@@ -8,9 +8,17 @@ import { ConstructorDropdownModule } from '../../../../shared/components/constru
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ComponentsListModule } from '../../../components-list/components-list.module';
-import { SelectChildrenScreenComponent } from './select-children-screen.component';
+import { SelectChildrenScreenContainerComponent } from './container/select-children-screen-container.component';
+import { SelectChildrenItemComponent } from './components/select-children-item/select-children-item.component';
+import { SelectChildrenItemWrapperComponent } from './components/select-children-item-wrapper/select-children-item-wrapper.component';
+import { SelectChildrenComponent } from './components/select-children/select-children.component';
 
-const COMPONENTS = [SelectChildrenScreenComponent];
+const COMPONENTS = [
+  SelectChildrenScreenContainerComponent,
+  SelectChildrenItemComponent,
+  SelectChildrenItemWrapperComponent,
+  SelectChildrenComponent,
+];
 
 @NgModule({
   declarations: [...COMPONENTS],

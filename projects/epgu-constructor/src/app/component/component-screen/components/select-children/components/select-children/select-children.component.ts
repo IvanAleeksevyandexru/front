@@ -1,50 +1,40 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-import { Observable } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../screen/screen.types';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
-import { CustomComponentOutputData } from '../../../components-list/components-list.types';
-
-enum ItemStatus {
-  invalid = 'INVALID',
-  valid = 'VALID',
-}
-
-interface ChildI extends Partial<ListElement> {
-  controlId?: string;
-  isNewRef?: string;
-}
-
-interface ClearEvent {
-  isClear: boolean;
-  id?: string;
-}
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ComponentDto,
+  ScenarioErrorsDto,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CustomComponentOutputData } from '../../../../../components-list/components-list.types';
+import { CachedValue, ChildI, ClearEvent, ItemStatus } from '../../select-children.models';
 
 @Component({
-  selector: 'epgu-constructor-select-children-screen',
-  templateUrl: './select-children-screen.component.html',
-  styleUrls: ['./select-children-screen.component.scss'],
+  selector: 'epgu-constructor-select-children',
+  templateUrl: './select-children.component.html',
+  styleUrls: ['./select-children.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectChildrenScreenComponent implements OnInit {
-  addSectionLabel$ = this.screenService.componentLabel$.pipe(
-    map((label) => {
-      return label || 'Добавить ребенка';
-    }),
-  );
-
-  data$: Observable<ComponentBase> = this.screenService.component$;
-  NEW_ID = 'new';
+export class SelectChildrenComponent implements OnInit {
+  @Input() addSectionLabel: string;
+  @Input() cachedValue: CachedValue;
+  @Input() component: ComponentDto;
+  @Input() errors: ScenarioErrorsDto;
+  @Output() updateCurrentAnswerServiceValidationEvent = new EventEmitter<boolean>();
+  @Output() updateCurrentAnswerServiceStateEvent = new EventEmitter<
+    { [key: string]: string | number | boolean }[]
+  >();
   itemsToSelect: Array<ChildI>; // Дети для выпадающего списка
   items: Array<ChildI> = []; // Выбранные дети
   itemsComponents = []; // Компоненты для кастомных детей
@@ -53,76 +43,54 @@ export class SelectChildrenScreenComponent implements OnInit {
   idRef: string;
   isNewRef: string;
   passportRef: string;
-  defaultAvailable = 20;
+  repeatAmount: number;
   isSingleChild: boolean;
-  hint: string | undefined;
-
-  private component: ScreenStoreComponentDtoI;
+  hint?: string;
+  DEFAULT_AVAILABLE = 20;
+  NEW_ID = 'new';
 
   constructor(
-    public screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
-    private cachedAnswersService: CachedAnswersService,
-    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      this.initVariables(data.id);
-      this.initStartValues(data.id);
-      this.changeDetectionRef.markForCheck();
-    });
+    this.repeatAmount = this.component?.attrs?.repeatAmount || this.DEFAULT_AVAILABLE;
+
+    this.initVariables();
+    this.initStartValues();
 
     this.selectChildrenForm.valueChanges
-      .pipe(startWith(this.selectChildrenForm.value as object), takeUntil(this.ngUnsubscribe$))
-      .subscribe(() =>
-        setTimeout(() => {
-          if (
-            Object.keys(this.selectChildrenForm.controls).every((control) => {
-              return this.selectChildrenForm.controls[control].valid;
-            })
-          ) {
-            this.selectChildrenForm.setErrors(null);
-          }
-          this.updateCurrentAnswerServiceValidation();
-
-          this.changeDetectionRef.markForCheck();
-        }),
-      );
+      .pipe(startWith(this.selectChildrenForm.value), takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        if (this.selectChildrenForm.valid) {
+          this.selectChildrenForm.setErrors(null);
+        }
+        this.updateCurrentAnswerServiceValidation();
+      });
 
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.addMoreChild();
-        this.changeDetectionRef.markForCheck();
       });
   }
 
-  initVariables(id: string): void {
-    const component = this.screenService.getCompFromDisplay(id);
-    this.component = component;
-
-    const itemsList = component ? JSON.parse(component.presetValue) : [];
+  initVariables(): void {
+    const itemsList = this.component ? JSON.parse(this.component.presetValue || '[]') : [];
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
     this.idRef = this.getRefFromComponent('id');
     this.passportRef = this.getRefFromComponent('rfPasportSeries');
     this.itemsToSelect = this.getItemsToSelect(itemsList);
-    this.isSingleChild = component?.attrs?.singleChild;
-    this.hint = component?.attrs?.hint;
+    this.isSingleChild = this.component?.attrs?.singleChild;
+    this.hint = this.component?.attrs?.hint;
   }
 
-  initStartValues(id: string): void {
-    const cachedValue = this.screenService.getCompValueFromCachedAnswers(id);
-    if (cachedValue) {
-      const children = this.cachedAnswersService.parseCachedValue<unknown[]>(
-        cachedValue,
-        this.component,
-      );
-      children.forEach((child, index) => {
+  initStartValues(): void {
+    if (this.cachedValue) {
+      this.cachedValue.forEach((child, index) => {
         const isNew = JSON.parse(child[this.isNewRef]);
         const childId = isNew ? this.NEW_ID : child[this.idRef];
         // По ID получаем ребенка для подстановки в formControl
@@ -136,7 +104,9 @@ export class SelectChildrenScreenComponent implements OnInit {
   }
 
   updateCurrentAnswerServiceValidation(): void {
-    this.currentAnswersService.isValid = this.selectChildrenForm.valid && !!this.items.length;
+    this.updateCurrentAnswerServiceValidationEvent.emit(
+      this.selectChildrenForm.valid && !!this.items.length,
+    );
   }
 
   updateItemValidationStatus(status: ItemStatus, itemId: string): void {
@@ -146,7 +116,7 @@ export class SelectChildrenScreenComponent implements OnInit {
   }
 
   getRefFromComponent(refName: string): string {
-    return (this.screenService.component?.attrs?.components || []).find((item) =>
+    return (this.component?.attrs?.components || []).find((item) =>
       item?.attrs?.fields?.find((field) => field.fieldName === refName),
     )?.id;
   }
@@ -154,10 +124,11 @@ export class SelectChildrenScreenComponent implements OnInit {
   /**
    * Создание кастомного ребенка
    */
-  addNewChild(index: number): void {
+  createNewChild(): ChildI {
     const id = uuidv4();
-    const newChild = {
-      ...this.screenService.component?.attrs?.components?.reduce(
+
+    return {
+      ...this.component?.attrs?.components?.reduce(
         (accum, value) => ({
           ...accum,
           [value.id]: '',
@@ -167,7 +138,6 @@ export class SelectChildrenScreenComponent implements OnInit {
       [this.isNewRef]: 'true',
       [this.idRef]: id,
     };
-    this.handleSelect(newChild, index);
   }
 
   removeChild(index: number): void {
@@ -197,7 +167,7 @@ export class SelectChildrenScreenComponent implements OnInit {
       }
       return childToSend;
     });
-    this.currentAnswersService.state = itemsToSend;
+    this.updateCurrentAnswerServiceStateEvent.emit(itemsToSend);
     this.setHideStateToSelectedItems(clearEvent);
   }
 
@@ -243,6 +213,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    *
    * @param event объект-ребенок
    * @param index индекс массива детей
+   * @param id индекс ребенка
    */
   handleSelect(event: ChildI | null, index?: number, id?: string): void {
     this.items[index] = {
@@ -252,7 +223,8 @@ export class SelectChildrenScreenComponent implements OnInit {
     };
 
     if (event && event[this.idRef] === this.NEW_ID) {
-      this.addNewChild(index);
+      const newChild = this.createNewChild();
+      this.handleSelect(newChild, index);
     } else {
       const clearEvent = {
         isClear: event === null,
@@ -260,17 +232,6 @@ export class SelectChildrenScreenComponent implements OnInit {
       };
       this.passDataToSend(this.items, clearEvent);
     }
-  }
-
-  isScreensAvailable(): boolean {
-    const screensAmount = this.items.length;
-    const repeatAmount = this.screenService.component?.attrs?.repeatAmount || this.defaultAvailable;
-
-    return screensAmount >= repeatAmount;
-  }
-
-  isMoreThanOneChild(): boolean {
-    return this.items.length > 1;
   }
 
   private setHideStateToSelectedItems(clearEvent?: ClearEvent): void {
@@ -297,7 +258,7 @@ export class SelectChildrenScreenComponent implements OnInit {
    * @param child - сохраненный ранее ребенок. Используется для заполнения полей
    */
   private prepareItemComponents(child: ChildI = {}): Array<ComponentDto> {
-    return this.screenService.component?.attrs?.components.map((component) => {
+    return this.component?.attrs?.components.map((component) => {
       return {
         ...component,
         value: <string>child[component.id],
