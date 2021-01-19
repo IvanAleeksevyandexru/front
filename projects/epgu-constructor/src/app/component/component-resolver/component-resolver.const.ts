@@ -8,7 +8,8 @@ import { ConfirmPersonalUserPhoneEmailComponent } from '../component-screen/comp
 import { RegistrationAddrComponent } from '../component-screen/components/confirm-personal-user/screens/registration-addr/components/registration-addr/registration-addr.component';
 // eslint-disable-next-line max-len
 import { AddPassportContainerComponent } from '../component-screen/components/add-passport/container/add-passport-component-container.component';
-import { SelectChildrenScreenComponent } from '../component-screen/components/select-children/select-children-screen.component';
+// eslint-disable-next-line max-len
+import { SelectChildrenScreenContainerComponent } from '../component-screen/components/select-children/container/select-children-screen-container.component';
 import { ComponentScreenComponentTypes } from '../component-screen/component-screen-components.types';
 import { Type } from '@angular/core';
 import { SelectMapObjectComponent } from '../unique-screen/components/select-map-object/select-map-object.component';
@@ -38,7 +39,7 @@ type ComponentScreenComponent = ConfirmPersonalUserAddressComponent
   | ConfirmPersonalUserPhoneEmailComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
-  | SelectChildrenScreenComponent;
+  | SelectChildrenScreenContainerComponent;
 
 type UniqueScreenComponent = InformationCenterMvdComponent
   | UnusedPaymentsContainerComponent
@@ -65,9 +66,9 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<ComponentTypes, Type<Co
   ConfirmPersonalUserPhone: ConfirmPersonalUserPhoneEmailComponent,
   RegistrationAddr: RegistrationAddrComponent,
   PassportLookup: AddPassportContainerComponent,
-  ChildrenList: SelectChildrenScreenComponent,
-  ChildrenListUnder14: SelectChildrenScreenComponent, // TODO: удалить потом как depricated
-  ChildrenListAbove14: SelectChildrenScreenComponent, //TODO: удалить потом как depricated
+  ChildrenList: SelectChildrenScreenContainerComponent,
+  ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
+  ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
 };
 
 export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {

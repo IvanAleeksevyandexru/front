@@ -11,7 +11,8 @@ import { ConfirmPersonalUserPhoneEmailComponent } from '../component-screen/comp
 import { RegistrationAddrComponent } from '../component-screen/components/confirm-personal-user/screens/registration-addr/components/registration-addr/registration-addr.component';
 // eslint-disable-next-line max-len
 import { AddPassportContainerComponent } from '../component-screen/components/add-passport/container/add-passport-component-container.component';
-import { SelectChildrenScreenComponent } from '../component-screen/components/select-children/select-children-screen.component';
+// eslint-disable-next-line max-len
+import { SelectChildrenScreenContainerComponent } from '../component-screen/components/select-children/container/select-children-screen-container.component';
 import { ComponentScreenComponentsModule } from '../component-screen/component-screen-components.module';
 import { UniqueScreenComponentsModule } from '../unique-screen/unique-screen-components.module';
 import { InformationCenterMvdComponent } from '../unique-screen/components/information-center-mvd/information-center-mvd.component';
@@ -43,7 +44,7 @@ import { PaymentTypeSelectorComponent } from '../unique-screen/components/paymen
     ConfirmPersonalUserPhoneEmailComponent,
     RegistrationAddrComponent,
     AddPassportContainerComponent,
-    SelectChildrenScreenComponent,
+    SelectChildrenScreenContainerComponent,
 
     InformationCenterMvdComponent,
     UnusedPaymentsContainerComponent,

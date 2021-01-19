@@ -36,4 +36,8 @@ export class ScreenServiceStub extends ScreenContent {
   public getStore() {
     return { cachedAnswers: [] };
   }
+
+  public getCompValueFromCachedAnswers(): string {
+    return '';
+  }
 }
