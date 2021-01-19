@@ -1,0 +1,8 @@
+<epgu-constructor-select-children
+  [addSectionLabel]="addSectionLabel$ | async"
+  [cachedValue]="cachedValue$ | async"
+  [component]="component$ | async"
+  [errors]="screenService.componentErrors$ | async"
+  (updateCurrentAnswerServiceStateEvent)="updateCurrentAnswersState($event)"
+  (updateCurrentAnswerServiceValidationEvent)="updateCurrentAnswersValid($event)"
+></epgu-constructor-select-children>

@@ -2,8 +2,20 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
-import { MockComponents, MockModule } from 'ng-mocks';
-
+import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
+import { ComponentScreenComponentTypes } from '../../component/component-screen/component-screen-components.types';
+// eslint-disable-next-line max-len
+import { AddPassportContainerComponent } from '../../component/component-screen/components/add-passport/container/add-passport-component-container.component';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserAddressComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserDataComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/component/confirm-personal-user-data/confirm-personal-user-data.component';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserPhoneEmailComponent } from '../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-phone-email/confirm-personal-user-phone-email.component';
+// eslint-disable-next-line max-len
+import { RegistrationAddrComponent } from '../../component/component-screen/components/confirm-personal-user/screens/registration-addr/components/registration-addr/registration-addr.component';
+// eslint-disable-next-line max-len
+import { SelectChildrenScreenContainerComponent } from '../../component/component-screen/components/select-children/container/select-children-screen-container.component';
 import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
