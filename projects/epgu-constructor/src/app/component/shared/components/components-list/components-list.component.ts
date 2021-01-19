@@ -70,36 +70,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    // this.dictionaries$.pipe(
-    //   takeUntil(this.unsubscribeService.ngUnsubscribe$),
-    //   mergeMap((dicts: CustomListDictionaries) => {
-    //     const componentSuggestionsFields: string[] = [];
-    //     Object.keys(dicts).forEach((key: string) => {
-    //       componentSuggestionsFields.push(dicts[key].origin?.attrs?.suggestionId);
-    //     });
-    //     if (componentSuggestionsFields.length) {
-    //       this.autocompleteService
-    //         .getSuggestions(componentSuggestionsFields)
-    //         .subscribe((suggestions: SuggestionsApiResponse[]) => {
-    //           Object.keys(dicts).forEach((key: string) => {
-    //             const suggestion = suggestions.find(
-    //               (item) => item.suggestionId === dicts[key].origin?.attrs?.suggestionId,
-    //             );
-    //             if (suggestion) {
-    //               const suggestionValues = suggestion.values.map((value: string) =>
-    //                 JSON.parse(value),
-    //               );
-    //               dicts[key].list.unshift(...suggestionValues);
-    //             }
-    //           });
-    //         });
-    //     }
-
-    //     console.log('!!!', dicts);
-    //     return of(dicts);
-    //   }),
-    // );
-
     this.eventBusService
       .on('validateOnBlur')
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))

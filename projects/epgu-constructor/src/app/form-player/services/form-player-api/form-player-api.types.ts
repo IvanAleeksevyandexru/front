@@ -143,6 +143,7 @@ export interface ComponentAttrsDto {
   errors?: CarInfoErrorsDto;
   add?: { component: string; caption: string[] };
   hideAddNewChildButton?: boolean;
+  suggestionId?: string;
 }
 
 export interface ComponentUploadedFileDto {
@@ -331,6 +332,13 @@ export interface DisplayDto {
   displayCssClass?: string;
   buttons?: Array<ScreenActionDto>;
   infoComponents?: string[];
+  suggestion?: SuggestionGroup;
+}
+
+export interface SuggestionGroup {
+  groupId: string;
+  saveGroupDataCheckboxId: string;
+  groupNameFieldId: string;
 }
 
 export interface ScenarioErrorsDto {
@@ -443,6 +451,20 @@ export interface ActionApiResponse<T> {
 }
 
 export interface SuggestionsApiResponse {
-  suggestionId: string;
-  values: string[];
+  fields: {
+    suggestionId: string;
+    values: {
+      value: string;
+      createdOn: string;
+    }
+  }[]
+  groups: {
+    suggestionGroupId: string;
+    values: [
+      {
+        suggestionId: string;
+        value: string;
+      }[]
+    ];
+  }[]
 }

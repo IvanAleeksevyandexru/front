@@ -11,6 +11,7 @@ import { DateRangeService } from '../../../component/shared/components/component
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
@@ -73,6 +74,7 @@ describe('ValidationTypeDirective', () => {
         EventBusService,
         DateRangeService,
         DatesToolsService,
+        UnsubscribeService,
       ],
     });
     service = TestBed.inject(ValidationService);

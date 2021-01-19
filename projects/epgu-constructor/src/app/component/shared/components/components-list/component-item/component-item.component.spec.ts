@@ -12,6 +12,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
 import { CoreModule } from '../../../../../core/core.module';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -35,7 +36,11 @@ describe('ComponentItemComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent],
       imports: [CoreModule, BaseModule, RouterTestingModule, WebcamShootModule],
-      providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        HealthService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        UnsubscribeService,
+      ],
     }).compileComponents();
     fb = TestBed.inject(FormBuilder);
   });
