@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenStoreComponentDtoI } from '../../../../../screen/screen.types';
@@ -13,7 +12,6 @@ import { CachedValue } from '../select-children.models';
   selector: 'epgu-constructor-select-children-screen-container',
   templateUrl: './select-children-screen-container.component.html',
   styleUrls: ['./select-children-screen-container.component.scss'],
-  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectChildrenScreenContainerComponent {
@@ -36,7 +34,6 @@ export class SelectChildrenScreenContainerComponent {
   constructor(
     public screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
-    private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
   ) {}
 
