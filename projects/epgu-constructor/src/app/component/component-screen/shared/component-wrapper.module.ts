@@ -8,6 +8,7 @@ import { BaseModule } from '../../../shared/base.module';
 import { AnswerButtonModule } from '../../../shared/components/answer-button/answer-button.module';
 import { ScreenContainerModule } from '../../../shared/components/screen-container/screen-container.module';
 import { BaseComponentsModule } from '../../../shared/components/base-components/base-components.module';
+import { UserInfoLoaderModule } from '../../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [ComponentWrapperComponent],
@@ -20,6 +21,7 @@ import { BaseComponentsModule } from '../../../shared/components/base-components
     FieldListModule,
     ScreenPadModule,
     ActionModule,
+    UserInfoLoaderModule,
   ],
 })
 export class ComponentWrapperModule {}

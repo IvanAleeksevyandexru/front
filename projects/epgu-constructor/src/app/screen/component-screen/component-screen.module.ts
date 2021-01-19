@@ -11,11 +11,13 @@ import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.m
 import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
 import { ComponentWrapperModule } from '../../component/component-screen/shared/component-wrapper.module';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [ComponentScreenComponent],
   exports: [ComponentScreenComponent],
   imports: [
+    UserInfoLoaderModule,
     ComponentScreenComponentsModule,
     ComponentsListModule,
     TimerModule,

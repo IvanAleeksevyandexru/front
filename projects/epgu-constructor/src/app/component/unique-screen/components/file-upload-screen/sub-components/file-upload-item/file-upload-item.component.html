@@ -2,6 +2,7 @@
   <div *ngIf="data.title"
        class="title">
     {{data.title}}
+    <epgu-constructor-user-info-loader [isDisplay]="false"></epgu-constructor-user-info-loader>
   </div>
   <div class="file__bottom">
     <epgu-constructor-output-html
