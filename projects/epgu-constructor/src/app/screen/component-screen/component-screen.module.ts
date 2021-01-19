@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
 import { TimerModule } from '../../component/component-screen/components/timer/timer.module';
 import { ComponentsListModule } from '../../component/components-list/components-list.module';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { BaseModule } from '../../shared/base.module';
-import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
-import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
-import { ActionModule } from '../../shared/directives/action/action.module';
 import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
+import { ComponentWrapperModule } from '../../component/component-screen/shared/component-wrapper.module';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
@@ -19,17 +18,15 @@ import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/u
   exports: [ComponentScreenComponent],
   imports: [
     UserInfoLoaderModule,
-    BaseModule,
     ComponentScreenComponentsModule,
     ComponentsListModule,
     TimerModule,
     BaseComponentsModule,
-    ScreenContainerModule,
-    AnswerButtonModule,
-    FieldListModule,
+    ComponentResolverModule,
+    ComponentWrapperModule,
     ScreenPadModule,
-    ActionModule,
-    ComponentResolverModule
+    FieldListModule,
+    CommonModule,
   ],
   providers: [EventBusService],
 })
