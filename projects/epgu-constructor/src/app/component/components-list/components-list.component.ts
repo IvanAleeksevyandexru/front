@@ -43,6 +43,7 @@ const halfWidthItemTypes = [
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges {
+  @Input() componentsGroupIndex = 0;
   @Input() components: CustomComponent;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели

@@ -154,7 +154,7 @@
           "
         >
           <epgu-constructor-constructor-checkbox
-            [checkboxId]="componentData.value?.id"
+            checkboxId="{{componentData.value?.id}}_{{componentsGroupIndex}}"
             [control]="componentData.get('value')"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
