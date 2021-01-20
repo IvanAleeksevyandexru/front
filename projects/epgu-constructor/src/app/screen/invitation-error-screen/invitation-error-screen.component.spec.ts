@@ -6,13 +6,14 @@ import { InvitationErrorScreenComponentTypes } from '../../component/invitation-
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { NavigationPayload } from '../../form-player/form-player.types';
 import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenStore } from '../screen.types';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
+import { ScreenBase } from '../screenBase';
+// eslint-disable-next-line max-len
+import { ApplicantAnswersDto } from '../../../../../../dist/epgu-constructor/app/form-player/services/form-player-api/form-player-api.types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -20,18 +21,17 @@ const componentDtoSample: ComponentDto = {
   type: 'type1',
 };
 
-const scenarioDtoSample: ScreenStore = {
-  token: 'some token',
-};
-
-const navigationPayloadSample: NavigationPayload = {
-  foo: {
+const answerDtoSample: ApplicantAnswersDto = {
+  test: {
     visited: true,
-    value: 'bar',
+    value: 'string',
+    disabled: true,
   },
 };
 
-// TODO: починить тесты
+const orderIdSample = 'desc';
+
+const headerSample = 'Test header';
 
 describe('InvitationErrorScreenComponent', () => {
   let component: InvitationErrorScreenComponent;
@@ -61,7 +61,7 @@ describe('InvitationErrorScreenComponent', () => {
   beforeEach(() => {
     initComponent();
 
-    navigationService = TestBed.inject(NavigationService) as NavigationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
@@ -71,17 +71,13 @@ describe('InvitationErrorScreenComponent', () => {
     });
   });
 
-  xdescribe('scenarioDto property', () => {
-    it('should be equal to this.screenService.getStore()', () => {
-      spyOn(screenService, 'getStore').and.returnValue(scenarioDtoSample);
-
-      initComponent();
-
-      expect(component.scenarioDto).toBe(scenarioDtoSample);
+  describe('InvitationErrorScreenComponent', () => {
+    it('should extend ScreenBase', () => {
+      expect(component).toBeInstanceOf(ScreenBase);
     });
   });
 
-  xdescribe('epgu-constructor-invitation-error component', () => {
+  describe('epgu-constructor-invitation-error component', () => {
     const selector = 'epgu-constructor-invitation-error';
 
     it('should be rendered if screenService.componentType is invitationError', () => {
@@ -111,14 +107,46 @@ describe('InvitationErrorScreenComponent', () => {
       expect(debugEl.componentInstance.data).toBe(componentDtoSample);
     });
 
-    it('scenarioDto property should be equal to component.scenarioDto', () => {
+    it('applicantAnswers property should be equal to screenService.applicantAnswers', () => {
       screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-      component.scenarioDto = scenarioDtoSample;
       fixture.detectChanges();
 
       const debugEl = fixture.debugElement.query(By.css(selector));
 
-      expect(debugEl.componentInstance.scenarioDto).toBe(scenarioDtoSample);
+      expect(debugEl.componentInstance.applicantAnswers).toBeNull();
+
+      screenService.applicantAnswers = answerDtoSample;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.applicantAnswers).toBe(answerDtoSample);
+    });
+
+    it('orderId property should be equal to screenService.orderId', () => {
+      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
+      fixture.detectChanges();
+
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.componentInstance.orderId).toBeNull();
+
+      screenService.orderId = orderIdSample;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.orderId).toBe(orderIdSample);
+    });
+
+    it('header property should be equal to screenService.header', () => {
+      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
+      fixture.detectChanges();
+
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.componentInstance.header).toBeNull();
+
+      screenService.header = headerSample;
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.header).toBe(headerSample);
     });
   });
 });
