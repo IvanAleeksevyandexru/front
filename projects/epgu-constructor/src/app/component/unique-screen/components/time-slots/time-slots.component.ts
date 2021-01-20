@@ -529,7 +529,6 @@ export class TimeSlotsComponent implements OnInit {
       this.monthChanged(this.currentMonth);
     }
 
-    this.bookedSlot = this.currentService.getBookedSlot();
     if (this.bookedSlot && isBookedDepartment) {
       this.selectDate(this.bookedSlot.slotTime);
       this.chooseTimeSlot(this.bookedSlot);
