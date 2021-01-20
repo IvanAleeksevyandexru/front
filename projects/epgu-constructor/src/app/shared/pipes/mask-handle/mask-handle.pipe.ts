@@ -1,12 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { MASKS } from './mask.constant';
 
 @Pipe({
   name: 'maskHandle'
 })
 export class MaskHandlePipe implements PipeTransform {
 
-  public transform(input: Array<string>): Array<string | RegExp> {
-    if (input) {
+  public transform(input: string | string[]): Array<string | RegExp> {
+    if (typeof input === 'string') {
+      switch (input) {
+        case 'KadastrNumberInput':
+          return (MASKS.KadastrNumberInput as unknown) as Array<string | RegExp>;
+        default:
+          return null;
+      }
+    }
+
+    if (Array.isArray(input)) {
       return input.map((char) => {
         const isRegExp = char[0] === '/';
         return isRegExp ? this.strToRegExp(char) : char;
