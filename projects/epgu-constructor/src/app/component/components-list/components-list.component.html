@@ -3,7 +3,7 @@
     *ngFor="let componentData of formService.form.controls; let idx = index"
     class="form__item {{
       componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
-    }}"
+    }} {{componentData.value?.type === componentType.DropDown ? 'form__item_start' : ''}}"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
