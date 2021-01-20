@@ -57,8 +57,8 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить данные'),
   );
-  data$: Observable<DisplayDto> = this.screenService.display$;
-  init$: Observable<DisplayDto> = this.data$.pipe(
+
+  init$: Observable<DisplayDto> = this.screenService.display$.pipe(
     filter((data) => data.type === ScreenTypes.UNIQUE),
     tap((data: DisplayDto) => {
       this.initVariable();
@@ -112,25 +112,6 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  duplicateScreen(isNew?: boolean): void {
-    const isScreensAvailable = this.isScreensAvailable();
-    const { attrs } = this.propData.components[0];
-
-    const notFirstScreenComponents = (components: unknown[]): CustomComponent[] =>
-      (components as CustomComponent[]).filter(({ attrs: cmpAttrs }) => !cmpAttrs.onlyFirstScreen);
-
-    const getScreenComponents = (components: unknown[], index: number): unknown[] =>
-      index > 0 ? notFirstScreenComponents(components) : components;
-
-    if (isScreensAvailable && isNew) {
-      this.setNewScreen(notFirstScreenComponents(attrs.components));
-    } else if (isScreensAvailable) {
-      attrs.repeatableComponents.forEach((component, i) => {
-        this.setNewScreen(getScreenComponents(component, i) as CustomComponent[]);
-      });
-    }
-  }
-
   changeComponentList(changes: CustomComponentOutputData, index: number): void {
     const state = this.getState();
     this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
@@ -171,6 +152,25 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
         return isEqualObj(prev, curr) ? 'noChange' : 'change';
       }),
     );
+  }
+
+  private duplicateScreen(isNew?: boolean): void {
+    const isScreensAvailable = this.isScreensAvailable();
+    const { attrs } = this.propData.components[0];
+
+    const notFirstScreenComponents = (components: unknown[]): CustomComponent[] =>
+      (components as CustomComponent[]).filter(({ attrs: cmpAttrs }) => !cmpAttrs.onlyFirstScreen);
+
+    const getScreenComponents = (components: unknown[], index: number): unknown[] =>
+      index > 0 ? notFirstScreenComponents(components) : components;
+
+    if (isScreensAvailable && isNew) {
+      this.setNewScreen(notFirstScreenComponents(attrs.components));
+    } else if (isScreensAvailable) {
+      attrs.repeatableComponents.forEach((component, i) => {
+        this.setNewScreen(getScreenComponents(component, i) as CustomComponent[]);
+      });
+    }
   }
 
   private setNewScreen(components: CustomComponent[]): void {
