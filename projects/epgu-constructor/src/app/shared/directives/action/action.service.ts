@@ -126,8 +126,16 @@ export class ActionService {
   }
 
   private getComponentStateForNavigate(action: ComponentActionDto, componentId: string): ComponentStateForNavigate {
-    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов (кроме таймера)
-    if (this.screenService.display?.type === ScreenTypes.CUSTOM && !this.isTimerComponent(componentId)) {
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
+    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
+      if (this.isTimerComponent(componentId)) {
+        return {
+          [componentId]: {
+            visited: true,
+            value: action.value,
+          },
+        };
+      }
       return {
         ...this.currentAnswersService.state as object
       };
