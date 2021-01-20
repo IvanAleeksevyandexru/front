@@ -18,12 +18,11 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
 import { InputErrorModule } from '../../shared/components/input-error/input-error.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
-import { MemoPipe } from '../../core/pipes/memo/memo.pipe';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../shared/base.module';
 import { DateRangeService } from './services/date-range/date-range.service';
 
-const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
+const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],

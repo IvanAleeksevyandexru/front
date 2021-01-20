@@ -14,14 +14,14 @@ import { ConstructorPlainInputModule } from '../../../../shared/components/const
 import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { Gender } from '../../../../shared/types/gender';
-import { EmployeeHistoryComponent } from './employee-history.component';
-import { EmployeeHistoryDataSourceService } from './services/employee-history-data-source.service';
+import { EmployeeHistoryFormComponent } from './employee-history-form.component';
+import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 
 xdescribe('EmployeeHistoryComponent', () => {
-  let component: EmployeeHistoryComponent;
-  let fixture: ComponentFixture<EmployeeHistoryComponent>;
+  let component: EmployeeHistoryFormComponent;
+  let fixture: ComponentFixture<EmployeeHistoryFormComponent>;
   let mockDisplay: DisplayDto = {
     components: [],
     subHeader: { text: '', clarifications: {}},
@@ -45,7 +45,7 @@ xdescribe('EmployeeHistoryComponent', () => {
       ],
 
       declarations: [
-        EmployeeHistoryComponent,
+        EmployeeHistoryFormComponent,
         PageNameComponent,
         LabelComponent,
         NavigationComponent,
@@ -54,7 +54,7 @@ xdescribe('EmployeeHistoryComponent', () => {
       providers: [
         EmployeeHistoryFormService,
         UnsubscribeService,
-        EmployeeHistoryDataSourceService,
+        EmployeeHistoryDatasourceService,
         EmployeeHistoryMonthsService,
         EventBusService,
       ],
@@ -62,10 +62,10 @@ xdescribe('EmployeeHistoryComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeeHistoryComponent);
+    fixture = TestBed.createComponent(EmployeeHistoryFormComponent);
     fixture.debugElement.injector.get(EmployeeHistoryFormService);
     fixture.debugElement.injector.get(UnsubscribeService);
-    fixture.debugElement.injector.get(EmployeeHistoryDataSourceService);
+    fixture.debugElement.injector.get(EmployeeHistoryDatasourceService);
     fixture.debugElement.injector.get(EmployeeHistoryMonthsService);
 
     component = fixture.componentInstance;

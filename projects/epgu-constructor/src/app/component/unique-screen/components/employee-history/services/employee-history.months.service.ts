@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import * as moment_ from 'moment';
 import { Moment } from 'moment';
+import { MonthYear } from 'epgu-lib';
+import { BehaviorSubject } from 'rxjs';
+
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel,
   EmployeeHistoryUncheckedPeriod,
 } from '../employee-history.types';
-import { MonthYear } from 'epgu-lib';
-import { BehaviorSubject } from 'rxjs';
 
 const moment = moment_;
 moment.locale('ru');
@@ -33,20 +34,22 @@ export class EmployeeHistoryMonthsService {
     this.availableMonths = this.getAvailableMonths();
   }
 
-  getUncheckedPeriods(): EmployeeHistoryUncheckedPeriod[] {
+  getUncheckedPeriods(availableMonths: EmployeeHistoryAvailableDates[]): EmployeeHistoryUncheckedPeriod[] {
+    if (!availableMonths.length) return [];
+
     const periods: Array<Array<EmployeeHistoryAvailableDates>> = [];
     let periodIndex = 0;
 
     periods[periodIndex] = [];
 
-    for (let i = 0; i < this.availableMonths.length; i++) {
-      if (this.availableMonths[i].checked) {
-        if (!this.availableMonths[i + 1]?.checked) {
+    for (let i = 0; i < availableMonths.length; i++) {
+      if (availableMonths[i].checked) {
+        if (!availableMonths[i + 1]?.checked) {
           periodIndex++;
           periods[periodIndex] = [];
         }
       } else {
-        periods[periodIndex].push(this.availableMonths[i]);
+        periods[periodIndex].push(availableMonths[i]);
       }
     }
 

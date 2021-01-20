@@ -1,4 +1,6 @@
 import { MonthYear } from 'epgu-lib/lib/models/date-time.model';
+import { ComponentBase } from '../../../../screen/screen.types';
+import { TextTransform } from '../../../../shared/types/textTransform';
 
 export interface EmployeeHistoryDataSource {
   label: string;
@@ -48,3 +50,9 @@ export interface EmployeeHistoryUncheckedPeriod {
 }
 
 export type EmployeeType = 'employed' | 'unemployed' | 'military' | 'student';
+
+export interface EmployeeHistoryComponentInterface extends ComponentBase {
+  attrs: {
+    fstuc?: TextTransform;
+  };
+}

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
+
 import { EmployeeHistoryDataSource } from '../employee-history.types';
 import { Gender } from '../../../../../shared/types/gender';
 
 @Injectable()
-export class EmployeeHistoryDatasourceService {
-  constructor() {}
+export class EmployeeHistoryDataSourceService {
+  public dataSource: Array<EmployeeHistoryDataSource>;
 
-  public getDataSourceByGender(gender: Gender = Gender.male): Array<EmployeeHistoryDataSource> {
-    return [
+  public getDataSourceByGender(gender: Gender = Gender.male): void {
+    this.dataSource = [
       {
         label: `Я учил${gender === Gender.male ? 'ся' : 'ась'}`,
         type: 'student',
@@ -34,7 +35,9 @@ export class EmployeeHistoryDatasourceService {
         address: 'Юридический адрес полностью, включая регион и город',
       },
       {
-        label: `Я не работал${gender === Gender.male ? '' : 'а'} и не учил${gender === Gender.male ? 'ся' : 'ась'}`,
+        label: `Я не работал${gender === Gender.male ? '' : 'а'} и не учил${
+          gender === Gender.male ? 'ся' : 'ась'
+        }`,
         type: 'unemployed',
         position: '',
         place: '',

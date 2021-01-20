@@ -16,7 +16,8 @@ import { SelectMapObjectComponent } from '../unique-screen/components/select-map
 import { FileUploadScreenComponent } from '../unique-screen/components/file-upload-screen/file-upload-screen.component';
 // eslint-disable-next-line max-len
 import { UploadAndEditPhotoComponent } from '../unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
-import { EmployeeHistoryComponent } from '../unique-screen/components/employee-history/employee-history.component';
+// eslint-disable-next-line max-len
+import { EmployeeHistoryContainerComponent } from '../unique-screen/components/employee-history/container/employee-history-container.component';
 import { RepeatableFieldsComponent } from '../unique-screen/components/repeatable-fields/repeatable-fields.component';
 import { TimeSlotsComponent } from '../unique-screen/components/time-slots/time-slots.component';
 // eslint-disable-next-line max-len
@@ -46,7 +47,7 @@ type UniqueScreenComponent = InformationCenterMvdComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
   | UploadAndEditPhotoComponent
-  | EmployeeHistoryComponent
+  | EmployeeHistoryContainerComponent
   | RepeatableFieldsComponent
   | TimeSlotsComponent
   | CarInfoContainerComponent
@@ -77,7 +78,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   MapService: SelectMapObjectComponent,
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoComponent,
-  EmployeeHistory: EmployeeHistoryComponent,
+  EmployeeHistory: EmployeeHistoryContainerComponent,
   RepeatableFields: RepeatableFieldsComponent,
   TimeSlot: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,

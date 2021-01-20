@@ -20,7 +20,8 @@ import { UnusedPaymentsContainerComponent } from '../unique-screen/components/un
 import { SelectMapObjectComponent } from '../unique-screen/components/select-map-object/select-map-object.component';
 import { FileUploadScreenComponent } from '../unique-screen/components/file-upload-screen/file-upload-screen.component';
 import { UploadAndEditPhotoComponent } from '../unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
-import { EmployeeHistoryComponent } from '../unique-screen/components/employee-history/employee-history.component';
+// eslint-disable-next-line max-len
+import { EmployeeHistoryContainerComponent } from '../unique-screen/components/employee-history/container/employee-history-container.component';
 import { RepeatableFieldsComponent } from '../unique-screen/components/repeatable-fields/repeatable-fields.component';
 import { TimeSlotsComponent } from '../unique-screen/components/time-slots/time-slots.component';
 import { CarInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
@@ -51,7 +52,7 @@ import { PaymentTypeSelectorComponent } from '../unique-screen/components/paymen
     SelectMapObjectComponent,
     FileUploadScreenComponent,
     UploadAndEditPhotoComponent,
-    EmployeeHistoryComponent,
+    EmployeeHistoryContainerComponent,
     RepeatableFieldsComponent,
     TimeSlotsComponent,
     CarInfoContainerComponent,

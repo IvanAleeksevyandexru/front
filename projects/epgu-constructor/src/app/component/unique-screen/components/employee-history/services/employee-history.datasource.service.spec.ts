@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
+import { EmployeeHistoryDataSourceService } from './employee-history-data-source.service';
 
-describe('EmployeeHistoryDatasourceService', () => {
-  let service: EmployeeHistoryDatasourceService;
+describe('EmployeeHistoryDataSourceService', () => {
+  let service: EmployeeHistoryDataSourceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [EmployeeHistoryDatasourceService]
+      providers: [EmployeeHistoryDataSourceService]
     });
-    service = TestBed.inject(EmployeeHistoryDatasourceService);
+    service = TestBed.inject(EmployeeHistoryDataSourceService);
   });
 
   it('should be created', () => {

@@ -20,9 +20,8 @@ import {
   EmployeeHistoryDataSource,
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-
-import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
-import { EmployeeHostoryErrors } from '../employee-hostory.enums';
+import { EmployeeHistoryDataSourceService } from './employee-history-data-source.service';
+import { EmployeeHostoryErrors } from '../employee-history.enums';
 import { defaultScreensAmount } from '../../repeatable-fields/repeatable-fields.constant';
 
 const moment = moment_;
@@ -39,7 +38,7 @@ export class EmployeeHistoryFormService {
     private fb: FormBuilder,
     private unsubscribeService: UnsubscribeService,
     private monthsService: EmployeeHistoryMonthsService,
-    private ds: EmployeeHistoryDatasourceService,
+    private ds: EmployeeHistoryDataSourceService,
   ) {
     this.defaultType = 'student';
   }
@@ -50,7 +49,7 @@ export class EmployeeHistoryFormService {
   }
 
   newGeneration(generationData?: EmployeeHistoryModel): void {
-    if (!this.isScreensAvailable()) {
+    if (!this.isScreensAvailable(this.employeeHistoryForm.length)) {
       return;
     }
 
@@ -87,8 +86,8 @@ export class EmployeeHistoryFormService {
     this.employeeHistoryForm = this.fb.array([]);
   }
 
-  isScreensAvailable(): boolean {
-    return this.employeeHistoryForm.length < defaultScreensAmount;
+  isScreensAvailable(length: number): boolean {
+    return length < defaultScreensAmount;
   }
 
   private newGenerationWatch(form: FormGroup): void {
@@ -114,7 +113,7 @@ export class EmployeeHistoryFormService {
       .valueChanges.pipe(takeUntil(this.unsubscribeService))
       .subscribe((type: EmployeeType) => {
         this.setValidatorsByDataSource(
-          this.ds.getDataSourceByGender().find((e: EmployeeHistoryDataSource) => e.type === type),
+          this.ds.dataSource.find((e: EmployeeHistoryDataSource) => e.type === type),
           form,
         );
       });
