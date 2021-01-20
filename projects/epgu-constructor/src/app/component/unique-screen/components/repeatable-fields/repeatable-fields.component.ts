@@ -114,11 +114,19 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
 
   duplicateScreen(isNew?: boolean): void {
     const isScreensAvailable = this.isScreensAvailable();
+    const { attrs } = this.propData.components[0];
+
+    const notFirstScreenComponents = (components: unknown[]): CustomComponent[] =>
+      (components as CustomComponent[]).filter(({ attrs: cmpAttrs }) => !cmpAttrs.onlyFirstScreen);
+
+    const getScreenComponents = (components: unknown[], index: number): unknown[] =>
+      index > 0 ? notFirstScreenComponents(components) : components;
+
     if (isScreensAvailable && isNew) {
-      this.setNewScreen(this.propData.components[0].attrs.components as CustomComponent[]);
+      this.setNewScreen(notFirstScreenComponents(attrs.components));
     } else if (isScreensAvailable) {
-      this.propData.components[0].attrs.repeatableComponents.forEach((component) => {
-        this.setNewScreen((component as unknown) as CustomComponent[]);
+      attrs.repeatableComponents.forEach((component, i) => {
+        this.setNewScreen(getScreenComponents(component, i) as CustomComponent[]);
       });
     }
   }
