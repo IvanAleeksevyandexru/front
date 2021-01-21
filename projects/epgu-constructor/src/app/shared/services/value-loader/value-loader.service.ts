@@ -62,7 +62,6 @@ export class ValueLoaderService {
       parentComponent.value ||
       null;
     const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
-
     if (cachedValueArray.length) {
       let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
       cachedValueArray.forEach((_component, index) => {
@@ -70,7 +69,6 @@ export class ValueLoaderService {
           this.getCacheRepeatableField(components, cachedValue, index),
         );
       });
-
       return repeatableFieldComponents;
     } else {
       return [this.getCacheRepeatableField(components, cachedValue, 0)];

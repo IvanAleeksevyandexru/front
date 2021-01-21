@@ -115,6 +115,7 @@ export interface CustomComponentAttr {
   grid?: string;
   minDate?: string;
   maxDate?: string;
+  onlyFirstScreen?: boolean;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

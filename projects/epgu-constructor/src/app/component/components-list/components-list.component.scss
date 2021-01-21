@@ -20,6 +20,9 @@
       margin-bottom: $screen-pad-p;
     }
   }
+  &__item_start {
+    justify-content: flex-start;
+  }
   &::ng-deep .form__half {
     max-width: 50%;
   }
