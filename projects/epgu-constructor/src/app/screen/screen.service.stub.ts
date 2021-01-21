@@ -3,13 +3,14 @@ import { ScreenStore } from './screen.types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenContent } from './screen-content';
 import {
+  CachedAnswersDto,
   ComponentDto,
   DisplayDto,
 } from '../form-player/services/form-player-api/form-player-api.types';
 
 @Injectable()
 export class ScreenServiceStub extends ScreenContent {
-  private screenStore: ScreenStore;
+  private screenStore: ScreenStore = { cachedAnswers: [] } as unknown as CachedAnswersDto;
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
 
@@ -19,11 +20,10 @@ export class ScreenServiceStub extends ScreenContent {
   public isLoadingSubject$ = new BehaviorSubject<boolean>(false);
   public isLoading$: Observable<boolean> = this.isLoadingSubject$.asObservable();
 
-  public get componentValue(): string {
-    return '';
+  public initScreenStore(store: ScreenStore): void {
+    this.screenStore = store;
+    this.updateScreenContent(store);
   }
-
-  public initScreenStore(store: ScreenStore): void {}
 
   public updateScreenStore(newState: ScreenStore): void {}
 
@@ -33,11 +33,15 @@ export class ScreenServiceStub extends ScreenContent {
 
   private loadValueFromCachedAnswer(): void {}
 
-  public getStore() {
-    return { cachedAnswers: [] };
+  public getStore(): ScreenStore {
+    return this.screenStore;
   }
 
-  public getCompValueFromCachedAnswers(): string {
-    return '';
+  public getCompValueFromCachedAnswers(componentId?: string): string {
+    const cachedAnswers = this.getStore().cachedAnswers;
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+    return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 }
