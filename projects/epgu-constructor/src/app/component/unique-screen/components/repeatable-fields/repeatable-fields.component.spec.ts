@@ -11,111 +11,112 @@ import { ScreenTypes } from '../../../../screen/screen.types';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { RepeatableFieldsComponent } from './repeatable-fields.component';
 
+const displayMock = {
+  id: 's113',
+  name: 'Укажите все изменения ФИО',
+  type: ScreenTypes.UNIQUE,
+  header: 'Укажите все изменения',
+  submitLabel: 'Далее',
+  components: [
+    {
+      id: 'pd6',
+      type: 'RepeatableFields',
+      label: 'Добавить еще  ФИО',
+      attrs: {
+        repeatableComponents: [],
+        repeatAmount: '20',
+        components: [
+          {
+            id: 'pd9',
+            type: 'StringInput',
+            label: 'Прежняя фамилия',
+            attrs: {
+              fstuc: 'all',
+              validation: [
+                {
+                  type: 'RegExp',
+                  value: '.+',
+                  ref: '',
+                  dataType: '',
+                  condition: '',
+                  errorMsg: 'Поле не может быть пустым',
+                },
+                {
+                  type: 'RegExp',
+                  value: '^[\\s\\S]{0,100}$',
+                  ref: '',
+                  condition: '',
+                  errorMsg: 'Поле должно содержать не более 100 символов',
+                },
+              ],
+            },
+            value: '',
+            required: true,
+            cycled: false,
+          },
+          {
+            id: 'pd10',
+            type: 'StringInput',
+            label: 'Прежнее имя',
+            attrs: {
+              fstuc: 'all',
+              validation: [
+                {
+                  type: 'RegExp',
+                  value: '^[\\s\\S]{0,100}$',
+                  ref: '',
+                  condition: '',
+                  errorMsg: 'Поле должно содержать не более 100 символов',
+                },
+              ],
+            },
+            value: '',
+            required: false,
+            cycled: false,
+          },
+          {
+            id: 'pd11',
+            type: 'StringInput',
+            label: 'Прежнее отчество',
+            attrs: {
+              fstuc: 'all',
+              validation: [
+                {
+                  type: 'RegExp',
+                  value: '^[\\s\\S]{0,100}$',
+                  ref: '',
+                  condition: '',
+                  errorMsg: 'Поле должно содержать не более 100 символов',
+                },
+              ],
+              customUnrecLabel: 'При наличии',
+              onlyFirstScreen: true
+            },
+            value: '',
+            required: false,
+            cycled: false,
+          },
+        ],
+        fields: [],
+        actions: [],
+      },
+      arguments: {},
+      value: '',
+      required: true,
+      cycled: false,
+    },
+  ],
+  accepted: true,
+  impasse: false,
+  terminal: false,
+  firstScreen: false,
+} as DisplayDto;
 
 describe('RepeatableFieldsComponent', () => {
   let component: RepeatableFieldsComponent;
-
   let fixture: ComponentFixture<RepeatableFieldsComponent>;
-  let displayMock = {
-    id: 's113',
-    name: 'Укажите все изменения ФИО',
-    type: ScreenTypes.UNIQUE,
-    header: 'Укажите все изменения',
-    submitLabel: 'Далее',
-    components: [
-      {
-        id: 'pd6',
-        type: 'RepeatableFields',
-        label: 'Добавить еще  ФИО',
-        attrs: {
-          repeatableComponents: [],
-          repeatAmount: '20',
-          components: [
-            {
-              id: 'pd9',
-              type: 'StringInput',
-              label: 'Прежняя фамилия',
-              attrs: {
-                fstuc: 'all',
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '.+',
-                    ref: '',
-                    dataType: '',
-                    condition: '',
-                    errorMsg: 'Поле не может быть пустым',
-                  },
-                  {
-                    type: 'RegExp',
-                    value: '^[\\s\\S]{0,100}$',
-                    ref: '',
-                    condition: '',
-                    errorMsg: 'Поле должно содержать не более 100 символов',
-                  },
-                ],
-              },
-              value: '',
-              required: true,
-              cycled: false,
-            },
-            {
-              id: 'pd10',
-              type: 'StringInput',
-              label: 'Прежнее имя',
-              attrs: {
-                fstuc: 'all',
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '^[\\s\\S]{0,100}$',
-                    ref: '',
-                    condition: '',
-                    errorMsg: 'Поле должно содержать не более 100 символов',
-                  },
-                ],
-              },
-              value: '',
-              required: false,
-              cycled: false,
-            },
-            {
-              id: 'pd11',
-              type: 'StringInput',
-              label: 'Прежнее отчество',
-              attrs: {
-                fstuc: 'all',
-                validation: [
-                  {
-                    type: 'RegExp',
-                    value: '^[\\s\\S]{0,100}$',
-                    ref: '',
-                    condition: '',
-                    errorMsg: 'Поле должно содержать не более 100 символов',
-                  },
-                ],
-                customUnrecLabel: 'При наличии',
-              },
-              value: '',
-              required: false,
-              cycled: false,
-            },
-          ],
-          fields: [],
-          actions: [],
-        },
-        arguments: {},
-        value: '',
-        required: true,
-        cycled: false,
-      },
-    ],
-    accepted: true,
-    impasse: false,
-    terminal: false,
-    firstScreen: false,
-  } as DisplayDto;
 
+  let eventBusService: EventBusService;
   let screenService: ScreenService;
 
   beforeEach(
@@ -137,6 +138,7 @@ describe('RepeatableFieldsComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RepeatableFieldsComponent);
+    eventBusService = TestBed.inject(EventBusService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -183,6 +185,27 @@ describe('RepeatableFieldsComponent', () => {
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.showNav).toBeTruthy();
+    });
+  });
+
+  it('when cloneButtonClickEvent,should create components with filtered onlyFirstScreen', () => {
+    const components = [
+      displayMock.components[0].attrs.components[0],
+      displayMock.components[0].attrs.components[1]
+    ];
+    const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
+    eventBusService.emit('cloneButtonClickEvent', 'any');
+    expect(setNewScreenSpy).toBeCalledTimes(1);
+    expect(setNewScreenSpy).toBeCalledWith(components);
+
+  });
+
+  it('should been called setNewScreen method with screens components',  () => {
+    const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
+    const { components } = displayMock.components[0].attrs;
+    component.init$.subscribe(() => {
+      expect(setNewScreenSpy).toBeCalledTimes(1);
+      expect(setNewScreenSpy).toBeCalledWith(components);
     });
   });
 });
