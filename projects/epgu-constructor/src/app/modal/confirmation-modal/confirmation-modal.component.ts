@@ -1,9 +1,9 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
+  Injector,
   OnInit,
 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -42,13 +42,13 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   isShortModal?: ConfirmationModal['isShortModal'];
 
   constructor(
+    public injector: Injector,
     private modalService: ModalService,
-    private elemRef: ElementRef,
+    protected elemRef: ElementRef,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
-    private cdr: ChangeDetectorRef,
   ) {
-    super();
+    super(injector);
   }
 
   ngOnInit(): void {
@@ -58,11 +58,10 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     }
 
     this.eventBusService
-      .on('closeModalEvent')
+      .on(`closeModalEvent_${this.text}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.closeModal();
-        this.cdr.markForCheck();
       });
   }
 
@@ -107,14 +106,19 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   }
 
   setCustomButtons(): void {
-    this.buttons.forEach(({ handler, closeModal, value }, index) => {
-      this.buttons[index].handler = (): void => {
-        if (handler) {
-          handler();
+    this.buttons = this.buttons.map((button) => {
+      const handler = (): void => {
+        if (button.handler) {
+          button.handler();
         }
-        if (closeModal) {
-          this.closeModal(value);
+        if (button.closeModal) {
+          this.closeModal(button.value);
         }
+      };
+
+      return {
+        ...button,
+        handler,
       };
     });
   }
