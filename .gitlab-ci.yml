@@ -44,7 +44,7 @@ Lint:
     - master
     - stage
 
-Code-coverage:
+Test:
   stage: code-quality
   except:
     variables:
@@ -60,6 +60,8 @@ Code-coverage:
       junit: coverage/junit/test-results.xml
   only:
     - merge_requests
+    - master
+    - stage
 
 Code-dry:
   stage: code-quality
