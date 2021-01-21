@@ -5,7 +5,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { of } from 'rxjs';
-import { CarInfoValues } from '../../models/car-info.interface';
+import { CarInfo } from '../../models/car-info.interface';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
 import { CarInfoComponent } from '../../components/car-info-screen/car-info.component';
@@ -32,7 +32,7 @@ import { LocationServiceStub } from '../../../../../../core/services/location/lo
 describe('CarInfoContainerComponent', () => {
   let component: CarInfoContainerComponent;
   let fixture: ComponentFixture<CarInfoContainerComponent>;
-  const mockData: CarInfoValues = {
+  const mockData: CarInfo = {
     brandModel: 'test',
     status: 'REGISTERED',
     owners: [],

@@ -1,20 +1,30 @@
 @import "../../../../../../../styles/core";
 
 .car__info--title {
-  font-family: 'Lato', sans-serif;
+  font-family: $font-lato, sans-serif;
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
   line-height: 24px;
+  margin-bottom: 12px;
+}
+
+.car__info--subtitle {
+  font-family: $font-lato, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color-text-helper;
+  margin-bottom: 4px;
 }
 
 .car__info--block:not(:last-child) {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .car__info--item {
-  margin-top: 24px;
-  font-family: 'Lato', sans-serif;
+  font-family: $font-lato, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -24,3 +34,28 @@
     font-weight: bold;
   }
 }
+
+.car-info-divider {
+  margin: 24px 0;
+  background: $color-divider;
+  height: 1px;
+  width: 100%;
+}
+
+.car-info-item:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.car-info-text-helper {
+  font-family: $font-lato, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: $color-text-helper
+}
+
+.car-info-details {
+  margin: 16px 0;
+}
+

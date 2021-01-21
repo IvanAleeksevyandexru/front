@@ -1,48 +1,170 @@
-<epgu-constructor-screen-pad
-  *ngIf="
-          !carInfo.brandModel &&
-          !carInfo.status &&
-          !carInfo.owners &&
-          !carInfo.legals &&
-          !carInfo.accidenceCount
-        "
-  class="car__info--block"
->
-  <h5 class="car__info--title">Данные не получены</h5>
-  <div class="car__info--item">Не удалось получить данные о состоянии ТС</div>
-</epgu-constructor-screen-pad>
+<epgu-constructor-screen-pad class="car__info--block">
+  <div>
+    <h5 class="car__info--title">Регистрация ТС</h5>
 
-<epgu-constructor-screen-pad *ngIf="carInfo.brandModel" class="car__info--block">
-  <h5 class="car__info--title">Марка и модель</h5>
-  <div class="car__info--item">{{ carInfo.brandModel }}</div>
-</epgu-constructor-screen-pad>
+    <div class="car-info-group">
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Статус в ГИБДД</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.status | defaultValue }}</div>
+      </div>
 
-<epgu-constructor-screen-pad *ngIf="carInfo.status" class="car__info--block">
-  <h5 class="car__info--title">Сведения из государственного реестра</h5>
-  <div class="car__info--item">{{ carInfo.status | carInfoStatus }}</div>
-</epgu-constructor-screen-pad>
-
-<epgu-constructor-screen-pad *ngIf="carInfo.owners" class="car__info--block">
-  <h5 class="car__info--title">Владельцы по ПТС</h5>
-  <div class="car__info--item" *ngFor="let owner of carInfo.owners">
-    <div class="car__info--owner">
-      {{ owner.ownerType | carInfoOwner }}
-      <span class="bold">{{ owner.tenure | carInfoDate: 'DIFF' }}</span>
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Последняя операция</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.lastRegActionName | defaultValue }}</div>
+      </div>
     </div>
-    <div class="car__info--dates">{{ owner.tenure | carInfoDate }}</div>
+
+
+    <div class="car-info-divider"></div>
   </div>
-  <div class="car__info--item" *ngIf="carInfo.owners?.length === 0">Нет данных</div>
+
+  <div>
+    <h5 class="car__info--title">Технические данные</h5>
+
+    <div class="car-info-group">
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Марка и модель</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.modelMarkName | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Год выпуска</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.manufacturedYear | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Идентификационный номер (VIN)</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.vin | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Номер шасси (рамы)</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.chassisNumber | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Номер кузова (кабины)</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.carcaseNumber | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Цвет кузова (кабины)</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.carcaseColor | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Рабочий объём (куб.см)</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.engineVolume | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Мощность (кВТ/л.с.)</div>
+        <div class="car__info--item">
+          {{ carInfo.vehicleInfo?.enginePower | defaultValue }}
+        </div>
+      </div>
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Тип транспортного средства</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.vehicleType | defaultValue}}</div>
+      </div>
+
+    </div>
+
+    <div class="car-info-divider"></div>
+  </div>
+
+  <div *ngIf="carInfo.vehicleInfo?.ownerPeriods?.length > 0">
+    <h5 class="car__info--title">Владельцы</h5>
+
+    <div class="car-info-group">
+
+      <div class="car-info-item" *ngFor="let ownerPeriod of carInfo.vehicleInfo?.ownerPeriods">
+        <div class="car__info--subtitle">{{ ownerPeriod.ownerType }}</div>
+        <div class="car__info--item">{{ownerPeriod.date | defaultValue}}</div>
+      </div>
+
+
+    </div>
+
+    <div class="car-info-divider"></div>
+  </div>
+
+  <div>
+    <h5 class="car__info--title">Юридическая чистота</h5>
+
+    <div class="car-info-group">
+
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Находится в розыске</div>
+        <div class="car__info--item">{{ carInfo.vehicleInfo?.searchingTransport | defaultValue }}</div>
+      </div>
+
+      <div class="car-info-item" *ngFor="let restriction of carInfo.vehicleInfo?.restrictions">
+        <div class="car__info--subtitle">Вид ограничения</div>
+        <div class="car__info--item">{{ restriction.restrictionType | defaultValue }}</div>
+        <epgu-constructor-expansion-link>
+          <div class="car-info-details">
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Статус</div>
+              <div class="car__info--item">{{ restriction.status | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Дата наложения ограничения</div>
+              <div class="car__info--item">{{ restriction.enforcementProceedingsDate | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Регион инициатора</div>
+              <div class="car__info--item">{{ restriction.initiateRegion | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Подразделение ГИБДД</div>
+              <div class="car__info--item">{{ restriction.gibddDepart | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Основание</div>
+              <div class="car__info--item">{{ restriction.mainReason | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Формулировка</div>
+              <div class="car__info--item">{{ restriction.restrictionDesc | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Номер исполнительного производства</div>
+              <div class="car__info--item">{{ restriction.enforcementProceedingsNumber  | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Дата возбуждения исполнительного производства</div>
+              <div class="car__info--item">{{ restriction.enforcementProceedingsDate  | defaultValue }}</div>
+            </div>
+            <div class="car-info-item">
+              <div class="car__info--subtitle">Наименование исполнительного производства</div>
+              <div class="car__info--item">{{ restriction.enforcementProceedingsName  | defaultValue }}</div>
+            </div>
+          </div>
+        </epgu-constructor-expansion-link>
+      </div>
+
+    </div>
+
+    <div class="car-info-divider"></div>
+  </div>
+
+  <div>
+    <h5 class="car__info--title">Проверка в Федеральной нотариальной палате</h5>
+
+    <div class="car-info-group">
+
+      <div class="car-info-item">
+        <div class="car__info--subtitle">Находится в залоге</div>
+        <div class="car__info--item">{{ carInfo.notaryInfo?.pledging | defaultValue }}</div>
+      </div>
+
+    </div>
+
+  </div>
+
 </epgu-constructor-screen-pad>
 
-<epgu-constructor-screen-pad *ngIf="carInfo.legals" class="car__info--block">
-  <h5 class="car__info--title">Юридическая чистота</h5>
-  <div class="car__info--item" *ngFor="let legal of carInfo.legals">
-    {{ legal.name | carInfoLegal }}: <span class="bold">{{ legal ? 'Да' : 'Нет' }}</span>
-  </div>
-  <div class="car__info--item" *ngIf="carInfo.legals?.length === 0">Нет данных</div>
-</epgu-constructor-screen-pad>
-
-<epgu-constructor-screen-pad *ngIf="carInfo.accidenceCount" class="car__info--block">
-  <h5 class="car__info--title">Участие в ДТП</h5>
-  <div class="car__info--item" [innerHtml]="carInfo.accidenceCount | carInfoAccidents"></div>
-</epgu-constructor-screen-pad>
+<div class="car-info-text-helper"> Данные о транспортном средстве предоставлены из официальной базы ГИБДД</div>

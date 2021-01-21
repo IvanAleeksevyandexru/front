@@ -24,13 +24,13 @@ import { LocationServiceStub } from '../../../../../../core/services/location/lo
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { CarInfoValues } from '../../models/car-info.interface';
+import { CarInfo } from '../../models/car-info.interface';
 
 
 describe('CarInfoComponent', () => {
   let component: CarInfoComponent;
   let fixture: ComponentFixture<CarInfoComponent>;
-  const mockData: CarInfoValues = {
+  const mockData: CarInfo = {
     brandModel: 'test',
     status: 'REGISTERED',
     owners: [],

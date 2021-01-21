@@ -12,6 +12,8 @@ import { CarInfoLegalPipe } from './pipes/car-info.pipe';
 import { CarInfoOwnerPipe } from './pipes/car-owner-type.pipe';
 import { CarInfoStatusPipe } from './pipes/car-status.pipe';
 import { CarInfoContainerComponent } from './containers/car-info-screen/car-info-container.component';
+import { ExpansionLinkComponent } from './components/expansion-link/expansion-link.component';
+import { DefaultValuePipe } from './pipes/default-value.pipe';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -20,7 +22,9 @@ const COMPONENTS = [
   CarInfoDatePipe,
   CarInfoOwnerPipe,
   CarInfoAccidentsPipe,
-  CarInfoContainerComponent
+  CarInfoContainerComponent,
+  ExpansionLinkComponent,
+  DefaultValuePipe
 ];
 
 @NgModule({
