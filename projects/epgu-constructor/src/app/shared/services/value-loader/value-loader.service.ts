@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-
-const moment = moment_;
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 
 @Injectable()
 export class ValueLoaderService {
   private repeatableFields = 'RepeatableFields';
-  constructor(private cachedAnswersService: CachedAnswersService, private utils: UtilsService) {}
+
+  constructor(
+    private cachedAnswersService: CachedAnswersService,
+    private utils: UtilsService,
+    private datesToolsService: DatesToolsService,
+  ) { }
 
   public loadValueFromCachedAnswer(
     components: Array<ComponentDto>,
@@ -186,10 +190,10 @@ export class ValueLoaderService {
     const cache = cachedAnswers[id].value;
 
     if (this.utils.hasJsonStructure(cache)) {
-      const date =  UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
-      return this.isShortTimeFormat(date) ? date : moment(date).format('DD.MM.YYYY');
+      const date: string =  UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      return this.isShortTimeFormat(date) ? date : this.datesToolsService.format(date, DATE_STRING_DOT_FORMAT);
     } else {
-      return this.isShortTimeFormat(cache) ? cache : moment(cache).format('DD.MM.YYYY');
+      return this.isShortTimeFormat(cache) ? cache : this.datesToolsService.format(cache, DATE_STRING_DOT_FORMAT);
     }
   }
 

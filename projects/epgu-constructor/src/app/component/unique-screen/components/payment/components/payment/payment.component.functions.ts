@@ -1,8 +1,7 @@
-import * as moment_ from 'moment';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import { BillInfoAddAttrsResponse, BillInfoResponse } from '../../payment.types';
 
-const moment = moment_;
 
 /**
  * Возвращает значение аттрибута объекта счета или null
@@ -25,7 +24,7 @@ export const getBillAttributeValueByKey = (bill: BillInfoResponse, attrName: str
 export const getDiscountDate = (bill: BillInfoResponse): string => {
   const discountDate =
     getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
-  return discountDate ? moment(discountDate).format(DATE_STRING_DOT_FORMAT) : '';
+  return discountDate ? new DatesToolsService().format(discountDate, DATE_STRING_DOT_FORMAT) : '';
 };
 
 /**

@@ -6,6 +6,7 @@ import { ValidationService } from './validation.service';
 import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -69,6 +70,7 @@ describe('ValidationService', () => {
         ComponentListToolsService,
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DatesToolsService,
       ],
     });
     service = TestBed.inject(ValidationService);

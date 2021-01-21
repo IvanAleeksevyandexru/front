@@ -10,6 +10,7 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { BaseModule } from '../../../../shared/base.module';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 @NgModule({
   declarations: [TimeSlotsComponent],
@@ -21,6 +22,7 @@ import { BaseModule } from '../../../../shared/base.module';
     GibddTimeSlotsService,
     MvdTimeSlotsService,
     Smev3TimeSlotsRestService,
+    DatesToolsService,
   ],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
 })

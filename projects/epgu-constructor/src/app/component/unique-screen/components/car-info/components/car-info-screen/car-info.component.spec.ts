@@ -25,6 +25,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { CarInfoValues } from '../../models/car-info.interface';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 
 
 describe('CarInfoComponent', () => {
@@ -56,6 +57,7 @@ describe('CarInfoComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         CurrentAnswersService, UtilsService, NavigationService,
+        DatesToolsService,
       ],
       imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
     })

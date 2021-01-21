@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
-import * as moment_ from 'moment';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/components-list/components-list.component';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions
 } from '../../component/components-list/components-list.types';
+import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
@@ -23,7 +23,6 @@ import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
 
-const moment = moment_;
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -32,6 +31,7 @@ describe('CustomScreenComponent', () => {
   let screenService: ScreenServiceStub;
   let navigationService: NavigationServiceStub;
   let customScreenService: CustomScreenService;
+  let datesToolsService: DatesToolsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,6 +49,7 @@ describe('CustomScreenComponent', () => {
         EventBusService,
         CurrentAnswersService,
         CustomScreenService,
+        DatesToolsService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {
@@ -64,6 +65,7 @@ describe('CustomScreenComponent', () => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     customScreenService = TestBed.inject(CustomScreenService);
+    datesToolsService = TestBed.inject(DatesToolsService);
   });
 
   it('check snapshot', () => {
@@ -87,12 +89,12 @@ describe('CustomScreenComponent', () => {
       const date = new Date();
       const changes: CustomComponentOutputData = {
         any: {
-          value: date.toISOString(),
+          value: datesToolsService.format(date),
           valid: true,
         },
       };
       const expectedResult = {
-        any: { visited: true, disabled: undefined, value: moment(date).toISOString() },
+        any: { visited: true, disabled: undefined, value: datesToolsService.format(date) },
       };
 
       const result = customScreenService.getFormattedData(changes);
