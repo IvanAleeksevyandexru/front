@@ -11,6 +11,7 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
+import { LoggerService } from '../../core/services/logger/logger.service';
 
 /**
  * Это технический компонент для организации каких-то действий не требующийх отображения данных.
@@ -43,6 +44,7 @@ export class EmptyScreenComponent {
     private initDataService: InitDataService,
     private navigationService: NavigationService,
     private locationService: LocationService,
+    private loggerService: LoggerService,
   ) {}
 
   createLink([component, applicantAnswers]: [ComponentDto, ApplicantAnswersDto]): Function {
@@ -55,11 +57,14 @@ export class EmptyScreenComponent {
     } else if (actions?.length > 0) {
       const type = this.navigationMap[actions[0]?.type as string] ? actions[0].type : 'home';
       result = this.navigationMap[type];
-    } else {
+    } else if (refLink) {
       result = this.locationService.href.bind(
         this.locationService,
         `${refLink}${this.queryParams()}`,
       );
+    } else {
+      result = (): void =>
+        this.loggerService.error(['unknown redirect link'], 'EmptyScreenComponent');
     }
     return result;
   }
