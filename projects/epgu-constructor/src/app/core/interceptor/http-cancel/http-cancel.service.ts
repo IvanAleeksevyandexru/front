@@ -7,8 +7,6 @@ import { Observable, Subject } from 'rxjs';
 export class HttpCancelService {
   private cancelPendingRequests$ = new Subject<void>();
 
-  constructor() {}
-
   public cancelPendingRequests(): void {
     this.cancelPendingRequests$.next();
   }
