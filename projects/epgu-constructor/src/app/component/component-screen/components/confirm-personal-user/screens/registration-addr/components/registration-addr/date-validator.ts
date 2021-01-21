@@ -1,19 +1,26 @@
+import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import * as moment_ from 'moment';
+import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
 
-const moment = moment_;
 interface ValidatorDate {
   dateVaidator: boolean
 }
 
+// TODO: подумать над мерджем этой логики с ValidationService
+@Injectable()
 export class DateValidator {
-  static date(aControl: AbstractControl): ValidatorDate|null {
-    if (aControl && aControl.value && !moment(aControl.value).isValid()) {
+
+  constructor(
+    public datesHelperService: DatesToolsService
+  ) {}
+
+  public date = (aControl: AbstractControl): ValidatorDate | null => {
+    if (aControl && aControl.value && !this.datesHelperService.isValid(aControl.value)) {
       return { dateVaidator: true };
     }
     if (aControl && typeof aControl.value !== 'object') {
       return { dateVaidator: true };
     }
     return null;
-  }
+  };
 }

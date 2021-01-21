@@ -61,21 +61,6 @@ Code-coverage:
   only:
     - merge_requests
 
-Code-quality:
-  stage: code-quality
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
-  script:
-    - yarn test:coverage
-  only:
-    - merge_requests
-    - master
-    - stage
-
 Code-dry:
   stage: code-quality
   except:

@@ -1,4 +1,4 @@
-import { DurationInputArg2 } from 'moment';
+import { DurationTimeTypes } from '../../../../shared/constants/dates';
 import { CustomComponentAttr, CustomComponentRef } from '../../components-list.types';
 
 export interface Attrs extends CustomComponentAttr {
@@ -10,7 +10,7 @@ export interface Attrs extends CustomComponentAttr {
 export interface Ref extends CustomComponentRef{
   relatedDate: string;
   val: string;
-  period: DurationInputArg2;
+  period: DurationTimeTypes;
   condition: Operation;
 }
 

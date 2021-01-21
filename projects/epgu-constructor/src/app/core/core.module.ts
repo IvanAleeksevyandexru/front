@@ -9,6 +9,7 @@ import { ErrorsInterceptorService } from './interceptor/errors/errors.intercepto
 import { initApp } from './initializers/app.initializer';
 import { CookieService } from 'ngx-cookie-service';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
+import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { LoggerService } from './services/logger/logger.service';
@@ -46,6 +47,11 @@ import { InitDataService } from './services/init-data/init-data.service';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorsInterceptorService,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCancelInterceptor,
+      multi: true
     },
     {
       provide: APP_INITIALIZER,

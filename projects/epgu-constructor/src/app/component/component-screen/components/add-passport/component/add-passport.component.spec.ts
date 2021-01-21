@@ -2,6 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -52,6 +53,7 @@ describe('AddPassportComponent', () => {
         ValidationService,
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DatesToolsService,
       ],
     }).compileComponents();
   }));

@@ -105,7 +105,7 @@ $minModalHeight: 293px;
 
     @include tablets-up {
       max-height: calc(100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight});
-      min-height: calc(#{$minModalHeight} - #{$pyConfModal} - #{$headerHeight});
+      min-height: calc(#{$minModalHeight} - #{$pyConfModal} - #{$headerHeight} - #{$pyConfModal / 2});
     }
   }
 }

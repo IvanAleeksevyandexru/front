@@ -10,6 +10,7 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { BaseModule } from '../../../../shared/base.module';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 @NgModule({
   declarations: [EmployeeHistoryComponent],
@@ -27,6 +28,7 @@ import { BaseModule } from '../../../../shared/base.module';
     EmployeeHistoryDatasourceService,
     EmployeeHistoryFormService,
     EmployeeHistoryMonthsService,
+    DatesToolsService,
   ],
 })
 export class EmployeeHistoryModule {}

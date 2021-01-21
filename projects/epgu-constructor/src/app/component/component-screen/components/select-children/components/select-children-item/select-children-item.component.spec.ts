@@ -10,6 +10,7 @@ import { ComponentsListModule } from '../../../../../components-list/components-
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ItemStatus } from '../../select-children.models';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -58,7 +59,11 @@ describe('SelectChildrenItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
       imports: [RouterTestingModule, ConstructorDropdownModule, ComponentsListModule],
-      providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        HealthService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        DatesToolsService,
+      ],
     }).compileComponents();
   });
 

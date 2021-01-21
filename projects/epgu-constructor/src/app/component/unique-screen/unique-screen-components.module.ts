@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ModalModule } from '../../modal/modal.module';
@@ -64,6 +65,12 @@ import { WebcamService } from './services/webcam/webcam.service';
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
   ],
-  providers: [WebcamService, DictionaryApiService, UnsubscribeService, EventBusService],
+  providers: [
+    WebcamService,
+    DictionaryApiService,
+    UnsubscribeService,
+    EventBusService,
+    DatesToolsService,
+  ],
 })
 export class UniqueScreenComponentsModule {}

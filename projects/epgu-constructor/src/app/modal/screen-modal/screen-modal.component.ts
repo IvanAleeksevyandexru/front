@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Injector,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -38,6 +39,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   screenTypes = ScreenTypes;
 
   constructor(
+    public injector: Injector,
     public screenModalService: ScreenModalService,
     public screenService: ScreenService,
     private navModalService: NavigationModalService,
@@ -46,7 +48,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     private deviceDetector: DeviceDetectorService,
     private changeDetectionRef: ChangeDetectorRef,
   ) {
-    super();
+    super(injector);
   }
 
   ngOnInit(): void {

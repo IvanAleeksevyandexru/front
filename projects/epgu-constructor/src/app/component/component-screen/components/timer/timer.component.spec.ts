@@ -3,6 +3,7 @@ import { MockModule } from 'ng-mocks';
 import { CoreModule } from '../../../../core/core.module';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -36,6 +37,7 @@ describe('TimerComponent', () => {
         CachedAnswersService,
         ValueLoaderService,
         EventBusService,
+        DatesToolsService,
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();

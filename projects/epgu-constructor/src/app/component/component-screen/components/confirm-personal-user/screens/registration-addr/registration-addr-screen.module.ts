@@ -7,6 +7,8 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../../../../../shared/base.module';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DateValidator } from './components/registration-addr/date-validator';
 
 @NgModule({
   declarations: [RegistrationAddrComponent],
@@ -18,6 +20,7 @@ import { BaseModule } from '../../../../../../shared/base.module';
         BaseComponentsModule,
         ScreenPadModule,
         ConstructorDatePickerModule,
-    ],
+  ],
+  providers: [DateValidator, DatesToolsService]
 })
 export class RegistrationAddrScreenModule {}

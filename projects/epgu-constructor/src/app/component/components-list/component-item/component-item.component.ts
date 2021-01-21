@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { OPTIONAL_FIELD } from '../../../shared/constants/helper-texts';
 import { CustomScreenComponentTypes } from '../components-list.types';
@@ -7,7 +7,6 @@ import { CustomScreenComponentTypes } from '../components-list.types';
   selector: 'epgu-constructor-component-item',
   templateUrl: './component-item.component.html',
   styleUrls: ['./component-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentItemComponent implements OnInit {
   @Input() data: AbstractControl;

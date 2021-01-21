@@ -27,6 +27,49 @@ export class ConfigServiceStub implements Config {
   _addToCalendarUrl = '';
   _isLoaded$ = of(false);
 
+  constructor() {
+    this._timeSlots = {
+      mvd: {
+        subject:
+          'Выдача паспорта гражданина Российской Федерации в случае утраты (хищения) паспорта',
+        calendarName: 'на приём в подразделения МВД РФ',
+        serviceId: '10000014784',
+        eserviceId: '555666777',
+        serviceCode: '-10000019911',
+      },
+      gibdd: {
+        subject: 'Запись на прием',
+        calendarName: 'Запись на прием',
+        serviceId: '10000593393',
+        serviceCode: '-10001970000',
+        eserviceId: '10000070732',
+        preliminaryReservation: 'true',
+        preliminaryReservationPeriod: '240',
+        routeNumber: '46000000000',
+      },
+      divorce: {
+        subject: 'Регистрация расторжения брака',
+        calendarName: 'на услугу «Регистрация расторжения брака»',
+        serviceId: 'ЗагсРазводФорма12-1',
+        serviceCode: '-100000100821',
+        eserviceId: '10000057526',
+        preliminaryReservation: 'true',
+        preliminaryReservationPeriod: '1440',
+        routeNumber: '45382000',
+      },
+      brak: {
+        subject: 'Регистрация заключения брака',
+        calendarName: 'на услугу «Регистрация заключения брака»',
+        serviceId: 'ЗагсБрак',
+        serviceCode: '-100000100821',
+        eserviceId: '10000057526',
+        preliminaryReservation: 'true',
+        preliminaryReservationPeriod: '1440',
+        routeNumber: '45382000',
+      },
+    };
+  }
+
   get apiUrl(): string {
     return this._apiUrl;
   }
