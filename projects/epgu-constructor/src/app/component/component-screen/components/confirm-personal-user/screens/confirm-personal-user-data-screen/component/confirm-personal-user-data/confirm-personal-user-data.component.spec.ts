@@ -13,6 +13,7 @@ import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/com
 import { of } from 'rxjs';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenPadComponent } from '../../../../../../../../shared/components/screen-pad/screen-pad.component';
+import { ImgPrefixerPipe } from '../../../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -65,6 +66,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
           ActionDirective,
           FieldListComponent,
           SafePipe,
+          ImgPrefixerPipe
         ],
         providers: [
           CurrentAnswersService,
@@ -81,7 +83,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
     component.data$ = of(mockData);
-    jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
+    jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock as any);
 
     fixture.detectChanges();
   });
