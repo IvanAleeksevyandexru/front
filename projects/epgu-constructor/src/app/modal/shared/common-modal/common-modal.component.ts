@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, TemplateRef } from '@angular/core';
 import { ModalBaseComponent } from '../modal-base/modal-base.component';
 
 @Component({
@@ -11,4 +11,8 @@ export class CommonModalComponent extends ModalBaseComponent {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public modalTemplateRef: TemplateRef<any>;
   public modalTemplateHTML: string;
+
+  constructor(public injector: Injector) {
+    super(injector);
+  }
 }
