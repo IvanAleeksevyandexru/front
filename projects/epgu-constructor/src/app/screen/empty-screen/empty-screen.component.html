@@ -2,7 +2,7 @@
 
 	<epgu-constructor-redirect
     *ngSwitchCase="emptyComponentName.redirect"
-    [link]="redirectLink"
+    [link]="redirectLink$ | async"
   ></epgu-constructor-redirect>
 
 </ng-container>

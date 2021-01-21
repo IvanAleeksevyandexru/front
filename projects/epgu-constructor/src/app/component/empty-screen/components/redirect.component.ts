@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { LocationService } from '../../../core/services/location/location.service';
 
 /**
  * Модуль для редиректа на нужный адрес
@@ -10,9 +9,7 @@ import { LocationService } from '../../../core/services/location/location.servic
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RedirectComponent {
-  constructor(private locationService: LocationService) {}
-
-  @Input() set link(link: string) {
-    this.locationService.href(link);
+  @Input() set link(link: Function) {
+    link();
   }
 }
