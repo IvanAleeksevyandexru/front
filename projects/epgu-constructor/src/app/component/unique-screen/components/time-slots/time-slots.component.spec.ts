@@ -29,6 +29,7 @@ import { of } from 'rxjs';
 import { LoggerService } from 'projects/epgu-constructor/src/app/core/services/logger/logger.service';
 import { LoggerServiceStub } from 'projects/epgu-constructor/src/app/core/services/logger/logger.service.stub';
 import { EventBusService } from 'projects/epgu-constructor/src/app/core/services/event-bus/event-bus.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 Date.now = jest.fn().mockReturnValue(new Date('2020-01-01T00:00:00.000Z'));
 
@@ -62,6 +63,7 @@ describe('TimeSlotsComponent', () => {
         CurrentAnswersService,
         TimeSlotsConstants,
         EventBusService,
+        DatesToolsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
