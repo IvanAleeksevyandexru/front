@@ -33,7 +33,9 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
       this.isEditContactAction = this.getIsEditContactAction();
       this.updateValue(data?.value);
 
-      this.changeDetectionRef.markForCheck();
+      setTimeout(() => {
+        this.changeDetectionRef.markForCheck();
+      });
     });
   }
 
