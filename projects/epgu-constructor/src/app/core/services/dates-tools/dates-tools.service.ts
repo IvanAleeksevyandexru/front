@@ -9,6 +9,7 @@ import {
   isAfter as _isAfter,
   isBefore as _isBefore,
   parse as _parse,
+  parseISO as _parseISO,
   format as _format,
   add as _add,
   sub as _sub,
@@ -140,6 +141,15 @@ export class DatesToolsService {
    */
   public parse(date: string, format: string = DATE_ISO_STRING_FORMAT, referenceDate: Date | number = new Date()): Date {
     return _parse(date, format, referenceDate, { locale: _ruLocale });
+  }
+
+    /**
+   * Возвращает объект даты, если переданный аргумент является валидной строковой датой ISOString формата
+   * иначе Invalid Date
+   * @param {string} date конвертируемая дата в виде строки
+   */
+  public parseISO(date: string): Date {
+    return _parseISO(date);
   }
 
   /**

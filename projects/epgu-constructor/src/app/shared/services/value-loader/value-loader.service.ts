@@ -190,10 +190,20 @@ export class ValueLoaderService {
     const cache = cachedAnswers[id].value;
 
     if (this.utils.hasJsonStructure(cache)) {
-      const date: string =  UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
-      return this.isShortTimeFormat(date) ? date : this.datesToolsService.format(date, DATE_STRING_DOT_FORMAT);
+      const date: string = UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      if (this.isShortTimeFormat(date)) {
+        return date;
+      } else {
+        const parsedDate = this.datesToolsService.parseISO(date);
+        return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
+      }
     } else {
-      return this.isShortTimeFormat(cache) ? cache : this.datesToolsService.format(cache, DATE_STRING_DOT_FORMAT);
+      if (this.isShortTimeFormat(cache)) {
+        return cache;
+      } else {
+        const parsedDate = this.datesToolsService.parseISO(cache);
+        return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
+      }
     }
   }
 
