@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import * as moment_ from 'moment';
+import { Moment } from 'moment';
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel,
@@ -6,7 +8,11 @@ import {
 } from '../employee-history.types';
 import { MonthYear } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+
+// TODO: ревертнул обратно до момента доисследования проблемы: при переезде на DatesToolsService тут происходит утечка памяти где-то
+const moment = moment_;
+moment.locale('ru');
+
 @Injectable()
 export class EmployeeHistoryMonthsService {
   years = 10;
@@ -16,14 +22,13 @@ export class EmployeeHistoryMonthsService {
   availableMonths: EmployeeHistoryAvailableDates[] = [];
   isNonStop: boolean;
   isMonthComplete$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private today: Date = this.datesToolsService.getToday();
-
-  constructor(private datesToolsService: DatesToolsService) { }
 
   initSettings(): void {
-    this.maxDate = MonthYear.fromDate(this.datesToolsService.endOfMonth(this.today));
+    this.maxDate = MonthYear.fromDate(moment().endOf('month').toDate());
     this.minDateFrom = MonthYear.fromDate(
-      this.datesToolsService.sub(this.today, this.years + 60, 'years')
+      moment()
+        .subtract(this.years + 60, 'years')
+        .toDate(),
     );
     this.minDateTo = this.minDateFrom;
     this.availableMonths = this.getAvailableMonths();
@@ -46,16 +51,15 @@ export class EmployeeHistoryMonthsService {
       }
     }
 
-    const getPeriod = (type: 'min' | 'max', convertedDates: Array<Date>): string => {
+    const getPeriod = (type: 'min' | 'max', convertedDates: Array<Moment>): string => {
       const formatString = 'MMMM YYYY';
-      const date = this.datesToolsService[type](convertedDates);
-      return this.datesToolsService.format(date, formatString);
+      return moment[type](convertedDates).format(formatString);
     };
 
     return periods
       .filter((period) => period.length)
       .map((period: EmployeeHistoryAvailableDates[]) => {
-        const convertedDates: Array<Date> = period.map(
+        const convertedDates: Array<Moment> = period.map(
           (stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate),
         );
 
@@ -72,8 +76,8 @@ export class EmployeeHistoryMonthsService {
     generation.forEach((e: EmployeeHistoryModel) => {
       if (e.from && e.to) {
         const availableMonths: Array<string> = this.getAvailableMonths(
-          this.datesToolsService.setDate(this.today, e.from.year, e.from.month, null),
-          this.datesToolsService.setDate(this.today, e.to.year, e.to.month, null)
+          moment().year(e.from.year).month(e.from.month),
+          moment().year(e.to.year).month(e.to.month),
         ).map((e: EmployeeHistoryAvailableDates) => e.date);
 
         this.availableMonths = this.availableMonths.map((e: EmployeeHistoryAvailableDates) => ({
@@ -87,18 +91,17 @@ export class EmployeeHistoryMonthsService {
   }
 
   private getAvailableMonths(
-    fromDate: Date = this.datesToolsService.sub(this.today, this.years, 'years'),
-    toDate: Date = this.today,
+    fromDate: Moment = moment().subtract(this.years, 'years'),
+    toDate: Moment = moment(),
   ): EmployeeHistoryAvailableDates[] {
     const availableDates = [];
-    const toDateFromDateDiff = this.datesToolsService.diff(toDate, fromDate);
 
-    while (toDateFromDateDiff >= 0) {
+    while (toDate.diff(fromDate) >= 0) {
       availableDates.push({
-        date: this.datesToolsService.format( fromDate, 'MM/YYYY'),
+        date: fromDate.format('MM/YYYY'),
         checked: false,
       });
-      fromDate = this.datesToolsService.add( fromDate, 1, 'months');
+      fromDate.add(1, 'month');
     }
 
     return availableDates;
@@ -121,9 +124,7 @@ export class EmployeeHistoryMonthsService {
       const convertedDate = this.availableMonths
         .filter((stringDate: EmployeeHistoryAvailableDates) => stringDate.checked)
         .map((stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate));
-      const maxDate = this.datesToolsService.max(convertedDate);
-      const minDate = this.datesToolsService.min(convertedDate);
-      const diff = this.datesToolsService.differenceInYears( maxDate, minDate);
+      const diff = moment.max(convertedDate).diff(moment.min(convertedDate), 'years');
       if (diff === this.years) {
         this.isMonthComplete$.next(true);
       } else {
@@ -136,10 +137,10 @@ export class EmployeeHistoryMonthsService {
    *
    * @param stringDate
    * @private
-   * @example: getConvertedDates({ date: '05/2020'}) => Date (05/01/2020)
+   * @example: getConvertedDates({ date: '05/2020'}) => moment(05/01/2020)
    */
-  private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Date {
+  private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Moment {
     const arrParsedDate: string[] = stringDate.date.split('/');
-    return this.datesToolsService.parse(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, 'MM/DD/YYYY');
+    return moment(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, 'MM/DD/YYYY');
   }
 }
