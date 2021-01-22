@@ -23,11 +23,12 @@ import { ScreenContainerModule } from '../../../../shared/components/screen-cont
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
-import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
+import { PaymentTypeSelectorContainerComponent } from './payment-type-selector-container.component';
+import { PaymentTypeSelectorComponent } from './component/payment-type-selector.component';
 
-describe('PaymentTypeSelectorComponent', () => {
-  let component: PaymentTypeSelectorComponent;
-  let fixture: ComponentFixture<PaymentTypeSelectorComponent>;
+describe('PaymentTypeSelectorContainerComponent', () => {
+  let component: PaymentTypeSelectorContainerComponent;
+  let fixture: ComponentFixture<PaymentTypeSelectorContainerComponent>;
   let screenService: ScreenService;
   const mockComponent: ComponentDto = {
     attrs: {
@@ -61,7 +62,7 @@ describe('PaymentTypeSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PaymentTypeSelectorComponent],
+      declarations: [PaymentTypeSelectorContainerComponent, PaymentTypeSelectorComponent],
       imports: [
         ModalModule,
         BaseModule,
@@ -91,7 +92,7 @@ describe('PaymentTypeSelectorComponent', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockComponent;
-    fixture = TestBed.createComponent(PaymentTypeSelectorComponent);
+    fixture = TestBed.createComponent(PaymentTypeSelectorContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

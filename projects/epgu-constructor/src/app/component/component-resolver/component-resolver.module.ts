@@ -28,15 +28,12 @@ import { CarInfoContainerComponent } from '../unique-screen/components/car-info/
 import { SignatureApplicationContainerComponent } from '../unique-screen/components/signature-application/components/container/signature-application-container.component';
 import { PaymentComponent } from '../unique-screen/components/payment/components/payment/payment.component';
 import { BillInfoComponent } from '../unique-screen/components/payment/components/billinfo/billinfo.component';
-import { PaymentTypeSelectorComponent } from '../unique-screen/components/payment-type-selector/payment-type-selector.component';
+// eslint-disable-next-line max-len
+import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/payment-type-selector-container.component';
 
 @NgModule({
   declarations: [ComponentResolverComponent],
-  imports: [
-    CommonModule,
-    ComponentScreenComponentsModule,
-    UniqueScreenComponentsModule
-  ],
+  imports: [CommonModule, ComponentScreenComponentsModule, UniqueScreenComponentsModule],
   exports: [ComponentResolverComponent],
   entryComponents: [
     ConfirmPersonalUserAddressComponent,
@@ -58,7 +55,7 @@ import { PaymentTypeSelectorComponent } from '../unique-screen/components/paymen
     SignatureApplicationContainerComponent,
     PaymentComponent,
     BillInfoComponent,
-    PaymentTypeSelectorComponent
-  ]
+    PaymentTypeSelectorContainerComponent,
+  ],
 })
 export class ComponentResolverModule {}
