@@ -9,7 +9,7 @@ import { CloneButtonModule } from '../../shared/components/clone-button/clone-bu
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
-import { ComponentsListModule } from '../components-list/components-list.module';
+import { ComponentsListModule } from '../shared/components/components-list/components-list.module';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';

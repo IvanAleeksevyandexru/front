@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
-import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';

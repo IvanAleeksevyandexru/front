@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
 import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
-import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/shared/components/components-list/services/date-range/date-range.service';
 import { SignatureApplicationComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/components/signature-application/signature-application.component';
 import { SignatureApplicationModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/signature-application.module';
 import { UnusedPaymentsComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/component/unused-payments.component';

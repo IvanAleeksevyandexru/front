@@ -4,7 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { ComponentListModalComponent } from './component-list-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentsListComponent } from '../../../../component/components-list/components-list.component';
+import { ComponentsListComponent } from '../../../../component/shared/components/components-list/components-list.component';
 import { ScreenStore, ScreenTypes } from '../../../../screen/screen.types';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
