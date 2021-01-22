@@ -92,11 +92,13 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   }
 
   getPreparedDataToSend(): string {
-    const { regDate } = this.valueParsed || {};
     const dataToSend = { ...this.valueParsed };
-    dataToSend.regDate = dataToSend.regAddr
-      ? this.datesToolsService.format(regDate, DATE_STRING_DOT_FORMAT)
-      : '';
+    if (dataToSend.regDate) {
+      dataToSend.regDate = this.datesToolsService.format(
+        dataToSend.regDate,
+        DATE_STRING_DOT_FORMAT,
+      );
+    }
     return JSON.stringify(dataToSend);
   }
 

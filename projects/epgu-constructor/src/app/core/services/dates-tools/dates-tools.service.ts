@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+// TODO: перейти на использование ECMAScript Modules версии либы 'date-fns/esm' для tree-shaking
 import {
   isToday as _isToday,
   toDate as _toDate,
