@@ -175,10 +175,11 @@ describe('DatesToolsService', () => {
 
   describe('diff() method', () => {
     it('should return miliseconds between two dates', () => {
-      const dateLeft = service.parse('02.01.2000', DATE_STRING_DOT_FORMAT);
-      const dateRight = new Date(1);
-      const passedTime = 946760399999;
-      expect(service.diff(dateLeft, dateRight)).toBeGreaterThanOrEqual(passedTime);
+      const dateLeft = new Date();
+      const dateRight = service.add(dateLeft, 1, 'seconds');
+      const passedTime = -1000;
+      console.log({ dateLeft, dateRight });
+      expect(service.diff(dateLeft, dateRight)).toEqual(passedTime);
     });
   });
 
@@ -200,6 +201,7 @@ describe('DatesToolsService', () => {
     });
   });
 
+  // TODO: додумать этот тест
   xdescribe('setDate() method', () => {
     it('should return setted date', () => {
       const date = new Date();
@@ -209,6 +211,13 @@ describe('DatesToolsService', () => {
       expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
     });
   });
+
+    // TODO: додумать этот тест
+    xdescribe('endOfMonth() method', () => {
+      it('should return setted date', () => {
+        expect(true).toBeTruthy();
+      });
+    });
 
   describe('min() method', () => {
     it('should return min date from array of dates', () => {
