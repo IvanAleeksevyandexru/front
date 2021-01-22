@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
-import { Moment } from 'moment';
-
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Attrs, DateRange, Range, Ref } from './date-range.models';
-
-const moment = moment_;
 
 @Injectable()
 export class DateRangeService {
   rangeMap = new Map<string, Range>();
 
-  constructor(public screenService: ScreenService) {}
+  constructor(public screenService: ScreenService, private datesToolsService: DatesToolsService) {}
 
   /**
    * Устанавливает максимальную и минимальную дату для календарей
@@ -20,15 +16,15 @@ export class DateRangeService {
    * @param id id компонента
    */
   changeDate(attrs: Attrs, date: DateRange): void {
-     if (!attrs?.limit) return;
+    if (!attrs?.limit) return;
 
     if (attrs?.to) {
-      const maxDate = moment(date).add(attrs.limit, 'years').toDate();
+      const maxDate = this.datesToolsService.add(date, attrs.limit, 'years');
       this.rangeMap.set(attrs.to, { max: maxDate, min: date });
     }
 
     if (attrs?.from) {
-      const minDate = moment(date).subtract(attrs.limit, 'years').toDate();
+      const minDate = this.datesToolsService.sub(date, attrs.limit, 'years');
       this.rangeMap.set(attrs.from, { max: date, min: minDate });
     }
   }
@@ -74,33 +70,34 @@ export class DateRangeService {
       return range;
     }
 
-    const date = moment(refDate);
+    const date = this.datesToolsService.toDate(refDate);
     [range.min, range.max] = this.chooseOperation(refParams, date);
 
     return range;
   }
 
-  private chooseOperation(refParams: Ref, date: Moment): Array<Date> {
+  private chooseOperation(refParams: Ref, date: Date): Array<Date> {
+    const today = this.datesToolsService.getToday();
     switch (refParams.condition) {
       case '>=today':
-        return [date.toDate(), moment().toDate()];
+        return [date, today];
       case '>today':
-        return [date.add(1, 'days').toDate(), moment().toDate()];
+        return [this.datesToolsService.add(date, 1, 'days'), today];
       case '<=today':
-        return [moment().toDate(), date.toDate()];
+        return [today, date];
       case '<today':
-        return [moment().toDate(), date.subtract(1, 'days').toDate()];
+        return [today, this.datesToolsService.sub(date, 1, 'days')];
       case '<':
         return [
-          date.subtract(refParams.val, refParams.period).toDate(),
-          date.subtract(1, 'days').toDate(),
+          this.datesToolsService.sub(date, refParams.val, refParams.period),
+          this.datesToolsService.sub(date, 1, 'days'),
         ];
       case '<=':
-        return [date.subtract(refParams.val, refParams.period).toDate(), date.toDate()];
+        return [this.datesToolsService.sub(date, refParams.val, refParams.period), date];
       case '>':
-        return [date.add(1, 'days').toDate(), date.add(refParams.val, refParams.period).toDate()];
+        return [this.datesToolsService.add(date, 1, 'days'), this.datesToolsService.add(date, refParams.val, refParams.period)];
       case '>=':
-        return [date.toDate(), date.add(refParams.val, refParams.period).toDate()];
+        return [date, this.datesToolsService.add(date, refParams.val, refParams.period)];
     }
   }
 }

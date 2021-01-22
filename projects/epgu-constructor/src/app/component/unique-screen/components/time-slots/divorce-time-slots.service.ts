@@ -20,7 +20,7 @@ import {
   ZagsDepartmentInterface
 } from './time-slots.types';
 
-const moment = moment_;
+const moment = moment_; // TODO: заменить потом на DateToolsService
 
 @Injectable()
 export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {

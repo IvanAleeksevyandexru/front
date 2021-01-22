@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent } from './doc-input.component';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListModule } from '../components-list.module';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 
 xdescribe('DocInputComponent', () => {
   let component: DocInputComponent;
@@ -19,7 +20,7 @@ xdescribe('DocInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [UnsubscribeService],
+      providers: [UnsubscribeService, DatesToolsService],
       imports: [ComponentsListModule],
     }).compileComponents();
   }));

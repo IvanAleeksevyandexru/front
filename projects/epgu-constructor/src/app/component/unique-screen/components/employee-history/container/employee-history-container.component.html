@@ -12,15 +12,14 @@
       [componentValue]="$any(screenService.componentValue$ | async)"
       [init]="init$ | async"
       [ds]="ds"
+      (updateFormEvent)="updateEmployeeHistory($event)"
     >
     </epgu-constructor-employee-history-form>
   </div>
 
   <div class="screen-footer">
-    <lib-button (click)="getNextScreen()" [disabled]="isValid" class="submit-button">
+    <lib-button (click)="getNextScreen()" [disabled]="!isValid" class="submit-button">
       {{ screenService.submitLabel || 'Продолжить' }}
     </lib-button>
   </div>
 </epgu-constructor-screen-container>
-
-<!--!(monthsService.isMonthComplete$ | async) || employeeFormService.employeeHistoryForm.invalid-->

@@ -5,13 +5,14 @@ import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 
 describe('ValueLoaderService', () => {
   let service: ValueLoaderService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CachedAnswersService, UtilsService, ValueLoaderService],
+      providers: [CachedAnswersService, UtilsService, ValueLoaderService, DatesToolsService],
     });
     service = TestBed.inject(ValueLoaderService);
   });

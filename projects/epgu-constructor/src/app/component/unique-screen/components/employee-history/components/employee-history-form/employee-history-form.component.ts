@@ -5,16 +5,22 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
-import { EmployeeHistoryDataSource, EmployeeHistoryModel } from '../../employee-history.types';
+import {
+  EmployeeHistoryDataSource,
+  EmployeeHistoryFormData,
+  EmployeeHistoryModel,
+} from '../../employee-history.types';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
 import { Gender } from '../../../../../../shared/types/gender';
@@ -25,13 +31,14 @@ import { Gender } from '../../../../../../shared/types/gender';
   styleUrls: ['./employee-history-form.component.scss'],
   providers: [UnsubscribeService],
   // TODO: month picker открывается на 50 год из-за OnPush
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   @Input() fstuc?: TextTransform;
   @Input() init: [DisplayDto, Gender];
   @Input() componentValue?: EmployeeHistoryModel[];
   @Input() ds: Array<EmployeeHistoryDataSource>;
+  @Output() updateFormEvent = new EventEmitter<EmployeeHistoryFormData>();
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
@@ -52,14 +59,25 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
         this.cdr.markForCheck();
       });
 
-    this.employeeFormService.employeeHistoryForm.statusChanges
-      .pipe(distinctUntilChanged((prev, curr) => prev !== curr))
-      .subscribe((value) => {
-        console.log(value);
+    combineLatest([
+      this.monthsService.isMonthComplete$,
+      this.employeeFormService.employeeHistoryForm.statusChanges.pipe(
+        map((status) => status === 'VALID'),
+      ),
+    ])
+      .pipe(
+        map(([isMonthComplete, isValid]) => isMonthComplete && isValid),
+        distinctUntilChanged((prev, curr) => prev === curr && !curr),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe((isValid) => {
+        const data = this.employeeFormService.employeeHistoryForm.getRawValue();
+        this.updateFormEvent.emit({ isValid, data });
+        console.log(isValid);
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     const [display] = this.init;
     const displayAttrs = display?.components[0]?.attrs;
     this.monthsService.years = displayAttrs?.years;
@@ -67,10 +85,6 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
     this.monthsService.initSettings();
     this.initData();
   }
-
-  // textTransformType(display: DisplayDto): TextTransform {
-  //   return display?.components[0].attrs?.fstuc;
-  // }
 
   availableControlsOfType(type: string): EmployeeHistoryDataSource {
     return this.ds.find((e: EmployeeHistoryDataSource) => String(e.type) === String(type));

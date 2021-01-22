@@ -12,7 +12,12 @@ describe('EmployeeHistoryFormService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      providers: [UnsubscribeService, EmployeeHistoryMonthsService, EmployeeHistoryFormService, EmployeeHistoryDataSourceService],
+      providers: [
+        UnsubscribeService,
+        EmployeeHistoryMonthsService,
+        EmployeeHistoryFormService,
+        EmployeeHistoryDataSourceService,
+      ],
     });
     service = TestBed.inject(EmployeeHistoryFormService);
   });

@@ -29,6 +29,6 @@ export class ConfirmationModalBaseComponent {
   }
 
   closeModal(): void {
-    this.eventBusService.emit('closeModalEvent');
+    this.eventBusService.emit(`closeModalEvent_${this.text}`);
   }
 }

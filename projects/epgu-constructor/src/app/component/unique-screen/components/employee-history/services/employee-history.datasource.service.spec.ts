@@ -7,7 +7,7 @@ describe('EmployeeHistoryDataSourceService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [EmployeeHistoryDataSourceService]
+      providers: [EmployeeHistoryDataSourceService],
     });
     service = TestBed.inject(EmployeeHistoryDataSourceService);
   });

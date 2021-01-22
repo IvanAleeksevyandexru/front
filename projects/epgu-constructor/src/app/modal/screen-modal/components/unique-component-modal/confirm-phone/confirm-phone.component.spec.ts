@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DateRangeService } from '../../../../../component/components-list/services/date-range/date-range.service';
 import { CoreModule } from '../../../../../core/core.module';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
@@ -53,6 +54,7 @@ describe('ConfirmPhoneComponent', () => {
         ValidationService,
         EventBusService,
         DateRangeService,
+        DatesToolsService,
       ],
     }).compileComponents();
 

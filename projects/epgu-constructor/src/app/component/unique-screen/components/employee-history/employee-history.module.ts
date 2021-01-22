@@ -14,6 +14,7 @@ import { EmployeeHistoryContainerComponent } from './container/employee-history-
 import { EmployeeHistoryDescriptionComponent } from './components/employee-history-desription/employee-history-description.component';
 import { EmployeeHistoryFormComponent } from './components/employee-history-form/employee-history-form.component';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
     EmployeeHistoryDataSourceService,
     EmployeeHistoryFormService,
     EmployeeHistoryMonthsService,
+    DatesToolsService,
   ],
 })
 export class EmployeeHistoryModule {}

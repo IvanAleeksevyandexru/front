@@ -1,22 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { DATE_STRING_DOT_FORMAT } from '../../../../../shared/constants/dates';
 import { TenureDates } from '../models/car-info.interface';
 
-const moment = moment_;
 type Type = 'DIFF' | 'FORMAT';
 
 @Pipe({ name: 'carInfoDate' })
 export class CarInfoDatePipe implements PipeTransform {
-  constructor(private utils: UtilsService) {}
+  constructor(
+    private utils: UtilsService,
+    private datesToolsService: DatesToolsService,
+  ) { }
 
   transform(value: TenureDates, type: Type = 'FORMAT'): string {
     const { from, to } = value;
-    const fromDate = moment(new Date(from));
-    const toDate = moment(new Date(to));
+    const fromDate = this.datesToolsService.toDate(from);
+    const toDate = this.datesToolsService.toDate(to);
 
     if (type === 'DIFF') {
-      const diff = toDate.diff(fromDate, 'years');
+      const diff = this.datesToolsService.differenceInYears(fromDate, toDate);
       if (diff < 3) {
         return 'менее 3 лет';
       } else if (diff > 5) {
@@ -26,9 +29,9 @@ export class CarInfoDatePipe implements PipeTransform {
       }
     }
 
-    return `(${this.utils.formatDate(fromDate, 'DD.MM.YYYY')} -  ${this.utils.formatDate(
+    return `(${this.datesToolsService.format(fromDate, DATE_STRING_DOT_FORMAT)} -  ${this.datesToolsService.format(
       toDate,
-      'DD.MM.YYYY',
+      DATE_STRING_DOT_FORMAT,
     )})`;
   }
 }

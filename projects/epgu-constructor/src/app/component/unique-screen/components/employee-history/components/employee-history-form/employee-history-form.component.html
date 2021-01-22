@@ -132,7 +132,10 @@
 <section class="employee-history__newGeneration">
   <epgu-constructor-clone-button
     [disabled]="
-      !(employeeFormService.employeeHistoryForm.length | memo: employeeFormService.isScreensAvailable)
+      !(
+        employeeFormService.employeeHistoryForm.length
+        | memo: employeeFormService.isScreensAvailable
+      )
     "
     >Добавить данные</epgu-constructor-clone-button
   >

@@ -13,6 +13,7 @@ import { PaymentService } from './payment.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -34,6 +35,7 @@ describe('PaymentService', () => {
         WINDOW_PROVIDERS,
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValueLoaderService,
+        DatesToolsService,
       ],
     });
     service = TestBed.inject(PaymentService);

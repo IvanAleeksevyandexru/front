@@ -6,12 +6,11 @@ import {
   FormGroup,
   ValidationErrors,
   ValidatorFn,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
-import * as moment_ from 'moment';
 
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
@@ -23,8 +22,7 @@ import { EmployeeHistoryMonthsService } from './employee-history.months.service'
 import { EmployeeHistoryDataSourceService } from './employee-history-data-source.service';
 import { EmployeeHostoryErrors } from '../employee-history.enums';
 import { defaultScreensAmount } from '../../repeatable-fields/repeatable-fields.constant';
-
-const moment = moment_;
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 
 @Injectable()
 export class EmployeeHistoryFormService {
@@ -39,6 +37,7 @@ export class EmployeeHistoryFormService {
     private unsubscribeService: UnsubscribeService,
     private monthsService: EmployeeHistoryMonthsService,
     private ds: EmployeeHistoryDataSourceService,
+    private datesToolsService: DatesToolsService,
   ) {
     this.defaultType = 'student';
   }
@@ -131,20 +130,21 @@ export class EmployeeHistoryFormService {
 
   private checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear): void {
     if (toDateValue) {
-      const toDate: moment_.Moment = moment().year(toDateValue.year).month(toDateValue.month);
-      const minDate = moment().subtract(this.monthsService.years, 'years');
+      const today = this.datesToolsService.getToday();
+      const toDate: Date =  this.datesToolsService.setDate(today, toDateValue.year, toDateValue.month, null);
+      const minDate = this.datesToolsService.sub(today, this.monthsService.years, 'years');
+      const toDateMinDateDiff = this.datesToolsService.diff(toDate, minDate);
       if (fromDateValue) {
-        const fromDate: moment_.Moment = moment()
-          .year(fromDateValue.year)
-          .month(fromDateValue.month);
-        if (fromDate.diff(toDate) > 0) {
+        const fromDate: Date = this.datesToolsService.setDate(today, fromDateValue.year, fromDateValue.month, null);
+        const fromDateToDateDiff = this.datesToolsService.diff(fromDate, toDate);
+        if (fromDateToDateDiff > 0) {
           form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
           return;
         } else {
           form.get('error').setErrors(null);
         }
       }
-      if (toDate.diff(minDate) < 0) {
+      if (toDateMinDateDiff < 0) {
         form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedPeriod });
       } else {
         form.get('error').setErrors(null);
@@ -170,10 +170,11 @@ export class EmployeeHistoryFormService {
 
   private inputValidators(): ValidatorFn {
     //TODO: сделать валидацию через json
-    const errorMsg = 'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
+    const errorMsg =
+      'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
 
     return (control: AbstractControl): ValidationErrors => {
-      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/,'gm');
+      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/, 'gm');
       const hasError = !pattern.test(control.value);
 
       return hasError ? { errorMsg } : null;

@@ -24,7 +24,7 @@ xdescribe('EmployeeHistoryComponent', () => {
   let fixture: ComponentFixture<EmployeeHistoryFormComponent>;
   let mockDisplay: DisplayDto = {
     components: [],
-    subHeader: { text: '', clarifications: {}},
+    subHeader: { text: '', clarifications: {} },
     header: '',
     label: '',
     id: '',
