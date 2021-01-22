@@ -210,7 +210,7 @@ describe('ScreenService', () => {
 
     it('should init component state service', () => {
       expect(currentAnswersService.state).toBeUndefined();
-      expect(currentAnswersService.isValid).toBeUndefined();
+      expect(currentAnswersService.isValid).toBeNull();
 
       screenService.initScreenStore(makeScreenStoreSample());
 
