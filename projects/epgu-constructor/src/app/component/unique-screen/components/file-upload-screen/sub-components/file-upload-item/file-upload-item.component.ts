@@ -169,6 +169,7 @@ export class FileUploadItemComponent implements OnDestroy {
     const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(maxImgSizeInBytes),
       deepChecking: true,
+      maxWidthOrHeight: 1024,
     };
 
     return files.map((file: File) => {
