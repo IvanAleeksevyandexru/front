@@ -51,8 +51,17 @@ export class ScreenModalService extends FormPlayerBaseService {
     if (!this._store) {
       this._store = JSON.parse(JSON.stringify(this.formPlayerService.store));
     }
-
-    this.formPlayerService.navigate(navigation, formPlayerNavigation, this._store);
+    this.updateLoading(true);
+    this.updateRequest(navigation);
+    this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
+      (response) => {
+        this.processResponse(response);
+      },
+      (error) => {
+        this.sendDataError(error);
+      },
+      () => this.updateLoading(false)
+    );
   }
 
   processResponse(response: FormPlayerApiResponse): void {
