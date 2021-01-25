@@ -11,6 +11,7 @@ import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-add
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { of } from 'rxjs';
+import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
 
 
 
@@ -38,7 +39,8 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         UnsubscribeService,
         CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub }
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        DatesToolsService,
       ]
     })
     .compileComponents();

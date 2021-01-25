@@ -23,7 +23,7 @@ describe('CurrentAnswersService', () => {
   });
 
   it('should get and set isValid property', () => {
-    expect(service.isValid).toBeUndefined();
+    expect(service.isValid).toBeNull();
 
     service.isValid = true;
     expect(service.isValid).toBe(true);

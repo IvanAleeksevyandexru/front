@@ -10,6 +10,11 @@ export interface CompressionOptions {
   deepChecking?: boolean;
 }
 
+interface MaxWidthOrHeightOptions {
+  maxWidthOrHeightFixedCanvas: HTMLCanvasElement | OffscreenCanvas;
+  needToHandle: boolean;
+}
+
 const unsupportedImageTypes = ['TIFF', 'TIF'];
 
 @Injectable()
@@ -264,7 +269,7 @@ export class CompressionService {
   * @returns {HTMLCanvasElement | OffscreenCanvas}
   */
   private handleMaxWidthOrHeight(canvas: HTMLCanvasElement | OffscreenCanvas,
-                                 options: CompressionOptions): HTMLCanvasElement | OffscreenCanvas {
+                                 options: CompressionOptions): MaxWidthOrHeightOptions {
     const width = canvas['width'];
     const height = canvas['height'];
     const maxWidthOrHeight = options['maxWidthOrHeight'];
@@ -288,7 +293,7 @@ export class CompressionService {
       this.cleanupCanvasMemory(canvas);
     }
 
-    return newCanvas;
+    return { maxWidthOrHeightFixedCanvas: newCanvas, needToHandle };
   }
 
   /**
@@ -405,7 +410,11 @@ export class CompressionService {
 
     let [,origCanvas] = await this.drawFileInCanvas(file);
 
-    const maxWidthOrHeightFixedCanvas = this.handleMaxWidthOrHeight(origCanvas, options);
+    const { maxWidthOrHeightFixedCanvas, needToHandle } = this.handleMaxWidthOrHeight(origCanvas, options);
+
+    if (options['maxWidthOrHeight'] && needToHandle) {
+      this.cleanupCanvasMemory(origCanvas);
+    }
 
     options['exifOrientation'] = options['exifOrientation'] || await this.getExifOrientation(file);
 
@@ -427,6 +436,10 @@ export class CompressionService {
     const sizeBecomeLarger = tempFile['size'] > file['size'];
 
     if (!origExceedMaxSize && !sizeBecomeLarger) {
+      this.cleanupCanvasMemory(maxWidthOrHeightFixedCanvas);
+      this.cleanupCanvasMemory(orientationFixedCanvas);
+      this.cleanupCanvasMemory(origCanvas);
+
       return tempFile;
     }
 
@@ -466,7 +479,6 @@ export class CompressionService {
     this.cleanupCanvasMemory(newCanvas);
     this.cleanupCanvasMemory(maxWidthOrHeightFixedCanvas);
     this.cleanupCanvasMemory(orientationFixedCanvas);
-    this.cleanupCanvasMemory(origCanvas);
 
     return compressedFile;
   }

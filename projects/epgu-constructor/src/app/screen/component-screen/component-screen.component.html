@@ -6,7 +6,7 @@
   [isShowActionBtn]="isShowActionBtn$ | async"
   [showNav]="screenService.showNav$ | async"
   [submitLabel]="screenService.submitLabel$ | async"
-  [isValid]="currentAnswersService.isValid"
+  [isValid]="currentAnswersService.isValid$ | async"
   [nextStepAction]="nextStepAction"
 >
   <epgu-constructor-component-resolver></epgu-constructor-component-resolver>
