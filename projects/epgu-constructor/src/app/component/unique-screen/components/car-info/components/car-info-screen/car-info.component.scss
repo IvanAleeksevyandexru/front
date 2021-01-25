@@ -59,3 +59,40 @@
   margin: 16px 0;
 }
 
+.car-info-error-title {
+  font-family: $font-lato, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.car-info-error-label {
+  font-family: $font-lato, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: $color-text-helper;
+}
+
+.car-info-error-icon {
+  width: 24px;
+  height: 4px;
+  margin-right: 8px;
+}
+
+.car-info-not-found-error {
+  background: $color-giallo-brillante;
+}
+.car-info-internal-error {
+  background: $color-gosred;
+}
+
+.car-info-error {
+  margin-top: 24px;
+}
+

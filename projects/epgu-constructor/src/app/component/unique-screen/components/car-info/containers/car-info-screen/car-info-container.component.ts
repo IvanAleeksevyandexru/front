@@ -7,7 +7,7 @@ import {
   DisplayDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { CarInfo, VehicleInfo } from '../../models/car-info.interface';
+import { CarInfo, CarInfoErrors, CarInfoErrorsDto } from '../../models/car-info.interface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
@@ -18,15 +18,20 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarInfoContainerComponent implements OnInit {
+  carInfoErrors: CarInfoErrors;
   showNav$: Observable<boolean> = this.screenService.showNav$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   display$: Observable<DisplayDto> = this.screenService.display$;
   carInfo$: Observable<CarInfo> = this.display$.pipe(
     filter((display: DisplayDto) => !!display?.components[0].value),
     map((display: DisplayDto) => {
-      const carInfo = display.components[0].value;
+      const carInfo = JSON.parse(display.components[0].value);
       this.currentAnswersService.state = carInfo;
-      return this.mapCarInfo(JSON.parse(carInfo));
+
+      const { errors } = display.components[0].attrs;
+      this.carInfoErrors = this.mapCarInfoErrors(errors, carInfo);
+
+      return this.mapCarInfo(carInfo);
     }),
   );
 
@@ -44,20 +49,14 @@ export class CarInfoContainerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  private mapCarInfo(carInfo: CarInfo): CarInfo {
-    const mappedVehicleInfo = CarInfoContainerComponent.mapVehicleInfo(carInfo.vehicleInfo);
-
-    return {
-      ...carInfo,
-      ...mappedVehicleInfo,
-      notaryInfo: {
-        ...carInfo.notaryInfo,
-        pledging: carInfo.notaryInfo?.isPledged ? 'Да' : 'Нет',
-      },
-    };
+  private mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
+    return <CarInfoErrors>carInfo.errors.reduce((errors, error) => {
+      const text = errorsDto && errorsDto[error.type];
+      return { ...errors, [error.service]: { type: error.type, text } };
+    }, {});
   }
 
-  private mapVehicleInfo(vehicleInfo: VehicleInfo): VehicleInfo {
+  private mapCarInfo(carInfo: CarInfo): CarInfo {
     const {
       modelMarkName,
       modelName,
@@ -65,22 +64,26 @@ export class CarInfoContainerComponent implements OnInit {
       enginePowerHorse,
       enginePowerVt,
       ownerPeriods,
-      searchingTransportFlag,
-    } = vehicleInfo || {};
+    } = carInfo.vehicleInfo;
 
     return {
-      ...vehicleInfo,
+      ...carInfo,
       ...{
-        modelMarkName: modelMarkName || [markName, modelName].filter((value) => !!value).join(' '),
-        enginePower: [enginePowerVt, enginePowerHorse].filter((value) => !!value).join('/'),
-        searchingTransport: searchingTransportFlag ? 'Да' : 'Нет',
-        ownerPeriods: (ownerPeriods || []).map((period) => {
-          return {
-            ...period,
-            date:
-              period.dateStart && period.dateEnd ? `${period.dateStart} - ${period.dateEnd}` : null,
-          };
-        }),
+        ...carInfo.vehicleInfo,
+        ...{
+          modelMarkName:
+            modelMarkName || [markName, modelName].filter((value) => !!value).join(' '),
+          enginePower: [enginePowerVt, enginePowerHorse].filter((value) => !!value).join('/'),
+          ownerPeriods: (ownerPeriods || []).map((period) => {
+            return {
+              ...period,
+              date:
+                period.dateStart && period.dateEnd
+                  ? `${period.dateStart} - ${period.dateEnd}`
+                  : null,
+            };
+          }),
+        },
       },
     };
   }

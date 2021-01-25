@@ -1,7 +1,7 @@
 export type LegalInfo = 'PLEDGED' | 'WANTED' | 'RESTRICTIONS';
 export type OwnerType = 'INDIVIDUAL' | 'LEGAL_ENTITY';
 export type StatusType = 'REGISTERED' | 'NOT_REGISTERED' | 'REMOVED' | 'SUSPENDED';
-
+export type ServiceType = 'vehicle' | 'notary';
 
 export interface TenureDates {
   from: number;
@@ -14,14 +14,25 @@ export interface CarInfo {
   errors: CarInfoError[];
 }
 
-interface CarInfoError {
+export interface CarInfoErrors {
+  vehicle: CarInfoDisplayedError;
+  notary: CarInfoDisplayedError;
+}
+
+
+export interface CarInfoError {
   type: string;
-  service: string;
+  service: ServiceType;
+}
+
+export interface CarInfoDisplayedError {
+  type: string;
+  service: ServiceType;
+  text: string;
 }
 
 interface NotaryInfo {
   isPledged: boolean;
-  pledging: string;
 }
 
 export interface VehicleInfo {
@@ -29,7 +40,6 @@ export interface VehicleInfo {
   stsSeriesNumber: string;
   restrictionsFlag: boolean;
   category: string;
-  searchingTransport: string;
   searchingTransportFlag: boolean;
   carcaseColor: string;
   markName: string;
@@ -69,4 +79,9 @@ interface Restriction {
   enforcementProceedingsNumber: string;
   enforcementProceedingsDate: string;
   enforcementProceedingsName: string;
+}
+
+export interface CarInfoErrorsDto {
+  EXTERNAL_SERVER_ERROR?: string,
+  NOT_FOUND_ERROR?: string
 }

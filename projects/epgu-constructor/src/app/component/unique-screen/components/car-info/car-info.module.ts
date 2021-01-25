@@ -14,6 +14,8 @@ import { CarInfoStatusPipe } from './pipes/car-status.pipe';
 import { CarInfoContainerComponent } from './containers/car-info-screen/car-info-container.component';
 import { ExpansionLinkComponent } from './components/expansion-link/expansion-link.component';
 import { DefaultValuePipe } from './pipes/default-value.pipe';
+import { YesNoPipe } from './pipes/yes-no.pipe';
+import { ErrorTemplatePipe } from './pipes/error-template.pipe';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -28,7 +30,7 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, YesNoPipe, ErrorTemplatePipe],
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { CarInfo } from '../../models/car-info.interface';
+import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
 
 // TODO компонент на удаление (объединить с epgu-constructor-confirm-personal-user-data)
 @Component({
@@ -10,6 +10,7 @@ import { CarInfo } from '../../models/car-info.interface';
 })
 export class CarInfoComponent implements OnInit {
   @Input() carInfo: CarInfo;
+  @Input() carInfoErrors: CarInfoErrors;
 
   ngOnInit(): void {}
 }

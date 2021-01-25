@@ -9,6 +9,7 @@ import { ModalService } from '../../../modal/modal.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { getHiddenBlock } from '../../constants/uttils';
 import { ActionService } from '../../directives/action/action.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-output-html',
@@ -24,6 +25,7 @@ export class OutputHtmlComponent {
     private modalService: ModalService,
     private screenService: ScreenService,
     private actionService: ActionService,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   showModal(targetClarification: { text?: string }, targetElementId: string): void {
@@ -51,6 +53,11 @@ export class OutputHtmlComponent {
   private handleAction(type: ActionType, value?: string): void {
     const action: DTOActionAction =
       type === ActionType.nextStep ? DTOActionAction.getNextStep : DTOActionAction.getPrevStep;
+
+    if (value) {
+      this.currentAnswersService.state = value;
+    }
+
     this.actionService.switchAction(
       { label: '', type, action, value },
       this.screenService.component.id,
