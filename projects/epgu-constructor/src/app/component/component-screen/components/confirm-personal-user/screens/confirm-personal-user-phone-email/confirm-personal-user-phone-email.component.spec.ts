@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormatPhonePipe } from 'epgu-lib';
+import { of } from 'rxjs';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -8,8 +9,10 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
-import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { of } from 'rxjs';
+import {
+  ActionType,
+  ComponentActionDto,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 
 xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
@@ -23,10 +26,10 @@ xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
     type: '',
     value: ''
   };
-  const actionMock = {
+  const actionMock: ComponentActionDto = {
     label: '',
     value: '',
-    action: '',
+    action: null,
     type: ActionType.nextStepModal,
   };
 

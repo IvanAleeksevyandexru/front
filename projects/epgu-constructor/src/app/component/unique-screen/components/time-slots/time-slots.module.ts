@@ -25,5 +25,6 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
     DatesToolsService,
   ],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
+  entryComponents: [TimeSlotsComponent]
 })
 export class TimeSlotsModule {}

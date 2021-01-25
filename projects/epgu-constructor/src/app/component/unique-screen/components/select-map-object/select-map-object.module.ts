@@ -5,12 +5,11 @@ import { ConstructorLookupModule } from '../../../../shared/components/construct
 import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
 import { BaseModule } from '../../../../shared/base.module';
 
-const COMPONENTS = [SelectMapObjectComponent];
-
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [SelectMapObjectComponent],
   providers: [Icons],
-  exports: [...COMPONENTS],
+  exports: [SelectMapObjectComponent],
   imports: [BaseModule, ConstructorLookupModule, NavigationModule],
+  entryComponents:[SelectMapObjectComponent]
 })
 export class SelectMapObjectModule {}

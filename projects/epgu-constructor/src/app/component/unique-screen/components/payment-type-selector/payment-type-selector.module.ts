@@ -18,5 +18,6 @@ import { BaseModule } from '../../../../shared/base.module';
     ScreenPadModule,
     AnswerButtonModule,
   ],
+  entryComponents: [PaymentTypeSelectorComponent]
 })
 export class PaymentTypeSelectorModule {}

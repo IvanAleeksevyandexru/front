@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-
+import { MockComponent } from 'ng-mocks';
 import { CoreModule } from '../../../../../core/core.module';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -23,6 +23,7 @@ import { SelectChildrenComponent } from '../components/select-children/select-ch
 import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CachedAnswersDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentWrapperComponent } from '../../../shared/component-wrapper.component';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
@@ -78,6 +79,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
         SelectChildrenItemWrapperComponent,
         SelectChildrenItemComponent,
         SelectChildrenComponent,
+        MockComponent(ComponentWrapperComponent),
       ],
       imports: [
         CoreModule,

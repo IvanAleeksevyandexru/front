@@ -8,7 +8,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 import { BaseComponentsModule } from '../base-components/base-components.module';
-import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { ConstructorMaskedInputModule } from '../constructor-masked-input/constructor-masked-input.module';
 import { PassportComponent } from './passport.component';
 
 

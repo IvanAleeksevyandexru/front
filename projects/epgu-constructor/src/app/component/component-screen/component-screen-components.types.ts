@@ -11,7 +11,6 @@ export enum ComponentScreenComponentTypes {
   childrenListUnder14 = 'ChildrenListUnder14', // TODO: удалить потом как depricated
   childrenListAbove14 = 'ChildrenListAbove14', // TODO: удалить потом как depricated
   docInput = 'DocInput',
-  divorceConsent = 'DivorceConsent',
   fieldList = 'FieldList',
   timer = 'Timer',
   timeSlot = 'TimeSlot',
