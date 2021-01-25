@@ -17,7 +17,10 @@ import { DeviceDetectorService } from '../../../../core/services/device-detector
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentDto,
+  ComponentUploadedFileDto,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
@@ -35,6 +38,7 @@ import {
   recommendedDPI,
   uploadPhotoElemId,
 } from './upload-and-edit-photo.constant';
+import { TerabyteListItem } from '../../services/terra-byte-api/terra-byte-api.types';
 import { ImgSubject } from './upload-and-edit-photo.model';
 
 @Component({
@@ -195,13 +199,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
       );
   }
 
-  getRequestData(): {
-    mnemonic: string;
-    name: string;
-    objectType: number;
-    objectId: string;
-    mimeType: string;
-  } {
+  getRequestData(): ComponentUploadedFileDto {
     const { mnemonic = null, name = null, objectType = 2 } = this.data?.attrs?.uploadedFile;
     return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
   }
@@ -384,9 +382,11 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
         switchMap((fileName) => deletePrevImage(fileName)),
         switchMap(() => compressFile()),
         switchMap((compressedFile) => uploadFile(compressedFile)),
+        switchMap(() => this.terabyteService.getFileInfo(requestData)),
       )
-      .subscribe(() => {
-        this.eventBusService.emit('nextStepEvent', JSON.stringify(requestData));
+      .subscribe((terraFile: TerabyteListItem) => {
+        const mergedData = { ...requestData, ...terraFile };
+        this.eventBusService.emit('nextStepEvent', JSON.stringify(mergedData));
         this.changeDetectionRef.markForCheck();
       });
   }

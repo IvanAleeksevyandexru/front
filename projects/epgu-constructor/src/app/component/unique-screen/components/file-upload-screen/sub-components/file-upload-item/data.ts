@@ -1,4 +1,5 @@
 import {
+  TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
@@ -8,14 +9,25 @@ import {
  * Класс подгруженного файла
  */
 export class TerraUploadedFile implements UploadedFile {
+  fileExt?: string;
   fileName = '';
+  fileSize = 0;
+  fileUid?: number;
+  hasSign?: boolean;
+  metaId?: number;
+  mimeType?: string;
+  mnemonic = '';
+  nodeId?: string;
   objectId = '';
   objectTypeId = 0;
-  mnemonic = '';
-  fileSize = 0;
+  realPath?: string;
   uploaded = false;
+  userId?: number;
   hasError = false;
-  mimeType?: string;
+  created?: string;
+  updated?: string;
+  deleted?: boolean;
+
 
   constructor(props: object = {}) {
     Object.keys(props).forEach((key) => {
@@ -34,6 +46,16 @@ export class TerraUploadedFile implements UploadedFile {
       mnemonic: this.mnemonic,
       mimeType: this.mimeType,
     } as TerraUploadFileOptions;
+  }
+
+    /**
+   * Возвращает объект с данными и параметрами для загрузки на сервер файла
+   */
+  setParamsForUploadedFile(terraFile: TerabyteListItem, uploaded: boolean): void {
+    Object.keys(terraFile).forEach((key: string) => {
+      this[key] = terraFile[key];
+    });
+    this.uploaded = uploaded;
   }
 
   /**
