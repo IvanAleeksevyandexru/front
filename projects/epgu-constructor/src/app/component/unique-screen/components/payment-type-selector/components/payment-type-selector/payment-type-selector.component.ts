@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PaymentTypeSelectorInterface } from '../payment-type-selector.types';
+import { PaymentTypeSelectorInterface } from '../../payment-type-selector.types';
 
 @Component({
   selector: 'epgu-constructor-payment-type-selector',

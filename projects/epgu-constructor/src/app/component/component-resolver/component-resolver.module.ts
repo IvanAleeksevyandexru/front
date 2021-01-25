@@ -29,7 +29,7 @@ import { SignatureApplicationContainerComponent } from '../unique-screen/compone
 import { PaymentComponent } from '../unique-screen/components/payment/components/payment/payment.component';
 import { BillInfoComponent } from '../unique-screen/components/payment/components/billinfo/billinfo.component';
 // eslint-disable-next-line max-len
-import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/payment-type-selector-container.component';
+import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/components/payment-type-selector-container/payment-type-selector-container.component';
 
 @NgModule({
   declarations: [ComponentResolverComponent],

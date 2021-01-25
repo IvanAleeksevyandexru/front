@@ -2,32 +2,32 @@ import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
-import { CoreModule } from '../../../../../core/core.module';
-import { WINDOW_PROVIDERS } from '../../../../../core/providers/window.provider';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
-import { LocationService } from '../../../../../core/services/location/location.service';
-import { FormPlayerApiService } from '../../../../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ModalModule } from '../../../../../modal/modal.module';
-import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { BaseModule } from '../../../../../shared/base.module';
-import { AnswerButtonModule } from '../../../../../shared/components/answer-button/answer-button.module';
-import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
-import { ActionModule } from '../../../../../shared/directives/action/action.module';
-import { HtmlRemoverService } from '../../../../../shared/services/html-remover/html-remover.service';
+import { CoreModule } from '../../../../../../core/core.module';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
+import { LocationService } from '../../../../../../core/services/location/location.service';
+import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
+import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ModalModule } from '../../../../../../modal/modal.module';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { BaseModule } from '../../../../../../shared/base.module';
+import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
+import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ActionModule } from '../../../../../../shared/directives/action/action.module';
+import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
-import { PaymentTypeSelectorInterface } from '../payment-type-selector.types';
-import { EmptyScreenComponent } from '../../../../../screen/empty-screen/empty-screen.component';
+import { PaymentTypeSelectorInterface } from '../../payment-type-selector.types';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -52,7 +52,7 @@ describe('PaymentTypeSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PaymentTypeSelectorComponent],
+      declarations: [PaymentTypeSelectorComponent, PaymentTypeSelectorButtonComponent],
       imports: [
         ModalModule,
         BaseModule,
@@ -119,13 +119,5 @@ describe('PaymentTypeSelectorComponent', () => {
     expect(
       fixture.debugElement.query(By.css('epgu-constructor-output-html[ng-reflect-html=test]')),
     ).not.toBeNull();
-  });
-  it('should action button for error', () => {
-    component.isErrorTemplate = true;
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('.screen-footer__btn'))).not.toBeNull();
-  });
-  it('should action button for success', () => {
-    expect(fixture.debugElement.query(By.css('.answer-btn'))).not.toBeNull();
   });
 });
