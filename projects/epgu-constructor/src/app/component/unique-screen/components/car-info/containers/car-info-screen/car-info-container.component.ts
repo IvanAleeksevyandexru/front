@@ -4,6 +4,7 @@ import { filter, map } from 'rxjs/operators';
 import {
   ActionType,
   ComponentActionDto,
+  ComponentDto,
   DisplayDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
@@ -22,13 +23,13 @@ export class CarInfoContainerComponent implements OnInit {
   showNav$: Observable<boolean> = this.screenService.showNav$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   display$: Observable<DisplayDto> = this.screenService.display$;
-  carInfo$: Observable<CarInfo> = this.display$.pipe(
-    filter((display: DisplayDto) => !!display?.components[0].value),
-    map((display: DisplayDto) => {
-      const carInfo = JSON.parse(display.components[0].value);
+  carInfo$: Observable<CarInfo> = this.screenService.component$.pipe(
+    filter((component: ComponentDto) => !!component.value),
+    map((component: ComponentDto) => {
+      const carInfo = JSON.parse(component.value);
       this.currentAnswersService.state = carInfo;
 
-      this.carInfoErrors = this.mapCarInfoErrors(display.components[0]?.attrs?.errors, carInfo);
+      this.carInfoErrors = this.mapCarInfoErrors(component?.attrs?.errors, carInfo);
 
       return carInfo;
     }),

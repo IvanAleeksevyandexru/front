@@ -1,20 +1,11 @@
 @import "../../../../../../../styles/core";
 
 .car__info--title {
-  font-family: $font-lato, sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 24px;
   margin-bottom: 12px;
 }
 
 .car__info--subtitle {
-  font-family: $font-lato, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
+  @include typ-plain-text;
   color: $color-text-helper;
   margin-bottom: 4px;
 }
@@ -24,11 +15,7 @@
 }
 
 .car__info--item {
-  font-family: $font-lato, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
+  @include typ-plain-text;
 
   .bold {
     font-weight: bold;
@@ -47,11 +34,7 @@
 }
 
 .car-info-text-helper {
-  font-family: $font-lato, sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
+  @include typ-plain-small;
   color: $color-text-helper
 }
 
@@ -60,22 +43,14 @@
 }
 
 .car-info-error-title {
-  font-family: $font-lato, sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
+  @include typ-h6;
   display: flex;
   align-items: center;
   margin-bottom: 4px;
 }
 
 .car-info-error-label {
-  font-family: $font-lato, sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
+  @include typ-plain-small;
   color: $color-text-helper;
 }
 
