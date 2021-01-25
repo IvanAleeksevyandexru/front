@@ -55,7 +55,8 @@
     },
     "disableUnderConstructionMode": true,
     "isSocialShareDisabled": true,
-    "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/"
+    "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
+    "suggestionsApiUrl": "http://localhost:8888/api/v1/suggestions"
   },
   "core": {
     "config": {

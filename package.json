@@ -70,7 +70,7 @@
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.8.1",
     "date-fns": "^2.16.1",
-    "epgu-lib": "0.0.943",
+    "epgu-lib": "0.0.952",
     "file-saver": "^2.0.5",
     "ics": "^2.24.0",
     "moment": "2.24.0",
