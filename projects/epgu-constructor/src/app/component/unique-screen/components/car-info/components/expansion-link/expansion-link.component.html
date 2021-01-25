@@ -1,0 +1,6 @@
+<a class="expansion-link expansion-show-details-link" *ngIf="!isExpanded" (click)="this.isExpanded = true">Показать детали</a>
+<ng-container *ngIf="isExpanded">
+  <ng-content></ng-content>
+</ng-container>
+<a class="expansion-link" *ngIf="isExpanded" (click)="this.isExpanded = false">Свернуть</a>
+

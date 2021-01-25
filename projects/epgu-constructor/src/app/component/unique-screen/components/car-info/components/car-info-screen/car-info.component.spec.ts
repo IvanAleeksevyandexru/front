@@ -6,12 +6,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { CarInfoStatusPipe } from '../../pipes/car-status.pipe';
 import { CarInfoContainerComponent } from '../../containers/car-info-screen/car-info-container.component';
-import { CarInfoLegalPipe } from '../../pipes/car-info.pipe';
-import { CarInfoDatePipe } from '../../pipes/car-date-format.pipe';
-import { CarInfoOwnerPipe } from '../../pipes/car-owner-type.pipe';
-import { CarInfoAccidentsPipe } from '../../pipes/car-accidents.pipe';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
@@ -25,29 +20,33 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { CarInfo } from '../../models/car-info.interface';
+import { YesNoPipe } from '../../pipes/yes-no.pipe';
+import { ErrorTemplatePipe } from '../../pipes/error-template.pipe';
+import { EnginePowerPipe } from '../../pipes/engine-power.pipe';
+import { ModelMarkNamePipe } from '../../pipes/model-mark-name.pipe';
+import { CarDatePipe } from '../../pipes/car-date.pipe';
+import { DefaultValuePipe } from '../../pipes/default-value.pipe';
+import { ExpansionLinkComponent } from '../expansion-link/expansion-link.component';
 
 
 describe('CarInfoComponent', () => {
   let component: CarInfoComponent;
   let fixture: ComponentFixture<CarInfoComponent>;
   const mockData: CarInfo = {
-    brandModel: 'test',
-    status: 'REGISTERED',
-    owners: [],
-    legals: [],
-    accidenceCount: 3,
-  };
+  } as any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         CarInfoContainerComponent,
         CarInfoComponent,
-        CarInfoLegalPipe,
-        CarInfoStatusPipe,
-        CarInfoDatePipe,
-        CarInfoOwnerPipe,
-        CarInfoAccidentsPipe
+        YesNoPipe,
+        ErrorTemplatePipe,
+        EnginePowerPipe,
+        ModelMarkNamePipe,
+        CarDatePipe,
+        DefaultValuePipe,
+        ExpansionLinkComponent
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

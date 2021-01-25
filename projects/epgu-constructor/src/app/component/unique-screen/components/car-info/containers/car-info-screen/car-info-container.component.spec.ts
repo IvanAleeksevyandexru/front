@@ -9,11 +9,6 @@ import { CarInfo } from '../../models/car-info.interface';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
 import { CarInfoComponent } from '../../components/car-info-screen/car-info.component';
-import { CarInfoLegalPipe } from '../../pipes/car-info.pipe';
-import { CarInfoStatusPipe } from '../../pipes/car-status.pipe';
-import { CarInfoDatePipe } from '../../pipes/car-date-format.pipe';
-import { CarInfoOwnerPipe } from '../../pipes/car-owner-type.pipe';
-import { CarInfoAccidentsPipe } from '../../pipes/car-accidents.pipe';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
@@ -27,6 +22,13 @@ import { DeviceDetectorService } from '../../../../../../core/services/device-de
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
+import { YesNoPipe } from '../../pipes/yes-no.pipe';
+import { ErrorTemplatePipe } from '../../pipes/error-template.pipe';
+import { EnginePowerPipe } from '../../pipes/engine-power.pipe';
+import { ModelMarkNamePipe } from '../../pipes/model-mark-name.pipe';
+import { CarDatePipe } from '../../pipes/car-date.pipe';
+import { DefaultValuePipe } from '../../pipes/default-value.pipe';
+import { ExpansionLinkComponent } from '../../components/expansion-link/expansion-link.component';
 
 
 describe('CarInfoContainerComponent', () => {
@@ -57,11 +59,13 @@ describe('CarInfoContainerComponent', () => {
       declarations: [
         CarInfoContainerComponent,
         CarInfoComponent,
-        CarInfoLegalPipe,
-        CarInfoStatusPipe,
-        CarInfoDatePipe,
-        CarInfoOwnerPipe,
-        CarInfoAccidentsPipe
+        YesNoPipe,
+        ErrorTemplatePipe,
+        EnginePowerPipe,
+        ModelMarkNamePipe,
+        CarDatePipe,
+        DefaultValuePipe,
+        ExpansionLinkComponent
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

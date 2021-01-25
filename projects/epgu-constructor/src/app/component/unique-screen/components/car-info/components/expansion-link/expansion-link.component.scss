@@ -1,0 +1,15 @@
+@import "../../../../../../../styles/core";
+
+.expansion-link {
+  font-family: $font-lato, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  color: $color-gosblue;
+}
+
+.expansion-show-details-link {
+  margin-top: 4px;
+  display: inline-block;
+}
