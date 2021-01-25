@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
 
-// TODO компонент на удаление (объединить с epgu-constructor-confirm-personal-user-data)
 @Component({
   selector: 'epgu-constructor-car-info',
   templateUrl: './car-info.component.html',

@@ -28,10 +28,9 @@ export class CarInfoContainerComponent implements OnInit {
       const carInfo = JSON.parse(display.components[0].value);
       this.currentAnswersService.state = carInfo;
 
-      const { errors } = display.components[0].attrs;
-      this.carInfoErrors = this.mapCarInfoErrors(errors, carInfo);
+      this.carInfoErrors = this.mapCarInfoErrors(display.components[0]?.attrs?.errors, carInfo);
 
-      return this.mapCarInfo(carInfo);
+      return carInfo;
     }),
   );
 
@@ -50,41 +49,9 @@ export class CarInfoContainerComponent implements OnInit {
   ngOnInit(): void {}
 
   private mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
-    return <CarInfoErrors>carInfo.errors.reduce((errors, error) => {
-      const text = errorsDto && errorsDto[error.type];
-      return { ...errors, [error.service]: { type: error.type, text } };
-    }, {});
-  }
-
-  private mapCarInfo(carInfo: CarInfo): CarInfo {
-    const {
-      modelMarkName,
-      modelName,
-      markName,
-      enginePowerHorse,
-      enginePowerVt,
-      ownerPeriods,
-    } = carInfo.vehicleInfo;
-
-    return {
-      ...carInfo,
-      ...{
-        ...carInfo.vehicleInfo,
-        ...{
-          modelMarkName:
-            modelMarkName || [markName, modelName].filter((value) => !!value).join(' '),
-          enginePower: [enginePowerVt, enginePowerHorse].filter((value) => !!value).join('/'),
-          ownerPeriods: (ownerPeriods || []).map((period) => {
-            return {
-              ...period,
-              date:
-                period.dateStart && period.dateEnd
-                  ? `${period.dateStart} - ${period.dateEnd}`
-                  : null,
-            };
-          }),
-        },
-      },
-    };
+    return carInfo.errors && <CarInfoErrors>carInfo.errors.reduce((errors, error) => {
+        const text = errorsDto && errorsDto[error.type];
+        return { ...errors, [error.service]: { type: error.type, text } };
+      }, {});
   }
 }

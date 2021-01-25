@@ -55,7 +55,6 @@ export interface VehicleInfo {
   engineVolume: string;
   enginePowerHorse: string;
   enginePowerVt: string;
-  enginePower: string;
   lastRegActionName: string;
   restrictions: Restriction[];
   ownerPeriods: OwnerPeriod[];
@@ -65,7 +64,6 @@ interface OwnerPeriod {
   ownerType: string;
   dateStart: string;
   dateEnd: string;
-  date: string;
 }
 
 interface Restriction {
