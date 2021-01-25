@@ -1,19 +1,80 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+  "default-config": {
+    "dictionaryUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
+    "externalApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1",
+    "timeSlotApiUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api/lk/v1/equeue/agg",
+    "listPaymentsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1/orders/listpaymentsinfo",
+    "uinApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin",
+    "billsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/pay/v1/bills",
+    "invitationUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1",
+    "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
+    "lkUrl": "https://pgu-uat-betalk.test.gosuslugi.ru",
+    "paymentUrl": "https://oplata.gosuslugi.ru",
+    "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "production": true,
+    "mocks": [],
+    "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api",
+    "timeSlots": {
+      "MVD": {
+        "subject": "Выдача паспорта гражданина Российской Федерации в случае утраты (хищения) паспорта",
+        "calendarName": "на приём в подразделения МВД РФ",
+        "serviceId": "10000014784",
+        "eserviceId": "555666777",
+        "serviceCode": "-10000019911"
+      },
+      "GIBDD": {
+        "subject": "Запись на прием",
+        "calendarName": "Запись на прием",
+        "serviceId": "10000593393",
+        "serviceCode": "-10001970000",
+        "eserviceId": "10000070732",
+        "preliminaryReservation": "true",
+        "preliminaryReservationPeriod": "240",
+        "routeNumber": "46000000000"
+      },
+      "RAZBRAK": {
+        "subject": "Регистрация расторжения брака",
+        "calendarName": "на услугу «Регистрация расторжения брака»",
+        "serviceId": "ЗагсРазводФорма12-1",
+        "serviceCode": "-100000100821",
+        "eserviceId": "10000057526",
+        "preliminaryReservation": "true",
+        "preliminaryReservationPeriod": "1440",
+        "routeNumber": "45382000"
+      },
+      "BRAK": {
+        "subject": "Регистрация заключения брака",
+        "calendarName": "на услугу «Регистрация заключения брака»",
+        "serviceId": "ЗагсБрак",
+        "serviceCode": "-100000100821",
+        "eserviceId": "10000057526",
+        "preliminaryReservation": "true",
+        "preliminaryReservationPeriod": "1440",
+        "routeNumber": "45382000"
+      }
+    },
+    "disableUnderConstructionMode": true,
+    "isSocialShareDisabled": true,
+    "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/"
+  },
+  "core": {
+    "config": {
+      "newSfApiUrl": "/api",
+      "ipshApi": "https://pgu-dev-fed.test.gosuslugi.ru/api/pay/v1/",
+      "nsiApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/",
+      "storageApi": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/",
+      "oplataUrl": "https://payment-dev-l14.test.gosuslugi.ru",
+      "lkUrl": "https://lk.gosuslugi.ru/",
+      "lkApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/",
+      "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
+      "staticDomain": "",
+      "isEmbedded": false
+    },
+    "data": {
+      "user": {}
+    },
+    "attrs": {
+      "deviceType": "desk"
     }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
   }
 }
