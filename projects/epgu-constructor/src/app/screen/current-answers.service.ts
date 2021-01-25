@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class CurrentAnswersService {
-
   private _state: string | object;
-  private _isValid: boolean;
+  private _isValid = new BehaviorSubject<boolean>(null);
 
   get state(): string | object {
     return this._state;
@@ -15,11 +15,12 @@ export class CurrentAnswersService {
   }
 
   get isValid(): boolean {
-    return this._isValid;
+    return this._isValid.getValue();
   }
   set isValid(val: boolean) {
-    this._isValid = val;
+    this._isValid.next(val);
   }
-
-  constructor() {}
+  get isValid$(): Observable<boolean> {
+    return this._isValid.asObservable();
+  }
 }

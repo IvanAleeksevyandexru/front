@@ -77,9 +77,12 @@ export class TimerComponent {
    * Обработка таймера
    */
   startTimerHandler(): void {
-    const time = this.timer.time - this.oneSecond;
+    let { time } = this.timer;
+    if (time > 0) {
+      time = this.timer.time - this.oneSecond;
+    }
     this.timer.isWarning = isWarning(time, this.data.attrs?.timerRules?.warningColorFromTime);
-    this.timer.isFinish = time <= this.oneSecond;
+    this.timer.isFinish = time < this.oneSecond;
     this.timer.time = time;
     this.label = this.componentBase.label;
     if (this.hasLabels) {
