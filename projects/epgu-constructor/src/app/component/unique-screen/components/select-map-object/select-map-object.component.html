@@ -67,7 +67,7 @@
           <lib-button
             [showLoader]="screenService.isLoading$ | async"
             [disabled]="!mapObject.agreement"
-            (click)="selectObject()"
+            (click)="selectObject(mapObject)"
             class="submit-button"
             width="wide"
             >Выбрать
