@@ -1,0 +1,34 @@
+<div [formGroup]="pfrForm" class="pfr-form">
+  <div class="pfr-form__item">
+    <epgu-constructor-label [label]="items.region.label"></epgu-constructor-label>
+    <epgu-constructor-constructor-dropdown
+      [items]="regionDictionary"
+      (changed)="handleSelect($event, pfrAreAType.district)"
+      [control]="pfrForm.get(pfrAreAType.region)"
+      [localSearch]="true"
+    >
+    </epgu-constructor-constructor-dropdown>
+  </div>
+
+  <div class="pfr-form__item" *ngIf="districtDictionary.length">
+    <epgu-constructor-label [label]="items.district.label"></epgu-constructor-label>
+    <epgu-constructor-constructor-dropdown
+      [items]="districtDictionary"
+      (changed)="handleSelect($event, pfrAreAType.territory)"
+      [control]="pfrForm.get(pfrAreAType.district)"
+      [localSearch]="true"
+    >
+    </epgu-constructor-constructor-dropdown>
+  </div>
+
+  <div class="pfr-form__item" *ngIf="territoryDictionary.length as length">
+    <epgu-constructor-label [label]="items.territory.label"></epgu-constructor-label>
+    <epgu-constructor-constructor-dropdown
+      [items]="territoryDictionary"
+      [control]="pfrForm.get(pfrAreAType.territory)"
+      [clearable]="length > 1"
+      [localSearch]="length > 1"
+    >
+    </epgu-constructor-constructor-dropdown>
+  </div>
+</div>

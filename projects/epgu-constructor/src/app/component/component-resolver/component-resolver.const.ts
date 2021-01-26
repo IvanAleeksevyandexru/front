@@ -31,6 +31,8 @@ import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-compo
 // eslint-disable-next-line max-len
 import { InformationCenterMvdComponent } from '../unique-screen/components/information-center-mvd/information-center-mvd.component';
 import { CarInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
+// eslint-disable-next-line max-len
+import { InformationCenterPfrContainerComponent } from '../unique-screen/components/information-center-pfr/container/information-center-pfr-container.component';
 
 export type ComponentTypes = ComponentScreenComponentTypes | UniqueScreenComponentTypes;
 
@@ -53,7 +55,8 @@ type UniqueScreenComponent = InformationCenterMvdComponent
   | SignatureApplicationContainerComponent
   | PaymentComponent
   | BillInfoComponent
-  | PaymentTypeSelectorComponent;
+  | PaymentTypeSelectorComponent
+  | InformationCenterPfrContainerComponent;
 
 export type ScreenComponentTypes = ComponentScreenComponent | UniqueScreenComponent;
 
@@ -85,4 +88,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   PaymentScr: PaymentComponent,
   BillInfo: BillInfoComponent,
   PaymentTypeSelector: PaymentTypeSelectorComponent,
+  InformationCenterPfr: InformationCenterPfrContainerComponent,
 };
