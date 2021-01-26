@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+// TODO: перейти на использование ECMAScript Modules версии либы 'date-fns/esm' для tree-shaking
 import {
   isToday as _isToday,
   toDate as _toDate,
@@ -8,6 +9,7 @@ import {
   isAfter as _isAfter,
   isBefore as _isBefore,
   parse as _parse,
+  parseISO as _parseISO,
   format as _format,
   add as _add,
   sub as _sub,
@@ -141,9 +143,18 @@ export class DatesToolsService {
     return _parse(date, format, referenceDate, { locale: _ruLocale });
   }
 
+    /**
+   * Возвращает объект даты, если переданный аргумент является валидной строковой датой ISOString формата
+   * иначе Invalid Date
+   * @param {string} date конвертируемая дата в виде строки
+   */
+  public parseISO(date: string): Date {
+    return _parseISO(date);
+  }
+
   /**
    * Возвращает объект даты в виде строки, отформатированной по указанной маске,
-   * иначе RangeError: `date must not be Invalid Date`
+   * иначе Invalid Date
    * @param {Date | Number} date конвертируемая дата в виде строки
    * @param {string} format строка маска для распарсивания строки с датой (по умолчанию ISOString вида yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx )
    */
@@ -151,6 +162,7 @@ export class DatesToolsService {
     if (typeof date === 'string') {
       date = this.parse(date, format);
     }
+
     return _format(date, format, { locale: _ruLocale });
   }
 

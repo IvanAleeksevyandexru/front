@@ -8,9 +8,9 @@ import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
-} from '../../../component/components-list/components-list.types';
+} from '../../../component/shared/components/components-list/components-list.types';
 import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
-import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../../../component/shared/components/components-list/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 
 enum ValidationType {

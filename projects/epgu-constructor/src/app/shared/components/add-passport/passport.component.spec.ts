@@ -12,7 +12,6 @@ import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-inp
 import { PassportComponent } from './passport.component';
 
 
-
 describe('PassportComponent', () => {
   let component: PassportComponent;
   let fixture: ComponentFixture<PassportComponent>;

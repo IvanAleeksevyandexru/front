@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ComponentsListModule } from '../../component/components-list/components-list.module';
+import { ComponentsListModule } from '../../component/shared/components/components-list/components-list.module';
 import { AbstractPaymentComponent } from '../../component/unique-screen/components/payment/abstractpayment.component';
 import { UniqueScreenComponentsModule } from '../../component/unique-screen/unique-screen-components.module';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';

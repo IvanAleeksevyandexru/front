@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
-import { TimerModule } from '../../component/component-screen/components/timer/timer.module';
-import { ComponentsListModule } from '../../component/components-list/components-list.module';
+import { TimerModule } from '../../component/custom-screen/timer/timer.module';
+import { ComponentsListModule } from '../../component/shared/components/components-list/components-list.module';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';

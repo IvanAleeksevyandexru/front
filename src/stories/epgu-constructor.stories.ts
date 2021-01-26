@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
 import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
-import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/shared/components/components-list/services/date-range/date-range.service';
 import { SignatureApplicationComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/components/signature-application/signature-application.component';
 import { SignatureApplicationModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/signature-application.module';
 import { UnusedPaymentsComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/unused-payments/component/unused-payments.component';
@@ -20,6 +20,7 @@ import { LocationService } from '../../projects/epgu-constructor/src/app/core/se
 import { NavigationService } from '../../projects/epgu-constructor/src/app/core/services/navigation/navigation.service';
 import { UtilsService } from '../../projects/epgu-constructor/src/app/core/services/utils/utils.service';
 import {
+  ComponentActionDto,
   ComponentDto,
   DisplayDto,
   DTOActionAction,
@@ -48,6 +49,9 @@ import { LocalStorageService } from '../../projects/epgu-constructor/src/app/cor
 import { HtmlRemoverService } from '../../projects/epgu-constructor/src/app/shared/services/html-remover/html-remover.service';
 import { SelectChildrenScreenModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/select-children/select-children-screen.module';
 import { SelectChildrenComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/select-children/components/select-children/select-children.component';
+import { PaymentTypeSelectorButtonComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/components/payment-type-selector-button/payment-type-selector-button.component';
+import { PaymentTypeSelectorModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/payment-type-selector.module';
+import { PaymentTypeSelectorComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/components/payment-type-selector/payment-type-selector.component';
 
 export default {
   title: 'Example/EPGU Constructor',
@@ -64,6 +68,7 @@ export default {
         SelectChildrenScreenModule,
         RouterTestingModule,
         BrowserAnimationsModule,
+        PaymentTypeSelectorModule,
       ],
       schemas: [],
       declarations: [],
@@ -183,6 +188,47 @@ UnusedPayments.args = {
   showNav: true,
   data: DisplayDtoSample,
   paymentsData: paymentsDataSample,
+};
+
+const paymentTypeSelectorMocks = {
+  isErrorTemplate: false,
+  applicantType: 'success',
+  paymentTypeSelector: {
+    header: 'success',
+    subHeader: 'success',
+    srcImg: 'asset.jpg',
+    body: 'test',
+    clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' } },
+    actions: [
+      {
+        label: 'На портале со скидкой 30%',
+        value: '"На портале со скидкой 30%',
+        type: 'nextStep',
+        action: 'getNextScreen',
+      } as ComponentActionDto,
+    ],
+  },
+};
+export const PaymentTypeSelectorButton = (args: PaymentTypeSelectorButtonComponent) => ({
+  component: PaymentTypeSelectorButtonComponent,
+  props: args,
+});
+
+PaymentTypeSelectorButton.args = {
+  action: paymentTypeSelectorMocks.paymentTypeSelector.actions[0],
+  applicantType: paymentTypeSelectorMocks.applicantType,
+  isErrorTemplate: paymentTypeSelectorMocks.isErrorTemplate,
+};
+
+export const PaymentTypeSelector = (args: PaymentTypeSelectorComponent) => ({
+  component: PaymentTypeSelectorComponent,
+  props: args,
+});
+
+PaymentTypeSelector.args = {
+  paymentTypeSelector: paymentTypeSelectorMocks.paymentTypeSelector,
+  applicantType: paymentTypeSelectorMocks.applicantType,
+  isErrorTemplate: paymentTypeSelectorMocks.isErrorTemplate,
 };
 
 export const AddPassport = (args: AddPassportComponent) => ({

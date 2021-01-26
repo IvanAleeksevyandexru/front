@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ListItem } from 'epgu-lib';
 import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -37,7 +44,7 @@ moment.locale('ru');
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimeSlotsComponent implements OnInit {
+export class TimeSlotsComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
 
@@ -100,6 +107,7 @@ export class TimeSlotsComponent implements OnInit {
     private eventBusService: EventBusService,
     private changeDetectionRef: ChangeDetectorRef,
     private datesHelperService: DatesToolsService,
+    private httpCancelService: HttpCancelService,
   ) {
     this.timeSlotServices.BRAK = this.brakTimeSlotsService;
     this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
@@ -116,6 +124,10 @@ export class TimeSlotsComponent implements OnInit {
     if (this.screenService.component) {
       this.loadTimeSlots();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.httpCancelService.cancelPendingRequests();
   }
 
   /**
