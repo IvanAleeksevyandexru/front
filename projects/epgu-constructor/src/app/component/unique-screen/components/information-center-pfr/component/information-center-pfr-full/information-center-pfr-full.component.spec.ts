@@ -5,10 +5,11 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { InformationCenterPfrFullComponent } from './information-center-pfr-full.component';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { Full } from '../../information-center-pfr.models';
+import { Full, PfrAreaType } from '../../information-center-pfr.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { By } from '@angular/platform-browser';
 
 describe('InformationCenterPfrFullComponent', () => {
   let component: InformationCenterPfrFullComponent;
@@ -117,6 +118,7 @@ describe('InformationCenterPfrFullComponent', () => {
     });
 
     // it('should init form with cachedValue', () => {
+    //   // jest.spyOn(component, 'cachedValue', ).mockReturnValue(JSON.stringify(mockCachedValue));
     //   component.cachedValue = JSON.stringify(mockCachedValue);
     //   fixture.detectChanges();
     //   expect(component.pfrForm.value).toEqual({
@@ -128,8 +130,14 @@ describe('InformationCenterPfrFullComponent', () => {
   });
 
   describe('handleSelect', () => {
-    it('should init form with cachedValue', () => {
-      expect(component).toBeTruthy();
+    it('should be call formChangeEvent', () => {
+      jest.spyOn(component.formChangeEvent, 'emit');
+      jest.spyOn(component, 'handleSelect');
+      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-dropdown'));
+      debugEl.triggerEventHandler('changed', {});
+
+      expect(component.formChangeEvent.emit).toHaveBeenCalled();
+      expect(component.handleSelect).toHaveBeenCalled();
     });
   });
 });
