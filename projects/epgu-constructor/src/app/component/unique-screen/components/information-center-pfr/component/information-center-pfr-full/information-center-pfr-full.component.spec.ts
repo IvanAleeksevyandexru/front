@@ -1,39 +1,135 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { InformationCenterPfrFullComponent } from './information-center-pfr-full.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { MockModule } from 'ng-mocks';
+import { ChangeDetectionStrategy } from '@angular/core';
 
-describe('InformationCenterPfrComponent', () => {
+import { InformationCenterPfrFullComponent } from './information-center-pfr-full.component';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { Full } from '../../information-center-pfr.models';
+import { BaseModule } from '../../../../../../shared/base.module';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+
+describe('InformationCenterPfrFullComponent', () => {
   let component: InformationCenterPfrFullComponent;
   let fixture: ComponentFixture<InformationCenterPfrFullComponent>;
+  const itemsMock: Full = {
+    region: {
+      label: 'Регион',
+      attributeName: 'parent_attr',
+      condition: 'CONTAINS',
+    },
+    district: {
+      label: 'Район (Административный центр)',
+      attributeName: 'parent_attr',
+      condition: 'EQUALS',
+    },
+    territory: {
+      label: 'Территориальный орган',
+      attributeName: 'parent_attr',
+      condition: 'CONTAINS',
+    },
+  };
 
-  beforeEach(async(() => {
+  const mockCachedValue = {
+    region: {
+      originalItem: {
+        value: '032',
+        parentValue: null,
+        title: 'Алтайский край',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+      id: '032',
+      text: 'Алтайский край',
+    },
+    district: {
+      originalItem: {
+        value: '032000690',
+        parentValue: null,
+        title: 'Алтайский район с. Алтайское',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+      id: '032016',
+      text: 'Государственное учреждение ',
+    },
+    territory: {
+      originalItem: {
+        value: '032016',
+        parentValue: null,
+        title: 'Государственное учреждение',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+      id: '032016',
+      text: 'Государственное учреждение',
+    },
+  };
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [InformationCenterPfrFullComponent],
-      providers: [
-        UnsubscribeService,
-        CurrentAnswersService,
-        CachedAnswersService,
-        UtilsService,
-        NavigationService,
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
+      imports: [
+        MockModule(BaseModule),
+        MockModule(BaseComponentsModule),
+        MockModule(ConstructorDropdownModule),
       ],
-    }).compileComponents();
-  }));
+      providers: [UnsubscribeService, FormBuilder],
+    })
+      .overrideComponent(InformationCenterPfrFullComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InformationCenterPfrFullComponent);
     component = fixture.componentInstance;
-    component.data$ = of(mockData);
-    component.display$ = of(mockDisplay);
-    component.isLoading$ = of(true);
-    component.submitLabel$ = of('');
+    component.items = itemsMock;
+    component.territoryDictionary = [];
+    component.districtDictionary = [];
+    component.regionDictionary = [];
+    component.cachedValue = '';
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('initForm', () => {
+    it('should init form without cachedValue', () => {
+      expect(component.pfrForm.value).toEqual({
+        region: null,
+        district: null,
+        territory: null,
+      });
+    });
+
+    // it('should init form with cachedValue', () => {
+    //   component.cachedValue = JSON.stringify(mockCachedValue);
+    //   fixture.detectChanges();
+    //   expect(component.pfrForm.value).toEqual({
+    //     region: mockCachedValue.region,
+    //     district: mockCachedValue.district,
+    //     territory: mockCachedValue.territory,
+    //   });
+    // });
+  });
+
+  describe('handleSelect', () => {
+    it('should init form with cachedValue', () => {
+      expect(component).toBeTruthy();
+    });
   });
 });

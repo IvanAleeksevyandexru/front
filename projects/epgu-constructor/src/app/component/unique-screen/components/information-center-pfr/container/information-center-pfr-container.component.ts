@@ -145,6 +145,9 @@ export class InformationCenterPfrContainerComponent {
 
   private setCashedValue(component: InformationCenterPfr): void {
     const value = JSON.parse(component.value) as CachedValue;
+
+    if (!value.territory) return;
+
     const { full } = component.attrs;
 
     Object.keys(value).forEach((type, index, array) => {
