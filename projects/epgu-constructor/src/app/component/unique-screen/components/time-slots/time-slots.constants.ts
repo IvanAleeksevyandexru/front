@@ -11,3 +11,10 @@ export class TimeSlotsConstants {
   errorInitialiseService = 'Ошибка инициализации сервиса';
   error101ServiceUnavailable = 'сервис недоступен. Повторите запрос позже.';
 }
+
+export enum TimeSlotsTypes {
+  BRAK = 'BRAK',
+  RAZBRAK = 'RAZBRAK',
+  GIBDD = 'GIBDD',
+  MVD = 'MVD'
+}

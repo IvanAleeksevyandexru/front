@@ -3,7 +3,7 @@
     *ngFor="let componentData of formService.form.controls; let idx = index"
     class="form__item {{
       componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
-    }} {{componentData.value?.type === componentType.DropDown ? 'form__item_start' : ''}}"
+    }}"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
@@ -154,7 +154,7 @@
           "
         >
           <epgu-constructor-constructor-checkbox
-            checkboxId="{{componentData.value?.id}}_{{componentsGroupIndex}}"
+            checkboxId="{{ componentData.value?.id }}_{{ componentsGroupIndex }}"
             [control]="componentData.get('value')"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
@@ -180,7 +180,9 @@
           [maxDate]="componentData.value?.attrs?.maxDate || '+50y'"
           [clearable]="true"
           [align]="'left'"
-          [brokenDateFixStrategy]="componentData.value?.attrs?.brokenDateFixStrategy || brokenDateFixStrategy"
+          [brokenDateFixStrategy]="
+            componentData.value?.attrs?.brokenDateFixStrategy || brokenDateFixStrategy
+          "
         ></epgu-constructor-constructor-date-picker>
       </epgu-constructor-component-item>
 
@@ -208,7 +210,9 @@
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [validationShowOn]="validationShowOn"
           [control]="$any(componentData.get('value'))"
-          [itemsProvider]="formService.addressHelperServiceProvider(componentData.value?.attrs?.searchType)"
+          [itemsProvider]="
+            formService.addressHelperServiceProvider(componentData.value?.attrs?.searchType)
+          "
           [clearable]="true"
         >
         </epgu-constructor-constructor-lookup>
