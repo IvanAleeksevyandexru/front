@@ -7,6 +7,7 @@ import { TextTransform } from '../../../types/textTransform';
 @Component({
   selector: 'epgu-constructor-masked-input',
   templateUrl: './constructor-masked-input.component.html',
+  styleUrls: ['./constructor-masked-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorMaskedInputComponent {
@@ -24,6 +25,7 @@ export class ConstructorMaskedInputComponent {
   @Input() placeholder: string;
   @Input() isTrim?: boolean;
   @Input() component?: CustomComponent;
+  @Input() showPlaceholderOnFocus?: boolean;
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {
