@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UnusedPaymentInterface } from '../../component/unique-screen/components/unused-payments/unused-payment.interface';
 
@@ -13,6 +13,10 @@ export class UsePaymentsModalComponent extends ModalBaseComponent {
 
   usePaymentHandler: Function;
   skipPaymentHandler: Function;
+
+  constructor(public injector: Injector) {
+    super(injector);
+  }
 
   public clickUsePayment(uin: string): void {
     this.closeModal();

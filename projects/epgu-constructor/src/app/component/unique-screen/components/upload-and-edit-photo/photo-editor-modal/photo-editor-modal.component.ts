@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Injector,
 } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
@@ -39,9 +40,12 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
 
   isPhoneSize: boolean;
 
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(public config: ConfigService, private changeDetectionRef: ChangeDetectorRef) {
-    super();
+  constructor(
+    public injector: Injector,
+    public config: ConfigService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {
+    super(injector);
   }
 
   ngAfterViewInit(): void {

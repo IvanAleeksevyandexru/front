@@ -9,32 +9,50 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { LocationService } from '../../core/services/location/location.service';
+import { LocationServiceStub } from '../../core/services/location/location.service.stub';
+import { LoggerService } from '../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
+import { of } from 'rxjs';
+import {
+  ApplicantAnswersDto,
+  ComponentDto,
+} from '../../form-player/services/form-player-api/form-player-api.types';
 
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
   let fixture: ComponentFixture<EmptyScreenComponent>;
 
   let screenService: ScreenServiceStub;
+  let locationService: LocationServiceStub;
+  let navigationService: NavigationServiceStub;
+  let loggerService: LoggerServiceStub;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EmptyScreenComponent, MockComponent(RedirectComponent)],
+      declarations: [EmptyScreenComponent, RedirectComponent],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
       ],
     }).overrideComponent(EmptyScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
+      set: { changeDetection: ChangeDetectionStrategy.OnPush },
     });
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EmptyScreenComponent);
     component = fixture.componentInstance;
-    // screenService.updateScreenStore(screenDataMock);
-    fixture.detectChanges();
 
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
+    locationService = (TestBed.inject(LocationService) as unknown) as LocationServiceStub;
+    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
+    loggerService = (TestBed.inject(LoggerService) as unknown) as LoggerServiceStub;
   });
 
   describe('emptyComponentName property', () => {
@@ -45,49 +63,109 @@ describe('EmptyScreenComponent', () => {
 
   describe('redirectLink() getter', () => {
     it('should return link from ref if ref exists', () => {
-      screenService.applicantAnswers = {
+      const applicantAnswers = {
         ref1: {
           visited: true,
           value: 'http://example.com',
         },
-      };
-      screenService.component = {
+      } as ApplicantAnswersDto;
+      const componentSchema = {
         attrs: {
           ref: 'ref1',
         },
         id: 'id1',
         type: 'type1',
-      };
+      } as ComponentDto;
 
-      expect(component.redirectLink).toBe('http://example.com');
+      spyOn(locationService, 'href').and.callThrough();
+      component.createLink([componentSchema, applicantAnswers])();
+
+      expect(locationService.href).toHaveBeenCalledWith('http://example.com');
     });
 
     it('should return link from component if ref does not exist', () => {
-      screenService.component = {
+      const componentSchema = {
         attrs: {
           link: 'http://example.com',
         },
         id: 'id1',
         type: 'type1',
-      };
+      } as ComponentDto;
 
-      expect(component.redirectLink).toBe('http://example.com');
+      spyOn(locationService, 'href').and.callThrough();
+      component.createLink([componentSchema, {}])();
+
+      expect(locationService.href).toHaveBeenCalledWith('http://example.com');
     });
 
-    it('should return NULL if link is not in ref or in component', () => {
-      screenService.component = {
+    it('should to redirectToLK', () => {
+      spyOn(navigationService, 'redirectToLK').and.callThrough();
+      fixture = TestBed.createComponent(EmptyScreenComponent);
+      component = fixture.componentInstance;
+      const componentSchema = {
+        attrs: {
+          actions: [{ type: 'redirectToLK' }],
+        },
+        id: 'id1',
+        type: 'type1',
+      } as ComponentDto;
+
+      component.createLink([componentSchema, {}])();
+
+      expect(navigationService.redirectToLK).toHaveBeenCalled();
+    });
+    it('should to Home', () => {
+      spyOn(navigationService, 'redirectToHome').and.callThrough();
+      fixture = TestBed.createComponent(EmptyScreenComponent);
+      component = fixture.componentInstance;
+      const componentSchema = {
+        attrs: {
+          actions: [{ type: 'home' }],
+        },
+        id: 'id1',
+        type: 'type1',
+      } as ComponentDto;
+
+      component.createLink([componentSchema, {}])();
+
+      expect(navigationService.redirectToHome).toHaveBeenCalled();
+    });
+    it('should other type action', () => {
+      spyOn(navigationService, 'redirectToHome').and.callThrough();
+      fixture = TestBed.createComponent(EmptyScreenComponent);
+      component = fixture.componentInstance;
+      const componentSchema = {
+        attrs: {
+          actions: [{ type: 'download' }],
+        },
+        id: 'id1',
+        type: 'type1',
+      } as ComponentDto;
+
+      component.createLink([componentSchema, {}])();
+
+      expect(navigationService.redirectToHome).toHaveBeenCalled();
+    });
+    it('should unknown', () => {
+      spyOn(loggerService, 'error').and.callThrough();
+      fixture = TestBed.createComponent(EmptyScreenComponent);
+      component = fixture.componentInstance;
+      const componentSchema = {
         attrs: {},
         id: 'id1',
         type: 'type1',
-      };
+      } as ComponentDto;
 
-      expect(component.redirectLink).toBeUndefined();
+      component.createLink([componentSchema, {}])();
+
+      expect(loggerService.error).toHaveBeenCalled();
     });
   });
 
   it('should render epgu-constructor-redirect', () => {
     const selector = 'epgu-constructor-redirect';
-
+    const func = jest.fn();
+    component.redirectLink$ = of(func);
     let debugEl = fixture.debugElement.query(By.css(selector));
 
     expect(debugEl).toBeNull();
@@ -101,9 +179,8 @@ describe('EmptyScreenComponent', () => {
 
     expect(debugEl.componentInstance.link).toBeUndefined();
 
-    jest.spyOn(component, 'redirectLink', 'get').mockReturnValue('http://example.com');
     fixture.detectChanges();
 
-    expect(debugEl.componentInstance.link).toBe('http://example.com');
+    expect(func).toHaveBeenCalled();
   });
 });

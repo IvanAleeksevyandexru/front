@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
@@ -20,12 +26,13 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
   buttons: ConfirmationModalBaseButton[] = [];
 
   constructor(
+    public injector: Injector,
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
   ) {
-    super();
+    super(injector);
   }
 
   ngOnInit(): void {

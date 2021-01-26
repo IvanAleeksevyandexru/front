@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ModalModule } from '../../modal/modal.module';
@@ -8,7 +9,7 @@ import { CloneButtonModule } from '../../shared/components/clone-button/clone-bu
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
-import { ComponentsListModule } from '../components-list/components-list.module';
+import { ComponentsListModule } from '../shared/components/components-list/components-list.module';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
@@ -64,6 +65,12 @@ import { WebcamService } from './services/webcam/webcam.service';
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
   ],
-  providers: [WebcamService, DictionaryApiService, UnsubscribeService, EventBusService],
+  providers: [
+    WebcamService,
+    DictionaryApiService,
+    UnsubscribeService,
+    EventBusService,
+    DatesToolsService,
+  ],
 })
 export class UniqueScreenComponentsModule {}

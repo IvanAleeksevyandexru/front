@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import * as moment_ from 'moment';
 import { DatesHelperService } from 'epgu-lib';
 
 import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
-} from '../../../component/components-list/components-list.types';
+} from '../../../component/shared/components/components-list/components-list.types';
 import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
-import { DateRangeService } from '../../../component/components-list/services/date-range/date-range.service';
-
-const moment = moment_;
+import { DateRangeService } from '../../../component/shared/components/components-list/services/date-range/date-range.service';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -29,7 +27,10 @@ export class ValidationService {
     CustomScreenComponentTypes.HtmlString,
   ];
 
-  constructor(private dateRangeService: DateRangeService) {}
+  constructor(
+    private dateRangeService: DateRangeService,
+    private datesToolsService: DatesToolsService,
+  ) { }
 
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
@@ -134,13 +135,13 @@ export class ValidationService {
       const error = validations.find((validation) => {
         switch ((validation.condition as unknown) as DateValidationCondition) {
           case '<':
-            return moment(control.value).isBefore(minDate);
+            return this.datesToolsService.isBefore(control.value, minDate);
           case '<=':
-            return moment(control.value).isSameOrBefore(minDate);
+            return this.datesToolsService.isSameOrBefore(control.value, minDate);
           case '>':
-            return moment(control.value).isAfter(maxDate);
+            return this.datesToolsService.isAfter(control.value, maxDate);
           case '>=':
-            return moment(control.value).isSameOrAfter(maxDate);
+            return this.datesToolsService.isSameOrAfter(control.value, maxDate);
           default:
             return null;
         }

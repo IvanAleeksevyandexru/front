@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Moment } from 'moment';
-import { CustomComponent } from '../../../component/components-list/components-list.types';
+import { CustomComponent } from '../../../component/shared/components/components-list/components-list.types';
 import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 interface TranslitAlphabet {
@@ -121,15 +120,6 @@ export class UtilsService {
    */
   public static getDictKeyByComp(component: CustomComponent): string {
     return component.attrs.dictionaryType + component.id;
-  }
-
-  /**
-   * Форматирует объект moment даты в нужны формат и возвращает его
-   * @param date - объект даты обёрнутый в библитеку moment
-   * @param format - формат в котором выводить дату (из документации к moment.js)
-   */
-  public formatDate(date: Moment, format: string): string {
-    return date.format(format);
   }
 
   public getDeclension(num: number, forms: string[]): string {

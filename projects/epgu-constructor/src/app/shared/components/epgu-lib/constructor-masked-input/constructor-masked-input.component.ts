@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { CustomComponent } from '../../../../component/components-list/components-list.types';
+import { CustomComponent } from '../../../../component/shared/components/components-list/components-list.types';
 import { TextTransform } from '../../../types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-masked-input',
   templateUrl: './constructor-masked-input.component.html',
+  styleUrls: ['./constructor-masked-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorMaskedInputComponent {
@@ -24,6 +25,7 @@ export class ConstructorMaskedInputComponent {
   @Input() placeholder: string;
   @Input() isTrim?: boolean;
   @Input() component?: CustomComponent;
+  @Input() showPlaceholderOnFocus?: boolean;
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {

@@ -18,6 +18,8 @@ import { RegistrationAddrComponent } from './registration-addr.component';
 import { ConstructorDadataWidgetModule } from '../../../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 // eslint-disable-next-line max-len
 import { ConstructorDatePickerModule } from '../../../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
+import { DateValidator } from './date-validator';
 
 
 
@@ -48,6 +50,8 @@ describe('RegistrationAddrComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DatesToolsService,
+        DateValidator,
       ]
     })
     .compileComponents();

@@ -20,7 +20,7 @@ import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { CustomScreenComponentTypes } from '../../../component/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',

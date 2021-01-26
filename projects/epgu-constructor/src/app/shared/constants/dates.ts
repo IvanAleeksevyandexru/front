@@ -1,5 +1,8 @@
-const DATE_STRING_DOT_FORMAT = 'DD.MM.YYYY';
-
+const DATE_STRING_DOT_FORMAT = 'dd.MM.yyyy';
+const DATE_STRING_SLASH_FORMAT = 'MM/dd/yyyy';
+const DATE_STRING_MMMM_YYYY_FORMAT = 'MMMM yyyy';
+const DATE_ISO_STRING_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx';
+const DATE_MONTH_YEAR_FORMAT = 'MM/yyyy';
 const months = [
   'Январь',
   'Февраль',
@@ -15,6 +18,25 @@ const months = [
   'Декабрь',
 ];
 
+type DurationTimeTypes =
+  | 'years'
+  | 'months'
+  | 'weeks'
+  | 'days'
+  | 'hours'
+  | 'minutes'
+  | 'seconds'
+  | 'milliseconds';
+
 const weekDaysAbbr = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-export { DATE_STRING_DOT_FORMAT, months, weekDaysAbbr };
+export {
+  DATE_STRING_DOT_FORMAT,
+  DATE_STRING_SLASH_FORMAT,
+  DATE_STRING_MMMM_YYYY_FORMAT,
+  DATE_ISO_STRING_FORMAT,
+  DATE_MONTH_YEAR_FORMAT,
+  months,
+  weekDaysAbbr,
+  DurationTimeTypes,
+};

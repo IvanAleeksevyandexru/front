@@ -44,7 +44,7 @@ Lint:
     - master
     - stage
 
-Code-coverage:
+Test:
   stage: code-quality
   except:
     variables:
@@ -58,19 +58,6 @@ Code-coverage:
     reports:
       cobertura: coverage/jest/cobertura-coverage.xml
       junit: coverage/junit/test-results.xml
-  only:
-    - merge_requests
-
-Code-quality:
-  stage: code-quality
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
-  script:
-    - yarn test:coverage
   only:
     - merge_requests
     - master
