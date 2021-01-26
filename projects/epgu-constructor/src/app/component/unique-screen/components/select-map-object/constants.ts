@@ -33,3 +33,5 @@ export class Icons {
 
   constructor(public config: ConfigService) { }
 }
+
+export const TIMEZONE_STR_OFFSET = -6;

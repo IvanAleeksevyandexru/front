@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import {
@@ -12,6 +12,7 @@ import {
   DictionaryResponse,
   DictionaryUnionKind,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsTypes } from './time-slots.constants';
 import {
@@ -26,8 +27,6 @@ import {
   TimeSlotValueInterface,
   ZagsDepartmentInterface,
 } from './time-slots.types';
-
-const moment = moment_; // TODO: заменить потом на DateToolsService
 
 @Injectable()
 export class TimeSlotsService {
@@ -53,6 +52,7 @@ export class TimeSlotsService {
     private config: ConfigService,
     private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -80,7 +80,7 @@ export class TimeSlotsService {
   }
 
   book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
-    this.errorMessage = undefined;
+    this.errorMessage = null;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap((response) => {
         if (response.error) {
@@ -147,7 +147,7 @@ export class TimeSlotsService {
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
-      this.errorMessage = undefined;
+      this.errorMessage = null;
 
       return this.getAvailableAreaNames(this.department.attributeValues.AREA_NAME).pipe(
         switchMap((areaNames) => {
@@ -332,7 +332,7 @@ export class TimeSlotsService {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
-        const month = moment(slotDate).format('YYYY-MM');
+        const month = this.datesToolsService.format(slotDate, 'yyyy-MM');
         this.availableMonths.push(month);
       }
 
@@ -349,7 +349,7 @@ export class TimeSlotsService {
         slotId: slot.slotId,
         areaId: slot.areaId,
         slotTime: slotDate,
-        timezone: slot.visitTimeISO.substr(-6),
+        timezone: slot.visitTimeISO.substr(TIMEZONE_STR_OFFSET),
       });
     });
   }
@@ -419,12 +419,14 @@ export class TimeSlotsService {
     if (!timeStart) {
       return;
     }
-    const settings = {};
-    settings[TimeSlotsTypes.BRAK] = 1440;
-    settings[TimeSlotsTypes.RAZBRAK] = 1440;
-    settings[TimeSlotsTypes.MVD] = 240;
-    settings[TimeSlotsTypes.GIBDD] = 240;
-    return moment(timeStart).add(settings[this.timeSlotsType], 'm').toDate();
+    const settings = {
+      [TimeSlotsTypes.BRAK]: 1440,
+      [TimeSlotsTypes.RAZBRAK]: 1440,
+      [TimeSlotsTypes.MVD]: 240,
+      [TimeSlotsTypes.GIBDD]: 240,
+    };
+
+    return this.datesToolsService.add(timeStart, settings[this.timeSlotsType], 'minutes');
   }
 
   private isCancelCondition(): boolean {
