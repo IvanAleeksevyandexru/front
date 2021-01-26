@@ -1,12 +1,9 @@
-export type LegalInfo = 'PLEDGED' | 'WANTED' | 'RESTRICTIONS';
-export type OwnerType = 'INDIVIDUAL' | 'LEGAL_ENTITY';
-export type StatusType = 'REGISTERED' | 'NOT_REGISTERED' | 'REMOVED' | 'SUSPENDED';
-export type ServiceType = 'vehicle' | 'notary';
-
-export interface TenureDates {
-  from: number;
-  to: number;
+export enum ServiceType {
+  vehicle = 'vehicle',
+  notary = 'notary',
+  common = 'common'
 }
+
 
 export interface CarInfo {
   vehicleInfo: VehicleInfo;
@@ -17,6 +14,7 @@ export interface CarInfo {
 export interface CarInfoErrors {
   vehicle: CarInfoDisplayedError;
   notary: CarInfoDisplayedError;
+  common: CarInfoDisplayedError;
 }
 
 

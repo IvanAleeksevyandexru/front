@@ -8,7 +8,12 @@ import {
   DisplayDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { CarInfo, CarInfoErrors, CarInfoErrorsDto } from '../../models/car-info.interface';
+import {
+  CarInfo,
+  CarInfoErrors,
+  CarInfoErrorsDto,
+  ServiceType,
+} from '../../models/car-info.interface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
@@ -52,7 +57,10 @@ export class CarInfoContainerComponent implements OnInit {
   private mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
     return carInfo.errors && <CarInfoErrors>carInfo.errors.reduce((errors, error) => {
         const text = errorsDto && errorsDto[error.type];
-        return { ...errors, [error.service]: { type: error.type, text } };
+        return {
+          ...errors,
+          [error.service ? error.service : ServiceType.common]: { type: error.type, text },
+        };
       }, {});
   }
 }
