@@ -50,7 +50,7 @@
     "usePathForSuiteName": "true"
   },
   "dependencies": {
-    "@alyle/ui": "^10.2.1",
+    "@alyle/ui": "^10.5.1",
     "@angular/animations": "11.1.0",
     "@angular/cdk": "11.1.0",
     "@angular/common": "11.1.0",

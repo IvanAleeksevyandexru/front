@@ -7,10 +7,10 @@
   resolved "http://npm.gosuslugi.local/@aduh95%2fviz.js/-/viz.js-3.2.1.tgz#189d7bc08d83e487487fe6c1810cf50fd8747a94"
   integrity sha512-5Hmejfgemk1qJw24M5I+NabADKmD5Io7LU2fxHw/E6Bo0ji9EdmHP16KrFnt6Sz0/w7VIzc1ZAasyLULaPLGJQ==
 
-"@alyle/ui@^10.2.1":
-  version "10.2.1"
-  resolved "http://npm.gosuslugi.local/@alyle%2fui/-/ui-10.2.1.tgz#c5533b471807675c68aeefaa55600e4bee564729"
-  integrity sha512-lSrFzD87QJrjc53SC6HtBxtBAZKnJi+Say9tmnSo6SkgQqLsqjbhxEulyEEcxTg3noAzPzObgDcF8ZFlhKEvMA==
+"@alyle/ui@^10.5.1":
+  version "10.5.1"
+  resolved "http://npm.gosuslugi.local/@alyle%2fui/-/ui-10.5.1.tgz#0dd4c168082ae309dffcf5ff5b856163451a8637"
+  integrity sha512-gPCmPHTiYBxSsKPQbcDqS+buQTf/kzM7UuaQp3gbJ8j14MqTdKtiNj5328HOFSxpEf1BOwKLvuvbtkTE441yWQ==
   dependencies:
     tslib "^1.9.0"
 
