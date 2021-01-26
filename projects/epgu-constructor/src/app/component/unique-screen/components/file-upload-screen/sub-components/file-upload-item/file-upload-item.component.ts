@@ -450,7 +450,7 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   /**
-   * Устанавливает сведения Фаой
+   * Устанавливает сведения Файла
    * @param uploadedFile - файл загружаемый на сервер
    * @param fileSize - размер фай
    * @param uploaded - файл загружен?
@@ -458,16 +458,13 @@ export class FileUploadItemComponent implements OnDestroy {
    */
   private setFileInfoUploaded(
     uploadedFile: TerraUploadedFile,
-    fileSize: number,
+    terraFile: TerabyteListItem,
     uploaded: boolean,
   ): void {
     const files = this.files$$.value;
     files.forEach((f: TerraUploadedFile) => {
       if (f.mnemonic === uploadedFile.mnemonic) {
-        // eslint-disable-next-line no-param-reassign
-        f.uploaded = uploaded;
-        // eslint-disable-next-line no-param-reassign
-        f.fileSize = fileSize;
+        f.setParamsForUploadedFile(terraFile, uploaded);
       }
     });
     this.files$$.next(files);
@@ -492,8 +489,8 @@ export class FileUploadItemComponent implements OnDestroy {
       this.terabyteService
         .getFileInfo(uploadedFile.getParamsForFileOptions())
         .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((result: TerabyteListItem) =>
-          this.setFileInfoUploaded(uploadedFile, result.fileSize, uploaded),
+        .subscribe((terraFile: TerabyteListItem) =>
+          this.setFileInfoUploaded(uploadedFile, terraFile, uploaded),
         );
     } else {
       this.removeFileFromStore(uploadedFile);

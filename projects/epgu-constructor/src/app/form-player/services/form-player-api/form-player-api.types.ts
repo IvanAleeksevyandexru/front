@@ -142,11 +142,27 @@ export interface ComponentAttrsDto {
 }
 
 export interface ComponentUploadedFileDto {
-  fileType: string[];
+  fileType?: string[];
   mnemonic: string;
   name: string;
   objectType: number;
   objectId: string;
+  fileExt?: string;
+  fileName?:string;
+  fileSize?: number;
+  fileUid?: number;
+  hasSign?: boolean;
+  metaId?: number;
+  mimeType?: string;
+  nodeId?: string;
+  objectTypeId?: number;
+  realPath?: string;
+  uploaded?: boolean;
+  userId?: number;
+  hasError?: boolean;
+  created?: string;
+  updated?: string;
+  deleted?: boolean;
 }
 
 export interface RefsTimeDto {
