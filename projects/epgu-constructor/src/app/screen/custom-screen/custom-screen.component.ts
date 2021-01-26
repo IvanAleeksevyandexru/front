@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
-} from '../../component/components-list/components-list.types';
+} from '../../component/shared/components/components-list/components-list.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {

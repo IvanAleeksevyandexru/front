@@ -1,15 +1,22 @@
 import { NgModule } from '@angular/core';
-import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
+// eslint-disable-next-line max-len
+import { PaymentTypeSelectorContainerComponent } from './components/payment-type-selector-container/payment-type-selector-container.component';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
+import { PaymentTypeSelectorComponent } from './components/payment-type-selector/payment-type-selector.component';
+import { PaymentTypeSelectorButtonComponent } from './components/payment-type-selector-button/payment-type-selector-button.component';
 
 @NgModule({
-  declarations: [PaymentTypeSelectorComponent],
-  exports: [PaymentTypeSelectorComponent],
+  declarations: [
+    PaymentTypeSelectorContainerComponent,
+    PaymentTypeSelectorComponent,
+    PaymentTypeSelectorButtonComponent,
+  ],
+  exports: [PaymentTypeSelectorContainerComponent],
   providers: [ScreenService],
   imports: [
     BaseModule,
