@@ -1,5 +1,6 @@
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
+import { DictionaryItem } from '../../../shared/services/dictionary-api/dictionary-api.types';
 
 export enum PfrAreaType {
   region = 'region',
@@ -14,7 +15,7 @@ export interface PftAreaTypeParams {
 }
 
 export interface Simple {
-  items: Array<ListElement>;
+  items: Array<DictionaryItem | ListElement>;
   label: string;
   html: string;
 }
@@ -41,7 +42,9 @@ export interface SelectEvent {
 }
 
 export interface FormChangeEvent {
-  value: unknown;
+  value: {
+    [PfrAreaType.territory]: ListElement;
+  };
   isValid: boolean;
 }
 

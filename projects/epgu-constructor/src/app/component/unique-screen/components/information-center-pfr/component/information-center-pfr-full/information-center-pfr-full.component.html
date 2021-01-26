@@ -1,5 +1,5 @@
-<div [formGroup]="pfrForm" class="pfr-form">
-  <div class="pfr-form__item">
+<div [formGroup]="pfrForm">
+  <div class="item">
     <epgu-constructor-label [label]="items.region.label"></epgu-constructor-label>
     <epgu-constructor-constructor-dropdown
       [items]="regionDictionary"
@@ -10,7 +10,7 @@
     </epgu-constructor-constructor-dropdown>
   </div>
 
-  <div class="pfr-form__item" *ngIf="districtDictionary.length">
+  <div class="item" *ngIf="districtDictionary.length">
     <epgu-constructor-label [label]="items.district.label"></epgu-constructor-label>
     <epgu-constructor-constructor-dropdown
       [items]="districtDictionary"
@@ -21,7 +21,7 @@
     </epgu-constructor-constructor-dropdown>
   </div>
 
-  <div class="pfr-form__item" *ngIf="territoryDictionary.length as length">
+  <div class="item" *ngIf="territoryDictionary.length as length">
     <epgu-constructor-label [label]="items.territory.label"></epgu-constructor-label>
     <epgu-constructor-constructor-dropdown
       [items]="territoryDictionary"

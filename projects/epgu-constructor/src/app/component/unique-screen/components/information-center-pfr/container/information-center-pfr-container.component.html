@@ -30,7 +30,7 @@
   <div class="screen-footer">
     <lib-button
       [showLoader]="screenService.isLoading$ | async"
-      [disabled]="!isValid"
+      [disabled]="!currentAnswersService.isValid"
       epgu-constructor-action
       [action]="nextStepAction"
       class="submit-button"

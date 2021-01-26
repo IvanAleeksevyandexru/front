@@ -1,19 +1,23 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary-api/dictionary-api.service';
 import {
+  CachedValue,
   FormChangeEvent,
   InformationCenterPfr,
   PfrAreaType,
-  CachedValue,
   SelectEvent,
+  Simple,
 } from '../information-center-pfr.models';
-import { DictionaryFilters } from '../../../../shared/services/dictionary-api/dictionary-api.types';
+import {
+  DictionaryFilters,
+  DictionaryItem,
+} from '../../../../shared/services/dictionary-api/dictionary-api.types';
 import { DictionaryUtilities } from '../../select-map-object/dictionary-utilities';
 import {
   ActionType,
@@ -25,16 +29,13 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 @Component({
   selector: 'epgu-constructor-information-center-pfr',
   templateUrl: './information-center-pfr-container.component.html',
-  styleUrls: ['./information-center-pfr-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class InformationCenterPfrContainerComponent {
   public data$ = (this.screenService.component$ as Observable<InformationCenterPfr>).pipe(
     tap((component) => {
-      const isSingleElement = component.attrs.simple.items.length !== 1;
-
-      if (isSingleElement) {
+      if (!this.isSimpleElement(component)) {
         this.dictionaryType = component.attrs.dictionaryType;
         const { condition, attributeName } = component.attrs.full.region;
         this.fetchDictionary({
@@ -44,9 +45,26 @@ export class InformationCenterPfrContainerComponent {
         });
       }
 
-      if (component.value) {
+      if (!this.isSimpleElement(component) && component.value) {
         this.setCashedValue(component);
       }
+    }),
+    map<InformationCenterPfr, InformationCenterPfr>((component) => {
+      if (!this.isSimpleElement(component)) return component;
+
+      const { simple } = component.attrs;
+      const data: Simple = {
+        ...simple,
+        items: DictionaryUtilities.adaptDictionaryToListItem(simple.items as Array<DictionaryItem>),
+      };
+
+      return {
+        ...component,
+        attrs: {
+          ...component.attrs,
+          simple: data,
+        },
+      };
     }),
   );
   public regionDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
@@ -58,18 +76,16 @@ export class InformationCenterPfrContainerComponent {
     value: '',
     type: ActionType.nextStep,
   };
-  public isValid: boolean;
   private dictionaryType: string;
 
   constructor(
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,
     private readonly dictionaryApiService: DictionaryApiService,
-    private currentAnswersService: CurrentAnswersService,
+    public currentAnswersService: CurrentAnswersService,
   ) {}
 
   public changeForm({ isValid, value }: FormChangeEvent): void {
-    this.isValid = isValid;
     this.currentAnswersService.isValid = isValid;
     this.currentAnswersService.state = JSON.stringify(value);
   }
@@ -141,5 +157,9 @@ export class InformationCenterPfrContainerComponent {
         });
       }
     });
+  }
+
+  private isSimpleElement(component: InformationCenterPfr): boolean {
+    return component.attrs.simple.items.length === 1;
   }
 }

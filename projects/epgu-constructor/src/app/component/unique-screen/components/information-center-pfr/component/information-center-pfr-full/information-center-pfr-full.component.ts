@@ -49,7 +49,10 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
     }
 
     this.pfrForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((value) => {
-      this.formChangeEvent.emit({ value, isValid: this.pfrForm.valid });
+      this.formChangeEvent.emit({
+        value,
+        isValid: this.pfrForm.valid,
+      });
     });
   }
 
