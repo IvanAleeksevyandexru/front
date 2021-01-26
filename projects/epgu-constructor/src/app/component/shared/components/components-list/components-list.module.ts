@@ -23,6 +23,8 @@ import { MemoPipe } from '../../../../core/pipes/memo/memo.pipe';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { DateRangeService } from './services/date-range/date-range.service';
+// eslint-disable-next-line max-len
+import { ConstructorMultilineInputModule } from '../../../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
 
@@ -44,6 +46,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     FieldListModule,
     CurrencyModule,
     ConstructorDatePickerModule,
+    ConstructorMultilineInputModule,
   ],
   providers: [
     ValidationService,
