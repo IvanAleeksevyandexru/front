@@ -2,14 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 import { InformationCenterPfrFullComponent } from './information-center-pfr-full.component';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { Full, PfrAreaType } from '../../information-center-pfr.models';
+import { Full } from '../../information-center-pfr.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { By } from '@angular/platform-browser';
 
 describe('InformationCenterPfrFullComponent', () => {
   let component: InformationCenterPfrFullComponent;
@@ -29,51 +29,6 @@ describe('InformationCenterPfrFullComponent', () => {
       label: 'Территориальный орган',
       attributeName: 'parent_attr',
       condition: 'CONTAINS',
-    },
-  };
-
-  const mockCachedValue = {
-    region: {
-      originalItem: {
-        value: '032',
-        parentValue: null,
-        title: 'Алтайский край',
-        isLeaf: true,
-        children: [],
-        attributes: [],
-        source: null,
-        attributeValues: {},
-      },
-      id: '032',
-      text: 'Алтайский край',
-    },
-    district: {
-      originalItem: {
-        value: '032000690',
-        parentValue: null,
-        title: 'Алтайский район с. Алтайское',
-        isLeaf: true,
-        children: [],
-        attributes: [],
-        source: null,
-        attributeValues: {},
-      },
-      id: '032016',
-      text: 'Государственное учреждение ',
-    },
-    territory: {
-      originalItem: {
-        value: '032016',
-        parentValue: null,
-        title: 'Государственное учреждение',
-        isLeaf: true,
-        children: [],
-        attributes: [],
-        source: null,
-        attributeValues: {},
-      },
-      id: '032016',
-      text: 'Государственное учреждение',
     },
   };
 
@@ -116,17 +71,6 @@ describe('InformationCenterPfrFullComponent', () => {
         territory: null,
       });
     });
-
-    // it('should init form with cachedValue', () => {
-    //   // jest.spyOn(component, 'cachedValue', ).mockReturnValue(JSON.stringify(mockCachedValue));
-    //   component.cachedValue = JSON.stringify(mockCachedValue);
-    //   fixture.detectChanges();
-    //   expect(component.pfrForm.value).toEqual({
-    //     region: mockCachedValue.region,
-    //     district: mockCachedValue.district,
-    //     territory: mockCachedValue.territory,
-    //   });
-    // });
   });
 
   describe('handleSelect', () => {

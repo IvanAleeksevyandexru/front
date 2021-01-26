@@ -17,12 +17,13 @@ import { ConstructorDropdownModule } from '../../../../../shared/components/cons
 import { ScreenContainerModule } from '../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
-import { InformationCenterPfr } from '../information-center-pfr.models';
+import { InformationCenterPfr, PfrAreaType } from '../information-center-pfr.models';
 
 describe('InformationCenterPfrContainerComponent', () => {
   let component: InformationCenterPfrContainerComponent;
   let fixture: ComponentFixture<InformationCenterPfrContainerComponent>;
   let screenService: ScreenService;
+  let dictionaryApiService: DictionaryApiService;
   const mockData: InformationCenterPfr = {
     id: 'dict55',
     type: UniqueScreenComponentTypes.informationCenterPfr,
@@ -45,6 +46,50 @@ describe('InformationCenterPfrContainerComponent', () => {
       },
     },
     value: '',
+  };
+  const mockCachedValue = {
+    region: {
+      originalItem: {
+        value: '032',
+        parentValue: null,
+        title: 'Алтайский край',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+      id: '032',
+      text: 'Алтайский край',
+    },
+    district: {
+      originalItem: {
+        value: '032000690',
+        parentValue: null,
+        title: 'Алтайский район с. Алтайское',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+      id: '032016',
+      text: 'Государственное учреждение ',
+    },
+    territory: {
+      originalItem: {
+        value: '032016',
+        parentValue: null,
+        title: 'Государственное учреждение',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+      id: '032016',
+      text: 'Государственное учреждение',
+    },
   };
 
   beforeEach(() => {
@@ -74,6 +119,7 @@ describe('InformationCenterPfrContainerComponent', () => {
     fixture = TestBed.createComponent(InformationCenterPfrContainerComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
+    dictionaryApiService = TestBed.inject(DictionaryApiService);
     screenService.component = mockData;
     fixture.detectChanges();
   });
@@ -146,6 +192,31 @@ describe('InformationCenterPfrContainerComponent', () => {
       debugEl.triggerEventHandler('selectEvent', {});
 
       expect(component.fetchDictionary).toHaveBeenCalled();
+    });
+
+    it('should be update dictionary with []', () => {
+      const params = { value: null, type: PfrAreaType.territory } as any;
+      component.fetchDictionary(params);
+
+      expect(component.territoryDictionary$.getValue()).toEqual([]);
+    });
+  });
+
+  describe('setCashedValue', () => {
+    it('should be set CashedValue', () => {
+      jest.spyOn(component, 'fetchDictionary');
+      mockData.value = JSON.stringify(mockCachedValue);
+      screenService.component = mockData;
+
+      expect(component.fetchDictionary).toBeCalledTimes(3);
+    });
+
+    it('should be not set CashedValue', () => {
+      jest.spyOn(component, 'fetchDictionary');
+      mockData.value = JSON.stringify({});
+      screenService.component = mockData;
+
+      expect(component.fetchDictionary).toBeCalledTimes(1);
     });
   });
 });

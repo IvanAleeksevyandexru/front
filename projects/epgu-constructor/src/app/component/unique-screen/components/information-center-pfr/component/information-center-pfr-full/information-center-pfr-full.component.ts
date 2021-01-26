@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 import {
   FormChangeEvent,
@@ -48,12 +48,14 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
       this.initForm();
     }
 
-    this.pfrForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((value) => {
-      this.formChangeEvent.emit({
-        value,
-        isValid: this.pfrForm.valid,
+    this.pfrForm.valueChanges
+      .pipe(startWith({}), takeUntil(this.ngUnsubscribe$))
+      .subscribe((value) => {
+        this.formChangeEvent.emit({
+          value,
+          isValid: this.pfrForm.valid,
+        });
       });
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
