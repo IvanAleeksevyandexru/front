@@ -123,7 +123,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     };
   }
 
-  public selectObject(): void {
+  public selectObject(item: DictionaryYMapItem): void {
+    this.selectedValue = item;
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
       this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))

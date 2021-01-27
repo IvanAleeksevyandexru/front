@@ -153,7 +153,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       this.sum = amount;
       this.paymentPurpose = billName;
       this.billId = billId;
-      this.billDate = this.datesToolsService.format(billDate, DATE_STRING_DOT_FORMAT);
+      this.billDate = this.datesToolsService.format(new Date(billDate), DATE_STRING_DOT_FORMAT);
       this.payCode = payCode;
       this.inLoading = true;
       this.isShown = true;
