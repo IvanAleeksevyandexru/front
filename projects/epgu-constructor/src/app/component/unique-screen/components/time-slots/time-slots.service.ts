@@ -56,6 +56,7 @@ export class TimeSlotsService {
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
+    this.errorMessage = null;
     // Если есть забуканный слот и (сменился загс или слот просрочен)
     const cancelCondition = this.isCancelCondition();
     if (cancelCondition) {
