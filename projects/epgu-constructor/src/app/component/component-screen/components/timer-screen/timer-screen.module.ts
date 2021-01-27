@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ComponentWrapperModule } from '../../../component-screen/shared/component-wrapper.module';
+import { ComponentWrapperModule } from '../../shared/component-wrapper.module';
 import { TimerScreenComponent } from './timer-screen.component';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { CommonModule } from '@angular/common';
