@@ -21,12 +21,8 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { months, weekDaysAbbr } from '../../../../shared/constants/dates';
-import { BrakTimeSlotsService } from './brak-time-slots.service';
-import { DivorceTimeSlotsService } from './divorce-time-slots.service';
-import { GibddTimeSlotsService } from './gibdd-time-slots.service';
-import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { TimeSlotsConstants } from './time-slots.constants';
-import { TimeSlotsServiceInterface } from './time-slots.interface';
+import { TimeSlotsService } from './time-slots.service';
 import {
   SlotInterface,
   TimeSlot,
@@ -89,16 +85,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   bookedSlot: SlotInterface;
   errorMessage;
 
-  private timeSlotServices: { [key: string]: TimeSlotsServiceInterface } = {};
-  private currentService: TimeSlotsServiceInterface;
   private errorModalResultSub = new Subscription();
   private cachedAnswer: TimeSlotsAnswerInterface;
 
   constructor(
-    private brakTimeSlotsService: BrakTimeSlotsService,
-    private divorceTimeSlotsService: DivorceTimeSlotsService,
-    private gibddTimeSlotsService: GibddTimeSlotsService,
-    private mvdTimeSlotsService: MvdTimeSlotsService,
     private modalService: ModalService,
     private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
@@ -108,12 +98,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     private changeDetectionRef: ChangeDetectorRef,
     private datesHelperService: DatesToolsService,
     private httpCancelService: HttpCancelService,
-  ) {
-    this.timeSlotServices.BRAK = this.brakTimeSlotsService;
-    this.timeSlotServices.RAZBRAK = this.divorceTimeSlotsService;
-    this.timeSlotServices.GIBDD = this.gibddTimeSlotsService;
-    this.timeSlotServices.MVD = this.mvdTimeSlotsService;
-  }
+    private timeSlotsService: TimeSlotsService,
+  ) {}
 
   ngOnInit(): void {
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
@@ -162,7 +148,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public isDateLocked(date: Date): boolean {
     return (
       this.isDateOutOfMonth(date) ||
-      this.currentService.isDateLocked(date) ||
+      this.timeSlotsService.isDateLocked(date) ||
       this.checkDateRestrictions(date)
     );
   }
@@ -202,19 +188,19 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public showTimeSlots(date: Date): void {
     this.currentSlot = null;
-    this.currentService.getAvailableSlots(date).subscribe(
+    this.timeSlotsService.getAvailableSlots(date).subscribe(
       (timeSlots) => {
         this.timeSlots = timeSlots;
-        if (this.currentService.hasError()) {
+        if (this.timeSlotsService.hasError()) {
           this.showError(
-            `${this.constants.errorLoadingTimeSlots} (${this.currentService.getErrorMessage()})`,
+            `${this.constants.errorLoadingTimeSlots} (${this.timeSlotsService.getErrorMessage()})`,
           );
         }
         this.changeDetectionRef.markForCheck();
       },
       () => {
         this.showError(
-          `${this.constants.errorLoadingTimeSlots}  (${this.currentService.getErrorMessage()})`,
+          `${this.constants.errorLoadingTimeSlots}  (${this.timeSlotsService.getErrorMessage()})`,
         );
         this.changeDetectionRef.markForCheck();
       },
@@ -253,18 +239,18 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public bookTimeSlot(): void {
     this.inProgress = true;
-    this.currentService.checkBooking(this.currentSlot).subscribe(
+    this.timeSlotsService.checkBooking(this.currentSlot).subscribe(
       (response) => {
         this.inProgress = false;
-        if (this.currentService.hasError()) {
+        if (this.timeSlotsService.hasError()) {
           this.showError(
-            `${this.constants.errorFailBookTimeSlot}  (${this.currentService.getErrorMessage()})`,
+            `${this.constants.errorFailBookTimeSlot}  (${this.timeSlotsService.getErrorMessage()})`,
           );
           return;
         }
         const answer = {
           ...response,
-          department: this.currentService.department,
+          department: this.timeSlotsService.department,
         };
         this.setBookedTimeStr(this.currentSlot);
         this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
@@ -326,11 +312,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
     this.initServiceVariables(value);
 
-    this.currentService.init(value, this.cachedAnswer).subscribe(
+    this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
       (isBookedDepartment) => {
-        if (this.currentService.hasError()) {
+        if (this.timeSlotsService.hasError()) {
           this.inProgress = false;
-          this.errorMessage = this.currentService.getErrorMessage();
+          this.errorMessage = this.timeSlotsService.getErrorMessage();
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
@@ -346,7 +332,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.changeDetectionRef.markForCheck();
       },
       () => {
-        this.errorMessage = this.currentService.getErrorMessage();
+        this.errorMessage = this.timeSlotsService.getErrorMessage();
         this.inProgress = false;
         this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
 
@@ -439,7 +425,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    */
   private fillMonthsYears(): void {
     this.monthsYears = [];
-    const availableMonths = this.currentService.getAvailableMonths();
+    const availableMonths = this.timeSlotsService.getAvailableMonths();
     if (availableMonths.length) {
       availableMonths.sort((date1: string, date2: string): number => {
         return new Date(date1) > new Date(date2) ? 1 : -1;
@@ -447,12 +433,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       const firstMonthStr = availableMonths[0];
       const lastMonthStr = availableMonths[availableMonths.length - 1];
       for (let month = moment(firstMonthStr); !month.isAfter(lastMonthStr); month.add(1, 'M')) {
-        const monthForDropdown = this.getMonthsListItem(month.format('YYYY-M'));
+        const monthForDropdown = this.getMonthsListItem(month.format('YYYY-MM'));
         if (
-          !(
-            availableMonths.includes(month.format('YYYY-M')) ||
-            availableMonths.includes(month.format('YYYY-MM'))
-          ) ||
+          !availableMonths.includes(month.format('YYYY-MM')) ||
           this.checkDateRestrictions(month.toDate(), 'month')
         ) {
           monthForDropdown.unselectable = true;
@@ -475,8 +458,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * @param timeSlot таймслот из кэша
    */
   private setBookedSlot(timeSlot: TimeSlot, waitingTimeExpired: boolean): void {
-    this.currentService.waitingTimeExpired = waitingTimeExpired;
-    let bookedSlot = this.currentService.getBookedSlot();
+    this.timeSlotsService.waitingTimeExpired = waitingTimeExpired;
+    let bookedSlot = this.timeSlotsService.getBookedSlot();
     if (!bookedSlot && timeSlot) {
       bookedSlot = {
         slotId: timeSlot.slotId,
@@ -484,8 +467,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         timezone: timeSlot.visitTimeISO.substr(-6),
         areaId: timeSlot.areaId,
       };
-      this.currentService.setBookedSlot(bookedSlot);
-      this.currentService.bookId = this.cachedAnswer.bookId;
+      this.timeSlotsService.setBookedSlot(bookedSlot);
+      this.timeSlotsService.bookId = this.cachedAnswer.bookId;
     }
 
     this.bookedSlot = waitingTimeExpired ? null : bookedSlot;
@@ -520,7 +503,6 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     // waitingTimeExpired - Флаг просрочки бронирования
     const { waitingTimeExpired } = componentValue;
 
-    this.currentService = this.timeSlotServices[componentValue.timeSlotType];
     this.setBookedSlot(timeSlotFromCache, waitingTimeExpired);
     if (this.bookedSlot) {
       this.setBookedTimeStr(this.bookedSlot);
@@ -534,8 +516,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private serviceInitHandle(isBookedDepartment: boolean): void {
     this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
-    this.activeMonthNumber = this.currentService.getCurrentMonth();
-    this.activeYearNumber = this.currentService.getCurrentYear();
+    this.activeMonthNumber = this.timeSlotsService.getCurrentMonth();
+    this.activeYearNumber = this.timeSlotsService.getCurrentYear();
 
     this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;

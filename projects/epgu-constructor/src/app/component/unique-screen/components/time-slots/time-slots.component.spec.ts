@@ -6,15 +6,11 @@ import { ScreenPadComponent } from '../../../../shared/components/screen-pad/scr
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { BrakTimeSlotsService } from './brak-time-slots.service';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../shared/services/dictionary-api/dictionary-api.service.stub';
-import { DivorceTimeSlotsService } from './divorce-time-slots.service';
-import { GibddTimeSlotsService } from './gibdd-time-slots.service';
-import { MvdTimeSlotsService } from './mvd-time-slots.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -30,6 +26,7 @@ import { LoggerService } from 'projects/epgu-constructor/src/app/core/services/l
 import { LoggerServiceStub } from 'projects/epgu-constructor/src/app/core/services/logger/logger.service.stub';
 import { EventBusService } from 'projects/epgu-constructor/src/app/core/services/event-bus/event-bus.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { TimeSlotsService } from './time-slots.service';
 
 Date.now = jest.fn().mockReturnValue(new Date('2020-01-01T00:00:00.000Z'));
 
@@ -56,14 +53,11 @@ describe('TimeSlotsComponent', () => {
         ),
       ],
       providers: [
-        BrakTimeSlotsService,
-        DivorceTimeSlotsService,
-        GibddTimeSlotsService,
-        MvdTimeSlotsService,
         CurrentAnswersService,
         TimeSlotsConstants,
         EventBusService,
         DatesToolsService,
+        TimeSlotsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -121,7 +115,7 @@ describe('TimeSlotsComponent', () => {
 
   it('calcing of isBookedDepartment as true', () => {
     fixture.detectChanges();
-    let isBookedDepartment = component['currentService'].isBookedDepartment;
+    let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     expect(isBookedDepartment).toBeTruthy();
   });
 
@@ -132,7 +126,7 @@ describe('TimeSlotsComponent', () => {
     compValue.department = JSON.stringify(department);
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
-    let isBookedDepartment = component['currentService'].isBookedDepartment;
+    let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     expect(isBookedDepartment).toBeFalsy();
   });
 
@@ -144,7 +138,7 @@ describe('TimeSlotsComponent', () => {
     compValue.department = JSON.stringify(department);
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
-    let isBookedDepartment = component['currentService'].isBookedDepartment;
+    let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     expect(isBookedDepartment).toBeFalsy();
   });
 
@@ -153,21 +147,21 @@ describe('TimeSlotsComponent', () => {
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
-    const oldBookid = component['currentService'].bookId;
-    component['currentService']['getBookRequest'](EMPTY_SLOT);
-    const newBookid = component['currentService'].bookId;
+    const oldBookid = component['timeSlotsService'].bookId;
+    component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
+    const newBookid = component['timeSlotsService'].bookId;
     expect(oldBookid).not.toMatch(newBookid);
   });
 
   it('not generate new uuid in case of not waitingTimeExpired', () => {
     const compValue = JSON.parse(screenService.component.value);
     const department = JSON.parse(compValue.department);
-    let isBookedDepartment = component['currentService']?.isBookedDepartment;
+    let isBookedDepartment = component['timeSlotsService']?.isBookedDepartment;
     fixture.detectChanges();
-    isBookedDepartment = component['currentService'].isBookedDepartment;
-    const oldBookid = component['currentService'].bookId;
-    component['currentService']['getBookRequest'](EMPTY_SLOT);
-    const newBookid = component['currentService'].bookId;
+    isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
+    const oldBookid = component['timeSlotsService'].bookId;
+    component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
+    const newBookid = component['timeSlotsService'].bookId;
     expect(oldBookid).toMatch(newBookid);
   });
 
@@ -177,8 +171,8 @@ describe('TimeSlotsComponent', () => {
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
     // @ts-ignore
-    const cancelRequestSpy = spyOn(component['currentService'], 'cancelSlot').and.callThrough();
-    component['currentService']['checkBooking'](EMPTY_SLOT);
+    const cancelRequestSpy = spyOn(component['timeSlotsService'], 'cancelSlot').and.callThrough();
+    component['timeSlotsService']['checkBooking'](EMPTY_SLOT);
     expect(cancelRequestSpy).toBeCalledTimes(1);
   });
 
@@ -187,9 +181,9 @@ describe('TimeSlotsComponent', () => {
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     component['loadTimeSlots']();
-    const initMock = spyOn(component['currentService'], 'init').and.returnValue(of('okay'));
-    const hasErrorsMock = spyOn(component['currentService'], 'hasError').and.returnValue(false);
-    const getErrorMessageMock = spyOn(component['currentService'], 'getErrorMessage').and.returnValue('no_error');
+    const initMock = spyOn(component['timeSlotsService'], 'init').and.returnValue(of('okay'));
+    const hasErrorsMock = spyOn(component['timeSlotsService'], 'hasError').and.returnValue(false);
+    const getErrorMessageMock = spyOn(component['timeSlotsService'], 'getErrorMessage').and.returnValue('no_error');
     fixture.detectChanges();
     const bookedSlot = component.bookedSlot;
     expect(bookedSlot).toBeNull();

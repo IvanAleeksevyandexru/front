@@ -20,7 +20,7 @@ export class ConstructorDropdownComponent implements OnInit {
   @Input() control: AbstractControl;
   @Input() invalid: boolean;
   @Input() validationShowOn: ValidationShowOn | string | boolean;
-  @Input() clearable: boolean;
+  @Input() clearable = true;
   @Input() disabled: boolean;
   @Input() localSearch: boolean;
   @Input() placeholder?: string = '&mdash;';
