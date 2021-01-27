@@ -5,6 +5,7 @@ import {
   ComponentActionDto,
   ComponentAnswerDto,
   ComponentDto,
+  CycledApplicantAnswers,
   DisplayDto,
   DisplaySubjHead,
   ScenarioErrorsDto,
@@ -275,6 +276,18 @@ export class ScreenContent {
     return this._applicantAnswers.asObservable();
   }
 
+  public get cycledApplicantAnswers(): CycledApplicantAnswers {
+    return this._cycledApplicantAnswers.getValue();
+  }
+
+  public set cycledApplicantAnswers(val: CycledApplicantAnswers) {
+    this._cycledApplicantAnswers.next(val);
+  }
+
+  public get cycledApplicantAnswers$(): Observable<CycledApplicantAnswers> {
+    return this._cycledApplicantAnswers.asObservable();
+  }
+
   public get cachedAnswers(): CachedAnswersDto {
     return this._cachedAnswers.getValue();
   }
@@ -308,6 +321,7 @@ export class ScreenContent {
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
+  private _cycledApplicantAnswers = new BehaviorSubject<CycledApplicantAnswers>(null);
 
   updateScreenContent(screenStore: ScreenStore): void {
     const {
@@ -317,6 +331,7 @@ export class ScreenContent {
       gender,
       applicantAnswers,
       cachedAnswers,
+      cycledApplicantAnswers,
     } = screenStore;
     const {
       header,
@@ -351,6 +366,7 @@ export class ScreenContent {
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;
+    this.cycledApplicantAnswers = cycledApplicantAnswers;
   }
 
   getComponentData(str: string): ComponentValue {
