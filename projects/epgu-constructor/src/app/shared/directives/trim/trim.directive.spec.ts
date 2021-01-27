@@ -24,11 +24,11 @@ describe('TrimDirective', () => {
     expect(directive).toBeTruthy();
   });
   it('should check for trimControl', () => {
-    const control = new FormControl(' dsf sdfsdf ');
-    directive.trimControl = control;
+    directive.trimControl = new FormControl(' dsf sdfsdf ');
 
     directive.onFocusOut(null as any);
-    expect(control.value).toBe('dsf sdfsdf');
+
+    expect(directive.trimControl.value).toBe('dsf sdfsdf');
   });
   it('should remove non alphabetic or numeral symbols from beginning', () => {
     inputValue = '   42Тыц   8тыц -тац тац-тац';

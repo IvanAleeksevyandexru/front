@@ -15,6 +15,7 @@ import { ValidationTypeModule } from '../../directives/validation-type/validatio
 import { ValidationService } from '../../services/validation/validation.service';
 import { TextTransform } from '../../types/textTransform';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
+import { By } from '@angular/platform-browser';
 
 describe('ConstructorMultilineInputComponent', () => {
   let component: ConstructorMultilineInputComponent;
@@ -50,11 +51,19 @@ describe('ConstructorMultilineInputComponent', () => {
     component.invalid = true;
     component.validationShowOn = ValidationShowOn.TOUCHED;
     component.textTransformType = TextTransform.ALL;
-    component.maxlength = 2;
+    component.commitOnInput = true;
+    component.maxlength = 4;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('check input', () => {
+    const editInput: HTMLDivElement = fixture.debugElement.query(By.css('.multiline-input'))
+      .nativeElement;
+
+    const text = 'text';
+    editInput.innerHTML = text;
+    editInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(component.control.value).toBe(text);
   });
 });
