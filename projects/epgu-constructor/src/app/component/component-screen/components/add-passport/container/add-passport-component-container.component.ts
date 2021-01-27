@@ -4,6 +4,11 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { Passport } from '../add-passport.models';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-add-passport-container',
@@ -14,9 +19,16 @@ import { Passport } from '../add-passport.models';
 export class AddPassportContainerComponent {
   data$: Observable<ComponentBase> = this.screenService.component$;
 
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
+
   constructor(
-    private currentAnswersService: CurrentAnswersService,
-    private screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
+    public screenService: ScreenService,
   ) {}
 
   onPassportDataChange({ value, isValid }: Passport): void {

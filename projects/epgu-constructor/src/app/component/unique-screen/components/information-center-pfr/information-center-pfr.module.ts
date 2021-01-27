@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 import { InformationCenterPfrContainerComponent } from './container/information-center-pfr-container.component';
 import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
@@ -11,7 +11,7 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { InformationCenterPfrSimpleComponent } from './component/information-center-pfr-short/information-center-pfr-simple.component';
 import { InformationCenterPfrFullComponent } from './component/information-center-pfr-full/information-center-pfr-full.component';
-import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -35,5 +35,6 @@ import { CommonModule } from '@angular/common';
     InformationCenterPfrSimpleComponent,
     InformationCenterPfrFullComponent,
   ],
+  entryComponents: [InformationCenterPfrContainerComponent]
 })
 export class InformationCenterPfrModule {}

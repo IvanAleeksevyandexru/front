@@ -1,5 +1,8 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { ActionType, ComponentActionDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionType,
+  ComponentActionDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ActionService } from './action.service';
 
@@ -16,9 +19,15 @@ export class ActionDirective {
   ) {}
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && this.action.type === ActionType.nextStep) {
+    const target: Element = event.target as Element;
+    if (
+      event.key === 'Enter' &&
+      this.action.type === ActionType.nextStep &&
+      !target.classList.contains('multiline-input')
+    ) {
       event.preventDefault();
-      this.currentAnswersService.isValid && this.actionService.switchAction(this.action, this.componentId);
+      this.currentAnswersService.isValid &&
+        this.actionService.switchAction(this.action, this.componentId);
     }
   }
 

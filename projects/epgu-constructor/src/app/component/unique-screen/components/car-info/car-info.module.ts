@@ -32,5 +32,6 @@ const COMPONENTS = [
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
+  entryComponents: [CarInfoContainerComponent]
 })
 export class CarInfoModule {}

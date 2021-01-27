@@ -219,6 +219,24 @@
       </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
+        *ngSwitchCase="componentType.TextArea"
+        [data]="componentData"
+      >
+        <epgu-constructor-constructor-multiline-input
+          [textTransformType]="componentData.value?.attrs?.fstuc"
+          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
+          [name]="componentData.value?.id"
+          [maxlength]="componentData.value?.attrs?.charsAmount"
+          [control]="$any(componentData.get('value'))"
+          [validationShowOn]="validationShowOn"
+          [readOnly]="componentData.value?.attrs?.readonly"
+          [placeholder]="componentData.value?.attrs?.placeholder"
+          [component]="componentData.value"
+        >
+        </epgu-constructor-constructor-multiline-input>
+      </epgu-constructor-component-item>
+
+      <epgu-constructor-component-item
         *ngSwitchCase="componentType.PhoneNumberChangeInput"
         [data]="componentData"
         [isHalfWidthItem]="isHalfWidthItem(componentData)"
