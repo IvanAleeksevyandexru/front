@@ -106,13 +106,6 @@ interface ErrorInterface {
   fieldErrors: [];
 }
 
-export enum TimeSlotsServiceTypes {
-  'BRAK' = 'BRAK',
-  'DIVORCE' = 'DIVORCE',
-  'GIBDD' = 'GIBDD',
-  'MVD' = 'MVD',
-}
-
 export interface TimeSlotReq {
   organizationId?: string[] | string;
   caseNumber?: string;
