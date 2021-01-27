@@ -13,6 +13,7 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
+import { CarInfoErrorsDto } from '../../../component/unique-screen/components/car-info/models/car-info.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -139,6 +140,7 @@ export interface ComponentAttrsDto {
   hideSocialShare?: boolean;
   addContextQueryParams?: boolean;
   infoComponents?: string[];
+  errors?: CarInfoErrorsDto;
 }
 
 export interface ComponentUploadedFileDto {

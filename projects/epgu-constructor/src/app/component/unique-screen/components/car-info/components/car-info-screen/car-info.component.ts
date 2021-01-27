@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { CarInfoValues } from '../../models/car-info.interface';
+import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
 
-// TODO компонент на удаление (объединить с epgu-constructor-confirm-personal-user-data)
 @Component({
   selector: 'epgu-constructor-car-info',
   templateUrl: './car-info.component.html',
@@ -9,7 +8,8 @@ import { CarInfoValues } from '../../models/car-info.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarInfoComponent implements OnInit {
-  @Input() carInfo: CarInfoValues;
+  @Input() carInfo: CarInfo;
+  @Input() carInfoErrors: CarInfoErrors;
 
   ngOnInit(): void {}
 }

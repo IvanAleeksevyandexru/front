@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
-import * as moment_ from 'moment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import {
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionaryResponse,
+  DictionaryUnionKind,
+} from '../../../shared/services/dictionary-api/dictionary-api.types';
+import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { TimeSlotsServiceInterface } from './time-slots.interface';
+import { TimeSlotsTypes } from './time-slots.constants';
 import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
@@ -17,37 +25,40 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface
+  ZagsDepartmentInterface,
 } from './time-slots.types';
 
-const moment = moment_; // TODO: заменить потом на DateToolsService
-
 @Injectable()
-export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
-  public department: ZagsDepartmentInterface;
+export class TimeSlotsService {
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public bookId;
-  public availableMonths: string[];
-  public BOOKING_NAMESPACE = 'c4d4da75-53dc-47bc-a255-720750dfdb76'; // Рандомно сгенеренный UUID для генерации v5 UUID для букинга разводов
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
+  public timeSlotsType: TimeSlotsTypes;
 
-  private orderId;
+  public department: ZagsDepartmentInterface;
   private serviceId: string;
+  private solemn: boolean;
+  private slotsPeriod;
+  private orderId;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
+  private availableMonths: string[];
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private config: ConfigService,
+    private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     // Если есть забуканный слот и (сменился загс или слот просрочен)
-    if (this.bookedSlot && (!this.isBookedDepartment || this.waitingTimeExpired)) {
+    const cancelCondition = this.isCancelCondition();
+    if (cancelCondition) {
       return this.cancelSlot(this.bookId).pipe(
         switchMap((response) => {
           if (response.error) {
@@ -69,21 +80,21 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
-    this.errorMessage = undefined;
+    this.errorMessage = null;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap((response) => {
-        if (!response.error) {
+        if (response.error) {
+          this.errorMessage = response.error.errorDetail
+            ? response.error.errorDetail.errorMessage
+            : 'check log';
+          this.loggerService.error([response.error]);
+        } else {
           this.bookedSlot = selectedSlot;
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
           response.timeStart = new Date();
-          response.timeFinish = moment(response.timeStart).add(1440, 'm').toDate();
-        } else {
-          this.errorMessage = response.error.errorDetail
-            ? response.error.errorDetail.errorMessage
-            : 'check log';
-          this.loggerService.error([response.error]);
+          response.timeFinish = this.getTimeFinish(response.timeFinish);
         }
       }),
       catchError((error) => {
@@ -127,25 +138,34 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     return this.activeYearNumber;
   }
 
-  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean> {
+  init(
+    data: TimeSlotValueInterface,
+    cachedAnswer: TimeSlotsAnswerInterface,
+    timeSlotsType: TimeSlotsTypes,
+  ): Observable<boolean> {
+    this.timeSlotsType = timeSlotsType;
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
-      this.errorMessage = undefined;
+      this.errorMessage = null;
 
-      return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
-        map((response) => {
-          if (response.error.errorDetail.errorCode === 0) {
-            this.initSlotsMap(response.slots);
-          } else {
-            const { errorMessage, errorCode } = response.error.errorDetail;
-            this.errorMessage = errorMessage || errorCode;
-          }
-          return this.isBookedDepartment;
-        }),
-        catchError((error) => {
-          this.errorMessage = error.message;
-          return throwError(error);
+      return this.getAvailableAreaNames(this.department.attributeValues.AREA_NAME).pipe(
+        switchMap((areaNames) => {
+          return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
+            map((response) => {
+              if (response.error.errorDetail.errorCode === 0) {
+                this.initSlotsMap(response.slots, areaNames);
+              } else {
+                const { errorMessage, errorCode } = response.error.errorDetail;
+                this.errorMessage = errorMessage || errorCode;
+              }
+              return this.isBookedDepartment;
+            }),
+            catchError((error) => {
+              this.errorMessage = error.message;
+              return throwError(error);
+            }),
+          );
         }),
       );
     }
@@ -165,10 +185,27 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    this.isBookedDepartment = cachedAnswer?.department.value === department.value;
-    if (this.department?.value !== department.value) {
+    this.isBookedDepartment =
+      cachedAnswer?.department.value === department.value &&
+      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME;
+    if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
+    }
+
+    let solemn = data.solemn == 'Да';
+    if (this.solemn !== solemn) {
+      changed = true;
+      this.solemn = solemn;
+    }
+
+    let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
+    if (this.slotsPeriod !== slotsPeriod) {
+      changed = true;
+      this.slotsPeriod = slotsPeriod;
+      const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
+      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+      this.activeYearNumber = parseInt(activeYearNumber, 10);
     }
 
     let orderId = data.orderId;
@@ -177,7 +214,11 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       this.orderId = orderId;
     }
 
-    this.serviceId = data.serviceId;
+    let serviceId = data.serviceId;
+    if (!this.serviceId || this.serviceId !== serviceId) {
+      changed = true;
+      this.serviceId = serviceId;
+    }
 
     return changed;
   }
@@ -196,7 +237,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
             this.errorMessage = response.error.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
-            this.loggerService.error([response.error]);
+            this.loggerService.log([response.error]);
           } else {
             this.bookedSlot = null;
             this.bookId = null;
@@ -210,7 +251,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots.divorce;
+    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots.brak;
 
     return {
       organizationId: [this.department.attributeValues.CODE],
@@ -218,7 +259,16 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
-      attributes: [],
+      attributes: [
+        {
+          name: 'SolemnRegistration',
+          value: this.solemn,
+        },
+        {
+          name: 'SlotsPeriod',
+          value: this.slotsPeriod,
+        },
+      ],
     };
   }
 
@@ -236,7 +286,7 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       calendarName,
       preliminaryReservationPeriod,
       routeNumber,
-    } = this.config.timeSlots.divorce;
+    } = this.config.timeSlots.brak;
 
     return {
       preliminaryReservation,
@@ -244,7 +294,6 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       orgName: this.department.attributeValues.FULLNAME,
       routeNumber,
       subject,
-      serviceCode,
       params: [
         {
           name: 'phone',
@@ -252,25 +301,29 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
         },
       ],
       eserviceId,
+      serviceCode,
       bookId: this.bookId,
       organizationId: this.department.attributeValues.CODE,
       calendarName,
       areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
+      selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
-      attributes: [
-        {
-          name: 'serviceId',
-          value: this.serviceId || serviceId,
-        },
-      ],
+      attributes: [],
       slotId: [selectedSlot.slotId],
       serviceId: [this.serviceId || serviceId],
     };
   }
 
-  private initSlotsMap(slots: TimeSlot[]): void {
-    slots.forEach((slot) => {
+  private initSlotsMap(slots: TimeSlot[], areaNames: Array<string>): void {
+    let initSlots;
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+      initSlots = slots.filter((slot) => areaNames.includes(slot.areaId));
+    } else {
+      initSlots = slots;
+    }
+
+    initSlots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
@@ -279,7 +332,12 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
-        this.availableMonths.push(`${slotDate.getFullYear()}-${slotDate.getMonth() + 1}`);
+        const month = this.datesToolsService.format(slotDate, 'yyyy-MM');
+        this.availableMonths.push(month);
+      }
+
+      if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+        this.availableMonths = [this.slotsPeriod];
       }
 
       let daySlots = monthSlots[slotDate.getMonth()];
@@ -291,18 +349,93 @@ export class DivorceTimeSlotsService implements TimeSlotsServiceInterface {
         slotId: slot.slotId,
         areaId: slot.areaId,
         slotTime: slotDate,
-        timezone: slot.visitTimeISO.substring(slot.visitTimeISO.length - 6),
+        timezone: slot.visitTimeISO.substr(TIMEZONE_STR_OFFSET),
       });
     });
+  }
 
-    if (this.availableMonths.length == 0) {
-      const today = new Date();
-      this.activeMonthNumber = today.getMonth();
-      this.activeYearNumber = today.getFullYear();
+  /**
+   * Метод возвращает массив с AREA_NAME для слотов загса. Если был выбран загс с AREA_NAME = null
+   * то нужно из справочника запросить список кабинетов
+   * @param areaName AREA_NAME загса
+   */
+  private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+      if (areaName) {
+        return of([areaName]);
+      } else {
+        return this.dictionaryApiService
+          .getSelectMapDictionary('FNS_ZAGS_ORGANIZATION_AREA', this.getOptionsMapDictionary())
+          .pipe(
+            map((response: DictionaryResponse) => {
+              return response.items.map((zags) => zags.attributeValues.AREA_NAME);
+            }),
+          );
+      }
     } else {
-      const [activeYearNumber, activeMonthNumber] = this.availableMonths[0].split('-');
-      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-      this.activeYearNumber = parseInt(activeYearNumber, 10);
+      return of();
     }
+  }
+
+  /**
+   * Подготовка тела POST запроса dictionary
+   */
+  private getOptionsMapDictionary(): DictionaryOptions {
+    return {
+      filter: {
+        union: {
+          unionKind: DictionaryUnionKind.AND,
+          subs: [
+            {
+              simple: {
+                attributeName: 'SHOW_ON_MAP',
+                condition: DictionaryConditions.EQUALS,
+                value: { asString: 'false' },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'SOLEMN',
+                condition: DictionaryConditions.EQUALS,
+                value: { asString: this.solemn.toString() },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'CODE',
+                condition: DictionaryConditions.CONTAINS,
+                value: { asString: this.department.value },
+              },
+            },
+          ],
+        },
+      },
+      selectAttributes: ['*'],
+      pageSize: '10000',
+    };
+  }
+
+  private getTimeFinish(timeStart: Date): Date {
+    if (!timeStart) {
+      return;
+    }
+    const settings = {
+      [TimeSlotsTypes.BRAK]: 1440,
+      [TimeSlotsTypes.RAZBRAK]: 1440,
+      [TimeSlotsTypes.MVD]: 240,
+      [TimeSlotsTypes.GIBDD]: 240,
+    };
+
+    return this.datesToolsService.add(timeStart, settings[this.timeSlotsType], 'minutes');
+  }
+
+  private isCancelCondition(): boolean {
+    return (
+      this.timeSlotsType !== TimeSlotsTypes.MVD &&
+      this.bookedSlot &&
+      (!this.isBookedDepartment ||
+        this.waitingTimeExpired ||
+        this.timeSlotsType === TimeSlotsTypes.BRAK)
+    );
   }
 }

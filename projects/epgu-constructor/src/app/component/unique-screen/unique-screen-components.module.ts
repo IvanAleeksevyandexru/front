@@ -25,6 +25,7 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
+import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
 
 @NgModule({
   declarations: [RepeatableFieldsComponent],
@@ -49,6 +50,7 @@ import { WebcamService } from './services/webcam/webcam.service';
     ScreenPadModule,
     CloneButtonModule,
     InformationCenterMvdModule,
+    InformationCenterPfrModule,
   ],
   exports: [
     RepeatableFieldsComponent,
@@ -64,6 +66,7 @@ import { WebcamService } from './services/webcam/webcam.service';
     SignatureApplicationModule,
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
+    InformationCenterPfrModule,
   ],
   providers: [
     WebcamService,
