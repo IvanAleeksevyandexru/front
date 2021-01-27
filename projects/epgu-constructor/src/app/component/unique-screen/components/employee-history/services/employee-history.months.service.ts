@@ -8,6 +8,7 @@ import {
   EmployeeHistoryUncheckedPeriod,
 } from '../employee-history.types';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DATE_MONTH_YEAR_FORMAT, DATE_STRING_MMMM_YYYY_FORMAT, DATE_STRING_SLASH_FORMAT } from '../../../../../shared/constants/dates';
 
 @Injectable()
 export class EmployeeHistoryMonthsService {
@@ -18,14 +19,13 @@ export class EmployeeHistoryMonthsService {
   availableMonths: EmployeeHistoryAvailableDates[] = [];
   isNonStop: boolean;
   isMonthComplete$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private today: Date = this.datesToolsService.getToday();
 
   constructor(private datesToolsService: DatesToolsService) { }
 
   initSettings(): void {
-    this.maxDate = MonthYear.fromDate(this.datesToolsService.endOfMonth(this.today));
+    this.maxDate = MonthYear.fromDate(this.datesToolsService.endOfMonth(new Date()));
     this.minDateFrom = MonthYear.fromDate(
-      this.datesToolsService.sub(this.today, this.years + 60, 'years')
+      this.datesToolsService.sub(new Date(), this.years + 60, 'years')
     );
     this.minDateTo = this.minDateFrom;
     this.availableMonths = this.getAvailableMonths();
@@ -53,9 +53,8 @@ export class EmployeeHistoryMonthsService {
     }
 
     const getPeriod = (type: 'min' | 'max', convertedDates: Array<Date>): string => {
-      const formatString = 'MMMM YYYY';
       const date = this.datesToolsService[type](convertedDates);
-      return this.datesToolsService.format(date, formatString);
+      return this.datesToolsService.format(date, DATE_STRING_MMMM_YYYY_FORMAT);
     };
 
     return periods
@@ -78,8 +77,8 @@ export class EmployeeHistoryMonthsService {
     generation.forEach((e: EmployeeHistoryModel) => {
       if (e.from && e.to) {
         const availableMonths: Array<string> = this.getAvailableMonths(
-          this.datesToolsService.setDate(this.today, e.from.year, e.from.month, null),
-          this.datesToolsService.setDate(this.today, e.to.year, e.to.month, null)
+          this.datesToolsService.setDate(new Date(), e.from.year, e.from.month, null),
+          this.datesToolsService.setDate(new Date(), e.to.year, e.to.month, null)
         ).map((e: EmployeeHistoryAvailableDates) => e.date);
 
         this.availableMonths = this.availableMonths.map((e: EmployeeHistoryAvailableDates) => ({
@@ -93,15 +92,14 @@ export class EmployeeHistoryMonthsService {
   }
 
   private getAvailableMonths(
-    fromDate: Date = this.datesToolsService.sub(this.today, this.years, 'years'),
-    toDate: Date = this.today,
+    fromDate: Date = this.datesToolsService.sub(new Date(), this.years, 'years'),
+    toDate: Date = new Date(),
   ): EmployeeHistoryAvailableDates[] {
     const availableDates = [];
-    const toDateFromDateDiff = this.datesToolsService.diff(toDate, fromDate);
 
-    while (toDateFromDateDiff >= 0) {
+    while (this.datesToolsService.diff(toDate, fromDate) >= 0) {
       availableDates.push({
-        date: this.datesToolsService.format( fromDate, 'MM/YYYY'),
+        date: this.datesToolsService.format( fromDate, DATE_MONTH_YEAR_FORMAT),
         checked: false,
       });
       fromDate = this.datesToolsService.add( fromDate, 1, 'months');
@@ -142,6 +140,6 @@ export class EmployeeHistoryMonthsService {
    */
   private getConvertedDates(stringDate: EmployeeHistoryAvailableDates): Date {
     const arrParsedDate: string[] = stringDate.date.split('/');
-    return this.datesToolsService.parse(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, 'MM/DD/YYYY');
+    return this.datesToolsService.parse(`${arrParsedDate[0]}/01/${arrParsedDate[1]}`, DATE_STRING_SLASH_FORMAT);
   }
 }

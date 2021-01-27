@@ -29,6 +29,7 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationComponent } from './signature-application.component';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -74,6 +75,7 @@ describe('SignatureApplicationComponent', () => {
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: LocationService, useClass: LocationServiceStub },
           { provide: ActionService, useClass: ActionServiceStub },
+          CurrentAnswersService,
         ],
       }).compileComponents();
     }),

@@ -9,7 +9,7 @@ import { CloneButtonModule } from '../../shared/components/clone-button/clone-bu
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
-import { ComponentsListModule } from '../components-list/components-list.module';
+import { ComponentsListModule } from '../shared/components/components-list/components-list.module';
 import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
@@ -25,6 +25,7 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
+import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
 
 @NgModule({
   declarations: [RepeatableFieldsComponent],
@@ -49,6 +50,7 @@ import { WebcamService } from './services/webcam/webcam.service';
     ScreenPadModule,
     CloneButtonModule,
     InformationCenterMvdModule,
+    InformationCenterPfrModule,
   ],
   exports: [
     RepeatableFieldsComponent,
@@ -64,6 +66,7 @@ import { WebcamService } from './services/webcam/webcam.service';
     SignatureApplicationModule,
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
+    InformationCenterPfrModule,
   ],
   providers: [
     WebcamService,

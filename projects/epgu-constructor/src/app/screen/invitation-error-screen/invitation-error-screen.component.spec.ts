@@ -6,14 +6,12 @@ import { InvitationErrorScreenComponentTypes } from '../../component/invitation-
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ApplicantAnswersDto, ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { ScreenBase } from '../screenBase';
-// eslint-disable-next-line max-len
-import { ApplicantAnswersDto } from '../../../../../../dist/epgu-constructor/app/form-player/services/form-player-api/form-player-api.types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

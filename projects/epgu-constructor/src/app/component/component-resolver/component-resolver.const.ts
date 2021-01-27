@@ -25,24 +25,28 @@ import { SignatureApplicationContainerComponent } from '../unique-screen/compone
 import { PaymentComponent } from '../unique-screen/components/payment/components/payment/payment.component';
 import { BillInfoComponent } from '../unique-screen/components/payment/components/billinfo/billinfo.component';
 // eslint-disable-next-line max-len
-import { PaymentTypeSelectorComponent } from '../unique-screen/components/payment-type-selector/payment-type-selector.component';
+import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/components/payment-type-selector-container/payment-type-selector-container.component';
 // eslint-disable-next-line max-len
 import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/unused-payments-container.component';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 // eslint-disable-next-line max-len
 import { InformationCenterMvdComponent } from '../unique-screen/components/information-center-mvd/information-center-mvd.component';
 import { CarInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
+// eslint-disable-next-line max-len
+import { InformationCenterPfrContainerComponent } from '../unique-screen/components/information-center-pfr/container/information-center-pfr-container.component';
 
 export type ComponentTypes = ComponentScreenComponentTypes | UniqueScreenComponentTypes;
 
-type ComponentScreenComponent = ConfirmPersonalUserAddressComponent
+type ComponentScreenComponent =
+  | ConfirmPersonalUserAddressComponent
   | ConfirmPersonalUserDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
   | SelectChildrenScreenContainerComponent;
 
-type UniqueScreenComponent = InformationCenterMvdComponent
+type UniqueScreenComponent =
+  | InformationCenterMvdComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
@@ -54,11 +58,15 @@ type UniqueScreenComponent = InformationCenterMvdComponent
   | SignatureApplicationContainerComponent
   | PaymentComponent
   | BillInfoComponent
-  | PaymentTypeSelectorComponent;
+  | PaymentTypeSelectorContainerComponent
+  | InformationCenterPfrContainerComponent;
 
 export type ScreenComponentTypes = ComponentScreenComponent | UniqueScreenComponent;
 
-export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<ComponentTypes, Type<ComponentScreenComponent>>> = {
+export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
+  ComponentTypes,
+  Type<ComponentScreenComponent>
+>> = {
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
   ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
   ConfirmAnotherUserData: ConfirmPersonalUserDataComponent,
@@ -72,7 +80,10 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<ComponentTypes, Type<Co
   ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
 };
 
-export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
+export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
+  UniqueScreenComponentTypes,
+  Type<UniqueScreenComponent>
+>> = {
   CityDepartment: InformationCenterMvdComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
@@ -85,5 +96,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   EsepSign: SignatureApplicationContainerComponent,
   PaymentScr: PaymentComponent,
   BillInfo: BillInfoComponent,
-  PaymentTypeSelector: PaymentTypeSelectorComponent,
+  PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
+  InformationCenterPfr: InformationCenterPfrContainerComponent,
 };

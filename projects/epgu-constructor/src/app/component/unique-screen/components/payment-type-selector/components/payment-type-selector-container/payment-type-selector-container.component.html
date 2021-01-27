@@ -1,0 +1,8 @@
+<ng-container *ngIf="init$ | async as data">
+  <epgu-constructor-payment-type-selector
+    [showNav]="showNav$ | async"
+    [applicantType]="data.applicantType"
+    [isErrorTemplate]="data.isErrorTemplate"
+    [paymentTypeSelector]="data.paymentTypeSelector"
+  ></epgu-constructor-payment-type-selector>
+</ng-container>

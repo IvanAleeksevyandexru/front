@@ -22,7 +22,7 @@ import { isEqualObj } from '../../../../shared/constants/uttils';
 import {
   CustomComponent,
   CustomComponentOutputData,
-} from '../../../components-list/components-list.types';
+} from '../../../shared/components/components-list/components-list.types';
 import {
   defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,

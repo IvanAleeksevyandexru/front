@@ -6,10 +6,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import * as moment_ from 'moment';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../../../core/services/config/config.service';
+import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
@@ -20,8 +20,6 @@ import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
-
-const moment = moment_;
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address',
@@ -46,6 +44,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     private changeDetection: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
     private changeDetectionRef: ChangeDetectorRef,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   ngOnInit(): void {
@@ -93,9 +92,13 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   }
 
   getPreparedDataToSend(): string {
-    const { regDate } = this.valueParsed || {};
     const dataToSend = { ...this.valueParsed };
-    dataToSend.regDate = dataToSend.regAddr ? moment(regDate).format(DATE_STRING_DOT_FORMAT) : '';
+    if (dataToSend.regDate) {
+      dataToSend.regDate = this.datesToolsService.format(
+        dataToSend.regDate,
+        DATE_STRING_DOT_FORMAT,
+      );
+    }
     return JSON.stringify(dataToSend);
   }
 
@@ -135,8 +138,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   }
 
   private getDate(regDate: string): Date {
-    const date = moment(regDate, DATE_STRING_DOT_FORMAT);
-    return date.isValid() ? date.toDate() : moment().toDate();
+    return this.datesToolsService.parse(regDate, DATE_STRING_DOT_FORMAT);
   }
 
   private getAddress(regAddr: string | { fullAddress: string }): string {

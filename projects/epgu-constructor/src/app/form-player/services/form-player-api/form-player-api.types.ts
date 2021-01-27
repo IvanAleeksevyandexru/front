@@ -3,7 +3,7 @@ import { ConfirmUserDataStyle } from '../../../component/component-screen/compon
 import {
   TimerComponentDtoAction,
   TimerLabelSection,
-} from '../../../component/component-screen/components/timer/timer.interface';
+} from '../../../component/custom-screen/timer/timer.interface';
 import {
   DictionaryConditions,
   DictionaryOptions,
@@ -13,6 +13,7 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
+import { CarInfoErrorsDto } from '../../../component/unique-screen/components/car-info/models/car-info.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -139,14 +140,31 @@ export interface ComponentAttrsDto {
   hideSocialShare?: boolean;
   addContextQueryParams?: boolean;
   infoComponents?: string[];
+  errors?: CarInfoErrorsDto;
 }
 
 export interface ComponentUploadedFileDto {
-  fileType: string[];
+  fileType?: string[];
   mnemonic: string;
   name: string;
   objectType: number;
   objectId: string;
+  fileExt?: string;
+  fileName?:string;
+  fileSize?: number;
+  fileUid?: number;
+  hasSign?: boolean;
+  metaId?: number;
+  mimeType?: string;
+  nodeId?: string;
+  objectTypeId?: number;
+  realPath?: string;
+  uploaded?: boolean;
+  userId?: number;
+  hasError?: boolean;
+  created?: string;
+  updated?: string;
+  deleted?: boolean;
 }
 
 export interface RefsTimeDto {

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockModule } from 'ng-mocks';
 
-import { TimerComponent } from '../../component/component-screen/components/timer/timer.component';
+import { TimerComponent } from '../../component/custom-screen/timer/timer.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import {
