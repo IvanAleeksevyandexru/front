@@ -6,21 +6,25 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { CarInfoComponent } from './components/car-info-screen/car-info.component';
-import { CarInfoAccidentsPipe } from './pipes/car-accidents.pipe';
-import { CarInfoDatePipe } from './pipes/car-date-format.pipe';
-import { CarInfoLegalPipe } from './pipes/car-info.pipe';
-import { CarInfoOwnerPipe } from './pipes/car-owner-type.pipe';
-import { CarInfoStatusPipe } from './pipes/car-status.pipe';
 import { CarInfoContainerComponent } from './containers/car-info-screen/car-info-container.component';
+import { ExpansionLinkComponent } from './components/expansion-link/expansion-link.component';
+import { DefaultValuePipe } from './pipes/default-value.pipe';
+import { YesNoPipe } from './pipes/yes-no.pipe';
+import { ErrorTemplatePipe } from './pipes/error-template.pipe';
+import { EnginePowerPipe } from './pipes/engine-power.pipe';
+import { ModelMarkNamePipe } from './pipes/model-mark-name.pipe';
+import { CarDatePipe } from './pipes/car-date.pipe';
 
 const COMPONENTS = [
   CarInfoComponent,
-  CarInfoLegalPipe,
-  CarInfoStatusPipe,
-  CarInfoDatePipe,
-  CarInfoOwnerPipe,
-  CarInfoAccidentsPipe,
-  CarInfoContainerComponent
+  CarInfoContainerComponent,
+  ExpansionLinkComponent,
+  YesNoPipe,
+  ErrorTemplatePipe,
+  EnginePowerPipe,
+  ModelMarkNamePipe,
+  CarDatePipe,
+  DefaultValuePipe
 ];
 
 @NgModule({

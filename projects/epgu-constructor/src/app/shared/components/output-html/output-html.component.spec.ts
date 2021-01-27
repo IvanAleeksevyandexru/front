@@ -16,6 +16,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -34,6 +35,7 @@ describe('OutputHtmlComponent', () => {
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ModalService, useClass: ModalServiceStub },
           { provide: ActionService, useClass: ActionServiceStub },
+          CurrentAnswersService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       })
