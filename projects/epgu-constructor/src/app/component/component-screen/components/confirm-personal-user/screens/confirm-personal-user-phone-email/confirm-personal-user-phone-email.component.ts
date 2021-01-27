@@ -6,7 +6,11 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { ComponentScreenComponentTypes } from '../../../../component-screen-components.types';
-import { DTOActionAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
@@ -20,11 +24,18 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
+
   constructor(
-    private currentAnswersService: CurrentAnswersService,
-    private ngUnsubscribe$: UnsubscribeService,
+    public currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     public config: ConfigService,
+    private ngUnsubscribe$: UnsubscribeService,
     private changeDetectionRef: ChangeDetectorRef,
   ) {}
 

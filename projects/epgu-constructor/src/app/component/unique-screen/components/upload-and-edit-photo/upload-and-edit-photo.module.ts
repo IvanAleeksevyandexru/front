@@ -23,6 +23,7 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
     PhotoErrorModalComponent,
     PhotoEditorModalComponent,
     PhotoRequirementsModalComponent,
+    UploadAndEditPhotoComponent,
   ],
   declarations: [
     PhotoErrorModalComponent,

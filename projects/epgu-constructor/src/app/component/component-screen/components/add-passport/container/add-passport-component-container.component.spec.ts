@@ -1,4 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
@@ -13,6 +14,7 @@ import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/
 import { Passport } from '../add-passport.models';
 import { AddPassportComponent } from '../component/add-passport.component';
 import { AddPassportContainerComponent } from './add-passport-component-container.component';
+import { ComponentWrapperComponent } from '../../../shared/component-wrapper.component';
 
 describe('AddPassportContainerComponent', () => {
   let component: AddPassportContainerComponent;
@@ -29,8 +31,18 @@ describe('AddPassportContainerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AddPassportContainerComponent, AddPassportComponent, ScreenPadComponent],
-      imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
+      declarations: [
+        AddPassportContainerComponent,
+        AddPassportComponent,
+        ScreenPadComponent,
+        MockComponent(ComponentWrapperComponent)
+      ],
+      imports: [
+        RouterTestingModule,
+        PassportModule,
+        ReactiveFormsModule,
+        FormsModule
+      ],
       providers: [
         CurrentAnswersService,
         HealthService,

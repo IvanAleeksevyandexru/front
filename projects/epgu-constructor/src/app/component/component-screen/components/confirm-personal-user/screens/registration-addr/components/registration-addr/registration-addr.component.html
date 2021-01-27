@@ -1,65 +1,77 @@
-<epgu-constructor-screen-pad class="screen-pad-body">
-  <form [formGroup]="redAddrForm" class="form">
-    <div class="item" *ngFor="let field of (data$ | async)?.attrs?.fields">
-      <epgu-constructor-label
-        [tips]="field?.attrs?.labelHint"
-        [attr.for]="field.fieldName"
-        [label]="field.label"
-      ></epgu-constructor-label>
+<epgu-constructor-component-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenActionButtons]="screenService.buttons$ | async"
+  [actionButtons]="screenService.actions$ | async"
+  [isShowActionBtn]="true"
+  [showNav]="screenService.showNav$ | async"
+  [submitLabel]="screenService.submitLabel$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+  [nextStepAction]="nextStepAction"
+>
+  <epgu-constructor-screen-pad class="screen-pad-body">
+    <form [formGroup]="redAddrForm" class="form">
+      <div class="item" *ngFor="let field of (data$ | async)?.attrs?.fields">
+        <epgu-constructor-label
+          [tips]="field?.attrs?.labelHint"
+          [attr.for]="field.fieldName"
+          [label]="field.label"
+        ></epgu-constructor-label>
 
-      <ng-container [ngSwitch]="field.fieldName">
-        <epgu-constructor-constructor-dadata-widget
-          *ngSwitchCase="'regAddr'"
-          [simpleMode]="true"
-          [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
-          [hideHouseCheckbox]="false"
-          [externalApiUrl]="config.externalApiUrl + '/'"
-          [id]="field.fieldName"
-          [validationShowOn]="field.validationShowOn || validationShowOn"
-          [invalid]="redAddrForm.get(field.fieldName).invalid"
-          [control]="redAddrForm.get(field.fieldName)"
-          [clearable]="true">
-        </epgu-constructor-constructor-dadata-widget>
+        <ng-container [ngSwitch]="field.fieldName">
+          <epgu-constructor-constructor-dadata-widget
+            *ngSwitchCase="'regAddr'"
+            [simpleMode]="true"
+            [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
+            [hideHouseCheckbox]="false"
+            [externalApiUrl]="config.externalApiUrl + '/'"
+            [id]="field.fieldName"
+            [validationShowOn]="field.validationShowOn || validationShowOn"
+            [invalid]="redAddrForm.get(field.fieldName).invalid"
+            [control]="redAddrForm.get(field.fieldName)"
+            [clearable]="true">
+          </epgu-constructor-constructor-dadata-widget>
 
-        <epgu-constructor-constructor-date-picker
-          *ngSwitchCase="
-            ['regFrom', 'regTo', 'regDate'].includes(field?.fieldName)
-              ? field?.fieldName
-              : !field?.fieldName
-          "
-          [minDate]="field.minDate ? field.minDate : '-50y'"
-          [maxDate]="field.maxDate ? field.maxDate : '+50y'"
-          class="item__data"
-          align="left"
-          [validationShowOn]="validationShowOn"
-          [id]="field.fieldName"
-          [invalid]="redAddrForm.controls[field.fieldName].invalid"
-          [control]="redAddrForm.get(field.fieldName)"
-          [disabled]="field.disabled"
-          [clearable]="true"
-          [brokenDateFixStrategy]="brokenDateFixStrategy"
-        >
-        </epgu-constructor-constructor-date-picker>
+          <epgu-constructor-constructor-date-picker
+            *ngSwitchCase="
+              ['regFrom', 'regTo', 'regDate'].includes(field?.fieldName)
+                ? field?.fieldName
+                : !field?.fieldName
+            "
+            [minDate]="field.minDate ? field.minDate : '-50y'"
+            [maxDate]="field.maxDate ? field.maxDate : '+50y'"
+            class="item__data"
+            align="left"
+            [validationShowOn]="validationShowOn"
+            [id]="field.fieldName"
+            [invalid]="redAddrForm.controls[field.fieldName].invalid"
+            [control]="redAddrForm.get(field.fieldName)"
+            [disabled]="field.disabled"
+            [clearable]="true"
+            [brokenDateFixStrategy]="brokenDateFixStrategy"
+          >
+          </epgu-constructor-constructor-date-picker>
 
-        <epgu-constructor-constructor-plain-input
-          [textTransformType]="(data$ | async)?.attrs?.fstuc"
-          [id]="field.fieldName"
-          [validationShowOn]="validationShowOn"
-          [invalid]="redAddrForm.controls[field.fieldName].invalid"
-          [control]="$any(redAddrForm.get(field.fieldName))"
-          *ngSwitchDefault
-        ></epgu-constructor-constructor-plain-input>
-      </ng-container>
+          <epgu-constructor-constructor-plain-input
+            [textTransformType]="(data$ | async)?.attrs?.fstuc"
+            [id]="field.fieldName"
+            [validationShowOn]="validationShowOn"
+            [invalid]="redAddrForm.controls[field.fieldName].invalid"
+            [control]="$any(redAddrForm.get(field.fieldName))"
+            *ngSwitchDefault
+          ></epgu-constructor-constructor-plain-input>
+        </ng-container>
+      </div>
+      <div class="error">
+        <small>{{ error$ | async }}</small>
+      </div>
+    </form>
+
+    <div class="item hint-wrapper">
+      <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
+      <div class="item__hint" *ngFor="let hint of (data$ | async)?.attrs?.hints" (click)="hintClick(hint)">
+        {{ hint.label }}
+      </div>
     </div>
-    <div class="error">
-      <small>{{ error$ | async }}</small>
-    </div>
-  </form>
-
-  <div class="item hint-wrapper">
-    <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-    <div class="item__hint" *ngFor="let hint of (data$ | async)?.attrs?.hints" (click)="hintClick(hint)">
-      {{ hint.label }}
-    </div>
-  </div>
-</epgu-constructor-screen-pad>
+  </epgu-constructor-screen-pad>
+</epgu-constructor-component-wrapper>

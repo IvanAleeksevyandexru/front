@@ -12,6 +12,7 @@ import { SelectChildrenScreenContainerComponent } from './container/select-child
 import { SelectChildrenItemComponent } from './components/select-children-item/select-children-item.component';
 import { SelectChildrenItemWrapperComponent } from './components/select-children-item-wrapper/select-children-item-wrapper.component';
 import { SelectChildrenComponent } from './components/select-children/select-children.component';
+import { ComponentWrapperModule } from '../../shared/component-wrapper.module';
 
 const COMPONENTS = [
   SelectChildrenScreenContainerComponent,
@@ -29,8 +30,10 @@ const COMPONENTS = [
     BaseComponentsModule,
     CloneButtonModule,
     ScreenPadModule,
+    ComponentWrapperModule,
   ],
   exports: [...COMPONENTS],
   providers: [ScreenService, CachedAnswersService, EventBusService],
+  entryComponents: [SelectChildrenScreenContainerComponent]
 })
 export class SelectChildrenScreenModule {}

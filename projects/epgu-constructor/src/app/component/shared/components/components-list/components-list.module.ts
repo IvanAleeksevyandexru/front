@@ -6,10 +6,10 @@ import { ComponentsListComponent } from './components-list.component';
 import { DictionaryApiService } from '../../services/dictionary-api/dictionary-api.service';
 import { ComponentItemComponent } from './component-item/component-item.component';
 import { DocInputComponent } from './doc-input/doc-input.component';
-import { TimerModule } from '../../../custom-screen/timer/timer.module';
+import { TimerModule } from '../../../../shared/components/timer/timer.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 // eslint-disable-next-line max-len
-import { ConstructorMaskedInputModule } from '../../../../shared/components/epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../../../shared/components/add-passport/passport.module';
 import { ConstructorDadataWidgetModule } from '../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';

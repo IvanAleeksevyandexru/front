@@ -10,5 +10,6 @@ import { BaseModule } from '../../../../../../shared/base.module';
   exports: [BillInfoComponent],
   providers: [PaymentService],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule],
+  entryComponents: [BillInfoComponent]
 })
 export class BillinfoModule {}

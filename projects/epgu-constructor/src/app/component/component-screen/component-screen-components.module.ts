@@ -16,10 +16,7 @@ import { ConfirmPersonalUserPhoneEmailModule } from './components/confirm-person
 import { RegistrationAddrScreenModule } from './components/confirm-personal-user/screens/registration-addr/registration-addr-screen.module';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 
-const COMPONENTS = [];
-
 @NgModule({
-  declarations: [...COMPONENTS],
   imports: [
     BaseModule,
     ConfirmPersonalUserPhoneEmailModule,
@@ -33,7 +30,6 @@ const COMPONENTS = [];
     ScreenPadModule,
   ],
   exports: [
-    ...COMPONENTS,
     ConfirmPersonalUserPhoneEmailModule,
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserDataScreenModule,
