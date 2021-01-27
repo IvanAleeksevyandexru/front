@@ -77,7 +77,6 @@ export class ComponentResolverComponent implements AfterViewInit {
   }
 
   getComponentByType(cmpType: ComponentTypes, screenType: ScreenTypes): Type<ScreenComponentTypes> {
-    console.log('getComponentByType');
     switch (screenType) {
       case ScreenTypes.COMPONENT:
         return COMPONENT_SCREEN_COMPONENTS[cmpType];
