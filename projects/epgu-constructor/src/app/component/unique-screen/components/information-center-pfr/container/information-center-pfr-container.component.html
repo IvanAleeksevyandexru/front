@@ -1,0 +1,41 @@
+<epgu-constructor-screen-container
+  *ngIf="data$ | async as data"
+  class="employee-history"
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div class="screen-body">
+    <epgu-constructor-page-name>{{ screenService.header$ | async }}</epgu-constructor-page-name>
+
+    <epgu-constructor-screen-pad>
+      <epgu-constructor-information-center-pfr-simple
+        *ngIf="data.attrs.simple.items.length === 1"
+        [simpleData]="data.attrs.simple"
+        (formChangeEvent)="changeForm($event)"
+      ></epgu-constructor-information-center-pfr-simple>
+
+      <epgu-constructor-information-center-pfr-full
+        *ngIf="data.attrs.simple.items.length !== 1"
+        [items]="data.attrs.full"
+        [cachedValue]="data.value"
+        [districtDictionary]="districtDictionary$ | async"
+        [regionDictionary]="regionDictionary$ | async"
+        [territoryDictionary]="territoryDictionary$ | async"
+        (selectEvent)="fetchDictionary($event)"
+        (formChangeEvent)="changeForm($event)"
+      ></epgu-constructor-information-center-pfr-full>
+    </epgu-constructor-screen-pad>
+  </div>
+
+  <div class="screen-footer">
+    <lib-button
+      [showLoader]="screenService.isLoading$ | async"
+      [disabled]="!currentAnswersService.isValid"
+      epgu-constructor-action
+      [action]="nextStepAction"
+      class="submit-button"
+    >
+      {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>

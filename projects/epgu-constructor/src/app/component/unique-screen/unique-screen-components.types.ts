@@ -15,4 +15,5 @@ export enum UniqueScreenComponentTypes {
   photoUploadComponent = 'PhotoUploadComponent',
   paymentTypeSelector = 'PaymentTypeSelector',
   cityDepartment = 'CityDepartment',
+  informationCenterPfr = 'InformationCenterPfr',
 }
