@@ -22,6 +22,7 @@ import { WebcamService } from './services/webcam/webcam.service';
 import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
 import { RepeatableFieldsModule } from './components/repeatable-fields/repeatable-fields.module';
+import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
 
 @NgModule({
   imports: [
@@ -41,7 +42,9 @@ import { RepeatableFieldsModule } from './components/repeatable-fields/repeatabl
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
     FieldListScreenModule,
+    TimerScreenModule,
     RepeatableFieldsModule,
+    InformationCenterPfrModule,
   ],
   exports: [
     RepeatableFieldsModule,
@@ -59,6 +62,7 @@ import { RepeatableFieldsModule } from './components/repeatable-fields/repeatabl
     InformationCenterMvdModule,
     FieldListScreenModule,
     TimerScreenModule,
+    InformationCenterPfrModule,
   ],
   providers: [
     WebcamService,

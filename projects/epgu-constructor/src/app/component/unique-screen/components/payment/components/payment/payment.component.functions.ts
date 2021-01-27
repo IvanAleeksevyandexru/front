@@ -24,7 +24,7 @@ export const getBillAttributeValueByKey = (bill: BillInfoResponse, attrName: str
 export const getDiscountDate = (bill: BillInfoResponse): string => {
   const discountDate =
     getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
-  return discountDate ? new DatesToolsService().format(discountDate, DATE_STRING_DOT_FORMAT) : '';
+  return discountDate ? new DatesToolsService().format(new Date(discountDate), DATE_STRING_DOT_FORMAT) : '';
 };
 
 /**

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface CompressionOptions {
   maxSizeMB?: number;
@@ -8,11 +9,6 @@ export interface CompressionOptions {
   fileType?: string;
   customFileName?: string;
   deepChecking?: boolean;
-}
-
-interface MaxWidthOrHeightOptions {
-  maxWidthOrHeightFixedCanvas: HTMLCanvasElement | OffscreenCanvas;
-  needToHandle: boolean;
 }
 
 const unsupportedImageTypes = ['TIFF', 'TIF'];
@@ -145,8 +141,8 @@ export class CompressionService {
   * @param {HTMLImageElement} img
   * @returns {HTMLCanvasElement | OffscreenCanvas}
   */
-  private drawImageInCanvas(img: HTMLImageElement): HTMLCanvasElement | OffscreenCanvas {
-    const [canvas, ctx] = this.getNewCanvasAndCtx(img['width'], img['height']);
+  private drawImageInCanvas(img: HTMLImageElement, width?: number, height?: number): HTMLCanvasElement | OffscreenCanvas {
+    const [canvas, ctx] = this.getNewCanvasAndCtx(width || img['width'], height || img['height']);
     ctx.drawImage(img, 0, 0, canvas['width'], canvas['height']);
     return canvas;
   }
@@ -163,6 +159,7 @@ export class CompressionService {
         canvas['height'] = data['height'];
         ctx.putImageData(data,0,0);
         dataURL = canvas.toDataURL();
+        this.cleanupCanvasMemory(canvas);
       } else {
         throw new Error('createImageBitmap does not handle the provided image source type');
       }
@@ -174,11 +171,7 @@ export class CompressionService {
     });
   };
 
-  /**
-  * @param {File | Blob} file
-  * @returns {Promise<[ImageBitmap | HTMLImageElement, HTMLCanvasElement | OffscreenCanvas]>}
-  */
-  private async drawFileInCanvas(file: File | Blob): Promise<[ImageBitmap | HTMLImageElement, HTMLCanvasElement | OffscreenCanvas]> {
+  private async getImageBitmap(file: File | Blob): Promise<ImageBitmap | HTMLImageElement> {
     let img;
     try {
       img = await this.createImageBitmap(file);
@@ -187,7 +180,18 @@ export class CompressionService {
       img = await this.loadImage(dataUrl as string);
     }
 
-    const canvas = this.drawImageInCanvas(img);
+    return img;
+  }
+
+  /**
+  * @param {File | Blob} file
+  * @returns {Promise<[ImageBitmap | HTMLImageElement, HTMLCanvasElement | OffscreenCanvas]>}
+  */
+  private async drawFileInCanvas(
+      file: File | Blob, width?: number, height?: number
+    ): Promise<[ImageBitmap | HTMLImageElement, HTMLCanvasElement | OffscreenCanvas]> {
+    const img = await this.getImageBitmap(file);
+    const canvas = this.drawImageInCanvas(img as HTMLImageElement, width, height);
     return [img, canvas];
   }
 
@@ -268,32 +272,30 @@ export class CompressionService {
   * @param options
   * @returns {HTMLCanvasElement | OffscreenCanvas}
   */
-  private handleMaxWidthOrHeight(canvas: HTMLCanvasElement | OffscreenCanvas,
-                                 options: CompressionOptions): MaxWidthOrHeightOptions {
-    const width = canvas['width'];
-    const height = canvas['height'];
+  private async handleMaxWidthOrHeight(file: File | Blob, options: CompressionOptions): Promise<HTMLCanvasElement | OffscreenCanvas> {
+    const img = await this.getImageBitmap(file);
     const maxWidthOrHeight = options['maxWidthOrHeight'];
+    const width = img['width'];
+    const height = img['height'];
 
     const needToHandle = isFinite(maxWidthOrHeight) && (width > maxWidthOrHeight || height > maxWidthOrHeight);
-
-    let newCanvas = canvas;
-    let ctx;
+    
+    let newWidth = width;
+    let newHeight = height;
 
     if (needToHandle) {
-      [newCanvas, ctx] = this.getNewCanvasAndCtx(width, height);
-      if (width > height) {
-        newCanvas['width'] = maxWidthOrHeight;
-        newCanvas['height'] = (height / width) * maxWidthOrHeight;
+      if (newWidth > newHeight) {
+        newWidth = maxWidthOrHeight;
+        newHeight = (newHeight / width) * maxWidthOrHeight;
       } else {
-        newCanvas['width'] = (width / height) * maxWidthOrHeight;
-        newCanvas['height'] = maxWidthOrHeight;
+        newWidth = (newWidth / height) * maxWidthOrHeight;
+        newHeight = maxWidthOrHeight;
       }
-      ctx.drawImage(canvas, 0, 0, newCanvas['width'], newCanvas['height']);
-
-      this.cleanupCanvasMemory(canvas);
     }
 
-    return { maxWidthOrHeightFixedCanvas: newCanvas, needToHandle };
+    const [, canvas] = await this.drawFileInCanvas(file, newWidth, newHeight);
+
+    return canvas;
   }
 
   /**
@@ -348,6 +350,7 @@ export class CompressionService {
       }
     } catch (e) {
       canvas = document.createElement('canvas') as HTMLCanvasElement;
+      canvas['id'] = uuidv4();
       ctx = canvas.getContext('2d');
     }
     canvas['width'] = width;
@@ -356,9 +359,9 @@ export class CompressionService {
   }
 
   /**
- * @param {HTMLCanvasElement | OffscreenCanvas} canvas
- * @returns void
- */
+  * @param {HTMLCanvasElement | OffscreenCanvas} canvas
+  * @returns void
+  */
   private cleanupCanvasMemory(canvas: HTMLCanvasElement | OffscreenCanvas): void {
     canvas['width'] = 0;
     canvas['height'] = 0;
@@ -408,13 +411,7 @@ export class CompressionService {
     let remainingTrials = options['maxIteration'] || 10;
     const maxSizeByte = options['maxSizeMB'] * 1024 * 1024;
 
-    let [,origCanvas] = await this.drawFileInCanvas(file);
-
-    const { maxWidthOrHeightFixedCanvas, needToHandle } = this.handleMaxWidthOrHeight(origCanvas, options);
-
-    if (options['maxWidthOrHeight'] && needToHandle) {
-      this.cleanupCanvasMemory(origCanvas);
-    }
+    const maxWidthOrHeightFixedCanvas = await this.handleMaxWidthOrHeight(file, options);
 
     options['exifOrientation'] = options['exifOrientation'] || await this.getExifOrientation(file);
 
@@ -438,7 +435,6 @@ export class CompressionService {
     if (!origExceedMaxSize && !sizeBecomeLarger) {
       this.cleanupCanvasMemory(maxWidthOrHeightFixedCanvas);
       this.cleanupCanvasMemory(orientationFixedCanvas);
-      this.cleanupCanvasMemory(origCanvas);
 
       return tempFile;
     }
