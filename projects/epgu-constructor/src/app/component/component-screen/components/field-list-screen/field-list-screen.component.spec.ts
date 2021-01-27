@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ComponentWrapperComponent } from '../../../component-screen/shared/component-wrapper.component';
+import { ComponentWrapperComponent } from '../../shared/component-wrapper.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
