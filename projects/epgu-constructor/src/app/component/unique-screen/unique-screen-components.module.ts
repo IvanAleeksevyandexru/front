@@ -19,8 +19,6 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from './services/webcam/webcam.service';
-import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
-import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
 import { RepeatableFieldsModule } from './components/repeatable-fields/repeatable-fields.module';
 import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
 
@@ -41,8 +39,6 @@ import { InformationCenterPfrModule } from './components/information-center-pfr/
     UploadAndEditPhotoModule,
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
-    FieldListScreenModule,
-    TimerScreenModule,
     RepeatableFieldsModule,
     InformationCenterPfrModule,
   ],
@@ -60,8 +56,6 @@ import { InformationCenterPfrModule } from './components/information-center-pfr/
     SignatureApplicationModule,
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
-    FieldListScreenModule,
-    TimerScreenModule,
     InformationCenterPfrModule,
   ],
   providers: [

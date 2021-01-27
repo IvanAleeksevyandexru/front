@@ -7,7 +7,7 @@ import { TimerScreenComponent } from './timer-screen.component';
 import { TimerComponentBase } from '../../../../shared/components/timer/timer.interface';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ComponentWrapperComponent } from '../../../component-screen/shared/component-wrapper.component';
+import { ComponentWrapperComponent } from '../../shared/component-wrapper.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
 
