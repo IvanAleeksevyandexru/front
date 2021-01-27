@@ -11,7 +11,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
+import { async } from 'rxjs/internal/scheduler/async';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../screen/screen.service';
 import {
@@ -45,6 +46,7 @@ export class ComponentResolverComponent implements AfterViewInit {
     this.screenService.display$
       .pipe(
         tap(() => this.destroyComponent()),
+        subscribeOn(async), // fix dirty checked errors
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(({ components, type: screenType }) => {
@@ -75,6 +77,7 @@ export class ComponentResolverComponent implements AfterViewInit {
   }
 
   getComponentByType(cmpType: ComponentTypes, screenType: ScreenTypes): Type<ScreenComponentTypes> {
+    console.log('getComponentByType');
     switch (screenType) {
       case ScreenTypes.COMPONENT:
         return COMPONENT_SCREEN_COMPONENTS[cmpType];
