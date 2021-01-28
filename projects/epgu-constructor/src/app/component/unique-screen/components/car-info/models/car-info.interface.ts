@@ -1,31 +1,25 @@
-export enum ServiceType {
-  vehicle = 'vehicle',
-  notary = 'notary',
-  common = 'common'
+export enum ServiceResult {
+  SUCCESS = 'SUCCESS',
+  NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
+  EXTERNAL_SERVER_ERROR = 'EXTERNAL_SERVER_ERROR',
 }
 
 
 export interface CarInfo {
   vehicleInfo: VehicleInfo;
   notaryInfo: NotaryInfo;
-  errors: CarInfoError[];
+  vehicleServiceCallResult: ServiceResult;
+  notaryServiceCallResult: ServiceResult;
 }
 
 export interface CarInfoErrors {
-  vehicle: CarInfoDisplayedError;
-  notary: CarInfoDisplayedError;
-  common: CarInfoDisplayedError;
-}
-
-
-export interface CarInfoError {
-  type: string;
-  service: ServiceType;
+  vehicle?: CarInfoDisplayedError;
+  notary?: CarInfoDisplayedError;
+  externalCommon?: CarInfoDisplayedError;
 }
 
 export interface CarInfoDisplayedError {
   type: string;
-  service: ServiceType;
   text: string;
 }
 

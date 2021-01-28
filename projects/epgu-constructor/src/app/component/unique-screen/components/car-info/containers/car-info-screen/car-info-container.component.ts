@@ -10,9 +10,10 @@ import {
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import {
   CarInfo,
+  CarInfoDisplayedError,
   CarInfoErrors,
   CarInfoErrorsDto,
-  ServiceType,
+  ServiceResult,
 } from '../../models/car-info.interface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -55,12 +56,27 @@ export class CarInfoContainerComponent implements OnInit {
   ngOnInit(): void {}
 
   private mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
-    return carInfo.errors && <CarInfoErrors>carInfo.errors.reduce((errors, error) => {
-        const text = errorsDto && errorsDto[error.type];
-        return {
-          ...errors,
-          [error.service ? error.service : ServiceType.common]: { type: error.type, text },
-        };
-      }, {});
+    const {
+      notaryServiceCallResult: notaryResult,
+      vehicleServiceCallResult: vehicleResult,
+    } = carInfo;
+
+    return {
+      notary: this.isError(notaryResult) ? this.buildError(notaryResult, errorsDto) : null,
+      vehicle: this.isError(vehicleResult) ? this.buildError(vehicleResult, errorsDto) : null,
+      externalCommon: [notaryResult, vehicleResult].every(
+        (status) => status === ServiceResult.EXTERNAL_SERVER_ERROR,
+      )
+        ? this.buildError(ServiceResult.EXTERNAL_SERVER_ERROR, errorsDto)
+        : null,
+    };
+  }
+
+  private buildError(type: ServiceResult, errorsDto: CarInfoErrorsDto): CarInfoDisplayedError {
+    return { type, text: errorsDto && errorsDto[type] };
+  }
+
+  private isError(result: ServiceResult): boolean {
+    return result && result !== ServiceResult.SUCCESS;
   }
 }
