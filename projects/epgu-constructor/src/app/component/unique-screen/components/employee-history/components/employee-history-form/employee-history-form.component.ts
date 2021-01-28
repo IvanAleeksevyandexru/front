@@ -30,7 +30,6 @@ import { Gender } from '../../../../../../shared/types/gender';
   templateUrl: './employee-history-form.component.html',
   styleUrls: ['./employee-history-form.component.scss'],
   providers: [UnsubscribeService],
-  // TODO: month picker открывается на 50 год из-за OnPush
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
@@ -73,7 +72,6 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
       .subscribe((isValid) => {
         const data = this.employeeFormService.employeeHistoryForm.getRawValue();
         this.updateFormEvent.emit({ isValid, data });
-        console.log(isValid);
       });
   }
 

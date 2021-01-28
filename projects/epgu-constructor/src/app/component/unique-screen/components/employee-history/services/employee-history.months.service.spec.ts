@@ -77,6 +77,7 @@ describe('EmployeeHistoryMonthsService', () => {
           address: null,
           checkboxToDate: false,
           minDateTo: new MonthYear(11, 2020),
+          label: '',
         },
       ];
       const dateMock = new MonthYear(1, 2021);

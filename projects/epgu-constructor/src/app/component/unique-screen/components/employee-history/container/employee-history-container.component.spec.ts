@@ -105,6 +105,7 @@ describe('EmployeeHistoryContainerComponent', () => {
           place: '',
           position: '',
           type: 'employed',
+          label: 'Я работала',
         },
       ];
       component.employeeHistoryData = employeeHistoryDataMock;
@@ -116,15 +117,20 @@ describe('EmployeeHistoryContainerComponent', () => {
           place: '',
           position: '',
           type: 'employed',
-          to: { year: 2021, month: 1, monthCode: 'Февраль' },
-          from: { year: 2021, month: 1, monthCode: 'Февраль' },
           label: 'Я работала',
+          to: {
+            year: 2021,
+            month: 1,
+            monthCode: 'Февраль',
+          },
+          from: {
+            year: 2021,
+            month: 1,
+            monthCode: 'Февраль',
+          },
         },
       ];
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        'nextStepEvent',
-        JSON.stringify(expectData),
-      );
+      expect(eventBusService.emit).toBeCalledWith('nextStepEvent', JSON.stringify(expectData));
     });
   });
 });
