@@ -5,7 +5,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { of } from 'rxjs';
-import { CarInfo } from '../../models/car-info.interface';
+import { CarInfo, ServiceResult } from '../../models/car-info.interface';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
 import { CarInfoComponent } from '../../components/car-info-screen/car-info.component';
@@ -34,13 +34,7 @@ import { ExpansionLinkComponent } from '../../components/expansion-link/expansio
 describe('CarInfoContainerComponent', () => {
   let component: CarInfoContainerComponent;
   let fixture: ComponentFixture<CarInfoContainerComponent>;
-  const mockData: CarInfo = {
-    brandModel: 'test',
-    status: 'REGISTERED',
-    owners: [],
-    legals: [],
-    accidenceCount: 3,
-  };
+  const mockData = {} as any;
   const mockDisplay: DisplayDto = {
     components: [],
     subHeader: { text: '', clarifications: {}},
@@ -93,4 +87,57 @@ describe('CarInfoContainerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('mapCarInfoErrors()', () => {
+    const errors = {
+      EXTERNAL_SERVER_ERROR: 'external error text',
+      NOT_FOUND_ERROR: 'not found error text'
+    };
+
+    it('should map external common error', () => {
+      const res = component.mapCarInfoErrors(errors, {
+        vehicleServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+        notaryServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+      } as CarInfo);
+
+      expect(res).toEqual({
+        externalCommon: {
+          type: ServiceResult.EXTERNAL_SERVER_ERROR,
+          text: 'external error text'
+        }
+      });
+    });
+
+    it('should map errors', () => {
+      const res = component.mapCarInfoErrors(errors, {
+        vehicleServiceCallResult: ServiceResult.SUCCESS,
+        notaryServiceCallResult: ServiceResult.NOT_FOUND_ERROR,
+      } as CarInfo);
+
+      expect(res).toEqual({
+        notary: {
+          type: ServiceResult.NOT_FOUND_ERROR,
+          text: 'not found error text'
+        },
+        vehicle: null,
+      });
+    });
+
+    it('should map errors if there aren\'t values', () => {
+      const res = component.mapCarInfoErrors(errors, {
+        vehicleServiceCallResult: ServiceResult.SUCCESS,
+        notaryServiceCallResult: ServiceResult.SUCCESS,
+      } as CarInfo);
+
+      expect(res).toEqual({
+        notary: null,
+        vehicle: null,
+      });
+    });
+
+  });
+
+
+
+
 });

@@ -55,21 +55,31 @@ export class CarInfoContainerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  private mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
+  mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
     const {
       notaryServiceCallResult: notaryResult,
       vehicleServiceCallResult: vehicleResult,
     } = carInfo;
 
+    if (this.isExternalCommonError(notaryResult, vehicleResult)) {
+      return {
+        externalCommon: this.buildError(ServiceResult.EXTERNAL_SERVER_ERROR, errorsDto),
+      };
+    }
+
     return {
       notary: this.isError(notaryResult) ? this.buildError(notaryResult, errorsDto) : null,
       vehicle: this.isError(vehicleResult) ? this.buildError(vehicleResult, errorsDto) : null,
-      externalCommon: [notaryResult, vehicleResult].every(
-        (status) => status === ServiceResult.EXTERNAL_SERVER_ERROR,
-      )
-        ? this.buildError(ServiceResult.EXTERNAL_SERVER_ERROR, errorsDto)
-        : null,
     };
+  }
+
+  private isExternalCommonError(
+    notaryResult: ServiceResult,
+    vehicleResult: ServiceResult,
+  ): boolean {
+    return [notaryResult, vehicleResult].every(
+      (status) => status === ServiceResult.EXTERNAL_SERVER_ERROR,
+    );
   }
 
   private buildError(type: ServiceResult, errorsDto: CarInfoErrorsDto): CarInfoDisplayedError {
