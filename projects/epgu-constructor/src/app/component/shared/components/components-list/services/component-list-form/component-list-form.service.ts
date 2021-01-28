@@ -179,18 +179,19 @@ export class ComponentListFormService {
     return String(value).match(params);
   }
   private relationMinDate(value: string | Date, params: string): boolean {
-    const dateLeft = typeof value === 'string'
-      ? this.datesHelperService.parse(value)
-      : this.datesHelperService.toDate(value);
-    const dateRight = this.datesHelperService.parse(params, DATE_STRING_DOT_FORMAT);
+    const { dateLeft, dateRight } = this.parsedDates(value, params);
     return this.datesHelperService.isSameOrAfter(dateLeft, dateRight);
   }
   private relationMaxDate(value: string | Date, params: string): boolean {
+    const { dateLeft, dateRight } = this.parsedDates(value, params);
+    return this.datesHelperService.isSameOrBefore(dateLeft, dateRight);
+  }
+  private parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date; } {
     const dateLeft = typeof value === 'string'
       ? this.datesHelperService.parse(value)
       : this.datesHelperService.toDate(value);
     const dateRight = this.datesHelperService.parse(params, DATE_STRING_DOT_FORMAT);
-    return this.datesHelperService.isSameOrBefore(dateLeft, dateRight);
+    return { dateLeft, dateRight };
   }
 
   private changeValidators(component: CustomComponent, control: AbstractControl): void {

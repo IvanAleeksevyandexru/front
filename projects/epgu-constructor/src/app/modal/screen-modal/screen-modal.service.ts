@@ -54,6 +54,7 @@ export class ScreenModalService extends FormPlayerBaseService {
     this.updateLoading(true);
     this.updateRequest(navigation);
     this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
+      /* jscpd:ignore-start */
       (response) => {
         this.processResponse(response);
       },
@@ -61,6 +62,7 @@ export class ScreenModalService extends FormPlayerBaseService {
         this.sendDataError(error);
       },
       () => this.updateLoading(false)
+      /* jscpd:ignore-end */
     );
   }
 

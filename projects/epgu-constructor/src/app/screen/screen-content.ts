@@ -18,46 +18,50 @@ type ComponentValueGeneric<T> = T;
 export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
+  private _display = new BehaviorSubject<DisplayDto>(null);
+  private _header = new BehaviorSubject<string>(null);
+  private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
+  private _submitLabel = new BehaviorSubject<string>(null);
+  private _gender = new BehaviorSubject<Gender>(null);
+  private _terminal = new BehaviorSubject<boolean>(null);
+  private _showNav = new BehaviorSubject<boolean>(null);
+  private _displayCssClass = new BehaviorSubject<string>(null);
+  private _screenType = new BehaviorSubject<ScreenTypes>(null);
+  private _orderId = new BehaviorSubject<string>(null);
+  private _component = new BehaviorSubject<ComponentDto>(null);
+  private _componentType = new BehaviorSubject<string>(null);
+  private _componentValue = new BehaviorSubject<ComponentValue>(null);
+  private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
+  private _componentError = new BehaviorSubject<string>(null);
+  private _componentLabel = new BehaviorSubject<string>(null);
+  private _buttons = new BehaviorSubject<Array<ScreenActionDto>>(null);
+  private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
+  private _action = new BehaviorSubject<ComponentActionDto>(null);
+  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
+  private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
+
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
       concatMap(({ infoComponents, components }) =>
         infoComponents
           ? (of(infoComponents).pipe(
-              map(
-                (infoList) =>
-                  infoList
-                    .map((componentId) => {
-                      const findedComponent = components.find(
-                        (component) => component.id === componentId,
-                      );
-                      return findedComponent
-                        ? [findedComponent, this.getComponentData(findedComponent.value)]
-                        : null;
-                    })
-                    .filter((component) => !!component) as [ComponentDto, ComponentValue][],
+            map(
+              (infoList) => this.filteredComponents(infoList, components)
               ),
             ) as Observable<[ComponentDto, ComponentValue][]>)
           : of([] as [ComponentDto, ComponentValue][]),
       ),
     );
   }
+
   public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.component$.pipe(
       concatMap(({ attrs: { infoComponents }}) =>
         infoComponents
           ? (combineLatest([of(infoComponents), this.display$]).pipe(
               map(
-                ([infoList, display]) =>
-                  infoList
-                    .map((componentId) => {
-                      const findedComponent = display.components.find(
-                        (component) => component.id === componentId,
-                      );
-                      return findedComponent
-                        ? [findedComponent, this.getComponentData(findedComponent.value)]
-                        : null;
-                    })
-                    .filter((component) => !!component) as [ComponentDto, ComponentValue][],
+                ([infoList, display]) => this.filteredComponents(infoList, display.components)
               ),
             ) as Observable<[ComponentDto, ComponentValue][]>)
           : (of([]) as Observable<[ComponentDto, ComponentValue][]>),
@@ -286,30 +290,7 @@ export class ScreenContent {
     return this._cachedAnswers.asObservable();
   }
 
-  private _display = new BehaviorSubject<DisplayDto>(null);
-  private _header = new BehaviorSubject<string>(null);
-  private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
-  private _submitLabel = new BehaviorSubject<string>(null);
-  private _gender = new BehaviorSubject<Gender>(null);
-  private _terminal = new BehaviorSubject<boolean>(null);
-  private _showNav = new BehaviorSubject<boolean>(null);
-  private _displayCssClass = new BehaviorSubject<string>(null);
-  private _screenType = new BehaviorSubject<ScreenTypes>(null);
-  private _orderId = new BehaviorSubject<string>(null);
-  private _component = new BehaviorSubject<ComponentDto>(null);
-  private _componentType = new BehaviorSubject<string>(null);
-  private _componentValue = new BehaviorSubject<ComponentValue>(null);
-  private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
-  private _componentError = new BehaviorSubject<string>(null);
-  private _componentLabel = new BehaviorSubject<string>(null);
-  private _buttons = new BehaviorSubject<Array<ScreenActionDto>>(null);
-  private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
-  private _action = new BehaviorSubject<ComponentActionDto>(null);
-  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
-  private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
-  private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
-
-  updateScreenContent(screenStore: ScreenStore): void {
+  public updateScreenContent(screenStore: ScreenStore): void {
     const {
       errors = {} as ScenarioErrorsDto,
       display = {} as DisplayDto,
@@ -353,11 +334,24 @@ export class ScreenContent {
     this.cachedAnswers = cachedAnswers;
   }
 
-  getComponentData(str: string): ComponentValue {
+  public getComponentData(str: string): ComponentValue {
     try {
       return JSON.parse(str);
     } catch (e) {
       return str;
     }
   }
+
+  private filteredComponents(infoList, components): [ComponentDto, ComponentValue][] {
+    return infoList
+      .map((componentId) => {
+        const findedComponent = components.find(
+          (component) => component.id === componentId
+        );
+        return findedComponent
+          ? [findedComponent, this.getComponentData(findedComponent.value)]
+          : null;
+      })
+      .filter((component) => !!component);
+}
 }

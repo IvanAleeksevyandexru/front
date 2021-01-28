@@ -7,10 +7,10 @@ import { ScreenService } from '../../../../../../../../screen/screen.service';
 import {
   ActionType,
   ComponentActionDto,
-  DTOActionAction,
 } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { NEXT_STEP_ACTION } from '../../../../../../../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',
@@ -22,12 +22,7 @@ export class ConfirmPersonalUserDataComponent implements OnInit {
   data$: Observable<ConfirmUserData> = this.screenService.component$ as Observable<ConfirmUserData>;
   actionType = ActionType;
 
-  nextStepAction: ComponentActionDto = {
-    label: 'Продолжить',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
+  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
     public config: ConfigService,
