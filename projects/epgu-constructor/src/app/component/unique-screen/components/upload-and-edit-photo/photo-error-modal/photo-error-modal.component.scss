@@ -1,6 +1,7 @@
-@import "../../../../../../styles/core";
+@import '../../../../../../styles/core';
 
 :host::ng-deep {
+  /* jscpd:ignore-start */
   .photo-error-modal {
     display: flex;
     flex-direction: column;
@@ -19,14 +20,14 @@
     @include phones-down {
       padding: 24px 0;
     }
-
+    /* jscpd:ignore-end */
     &__header {
       padding-bottom: 22px;
       margin: 0 32px;
       border-bottom: 1px solid $color-divider;
 
       @include phones-down {
-        margin:0 24px;
+        margin: 0 24px;
       }
     }
 
@@ -44,7 +45,7 @@
       margin-top: 38px;
 
       @include phones-down {
-        padding:0 24px;
+        padding: 0 24px;
       }
     }
 

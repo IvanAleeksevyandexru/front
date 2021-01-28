@@ -7,11 +7,11 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../../screen/screen.types';
 import { ComponentScreenComponentTypes } from '../../../../component-screen-components.types';
 import {
-  ActionType,
   ComponentActionDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone-email',
@@ -24,12 +24,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
 
-  nextStepAction: ComponentActionDto = {
-    label: 'Продолжить',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
+  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
     public currentAnswersService: CurrentAnswersService,

@@ -7,11 +7,8 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenStoreComponentDtoI } from '../../../../../screen/screen.types';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { CachedValue } from '../select-children.models';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-select-children-screen-container',
@@ -35,12 +32,7 @@ export class SelectChildrenScreenContainerComponent {
   component$: Observable<ScreenStoreComponentDtoI> = this.screenService.component$.pipe(
     map((component) => this.screenService.getCompFromDisplay(component.id)),
   );
-  nextStepAction: ComponentActionDto = {
-    label: 'Продолжить',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
+  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
     public screenService: ScreenService,
