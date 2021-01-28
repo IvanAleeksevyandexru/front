@@ -141,6 +141,7 @@ export interface ComponentAttrsDto {
   addContextQueryParams?: boolean;
   infoComponents?: string[];
   errors?: CarInfoErrorsDto;
+  hideAddNewChildButton?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
