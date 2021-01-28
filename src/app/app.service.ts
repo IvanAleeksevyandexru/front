@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
 import { ActivatedRoute } from '@angular/router';
@@ -21,9 +21,8 @@ const initValues: AppConfig = {
 @Injectable()
 export class AppService {
   config: AppConfig;
-
-  configSubject = new BehaviorSubject<AppConfig>(this.config);
-  config$ = this.configSubject.asObservable();
+  configSubject: BehaviorSubject<AppConfig>;
+  config$: Observable<AppConfig>;
 
   constructor (private route: ActivatedRoute, private ngxDeviceDetector: DeviceDetectorService) {
     this.initConfig();
@@ -70,6 +69,9 @@ export class AppService {
       ...initConfig,
       ...savedConfig
     }
+    this.configSubject = new BehaviorSubject<AppConfig>(this.config);
+    this.config$ = this.configSubject.asObservable();
+
     this.valuesFromQueryParams();
     this.configSubject.next(this.config)
   }

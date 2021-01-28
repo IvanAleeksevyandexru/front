@@ -2,19 +2,19 @@
   "name": "epgu-constructor",
   "version": "1.0.0",
   "peerDependencies": {
-    "@angular/common": "10.1.1",
-    "@angular/cdk": "10.2.0",
-    "@angular/core": "10.1.1",
-    "@angular/forms": "10.1.1",
+    "@angular/common": "11.1.0",
+    "@angular/cdk": "11.1.0",
+    "@angular/core": "11.1.0",
+    "@angular/forms": "11.1.0",
     "@ngx-translate/http-loader": "6.0.0",
     "angular2-text-mask": "9.0.0",
     "ngx-webcam": "0.3.0",
     "file-saver": "^2.0.5",
-    "rxjs": "6.5.3",
+    "rxjs": "6.6.3",
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
-    "epgu-lib": "0.0.857",
+    "epgu-lib": "0.0.943",
     "date-fns": "2.16.1",
     "uuid": "8.3.0"
   },
@@ -22,7 +22,7 @@
     "@tanker/file-ponyfill": "^2.6.3",
     "tslib": "2.0.0",
     "ics": "^2.24.0",
-    "@alyle/ui": "^10.2.1",
+    "@alyle/ui": "^10.5.1",
     "angular-resize-event": "^2.0.0"
   }
 }

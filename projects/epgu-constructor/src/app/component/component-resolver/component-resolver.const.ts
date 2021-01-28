@@ -44,9 +44,7 @@ type ComponentScreenComponent =
   | ConfirmPersonalUserPhoneEmailComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
-  | SelectChildrenScreenContainerComponent
-  | FieldListScreenComponent
-  | TimerScreenComponent;
+  | SelectChildrenScreenContainerComponent;
 
 type UniqueScreenComponent =
   InformationCenterMvdComponent
@@ -62,7 +60,9 @@ type UniqueScreenComponent =
   | PaymentComponent
   | BillInfoComponent
   | PaymentTypeSelectorContainerComponent
-  | InformationCenterPfrContainerComponent;
+  | InformationCenterPfrContainerComponent
+  | FieldListScreenComponent
+  | TimerScreenComponent;
 
 export type ScreenComponentTypes = ComponentScreenComponent | UniqueScreenComponent;
 
@@ -81,8 +81,6 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
   ChildrenList: SelectChildrenScreenContainerComponent,
   ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
   ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
-  FieldList: FieldListScreenComponent,
-  Timer: TimerScreenComponent,
 };
 
 export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
@@ -100,4 +98,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   BillInfo: BillInfoComponent,
   PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
   InformationCenterPfr: InformationCenterPfrContainerComponent,
+  FieldList: FieldListScreenComponent,
+  Timer: TimerScreenComponent,
 };
