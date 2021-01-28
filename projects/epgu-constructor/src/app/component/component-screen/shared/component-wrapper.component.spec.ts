@@ -18,6 +18,8 @@ import { PageNameComponent } from '../../../shared/components/base-components/pa
 import { ScreenPadComponent } from '../../../shared/components/screen-pad/screen-pad.component';
 import { UserInfoLoaderModule } from '../../../shared/components/user-info-loader/user-info-loader.module';
 import { AnswerButtonComponent } from '../../../shared/components/answer-button/answer-button.component';
+import { LoggerService } from '../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -43,7 +45,10 @@ describe('ComponentWrapperComponent', () => {
         ),
         MockDirective(ActionDirective),
       ],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+      ],
     })
       .overrideComponent(ComponentWrapperComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

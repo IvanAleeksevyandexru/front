@@ -12,7 +12,7 @@ module.exports = {
     semi: 'off',
     '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { "allow": ["constructors"] }],
-    'object-curly-spacing': ["error", "always", {"objectsInObjects": false}],
+    'object-curly-spacing': ["error", "always", { "objectsInObjects": false }],
     '@typescript-eslint/no-explicit-any': ["error", { "ignoreRestArgs": false }],
     '@typescript-eslint/typedef': [
       "error",
@@ -71,7 +71,8 @@ module.exports = {
         "abstract-method",
         "decorated-method",
         "method"
-      ]}
+      ]
+    }
     ]
   },
   overrides: [
@@ -79,9 +80,7 @@ module.exports = {
     {
       files: ['*.component.ts'],
       extends: [
-        // AirBnB Styleguide rules
         'airbnb-typescript/base',
-        // Settings for Prettier
         'prettier/@typescript-eslint',
         'plugin:prettier/recommended',
       ],
@@ -90,13 +89,14 @@ module.exports = {
         ecmaVersion: 2020,
         sourceType: 'module',
       },
-      // Custom rules
       rules: {
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',
         'class-methods-use-this': 'off',
         "lines-between-class-members": "off",
         "max-len": ["error", { "code": 180, "ignoreStrings": true }],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
         "@typescript-eslint/lines-between-class-members": ["off", "always", { "exceptAfterOverload": false }],
         '@typescript-eslint/unbound-method': [
           'error',
