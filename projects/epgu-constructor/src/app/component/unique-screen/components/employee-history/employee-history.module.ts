@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { EmployeeHistoryDataSourceService } from './services/employee-history-data-source.service';
+import { EmployeeHistoryDataSourceService } from './services/employee-history.data-source.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';

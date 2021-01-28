@@ -14,7 +14,7 @@ import { combineLatest } from 'rxjs';
 
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 import {
   EmployeeHistoryDataSource,
@@ -35,7 +35,7 @@ import { Gender } from '../../../../../../shared/types/gender';
 })
 export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   @Input() fstuc?: TextTransform;
-  @Input() init: [DisplayDto, Gender];
+  @Input() init: [ComponentDto, Gender];
   @Input() componentValue?: EmployeeHistoryModel[];
   @Input() ds: Array<EmployeeHistoryDataSource>;
   @Output() updateFormEvent = new EventEmitter<EmployeeHistoryFormData>();
@@ -78,10 +78,10 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    const [display] = this.init;
-    const displayAttrs = display?.components[0]?.attrs;
-    this.monthsService.years = displayAttrs?.years;
-    this.monthsService.isNonStop = displayAttrs?.nonStop;
+    const [component] = this.init;
+    const { attrs } = component;
+    this.monthsService.years = attrs?.years;
+    this.monthsService.isNonStop = attrs?.nonStop;
     this.monthsService.initSettings();
     this.initData();
   }

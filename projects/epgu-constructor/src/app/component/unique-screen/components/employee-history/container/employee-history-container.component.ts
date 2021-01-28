@@ -4,7 +4,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { DisplayDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { months } from '../../../../../shared/constants/dates';
 import { Gender } from '../../../../../shared/types/gender';
@@ -14,7 +14,7 @@ import {
   EmployeeHistoryModel,
   EmployeeHistoryServerModel,
 } from '../employee-history.types';
-import { EmployeeHistoryDataSourceService } from '../services/employee-history-data-source.service';
+import { EmployeeHistoryDataSourceService } from '../services/employee-history.data-source.service';
 
 @Component({
   selector: 'epgu-constructor-employee-history-container',
@@ -23,12 +23,13 @@ import { EmployeeHistoryDataSourceService } from '../services/employee-history-d
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeeHistoryContainerComponent {
-  display$: Observable<DisplayDto> = this.screenService.display$;
+  component$: Observable<ComponentDto> = this.screenService.component$;
   header$: Observable<string> = this.screenService.header$;
   gender$: Observable<Gender> = this.screenService.gender$;
 
-  init$: Observable<[DisplayDto, Gender]> = combineLatest([this.display$, this.gender$]).pipe(
-    tap(([_display, gender]) => {
+  init$: Observable<[ComponentDto, Gender]> = combineLatest([this.component$, this.gender$]).pipe(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    tap(([_, gender]) => {
       this.dataSourceService.getDataSourceByGender(gender);
       this.ds = this.dataSourceService.dataSource;
     }),

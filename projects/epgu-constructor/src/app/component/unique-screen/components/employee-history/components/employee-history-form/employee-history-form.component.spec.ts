@@ -1,78 +1,70 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EpguLibModule } from 'epgu-lib';
-import { of } from 'rxjs';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../../../screen/screen.types';
-import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
-import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
-import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
-import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { NavigationComponent } from '../../../../shared/components/navigation/navigation.component';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { Gender } from '../../../../shared/types/gender';
-import { EmployeeHistoryFormComponent } from './employee-history-form.component';
-import { EmployeeHistoryDatasourceService } from './services/employee-history.datasource.service';
-import { EmployeeHistoryFormService } from './services/employee-history.form.service';
-import { EmployeeHistoryMonthsService } from './services/employee-history.months.service';
+import { EpguLibModule, RadioComponent } from 'epgu-lib';
+import { MockComponent, MockModule } from 'ng-mocks';
+import { ChangeDetectionStrategy } from '@angular/core';
 
-xdescribe('EmployeeHistoryComponent', () => {
+import { EmployeeHistoryFormComponent } from './employee-history-form.component';
+import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMonthPickerModule } from '../../../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { ConstructorCheckboxModule } from '../../../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
+import { EmployeeHistoryDataSourceService } from '../../services/employee-history.data-source.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { EmployeeHistoryDescriptionComponent } from '../employee-history-desription/employee-history-description.component';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
+import { MemoModule } from '../../../../../../shared/pipes/memo/memo.module';
+
+describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
   let fixture: ComponentFixture<EmployeeHistoryFormComponent>;
-  let mockDisplay: DisplayDto = {
-    components: [],
-    subHeader: { text: '', clarifications: {} },
-    header: '',
-    label: '',
-    id: '',
-    name: '',
-    displayCssClass: '',
-    submitLabel: '',
-    terminal: false,
-    type: ScreenTypes.UNIQUE,
-  };
+  let employeeHistoryFormService: EmployeeHistoryFormService;
+  let employeeHistoryDataSourceService: EmployeeHistoryDataSourceService;
+  let employeeHistoryMonthsService: EmployeeHistoryMonthsService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        EpguLibModule,
-        ConstructorPlainInputModule,
-        ConstructorMonthPickerModule,
-        ConstructorCheckboxModule,
-      ],
-
       declarations: [
         EmployeeHistoryFormComponent,
-        PageNameComponent,
-        LabelComponent,
-        NavigationComponent,
-        ScreenContainerComponent,
+        MockComponent(EmployeeHistoryDescriptionComponent),
+        // MockComponent(RadioComponent),
+      ],
+      imports: [
+        ReactiveFormsModule,
+        MockModule(ConstructorPlainInputModule),
+        MockModule(ConstructorMonthPickerModule),
+        MockModule(ConstructorCheckboxModule),
+        MockModule(BaseComponentsModule),
+        MockModule(CloneButtonModule),
+        MockModule(MemoModule),
       ],
       providers: [
         EmployeeHistoryFormService,
         UnsubscribeService,
-        EmployeeHistoryDatasourceService,
+        EmployeeHistoryDataSourceService,
         EmployeeHistoryMonthsService,
         EventBusService,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(EmployeeHistoryFormComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EmployeeHistoryFormComponent);
-    fixture.debugElement.injector.get(EmployeeHistoryFormService);
-    fixture.debugElement.injector.get(UnsubscribeService);
-    fixture.debugElement.injector.get(EmployeeHistoryDatasourceService);
-    fixture.debugElement.injector.get(EmployeeHistoryMonthsService);
+    employeeHistoryFormService = fixture.debugElement.injector.get(EmployeeHistoryFormService);
+    employeeHistoryDataSourceService = fixture.debugElement.injector.get(
+      EmployeeHistoryDataSourceService,
+    );
+    employeeHistoryMonthsService = fixture.debugElement.injector.get(EmployeeHistoryMonthsService);
 
     component = fixture.componentInstance;
-    component.display$ = of(mockDisplay);
-    component.header$ = of('');
-    component.gender$ = of(Gender.male);
-    // spyOn(formService, 'createEmployeeForm')
+
     fixture.detectChanges();
   });
 

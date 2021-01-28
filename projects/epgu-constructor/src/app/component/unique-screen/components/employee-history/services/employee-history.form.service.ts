@@ -19,7 +19,7 @@ import {
   EmployeeHistoryDataSource,
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-import { EmployeeHistoryDataSourceService } from './employee-history-data-source.service';
+import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { EmployeeHostoryErrors } from '../employee-history.enums';
 import { defaultScreensAmount } from '../../repeatable-fields/repeatable-fields.constant';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
