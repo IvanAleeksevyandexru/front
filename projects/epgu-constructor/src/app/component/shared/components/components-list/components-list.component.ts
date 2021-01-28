@@ -9,18 +9,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { BrokenDateFixStrategy, ListItem, ValidationShowOn } from 'epgu-lib';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { concatMap, map, takeUntil } from 'rxjs/operators';
+import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
+import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
-import {
-  ScenarioErrorsDto,
-  ComponentDto,
-  CycledApplicantAnswer,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import {
   CustomComponent,
@@ -33,7 +29,6 @@ import {
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository/component-list-repository.service';
 import { DateRangeService } from './services/date-range/date-range.service';
-import { ScreenService } from '../../../../screen/screen.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,
@@ -70,7 +65,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     private repository: ComponentListRepositoryService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
-    private screenService: ScreenService,
   ) {
     this.changes = this.formService.changes;
   }
@@ -90,32 +84,6 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       this.subscribeOnFormStatusChanging();
       this.loadRepository(components);
     }
-  }
-
-  public dropDownbyCycledAnswers(itemComponent: ComponentDto): Observable<ListItem[]> {
-    if (!itemComponent?.attrs?.add) {
-      return of([]);
-    }
-
-    const { component, caption } = itemComponent?.attrs?.add;
-    return this.screenService.cycledApplicantAnswers$.pipe(
-      map((answers) => answers.answerlist.find((answerItem) => answerItem.id === component)),
-      concatMap((answer?: CycledApplicantAnswer) => {
-        if (!answer) {
-          return of([]);
-        }
-        const result = answer.items.map((item) => {
-          const text = caption
-            .reduce((acc, value) => {
-              acc.push(item.itemAnswers[value]);
-              return acc;
-            }, [])
-            .join(' ');
-          return new ListItem({ text, id: JSON.stringify(item.itemAnswers) });
-        });
-        return of(result);
-      }),
-    );
   }
 
   public getDictKeyByComp(component: CustomComponent): string {

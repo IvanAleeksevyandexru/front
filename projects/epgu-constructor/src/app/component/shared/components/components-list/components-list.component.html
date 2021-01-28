@@ -54,22 +54,10 @@
         [data]="componentData"
       >
         <lib-dropdown
-          *ngIf="
-            componentData.value?.attrs?.add
-              ? (dropDownbyCycledAnswers(componentData.value) | async)
-              : (dropDowns$ | async) as dropDowns
-          "
+          *ngIf="dropDowns$ | async as dropDowns"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="
-            componentData.value?.attrs?.add
-              ? $any(dropDowns)
-              : $any(dropDowns[componentData.value?.id])
-          "
-          [disabled]="
-            componentData.value?.attrs?.add
-              ? $any(dropDowns?.length)
-              : $any(dropDowns[componentData.value?.id])?.length === 1
-          "
+          [items]="$any(dropDowns[componentData.value?.id])"
+          [disabled]="$any(dropDowns[componentData.value?.id])?.length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
           [clearable]="true"

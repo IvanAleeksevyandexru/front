@@ -101,11 +101,14 @@ export class ComponentListRepositoryService {
   ): Observable<CustomListGenericData<Partial<ListItem>[]>> {
     return of({
       component,
-      data: this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
+      data: component.attrs?.add
+        ? this.toolsService.loadCycledDropdown(component)
+        : this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
     });
   }
 
   initDataAfterLoading(references: Array<CustomListReferenceData>): void {
+    console.log(references);
     references.forEach((reference: CustomListReferenceData) => {
       if (isDropDown(reference.component.type)) {
         this.initDropDown(reference as CustomListGenericData<Partial<ListItem>[]>);

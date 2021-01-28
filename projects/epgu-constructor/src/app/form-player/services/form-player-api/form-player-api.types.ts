@@ -15,29 +15,6 @@ import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { CarInfoErrorsDto } from '../../../component/unique-screen/components/car-info/models/car-info.interface';
 
-export type ResultValue = string | boolean | number;
-export interface CycledValue {
-  visited: boolean;
-  value: ResultValue;
-}
-export interface CycledApplicantAnswerItem {
-  cachedAnswers?: Record<string, CycledValue>;
-  esiaData?: Record<string, string | boolean | number>;
-  finishedScreens?: string[];
-  id?: string;
-  itemAnswers?: Record<string, CycledValue>;
-}
-export interface CycledApplicantAnswer {
-  currentItemId?: string;
-  id?: string;
-  initScreen?: string;
-  items?: CycledApplicantAnswerItem[];
-}
-export interface CycledApplicantAnswers {
-  answerlist?: CycledApplicantAnswer[];
-  currentAnswerId?: string;
-}
-
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
 }
@@ -375,7 +352,6 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  cycledApplicantAnswers?: CycledApplicantAnswers;
   currentScenarioId: string;
   cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;

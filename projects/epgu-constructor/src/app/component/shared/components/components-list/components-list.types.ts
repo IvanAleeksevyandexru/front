@@ -2,13 +2,15 @@ import { ListItem } from 'epgu-lib';
 import {
   ComponentFilterDto,
   ComponentRelationFieldDto,
-  DisplayDto
+  DisplayDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { Ref } from './services/date-range/date-range.models';
 import { TextTransform } from '../../../../shared/types/textTransform';
 import {
-  DictionaryItem, DictionaryOptions, DictionaryResponse
+  DictionaryItem,
+  DictionaryOptions,
+  DictionaryResponse,
 } from '../../services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
@@ -42,13 +44,15 @@ export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string 
 
 export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
 export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
-export type CustomListReferenceData = CustomListGenericData< Partial<ListItem>[] | DictionaryResponse >;
+export type CustomListReferenceData = CustomListGenericData<
+  Partial<ListItem>[] | DictionaryResponse
+>;
 // export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
 export interface CustomListDictionary {
-  loading: boolean,
-  loadError: boolean,
-  loadEnd: boolean,
+  loading: boolean;
+  loadError: boolean;
+  loadEnd: boolean;
   paginationLoading: boolean;
   origin: CustomComponent;
   data: DictionaryResponse;
@@ -67,7 +71,7 @@ export interface CustomStatusElement {
 }
 
 export interface CustomListGenericData<T> {
-  component: CustomComponent,
+  component: CustomComponent;
   data: T;
 }
 
@@ -79,8 +83,6 @@ export type CustomComponentDropDownItem = {
   code?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
   disable: boolean;
 };
-
-
 
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -101,7 +103,7 @@ export interface CustomComponentAttr {
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
-  relation?: {ref: string, conditions: RelationCondition[]}
+  relation?: { ref: string; conditions: RelationCondition[] };
   russia?: boolean;
   ussr?: boolean;
   disabled?: boolean;
@@ -116,6 +118,7 @@ export interface CustomComponentAttr {
   minDate?: string;
   maxDate?: string;
   onlyFirstScreen?: boolean;
+  add?: { component: string; caption: string[] };
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -137,7 +140,7 @@ export interface CustomComponentOutputData {
     isValid?: boolean;
     disabled?: boolean;
     condition?: string;
-  }
+  };
 }
 
 /**
