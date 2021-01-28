@@ -7,6 +7,7 @@ import { UserInfoComponentTypes } from './user-info-loader.types';
 
 import { UserInfoType } from '../user-info/user-info.type';
 import { ComponentValue } from '../../../screen/screen-content';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 @Component({
   selector: 'epgu-constructor-user-info-loader',
@@ -22,12 +23,12 @@ export class UserInfoLoaderComponent implements OnInit {
       this.isDisplay
         ? this.screenService.displayInfoComponents$.pipe(
             tap((v) => {
-              console.log('display', v);
+              this.loggerService.log(['display', v]);
             }),
           )
         : this.screenService.componentInfoComponents$.pipe(
             tap((v) => {
-              console.log('component', v);
+              this.loggerService.log(['component', v]);
             }),
           ),
     ),
@@ -43,7 +44,7 @@ export class UserInfoLoaderComponent implements OnInit {
     }),
   );
   componentTypes = UserInfoComponentTypes;
-  constructor(public screenService: ScreenService) {}
+  constructor(public screenService: ScreenService, private loggerService: LoggerService) {}
 
   ngOnInit(): void {}
 }

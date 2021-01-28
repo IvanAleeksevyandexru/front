@@ -13,8 +13,6 @@ import { ScreenServiceStub } from '../../../../../../../../screen/screen.service
 import { of } from 'rxjs';
 import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
 
-
-
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserAddressComponent>;
@@ -27,7 +25,8 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     value: '{}',
     label: '',
     type: ComponentScreenComponentTypes.confirmPersonalUserRegAddr,
-    required: false
+    required: false,
+    valueFromCache: false
   };
 
   beforeEach(waitForAsync(() => {

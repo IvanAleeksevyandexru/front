@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ComponentScreenComponentsModule } from '../../component/component-screen/component-screen-components.module';
-import { TimerModule } from '../../component/custom-screen/timer/timer.module';
 import { ComponentsListModule } from '../../component/shared/components/components-list/components-list.module';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
-import { FieldListModule } from '../../shared/components/field-list/field-list.module';
-import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { ComponentScreenComponent } from './component-screen.component';
 import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
-import { ComponentWrapperModule } from '../../component/component-screen/shared/component-wrapper.module';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
+// TODO вынести не нужные импорты
 @NgModule({
   declarations: [ComponentScreenComponent],
   exports: [ComponentScreenComponent],
@@ -20,12 +16,8 @@ import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/u
     UserInfoLoaderModule,
     ComponentScreenComponentsModule,
     ComponentsListModule,
-    TimerModule,
     BaseComponentsModule,
     ComponentResolverModule,
-    ComponentWrapperModule,
-    ScreenPadModule,
-    FieldListModule,
     CommonModule,
   ],
   providers: [EventBusService],

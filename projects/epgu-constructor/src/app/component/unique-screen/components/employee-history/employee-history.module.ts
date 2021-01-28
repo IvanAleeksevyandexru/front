@@ -43,5 +43,6 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
     EmployeeHistoryMonthsService,
     DatesToolsService,
   ],
+  entryComponents: [EmployeeHistoryComponent]
 })
 export class EmployeeHistoryModule {}

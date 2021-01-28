@@ -3,7 +3,7 @@ import { ConfirmUserDataStyle } from '../../../component/component-screen/compon
 import {
   TimerComponentDtoAction,
   TimerLabelSection,
-} from '../../../component/custom-screen/timer/timer.interface';
+} from '../../../shared/components/timer/timer.interface';
 import {
   DictionaryConditions,
   DictionaryOptions,

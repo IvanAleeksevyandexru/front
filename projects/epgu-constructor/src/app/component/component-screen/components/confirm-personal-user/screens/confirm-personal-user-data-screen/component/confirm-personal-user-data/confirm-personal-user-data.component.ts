@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';
 import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
-import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 
@@ -16,22 +19,27 @@ import { UnsubscribeService } from '../../../../../../../../core/services/unsubs
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserDataComponent implements OnInit {
-  // <-- variable
-  actionType = ActionType;
   data$: Observable<ConfirmUserData> = this.screenService.component$ as Observable<ConfirmUserData>;
+  actionType = ActionType;
+
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
 
   constructor(
     public config: ConfigService,
     public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
-    private currentAnswersService: CurrentAnswersService,
     private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.updateValue(data.value);
-
       this.changeDetectionRef.markForCheck();
     });
   }

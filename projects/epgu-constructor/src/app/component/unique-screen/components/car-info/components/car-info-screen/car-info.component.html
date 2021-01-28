@@ -1,9 +1,9 @@
-<epgu-constructor-screen-pad *ngIf="carInfoErrors?.common; else carInfoBlock">
+<epgu-constructor-screen-pad *ngIf="carInfoErrors?.externalCommon; else carInfoBlock">
   <ng-container
     *ngTemplateOutlet="templateError;
-        context: { iconClass: (carInfoErrors.common.type | errorTemplate).icon ,
-         title: (carInfoErrors.common.type | errorTemplate).title,
-         text: carInfoErrors.common.text}"
+        context: { iconClass: (carInfoErrors.externalCommon.type | errorTemplate).icon ,
+         title: (carInfoErrors.externalCommon.type | errorTemplate).title,
+         text: carInfoErrors.externalCommon.text}"
   ></ng-container>
 </epgu-constructor-screen-pad>
 
