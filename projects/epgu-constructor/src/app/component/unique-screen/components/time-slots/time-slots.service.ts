@@ -18,6 +18,7 @@ import { TimeSlotsTypes } from './time-slots.constants';
 import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
+  DepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface,
@@ -25,7 +26,6 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
 } from './time-slots.types';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class TimeSlotsService {
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
   public timeSlotsType: TimeSlotsTypes;
 
-  public department: ZagsDepartmentInterface;
+  public department: DepartmentInterface;
   private serviceId: string;
   private solemn: boolean;
   private slotsPeriod;
@@ -257,22 +257,30 @@ export class TimeSlotsService {
     const { serviceId, eserviceId, routeNumber } = this.config.timeSlots[this.timeSlotsType];
 
     return {
-      organizationId: [this.department.attributeValues.CODE],
+      organizationId: [this.department.attributeValues.CODE || this.department.attributeValues.code],
       caseNumber: this.orderId,
       serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
-      attributes: [
-        {
-          name: 'SolemnRegistration',
-          value: this.solemn,
-        },
-        {
-          name: 'SlotsPeriod',
-          value: this.slotsPeriod,
-        },
+      attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
+    };
+  }
+
+  private getSlotsRequestAttributes(slotsType: TimeSlotsTypes, serviceId: string): Array<{ name: string; value: string; }> {
+    const settings = {
+      [TimeSlotsTypes.BRAK]: [
+        { name: 'SolemnRegistration', value: this.solemn },
+        { name: 'SlotsPeriod', value: this.slotsPeriod },
+      ],
+      [TimeSlotsTypes.RAZBRAK]: [],
+      [TimeSlotsTypes.MVD]: [],
+      [TimeSlotsTypes.GIBDD]: [
+        { name: 'organizationId', value: this.department.attributeValues.code },
+        { name: 'serviceId', value: this.serviceId || serviceId },
       ],
     };
+
+    return settings[slotsType];
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
