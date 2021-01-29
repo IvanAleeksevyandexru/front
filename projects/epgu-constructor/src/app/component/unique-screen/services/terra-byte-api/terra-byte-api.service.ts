@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TerabyteListItem, TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
+import { Observable, of, range, from, timer } from 'rxjs';
 import {
-  TerabyteListItem,
-  TerraFileOptions,
-  TerraUploadFileOptions,
-} from './terra-byte-api.types';
-import { Observable } from 'rxjs';
-import { TerraUploadedFile } from '../../components/file-upload-screen/sub-components/file-upload-item/data';
+  BYTES_IN_KB,
+  TerraUploadedFile,
+} from '../../components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import * as FileSaver from 'file-saver';
+import { concatMap, delay, map, mergeMap, reduce, tap } from 'rxjs/operators';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -65,6 +65,65 @@ export class TerraByteApiService {
    * @param file - данные файла
    */
   uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<void> {
+    const chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; //кол-во в мб
+    if (file.size <= chunkSize) {
+      const formData = this.createFormData(options, file);
+
+      return this.http.post<void>(
+        this.getTerabyteApiUrl('/upload'),
+        formData,
+        this.getServerRequestOptions(),
+      );
+    } else {
+      const chunks = Math.ceil(file.size / chunkSize);
+      return range(0, chunks).pipe(
+        map((index) => {
+          const startIndex = index;
+          const endIndex = index + 1;
+          const start = startIndex * chunkSize;
+          const end = endIndex === chunks ? file.size : endIndex * chunkSize;
+          return {
+            form: this.createFormData({ ...options, chunks, chunk: index }, file.slice(start, end)),
+            index,
+          };
+        }),
+        reduce((acc, value) => {
+          if (value.index === 0) {
+            acc.push([value.form]); // часть с 0 байтом должна быть отправлена первой
+            return acc;
+          } else {
+            if (acc.length === 1) {
+              acc.push([]); //запрещаем добавлять в 1 часть
+            }
+            if (acc[acc.length - 1].length === 10) {
+              // максимум параллельно запсукаемых элементов
+              acc.push([]);
+            }
+            acc[acc.length - 1].push(value.form);
+            return acc;
+          }
+        }, []),
+        concatMap((streams) => {
+          return from(streams);
+        }),
+        concatMap((formList) => {
+          return from(formList).pipe(
+            mergeMap((form) => {
+              return this.http.post<void>(
+                this.getTerabyteApiUrl('/upload'),
+                form,
+                this.getServerRequestOptions(),
+              );
+            }),
+          );
+        }),
+        reduce((acc) => acc++, 0),
+        map(() => undefined),
+      );
+    }
+  }
+
+  createFormData(options: TerraUploadFileOptions, file: File | Blob): FormData {
     const formData = new FormData();
     if (file instanceof File) {
       formData.append('file', file, file.name);
@@ -74,12 +133,7 @@ export class TerraByteApiService {
     Object.keys(options).forEach((k) => {
       formData.append(k, options[k]);
     });
-
-    return this.http.post<void>(
-      this.getTerabyteApiUrl('/upload'),
-      formData,
-      this.getServerRequestOptions(),
-    );
+    return formData;
   }
 
   /**
