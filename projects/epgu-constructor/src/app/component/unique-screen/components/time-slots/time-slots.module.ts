@@ -19,5 +19,6 @@ import { TimeSlotsService } from './time-slots.service';
     TimeSlotsService,
   ],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
+  entryComponents: [TimeSlotsComponent]
 })
 export class TimeSlotsModule {}

@@ -20,6 +20,11 @@ import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address',
@@ -37,12 +42,19 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   textTransformType: TextTransform;
   isRequired: boolean;
 
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
+
   constructor(
     public config: ConfigService,
-    private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
+    private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
-    private currentAnswersService: CurrentAnswersService,
     private changeDetectionRef: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
   ) {}
@@ -52,7 +64,6 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       this.textTransformType = data?.attrs?.fstuc;
       this.isRequired = data.required;
       this.updateValue(data);
-
       this.changeDetectionRef.markForCheck();
     });
   }

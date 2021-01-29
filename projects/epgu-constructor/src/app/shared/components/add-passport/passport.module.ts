@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { PassportComponent } from './passport.component';
-import { ConstructorMaskedInputModule } from '../epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { ConstructorMaskedInputModule } from '../constructor-masked-input/constructor-masked-input.module';
 import { BaseComponentsModule } from '../base-components/base-components.module';
 import { BaseModule } from '../../base.module';
 

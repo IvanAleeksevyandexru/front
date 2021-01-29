@@ -8,9 +8,9 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { BaseModule } from '../../../shared/base.module';
-import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { ValueLoaderService } from '../../../shared/services/value-loader/value-loader.service';
+import { BaseModule } from '../../base.module';
+import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
+import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
 

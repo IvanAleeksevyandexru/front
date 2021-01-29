@@ -50,7 +50,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -73,16 +72,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "sourceMap": {
+            "scripts": true,
+            "styles": true,
+            "vendor": true
+          },
           "options": {
             "host": "local.test.gosuslugi.ru",
             "browserTarget": "epgu-form-frontend:build",
             "port": 4200,
-            "proxyConfig": "src/proxy.conf.json",
-            "sourceMap": {
-              "scripts": true,
-              "styles": true,
-              "vendor": true
-            }
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -125,7 +124,7 @@
       "prefix": "epgu-constructor",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/epgu-constructor/tsconfig.lib.json",
             "project": "projects/epgu-constructor/ng-package.json"
@@ -140,8 +139,10 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
-            "tsConfig": ["projects/epgu-constructor/tsconfig.lib.json", "tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/epgu-constructor/src/**/*.ts",
+              "projects/epgu-constructor/src/**/*.spec.ts"
+            ]
           }
         },
         "test": {

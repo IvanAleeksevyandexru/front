@@ -33,19 +33,23 @@ import { InformationCenterMvdComponent } from '../unique-screen/components/infor
 import { CarInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
 // eslint-disable-next-line max-len
 import { InformationCenterPfrContainerComponent } from '../unique-screen/components/information-center-pfr/container/information-center-pfr-container.component';
+import { FieldListScreenComponent } from '../component-screen/components/field-list-screen/field-list-screen.component';
+import { TimerScreenComponent } from '../component-screen/components/timer-screen/timer-screen.component';
 
 export type ComponentTypes = ComponentScreenComponentTypes | UniqueScreenComponentTypes;
 
 type ComponentScreenComponent =
-  | ConfirmPersonalUserAddressComponent
+  ConfirmPersonalUserAddressComponent
   | ConfirmPersonalUserDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
-  | SelectChildrenScreenContainerComponent;
+  | SelectChildrenScreenContainerComponent
+  | FieldListScreenComponent
+  | TimerScreenComponent;
 
 type UniqueScreenComponent =
-  | InformationCenterMvdComponent
+  InformationCenterMvdComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
@@ -63,7 +67,7 @@ type UniqueScreenComponent =
 export type ScreenComponentTypes = ComponentScreenComponent | UniqueScreenComponent;
 
 export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
-  ComponentTypes,
+  ComponentScreenComponentTypes,
   Type<ComponentScreenComponent>
 >> = {
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
@@ -77,12 +81,11 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
   ChildrenList: SelectChildrenScreenContainerComponent,
   ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
   ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
+  FieldList: FieldListScreenComponent,
+  Timer: TimerScreenComponent,
 };
 
-export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
-  UniqueScreenComponentTypes,
-  Type<UniqueScreenComponent>
->> = {
+export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
   CityDepartment: InformationCenterMvdComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,

@@ -13,5 +13,6 @@ import { BaseModule } from '../../../../shared/base.module';
   exports: [UnusedPaymentsContainerComponent],
   providers: [UnusedPaymentsService],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, NavigationModule, RadioTaxModule],
+  entryComponents: [UnusedPaymentsContainerComponent]
 })
 export class UnusedPaymentsModule {}

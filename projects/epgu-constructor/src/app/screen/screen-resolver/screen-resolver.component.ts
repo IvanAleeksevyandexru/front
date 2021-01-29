@@ -9,7 +9,8 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { delay, takeUntil, tap } from 'rxjs/operators';
+import { subscribeOn, takeUntil, tap } from 'rxjs/operators';
+import { async } from 'rxjs/internal/scheduler/async';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
@@ -36,7 +37,7 @@ export class ScreenResolverComponent implements AfterViewInit {
     this.screenService.screenType$
       .pipe(
         tap(() => this.destroyComponent()),
-        delay(0), // fix dirty checked errors
+        subscribeOn(async), // fix dirty checked errors
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((screenType) => {

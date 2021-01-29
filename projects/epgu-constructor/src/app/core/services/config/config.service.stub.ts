@@ -29,7 +29,7 @@ export class ConfigServiceStub implements Config {
 
   constructor() {
     this._timeSlots = {
-      mvd: {
+      MVD: {
         subject:
           'Выдача паспорта гражданина Российской Федерации в случае утраты (хищения) паспорта',
         calendarName: 'на приём в подразделения МВД РФ',
@@ -37,7 +37,7 @@ export class ConfigServiceStub implements Config {
         eserviceId: '555666777',
         serviceCode: '-10000019911',
       },
-      gibdd: {
+      GIBDD: {
         subject: 'Запись на прием',
         calendarName: 'Запись на прием',
         serviceId: '10000593393',
@@ -47,7 +47,7 @@ export class ConfigServiceStub implements Config {
         preliminaryReservationPeriod: '240',
         routeNumber: '46000000000',
       },
-      divorce: {
+      RAZBRAK: {
         subject: 'Регистрация расторжения брака',
         calendarName: 'на услугу «Регистрация расторжения брака»',
         serviceId: 'ЗагсРазводФорма12-1',
@@ -57,7 +57,7 @@ export class ConfigServiceStub implements Config {
         preliminaryReservationPeriod: '1440',
         routeNumber: '45382000',
       },
-      brak: {
+      BRAK: {
         subject: 'Регистрация заключения брака',
         calendarName: 'на услугу «Регистрация заключения брака»',
         serviceId: 'ЗагсБрак',

@@ -6,10 +6,10 @@ import { ComponentsListComponent } from './components-list.component';
 import { DictionaryApiService } from '../../services/dictionary-api/dictionary-api.service';
 import { ComponentItemComponent } from './component-item/component-item.component';
 import { DocInputComponent } from './doc-input/doc-input.component';
-import { TimerModule } from '../../../custom-screen/timer/timer.module';
+import { TimerModule } from '../../../../shared/components/timer/timer.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 // eslint-disable-next-line max-len
-import { ConstructorMaskedInputModule } from '../../../../shared/components/epgu-lib/constructor-masked-input/constructor-masked-input.module';
+import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../../../shared/components/add-passport/passport.module';
 import { ConstructorDadataWidgetModule } from '../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
@@ -23,6 +23,8 @@ import { MemoPipe } from '../../../../core/pipes/memo/memo.pipe';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { DateRangeService } from './services/date-range/date-range.service';
+// eslint-disable-next-line max-len
+import { ConstructorMultilineInputModule } from '../../../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
 
@@ -44,6 +46,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     FieldListModule,
     CurrencyModule,
     ConstructorDatePickerModule,
+    ConstructorMultilineInputModule,
   ],
   providers: [
     ValidationService,
