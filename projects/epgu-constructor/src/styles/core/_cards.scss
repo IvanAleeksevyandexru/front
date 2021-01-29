@@ -57,6 +57,21 @@
       margin-top: 24px;
     }
   }
+  input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  input:checked {
+    + .card-header::after {
+      transform: rotate(-90deg);
+    }
+    ~ .card-content {
+      max-height: 100vh;
+      padding-top: 24px;
+    }
+  }
 }
 
 .card,
@@ -64,21 +79,5 @@
   background: $color-white;
   &:not(:last-child){
     margin-bottom: 24px;
-  }
-}
-
-input {
-  position: absolute;
-  opacity: 0;
-  z-index: -1;
-}
-
-input:checked {
-  + .card-header::after {
-    transform: rotate(-90deg);
-  }
-  ~ .card-content {
-    max-height: 100vh;
-    padding-top: 24px;
   }
 }
