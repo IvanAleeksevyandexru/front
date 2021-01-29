@@ -71,7 +71,7 @@ describe('UnusedPaymentsContainerComponent', () => {
     header: '',
     id: '',
     terminal: false,
-    type: ScreenTypes.COMPONENT,
+    type: ScreenTypes.UNIQUE,
     name: 'name',
     submitLabel: 'submitLabel',
   };
