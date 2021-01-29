@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+import { MonthYear } from 'epgu-lib';
+import { BehaviorSubject } from 'rxjs';
+
 import {
   EmployeeHistoryAvailableDates,
   EmployeeHistoryModel,
   EmployeeHistoryUncheckedPeriod,
 } from '../employee-history.types';
-import { MonthYear } from 'epgu-lib';
-import { BehaviorSubject } from 'rxjs';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { DATE_MONTH_YEAR_FORMAT, DATE_STRING_MMMM_YYYY_FORMAT, DATE_STRING_SLASH_FORMAT } from '../../../../../shared/constants/dates';
+
 @Injectable()
 export class EmployeeHistoryMonthsService {
   years = 10;
@@ -29,20 +31,24 @@ export class EmployeeHistoryMonthsService {
     this.availableMonths = this.getAvailableMonths();
   }
 
-  getUncheckedPeriods(): EmployeeHistoryUncheckedPeriod[] {
+  getUncheckedPeriods(
+    availableMonths: EmployeeHistoryAvailableDates[],
+  ): EmployeeHistoryUncheckedPeriod[] {
+    if (!availableMonths.length) return [];
+
     const periods: Array<Array<EmployeeHistoryAvailableDates>> = [];
     let periodIndex = 0;
 
     periods[periodIndex] = [];
 
-    for (let i = 0; i < this.availableMonths.length; i++) {
-      if (this.availableMonths[i].checked) {
-        if (!this.availableMonths[i + 1]?.checked) {
+    for (let i = 0; i < availableMonths.length; i++) {
+      if (availableMonths[i].checked) {
+        if (!availableMonths[i + 1]?.checked) {
           periodIndex++;
           periods[periodIndex] = [];
         }
       } else {
-        periods[periodIndex].push(this.availableMonths[i]);
+        periods[periodIndex].push(availableMonths[i]);
       }
     }
 
@@ -122,11 +128,7 @@ export class EmployeeHistoryMonthsService {
       const maxDate = this.datesToolsService.max(convertedDate);
       const minDate = this.datesToolsService.min(convertedDate);
       const diff = this.datesToolsService.differenceInYears( maxDate, minDate);
-      if (diff === this.years) {
-        this.isMonthComplete$.next(true);
-      } else {
-        this.isMonthComplete$.next(false);
-      }
+      this.isMonthComplete$.next(diff === this.years);
     }
   }
 
