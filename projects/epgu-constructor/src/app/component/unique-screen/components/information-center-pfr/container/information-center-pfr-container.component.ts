@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
@@ -82,12 +82,14 @@ export class InformationCenterPfrContainerComponent {
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,
     private readonly dictionaryApiService: DictionaryApiService,
+    private cdr: ChangeDetectorRef,
     public currentAnswersService: CurrentAnswersService,
   ) {}
 
   public changeForm({ isValid, value }: FormChangeEvent): void {
     this.currentAnswersService.isValid = isValid;
     this.currentAnswersService.state = JSON.stringify(value);
+    this.cdr.detectChanges();
   }
 
   public fetchDictionary({ value, type, attributeName, condition }: SelectEvent): void {
