@@ -25,6 +25,7 @@ const COMPONENTS = [
     BaseComponentsModule
   ],
   exports: [...COMPONENTS],
+  entryComponents: [InformationCenterMvdComponent]
 })
 export class InformationCenterMvdModule {
 }

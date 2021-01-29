@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Injector,
@@ -47,6 +48,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     protected elemRef: ElementRef,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {
     super(injector);
   }
@@ -69,6 +71,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     this.setElemByIdHandler();
     this.setDefaultCloseAction();
     this.setCustomButtons();
+    this.cdr.markForCheck();
   }
 
   setElemByIdHandler(): void {

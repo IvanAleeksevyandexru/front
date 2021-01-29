@@ -3,12 +3,14 @@
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="header">{{ header }}
-    <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
+    <epgu-constructor-page-name *ngIf="header"
+      >{{ header }}
+      <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
     </epgu-constructor-page-name>
     <div class="photo" [ngClass]="{ 'photo--flex-column': croppedImageUrl }">
       <input
         #cameraInput
+        id="cameraInput"
         type="file"
         capture="user"
         accept="image/*"
@@ -17,6 +19,7 @@
       />
       <input
         #hiddenFileInput
+        id="hiddenFileInput"
         style="display: none;"
         [attr.accept]="getAcceptTypes()"
         type="file"
@@ -31,11 +34,7 @@
           class="photo__cropped-image"
           [src]="croppedImageUrl | safe: 'resourceUrl'"
         />
-        <div
-          *ngIf="!croppedImageUrl"
-          dragAndDrop
-          class="photo__uploading-area"
-        >
+        <div *ngIf="!croppedImageUrl" dragAndDrop class="photo__uploading-area">
           <img
             *ngIf="isDesktop"
             src="{{ config.staticDomainAssetsPath }}/assets/img/photo-upload-area-desktop.svg"

@@ -16,7 +16,8 @@ import { DictionaryApiService } from '../../services/dictionary-api/dictionary-a
 import { DictionaryApiServiceStub } from '../../services/dictionary-api/dictionary-api.service.stub';
 import { ComponentsListComponent } from './components-list.component';
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
-
+// eslint-disable-next-line max-len
+import { ConstructorMultilineInputModule } from '../../../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
 
 xdescribe('ComponentsListComponent', () => {
   let component: ComponentsListComponent;
@@ -24,11 +25,11 @@ xdescribe('ComponentsListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ ComponentsListComponent, MaskHandlePipe ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      declarations: [ComponentsListComponent, MaskHandlePipe],
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide:  ConfigService, useClass: ConfigServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         ComponentListFormService,
         EventBusService,
       ],
@@ -42,7 +43,8 @@ xdescribe('ComponentsListComponent', () => {
         ConstructorLookupModule,
         ConstructorCheckboxModule,
         ConstructorDatePickerModule,
-      ]
+        ConstructorMultilineInputModule,
+      ],
     });
 
     TestBed.compileComponents();

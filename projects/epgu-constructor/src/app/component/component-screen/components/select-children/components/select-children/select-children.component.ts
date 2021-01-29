@@ -48,6 +48,7 @@ export class SelectChildrenComponent implements OnInit {
   hint?: string;
   DEFAULT_AVAILABLE = 20;
   NEW_ID = 'new';
+  hideAddNewChildButton = false;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -79,6 +80,7 @@ export class SelectChildrenComponent implements OnInit {
 
   initVariables(): void {
     const itemsList = this.component ? JSON.parse(this.component.presetValue || '[]') : [];
+    this.hideAddNewChildButton = this.component?.attrs?.hideAddNewChildButton || false;
     this.firstNameRef = this.getRefFromComponent('firstName');
     this.isNewRef = this.getRefFromComponent('isNew');
     this.idRef = this.getRefFromComponent('id');
@@ -267,18 +269,26 @@ export class SelectChildrenComponent implements OnInit {
   }
 
   private getItemsToSelect(itemsList: Array<{ [key: string]: string }>): ChildI[] {
-    return itemsList
-      .map<ChildI>((child) => {
-        return {
-          ...child,
-          id: child[this.idRef],
-          text: child[this.firstNameRef],
-        };
-      })
-      .concat(this.getChildForAddChildren(this.idRef));
+    const itemsToSelect = itemsList.map<ChildI>((child) => {
+      return {
+        ...child,
+        id: child[this.idRef],
+        text: child[this.firstNameRef],
+      };
+    });
+
+    if (this.hideAddNewChildButton) {
+      return itemsToSelect;
+    }
+
+    return this.appendAddNewChildButton(itemsToSelect);
   }
 
-  private getChildForAddChildren(prop: string): ChildI {
+  private appendAddNewChildButton(itemsToSelect: ChildI[]): ChildI[] {
+    return itemsToSelect.concat(this.getChildForAddNewChildButton(this.idRef));
+  }
+
+  private getChildForAddNewChildButton(prop: string): ChildI {
     return {
       id: this.NEW_ID,
       text: 'Добавить нового ребенка',

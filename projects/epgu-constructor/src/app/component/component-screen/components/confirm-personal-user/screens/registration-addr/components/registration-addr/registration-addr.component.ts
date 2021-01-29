@@ -15,6 +15,11 @@ import {
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
 import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-registration-addr',
@@ -27,17 +32,24 @@ export class RegistrationAddrComponent implements OnInit {
   data$: Observable<IRegistrationAddrComponent> = this.screenService.component$ as Observable<
     IRegistrationAddrComponent
   >;
-  required: boolean;
-
   error$: Observable<string> = this.screenService.componentError$;
+
+  required: boolean;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   redAddrForm: FormGroup;
 
+  nextStepAction: ComponentActionDto = {
+    label: 'Продолжить',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
+
   constructor(
     public config: ConfigService,
-    private screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
+    public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,

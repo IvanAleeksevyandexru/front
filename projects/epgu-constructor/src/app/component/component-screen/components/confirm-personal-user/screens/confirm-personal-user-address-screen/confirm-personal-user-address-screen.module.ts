@@ -7,11 +7,13 @@ import { TrimModule } from '../../../../../../shared/directives/trim/trim.module
 import { TextTransformModule } from '../../../../../../shared/directives/text-transform/text-transform.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { BaseModule } from '../../../../../../shared/base.module';
+import { ComponentWrapperModule } from '../../../../shared/component-wrapper.module';
 
 @NgModule({
   declarations: [ConfirmPersonalUserAddressComponent, AddressItemComponent],
   exports: [ConfirmPersonalUserAddressComponent],
-  imports: [BaseModule, BaseComponentsModule, TrimModule, TextTransformModule, ScreenPadModule],
+  imports: [BaseModule, BaseComponentsModule, TrimModule, TextTransformModule, ScreenPadModule, ComponentWrapperModule],
   providers: [DatePipe],
+  entryComponents: [ConfirmPersonalUserAddressComponent]
 })
 export class ConfirmPersonalUserAddressScreenModule {}

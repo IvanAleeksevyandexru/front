@@ -18,6 +18,7 @@ import { TimeSlotsTypes } from './time-slots.constants';
 import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
+  DepartmentInterface,
   SlotInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface,
@@ -25,7 +26,6 @@ import {
   TimeSlotReq,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
-  ZagsDepartmentInterface,
 } from './time-slots.types';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class TimeSlotsService {
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
   public timeSlotsType: TimeSlotsTypes;
 
-  public department: ZagsDepartmentInterface;
+  public department: DepartmentInterface;
   private serviceId: string;
   private solemn: boolean;
   private slotsPeriod;
@@ -56,6 +56,7 @@ export class TimeSlotsService {
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
+    this.errorMessage = null;
     // Если есть забуканный слот и (сменился загс или слот просрочен)
     const cancelCondition = this.isCancelCondition();
     if (cancelCondition) {
@@ -193,19 +194,21 @@ export class TimeSlotsService {
       this.department = department;
     }
 
-    let solemn = data.solemn == 'Да';
-    if (this.solemn !== solemn) {
-      changed = true;
-      this.solemn = solemn;
-    }
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+      let solemn = data.solemn == 'Да';
+      if (this.solemn !== solemn) {
+        changed = true;
+        this.solemn = solemn;
+      }
 
-    let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
-    if (this.slotsPeriod !== slotsPeriod) {
-      changed = true;
-      this.slotsPeriod = slotsPeriod;
-      const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
-      this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-      this.activeYearNumber = parseInt(activeYearNumber, 10);
+      let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
+      if (this.slotsPeriod !== slotsPeriod) {
+        changed = true;
+        this.slotsPeriod = slotsPeriod;
+        const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
+        this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
+        this.activeYearNumber = parseInt(activeYearNumber, 10);
+      }
     }
 
     let orderId = data.orderId;
@@ -224,7 +227,7 @@ export class TimeSlotsService {
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
-    const { eserviceId } = this.config.timeSlots.brak;
+    const { eserviceId } = this.config.timeSlots[this.timeSlotsType];
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
@@ -251,25 +254,33 @@ export class TimeSlotsService {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots.brak;
+    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots[this.timeSlotsType];
 
     return {
-      organizationId: [this.department.attributeValues.CODE],
+      organizationId: [this.department.attributeValues.CODE || this.department.attributeValues.code],
       caseNumber: this.orderId,
       serviceId: [this.serviceId || serviceId],
       eserviceId,
       routeNumber,
-      attributes: [
-        {
-          name: 'SolemnRegistration',
-          value: this.solemn,
-        },
-        {
-          name: 'SlotsPeriod',
-          value: this.slotsPeriod,
-        },
+      attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
+    };
+  }
+
+  private getSlotsRequestAttributes(slotsType: TimeSlotsTypes, serviceId: string): Array<{ name: string; value: string; }> {
+    const settings = {
+      [TimeSlotsTypes.BRAK]: [
+        { name: 'SolemnRegistration', value: this.solemn },
+        { name: 'SlotsPeriod', value: this.slotsPeriod },
+      ],
+      [TimeSlotsTypes.RAZBRAK]: [],
+      [TimeSlotsTypes.MVD]: [],
+      [TimeSlotsTypes.GIBDD]: [
+        { name: 'organizationId', value: this.department.attributeValues.code },
+        { name: 'serviceId', value: this.serviceId || serviceId },
       ],
     };
+
+    return settings[slotsType];
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
@@ -286,7 +297,7 @@ export class TimeSlotsService {
       calendarName,
       preliminaryReservationPeriod,
       routeNumber,
-    } = this.config.timeSlots.brak;
+    } = this.config.timeSlots[this.timeSlotsType];
 
     return {
       preliminaryReservation,
@@ -373,7 +384,7 @@ export class TimeSlotsService {
           );
       }
     } else {
-      return of();
+      return of(['']);
     }
   }
 

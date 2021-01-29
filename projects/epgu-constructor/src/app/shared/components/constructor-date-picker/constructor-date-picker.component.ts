@@ -41,7 +41,7 @@ export class ConstructorDatePickerComponent implements OnInit {
 
   public onChange($event: Event): void {
     const input = $event.target as HTMLInputElement;
-    const [day, month, year] = input.value.split('.').map((date) => parseInt(date, 0));
+    const [day, month, year] = input.value.split('.').map((date) => parseInt(date, 10));
 
     const date = new Date(year, month - 1, day);
     this.onDateSelected(date);

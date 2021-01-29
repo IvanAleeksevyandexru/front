@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { CustomComponent } from '../../../../component/shared/components/components-list/components-list.types';
-import { TextTransform } from '../../../types/textTransform';
+import { CustomComponent } from '../../../component/shared/components/components-list/components-list.types';
+import { TextTransform } from '../../types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-masked-input',

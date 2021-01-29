@@ -1,11 +1,15 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { ConfigService } from '../../../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
-import { ActionType } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ActionType,
+  DTOActionAction
+} from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../../../../../shared/directives/action/action.directive';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { SafePipe } from 'projects/epgu-constructor/src/app/shared/pipes/safe/safe.pipe';
@@ -14,6 +18,7 @@ import { of } from 'rxjs';
 import { UnsubscribeService } from '../../../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenPadComponent } from '../../../../../../../../shared/components/screen-pad/screen-pad.component';
 import { ImgPrefixerPipe } from '../../../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { ComponentWrapperComponent } from '../../../../../../shared/component-wrapper.component';
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -25,7 +30,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
         {
           label: '',
           value: '',
-          action: '',
+          action: DTOActionAction.getNextStep,
         },
       ],
       fields: [
@@ -62,11 +67,12 @@ describe('ConfirmPersonalUserDataComponent', () => {
       TestBed.configureTestingModule({
         declarations: [
           ConfirmPersonalUserDataComponent,
+          MockComponent(ComponentWrapperComponent),
           ScreenPadComponent,
-          ActionDirective,
           FieldListComponent,
           SafePipe,
-          ImgPrefixerPipe
+          ImgPrefixerPipe,
+          MockDirective(ActionDirective),
         ],
         providers: [
           CurrentAnswersService,

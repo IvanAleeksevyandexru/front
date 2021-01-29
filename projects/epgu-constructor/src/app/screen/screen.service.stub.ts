@@ -13,8 +13,9 @@ export class ScreenServiceStub extends ScreenContent {
   private screenStore: ScreenStore = { cachedAnswers: [] } as unknown as CachedAnswersDto;
   private isLoading = false;
   private isShown = true; // Показываем или нет кнопку
-
+  // @ts-ignore
   public display$: Observable<DisplayDto>;
+  // @ts-ignore
   public component$: Observable<ComponentDto>;
 
   public isLoadingSubject$ = new BehaviorSubject<boolean>(false);

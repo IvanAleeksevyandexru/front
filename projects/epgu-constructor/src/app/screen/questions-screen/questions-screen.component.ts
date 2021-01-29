@@ -16,6 +16,7 @@ import {
   ComponentAnswerDto,
   DTOActionAction,
   ScreenActionDto,
+  // eslint-disable-next-line import/named
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
@@ -65,6 +66,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       .subscribe((label: string) => {
         this.submitLabel = label;
         this.nextStepAction.label = label || 'Далее';
+        this.nextStepAction.value = label || 'Далее';
         this.changeDetectionRef.markForCheck();
       });
   }
