@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TerabyteListItem, TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
-import { Observable, of, range, from, timer } from 'rxjs';
+import { Observable, range, from } from 'rxjs';
 import {
   BYTES_IN_KB,
   TerraUploadedFile,
 } from '../../components/file-upload-screen/sub-components/file-upload-item/data';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import * as FileSaver from 'file-saver';
-import { concatMap, delay, map, mergeMap, reduce, tap } from 'rxjs/operators';
+import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
