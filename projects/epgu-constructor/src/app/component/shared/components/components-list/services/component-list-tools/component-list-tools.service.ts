@@ -269,7 +269,6 @@ export class ComponentListToolsService {
   }
 
   adaptiveDropDown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
-    console.log(items);
     return items.map((item: CustomComponentDropDownItem, index: number) => {
       const itemText = item.label || item.title;
       const itemCode = item.code || item?.value || `${itemText}-${index}`;

@@ -108,7 +108,6 @@ export class ComponentListRepositoryService {
   }
 
   initDataAfterLoading(references: Array<CustomListReferenceData>): void {
-    console.log(references);
     references.forEach((reference: CustomListReferenceData) => {
       if (isDropDown(reference.component.type)) {
         this.initDropDown(reference as CustomListGenericData<Partial<ListItem>[]>);
