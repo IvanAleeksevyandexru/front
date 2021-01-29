@@ -15,11 +15,8 @@ import {
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
 import { DatesToolsService } from '../../../../../../../../core/services/dates-tools/dates-tools.service';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { NEXT_STEP_ACTION } from '../../../../../../../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-registration-addr',
@@ -39,12 +36,7 @@ export class RegistrationAddrComponent implements OnInit {
   brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   redAddrForm: FormGroup;
 
-  nextStepAction: ComponentActionDto = {
-    label: 'Продолжить',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
+  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
     public config: ConfigService,

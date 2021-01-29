@@ -185,7 +185,6 @@ describe('DatesToolsService', () => {
       const dateLeft = new Date();
       const dateRight = service.add(dateLeft, 1, 'seconds');
       const passedTime = -1000;
-      console.log({ dateLeft, dateRight });
       expect(service.diff(dateLeft, dateRight)).toEqual(passedTime);
     });
   });
@@ -214,7 +213,6 @@ describe('DatesToolsService', () => {
       const date = new Date();
       const controlDate = new Date(1);
       const resultDate = service.setDate(date, '1970', '0', '1');
-      console.log(resultDate, controlDate);
       expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
     });
   });

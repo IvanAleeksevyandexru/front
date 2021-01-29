@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class EnginePowerPipe implements PipeTransform {
 
   transform(enginePowerVt: string, enginePowerHorse: string): string {
-    return [enginePowerVt, enginePowerHorse].filter((value) => !!value).join('/');
+    return enginePowerVt && enginePowerHorse ? `${enginePowerVt}/${enginePowerHorse}`: null;
   }
 
 }

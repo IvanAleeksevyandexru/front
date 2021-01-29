@@ -1,0 +1,84 @@
+@import "palettes";
+@import 'functions';
+
+.card-pad{
+  padding: $screen-pad-p;
+  border-radius: $border-xl;
+  @include shadow-second();
+  @include tablets-up {
+    padding: $screen-pad-p;
+    @include shadow-main();
+  }
+}
+
+.card {
+  width: 100%;
+  overflow: hidden;
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 18px;
+    &::after {
+      content: "\276F";
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      transition: all .35s;
+      background: rgb(228, 236, 253);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 400;
+      color: $color-gosblue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(90deg);
+    }
+    & .card-label{
+      max-width: 90%;
+      display: flex;
+      flex-direction: column;
+      & > *:not(:last-child) {
+        margin-bottom: 24px;
+      }
+    }
+  }
+  &-content {
+    max-height: 0;
+    transition: all .35s;
+    font-size: 16px;
+    padding: 0;
+
+    .close {
+      display: inline-block;
+      color: $color-gosblue;
+      font-size: 16px;
+      margin-top: 24px;
+    }
+  }
+}
+
+.card,
+.card-pad {
+  background: $color-white;
+  &:not(:last-child){
+    margin-bottom: 24px;
+  }
+}
+
+input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+input:checked {
+  + .card-header::after {
+    transform: rotate(-90deg);
+  }
+  ~ .card-content {
+    max-height: 100vh;
+    padding-top: 24px;
+  }
+}
