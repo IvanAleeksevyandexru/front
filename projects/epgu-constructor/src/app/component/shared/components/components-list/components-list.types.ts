@@ -119,6 +119,7 @@ export interface CustomComponentAttr {
   minDate?: string;
   maxDate?: string;
   onlyFirstScreen?: boolean;
+  add?: { component: string; caption: string[] };
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

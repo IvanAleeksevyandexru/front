@@ -101,7 +101,9 @@ export class ComponentListRepositoryService {
   ): Observable<CustomListGenericData<Partial<ListItem>[]>> {
     return of({
       component,
-      data: this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
+      data: component.attrs?.add
+        ? this.toolsService.loadCycledDropdown(component)
+        : this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
     });
   }
 

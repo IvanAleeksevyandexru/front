@@ -3,7 +3,7 @@ import { Answer } from '../shared/types/answer';
 import {
   ComponentDto,
   DisplayDto,
-  ScenarioDto
+  ScenarioDto,
 } from '../form-player/services/form-player-api/form-player-api.types';
 
 /**
@@ -27,8 +27,8 @@ export interface ScreenStore extends Partial<ScenarioDto> {
 }
 
 export interface Screen {
-  prevStep: (data?: NavigationPayload) => void,
-  nextStep: (data?: NavigationPayload) => void,
+  prevStep: (data?: NavigationPayload) => void;
+  nextStep: (data?: NavigationPayload) => void;
 }
 
 export enum ScreenTypes {
@@ -38,5 +38,5 @@ export enum ScreenTypes {
   'CUSTOM' = 'CUSTOM',
   'UNIQUE' = 'UNIQUE',
   'INVITATION_ERROR' = 'INVITATION_ERROR',
-  'EMPTY' = 'EMPTY'
+  'EMPTY' = 'EMPTY',
 }

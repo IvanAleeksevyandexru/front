@@ -141,6 +141,8 @@ export interface ComponentAttrsDto {
   addContextQueryParams?: boolean;
   infoComponents?: string[];
   errors?: CarInfoErrorsDto;
+  add?: { component: string; caption: string[] };
+  hideAddNewChildButton?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
@@ -150,7 +152,7 @@ export interface ComponentUploadedFileDto {
   objectType: number;
   objectId: string;
   fileExt?: string;
-  fileName?:string;
+  fileName?: string;
   fileSize?: number;
   fileUid?: number;
   hasSign?: boolean;
