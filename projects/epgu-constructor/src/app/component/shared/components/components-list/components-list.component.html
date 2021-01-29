@@ -57,7 +57,7 @@
           *ngIf="dropDowns$ | async as dropDowns"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="$any(dropDowns[componentData.value?.id])"
-          [disabled]="$any(dropDowns[componentData.value?.id]?.length === 1)"
+          [disabled]="$any(dropDowns[componentData.value?.id])?.length === 1"
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
           [clearable]="true"

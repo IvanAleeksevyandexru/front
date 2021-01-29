@@ -16,6 +16,7 @@ import {
 import { ListItem } from 'epgu-lib';
 import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 import { DateRangeService } from '../date-range/date-range.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 @Injectable()
 export class ComponentListToolsService {
@@ -31,7 +32,7 @@ export class ComponentListToolsService {
 
   private prevValues: { [key: string]: string | number } = {};
 
-  constructor(private dateRangeService: DateRangeService) {}
+  constructor(private dateRangeService: DateRangeService, private screenService: ScreenService) {}
 
   updateStatusElements(
     dependentComponent: CustomComponent,
@@ -227,6 +228,44 @@ export class ComponentListToolsService {
     } else {
       return component.value;
     }
+  }
+
+  loadCycledDropdown(itemComponent: CustomComponent): Partial<ListItem>[] {
+    if (!itemComponent?.attrs?.add) {
+      return [];
+    }
+
+    const { component, caption } = itemComponent?.attrs?.add;
+    const answers = this.screenService.cachedAnswers;
+    const items = answers[component];
+    if (!items) {
+      return [];
+    }
+    let result:
+      | string
+      | Array<Record<string, string | boolean | number>>
+      | Record<string, string | boolean | number>;
+    try {
+      result = JSON.parse(items.value);
+    } catch (e) {
+      return [];
+    }
+    if (!Array.isArray(result)) {
+      return [];
+    }
+    return (result as Array<Record<string, string | boolean | number>>).map((answer) => {
+      const text = caption
+        .reduce((acc, value) => {
+          acc.push(answer[value]);
+          return acc;
+        }, [])
+        .join(' ');
+      return {
+        text,
+        id: JSON.stringify(answer),
+        originalItem: answer,
+      };
+    });
   }
 
   adaptiveDropDown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
