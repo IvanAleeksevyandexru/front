@@ -24,14 +24,15 @@ export class AutocompleteService {
   init(): void {
     this.screenService.display$
       .pipe(
-        tap(() => this.resetComponentsSuggestionsMap()),
         filter(display => display !== null),
         distinctUntilKeyChanged(('id')),
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((display: DisplayDto) => {
+        this.resetComponentsSuggestionsMap();
         const componentsSuggestionsGroupId: string = this.getComponentsSuggestionsGroupId(display);
         const componentsSuggestionsFieldsIds: string[] = this.getComponentsSuggestionsFieldsIds(display);
+
         if (componentsSuggestionsGroupId) {
           this.getSuggestionsGroup(componentsSuggestionsGroupId)
             .subscribe((suggestions: ISuggestionApi) => {
@@ -58,11 +59,12 @@ export class AutocompleteService {
         );
 
         if (component && payload.value) {
+          component.presetValue = payload.value;
           component.value = payload.value;
         }
 
-        console.log({ payload, component }, this.screenService.display);
-        this.screenService.display = { ...this.screenService.display, ...this.screenService.display.components };
+        this.screenService.updateScreenContent(this.screenService);
+        // this.screenService.display = { ...this.screenService.display };
       });
   }
 
