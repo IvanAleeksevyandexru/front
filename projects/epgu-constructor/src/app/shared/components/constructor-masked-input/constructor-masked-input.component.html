@@ -17,5 +17,8 @@
   [readOnly]="readonly"
   (change)="onChange($event)"
   [component]="component"
+  [autocomplete]="'off'"
+  [suggest]="suggestions"
+  (selectSuggest)="suggestHandle($event)"
   [ngClass]="{'showPlaceholder-on-focus': showPlaceholderOnFocus}"
 ></lib-standard-masked-input>

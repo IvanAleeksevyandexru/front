@@ -11,12 +11,15 @@ import {
 import { AbstractControl } from '@angular/forms';
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { takeUntil } from 'rxjs/operators';
+import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenService } from '../../../../screen/screen.service';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import {
   CustomComponent,
@@ -54,6 +57,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
+  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
@@ -65,6 +69,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     private repository: ComponentListRepositoryService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
+    public screenService: ScreenService,
   ) {
     this.changes = this.formService.changes;
   }

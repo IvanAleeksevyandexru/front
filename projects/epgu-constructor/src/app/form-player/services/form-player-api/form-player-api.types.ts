@@ -449,22 +449,3 @@ export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
 }
-
-export interface SuggestionsApiResponse {
-  fields: {
-    suggestionId: string;
-    values: {
-      value: string;
-      createdOn: string;
-    }
-  }[]
-  groups: {
-    suggestionGroupId: string;
-    values: [
-      {
-        suggestionId: string;
-        value: string;
-      }[]
-    ];
-  }[]
-}
