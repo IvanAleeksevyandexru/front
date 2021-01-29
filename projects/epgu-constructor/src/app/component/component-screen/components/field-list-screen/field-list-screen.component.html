@@ -6,6 +6,8 @@
   [isShowActionBtn]="true"
   [showNav]="screenService.showNav$ | async"
   [submitLabel]="screenService.submitLabel$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+  [nextStepAction]="nextStepAction"
 >
   <epgu-constructor-screen-pad class="screen-pad-body">
     <epgu-constructor-field-list [data]="screenService.component$ | async"></epgu-constructor-field-list>

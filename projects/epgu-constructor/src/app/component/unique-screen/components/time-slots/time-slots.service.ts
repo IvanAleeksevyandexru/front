@@ -95,7 +95,7 @@ export class TimeSlotsService {
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
           response.timeStart = new Date();
-          response.timeFinish = this.getTimeFinish(response.timeFinish);
+          response.timeFinish = this.getTimeFinish(response.timeStart);
         }
       }),
       catchError((error) => {
