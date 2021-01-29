@@ -18,6 +18,7 @@ import { of } from 'rxjs';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenPadComponent } from '../../../../../../shared/components/screen-pad/screen-pad.component';
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
+// eslint-disable-next-line max-len
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 
 describe('ConfirmPersonalUserDataComponent', () => {
