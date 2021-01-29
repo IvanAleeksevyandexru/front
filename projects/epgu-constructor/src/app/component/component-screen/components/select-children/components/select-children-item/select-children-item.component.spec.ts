@@ -9,8 +9,13 @@ import { ConstructorDropdownModule } from '../../../../../../shared/components/c
 import { ComponentsListModule } from '../../../../../shared/components/components-list/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { ItemStatus } from '../../select-children.models';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -63,6 +68,9 @@ describe('SelectChildrenItemComponent', () => {
         HealthService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   });

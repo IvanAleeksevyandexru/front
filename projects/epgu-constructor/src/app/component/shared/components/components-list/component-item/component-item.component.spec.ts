@@ -12,6 +12,13 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
 import { CoreModule } from '../../../../../core/core.module';
+import { ClickableLabelModule } from '../../../../../shared/directives/clickable-label/clickable-label.module';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ModalService } from '../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -34,8 +41,20 @@ describe('ComponentItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent],
-      imports: [CoreModule, BaseModule, RouterTestingModule, WebcamShootModule],
-      providers: [HealthService, { provide: ScreenService, useClass: ScreenServiceStub }],
+      imports: [
+        CoreModule,
+        BaseModule,
+        RouterTestingModule,
+        WebcamShootModule,
+        ClickableLabelModule,
+      ],
+      providers: [
+        HealthService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+      ],
     }).compileComponents();
     fb = TestBed.inject(FormBuilder);
   });

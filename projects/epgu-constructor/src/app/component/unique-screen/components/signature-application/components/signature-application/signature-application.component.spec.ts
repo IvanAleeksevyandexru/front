@@ -30,6 +30,7 @@ import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img
 import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationComponent } from './signature-application.component';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -54,7 +55,7 @@ describe('SignatureApplicationComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, ClickableLabelModule],
         declarations: [
           SignatureApplicationComponent,
           ScreenContainerComponent,
