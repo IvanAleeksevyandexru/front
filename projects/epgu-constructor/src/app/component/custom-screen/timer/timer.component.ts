@@ -177,9 +177,12 @@ export class TimerComponent {
    * @private
    */
   private getCurrentTime(): number {
-    return this.data.attrs?.currentTime
-      ? new Date(this.data.attrs.currentTime).getTime()
-      : Date.now();
+    if (this.data.attrs?.currentTime) {
+      const serverDate = new Date(this.data.attrs.currentTime).getTime();
+      const timeDifference = serverDate - Date.now();
+      return serverDate - timeDifference;
+    }
+    return Date.now();
   }
 
   /**
