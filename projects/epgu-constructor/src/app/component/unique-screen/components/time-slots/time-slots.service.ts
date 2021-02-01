@@ -327,7 +327,7 @@ export class TimeSlotsService {
       bookId: this.bookId,
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
       calendarName,
-      areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
+      areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
