@@ -334,8 +334,8 @@ export interface DisplayDto {
 
 export interface SuggestionGroup {
   groupId: string;
-  saveGroupDataCheckboxId: string;
-  groupNameFieldId: string;
+  saveGroupDataCheckboxId?: string;
+  groupNameFieldId?: string;
 }
 
 export interface ScenarioErrorsDto {

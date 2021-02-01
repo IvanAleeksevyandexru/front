@@ -75,6 +75,9 @@ export class ScreenContent {
     return this._display.getValue();
   }
   public set display(val: DisplayDto) {
+    val.suggestion = {
+      groupId: 'PASSPORT_DATA'
+    };
     this._display.next(val);
   }
   public get display$(): Observable<DisplayDto> {
