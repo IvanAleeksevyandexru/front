@@ -24,6 +24,8 @@ import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interf
 export class PhotoRequirementsModalComponent extends ModalBaseComponent implements OnInit {
   setting: PhotoRequirementsModalSetting;
   buttons: ConfirmationModalBaseButton[] = [];
+  validIconPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/icon-valid.svg`;
+  invalidIconPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/icon-invalid.svg`;
 
   constructor(
     public injector: Injector,
