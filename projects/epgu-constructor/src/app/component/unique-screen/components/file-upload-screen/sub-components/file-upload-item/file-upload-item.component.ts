@@ -10,6 +10,7 @@ import {
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
@@ -67,7 +68,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .getListByObjectId(this.objectId)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        catchError(() => of([])),
+        catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
         map((result) => this.filterServerListItemsForCurrentForm(result)),
         map((list: TerabyteListItem[]) => this.transformTerabyteItemsToUploadedFiles(list)),
       )
