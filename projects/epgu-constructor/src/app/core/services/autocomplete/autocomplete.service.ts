@@ -1,17 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { distinctUntilKeyChanged, filter, takeUntil, tap } from 'rxjs/operators';
-import { DisplayDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
+import { ComponentDto, DisplayDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ConfigService } from '../config/config.service';
 import { EventBusService } from '../event-bus/event-bus.service';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
-import { ISuggestionItem, ISuggestionApi, ISuggestionApiFieldsValue, ISuggestionItemList } from './autocomplete.inteface';
+import {
+  ISuggestionItem,
+  ISuggestionApi,
+  ISuggestionApiField,
+  ISuggestionApiFieldsValue,
+  ISuggestionItemList,
+} from './autocomplete.inteface';
 
 @Injectable()
 export class AutocompleteService {
-  componentsSuggestionsMap: { [key: string]: string } = {};
+  componentsSuggestionsMap: { [key: string]: string[] } = {};
+  groupId: string = null;
 
   constructor(
     private http: HttpClient,
@@ -19,76 +26,140 @@ export class AutocompleteService {
     private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
-  ) { }
+  ) {}
 
   init(): void {
     this.screenService.display$
       .pipe(
-        filter(display => display !== null),
-        distinctUntilKeyChanged(('id')),
+        filter((display) => display !== null),
+        distinctUntilKeyChanged('id'),
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((display: DisplayDto) => {
         this.resetComponentsSuggestionsMap();
-        const componentsSuggestionsGroupId: string = this.getComponentsSuggestionsGroupId(display);
-        const componentsSuggestionsFieldsIds: string[] = this.getComponentsSuggestionsFieldsIds(display);
+        this.groupId = this.getComponentsSuggestionsGroupId(display);
+        const componentsSuggestionsFieldsIds: string[] = this.getComponentsSuggestionsFieldsIds(
+          display,
+        );
 
-        if (componentsSuggestionsGroupId) {
-          this.getSuggestionsGroup(componentsSuggestionsGroupId)
-            .subscribe((suggestions: ISuggestionApi) => {
-              console.log({ suggestions });
-              // TODO: добавить парсинг, подготовку и проброс данных на уровень компонентов по componentsSuggestionsMap
-            });
+        if (this.groupId) {
+          this.getSuggestionsGroup(this.groupId).subscribe((suggestions: ISuggestionApi) => {
+            this.formatAndPassDataToComponents(suggestions);
+          });
           return;
         }
         if (componentsSuggestionsFieldsIds.length) {
-          this.getSuggestionsFields(componentsSuggestionsFieldsIds)
-            .subscribe((suggestions: ISuggestionApi) => {
+          this.getSuggestionsFields(componentsSuggestionsFieldsIds).subscribe(
+            (suggestions: ISuggestionApi) => {
               this.formatAndPassDataToComponents(suggestions);
-            });
+            },
+          );
           return;
         }
       });
 
-    this.eventBusService.on('suggestionSelectedEvent')
+    this.eventBusService
+      .on('suggestionSelectedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
-        const mnemonic = payload.mnemonic.split('.')[0];
-        const component = this.screenService.display?.components?.find(
-          component => component.id === this.componentsSuggestionsMap[mnemonic]
-        );
+        let [mnemonic] = payload.mnemonic.split('.');
+        let { value, groupIdx } = payload;
+        let component: ComponentDto;
 
-        if (component && payload.value) {
-          component.presetValue = payload.value;
-          component.value = payload.value;
+        if (this.groupId && groupIdx >= 0) {
+          Object.keys(this.screenService.suggestions).forEach((componentId) => {
+            mnemonic = this.screenService.suggestions[componentId].mnemonic;
+            component = this.findComponent(mnemonic);
+            value = this.screenService.suggestions[component.id]?.list[groupIdx]?.value;
+            this.setComponentValue(component, value);
+          });
+        } else {
+          component = this.findComponent(mnemonic);
+          this.setComponentValue(component, value);
         }
 
         this.screenService.updateScreenContent(this.screenService);
-        // this.screenService.display = { ...this.screenService.display };
       });
+  }
+
+  private findComponent(mnemonic: string): ComponentDto {
+    return this.screenService.display?.components?.find((component) => {
+      return this.findComponentByMnemonic(mnemonic, component);
+    });
+  }
+
+  private findComponentByMnemonic(componentMnemonic: string, component: ComponentDto): boolean {
+    return this.componentsSuggestionsMap[componentMnemonic].some(
+      (componentId) => component.id === componentId
+    );
+  }
+
+  private setComponentValue(component: ComponentDto, value: string): void {
+    if (component && value) {
+      component.presetValue = value;
+      component.value = value;
+    }
   }
 
   private formatAndPassDataToComponents(suggestions: ISuggestionApi): void {
     let list: ISuggestionItemList[];
     let result: { [key: string]: ISuggestionItem } = {};
+    const isGroupSuggest = suggestions.groups?.length;
+    if (isGroupSuggest) {
+      const [groupItem] = suggestions.groups;
+      const { values } = groupItem;
+      suggestions.fields = values.reduce(
+        (acc: ISuggestionApiField[], item, groupIdx): ISuggestionApiField[] => {
+          let suggestionFieldItem: ISuggestionApiField = null;
+          item.forEach((field) => {
+            const { suggestionId, value } = field;
+            const existingItem = acc.find(
+              (suggestItem) => suggestItem.suggestionId === suggestionId,
+            );
+            if (existingItem) {
+              existingItem.values.push({ value, groupIdx });
+            } else {
+              suggestionFieldItem = {
+                suggestionId,
+                values: [{ value, groupIdx }],
+              };
+              acc.push(suggestionFieldItem);
+            }
+          });
+          return acc;
+        },
+        [],
+      );
+    }
+
     suggestions.fields.forEach((field) => {
       const mnemonic = field.suggestionId;
-      const componentId = this.componentsSuggestionsMap[mnemonic];
+      const componentsIds: string[] = this.componentsSuggestionsMap[mnemonic];
       list = this.getFormattedList(field.values, mnemonic);
-      result[componentId] = {
-        mnemonic,
-        list
-      };
+      if (componentsIds) {
+        componentsIds.forEach((componentId: string) => {
+          result[componentId] = {
+            mnemonic,
+            list,
+          };
+        });
+      }
     });
+
     this.screenService.suggestions = result;
   }
 
-  private getFormattedList(values: ISuggestionApiFieldsValue[], mnemonic: string): ISuggestionItemList[] {
-    return values.map((item: ISuggestionApiFieldsValue, idx) => {
+  private getFormattedList(
+    values: ISuggestionApiFieldsValue[],
+    mnemonic: string,
+  ): ISuggestionItemList[] {
+    return values.map((item: ISuggestionApiFieldsValue) => {
+      const { value, groupIdx } = item;
       return {
-        value: item.value,
-        mnemonic: `${mnemonic}.${idx}`,
-        hints: []
+        value,
+        mnemonic: `${mnemonic}.${groupIdx}`,
+        hints: [],
+        groupIdx,
       };
     });
   }
@@ -97,7 +168,7 @@ export class AutocompleteService {
     groupId: string,
     serviceId: string = '11111',
   ): Observable<ISuggestionApi> {
-    const searchQuery = `group=${groupId}&serviceId=${serviceId}`;
+    const searchQuery = `groups=${groupId}&serviceId=${serviceId}`;
     const path = `${this.configService.suggestionsApiUrl}?${searchQuery}`;
     return this.httpGet<ISuggestionApi>(path);
   }
@@ -117,13 +188,11 @@ export class AutocompleteService {
   private resetComponentsSuggestionsMap(): void {
     this.componentsSuggestionsMap = null;
     this.componentsSuggestionsMap = {};
+    this.groupId = null;
   }
 
   private getComponentsSuggestionsGroupId(display: DisplayDto): string {
-    const groupId = display.suggestion?.groupId;
-    this.getComponentsSuggestionsFieldsIds(display);
-    this.componentsSuggestionsMap[groupId] = display.id;
-    return groupId;
+    return display.suggestion?.groupId || null;
   }
 
   private getComponentsSuggestionsFieldsIds(display: DisplayDto): string[] {
@@ -131,7 +200,10 @@ export class AutocompleteService {
       .filter((component) => component.attrs?.suggestionId)
       .map((component) => {
         const suggestionId = component.attrs?.suggestionId;
-        this.componentsSuggestionsMap[suggestionId] = component.id;
+        if (!this.componentsSuggestionsMap[suggestionId]) {
+          this.componentsSuggestionsMap[suggestionId] = [];
+        }
+        this.componentsSuggestionsMap[suggestionId].push(component.id);
         return suggestionId;
       });
   }

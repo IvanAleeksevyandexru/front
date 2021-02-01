@@ -8,6 +8,7 @@ export interface ISuggestionItemList {
   value: string;
   mnemonic: string;
   hints?: ISuggestionItemListHints[];
+  groupIdx?: number;
 }
 
 export interface ISuggestionItemListHints {
@@ -27,15 +28,16 @@ export interface ISuggestionApiField {
 
 export interface ISuggestionApiFieldsValue {
   value: string;
-  createdOn: string;
+  createdOn?: string;
+  groupIdx?: number;
 }
 
 export interface ISuggestionApiGroup {
   suggestionGroupId: string;
-  values: ISuuggestionApiGroupValue[];
+  values: ISuggestionApiGroupValue[][];
 }
 
-export interface ISuuggestionApiGroupValue {
+export interface ISuggestionApiGroupValue {
   suggestionId: string;
   value: string;
 }

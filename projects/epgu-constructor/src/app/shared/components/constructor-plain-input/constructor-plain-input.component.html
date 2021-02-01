@@ -15,4 +15,7 @@
   [type]="type"
   [pattern]="pattern"
   [component]="component"
+  [autocomplete]="'off'"
+  [suggest]="suggestions"
+  (selectSuggest)="suggestHandle($event)"
 ></lib-plain-input>

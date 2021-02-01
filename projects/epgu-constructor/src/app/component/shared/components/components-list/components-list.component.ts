@@ -13,7 +13,10 @@ import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { takeUntil } from 'rxjs/operators';
-import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -57,7 +60,8 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
-  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
+  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService
+    .suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
@@ -97,6 +101,14 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   public isHalfWidthItem(componentData: AbstractControl): boolean {
     return halfWidthItemTypes.includes(componentData.value?.type);
+  }
+
+  public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
+    if (Object.prototype.hasOwnProperty.call(event, 'list')) {
+      this.eventBusService.emit('suggestionsEditEvent', event);
+    } else {
+      this.eventBusService.emit('suggestionSelectedEvent', event);
+    }
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
