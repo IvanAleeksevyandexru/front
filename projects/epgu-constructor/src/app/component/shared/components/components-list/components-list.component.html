@@ -368,5 +368,6 @@
     [isTrim]="false"
     [component]="data.value"
     [showPlaceholderOnFocus]="data.value?.attrs?.showPlaceholderOnFocus"
+    [suggestions]="(suggestions$ | async)[data.value?.id]"
   ></epgu-constructor-masked-input>
 </ng-template>

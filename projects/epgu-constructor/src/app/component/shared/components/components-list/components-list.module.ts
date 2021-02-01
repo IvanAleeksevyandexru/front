@@ -19,14 +19,14 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { InputErrorModule } from '../../../../shared/components/input-error/input-error.module';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';
 import { CurrencyModule } from '../../../../shared/directives/currency/currency.module';
-import { MemoPipe } from '../../../../core/pipes/memo/memo.pipe';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { DateRangeService } from './services/date-range/date-range.service';
 // eslint-disable-next-line max-len
 import { ConstructorMultilineInputModule } from '../../../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
+import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
 
-const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent, MemoPipe];
+const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
@@ -47,6 +47,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     CurrencyModule,
     ConstructorDatePickerModule,
     ConstructorMultilineInputModule,
+    MemoModule,
   ],
   providers: [
     ValidationService,

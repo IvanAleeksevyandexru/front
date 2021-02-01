@@ -14,7 +14,7 @@
     "moment": "2.24.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
-    "epgu-lib": "0.0.943",
+    "epgu-lib": "0.0.952",
     "date-fns": "2.16.1",
     "uuid": "8.3.0"
   },

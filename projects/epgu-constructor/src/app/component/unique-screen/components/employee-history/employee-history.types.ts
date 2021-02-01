@@ -35,6 +35,7 @@ export interface EmployeeHistoryModel extends EmployeeHistoryBaseModel {
   to: MonthYear;
   minDateTo?: MonthYear;
   error?: string;
+  label: string;
 }
 
 export interface EmployeeHistoryAvailableDates {
@@ -48,3 +49,8 @@ export interface EmployeeHistoryUncheckedPeriod {
 }
 
 export type EmployeeType = 'employed' | 'unemployed' | 'military' | 'student';
+
+export interface EmployeeHistoryFormData {
+  isValid: boolean;
+  data: EmployeeHistoryModel[];
+}
