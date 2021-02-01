@@ -26,6 +26,7 @@ import { ImgPrefixerPipe } from '../../../../../shared/pipes/img-prefixer/img-pr
 import { SafePipe } from '../../../../../shared/pipes/safe/safe.pipe';
 import { UnusedPaymentInterface } from '../unused-payment.interface';
 import { UnusedPaymentsComponent } from './unused-payments.component';
+import { ClickableLabelModule } from '../../../../../shared/directives/clickable-label/clickable-label.module';
 
 describe('UnusedPaymentsComponent', () => {
   let component: UnusedPaymentsComponent;
@@ -47,7 +48,7 @@ describe('UnusedPaymentsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, ClickableLabelModule],
         declarations: [
           UnusedPaymentsComponent,
           ScreenContainerComponent,

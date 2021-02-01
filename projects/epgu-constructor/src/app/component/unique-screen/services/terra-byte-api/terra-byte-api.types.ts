@@ -63,7 +63,8 @@ export interface FileUploadAttributes {
 export interface Clarifications {
   [key: string]: {
     text?: string;
-  };
+    title?: string;
+  }
 }
 
 /**

@@ -63,7 +63,7 @@ export class TimeSlotsService {
       return this.cancelSlot(this.bookId).pipe(
         switchMap((response) => {
           if (response.error) {
-            this.errorMessage = response.error.errorDetail
+            this.errorMessage = response.error?.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
             this.loggerService.error([response.error]);
@@ -85,7 +85,7 @@ export class TimeSlotsService {
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap((response) => {
         if (response.error) {
-          this.errorMessage = response.error.errorDetail
+          this.errorMessage = response.error?.errorDetail
             ? response.error.errorDetail.errorMessage
             : 'check log';
           this.loggerService.error([response.error]);
@@ -154,7 +154,7 @@ export class TimeSlotsService {
         switchMap((areaNames) => {
           return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
             map((response) => {
-              if (response.error.errorDetail.errorCode === 0) {
+              if (response.error?.errorDetail.errorCode === 0 || response.error === null) {
                 this.initSlotsMap(response.slots, areaNames);
               } else {
                 const { errorMessage, errorCode } = response.error.errorDetail;
@@ -237,7 +237,7 @@ export class TimeSlotsService {
       .pipe(
         tap((response) => {
           if (response.error) {
-            this.errorMessage = response.error.errorDetail
+            this.errorMessage = response.error?.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
             this.loggerService.log([response.error]);
@@ -257,7 +257,7 @@ export class TimeSlotsService {
     const { serviceId, eserviceId, routeNumber } = this.config.timeSlots[this.timeSlotsType];
 
     return {
-      organizationId: [this.department.attributeValues.CODE || this.department.attributeValues.code],
+      organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
       caseNumber: this.orderId,
       serviceId: [this.serviceId || serviceId],
       eserviceId,
@@ -283,6 +283,17 @@ export class TimeSlotsService {
     return settings[slotsType];
   }
 
+  private getSlotsRequestOrganizationId(slotsType: TimeSlotsTypes): string {
+    const settings = {
+      [TimeSlotsTypes.BRAK]: this.department.attributeValues.CODE,
+      [TimeSlotsTypes.RAZBRAK]: this.department.attributeValues.CODE,
+      [TimeSlotsTypes.MVD]: this.department.value,
+      [TimeSlotsTypes.GIBDD]: this.department.attributeValues.code,
+    };
+
+    return settings[slotsType];
+  }
+
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
     if (!this.bookId || !this.isBookedDepartment || this.waitingTimeExpired) {
       this.bookId = uuidv4();
@@ -301,8 +312,8 @@ export class TimeSlotsService {
 
     return {
       preliminaryReservation,
-      address: this.department.attributeValues.ADDRESS,
-      orgName: this.department.attributeValues.FULLNAME,
+      address: this.department.attributeValues.ADDRESS || this.department.attributeValues.ADDRESS_OUT,
+      orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
       subject,
       params: [
@@ -314,9 +325,9 @@ export class TimeSlotsService {
       eserviceId,
       serviceCode,
       bookId: this.bookId,
-      organizationId: this.department.attributeValues.CODE,
+      organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
       calendarName,
-      areaId: [selectedSlot.areaId || this.department.attributeValues.AREA_NAME],
+      areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,

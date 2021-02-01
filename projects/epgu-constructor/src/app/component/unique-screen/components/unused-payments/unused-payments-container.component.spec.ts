@@ -39,6 +39,7 @@ import { UnusedPaymentInterface } from './unused-payment.interface';
 import { UnusedPaymentsContainerComponent } from './unused-payments-container.component';
 import { UnusedPaymentsService } from './unused-payments.service';
 import { UnusedPaymentsServiceStub } from './unused-payments.service.stub';
+import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
@@ -79,7 +80,7 @@ describe('UnusedPaymentsContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, ClickableLabelModule],
         declarations: [
           UnusedPaymentsComponent,
           UnusedPaymentsContainerComponent,

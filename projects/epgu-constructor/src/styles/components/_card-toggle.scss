@@ -1,7 +1,7 @@
-@import "palettes";
-@import 'functions';
+@import "../core/palettes";
+@import '../core/functions';
 
-.card-pad{
+.card-toggle-pad{
   padding: $screen-pad-p;
   border-radius: $border-xl;
   @include shadow-second();
@@ -11,7 +11,7 @@
   }
 }
 
-.card {
+.card-toggle {
   width: 100%;
   overflow: hidden;
   &-header {
@@ -35,7 +35,7 @@
       justify-content: center;
       transform: rotate(90deg);
     }
-    & .card-label{
+    & .card-toggle-label{
       max-width: 90%;
       display: flex;
       flex-direction: column;
@@ -64,18 +64,18 @@
   }
 
   input:checked {
-    + .card-header::after {
+    + .card-toggle-header::after {
       transform: rotate(-90deg);
     }
-    ~ .card-content {
+    ~ .card-toggle-content {
       max-height: 100vh;
       padding-top: 24px;
     }
   }
 }
 
-.card,
-.card-pad {
+.card-toggle,
+.card-toggle-pad {
   background: $color-white;
   &:not(:last-child){
     margin-bottom: 24px;
