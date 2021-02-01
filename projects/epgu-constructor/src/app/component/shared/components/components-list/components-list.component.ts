@@ -61,7 +61,8 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
-  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
+  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService
+    .suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
