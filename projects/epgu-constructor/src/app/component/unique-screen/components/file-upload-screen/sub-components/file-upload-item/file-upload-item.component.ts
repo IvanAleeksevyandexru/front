@@ -67,11 +67,7 @@ export class FileUploadItemComponent implements OnDestroy {
       .getListByObjectId(this.objectId)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        catchError((e) => {
-          this.listIsUploadingNow = false;
-          this.changeDetectionRef.markForCheck();
-          return throwError(e);
-        }),
+        catchError(() => of([])),
         map((result) => this.filterServerListItemsForCurrentForm(result)),
         map((list: TerabyteListItem[]) => this.transformTerabyteItemsToUploadedFiles(list)),
       )
