@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TerabyteListItem, TerraFileOptions, TerraUploadFileOptions } from './terra-byte-api.types';
-import { Observable, range, from } from 'rxjs';
+import {
+  Chunk,
+  ChunkPacket,
+  TerabyteListItem,
+  TerraFileOptions,
+  TerraUploadFileOptions,
+} from './terra-byte-api.types';
+import { Observable, range, from, combineLatest } from 'rxjs';
 import {
   BYTES_IN_KB,
   TerraUploadedFile,
@@ -9,12 +15,15 @@ import {
 import { ConfigService } from '../../../../core/services/config/config.service';
 import * as FileSaver from 'file-saver';
 import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
  */
 @Injectable()
 export class TerraByteApiService {
+  chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; //кол-во в мб
+  chunkPacketMaxSize = 10;
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
@@ -59,68 +68,68 @@ export class TerraByteApiService {
     );
   }
 
+  uploadForm(form: FormData): Observable<void> {
+    return this.http.post<void>(
+      this.getTerabyteApiUrl('/upload'),
+      form,
+      this.getServerRequestOptions(),
+    );
+  }
+
+  createChunk([chunk, chunks, file, options]: [
+    number,
+    number,
+    File | Blob,
+    TerraUploadFileOptions,
+  ]): Chunk {
+    const endIndex = chunk + 1;
+    const start = chunk * this.chunkSize;
+    const end = endIndex === chunks ? file.size : endIndex * this.chunkSize;
+    return {
+      form: this.createFormData({ ...options, chunks, chunk }, file.slice(start, end)),
+      chunk,
+    };
+  }
+
+  accumuleChunkPacket(acc: ChunkPacket[], value: Chunk): ChunkPacket[] {
+    if (value.chunk === 0) {
+      acc.push([value.form]); // часть с 0 байтом должна быть отправлена первой
+      return acc;
+    }
+    if (acc.length === 1) {
+      acc.push([]); //запрещаем добавлять в 1 часть
+    }
+    if (acc[acc.length - 1].length === this.chunkPacketMaxSize) {
+      // максимум параллельно запсукаемых элементов
+      acc.push([]);
+    }
+    acc[acc.length - 1].push(value.form);
+    return acc;
+  }
+
+  uploadByChunkFile(options: TerraUploadFileOptions, file: File | Blob): Observable<void> {
+    const chunks = Math.ceil(file.size / this.chunkSize);
+
+    return combineLatest([range(0, chunks), of(chunks), of(file), of(options)]).pipe(
+      map(this.createChunk.bind(this)),
+      reduce<Chunk, ChunkPacket[]>(this.accumuleChunkPacket.bind(this), []),
+      concatMap((streams) => from(streams)),
+      concatMap((formList) =>
+        from(formList).pipe(mergeMap((form) => this.uploadForm(form as FormData))),
+      ),
+      reduce((acc) => acc, undefined),
+    );
+  }
+
   /**
    * Загружает файл на сервер
    * @param options - опции для отправки файла
    * @param file - данные файла
    */
   uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<void> {
-    const chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; //кол-во в мб
-    if (file.size <= chunkSize) {
-      const formData = this.createFormData(options, file);
-
-      return this.http.post<void>(
-        this.getTerabyteApiUrl('/upload'),
-        formData,
-        this.getServerRequestOptions(),
-      );
-    } else {
-      const chunks = Math.ceil(file.size / chunkSize);
-      return range(0, chunks).pipe(
-        map((index) => {
-          const startIndex = index;
-          const endIndex = index + 1;
-          const start = startIndex * chunkSize;
-          const end = endIndex === chunks ? file.size : endIndex * chunkSize;
-          return {
-            form: this.createFormData({ ...options, chunks, chunk: index }, file.slice(start, end)),
-            index,
-          };
-        }),
-        reduce((acc, value) => {
-          if (value.index === 0) {
-            acc.push([value.form]); // часть с 0 байтом должна быть отправлена первой
-            return acc;
-          } else {
-            if (acc.length === 1) {
-              acc.push([]); //запрещаем добавлять в 1 часть
-            }
-            if (acc[acc.length - 1].length === 10) {
-              // максимум параллельно запсукаемых элементов
-              acc.push([]);
-            }
-            acc[acc.length - 1].push(value.form);
-            return acc;
-          }
-        }, []),
-        concatMap((streams) => {
-          return from(streams);
-        }),
-        concatMap((formList) => {
-          return from(formList).pipe(
-            mergeMap((form) => {
-              return this.http.post<void>(
-                this.getTerabyteApiUrl('/upload'),
-                form,
-                this.getServerRequestOptions(),
-              );
-            }),
-          );
-        }),
-        reduce((acc) => acc++, 0),
-        map(() => undefined),
-      );
-    }
+    return file.size <= this.chunkSize
+      ? this.uploadForm(this.createFormData(options, file))
+      : this.uploadByChunkFile(options, file);
   }
 
   createFormData(options: TerraUploadFileOptions, file: File | Blob): FormData {
