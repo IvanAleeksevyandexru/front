@@ -52,6 +52,8 @@ import { SelectChildrenComponent } from '../../projects/epgu-constructor/src/app
 import { PaymentTypeSelectorButtonComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/components/payment-type-selector-button/payment-type-selector-button.component';
 import { PaymentTypeSelectorModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/payment-type-selector.module';
 import { PaymentTypeSelectorComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/components/payment-type-selector/payment-type-selector.component';
+import { EmployeeHistoryFormComponent } from '../../dist/epgu-constructor/app/component/unique-screen/components/employee-history/components/employee-history-form/employee-history-form.component';
+import { Gender } from '../../projects/epgu-constructor/src/app/shared/types/gender';
 
 export default {
   title: 'Example/EPGU Constructor',
@@ -465,4 +467,63 @@ SelectChildren.args = {
       '[{"ai18_4":"Dsssss","ai18_6":false,"ai18_0":"7588631","ai18_1":"2020-01-14T00:00:00Z","ai18_2":"F","ai18_3":"Впрол"}]',
     required: true,
   },
+};
+
+export const EmployeeHistory = (args: EmployeeHistoryFormComponent) => ({
+  component: EmployeeHistoryFormComponent,
+  props: args,
+});
+EmployeeHistory.args = {
+  ds: [
+    {
+      label: `Я учил${Gender.male === Gender.male ? 'ся' : 'ась'}`,
+      type: 'student',
+      position: '',
+      place: 'Место учебы без сокращений и аббревиатур',
+      placeHint: 'Как в дипломе или аттестате',
+      address: 'Юридический адрес полностью, включая регион и город',
+    },
+    {
+      label: `Я работал${Gender.male === Gender.male ? '' : 'а'}`,
+      type: 'employed',
+      position: 'Ваша должность',
+      positionHint: 'Если вы ИП, указывайте — Индивидуальный предприниматель',
+      place: 'Место работы без сокращений и аббревиатур',
+      placeHint: 'Как в трудовой. Если вы ИП, указывайте — Индивидуальный предприниматель ФИО',
+      address: 'Юридический адрес полностью, включая регион и город',
+    },
+    {
+      label: `Я служил${Gender.male === Gender.male ? '' : 'а'}`,
+      type: 'military',
+      position: 'Воинская должность и звание',
+      place: 'Номер части и род (вид) войск',
+      placeHint: 'Как в военном билете',
+      address: 'Юридический адрес полностью, включая регион и город',
+    },
+    {
+      label: `Я не работал${Gender.male === Gender.male ? '' : 'а'} и не учил${
+        Gender.male === Gender.male ? 'ся' : 'ась'
+      }`,
+      type: 'unemployed',
+      position: '',
+      place: '',
+      address:
+        'Адрес постоянной регистрации (прописки) или временной регистрации (место пребывания) в этот период',
+    },
+  ],
+  componentValue: [],
+  fstuc: null,
+  init: [
+    {
+      id: 'eh1',
+      type: 'EmployeeHistory',
+      label: '',
+      attrs: { years: 10, nonStop: true },
+      linkedValues: [],
+      arguments: {},
+      value: '',
+      required: true,
+    },
+    Gender.male,
+  ],
 };

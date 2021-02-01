@@ -72,6 +72,7 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
   isWebcamAvailable: boolean;
   isModalOpened: boolean; // flag is for keeping one modal instance opened
 
+  storedImageObjectUrl: string;
   previousImageObjectUrl: string; // keep previous image url if image is changing from modal window
   croppedImageUrl: string;
 
@@ -204,18 +205,19 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
     return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
   }
 
+  setImageUrl(imageUrl: string): void {
+    this.storedImageObjectUrl = imageUrl;
+    this.croppedImageUrl = imageUrl;
+    this.previousImageObjectUrl = imageUrl;
+    this.changeDetectionRef.markForCheck();
+  }
+
   checkImagePresence(): void {
     const requestData = this.getRequestData();
 
     if (requestData.mnemonic && requestData.name) {
       this.terabyteService.downloadFile(requestData).subscribe((file: Blob | File) => {
-        // @ts-ignore
-        const setImageUrl = (imageUrl: string): void => {
-          this.croppedImageUrl = imageUrl;
-          this.previousImageObjectUrl = imageUrl;
-          this.changeDetectionRef.markForCheck();
-        };
-        this.blobToDataURL(file, setImageUrl);
+        this.blobToDataURL(file, this.setImageUrl.bind(this));
       });
     }
   }
@@ -243,9 +245,10 @@ export class UploadAndEditPhotoComponent implements OnInit, OnDestroy {
 
     const imageErrors = this.getImageError(isSizeValid, isTypeValid, isDPIValid(), width, height);
 
-    if (this.previousImageObjectUrl) {
+    if (this.storedImageObjectUrl) {
       this.imgSubject.next({ imageObjectUrl: this.previousImageObjectUrl, imageErrors });
     } else {
+      this.setImageUrl(this.storedImageObjectUrl);
       this.imgAttachErrorSubject.next(imageErrors);
     }
   }

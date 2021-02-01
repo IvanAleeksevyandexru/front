@@ -6,11 +6,12 @@ import {
   FormGroup,
   ValidationErrors,
   ValidatorFn,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
+
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
@@ -18,9 +19,8 @@ import {
   EmployeeHistoryDataSource,
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-
-import { EmployeeHistoryDatasourceService } from './employee-history.datasource.service';
-import { EmployeeHostoryErrors } from '../employee-hostory.enums';
+import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
+import { EmployeeHostoryErrors } from '../employee-history.enums';
 import { defaultScreensAmount } from '../../repeatable-fields/repeatable-fields.constant';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 
@@ -36,7 +36,7 @@ export class EmployeeHistoryFormService {
     private fb: FormBuilder,
     private unsubscribeService: UnsubscribeService,
     private monthsService: EmployeeHistoryMonthsService,
-    private ds: EmployeeHistoryDatasourceService,
+    private ds: EmployeeHistoryDataSourceService,
     private datesToolsService: DatesToolsService,
   ) {
     this.defaultType = 'student';
@@ -48,7 +48,7 @@ export class EmployeeHistoryFormService {
   }
 
   newGeneration(generationData?: EmployeeHistoryModel): void {
-    if (!this.isScreensAvailable()) {
+    if (!this.isScreensAvailable(this.employeeHistoryForm.length)) {
       return;
     }
 
@@ -85,8 +85,8 @@ export class EmployeeHistoryFormService {
     this.employeeHistoryForm = this.fb.array([]);
   }
 
-  isScreensAvailable(): boolean {
-    return this.employeeHistoryForm.length < defaultScreensAmount;
+  isScreensAvailable(length: number): boolean {
+    return length < defaultScreensAmount;
   }
 
   private newGenerationWatch(form: FormGroup): void {
@@ -112,7 +112,7 @@ export class EmployeeHistoryFormService {
       .valueChanges.pipe(takeUntil(this.unsubscribeService))
       .subscribe((type: EmployeeType) => {
         this.setValidatorsByDataSource(
-          this.ds.getDataSourceByGender().find((e: EmployeeHistoryDataSource) => e.type === type),
+          this.ds.dataSource.find((e: EmployeeHistoryDataSource) => e.type === type),
           form,
         );
       });
@@ -170,10 +170,11 @@ export class EmployeeHistoryFormService {
 
   private inputValidators(): ValidatorFn {
     //TODO: сделать валидацию через json
-    const errorMsg = 'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
+    const errorMsg =
+      'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
 
     return (control: AbstractControl): ValidationErrors => {
-      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/,'gm');
+      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/, 'gm');
       const hasError = !pattern.test(control.value);
 
       return hasError ? { errorMsg } : null;
