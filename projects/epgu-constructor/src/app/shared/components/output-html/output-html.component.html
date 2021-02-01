@@ -1,6 +1,6 @@
 <div
   class="text"
-  #innerHtml
+  epgu-constructor-clickable-label
   [innerHTML]="html | imgPrefixer | safe: 'html'"
-  (click)="clickToInnerHTML($event, innerHtml)"
+  [clarifications]="clarifications"
 ></div>

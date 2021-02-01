@@ -18,7 +18,7 @@ import {
   ComponentActionDto,
   ComponentAttrsDto,
   ComponentDto,
-  DTOActionAction
+  DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
@@ -33,11 +33,7 @@ import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../../models/application.interface';
 import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
 import { SignatureApplicationContainerComponent } from './signature-application-container.component';
-
-
-
-
-
+import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
@@ -74,7 +70,7 @@ describe('SignatureApplicationContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, ClickableLabelModule],
         declarations: [
           SignatureApplicationComponent,
           SignatureApplicationContainerComponent,

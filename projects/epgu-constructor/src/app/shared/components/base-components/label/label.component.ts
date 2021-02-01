@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Clarifications } from '../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-label',
@@ -6,12 +7,11 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   styleUrls: ['./label.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LabelComponent implements OnInit {
+export class LabelComponent {
   @Input() for: string;
   @Input() required: boolean;
   @Input() tips: string;
   @Input() isTextHelper: boolean;
   @Input() label: string;
-
-  ngOnInit(): void {}
+  @Input() clarifications: Clarifications;
 }

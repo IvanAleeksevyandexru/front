@@ -24,6 +24,12 @@ import { ScreenPadModule } from '../../../../../shared/components/screen-pad/scr
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CachedAnswersDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentWrapperComponent } from '../../../shared/component-wrapper.component';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ModalService } from '../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
@@ -99,6 +105,9 @@ describe('SelectChildrenScreenContainerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   });
