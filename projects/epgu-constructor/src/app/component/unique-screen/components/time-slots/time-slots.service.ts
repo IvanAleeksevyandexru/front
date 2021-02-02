@@ -312,7 +312,8 @@ export class TimeSlotsService {
 
     return {
       preliminaryReservation,
-      address: this.department.attributeValues.ADDRESS || this.department.attributeValues.ADDRESS_OUT,
+      address: this.department.attributeValues.ADDRESS || this.department.attributeValues.ADDRESS_OUT
+        || this.department.attributeValues.address,
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
       subject,
