@@ -1,0 +1,10 @@
+<ng-content></ng-content>
+<input
+  #input
+  type="file"
+  [attr.capture]="capture"
+  [attr.accept]="accept"
+  [attr.multiple]="multiple"
+  (click)="reset(input)"
+  (change)="select($any($event.target).files)"
+/>

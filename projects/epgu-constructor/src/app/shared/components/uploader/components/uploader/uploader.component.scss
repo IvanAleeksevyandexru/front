@@ -1,0 +1,15 @@
+@import '../../../../../../styles/core/index';
+
+:host {
+  border: 2px dashed $color-divider;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 24px 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.highlight {
+  border-color: $color-active-item !important;
+}
