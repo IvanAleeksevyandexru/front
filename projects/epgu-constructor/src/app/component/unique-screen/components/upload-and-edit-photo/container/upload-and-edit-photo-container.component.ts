@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { share } from 'rxjs/operators';
 
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
@@ -16,7 +15,7 @@ export class UploadAndEditPhotoContainerComponent {
   croppedImageUrl: string;
   startToUploadPhoto$ = new BehaviorSubject<{ isStart: boolean }>({ isStart: false });
   startToChangeCroppedImageUrl$ = new BehaviorSubject<{ isStart: boolean }>({ isStart: false });
-  data$: Observable<ComponentDto> = this.screenService.component$.pipe(share());
+  data$: Observable<ComponentDto> = this.screenService.component$;
 
   constructor(
     public screenService: ScreenService,

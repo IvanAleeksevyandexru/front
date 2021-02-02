@@ -23,42 +23,20 @@ export class UploadService {
     requestData: ComponentUploadedFileDto,
     croppedImageUrl: string,
   ): Observable<TerabyteListItem & ComponentUploadedFileDto> {
-    // TODO: вынести в серивс
-    // let requestData = this.getRequestData();
     let dataAfterSend: ComponentUploadedFileDto;
-
-    // const deletePrevImage = (fileName: string): Observable<TerraUploadedFile> =>
-    //   fileName
-    //     ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
-    //     : of(null);
-    // const compressFile = (): Observable<Blob | File> => {
-    //   const blobFile = TerraByteApiService.base64toBlob(croppedImageUrl);
-    //   return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
-    // };
-    // const uploadFile = (file: Blob | File): Observable<void> => {
-    //   const fileName2 = fileName.split('.');
-    //   fileName2[fileName2.length - 1] = 'jpg';
-    //   const name = this.utils.cyrillicToLatin(fileName2.join('.'));
-    //   requestData = { ...requestData, name };
-    //   return this.terabyteService.uploadFile(requestData, file);
-    // };
 
     return of(requestData.name).pipe(
       switchMap((fileName) => this.deletePrevImage(fileName, requestData)),
       switchMap(() => this.compressFile(croppedImageUrl)),
       map((compressedFile) => this.prepareFile(fileName, requestData, compressedFile)),
-      tap(({ requestData }) => {
-        dataAfterSend = requestData;
-      }),
+      tap(({ requestData }) => dataAfterSend = requestData),
       switchMap(({ requestData, compressedFile }) => this.uploadFile(compressedFile, requestData)),
       switchMap(() => this.terabyteService.getFileInfo(requestData)),
-      map((terraFile) => {
-        return { ...dataAfterSend, ...terraFile };
-      }),
+      map((terraFile) => ({ ...dataAfterSend, ...terraFile })),
     );
   }
 
-  deletePrevImage(
+  private deletePrevImage(
     fileName: string,
     requestData: ComponentUploadedFileDto,
   ): Observable<TerraUploadedFile> {
@@ -67,12 +45,13 @@ export class UploadService {
       : of(null);
   }
 
-  compressFile(croppedImageUrl: string): Observable<Blob | File> {
+  private compressFile(croppedImageUrl: string): Observable<Blob | File> {
     const blobFile = TerraByteApiService.base64toBlob(croppedImageUrl);
+
     return fromPromise(this.compressionService.imageCompression(blobFile, { maxSizeMB: 5 }));
   }
 
-  prepareFile(
+  private prepareFile(
     fileName: string,
     requestData: ComponentUploadedFileDto,
     compressedFile: Blob | File,
@@ -80,10 +59,11 @@ export class UploadService {
     const prepareFileName = fileName.split('.');
     prepareFileName[prepareFileName.length - 1] = 'jpg';
     const name = this.utils.cyrillicToLatin(prepareFileName.join('.'));
+
     return { requestData: { ...requestData, name }, compressedFile };
   }
 
-  uploadFile(file: Blob | File, requestData: ComponentUploadedFileDto): Observable<void> {
+  private uploadFile(file: Blob | File, requestData: ComponentUploadedFileDto): Observable<void> {
     return this.terabyteService.uploadFile(requestData, file);
   }
 }
