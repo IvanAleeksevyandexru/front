@@ -30,7 +30,7 @@ export class UploaderComponent implements AfterContentInit {
   subs: Subscription;
 
   @HostBinding('class.highlight')
-  get classHighlight() {
+  get classHighlight(): boolean {
     return this.isHighlight;
   }
 
