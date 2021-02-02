@@ -29,4 +29,7 @@ export enum UniqueScreenComponentTypes {
   childrenListUnder14 = 'ChildrenListUnder14', // TODO: удалить потом как depricated
   childrenListAbove14 = 'ChildrenListAbove14', // TODO: удалить потом как depricated
   docInput = 'DocInput',
+  confirmLegalData = 'ConfirmLegalData',
+  confirmLegalPhone = 'ConfirmLegalPhone',
+  confirmLegalEmail = 'ConfirmLegalEmail'
 }

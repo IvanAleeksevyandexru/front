@@ -12,7 +12,8 @@ import {
   ActionApiResponse,
   ActionDTO,
   ActionType,
-  ComponentActionDto
+  ComponentActionDto,
+  DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore, ScreenTypes } from '../../../screen/screen.types';
@@ -71,7 +72,7 @@ export class ActionService {
         this.navService.redirectToLK();
         break;
       case ActionType.profileEdit:
-        this.navService.redirectToProfileEdit();
+        this.redirectToEdit(action);
         break;
       case ActionType.home:
         this.navService.redirectToHome();
@@ -194,4 +195,13 @@ export class ActionService {
     };
     return store;
   };
+
+  private redirectToEdit({ action }: ComponentActionDto): void {
+    switch (action) {
+      case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
+        return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
+      default:
+        return this.navService.redirectToProfileEdit();
+    }
+  }
 }
