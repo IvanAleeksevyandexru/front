@@ -23,7 +23,7 @@ import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 })
 export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
-    map((i) => this.prepareValue(i)),
+    map((component) => this.prepareValue(component)),
   );
   isEditContactAction: boolean;
   componentScreenComponentTypes = ComponentScreenComponentTypes;
