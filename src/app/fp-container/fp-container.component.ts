@@ -2,7 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppService } from '../app.service';
-import { ServiceEntity } from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
+import {
+  ServiceEntity,
+  ServiceInfo,
+} from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
 import { FormPlayerContext } from '../../../dist/epgu-constructor/app/form-player/form-player.types';
 
 @Component({
@@ -17,6 +20,7 @@ export class FpContainerComponent {
       const service: ServiceEntity = {
         serviceId: config.serviceId,
         targetId: config.targetId,
+        serviceInfo: config.serviceInfo ? (JSON.parse(config.serviceInfo) as ServiceInfo) : null,
         orderId: config.orderId,
         invited: config.invited,
         canStartNew: config.canStartNew,
@@ -28,6 +32,10 @@ export class FpContainerComponent {
 
       if (typeof config.canStartNew === 'string' && config.canStartNew === '') {
         delete service.canStartNew;
+      }
+
+      if (typeof config.serviceInfo === 'string' && config.serviceInfo === '') {
+        delete service.serviceInfo;
       }
 
       return service;

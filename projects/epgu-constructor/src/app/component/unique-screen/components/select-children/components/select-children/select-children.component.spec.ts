@@ -21,6 +21,12 @@ import { ConstructorDropdownModule } from '../../../../../../shared/components/c
 import { ComponentsListModule } from '../../../../../shared/components/components-list/components-list.module';
 import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ItemStatus } from '../../select-children.models';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -93,6 +99,9 @@ describe('SelectChildrenComponent', () => {
         HealthService,
         EventBusService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     })
       .overrideComponent(SelectChildrenComponent, {

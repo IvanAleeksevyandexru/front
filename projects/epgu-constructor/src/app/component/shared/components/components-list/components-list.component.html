@@ -339,7 +339,8 @@
 
 <ng-template #plainInput let-data>
   <epgu-constructor-constructor-plain-input
-    [epgu-constructor-currency-transform]="data.value?.attrs?.price"
+    [price]="data.value?.attrs?.price"
+    [rank]="data.value?.attrs?.rank"
     [textTransformType]="data.value?.attrs?.fstuc"
     [invalid]="data.get('value').invalid && data.get('value').touched"
     [name]="data.value?.id"

@@ -6,6 +6,14 @@ import { By } from '@angular/platform-browser';
 import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;
@@ -15,7 +23,13 @@ describe('SelectChildrenItemWrapperComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemWrapperComponent],
       imports: [RouterTestingModule, BaseModule, BaseComponentsModule],
-      providers: [HealthService],
+      providers: [
+        HealthService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+      ],
     }).compileComponents();
   });
 
