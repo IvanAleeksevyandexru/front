@@ -198,10 +198,10 @@ export class ActionService {
 
   private redirectToEdit({ action }: ComponentActionDto): void {
     switch (action) {
-      case DTOActionAction.editPassportData:
-        return this.navService.redirectToProfileEdit();
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
+      default:
+        return this.navService.redirectToProfileEdit();
     }
   }
 }
