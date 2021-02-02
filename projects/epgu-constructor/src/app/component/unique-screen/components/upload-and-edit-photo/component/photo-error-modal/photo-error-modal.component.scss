@@ -1,0 +1,87 @@
+@import '../../../../../../../styles/core/index';
+
+:host::ng-deep {
+  /* jscpd:ignore-start */
+  .photo-error-modal {
+    display: flex;
+    flex-direction: column;
+    @include modal-body();
+    width: 634px;
+    height: fit-content;
+    padding: 32px 0;
+    border-radius: 12px;
+
+    @include tablets-down {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    @include phones-down {
+      padding: 24px 0;
+    }
+    /* jscpd:ignore-end */
+    &__header {
+      padding-bottom: 22px;
+      margin: 0 32px;
+      border-bottom: 1px solid $color-divider;
+
+      @include phones-down {
+        margin: 0 24px;
+      }
+    }
+
+    &__body-scroll {
+      overflow-y: auto;
+    }
+
+    &__body {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      padding: 0 32px;
+      margin-top: 38px;
+
+      @include phones-down {
+        padding: 0 24px;
+      }
+    }
+
+    &__description {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 24px 0;
+    }
+
+    &__description-title {
+      @include typ-h4;
+
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    &__description-text {
+      @include typ-plain-small;
+
+      color: $color-text-helper;
+    }
+
+    &__button {
+      @include phones-down {
+        margin-top: 26px;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+      }
+
+      img {
+        margin-right: 12px;
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@import '../../../../../../../styles/core/index';
+
+.photo {
+  display: flex;
+
+  @include phones-down {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  &--flex-column {
+    @include phones-down {
+      flex-direction: column;
+    }
+  }
+}

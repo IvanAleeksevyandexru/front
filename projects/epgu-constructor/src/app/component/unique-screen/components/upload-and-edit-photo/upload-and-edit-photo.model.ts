@@ -11,7 +11,6 @@ interface ImgSubject {
   imageErrors?: string[][];
 }
 
-
 interface NewSizeEvent {
   newWidth: number;
   newHeight: number;

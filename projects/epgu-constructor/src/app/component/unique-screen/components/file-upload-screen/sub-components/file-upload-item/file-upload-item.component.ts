@@ -25,7 +25,7 @@ import {
 import {
   CompressionOptions,
   CompressionService,
-} from '../../../upload-and-edit-photo/compression/compression.service';
+} from '../../../upload-and-edit-photo/service/compression/compression.service';
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 
