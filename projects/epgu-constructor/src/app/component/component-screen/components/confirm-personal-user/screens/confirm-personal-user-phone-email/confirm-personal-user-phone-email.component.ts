@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { FormatPhonePipe } from 'epgu-lib';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -19,14 +18,11 @@ import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
   templateUrl: './confirm-personal-user-phone-email.component.html',
   styleUrls: ['./confirm-personal-user-phone-email.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [FormatPhonePipe],
 })
 export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
-  data$: Observable<ComponentBase> = this.screenService.component$.pipe(
-    map((component) => this.prepareValue(component)),
-  );
+  data$: Observable<ComponentBase> = this.screenService.component$;
+  isPhoneScreenType: boolean;
   isEditContactAction: boolean;
-  componentScreenComponentTypes = ComponentScreenComponentTypes;
 
   nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
@@ -36,12 +32,12 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetectionRef: ChangeDetectorRef,
-    private formatPhonePipe: FormatPhonePipe,
   ) {}
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isEditContactAction = this.getIsEditContactAction();
+      this.isPhoneScreenType = this.getIsPhoneScreenType();
       this.updateValue(data?.value);
 
       setTimeout(() => {
@@ -59,7 +55,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     }
   }
 
-  getIsEditContactAction(): boolean {
+  private getIsEditContactAction(): boolean {
     const isEditPhone = [DTOActionAction.editPhoneNumber, DTOActionAction.editLegalPhone].includes(
       this.screenService.action?.action,
     );
@@ -69,18 +65,10 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     return isEditPhone || isEditEmail;
   }
 
-  private isPhoneScreenType(type: string): boolean {
+  private getIsPhoneScreenType(): boolean {
     return [
       ComponentScreenComponentTypes.confirmPersonalUserPhone,
       ComponentScreenComponentTypes.confirmLegalPhone,
-    ].includes(type as ComponentScreenComponentTypes);
-  }
-
-  private prepareValue(data: ComponentBase): ComponentBase {
-    const { type, value } = data;
-    return {
-      ...data,
-      value: this.isPhoneScreenType(type) ? this.formatPhonePipe.transform(value) : value,
-    };
+    ].includes(this.screenService.component?.type as ComponentScreenComponentTypes);
   }
 }
