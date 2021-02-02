@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormPlayerNavigation } from '../../form-player.types';
+import { FormPlayerNavigation, ServiceInfo } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { Gender } from '../../../shared/types/gender';
@@ -20,6 +20,25 @@ describe('FormPlayerApiService', () => {
   let serviceId = 'local';
   let targetId = 'local';
   let orderId = '12345';
+  let serviceInfo: ServiceInfo = {
+    stateOrg: {
+      id: 'id',
+      title: 'title'
+    },
+    routingCode: 'routingCode',
+    formPrefilling: true,
+    infSysCode: 'infSysCode',
+    error: 'error',
+    userRegion: {
+      name: 'name',
+      path: 'path',
+      codes: [
+        '1',
+        '2',
+        '3'
+      ]
+    }
+  };
   let responseMock = [42];
   let mockData = {
     scenarioDto: {
@@ -70,9 +89,10 @@ describe('FormPlayerApiService', () => {
     });
     service = TestBed.inject(FormPlayerApiService);
     initDataService = TestBed.inject(InitDataService);
-    initDataService['_targetId'] = targetId;
-    initDataService['_orderId'] = orderId;
-    initDataService['_serviceId'] = serviceId;
+    initDataService.targetId = targetId;
+    initDataService.orderId = orderId;
+    initDataService.serviceId = serviceId;
+    initDataService.serviceInfo = serviceInfo;
     http = TestBed.inject(HttpTestingController);
   }));
 
@@ -138,39 +158,46 @@ describe('FormPlayerApiService', () => {
   });
 
   describe('getServiceData()', () => {
-    it('should call http with post method', fakeAsync(() => {
-      service.getServiceData().subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
-      expect(req.request.method).toBe('POST');
+    let req;
+    beforeEach(fakeAsync(() => {
+      service.getServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
+      req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
+    }));
+
+    afterEach(fakeAsync(() => {
       req.flush(responseMock);
       tick();
+    }));
+
+    it('should call http with post method', fakeAsync(() => {
+      expect(req.request.method).toBe('POST');
     }));
 
     it('should call with body without orderId', fakeAsync(() => {
       service.getServiceData().subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
+      req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const body = req.request.body;
-      expect(body).toEqual({ targetId });
-      req.flush(responseMock);
-      tick();
+      expect(body.orderId).toBeUndefined();
     }));
 
     it('should call with body with orderId', fakeAsync(() => {
-      service.getServiceData(orderId).subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const body = req.request.body;
-      expect(body).toEqual({ targetId, orderId });
-      req.flush(responseMock);
-      tick();
+      expect(body.orderId).toEqual(orderId);
+    }));
+
+    it('should call with body with targetId', fakeAsync(() => {
+      const body = req.request.body;
+      expect(body.targetId).toEqual(targetId);
+    }));
+
+    it('should call with body with serviceInfo', fakeAsync(() => {
+      const body = req.request.body;
+      expect(body.serviceInfo).toEqual(serviceInfo);
     }));
 
     it('should call http post with withCredentials equal true', fakeAsync(() => {
-      service.getServiceData().subscribe(response => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/service/${serviceId}/scenario/getService`);
       const withCredentials = req.request.withCredentials;
       expect(withCredentials).toBe(true);
-      req.flush(responseMock);
-      tick();
     }));
   });
 
@@ -229,7 +256,7 @@ describe('FormPlayerApiService', () => {
     }));
   });
 
-  describe('navigate()', () => {
+  describe('sendAction()', () => {
     it('should call http with post method', fakeAsync(() => {
       const path = 'editPhoneNumber';
       const responseMockData = {};

@@ -15,15 +15,7 @@
     <div class="error" *ngIf="screenService.componentError">
       {{ screenService.componentError }}
     </div>
-
-    <div class="item">
-      {{
-      (data$ | async).type === componentScreenComponentTypes.confirmPersonalUserPhone
-        ? ((data$ | async).value | formatPhone)
-        : (data$ | async).value
-      }}
-    </div>
-
+    <div class="item"> {{ (data$ | async).value }} </div>
     <div class="footer" *ngIf="isEditContactAction">
       <div class="divider"></div>
       <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">

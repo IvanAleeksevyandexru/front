@@ -426,6 +426,9 @@ export enum DTOActionAction {
   editEmail = 'service/actions/editUserEmail',
   goBackToMainScenario = 'goBackToMainScenario',
   resendEmailConfirmation = 'service/actions/resendEmailConfirmation',
+  editPassportData = 'editPassportData',
+  editLegalPhone = 'editLegalPhone',
+  editLegalEmail = 'editLegalEmail',
 }
 
 export interface CheckOrderApiResponse {
