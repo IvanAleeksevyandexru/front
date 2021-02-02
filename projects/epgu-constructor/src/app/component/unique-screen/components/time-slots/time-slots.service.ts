@@ -312,8 +312,7 @@ export class TimeSlotsService {
 
     return {
       preliminaryReservation,
-      address: this.department.attributeValues.ADDRESS || this.department.attributeValues.ADDRESS_OUT
-        || this.department.attributeValues.address,
+      address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
       subject,
@@ -336,6 +335,10 @@ export class TimeSlotsService {
       slotId: [selectedSlot.slotId],
       serviceId: [this.serviceId || serviceId],
     };
+  }
+
+  private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {
+    return ADDRESS || ADDRESS_OUT || address;
   }
 
   private initSlotsMap(slots: TimeSlot[], areaNames: Array<string>): void {
