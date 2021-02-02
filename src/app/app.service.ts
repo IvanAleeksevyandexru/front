@@ -10,6 +10,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 const initValues: AppConfig = {
   serviceId: environment.serviceId,
   targetId: environment.targetId,
+  serviceInfo: null,
   orderId: environment.orderId,
   configId: null,
   invited: null,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerContext, QueryParams, ServiceEntity } from '../../../form-player/form-player.types';
+import { FormPlayerContext, QueryParams, ServiceEntity, ServiceInfo } from '../../../form-player/form-player.types';
 import { LoggerService } from '../logger/logger.service';
 
 /**
@@ -10,6 +10,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _serviceId: string;
   private _orderId: string;
   private _targetId: string;
+  private _serviceInfo: ServiceInfo;
   private _invited: boolean;
   private _canStartNew: boolean;
   private _initState: string;
@@ -30,6 +31,14 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
 
   set targetId(targetId: string) {
     this._targetId = targetId;
+  }
+
+  get serviceInfo(): ServiceInfo {
+    return this._serviceInfo;
+  }
+
+  set serviceInfo(serviceInfo: ServiceInfo) {
+    this._serviceInfo = serviceInfo;
   }
 
   get orderId(): string {
@@ -86,6 +95,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this.checkProps(service);
     this.serviceId = service.serviceId;
     this.targetId = service.targetId;
+    this.serviceInfo = service.serviceInfo;
     this.orderId = service.orderId;
     this.invited = service.invited;
     this.canStartNew = service.canStartNew;
