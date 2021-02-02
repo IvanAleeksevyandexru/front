@@ -1,4 +1,12 @@
 import { TerraUploadedFile } from '../../components/file-upload-screen/sub-components/file-upload-item/data';
+
+export interface Chunk {
+  chunk: number;
+  form: FormData;
+}
+
+export type ChunkPacket = FormData[];
+
 /**
  * Интерфейс для опций файла, при получении обновлении или удалении
  */
@@ -26,7 +34,7 @@ export interface FileResponseToBackendUploadsItem {
   value?: UploadedFile[];
   relatedUploads?: {
     uploads: FileResponseToBackendUploadsItem[];
-  }
+  };
   errors?: string[];
   files?: FileResponseToBackendUploadsItem[];
 }
@@ -59,7 +67,6 @@ export interface Clarifications {
   }
 }
 
-
 /**
  * Интерфейс для связанных файлов на загрузки из JSON
  */
@@ -73,7 +80,7 @@ export interface RelatedUploads extends FileUploadAttributes {
  */
 export enum FileUploadItemTypes {
   single = 'single',
-  cycle = 'cycle'
+  cycle = 'cycle',
 }
 
 /**
@@ -87,7 +94,7 @@ export interface FileUploadItem {
   fileType: string[];
   maxFileCount?: number;
   maxSize?: number;
-  relatedUploads?: RelatedUploads
+  relatedUploads?: RelatedUploads;
 }
 
 /**
@@ -102,7 +109,7 @@ export interface UploadedFile {
   fileSize: number;
   hasError: boolean;
 
-  alternativeMimeTypes?: string[]
+  alternativeMimeTypes?: string[];
   created?: string;
   deleted?: boolean;
   fileExt?: string;
@@ -142,12 +149,12 @@ export interface TerabyteListItem {
 /**
  * Интерфейс для события значений файлов
  */
-export interface FileUploadEmitValue{
+export interface FileUploadEmitValue {
   uploadId: string;
   value: TerraUploadedFile[];
   relatedUploads?: {
     uploads: FileUploadEmitValue[];
-  }
+  };
 }
 
 /**
