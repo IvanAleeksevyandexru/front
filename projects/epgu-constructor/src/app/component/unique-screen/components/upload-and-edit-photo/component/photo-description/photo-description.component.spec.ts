@@ -8,7 +8,7 @@ import { ComponentDto } from '../../../../../../form-player/services/form-player
 import { SafeModule } from '../../../../../../shared/pipes/safe/safe.module';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
-import { uploadPhotoElemId } from '../../upload-and-edit-photo-form.constant';
+import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;
@@ -82,14 +82,14 @@ describe('PhotoDescriptionComponent', () => {
   describe('handleClickOnElemById', () => {
     it('should be call openRequirementsModal', () => {
       jest.spyOn(component, 'openRequirementsModal');
-      const event = { target: { id: 'howtotakephoto' } };
+      const event = { target: { id: 'howtotakephoto' }};
       component.handleClickOnElemById(event as any);
       expect(component.openRequirementsModal).toHaveBeenCalled();
     });
 
     it('should be call openHowPhotoModal', () => {
       jest.spyOn(component, 'openHowPhotoModal');
-      const event = { target: { id: 'requirements' } };
+      const event = { target: { id: 'requirements' }};
       component.handleClickOnElemById(event as any);
       expect(component.openHowPhotoModal).toHaveBeenCalled();
     });
