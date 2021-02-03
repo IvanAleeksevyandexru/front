@@ -8,6 +8,7 @@ import { TerabyteListItem } from '../../../../../component/unique-screen/service
 import { CompressionService } from '../compression/compression.service';
 import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
+// eslint-disable-next-line max-len
 import { TerraUploadedFile } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 
 @Injectable()
