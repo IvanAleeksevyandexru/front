@@ -115,6 +115,34 @@ export class AutocompleteService {
           }
         );
       });
+
+    this.eventBusService
+      .on('suggestionsEditEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: ISuggestionItem) => {
+        const text = payload.list.reduce((acc, item: ISuggestionItemList): string => {
+          const hints = item.hints.map((hint) => hint.value).join(' ');
+          const { value, mnemonic } = item;
+          const html = `
+          <div class="suggest-item">
+            <div>${value}</div>
+            <div class="suggest-hint">${hints}</div>
+            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${mnemonic+':'+value}">
+            </button>
+          </div>
+          `;
+          return acc.concat(html);
+        }, '');
+        this.modalService.openModal(ConfirmationModalComponent,
+          {
+            title: 'Ранее заполненные данные',
+            text,
+            showCloseButton: true,
+            showCrossButton: true,
+            isShortModal: true,
+          }
+        );
+      });
   }
 
   private findComponent(mnemonic: string): ComponentDto {
@@ -125,7 +153,7 @@ export class AutocompleteService {
 
   private findComponentByMnemonic(componentMnemonic: string, component: ComponentDto): boolean {
     return this.componentsSuggestionsMap[componentMnemonic].some(
-      (componentId) => component.id === componentId,
+      (componentId) => component.id === componentId
     );
   }
 
