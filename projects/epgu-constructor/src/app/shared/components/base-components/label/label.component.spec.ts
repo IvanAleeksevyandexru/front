@@ -13,6 +13,7 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ActionService } from '../../../directives/action/action.service';
 import { ActionServiceStub } from '../../../directives/action/action.service.stub';
 import { By } from '@angular/platform-browser';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;
@@ -28,6 +29,7 @@ describe('LabelComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService
       ],
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(LabelComponent);
