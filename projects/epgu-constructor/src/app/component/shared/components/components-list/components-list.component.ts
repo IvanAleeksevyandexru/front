@@ -17,6 +17,7 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../../core/services/autocomplete/autocomplete.inteface';
+import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -60,8 +61,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
-  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService
-    .suggestions$;
+  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
@@ -74,11 +74,13 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     public screenService: ScreenService,
+    private autocompleteService: AutocompleteService,
   ) {
     this.changes = this.formService.changes;
   }
 
   ngOnInit(): void {
+    this.autocompleteService.init();
     this.eventBusService
       .on('validateOnBlur')
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
@@ -104,10 +106,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
-    if (Object.prototype.hasOwnProperty.call(event, 'list')) {
-      this.eventBusService.emit('suggestionsEditEvent', event);
+    if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
+      this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
     } else {
-      this.eventBusService.emit('suggestionSelectedEvent', event);
+      this.eventBusService.emit('suggestionSelectedEvent', event as ISuggestionItemList);
     }
   }
 

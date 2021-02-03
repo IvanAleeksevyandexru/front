@@ -418,6 +418,7 @@ export enum ActionType {
   quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
+  deleteSuggest = 'deleteSuggest',
 }
 
 export enum DTOActionAction {
