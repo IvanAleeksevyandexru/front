@@ -80,9 +80,11 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       }
 
       fields.forEach((fieldName: string) => {
-        const fieldControl = this.form.get(fieldName);
+        const fieldControl =
+          this.form.get(fieldName) || this.form.get([this.seriesNumDateGroup, fieldName]);
         if (serverError[fieldName] && fieldControl) {
           fieldControl.setErrors({ msg: serverError[fieldName] });
+          fieldControl.markAsDirty();
           fieldControl.markAsTouched();
         }
       });
