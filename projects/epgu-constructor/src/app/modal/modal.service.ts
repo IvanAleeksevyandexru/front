@@ -19,7 +19,7 @@ export class ModalService {
   constructor(
     private cfr: ComponentFactoryResolver,
     private rendererFactory: RendererFactory2,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

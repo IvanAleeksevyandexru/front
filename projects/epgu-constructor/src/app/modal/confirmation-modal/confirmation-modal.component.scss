@@ -20,6 +20,33 @@
       }
     }
   }
+
+  .suggest-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+  .suggest-hint {
+    @include typ-plain-small();
+    color: $color-text-helper;
+  }
+  .suggest-delete {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    background-image: url(../../../../assets/icons/svg/delete.svg);
+    position: absolute;
+    right: 0;
+    top: 12px;
+    &[disabled] {
+      opacity: .5;
+    }
+  }
 }
 
 

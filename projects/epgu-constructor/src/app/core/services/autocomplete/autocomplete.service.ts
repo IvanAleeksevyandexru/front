@@ -6,6 +6,8 @@ import {
   ComponentDto,
   DisplayDto,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../modal/modal.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ConfigService } from '../config/config.service';
 import { EventBusService } from '../event-bus/event-bus.service';
@@ -30,6 +32,7 @@ export class AutocompleteService {
     private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
+    private modalService: ModalService,
   ) {}
 
   init(): void {
@@ -88,8 +91,29 @@ export class AutocompleteService {
     this.eventBusService
       .on('suggestionsEditEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: ISuggestionItemList) => {
-        console.log({ payload });
+      .subscribe((payload: ISuggestionItem) => {
+        const text = payload.list.reduce((acc, item: ISuggestionItemList): string => {
+          const hints = item.hints.map((hint) => hint.value).join(' ');
+          const { value, mnemonic } = item;
+          const html = `
+          <div class="suggest-item">
+            <div>${value}</div>
+            <div class="suggest-hint">${hints}</div>
+            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${mnemonic+':'+value}">
+            </button>
+          </div>
+          `;
+          return acc.concat(html);
+        }, '');
+        this.modalService.openModal(ConfirmationModalComponent,
+          {
+            title: 'Ранее заполненные данные',
+            text,
+            showCloseButton: true,
+            showCrossButton: true,
+            isShortModal: true,
+          }
+        );
       });
   }
 

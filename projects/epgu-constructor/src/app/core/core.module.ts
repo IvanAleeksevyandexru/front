@@ -35,7 +35,6 @@ import { UtilsService } from './services/utils/utils.service';
     UtilsService,
     SessionService,
     InitDataService,
-    AutocompleteService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
@@ -58,7 +57,7 @@ import { UtilsService } from './services/utils/utils.service';
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,
-      deps: [SmuEventsService, CookieService, AutocompleteService],
+      deps: [SmuEventsService, CookieService],
       multi: true,
     },
     WINDOW_PROVIDERS,

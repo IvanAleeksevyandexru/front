@@ -76,6 +76,9 @@ export class ActionService {
       case ActionType.home:
         this.navService.redirectToHome();
         break;
+      case ActionType.deleteSuggest:
+        this.deleteSuggestAction(action);
+        break;
     }
   }
 
@@ -163,6 +166,11 @@ export class ActionService {
         ({ responseData }) => this.utilsService.downloadFile(responseData),
         (error) => console.log(error),
       );
+  }
+
+  private deleteSuggestAction(action: ComponentActionDto): void {
+    console.log({ action });
+    // TODO: по готовности продуктового бэковского микросервиса SuggestService реализовать отправку запроса на удаление указанного саджеста
   }
 
   private getActionDTO(action: ComponentActionDto): ActionDTO {

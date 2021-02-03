@@ -43,6 +43,9 @@ export class OutputHtmlComponent {
     const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
 
+    if (targetElementActionType === ActionType.deleteSuggest) {
+      targetElement.setAttribute('disabled', 'disabled');
+    }
     if (targetElementActionType) {
       this.handleAction(targetElementActionType, targetElementActionValue);
     } else if (targetElement.id) {
