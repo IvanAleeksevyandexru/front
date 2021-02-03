@@ -14,6 +14,7 @@ import { Clarifications } from '../../../component/unique-screen/services/terra-
 import { SafePipe } from '../../pipes/safe/safe.pipe';
 import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
 import { By } from '@angular/platform-browser';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-label-test-component',
@@ -45,6 +46,7 @@ describe('ClickableLabelDirective', () => {
           { provide: ModalService, useClass: ModalServiceStub },
           { provide: ScreenService, useClass: ScreenServiceStub },
           { provide: ActionService, useClass: ActionServiceStub },
+          CurrentAnswersService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       })
