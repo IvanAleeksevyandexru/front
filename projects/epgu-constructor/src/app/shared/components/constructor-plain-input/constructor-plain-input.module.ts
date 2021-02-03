@@ -6,10 +6,18 @@ import { TextTransformModule } from '../../directives/text-transform/text-transf
 import { CurrencyModule } from '../../directives/currency/currency.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { BaseModule } from '../../base.module';
+import { RankModule } from '../../directives/rank/rank.module';
 
 @NgModule({
   declarations: [ConstructorPlainInputComponent],
-  imports: [BaseModule, TrimModule, TextTransformModule, CurrencyModule, ValidationTypeModule],
+  imports: [
+    BaseModule,
+    TrimModule,
+    TextTransformModule,
+    CurrencyModule,
+    ValidationTypeModule,
+    RankModule,
+  ],
   exports: [ConstructorPlainInputComponent],
 })
 export class ConstructorPlainInputModule {}

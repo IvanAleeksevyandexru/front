@@ -11,6 +11,12 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -64,6 +70,9 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
         UnsubscribeService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   });

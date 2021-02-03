@@ -1,5 +1,9 @@
 <label class="label" [class.label--text-helper-color]="isTextHelper" [for]="for">
-  <span [innerHTML]="label"></span>
+  <span
+    epgu-constructor-clickable-label
+    [clarifications]="clarifications"
+    [innerHTML]="label | imgPrefixer | safe: 'html'"
+  ></span>
   <span *ngIf="required"> * </span>
   <!-- TODO отключил в рамках EPGUCORE-41468, пока что пиктограмму не делаем -->
   <!-- <lib-question-help-tip *ngIf="tips">{{ tips | titlecase }}</lib-question-help-tip> -->

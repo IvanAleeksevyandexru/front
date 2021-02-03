@@ -11,6 +11,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
 import { CurrencyModule } from '../../directives/currency/currency.module';
+import { RankModule } from '../../directives/rank/rank.module';
 import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
 import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
@@ -32,6 +33,7 @@ describe('ConstructorPlainInputComponent', () => {
         TrimModule,
         TextTransformModule,
         CurrencyModule,
+        RankModule,
         ValidationTypeModule,
       ],
       providers: [

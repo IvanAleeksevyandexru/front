@@ -24,6 +24,7 @@ export class ConstructorPlainInputComponent {
   @Input() id?: string;
   @Input() placeholder?: string;
   @Input() price?: boolean;
+  @Input() rank?: boolean;
   @Input() maxlength?: number;
   @Input() type?: string;
   @Input() pattern?: string;

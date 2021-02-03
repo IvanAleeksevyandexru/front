@@ -14,6 +14,12 @@ import { ValidationService } from '../../../../../shared/services/validation/val
 import { ComponentListToolsService } from '../../../../shared/components/components-list/services/component-list-tools/component-list-tools.service';
 import { DateRangeService } from '../../../../shared/components/components-list/services/date-range/date-range.service';
 import { AddPassportComponent } from './add-passport.component';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ModalService } from '../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -55,6 +61,9 @@ describe('AddPassportComponent', () => {
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   }));

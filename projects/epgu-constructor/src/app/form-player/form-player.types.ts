@@ -18,9 +18,26 @@ export interface FormPlayerContext {
   queryParams?: QueryParams;
 }
 
+export interface ServiceInfo {
+  stateOrg: {
+    id: string;
+    title: string;
+  };
+  routingCode: string;
+  formPrefilling: boolean;
+  infSysCode: string;
+  error: string;
+  userRegion: {
+    name: string;
+    path: string;
+    codes: Array<string>;
+  };
+}
+
 /**
  * @property serviceId - идентификатор услуги в formPlayerApi
  * @property targetId - идентификатор услуги в ФРГУ
+ * @property serviceInfo - для передаче данных сервиса для регионах
  * @property orderId - идентификатор черновика заявления
  * @property invited - флаг для запуска инвайт сценариев
  * @property canStartNew - флаг для возможности отображения модального окна "продолжить черновик",
@@ -29,6 +46,7 @@ export interface FormPlayerContext {
 export interface ServiceEntity {
   serviceId: string;
   targetId: string;
+  serviceInfo?: ServiceInfo;
   orderId?: string;
   invited?: boolean;
   canStartNew?: boolean;
