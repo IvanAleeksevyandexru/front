@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 
-import { ModalBaseComponent } from '../../../../../../modal/shared/modal-base/modal-base.component';
-import { imageErrorText } from '../../upload-and-edit-photo.constant';
-import { ImageErrorText } from '../../upload-and-edit-photo.model';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ImageErrorText } from '../../upload-and-edit-photo-form.model';
+import { imageErrorText } from '../../upload-and-edit-photo-form.constant';
 
 @Component({
   selector: 'epgu-constructor-photo-error-modal',

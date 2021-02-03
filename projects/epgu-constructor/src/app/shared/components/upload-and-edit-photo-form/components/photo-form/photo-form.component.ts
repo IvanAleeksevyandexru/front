@@ -15,19 +15,19 @@ import { fromEvent, merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { v4 as uuidv4 } from 'uuid';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import { ComponentUploadedFileDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../../../services/webcam/webcam.service';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ModalService } from '../../../../../modal/modal.service';
+import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../../../../component/unique-screen/services/webcam/webcam.service';
 import { PhotoEditorModalComponent } from '../photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from '../photo-error-modal/photo-error-modal.component';
-import { ImgSubject } from '../../upload-and-edit-photo.model';
 import { ValidationService } from '../../service/validation/validation.service';
 import { UploadService } from '../../service/upload/upload.service';
+import { ImgSubject } from '../../upload-and-edit-photo-form.model';
 
 @Component({
   selector: 'epgu-constructor-photo-form',
@@ -63,7 +63,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   storedImageObjectUrl: string;
   previousImageObjectUrl: string; // keep previous image url if image is changing from modal window
   croppedImageUrl: string;
-
+  acceptType: string;
   imageValidator = new Image(); // img container for img validation
 
   constructor(
@@ -94,6 +94,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     this.subscribeToImg();
     this.subscribeToImgAttachError();
     this.checkImagePresence();
+    this.acceptType = this.getAcceptType();
 
     this.eventBusService
       .on('fileDropped')
@@ -118,11 +119,32 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   /**
    * Открытие камеры для получения изображения и последующей загрузки
    */
-  openCamera(): void {
+  public openCamera(): void {
     this.cameraInput.nativeElement.click();
   }
 
-  subscribeToImg(): void {
+  public onFileSelected(
+    fileList: FileList,
+    fileInput?: HTMLInputElement,
+    isPhoto: boolean = false,
+  ): void {
+    if (fileList?.length && !this.isModalOpened) {
+      this.setFile(fileList[0], isPhoto);
+    }
+    if (fileInput) {
+      // eslint-disable-next-line no-param-reassign
+      fileInput.value = '';
+    }
+  }
+
+  private getAcceptType(): string {
+    return this.allowedImgTypes
+      .map((fileType) => `.${fileType}`)
+      .join(',')
+      .toLowerCase();
+  }
+
+  private subscribeToImg(): void {
     this.img$.subscribe((imageObject) => {
       this.previousImageObjectUrl = imageObject?.imageObjectUrl;
       this.isModalOpened = true;
@@ -145,7 +167,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     });
   }
 
-  subscribeToImgAttachError(): void {
+  private subscribeToImgAttachError(): void {
     this.imgAttachError$.subscribe((imageErrors) =>
       this.modalService
         .openModal<{ changeImage?: boolean }>(PhotoErrorModalComponent, { imageErrors })
@@ -159,7 +181,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     );
   }
 
-  subscribeToImageValidator(): void {
+  private subscribeToImageValidator(): void {
     merge(fromEvent(this.imageValidator, 'load'), fromEvent(this.imageValidator, 'error'))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
@@ -168,12 +190,12 @@ export class PhotoFormComponent implements OnChanges, OnInit {
       });
   }
 
-  getRequestData(): ComponentUploadedFileDto {
+  private getRequestData(): ComponentUploadedFileDto {
     const { mnemonic = null, name = null, objectType = 2 } = this.uploadedFile;
     return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
   }
 
-  setImageUrl(imageUrl: string): void {
+  private setImageUrl(imageUrl: string): void {
     this.storedImageObjectUrl = imageUrl;
     this.croppedImageUrl = imageUrl;
     this.previousImageObjectUrl = imageUrl;
@@ -181,7 +203,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     this.changeDetectionRef.markForCheck();
   }
 
-  checkImagePresence(): void {
+  private checkImagePresence(): void {
     const requestData = this.getRequestData();
 
     if (requestData.mnemonic && requestData.name) {
@@ -194,7 +216,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     }
   }
 
-  validateImage(): void {
+  private validateImage(): void {
     const { width, height, src } = this.imageValidator;
 
     const { isTypeValid, isSizeValid, isDPIValid } = this.validationService.validateImage(
@@ -226,34 +248,17 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     }
   }
 
-  getAcceptTypes(): string {
-    return this.allowedImgTypes
-      .map((fileType) => `.${fileType}`)
-      .join(',')
-      .toLowerCase();
-  }
-
-  onFileSelected(fileList: FileList, fileInput?: HTMLInputElement, isPhoto: boolean = false): void {
-    if (fileList?.length && !this.isModalOpened) {
-      this.setFile(fileList[0], isPhoto);
-    }
-    if (fileInput) {
-      // eslint-disable-next-line no-param-reassign
-      fileInput.value = '';
-    }
-  }
-
-  blobToDataURL(file: Blob | File, callback: Function): void {
+  private blobToDataURL(file: Blob | File, callback: Function): void {
     const fileReader = new FileReader();
     fileReader.onload = (e): Function => callback(e.target.result.toString());
     fileReader.readAsDataURL(file);
   }
 
-  validateImageEvent(imageUrl: string): void {
+  private validateImageEvent(imageUrl: string): void {
     this.imageValidator.src = imageUrl;
   }
 
-  setFile(file: File, isPhoto: boolean): void {
+  private setFile(file: File, isPhoto: boolean): void {
     if (isPhoto) {
       this.fileName = this.utils.cyrillicToLatin(`Фото_${uuidv4()}.jpg`);
     } else {
@@ -266,7 +271,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
    * Для браузера Mi фиксит ошибку с двумя точками в названии файла.
    * @param fileName
    */
-  fixFileName(fileName: string): string {
+  private fixFileName(fileName: string): string {
     if (this.deviceDetector.isMiAndroid()) {
       const extension = fileName.split('.').pop();
       return fileName.replace(`..${extension}`, `.${extension}`);
@@ -275,12 +280,12 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     return fileName;
   }
 
-  changeCroppedPhoto(): void {
+  private changeCroppedPhoto(): void {
     this.img$.next({ imageObjectUrl: this.previousImageObjectUrl });
     this.startToChangeCroppedImageUrl.isStart = false;
   }
 
-  uploadPhotoToServer(): void {
+  private uploadPhotoToServer(): void {
     const requestData = this.getRequestData();
     this.uploadService
       .uploadPhotoToServer(this.fileName, requestData, this.croppedImageUrl)

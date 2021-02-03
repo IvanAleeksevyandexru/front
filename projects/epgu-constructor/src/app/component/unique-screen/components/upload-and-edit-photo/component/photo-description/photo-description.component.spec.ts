@@ -8,7 +8,7 @@ import { ComponentDto } from '../../../../../../form-player/services/form-player
 import { SafeModule } from '../../../../../../shared/pipes/safe/safe.module';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
-import { uploadPhotoElemId } from '../../upload-and-edit-photo.constant';
+import { uploadPhotoElemId } from '../../upload-and-edit-photo-form.constant';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;

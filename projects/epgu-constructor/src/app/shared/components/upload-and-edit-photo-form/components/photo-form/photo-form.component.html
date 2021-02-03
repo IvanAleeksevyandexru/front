@@ -12,7 +12,7 @@
     #hiddenFileInput
     id="hiddenFileInput"
     style="display: none;"
-    [attr.accept]="getAcceptTypes()"
+    [attr.accept]="acceptType"
     type="file"
     (change)="onFileSelected($any($event.target).files, hiddenFileInput)"
   />

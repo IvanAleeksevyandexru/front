@@ -3,12 +3,12 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 
-import { TerraUploadedFile } from '../../../file-upload-screen/sub-components/file-upload-item/data';
-import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
-import { TerabyteListItem } from '../../../../services/terra-byte-api/terra-byte-api.types';
+import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
+import { TerabyteListItem } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
-import { ComponentUploadedFileDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { TerraUploadedFile } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 
 @Injectable()
 export class UploadService {
@@ -29,7 +29,7 @@ export class UploadService {
       switchMap((fileName) => this.deletePrevImage(fileName, requestData)),
       switchMap(() => this.compressFile(croppedImageUrl)),
       map((compressedFile) => this.prepareFile(fileName, requestData, compressedFile)),
-      tap(({ requestData }) => dataAfterSend = requestData),
+      tap(({ requestData }) => (dataAfterSend = requestData)),
       switchMap(({ requestData, compressedFile }) => this.uploadFile(compressedFile, requestData)),
       switchMap(() => this.terabyteService.getFileInfo(requestData)),
       map((terraFile) => ({ ...dataAfterSend, ...terraFile })),

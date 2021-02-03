@@ -9,11 +9,11 @@ import { takeUntil } from 'rxjs/operators';
 
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { uploadPhotoElemId } from '../../upload-and-edit-photo.constant';
 import { PhotoRequirementsModalComponent } from '../photo-requirements-modal/photo-requirements-modal.component';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
+import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 
 @Component({
   selector: 'epgu-constructor-photo-description',

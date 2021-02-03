@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { minSize, printImgPx, recommendedDPI } from '../../upload-and-edit-photo.constant';
+import { minSize, printImgPx, recommendedDPI } from '../../upload-and-edit-photo-form.constant';
 
 @Injectable()
 export class ValidationService {
@@ -14,10 +14,8 @@ export class ValidationService {
     isSizeValid: boolean;
     isDPIValid: boolean;
   } {
-    const imageType = (fileName || '').split('.').pop();
-
     return {
-      isTypeValid: this.isTypeValid(allowedImgTypes, imageType),
+      isTypeValid: this.isTypeValid(allowedImgTypes, fileName),
       isSizeValid: this.isSizeValid(width, height),
       isDPIValid: this.isDPIValid(height),
     };
@@ -29,7 +27,9 @@ export class ValidationService {
     return scaledDPI >= recommendedDPI;
   }
 
-  isTypeValid(allowedImgTypes: string[], imageType: string): boolean {
+  isTypeValid(allowedImgTypes: string[], fileName: string): boolean {
+    const imageType = (fileName || '').split('.').pop();
+
     return allowedImgTypes.some(
       (allowedType) => allowedType.toLowerCase() === imageType.toLowerCase(),
     );

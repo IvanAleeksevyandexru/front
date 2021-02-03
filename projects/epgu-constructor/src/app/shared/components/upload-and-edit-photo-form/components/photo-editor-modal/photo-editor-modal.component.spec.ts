@@ -5,10 +5,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { ButtonComponent } from 'epgu-lib';
 
-import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 

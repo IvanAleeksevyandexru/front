@@ -3,8 +3,8 @@ import { PhotoErrorModalComponent } from './photo-error-modal.component';
 import { ButtonComponent } from 'epgu-lib';
 import { MockComponent } from 'ng-mocks';
 
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 
 describe('PhotoErrorModalComponent', () => {
   let component: PhotoErrorModalComponent;

@@ -9,11 +9,11 @@ import {
 import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
 
-import { ModalBaseComponent } from '../../../../../../modal/shared/modal-base/modal-base.component';
-import { ImageErrorText, NewSizeEvent } from '../../upload-and-edit-photo.model';
-import { imageErrorText, minCropSize } from '../../upload-and-edit-photo.constant';
+import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ImageErrorText, NewSizeEvent } from '../../upload-and-edit-photo-form.model';
+import { minCropSize, imageErrorText } from '../../upload-and-edit-photo-form.constant';
 
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',

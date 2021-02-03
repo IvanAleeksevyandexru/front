@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PhotoFormViewComponent } from './photo-form-view.component';
-import { SafeModule } from '../../../../../../shared/pipes/safe/safe.module';
+import { SafeModule } from '../../../../pipes/safe/safe.module';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
@@ -53,10 +53,4 @@ describe('PhotoFormViewComponent', () => {
       expect(component.openCameraEvent.emit).toHaveBeenCalled();
     });
   });
-
-  // describe('PhotoFormViewComponent', () => {
-  //   it('should create', () => {
-  //     expect(component).toBeTruthy();
-  //   });
-  // });
 });

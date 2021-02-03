@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -7,7 +9,7 @@ import { UploadAndEditPhotoContainerComponent } from './upload-and-edit-photo-co
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { PhotoFormComponent } from '../component/photo-form/photo-form.component';
+import { PhotoFormComponent } from '../../../../../shared/components/upload-and-edit-photo-form/components/photo-form/photo-form.component';
 import { PhotoDescriptionComponent } from '../component/photo-description/photo-description.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
@@ -86,15 +88,61 @@ describe('UploadAndEditPhotoContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(UploadAndEditPhotoContainerComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(UploadAndEditPhotoContainerComponent);
     screenService = TestBed.inject(ScreenService);
+    screenService.component = mockData;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('changeCroppedImageUrl', () => {
+    it('should create', () => {
+      jest.spyOn(component, 'changeCroppedImageUrl');
+      const selector = 'epgu-constructor-photo-form';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      debugEl.triggerEventHandler('croppedImageUrlEvent', 'image');
+      expect(component.changeCroppedImageUrl).toHaveBeenCalled();
+      expect(component.croppedImageUrl).toBe('image');
+    });
+  });
+
+  describe('changeCroppedPhoto', () => {
+    it('should be call startToChangeCroppedImageUrl$', () => {
+      jest.spyOn(component.startToChangeCroppedImageUrl$, 'next');
+      component.croppedImageUrl = 'image';
+      fixture.detectChanges();
+      const selector = 'lib-button';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      debugEl.triggerEventHandler('click', {});
+      expect(component.startToChangeCroppedImageUrl$.next).toBeCalledWith({ isStart: true });
+    });
+  });
+
+  describe('uploadPhotoToServer', () => {
+    it('should be call startToUploadPhoto$', () => {
+      jest.spyOn(component.startToUploadPhoto$, 'next');
+      component.croppedImageUrl = 'image';
+      fixture.detectChanges();
+      const selector = '.submit-button';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      debugEl.triggerEventHandler('click', {});
+      expect(component.startToUploadPhoto$.next).toBeCalledWith({ isStart: true });
+    });
+  });
+
+  describe('nextStep', () => {
+    it('should be call nextStep', () => {
+      jest.spyOn(component, 'nextStep');
+      const selector = 'epgu-constructor-photo-form';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      debugEl.triggerEventHandler('uploadPhotoToServerEvent', {});
+      expect(component.nextStep).toHaveBeenCalled();
+    });
   });
 });

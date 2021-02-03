@@ -38,7 +38,7 @@ export class CompressionService {
     file: File | Blob,
     options: CompressionOptions,
   ): Promise<File | Blob> {
-    let compressedFile;
+    let compressedFile: File | Blob;
 
     if (!(file instanceof Blob)) {
       throw new Error('The file given is not an instance of Blob or File');
