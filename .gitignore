@@ -57,3 +57,5 @@ Thumbs.db
 .run
 /documentation.json
 /report/*
+# stryker temp files
+.stryker-tmp
