@@ -21,7 +21,12 @@ describe('PhotoErrorModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be create', () => {
-    expect(component).toBeTruthy();
+  it('should be close modal', () => {
+    jest.spyOn(component, 'closeModal');
+    jest.spyOn(component.modalResult, 'next');
+    component.detachView = () => null;
+    component.choseAnotherPhoto();
+    expect(component.modalResult.next).toHaveBeenCalledWith({ changeImage: true });
+    expect(component.closeModal).toHaveBeenCalled();
   });
 });

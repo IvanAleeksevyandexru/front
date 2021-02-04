@@ -14,7 +14,7 @@ import { TerraUploadedFile } from '../../../../../component/unique-screen/compon
 @Injectable()
 export class UploadService {
   constructor(
-    private terabyteService: TerraByteApiService,
+    private terraByteApiService: TerraByteApiService,
     private compressionService: CompressionService,
     private utils: UtilsService,
   ) {}
@@ -31,8 +31,10 @@ export class UploadService {
       switchMap(() => this.compressFile(croppedImageUrl)),
       map((compressedFile) => this.prepareFile(fileName, requestData, compressedFile)),
       tap(({ requestData }) => (dataAfterSend = requestData)),
-      switchMap(({ requestData, compressedFile }) => this.uploadFile(compressedFile, requestData)),
-      switchMap(() => this.terabyteService.getFileInfo(requestData)),
+      switchMap(({ requestData, compressedFile }) =>
+        this.terraByteApiService.uploadFile(requestData, compressedFile),
+      ),
+      switchMap(() => this.terraByteApiService.getFileInfo(requestData)),
       map((terraFile) => ({ ...dataAfterSend, ...terraFile })),
     );
   }
@@ -42,7 +44,7 @@ export class UploadService {
     requestData: ComponentUploadedFileDto,
   ): Observable<TerraUploadedFile> {
     return fileName
-      ? this.terabyteService.deleteFile(requestData).pipe(catchError(() => of(null)))
+      ? this.terraByteApiService.deleteFile(requestData).pipe(catchError(() => of(null)))
       : of(null);
   }
 
@@ -62,9 +64,5 @@ export class UploadService {
     const name = this.utils.cyrillicToLatin(prepareFileName.join('.'));
 
     return { requestData: { ...requestData, name }, compressedFile };
-  }
-
-  private uploadFile(file: Blob | File, requestData: ComponentUploadedFileDto): Observable<void> {
-    return this.terabyteService.uploadFile(requestData, file);
   }
 }

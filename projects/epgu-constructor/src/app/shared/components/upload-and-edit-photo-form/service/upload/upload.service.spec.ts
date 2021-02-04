@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { UploadService } from './upload.service';
 import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
@@ -12,7 +12,8 @@ import { ComponentUploadedFileDto } from '../../../../../form-player/services/fo
 
 describe('UploadService', () => {
   let service: UploadService;
-  let terabyteService: TerraByteApiService;
+  let terraByteApiService: TerraByteApiService;
+  let compressionService: CompressionService;
   let requestDataMock: ComponentUploadedFileDto = {
     mnemonic: 'd33.PhotoUploadComponent.passport_photo.0',
     name: '',
@@ -55,19 +56,29 @@ describe('UploadService', () => {
       ],
     });
     service = TestBed.inject(UploadService);
-    terabyteService = TestBed.inject(TerraByteApiService);
+    terraByteApiService = TestBed.inject(TerraByteApiService);
+    compressionService = TestBed.inject(CompressionService);
+    jest.spyOn(TerraByteApiService, 'base64toBlob').mockReturnValue(new Blob([]));
+    jest
+      .spyOn(compressionService, 'imageCompression')
+      .mockReturnValue(Promise.resolve(new Blob([])));
+    jest.spyOn(terraByteApiService, 'uploadFile').mockReturnValue(of(null));
+    jest.spyOn(terraByteApiService, 'getFileInfo').mockReturnValue(of(responseDataMock as any));
   });
 
   it('should be upload photo', () => {
+    jest.spyOn(terraByteApiService, 'deleteFile').mockReturnValue(of({} as any));
+
     service.uploadPhotoToServer('fieldList.png', requestDataMock, '').subscribe((response) => {
       expect(response).toEqual(responseDataMock);
     });
   });
 
-  it('should be catch error', () => {
-    jest.spyOn(terabyteService, 'deleteFile').mockReturnValue(throwError(''));
-    service.uploadPhotoToServer('fieldList.png', requestDataMock, '').subscribe((response) => {
-      expect(response).toBeNull();
+  it('should be catch error if file deleted', () => {
+    jest.spyOn(terraByteApiService, 'deleteFile').mockReturnValue(throwError(''));
+
+    service.uploadPhotoToServer('', requestDataMock, '').subscribe((response) => {
+      expect(response).toEqual(responseDataMock);
     });
   });
 });
