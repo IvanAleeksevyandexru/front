@@ -310,7 +310,7 @@ export class TimeSlotsService {
       routeNumber,
     } = this.config.timeSlots[this.timeSlotsType];
 
-    return {
+    const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
@@ -335,6 +335,13 @@ export class TimeSlotsService {
       slotId: [selectedSlot.slotId],
       serviceId: [this.serviceId || serviceId],
     };
+
+    if (this.timeSlotsType === TimeSlotsTypes.MVD) {
+      requestBody.parentOrderId = '';
+      requestBody.caseNumber = this.orderId;
+    }
+
+    return requestBody;
   }
 
   private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {
