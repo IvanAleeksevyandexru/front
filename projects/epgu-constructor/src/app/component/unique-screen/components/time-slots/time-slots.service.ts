@@ -39,6 +39,7 @@ export class TimeSlotsService {
 
   public department: DepartmentInterface;
   private serviceId: string;
+  private subject: string;
   private solemn: boolean;
   private slotsPeriod;
   private orderId;
@@ -223,6 +224,12 @@ export class TimeSlotsService {
       this.serviceId = serviceId;
     }
 
+    let subject = data.subject;
+    if (!this.subject || this.subject !== subject) {
+      changed = true;
+      this.subject = subject;
+    }
+
     return changed;
   }
 
@@ -315,7 +322,7 @@ export class TimeSlotsService {
       address: this.department.attributeValues.ADDRESS || this.department.attributeValues.ADDRESS_OUT,
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject,
+      subject: this.subject || subject,
       params: [
         {
           name: 'phone',
