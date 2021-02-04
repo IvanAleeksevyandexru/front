@@ -311,6 +311,7 @@ export class ComponentListFormService {
           this.shownElements,
           this.form,
           this.repository.dictionaries,
+          true
         );
         ////////HARDCODE!!!
         // TODO: избавиться от хардкода
