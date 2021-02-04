@@ -21,8 +21,8 @@ import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 })
 export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$;
+  isPhoneScreenType: boolean;
   isEditContactAction: boolean;
-  componentScreenComponentTypes = ComponentScreenComponentTypes;
 
   nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
@@ -37,6 +37,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isEditContactAction = this.getIsEditContactAction();
+      this.isPhoneScreenType = this.getIsPhoneScreenType();
       this.updateValue(data?.value);
 
       setTimeout(() => {
@@ -54,9 +55,20 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     }
   }
 
-  getIsEditContactAction(): boolean {
-    const isEditPhone = this.screenService.action?.action === DTOActionAction.editPhoneNumber;
-    const isEditEmail = this.screenService.action?.action === DTOActionAction.editEmail;
+  private getIsEditContactAction(): boolean {
+    const isEditPhone = [DTOActionAction.editPhoneNumber, DTOActionAction.editLegalPhone].includes(
+      this.screenService.action?.action,
+    );
+    const isEditEmail = [DTOActionAction.editEmail, DTOActionAction.editLegalEmail].includes(
+      this.screenService.action?.action,
+    );
     return isEditPhone || isEditEmail;
+  }
+
+  private getIsPhoneScreenType(): boolean {
+    return [
+      ComponentScreenComponentTypes.confirmPersonalUserPhone,
+      ComponentScreenComponentTypes.confirmLegalPhone,
+    ].includes(this.screenService.component?.type as ComponentScreenComponentTypes);
   }
 }

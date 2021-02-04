@@ -14,4 +14,7 @@ export enum ComponentScreenComponentTypes {
   fieldList = 'FieldList',
   timer = 'Timer',
   timeSlot = 'TimeSlot',
+  confirmLegalData = 'ConfirmLegalData',
+  confirmLegalPhone = 'ConfirmLegalPhone',
+  confirmLegalEmail = 'ConfirmLegalEmail'
 }
