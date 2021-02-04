@@ -12,21 +12,6 @@
     </epgu-constructor-output-html>
     <div *ngIf="refData?.length" class="fileupload__label" [innerHTML]="refData"></div>
   </div>
-  <input
-    #fileUploadInput
-    type="file"
-    [attr.accept]="getAcceptTypes()"
-    (click)="resetFileInputState(fileUploadInput)"
-    (change)="updateSelectedFilesInfoAndSend($any($event.target).files)"
-    multiple
-  />
-  <input
-    #cameraInput
-    type="file"
-    capture="environment"
-    accept="image/*"
-    (change)="updateSelectedFilesInfoAndSend($any($event.target).files, true)"
-  />
   <div *ngIf="files$$ | async as files" class="files">
     <div *ngFor="let file of files" class="file">
       <div
@@ -53,50 +38,44 @@
       </button>
     </div>
   </div>
-  <div class="fileupload__buttons">
-    <lib-button
-      *ngIf="this.isMobile"
-      [disabled]="isButtonsDisabled"
-      [color]="'white'"
-      (click)="openCamera()"
-      class="fileupload__button"
-    >
-      <img
-        src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
-        class="fileupload__button-icon"
-        alt="Фото"
-      />
-      Фото
-    </lib-button>
-    <lib-button
-      [disabled]="isButtonsDisabled"
-      [color]="'white'"
-      (click)="selectFilesEvent()"
-      class="fileupload__button"
-    >
-      <img
-        src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
-        class="fileupload__button-icon"
-        alt="Файл"
-      />
-      Файл
-    </lib-button>
-  </div>
+
+  <epgu-constructor-uploader-manager></epgu-constructor-uploader-manager>
+  <epgu-constructor-uploader (upload)="updateSelectedFilesInfoAndSend($event)">
+    <div class="uploader-info">
+      <span *ngIf="!isMobile">Перетащите файлы или выберите на компьютере</span>
+      <span *ngIf="isMobile">Выберите файл или сделайте фото</span>
+    </div>
+    <div class="uploader-buttons">
+      <epgu-constructor-uploader-button capture="environment" accept="image/*">
+        <button
+          *ngIf="this.isMobile"
+          [disabled]="isButtonsDisabled"
+          class="fileupload__link-button"
+        >
+          <img
+            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
+            class="fileupload__button-icon"
+            alt="Фото"
+          />
+          Сделать фото
+        </button>
+      </epgu-constructor-uploader-button>
+      <epgu-constructor-uploader-button [multiple]="true" [accept]="getAcceptTypes()">
+        <button [disabled]="isButtonsDisabled" class="fileupload__link-button">
+          <img
+            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
+            class="fileupload__button-icon"
+            alt="Файл"
+          />
+          Выбрать ещё
+        </button>
+      </epgu-constructor-uploader-button>
+    </div>
+  </epgu-constructor-uploader>
   <div *ngIf="errors.length">
     <div *ngFor="let error of errors" class="error">
       <div class="file__icon has-error"></div>
       <span>{{ error }}</span>
     </div>
   </div>
-  <epgu-constructor-uploader>
-    <div class="info">
-      <span *ngIf="!isMobile">Перетащите файлы или выберите на компьютере</span>
-      <span *ngIf="isMobile">Выберите файл или сделайте фото</span>
-    </div>
-    <div class="buttons">
-      <epgu-constructor-uploader-button>
-        Выбрать ещё
-      </epgu-constructor-uploader-button>
-    </div>
-  </epgu-constructor-uploader>
 </div>

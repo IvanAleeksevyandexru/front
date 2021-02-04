@@ -158,4 +158,22 @@ input[type='file'] {
   }
 }
 
+.fileupload__link-button {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  @include typ-plain-text;
+  color: $color-gosblue;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  margin-top: 24px;
+  outline: none;
+}
+.uploader-info {
+  color: $color-text-helper;
+  @include typ-plain-small;
+}
+
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');

@@ -2,14 +2,30 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnDestroy,
-  ViewChild,
 } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
-import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
-import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  from,
+  merge,
+  Observable,
+  of,
+  Subscription,
+  throwError,
+  Subject,
+} from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  filter,
+  finalize,
+  map,
+  takeUntil,
+  takeWhile,
+  tap,
+} from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
@@ -41,6 +57,20 @@ enum ErrorActions {
   addDownloadErr = 'addDownloadErr',
   addUploadErr = 'addUploadErr',
   addDeletionErr = 'addDeletionErr',
+}
+
+enum FileItemStatus {
+  error = 'error',
+  uploading = 'uploading',
+  uploaded = 'uploaded',
+  preparation = 'preparation',
+}
+interface FileItem {
+  raw?: File;
+  status: FileItemStatus;
+  error?: {
+    text?: string;
+  };
 }
 
 const photoBaseName = 'Снимок';
@@ -78,29 +108,23 @@ export class FileUploadItemComponent implements OnDestroy {
         }),
         map((result) => this.filterServerListItemsForCurrentForm(result)),
         map((list: TerabyteListItem[]) => this.transformTerabyteItemsToUploadedFiles(list)),
+        filter((list) => !!list.length),
+        finalize(() => {
+          this.listIsUploadingNow = false;
+          this.changeDetectionRef.markForCheck();
+        }),
       )
       .subscribe((list) => {
-        this.listIsUploadingNow = false;
-        if (list.length) {
-          list.forEach((fileInfo: TerraUploadedFile) => {
-            this.updateUploadingInfo(fileInfo);
-          });
-          // eslint-disable-next-line no-console
-          this.files$$.next([...list]);
-          this.maxFileNumber = this.getMaxFileNumberFromList(list);
-        }
-
-        this.changeDetectionRef.markForCheck();
+        list.forEach((fileInfo: TerraUploadedFile) => {
+          this.updateUploadingInfo(fileInfo);
+        });
+        // eslint-disable-next-line no-console
+        this.files$$.next([...list]);
+        this.maxFileNumber = this.getMaxFileNumberFromList(list);
       });
   }
 
-  @ViewChild('fileUploadInput', { static: true })
-  uploadInput: ElementRef;
-
-  @ViewChild('cameraInput', { static: true })
-  cameraInput: ElementRef;
-
-  isMobile: boolean;
+  isMobile: boolean = this.deviceDetectorService.isMobile;
   uploadedCameraPhotoNumber = 0;
   listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
@@ -124,6 +148,23 @@ export class FileUploadItemComponent implements OnDestroy {
     .subscribe();
   errors: string[] = [];
 
+  processingFiles = new Subject<FileList>();
+  processingFiles$ = this.processingFiles.pipe(
+    concatMap((files: FileList) => from(files)), //разбиваем по файлу
+    map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
+  );
+
+  files = new BehaviorSubject([]);
+  subscriptions: Subscription = new Subscription().add(this.processingFiles$.subscribe());
+
+  /**
+   * Обновляет данные о файлах, которые были загружены
+   */
+  updateSelectedFilesInfoAndSend(fileList: FileList): void {
+    this.processingFiles.next(fileList);
+    this.prepareFilesToUpload(fileList).subscribe((file: File) => this.sendFile(file));
+  }
+
   get data(): FileUploadItem {
     return this.loadData;
   }
@@ -146,9 +187,17 @@ export class FileUploadItemComponent implements OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private changeDetectionRef: ChangeDetectorRef,
-  ) {
-    this.isMobile = this.deviceDetectorService.isMobile;
+  ) {}
+
+  polyfillFile(file: File): File {
+    const { type, lastModified, name } = file;
+
+    return new FilePonyfill([file], name, {
+      type,
+      lastModified,
+    });
   }
+
   updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
     if (!fileName?.includes(photoBaseName)) {
       return;
@@ -165,6 +214,19 @@ export class FileUploadItemComponent implements OnDestroy {
       type,
       lastModified,
     });
+  }
+
+  compressImage(file: File): Observable<unknown> {
+    const compressedImageOptions: CompressionOptions = {
+      maxSizeMB: getSizeInMB(maxImgSizeInBytes),
+      deepChecking: true,
+      maxWidthOrHeight: 1024,
+    };
+    return from(this.compressionService.imageCompression(file, compressedImageOptions)).pipe(
+      catchError(() => {
+        return of();
+      }),
+    );
   }
 
   compressImages(files: File[]): Array<Observable<unknown>> {
@@ -332,7 +394,6 @@ export class FileUploadItemComponent implements OnDestroy {
       files = files.filter((f) => f.mnemonic !== file.mnemonic);
       this.files$$.next(files);
     }
-    this.uploadInput.nativeElement.value = '';
   }
 
   updateUploadingInfo(fileInfo: TerraUploadedFile, isDeleted?: boolean): void {
@@ -345,37 +406,11 @@ export class FileUploadItemComponent implements OnDestroy {
     }
   }
 
-  resetFileInputState(htmlInput: HTMLInputElement): void {
-    // eslint-disable-next-line no-param-reassign
-    htmlInput.value = null;
-  }
-
-  /**
-   * Обновляет данные о файлах, которые были загружены
-   */
-  updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean): void {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
-  }
-
   isFileTypeValid(file: File): boolean {
     const fileExtension = `.${file.name.split('.').pop()}`;
     const validTypes = this.getAcceptTypes().split(',');
 
     return validTypes.some((validType) => validType.toLowerCase() === fileExtension.toLowerCase());
-  }
-
-  /**
-   * Загрузка файлов на сервер террабайта через стандартный выбор
-   */
-  selectFilesEvent(): void {
-    this.uploadInput.nativeElement.click();
-  }
-
-  /**
-   * Открытие камеры для получения изображения и последующей загрузки
-   */
-  openCamera(): void {
-    this.cameraInput.nativeElement.click();
   }
 
   /**
@@ -401,6 +436,7 @@ export class FileUploadItemComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
@@ -534,16 +570,22 @@ export class FileUploadItemComponent implements OnDestroy {
     );
   }
 
+  private isPhoto(files: FileList): boolean {
+    return files.length === 1 && files[0].type.indexOf('image/') !== -1;
+  }
+
   /**
    * Подготавливает файлы на загрузку и возращает итоговый проверенный
    * список для загрузки и добавления в общий список загружаемых файлов
    * @param filesToUpload
-   * @param isPhoto
    * @private
    */
-  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
+
+  private prepareFilesToUpload(filesToUpload: FileList): Observable<File> {
     this.handleError(ErrorActions.clear);
-    const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
+    const files = this.isPhoto(filesToUpload)
+      ? Array.from(filesToUpload)
+      : this.filterValidFiles(filesToUpload);
 
     const {
       isValid: isAmountValid,
