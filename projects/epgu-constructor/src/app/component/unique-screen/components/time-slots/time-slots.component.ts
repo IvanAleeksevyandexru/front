@@ -401,8 +401,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     const restrictions = this.screenService.component?.attrs?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
-      minDate: (amount, type): boolean => moment(date).isBefore(today.clone().add(amount, type)),
-      maxDate: (amount, type): boolean => moment(date).isAfter(today.clone().add(amount, type)),
+      minDate: (amount, type): boolean =>
+        moment(date).isBefore(today.clone().add(amount, type).startOf(startType)),
+      maxDate: (amount, type): boolean =>
+        moment(date).isAfter(today.clone().add(amount, type).startOf(startType)),
     };
     // Перебираем все ключи restrictions из attrs до первого "плохого"
     // пример: "minDate": [30, "d"],

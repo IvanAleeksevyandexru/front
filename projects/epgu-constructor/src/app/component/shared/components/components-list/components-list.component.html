@@ -362,7 +362,7 @@
     *ngIf="data.value?.attrs?.mask"
     [validationShowOn]="validationShowOn"
     [readonly]="data.value?.attrs?.readonly"
-    [mask]="data.value?.attrs?.mask | maskHandle"
+    [mask]="data.value?.attrs?.mask | maskHandle:data.value?.attrs?.maskOptions"
     [textTransformType]="data.value?.attrs?.fstuc"
     [clearable]="true"
     [name]="data.value?.id"

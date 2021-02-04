@@ -13,6 +13,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -27,6 +28,7 @@ describe('OutputHtmlComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

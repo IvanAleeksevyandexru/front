@@ -6,6 +6,7 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 import { ActionType, DTOActionAction, } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { getHiddenBlock } from '../../constants/uttils';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 @Directive({
   selector: '[epgu-constructor-clickable-label]',
@@ -18,6 +19,7 @@ export class ClickableLabelDirective {
     private _screenService: ScreenService,
     private _actionService: ActionService,
     private _elementRef: ElementRef,
+    private _currentAnswersService: CurrentAnswersService,
   ) {}
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
@@ -35,6 +37,11 @@ export class ClickableLabelDirective {
   private _handleAction(type: ActionType, value?: string): void {
     const action: DTOActionAction =
       type === ActionType.nextStep ? DTOActionAction.getNextStep : DTOActionAction.getPrevStep;
+
+    if (value) {
+      this._currentAnswersService.state = value;
+    }
+
     this._actionService.switchAction(
       { label: '', type, action, value },
       this._screenService.component.id,
