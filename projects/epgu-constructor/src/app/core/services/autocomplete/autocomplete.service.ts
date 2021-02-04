@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 import {
   ComponentDto,
@@ -9,9 +7,9 @@ import {
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../modal/modal.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ConfigService } from '../config/config.service';
 import { EventBusService } from '../event-bus/event-bus.service';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
+import { AutocompleteApiService } from './autocomplete-api.service';
 import {
   ISuggestionItem,
   ISuggestionApi,
@@ -27,12 +25,11 @@ export class AutocompleteService {
   groupId: string = null;
 
   constructor(
-    private http: HttpClient,
     private screenService: ScreenService,
-    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
+    private autocompleteApiService: AutocompleteApiService,
   ) {}
 
   init(): void {
@@ -50,13 +47,13 @@ export class AutocompleteService {
         );
 
         if (this.groupId) {
-          this.getSuggestionsGroup(this.groupId).subscribe((suggestions: ISuggestionApi) => {
+          this.autocompleteApiService.getSuggestionsGroup(this.groupId).subscribe((suggestions: ISuggestionApi) => {
             this.formatAndPassDataToComponents(suggestions);
           });
           return;
         }
         if (componentsSuggestionsFieldsIds.length) {
-          this.getSuggestionsFields(componentsSuggestionsFieldsIds).subscribe(
+          this.autocompleteApiService.getSuggestionsFields(componentsSuggestionsFieldsIds).subscribe(
             (suggestions: ISuggestionApi) => {
               this.formatAndPassDataToComponents(suggestions);
             },
@@ -86,34 +83,6 @@ export class AutocompleteService {
         }
 
         this.screenService.updateScreenContent(this.screenService);
-      });
-
-    this.eventBusService
-      .on('suggestionsEditEvent')
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: ISuggestionItem) => {
-        const text = payload.list.reduce((acc, item: ISuggestionItemList): string => {
-          const hints = item.hints.map((hint) => hint.value).join(' ');
-          const { value, mnemonic } = item;
-          const html = `
-          <div class="suggest-item">
-            <div>${value}</div>
-            <div class="suggest-hint">${hints}</div>
-            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${mnemonic+':'+value}">
-            </button>
-          </div>
-          `;
-          return acc.concat(html);
-        }, '');
-        this.modalService.openModal(ConfirmationModalComponent,
-          {
-            title: 'Ранее заполненные данные',
-            text,
-            showCloseButton: true,
-            showCrossButton: true,
-            isShortModal: true,
-          }
-        );
       });
 
     this.eventBusService
@@ -253,27 +222,6 @@ export class AutocompleteService {
     );
   }
 
-  private getSuggestionsGroup(
-    groupId: string,
-    serviceId: string = '11111',
-  ): Observable<ISuggestionApi> {
-    const searchQuery = `groups=${groupId}&serviceId=${serviceId}`;
-    const path = `${this.configService.suggestionsApiUrl}?${searchQuery}`;
-    return this.httpGet<ISuggestionApi>(path);
-  }
-
-  private getSuggestionsFields(
-    fields: Array<string>,
-    serviceId: string = '11111',
-  ): Observable<ISuggestionApi> {
-    const searchQuery = fields
-      .map((field) => 'fields=' + field)
-      .join('&')
-      .concat('&serviceId=' + serviceId);
-    const path = `${this.configService.suggestionsApiUrl}?${searchQuery}`;
-    return this.httpGet<ISuggestionApi>(path);
-  }
-
   private resetComponentsSuggestionsMap(): void {
     this.componentsSuggestionsMap = null;
     this.componentsSuggestionsMap = {};
@@ -295,11 +243,5 @@ export class AutocompleteService {
         this.componentsSuggestionsMap[suggestionId].push(component.id);
         return suggestionId;
       });
-  }
-
-  private httpGet<T>(path: string): Observable<T> {
-    return this.http.get<T>(path, {
-      // withCredentials: true,
-    });
   }
 }
