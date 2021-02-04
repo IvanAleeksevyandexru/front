@@ -24,7 +24,6 @@ import {
   filter,
   finalize,
   map,
-  mergeMap,
   takeUntil,
   takeWhile,
   tap,
@@ -164,9 +163,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   listUploadingStatus = new BehaviorSubject<boolean>(false);
 
-  processingFiles = new Subject<FileList>(); //Сюда попадают файлы на загрузку
+  processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
   processingFiles$ = this.processingFiles.pipe(
-    concatMap((files: FileList) => from(Array.from(files))), //разбиваем по файлу
+    concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map((file: File) => ({ status: FileItemStatus.preparation, raw: file } as FileItem)),
   );
@@ -181,14 +180,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
    * Скачивание
    *
    * */
-
-  /**
-   * Обновляет данные о файлах, которые были загружены
-   */
-  updateSelectedFilesInfoAndSend(fileList: FileList): void {
-    this.processingFiles.next(fileList);
-    this.prepareFilesToUpload(fileList).subscribe((file: File) => this.sendFile(file));
-  }
 
   get data(): FileUploadItem {
     return this.loadData;
@@ -215,37 +206,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   ) {}
 
   /**
-   * Подготавливает файлы на загрузку и возращает итоговый проверенный
-   * список для загрузки и добавления в общий список загружаемых файлов
-   * @param filesToUpload
-   * @private
+   * Обновляет данные о файлах, которые были загружены
    */
-
-  private prepareFilesToUpload(filesToUpload: FileList): Observable<File> {
-    this.handleError(ErrorActions.clear);
-    const files = this.isPhoto(filesToUpload)
-      ? Array.from(filesToUpload)
-      : this.filterValidFiles(filesToUpload);
-
-    const {
-      isValid: isAmountValid,
-      reason: amountFailedReason,
-    } = this.fileUploadService.checkFilesAmount(files.length, this.loadData.uploadId);
-
-    if (!isAmountValid) {
-      if (amountFailedReason === CheckFailedReasons.total) {
-        this.handleError(ErrorActions.addMaxTotalAmount);
-      } else if (amountFailedReason === CheckFailedReasons.uploaderRestriction) {
-        this.handleError(ErrorActions.addMaxAmount);
-      }
-      return of();
-    }
-
-    const compressedFiles = this.compressImages(files);
-
-    return merge(...compressedFiles).pipe(
-      takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
-    );
+  updateSelectedFilesInfoAndSend(fileList: FileList): void {
+    this.processingFiles.next(fileList);
+    this.prepareFilesToUpload(fileList).subscribe((file: File) => this.sendFile(file));
   }
 
   getListStream(objectId: string): Observable<UploadedFile> {
@@ -683,5 +648,39 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       const index = Number(file.mnemonic.split('.').pop());
       return index > maxIndex ? index : item;
     }, -1);
+  }
+
+  /**
+   * Подготавливает файлы на загрузку и возращает итоговый проверенный
+   * список для загрузки и добавления в общий список загружаемых файлов
+   * @param filesToUpload
+   * @private
+   */
+
+  private prepareFilesToUpload(filesToUpload: FileList): Observable<File> {
+    this.handleError(ErrorActions.clear);
+    const files = this.isPhoto(filesToUpload)
+      ? Array.from(filesToUpload)
+      : this.filterValidFiles(filesToUpload);
+
+    const {
+      isValid: isAmountValid,
+      reason: amountFailedReason,
+    } = this.fileUploadService.checkFilesAmount(files.length, this.loadData.uploadId);
+
+    if (!isAmountValid) {
+      if (amountFailedReason === CheckFailedReasons.total) {
+        this.handleError(ErrorActions.addMaxTotalAmount);
+      } else if (amountFailedReason === CheckFailedReasons.uploaderRestriction) {
+        this.handleError(ErrorActions.addMaxAmount);
+      }
+      return of();
+    }
+
+    const compressedFiles = this.compressImages(files);
+
+    return merge(...compressedFiles).pipe(
+      takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
+    );
   }
 }
