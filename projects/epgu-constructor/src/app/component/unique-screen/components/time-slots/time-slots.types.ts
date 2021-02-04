@@ -19,6 +19,7 @@ export interface TimeSlotValueInterface {
   orderId?: string;
   serviceId?: string;
   waitingTimeExpired: boolean;
+  subject?: string;
 }
 
 export interface DepartmentInterface {
