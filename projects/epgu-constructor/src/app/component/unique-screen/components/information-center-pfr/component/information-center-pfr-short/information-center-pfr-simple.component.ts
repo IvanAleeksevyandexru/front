@@ -6,9 +6,8 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
-import { FormChangeEvent, Simple } from '../../information-center-pfr.models';
+import { FormChangeEvent, PfrAreaType, Simple } from '../../information-center-pfr.models';
 
 @Component({
   selector: 'epgu-constructor-information-center-pfr-simple',
@@ -19,10 +18,11 @@ import { FormChangeEvent, Simple } from '../../information-center-pfr.models';
 export class InformationCenterPfrSimpleComponent implements OnInit {
   @Input() simpleData: Simple;
   @Output() formChangeEvent = new EventEmitter<FormChangeEvent>();
-  control: FormControl;
 
   ngOnInit(): void {
-    this.control = new FormControl({ value: this.simpleData.items[0], disabled: true });
-    this.formChangeEvent.emit({ value: this.control.value, isValid: true });
+    this.formChangeEvent.emit({
+      value: { [PfrAreaType.territory]: this.simpleData.items[0] },
+      isValid: true,
+    });
   }
 }

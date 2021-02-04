@@ -1,8 +1,4 @@
-<epgu-constructor-output-html
-  [html]="simpleData.html"
-  class="item"
-></epgu-constructor-output-html>
+<epgu-constructor-output-html [html]="simpleData.html" class="item"></epgu-constructor-output-html>
 
-<epgu-constructor-label [label]="simpleData.label"></epgu-constructor-label>
-<epgu-constructor-constructor-dropdown [items]="simpleData.items" [control]="control">
-</epgu-constructor-constructor-dropdown>
+<div class="label">{{ simpleData.label }}</div>
+<div class="text">{{ simpleData.items[0].text }}</div>
