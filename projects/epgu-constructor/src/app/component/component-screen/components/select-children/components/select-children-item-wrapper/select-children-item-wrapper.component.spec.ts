@@ -14,6 +14,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;
@@ -29,6 +30,7 @@ describe('SelectChildrenItemWrapperComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService
       ],
     }).compileComponents();
   });
