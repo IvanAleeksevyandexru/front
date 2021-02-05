@@ -147,6 +147,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     mergeMap(this.send.bind(this)),
   );
   downloadFiles = new BehaviorSubject<FileItem[]>([]);
+  deleteFiles = new BehaviorSubject<FileItem[]>([]);
 
   files_$ = this.files.pipe(
     concatMap((files) => from(files)),
@@ -217,6 +218,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
    */
   // TODO избавиться от any в шаблоне
   downloadFile(file: FileItem): void {
+    const files = this.downloadFiles.getValue();
+    files.push(file);
+    this.downloadFiles.next(files);
     // this.handleError(ErrorActions.clear);
     // const subs: Subscription = this.terabyteService
     //   .downloadFile(file.getParamsForFileOptions())
@@ -546,6 +550,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
    * @param file - объект файла на удаление
    */
   deleteFile(file: FileItem): void {
+    const files = this.deleteFiles.getValue();
+    files.push(file);
+    this.deleteFiles.next(files);
     // this.handleError(ErrorActions.clear);
     //
     // if (file.uploaded) {
