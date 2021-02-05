@@ -273,7 +273,10 @@ export class TimeSlotsService {
     };
   }
 
-  private getSlotsRequestAttributes(slotsType: TimeSlotsTypes, serviceId: string): Array<{ name: string; value: string; }> {
+  private getSlotsRequestAttributes(
+    slotsType: TimeSlotsTypes,
+    serviceId: string,
+  ): Array<{ name: string; value: string }> {
     const settings = {
       [TimeSlotsTypes.BRAK]: [
         { name: 'SolemnRegistration', value: this.solemn },
@@ -338,7 +341,7 @@ export class TimeSlotsService {
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
-      attributes: [],
+      attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
       serviceId: [this.serviceId || serviceId],
     };
@@ -349,6 +352,20 @@ export class TimeSlotsService {
     }
 
     return requestBody;
+  }
+
+  private getBookRequestAttributes(
+    slotsType: TimeSlotsTypes,
+    serviceId: string,
+  ): Array<{ name: string; value: string }> {
+    const settings = {
+      [TimeSlotsTypes.BRAK]: [],
+      [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.serviceId || serviceId }],
+      [TimeSlotsTypes.MVD]: [],
+      [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.serviceId || serviceId }],
+    };
+
+    return settings[slotsType];
   }
 
   private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {
