@@ -1,0 +1,31 @@
+<div
+  class="photo__uploading-container"
+  [ngClass]="{ 'photo__uploading-container-mobile': !isDesktop }"
+>
+  <img
+    *ngIf="croppedImageUrl"
+    class="photo__cropped-image"
+    [src]="croppedImageUrl | safe: 'resourceUrl'"
+    alt=""
+  />
+  <div *ngIf="!croppedImageUrl" dragAndDrop class="photo__uploading-area">
+    <img [src]="isDesktop ? desktopIcon : mobileIcon" alt="" />
+
+    <div class="photo__uploading-inner-container">
+      <p *ngIf="isDesktop" class="photo__uploading-text photo__uploading-text_mt-80">
+        Перетащите фото сюда или выберите на компьютере
+      </p>
+      <p *ngIf="!isDesktop" class="photo__uploading-text photo__uploading-text_mt-68">
+        Выберите файл или сделайте фото
+      </p>
+      <button *ngIf="!isDesktop" class="photo__uploading-button" (click)="openCameraEvent.emit()">
+        <img src="{{ staticDomainAssetsPath }}/assets/icons/svg/camera.svg" alt="" />
+        Сделать фото
+      </button>
+      <button class="photo__uploading-button" (click)="hiddenFileInputEvent.emit()">
+        <img src="{{ staticDomainAssetsPath }}/assets/icons/svg/clip.svg" alt="" />
+        Загрузить фото
+      </button>
+    </div>
+  </div>
+</div>
