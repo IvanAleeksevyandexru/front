@@ -1,13 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { ListItem } from 'epgu-lib';
+import { ErrorDisplayDto, VehicleOwnerInfo } from '../../models/car-list.interface';
 
 @Component({
   selector: 'epgu-constructor-car-list',
   templateUrl: './car-list.component.html',
   styleUrls: ['./car-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarListComponent implements OnInit {
+  @Input() staticDomainAssetsPath: string;
+  @Input() searchCaseSensitive: boolean;
+  @Input() provider: { search: (searchString: string) => Observable<Partial<ListItem>[]> };
+  @Input() formatter: (item: ListItem) => string;
+  @Input() label: string;
+  @Input() carFixedItems: Partial<ListItem>[];
+  @Input() errorDisplayDto: ErrorDisplayDto;
+  @Input() control: FormControl;
 
-  constructor() { }
+  @Output() formChangeEvent = new EventEmitter<VehicleOwnerInfo>();
 
   ngOnInit(): void {}
+
+  lookupChanged(): void {
+    this.formChangeEvent.emit(<VehicleOwnerInfo>this.control.value.originalItem);
+  }
 }

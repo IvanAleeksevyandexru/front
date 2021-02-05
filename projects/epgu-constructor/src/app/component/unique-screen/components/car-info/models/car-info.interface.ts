@@ -1,3 +1,5 @@
+import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',
   NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
@@ -69,6 +71,10 @@ interface Restriction {
   enforcementProceedingsNumber: string;
   enforcementProceedingsDate: string;
   enforcementProceedingsName: string;
+}
+
+export interface CarInfoComponentAttrsDto extends ComponentAttrsDto {
+  errors: CarInfoErrorsDto;
 }
 
 export interface CarInfoErrorsDto {
