@@ -1,0 +1,9 @@
+@import '../../../../../../../styles/core/index';
+
+:host {
+  flex: 1;
+
+  @include phones-up {
+    padding-left: 32px;
+  }
+}
