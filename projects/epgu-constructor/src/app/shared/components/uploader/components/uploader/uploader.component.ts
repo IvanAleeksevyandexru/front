@@ -7,6 +7,7 @@ import {
   HostBinding,
   HostListener,
   Input,
+  OnDestroy,
   Output,
   QueryList,
 } from '@angular/core';
@@ -20,7 +21,7 @@ import { UploaderButtonComponent } from '../uploader-button/uploader-button.comp
   styleUrls: ['./uploader.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderComponent implements AfterContentInit {
+export class UploaderComponent implements AfterContentInit, OnDestroy {
   @Output() upload = new EventEmitter<FileList>();
   @Input() isMobile: boolean;
   @ContentChildren(UploaderButtonComponent, { descendants: true }) buttons!: QueryList<
@@ -67,6 +68,7 @@ export class UploaderComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
+    console.log('ngAfterContentInit');
     this.subs?.unsubscribe();
     this.subs = new Subscription();
     this.buttons.forEach((item) => {
@@ -79,5 +81,9 @@ export class UploaderComponent implements AfterContentInit {
           .subscribe(),
       );
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }

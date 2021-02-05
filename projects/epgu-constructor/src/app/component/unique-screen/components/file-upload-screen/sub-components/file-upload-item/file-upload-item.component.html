@@ -12,28 +12,28 @@
     </epgu-constructor-output-html>
     <div *ngIf="refData?.length" class="fileupload__label" [innerHTML]="refData"></div>
   </div>
-  <div *ngIf="files$$ | async as files" class="files">
+  <div *ngIf="files | async as files" class="files">
     <div *ngFor="let file of files" class="file">
       <div
         class="file__icon"
-        [class.uploaded]="file.uploaded"
-        [class.loading]="!file.uploaded"
+        [class.uploaded]="file.status === 'uploaded'"
+        [class.loading]="file.status !== 'uploaded'"
       ></div>
       <div class="file__title-wrapper">
         <div
-          *ngIf="file.uploaded"
+          *ngIf="file.status === 'uploaded'"
           class="file__title uploaded"
-          [innerText]="file.fileName"
+          [innerText]="file?.item?.fileName || file?.raw?.name"
           (click)="downloadFile(file)"
         ></div>
-        <span *ngIf="!file.uploaded" class="file__title">
+        <span *ngIf="file.status !== 'uploaded'" class="file__title">
           Файл загружается...
         </span>
-        <div *ngIf="file.uploaded" class="file__title-info">
-          Файл загружен ({{ file.getFileSize() }})
+        <div *ngIf="file.status === 'uploaded'" class="file__title-info">
+          Файл загружен ({{ file?.item?.fileSize || file?.raw?.size }})
         </div>
       </div>
-      <button *ngIf="file.uploaded" class="file__action" (click)="deleteFile(file)">
+      <button *ngIf="file.status === 'uploaded'" class="file__action" (click)="deleteFile(file)">
         Удалить
       </button>
     </div>
