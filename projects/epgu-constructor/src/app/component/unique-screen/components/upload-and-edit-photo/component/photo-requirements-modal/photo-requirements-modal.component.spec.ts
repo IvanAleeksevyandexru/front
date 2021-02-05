@@ -53,6 +53,7 @@ describe('PhotoRequirementsModalComponent', () => {
         CurrentAnswersService,
         UnsubscribeService,
         EventBusService,
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });

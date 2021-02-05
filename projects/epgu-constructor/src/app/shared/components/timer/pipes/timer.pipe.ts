@@ -1,7 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment_ from 'moment';
-
-const moment = moment_;
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 /**
  * Преобразовывает переданное время в формат HH:mm:ss
@@ -10,12 +8,11 @@ const moment = moment_;
   name: 'timer',
 })
 export class TimerPipe implements PipeTransform {
-  transform(value: number): string {
-    const duration = moment.duration(value);
-    const seconds = duration.seconds();
-    const minutes = duration.minutes();
-    const hours = Math.trunc(duration.asHours());
 
+  constructor(private datesToolsService: DatesToolsService) { }
+
+  transform(value: number): string {
+    const { hours, minutes, seconds } = this.datesToolsService.intervalToDuration({ start: 0, end: value });
     return `${this.getFormatTime(hours)}:${this.getFormatTime(minutes)}:${this.getFormatTime(
       seconds,
     )}`;

@@ -30,6 +30,7 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 
+// TODO: переехать на DatesToolsService и упразднить moment
 const moment = moment_;
 moment.locale('ru');
 
