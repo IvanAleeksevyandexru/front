@@ -4,6 +4,8 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Align, MonthYear, ValidationShowOn } from 'epgu-lib';
@@ -22,6 +24,10 @@ export class ConstructorMonthPickerComponent implements AfterContentChecked {
   @Input() validationShowOn: ValidationShowOn | string | boolean;
   @Input() hideTillNowAvailable?: boolean;
   @Input() align?: Align | string;
+  @Output() changeEvent = new EventEmitter();
+  @Output() clearedEvent = new EventEmitter<void>();
+  @Output() focusEvent = new EventEmitter();
+  @Output() blurEvent = new EventEmitter();
 
   constructor(private cdr: ChangeDetectorRef) {}
 

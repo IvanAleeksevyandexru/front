@@ -20,6 +20,7 @@ import { ModalService } from '../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -64,6 +65,7 @@ describe('AddPassportComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService
       ],
     }).compileComponents();
   }));

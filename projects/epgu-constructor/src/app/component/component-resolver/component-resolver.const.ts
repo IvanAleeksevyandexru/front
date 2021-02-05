@@ -14,7 +14,7 @@ import { Type } from '@angular/core';
 import { SelectMapObjectComponent } from '../unique-screen/components/select-map-object/select-map-object.component';
 import { FileUploadScreenComponent } from '../unique-screen/components/file-upload-screen/file-upload-screen.component';
 // eslint-disable-next-line max-len
-import { UploadAndEditPhotoComponent } from '../unique-screen/components/upload-and-edit-photo/upload-and-edit-photo.component';
+import { UploadAndEditPhotoContainerComponent } from '../unique-screen/components/upload-and-edit-photo/container/upload-and-edit-photo-container.component';
 // eslint-disable-next-line max-len
 import { EmployeeHistoryContainerComponent } from '../unique-screen/components/employee-history/container/employee-history-container.component';
 import { RepeatableFieldsComponent } from '../unique-screen/components/repeatable-fields/repeatable-fields.component';
@@ -44,7 +44,7 @@ type UniqueScreenComponent =
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
-  | UploadAndEditPhotoComponent
+  | UploadAndEditPhotoContainerComponent
   | EmployeeHistoryContainerComponent
   | RepeatableFieldsComponent
   | TimeSlotsComponent
@@ -70,7 +70,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
   FileUploadComponent: FileUploadScreenComponent,
-  PhotoUploadComponent: UploadAndEditPhotoComponent,
+  PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
   RepeatableFields: RepeatableFieldsComponent,
   TimeSlot: TimeSlotsComponent,

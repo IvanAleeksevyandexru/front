@@ -7,4 +7,8 @@
   [validationShowOn]="validationShowOn"
   [hideTillNowAvailable]="hideTillNowAvailable"
   [align]="align"
+  (changed)="changeEvent.emit($event)"
+  (cleared)="clearedEvent.emit($event)"
+  (focus)="focusEvent.emit($event)"
+  (blur)="blurEvent.emit($event)"
 ></lib-month-picker>
