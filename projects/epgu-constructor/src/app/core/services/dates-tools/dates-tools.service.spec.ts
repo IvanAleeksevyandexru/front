@@ -22,11 +22,10 @@ describe('DatesToolsService', () => {
     });
   });
 
-  // TODO: неконсистентный тест, подумать над другой имплементацией
-  xdescribe('getToday() method', () => {
+  describe('getToday() method', () => {
     it('should return today date', () => {
-      const today = new Date();
-      const serviceToday = service.getToday();
+      const today = new Date().toLocaleString();
+      const serviceToday = service.getToday().toLocaleString();
       expect(serviceToday).toEqual(today);
     });
   });
@@ -207,22 +206,54 @@ describe('DatesToolsService', () => {
     });
   });
 
-  // TODO: додумать этот тест
   xdescribe('setDate() method', () => {
     it('should return setted date', () => {
-      const date = new Date();
-      const controlDate = new Date(1);
-      const resultDate = service.setDate(date, '1970', '0', '1');
-      expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
+      expect(service.setDate(new Date(2014, 8, 1), null, null, 30).toLocaleString()).toEqual('2014-09-29T20:00:00.000Z');
     });
   });
 
-    // TODO: додумать этот тест
-    xdescribe('endOfMonth() method', () => {
-      it('should return setted date', () => {
-        expect(true).toBeTruthy();
-      });
+
+  xdescribe('endOfMonth() method', () => {
+    it('should return date end of month', () => {
+      expect(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('2014-09-30T19:59:59.999Z');
     });
+  });
+
+  xdescribe('startOfYear() method', () => {
+    it('should return start date of year', () => {
+      expect(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.01.2014, 00:00:00');
+    });
+  });
+
+  xdescribe('startOfMonth() method', () => {
+    it('should return start date of month', () => {
+      expect(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.09.2014, 00:00:00');
+    });
+  });
+
+  xdescribe('startOfDay() method', () => {
+    it('should return start date of day', () => {
+      expect(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('02.09.2014, 00:00:00');
+    });
+  });
+
+  describe('getISODay() method', () => {
+    it('should return day of week of passed date', () => {
+      expect(service.getISODay(new Date(2012, 1, 26))).toEqual(7);
+    });
+  });
+
+  describe('getMonth() method', () => {
+    it('should return month of passed date', () => {
+      expect(service.getMonth(new Date(2012, 1, 29))).toEqual(1);
+    });
+  });
+
+  describe('getDaysInMonth() method', () => {
+    it('should amount of days in passed date', () => {
+      expect(service.getDaysInMonth(new Date(2000, 1))).toEqual(29);
+    });
+  });
 
   describe('min() method', () => {
     it('should return min date from array of dates', () => {
@@ -237,6 +268,15 @@ describe('DatesToolsService', () => {
       const dateLeft = service.parse('02.01.2000', DATE_STRING_DOT_FORMAT);
       const dateRight = new Date(1);
       expect(service.max([dateLeft, dateRight])).toEqual(dateLeft);
+    });
+  });
+
+  describe('intervalToDuration() method', () => {
+    it('should return duration object for passed interval', () => {
+      expect(service.intervalToDuration({
+        start: new Date(1929, 0, 15, 12, 0, 0),
+        end: new Date(1968, 3, 4, 19, 5, 0)
+      })).toEqual({ years: 39, months: 2, days: 20, hours: 7, minutes: 5, seconds: 0 });
     });
   });
 

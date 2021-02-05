@@ -18,6 +18,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -51,6 +52,7 @@ describe('PhotoRequirementsModalComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         UnsubscribeService,
         EventBusService,
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });

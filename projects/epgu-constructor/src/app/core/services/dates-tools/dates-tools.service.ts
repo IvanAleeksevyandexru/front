@@ -14,16 +14,33 @@ import {
   add as _add,
   sub as _sub,
   setYear as _setYear,
+  startOfYear as _startOfYear,
   setMonth as _setMonth,
+  getMonth as _getMonth,
+  startOfMonth as _startOfMonth,
+  endOfMonth as _endOfMonth,
+  getDaysInMonth as _getDaysInMonth,
   setDay as _setDay,
+  startOfDay as _startOfDay,
+  getISODay as _getISODay,
   differenceInYears as _differenceInYears,
   differenceInMilliseconds as _differenceInMilliseconds,
-  endOfMonth as _endOfMonth,
   min as _min,
   max as _max,
+  intervalToDuration as _intervalToDuration,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { DATE_ISO_STRING_FORMAT, DurationTimeTypes } from '../../../shared/constants/dates';
+
+interface Duration {
+  years?: number;
+  months?: number;
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+}
 
 @Injectable()
 export class DatesToolsService {
@@ -215,6 +232,14 @@ export class DatesToolsService {
     return _setYear(date, Number(year));
   }
 
+  /**
+   * Возвращает объект даты с началом года
+   * @param {Date | Number} date исходная дата
+   */
+  public startOfYear(date: Date | number): Date {
+    return _startOfYear(date);
+  }
+
     /**
    * Возвращает новый объект даты с заданным месяцем
    * @param {Date | Number} date исходная дата
@@ -233,6 +258,33 @@ export class DatesToolsService {
     return _setDay(date, Number(day));
   }
 
+  /**
+   * Возвращает объект даты с началом дня
+   * @param {Date | Number} date исходная дата
+   */
+  public startOfDay(date: Date | number): Date {
+    return _startOfDay(date);
+  }
+
+  /**
+   * Возвращает день недели переданной даты
+   * @param {Date | Number} date исходная дата
+   */
+  public getISODay(date: Date | number): number {
+    return _getISODay(date);
+  }
+
+  public startOf(date: Date | number, startType: 'day' | 'month' | 'year'): Date {
+    switch (startType) {
+      case 'day':
+        return this.startOfDay(date);
+      case 'month':
+        return this.startOfMonth(date);
+      case 'year':
+        return this.startOfYear(date);
+    }
+  }
+
 
     /**
    * Возвращает новый объект даты с заданными аргументами
@@ -241,7 +293,7 @@ export class DatesToolsService {
    * @param {Number} month указанный месяц
    * @param {Number} day указанный день
    */
-  public setDate(date: Date | number, year: number | string, month: number | string, day: number | string): Date {
+  public setDate(date: Date | number, year?: number | string, month?: number | string, day?: number | string): Date {
     let newDate = this.toDate(date);
     if (year) {
       newDate = this.setYear(newDate, year);
@@ -256,12 +308,37 @@ export class DatesToolsService {
   }
 
   /**
-   * Возвращает объект даты с концом месяца
-   * @param {Date} date исходная дата
+   * Возвращает месяц переданной даты
+   * @param {Date | Number} date исходная дата
    */
-  public endOfMonth(date: Date): Date {
+  public getMonth(date: Date | number): number {
+    return _getMonth(date);
+  }
+
+  /**
+   * Возвращает объект даты с началом месяца
+   * @param {Date | Number} date исходная дата
+   */
+  public startOfMonth(date: Date | number): Date {
+    return _startOfMonth(date);
+  }
+
+  /**
+   * Возвращает объект даты с концом месяца
+   * @param {Date | Number} date исходная дата
+   */
+  public endOfMonth(date: Date | number): Date {
     return _endOfMonth(date);
   }
+
+  /**
+   * Возвращает кол-во дней в переданной дате
+   * @param {Date | Number} date исходная дата
+   */
+  public getDaysInMonth(date: Date | number): number {
+    return _getDaysInMonth(date);
+  }
+
 
   /**
    * Возвращает самую раннюю дату из массива дат
@@ -279,4 +356,11 @@ export class DatesToolsService {
     return _max(dates);
   }
 
+  /**
+   * Возвращает duration объект для переданного отрезка времени
+   * @param {start: Date | Number, end: Date | Number} interval объект интервала, состоящий из начала и конца временного отрезка
+   */
+  public intervalToDuration(interval: { start: Date | number, end: Date | number }): Duration {
+    return _intervalToDuration(interval);
+  }
 }
