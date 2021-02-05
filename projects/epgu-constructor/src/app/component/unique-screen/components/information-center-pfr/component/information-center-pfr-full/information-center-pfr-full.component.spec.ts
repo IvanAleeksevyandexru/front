@@ -9,7 +9,7 @@ import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/
 import { Full } from '../../information-center-pfr.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
 
 describe('InformationCenterPfrFullComponent', () => {
   let component: InformationCenterPfrFullComponent;
@@ -38,7 +38,7 @@ describe('InformationCenterPfrFullComponent', () => {
       imports: [
         MockModule(BaseModule),
         MockModule(BaseComponentsModule),
-        MockModule(ConstructorDropdownModule),
+        MockModule(ConstructorLookupModule),
       ],
       providers: [UnsubscribeService, FormBuilder],
     })
@@ -77,7 +77,7 @@ describe('InformationCenterPfrFullComponent', () => {
     it('should be call formChangeEvent', () => {
       jest.spyOn(component.formChangeEvent, 'emit');
       jest.spyOn(component, 'handleSelect');
-      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-dropdown'));
+      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-lookup'));
       debugEl.triggerEventHandler('changed', {});
 
       expect(component.formChangeEvent.emit).toHaveBeenCalled();
