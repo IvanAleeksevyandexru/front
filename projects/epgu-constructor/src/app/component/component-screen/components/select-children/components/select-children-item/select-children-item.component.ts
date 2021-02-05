@@ -22,7 +22,7 @@ export class SelectChildrenItemComponent {
   @Input() children: Array<ListElement>;
   @Input() errors: ScenarioErrorsDto;
   @Input() isNewChild: boolean;
-  @Input() components: CustomComponent;
+  @Input() components: Array<CustomComponent>;
   @Input() control: AbstractControl;
   @Output() selectChildrenEvent = new EventEmitter<ChildI>();
   @Output() updateChildEvent = new EventEmitter<CustomComponentOutputData>();

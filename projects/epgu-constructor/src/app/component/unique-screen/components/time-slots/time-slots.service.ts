@@ -39,6 +39,7 @@ export class TimeSlotsService {
 
   public department: DepartmentInterface;
   private serviceId: string;
+  private subject: string;
   private solemn: boolean;
   private slotsPeriod;
   private orderId;
@@ -223,6 +224,12 @@ export class TimeSlotsService {
       this.serviceId = serviceId;
     }
 
+    let subject = data.subject;
+    if (!this.subject || this.subject !== subject) {
+      changed = true;
+      this.subject = subject;
+    }
+
     return changed;
   }
 
@@ -310,12 +317,12 @@ export class TimeSlotsService {
       routeNumber,
     } = this.config.timeSlots[this.timeSlotsType];
 
-    return {
+    const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject,
+      subject: this.subject || subject,
       params: [
         {
           name: 'phone',
@@ -335,6 +342,13 @@ export class TimeSlotsService {
       slotId: [selectedSlot.slotId],
       serviceId: [this.serviceId || serviceId],
     };
+
+    if (this.timeSlotsType === TimeSlotsTypes.MVD) {
+      requestBody.parentOrderId = '';
+      requestBody.caseNumber = this.orderId;
+    }
+
+    return requestBody;
   }
 
   private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {

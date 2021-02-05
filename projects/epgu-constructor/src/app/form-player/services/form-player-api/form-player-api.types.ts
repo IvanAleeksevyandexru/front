@@ -165,6 +165,8 @@ export interface ComponentUploadedFileDto {
   created?: string;
   updated?: string;
   deleted?: boolean;
+  uploadId?: string;
+  maxSize?: number;
 }
 
 export interface RefsTimeDto {

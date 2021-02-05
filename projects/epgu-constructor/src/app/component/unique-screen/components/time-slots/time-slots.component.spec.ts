@@ -189,4 +189,17 @@ describe('TimeSlotsComponent', () => {
     expect(bookedSlot).toBeNull();
   });
 
+  it('MVD should contain caseNumber and empty parentOrderId', () => {
+    const compValue = JSON.parse(screenService.component.value);
+    const department = JSON.parse(compValue.department);
+    compValue.timeSlotType = 'MVD';
+    department.attributeValues.AREA_NAME = 'temp';
+    compValue.department = JSON.stringify(department);
+    screenService.component.value = JSON.stringify(compValue);
+    fixture.detectChanges();
+    const reqBody = component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
+    expect(reqBody.caseNumber).toBeTruthy();
+    expect(reqBody.parentOrderId).toEqual('');
+  });
+
 });
