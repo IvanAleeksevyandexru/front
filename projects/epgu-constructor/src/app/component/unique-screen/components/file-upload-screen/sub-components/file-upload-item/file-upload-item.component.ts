@@ -184,7 +184,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public config: ConfigService,
     public modal: ModalService,
     private eventBusService: EventBusService,
-    private changeDetectionRef: ChangeDetectorRef,
   ) {}
 
   addDownload(file: FileItem): void {
@@ -437,14 +436,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
-    if (!fileName?.includes(photoBaseName)) {
-      return;
-    }
-    if (addPhoto) {
-      this.uploadedCameraPhotoNumber += 1;
-    }
-  }
+  // updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
+  //   if (!fileName?.includes(photoBaseName)) {
+  //     return;
+  //   }
+  //   if (addPhoto) {
+  //     this.uploadedCameraPhotoNumber += 1;
+  //   }
+  // }
 
   /**
    * Возращает промежуточный путь для формирования мнемомники, конретно для этой формы
@@ -602,9 +601,5 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
     this.subs.forEach((sub) => sub.unsubscribe());
-  }
-
-  private isPhoto(files: FileList): boolean {
-    return files.length === 1 && files[0].type.indexOf('image/') !== -1;
   }
 }
