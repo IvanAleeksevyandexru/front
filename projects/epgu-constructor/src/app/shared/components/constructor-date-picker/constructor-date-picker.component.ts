@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Align, BrokenDateFixStrategy, RelativeDate } from 'epgu-lib';
 import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
@@ -6,9 +6,8 @@ import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
 @Component({
   selector: 'epgu-constructor-constructor-date-picker',
   templateUrl: './constructor-date-picker.component.html',
-  styleUrls: ['./constructor-date-picker.component.scss'],
 })
-export class ConstructorDatePickerComponent implements OnInit {
+export class ConstructorDatePickerComponent {
   @Input() invalid: boolean;
   @Input() validationShowOn: ValidationShowOn | string | boolean;
   @Input() name: string;
@@ -24,8 +23,6 @@ export class ConstructorDatePickerComponent implements OnInit {
   @Output() dateSelectedEvent = new EventEmitter<Date>();
   @Output() clearedEvent = new EventEmitter<void>();
   @Output() blurEvent = new EventEmitter<void>();
-
-  ngOnInit(): void {}
 
   public onDateSelected(date: Date): void {
     this.dateSelectedEvent.emit(date);
