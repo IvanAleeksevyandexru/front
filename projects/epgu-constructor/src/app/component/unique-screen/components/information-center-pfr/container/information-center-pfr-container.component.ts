@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
@@ -69,6 +69,7 @@ export class InformationCenterPfrContainerComponent {
   );
   public regionDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public districtDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
+  public cityDistrictDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public territoryDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -82,12 +83,14 @@ export class InformationCenterPfrContainerComponent {
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,
     private readonly dictionaryApiService: DictionaryApiService,
+    private cdr: ChangeDetectorRef,
     public currentAnswersService: CurrentAnswersService,
   ) {}
 
   public changeForm({ isValid, value }: FormChangeEvent): void {
     this.currentAnswersService.isValid = isValid;
     this.currentAnswersService.state = JSON.stringify(value);
+    this.cdr.detectChanges();
   }
 
   public fetchDictionary({ value, type, attributeName, condition }: SelectEvent): void {
@@ -112,11 +115,22 @@ export class InformationCenterPfrContainerComponent {
       case PfrAreaType.region:
         this.territoryDictionary$.next([]);
         this.districtDictionary$.next([]);
+        this.cityDistrictDictionary$.next([]);
         this.regionDictionary$.next(items);
         break;
       case PfrAreaType.district:
         this.territoryDictionary$.next([]);
+        this.cityDistrictDictionary$.next([]);
         this.districtDictionary$.next(items);
+        break;
+      case PfrAreaType.cityDistrict:
+        if (items.length !== 1) {
+          this.cityDistrictDictionary$.next(items);
+          this.territoryDictionary$.next([]);
+        } else {
+          this.cityDistrictDictionary$.next([]);
+          this.territoryDictionary$.next(items);
+        }
         break;
       case PfrAreaType.territory:
         this.territoryDictionary$.next(items);
@@ -151,10 +165,10 @@ export class InformationCenterPfrContainerComponent {
     const { full } = component.attrs;
 
     Object.keys(value).forEach((type, index, array) => {
-      if (index !== 0) {
+      if (index !== 0 && value[type]) {
         this.fetchDictionary({
           type: type as PfrAreaType,
-          value: value[array[index - 1]],
+          value: value[array[index - 1]] || value[array[index - 2]],
           condition: full[type].condition,
           attributeName: full[type].attributeName,
         });

@@ -1,3 +1,14 @@
+@import '../../../../../../../styles/core';
+
 .item {
   margin-bottom: 24px;
+}
+
+.label {
+  @include typ-h5;
+  margin-bottom: 12px;
+}
+
+.text {
+  @include typ-plain-text;
 }

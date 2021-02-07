@@ -6,6 +6,7 @@ export enum PfrAreaType {
   region = 'region',
   district = 'district',
   territory = 'territory',
+  cityDistrict = 'cityDistrict',
 }
 
 export interface PftAreaTypeParams {
@@ -24,6 +25,7 @@ export interface InformationCenterPfrAttrs {
   full: Full;
   simple: Simple;
   dictionaryType: string;
+  relation: PfrAreaType;
 }
 
 export interface InformationCenterPfr {
