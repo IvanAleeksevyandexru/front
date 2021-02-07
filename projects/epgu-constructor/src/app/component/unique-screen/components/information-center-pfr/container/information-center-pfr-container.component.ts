@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
@@ -35,8 +35,8 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 export class InformationCenterPfrContainerComponent {
   public data$ = (this.screenService.component$ as Observable<InformationCenterPfr>).pipe(
     tap((component) => {
-      if (!this.isSimpleElement(component)) {
-        this.dictionaryType = component.attrs.dictionaryType;
+      this.dictionaryType = component.attrs.dictionaryType;
+      if (!this.isSimpleElement(component) && !component.value) {
         const { condition, attributeName } = component.attrs.full.region;
         this.fetchDictionary({
           type: PfrAreaType.region,
@@ -93,10 +93,7 @@ export class InformationCenterPfrContainerComponent {
     this.cdr.detectChanges();
   }
 
-  public fetchDictionary(
-    { value, type, attributeName, condition }: SelectEvent,
-    isFetchFromCache = false,
-  ): void {
+  public fetchDictionary({ value, type, attributeName, condition }: SelectEvent): void {
     if (value === null) {
       this.updateDictionary(type, []);
       return;
@@ -109,11 +106,7 @@ export class InformationCenterPfrContainerComponent {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         const items = DictionaryUtilities.adaptDictionaryToListItem(data.items);
-        if (isFetchFromCache) {
-          this.updateDictionary(type, items);
-        } else {
-          this.updateDictionaryFromCache(type, items);
-        }
+        this.updateDictionary(type, items);
       });
   }
 
@@ -196,15 +189,40 @@ export class InformationCenterPfrContainerComponent {
 
     const { full } = component.attrs;
 
+    const data: SelectEvent[] = [];
     Object.keys(value).forEach((type, index, array) => {
       if (index !== 0 && value[type]) {
-        this.fetchDictionary({
+        data.push({
           type: type as PfrAreaType,
-          value: value[array[index - 1]] || value[array[index - 2]], // TODO: подумать над механизмом relation, сейчас идет перебор массива с сравнением, что не очень универсально
+          value: value[array[index - 1]] || value[array[index - 2]],
+          condition: full[type].condition,
+          attributeName: full[type].attributeName,
+        });
+      } else if (index === 0) {
+        data.push({
+          type: type as PfrAreaType,
           condition: full[type].condition,
           attributeName: full[type].attributeName,
         });
       }
+    });
+
+    forkJoin(
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      data.map(({ attributeName, condition, value }) => {
+        const options = this.getInfoCenterOptionsRequest(
+          attributeName,
+          condition,
+          value?.id as string,
+        );
+
+        return this.dictionaryApiService.getDictionary(this.dictionaryType, options);
+      }),
+    ).subscribe((response) => {
+      response.forEach(({ items }, index) => {
+        const dictionary = DictionaryUtilities.adaptDictionaryToListItem(items);
+        this.updateDictionaryFromCache(data[index].type, dictionary);
+      });
     });
   }
 
