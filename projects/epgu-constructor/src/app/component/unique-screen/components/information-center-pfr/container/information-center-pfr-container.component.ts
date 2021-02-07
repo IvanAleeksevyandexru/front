@@ -93,7 +93,10 @@ export class InformationCenterPfrContainerComponent {
     this.cdr.detectChanges();
   }
 
-  public fetchDictionary({ value, type, attributeName, condition }: SelectEvent): void {
+  public fetchDictionary(
+    { value, type, attributeName, condition }: SelectEvent,
+    isFetchFromCache = false,
+  ): void {
     if (value === null) {
       this.updateDictionary(type, []);
       return;
@@ -106,7 +109,11 @@ export class InformationCenterPfrContainerComponent {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         const items = DictionaryUtilities.adaptDictionaryToListItem(data.items);
-        this.updateDictionary(type, items);
+        if (isFetchFromCache) {
+          this.updateDictionary(type, items);
+        } else {
+          this.updateDictionaryFromCache(type, items);
+        }
       });
   }
 
@@ -121,6 +128,31 @@ export class InformationCenterPfrContainerComponent {
       case PfrAreaType.district:
         this.territoryDictionary$.next([]);
         this.cityDistrictDictionary$.next([]);
+        this.districtDictionary$.next(items);
+        break;
+      case PfrAreaType.cityDistrict:
+        if (items.length !== 1) {
+          this.cityDistrictDictionary$.next(items);
+          this.territoryDictionary$.next([]);
+        } else {
+          this.cityDistrictDictionary$.next([]);
+          this.territoryDictionary$.next(items);
+        }
+        break;
+      case PfrAreaType.territory:
+        this.territoryDictionary$.next(items);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private updateDictionaryFromCache(type: PfrAreaType, items: Array<ListElement>): void {
+    switch (type) {
+      case PfrAreaType.region:
+        this.regionDictionary$.next(items);
+        break;
+      case PfrAreaType.district:
         this.districtDictionary$.next(items);
         break;
       case PfrAreaType.cityDistrict:

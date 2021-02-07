@@ -72,7 +72,7 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
       this.pfrForm.controls[this.pfrAreAType.cityDistrict].updateValueAndValidity();
     }
 
-    if (changes.territoryDictionary.currentValue.length === 1 && this.pfrForm) {
+    if (changes.territoryDictionary?.currentValue.length === 1 && this.pfrForm) {
       this.pfrForm.controls[this.pfrAreAType.territory].setValue(this.territoryDictionary[0]);
       this.pfrForm.controls[this.pfrAreAType.territory].updateValueAndValidity();
     }
