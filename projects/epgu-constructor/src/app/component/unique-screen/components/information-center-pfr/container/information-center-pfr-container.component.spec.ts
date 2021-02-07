@@ -38,6 +38,11 @@ describe('InformationCenterPfrContainerComponent', () => {
           attributeName: 'parent_attr',
           condition: 'EQUALS',
         },
+        cityDistrict: {
+          label: 'Городской район',
+          attributeName: 'parent_attr',
+          condition: 'EQUALS',
+        },
         territory: {
           label: 'Территориальный орган',
           attributeName: 'parent_attr',
@@ -159,6 +164,11 @@ describe('InformationCenterPfrContainerComponent', () => {
             region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' },
             district: {
               label: 'Район (Административный центр)',
+              attributeName: 'parent_attr',
+              condition: 'EQUALS',
+            },
+            cityDistrict: {
+              label: 'Городской район',
               attributeName: 'parent_attr',
               condition: 'EQUALS',
             },

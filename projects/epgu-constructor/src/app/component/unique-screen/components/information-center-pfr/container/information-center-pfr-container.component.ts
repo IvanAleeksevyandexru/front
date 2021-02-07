@@ -168,7 +168,7 @@ export class InformationCenterPfrContainerComponent {
       if (index !== 0 && value[type]) {
         this.fetchDictionary({
           type: type as PfrAreaType,
-          value: value[array[index - 1]] || value[array[index - 2]],
+          value: value[array[index - 1]] || value[array[index - 2]], // TODO: подумать над механизмом relation, сейчас идет перебор массива с сравнением, что не очень универсально
           condition: full[type].condition,
           attributeName: full[type].attributeName,
         });

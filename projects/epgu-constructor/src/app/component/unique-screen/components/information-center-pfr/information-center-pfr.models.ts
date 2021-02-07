@@ -25,7 +25,6 @@ export interface InformationCenterPfrAttrs {
   full: Full;
   simple: Simple;
   dictionaryType: string;
-  relation: PfrAreaType;
 }
 
 export interface InformationCenterPfr {
