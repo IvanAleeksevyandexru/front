@@ -91,4 +91,18 @@
       margin-top: 0;
     }
   }
+
+
+  .yellow-line {
+    &::before {
+      background-image: url('../../../../assets/icons/svg/yellow-line.svg');
+      content: "";
+      display: inline-block;
+      margin-right: 8px;
+      width: 24px;
+      height: 4px;
+      position: relative;
+      bottom: 3px;
+    }
+  }
 }
