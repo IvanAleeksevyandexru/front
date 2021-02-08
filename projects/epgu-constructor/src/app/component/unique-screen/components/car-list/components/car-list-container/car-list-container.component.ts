@@ -78,6 +78,19 @@ export class CarListContainerComponent {
     }
   }
 
+  handleErrors(value: CarList, { errors }: CarListComponentAttrsDto): void {
+    this.hasError = this.isNotFoundError(value) || this.isExternalError(value);
+
+    if (!this.hasError) return;
+
+    if (this.isNotFoundError(value)) {
+      this.errorTemplate = errors?.NOT_FOUND_ERROR;
+    }
+    if (this.isExternalError(value)) {
+      this.errorTemplate = errors?.EXTERNAL_SERVER_ERROR;
+    }
+  }
+
   lookupFormatter = (item: ListItem): string => {
     return this.getHtmlItemTemplate(item.originalItem.originalItem);
   };
@@ -115,19 +128,6 @@ export class CarListContainerComponent {
 
   private getModelMarkName({ modelMarkName, modelName, markName }: VehicleOwnerInfo): string {
     return modelMarkName || [markName, modelName].filter((value) => !!value).join(' ');
-  }
-
-  private handleErrors(value: CarList, { errors }: CarListComponentAttrsDto): void {
-    this.hasError = this.isNotFoundError(value) || this.isExternalError(value);
-
-    if (!this.hasError) return;
-
-    if (this.isNotFoundError(value)) {
-      this.errorTemplate = errors?.NOT_FOUND_ERROR;
-    }
-    if (this.isExternalError(value)) {
-      this.errorTemplate = errors?.EXTERNAL_SERVER_ERROR;
-    }
   }
 
   private isNotFoundError(carList: CarList): boolean {
