@@ -6,6 +6,7 @@ export enum PfrAreaType {
   region = 'region',
   district = 'district',
   territory = 'territory',
+  cityDistrict = 'cityDistrict',
 }
 
 export interface PftAreaTypeParams {
