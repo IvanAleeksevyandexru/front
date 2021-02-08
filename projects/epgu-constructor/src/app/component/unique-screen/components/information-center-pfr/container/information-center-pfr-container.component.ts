@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
@@ -35,8 +35,8 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 export class InformationCenterPfrContainerComponent {
   public data$ = (this.screenService.component$ as Observable<InformationCenterPfr>).pipe(
     tap((component) => {
-      if (!this.isSimpleElement(component)) {
-        this.dictionaryType = component.attrs.dictionaryType;
+      this.dictionaryType = component.attrs.dictionaryType;
+      if (!this.isSimpleElement(component) && !component.value) {
         const { condition, attributeName } = component.attrs.full.region;
         this.fetchDictionary({
           type: PfrAreaType.region,
@@ -69,6 +69,7 @@ export class InformationCenterPfrContainerComponent {
   );
   public regionDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public districtDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
+  public cityDistrictDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public territoryDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -114,11 +115,47 @@ export class InformationCenterPfrContainerComponent {
       case PfrAreaType.region:
         this.territoryDictionary$.next([]);
         this.districtDictionary$.next([]);
+        this.cityDistrictDictionary$.next([]);
         this.regionDictionary$.next(items);
         break;
       case PfrAreaType.district:
         this.territoryDictionary$.next([]);
+        this.cityDistrictDictionary$.next([]);
         this.districtDictionary$.next(items);
+        break;
+      case PfrAreaType.cityDistrict:
+        if (items.length !== 1) {
+          this.cityDistrictDictionary$.next(items);
+          this.territoryDictionary$.next([]);
+        } else {
+          this.cityDistrictDictionary$.next([]);
+          this.territoryDictionary$.next(items);
+        }
+        break;
+      case PfrAreaType.territory:
+        this.territoryDictionary$.next(items);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private updateDictionaryFromCache(type: PfrAreaType, items: Array<ListElement>): void {
+    switch (type) {
+      case PfrAreaType.region:
+        this.regionDictionary$.next(items);
+        break;
+      case PfrAreaType.district:
+        this.districtDictionary$.next(items);
+        break;
+      case PfrAreaType.cityDistrict:
+        if (items.length !== 1) {
+          this.cityDistrictDictionary$.next(items);
+          this.territoryDictionary$.next([]);
+        } else {
+          this.cityDistrictDictionary$.next([]);
+          this.territoryDictionary$.next(items);
+        }
         break;
       case PfrAreaType.territory:
         this.territoryDictionary$.next(items);
@@ -152,15 +189,40 @@ export class InformationCenterPfrContainerComponent {
 
     const { full } = component.attrs;
 
+    const data: SelectEvent[] = [];
     Object.keys(value).forEach((type, index, array) => {
-      if (index !== 0) {
-        this.fetchDictionary({
+      if (index !== 0 && value[type]) {
+        data.push({
           type: type as PfrAreaType,
-          value: value[array[index - 1]],
+          value: value[array[index - 1]] || value[array[index - 2]],
+          condition: full[type].condition,
+          attributeName: full[type].attributeName,
+        });
+      } else if (index === 0) {
+        data.push({
+          type: type as PfrAreaType,
           condition: full[type].condition,
           attributeName: full[type].attributeName,
         });
       }
+    });
+
+    forkJoin(
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      data.map(({ attributeName, condition, value }) => {
+        const options = this.getInfoCenterOptionsRequest(
+          attributeName,
+          condition,
+          value?.id as string,
+        );
+
+        return this.dictionaryApiService.getDictionary(this.dictionaryType, options);
+      }),
+    ).subscribe((response) => {
+      response.forEach(({ items }, index) => {
+        const dictionary = DictionaryUtilities.adaptDictionaryToListItem(items);
+        this.updateDictionaryFromCache(data[index].type, dictionary);
+      });
     });
   }
 

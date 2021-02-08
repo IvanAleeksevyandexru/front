@@ -13,10 +13,10 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import {
+  CachedValue,
   FormChangeEvent,
   Full,
   PfrAreaType,
-  CachedValue,
   SelectEvent,
 } from '../../information-center-pfr.models';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -32,6 +32,7 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
   @Input() items: Full;
   @Input() regionDictionary: Array<ListElement>;
   @Input() districtDictionary: Array<ListElement>;
+  @Input() cityDistrictDictionary: Array<ListElement>;
   @Input() territoryDictionary: Array<ListElement>;
   @Input() cachedValue: string;
   @Output() selectEvent = new EventEmitter<SelectEvent>();
@@ -49,7 +50,7 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
     }
 
     this.pfrForm.valueChanges
-      .pipe(startWith({}), takeUntil(this.ngUnsubscribe$))
+      .pipe(startWith(this.pfrForm.value), takeUntil(this.ngUnsubscribe$))
       .subscribe((value) => {
         this.formChangeEvent.emit({
           value,
@@ -59,15 +60,26 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.territoryDictionary.currentValue.length === 1) {
-      setTimeout(() => {
-        this.pfrForm.get(this.pfrAreAType.territory).setValue(this.territoryDictionary[0]);
-      });
+    if (
+      changes.cityDistrictDictionary &&
+      changes.cityDistrictDictionary?.currentValue.length !== 0 &&
+      this.pfrForm
+    ) {
+      this.pfrForm.controls[this.pfrAreAType.cityDistrict].setValidators(Validators.required);
+      this.pfrForm.controls[this.pfrAreAType.cityDistrict].updateValueAndValidity();
+    } else if (changes.cityDistrictDictionary?.currentValue.length === 0 && this.pfrForm) {
+      this.pfrForm.controls[this.pfrAreAType.cityDistrict].setValidators(Validators.nullValidator);
+      this.pfrForm.controls[this.pfrAreAType.cityDistrict].updateValueAndValidity();
+    }
+
+    if (changes.territoryDictionary?.currentValue.length === 1 && this.pfrForm) {
+      this.pfrForm.controls[this.pfrAreAType.territory].setValue(this.territoryDictionary[0]);
+      this.pfrForm.controls[this.pfrAreAType.territory].updateValueAndValidity();
     }
   }
 
   public handleSelect(value: ListElement, type: PfrAreaType): void {
-    if ([PfrAreaType.district, PfrAreaType.territory].includes(type)) {
+    if ([PfrAreaType.district, PfrAreaType.cityDistrict, PfrAreaType.territory].includes(type)) {
       this.pfrForm.get(type).reset();
     }
 
@@ -86,6 +98,10 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
       [this.pfrAreAType.district]: new FormControl(
         cachedValue?.district || null,
         Validators.required,
+      ),
+      [this.pfrAreAType.cityDistrict]: new FormControl(
+        cachedValue?.cityDistrict || null,
+        cachedValue?.cityDistrict ? Validators.required : Validators.nullValidator,
       ),
       [this.pfrAreAType.territory]: new FormControl(
         cachedValue?.territory || null,
