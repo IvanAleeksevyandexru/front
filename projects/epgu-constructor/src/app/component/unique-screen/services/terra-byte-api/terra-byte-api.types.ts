@@ -108,7 +108,7 @@ export interface UploadedFile {
   uploaded: boolean;
   fileSize: number;
   hasError: boolean;
-
+  mimeType?: string;
   alternativeMimeTypes?: string[];
   created?: string;
   deleted?: boolean;

@@ -1,0 +1,32 @@
+<div class="uploader-manager-item__container">
+  <div class="uploader-manager-item__thumb">
+    <ng-container *ngIf="!isErrors">
+      <div *ngIf="isImage" class="photo-preview">
+        <img [src]="" [alt]="name" />
+      </div>
+      <div *ngIf="!isImage" class="fileType-preview">
+        <span>{{ ext }}</span>
+      </div>
+    </ng-container>
+    <div *ngIf="isErrors" class="error-preview"></div>
+  </div>
+  <div class="uploader-manager-item__info">
+    <div class="uploader-manager-item__title">
+      <div class="name">{{ name }}</div>
+      <div class="size">| {{ size | fileSize }}</div>
+      <div class="status">| {{ status }}</div>
+    </div>
+    <div *ngIf="isImage" (click)="preview()" class="uploader-manager-item__view">
+      Посмотреть
+    </div>
+  </div>
+  <div class="uploader-manager-item__actions">
+    <span (click)="delete.emit(fileItem)">Удалить</span>
+    <span (click)="update.emit(fileItem)">Заменить</span>
+    <span (click)="cancel.emit(fileItem)">Отменить</span>
+  </div>
+</div>
+<div *ngIf="isErrors" class="uploader-manager-item__error">
+  <div class="uploader-manager-item__error-text"></div>
+  <div class="uploader-manager-item__error-description"></div>
+</div>

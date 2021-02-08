@@ -28,9 +28,8 @@ export class UploaderButtonComponent {
     this.input.nativeElement.click();
   }
 
-  reset(input: HTMLInputElement): void {
-    // eslint-disable-next-line no-param-reassign
-    input.value = null;
+  reset(): void {
+    this.input.nativeElement.value = null;
   }
 
   select(files: FileList): void {

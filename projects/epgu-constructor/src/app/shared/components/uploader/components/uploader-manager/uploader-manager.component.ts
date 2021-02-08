@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager',
@@ -6,4 +7,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./uploader-manager.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderManagerComponent {}
+export class UploaderManagerComponent {
+  @Output() update = new EventEmitter<FileItem>();
+  @Output() cancel = new EventEmitter<FileItem>();
+  @Output() delete = new EventEmitter<FileItem>();
+  @Input() list: FileItem[];
+}

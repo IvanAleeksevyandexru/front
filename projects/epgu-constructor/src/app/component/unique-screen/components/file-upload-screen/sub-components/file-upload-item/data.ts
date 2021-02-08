@@ -4,6 +4,53 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
+import { BehaviorSubject } from 'rxjs';
+
+export enum ErrorActions {
+  clear = 'clear',
+  addMaxSize = 'maxSize',
+  addMaxAmount = 'maxAmount',
+  addMaxTotalAmount = 'maxTotalAmount',
+  addMaxTotalSize = 'maxTotalSize',
+  addInvalidType = 'invalidType',
+  addInvalidFile = 'invalidFile',
+  addDownloadErr = 'addDownloadErr',
+  addUploadErr = 'addUploadErr',
+  addDeletionErr = 'addDeletionErr',
+}
+
+export enum FileItemStatus {
+  error = 'error',
+  uploading = 'uploading',
+  uploaded = 'uploaded',
+  preparation = 'preparation',
+  downloading = 'downloading',
+  delition = 'delition',
+}
+
+export interface FileItem {
+  raw?: File;
+  id: string;
+  item: UploadedFile;
+  status: FileItemStatus;
+  errors: FileItemError[];
+}
+export interface FileItemError {
+  type: string;
+  text: string;
+}
+
+export enum OperationType {
+  upload = 'upload',
+  delete = 'delete',
+  download = 'download',
+}
+
+export interface Operation {
+  type: OperationType;
+  cancel: BehaviorSubject<boolean>; // Если сюда отправить true операция будет отменена
+  item: FileItem;
+}
 
 /**
  * Класс подгруженного файла
@@ -28,7 +75,6 @@ export class TerraUploadedFile implements UploadedFile {
   updated?: string;
   deleted?: boolean;
 
-
   constructor(props: object = {}) {
     Object.keys(props).forEach((key) => {
       this[key] = props[key];
@@ -48,7 +94,7 @@ export class TerraUploadedFile implements UploadedFile {
     } as TerraUploadFileOptions;
   }
 
-    /**
+  /**
    * Возвращает объект с данными и параметрами для загрузки на сервер файла
    */
   setParamsForUploadedFile(terraFile: TerabyteListItem, uploaded: boolean): void {
