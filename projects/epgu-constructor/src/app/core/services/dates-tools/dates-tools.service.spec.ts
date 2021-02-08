@@ -206,9 +206,16 @@ describe('DatesToolsService', () => {
     });
   });
 
-  xdescribe('setDate() method', () => {
+  describe('setDate() method', () => {
     it('should return setted date', () => {
-      expect(service.setDate(new Date(2014, 8, 1), null, null, 30).toLocaleString()).toEqual('2014-09-29T20:00:00.000Z');
+      expect(service.setCalendarDate(new Date(2014, 8, 1), null, null, 30).toLocaleString()).toEqual('30.09.2014, 00:00:00');
+    });
+
+    it('should return setted date for january', () => {
+      const date = new Date();
+      const controlDate = new Date(1);
+      const resultDate = service.setCalendarDate(date, 1970, 0, 1);
+      expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
     });
   });
 
@@ -225,13 +232,13 @@ describe('DatesToolsService', () => {
     });
   });
 
-  xdescribe('startOfMonth() method', () => {
+  describe('startOfMonth() method', () => {
     it('should return start date of month', () => {
       expect(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.09.2014, 00:00:00');
     });
   });
 
-  xdescribe('startOfDay() method', () => {
+  describe('startOfDay() method', () => {
     it('should return start date of day', () => {
       expect(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('02.09.2014, 00:00:00');
     });

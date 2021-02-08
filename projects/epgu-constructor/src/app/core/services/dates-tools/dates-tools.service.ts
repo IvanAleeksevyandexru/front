@@ -20,9 +20,9 @@ import {
   startOfMonth as _startOfMonth,
   endOfMonth as _endOfMonth,
   getDaysInMonth as _getDaysInMonth,
-  setDay as _setDay,
   startOfDay as _startOfDay,
   getISODay as _getISODay,
+  setDate as _setDate,
   differenceInYears as _differenceInYears,
   differenceInMilliseconds as _differenceInMilliseconds,
   min as _min,
@@ -44,15 +44,14 @@ interface Duration {
 
 @Injectable()
 export class DatesToolsService {
-
-  constructor() { }
+  constructor() {}
 
   /**
    * Возвращает true, если переданная дата является сегодняшней датой,
    * иначе false
    * @param {Date | Number} date значение для проверки
    */
-  public isToday(date: 	Date | number): boolean {
+  public isToday(date: Date | number): boolean {
     return _isToday(date);
   }
 
@@ -156,11 +155,15 @@ export class DatesToolsService {
    * @param {string} format строка маска для распарсивания строки с датой (по умолчанию ISOString вида yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx )
    * @param {Date | Number} referenceDate референсная дата для использования недостающих ед. в распарсенной дате
    */
-  public parse(date: string, format: string = DATE_ISO_STRING_FORMAT, referenceDate: Date | number = new Date()): Date {
+  public parse(
+    date: string,
+    format: string = DATE_ISO_STRING_FORMAT,
+    referenceDate: Date | number = new Date(),
+  ): Date {
     return _parse(date, format, referenceDate, { locale: _ruLocale });
   }
 
-    /**
+  /**
    * Возвращает объект даты, если переданный аргумент является валидной строковой датой ISOString формата
    * иначе Invalid Date
    * @param {string} date конвертируемая дата в виде строки
@@ -249,13 +252,13 @@ export class DatesToolsService {
     return _setMonth(date, Number(month));
   }
 
-    /**
+  /**
    * Возвращает новый объект даты с заданным днем
    * @param {Date | Number} date исходная дата
    * @param {Number} day указанный день
    */
-  public setDay(date: Date | number, day: number | string): Date {
-    return _setDay(date, Number(day));
+  public setDate(date: Date | number, day: number | string): Date {
+    return _setDate(date, Number(day));
   }
 
   /**
@@ -293,16 +296,21 @@ export class DatesToolsService {
    * @param {Number} month указанный месяц
    * @param {Number} day указанный день
    */
-  public setDate(date: Date | number, year?: number | string, month?: number | string, day?: number | string): Date {
+  public setCalendarDate(
+    date: Date | number,
+    year: number | string = null,
+    month: number | string = null,
+    day: number | string = null,
+  ): Date {
     let newDate = this.toDate(date);
-    if (year) {
+    if (year !== null) {
       newDate = this.setYear(newDate, year);
     }
-    if (month) {
+    if (month !== null) {
       newDate = this.setMonth(newDate, month);
     }
-    if (day) {
-      newDate = this.setDay(newDate, day);
+    if (day !== null) {
+      newDate = this.setDate(newDate, day);
     }
     return newDate;
   }
