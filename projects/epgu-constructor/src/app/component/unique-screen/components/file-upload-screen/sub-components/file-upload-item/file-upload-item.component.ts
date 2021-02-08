@@ -17,7 +17,6 @@ import { v4 } from 'uuid';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
 import {
@@ -51,7 +50,6 @@ const maxImgSizeInBytes = 525288;
   selector: 'epgu-constructor-file-upload-item',
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
-  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadItemComponent implements OnInit, OnDestroy {
@@ -169,7 +167,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private terabyteService: TerraByteApiService,
     private deviceDetectorService: DeviceDetectorService,
     private compressionService: CompressionService,
-    private ngUnsubscribe$: UnsubscribeService,
     private fileUploadService: FileUploadService,
     public config: ConfigService,
     public modal: ModalService,
