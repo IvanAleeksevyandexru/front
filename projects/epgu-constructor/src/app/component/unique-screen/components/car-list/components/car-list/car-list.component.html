@@ -9,13 +9,20 @@
   <h3 class="car-error-title">{{errorDisplayDto.title}}</h3>
 
   <div class="car-list-error-label">
-    <epgu-constructor-output-html [html]="errorDisplayDto.label"></epgu-constructor-output-html>
+    <epgu-constructor-output-html
+      [html]="errorDisplayDto.label"
+      [clarifications]="clarifications"
+    ></epgu-constructor-output-html>
   </div>
 
 </epgu-constructor-screen-pad>
 
 <ng-template #carList>
-  <epgu-constructor-output-html *ngIf="label" [html]="label"></epgu-constructor-output-html>
+  <epgu-constructor-output-html
+    *ngIf="label"
+    [html]="label"
+    [clarifications]="clarifications"
+  ></epgu-constructor-output-html>
 
   <epgu-constructor-constructor-lookup
     *ngIf="carFixedItems"

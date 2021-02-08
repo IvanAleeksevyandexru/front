@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
@@ -27,7 +27,7 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
   styleUrls: ['./car-list-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarListContainerComponent implements OnInit {
+export class CarListContainerComponent {
   showNav$: Observable<boolean> = this.screenService.showNav$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   display$: Observable<DisplayDto> = this.screenService.display$;
@@ -67,12 +67,10 @@ export class CarListContainerComponent implements OnInit {
   };
 
   constructor(
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     public config: ConfigService,
   ) {}
-
-  ngOnInit(): void {}
 
   setState(carOriginalItem: VehicleOwnerInfo): void {
     if (carOriginalItem) {
