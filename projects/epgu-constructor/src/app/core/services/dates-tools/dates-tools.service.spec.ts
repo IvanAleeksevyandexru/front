@@ -4,6 +4,7 @@ import { DatesToolsService } from './dates-tools.service';
 
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
+  const locale = 'ru-RU';
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DatesToolsService]
@@ -24,8 +25,8 @@ describe('DatesToolsService', () => {
 
   describe('getToday() method', () => {
     it('should return today date', () => {
-      const today = new Date().toLocaleString();
-      const serviceToday = service.getToday().toLocaleString();
+      const today = new Date().toLocaleString(locale);
+      const serviceToday = service.getToday().toLocaleString(locale);
       expect(serviceToday).toEqual(today);
     });
   });
@@ -208,7 +209,7 @@ describe('DatesToolsService', () => {
 
   describe('setDate() method', () => {
     it('should return setted date', () => {
-      expect(service.setCalendarDate(new Date(2014, 8, 1), null, null, 30).toLocaleString()).toEqual('30.09.2014, 00:00:00');
+      expect(service.setCalendarDate(new Date(2014, 8, 1), null, null, 30).toLocaleString(locale)).toEqual('30.09.2014, 00:00:00');
     });
 
     it('should return setted date for january', () => {
@@ -222,25 +223,25 @@ describe('DatesToolsService', () => {
 
   xdescribe('endOfMonth() method', () => {
     it('should return date end of month', () => {
-      expect(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('2014-09-30T19:59:59.999Z');
+      expect(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('2014-09-30T19:59:59.999Z');
     });
   });
 
   xdescribe('startOfYear() method', () => {
     it('should return start date of year', () => {
-      expect(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.01.2014, 00:00:00');
+      expect(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('01.01.2014, 00:00:00');
     });
   });
 
   describe('startOfMonth() method', () => {
     it('should return start date of month', () => {
-      expect(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.09.2014, 00:00:00');
+      expect(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('01.09.2014, 00:00:00');
     });
   });
 
   describe('startOfDay() method', () => {
     it('should return start date of day', () => {
-      expect(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('02.09.2014, 00:00:00');
+      expect(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('02.09.2014, 00:00:00');
     });
   });
 
