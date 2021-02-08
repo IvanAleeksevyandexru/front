@@ -20,6 +20,7 @@
         [cachedValue]="data.value"
         [districtDictionary]="districtDictionary$ | async"
         [regionDictionary]="regionDictionary$ | async"
+        [cityDistrictDictionary]="cityDistrictDictionary$ | async"
         [territoryDictionary]="territoryDictionary$ | async"
         (selectEvent)="fetchDictionary($event)"
         (formChangeEvent)="changeForm($event)"

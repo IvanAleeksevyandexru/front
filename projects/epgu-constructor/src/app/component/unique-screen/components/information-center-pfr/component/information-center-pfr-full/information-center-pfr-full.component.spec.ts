@@ -25,6 +25,11 @@ describe('InformationCenterPfrFullComponent', () => {
       attributeName: 'parent_attr',
       condition: 'EQUALS',
     },
+    cityDistrict: {
+      label: 'Городской район',
+      attributeName: 'parent_attr',
+      condition: 'EQUALS',
+    },
     territory: {
       label: 'Территориальный орган',
       attributeName: 'parent_attr',
@@ -54,6 +59,7 @@ describe('InformationCenterPfrFullComponent', () => {
     component.items = itemsMock;
     component.territoryDictionary = [];
     component.districtDictionary = [];
+    component.cityDistrictDictionary = [];
     component.regionDictionary = [];
     component.cachedValue = '';
     fixture.detectChanges();
@@ -68,6 +74,7 @@ describe('InformationCenterPfrFullComponent', () => {
       expect(component.pfrForm.value).toEqual({
         region: null,
         district: null,
+        cityDistrict: null,
         territory: null,
       });
     });
