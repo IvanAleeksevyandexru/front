@@ -3,7 +3,9 @@
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="screen-body">
-    <epgu-constructor-page-name>{{ screenService.header$ | async }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>{{ screenService.header$ | async }}
+      <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
+    </epgu-constructor-page-name>
 
     <epgu-constructor-screen-pad class="body">
       <epgu-constructor-components-list
