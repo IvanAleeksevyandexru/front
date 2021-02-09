@@ -5,6 +5,7 @@ import { UploaderButtonComponent } from './components/uploader-button/uploader-b
 import { UploaderManagerComponent } from './components/uploader-manager/uploader-manager.component';
 import { UploaderManagerItemComponent } from './components/uploader-manager-item/uploader-manager-item.component';
 import { FileSizeModule } from '../../pipes/file-size/file-size.module';
+import { BaseModule } from '../../base.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { FileSizeModule } from '../../pipes/file-size/file-size.module';
     UploaderManagerItemComponent,
   ],
 
-  imports: [CommonModule, FileSizeModule],
+  imports: [CommonModule, FileSizeModule, BaseModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
 })
 export class UploaderModule {}

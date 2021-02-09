@@ -100,7 +100,6 @@ export class TerraByteApiService {
     if (acc.length === 1) {
       acc.push([]); //запрещаем добавлять в 1 часть
     }
-    console.log(acc, value);
     if (acc[acc.length - 1].length === this.chunkPacketMaxSize) {
       // максимум параллельно запсукаемых элементов
       acc.push([]);

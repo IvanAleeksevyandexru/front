@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
-import { BehaviorSubject, from, Observable, of, Subscription, throwError, Subject } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -13,7 +13,6 @@ import {
   tap,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { v4 } from 'uuid';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
@@ -23,28 +22,22 @@ import {
   Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
-  TerraFileOptions,
-  TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
+import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
+import { FileUploadService } from '../file-upload.service';
 import {
-  CompressionOptions,
-  CompressionService,
-} from '../../../upload-and-edit-photo/compression/compression.service';
-import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
-import {
+  ErrorActions,
+  FileItem,
+  FileItemError,
+  FileItemStatus,
+  FileItemStore,
   getSizeInMB,
-  TerraUploadedFile,
-  UPLOAD_OBJECT_TYPE,
   Operation,
   OperationType,
-  FileItem,
-  FileItemStatus,
-  FileItemError,
-  ErrorActions,
+  UPLOAD_OBJECT_TYPE,
 } from './data';
-
-const maxImgSizeInBytes = 525288;
+import { PrepareService } from '../prepare.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -60,8 +53,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
-    this.loadData.maxSize = 9999999999999999999999;
+    this.updateAcceptTypes();
   }
+  acceptTypes?: string;
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   // listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
@@ -79,18 +73,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   processingFiles$ = this.processingFiles.pipe(
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
-    map((file: File) => this.createFileItem({ raw: file, status: FileItemStatus.preparation })), // Формируем FileItem
-    map((file: FileItem) => this.validateType(file)), // Проверка типа
-    map((file: FileItem) => this.validateAmount(file)), // Проверка кол-ва
-    concatMap((file: FileItem) => this.compressImage(file)), // Компрессия
-    map((file: FileItem) => this.validateSize(file)), // Проверка размера
-    tap((file: FileItem) => this.addFileItem(file)), // Добавление файла в общий поток
-    tap((file: FileItem) => this.addUpload(file)),
+    map((file: File) => new FileItem(FileItemStatus.preparation, file)), // Формируем FileItem
+    tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
+    tap((file: FileItem) => this.updateUploadingInfo(file)),
+    tap((file: FileItem) => this.addPrepare(file)),
   );
 
-  files = new BehaviorSubject<FileItem[]>([]); // Здесь файлы для отображения
+  store = new FileItemStore();
 
-  files_$ = this.files.pipe(
+  files = this.store.files;
+  files$ = this.store.files.pipe(
     concatMap((files) => from(files)),
     reduce((acc, value) => {
       acc.push(value.item);
@@ -110,6 +102,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   operationsUploading: Record<string, Operation> = {};
   operationsDownloading: Record<string, Operation> = {};
   operationsDelition: Record<string, Operation> = {};
+  operationsPreparing: Record<string, Operation> = {};
 
   processingOperations = new Subject<Operation>();
   processingOperations$ = this.processingOperations.pipe(
@@ -133,6 +126,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           executor = this.uploading(operation);
           break;
         }
+        case OperationType.prepare: {
+          storage = this.operationsPreparing;
+          executor = this.preparing(operation);
+          break;
+        }
         default: {
           break;
         }
@@ -145,7 +143,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         takeUntil(
           storage[operation.item.id].cancel.pipe(
             filter((status) => status === true),
-            tap(() => this.changeStatus(operation.item, fileStatus)),
+            tap(() => this.store.changeStatus(operation.item, fileStatus)),
+            tap(() =>
+              operation.type === OperationType.upload || operation.type === OperationType.prepare
+                ? this.store.remove(operation.item)
+                : null,
+            ),
           ),
         ),
         finalize(() => {
@@ -157,7 +160,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
-    .add(this.files_$.subscribe())
+    .add(this.files$.subscribe())
     .add(this.processingOperations$.subscribe());
 
   private loadData: FileUploadItem;
@@ -171,7 +174,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public config: ConfigService,
     public modal: ModalService,
     private eventBusService: EventBusService,
+    private prepareService: PrepareService,
   ) {}
+
+  update(fileItem: FileItem): void {
+    this.addPrepare(fileItem);
+  }
 
   cancelOperation(type: OperationType, item: FileItem): void {
     let storage: Record<string, Operation>;
@@ -186,6 +194,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       }
       case OperationType.upload: {
         storage = this.operationsUploading;
+        break;
+      }
+      case OperationType.prepare: {
+        storage = this.operationsPreparing;
         break;
       }
       default: {
@@ -203,25 +215,31 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.processingOperations.next(operation);
   }
 
+  addPrepare(file: FileItem): void {
+    this.createOperation(OperationType.prepare, file);
+  }
+
+  preparing(operation: Operation): Observable<void> {
+    const fileItem = operation.item;
+    return of(fileItem).pipe(
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.preparation)),
+      concatMap((file: FileItem) =>
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes),
+      ),
+      tap((file: FileItem) => this.store.update(file)),
+      tap((file: FileItem) => (file.status !== FileItemStatus.error ? this.addUpload(file) : null)),
+      map(() => undefined),
+    );
+  }
   addDownload(file: FileItem): void {
     this.createOperation(OperationType.download, file);
   }
-
-  getUploadedParams(file: FileItem): TerraFileOptions {
-    return {
-      objectId: file.item.objectId,
-      objectType: file.item.objectTypeId,
-      mnemonic: file.item.mnemonic,
-      mimeType: file.item.mimeType,
-    } as TerraFileOptions;
-  }
-
   downloading(operation: Operation): Observable<void> {
     const fileItem = operation.item;
     const { status } = fileItem;
     return of(fileItem).pipe(
-      tap((file) => this.changeStatus(file, FileItemStatus.downloading)),
-      concatMap((file) => this.terabyteService.downloadFile(this.getUploadedParams(file))),
+      tap((file) => this.store.changeStatus(file, FileItemStatus.downloading)),
+      concatMap((file) => this.terabyteService.downloadFile(file.createUploadedParams())),
       catchError((e) => {
         // TODO: Добавить в общий стэк ошибок
         // this.updateFileItem(this.createError(ErrorActions.addDownloadErr, fileItem));
@@ -232,7 +250,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.terabyteService.pushFileToBrowserForDownload(result, fileItem.item);
       }),
       finalize(() => {
-        this.changeStatus(fileItem, status);
+        this.store.changeStatus(fileItem, status);
       }),
       map(() => undefined),
     );
@@ -246,32 +264,22 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     const fileItem = operation.item;
     const { status } = fileItem;
     return of(fileItem).pipe(
-      tap((file) => this.changeStatus(file, FileItemStatus.delition)),
+      tap((file) => this.store.changeStatus(file, FileItemStatus.delition)),
       concatMap((file) =>
         status === FileItemStatus.uploaded
-          ? this.terabyteService.deleteFile(this.getUploadedParams(file)).pipe(map(() => undefined))
+          ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(map(() => undefined))
           : of(undefined),
       ),
       catchError((e) => {
         // TODO: Добавить в общий стэк ошибок
         // this.updateFileItem(this.createError(ErrorActions.addDeletionErr, fileItem));
         // this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
-        this.changeStatus(fileItem, status);
+        this.store.changeStatus(fileItem, status);
         return throwError(e);
       }),
-      tap(() => this.updateUploadingInfo(fileItem.item, true)),
-      tap(() => this.removeFileItem(fileItem)),
+      tap(() => this.updateUploadingInfo(fileItem, true)),
+      tap(() => this.store.remove(fileItem)),
     );
-  }
-
-  createUploadOptions(file: FileItem): TerraUploadFileOptions {
-    return {
-      name: file.raw.name,
-      mimeType: file.raw.type,
-      objectId: this.objectId,
-      objectType: UPLOAD_OBJECT_TYPE,
-      mnemonic: this.getMnemonic(),
-    } as TerraUploadFileOptions;
   }
 
   addUpload(file: FileItem): void {
@@ -280,126 +288,24 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   uploading(operation: Operation): Observable<void> {
     const { item } = operation;
-    const options = this.createUploadOptions(item);
+    const options = item.createUploadOptions(this.objectId, UPLOAD_OBJECT_TYPE, this.getMnemonic());
 
     return of(item).pipe(
-      tap((file) => this.changeStatus(file, FileItemStatus.uploading)),
+      tap((file) => this.store.changeStatus(file, FileItemStatus.uploading)),
       tap((file) => this.fileUploadService.updateFilesSize(file.raw.size, this.loadData.uploadId)),
       concatMap((file) => this.terabyteService.uploadFile(options, file.raw)),
       catchError((e) => {
-        this.updateFileItem(this.createError(ErrorActions.addUploadErr, item));
+        this.store.update(item.setError(this.getError(ErrorActions.addUploadErr, item.raw)));
         this.fileUploadService.decrementFilesSize(item.raw.size, this.loadData.uploadId);
         return throwError(e);
       }),
       concatMap(() => this.terabyteService.getFileInfo(options)),
       map((upploaded) => {
-        const uploadedItem = { ...item };
-        uploadedItem.item = upploaded as UploadedFile;
-        uploadedItem.status = FileItemStatus.uploaded;
-        this.updateFileItem(uploadedItem);
+        item.setItem(upploaded as UploadedFile).setStatus(FileItemStatus.uploaded);
+        this.store.update(item);
       }),
       map(() => undefined),
     );
-  }
-
-  createFileItem(part: Partial<FileItem>): FileItem {
-    const defaultItem = {
-      id: v4(),
-      raw: null,
-      item: null,
-      errors: [],
-      status: FileItemStatus.preparation,
-    } as FileItem;
-    const result = { ...defaultItem, ...part } as FileItem;
-    if (!result?.raw && result.item) {
-      result.raw = {
-        size: result.item.fileSize,
-        name: result.item.fileName,
-        type: result.item.mimeType,
-      } as File;
-    }
-    return result;
-  }
-
-  createError(action: ErrorActions, file: FileItem): FileItem {
-    const resultedFile = { ...file };
-    const error = {
-      type: action,
-      text: this.getError(action, file.raw),
-    } as FileItemError;
-    resultedFile.errors.push(error);
-    resultedFile.status = FileItemStatus.error;
-    return resultedFile;
-  }
-
-  validateType(file: FileItem): FileItem {
-    return this.isFileTypeValid(file.raw)
-      ? file
-      : this.createError(ErrorActions.addInvalidType, file);
-  }
-
-  validateAmount(file: FileItem): FileItem {
-    let resultedFile = { ...file };
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(1, this.loadData.uploadId);
-    if (!isValid) {
-      switch (reason) {
-        case CheckFailedReasons.total: {
-          resultedFile = this.createError(ErrorActions.addMaxTotalAmount, file);
-          break;
-        }
-        case CheckFailedReasons.uploaderRestriction: {
-          resultedFile = this.createError(ErrorActions.addMaxAmount, file);
-          break;
-        }
-        default:
-          break;
-      }
-    }
-    return resultedFile;
-  }
-
-  compressImage(file: FileItem): Observable<FileItem> {
-    const compressFileItem = { ...file };
-    const compressedImageOptions: CompressionOptions = {
-      maxSizeMB: getSizeInMB(maxImgSizeInBytes),
-      deepChecking: true,
-      maxWidthOrHeight: 1024,
-    };
-    return this.compressionService.isValidImageType(file.raw)
-      ? from(this.compressionService.imageCompression(file.raw, compressedImageOptions)).pipe(
-          catchError(() => {
-            return of(this.createError(ErrorActions.addInvalidFile, file));
-          }),
-          map((raw: File) => {
-            compressFileItem.raw = raw;
-            return compressFileItem;
-          }),
-        )
-      : of(compressFileItem);
-  }
-
-  validateSize(file: FileItem): FileItem {
-    let resultedFile = { ...file };
-    const { isValid, reason } = this.fileUploadService.checkFilesSize(
-      file.raw.size,
-      this.loadData.uploadId,
-    );
-
-    if (!isValid) {
-      switch (reason) {
-        case CheckFailedReasons.total: {
-          resultedFile = this.createError(ErrorActions.addMaxTotalSize, resultedFile);
-          break;
-        }
-        case CheckFailedReasons.uploaderRestriction: {
-          resultedFile = this.createError(ErrorActions.addMaxSize, resultedFile);
-          break;
-        }
-        default:
-          break;
-      }
-    }
-    return resultedFile;
   }
 
   sendUpdateEvent(files?: UploadedFile[], errors?: string[]): void {
@@ -430,41 +336,34 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     );
   }
 
-  addFileItem(file: FileItem): void {
-    const files = [...this.files.getValue()];
-    files.push(file);
-    this.files.next(files);
-  }
-  changeStatus(file: FileItem, status: FileItemStatus): void {
-    const files = [...this.files.getValue()];
-    const index = files.findIndex((item) => item.id === file.id);
-    files[index].status = status;
-    this.files.next(files);
-  }
-
-  updateFileItem(file: FileItem): void {
-    const files = [...this.files.getValue()];
-    const index = files.findIndex((item) => item.id === file.id);
-    files[index] = file;
-    this.files.next(files);
-  }
-  removeFileItem(file: FileItem): void {
-    const files = [...this.files.getValue()];
-    this.files.next(files.filter((item) => item.id !== file.id));
-  }
-
   updateMaxFileNumber(file: UploadedFile): void {
     const index = Number(file.mnemonic.split('.').pop());
     this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;
   }
 
-  loadList(): Observable<UploadedFile> {
+  loadImage(file: FileItem): Observable<FileItem> {
+    return !file.isImage
+      ? of(file)
+      : this.terabyteService.downloadFile(file.createUploadedParams()).pipe(
+          catchError((e) => {
+            // TODO: Добавить в общий стэк ошибок
+            // this.updateFileItem(this.createError(ErrorActions.addDownloadErr, fileItem));
+            // this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
+            return throwError(e);
+          }),
+          map((blob: Blob) =>
+            file.setRaw(new File([blob], file.raw.name, { type: file.raw.type })),
+          ),
+        );
+  }
+
+  loadList(): Observable<FileItem> {
     return this.getListStream(this.objectId).pipe(
-      tap((file) =>
-        this.addFileItem(this.createFileItem({ status: FileItemStatus.uploaded, item: file })),
-      ),
-      tap((file) => this.updateUploadingInfo(file)),
-      tap((file) => this.updateMaxFileNumber(file)),
+      map((file) => new FileItem(FileItemStatus.uploaded, null, file)),
+      mergeMap((file: FileItem) => this.loadImage(file)),
+      tap((file: FileItem) => this.store.add(file)),
+      tap((file: FileItem) => this.updateUploadingInfo(file)),
+      tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
     );
   }
 
@@ -497,7 +396,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return [this.getSubMnemonicPath(), this.maxFileNumber].join('.');
   }
 
-  getError(action: ErrorActions, file?: Partial<File>): string {
+  getError(action: ErrorActions, file?: Partial<File>): FileItemError {
     const errorHandler = {};
     errorHandler[
       ErrorActions.addMaxTotalAmount
@@ -521,7 +420,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     errorHandler[ErrorActions.addUploadErr] = `Ошибка загрузки файла "${file?.name}" на сервер`;
     errorHandler[ErrorActions.addDeletionErr] = `Не удалось удалить файл "${file?.name}"`;
 
-    return errorHandler[action];
+    return { description: '', type: action, text: errorHandler[action] };
   }
 
   // handleError(action: ErrorActions, file?: Partial<File>): void {
@@ -558,34 +457,23 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  /**
-   * Возращает типы файлов, которые должны принимать
-   */
-  getAcceptTypes(): string {
-    if (!this.data.fileType.length) {
-      return null;
-    }
-    return this.data.fileType
-      .map((fileType) => `.${fileType}`)
-      .join(',')
-      .toLowerCase();
+  updateAcceptTypes(): void {
+    this.acceptTypes = !this.data.fileType.length
+      ? null
+      : this.data.fileType
+          .map((fileType) => `.${fileType}`)
+          .join(',')
+          .toLowerCase();
   }
 
-  updateUploadingInfo(fileInfo: TerraUploadedFile | UploadedFile, isDeleted?: boolean): void {
+  updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {
     if (isDeleted) {
       this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
-      this.fileUploadService.updateFilesSize(-fileInfo.fileSize, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(-file.raw.size, this.loadData.uploadId);
     } else {
       this.fileUploadService.updateFilesAmount(1, this.loadData.uploadId);
-      this.fileUploadService.updateFilesSize(fileInfo.fileSize, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(file.raw.size, this.loadData.uploadId);
     }
-  }
-
-  isFileTypeValid(file: File): boolean {
-    const fileExtension = `.${file.name.split('.').pop()}`;
-    const validTypes = this.getAcceptTypes().split(',');
-
-    return validTypes.some((validType) => validType.toLowerCase() === fileExtension.toLowerCase());
   }
 
   ngOnDestroy(): void {

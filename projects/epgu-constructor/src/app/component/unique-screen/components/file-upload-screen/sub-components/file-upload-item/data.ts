@@ -1,10 +1,12 @@
 import {
+  FileUploadItem,
   TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
 import { BehaviorSubject } from 'rxjs';
+import { v4 } from 'uuid';
 
 export enum ErrorActions {
   clear = 'clear',
@@ -27,23 +29,123 @@ export enum FileItemStatus {
   downloading = 'downloading',
   delition = 'delition',
 }
-
-export interface FileItem {
-  raw?: File;
-  id: string;
-  item: UploadedFile;
-  status: FileItemStatus;
-  errors: FileItemError[];
+export enum FileItemStatusText {
+  error = 'ошибка',
+  uploading = 'загружается...',
+  uploaded = 'загружено',
+  preparation = 'обработка...',
+  downloading = 'скачивается...',
+  delition = 'удаляется...',
 }
+
+export class FileItemStore {
+  files = new BehaviorSubject<FileItem[]>([]);
+
+  add(file: FileItem): FileItemStore {
+    const files = [...this.files.getValue()];
+    files.push(file);
+    this.files.next(files);
+    return this;
+  }
+  update(file: FileItem): void {
+    const files = [...this.files.getValue()];
+    const index = files.findIndex((item) => item.id === file.id);
+    files[index] = Object.assign(Object.create(Object.getPrototypeOf(file)), file);
+    this.files.next(files);
+  }
+  remove(file: FileItem): void {
+    const files = [...this.files.getValue()];
+    this.files.next(files.filter((item) => item.id !== file.id));
+  }
+
+  changeStatus(file: FileItem, status: FileItemStatus): void {
+    file.setStatus(status);
+    this.update(file);
+  }
+}
+
+export class FileItem {
+  id = v4();
+  error: FileItemError;
+  isImage: boolean;
+  constructor(public status: FileItemStatus, public raw?: File, public item?: UploadedFile) {
+    if (!raw && item) {
+      this.raw = {
+        size: item.fileSize,
+        name: item.fileName,
+        type: item.mimeType,
+      } as File;
+    }
+    this.isImage = this.raw.type.indexOf('image') !== -1;
+  }
+
+  setError(error: FileItemError): FileItem {
+    this.error = error;
+    this.setStatus(FileItemStatus.error);
+    return this;
+  }
+  setStatus(status: FileItemStatus): FileItem {
+    this.status = status;
+    return this;
+  }
+  setRaw(raw: File): FileItem {
+    this.raw = raw;
+    return this;
+  }
+  setItem(item: UploadedFile): FileItem {
+    this.item = item;
+    return this;
+  }
+
+  createUploadedParams(): TerraFileOptions {
+    return {
+      objectId: this.item.objectId,
+      objectType: this.item.objectTypeId,
+      mnemonic: this.item.mnemonic,
+      mimeType: this.item.mimeType,
+    } as TerraFileOptions;
+  }
+
+  createUploadOptions(
+    objectId: string,
+    objectType: number,
+    mnemonic: string,
+  ): TerraUploadFileOptions {
+    return {
+      name: this.raw.name,
+      mimeType: this.raw.type,
+      objectId: objectId,
+      objectType: objectType,
+      mnemonic: mnemonic,
+    } as TerraUploadFileOptions;
+  }
+
+  isTypeValid(acceptTypes?: string): boolean {
+    if (!acceptTypes) {
+      return true;
+    }
+    const extension = `.${this.raw.name.split('.').pop()}`.toLowerCase();
+    const validTypes = acceptTypes.toLowerCase().split(',');
+
+    return validTypes.some((validType) => validType === extension);
+  }
+}
+
 export interface FileItemError {
   type: string;
   text: string;
+  description?: string;
 }
 
 export enum OperationType {
   upload = 'upload',
   delete = 'delete',
   download = 'download',
+  prepare = 'prepare',
+}
+export interface CancelAction {
+  type: OperationType;
+  item: FileItem;
 }
 
 export interface Operation {

@@ -12,36 +12,14 @@
     </epgu-constructor-output-html>
     <div *ngIf="refData?.length" class="fileupload__label" [innerHTML]="refData"></div>
   </div>
-  <div *ngIf="files | async as filesList" class="files">
-    <ng-container *ngFor="let file of filesList">
-      <div *ngIf="file.status !== fileStatus.preparation" class="file">
-        <div
-          class="file__icon"
-          [class.uploaded]="file.status === fileStatus.uploaded"
-          [class.loading]="file.status === fileStatus.uploading"
-        ></div>
-        <div class="file__title-wrapper">
-          <div
-            *ngIf="file.status === fileStatus.uploaded"
-            class="file__title uploaded"
-            [innerText]="file?.item?.fileName || file?.raw?.name"
-            (click)="addDownload(file)"
-          ></div>
-          <span *ngIf="file.status === fileStatus.uploading" class="file__title">
-            Файл загружается...
-          </span>
-          <div *ngIf="file.status === fileStatus.uploaded" class="file__title-info">
-            Файл загружен ({{ file?.item?.fileSize || file?.raw?.size | fileSize }})
-          </div>
-        </div>
-        <button *ngIf="file.status === 'uploaded'" class="file__action" (click)="addDelete(file)">
-          Удалить
-        </button>
-      </div>
-    </ng-container>
-  </div>
 
-  <epgu-constructor-uploader-manager [list]="files | async"></epgu-constructor-uploader-manager>
+  <epgu-constructor-uploader-manager
+    (update)="update($event)"
+    (delete)="addDelete($event)"
+    (download)="addDownload($event)"
+    (cancel)="cancelOperation($event.type, $event.item)"
+    [list]="files | async"
+  ></epgu-constructor-uploader-manager>
   <epgu-constructor-uploader (upload)="updateSelectedFilesInfoAndSend($event)">
     <div class="uploader-info">
       <span *ngIf="!isMobile">Перетащите файлы или выберите на компьютере</span>
@@ -62,7 +40,7 @@
           Сделать фото
         </button>
       </epgu-constructor-uploader-button>
-      <epgu-constructor-uploader-button [multiple]="true" [accept]="getAcceptTypes()">
+      <epgu-constructor-uploader-button [multiple]="true" [accept]="acceptTypes">
         <button [disabled]="isButtonsDisabled" class="fileupload__link-button">
           <img
             src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
