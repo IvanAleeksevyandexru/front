@@ -126,7 +126,7 @@ export interface ComponentAttrsDto {
   dictionaryOptions?: DictionaryOptions;
   style?: ConfirmUserDataStyle;
   imgSrc?: string;
-  error?: { imgSrc: string; label: string };
+  error?: { imgSrc: string; label: string, title?: string, desc?: string, icon?: string, fields?: string[] };
   success?: { imgSrc: string; label: string };
   helperText?: string;
   label?: string;

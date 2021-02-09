@@ -35,6 +35,7 @@ export class ConfirmPersonalUserDataComponent implements OnInit {
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.updateValue(data.value);
+      this.currentAnswersService.isValid = !data.attrs.error;
       this.changeDetectionRef.markForCheck();
     });
   }

@@ -1,8 +1,11 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import { DTOActionAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentAttrsDto,
+  DTOActionAction
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 export interface ConfirmUserData extends ComponentBase {
-  attrs: ConfirmUserDataAttrs;
+  attrs: ConfirmUserDataAttrs & ComponentAttrsDto;
 }
 export interface ConfirmUserDataAttrs {
   fields: Array<ConfirmUserDataField>;
@@ -46,5 +49,3 @@ export interface ConfirmUserDataStyle {
   list: string;
   divider: string;
 }
-
-
