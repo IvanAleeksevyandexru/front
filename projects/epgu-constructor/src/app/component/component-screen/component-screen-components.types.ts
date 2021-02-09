@@ -6,6 +6,7 @@ export enum ComponentScreenComponentTypes {
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
   confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
   registrationAddr = 'RegistrationAddr',
+  registrationLegalAddr = 'RegistrationLegalAddr',
   passportLookup = 'PassportLookup',
   childrenList = 'ChildrenList',
   childrenListUnder14 = 'ChildrenListUnder14', // TODO: удалить потом как depricated
