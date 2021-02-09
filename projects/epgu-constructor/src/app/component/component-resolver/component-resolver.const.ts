@@ -30,7 +30,7 @@ import { PaymentTypeSelectorContainerComponent } from '../unique-screen/componen
 import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/unused-payments-container.component';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 // eslint-disable-next-line max-len
-import { InformationCenterMvdComponent } from '../unique-screen/components/information-center-mvd/information-center-mvd.component';
+import { InformationCenterMvdContainerComponent } from '../unique-screen/components/information-center-mvd/container/information-center-mvd-container.component';
 import { CarInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
 // eslint-disable-next-line max-len
 import { InformationCenterPfrContainerComponent } from '../unique-screen/components/information-center-pfr/container/information-center-pfr-container.component';
@@ -51,7 +51,7 @@ type ComponentScreenComponent =
   | TimerScreenComponent;
 
 type UniqueScreenComponent =
-  InformationCenterMvdComponent
+  InformationCenterMvdContainerComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
@@ -93,7 +93,7 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
 };
 
 export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
-  CityDepartment: InformationCenterMvdComponent,
+  CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
   FileUploadComponent: FileUploadScreenComponent,

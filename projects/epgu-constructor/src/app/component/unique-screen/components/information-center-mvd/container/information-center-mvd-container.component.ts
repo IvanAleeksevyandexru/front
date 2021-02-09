@@ -1,40 +1,37 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { ScreenService } from '../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   DictionaryToRequestI,
   InformationCenterMvdI,
-} from './interface/information-center-mvd.interface';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { DictionaryUtilities } from '../select-map-object/dictionary-utilities';
+} from '../interface/information-center-mvd.interface';
+import { DictionaryApiService } from '../../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryUtilities } from '../../select-map-object/dictionary-utilities';
 import {
   DictionaryFilters,
   DictionaryItem,
-} from '../../../shared/services/dictionary-api/dictionary-api.types';
+} from '../../../../shared/services/dictionary-api/dictionary-api.types';
 
 @Component({
-  selector: 'epgu-constructor-information-center-mvd',
-  templateUrl: './information-center-mvd.component.html',
-  styleUrls: ['./information-center-mvd.component.scss'],
+  selector: 'epgu-constructor-information-center-mvd-container',
+  templateUrl: './information-center-mvd-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InformationCenterMvdComponent implements OnInit {
+export class InformationCenterMvdContainerComponent implements OnInit {
   data$: Observable<InformationCenterMvdI> = this.screenService.component$ as Observable<
     InformationCenterMvdI
   >;
-  display$: Observable<DisplayDto> = this.screenService.display$;
-  isLoading$: Observable<boolean> = this.screenService.isLoading$;
-  submitLabel$: Observable<string> = this.screenService.submitLabel$;
+  isLoading$ = this.screenService.isLoading$;
+  submitLabel$ = this.screenService.submitLabel$;
+  header$ = this.screenService.header$;
   isLoadingInfoCenter = false;
-  select = new FormControl();
   sourceList: Array<ListElement> = [];
   infoCenterList: Array<DictionaryItem> = [];
   dictionaryToRequest: DictionaryToRequestI;
+
   constructor(
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,

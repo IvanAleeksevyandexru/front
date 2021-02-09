@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { MvdInfoCanterI } from '../../interface/information-center-mvd.interface';
+import { MvdInfoCenterI } from '../../interface/information-center-mvd.interface';
 
 @Component({
   selector: 'epgu-constructor-information-center-card',
@@ -8,5 +8,5 @@ import { MvdInfoCanterI } from '../../interface/information-center-mvd.interface
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InformationCenterCardComponent {
-  @Input() item: MvdInfoCanterI;
+  @Input() item: MvdInfoCenterI;
 }
