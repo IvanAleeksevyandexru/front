@@ -221,13 +221,13 @@ describe('DatesToolsService', () => {
   });
 
 
-  xdescribe('endOfMonth() method', () => {
+  describe('endOfMonth() method', () => {
     it('should return date end of month', () => {
-      expect(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('2014-09-30T19:59:59.999Z');
+      expect(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('30.09.2014, 23:59:59');
     });
   });
 
-  xdescribe('startOfYear() method', () => {
+  describe('startOfYear() method', () => {
     it('should return start date of year', () => {
       expect(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString(locale)).toEqual('01.01.2014, 00:00:00');
     });
