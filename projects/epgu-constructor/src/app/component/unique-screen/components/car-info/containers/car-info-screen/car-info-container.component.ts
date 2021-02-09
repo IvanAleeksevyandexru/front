@@ -10,6 +10,7 @@ import {
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import {
   CarInfo,
+  CarInfoComponentAttrsDto,
   CarInfoDisplayedError,
   CarInfoErrors,
   CarInfoErrorsDto,
@@ -35,7 +36,8 @@ export class CarInfoContainerComponent implements OnInit {
       const carInfo = JSON.parse(component.value);
       this.currentAnswersService.state = carInfo;
 
-      this.carInfoErrors = this.mapCarInfoErrors(component?.attrs?.errors, carInfo);
+      const attrs = <CarInfoComponentAttrsDto>component?.attrs;
+      this.carInfoErrors = this.mapCarInfoErrors(attrs?.errors, carInfo);
 
       return carInfo;
     }),

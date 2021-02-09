@@ -1,0 +1,58 @@
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: { attrs: (component$ | async), display: (display$ | async), showNav: (showNav$ | async)  }
+  "
+>
+</ng-container>
+
+<ng-template #templateContent let-component="component" let-display="display" let-showNav="showNav">
+  <epgu-constructor-screen-container
+    [show-nav]="showNav"
+    [class.screen-container-mt]="!showNav"
+  >
+    <div class="screen-body">
+      <div
+        *ngIf="display.header"
+        class="head">
+        <epgu-constructor-page-name>{{ display.header }}</epgu-constructor-page-name>
+      </div>
+
+      <epgu-constructor-car-list
+        [label]="component?.attrs?.label"
+        [clarifications]="component?.attrs?.clarifications"
+        [provider]="lookupProvider"
+        [control]="control"
+        [carFixedItems]="carFixedItems"
+        [errorDisplayDto]="errorTemplate?.display"
+        [formatter]="lookupFormatter"
+        [searchCaseSensitive]="lookupSearchCaseSensitive"
+        [staticDomainAssetsPath]="config.staticDomainAssetsPath"
+        (formChangeEvent)="setState($event)"
+      ></epgu-constructor-car-list>
+    </div>
+
+    <div class="screen-footer">
+      <lib-button
+        *ngIf="!hasError"
+        [showLoader]="isLoading$ | async"
+        epgu-constructor-action
+        [action]="nextStepAction"
+        class="submit-button"
+      >
+        {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
+      </lib-button>
+
+      <ng-container *ngIf="hasError && errorTemplate?.actions">
+        <lib-button
+          *ngFor="let action of errorTemplate.actions"
+          epgu-constructor-action
+          [action]="action"
+          [color]="action.color"
+          class="screen-footer__btn"
+        >{{ action.label }}</lib-button>
+      </ng-container>
+
+    </div>
+  </epgu-constructor-screen-container>
+</ng-template>

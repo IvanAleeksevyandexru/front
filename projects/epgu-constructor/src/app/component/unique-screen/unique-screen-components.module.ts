@@ -21,6 +21,7 @@ import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upl
 import { WebcamService } from './services/webcam/webcam.service';
 import { RepeatableFieldsModule } from './components/repeatable-fields/repeatable-fields.module';
 import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
+import { CarListModule } from './components/car-list/car-list.module';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { InformationCenterPfrModule } from './components/information-center-pfr/
     InformationCenterMvdModule,
     RepeatableFieldsModule,
     InformationCenterPfrModule,
+    CarListModule
   ],
   exports: [
     RepeatableFieldsModule,
@@ -57,6 +59,7 @@ import { InformationCenterPfrModule } from './components/information-center-pfr/
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
     InformationCenterPfrModule,
+    CarListModule
   ],
   providers: [
     WebcamService,
