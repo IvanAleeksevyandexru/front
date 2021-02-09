@@ -1,5 +1,4 @@
 import {
-  FileUploadItem,
   TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
