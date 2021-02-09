@@ -1,37 +1,47 @@
-import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ServiceResult } from '../../car-info/models/car-info.interface';
+import {
+  ComponentActionDto,
+  ComponentAttrsDto
+} from '../../../../../form-player/services/form-player-api/form-player-api.types';
 
-export enum ServiceResult {
-  SUCCESS = 'SUCCESS',
-  NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
-  EXTERNAL_SERVER_ERROR = 'EXTERNAL_SERVER_ERROR',
+
+export interface CarListComponentAttrsDto extends ComponentAttrsDto {
+  errors: CarInfoErrorsDto;
 }
 
+export interface CarInfoErrorsDto {
+  EXTERNAL_SERVER_ERROR?: ErrorTemplate,
+  NOT_FOUND_ERROR?: ErrorTemplate
+}
 
-export interface CarInfo {
-  vehicleInfo: VehicleInfo;
-  notaryInfo: NotaryInfo;
+export interface ErrorTemplate {
+  display: ErrorDisplayDto;
+  actions: ComponentActionDto[];
+}
+
+export interface ErrorDisplayDto {
+  imageClass: string;
+  imageSrc: string;
+  title: string;
+  label: string;
+}
+
+export interface CarList {
+  vehicles: VehicleOwnerInfo[];
   vehicleServiceCallResult: ServiceResult;
-  notaryServiceCallResult: ServiceResult;
 }
 
-export interface CarInfoErrors {
-  vehicle?: CarInfoDisplayedError;
-  notary?: CarInfoDisplayedError;
-  externalCommon?: CarInfoDisplayedError;
-}
-
-export interface CarInfoDisplayedError {
-  type: string;
-  text: string;
-}
-
-interface NotaryInfo {
-  isPledged: boolean;
-}
-
-export interface VehicleInfo {
+export interface VehicleOwnerInfo {
   status: string;
   stsSeriesNumber: string;
+  stsDocumentDate: string;
+  stsIssueAgency: string;
+  ptsType: string;
+  ptsNum: string;
+  ptsRegDate: string;
+  ptsIssueAgency: string;
+  engineModel: string;
+  engineNum: string;
   restrictionsFlag: boolean;
   category: string;
   searchingTransportFlag: boolean;
@@ -71,13 +81,4 @@ interface Restriction {
   enforcementProceedingsNumber: string;
   enforcementProceedingsDate: string;
   enforcementProceedingsName: string;
-}
-
-export interface CarInfoComponentAttrsDto extends ComponentAttrsDto {
-  errors: CarInfoErrorsDto;
-}
-
-export interface CarInfoErrorsDto {
-  EXTERNAL_SERVER_ERROR?: string,
-  NOT_FOUND_ERROR?: string
 }
