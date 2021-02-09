@@ -8,7 +8,7 @@ import {
 } from './file-upload-item/data';
 import { FileUploadItem } from '../../../services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
 import { CheckFailedReasons, FileUploadService } from './file-upload.service';
 import {
   CompressionOptions,

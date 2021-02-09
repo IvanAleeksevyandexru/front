@@ -68,7 +68,6 @@ export class UploaderComponent implements AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit(): void {
-    console.log('ngAfterContentInit');
     this.subs?.unsubscribe();
     this.subs = new Subscription();
     this.buttons.forEach((item) => {
