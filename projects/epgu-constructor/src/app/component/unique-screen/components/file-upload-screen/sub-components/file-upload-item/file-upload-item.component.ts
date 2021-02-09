@@ -24,7 +24,6 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
-import { CompressionService } from '../../../upload-and-edit-photo/compression/compression.service';
 import { FileUploadService } from '../file-upload.service';
 import {
   ErrorActions,
@@ -169,7 +168,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   constructor(
     private terabyteService: TerraByteApiService,
     private deviceDetectorService: DeviceDetectorService,
-    private compressionService: CompressionService,
     private fileUploadService: FileUploadService,
     public config: ConfigService,
     public modal: ModalService,
