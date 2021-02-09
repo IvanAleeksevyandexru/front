@@ -18,7 +18,8 @@ exports[`CustomScreenComponent check snapshot 1`] = `
       class="screen-body"
     >
       <epgu-constructor-page-name>
-        
+         
+        <epgu-constructor-user-info-loader />
       </epgu-constructor-page-name>
       <epgu-constructor-screen-pad
         class="body"

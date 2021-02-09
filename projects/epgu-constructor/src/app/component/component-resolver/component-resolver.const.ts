@@ -35,6 +35,7 @@ import { CarInfoContainerComponent } from '../unique-screen/components/car-info/
 import { InformationCenterPfrContainerComponent } from '../unique-screen/components/information-center-pfr/container/information-center-pfr-container.component';
 import { FieldListScreenComponent } from '../unique-screen/components/field-list-screen/field-list-screen.component';
 import { TimerScreenComponent } from '../unique-screen/components/timer-screen/timer-screen.component';
+import { CarListContainerComponent } from '../unique-screen/components/car-list/components/car-list-container/car-list-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -49,6 +50,7 @@ type UniqueScreenComponent =
   | RepeatableFieldsComponent
   | TimeSlotsComponent
   | CarInfoContainerComponent
+  | CarListContainerComponent
   | SignatureApplicationContainerComponent
   | PaymentComponent
   | BillInfoComponent
@@ -75,6 +77,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   RepeatableFields: RepeatableFieldsComponent,
   TimeSlot: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
+  CarList: CarListContainerComponent,
   EsepSign: SignatureApplicationContainerComponent,
   PaymentScr: PaymentComponent,
   BillInfo: BillInfoComponent,
@@ -90,6 +93,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
   RegistrationAddr: RegistrationAddrComponent,
+  RegistrationLegalAddr: RegistrationAddrComponent,
   PassportLookup: AddPassportContainerComponent,
   ChildrenList: SelectChildrenScreenContainerComponent,
   ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated

@@ -34,6 +34,7 @@ import { ConstructorDropdownModule } from '../../shared/components/constructor-d
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
+import { CarListModule } from './components/car-list/car-list.module';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { TimerScreenModule } from './components/timer-screen/timer-screen.module
     BaseComponentsModule,
     FieldListScreenModule,
     TimerScreenModule,
+    CarListModule
   ],
   exports: [
     RepeatableFieldsModule,
@@ -88,6 +90,7 @@ import { TimerScreenModule } from './components/timer-screen/timer-screen.module
     AddPassportModule,
     FieldListScreenModule,
     TimerScreenModule,
+    CarListModule
   ],
   providers: [
     WebcamService,

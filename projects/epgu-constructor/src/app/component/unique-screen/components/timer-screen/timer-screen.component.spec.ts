@@ -10,6 +10,7 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 const mockData: TimerComponentBase = {
   id: null,
@@ -45,6 +46,7 @@ describe('TimerScreenComponent', () => {
       ],
       providers: [
         CurrentAnswersService,
+        DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();

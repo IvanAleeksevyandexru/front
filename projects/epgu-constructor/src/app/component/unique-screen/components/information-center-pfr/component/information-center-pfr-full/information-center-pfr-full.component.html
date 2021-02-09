@@ -14,8 +14,19 @@
     <epgu-constructor-label [label]="items.district.label"></epgu-constructor-label>
     <epgu-constructor-constructor-lookup
       [fixedItems]="districtDictionary"
-      (changed)="handleSelect($event, pfrAreAType.territory)"
+      (changed)="handleSelect($event, pfrAreAType.cityDistrict)"
       [control]="pfrForm.get(pfrAreAType.district)"
+      [clearable]="true"
+    >
+    </epgu-constructor-constructor-lookup>
+  </div>
+
+  <div class="item" *ngIf="cityDistrictDictionary.length">
+    <epgu-constructor-label [label]="items.cityDistrict.label"></epgu-constructor-label>
+    <epgu-constructor-constructor-lookup
+      [fixedItems]="cityDistrictDictionary"
+      (changed)="handleSelect($event, pfrAreAType.territory)"
+      [control]="pfrForm.get(pfrAreAType.cityDistrict)"
       [clearable]="true"
     >
     </epgu-constructor-constructor-lookup>

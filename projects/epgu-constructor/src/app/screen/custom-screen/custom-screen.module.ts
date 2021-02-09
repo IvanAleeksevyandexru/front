@@ -6,6 +6,7 @@ import { ScreenContainerModule } from '../../shared/components/screen-container/
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [CustomScreenComponent],
@@ -16,6 +17,7 @@ import { CustomScreenService } from './custom-screen.service';
     BaseComponentsModule,
     ScreenContainerModule,
     ScreenPadModule,
+    UserInfoLoaderModule,
   ],
   providers: [
     CustomScreenService,

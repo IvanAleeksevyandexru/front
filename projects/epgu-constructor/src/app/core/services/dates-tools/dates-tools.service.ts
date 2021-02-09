@@ -14,28 +14,44 @@ import {
   add as _add,
   sub as _sub,
   setYear as _setYear,
+  startOfYear as _startOfYear,
   setMonth as _setMonth,
-  setDay as _setDay,
+  getMonth as _getMonth,
+  startOfMonth as _startOfMonth,
+  endOfMonth as _endOfMonth,
+  getDaysInMonth as _getDaysInMonth,
+  startOfDay as _startOfDay,
+  getISODay as _getISODay,
+  setDate as _setDate,
   differenceInYears as _differenceInYears,
   differenceInMilliseconds as _differenceInMilliseconds,
-  endOfMonth as _endOfMonth,
   min as _min,
   max as _max,
+  intervalToDuration as _intervalToDuration,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { DATE_ISO_STRING_FORMAT, DurationTimeTypes } from '../../../shared/constants/dates';
 
+interface Duration {
+  years?: number;
+  months?: number;
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+}
+
 @Injectable()
 export class DatesToolsService {
-
-  constructor() { }
+  constructor() {}
 
   /**
    * Возвращает true, если переданная дата является сегодняшней датой,
    * иначе false
    * @param {Date | Number} date значение для проверки
    */
-  public isToday(date: 	Date | number): boolean {
+  public isToday(date: Date | number): boolean {
     return _isToday(date);
   }
 
@@ -139,11 +155,15 @@ export class DatesToolsService {
    * @param {string} format строка маска для распарсивания строки с датой (по умолчанию ISOString вида yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx )
    * @param {Date | Number} referenceDate референсная дата для использования недостающих ед. в распарсенной дате
    */
-  public parse(date: string, format: string = DATE_ISO_STRING_FORMAT, referenceDate: Date | number = new Date()): Date {
+  public parse(
+    date: string,
+    format: string = DATE_ISO_STRING_FORMAT,
+    referenceDate: Date | number = new Date(),
+  ): Date {
     return _parse(date, format, referenceDate, { locale: _ruLocale });
   }
 
-    /**
+  /**
    * Возвращает объект даты, если переданный аргумент является валидной строковой датой ISOString формата
    * иначе Invalid Date
    * @param {string} date конвертируемая дата в виде строки
@@ -215,6 +235,14 @@ export class DatesToolsService {
     return _setYear(date, Number(year));
   }
 
+  /**
+   * Возвращает объект даты с началом года
+   * @param {Date | Number} date исходная дата
+   */
+  public startOfYear(date: Date | number): Date {
+    return _startOfYear(date);
+  }
+
     /**
    * Возвращает новый объект даты с заданным месяцем
    * @param {Date | Number} date исходная дата
@@ -224,13 +252,40 @@ export class DatesToolsService {
     return _setMonth(date, Number(month));
   }
 
-    /**
+  /**
    * Возвращает новый объект даты с заданным днем
    * @param {Date | Number} date исходная дата
    * @param {Number} day указанный день
    */
-  public setDay(date: Date | number, day: number | string): Date {
-    return _setDay(date, Number(day));
+  public setDate(date: Date | number, day: number | string): Date {
+    return _setDate(date, Number(day));
+  }
+
+  /**
+   * Возвращает объект даты с началом дня
+   * @param {Date | Number} date исходная дата
+   */
+  public startOfDay(date: Date | number): Date {
+    return _startOfDay(date);
+  }
+
+  /**
+   * Возвращает день недели переданной даты
+   * @param {Date | Number} date исходная дата
+   */
+  public getISODay(date: Date | number): number {
+    return _getISODay(date);
+  }
+
+  public startOf(date: Date | number, startType: 'day' | 'month' | 'year'): Date {
+    switch (startType) {
+      case 'day':
+        return this.startOfDay(date);
+      case 'month':
+        return this.startOfMonth(date);
+      case 'year':
+        return this.startOfYear(date);
+    }
   }
 
 
@@ -241,27 +296,57 @@ export class DatesToolsService {
    * @param {Number} month указанный месяц
    * @param {Number} day указанный день
    */
-  public setDate(date: Date | number, year: number | string, month: number | string, day: number | string): Date {
+  public setCalendarDate(
+    date: Date | number,
+    year: number | string = null,
+    month: number | string = null,
+    day: number | string = null,
+  ): Date {
     let newDate = this.toDate(date);
-    if (year) {
+    if (year !== null) {
       newDate = this.setYear(newDate, year);
     }
-    if (month) {
+    if (month !== null) {
       newDate = this.setMonth(newDate, month);
     }
-    if (day) {
-      newDate = this.setDay(newDate, day);
+    if (day !== null) {
+      newDate = this.setDate(newDate, day);
     }
     return newDate;
   }
 
   /**
-   * Возвращает объект даты с концом месяца
-   * @param {Date} date исходная дата
+   * Возвращает месяц переданной даты
+   * @param {Date | Number} date исходная дата
    */
-  public endOfMonth(date: Date): Date {
+  public getMonth(date: Date | number): number {
+    return _getMonth(date);
+  }
+
+  /**
+   * Возвращает объект даты с началом месяца
+   * @param {Date | Number} date исходная дата
+   */
+  public startOfMonth(date: Date | number): Date {
+    return _startOfMonth(date);
+  }
+
+  /**
+   * Возвращает объект даты с концом месяца
+   * @param {Date | Number} date исходная дата
+   */
+  public endOfMonth(date: Date | number): Date {
     return _endOfMonth(date);
   }
+
+  /**
+   * Возвращает кол-во дней в переданной дате
+   * @param {Date | Number} date исходная дата
+   */
+  public getDaysInMonth(date: Date | number): number {
+    return _getDaysInMonth(date);
+  }
+
 
   /**
    * Возвращает самую раннюю дату из массива дат
@@ -279,4 +364,11 @@ export class DatesToolsService {
     return _max(dates);
   }
 
+  /**
+   * Возвращает duration объект для переданного отрезка времени
+   * @param {start: Date | Number, end: Date | Number} interval объект интервала, состоящий из начала и конца временного отрезка
+   */
+  public intervalToDuration(interval: { start: Date | number, end: Date | number }): Duration {
+    return _intervalToDuration(interval);
+  }
 }

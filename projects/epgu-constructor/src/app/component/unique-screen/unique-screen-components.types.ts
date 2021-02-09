@@ -3,6 +3,7 @@ export enum UniqueScreenComponentTypes {
   timeSlot = 'TimeSlot',
   mapService = 'MapService',
   carInfo = 'CarInfo',
+  carList = 'CarList',
   repeatableFields = 'RepeatableFields',
   employeeHistory = 'EmployeeHistory',
   timer = 'Timer',
@@ -24,6 +25,7 @@ export enum UniqueScreenComponentTypes {
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
   confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
   registrationAddr = 'RegistrationAddr',
+  registrationLegalAddr = 'RegistrationLegalAddr',
   passportLookup = 'PassportLookup',
   childrenList = 'ChildrenList',
   childrenListUnder14 = 'ChildrenListUnder14', // TODO: удалить потом как depricated

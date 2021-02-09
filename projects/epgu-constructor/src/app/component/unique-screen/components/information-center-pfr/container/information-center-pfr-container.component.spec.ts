@@ -38,6 +38,11 @@ describe('InformationCenterPfrContainerComponent', () => {
           attributeName: 'parent_attr',
           condition: 'EQUALS',
         },
+        cityDistrict: {
+          label: 'Городской район',
+          attributeName: 'parent_attr',
+          condition: 'EQUALS',
+        },
         territory: {
           label: 'Территориальный орган',
           attributeName: 'parent_attr',
@@ -162,6 +167,11 @@ describe('InformationCenterPfrContainerComponent', () => {
               attributeName: 'parent_attr',
               condition: 'EQUALS',
             },
+            cityDistrict: {
+              label: 'Городской район',
+              attributeName: 'parent_attr',
+              condition: 'EQUALS',
+            },
             territory: {
               label: 'Территориальный орган',
               attributeName: 'parent_attr',
@@ -208,7 +218,7 @@ describe('InformationCenterPfrContainerComponent', () => {
       mockData.value = JSON.stringify(mockCachedValue);
       screenService.component = mockData;
 
-      expect(component.fetchDictionary).toBeCalledTimes(3);
+      expect(component.fetchDictionary).toBeCalledTimes(0);
     });
 
     it('should be not set CashedValue', () => {
@@ -216,7 +226,7 @@ describe('InformationCenterPfrContainerComponent', () => {
       mockData.value = JSON.stringify({});
       screenService.component = mockData;
 
-      expect(component.fetchDictionary).toBeCalledTimes(1);
+      expect(component.fetchDictionary).toBeCalledTimes(0);
     });
   });
 });
