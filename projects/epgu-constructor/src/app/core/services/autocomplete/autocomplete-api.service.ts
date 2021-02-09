@@ -17,25 +17,21 @@ export class AutocompleteApiService {
     serviceId: string = '11111',
   ): Observable<ISuggestionApi> {
     const searchQuery = `groups=${groupId}&serviceId=${serviceId}`;
-    const path = `${this.configService.suggestionsApiUrl}?${searchQuery}`;
+    const path = `${this.configService.suggestionsApiUrl}groups?groups=${searchQuery}`;
     return this.httpGet<ISuggestionApi>(path);
   }
 
   public getSuggestionsFields(
     fields: Array<string>,
-    serviceId: string = '11111',
   ): Observable<ISuggestionApi> {
-    const searchQuery = fields
-      .map((field) => 'fields=' + field)
-      .join('&')
-      .concat('&serviceId=' + serviceId);
-    const path = `${this.configService.suggestionsApiUrl}?${searchQuery}`;
+    const searchQuery = fields.join(',');
+    const path = `${this.configService.suggestionsApiUrl}/fields?fields=${searchQuery}`;
     return this.httpGet<ISuggestionApi>(path);
   }
 
   private httpGet<T>(path: string): Observable<T> {
     return this.http.get<T>(path, {
-      // withCredentials: true,
-    });
+      withCredentials: true,
+  });
   }
 }
