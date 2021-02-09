@@ -8,7 +8,14 @@
 
     <epgu-constructor-screen-pad>
       <div class="card">
-        <div class="months-list">
+        <div *ngIf="isAreasVisible" class="dropdown-list">
+          <lib-dropdown
+            [items]="areas"
+            [(ngModel)]="currentArea"
+            (changed)="areaChanged()"
+          ></lib-dropdown>
+        </div>
+        <div class="dropdown-list">
           <lib-dropdown
             [disabled]="fixedMonth"
             [items]="monthsYears"

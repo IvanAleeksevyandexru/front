@@ -18,7 +18,7 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-    font-size: 18px;
+    line-height: 24px;
     &::after {
       content: "\276F";
       width: 24px;
@@ -38,6 +38,7 @@
     & .card-toggle-label{
       max-width: 90%;
       display: flex;
+      font-size: 18px;
       flex-direction: column;
       & > *:not(:last-child) {
         margin-bottom: 24px;
@@ -49,7 +50,6 @@
     transition: all .35s;
     font-size: 16px;
     padding: 0;
-
     .close {
       display: inline-block;
       color: $color-gosblue;

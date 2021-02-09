@@ -1,7 +1,16 @@
 import { TimerPipe } from './timer.pipe';
+import { TestBed } from '@angular/core/testing';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 describe('TimerPipe', () => {
-  const pipe: TimerPipe = new TimerPipe();
+  const pipe: TimerPipe = new TimerPipe(new DatesToolsService());
+
+  TestBed.configureTestingModule({
+    imports: [],
+    providers: [
+      DatesToolsService
+    ],
+  });
 
   it('create an instance', () => {
     expect(pipe).toBeTruthy();
