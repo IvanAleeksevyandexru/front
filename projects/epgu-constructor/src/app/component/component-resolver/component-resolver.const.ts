@@ -81,6 +81,7 @@ export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
   ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
   RegistrationAddr: RegistrationAddrComponent,
+  RegistrationLegalAddr: RegistrationAddrComponent,
   PassportLookup: AddPassportContainerComponent,
   ChildrenList: SelectChildrenScreenContainerComponent,
   ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
