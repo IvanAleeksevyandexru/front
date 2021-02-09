@@ -10,7 +10,7 @@ import {
   ConfirmUserDataFieldsState,
   ConfirmUserDataState,
   ConfirmUserDataStyle,
-} from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+} from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 const defaultStyle: ConfirmUserDataStyle = {

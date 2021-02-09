@@ -1,16 +1,15 @@
 // eslint-disable-next-line max-len
-import { ConfirmPersonalUserAddressComponent } from '../component-screen/components/confirm-personal-user/screens/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
+import { ConfirmPersonalUserAddressComponent } from '../unique-screen/components/confirm-personal-user-address-screen/components/confirm-personal-user-address/confirm-personal-user-address.component';
 // eslint-disable-next-line max-len
-import { ConfirmPersonalUserDataComponent } from '../component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/component/confirm-personal-user-data/confirm-personal-user-data.component';
+import { ConfirmPersonalUserDataComponent } from '../unique-screen/components/confirm-personal-user-data-screen/component/confirm-personal-user-data/confirm-personal-user-data.component';
 // eslint-disable-next-line max-len
-import { ConfirmPersonalUserPhoneEmailComponent } from '../component-screen/components/confirm-personal-user/screens/confirm-personal-user-phone-email/confirm-personal-user-phone-email.component';
+import { ConfirmPersonalUserPhoneEmailComponent } from '../unique-screen/components/confirm-personal-user-phone-email/confirm-personal-user-phone-email.component';
 // eslint-disable-next-line max-len
-import { RegistrationAddrComponent } from '../component-screen/components/confirm-personal-user/screens/registration-addr/components/registration-addr/registration-addr.component';
+import { RegistrationAddrComponent } from '../unique-screen/components/registration-addr/components/registration-addr/registration-addr.component';
 // eslint-disable-next-line max-len
-import { AddPassportContainerComponent } from '../component-screen/components/add-passport/container/add-passport-component-container.component';
+import { AddPassportContainerComponent } from '../unique-screen/components/add-passport/container/add-passport-component-container.component';
 // eslint-disable-next-line max-len
-import { SelectChildrenScreenContainerComponent } from '../component-screen/components/select-children/container/select-children-screen-container.component';
-import { ComponentScreenComponentTypes } from '../component-screen/component-screen-components.types';
+import { SelectChildrenScreenContainerComponent } from '../unique-screen/components/select-children/container/select-children-screen-container.component';
 import { Type } from '@angular/core';
 import { SelectMapObjectComponent } from '../unique-screen/components/select-map-object/select-map-object.component';
 import { FileUploadScreenComponent } from '../unique-screen/components/file-upload-screen/file-upload-screen.component';
@@ -34,21 +33,12 @@ import { InformationCenterMvdContainerComponent } from '../unique-screen/compone
 import { CarInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-info-screen/car-info-container.component';
 // eslint-disable-next-line max-len
 import { InformationCenterPfrContainerComponent } from '../unique-screen/components/information-center-pfr/container/information-center-pfr-container.component';
-import { FieldListScreenComponent } from '../component-screen/components/field-list-screen/field-list-screen.component';
-import { TimerScreenComponent } from '../component-screen/components/timer-screen/timer-screen.component';
+import { FieldListScreenComponent } from '../unique-screen/components/field-list-screen/field-list-screen.component';
+import { TimerScreenComponent } from '../unique-screen/components/timer-screen/timer-screen.component';
 import { CarListContainerComponent } from '../unique-screen/components/car-list/components/car-list-container/car-list-container.component';
 
-export type ComponentTypes = ComponentScreenComponentTypes | UniqueScreenComponentTypes;
+export type ComponentTypes = UniqueScreenComponentTypes;
 
-type ComponentScreenComponent =
-  ConfirmPersonalUserAddressComponent
-  | ConfirmPersonalUserDataComponent
-  | ConfirmPersonalUserPhoneEmailComponent
-  | RegistrationAddrComponent
-  | AddPassportContainerComponent
-  | SelectChildrenScreenContainerComponent
-  | FieldListScreenComponent
-  | TimerScreenComponent;
 
 type UniqueScreenComponent =
   InformationCenterMvdContainerComponent
@@ -65,32 +55,17 @@ type UniqueScreenComponent =
   | PaymentComponent
   | BillInfoComponent
   | PaymentTypeSelectorContainerComponent
-  | InformationCenterPfrContainerComponent;
+  | InformationCenterPfrContainerComponent
+  | ConfirmPersonalUserAddressComponent
+  | ConfirmPersonalUserDataComponent
+  | ConfirmPersonalUserPhoneEmailComponent
+  | RegistrationAddrComponent
+  | AddPassportContainerComponent
+  | SelectChildrenScreenContainerComponent
+  | FieldListScreenComponent
+  | TimerScreenComponent;
 
-export type ScreenComponentTypes = ComponentScreenComponent | UniqueScreenComponent;
-
-export const COMPONENT_SCREEN_COMPONENTS: Partial<Record<
-  ComponentScreenComponentTypes,
-  Type<ComponentScreenComponent>
->> = {
-  ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
-  ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
-  ConfirmAnotherUserData: ConfirmPersonalUserDataComponent,
-  ConfirmChildData: ConfirmPersonalUserDataComponent,
-  ConfirmPersonalUserEmail: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmPersonalUserPhone: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmLegalData: ConfirmPersonalUserDataComponent,
-  ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
-  RegistrationAddr: RegistrationAddrComponent,
-  RegistrationLegalAddr: RegistrationAddrComponent,
-  PassportLookup: AddPassportContainerComponent,
-  ChildrenList: SelectChildrenScreenContainerComponent,
-  ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
-  ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
-  FieldList: FieldListScreenComponent,
-  Timer: TimerScreenComponent,
-};
+export type ScreenComponentTypes = UniqueScreenComponent;
 
 export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
   CityDepartment: InformationCenterMvdContainerComponent,
@@ -108,4 +83,21 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   BillInfo: BillInfoComponent,
   PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
   InformationCenterPfr: InformationCenterPfrContainerComponent,
+  ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
+  ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
+  ConfirmAnotherUserData: ConfirmPersonalUserDataComponent,
+  ConfirmChildData: ConfirmPersonalUserDataComponent,
+  ConfirmPersonalUserEmail: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmPersonalUserPhone: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmLegalData: ConfirmPersonalUserDataComponent,
+  ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
+  RegistrationAddr: RegistrationAddrComponent,
+  RegistrationLegalAddr: RegistrationAddrComponent,
+  PassportLookup: AddPassportContainerComponent,
+  ChildrenList: SelectChildrenScreenContainerComponent,
+  ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
+  ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
+  FieldList: FieldListScreenComponent,
+  Timer: TimerScreenComponent,
 };
