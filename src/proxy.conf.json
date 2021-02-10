@@ -7,9 +7,12 @@
     "target": "http://localhost:3000",
     "secure": false
   },
+  "/suggests": {
+    "target": "http://localhost:8092",
+    "secure": true
+  },
   "/api": {
     "target": "http://localhost:8080",
     "secure": false
   }
 }
-
