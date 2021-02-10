@@ -1,15 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
-import {
-  BehaviorSubject,
-  from,
-  never,
-  Observable,
-  of,
-  Subject,
-  Subscription,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
 import {
   catchError,
   concatMap,
