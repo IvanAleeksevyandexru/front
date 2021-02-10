@@ -58,7 +58,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     }
   }
 
-  showErrorText(): void {
+  public showErrorText(): void {
     this.errorTextIsShown = true;
     setTimeout(() => {
       this.errorTextIsShown = false;
@@ -66,39 +66,14 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     }, showErrorTime);
   }
 
-  getCroppedImageUrl(): string {
-    return this.cropper.crop().dataURL;
-  }
-
   /**
    * Image loaded hook
    */
-  imageLoaded(): void {
+  public imageLoaded(): void {
     this.setScaling();
   }
 
-  /**
-   * Check if scaling is available and set it.
-   */
-  setScaling(): void {
-    const initScale = this.scale;
-    this.cropper.zoomIn();
-    this.isScalingAvailable = this.scale > initScale;
-    this.cropper.zoomOut();
-  }
-
-  setCropperSize(): void {
-    this.isPhoneSize = matchMedia('(max-width: 576px)').matches;
-    this.maskSrc = `${this.config.staticDomainAssetsPath}/${photoMaskSrc.desktop}`;
-  }
-
-  fitImageToCropArea(): void {
-    this.cropper.rotate(0);
-    this.cropper.center();
-    this.cropper.fit();
-  }
-
-  onResized(newSize: NewSizeEvent): void {
+  public onResized(newSize: NewSizeEvent): void {
     if (newSize.newWidth !== newSize.oldWidth) {
       this.setCropperSize();
     }
@@ -107,14 +82,39 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
     }
   }
 
-  takeAnotherPhoto(): void {
+  public takeAnotherPhoto(): void {
     this.modalResult.next({ changeImage: true });
     this.closeModal();
   }
 
-  saveAndExit(): void {
+  public saveAndExit(): void {
     const croppedImageUrl = this.getCroppedImageUrl();
     this.modalResult.next({ imageObjectUrl: croppedImageUrl });
     this.closeModal();
+  }
+
+  /**
+   * Check if scaling is available and set it.
+   */
+  private setScaling(): void {
+    const initScale = this.scale;
+    this.cropper.zoomIn();
+    this.isScalingAvailable = this.scale > initScale;
+    this.cropper.zoomOut();
+  }
+
+  private setCropperSize(): void {
+    this.isPhoneSize = matchMedia('(max-width: 576px)').matches;
+    this.maskSrc = `${this.config.staticDomainAssetsPath}/${photoMaskSrc.desktop}`;
+  }
+
+  private fitImageToCropArea(): void {
+    this.cropper.rotate(0);
+    this.cropper.center();
+    this.cropper.fit();
+  }
+
+  private getCroppedImageUrl(): string {
+    return this.cropper.crop().dataURL;
   }
 }
