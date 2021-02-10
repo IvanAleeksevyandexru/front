@@ -69,10 +69,10 @@ describe('LoggerService', () => {
   });
 
   describe('error()', () => {
-    it('should call isShowLog', () => {
+    it('shouldn\'t call isShowLog', () => {
       spyOn<any>(service, 'isShowLog').and.callThrough();
       service.error(message, groupName);
-      expect(service['isShowLog']).toBeCalled();
+      expect(service['isShowLog']).not.toBeCalled();
     });
 
     it('should call openGroup', () => {
