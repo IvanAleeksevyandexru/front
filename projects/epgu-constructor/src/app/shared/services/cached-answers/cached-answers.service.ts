@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { ComponentScreenComponentTypes } from '../../../component/component-screen/component-screen-components.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
@@ -9,8 +8,8 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [
   UniqueScreenComponentTypes.carInfo,
-  ComponentScreenComponentTypes.confirmPersonalUserPhone,
-  ComponentScreenComponentTypes.confirmPersonalUserEmail,
+  UniqueScreenComponentTypes.confirmPersonalUserPhone,
+  UniqueScreenComponentTypes.confirmPersonalUserEmail,
   UniqueScreenComponentTypes.paymentScr,
   UniqueScreenComponentTypes.timeSlot,
 ];
@@ -40,7 +39,7 @@ export class CachedAnswersService {
 
     const parsedValue = JSON.parse(cachedValue);
 
-    if (component.type === ComponentScreenComponentTypes.childrenList) {
+    if (component.type === UniqueScreenComponentTypes.childrenList) {
       const childComponents = component.attrs.components;
 
       for (const childCache of parsedValue) {

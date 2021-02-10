@@ -6,8 +6,6 @@ import { BaseModule } from '../shared/base.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
-import { ComponentScreenComponent } from './component-screen/component-screen.component';
-import { ComponentScreenModule } from './component-screen/component-screen.module';
 import { CurrentAnswersService } from './current-answers.service';
 import { CustomScreenComponent } from './custom-screen/custom-screen.component';
 import { CustomScreenModule } from './custom-screen/custom-screen.module';
@@ -31,7 +29,6 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
   declarations: [ScreenResolverComponent],
   imports: [
     BaseModule,
-    ComponentScreenModule,
     CustomScreenModule,
     EmptyScreenModule,
     QuestionsScreenModule,
@@ -53,7 +50,6 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
   entryComponents: [
     InfoScreenComponent,
     QuestionsScreenComponent,
-    ComponentScreenComponent,
     CustomScreenComponent,
     UniqueScreenComponent,
     InvitationErrorScreenComponent,

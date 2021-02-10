@@ -4,8 +4,8 @@ import { AnimationBuilder } from '@angular/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/add-passport.module';
-import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/add-passport/component/add-passport.component';
+import { AddPassportModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/add-passport/add-passport.module';
+import { AddPassportComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/add-passport/component/add-passport.component';
 import { DateRangeService } from '../../projects/epgu-constructor/src/app/component/shared/components/components-list/services/date-range/date-range.service';
 import { SignatureApplicationComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/components/signature-application/signature-application.component';
 import { SignatureApplicationModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/signature-application/signature-application.module';
@@ -47,8 +47,8 @@ import { LoggerService } from '../../projects/epgu-constructor/src/app/core/serv
 import { NavigationModalService } from '../../projects/epgu-constructor/src/app/core/services/navigation-modal/navigation-modal.service';
 import { LocalStorageService } from '../../projects/epgu-constructor/src/app/core/services/local-storage/local-storage.service';
 import { HtmlRemoverService } from '../../projects/epgu-constructor/src/app/shared/services/html-remover/html-remover.service';
-import { SelectChildrenScreenModule } from '../../projects/epgu-constructor/src/app/component/component-screen/components/select-children/select-children-screen.module';
-import { SelectChildrenComponent } from '../../projects/epgu-constructor/src/app/component/component-screen/components/select-children/components/select-children/select-children.component';
+import { SelectChildrenScreenModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/select-children/select-children-screen.module';
+import { SelectChildrenComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/select-children/components/select-children/select-children.component';
 import { PaymentTypeSelectorButtonComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/components/payment-type-selector-button/payment-type-selector-button.component';
 import { PaymentTypeSelectorModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/payment-type-selector.module';
 import { PaymentTypeSelectorComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/payment-type-selector/components/payment-type-selector/payment-type-selector.component';
@@ -173,7 +173,7 @@ const DisplayDtoSample: DisplayDto = {
   header: '',
   id: '',
   terminal: false,
-  type: ScreenTypes.COMPONENT,
+  type: ScreenTypes.UNIQUE,
   name: 'name',
   submitLabel: 'submitLabel',
 };
