@@ -14,19 +14,17 @@ export class AutocompleteApiService {
 
   public getSuggestionsGroup(
     groupId: string,
-    serviceId: string = '11111',
-  ): Observable<ISuggestionApi> {
-    const searchQuery = `groups=${groupId}&serviceId=${serviceId}`;
-    const path = `${this.configService.suggestionsApiUrl}groups?groups=${searchQuery}`;
-    return this.httpGet<ISuggestionApi>(path);
+  ): Observable<ISuggestionApi[]> {
+    const path = `${this.configService.suggestionsApiUrl}/groups?groups=${groupId}`;
+    return this.httpGet<ISuggestionApi[]>(path);
   }
 
   public getSuggestionsFields(
     fields: Array<string>,
-  ): Observable<ISuggestionApi> {
+  ): Observable<ISuggestionApi[]> {
     const searchQuery = fields.join(',');
     const path = `${this.configService.suggestionsApiUrl}/fields?fields=${searchQuery}`;
-    return this.httpGet<ISuggestionApi>(path);
+    return this.httpGet<ISuggestionApi[]>(path);
   }
 
   private httpGet<T>(path: string): Observable<T> {

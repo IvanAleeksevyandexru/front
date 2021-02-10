@@ -7,8 +7,9 @@ export interface ISuggestionItem {
 export interface ISuggestionItemList {
   value: string;
   mnemonic: string;
+  originValue?: string;
+  id?: number;
   hints?: ISuggestionItemListHints[];
-  groupIdx?: number;
 }
 
 export interface ISuggestionItemListHints {
@@ -17,27 +18,19 @@ export interface ISuggestionItemListHints {
 }
 
 export interface ISuggestionApi {
-  fields: ISuggestionApiField[];
-  groups: ISuggestionApiGroup[];
+  mnemonic: string;
+  multiple: boolean;
+  values: ISuggestionApiValue[];
 }
 
-export interface ISuggestionApiField {
-  suggestionId: string;
-  values: ISuggestionApiFieldsValue[];
+export interface ISuggestionApiValue {
+  createdOn: string;
+  fields: ISuggestionApiValueField[];
+  id: number;
 }
 
-export interface ISuggestionApiFieldsValue {
-  value: string;
-  createdOn?: string;
-  groupIdx?: number;
-}
-
-export interface ISuggestionApiGroup {
-  suggestionGroupId: string;
-  values: ISuggestionApiGroupValue[][];
-}
-
-export interface ISuggestionApiGroupValue {
-  suggestionId: string;
+export interface ISuggestionApiValueField {
+  keyField: boolean;
+  mnemonic: string;
   value: string;
 }

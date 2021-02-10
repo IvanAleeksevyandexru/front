@@ -46,6 +46,7 @@ export interface ComponentDto {
   visited?: boolean;
   presetValue?: string;
   valueFromCache?: boolean;
+  suggestionId?: string;
 }
 
 export interface ComponentAnswerDto {
@@ -138,7 +139,6 @@ export interface ComponentAttrsDto {
   infoComponents?: string[];
   add?: { component: string; caption: string[] };
   hideAddNewChildButton?: boolean;
-  suggestionId?: string;
 }
 
 export interface ComponentUploadedFileDto {
