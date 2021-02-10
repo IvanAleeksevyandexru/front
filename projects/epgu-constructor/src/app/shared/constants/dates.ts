@@ -29,6 +29,11 @@ type DurationTimeTypes =
   | 'seconds'
   | 'milliseconds';
 
+type StartOfTypes =
+  | 'year'
+  | 'month'
+  | 'day';
+
 const weekDaysAbbr = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export {
@@ -41,4 +46,9 @@ export {
   months,
   weekDaysAbbr,
   DurationTimeTypes,
+  StartOfTypes,
 };
+
+// Прошу вместо месяца реализовать срок 30+3 дня
+// Основание письмо Минюста от 12.03.2019 №12-31142/19
+export const DAYS_IN_MONTH = 30 + 3;

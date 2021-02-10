@@ -16,6 +16,7 @@ import {
   setYear as _setYear,
   startOfYear as _startOfYear,
   setMonth as _setMonth,
+  getDate as _getDate,
   getMonth as _getMonth,
   startOfMonth as _startOfMonth,
   endOfMonth as _endOfMonth,
@@ -30,7 +31,12 @@ import {
   intervalToDuration as _intervalToDuration,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
-import { DATE_ISO_STRING_FORMAT, DurationTimeTypes } from '../../../shared/constants/dates';
+import {
+  DATE_ISO_STRING_FORMAT,
+  DurationTimeTypes,
+  StartOfTypes,
+  DAYS_IN_MONTH
+} from '../../../shared/constants/dates';
 
 interface Duration {
   years?: number;
@@ -243,7 +249,7 @@ export class DatesToolsService {
     return _startOfYear(date);
   }
 
-    /**
+  /**
    * Возвращает новый объект даты с заданным месяцем
    * @param {Date | Number} date исходная дата
    * @param {Number} month указанный месяц
@@ -277,7 +283,7 @@ export class DatesToolsService {
     return _getISODay(date);
   }
 
-  public startOf(date: Date | number, startType: 'day' | 'month' | 'year'): Date {
+  public startOf(date: Date | number, startType: StartOfTypes): Date {
     switch (startType) {
       case 'day':
         return this.startOfDay(date);
@@ -288,8 +294,7 @@ export class DatesToolsService {
     }
   }
 
-
-    /**
+  /**
    * Возвращает новый объект даты с заданными аргументами
    * @param {Date | Number} date исходная дата
    * @param {Number} year указанный год
@@ -324,6 +329,14 @@ export class DatesToolsService {
   }
 
   /**
+   * Возвращает день месяца
+   * @param {Date} date исходная дата
+   */
+  public getDate(date: Date): number {
+    return _getDate(date);
+  }
+
+  /**
    * Возвращает объект даты с началом месяца
    * @param {Date | Number} date исходная дата
    */
@@ -340,13 +353,12 @@ export class DatesToolsService {
   }
 
   /**
-   * Возвращает кол-во дней в переданной дате
-   * @param {Date | Number} date исходная дата
+   * Возврпащает количество дней в месяце
+   * @param {Date} date исходная дата
    */
-  public getDaysInMonth(date: Date | number): number {
+  public getDaysInMonth(date: Date): number {
     return _getDaysInMonth(date);
   }
-
 
   /**
    * Возвращает самую раннюю дату из массива дат
@@ -368,7 +380,43 @@ export class DatesToolsService {
    * Возвращает duration объект для переданного отрезка времени
    * @param {start: Date | Number, end: Date | Number} interval объект интервала, состоящий из начала и конца временного отрезка
    */
-  public intervalToDuration(interval: { start: Date | number, end: Date | number }): Duration {
+  public intervalToDuration(interval: { start: Date | number; end: Date | number }): Duration {
     return _intervalToDuration(interval);
+  }
+
+  /**
+   * Аналог utcOffset у moment. Смещает время относительно таймзоны.
+   * @param {Date} date исходная дата
+   * @param {String} timezone Таймзона в формате '+HH:mm'
+   */
+  public utcOffset(date: Date, timezone: string): Date {
+    let copiedDate = this.toDate(date);
+    copiedDate.setMinutes(copiedDate.getMinutes() + copiedDate.getTimezoneOffset());
+
+    if (timezone.length === 6 && timezone.includes(':')) {
+      const [hours, minutes] = timezone.split(':');
+
+      copiedDate = this.add(copiedDate, hours, 'hours');
+      copiedDate = this.add(copiedDate, minutes, 'minutes');
+    }
+
+    return copiedDate;
+  }
+
+  /**
+   * Истёк ли месяц с даты обращения или сегодняшнего дня если не указана для исходной даты.
+   * Чему равен месяц лучше посмотреть в константах
+   * @param {Date} date исходная дата
+   * @param {Date | null} specificDate дата относительно которой смотрим
+   */
+  public hasMonthExpired(date: Date, specificDate: Date | null = null) {
+    let expectedDate = this.add(
+      new Date(specificDate === null ? Date.now() : specificDate),
+      DAYS_IN_MONTH,
+      'days',
+    );
+    expectedDate = this.startOf(expectedDate, 'day');
+
+    return this.isAfter(date, expectedDate);
   }
 }

@@ -141,6 +141,8 @@ export interface ComponentAttrsDto {
   infoComponents?: string[];
   add?: { component: string; caption: string[] };
   hideAddNewChildButton?: boolean;
+  dateType?: string;
+  refDate?: string;
 }
 
 export interface ComponentUploadedFileDto {

@@ -18,3 +18,8 @@ export enum TimeSlotsTypes {
   GIBDD = 'GIBDD',
   MVD = 'MVD'
 }
+
+export enum DateTypeTypes {
+  TODAY = 'today',
+  REF_DATE = 'refDate'
+}
