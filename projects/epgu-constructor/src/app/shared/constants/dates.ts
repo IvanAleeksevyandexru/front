@@ -1,4 +1,5 @@
 const DATE_STRING_DOT_FORMAT = 'dd.MM.yyyy';
+const DATE_TIME_STRING_DOT_FORMAT = 'dd.MM.yyyy, HH:mm:ss';
 const DATE_STRING_SLASH_FORMAT = 'MM/dd/yyyy';
 const DATE_STRING_MMMM_YYYY_FORMAT = 'MMMM yyyy';
 const DATE_ISO_STRING_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx';
@@ -33,6 +34,7 @@ const weekDaysAbbr = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
 export {
   DATE_STRING_DOT_FORMAT,
+  DATE_TIME_STRING_DOT_FORMAT,
   DATE_STRING_SLASH_FORMAT,
   DATE_STRING_MMMM_YYYY_FORMAT,
   DATE_ISO_STRING_FORMAT,
