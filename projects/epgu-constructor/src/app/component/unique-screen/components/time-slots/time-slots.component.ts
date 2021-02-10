@@ -20,11 +20,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { months, StartOfTypes, weekDaysAbbr } from '../../../../shared/constants/dates';
-import {
-  DateTypeTypes,
-  TimeSlotsConstants,
-  TimeSlotsTypes,
-} from './time-slots.constants';
+import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import {
   SlotInterface,
@@ -353,7 +349,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private renderSingleMonthGrid(output): void {
     output.splice(0, output.length); // in-place clear
 
-    let firstDayOfMonth = new Date();
+    let firstDayOfMonth = new Date(Date.now());
     firstDayOfMonth = this.datesHelperService.setYear(firstDayOfMonth, this.activeYearNumber);
     firstDayOfMonth = this.datesHelperService.setMonth(firstDayOfMonth, this.activeMonthNumber - 1);
     firstDayOfMonth = this.datesHelperService.startOfMonth(firstDayOfMonth);
@@ -417,8 +413,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * @returns {boolean} false - дата прошла проверки. true - дата инвалидна
    */
   private checkDateRestrictions(date: Date, startType: StartOfTypes = 'day'): boolean {
-    let isInvalid = false;
-    const today = this.datesHelperService.startOf(new Date(), startType);
+    const today = this.datesHelperService.startOf(new Date(Date.now()), startType);
     const restrictions = this.screenService.component?.attrs?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
@@ -435,12 +430,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     };
     // Перебираем все ключи restrictions из attrs до первого "плохого"
     // пример: "minDate": [30, "d"],
-    Object.keys(restrictions).some((key) => {
+    return Object.keys(restrictions).some((key) => {
       const [amount, type] = restrictions[key];
-      isInvalid = checks[key](amount, type);
-      return isInvalid;
+      return checks[key](amount, type);
     });
-    return isInvalid;
   }
 
   private isLockedByDateType(date: Date): boolean {
@@ -451,7 +444,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
 
     if (dateType === DateTypeTypes.REF_DATE && this.screenService.component?.attrs?.refDate) {
-      return !this.datesHelperService.hasMonthExpired(date, new Date(this.screenService.component?.attrs?.refDate));
+      return !this.datesHelperService.hasMonthExpired(
+        date,
+        new Date(this.screenService.component?.attrs?.refDate),
+      );
     }
 
     return false;

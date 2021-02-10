@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {EpguLibModule, ListItem} from 'epgu-lib';
+import { EpguLibModule, ListItem } from 'epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
@@ -106,6 +106,7 @@ describe('TimeSlotsComponent', () => {
     const checkDateRestrictions = component['checkDateRestrictions'].bind(component);
     let date = new Date('2020-01-01T10:00:00.000Z');
     let check = checkDateRestrictions(date);
+
     expect(check).toBeTruthy();
     date = new Date('2020-02-01T10:00:00.000Z');
     check = checkDateRestrictions(date);
@@ -304,10 +305,10 @@ describe('TimeSlotsComponent', () => {
       return isInvalid;
     };
 
-    screenService.component.attrs.restrictions = { minDate: [30, 'd'], maxDate: [30, 'd'] };
+    screenService.component.attrs.restrictions = { minDate: [30, 'd'], maxDate: [1, 'y'] };
     const date = new Date(Date.now());
 
-    for (let i = 0; i < 30; ++i) {
+    for (let i = -30; i < 30; ++i) {
       date.setDate(date.getDate() + 1);
       ['day', 'month'].forEach((unit) => {
         expect(component['checkDateRestrictions'](date, unit as any)).toEqual(
@@ -315,6 +316,20 @@ describe('TimeSlotsComponent', () => {
         );
       });
     }
+
+    [
+      '2020-01-01T10:00:00.000Z',
+      '2020-02-01T10:00:00.000Z',
+      '2021-01-01T10:00:00.000Z',
+      '2020-12-31T10:00:00.000Z',
+    ].forEach((dateStr) => {
+      const date = new Date(dateStr);
+      ['day', 'month'].forEach((unit) => {
+        expect(component['checkDateRestrictions'](date, unit as any)).toBe(
+          checkDateRestrictions(date, unit as any),
+        );
+      });
+    });
   });
 
   describe('when dateType is today', () => {

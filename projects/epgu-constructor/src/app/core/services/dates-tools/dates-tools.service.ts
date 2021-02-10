@@ -35,7 +35,7 @@ import {
   DATE_ISO_STRING_FORMAT,
   DurationTimeTypes,
   StartOfTypes,
-  DAYS_IN_MONTH
+  DAYS_IN_MONTH,
 } from '../../../shared/constants/dates';
 
 interface Duration {
@@ -217,7 +217,7 @@ export class DatesToolsService {
    * @param {DurationTimeTypes} unit ед. измерения (секунды, минуты, часы, дни, недели, месяца, года)
    */
   public add(date: number | Date, amount: number | string, unit: DurationTimeTypes): Date {
-    const duration = { [unit]: Number(amount) };
+    const duration = this.getDuration(amount, unit);
     return _add(date, duration);
   }
 
@@ -228,7 +228,7 @@ export class DatesToolsService {
    * @param {DurationTimeTypes} unit ед. измерения (секунды, минуты, часы, дни, недели, месяца, года)
    */
   public sub(date: number | Date, amount: number | string, unit: DurationTimeTypes): Date {
-    const duration = { [unit]: Number(amount) };
+    const duration = this.getDuration(amount, unit);
     return _sub(date, duration);
   }
 
@@ -393,11 +393,12 @@ export class DatesToolsService {
     let copiedDate = this.toDate(date);
     copiedDate.setMinutes(copiedDate.getMinutes() + copiedDate.getTimezoneOffset());
 
-    if (timezone.length === 6 && timezone.includes(':')) {
-      const [hours, minutes] = timezone.split(':');
+    const pattern = /^((\+|-)?[0-9]{2}):([0-9]{2})$/;
+    if (timezone.match(pattern)) {
+      const [, hours, , minutes] = timezone.match(pattern);
 
-      copiedDate = this.add(copiedDate, hours, 'hours');
-      copiedDate = this.add(copiedDate, minutes, 'minutes');
+      copiedDate = this.add(copiedDate, Number(hours), 'hours');
+      copiedDate = this.add(copiedDate, Number(minutes), 'minutes');
     }
 
     return copiedDate;
@@ -409,7 +410,7 @@ export class DatesToolsService {
    * @param {Date} date исходная дата
    * @param {Date | null} specificDate дата относительно которой смотрим
    */
-  public hasMonthExpired(date: Date, specificDate: Date | null = null) {
+  public hasMonthExpired(date: Date, specificDate: Date | null = null): boolean {
     let expectedDate = this.add(
       new Date(specificDate === null ? Date.now() : specificDate),
       DAYS_IN_MONTH,
@@ -418,5 +419,50 @@ export class DatesToolsService {
     expectedDate = this.startOf(expectedDate, 'day');
 
     return this.isAfter(date, expectedDate);
+  }
+
+  /**
+   * Преобразовывает продолжительность из формата moment.js в dateFns
+   * Нужно например для restrictions формата 30, 'd'
+   * @param {Number | String} amount длина продолжительности
+   * @param {String} unit Единицы измерения продолжительности
+   * @throws Error бросает ошибку если передать неизвестные единицы измерения
+   * это ведь лучше чем тихо ничего не менять
+   */
+  private getDuration(
+    amount: number | string,
+    unit: string,
+  ): { [key in DurationTimeTypes]: number } {
+    const momentToDateFnsUnits: { [key: string]: DurationTimeTypes } = {
+      y: 'years',
+      year: 'years',
+      years: 'years',
+      M: 'months',
+      month: 'months',
+      months: 'months',
+      w: 'weeks',
+      week: 'weeks',
+      weeks: 'weeks',
+      d: 'days',
+      day: 'days',
+      days: 'days',
+      h: 'hours',
+      hour: 'hours',
+      hours: 'hours',
+      m: 'minutes',
+      minute: 'minutes',
+      minutes: 'minutes',
+      s: 'seconds',
+      second: 'seconds',
+      seconds: 'seconds',
+    };
+
+    if (!(unit in momentToDateFnsUnits)) {
+      throw new Error(`${unit} in not supported yet or incorrect`);
+    }
+
+    const translatedUnit: DurationTimeTypes = momentToDateFnsUnits[unit];
+
+    return { [translatedUnit]: Number(amount) } as { [key in DurationTimeTypes]: number };
   }
 }
