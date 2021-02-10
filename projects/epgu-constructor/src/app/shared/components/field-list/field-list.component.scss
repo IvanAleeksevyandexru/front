@@ -22,3 +22,19 @@
 .group-divider {
   border-bottom: 1px solid $color-divider;
 }
+
+.error {
+  margin-bottom: 16px;
+
+  .title {
+    @include typ-h6;
+    font-weight: $fw-bold;
+    margin-bottom: 4px;
+  }
+
+  .description {
+    @include typ-plain-small;
+    color: $color-text-helper;
+    margin: 0;
+  }
+}
