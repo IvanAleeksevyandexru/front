@@ -3,6 +3,7 @@ export enum UniqueScreenComponentTypes {
   timeSlot = 'TimeSlot',
   mapService = 'MapService',
   carInfo = 'CarInfo',
+  carOwnerInfo = 'CarOwnerInfo',
   carList = 'CarList',
   repeatableFields = 'RepeatableFields',
   employeeHistory = 'EmployeeHistory',

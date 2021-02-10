@@ -1,0 +1,27 @@
+@import "./../core/palettes";
+@import '../core/typography';
+
+.info-list-title {
+  margin-bottom: 12px;
+}
+
+.info-list-subtitle {
+  @include typ-plain-text;
+  color: $color-text-helper;
+  margin-bottom: 4px;
+}
+
+.info-list-value {
+  @include typ-plain-text;
+}
+
+.info-list-group-item:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.info-list-divider {
+  margin: 24px 0;
+  background: $color-divider;
+  height: 1px;
+  width: 100%;
+}

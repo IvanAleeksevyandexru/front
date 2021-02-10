@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { CarInfo, ServiceResult } from '../../models/car-info.interface';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
-import { CarInfoComponent } from '../../components/car-info-screen/car-info.component';
+import { CarInfoComponent } from '../../components/car-info/car-info.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
