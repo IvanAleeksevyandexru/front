@@ -45,7 +45,7 @@ export class ActionService {
   ) {
   }
 
-  switchAction(action: ComponentActionDto, componentId: string): void {
+  switchAction(action: ComponentActionDto, componentId: string, targetElement?: HTMLElement): void {
     switch (action.type) {
       case ActionType.download:
         this.downloadAction(action);
@@ -78,7 +78,7 @@ export class ActionService {
         this.navService.redirectToHome();
         break;
       case ActionType.deleteSuggest:
-        this.deleteSuggestAction(action);
+        this.deleteSuggestAction(action, targetElement);
         break;
     }
   }
@@ -169,8 +169,9 @@ export class ActionService {
       );
   }
 
-  private deleteSuggestAction(action: ComponentActionDto): void {
+  private deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {
     console.log({ action });
+    targetElement.setAttribute('disabled', 'disabled');
     // TODO: по готовности продуктового бэковского микросервиса SuggestService реализовать отправку запроса на удаление указанного саджеста
   }
 

@@ -28,13 +28,13 @@ export class ClickableLabelDirective {
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
 
     if (targetElementActionType) {
-      this._handleAction(targetElementActionType, targetElementActionValue);
+      this._handleAction(targetElementActionType, targetElementActionValue, targetElement);
     } else if (targetElement.id) {
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
     }
   }
 
-  private _handleAction(type: ActionType, value?: string): void {
+  private _handleAction(type: ActionType, value?: string, targetElement?: HTMLElement): void {
     const action: DTOActionAction =
       type === ActionType.nextStep ? DTOActionAction.getNextStep : DTOActionAction.getPrevStep;
 
@@ -45,6 +45,7 @@ export class ClickableLabelDirective {
     this._actionService.switchAction(
       { label: '', type, action, value },
       this._screenService.component.id,
+      targetElement,
     );
   }
 

@@ -136,36 +136,7 @@ export class AutocompleteService {
   }
 
   private formatAndPassDataToComponents(suggestions: ISuggestionApi[], isMultiple?: boolean): void {
-    let componentList: ISuggestionItemList[];
     let result: { [key: string]: ISuggestionItem } = {};
-    // let hints: ISuggestionApiGroupValue[][] = [];
-    const isGroupSuggest = isMultiple || suggestions[0].multiple;
-    if (isGroupSuggest) {
-      const [{ values }] = suggestions;
-      // hints = values;
-      // values.fields = values.fields.reduce(
-      //   (acc: ISuggestionApiField[], item, groupIdx): ISuggestionApiField[] => {
-      //     let suggestionFieldItem: ISuggestionApiField = null;
-      //     item.forEach((field) => {
-      //       const { suggestionId, value } = field;
-      //       const existingItem = acc.find(
-      //         (suggestItem) => suggestItem.suggestionId === suggestionId,
-      //       );
-      //       if (existingItem) {
-      //         existingItem.values.push({ value, groupIdx });
-      //       } else {
-      //         suggestionFieldItem = {
-      //           suggestionId,
-      //           values: [{ value, groupIdx }],
-      //         };
-      //         acc.push(suggestionFieldItem);
-      //       }
-      //     });
-      //     return acc;
-      //   },
-      //   [],
-      // );
-    }
 
     suggestions.forEach((suggestion) => {
       const { values } = suggestion;
@@ -195,9 +166,8 @@ export class AutocompleteService {
     fields: ISuggestionApiValueField[],
     id: number,
     componentMnemonic: string,
-    // _hints: ISuggestionApiGroupValue[][] = [],
   ): ISuggestionItemList {
-    // const hints: { value: string; mnemonic: string }[][] = this.getFormattedHints(_hints, mnemonic);
+    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(fields, componentMnemonic);
     const field = fields.find((field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic);
     if (field) {
       let { value, mnemonic } = field;
@@ -212,34 +182,32 @@ export class AutocompleteService {
         mnemonic,
         originValue,
         id,
-        // hints: hints[groupIdx],
+        hints,
       };
     } else {
       return null;
     }
   }
 
-  // private getFormattedHints(_hints: ISuggestionApiGroupValue[][], mnemonic: string): { value: string; mnemonic: string; }[][] {
-  //   return _hints.reduce(
-  //     (acc: { value: string; mnemonic: string; }[][], hint) => {
-  //       const result: Array<{ value: string; mnemonic: string; }> = hint.reduce(
-  //         (hintAcc, item: ISuggestionApiGroupValue): Array<{ value: string; mnemonic: string; }> => {
-  //           if (item.suggestionId !== mnemonic) {
-  //             hintAcc.push({
-  //               value: item.value,
-  //               mnemonic: item.suggestionId,
-  //             });
-  //           }
-  //           return hintAcc;
-  //         },
-  //         []
-  //       );
-  //       acc.push(result);
-  //       return acc;
-  //     },
-  //     []
-  //   );
-  // }
+  private getFormattedHints(fields: ISuggestionApiValueField[], componentMnemonic: string): { value: string; mnemonic: string; }[] {
+    const isIncludedInComponentsSuggestionsMap = (mnemonic: string) => {
+      return Object.keys(this.componentsSuggestionsMap).includes(mnemonic);
+    };
+
+    return fields.reduce(
+      (acc: { value: string; mnemonic: string; }[], field) => {
+        const { value, mnemonic } = field;
+        if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
+          acc.push({
+            value,
+            mnemonic,
+          })
+        }
+        return acc;
+      },
+      []
+    );
+  }
 
   private resetComponentsSuggestionsMap(): void {
     this.componentsSuggestionsMap = null;
