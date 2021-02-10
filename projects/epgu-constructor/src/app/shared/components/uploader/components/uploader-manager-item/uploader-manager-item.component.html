@@ -7,53 +7,89 @@
           else previewType
         "
       >
-        <div class="upload-preview"></div>
+        <div class="upload-preview">
+          <div class="uploader"></div>
+        </div>
       </ng-container>
       <ng-template #previewType>
         <div *ngIf="isImage" class="photo-preview">
           <img [src]="imageUrl | safe: 'url'" [alt]="name" />
         </div>
         <div *ngIf="!isImage" class="fileType-preview">
-          <span>{{ ext }}</span>
+          <ng-container
+            *ngTemplateOutlet="fileTypeTemplate; context: { backgroundClass: 'tag__file-type' }"
+          ></ng-container>
+          <div class="tag__text">{{ ext }}</div>
         </div>
       </ng-template>
     </ng-container>
-    <div *ngIf="isError" class="error-preview"></div>
+    <div *ngIf="isError" class="fileType-preview">
+      <ng-container
+        *ngTemplateOutlet="fileTypeTemplate; context: { backgroundClass: 'tag__error' }"
+      ></ng-container>
+      <div class="tag__text">x_x</div>
+    </div>
   </div>
   <div class="uploader-manager-item__info">
     <div class="uploader-manager-item__title">
-      <div class="name">{{ name }}</div>
-      <div class="size">&nbsp;| {{ size | fileSize }}</div>
+      <div (click)="viewAction()" class="name">{{ name }}</div>
       <div
         *ngIf="
           status === fileStatus.uploading ||
-          status === fileStatus.downloading ||
-          status === fileStatus.preparation ||
-          status === fileStatus.delition
+            status === fileStatus.downloading ||
+            status === fileStatus.preparation ||
+            status === fileStatus.delition;
+          else sizeTemplate
         "
         class="status"
       >
-        | {{ statusText[status] }}
+        &nbsp;| {{ statusText[status] }}
+      </div>
+      <ng-template #sizeTemplate>
+        <div class="size">&nbsp;| {{ size | fileSize }}</div>
+      </ng-template>
+      <div class="uploader-manager-item__action">
+        <button
+          *ngIf="status === fileStatus.error || status === fileStatus.uploaded"
+          (click)="delete.emit(fileItem)"
+          class="uploader-manager-item__button"
+        >
+          Удалить
+        </button>
+        <button
+          class="uploader-manager-item__button"
+          *ngIf="status === fileStatus.uploading"
+          (click)="cancelAction(operationType.upload)"
+        >
+          Отменить
+        </button>
       </div>
     </div>
-    <div *ngIf="isImage" (click)="preview()" class="uploader-manager-item__view">
-      Посмотреть
-    </div>
-  </div>
-  <div class="uploader-manager-item__actions">
     <button
-      *ngIf="status === fileStatus.error || status === fileStatus.uploaded"
-      (click)="delete.emit(fileItem)"
+      *ngIf="
+        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading
+      "
+      (click)="viewAction()"
+      class="uploader-manager-item__button"
     >
-      Удалить
-    </button>
-    <!--    <span (click)="update.emit(fileItem)">Заменить</span>-->
-    <button *ngIf="status === fileStatus.uploading" (click)="cancelAction(operationType.upload)">
-      Отменить
+      Посмотреть
     </button>
   </div>
 </div>
 <div *ngIf="isError" class="uploader-manager-item__error">
   <div class="uploader-manager-item__error-text">{{ fileItem.error.text }}</div>
-  <div class="uploader-manager-item__error-description">{{ fileItem.error.description }}</div>
+  <div class="uploader-manager-item__error-description">
+    {{ fileItem.error.description }}
+  </div>
 </div>
+
+<ng-template #fileTypeTemplate let-backgroundClass="backgroundClass">
+  <div class="tag {{ backgroundClass }}">
+    <svg width="46" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M4.986 23.5c-3.092 0-5.015-3.358-3.45-6.025L9.181 4.45a8 8 0 016.9-3.95H42a4 4 0 014 4v15a4 4 0 01-4 4H4.986z"
+        fill="#851F82"
+      />
+    </svg>
+  </div>
+</ng-template>

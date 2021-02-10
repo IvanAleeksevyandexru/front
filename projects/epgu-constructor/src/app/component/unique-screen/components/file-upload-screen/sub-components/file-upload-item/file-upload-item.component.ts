@@ -1,6 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
-import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  never,
+  Observable,
+  of,
+  Subject,
+  Subscription,
+  throwError,
+} from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -107,6 +116,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   processingOperations$ = this.processingOperations.pipe(
     mergeMap((operation: Operation) => {
       const { status: fileStatus } = operation.item;
+
       let storage: Record<string, Operation>;
       let executor: Observable<void>;
       switch (operation.type) {
@@ -150,6 +160,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
             ),
           ),
         ),
+        catchError(() => of(undefined)),
         finalize(() => {
           delete storage[operation.item.id];
         }),
@@ -157,10 +168,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
+  sub = this.processingOperations$.subscribe();
+
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
     .add(this.files$.subscribe())
-    .add(this.processingOperations$.subscribe());
+    .add(this.sub);
 
   private loadData: FileUploadItem;
   private maxFileNumber = -1;

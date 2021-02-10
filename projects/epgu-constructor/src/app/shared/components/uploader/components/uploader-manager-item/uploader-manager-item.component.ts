@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   CancelAction,
   FileItem,
@@ -27,7 +20,11 @@ export class UploaderManagerItemComponent {
   @Output() download = new EventEmitter<FileItem>();
   @Input() set file(file: FileItem) {
     this.fileItem = file;
+
     this.isError = file.status === FileItemStatus.error;
+    if (this.isError) {
+      this.errorType = file.error.type;
+    }
     this.isImage = file.isImage;
     this.ext = file.raw.name.split('.').pop();
     this.size = file.raw.size;
@@ -36,7 +33,6 @@ export class UploaderManagerItemComponent {
     if (this.isImage) {
       this.imageUrl = window.URL.createObjectURL(file.raw);
     }
-    this.changeDetectionRef.markForCheck();
   }
 
   operationType = OperationType;
@@ -47,15 +43,21 @@ export class UploaderManagerItemComponent {
   name: string;
   ext: string;
   isError = false;
+  errorType: string;
   isImage = false;
   fileItem: FileItem;
 
   statusText = FileItemStatusText;
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) {}
-
   cancelAction(type: OperationType): void {
     this.cancel.emit({ type, item: this.fileItem });
+  }
+  viewAction(): void {
+    if (this.isImage) {
+      this.preview();
+    } else {
+      this.download.emit(this.fileItem);
+    }
   }
 
   preview(): void {}
