@@ -22,6 +22,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 
 describe('CustomScreenComponent', () => {
@@ -35,7 +36,7 @@ describe('CustomScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule)],
+      imports: [MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
       declarations: [
         CustomScreenComponent,
         MockComponent(PageNameComponent),

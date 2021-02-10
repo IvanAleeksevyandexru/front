@@ -48,6 +48,9 @@ $minModalHeight: 293px;
     .perfect-scrollbar {
       .conf-modal__content {
         overflow: initial;
+        height: auto;
+        display: flex;
+        position: relative;
       }
     }
 

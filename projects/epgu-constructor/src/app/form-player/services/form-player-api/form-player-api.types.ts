@@ -9,7 +9,6 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
-import { CarInfoErrorsDto } from '../../../component/unique-screen/components/car-info/models/car-info.interface';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
 
 export interface ApplicantAnswersDto {
@@ -137,7 +136,6 @@ export interface ComponentAttrsDto {
   hideSocialShare?: boolean;
   addContextQueryParams?: boolean;
   infoComponents?: string[];
-  errors?: CarInfoErrorsDto;
   add?: { component: string; caption: string[] };
   hideAddNewChildButton?: boolean;
   suggestionId?: string;

@@ -24,8 +24,12 @@ export class ValueLoaderService {
     return components.map((item) => {
       item.valueFromCache = false;
       if (item.type === this.repeatableFields) {
+        const components = item.attrs.components.map((component) =>
+          this.getComponentWithAttrsDateRef(component, cachedAnswers),
+        );
+
         const repeatableFieldsComponents = this.setRepeatableFields(
-          item.attrs.components,
+          components,
           cachedAnswers,
           item,
         );
@@ -41,18 +45,17 @@ export class ValueLoaderService {
       const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
       const cachedValue = this.getCache(item.type, item.id, cachedAnswers);
 
-      if (item.attrs.minDateRef) {
-        item.attrs.minDate = this.getLimitDate(cachedAnswers, item.attrs.minDateRef);
-      }
-
-      if (item.attrs.maxDateRef) {
-        item.attrs.maxDate = this.getLimitDate(cachedAnswers, item.attrs.minDateRef);
-      }
       if (hasPresetTypeRef && !cachedValue) {
-        return this.getPresetValue(item, cachedAnswers);
+        return this.getPresetValue(
+          this.getComponentWithAttrsDateRef(item, cachedAnswers),
+          cachedAnswers
+        );
       }
 
-      return this.getComponentWithCaches(item, cachedValue);
+      return this.getComponentWithCaches(
+        this.getComponentWithAttrsDateRef(item, cachedAnswers),
+        cachedValue
+      );
     });
   }
 
@@ -215,4 +218,15 @@ export class ValueLoaderService {
   private isShortTimeFormat(date: string): boolean {
     return /^\d{1,2}.\d{1,2}.\d{1,4}$/.test(date);
   }
+
+  private getComponentWithAttrsDateRef(component: ComponentDto, cachedAnswers: CachedAnswers): ComponentDto {
+    const { attrs } = component;
+    if (attrs.minDateRef) {
+      attrs.minDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
+    }
+    if (attrs.maxDateRef) {
+      attrs.maxDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
+    }
+    return component;
+  };
 }

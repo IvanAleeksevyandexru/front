@@ -3,12 +3,16 @@
   [invalid]="invalid"
   [validationShowOn]="validationShowOn"
   [formControl]="$any(control)"
-  [queryMinSymbolsCount]="0"
+  [queryMinSymbolsCount]="queryMinSymbolsCount"
   [searchCaseSensitive]="false"
   [fixedItems]="fixedItems"
   [virtualScroll]="true"
   [clearable]="clearable"
   [itemsProvider]="itemsProvider"
+  [disabled]="disabled"
+  [formatter]="formatter"
+  [showMagnifyingGlass]="showMagnifyingGlass"
+  [showExpandCollapse]="showExpandCollapse"
   (changed)="onChanged($event)"
   #lookupComponent
 >
