@@ -29,7 +29,7 @@
     </div>
     <div *ngIf="groupItem.needDivider" [ngClass]="['group-divider', style.divider]"></div>
   </ng-container>
-  <div *ngIf="data.attrs.error as error" class="error" [class.mb-24]="error.fields">
+  <div *ngIf="error" class="error" [class.mb-24]="error.fields">
     <p class="title"><span [class]="error.icon"></span>{{ error.title }}</p>
     <p class="description">{{ error.desc }}</p>
     <p *ngFor="let field of error.fields" class="description">- {{ field }}</p>

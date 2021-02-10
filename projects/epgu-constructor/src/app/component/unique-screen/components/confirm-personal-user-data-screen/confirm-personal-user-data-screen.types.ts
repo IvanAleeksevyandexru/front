@@ -1,11 +1,8 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import {
-  ComponentAttrsDto,
-  DTOActionAction
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { DTOActionAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 export interface ConfirmUserData extends ComponentBase {
-  attrs: ConfirmUserDataAttrs & ComponentAttrsDto;
+  attrs: ConfirmUserDataAttrs;
 }
 export interface ConfirmUserDataAttrs {
   fields: Array<ConfirmUserDataField>;
@@ -38,6 +35,7 @@ export interface ConfirmUserDataFieldsState {
 export interface ConfirmUserDataState {
   states: ConfirmUserDataFieldsState[];
   storedValues: { [key: string]: string | boolean | object };
+  error?: ConfirmUserDataError;
 }
 
 export interface ConfirmUserDataStyle {
@@ -48,4 +46,11 @@ export interface ConfirmUserDataStyle {
   field: string;
   list: string;
   divider: string;
+}
+
+export interface ConfirmUserDataError {
+  title?: string;
+  desc?: string;
+  icon?: string;
+  fields?: string[];
 }

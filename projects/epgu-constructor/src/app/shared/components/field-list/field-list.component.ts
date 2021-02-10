@@ -7,6 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
+  ConfirmUserDataError,
   ConfirmUserDataFieldsState,
   ConfirmUserDataState,
   ConfirmUserDataStyle,
@@ -34,6 +35,7 @@ export class FieldListComponent implements OnInit, OnChanges {
 
   public preparedData: Array<ConfirmUserDataFieldsState> = [];
   public style: ConfirmUserDataStyle;
+  public error: ConfirmUserDataError;
 
   ngOnInit(): void {
     this.style = this.data.attrs?.style || defaultStyle;
@@ -41,10 +43,11 @@ export class FieldListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      const { states } = (this.data.presetValue
+      const { states, error = null } = (this.data.presetValue
         ? JSON.parse(this.data.presetValue)
         : JSON.parse(this.data.value)) as ConfirmUserDataState;
       this.preparedData = states;
+      this.error = error;
     }
   }
 }
