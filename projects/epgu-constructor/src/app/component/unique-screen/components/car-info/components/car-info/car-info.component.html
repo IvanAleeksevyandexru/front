@@ -21,7 +21,7 @@
         ></ng-container>
       </div>
 
-      <div class="info-list-divider"></div>
+      <div class="divider info-list-divider"></div>
     </div>
 
     <ng-template #vehicleInfo>
@@ -41,7 +41,7 @@
         </div>
 
 
-        <div class="info-list-divider"></div>
+        <div class="divider info-list-divider"></div>
       </div>
 
       <div>
@@ -100,7 +100,7 @@
 
         </div>
 
-        <div class="info-list-divider"></div>
+        <div class="divider info-list-divider"></div>
       </div>
 
 
@@ -120,7 +120,7 @@
     <div *ngIf="carInfoErrors?.notary; else notaryInfo">
       <h5 class="info-list-title">Проверка в Федеральной нотариальной палате</h5>
 
-      <div class="car-info-group" *ngIf="carInfoErrors?.notary; else notaryInfo">
+      <div class="car-info-group">
         <ng-container
           *ngTemplateOutlet="templateError;
         context: {iconClass: (carInfoErrors.notary.type | errorTemplate).icon ,

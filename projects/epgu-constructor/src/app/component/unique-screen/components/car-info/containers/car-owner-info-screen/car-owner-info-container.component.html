@@ -1,20 +1,18 @@
 <ng-container
   *ngTemplateOutlet="
     templateContent;
-    context: { display: (display$ | async), isLoading: (isLoading$ | async), showNav: (showNav$ | async)  }"
+    context: { header: (header$ | async), isLoading: (isLoading$ | async), showNav: (showNav$ | async)  }"
 >
 </ng-container>
-<ng-template #templateContent let-display="display" let-isLoading="isLoading"
+<ng-template #templateContent let-header="header" let-isLoading="isLoading"
              let-showNav="showNav">
   <epgu-constructor-screen-container
     [show-nav]="showNav"
     [class.screen-container-mt]="!showNav"
   >
     <div class="screen-body">
-      <div
-        *ngIf="display?.header"
-        class="head">
-        <epgu-constructor-page-name>{{ display?.header }}</epgu-constructor-page-name>
+      <div class="head">
+        <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
       </div>
 
       <epgu-constructor-car-owner-info
