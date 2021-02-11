@@ -65,11 +65,11 @@ export class HealthInterceptor implements HttpInterceptor {
             };
           }
 
-          if (result?.error && result.error?.core !== 0 || undefined && result?.error?.message !== '' || undefined) {
+          if (this.utils.isDefined(result.error) && this.utils.isDefined(result.error.code) && Number(result.error.code) !== 0) {
             successRequestPayload = { 
               ...successRequestPayload, 
               error: result.error.code,
-              errorMessage: result.error.message,
+              errorMessage: this.utils.isDefined(result.error.message) ? result.error.message : null,
             };
             dictionaryValidationStatus = true;
           }
