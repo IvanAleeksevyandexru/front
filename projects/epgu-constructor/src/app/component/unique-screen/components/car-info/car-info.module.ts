@@ -27,6 +27,8 @@ const COMPONENTS = [
   CarOwnerInfoContainerComponent,
   CarOwnerInfoComponent,
   CarOwnersComponent,
+  LegalComplianceComponent,
+  NotaryInfoComponent,
   ExpansionLinkComponent,
   YesNoPipe,
   ErrorTemplatePipe,
@@ -38,7 +40,7 @@ const COMPONENTS = [
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, LegalComplianceComponent, NotaryInfoComponent],
+  declarations: [...COMPONENTS],
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],

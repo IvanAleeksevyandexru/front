@@ -1,42 +1,12 @@
 @import "../../../../../../../styles/components/info-list";
 @import "../../../../../../../styles/core";
 
-.car__info--block:not(:last-child) {
+.car-info-block:not(:last-child) {
   margin-bottom: 16px;
 }
 
 .car-info-text-helper {
   @include typ-plain-small;
   color: $color-text-helper
-}
-
-
-.car-info-error-title {
-  @include typ-h6;
-  display: flex;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.car-info-error-label {
-  @include typ-plain-small;
-  color: $color-text-helper;
-}
-
-.car-info-error-icon {
-  width: 24px;
-  height: 4px;
-  margin-right: 8px;
-}
-
-.car-info-not-found-error {
-  background: $color-giallo-brillante;
-}
-.car-info-internal-error {
-  background: $color-gosred;
-}
-
-.car-info-error {
-  margin-top: 24px;
 }
 

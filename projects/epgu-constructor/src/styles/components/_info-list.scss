@@ -25,3 +25,34 @@
   height: 1px;
   width: 100%;
 }
+
+.info-list-warning-icon {
+  width: 24px;
+  height: 4px;
+  margin-right: 8px;
+}
+
+.info-list-yellow-warning-icon {
+  background: $color-giallo-brillante;
+}
+.info-list-red-warning-icon {
+  background: $color-gosred;
+}
+
+.info-list-warning-group-item {
+  margin-top: 24px;
+}
+
+.info-list-warning-title {
+  @include typ-h6;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.info-list-warning-text {
+  @include typ-plain-small;
+  color: $color-text-helper;
+}
+
+

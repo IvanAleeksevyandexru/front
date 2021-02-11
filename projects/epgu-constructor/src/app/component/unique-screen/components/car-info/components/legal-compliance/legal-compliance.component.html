@@ -3,6 +3,17 @@
 
   <div class="car-info-group">
 
+    <div *ngIf="showSellWarning && restrictionsFlag"
+         class="info-list-group-item info-list-warning-group-item">
+      <div class="info-list-warning-title">
+        <div class="info-list-warning-icon info-list-red-warning-icon"></div>
+        <div>Есть ограничения</div>
+      </div>
+      <div class="info-list-warning-text">
+        Вы не можете продать машину, на которую наложены ограничения
+      </div>
+    </div>
+
 
     <div class="info-list-group-item">
       <div class="info-list-subtitle">В розыске</div>

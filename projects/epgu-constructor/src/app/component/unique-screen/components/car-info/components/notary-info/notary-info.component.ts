@@ -6,5 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./notary-info.component.scss'],
 })
 export class NotaryInfoComponent {
+  @Input() showSellWarning = false;
   @Input() isPledged: boolean;
 }

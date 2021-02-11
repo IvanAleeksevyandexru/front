@@ -1,9 +1,7 @@
 <ng-container
   *ngTemplateOutlet="
     templateContent;
-    context: { display: (display$ | async), isLoading: (isLoading$ | async),
-    showNav: (showNav$ | async)  }
-  "
+    context: { display: (display$ | async), isLoading: (isLoading$ | async), showNav: (showNav$ | async)  }"
 >
 </ng-container>
 <ng-template #templateContent let-display="display" let-isLoading="isLoading"

@@ -8,7 +8,7 @@
       </div>
 
       <div class="info-list-group-item">
-        <div class="info-list-subtitle">Паспорт собственника</div>
+        <div class="info-list-subtitle">Паспорт гражданина РФ</div>
         <div class="info-list-value">
           {{ carOwnerInfo?.ownerInfo?.document?.series | passportInfo
           : carOwnerInfo?.ownerInfo?.document?.number : carOwnerInfo?.ownerInfo?.document?.issueDate
@@ -57,7 +57,7 @@
       </div>
 
       <div class="info-list-group-item">
-        <div class="info-list-subtitle">Номер кузова (кабины)</div>
+        <div class="info-list-subtitle">Номер кузова</div>
         <div class="info-list-value">{{ carOwnerInfo?.vehicleInfo?.carcaseNumber | defaultValue }}</div>
       </div>
 
@@ -87,14 +87,15 @@
   ></epgu-constructor-car-owners>
 
   <epgu-constructor-legal-compliance
+    [showSellWarning]="true"
     [searchingTransportFlag]="carOwnerInfo?.vehicleInfo?.searchingTransportFlag"
     [restrictionsFlag]="carOwnerInfo?.vehicleInfo?.restrictionsFlag"
     [restrictions]="carOwnerInfo?.vehicleInfo?.restrictions"
   ></epgu-constructor-legal-compliance>
 
   <epgu-constructor-notary-info
+    [showSellWarning]="true"
     [isPledged]="carOwnerInfo?.notaryInfo?.isPledged"
   ></epgu-constructor-notary-info>
-
 
 </epgu-constructor-screen-pad>

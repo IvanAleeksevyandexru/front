@@ -3,6 +3,17 @@
 
 
   <div class="car-info-group">
+    <div *ngIf="showSellWarning && isPledged"
+         class="info-list-group-item info-list-warning-group-item">
+      <div class="info-list-warning-title">
+        <div class="info-list-warning-icon info-list-red-warning-icon"></div>
+        <div>Машина в залоге</div>
+      </div>
+      <div class="info-list-warning-text">
+        Вы не можете продать машину, которая находится в залоге
+      </div>
+    </div>
+
     <div class="info-list-group-item">
       <div class="info-list-subtitle">Находится в залоге</div>
       <div class="info-list-value">{{ isPledged | yesNo }}</div>

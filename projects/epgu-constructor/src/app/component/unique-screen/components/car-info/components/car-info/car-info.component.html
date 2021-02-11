@@ -8,7 +8,7 @@
 </epgu-constructor-screen-pad>
 
 <ng-template #carInfoBlock>
-  <epgu-constructor-screen-pad class="car__info--block">
+  <epgu-constructor-screen-pad class="car-info-block">
     <div *ngIf="carInfoErrors?.vehicle; else vehicleInfo">
       <h5 class="info-list-title">Информация о регистрации ТС</h5>
 
@@ -143,12 +143,12 @@
 </ng-template>
 
 <ng-template #templateError let-iconClass="iconClass" let-title="title" let-text="text">
-  <div class="info-list-group-item car-info-error">
-    <div class="car-info-error-title">
-      <div class="car-info-error-icon {{iconClass}}"></div>
+  <div class="info-list-group-item info-list-warning-group-item">
+    <div class="info-list-warning-title">
+      <div class="info-list-warning-icon {{iconClass}}"></div>
       <div>{{title}}</div>
     </div>
-    <div class="car-info-error-label">
+    <div class="info-list-warning-text">
       <epgu-constructor-output-html [html]="text"></epgu-constructor-output-html>
     </div>
   </div>

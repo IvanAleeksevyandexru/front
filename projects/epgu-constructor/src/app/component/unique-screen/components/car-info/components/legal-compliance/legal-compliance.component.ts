@@ -7,6 +7,7 @@ import { Restriction } from '../../models/car-info.interface';
   styleUrls: ['./legal-compliance.component.scss'],
 })
 export class LegalComplianceComponent {
+  @Input() showSellWarning = false;
   @Input() searchingTransportFlag: boolean;
   @Input() restrictionsFlag: boolean;
   @Input() restrictions: Restriction[];
