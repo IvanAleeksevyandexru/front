@@ -29,10 +29,11 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { get } from 'lodash';
+import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 
 @Injectable()
 export class TimeSlotsService {
-  public activeMonthNumber: number;
+  public activeMonthNumber: number; // 0..11
   public activeYearNumber: number;
   public bookId;
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
@@ -397,7 +398,7 @@ export class TimeSlotsService {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
-        const month = this.datesToolsService.format(slotDate, 'yyyy-MM');
+        const month = this.datesToolsService.format(slotDate, DATE_STRING_YEAR_MONTH);
         this.availableMonths.push(month);
       }
 

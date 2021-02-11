@@ -19,7 +19,13 @@ import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirma
 import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { months, StartOfTypes, weekDaysAbbr } from '../../../../shared/constants/dates';
+import {
+  DATE_STRING_YEAR_MONTH,
+  DATE_TIME_STRING_FULL,
+  months,
+  StartOfTypes,
+  weekDaysAbbr,
+} from '../../../../shared/constants/dates';
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import {
@@ -473,18 +479,20 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       const firstMonthStr = availableMonths[0];
       const lastMonthStr = availableMonths[availableMonths.length - 1];
       for (
-        let month = this.datesHelperService.parse(firstMonthStr, 'yyyy-MM');
+        let month = this.datesHelperService.parse(firstMonthStr, DATE_STRING_YEAR_MONTH);
         !this.datesHelperService.isAfter(
           month,
-          this.datesHelperService.parse(lastMonthStr, 'yyyy-MM'),
+          this.datesHelperService.parse(lastMonthStr, DATE_STRING_YEAR_MONTH),
         );
         month = this.datesHelperService.add(month, 1, 'months')
       ) {
         const monthForDropdown = this.getMonthsListItem(
-          this.datesHelperService.format(month, 'yyyy-MM'),
+          this.datesHelperService.format(month, DATE_STRING_YEAR_MONTH),
         );
         if (
-          !availableMonths.includes(this.datesHelperService.format(month, 'yyyy-MM')) ||
+          !availableMonths.includes(
+            this.datesHelperService.format(month, DATE_STRING_YEAR_MONTH),
+          ) ||
           this.checkDateRestrictions(this.datesHelperService.toDate(month), 'month')
         ) {
           monthForDropdown.unselectable = true;
@@ -526,7 +534,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private setBookedTimeStr(slot: SlotInterface): void {
     const time = this.datesHelperService.utcOffset(slot.slotTime, slot.timezone);
 
-    this.chosenTimeStr = this.datesHelperService.format(time, 'd MMMM yyyy года в HH:mm, eeee');
+    this.chosenTimeStr = this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
   }
 
   /**

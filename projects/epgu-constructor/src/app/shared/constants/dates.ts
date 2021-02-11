@@ -5,6 +5,9 @@ const DATE_STRING_MMMM_YYYY_FORMAT = 'MMMM yyyy';
 const DATE_ISO_STRING_FORMAT = 'yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx';
 const DATE_MONTH_YEAR_FORMAT = 'MM/yyyy';
 const DATE_HOURLY_FORMAT = 'HH:mm:ss';
+const DATE_TIME_STRING_FULL = 'd MMMM yyyy года в HH:mm, eeee';
+const DATE_STRING_YEAR_MONTH = 'yyyy-MM';
+
 const months = [
   'Январь',
   'Февраль',
@@ -45,6 +48,8 @@ export {
   DATE_ISO_STRING_FORMAT,
   DATE_MONTH_YEAR_FORMAT,
   DATE_HOURLY_FORMAT,
+  DATE_TIME_STRING_FULL,
+  DATE_STRING_YEAR_MONTH,
   months,
   weekDaysAbbr,
   DurationTimeTypes,
