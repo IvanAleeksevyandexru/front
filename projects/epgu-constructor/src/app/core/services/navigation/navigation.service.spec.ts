@@ -61,6 +61,13 @@ describe('NavigationService', () => {
     });
     navigationService.prev(null);
   });
+  it('test patch', (done) => {
+    navigationService.patchStepOnCli$.subscribe((v) => {
+      expect(v).toBe(null);
+      done();
+    });
+    navigationService.patchOnCli(null);
+  });
   it('test redirectToProfileEdit', () => {
     navigationService.isWebView = true;
     navigationService.redirectToProfileEdit();

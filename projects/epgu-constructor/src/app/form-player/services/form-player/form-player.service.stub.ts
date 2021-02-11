@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerApiSuccessResponse } from '../form-player-api/form-player-api.types';
+import { FormPlayerApiSuccessResponse, ScenarioDto } from '../form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Gender } from '../../../shared/types/gender';
 import { Observable, of } from 'rxjs';
@@ -76,6 +76,8 @@ export class FormPlayerServiceStub {
   checkIfOrderExist(): Observable<{}> {
     return of({});
   }
+
+  patchStore(): void {}
 
   getOrderStatus(): Observable<{}> {
     return of({});

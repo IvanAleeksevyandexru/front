@@ -20,7 +20,7 @@
   <div class="screen-footer">
     <!-- TODO: добавить поддержку вывода ScreenActionDto  -->
     <lib-button
-      *ngIf="screenService.submitLabel$ | async"
+      *ngIf="(screenService.submitLabel$ | async) && !screenActionButtons.length"
       [showLoader]="screenService.isLoading$ | async"
       epgu-constructor-action
       [action]="nextStepAction"
@@ -29,5 +29,23 @@
     >
       {{ screenService.submitLabel$ | async }}
     </lib-button>
+
+    <ng-container *ngIf="screenActionButtons.length">
+      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
+    </ng-container>
   </div>
 </epgu-constructor-screen-container>
+
+<ng-template #screenActionBtns>
+  <div class="custom__actions">
+    <lib-button
+      *ngFor="let action of screenActionButtons"
+      class="custom__action submit-button"
+      epgu-constructor-action
+      [action]="action"
+      [color]="action.color"
+    >
+      <div>{{ action.label }}</div>
+    </lib-button>
+  </div>
+</ng-template>
