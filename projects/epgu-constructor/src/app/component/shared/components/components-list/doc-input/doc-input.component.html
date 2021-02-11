@@ -16,7 +16,11 @@
   </div>
 
   <div *ngIf="!hasExpirationDate; else expireDate" class="doc-input__group">
-    <div class="doc-input__group-item doc-input__series">
+    <div
+      class="doc-input__group-item doc-input__series"
+      *ngIf="!fields['series']?.attrs.hidden"
+      [class.doc-input__all-width]="fields['number']?.attrs.hidden"
+    >
       <epgu-constructor-label
         [tips]="fields['series']?.attrs?.labelHint"
         [label]="fields['series']?.label"
@@ -50,7 +54,11 @@
         {{ hint }}
       </epgu-constructor-helper-text>
     </div>
-    <div class="doc-input__group-item doc-input__number">
+    <div
+      class="doc-input__group-item doc-input__number"
+      *ngIf="!fields['number']?.attrs.hidden"
+      [class.doc-input__all-width]="fields['series']?.attrs.hidden"
+    >
       <epgu-constructor-label
         [tips]="fields['number']?.attrs?.labelHint"
         [label]="fields['number']?.label"
@@ -109,7 +117,7 @@
   </div>
   <ng-template #expireDate>
     <div class="doc-input__group">
-      <div class="doc-input__group-item doc-input__series">
+      <div class="doc-input__group-item doc-input__series" *ngIf="!fields['series']?.attrs.hidden">
         <epgu-constructor-label
           [tips]="fields['series']?.attrs?.labelHint"
           [label]="fields['series']?.label"
@@ -146,7 +154,7 @@
           {{ hint }}
         </epgu-constructor-helper-text>
       </div>
-      <div class="doc-input__group-item doc-input__number">
+      <div class="doc-input__group-item doc-input__number" *ngIf="!fields['number']?.attrs.hidden">
         <epgu-constructor-label
           [tips]="fields['number']?.attrs?.labelHint"
           [label]="fields['number']?.label"

@@ -30,6 +30,7 @@ interface DocInputField extends CustomComponent {
     minDate?: string;
     accuracy?: string;
     fstuc?: TextTransform;
+    hidden?: boolean;
   };
 }
 
