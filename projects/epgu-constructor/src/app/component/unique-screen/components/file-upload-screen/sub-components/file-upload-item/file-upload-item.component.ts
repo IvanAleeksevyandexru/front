@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
 import {
@@ -178,7 +171,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
-    private changeDetection: ChangeDetectorRef,
   ) {}
 
   reduceChanges(
