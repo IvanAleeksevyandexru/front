@@ -245,7 +245,7 @@ describe('TimeSlotsComponent', () => {
       output.splice(0, output.length); // in-place clear
       const firstDayOfMonth = moment()
         .year(component.activeYearNumber)
-        .month(component.activeMonthNumber - 1)
+        .month(component.activeMonthNumber)
         .startOf('month')
         .startOf('day');
       const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
@@ -335,29 +335,42 @@ describe('TimeSlotsComponent', () => {
   describe('when dateType is today', () => {
     beforeEach(() => {
       screenService.component.attrs.dateType = 'today';
-      const timeSlotsService = TestBed.inject(TimeSlotsService);
-      jest.spyOn(timeSlotsService, 'isDateLocked').mockReturnValue(false);
+      screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
+      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
+
+      const today = new Date(Date.now());
+      const nextMonth = today.getMonth() === 11 ? '01' : `0${(today.getMonth() + 2)}`.substr(-2);
+      const year = today.getMonth() === 11 ? today.getFullYear() + 1 : today.getFullYear();
+      const selectedMonth = new ListItem({ id: `${year}-${nextMonth}` } as ListItem);
+      component.monthChanged(selectedMonth);
+      fixture.detectChanges();
     });
 
     it('should allow book date in 30+3 days after today', () => {
-      const today = new Date(Date.now());
-      const nextMonth =
-        today.getMonth() === 11
-          ? `${today.getFullYear() + 1}-1`
-          : `${today.getFullYear()}-${today.getMonth() + 3}`;
-      const selectedMonth = new ListItem({ id: nextMonth } as ListItem);
-
-      component.isDateLocked = jest.fn((date: Date) => component['isLockedByDateType'](date));
-      component.monthChanged(selectedMonth);
-      fixture.detectChanges();
-
       const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
-
       expect(allDays.length).toEqual(35);
 
       const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
+      expect(lockedDays.length).toEqual(7);
+    });
+  });
 
-      expect(lockedDays.length).toEqual(8);
+  describe('when dateType is refDate', () => {
+    beforeEach(() => {
+      screenService.component.attrs.dateType = 'refDate';
+      screenService.component.attrs.refDate = '2019-12-15T00:00:00.000Z';
+      screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
+      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
+      component.monthChanged(new ListItem({ id: '2020-01' } as ListItem));
+      fixture.detectChanges();
+    });
+
+    it('should allow book date in 30+3 days after today', () => {
+      const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
+      expect(allDays.length).toEqual(35);
+
+      const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
+      expect(lockedDays.length).toEqual(18);
     });
   });
 });

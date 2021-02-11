@@ -35,7 +35,6 @@ import {
   DATE_ISO_STRING_FORMAT,
   DurationTimeTypes,
   StartOfTypes,
-  DAYS_IN_MONTH,
 } from '../../../shared/constants/dates';
 
 interface Duration {
@@ -402,23 +401,6 @@ export class DatesToolsService {
     }
 
     return copiedDate;
-  }
-
-  /**
-   * Истёк ли месяц с даты обращения или сегодняшнего дня если не указана для исходной даты.
-   * Чему равен месяц лучше посмотреть в константах
-   * @param {Date} date исходная дата
-   * @param {Date | null} specificDate дата относительно которой смотрим
-   */
-  public hasMonthExpired(date: Date, specificDate: Date | null = null): boolean {
-    let expectedDate = this.add(
-      new Date(specificDate === null ? Date.now() : specificDate),
-      DAYS_IN_MONTH,
-      'days',
-    );
-    expectedDate = this.startOf(expectedDate, 'day');
-
-    return this.isAfter(date, expectedDate);
   }
 
   /**

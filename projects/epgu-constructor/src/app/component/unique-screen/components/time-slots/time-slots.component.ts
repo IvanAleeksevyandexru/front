@@ -138,15 +138,14 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   public isDateOutOfMonth(date: Date): boolean {
-    return date && this.datesHelperService.getMonth(date) + 1 !== this.activeMonthNumber;
+    return date && this.datesHelperService.getMonth(date) !== this.activeMonthNumber;
   }
 
   public isDateLocked(date: Date): boolean {
     return (
       this.isDateOutOfMonth(date) ||
       this.timeSlotsService.isDateLocked(date, this.currentArea?.id) ||
-      this.checkDateRestrictions(date) ||
-      this.isLockedByDateType(date)
+      this.checkDateRestrictions(date)
     );
   }
 
@@ -350,8 +349,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     output.splice(0, output.length); // in-place clear
 
     let firstDayOfMonth = new Date(Date.now());
-    firstDayOfMonth = this.datesHelperService.setYear(firstDayOfMonth, this.activeYearNumber);
-    firstDayOfMonth = this.datesHelperService.setMonth(firstDayOfMonth, this.activeMonthNumber - 1);
+    firstDayOfMonth = this.datesHelperService.setCalendarDate(
+      firstDayOfMonth,
+      this.activeYearNumber,
+      this.activeMonthNumber,
+    );
     firstDayOfMonth = this.datesHelperService.startOfMonth(firstDayOfMonth);
     firstDayOfMonth = this.datesHelperService.startOfDay(firstDayOfMonth);
 
@@ -406,6 +408,21 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getRefDate(): Date {
+    const dateType = this.screenService.component?.attrs?.dateType || DateTypeTypes.TODAY;
+    const refDateAttr = this.screenService.component?.attrs?.refDate;
+
+    if (dateType === DateTypeTypes.TODAY) {
+      return new Date(Date.now());
+    }
+
+    if (dateType === DateTypeTypes.REF_DATE && refDateAttr) {
+      return new Date(refDateAttr);
+    }
+
+    throw Error(`dateType has incorrect value "${dateType}" or missed refDate attr in json`);
+  }
+
   /**
    * Проверяет дату по ограничениям на валидность
    * @param {Date} date дата для валидации
@@ -413,17 +430,18 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * @returns {boolean} false - дата прошла проверки. true - дата инвалидна
    */
   private checkDateRestrictions(date: Date, startType: StartOfTypes = 'day'): boolean {
-    const today = this.datesHelperService.startOf(new Date(Date.now()), startType);
+    const refDate = this.datesHelperService.startOf(this.getRefDate(), startType);
+
     const restrictions = this.screenService.component?.attrs?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
       minDate: (amount, type): boolean => {
-        let expectedBefore = this.datesHelperService.add(today, amount, type);
+        let expectedBefore = this.datesHelperService.add(refDate, amount, type);
         expectedBefore = this.datesHelperService.startOf(expectedBefore, startType);
         return this.datesHelperService.isBefore(date, expectedBefore);
       },
       maxDate: (amount, type): boolean => {
-        let expectedAfter = this.datesHelperService.add(today, amount, type);
+        let expectedAfter = this.datesHelperService.add(refDate, amount, type);
         expectedAfter = this.datesHelperService.startOf(expectedAfter, startType);
         return this.datesHelperService.isAfter(date, expectedAfter);
       },
@@ -434,23 +452,6 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       const [amount, type] = restrictions[key];
       return checks[key](amount, type);
     });
-  }
-
-  private isLockedByDateType(date: Date): boolean {
-    const dateType = this.screenService.component?.attrs?.dateType || null;
-
-    if (dateType === DateTypeTypes.TODAY) {
-      return !this.datesHelperService.hasMonthExpired(date);
-    }
-
-    if (dateType === DateTypeTypes.REF_DATE && this.screenService.component?.attrs?.refDate) {
-      return !this.datesHelperService.hasMonthExpired(
-        date,
-        new Date(this.screenService.component?.attrs?.refDate),
-      );
-    }
-
-    return false;
   }
 
   private isCachedValueChanged(): boolean {

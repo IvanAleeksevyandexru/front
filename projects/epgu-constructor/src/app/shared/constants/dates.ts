@@ -50,7 +50,3 @@ export {
   DurationTimeTypes,
   StartOfTypes,
 };
-
-// Прошу вместо месяца реализовать срок 30+3 дня
-// Основание письмо Минюста от 12.03.2019 №12-31142/19
-export const DAYS_IN_MONTH = 30 + 3;
