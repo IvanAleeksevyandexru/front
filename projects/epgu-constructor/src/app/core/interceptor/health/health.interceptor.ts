@@ -65,7 +65,7 @@ export class HealthInterceptor implements HttpInterceptor {
             };
           }
 
-          if (this.utils.isDefined(result.error) && this.utils.isDefined(result.error.code) && Number(result.error.code) !== 0) {
+          if (this.utils.isDefined(result?.error) && this.utils.isDefined(result.error?.code) && Number(result.error.code) !== 0) {
             successRequestPayload = { 
               ...successRequestPayload, 
               error: result.error.code,
