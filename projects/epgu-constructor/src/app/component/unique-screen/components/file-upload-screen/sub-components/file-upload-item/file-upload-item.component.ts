@@ -345,16 +345,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return !file.isImage
       ? of(file)
       : this.terabyteService.downloadFile(file.createUploadedParams()).pipe(
-        catchError((e) => {
-          // TODO: Добавить в общий стэк ошибок
-          // this.updateFileItem(this.createError(ErrorActions.addDownloadErr, fileItem));
-          // this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
-          return throwError(e);
-        }),
-        map((blob: Blob) =>
-          file.setRaw(new File([blob], file.raw.name, { type: file.raw.type })),
-        ),
-      );
+          catchError((e) => {
+            // TODO: Добавить в общий стэк ошибок
+            // this.updateFileItem(this.createError(ErrorActions.addDownloadErr, fileItem));
+            // this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
+            return throwError(e);
+          }),
+          map((blob: Blob) =>
+            file.setRaw(new File([blob], file.raw.name, { type: file.raw.type })),
+          ),
+        );
   }
 
   loadList(): Observable<FileItem> {
@@ -400,7 +400,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     const errorHandler = {};
     errorHandler[
       ErrorActions.addMaxTotalAmount
-      ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
+    ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
 
     errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
       this.fileUploadService.getMaxTotalFilesSize(),
@@ -409,7 +409,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line prettier/prettier
     errorHandler[
       ErrorActions.addMaxAmount
-      ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
+    ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
     // eslint-disable-next-line prettier/prettier
     errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
       this.data.maxSize,
@@ -461,9 +461,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.acceptTypes = !this.data.fileType.length
       ? null
       : this.data.fileType
-        .map((fileType) => `.${fileType}`)
-        .join(',')
-        .toLowerCase();
+          .map((fileType) => `.${fileType}`)
+          .join(',')
+          .toLowerCase();
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {
