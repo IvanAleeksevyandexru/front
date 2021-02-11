@@ -51,6 +51,7 @@ export class HealthInterceptor implements HttpInterceptor {
           const result = response.body;
           const validationStatus = this.utils.isValidScenarioDto(result);
           let successRequestPayload = null;
+          let dictionaryValidationStatus = false;
 
           if (validationStatus) {
             const { scenarioDto } = result;
@@ -64,6 +65,15 @@ export class HealthInterceptor implements HttpInterceptor {
             };
           }
 
+          if (this.utils.isDefined(result?.error) && this.utils.isDefined(result.error?.code) && Number(result.error.code) !== 0) {
+            successRequestPayload = { 
+              ...successRequestPayload, 
+              error: result.error.code,
+              errorMessage: this.utils.isDefined(result.error.message) ? result.error.message : null,
+            };
+            dictionaryValidationStatus = true;
+          }
+
           if (!(Object.keys(this.configParams).length === 0)) {
             const { id, name, orderId } = this.configParams;
             successRequestPayload = { id, name, orderId };
@@ -72,7 +82,11 @@ export class HealthInterceptor implements HttpInterceptor {
             ) as ConfigParams;
           }
 
-          this.health.measureEnd(serviceName, RequestStatus.Successed, successRequestPayload);
+          this.health.measureEnd(
+            serviceName, 
+            dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Successed, 
+            successRequestPayload
+          );
         }
       }),
       catchError((error) => {

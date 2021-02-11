@@ -49,3 +49,27 @@
     margin-top: 32px !important;
   }
 }
+
+@mixin line {
+  content: "";
+  display: inline-block;
+  margin-right: 8px;
+  width: 24px;
+  height: 4px;
+  position: relative;
+  bottom: 3px;
+}
+
+.yellow-line {
+  &::before {
+    background-image: url('../../assets/icons/svg/yellow-line.svg');
+    @include line;
+  }
+}
+
+.red-line {
+  &::before {
+    background-image: url('../../assets/icons/svg/red-line.svg');
+    @include line;
+  }
+}

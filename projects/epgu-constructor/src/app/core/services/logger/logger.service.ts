@@ -21,16 +21,14 @@ export class LoggerService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(messages: Array<any>, groupName: string = null): void {
-    if(this.isShowLog()) {
-      if (groupName) {
-        this.openGroup(groupName);
-      }
+    if (groupName) {
+      this.openGroup(groupName);
+    }
 
-      messages.forEach(this.showError);
+    messages.forEach(this.showError);
 
-      if (groupName) {
-        this.closeGroup();
-      }
+    if (groupName) {
+      this.closeGroup();
     }
   }
 
