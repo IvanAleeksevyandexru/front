@@ -26,7 +26,7 @@ export class UploaderManagerItemComponent {
       this.errorType = file.error.type;
     }
     this.isImage = file.isImage;
-    this.ext = file.raw.name.split('.').pop();
+    this.extension = file.raw.name.split('.').pop();
     this.size = file.raw.size;
     this.name = file.raw.name;
     this.status = file.status;
@@ -41,7 +41,7 @@ export class UploaderManagerItemComponent {
   status: FileItemStatus;
   size: number;
   name: string;
-  ext: string;
+  extension: string;
   isError = false;
   errorType: string;
   isImage = false;

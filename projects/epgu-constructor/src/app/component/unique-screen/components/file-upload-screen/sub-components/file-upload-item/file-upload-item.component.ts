@@ -159,12 +159,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
-  sub = this.processingOperations$.subscribe();
-
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
     .add(this.files$.subscribe())
-    .add(this.sub);
+    .add(this.processingOperations$.subscribe());
 
   private loadData: FileUploadItem;
   private maxFileNumber = -1;
