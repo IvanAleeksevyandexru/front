@@ -65,13 +65,21 @@ export class HealthInterceptor implements HttpInterceptor {
             };
           }
 
-          if (this.utils.isDefined(result.error) && this.utils.isDefined(result.error.code) && Number(result.error.code) !== 0) {
+          if (result?.error && result.error?.core !== 0 || undefined && result?.error?.message !== '' || undefined) {
             successRequestPayload = { 
               ...successRequestPayload, 
               error: result.error.code,
-              errorMessage: this.utils.isDefined(result.error.message) ? result.error.message : null,
+              errorMessage: result.error.message,
             };
             dictionaryValidationStatus = true;
+          }
+
+          if (!(Object.keys(this.configParams).length === 0)) {
+            const { id, name, orderId } = this.configParams;
+            successRequestPayload = { id, name, orderId };
+            successRequestPayload = this.utils.filterIncorrectObjectFields(
+              successRequestPayload,
+            ) as ConfigParams;
           }
 
           this.health.measureEnd(
