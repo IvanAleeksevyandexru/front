@@ -55,7 +55,7 @@ describe('DictionaryApiService', () => {
       service.getDictionary(dictionaryName, optionsMock).subscribe(response => expect(response).toBe(responseMock));
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
-      expect(req.request.body).toEqual({ ...optionsMock, withCredentials: false });
+      expect(req.request.body).toEqual({ ...optionsMock });
       req.flush(responseMock);
       tick();
     }));
@@ -71,8 +71,7 @@ describe('DictionaryApiService', () => {
         pageSize: '10000',
         parentRefItemValue: '',
         selectAttributes: ['*'],
-        tx: '',
-        withCredentials: false
+        tx: ''
       });
       req.flush(responseMock);
       tick();
