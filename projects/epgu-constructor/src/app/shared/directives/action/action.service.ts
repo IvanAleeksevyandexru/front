@@ -22,6 +22,9 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
+import { ModalService } from '../../../modal/modal.service';
+import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
+
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -42,6 +45,7 @@ export class ActionService {
     private localStorageService: LocalStorageService,
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
+    private modalService: ModalService,
   ) {
   }
 
@@ -76,6 +80,12 @@ export class ActionService {
         break;
       case ActionType.home:
         this.navService.redirectToHome();
+        break;
+      case ActionType.dropdownListModal:
+        this.modalService.openModal(
+          DropdownListModalComponent,
+          { componentId: action.value }
+        );
         break;
     }
   }

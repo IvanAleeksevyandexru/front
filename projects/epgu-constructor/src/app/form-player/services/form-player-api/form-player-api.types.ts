@@ -276,7 +276,7 @@ export interface ComponentFieldDto {
 export interface ClarificationsDto {
   [key: string]: {
     title: string;
-    text: string;
+    text?: string;
     setting?: {};
   };
 }
@@ -413,6 +413,7 @@ export enum ActionType {
   quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
+  dropdownListModal = 'dropdownListModal',
 }
 
 export enum DTOActionAction {

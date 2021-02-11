@@ -24,6 +24,8 @@ import {
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { ModalService } from '../../../modal/modal.service';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -133,10 +135,11 @@ describe('ActionService', () => {
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         HtmlRemoverService,
         ActionService,
         NavigationModalService,
-        CurrentAnswersService
+        CurrentAnswersService,
       ],
     });
 

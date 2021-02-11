@@ -43,6 +43,9 @@
       & > *:not(:last-child) {
         margin-bottom: 24px;
       }
+      & .highlighted {
+        color: $color-gosblue;
+      }
     }
   }
   &-content {
