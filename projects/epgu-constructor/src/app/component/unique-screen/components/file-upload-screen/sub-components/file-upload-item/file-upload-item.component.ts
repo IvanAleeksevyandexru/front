@@ -288,9 +288,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           : of(undefined),
       ),
       catchError((e) => {
-        this.store.update(
-          fileItem.setError(this.getError(ErrorActions.addDeletionErr, fileItem.raw)),
-        );
+        this.store.update(fileItem.setError(this.getError(ErrorActions.addDeletionErr)));
         return throwError(e);
       }),
       tap(() => this.updateUploadingInfo(fileItem, true)),
@@ -313,7 +311,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       ),
       concatMap((file) => this.terabyteService.uploadFile(options, file.raw)),
       catchError((e) => {
-        this.store.update(item.setError(this.getError(ErrorActions.addUploadErr, item.raw)));
+        this.store.update(item.setError(this.getError(ErrorActions.addUploadErr)));
         this.fileUploadService.decrementFilesSize(item.raw.size, this.loadData.uploadId);
         return throwError(e);
       }),
@@ -413,7 +411,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return [this.getSubMnemonicPath(), this.maxFileNumber].join('.');
   }
 
-  getError(action: ErrorActions, file?: Partial<File>): FileItemError {
+  getError(action: ErrorActions): FileItemError {
     const errorHandler = {};
     // errorHandler[
     //   ErrorActions.addMaxTotalAmount

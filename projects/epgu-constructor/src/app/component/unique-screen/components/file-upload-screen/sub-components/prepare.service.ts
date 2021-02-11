@@ -15,7 +15,7 @@ import {
   CompressionService,
 } from '../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
 
-type getErrorType = (action: ErrorActions, file?: Partial<File>) => FileItemError;
+type getErrorType = (action: ErrorActions) => FileItemError;
 
 @Injectable()
 export class PrepareService {
@@ -49,7 +49,7 @@ export class PrepareService {
   validateType(file: FileItem, getError: getErrorType, acceptTypes?: string): FileItem {
     return file.isTypeValid(acceptTypes)
       ? file
-      : file.setError(getError(ErrorActions.addInvalidType, file.raw));
+      : file.setError(getError(ErrorActions.addInvalidType));
   }
 
   validateAmount(file: FileItem, config: FileUploadItem, getError: getErrorType): FileItem {
@@ -57,11 +57,11 @@ export class PrepareService {
     if (!isValid) {
       switch (reason) {
         case CheckFailedReasons.total: {
-          file.setError(getError(ErrorActions.addMaxTotalAmount, file.raw));
+          file.setError(getError(ErrorActions.addMaxTotalAmount));
           break;
         }
         case CheckFailedReasons.uploaderRestriction: {
-          file.setError(getError(ErrorActions.addMaxAmount, file.raw));
+          file.setError(getError(ErrorActions.addMaxAmount));
           break;
         }
         default:
@@ -80,7 +80,7 @@ export class PrepareService {
     return this.compressionService.isValidImageType(file.raw)
       ? from(this.compressionService.imageCompression(file.raw, compressedImageOptions)).pipe(
           catchError(() => {
-            return of(file.setError(getError(ErrorActions.addInvalidFile, file.raw)));
+            return of(file.setError(getError(ErrorActions.addInvalidFile)));
           }),
           map((raw: File) => {
             return file.setRaw(raw);
@@ -98,11 +98,11 @@ export class PrepareService {
     if (!isValid) {
       switch (reason) {
         case CheckFailedReasons.total: {
-          file.setError(getError(ErrorActions.addMaxTotalSize, file.raw));
+          file.setError(getError(ErrorActions.addMaxTotalSize));
           break;
         }
         case CheckFailedReasons.uploaderRestriction: {
-          file.setError(getError(ErrorActions.addMaxSize, file.raw));
+          file.setError(getError(ErrorActions.addMaxSize));
           break;
         }
         default:
