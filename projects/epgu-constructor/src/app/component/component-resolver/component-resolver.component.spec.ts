@@ -4,8 +4,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { ComponentResolverComponent } from './component-resolver.component';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { ScreenService } from '../../screen/screen.service';
-import { COMPONENT_SCREEN_COMPONENTS, UNIQUE_SCREEN_COMPONENTS } from './component-resolver.const';
-import { ComponentScreenComponentTypes } from '../component-screen/component-screen-components.types';
+import { UNIQUE_SCREEN_COMPONENTS } from './component-resolver.const';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
@@ -17,7 +16,7 @@ class TestComponent {}
 @Component({ template: '<div>test</div>' })
 class Test2Component {}
 
-Object.defineProperties(COMPONENT_SCREEN_COMPONENTS, {
+Object.defineProperties(UNIQUE_SCREEN_COMPONENTS, {
   TEST: {
     value: TestComponent,
   },
@@ -54,7 +53,7 @@ describe('ComponentResolverComponent', () => {
     component = fixture.componentInstance;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     // @ts-ignore
-    screenService.display = { components: [{ type: 'TEST' }], type: ScreenTypes.COMPONENT };
+    screenService.display = { components: [{ type: 'TEST' }], type: ScreenTypes.UNIQUE };
     fixture.detectChanges();
   });
 
@@ -68,7 +67,7 @@ describe('ComponentResolverComponent', () => {
     jest.runAllTimers();
     expect(component.componentRef.instance).toBeInstanceOf(TestComponent);
     // @ts-ignore
-    screenService.display = { components: [{ type: 'TEST2' }], type: ScreenTypes.COMPONENT };
+    screenService.display = { components: [{ type: 'TEST2' }], type: ScreenTypes.UNIQUE };
     fixture.detectChanges();
     jest.runAllTimers();
 
@@ -77,9 +76,9 @@ describe('ComponentResolverComponent', () => {
   });
 
 
-  it('should return screens from SCREEN_COMPONENTS or UNIQUE_SCREEN_COMPONENTS', () => {
-    expect(component.getComponentByType(ComponentScreenComponentTypes.childrenList, ScreenTypes.COMPONENT)).toBe(
-      COMPONENT_SCREEN_COMPONENTS[ComponentScreenComponentTypes.childrenList],
+  it('should return screens from UNIQUE_SCREEN_COMPONENTS', () => {
+    expect(component.getComponentByType(UniqueScreenComponentTypes.childrenList, ScreenTypes.UNIQUE)).toBe(
+      UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.childrenList],
     );
     expect(component.getComponentByType(UniqueScreenComponentTypes.billInfo, ScreenTypes.UNIQUE)).toBe(
       UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.billInfo],
@@ -91,7 +90,7 @@ describe('ComponentResolverComponent', () => {
     const unrecognizedType = 'unrecognized type' as any;
 
     expect(() => {
-      component.createComponent('TEST' as any, ScreenTypes.COMPONENT);
+      component.createComponent('TEST' as any, ScreenTypes.UNIQUE);
     }).not.toThrow();
 
     expect(() => {

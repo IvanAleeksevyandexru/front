@@ -3,6 +3,7 @@ export enum UniqueScreenComponentTypes {
   timeSlot = 'TimeSlot',
   mapService = 'MapService',
   carInfo = 'CarInfo',
+  carList = 'CarList',
   repeatableFields = 'RepeatableFields',
   employeeHistory = 'EmployeeHistory',
   timer = 'Timer',
@@ -17,4 +18,20 @@ export enum UniqueScreenComponentTypes {
   cityDepartment = 'CityDepartment',
   informationCenterPfr = 'InformationCenterPfr',
   fieldList = 'FieldList',
+  confirmPersonalUserRegAddr = 'ConfirmPersonalUserRegAddr',
+  confirmPersonalUserData = 'ConfirmPersonalUserData',
+  confirmAnotherUserData = 'ConfirmAnotherUserData',
+  confirmChildData = 'ConfirmChildData',
+  confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
+  confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
+  registrationAddr = 'RegistrationAddr',
+  registrationLegalAddr = 'RegistrationLegalAddr',
+  passportLookup = 'PassportLookup',
+  childrenList = 'ChildrenList',
+  childrenListUnder14 = 'ChildrenListUnder14', // TODO: удалить потом как depricated
+  childrenListAbove14 = 'ChildrenListAbove14', // TODO: удалить потом как depricated
+  docInput = 'DocInput',
+  confirmLegalData = 'ConfirmLegalData',
+  confirmLegalPhone = 'ConfirmLegalPhone',
+  confirmLegalEmail = 'ConfirmLegalEmail'
 }

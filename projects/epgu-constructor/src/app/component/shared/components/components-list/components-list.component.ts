@@ -44,7 +44,7 @@ const halfWidthItemTypes = [
 })
 export class ComponentsListComponent implements OnInit, OnChanges {
   @Input() componentsGroupIndex = 0;
-  @Input() components: CustomComponent;
+  @Input() components: Array<CustomComponent>;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
@@ -79,10 +79,14 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
     const components: Array<CustomComponent> = changes.components?.currentValue;
-    if (components) {
-      this.formService.create(components, this.errors);
+    const isErrorsChanged =
+      JSON.stringify(changes.errors?.currentValue) !==
+      JSON.stringify(changes.errors?.previousValue);
+
+    if (components || isErrorsChanged) {
+      this.formService.create(this.components, this.errors);
       this.subscribeOnFormStatusChanging();
-      this.loadRepository(components);
+      this.loadRepository(this.components);
     }
   }
 

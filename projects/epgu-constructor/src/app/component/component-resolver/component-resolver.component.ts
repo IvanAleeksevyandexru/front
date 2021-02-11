@@ -16,7 +16,6 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../screen/screen.service';
 import {
-  COMPONENT_SCREEN_COMPONENTS,
   ScreenComponentTypes,
   ComponentTypes,
   UNIQUE_SCREEN_COMPONENTS,
@@ -78,8 +77,6 @@ export class ComponentResolverComponent implements AfterViewInit {
 
   getComponentByType(cmpType: ComponentTypes, screenType: ScreenTypes): Type<ScreenComponentTypes> {
     switch (screenType) {
-      case ScreenTypes.COMPONENT:
-        return COMPONENT_SCREEN_COMPONENTS[cmpType];
       case ScreenTypes.UNIQUE:
         return UNIQUE_SCREEN_COMPONENTS[cmpType];
       default:

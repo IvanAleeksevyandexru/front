@@ -21,7 +21,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { months, weekDaysAbbr } from '../../../../shared/constants/dates';
-import { TimeSlotsConstants } from './time-slots.constants';
+import { TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import {
   SlotInterface,
@@ -30,6 +30,7 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 
+// TODO: переехать на DatesToolsService и упразднить moment
 const moment = moment_;
 moment.locale('ru');
 
@@ -72,12 +73,15 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public months = months;
 
   public weeks = [];
+  public areas: ListItem[] = [];
+  public isAreasVisible = false;
   public monthsYears: ListItem[] = [];
   public timeSlots: SlotInterface[] = [];
   public dialogButtons = [];
   public isExistsSlots = true;
   public currentSlot: SlotInterface;
   public currentMonth: ListItem;
+  public currentArea: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
   public inProgress = false;
@@ -87,6 +91,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   private errorModalResultSub = new Subscription();
   private cachedAnswer: TimeSlotsAnswerInterface;
+  private timeSlotType: TimeSlotsTypes;
 
   constructor(
     private modalService: ModalService,
@@ -148,7 +153,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public isDateLocked(date: Date): boolean {
     return (
       this.isDateOutOfMonth(date) ||
-      this.timeSlotsService.isDateLocked(date) ||
+      this.timeSlotsService.isDateLocked(date, this.currentArea?.id) ||
       this.checkDateRestrictions(date)
     );
   }
@@ -205,6 +210,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.changeDetectionRef.markForCheck();
       },
     );
+  }
+
+  public areaChanged(): void {
+    this.clearDateSelection();
+    this.checkExistenceSlots();
   }
 
   public monthChanged(ev: ListItem): void {
@@ -311,6 +321,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     const value = JSON.parse(this.screenService.component?.value);
 
     this.initServiceVariables(value);
+    this.timeSlotType = value.timeSlotType;
 
     this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
       (isBookedDepartment) => {
@@ -520,6 +531,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.errorMessage = undefined;
     this.activeMonthNumber = this.timeSlotsService.getCurrentMonth();
     this.activeYearNumber = this.timeSlotsService.getCurrentYear();
+    this.initSlotsAreas();
 
     this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
@@ -530,6 +542,14 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     if (this.bookedSlot && isBookedDepartment) {
       this.selectDate(this.bookedSlot.slotTime);
       this.chooseTimeSlot(this.bookedSlot);
+    }
+  }
+
+  private initSlotsAreas(): void {
+    if (this.timeSlotType === TimeSlotsTypes.BRAK) {
+      this.areas = this.timeSlotsService.getAreasListItems();
+      [this.currentArea] = this.areas;
+      this.isAreasVisible = this.areas.length > 0;
     }
   }
 }

@@ -42,6 +42,7 @@ export class ComponentListToolsService {
     form: FormArray,
     shownElements: CustomListStatusElements,
     dictionaries: CustomListDictionaries,
+    initInitialValues: boolean,
   ): CustomListStatusElements {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id,
@@ -111,10 +112,15 @@ export class ComponentListToolsService {
       }
     }
 
-    if (reference.relation === CustomComponentRefRelation.autofillFromDictionary) {
+    /* NOTICE: ниже происходит некая магия, которая разруливает конфликтный кейс автофила данных
+      при первичной загрузке формы и ранее закешированных в cachedAnswers данных, а также
+      отрабатывается кейс различающий первичную загрузку данных и нового пользовательского выбора */
+    /* TODO: подумать над реалзиацией сервиса, директивы или отдельного модуля,
+      который бы отвечал за работу с предазгруженными данными, в том числе с механизмом рефов.
+      А в идеале передать всю эту историю на бэк */
+    if (reference.relation === CustomComponentRefRelation.autofillFromDictionary && initInitialValues) {
       const attributeName = reference.val as string;
       const componentId = reference.relatedRel;
-
       const dictionaryAttributeValue = this.getDictionaryAttributeValue(
         attributeName,
         componentId,
@@ -125,11 +131,14 @@ export class ComponentListToolsService {
 
       if (dictionaryAttributeValue === undefined) {
         dependentControl.get('value').patchValue('');
-        dependentControl.get('value').enable();
       } else {
-        dependentControl.get('value').patchValue(dictionaryAttributeValue);
-        dependentControl.get('value').disable();
+        dependentControl.get('value').patchValue(
+          dependentControl.value.value !== ''
+            ? dependentControl.value.value
+            : dictionaryAttributeValue
+        );
       }
+
       dependentControl.markAsUntouched();
     }
 
@@ -150,6 +159,7 @@ export class ComponentListToolsService {
     shownElements: CustomListStatusElements,
     form: FormArray,
     dictionaries: CustomListDictionaries,
+    initInitialValues = false
   ): CustomListStatusElements {
     const isComponentDependent = (arr = []): boolean =>
       arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
@@ -172,6 +182,7 @@ export class ComponentListToolsService {
           form,
           shownElements,
           dictionaries,
+          initInitialValues
         );
       }
 

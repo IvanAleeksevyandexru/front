@@ -14,6 +14,7 @@ import {
   ComponentActionDto,
   DisplayDto,
   DTOActionAction,
+  ScenarioErrorsDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -75,9 +76,19 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   ]).pipe(
     filter(([error, component]) => !!error[component.id]),
     map(([error, component, isChangeState]) => {
+      let message = '';
+      let errors: ScenarioErrorsDto[] = [];
+      try {
+        errors = JSON.parse(error[component.id]);
+      } catch (e) {
+        message = error[component.id];
+        errors = [];
+      }
+
       return {
         hasError: isChangeState !== 'change',
-        message: error[component.id],
+        message,
+        errors,
       };
     }),
   );

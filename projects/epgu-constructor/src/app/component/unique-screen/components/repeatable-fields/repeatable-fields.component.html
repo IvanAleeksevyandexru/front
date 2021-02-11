@@ -26,7 +26,7 @@
           class="cmp-group__item"
           [componentsGroupIndex]="i"
           [components]="$any(screens[screenKey])"
-          [errors]="screenService.componentErrors$ | async"
+          [errors]="(commonError$ | async)?.errors[i] || {}"
           (changes)="changeComponentList($event, i)"
         >
         </epgu-constructor-components-list>

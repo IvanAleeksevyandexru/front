@@ -9,7 +9,7 @@ import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/
 import { Full } from '../../information-center-pfr.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
 
 describe('InformationCenterPfrFullComponent', () => {
   let component: InformationCenterPfrFullComponent;
@@ -22,6 +22,11 @@ describe('InformationCenterPfrFullComponent', () => {
     },
     district: {
       label: 'Район (Административный центр)',
+      attributeName: 'parent_attr',
+      condition: 'EQUALS',
+    },
+    cityDistrict: {
+      label: 'Городской район',
       attributeName: 'parent_attr',
       condition: 'EQUALS',
     },
@@ -38,7 +43,7 @@ describe('InformationCenterPfrFullComponent', () => {
       imports: [
         MockModule(BaseModule),
         MockModule(BaseComponentsModule),
-        MockModule(ConstructorDropdownModule),
+        MockModule(ConstructorLookupModule),
       ],
       providers: [UnsubscribeService, FormBuilder],
     })
@@ -54,6 +59,7 @@ describe('InformationCenterPfrFullComponent', () => {
     component.items = itemsMock;
     component.territoryDictionary = [];
     component.districtDictionary = [];
+    component.cityDistrictDictionary = [];
     component.regionDictionary = [];
     component.cachedValue = '';
     fixture.detectChanges();
@@ -68,6 +74,7 @@ describe('InformationCenterPfrFullComponent', () => {
       expect(component.pfrForm.value).toEqual({
         region: null,
         district: null,
+        cityDistrict: null,
         territory: null,
       });
     });
@@ -77,7 +84,7 @@ describe('InformationCenterPfrFullComponent', () => {
     it('should be call formChangeEvent', () => {
       jest.spyOn(component.formChangeEvent, 'emit');
       jest.spyOn(component, 'handleSelect');
-      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-dropdown'));
+      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-lookup'));
       debugEl.triggerEventHandler('changed', {});
 
       expect(component.formChangeEvent.emit).toHaveBeenCalled();

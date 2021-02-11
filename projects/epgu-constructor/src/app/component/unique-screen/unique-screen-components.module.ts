@@ -21,6 +21,20 @@ import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upl
 import { WebcamService } from './services/webcam/webcam.service';
 import { RepeatableFieldsModule } from './components/repeatable-fields/repeatable-fields.module';
 import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserPhoneEmailModule } from './components/confirm-personal-user-phone-email/confirm-personal-user-phone-email.module';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserDataScreenModule } from './components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.module';
+import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
+import { RegistrationAddrScreenModule } from './components/registration-addr/registration-addr-screen.module';
+import { AddPassportModule } from './components/add-passport/add-passport.module';
+import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
+import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
+import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
+import { CarListModule } from './components/car-list/car-list.module';
 
 @NgModule({
   imports: [
@@ -41,6 +55,17 @@ import { InformationCenterPfrModule } from './components/information-center-pfr/
     InformationCenterMvdModule,
     RepeatableFieldsModule,
     InformationCenterPfrModule,
+    ConfirmPersonalUserPhoneEmailModule,
+    ConfirmPersonalUserAddressScreenModule,
+    ConfirmPersonalUserDataScreenModule,
+    SelectChildrenScreenModule,
+    RegistrationAddrScreenModule,
+    AddPassportModule,
+    ConstructorDropdownModule,
+    BaseComponentsModule,
+    FieldListScreenModule,
+    TimerScreenModule,
+    CarListModule
   ],
   exports: [
     RepeatableFieldsModule,
@@ -57,6 +82,15 @@ import { InformationCenterPfrModule } from './components/information-center-pfr/
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
     InformationCenterPfrModule,
+    ConfirmPersonalUserPhoneEmailModule,
+    ConfirmPersonalUserAddressScreenModule,
+    ConfirmPersonalUserDataScreenModule,
+    SelectChildrenScreenModule,
+    RegistrationAddrScreenModule,
+    AddPassportModule,
+    FieldListScreenModule,
+    TimerScreenModule,
+    CarListModule
   ],
   providers: [
     WebcamService,

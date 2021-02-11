@@ -13,7 +13,7 @@ import { CheckFailedReasons, FileUploadService } from './file-upload.service';
 import {
   CompressionOptions,
   CompressionService,
-} from '../../upload-and-edit-photo/compression/compression.service';
+} from '../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
 
 type getErrorType = (action: ErrorActions, file?: Partial<File>) => FileItemError;
 

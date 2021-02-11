@@ -1,0 +1,45 @@
+<epgu-constructor-screen-pad *ngIf="errorDisplayDto; else carList">
+
+  <img
+    [class]="errorDisplayDto.imageClass"
+    src="{{ staticDomainAssetsPath }}{{ errorDisplayDto.imageSrc }}"
+    alt=""
+  />
+
+  <h3 class="car-error-title">{{errorDisplayDto.title}}</h3>
+
+  <div class="car-list-error-label">
+    <epgu-constructor-output-html
+      [html]="errorDisplayDto.label"
+      [clarifications]="clarifications"
+    ></epgu-constructor-output-html>
+  </div>
+
+</epgu-constructor-screen-pad>
+
+<ng-template #carList>
+  <epgu-constructor-output-html
+    *ngIf="label"
+    [html]="label"
+    [clarifications]="clarifications"
+  ></epgu-constructor-output-html>
+
+  <epgu-constructor-constructor-lookup
+    *ngIf="carFixedItems"
+    [showNotFound]="true"
+    [searchCaseSensitive]="searchCaseSensitive"
+    [fixedItems]="$any(carFixedItems)"
+    [itemsProvider]="provider"
+    [disabled]="carFixedItems.length === 1"
+    [formatter]="formatter"
+    [showExpandCollapse]="true"
+    [showMagnifyingGlass]="true"
+    [control]="control"
+    (changed)="lookupChanged()"
+  >
+  </epgu-constructor-constructor-lookup>
+</ng-template>
+
+
+
+

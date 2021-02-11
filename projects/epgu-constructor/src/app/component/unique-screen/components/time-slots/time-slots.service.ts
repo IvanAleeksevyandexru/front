@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ListItem } from 'epgu-lib';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
@@ -27,6 +28,7 @@ import {
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
 } from './time-slots.types';
+import { get } from 'lodash';
 
 @Injectable()
 export class TimeSlotsService {
@@ -39,6 +41,7 @@ export class TimeSlotsService {
 
   public department: DepartmentInterface;
   private serviceId: string;
+  private subject: string;
   private solemn: boolean;
   private slotsPeriod;
   private orderId;
@@ -46,6 +49,7 @@ export class TimeSlotsService {
   private bookedSlot: SlotInterface;
   private errorMessage;
   private availableMonths: string[];
+  private areas: string[];
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -105,12 +109,14 @@ export class TimeSlotsService {
     );
   }
 
-  isDateLocked(date: Date): boolean {
-    return (
-      !this.slotsMap[date.getFullYear()] ||
-      !this.slotsMap[date.getFullYear()][date.getMonth()] ||
-      !this.slotsMap[date.getFullYear()][date.getMonth()][date.getDate()]
-    );
+  isDateLocked(date: Date, areadId?: string | number): boolean {
+    const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
+    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath);
+    let isSelectedArea = true;
+    if (slots && areadId) {
+      isSelectedArea = slots.some((slot) => slot.areaId === areadId);
+    }
+    return !(slots && isSelectedArea);
   }
 
   getAvailableMonths(): string[] {
@@ -155,7 +161,8 @@ export class TimeSlotsService {
           return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
             map((response) => {
               if (response.error?.errorDetail.errorCode === 0 || response.error === null) {
-                this.initSlotsMap(response.slots, areaNames);
+                this.initSlotsMap(response.slots);
+                this.areas = areaNames;
               } else {
                 const { errorMessage, errorCode } = response.error.errorDetail;
                 this.errorMessage = errorMessage || errorCode;
@@ -223,7 +230,22 @@ export class TimeSlotsService {
       this.serviceId = serviceId;
     }
 
+    let subject = data.subject;
+    if (!this.subject || this.subject !== subject) {
+      changed = true;
+      this.subject = subject;
+    }
+
     return changed;
+  }
+
+  public getAreasListItems(): Array<ListItem> {
+    return this.areas.map((area) => {
+      return new ListItem({
+        id: area,
+        text: area,
+      });
+    });
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
@@ -266,7 +288,10 @@ export class TimeSlotsService {
     };
   }
 
-  private getSlotsRequestAttributes(slotsType: TimeSlotsTypes, serviceId: string): Array<{ name: string; value: string; }> {
+  private getSlotsRequestAttributes(
+    slotsType: TimeSlotsTypes,
+    serviceId: string,
+  ): Array<{ name: string; value: string }> {
     const settings = {
       [TimeSlotsTypes.BRAK]: [
         { name: 'SolemnRegistration', value: this.solemn },
@@ -310,12 +335,12 @@ export class TimeSlotsService {
       routeNumber,
     } = this.config.timeSlots[this.timeSlotsType];
 
-    return {
+    const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject,
+      subject: this.subject || subject,
       params: [
         {
           name: 'phone',
@@ -331,25 +356,39 @@ export class TimeSlotsService {
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.orderId,
       preliminaryReservationPeriod,
-      attributes: [],
+      attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
       serviceId: [this.serviceId || serviceId],
     };
+
+    if (this.timeSlotsType === TimeSlotsTypes.MVD) {
+      requestBody.parentOrderId = '';
+      requestBody.caseNumber = this.orderId;
+    }
+
+    return requestBody;
+  }
+
+  private getBookRequestAttributes(
+    slotsType: TimeSlotsTypes,
+    serviceId: string,
+  ): Array<{ name: string; value: string }> {
+    const settings = {
+      [TimeSlotsTypes.BRAK]: [],
+      [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.serviceId || serviceId }],
+      [TimeSlotsTypes.MVD]: [],
+      [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.serviceId || serviceId }],
+    };
+
+    return settings[slotsType];
   }
 
   private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {
     return ADDRESS || ADDRESS_OUT || address;
   }
 
-  private initSlotsMap(slots: TimeSlot[], areaNames: Array<string>): void {
-    let initSlots;
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-      initSlots = slots.filter((slot) => areaNames.includes(slot.areaId));
-    } else {
-      initSlots = slots;
-    }
-
-    initSlots.forEach((slot) => {
+  private initSlotsMap(slots: TimeSlot[]): void {
+    slots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeISO);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
