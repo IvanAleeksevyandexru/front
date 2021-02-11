@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { DATE_ISO_STRING_FORMAT, DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import { DATE_ISO_STRING_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { DatesToolsService } from './dates-tools.service';
 
 describe('DatesToolsService', () => {
@@ -24,8 +24,8 @@ describe('DatesToolsService', () => {
 
   describe('getToday() method', () => {
     it('should return today date', () => {
-      const today = new Date().toLocaleString();
-      const serviceToday = service.getToday().toLocaleString();
+      const today = service.format(new Date(), DATE_TIME_STRING_DOT_FORMAT);
+      const serviceToday = service.format(service.getToday(), DATE_TIME_STRING_DOT_FORMAT);
       expect(serviceToday).toEqual(today);
     });
   });
@@ -206,34 +206,46 @@ describe('DatesToolsService', () => {
     });
   });
 
-  xdescribe('setDate() method', () => {
+  describe('setDate() method', () => {
     it('should return setted date', () => {
-      expect(service.setDate(new Date(2014, 8, 1), null, null, 30).toLocaleString()).toEqual('2014-09-29T20:00:00.000Z');
+      expect(service.format(service.setCalendarDate(new Date(2014, 8, 1), null, null, 30), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('30.09.2014, 00:00:00');
+    });
+
+    it('should return setted date for january', () => {
+      const date = new Date();
+      const controlDate = new Date(1);
+      const resultDate = service.setCalendarDate(date, 1970, 0, 1);
+      expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
     });
   });
 
 
-  xdescribe('endOfMonth() method', () => {
+  describe('endOfMonth() method', () => {
     it('should return date end of month', () => {
-      expect(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('2014-09-30T19:59:59.999Z');
+      expect(service.format(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('30.09.2014, 23:59:59');
     });
   });
 
-  xdescribe('startOfYear() method', () => {
+  describe('startOfYear() method', () => {
     it('should return start date of year', () => {
-      expect(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.01.2014, 00:00:00');
+      expect(service.format(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('01.01.2014, 00:00:00');
     });
   });
 
-  xdescribe('startOfMonth() method', () => {
+  describe('startOfMonth() method', () => {
     it('should return start date of month', () => {
-      expect(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('01.09.2014, 00:00:00');
+      expect(service.format(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('01.09.2014, 00:00:00');
     });
   });
 
-  xdescribe('startOfDay() method', () => {
+  describe('startOfDay() method', () => {
     it('should return start date of day', () => {
-      expect(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)).toLocaleString()).toEqual('02.09.2014, 00:00:00');
+      expect(service.format(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('02.09.2014, 00:00:00');
     });
   });
 

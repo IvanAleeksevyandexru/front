@@ -131,11 +131,11 @@ export class EmployeeHistoryFormService {
   private checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear): void {
     if (toDateValue) {
       const today = this.datesToolsService.getToday();
-      const toDate: Date =  this.datesToolsService.setDate(today, toDateValue.year, toDateValue.month, null);
+      const toDate: Date =  this.datesToolsService.setCalendarDate(today, toDateValue.year, toDateValue.month, null);
       const minDate = this.datesToolsService.sub(today, this.monthsService.years, 'years');
       const toDateMinDateDiff = this.datesToolsService.diff(toDate, minDate);
       if (fromDateValue) {
-        const fromDate: Date = this.datesToolsService.setDate(today, fromDateValue.year, fromDateValue.month, null);
+        const fromDate: Date = this.datesToolsService.setCalendarDate(today, fromDateValue.year, fromDateValue.month, null);
         const fromDateToDateDiff = this.datesToolsService.diff(fromDate, toDate);
         if (fromDateToDateDiff > 0) {
           form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
