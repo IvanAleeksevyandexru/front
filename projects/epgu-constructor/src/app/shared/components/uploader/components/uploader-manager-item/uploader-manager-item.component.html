@@ -32,7 +32,9 @@
   </div>
   <div class="uploader-manager-item__info">
     <div class="uploader-manager-item__title">
-      <div (click)="viewAction()" class="name">{{ name }}</div>
+      <div (click)="viewAction()" class="name {{ isImage || link ? 'active' : null }}">
+        {{ name }}
+      </div>
       <div
         *ngIf="
           status === fileStatus.uploading ||
@@ -52,7 +54,9 @@
         <button
           *ngIf="status === fileStatus.error || status === fileStatus.uploaded"
           (click)="delete.emit(fileItem)"
-          class="uploader-manager-item__button"
+          class="uploader-manager-item__button {{
+            status === fileStatus.error ? 'uploader-manager-item__button_error' : ''
+          }}"
         >
           Удалить
         </button>
@@ -63,25 +67,48 @@
         >
           Отменить
         </button>
+        <button
+          class="uploader-manager-item__button"
+          *ngIf="status === fileStatus.downloading"
+          (click)="cancelAction(operationType.download)"
+        >
+          Отменить
+        </button>
+        <button
+          class="uploader-manager-item__button"
+          *ngIf="status === fileStatus.delition"
+          (click)="cancelAction(operationType.delete)"
+        >
+          Отменить
+        </button>
       </div>
     </div>
-    <button
-      *ngIf="
-        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading
-      "
-      (click)="viewAction()"
-      class="uploader-manager-item__button"
-    >
-      Посмотреть
-    </button>
+    <!--    <button-->
+    <!--      *ngIf="-->
+    <!--        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading-->
+    <!--      "-->
+    <!--      (click)="viewAction()"-->
+    <!--      class="uploader-manager-item__button"-->
+    <!--    >-->
+    <!--      Посмотреть-->
+    <!--    </button>-->
   </div>
 </div>
 <div *ngIf="isError" class="uploader-manager-item__error">
   <div class="uploader-manager-item__error-text">{{ fileItem.error.text }}</div>
   <div class="uploader-manager-item__error-description">
     {{ fileItem.error.description }}
+    <button
+      class="uploader-manager-item__button"
+      *ngIf="errorType === errorTypeAction.addUploadErr"
+      (click)="repeat.emit(fileItem)"
+    >
+      Повторить
+    </button>
   </div>
 </div>
+
+<a class="link" #elementLink [href]="link" [type]="type" target="_blank"></a>
 
 <ng-template #fileTypeTemplate let-backgroundClass="backgroundClass">
   <div class="tag {{ backgroundClass }}">

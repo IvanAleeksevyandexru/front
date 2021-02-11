@@ -1,11 +1,23 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import {
   CancelAction,
+  ErrorActions,
   FileItem,
   FileItemStatus,
   FileItemStatusText,
   OperationType,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',
@@ -18,6 +30,8 @@ export class UploaderManagerItemComponent {
   @Output() cancel = new EventEmitter<CancelAction>();
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
+  @Output() repeat = new EventEmitter<FileItem>();
+  @ViewChild('elementLink', { read: ElementRef, static: true }) elementLink: ElementRef;
   @Input() set file(file: FileItem) {
     this.fileItem = file;
 
@@ -25,16 +39,24 @@ export class UploaderManagerItemComponent {
     if (this.isError) {
       this.errorType = file.error.type;
     }
+
+    if (file.raw.type.indexOf('pdf') !== -1 && file.item) {
+      this.link = this.teraService.getDownloadApiPath(file.createUploadedParams());
+    }
     this.isImage = file.isImage;
     this.extension = file.raw.name.split('.').pop();
     this.size = file.raw.size;
     this.name = file.raw.name;
+    this.type = file.raw.type;
     this.status = file.status;
     if (this.isImage) {
       this.imageUrl = window.URL.createObjectURL(file.raw);
     }
   }
 
+  errorTypeAction = ErrorActions;
+  type: string;
+  link: string;
   operationType = OperationType;
   fileStatus = FileItemStatus;
   imageUrl = '';
@@ -43,11 +65,13 @@ export class UploaderManagerItemComponent {
   name: string;
   extension: string;
   isError = false;
-  errorType: string;
+  errorType: ErrorActions;
   isImage = false;
   fileItem: FileItem;
 
   statusText = FileItemStatusText;
+
+  constructor(private teraService: TerraByteApiService) {}
 
   cancelAction(type: OperationType): void {
     this.cancel.emit({ type, item: this.fileItem });
@@ -55,8 +79,8 @@ export class UploaderManagerItemComponent {
   viewAction(): void {
     if (this.isImage) {
       this.preview();
-    } else {
-      this.download.emit(this.fileItem);
+    } else if (this.link) {
+      this.elementLink.nativeElement.click();
     }
   }
 

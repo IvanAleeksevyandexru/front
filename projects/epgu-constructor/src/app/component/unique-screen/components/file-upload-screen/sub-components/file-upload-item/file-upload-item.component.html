@@ -18,6 +18,7 @@
     (delete)="addDelete($event)"
     (download)="addDownload($event)"
     (cancel)="cancelOperation($event.type, $event.item)"
+    (repeat)="repeat($event)"
     [list]="files | async"
   ></epgu-constructor-uploader-manager>
   <epgu-constructor-uploader (upload)="updateSelectedFilesInfoAndSend($event)">

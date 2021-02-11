@@ -160,6 +160,11 @@ export class TerraByteApiService {
     );
   }
 
+  getDownloadApiPath(options: TerraFileOptions): string {
+    return this.getTerabyteApiUrl(
+      `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
+    );
+  }
   /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
@@ -167,9 +172,7 @@ export class TerraByteApiService {
   downloadFile(options: TerraFileOptions): Observable<Blob> {
     // eslint-disable-next-line max-len
     return this.http.get<Blob>(
-      this.getTerabyteApiUrl(
-        `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
-      ),
+      this.getDownloadApiPath(options),
       this.getServerRequestOptions({
         responseType: 'blob',
       }),

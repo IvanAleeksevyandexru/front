@@ -15,6 +15,7 @@ export class UploaderManagerComponent {
   @Output() cancel = new EventEmitter<CancelAction>();
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
+  @Output() repeat = new EventEmitter<FileItem>();
 
   @Input() list: FileItem[];
 }

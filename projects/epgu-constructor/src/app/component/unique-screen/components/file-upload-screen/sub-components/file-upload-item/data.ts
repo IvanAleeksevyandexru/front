@@ -68,6 +68,9 @@ export class FileItem {
   error: FileItemError;
   isImage: boolean;
   constructor(public status: FileItemStatus, public raw?: File, public item?: UploadedFile) {
+    if (item) {
+      this.item.uploaded = true;
+    }
     if (!raw && item) {
       this.raw = {
         size: item.fileSize,
@@ -93,6 +96,7 @@ export class FileItem {
   }
   setItem(item: UploadedFile): FileItem {
     this.item = item;
+    this.item.uploaded = true;
     return this;
   }
 
@@ -131,7 +135,7 @@ export class FileItem {
 }
 
 export interface FileItemError {
-  type: string;
+  type: ErrorActions;
   text: string;
   description?: string;
 }

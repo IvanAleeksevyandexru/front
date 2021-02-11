@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
 import {
@@ -57,13 +64,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   acceptTypes?: string;
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
-  // listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
-  // filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
-  // filesInCompression = 0; // Количество файлов, проходящих через компрессию
-  // files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
-
   fileStatus = FileItemStatus;
-
   errors: string[] = [];
 
   listUploadingStatus = new BehaviorSubject<boolean>(false);
@@ -81,13 +82,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   store = new FileItemStore();
 
   files = this.store.files;
-  files$ = this.store.files.pipe(
-    concatMap((files) => from(files)),
-    reduce((acc, value) => {
-      acc.push(value.item);
-      return acc;
-    }, []),
-    map((files: UploadedFile[]) => this.sendUpdateEvent(files)), // Отправка изменений
+  files$ = this.files.pipe(
+    concatMap((files) =>
+      from(files).pipe(
+        reduce<FileItem, FileResponseToBackendUploadsItem>(this.reduceChanges.bind(this), {
+          value: [],
+          errors: [],
+        }),
+      ),
+    ),
+    tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
 
   get data(): FileUploadItem {
@@ -161,7 +165,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
-    .add(this.files$.subscribe())
     .add(this.processingOperations$.subscribe());
 
   private loadData: FileUploadItem;
@@ -175,7 +178,21 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
+    private changeDetection: ChangeDetectorRef,
   ) {}
+
+  reduceChanges(
+    acc: FileResponseToBackendUploadsItem,
+    value: FileItem,
+  ): FileResponseToBackendUploadsItem {
+    if (value.item) {
+      acc.value.push(value.item);
+    }
+    if (value.error) {
+      acc.errors.push(value.error.text);
+    }
+    return acc;
+  }
 
   update(fileItem: FileItem): void {
     this.addPrepare(fileItem);
@@ -215,6 +232,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.processingOperations.next(operation);
   }
 
+  repeat(file: FileItem): void {
+    const files = this.store.files.getValue();
+    files.forEach((item) =>
+      item?.error?.type === file?.error?.type ? this.addPrepare(item) : null,
+    );
+  }
   addPrepare(file: FileItem): void {
     this.createOperation(OperationType.prepare, file);
   }
@@ -240,12 +263,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return of(fileItem).pipe(
       tap((file) => this.store.changeStatus(file, FileItemStatus.downloading)),
       concatMap((file) => this.terabyteService.downloadFile(file.createUploadedParams())),
-      catchError((e) => {
-        // TODO: Добавить в общий стэк ошибок
-        // this.updateFileItem(this.createError(ErrorActions.addDownloadErr, fileItem));
-        // this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
-        return throwError(e);
-      }),
       tap((result) => {
         this.terabyteService.pushFileToBrowserForDownload(result, fileItem.item);
       }),
@@ -271,10 +288,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           : of(undefined),
       ),
       catchError((e) => {
-        // TODO: Добавить в общий стэк ошибок
-        // this.updateFileItem(this.createError(ErrorActions.addDeletionErr, fileItem));
-        // this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
-        this.store.changeStatus(fileItem, status);
+        this.store.update(
+          fileItem.setError(this.getError(ErrorActions.addDeletionErr, fileItem.raw)),
+        );
         return throwError(e);
       }),
       tap(() => this.updateUploadingInfo(fileItem, true)),
@@ -292,7 +308,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
     return of(item).pipe(
       tap((file) => this.store.changeStatus(file, FileItemStatus.uploading)),
-      tap((file) => this.fileUploadService.updateFilesSize(file.raw.size, this.loadData.uploadId)),
+      tap((file: FileItem) =>
+        this.fileUploadService.updateFilesSize(file.raw.size, this.loadData.uploadId),
+      ),
       concatMap((file) => this.terabyteService.uploadFile(options, file.raw)),
       catchError((e) => {
         this.store.update(item.setError(this.getError(ErrorActions.addUploadErr, item.raw)));
@@ -308,13 +326,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     );
   }
 
-  sendUpdateEvent(files?: UploadedFile[], errors?: string[]): void {
-    const resultValue: UploadedFile[] = files ?? this.files.getValue().map((file) => file.item);
-
+  sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit('fileUploadItemValueChangedEvent', {
       uploadId: this.loadData.uploadId,
-      value: resultValue,
-      errors: errors ?? this.errors,
+      value,
+      errors,
     } as FileResponseToBackendUploadsItem);
   }
 
@@ -370,6 +386,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
+    this.subscriptions.add(this.files$.subscribe());
   }
 
   polyfillFile(file: File): File {
@@ -398,64 +415,50 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   getError(action: ErrorActions, file?: Partial<File>): FileItemError {
     const errorHandler = {};
-    errorHandler[
-      ErrorActions.addMaxTotalAmount
-    ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
+    // errorHandler[
+    //   ErrorActions.addMaxTotalAmount
+    // ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
 
-    errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
-      this.fileUploadService.getMaxTotalFilesSize(),
-    )} МБ`;
+    // errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
+    //   this.fileUploadService.getMaxTotalFilesSize(),
+    // )} МБ`;
 
     // eslint-disable-next-line prettier/prettier
-    errorHandler[
-      ErrorActions.addMaxAmount
-    ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
-      this.data.maxSize,
-    )} МБ`;
-    errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
-    errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
-    errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
-    errorHandler[ErrorActions.addUploadErr] = `Ошибка загрузки файла "${file?.name}" на сервер`;
-    errorHandler[ErrorActions.addDeletionErr] = `Не удалось удалить файл "${file?.name}"`;
+    // errorHandler[
+    //   ErrorActions.addMaxAmount
+    // ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
 
-    return { description: '', type: action, text: errorHandler[action] };
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxSize] = {
+      text: `Файл тяжелее ${getSizeInMB(this.data.maxSize)} МБ`,
+      description: `Попробуйте уменьшить размер или загрузите файл полегче`,
+    };
+    errorHandler[ErrorActions.addInvalidType] = {
+      text: `Проверьте формат файла`,
+      description: `Попробуйте заменить на другой. Доступны для загрузки ${this.acceptTypes
+        .replace(/\./gi, '')
+        .replace(/,/gi, ', ')
+        .toUpperCase()}`,
+    };
+    errorHandler[ErrorActions.addInvalidFile] = {
+      text: `Файл повреждён`,
+      description: `Что-то не так с файлом. Попробуйте заменить на другой`,
+    };
+    errorHandler[ErrorActions.addDownloadErr] = {
+      text: `Ошибка при скачивании`,
+      description: `Не удалось скачать файл. Попробуйте снова`,
+    };
+    errorHandler[ErrorActions.addUploadErr] = {
+      text: `Ошибка при загрузке`,
+      description: `Попробуйте отправить снова или замените документ.`,
+    };
+    errorHandler[ErrorActions.addDeletionErr] = {
+      text: `Ошибка при удалении`,
+      description: `Не получилось удалить файл. Попробуйте снова`,
+    };
+
+    return { ...errorHandler[action], type: action };
   }
-
-  // handleError(action: ErrorActions, file?: Partial<File>): void {
-  //   const errorHandler = {};
-  //   errorHandler[
-  //     ErrorActions.addMaxTotalAmount
-  //   ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
-  //
-  //   errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
-  //     this.fileUploadService.getMaxTotalFilesSize(),
-  //   )} МБ`;
-  //
-  //   // eslint-disable-next-line prettier/prettier
-  //   errorHandler[
-  //     ErrorActions.addMaxAmount
-  //   ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
-  //   // eslint-disable-next-line prettier/prettier
-  //   errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
-  //     this.data.maxSize,
-  //   )} МБ`;
-  //   errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
-  //   errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
-  //   errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
-  //   errorHandler[ErrorActions.addUploadErr] = `Ошибка загрузки файла "${file?.name}" на сервер`;
-  //   errorHandler[ErrorActions.addDeletionErr] = `Не удалось удалить файл "${file?.name}"`;
-  //
-  //   if (action === ErrorActions.clear) {
-  //     this.errors = [];
-  //   } else {
-  //     this.errors.push(errorHandler[action]);
-  //     this.eventBusService.emit('fileUploadItemValueChangedEvent', {
-  //       errors: this.errors,
-  //     } as FileResponseToBackendUploadsItem);
-  //   }
-  // }
 
   updateAcceptTypes(): void {
     this.acceptTypes = !this.data.fileType.length
