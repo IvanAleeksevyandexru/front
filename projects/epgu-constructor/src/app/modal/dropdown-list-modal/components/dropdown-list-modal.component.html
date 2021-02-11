@@ -1,18 +1,14 @@
 <ng-container *ngIf="(data$ | async) as data">
   <epgu-constructor-confirmation-modal-base
-    [title]="data?.title"
+    [title]="data.title"
     text="dr_modal"
     [showCrossButton]="true"
     [buttons]="buttons"
   >
     <div class="dr_modal__body">
       <epgu-constructor-dropdown-list
-        [items]="data?.items"
+        [items]="data.items"
       ></epgu-constructor-dropdown-list>
     </div>
   </epgu-constructor-confirmation-modal-base>
 </ng-container>
-
-
-
-
