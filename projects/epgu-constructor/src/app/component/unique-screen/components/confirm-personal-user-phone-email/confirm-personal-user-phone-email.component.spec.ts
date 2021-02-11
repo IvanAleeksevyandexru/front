@@ -13,9 +13,11 @@ import {
   ActionType,
   ComponentActionDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ActionDirective } from '../../../../shared/directives/action/action.directive';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 
-xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
+describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   let component: ConfirmPersonalUserPhoneEmailComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserPhoneEmailComponent>;
   let screenService: ScreenService;
@@ -40,11 +42,13 @@ xdescribe('ConfirmPersonalUserPhoneEmailComponent', () => {
       declarations: [
         ConfirmPersonalUserPhoneEmailComponent,
         FormatPhonePipe,
+        ActionDirective,
       ],
       providers: [
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        UnsubscribeService,
       ]
     })
     .compileComponents();

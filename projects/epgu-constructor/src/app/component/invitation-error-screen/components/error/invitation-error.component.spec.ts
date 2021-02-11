@@ -1,50 +1,69 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ValidationService } from 'epgu-lib';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponents, MockModule } from 'ng-mocks';
+import { EpguLibModule } from 'epgu-lib';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { ComponentAttrsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { ImgPrefixerPipe } from '../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 import { InvitationErrorComponent } from './invitation-error.component';
+import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
+import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
+import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
+import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
+import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
+import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
+import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { DateRangeService } from '../../../shared/components/components-list/services/date-range/date-range.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { LocationService } from '../../../../core/services/location/location.service';
+import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
+import { ComponentBase } from '../../../../screen/screen.types';
 
-
-xdescribe('InvitationErrorComponent', () => {
+describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
   let fixture: ComponentFixture<InvitationErrorComponent>;
-  let http: HttpTestingController;
-  let config: ConfigService;
-  let validationService: ValidationService;
-  const mockData = { label: '', attrs: { url: '' } as ComponentAttrsDto, id: '', type: '' };
+  const mockData = { label: '', attrs: { url: '' }, id: '', type: '' } as ComponentBase;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [InvitationErrorComponent, ImgPrefixerPipe],
-      imports: [HttpClientTestingModule, ConstructorPlainInputModule],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [
+        InvitationErrorComponent,
+        MockComponents(
+          ScreenContainerComponent,
+          PageNameComponent,
+          ScreenPadComponent,
+          OutputHtmlComponent,
+          LabelComponent,
+          ConstructorPlainInputComponent,
+          HelperTextComponent
+        )
+      ],
+      imports: [MockModule(EpguLibModule)],
       providers: [
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
         ValidationService,
         UnsubscribeService,
-        EventBusService,
         CurrentAnswersService,
+        DateRangeService,
+        DatesToolsService,
       ]
     })
-    .compileComponents();
-  }));
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorComponent);
     component = fixture.componentInstance;
     component.data = mockData;
     fixture.detectChanges();
-    http = TestBed.inject(HttpTestingController);
-    config = TestBed.inject(ConfigService);
-    validationService = TestBed.inject(ValidationService);
   });
 
   it('should create', () => {
