@@ -5,9 +5,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  TemplateRef,
   ViewChild,
-  ViewContainerRef,
 } from '@angular/core';
 import {
   CancelAction,
