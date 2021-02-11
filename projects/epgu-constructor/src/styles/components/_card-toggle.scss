@@ -68,7 +68,8 @@
       transform: rotate(-90deg);
     }
     ~ .card-toggle-content {
-      max-height: 100vh;
+      max-height: initial;
+      height: auto;
       padding-top: 24px;
     }
   }
