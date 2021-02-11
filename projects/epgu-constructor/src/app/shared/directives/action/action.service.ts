@@ -22,6 +22,7 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -42,6 +43,7 @@ export class ActionService {
     private localStorageService: LocalStorageService,
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
+    private autocompleteApiService: AutocompleteApiService,
   ) {
   }
 
@@ -170,9 +172,9 @@ export class ActionService {
   }
 
   private deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {
-    console.log({ action });
+    const id: string = action.value.split(':').pop();
     targetElement.setAttribute('disabled', 'disabled');
-    // TODO: по готовности продуктового бэковского микросервиса SuggestService реализовать отправку запроса на удаление указанного саджеста
+    this.autocompleteApiService.deleteSuggestionsField(Number(id)).subscribe();
   }
 
   private getActionDTO(action: ComponentActionDto): ActionDTO {
