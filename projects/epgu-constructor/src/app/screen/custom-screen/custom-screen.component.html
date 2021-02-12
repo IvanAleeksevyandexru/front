@@ -18,7 +18,6 @@
   </div>
 
   <div class="screen-footer">
-    <!-- TODO: добавить поддержку вывода ScreenActionDto  -->
     <lib-button
       *ngIf="(screenService.submitLabel$ | async) && !screenActionButtons.length"
       [showLoader]="screenService.isLoading$ | async"

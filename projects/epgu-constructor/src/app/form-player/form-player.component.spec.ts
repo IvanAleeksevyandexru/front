@@ -224,6 +224,14 @@ describe('FormPlayerComponent', () => {
       component['initNavigation']();
       expect(component['skipStep']).toBeCalledWith(navigationParam);
     });
+
+    it('should call patchStepOnCli with param when push patchStepOnCli navigation', () => {
+      const navigationParam = {};
+      spyOn<any>(component, 'patchStepOnCli').and.callThrough();
+      navService.patchOnCli(navigationParam);
+      component['initNavigation']();
+      expect(component['patchStepOnCli']).toBeCalledWith(navigationParam);
+    });
   });
 
   describe('initSettingOfScreenIdToAttr()', () => {
@@ -275,6 +283,15 @@ describe('FormPlayerComponent', () => {
       spyOn(formPlayerService, 'navigate').and.callThrough();
       component['skipStep'](navigation);
       expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
+    });
+  });
+
+  describe('patchStepOnCli()', () => {
+    it('should call patchStore of formPlayerService with skip param', () => {
+      const newScenarioDtoDiff = {};
+      spyOn(formPlayerService, 'patchStore').and.callThrough();
+      component['patchStepOnCli'](newScenarioDtoDiff);
+      expect(formPlayerService.patchStore).toBeCalledWith(newScenarioDtoDiff);
     });
   });
 
