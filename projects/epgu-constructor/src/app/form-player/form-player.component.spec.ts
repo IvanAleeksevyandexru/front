@@ -240,7 +240,7 @@ describe('FormPlayerComponent', () => {
       name: '',
       header: '',
       submitLabel: '',
-      type: ScreenTypes.COMPONENT,
+      type: ScreenTypes.UNIQUE,
       terminal: false,
       components: []
     };

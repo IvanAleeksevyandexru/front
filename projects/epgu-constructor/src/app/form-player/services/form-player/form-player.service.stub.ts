@@ -28,7 +28,7 @@ export class FormPlayerServiceStub {
         name: 'some name',
         submitLabel: 'some submit label',
         terminal: false,
-        type: ScreenTypes.COMPONENT
+        type: ScreenTypes.UNIQUE
       },
       errors: {},
       gender: Gender.male,

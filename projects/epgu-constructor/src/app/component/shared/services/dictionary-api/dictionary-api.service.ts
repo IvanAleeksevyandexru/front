@@ -87,16 +87,20 @@ export class DictionaryApiService {
   }
 
   private post(path: string, options: DictionaryOptions): Observable<DictionaryResponse> {
-    return this.http.post<DictionaryResponse>(path, {
-      filter: options.filter,
-      treeFiltering: options.treeFiltering || 'ONELEVEL',
-      pageNum: options.pageNum || 1,
-      pageSize: options.pageSize || '10000',
-      parentRefItemValue: options.parentRefItemValue || '',
-      selectAttributes: options.selectAttributes || ['*'],
-      tx: options.tx || '',
-      // 2e641f4f-bc6a-11ea-b438-001a4a1660a6
-      withCredentials: false
-    });
+    return this.http.post<DictionaryResponse>(
+      path,
+      {
+        filter: options.filter,
+        treeFiltering: options.treeFiltering || 'ONELEVEL',
+        pageNum: options.pageNum || 1,
+        pageSize: options.pageSize || '10000',
+        parentRefItemValue: options.parentRefItemValue || '',
+        selectAttributes: options.selectAttributes || ['*'],
+        tx: options.tx || '',
+      },
+      {
+        withCredentials: true,
+      },
+    );
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { InformationCenterMvdComponent } from './information-center-mvd.component';
+import { InformationCenterMvdContainerComponent } from './container/information-center-mvd-container.component';
 import { CoreModule } from '../../../../core/core.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
@@ -8,13 +8,16 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 import { InformationCenterCardComponent } from './components/information-center-card/information-center-card.component';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
+import { InformationCenterFormComponent } from './components/information-center-form/information-center-form.component';
 
 const COMPONENTS = [
-  InformationCenterMvdComponent,
+  InformationCenterMvdContainerComponent,
+  InformationCenterFormComponent,
+  InformationCenterCardComponent,
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, InformationCenterCardComponent],
+  declarations: [...COMPONENTS],
   imports: [
     CoreModule,
     ConstructorDropdownModule,
@@ -22,10 +25,9 @@ const COMPONENTS = [
     ScreenPadModule,
     BaseModule,
     ActionModule,
-    BaseComponentsModule
+    BaseComponentsModule,
   ],
   exports: [...COMPONENTS],
-  entryComponents: [InformationCenterMvdComponent]
+  entryComponents: [InformationCenterMvdContainerComponent],
 })
-export class InformationCenterMvdModule {
-}
+export class InformationCenterMvdModule {}

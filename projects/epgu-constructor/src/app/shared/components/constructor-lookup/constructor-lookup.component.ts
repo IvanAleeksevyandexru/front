@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { LookupComponent, ValidationShowOn } from 'epgu-lib';
+import { ListItem, LookupComponent, ValidationShowOn } from 'epgu-lib';
 import {
   ListElement,
   LookupPartialProvider,
@@ -31,14 +31,16 @@ export class ConstructorLookupComponent {
   @Input() clearable: boolean;
   @Input() virtualScroll: boolean;
   @Input() searchCaseSensitive: boolean;
-  @Input() queryMinSymbolsCount: number;
+  @Input() queryMinSymbolsCount = 0;
   @Input() fixedItems: Array<ListElement>;
   @Input() itemsProvider:
     | LookupProvider<Partial<ListElement>>
     | LookupPartialProvider<Partial<ListElement>>;
   @Input() showSuggestion: boolean;
   @Input() showExpandCollapse: boolean;
+  @Input() showMagnifyingGlass: boolean;
   @Input() disabled: boolean;
+  @Input() formatter: (item: ListItem, context: { [name: string]: unknown }) => string;
   @Output() changed = new EventEmitter<ListElement>(); // TODO: подумать над рефактором подписочной модели
 
   public onChanged(item: ListElement): void {

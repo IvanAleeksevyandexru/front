@@ -17,7 +17,7 @@ interface InformationCenterMvdAttrI {
   actions: ComponentActionDto[];
 }
 
-interface SourceDictionaryI {
+export interface SourceDictionaryI {
   type: string;
   label: string;
   text: string;
@@ -31,7 +31,7 @@ export interface DictionaryToRequestI{
   hint: string;
 }
 
-export interface MvdInfoCanterI {
+export interface MvdInfoCenterI {
   title: string;
   attributeValues: {
     CODE: string;

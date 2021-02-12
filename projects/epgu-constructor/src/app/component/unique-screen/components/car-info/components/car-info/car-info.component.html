@@ -1,0 +1,155 @@
+<epgu-constructor-screen-pad *ngIf="carInfoErrors?.externalCommon; else carInfoBlock">
+  <ng-container
+    *ngTemplateOutlet="templateError;
+        context: { iconClass: (carInfoErrors.externalCommon.type | errorTemplate).icon ,
+         title: (carInfoErrors.externalCommon.type | errorTemplate).title,
+         text: carInfoErrors.externalCommon.text}"
+  ></ng-container>
+</epgu-constructor-screen-pad>
+
+<ng-template #carInfoBlock>
+  <epgu-constructor-screen-pad class="car-info-block">
+    <div *ngIf="carInfoErrors?.vehicle; else vehicleInfo">
+      <h5 class="info-list-title">Информация о регистрации ТС</h5>
+
+      <div class="car-info-group">
+        <ng-container
+          *ngTemplateOutlet="templateError;
+        context: { iconClass: (carInfoErrors.vehicle.type | errorTemplate).icon ,
+         title: (carInfoErrors.vehicle.type | errorTemplate).title,
+         text: carInfoErrors.vehicle.text}"
+        ></ng-container>
+      </div>
+
+      <div class="divider info-list-divider"></div>
+    </div>
+
+    <ng-template #vehicleInfo>
+      <div>
+        <h5 class="info-list-title">Регистрация ТС</h5>
+
+        <div class="car-info-group">
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Статус в ГИБДД</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.status | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Последняя операция</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.lastRegActionName | defaultValue }}</div>
+          </div>
+        </div>
+
+
+        <div class="divider info-list-divider"></div>
+      </div>
+
+      <div>
+        <h5 class="info-list-title">Технические данные</h5>
+
+        <div class="car-info-group">
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Марка и модель</div>
+            <div class="info-list-value">
+              {{ carInfo?.vehicleInfo?.modelMarkName | modelMarkName : carInfo?.vehicleInfo?.markName
+              : carInfo?.vehicleInfo?.modelName  | defaultValue }}
+            </div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Год выпуска</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.manufacturedYear | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Идентификационный номер (VIN)</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.vin | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Номер шасси (рамы)</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.chassisNumber | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Номер кузова (кабины)</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.carcaseNumber | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Цвет кузова (кабины)</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.carcaseColor | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Рабочий объём (куб.см)</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.engineVolume | defaultValue }}</div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Мощность (кВТ/л.с.)</div>
+            <div class="info-list-value">
+              {{ carInfo?.vehicleInfo?.enginePowerVt | enginePower: carInfo?.vehicleInfo?.enginePowerHorse | defaultValue }}
+            </div>
+          </div>
+
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Тип транспортного средства</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.vehicleType | defaultValue}}</div>
+          </div>
+
+        </div>
+
+        <div class="divider info-list-divider"></div>
+      </div>
+
+
+      <epgu-constructor-car-owners
+        *ngIf="carInfo?.vehicleInfo?.ownerPeriods?.length > 0"
+        [ownerPeriods]="carInfo.vehicleInfo.ownerPeriods"
+      ></epgu-constructor-car-owners>
+
+    </ng-template>
+
+    <epgu-constructor-legal-compliance
+      [searchingTransportFlag]="carInfo?.vehicleInfo?.searchingTransportFlag"
+      [restrictionsFlag]="carInfo?.vehicleInfo?.restrictionsFlag"
+      [restrictions]="carInfo?.vehicleInfo?.restrictions"
+    ></epgu-constructor-legal-compliance>
+
+    <div *ngIf="carInfoErrors?.notary; else notaryInfo">
+      <h5 class="info-list-title">Проверка в Федеральной нотариальной палате</h5>
+
+      <div class="car-info-group">
+        <ng-container
+          *ngTemplateOutlet="templateError;
+        context: {iconClass: (carInfoErrors.notary.type | errorTemplate).icon ,
+         title: (carInfoErrors.notary.type | errorTemplate).title, text: this.carInfoErrors.notary.text}"
+        ></ng-container>
+      </div>
+
+    </div>
+
+    <ng-template #notaryInfo>
+      <epgu-constructor-notary-info
+        [isPledged]="carInfo?.notaryInfo?.isPledged"
+      ></epgu-constructor-notary-info>
+    </ng-template>
+
+  </epgu-constructor-screen-pad>
+
+  <div class="car-info-text-helper"> Данные о транспортном средстве предоставлены из официальной базы ГИБДД</div>
+
+</ng-template>
+
+<ng-template #templateError let-iconClass="iconClass" let-title="title" let-text="text">
+  <div class="info-list-group-item info-list-warning-group-item">
+    <div class="info-list-warning-title">
+      <div class="info-list-warning-icon {{iconClass}}"></div>
+      <div>{{title}}</div>
+    </div>
+    <div class="info-list-warning-text">
+      <epgu-constructor-output-html [html]="text"></epgu-constructor-output-html>
+    </div>
+  </div>
+</ng-template>

@@ -1,12 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { DATE_ISO_STRING_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { DatesToolsService } from './dates-tools.service';
+import * as moment_ from 'moment';
+
+const moment = moment_;
+moment.locale('ru');
 
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DatesToolsService]
+      providers: [DatesToolsService],
     });
     service = TestBed.inject(DatesToolsService);
   });
@@ -220,7 +224,6 @@ describe('DatesToolsService', () => {
     });
   });
 
-
   describe('endOfMonth() method', () => {
     it('should return date end of month', () => {
       expect(service.format(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
@@ -285,14 +288,40 @@ describe('DatesToolsService', () => {
 
   describe('intervalToDuration() method', () => {
     it('should return duration object for passed interval', () => {
-      expect(service.intervalToDuration({
-        start: new Date(1929, 0, 15, 12, 0, 0),
-        end: new Date(1968, 3, 4, 19, 5, 0)
-      })).toEqual({ years: 39, months: 2, days: 20, hours: 7, minutes: 5, seconds: 0 });
+      expect(
+        service.intervalToDuration({
+          start: new Date(1929, 0, 15, 12, 0, 0),
+          end: new Date(1968, 3, 4, 19, 5, 0),
+        }),
+      ).toEqual({ years: 39, months: 2, days: 20, hours: 7, minutes: 5, seconds: 0 });
     });
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('utcOffset works like in moment', () => {
+    const getExpected = (slotTime, timezone) => {
+      const time = moment(slotTime).utcOffset(timezone);
+      return time.format('D MMMM YYYY года в HH:mm, dddd');
+    };
+
+    const getActual = (slotTime, timezone) => {
+      let time = service.utcOffset(slotTime, timezone);
+
+      return service.format(time, 'd MMMM yyyy года в HH:mm, eeee');
+    };
+
+    [
+      { slotTime: new Date('2020-05-15'), timezone: '+08:00' },
+      { slotTime: new Date('2020-01-31'), timezone: '+05:00' },
+      { slotTime: new Date('2021-01-31'), timezone: '-08:00' },
+      { slotTime: new Date('2021-02-28'), timezone: '+00:00' },
+      { slotTime: new Date('2021-05-15'), timezone: '-02:00' },
+      { slotTime: new Date('2021-11-11'), timezone: '+06:00' },
+    ].forEach(({ slotTime, timezone }) => {
+      expect(getActual(slotTime, timezone)).toEqual(getExpected(slotTime, timezone));
+    });
   });
 });

@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-len
-import { ConfirmUserDataStyle } from '../../../component/component-screen/components/confirm-personal-user/screens/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+import { ConfirmUserDataStyle } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import {
   TimerComponentDtoAction,
   TimerLabelSection,
@@ -13,7 +13,6 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
-import { CarInfoErrorsDto } from '../../../component/unique-screen/components/car-info/models/car-info.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -140,9 +139,10 @@ export interface ComponentAttrsDto {
   hideSocialShare?: boolean;
   addContextQueryParams?: boolean;
   infoComponents?: string[];
-  errors?: CarInfoErrorsDto;
   add?: { component: string; caption: string[] };
   hideAddNewChildButton?: boolean;
+  dateType?: string;
+  refDate?: string;
 }
 
 export interface ComponentUploadedFileDto {
@@ -278,7 +278,7 @@ export interface ComponentFieldDto {
 export interface ClarificationsDto {
   [key: string]: {
     title: string;
-    text: string;
+    text?: string;
     setting?: {};
   };
 }
@@ -415,6 +415,7 @@ export enum ActionType {
   quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
+  dropdownListModal = 'dropdownListModal',
 }
 
 export enum DTOActionAction {

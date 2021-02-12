@@ -4,8 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 
-
-xdescribe('UniqueComponentModalComponent', () => {
+describe('UniqueComponentModalComponent', () => {
   let component: UniqueComponentModalComponent;
   let fixture: ComponentFixture<UniqueComponentModalComponent>;
 

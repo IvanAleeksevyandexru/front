@@ -73,4 +73,8 @@
     text-align: left;
     color: $color-gray;
   }
+
+  &__all-width {
+    flex-grow: 2;
+  }
 }
