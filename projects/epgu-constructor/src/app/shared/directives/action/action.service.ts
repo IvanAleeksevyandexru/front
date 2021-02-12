@@ -82,10 +82,7 @@ export class ActionService {
         this.navService.redirectToHome();
         break;
       case ActionType.dropdownListModal:
-        this.modalService.openModal(
-          DropdownListModalComponent,
-          { componentId: action.value }
-        );
+        this.openDropdownListModal(action);
         break;
     }
   }
@@ -213,5 +210,12 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
+  }
+
+  private openDropdownListModal({ value }: ComponentActionDto): void {
+    this.modalService.openModal(
+      DropdownListModalComponent,
+      { componentId: value }
+    );
   }
 }
