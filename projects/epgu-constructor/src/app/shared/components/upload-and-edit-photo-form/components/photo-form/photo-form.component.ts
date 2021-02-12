@@ -12,9 +12,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
+
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -145,40 +145,46 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   }
 
   private subscribeToImg(): void {
-    this.img$.subscribe((imageObject) => {
-      this.previousImageObjectUrl = imageObject?.imageObjectUrl;
-      this.isModalOpened = true;
-      this.modalService
-        .openModal<{ changeImage?: boolean; imageObjectUrl?: string }>(
-          PhotoEditorModalComponent,
-          imageObject,
-        )
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((data) => {
-          if (data?.changeImage) {
-            this.fileInput.nativeElement.click();
-          } else if (data?.imageObjectUrl) {
-            this.croppedImageUrl = data.imageObjectUrl;
-            this.croppedImageUrlEvent.emit(this.croppedImageUrl);
-          }
-          this.isModalOpened = false;
-          this.changeDetectionRef.markForCheck();
-        });
-    });
+    this.img$
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        switchMap((imageObject) => {
+          this.previousImageObjectUrl = imageObject?.imageObjectUrl;
+          this.isModalOpened = true;
+          return this.modalService.openModal<{ changeImage?: boolean; imageObjectUrl?: string }>(
+            PhotoEditorModalComponent,
+            imageObject,
+          );
+        }),
+      )
+      .subscribe((data) => {
+        if (data?.changeImage) {
+          this.fileInput.nativeElement.click();
+        } else if (data?.imageObjectUrl) {
+          this.croppedImageUrl = data.imageObjectUrl;
+          this.croppedImageUrlEvent.emit(this.croppedImageUrl);
+        }
+        this.isModalOpened = false;
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   private subscribeToImgAttachError(): void {
-    this.imgAttachError$.subscribe((imageErrors) =>
-      this.modalService
-        .openModal<{ changeImage?: boolean }>(PhotoErrorModalComponent, { imageErrors })
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((data) => {
-          if (data?.changeImage) {
-            this.fileInput.nativeElement.click();
-          }
-          this.changeDetectionRef.markForCheck();
-        }),
-    );
+    this.imgAttachError$
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        switchMap((imageErrors) =>
+          this.modalService.openModal<{ changeImage?: boolean }>(PhotoErrorModalComponent, {
+            imageErrors,
+          }),
+        ),
+      )
+      .subscribe((data) => {
+        if (data?.changeImage) {
+          this.fileInput.nativeElement.click();
+        }
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   private subscribeToImageValidator(): void {
