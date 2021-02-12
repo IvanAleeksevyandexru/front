@@ -28,6 +28,7 @@ import { PaymentTypeSelectorInterface } from '../../payment-type-selector.types'
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
+import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -75,6 +76,7 @@ describe('PaymentTypeSelectorComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
+        AutocompleteApiService,
       ],
     })
       .overrideComponent(PaymentTypeSelectorComponent, {

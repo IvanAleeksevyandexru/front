@@ -11,7 +11,6 @@ describe('AutocompleteApiService', () => {
   let http: HttpTestingController;
   let config: ConfigService;
   let apiUrl: string;
-  let serviceId = '11111';
   let fields = ['CHILD_SNILS'];
   let groupId = 'PASSPORT_DATA';
   let responseMock = [42];
@@ -36,8 +35,8 @@ describe('AutocompleteApiService', () => {
   describe('getSuggestionsGroup()', () => {
     let req;
     beforeEach(fakeAsync(() => {
-      service.getSuggestionsGroup(groupId, serviceId).subscribe(response => expect(response).toBe(responseMock));
-      req = http.expectOne(`${apiUrl}?groups=${groupId}&serviceId=${serviceId}`);
+      service.getSuggestionsGroup(groupId).subscribe(response => expect(response).toBe(responseMock));
+      req = http.expectOne(`${apiUrl}?groups=${groupId}`);
     }));
 
     afterEach(fakeAsync(() => {
@@ -54,22 +53,17 @@ describe('AutocompleteApiService', () => {
       expect(includesGroupdId).toBeTruthy();
     }));
 
-    it('should call with serviceId', fakeAsync(() => {
-      const includesServiceId = req.request.url.includes(serviceId);
-      expect(includesServiceId).toBeTruthy();
-    }));
-
-    it('should call http get with withCredentials equal false', fakeAsync(() => {
+    it('should call http get with withCredentials equals false', fakeAsync(() => {
       const withCredentials = req.request.withCredentials;
-      expect(withCredentials).toBe(false);
+      expect(withCredentials).toBe(true);
     }));
   });
 
   describe('getSuggestionsFields()', () => {
     let req;
     beforeEach(fakeAsync(() => {
-      service.getSuggestionsFields(fields, serviceId).subscribe(response => expect(response).toBe(responseMock));
-      req = http.expectOne(`${apiUrl}?fields=${fields[0]}&serviceId=${serviceId}`);
+      service.getSuggestionsFields(fields).subscribe(response => expect(response).toBe(responseMock));
+      req = http.expectOne(`${apiUrl}?fields=${fields[0]}`);
     }));
 
     afterEach(fakeAsync(() => {
@@ -86,14 +80,9 @@ describe('AutocompleteApiService', () => {
       expect(includesGroupdId).toBeTruthy();
     }));
 
-    it('should call with serviceId', fakeAsync(() => {
-      const includesServiceId = req.request.url.includes(serviceId);
-      expect(includesServiceId).toBeTruthy();
-    }));
-
-    it('should call http get with withCredentials equal false', fakeAsync(() => {
+    it('should call http get with withCredentials equals true', fakeAsync(() => {
       const withCredentials = req.request.withCredentials;
-      expect(withCredentials).toBe(false);
+      expect(withCredentials).toBe(true);
     }));
   });
 });

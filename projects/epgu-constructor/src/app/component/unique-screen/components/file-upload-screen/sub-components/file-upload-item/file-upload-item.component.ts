@@ -158,7 +158,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      const componentList = suggestions[this.componentId].list || [];
+      const componentList = (suggestions && suggestions[this.componentId].list) || [];
       componentList.forEach((item) => {
         const parsedValue = JSON.parse(item.originValue);
         this.componentValues = [

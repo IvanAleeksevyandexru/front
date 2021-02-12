@@ -24,6 +24,9 @@ import {
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -136,7 +139,11 @@ describe('ActionService', () => {
         HtmlRemoverService,
         ActionService,
         NavigationModalService,
-        CurrentAnswersService
+        CurrentAnswersService,
+        AutocompleteApiService,
+        HttpClient,
+        HttpHandler,
+        EventBusService,
       ],
     });
 

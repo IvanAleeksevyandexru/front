@@ -1,9 +1,12 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -146,6 +149,10 @@ describe('ActionDirective', () => {
         HtmlRemoverService,
         CurrentAnswersService,
         ActionService,
+        AutocompleteApiService,
+        HttpClient,
+        HttpHandler,
+        EventBusService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

@@ -15,6 +15,8 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
+import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
   let component: PaymentTypeSelectorButtonComponent;
@@ -38,6 +40,8 @@ describe('PaymentTypeSelectorButtonComponent', () => {
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
+        AutocompleteApiService,
+        EventBusService,
       ],
     })
       .overrideComponent(PaymentTypeSelectorButtonComponent, {

@@ -213,8 +213,11 @@ export class AutocompleteService {
       let { value, mnemonic } = field;
       let originValue = value;
       if (this.utilsService.hasJsonStructure(value)) {
-        originValue = value;
-        const parsedValue = JSON.parse(value);
+        let parsedValue = JSON.parse(value);
+        if (this.repeatableComponents.length) {
+          parsedValue = Object.values(parsedValue[0])[0];
+          originValue = JSON.stringify(parsedValue);
+        }
         value = parsedValue['text'];
       }
       return {
