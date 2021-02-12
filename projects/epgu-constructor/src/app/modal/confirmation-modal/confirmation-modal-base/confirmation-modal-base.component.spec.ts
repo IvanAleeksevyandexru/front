@@ -1,17 +1,25 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmationModalBaseComponent } from './confirmation-modal-base.component';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { BaseModule } from '../../../shared/base.module';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 
-xdescribe('ConfirmationModalBaseComponent', () => {
+describe('ConfirmationModalBaseComponent', () => {
   let component: ConfirmationModalBaseComponent;
   let fixture: ComponentFixture<ConfirmationModalBaseComponent>;
 
-  beforeEach(waitForAsync(()=> {
-    TestBed.configureTestingModule({
-      declarations: [ ConfirmationModalBaseComponent ]
+  beforeEach(async() => {
+    await TestBed.configureTestingModule({
+      declarations: [ ConfirmationModalBaseComponent ],
+      imports: [ BaseModule ],
+      providers: [
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        EventBusService,
+      ],
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmationModalBaseComponent);
