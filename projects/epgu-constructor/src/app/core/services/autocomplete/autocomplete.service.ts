@@ -37,7 +37,7 @@ export class AutocompleteService {
     private datesToolsService: DatesToolsService,
   ) {}
 
-  init(): void {
+  public init(): void {
     this.screenService.display$
       .pipe(
         filter((display) => display !== null),

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
@@ -42,6 +41,6 @@ import { TimerScreenModule } from './components/timer-screen/timer-screen.module
     FieldListScreenModule,
     TimerScreenModule,
   ],
-  providers: [DictionaryApiService, EventBusService, AutocompleteService],
+  providers: [DictionaryApiService, EventBusService],
 })
 export class ComponentScreenComponentsModule {}

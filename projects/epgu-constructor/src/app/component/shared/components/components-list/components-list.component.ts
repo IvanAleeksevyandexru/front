@@ -17,7 +17,6 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../../core/services/autocomplete/autocomplete.inteface';
-import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -74,13 +73,11 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     public screenService: ScreenService,
-    private autocompleteService: AutocompleteService,
   ) {
     this.changes = this.formService.changes;
   }
 
   ngOnInit(): void {
-    this.autocompleteService.init();
     this.eventBusService
       .on('validateOnBlur')
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))

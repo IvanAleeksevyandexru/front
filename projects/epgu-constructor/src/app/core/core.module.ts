@@ -35,6 +35,7 @@ import { UtilsService } from './services/utils/utils.service';
     UtilsService,
     SessionService,
     InitDataService,
+    AutocompleteService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

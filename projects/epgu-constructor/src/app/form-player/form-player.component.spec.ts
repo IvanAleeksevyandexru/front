@@ -36,6 +36,7 @@ import { LocationService } from '../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
 import { SimpleChange } from '@angular/core';
 import { EpguLibModuleInited } from '../shared/base.module';
+import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 
 
 describe('FormPlayerComponent', () => {
@@ -74,6 +75,7 @@ describe('FormPlayerComponent', () => {
       providers: [
         UnsubscribeService,
         LocationService,
+        AutocompleteService,
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },

@@ -28,6 +28,7 @@ import { FormPlayerConfigApiService } from './services/form-player-config-api/fo
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
+import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 
 /**
  * Точка входа для приложения, эквивалент AppComponent.
@@ -62,6 +63,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public screenService: ScreenService,
     public formPlayerStartService: FormPlayerStartManager,
     private changeDetectionRef: ChangeDetectorRef,
+    private autocompleteService: AutocompleteService,
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +71,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
+    this.autocompleteService.init();
   }
 
   ngAfterViewInit(): void {
