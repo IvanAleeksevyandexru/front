@@ -12,13 +12,13 @@ export class TrimDirective {
   onFocusOut(target: HTMLInputElement): void {
     if (this.isTrim) {
       if (this.trimControl) {
-        let value = this.removeNonAlphabeticOrNumeralSymbolsFromBeginning(
+        let value = this.removeUnacceptableSymbolsFromBeginning(
           this.trimControl.value as string,
         );
         value = this.removeExtraSpacesBetweenWords(value);
         this.trimControl.setValue(value.trim());
       } else {
-        let value = this.removeNonAlphabeticOrNumeralSymbolsFromBeginning(target.value);
+        let value = this.removeUnacceptableSymbolsFromBeginning(target.value);
         value = this.removeExtraSpacesBetweenWords(value);
         target.value = value.trim();
         target.dispatchEvent(new Event('input')); // triggers input event for updating value in model
@@ -26,8 +26,8 @@ export class TrimDirective {
     }
   }
 
-  removeNonAlphabeticOrNumeralSymbolsFromBeginning(value: string): string {
-    const index = value.match(/[0-9a-zA-Za-яА-ЯёЁ]/)?.index;
+  removeUnacceptableSymbolsFromBeginning(value: string): string {
+    const index = value.match(/["0-9a-zA-Za-яА-ЯёЁ]/)?.index;
     return index ? value.slice(index) : value;
   }
 
