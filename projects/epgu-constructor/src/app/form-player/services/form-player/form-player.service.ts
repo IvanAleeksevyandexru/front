@@ -8,7 +8,7 @@ import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
-  QuizRequestDto,
+  QuizRequestDto, ScenarioDto,
 } from '../form-player-api/form-player-api.types';
 
 /**
@@ -86,6 +86,12 @@ export class FormPlayerService extends FormPlayerBaseService {
       );
   }
 
+  patchStore(newScenarioDtoDiff: Partial<ScenarioDto>): void {
+    this.updateLoading(true);
+    const newStore = JSON.parse(JSON.stringify(this._store));
+    newStore.scenarioDto = { ...newStore.scenarioDto, ...newScenarioDtoDiff };
+    this.processResponse(newStore);
+  }
 
   /**
    * Обработка ответа сервера
