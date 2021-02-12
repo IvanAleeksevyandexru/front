@@ -38,6 +38,7 @@ import { TimerScreenComponent } from '../unique-screen/components/timer-screen/t
 import { CarListContainerComponent } from '../unique-screen/components/car-list/components/car-list-container/car-list-container.component';
 // eslint-disable-next-line max-len
 import { CarOwnerInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-owner-info-screen/car-owner-info-container.component';
+import { AppealFinesContainerComponent } from '../unique-screen/components/appeal-fines/container/appeal-fines-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -66,7 +67,8 @@ type UniqueScreenComponent =
   | AddPassportContainerComponent
   | SelectChildrenScreenContainerComponent
   | FieldListScreenComponent
-  | TimerScreenComponent;
+  | TimerScreenComponent
+  | AppealFinesContainerComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -104,4 +106,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
   FieldList: FieldListScreenComponent,
   Timer: TimerScreenComponent,
+  AppealFines: AppealFinesContainerComponent
 };

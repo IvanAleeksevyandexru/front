@@ -75,6 +75,10 @@ export class FileUploadComponent implements OnInit {
       });
   }
 
+  getFiles(): FileResponseToBackendUploadsItem[] {
+    return this.value?.files;
+  }
+
   setUploadersRestrictions(): void {
     this.setUploadersMaxSizeAndAmount(Uploaders.total, this.attrs.maxSize, this.attrs.maxFileCount);
 
