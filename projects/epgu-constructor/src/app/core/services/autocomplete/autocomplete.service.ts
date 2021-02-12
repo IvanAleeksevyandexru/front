@@ -117,14 +117,18 @@ export class AutocompleteService {
 
   private findAndUpdateComponentWithValue(mnemonic: string, value: string, id?: number): void {
     const component = this.findComponent(mnemonic);
-    const componentValue = this.screenService.suggestions[component.id]?.list.find(item => {
+    const componentValue = this.findComponentValue(component, id, value);
+    this.setComponentValue(component, componentValue);
+  }
+
+  private findComponentValue(component: ComponentDto, id: number, value: string): string {
+    return this.screenService.suggestions[component.id]?.list.find(item => {
       if (typeof id === 'number') {
         return item.id === id;
       } else {
         return item.value === value;
       }
     })?.originValue || '';
-    this.setComponentValue(component, componentValue);
   }
 
   private findComponent(mnemonic: string): ComponentDto {

@@ -1,59 +1,54 @@
 <div class="fileupload__wrapper">
-  <div *ngIf="data.title"
-       class="title">
-    {{data.title}}
+  <div *ngIf="data.title" class="title">
+    {{ data.title }}
     <epgu-constructor-user-info-loader [isDisplay]="false"></epgu-constructor-user-info-loader>
   </div>
   <div class="file__bottom">
     <epgu-constructor-output-html
       class="info__text"
       [html]="data.label"
-      [clarifications]="clarification">
-    </epgu-constructor-output-html>
-    <div
-      *ngIf="refData?.length"
-      class="fileupload__label"
-      [innerHTML]="refData"
+      [clarifications]="clarification"
     >
-    </div>
+    </epgu-constructor-output-html>
+    <div *ngIf="refData?.length" class="fileupload__label" [innerHTML]="refData"></div>
   </div>
-  <input #fileUploadInput
-         type="file"
-         [attr.accept]="getAcceptTypes()"
-         (click)="resetFileInputState(fileUploadInput)"
-         (change)="updateSelectedFilesInfoAndSend($any($event.target).files)"
-         multiple/>
-  <input #cameraInput
-         type="file"
-         capture="environment"
-         accept="image/*"
-         (change)="updateSelectedFilesInfoAndSend($any($event.target).files, true)">
-  <div *ngIf="(files$$ | async) as files"
-       class="files">
-    <div *ngFor="let file of files"
-         class="file">
-      <div class="file__icon"
-           [class.uploaded]="file.uploaded"
-           [class.loading]="!file.uploaded">
-      </div>
+  <input
+    #fileUploadInput
+    type="file"
+    [attr.accept]="getAcceptTypes()"
+    (click)="resetFileInputState(fileUploadInput)"
+    (change)="updateSelectedFilesInfoAndSend($any($event.target).files)"
+    multiple
+  />
+  <input
+    #cameraInput
+    type="file"
+    capture="environment"
+    accept="image/*"
+    (change)="updateSelectedFilesInfoAndSend($any($event.target).files, true)"
+  />
+  <div *ngIf="files$$ | async as files" class="files">
+    <div *ngFor="let file of files" class="file">
+      <div
+        class="file__icon"
+        [class.uploaded]="file.uploaded"
+        [class.loading]="!file.uploaded"
+      ></div>
       <div class="file__title-wrapper">
-        <div *ngIf="file.uploaded"
-             class="file__title uploaded"
-             [innerText]="file.fileName"
-             (click)="downloadFile(file)">
-        </div>
-        <span *ngIf="!file.uploaded"
-              class="file__title">
+        <div
+          *ngIf="file.uploaded"
+          class="file__title uploaded"
+          [innerText]="file.fileName"
+          (click)="downloadFile(file)"
+        ></div>
+        <span *ngIf="!file.uploaded" class="file__title">
           Файл загружается...
         </span>
-        <div *ngIf="file.uploaded"
-             class="file__title-info">
-          Файл загружен ({{file.getFileSize()}})
+        <div *ngIf="file.uploaded" class="file__title-info">
+          Файл загружен ({{ file.getFileSize() }})
         </div>
       </div>
-      <button *ngIf="file.uploaded"
-              class="file__action"
-              (click)="deleteFile(file)">
+      <button *ngIf="file.uploaded" class="file__action" (click)="deleteFile(file)">
         Удалить
       </button>
     </div>
@@ -66,9 +61,11 @@
       (click)="openCamera()"
       class="fileupload__button"
     >
-      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
-           class="fileupload__button-icon"
-           alt="Фото"/>
+      <img
+        src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
+        class="fileupload__button-icon"
+        alt="Фото"
+      />
       Фото
     </lib-button>
     <lib-button
@@ -77,17 +74,26 @@
       (click)="selectFilesEvent()"
       class="fileupload__button"
     >
-      <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
-           class="fileupload__button-icon"
-           alt="Файл"/>
+      <img
+        src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
+        class="fileupload__button-icon"
+        alt="Файл"
+      />
       Файл
     </lib-button>
   </div>
+  <div class="mt-24" *ngIf="(suggestions$ | async) && (suggestions$ | async)[componentId]">
+    <div>
+      Ранее загруженные файлы
+    </div>
+    <div class="mt-8" *ngFor="let prevFile of (suggestions$ | async)[componentId].list">
+      <div style="border: 1px dashed pink; word-break: break-all; padding: 8px;">{{ prevFile.originValue }}</div>
+    </div>
+  </div>
   <div *ngIf="errors.length">
-    <div *ngFor="let error of errors"
-         class="error">
+    <div *ngFor="let error of errors" class="error">
       <div class="file__icon has-error"></div>
-      <span>{{error}}</span>
+      <span>{{ error }}</span>
     </div>
   </div>
 </div>

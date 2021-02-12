@@ -29,6 +29,7 @@ import {
 } from '../../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 enum ErrorActions {
   clear = 'clear',
@@ -106,6 +107,8 @@ export class FileUploadItemComponent implements OnDestroy {
   filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
   filesInCompression = 0; // Количество файлов, проходящих через компрессию
   files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
+  suggestions$ = this.screenService.suggestions$;
+  componentId = this.screenService.component.id;
 
   files$ = this.files$$
     .asObservable()
@@ -146,6 +149,7 @@ export class FileUploadItemComponent implements OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private changeDetectionRef: ChangeDetectorRef,
+    private screenService: ScreenService,
   ) {
     this.isMobile = this.deviceDetectorService.isMobile;
   }
