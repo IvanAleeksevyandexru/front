@@ -1,6 +1,13 @@
 <div class="uploader-manager-item__container">
   <div class="uploader-manager-item__thumb">
-    <ng-container *ngIf="!isError">
+    <ng-container
+      *ngIf="
+        (isError &&
+          (fileItem?.error?.type === errorTypeAction.addDeletionErr ||
+            fileItem?.error?.type === errorTypeAction.addUploadErr)) ||
+        !isError
+      "
+    >
       <ng-container
         *ngIf="
           status === fileStatus.uploading || status === fileStatus.downloading;
@@ -16,18 +23,19 @@
           <img [src]="imageUrl | safe: 'url'" [alt]="name" />
         </div>
         <div *ngIf="!isImage" class="fileType-preview">
-          <ng-container
-            *ngTemplateOutlet="fileTypeTemplate; context: { backgroundClass: 'tag__file-type' }"
-          ></ng-container>
-          <div class="tag__text">{{ extension }}</div>
+          <img [src]="basePath + selectedIconType + '.svg'" alt="error" />
         </div>
       </ng-template>
     </ng-container>
-    <div *ngIf="isError" class="fileType-preview">
-      <ng-container
-        *ngTemplateOutlet="fileTypeTemplate; context: { backgroundClass: 'tag__error' }"
-      ></ng-container>
-      <div class="tag__text">x_x</div>
+    <div
+      *ngIf="
+        isError &&
+        fileItem?.error?.type !== errorTypeAction.addDeletionErr &&
+        fileItem?.error?.type !== errorTypeAction.addUploadErr
+      "
+      class="fileType-preview"
+    >
+      <img [src]="basePath + errorIcon + '.svg'" alt="error" />
     </div>
   </div>
   <div class="uploader-manager-item__info">
@@ -41,25 +49,21 @@
             status === fileStatus.downloading ||
             status === fileStatus.preparation ||
             status === fileStatus.delition;
-          else sizeTemplate
+          else sizeTemplateDesktop
         "
-        class="status"
+        class="size desktop"
       >
-        &nbsp;| {{ statusText[status] }}
+        {{ statusText[status] }}
       </div>
-      <ng-template #sizeTemplate>
-        <div class="size">&nbsp;| {{ size | fileSize }}</div>
-      </ng-template>
+
       <div class="uploader-manager-item__action">
         <button
           *ngIf="status === fileStatus.error || status === fileStatus.uploaded"
           (click)="delete.emit(fileItem)"
-          class="uploader-manager-item__button {{
+          class="uploader-manager-item__button remove_button {{
             status === fileStatus.error ? 'uploader-manager-item__button_error' : ''
           }}"
-        >
-          Удалить
-        </button>
+        ></button>
         <button
           class="uploader-manager-item__button"
           *ngIf="status === fileStatus.uploading"
@@ -83,15 +87,27 @@
         </button>
       </div>
     </div>
-    <!--    <button-->
-    <!--      *ngIf="-->
-    <!--        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading-->
-    <!--      "-->
-    <!--      (click)="viewAction()"-->
-    <!--      class="uploader-manager-item__button"-->
-    <!--    >-->
-    <!--      Посмотреть-->
-    <!--    </button>-->
+    <div
+      *ngIf="
+        status === fileStatus.uploading ||
+          status === fileStatus.downloading ||
+          status === fileStatus.preparation ||
+          status === fileStatus.delition;
+        else sizeTemplateMobile
+      "
+      class="size mobile"
+    >
+      {{ statusText[status] }}
+    </div>
+    <button
+      *ngIf="
+        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading
+      "
+      (click)="viewAction()"
+      class="uploader-manager-item__button view_button"
+    >
+      Посмотреть
+    </button>
   </div>
 </div>
 <div *ngIf="isError" class="uploader-manager-item__error">
@@ -109,14 +125,9 @@
 </div>
 
 <a class="link" #elementLink [href]="link" [type]="type" target="_blank"></a>
-
-<ng-template #fileTypeTemplate let-backgroundClass="backgroundClass">
-  <div class="tag {{ backgroundClass }}">
-    <svg width="46" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M4.986 23.5c-3.092 0-5.015-3.358-3.45-6.025L9.181 4.45a8 8 0 016.9-3.95H42a4 4 0 014 4v15a4 4 0 01-4 4H4.986z"
-        fill="#851F82"
-      />
-    </svg>
-  </div>
+<ng-template #sizeTemplateDesktop>
+  <div class="size desktop">{{ size | fileSize }}</div>
+</ng-template>
+<ng-template #sizeTemplateMobile>
+  <div class="size mobile">{{ size | fileSize }}</div>
 </ng-template>

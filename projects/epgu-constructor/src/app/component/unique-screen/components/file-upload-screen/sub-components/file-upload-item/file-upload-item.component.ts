@@ -24,7 +24,7 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
-import { FileUploadService } from '../file-upload.service';
+import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 import {
   ErrorActions,
   FileItem,
@@ -37,6 +37,16 @@ import {
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
+
+interface OverLimitsItem {
+  count: number;
+  isMax: boolean;
+}
+interface OverLimits {
+  totalSize: OverLimitsItem;
+  totalAmount: OverLimitsItem;
+  amount: OverLimitsItem;
+}
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -52,24 +62,54 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
+    this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
+    this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
     this.updateAcceptTypes();
   }
+  maxTotalSize: number;
+  maxTotalAmount: number;
   acceptTypes?: string;
+
+  itemPluralMapping = {
+    file: {
+      '=0': '0 файлов',
+      '=1': '1 файл',
+      other: '# файлов',
+    },
+  };
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;
-  errors: string[] = [];
 
   listUploadingStatus = new BehaviorSubject<boolean>(false);
 
+  overTotalAmount = new BehaviorSubject<number>(0);
+  overTotalSize = new BehaviorSubject<number>(0);
+  overAmount = new BehaviorSubject<number>(0);
+  overLimits = new BehaviorSubject<OverLimits>({
+    totalSize: { count: 0, isMax: false },
+    totalAmount: { count: 0, isMax: false },
+    amount: { count: 0, isMax: false },
+  });
+
   processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
+
   processingFiles$ = this.processingFiles.pipe(
+    tap(() => this.resetLimits()), // Обнуляем каунтеры перебора
+    tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на upploaded статутс
+    tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map((file: File) => new FileItem(FileItemStatus.preparation, file)), // Формируем FileItem
+    concatMap(
+      (file: FileItem) =>
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes), // Валидируем файл
+    ),
+    filter((file: FileItem) => this.limitFilter(file)), // Фильруем по лимитам
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
-    tap((file: FileItem) => this.updateUploadingInfo(file)),
-    tap((file: FileItem) => this.addPrepare(file)),
+    filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
+    tap((file: FileItem) => this.incrementLimits(file)), // Обновляем лимиты
+    tap((file: FileItem) => this.addUpload(file)), // Эвент на згарузку
   );
 
   store = new FileItemStore();
@@ -89,10 +129,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   get data(): FileUploadItem {
     return this.loadData;
-  }
-
-  get isButtonsDisabled(): boolean {
-    return false;
   }
 
   operationsUploading: Record<string, Operation> = {};
@@ -172,6 +208,28 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
   ) {}
+
+  resetLimits(): void {
+    const limits = { ...this.overLimits.getValue() };
+    limits.totalAmount.count = 0;
+    limits.totalSize.count = 0;
+    limits.amount.count = 0;
+    this.overLimits.next(limits);
+  }
+
+  limitFilter(file: FileItem): boolean {
+    const maxTotalAmount = file?.error?.type === ErrorActions.addMaxTotalAmount;
+    const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
+    const maxAmount = file?.error?.type === ErrorActions.addMaxAmount;
+    const limits = { ...this.overLimits.getValue() };
+    limits.totalAmount.count = maxTotalAmount
+      ? limits.totalAmount.count + 1
+      : limits.totalAmount.count;
+    limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
+    limits.amount.count = maxAmount ? limits.amount.count + 1 : limits.amount.count;
+    this.overLimits.next(limits);
+    return !maxAmount && !maxTotalSize && !maxTotalAmount;
+  }
 
   reduceChanges(
     acc: FileResponseToBackendUploadsItem,
@@ -273,17 +331,20 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     const fileItem = operation.item;
     const { status } = fileItem;
     return of(fileItem).pipe(
-      tap((file) => this.store.changeStatus(file, FileItemStatus.delition)),
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.delition)),
       concatMap((file) =>
         status === FileItemStatus.uploaded
-          ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(map(() => undefined))
+          ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
+              tap(() => this.decrementLimits(fileItem)),
+              tap(() => this.resetLimits()),
+              map(() => undefined),
+            )
           : of(undefined),
       ),
       catchError((e) => {
         this.store.update(fileItem.setError(this.getError(ErrorActions.addDeletionErr)));
         return throwError(e);
       }),
-      tap(() => this.updateUploadingInfo(fileItem, true)),
       tap(() => this.store.remove(fileItem)),
     );
   }
@@ -292,19 +353,44 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.createOperation(OperationType.upload, file);
   }
 
+  incrementLimits(file: FileItem): void {
+    if (file.limited) {
+      return;
+    }
+    this.updateUploadingInfo(file);
+    this.maxLimitUpdate();
+    this.store.update(file.setLimited(true));
+  }
+  decrementLimits(file: FileItem): void {
+    if (!file.limited) {
+      return;
+    }
+    this.updateUploadingInfo(file, true);
+    this.maxLimitUpdate();
+    this.store.update(file.setLimited(false));
+  }
+
+  maxLimitUpdate(): void {
+    const limits = { ...this.overLimits.getValue() };
+    const checkSize = this.fileUploadService.checkFilesSize(1, this.data.uploadId);
+    const checkAmount = this.fileUploadService.checkFilesAmount(1, this.data.uploadId);
+    limits.totalSize.isMax = checkSize?.reason === CheckFailedReasons.total;
+    limits.amount.isMax = checkAmount?.reason === CheckFailedReasons.uploaderRestriction;
+    limits.totalAmount.isMax = checkAmount?.reason === CheckFailedReasons.total;
+    this.overLimits.next(limits);
+  }
+
   uploading(operation: Operation): Observable<void> {
     const { item } = operation;
     const options = item.createUploadOptions(this.objectId, UPLOAD_OBJECT_TYPE, this.getMnemonic());
 
     return of(item).pipe(
-      tap((file) => this.store.changeStatus(file, FileItemStatus.uploading)),
-      tap((file: FileItem) =>
-        this.fileUploadService.updateFilesSize(file.raw.size, this.loadData.uploadId),
-      ),
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.uploading)),
+      tap((file: FileItem) => this.incrementLimits(file)),
       concatMap((file) => this.terabyteService.uploadFile(options, file.raw)),
       catchError((e) => {
         this.store.update(item.setError(this.getError(ErrorActions.addUploadErr)));
-        this.fileUploadService.decrementFilesSize(item.raw.size, this.loadData.uploadId);
+        this.decrementLimits(item);
         return throwError(e);
       }),
       concatMap(() => this.terabyteService.getFileInfo(options)),
@@ -352,9 +438,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       ? of(file)
       : this.terabyteService.downloadFile(file.createUploadedParams()).pipe(
           catchError((e) => {
-            // TODO: Добавить в общий стэк ошибок
-            // this.updateFileItem(this.createError(ErrorActions.addDownloadErr, fileItem));
-            // this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
             return throwError(e);
           }),
           map((blob: Blob) =>
@@ -368,7 +451,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       map((file) => new FileItem(FileItemStatus.uploaded, null, file)),
       mergeMap((file: FileItem) => this.loadImage(file)),
       tap((file: FileItem) => this.store.add(file)),
-      tap((file: FileItem) => this.updateUploadingInfo(file)),
+      tap((file: FileItem) => this.incrementLimits(file)),
       tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
     );
   }
@@ -405,20 +488,19 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   getError(action: ErrorActions): FileItemError {
     const errorHandler = {};
-    // errorHandler[
-    //   ErrorActions.addMaxTotalAmount
-    // ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
-
-    // errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
-    //   this.fileUploadService.getMaxTotalFilesSize(),
-    // )} МБ`;
-
     // eslint-disable-next-line prettier/prettier
-    // errorHandler[
-    //   ErrorActions.addMaxAmount
-    // ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
-
-    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxTotalSize] = {
+      text: ``,
+      description: ``,
+    };
+    errorHandler[ErrorActions.addMaxAmount] = {
+      text: ``,
+      description: ``,
+    };
+    errorHandler[ErrorActions.addMaxTotalAmount] = {
+      text: ``,
+      description: ``,
+    };
     errorHandler[ErrorActions.addMaxSize] = {
       text: `Файл тяжелее ${getSizeInMB(this.data.maxSize)} МБ`,
       description: `Попробуйте уменьшить размер или загрузите файл полегче`,
@@ -457,6 +539,33 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           .map((fileType) => `.${fileType}`)
           .join(',')
           .toLowerCase();
+  }
+
+  checkMaxTotalAmount(amountFiles: number = 1): boolean {
+    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
+      amountFiles,
+      this.data.uploadId,
+    );
+    return !(!isValid && reason === CheckFailedReasons.total);
+  }
+
+  checkMaxAmount(amountFiles: number = 1): boolean {
+    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
+      amountFiles,
+      this.data.uploadId,
+    );
+    return !(!isValid && reason === CheckFailedReasons.uploaderRestriction);
+  }
+
+  checkAmount(amountFiles: number = 1): boolean {
+    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
+      amountFiles,
+      this.data.uploadId,
+    );
+    return !(
+      !isValid &&
+      (reason === CheckFailedReasons.total || reason === CheckFailedReasons.uploaderRestriction)
+    );
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {

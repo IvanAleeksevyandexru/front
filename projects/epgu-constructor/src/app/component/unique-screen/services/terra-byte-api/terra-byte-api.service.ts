@@ -24,7 +24,7 @@ import { of } from 'rxjs';
 @Injectable()
 export class TerraByteApiService {
   chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; //кол-во в мб
-  chunkPacketMaxSize = 1;
+  chunkPacketMaxSize = 5;
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**

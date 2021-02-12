@@ -32,6 +32,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  align-items: center;
   .name {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -42,13 +43,34 @@
     &.active {
       cursor: pointer;
     }
+    @include phones-down {
+      flex-grow: 1;
+    }
   }
-  .size,
-  .status {
-    flex-grow: 1;
-    @include typ-plain-text;
-    white-space: nowrap;
-    color: $color-text-helper;
+}
+.size {
+  flex-grow: 1;
+  @include typ-plain-text;
+  white-space: nowrap;
+  color: $color-text-helper;
+  &:before {
+    content: ' | ';
+    white-space: pre;
+    @include phones-down {
+      content: '';
+    }
+  }
+  &.mobile {
+    display: none;
+    @include phones-down {
+      display: block;
+    }
+  }
+  &.desktop {
+    display: block;
+    @include phones-down {
+      display: none;
+    }
   }
 }
 
@@ -86,10 +108,9 @@
   border: 0;
   cursor: pointer;
   outline: none;
-  text-decoration: none;
   padding: 0;
   &:hover {
-    text-decoration: underline;
+    color: $color-active-item;
   }
   &.uploader-manager-item__button_error {
     color: $color-gosred;
@@ -121,21 +142,6 @@
     align-items: center;
   }
 }
-.tag {
-  display: flex;
-  justify-content: flex-end;
-  line-height: 0;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.tag__error path {
-  fill: $color-gosred;
-}
-
-.tag__file-type path {
-  //fill: $color-file-type;
-}
 
 .photo-preview {
   height: 48px;
@@ -143,11 +149,43 @@
   border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
   img {
     object-fit: cover;
     object-position: 50% 50%;
     width: 100%;
     height: 100%;
+  }
+  &:after {
+    @include phones-down {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.72) url('../../../../../../assets/icons/svg/pen.svg')
+        no-repeat center center;
+    }
+  }
+}
+.view_button {
+  @include phones-down {
+    display: none;
+  }
+}
+.remove_button {
+  &:after {
+    content: 'Удалить';
+    @include phones-down {
+      content: '';
+    }
+  }
+  @include phones-down {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.72) url('../../../../../../assets/icons/svg/delete.svg')
+      no-repeat center center;
   }
 }
 

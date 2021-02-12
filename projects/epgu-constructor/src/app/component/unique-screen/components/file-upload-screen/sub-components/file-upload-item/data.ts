@@ -41,8 +41,7 @@ export class FileItemStore {
   files = new BehaviorSubject<FileItem[]>([]);
 
   add(file: FileItem): FileItemStore {
-    const files = [...this.files.getValue()];
-    files.push(file);
+    const files = [...this.files.getValue(), file];
     this.files.next(files);
     return this;
   }
@@ -57,9 +56,26 @@ export class FileItemStore {
     this.files.next(files.filter((item) => item.id !== file.id));
   }
 
+  removeWithErrorStatus(ignoreTypes: ErrorActions[] = []): void {
+    const files = [...this.files.getValue()];
+    this.files.next(
+      files.filter(
+        (item) =>
+          (item.status === FileItemStatus.error && ignoreTypes.includes(item?.error?.type)) ||
+          item.status !== FileItemStatus.error,
+      ),
+    );
+  }
+
   changeStatus(file: FileItem, status: FileItemStatus): void {
     file.setStatus(status);
     this.update(file);
+  }
+  errorTo(errorType: ErrorActions, status: FileItemStatus): void {
+    const files = [...this.files.getValue()];
+    files.forEach((item) =>
+      item?.error?.type === errorType ? this.update(item.setStatus(status).clearError()) : null,
+    );
   }
 }
 
@@ -67,6 +83,7 @@ export class FileItem {
   id = v4();
   error: FileItemError;
   isImage: boolean;
+  limited = false;
   constructor(public status: FileItemStatus, public raw?: File, public item?: UploadedFile) {
     if (item) {
       this.item.uploaded = true;
@@ -78,12 +95,21 @@ export class FileItem {
         type: item.mimeType,
       } as File;
     }
-    this.isImage = this.raw.type.indexOf('image') !== -1;
+    this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
+  }
+
+  setLimited(limit: boolean): FileItem {
+    this.limited = limit;
+    return this;
   }
 
   setError(error: FileItemError): FileItem {
     this.error = error;
     this.setStatus(FileItemStatus.error);
+    return this;
+  }
+  clearError(): FileItem {
+    this.error = null;
     return this;
   }
   setStatus(status: FileItemStatus): FileItem {

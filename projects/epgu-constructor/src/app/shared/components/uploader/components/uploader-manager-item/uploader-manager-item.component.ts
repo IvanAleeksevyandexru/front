@@ -16,6 +16,7 @@ import {
   OperationType,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',
@@ -42,7 +43,7 @@ export class UploaderManagerItemComponent {
       this.link = this.teraService.getDownloadApiPath(file.createUploadedParams());
     }
     this.isImage = file.isImage;
-    this.extension = file.raw.name.split('.').pop();
+    this.extension = file.raw.name.split('.').pop().toLowerCase();
     this.size = file.raw.size;
     this.name = file.raw.name;
     this.type = file.raw.type;
@@ -50,7 +51,9 @@ export class UploaderManagerItemComponent {
     if (this.isImage) {
       this.imageUrl = window.URL.createObjectURL(file.raw);
     }
+    this.selectedIconType = this.iconsType[this.extension] ?? 'TXT';
   }
+  selectedIconType: string;
 
   errorTypeAction = ErrorActions;
   type: string;
@@ -68,17 +71,47 @@ export class UploaderManagerItemComponent {
   fileItem: FileItem;
 
   statusText = FileItemStatusText;
+  basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
+  errorIcon = 'Error';
 
-  constructor(private teraService: TerraByteApiService) {}
+  iconsType = {
+    doc: 'DOC',
+    docx: 'DOC',
+    jpg: 'JPG',
+    jpeg: 'JPG',
+    bmp: 'BMP',
+    csv: 'CSV',
+    flv: 'FLV',
+    gif: 'GIF',
+    key: 'KEY',
+    mov: 'MOV',
+    mpg: 'MPG',
+    pdf: 'PDF',
+    png: 'PNG',
+    ppt: 'PPT',
+    rar: 'RAR',
+    rtf: 'RTF',
+    sig: 'SIG',
+    tif: 'TIF',
+    tiff: 'TIF',
+    txt: 'TXT',
+    xls: 'XLS',
+    xml: 'XML',
+    zip: 'ZIP',
+  };
+
+  constructor(private teraService: TerraByteApiService, public config: ConfigService) {}
 
   cancelAction(type: OperationType): void {
     this.cancel.emit({ type, item: this.fileItem });
   }
   viewAction(): void {
-    if (this.isImage) {
-      this.preview();
-    } else if (this.link) {
-      this.elementLink.nativeElement.click();
+    if (!this.isError) {
+      if (this.isImage) {
+        this.preview();
+      } else if (this.link) {
+        this.elementLink.nativeElement.click();
+      }
     }
   }
 

@@ -168,12 +168,26 @@ input[type='file'] {
   background-color: transparent;
   border: 0;
   cursor: pointer;
-  margin-top: 24px;
+  margin-top: 10px;
   outline: none;
 }
 .uploader-info {
   color: $color-text-helper;
   @include typ-plain-small;
+}
+.message__text {
+  @include typ-plain-small;
+  font-weight: $fw-bold;
+  color: $color-summer-night;
+  margin-bottom: 4px;
+  &.message__text_error {
+    font-weight: $fw-regular;
+    color: $color-tela-rossa;
+  }
+}
+.message__description {
+  @include typ-plain-small;
+  color: $color-text-helper;
 }
 
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');
