@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { CarInfo, ServiceResult } from '../../models/car-info.interface';
 import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
-import { CarInfoComponent } from '../../components/car-info-screen/car-info.component';
+import { CarInfoComponent } from '../../components/car-info/car-info.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
@@ -29,6 +29,12 @@ import { ModelMarkNamePipe } from '../../pipes/model-mark-name.pipe';
 import { CarDatePipe } from '../../pipes/car-date.pipe';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
 import { ExpansionLinkComponent } from '../../components/expansion-link/expansion-link.component';
+import { CarOwnerInfoContainerComponent } from '../car-owner-info-screen/car-owner-info-container.component';
+import { CarOwnerInfoComponent } from '../../components/car-owner-info/car-owner-info.component';
+import { CarOwnersComponent } from '../../components/car-owners/car-owners.component';
+import { LegalComplianceComponent } from '../../components/legal-compliance/legal-compliance.component';
+import { NotaryInfoComponent } from '../../components/notary-info/notary-info.component';
+import { PassportInfoPipe } from '../../pipes/passport-info.pipe';
 
 
 describe('CarInfoContainerComponent', () => {
@@ -51,15 +57,21 @@ describe('CarInfoContainerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        CarInfoContainerComponent,
         CarInfoComponent,
+        CarInfoContainerComponent,
+        CarOwnerInfoContainerComponent,
+        CarOwnerInfoComponent,
+        CarOwnersComponent,
+        LegalComplianceComponent,
+        NotaryInfoComponent,
+        ExpansionLinkComponent,
         YesNoPipe,
         ErrorTemplatePipe,
         EnginePowerPipe,
         ModelMarkNamePipe,
         CarDatePipe,
+        PassportInfoPipe,
         DefaultValuePipe,
-        ExpansionLinkComponent
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

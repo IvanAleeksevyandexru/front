@@ -1,0 +1,12 @@
+@import "../../../../../../../styles/components/info-list";
+@import "../../../../../../../styles/core";
+
+.car-info-block:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.car-info-text-helper {
+  @include typ-plain-small;
+  color: $color-text-helper
+}
+

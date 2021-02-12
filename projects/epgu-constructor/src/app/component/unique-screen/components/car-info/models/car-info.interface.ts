@@ -1,4 +1,5 @@
 import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
 
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',
@@ -54,13 +55,13 @@ export interface VehicleInfo {
   ownerPeriods: OwnerPeriod[];
 }
 
-interface OwnerPeriod {
+export interface OwnerPeriod {
   ownerType: string;
   dateStart: string;
   dateEnd: string;
 }
 
-interface Restriction {
+export interface Restriction {
   restrictionType: string;
   status: string;
   restrictionDate: string;
@@ -81,3 +82,23 @@ export interface CarInfoErrorsDto {
   EXTERNAL_SERVER_ERROR?: string,
   NOT_FOUND_ERROR?: string
 }
+
+export interface OwnerCarInfo {
+  vehicleInfo: VehicleOwnerInfo;
+  notaryInfo: NotaryInfo;
+  vehicleServiceCallResult: ServiceResult;
+  notaryServiceCallResult: ServiceResult;
+  ownerInfo: OwnerInfo;
+}
+
+export interface OwnerInfo {
+  fullName: string;
+  document: Document;
+}
+
+export interface Document {
+  series: string;
+  number: string;
+  issueDate: string;
+}
+
