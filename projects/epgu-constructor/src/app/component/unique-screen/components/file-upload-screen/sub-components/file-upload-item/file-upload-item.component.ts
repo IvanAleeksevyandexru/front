@@ -5,6 +5,7 @@ import {
   ElementRef,
   Input,
   OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
@@ -55,7 +56,7 @@ const maxImgSizeInBytes = 525288;
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploadItemComponent implements OnDestroy {
+export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input() prefixForMnemonic: string;
@@ -109,6 +110,7 @@ export class FileUploadItemComponent implements OnDestroy {
   files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
   suggestions$ = this.screenService.suggestions$;
   componentId = this.screenService.component.id;
+  componentValues: string[];
 
   files$ = this.files$$
     .asObservable()
@@ -153,6 +155,35 @@ export class FileUploadItemComponent implements OnDestroy {
   ) {
     this.isMobile = this.deviceDetectorService.isMobile;
   }
+
+  ngOnInit(): void {
+    this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
+      const componentList = suggestions[this.componentId].list || [];
+      componentList.forEach((item) => {
+        const parsedValue = JSON.parse(item.originValue);
+        this.componentValues = [
+          ...parsedValue.uploads.reduce((acc, upload) => {
+            acc.push(
+              ...upload.value.map((value) => {
+                return `
+                ${value.fileName}<br>
+                ${value.mnemonic}<br>
+                ${value.realPath}<br>
+                https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${value.objectId}/${value.objectTypeId}?mnemonic=${value.mnemonic}
+                `;
+              }),
+            );
+            return acc;
+          }, []),
+        ];
+      });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((sub) => sub.unsubscribe());
+  }
+
   updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
     if (!fileName?.includes(photoBaseName)) {
       return;
@@ -402,10 +433,6 @@ export class FileUploadItemComponent implements OnDestroy {
         this.terabyteService.pushFileToBrowserForDownload(result, file);
         subs.unsubscribe();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub.unsubscribe());
   }
 
   /**

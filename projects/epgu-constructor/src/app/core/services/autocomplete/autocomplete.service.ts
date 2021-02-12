@@ -50,20 +50,14 @@ export class AutocompleteService {
         this.repeatableComponents = display.components[0]?.attrs?.repeatableComponents || [];
         const componentsSuggestionsFieldsIds: string[] = this.getComponentsSuggestionsFieldsIds(
           display,
-        );
+        ) || [];
 
         if (this.groupId) {
-          this.autocompleteApiService.getSuggestionsGroup(this.groupId).subscribe((suggestions: ISuggestionApi[]) => {
-            this.formatAndPassDataToComponents(suggestions);
-          });
+          this.groupSuggestionsApiCall();
           return;
         }
         if (componentsSuggestionsFieldsIds.length) {
-          this.autocompleteApiService.getSuggestionsFields(componentsSuggestionsFieldsIds).subscribe(
-            (suggestions: ISuggestionApi[]) => {
-              this.formatAndPassDataToComponents(suggestions);
-            },
-          );
+          this.fieldsSuggestionsApiCall(componentsSuggestionsFieldsIds);
           return;
         }
       });
@@ -113,6 +107,33 @@ export class AutocompleteService {
           }
         );
       });
+
+      this.eventBusService
+        .on('suggestionDeleteEvent')
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe((payload: ISuggestionItemList): void => {
+          let { mnemonic } = payload;
+
+          if (this.groupId) {
+            this.groupSuggestionsApiCall();
+          } else {
+            this.fieldsSuggestionsApiCall([mnemonic]);
+          }
+        });
+  }
+
+  private groupSuggestionsApiCall(): void {
+    this.autocompleteApiService.getSuggestionsGroup(this.groupId).subscribe((suggestions: ISuggestionApi[]) => {
+      this.formatAndPassDataToComponents(suggestions);
+    });
+  }
+
+  private fieldsSuggestionsApiCall(componentsSuggestionsFieldsIds: string[]): void {
+    this.autocompleteApiService.getSuggestionsFields(componentsSuggestionsFieldsIds).subscribe(
+      (suggestions: ISuggestionApi[]) => {
+        this.formatAndPassDataToComponents(suggestions);
+      }
+    );
   }
 
   private findAndUpdateComponentWithValue(mnemonic: string, value: string, id?: number): void {

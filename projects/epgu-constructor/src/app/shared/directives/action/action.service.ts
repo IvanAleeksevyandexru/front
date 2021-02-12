@@ -23,6 +23,7 @@ import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -44,6 +45,7 @@ export class ActionService {
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
     private autocompleteApiService: AutocompleteApiService,
+    private eventBusService: EventBusService,
   ) {
   }
 
@@ -172,9 +174,11 @@ export class ActionService {
   }
 
   private deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {
-    const id: string = action.value.split(':').pop();
+    const [mnemonic, value, id] = action.value.split(':');
     targetElement.setAttribute('disabled', 'disabled');
-    this.autocompleteApiService.deleteSuggestionsField(Number(id)).subscribe();
+    this.autocompleteApiService.deleteSuggestionsField(Number(id)).subscribe(() => {
+      this.eventBusService.emit('suggestionDeleteEvent', { mnemonic, value, id });
+    });
   }
 
   private getActionDTO(action: ComponentActionDto): ActionDTO {
