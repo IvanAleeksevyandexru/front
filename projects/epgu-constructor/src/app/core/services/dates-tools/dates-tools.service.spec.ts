@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { DATE_ISO_STRING_FORMAT, DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { DatesToolsService } from './dates-tools.service';
 
+jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
+
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
   beforeEach(() => {
