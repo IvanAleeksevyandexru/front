@@ -83,9 +83,12 @@
     </lib-button>
   </div>
   <div class="mt-24" *ngIf="(suggestions$ | async) && (suggestions$ | async)[componentId]">
-    <div>
-      Ранее загруженные файлы
-    </div>
+    <button class="btn-edit" epgu-constructor-action [action]="attachUploadedFiles">
+      <div
+        class="btn-edit__icon"
+      ></div>
+      <span class="btn-edit__text">Ранее загруженные</span>
+    </button>
     <div class="mt-8" *ngFor="let prevFile of componentValues">
       <epgu-constructor-output-html [html]="prevFile" style="border: 1px dashed pink; word-break: break-all; padding: 8px;">
       </epgu-constructor-output-html>

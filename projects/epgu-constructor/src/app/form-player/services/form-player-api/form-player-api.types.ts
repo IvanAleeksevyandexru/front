@@ -419,6 +419,7 @@ export enum ActionType {
   profileEdit = 'profileEdit',
   home = 'home',
   deleteSuggest = 'deleteSuggest',
+  attachUploadedFiles = 'attachUploadedFiles',
 }
 
 export enum DTOActionAction {
@@ -433,6 +434,7 @@ export enum DTOActionAction {
   editPassportData = 'editPassportData',
   editLegalPhone = 'editLegalPhone',
   editLegalEmail = 'editLegalEmail',
+  attachUploadedFiles = 'attachUploadedFiles',
 }
 
 export interface CheckOrderApiResponse {

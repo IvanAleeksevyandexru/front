@@ -31,6 +31,7 @@ import {
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { ATTACH_UPLOADED_FILES } from '../../../../../../shared/constants/actions';
 
 enum ErrorActions {
   clear = 'clear',
@@ -111,6 +112,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   suggestions$ = this.screenService.suggestions$;
   componentId = this.screenService.component.id;
   componentValues: string[];
+  attachUploadedFiles = ATTACH_UPLOADED_FILES;
 
   files$ = this.files$$
     .asObservable()
@@ -158,7 +160,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      const componentList = (suggestions && suggestions[this.componentId].list) || [];
+      const componentList = (suggestions && suggestions[this.componentId]?.list) || [];
       componentList.forEach((item) => {
         const parsedValue = JSON.parse(item.originValue);
         this.componentValues = [

@@ -158,4 +158,30 @@ input[type='file'] {
   }
 }
 
+.btn-edit {
+  cursor: pointer;
+  border: 0;
+  display: flex;
+  align-items: flex-end;
+  font-size: $font-sm;
+  color: $color-gosblue;
+  background: none;
+  padding: 0;
+  &:focus,
+  &:active {
+    outline: 1px dashed $color-gosblue;
+  }
+  &__icon {
+    background-color: $color-gosblue;
+    mask: url('../../../../../../../assets/icons/svg/clock.svg');
+    mask-size: 100%;
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+  }
+  &__text {
+    transform: translateY(1px);
+  }
+}
+
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');

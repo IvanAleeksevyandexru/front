@@ -24,6 +24,9 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { ModalService } from '../../../modal/modal.service';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalBaseComponent } from '../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -39,6 +42,7 @@ export class ActionService {
     private screenService: ScreenService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
+    private modalService: ModalService,
     private utilsService: UtilsService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
@@ -83,6 +87,9 @@ export class ActionService {
         break;
       case ActionType.deleteSuggest:
         this.deleteSuggestAction(action, targetElement);
+        break;
+      case ActionType.attachUploadedFiles:
+        this.attachUploadedFiles(action);
         break;
     }
   }
@@ -218,5 +225,15 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
+  }
+
+  private attachUploadedFiles(action: ComponentActionDto): void {
+    console.log({ action });
+    this.modalService.openModal(ConfirmationModalBaseComponent, {
+      title: 'Ранее загруженные файлы',
+      text: '123',
+      showCloseButton: false,
+      showCrossButton: true,
+    });
   }
 }
