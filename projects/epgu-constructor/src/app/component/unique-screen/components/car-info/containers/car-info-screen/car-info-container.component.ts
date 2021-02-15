@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import {
   ActionType,
   ComponentActionDto,
   ComponentDto,
-  DisplayDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import {
@@ -25,11 +24,8 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
   styleUrls: ['./car-info-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarInfoContainerComponent implements OnInit {
+export class CarInfoContainerComponent {
   carInfoErrors: CarInfoErrors;
-  showNav$: Observable<boolean> = this.screenService.showNav$;
-  isLoading$: Observable<boolean> = this.screenService.isLoading$;
-  display$: Observable<DisplayDto> = this.screenService.display$;
   carInfo$: Observable<CarInfo> = this.screenService.component$.pipe(
     filter((component: ComponentDto) => !!component.value),
     map((component: ComponentDto) => {
@@ -51,11 +47,9 @@ export class CarInfoContainerComponent implements OnInit {
   };
 
   constructor(
-    private screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
+    public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
   ) {}
-
-  ngOnInit(): void {}
 
   mapCarInfoErrors(errorsDto: CarInfoErrorsDto, carInfo: CarInfo): CarInfoErrors {
     const {

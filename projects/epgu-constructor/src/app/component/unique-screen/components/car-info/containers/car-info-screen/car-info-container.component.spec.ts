@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockModule } from 'ng-mocks';
+import { of } from 'rxjs';
+
 import { CarInfoContainerComponent } from './car-info-container.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
-import { of } from 'rxjs';
 import { CarInfo, ServiceResult } from '../../models/car-info.interface';
-import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenTypes } from '../../../../../../screen/screen.types';
 import { CarInfoComponent } from '../../components/car-info/car-info.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -35,24 +34,12 @@ import { CarOwnersComponent } from '../../components/car-owners/car-owners.compo
 import { LegalComplianceComponent } from '../../components/legal-compliance/legal-compliance.component';
 import { NotaryInfoComponent } from '../../components/notary-info/notary-info.component';
 import { PassportInfoPipe } from '../../pipes/passport-info.pipe';
-
+import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 
 describe('CarInfoContainerComponent', () => {
   let component: CarInfoContainerComponent;
   let fixture: ComponentFixture<CarInfoContainerComponent>;
   const mockData = {} as any;
-  const mockDisplay: DisplayDto = {
-    components: [],
-    subHeader: { text: '', clarifications: {}},
-    header: '',
-    label: '',
-    id: '',
-    name: '',
-    displayCssClass: '',
-    submitLabel: '',
-    terminal: false,
-    type: ScreenTypes.UNIQUE,
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -79,19 +66,22 @@ describe('CarInfoContainerComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
-        CurrentAnswersService, UtilsService, NavigationService,
+        CurrentAnswersService,
+        UtilsService,
+        NavigationService,
       ],
-      imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
-    })
-      .compileComponents();
+      imports: [
+        BaseModule,
+        BaseComponentsModule,
+        ScreenPadModule,
+        MockModule(DefaultUniqueScreenWrapperModule),
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CarInfoContainerComponent);
     component = fixture.componentInstance;
-    component.showNav$ = of(true);
-    component.isLoading$ = of(true);
-    component.display$ = of(mockDisplay);
     component.carInfo$ = of(mockData);
     fixture.detectChanges();
   });
@@ -103,7 +93,7 @@ describe('CarInfoContainerComponent', () => {
   describe('mapCarInfoErrors()', () => {
     const errors = {
       EXTERNAL_SERVER_ERROR: 'external error text',
-      NOT_FOUND_ERROR: 'not found error text'
+      NOT_FOUND_ERROR: 'not found error text',
     };
 
     it('should map external common error', () => {
@@ -115,8 +105,8 @@ describe('CarInfoContainerComponent', () => {
       expect(res).toEqual({
         externalCommon: {
           type: ServiceResult.EXTERNAL_SERVER_ERROR,
-          text: 'external error text'
-        }
+          text: 'external error text',
+        },
       });
     });
 
@@ -129,13 +119,13 @@ describe('CarInfoContainerComponent', () => {
       expect(res).toEqual({
         notary: {
           type: ServiceResult.NOT_FOUND_ERROR,
-          text: 'not found error text'
+          text: 'not found error text',
         },
         vehicle: null,
       });
     });
 
-    it('should map errors if there aren\'t values', () => {
+    it("should map errors if there aren't values", () => {
       const res = component.mapCarInfoErrors(errors, {
         vehicleServiceCallResult: ServiceResult.SUCCESS,
         notaryServiceCallResult: ServiceResult.SUCCESS,
@@ -146,10 +136,5 @@ describe('CarInfoContainerComponent', () => {
         vehicle: null,
       });
     });
-
   });
-
-
-
-
 });

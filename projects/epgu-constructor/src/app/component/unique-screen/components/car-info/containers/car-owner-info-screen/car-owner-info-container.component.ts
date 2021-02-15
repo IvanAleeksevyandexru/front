@@ -16,9 +16,6 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarOwnerInfoContainerComponent {
-  showNav$: Observable<boolean> = this.screenService.showNav$;
-  isLoading$: Observable<boolean> = this.screenService.isLoading$;
-  header$: Observable<string> = this.screenService.header$;
   actions$: Observable<ComponentActionDto[]> = this.screenService.actions$;
   carOwnerInfo$: Observable<OwnerCarInfo> = this.screenService.component$.pipe(
     filter((component: ComponentDto) => !!component.value),
@@ -29,7 +26,7 @@ export class CarOwnerInfoContainerComponent {
   );
 
   constructor(
-    private screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
+    public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
   ) {}
 }

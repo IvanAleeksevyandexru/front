@@ -20,6 +20,7 @@ import { PassportInfoPipe } from './pipes/passport-info.pipe';
 import { CarOwnersComponent } from './components/car-owners/car-owners.component';
 import { LegalComplianceComponent } from './components/legal-compliance/legal-compliance.component';
 import { NotaryInfoComponent } from './components/notary-info/notary-info.component';
+import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -43,7 +44,7 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
-  imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule],
+  imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule, DefaultUniqueScreenWrapperModule],
   entryComponents: [CarInfoContainerComponent, CarOwnerInfoContainerComponent]
 })
 export class CarInfoModule {}

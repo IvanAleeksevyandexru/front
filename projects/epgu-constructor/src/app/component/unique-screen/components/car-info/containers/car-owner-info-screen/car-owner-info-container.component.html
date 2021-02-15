@@ -1,35 +1,47 @@
-<ng-container
-  *ngTemplateOutlet="
-    templateContent;
-    context: { header: (header$ | async), isLoading: (isLoading$ | async), showNav: (showNav$ | async)  }"
+<!--<ng-container-->
+<!--  *ngTemplateOutlet="-->
+<!--    templateContent;-->
+<!--    context: { header: (header$ | async), isLoading: (isLoading$ | async), showNav: (showNav$ | async)  }"-->
+<!--&gt;-->
+<!--</ng-container>-->
+<!--<ng-template #templateContent let-header="header" let-isLoading="isLoading"-->
+<!--             let-showNav="showNav">-->
+<!--  <epgu-constructor-screen-container-->
+<!--    [show-nav]="showNav"-->
+<!--    [class.screen-container-mt]="!showNav"-->
+<!--  >-->
+<!--    <div class="screen-body">-->
+<!--      <div class="head">-->
+<!--        <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>-->
+<!--      </div>-->
+
+<!--      <epgu-constructor-car-owner-info-->
+<!--        [carOwnerInfo]="carOwnerInfo$ | async"-->
+<!--      ></epgu-constructor-car-owner-info>-->
+<!--    </div>-->
+<!--    <div class="screen-footer">-->
+<!--      <lib-button-->
+<!--        *ngFor="let action of (actions$ | async)"-->
+<!--        epgu-constructor-action-->
+<!--        [action]="action"-->
+<!--        [color]="action.color"-->
+<!--        class="screen-footer__btn"-->
+<!--      >{{ action.label }}</lib-button>-->
+
+<!--    </div>-->
+<!--  </epgu-constructor-screen-container>-->
+<!--</ng-template>-->
+
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenActionButtons]="screenService.buttons$ | async"
+  [actionButtons]="screenService.actions$ | async"
+  [isShowActionBtn]="true"
+  [showNav]="screenService.showNav$ | async"
+
 >
-</ng-container>
-<ng-template #templateContent let-header="header" let-isLoading="isLoading"
-             let-showNav="showNav">
-  <epgu-constructor-screen-container
-    [show-nav]="showNav"
-    [class.screen-container-mt]="!showNav"
-  >
-    <div class="screen-body">
-      <div class="head">
-        <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
-      </div>
-
-      <epgu-constructor-car-owner-info
-        [carOwnerInfo]="carOwnerInfo$ | async"
-      ></epgu-constructor-car-owner-info>
-    </div>
-    <div class="screen-footer">
-      <lib-button
-        *ngFor="let action of (actions$ | async)"
-        epgu-constructor-action
-        [action]="action"
-        [color]="action.color"
-        class="screen-footer__btn"
-      >{{ action.label }}</lib-button>
-
-    </div>
-  </epgu-constructor-screen-container>
-</ng-template>
-
-
+  <epgu-constructor-car-owner-info
+    [carOwnerInfo]="carOwnerInfo$ | async"
+  ></epgu-constructor-car-owner-info>
+</epgu-constructor-default-unique-screen-wrapper>
