@@ -24,7 +24,7 @@ export class LocationService extends Location {
     this.window.location.reload();
   }
 
-  deleteParam(...paramNames): void {
+  deleteParam(...paramNames: string[]): void {
     let params = this.window.location.search;
     if (params) {
       params = params.slice(1);
