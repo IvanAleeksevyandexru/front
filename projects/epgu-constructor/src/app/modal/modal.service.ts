@@ -1,11 +1,12 @@
 import {
   ApplicationRef,
   ComponentFactoryResolver,
+  ComponentRef,
   Injectable,
   Injector,
   Renderer2,
   RendererFactory2,
-  Type
+  Type,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -19,11 +20,17 @@ export class ModalService {
   constructor(
     private cfr: ComponentFactoryResolver,
     private rendererFactory: RendererFactory2,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
+  public openModal<T, K = any>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    modalComponent: Type<any>,
+    modalParameters?: K,
+    isReturnComponent: boolean = false,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Observable<T> | ComponentRef<any> {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = 'hidden';
       const screenResolver = document.querySelector<HTMLElement>(
@@ -54,7 +61,10 @@ export class ModalService {
       modalResult.next(data);
     };
 
-    return modalResult.asObservable().pipe(take(1));
+    if (isReturnComponent) {
+      return componentRef;
+    }
+    return isReturnComponent ? componentRef : modalResult.asObservable().pipe(take(1));
   }
 
   public registerInjector(injector: Injector): void {
