@@ -110,22 +110,16 @@ export class TimeSlotsService {
   }
 
   isDateLocked(date: Date, areadId?: string | number): boolean {
-    const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath);
-    let isSelectedArea = true;
-    if (slots && areadId) {
-      isSelectedArea = slots.some((slot) => slot.areaId === areadId);
-    }
-    return !(slots && isSelectedArea);
+    return !this.getSlotsByDate(date, areadId).length;
   }
 
   getAvailableMonths(): string[] {
     return this.availableMonths;
   }
 
-  getAvailableSlots(selectedDay: Date): Observable<SlotInterface[]> {
+  getAvailableSlots(selectedDay: Date, areadId?: string | number): Observable<SlotInterface[]> {
     return of(
-      this.slotsMap[selectedDay.getFullYear()]?.[selectedDay.getMonth()]?.[selectedDay.getDate()],
+      this.getSlotsByDate(selectedDay, areadId),
     );
   }
 
@@ -500,7 +494,13 @@ export class TimeSlotsService {
       this.bookedSlot &&
       (!this.isBookedDepartment ||
         this.waitingTimeExpired ||
-        this.timeSlotsType === TimeSlotsTypes.BRAK)
+        this.timeSlotsType === TimeSlotsTypes.GIBDD)
     );
+  }
+
+  private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {
+    const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
+    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath, []);
+    return slots.filter((slot) => slot.areaId === areadId || !areadId);
   }
 }
