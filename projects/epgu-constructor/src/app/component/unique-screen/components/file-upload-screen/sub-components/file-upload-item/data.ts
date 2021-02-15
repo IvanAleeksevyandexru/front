@@ -4,6 +4,184 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
+import { BehaviorSubject } from 'rxjs';
+import { v4 } from 'uuid';
+
+export enum ErrorActions {
+  clear = 'clear',
+  addMaxSize = 'maxSize',
+  addMaxAmount = 'maxAmount',
+  addMaxTotalAmount = 'maxTotalAmount',
+  addMaxTotalSize = 'maxTotalSize',
+  addInvalidType = 'invalidType',
+  addInvalidFile = 'invalidFile',
+  addDownloadErr = 'addDownloadErr',
+  addUploadErr = 'addUploadErr',
+  addDeletionErr = 'addDeletionErr',
+}
+
+export enum FileItemStatus {
+  error = 'error',
+  uploading = 'uploading',
+  uploaded = 'uploaded',
+  preparation = 'preparation',
+  downloading = 'downloading',
+  delition = 'delition',
+}
+export enum FileItemStatusText {
+  error = 'ошибка',
+  uploading = 'загружается...',
+  uploaded = 'загружено',
+  preparation = 'обработка...',
+  downloading = 'скачивается...',
+  delition = 'удаляется...',
+}
+
+export class FileItemStore {
+  files = new BehaviorSubject<FileItem[]>([]);
+
+  add(file: FileItem): FileItemStore {
+    const files = [...this.files.getValue(), file];
+    this.files.next(files);
+    return this;
+  }
+  update(file: FileItem): void {
+    const files = [...this.files.getValue()];
+    const index = files.findIndex((item) => item.id === file.id);
+    files[index] = Object.assign(Object.create(Object.getPrototypeOf(file)), file);
+    this.files.next(files);
+  }
+  remove(file: FileItem): void {
+    const files = [...this.files.getValue()];
+    this.files.next(files.filter((item) => item.id !== file.id));
+  }
+
+  removeWithErrorStatus(ignoreTypes: ErrorActions[] = []): void {
+    const files = [...this.files.getValue()];
+    this.files.next(
+      files.filter(
+        (item) =>
+          (item.status === FileItemStatus.error && ignoreTypes.includes(item?.error?.type)) ||
+          item.status !== FileItemStatus.error,
+      ),
+    );
+  }
+
+  changeStatus(file: FileItem, status: FileItemStatus): void {
+    file.setStatus(status);
+    this.update(file);
+  }
+  errorTo(errorType: ErrorActions, status: FileItemStatus): void {
+    const files = [...this.files.getValue()];
+    files.forEach((item) =>
+      item?.error?.type === errorType ? this.update(item.setStatus(status).clearError()) : null,
+    );
+  }
+}
+
+export class FileItem {
+  id = v4();
+  error: FileItemError;
+  isImage: boolean;
+  limited = false;
+  constructor(public status: FileItemStatus, public raw?: File, public item?: UploadedFile) {
+    if (item) {
+      this.item.uploaded = true;
+    }
+    if (!raw && item) {
+      this.raw = {
+        size: item.fileSize,
+        name: item.fileName,
+        type: item.mimeType,
+      } as File;
+    }
+    this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
+  }
+
+  setLimited(limit: boolean): FileItem {
+    this.limited = limit;
+    return this;
+  }
+
+  setError(error: FileItemError): FileItem {
+    this.error = error;
+    this.setStatus(FileItemStatus.error);
+    return this;
+  }
+  clearError(): FileItem {
+    this.error = null;
+    return this;
+  }
+  setStatus(status: FileItemStatus): FileItem {
+    this.status = status;
+    return this;
+  }
+  setRaw(raw: File): FileItem {
+    this.raw = raw;
+    return this;
+  }
+  setItem(item: UploadedFile): FileItem {
+    this.item = item;
+    this.item.uploaded = true;
+    return this;
+  }
+
+  createUploadedParams(): TerraFileOptions {
+    return {
+      objectId: this.item.objectId,
+      objectType: this.item.objectTypeId,
+      mnemonic: this.item.mnemonic,
+      mimeType: this.item.mimeType,
+    } as TerraFileOptions;
+  }
+
+  createUploadOptions(
+    objectId: string,
+    objectType: number,
+    mnemonic: string,
+  ): TerraUploadFileOptions {
+    return {
+      name: this.raw.name,
+      mimeType: this.raw.type,
+      objectId: objectId,
+      objectType: objectType,
+      mnemonic: mnemonic,
+    } as TerraUploadFileOptions;
+  }
+
+  isTypeValid(acceptTypes?: string): boolean {
+    if (!acceptTypes) {
+      return true;
+    }
+    const extension = `.${this.raw.name.split('.').pop()}`.toLowerCase();
+    const validTypes = acceptTypes.toLowerCase().split(',');
+
+    return validTypes.some((validType) => validType === extension);
+  }
+}
+
+export interface FileItemError {
+  type: ErrorActions;
+  text: string;
+  description?: string;
+}
+
+export enum OperationType {
+  upload = 'upload',
+  delete = 'delete',
+  download = 'download',
+  prepare = 'prepare',
+}
+export interface CancelAction {
+  type: OperationType;
+  item: FileItem;
+}
+
+export interface Operation {
+  type: OperationType;
+  cancel: BehaviorSubject<boolean>; // Если сюда отправить true операция будет отменена
+  item: FileItem;
+}
 
 /**
  * Класс подгруженного файла
@@ -28,7 +206,6 @@ export class TerraUploadedFile implements UploadedFile {
   updated?: string;
   deleted?: boolean;
 
-
   constructor(props: object = {}) {
     Object.keys(props).forEach((key) => {
       this[key] = props[key];
@@ -48,7 +225,7 @@ export class TerraUploadedFile implements UploadedFile {
     } as TerraUploadFileOptions;
   }
 
-    /**
+  /**
    * Возвращает объект с данными и параметрами для загрузки на сервер файла
    */
   setParamsForUploadedFile(terraFile: TerabyteListItem, uploaded: boolean): void {

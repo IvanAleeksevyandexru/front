@@ -1,46 +1,54 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
-import { MockComponent } from 'ng-mocks';
+import { MockModule } from 'ng-mocks';
 import { ComponentListModalComponent } from './component-list-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentsListComponent } from '../../../../component/shared/components/components-list/components-list.component';
-import { ScreenStore, ScreenTypes } from '../../../../screen/screen.types';
+import { ScreenTypes } from '../../../../screen/screen.types';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
+import { ScreenModalService } from '../../screen-modal.service';
+import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
+import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { ComponentsListModule } from '../../../../component/shared/components/components-list/components-list.module';
+import { UniqueComponentModalModule } from '../unique-component-modal/unique-component-modal.module';
+import { InfoComponentModalModule } from '../info-component-modal/info-component-modal.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
-
-xdescribe('CustomScreenComponent', () => {
+//TODO дописать тесты
+describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
   let fixture: ComponentFixture<ComponentListModalComponent>;
-  let navModalService: NavigationModalService;
   let screenService: ScreenService;
-  let unsubscribeService: UnsubscribeService;
-  let ComponentsListComponentMock = MockComponent(ComponentsListComponent);
-  const screenDataMock: ScreenStore = {
-    display: {
-      components: [],
-      terminal: false,
-      header: '',
-      id: '',
-      name: '',
-      submitLabel: '',
-      type: ScreenTypes.CUSTOM
-    }
+
+  const screenDataMock = {
+    components: [],
+    terminal: false,
+    header: '',
+    id: '',
+    name: '',
+    submitLabel: '',
+    type: ScreenTypes.CUSTOM
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
-        EpguLibModule,
+        RouterTestingModule,
+        MockModule(EpguLibModule),
+        ComponentsListModule,
+        UniqueComponentModalModule,
+        InfoComponentModalModule
       ],
       declarations: [
-        ComponentListModalComponent,
-        ComponentsListComponentMock
+        ComponentListModalComponent
       ],
       providers: [
         NavigationModalService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ScreenModalService, useClass: ScreenModalServiceStub },
+        CustomScreenService,
+        DatesToolsService,
       ]
     })
     .compileComponents();
@@ -49,13 +57,9 @@ xdescribe('CustomScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentListModalComponent);
     component = fixture.componentInstance;
+    screenService = TestBed.inject(ScreenService);
 
-    navModalService = fixture.debugElement.injector.get(NavigationModalService);
-    unsubscribeService = fixture.debugElement.injector.get(UnsubscribeService);
-    screenService = fixture.debugElement.injector.get(ScreenService);
-
-    screenService.updateScreenStore(screenDataMock);
-    component.changeComponentsList({});
+    screenService.display = screenDataMock as any;
     fixture.detectChanges();
   });
 

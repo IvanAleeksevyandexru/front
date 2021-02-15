@@ -139,6 +139,8 @@ export interface ComponentAttrsDto {
   infoComponents?: string[];
   add?: { component: string; caption: string[] };
   hideAddNewChildButton?: boolean;
+  dateType?: string;
+  refDate?: string;
 }
 
 export interface ComponentUploadedFileDto {
@@ -274,7 +276,7 @@ export interface ComponentFieldDto {
 export interface ClarificationsDto {
   [key: string]: {
     title: string;
-    text: string;
+    text?: string;
     setting?: {};
   };
 }
@@ -420,6 +422,7 @@ export enum ActionType {
   home = 'home',
   deleteSuggest = 'deleteSuggest',
   attachUploadedFiles = 'attachUploadedFiles',
+  dropdownListModal = 'dropdownListModal',
 }
 
 export enum DTOActionAction {

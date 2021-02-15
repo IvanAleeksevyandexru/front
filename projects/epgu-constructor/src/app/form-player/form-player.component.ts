@@ -29,6 +29,7 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
+import { ScenarioDto } from './services/form-player-api/form-player-api.types';
 
 /**
  * Точка входа для приложения, эквивалент AppComponent.
@@ -128,6 +129,13 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.skipStep(data);
         this.changeDetectionRef.markForCheck();
       });
+
+    this.navService.patchStepOnCli$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: Partial<ScenarioDto>) => {
+        this.patchStepOnCli(data);
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   private initSettingOfScreenIdToAttr(): void {
@@ -164,5 +172,9 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private skipStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
+  }
+
+  private patchStepOnCli(newScenarioDtoDiff?: Partial<ScenarioDto>): void {
+    this.formPlayerService.patchStore(newScenarioDtoDiff);
   }
 }

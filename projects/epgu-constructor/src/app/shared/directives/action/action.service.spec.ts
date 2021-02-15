@@ -27,6 +27,8 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { ModalService } from '../../../modal/modal.service';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -106,6 +108,13 @@ const homeAction: ComponentActionDto = {
   type: ActionType.home,
 };
 
+const openDropdownModalAction: ComponentActionDto = {
+  label: '',
+  value: 'test',
+  action: null,
+  type: ActionType.dropdownListModal
+};
+
 const sendActionMock = of({
   errorList: [],
   responseData: { value: 'value', type: 'type' },
@@ -122,6 +131,7 @@ describe('ActionService', () => {
   let skipStepSpy: jasmine.Spy;
   let localStorageService: LocalStorageService;
   let formPlayerApiService: FormPlayerApiService;
+  let modalService: ModalService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -136,6 +146,7 @@ describe('ActionService', () => {
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         HtmlRemoverService,
         ActionService,
         NavigationModalService,
@@ -154,6 +165,7 @@ describe('ActionService', () => {
     navigationModalService = TestBed.inject(NavigationModalService);
     localStorageService = TestBed.inject(LocalStorageService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
+    modalService = TestBed.inject(ModalService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -239,5 +251,11 @@ describe('ActionService', () => {
     spyOn(navigationService, 'redirectToHome').and.callThrough();
     actionService.switchAction(homeAction, null);
     expect(navigationService.redirectToHome).toHaveBeenCalled();
+  });
+
+  it('should call switchAction openDropdownListModal', () => {
+    spyOn(modalService, 'openModal').and.callThrough();
+    actionService.switchAction(openDropdownModalAction, null);
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 });

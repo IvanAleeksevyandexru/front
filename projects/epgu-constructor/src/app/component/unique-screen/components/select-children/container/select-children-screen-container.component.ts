@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,7 +21,7 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
   styleUrls: ['./select-children-screen-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectChildrenScreenContainerComponent {
+export class SelectChildrenScreenContainerComponent implements AfterViewInit {
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить ребенка'),
   );
@@ -38,7 +43,12 @@ export class SelectChildrenScreenContainerComponent {
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
     private cachedAnswersService: CachedAnswersService,
+    private cdr: ChangeDetectorRef,
   ) {}
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
 
   public updateCurrentAnswersState(state: { [key: string]: string | number | boolean }[]): void {
     this.currentAnswersService.state = state;

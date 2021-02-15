@@ -36,6 +36,8 @@ import { InformationCenterPfrContainerComponent } from '../unique-screen/compone
 import { FieldListScreenComponent } from '../unique-screen/components/field-list-screen/field-list-screen.component';
 import { TimerScreenComponent } from '../unique-screen/components/timer-screen/timer-screen.component';
 import { CarListContainerComponent } from '../unique-screen/components/car-list/components/car-list-container/car-list-container.component';
+// eslint-disable-next-line max-len
+import { CarOwnerInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-owner-info-screen/car-owner-info-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -50,6 +52,7 @@ type UniqueScreenComponent =
   | RepeatableFieldsComponent
   | TimeSlotsComponent
   | CarInfoContainerComponent
+  | CarOwnerInfoContainerComponent
   | CarListContainerComponent
   | SignatureApplicationContainerComponent
   | PaymentComponent
@@ -78,6 +81,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   TimeSlot: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
+  CarOwnerInfo: CarOwnerInfoContainerComponent,
   EsepSign: SignatureApplicationContainerComponent,
   PaymentScr: PaymentComponent,
   BillInfo: BillInfoComponent,

@@ -17,6 +17,8 @@ import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
   let component: PaymentTypeSelectorButtonComponent;
@@ -39,6 +41,7 @@ describe('PaymentTypeSelectorButtonComponent', () => {
         HtmlRemoverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         CurrentAnswersService,
         AutocompleteApiService,
         EventBusService,

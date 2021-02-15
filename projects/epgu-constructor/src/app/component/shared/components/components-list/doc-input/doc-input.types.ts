@@ -30,6 +30,7 @@ interface DocInputField extends CustomComponent {
     minDate?: string;
     accuracy?: string;
     fstuc?: TextTransform;
+    hidden?: boolean;
   };
 }
 
@@ -50,11 +51,21 @@ interface DocInputFields {
   emitter: string;
 }
 
+enum DocInputFieldsTypes {
+  series = 'series',
+  number = 'number',
+  date = 'date',
+  emitter = 'emitter',
+  expirationDate = 'expirationDate',
+  seriesNumDate = 'seriesNumDate',
+}
+
 export {
   DocInputControl,
   DocInputComponentData,
   DocInputField,
   DocInputFormFields,
   DocInputFields,
+  DocInputFieldsTypes,
 };
 

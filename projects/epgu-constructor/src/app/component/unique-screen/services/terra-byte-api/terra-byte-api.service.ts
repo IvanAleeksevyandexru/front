@@ -6,6 +6,7 @@ import {
   TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
+  UploadedFile,
 } from './terra-byte-api.types';
 import { Observable, range, from, combineLatest } from 'rxjs';
 import {
@@ -23,7 +24,7 @@ import { of } from 'rxjs';
 @Injectable()
 export class TerraByteApiService {
   chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; //кол-во в мб
-  chunkPacketMaxSize = 10;
+  chunkPacketMaxSize = 5;
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
@@ -110,7 +111,8 @@ export class TerraByteApiService {
   uploadByChunkFile(options: TerraUploadFileOptions, file: File | Blob): Observable<void> {
     const chunks = Math.ceil(file.size / this.chunkSize);
 
-    return combineLatest([range(0, chunks), of(chunks), of(file), of(options)]).pipe(
+    return range(0, chunks).pipe(
+      concatMap((index) => combineLatest([of(index), of(chunks), of(file), of(options)])),
       map(this.createChunk.bind(this)),
       reduce<Chunk, ChunkPacket[]>(this.accumuleChunkPacket.bind(this), []),
       concatMap((streams) => from(streams)),
@@ -158,6 +160,11 @@ export class TerraByteApiService {
     );
   }
 
+  getDownloadApiPath(options: TerraFileOptions): string {
+    return this.getTerabyteApiUrl(
+      `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
+    );
+  }
   /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
@@ -165,9 +172,7 @@ export class TerraByteApiService {
   downloadFile(options: TerraFileOptions): Observable<Blob> {
     // eslint-disable-next-line max-len
     return this.http.get<Blob>(
-      this.getTerabyteApiUrl(
-        `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
-      ),
+      this.getDownloadApiPath(options),
       this.getServerRequestOptions({
         responseType: 'blob',
       }),
@@ -179,7 +184,7 @@ export class TerraByteApiService {
    * @param data - Blob данные для скачивания
    * @param file - файл для загрузки
    */
-  pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile): void {
+  pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile | UploadedFile): void {
     let resultBlob = data;
 
     if (file.mimeType) {

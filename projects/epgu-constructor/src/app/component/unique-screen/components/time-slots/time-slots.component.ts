@@ -6,7 +6,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import * as moment_ from 'moment';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
@@ -20,8 +19,14 @@ import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirma
 import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { months, weekDaysAbbr } from '../../../../shared/constants/dates';
-import { TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
+import {
+  DATE_STRING_YEAR_MONTH,
+  DATE_TIME_STRING_FULL,
+  months,
+  StartOfTypes,
+  weekDaysAbbr,
+} from '../../../../shared/constants/dates';
+import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import {
   SlotInterface,
@@ -29,10 +34,6 @@ import {
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
 } from './time-slots.types';
-
-// TODO: переехать на DatesToolsService и упразднить moment
-const moment = moment_;
-moment.locale('ru');
 
 @Component({
   selector: 'epgu-constructor-time-slots',
@@ -127,15 +128,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Функция вызывается при каждой регенерации календаря
    */
   public checkExistenceSlots(): void {
-    let isExistsSlots = false;
-    this.weeks.forEach((week) => {
-      week.forEach((day) => {
-        if (!this.isDateLocked(day.date)) {
-          isExistsSlots = true;
-        }
+    this.isExistsSlots = this.weeks.some((week) => {
+      return week.some((day) => {
+        return !this.isDateLocked(day.date);
       });
     });
-    this.isExistsSlots = isExistsSlots;
   }
 
   public isToday(date: Date): boolean {
@@ -147,7 +144,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   public isDateOutOfMonth(date: Date): boolean {
-    return date && moment(date).month() !== this.activeMonthNumber;
+    return date && this.datesHelperService.getMonth(date) !== this.activeMonthNumber;
   }
 
   public isDateLocked(date: Date): boolean {
@@ -193,7 +190,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public showTimeSlots(date: Date): void {
     this.currentSlot = null;
-    this.timeSlotsService.getAvailableSlots(date).subscribe(
+    this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
       (timeSlots) => {
         this.timeSlots = timeSlots;
         if (this.timeSlotsService.hasError()) {
@@ -356,19 +353,32 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/typedef
   private renderSingleMonthGrid(output): void {
     output.splice(0, output.length); // in-place clear
-    const firstDayOfMonth = moment()
-      .year(this.activeYearNumber)
-      .month(this.activeMonthNumber)
-      .startOf('month')
-      .startOf('day');
-    const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
-    const daysInMonth = firstDayOfMonth.daysInMonth();
+
+    let firstDayOfMonth = new Date(Date.now());
+    firstDayOfMonth = this.datesHelperService.setCalendarDate(
+      firstDayOfMonth,
+      this.activeYearNumber,
+      this.activeMonthNumber,
+    );
+    firstDayOfMonth = this.datesHelperService.startOfMonth(firstDayOfMonth);
+    firstDayOfMonth = this.datesHelperService.startOfDay(firstDayOfMonth);
+
+    const firstDayOfWeekInMonth = this.datesHelperService.getISODay(firstDayOfMonth);
+    const daysInMonth = this.datesHelperService.getDaysInMonth(firstDayOfMonth);
     let week = 0;
     output.push([]);
     if (firstDayOfWeekInMonth > 1) {
       for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-        const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-        output[0].push({ number: date.date(), date: date.toDate() });
+        const date = this.datesHelperService.add(
+          firstDayOfMonth,
+          i - firstDayOfWeekInMonth,
+          'days',
+        );
+
+        output[0].push({
+          number: this.datesHelperService.getDate(date),
+          date: this.datesHelperService.toDate(date),
+        });
       }
     }
     for (let i = 0; i < daysInMonth; i += 1) {
@@ -376,14 +386,21 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         week += 1;
         output.push([]);
       }
-      const date = moment(firstDayOfMonth).add(i, 'day');
-      output[week].push({ number: date.date(), date: date.toDate() });
+      const date = this.datesHelperService.add(firstDayOfMonth, i, 'days');
+      output[week].push({
+        number: this.datesHelperService.getDate(date),
+        date: this.datesHelperService.toDate(date),
+      });
     }
     let days = 0;
     while (output[week].length < 7) {
-      const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
+      let date = this.datesHelperService.add(firstDayOfMonth, 1, 'months');
+      date = this.datesHelperService.add(date, days, 'days');
       days += 1;
-      output[week].push({ number: date.date(), date: date.toDate() });
+      output[week].push({
+        number: this.datesHelperService.getDate(date),
+        date: this.datesHelperService.toDate(date),
+      });
     }
   }
 
@@ -397,34 +414,50 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getRefDate(): Date {
+    const dateType = this.screenService.component?.attrs?.dateType || DateTypeTypes.TODAY;
+    const refDateAttr = this.screenService.component?.attrs?.refDate;
+
+    if (dateType === DateTypeTypes.TODAY) {
+      return new Date(Date.now());
+    }
+
+    if (dateType === DateTypeTypes.REF_DATE && refDateAttr) {
+      return new Date(refDateAttr);
+    }
+
+    throw Error(`dateType has incorrect value "${dateType}" or missed refDate attr in json`);
+  }
+
   /**
    * Проверяет дату по ограничениям на валидность
    * @param {Date} date дата для валидации
    * @param startType тип обрезания даты, например, до начала дня ('day'), до начала месяца ('month')
    * @returns {boolean} false - дата прошла проверки. true - дата инвалидна
    */
-  private checkDateRestrictions(
-    date: Date,
-    startType: moment_.unitOfTime.StartOf = 'day',
-  ): boolean {
-    let isInvalid = false;
-    const today = moment().startOf(startType);
+  private checkDateRestrictions(date: Date, startType: StartOfTypes = 'day'): boolean {
+    const refDate = this.datesHelperService.startOf(this.getRefDate(), startType);
+
     const restrictions = this.screenService.component?.attrs?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
-      minDate: (amount, type): boolean =>
-        moment(date).isBefore(today.clone().add(amount, type).startOf(startType)),
-      maxDate: (amount, type): boolean =>
-        moment(date).isAfter(today.clone().add(amount, type).startOf(startType)),
+      minDate: (amount, type): boolean => {
+        let expectedBefore = this.datesHelperService.add(refDate, amount, type);
+        expectedBefore = this.datesHelperService.startOf(expectedBefore, startType);
+        return this.datesHelperService.isBefore(date, expectedBefore);
+      },
+      maxDate: (amount, type): boolean => {
+        let expectedAfter = this.datesHelperService.add(refDate, amount, type);
+        expectedAfter = this.datesHelperService.startOf(expectedAfter, startType);
+        return this.datesHelperService.isAfter(date, expectedAfter);
+      },
     };
     // Перебираем все ключи restrictions из attrs до первого "плохого"
     // пример: "minDate": [30, "d"],
-    Object.keys(restrictions).some((key) => {
+    return Object.keys(restrictions).some((key) => {
       const [amount, type] = restrictions[key];
-      isInvalid = checks[key](amount, type);
-      return isInvalid;
+      return checks[key](amount, type);
     });
-    return isInvalid;
   }
 
   private isCachedValueChanged(): boolean {
@@ -445,11 +478,22 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       });
       const firstMonthStr = availableMonths[0];
       const lastMonthStr = availableMonths[availableMonths.length - 1];
-      for (let month = moment(firstMonthStr); !month.isAfter(lastMonthStr); month.add(1, 'M')) {
-        const monthForDropdown = this.getMonthsListItem(month.format('YYYY-MM'));
+      for (
+        let month = this.datesHelperService.parse(firstMonthStr, DATE_STRING_YEAR_MONTH);
+        !this.datesHelperService.isAfter(
+          month,
+          this.datesHelperService.parse(lastMonthStr, DATE_STRING_YEAR_MONTH),
+        );
+        month = this.datesHelperService.add(month, 1, 'months')
+      ) {
+        const monthForDropdown = this.getMonthsListItem(
+          this.datesHelperService.format(month, DATE_STRING_YEAR_MONTH),
+        );
         if (
-          !availableMonths.includes(month.format('YYYY-MM')) ||
-          this.checkDateRestrictions(month.toDate(), 'month')
+          !availableMonths.includes(
+            this.datesHelperService.format(month, DATE_STRING_YEAR_MONTH),
+          ) ||
+          this.checkDateRestrictions(this.datesHelperService.toDate(month), 'month')
         ) {
           monthForDropdown.unselectable = true;
         }
@@ -487,14 +531,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.bookedSlot = waitingTimeExpired ? null : bookedSlot;
   }
 
-  /**
-   * Устаналивает строку
-   * @param slot
-   */
   private setBookedTimeStr(slot: SlotInterface): void {
-    const time = moment(slot.slotTime).utcOffset(slot.timezone);
-    const formatTemplate = 'D MMMM YYYY года в HH:mm, dddd';
-    this.chosenTimeStr = time.format(formatTemplate);
+    const time = this.datesHelperService.utcOffset(slot.slotTime, slot.timezone);
+
+    this.chosenTimeStr = this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
   }
 
   /**

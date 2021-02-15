@@ -10,6 +10,8 @@ export class NavigationServiceStub {
   prevStep$ = this.prevStep.asObservable();
   private skipStep = new Subject<Navigation>();
   skipStep$ = this.skipStep.asObservable();
+  private patchStepOnCli = new Subject<Navigation>();
+  patchStepOnCli$ = this.patchStepOnCli.asObservable();
 
   next(navigation?: Navigation): void {
     this.nextStep.next(navigation);
@@ -21,6 +23,10 @@ export class NavigationServiceStub {
 
   skip(navigation?: Navigation): void {
     this.skipStep.next(navigation);
+  }
+
+  patchOnCli(navigation?: Navigation): void {
+    this.patchStepOnCli.next(navigation);
   }
 
   redirectToLK(): void {}

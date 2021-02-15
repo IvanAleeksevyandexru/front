@@ -64,7 +64,7 @@ export interface Clarifications {
   [key: string]: {
     text?: string;
     title?: string;
-  }
+  };
 }
 
 /**
@@ -108,7 +108,7 @@ export interface UploadedFile {
   uploaded: boolean;
   fileSize: number;
   hasError: boolean;
-
+  mimeType?: string;
   alternativeMimeTypes?: string[];
   created?: string;
   deleted?: boolean;
@@ -127,22 +127,23 @@ export interface UploadedFile {
  * Интерфейс для файла из списка файлов в хранилище террабайт
  */
 export interface TerabyteListItem {
+  fileName: string;
+  objectId: string;
+  objectTypeId: number;
+  mnemonic: string;
+  updated: string;
+  fileSize: number;
+
   alternativeMimeTypes: string[];
   created: string;
   deleted: boolean;
   fileExt: string;
-  fileName: string;
-  fileSize: number;
   fileUid: number;
   hasSign: boolean;
   metaId: number;
-  mnemonic: string;
   nodeId: string;
-  objectId: string;
-  objectTypeId: number;
   realPath: string;
   relativePath: string;
-  updated: string;
   userId: number;
 }
 

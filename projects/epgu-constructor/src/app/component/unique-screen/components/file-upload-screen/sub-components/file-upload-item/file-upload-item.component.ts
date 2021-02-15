@@ -1,60 +1,57 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
-import { BehaviorSubject, from, merge, Observable, of, Subscription, throwError } from 'rxjs';
-import { catchError, map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  filter,
+  finalize,
+  map,
+  mergeMap,
+  reduce,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
 import {
   Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
-  TerabyteListItem,
+  UploadedFile,
 } from '../../../../services/terra-byte-api/terra-byte-api.types';
-import {
-  CompressionOptions,
-  CompressionService,
-} from '../../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
-import { getSizeInMB, TerraUploadedFile, UPLOAD_OBJECT_TYPE } from './data';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { ATTACH_UPLOADED_FILES } from '../../../../../../shared/constants/actions';
+import {
+  ErrorActions,
+  FileItem,
+  FileItemError,
+  FileItemStatus,
+  FileItemStore,
+  getSizeInMB,
+  Operation,
+  OperationType,
+  UPLOAD_OBJECT_TYPE,
+} from './data';
+import { PrepareService } from '../prepare.service';
 
-enum ErrorActions {
-  clear = 'clear',
-  addMaxSize = 'maxSize',
-  addMaxAmount = 'maxAmount',
-  addMaxTotalAmount = 'maxTotalAmount',
-  addMaxTotalSize = 'maxTotalSize',
-  addInvalidType = 'invalidType',
-  addInvalidFile = 'invalidFile',
-  addDownloadErr = 'addDownloadErr',
-  addUploadErr = 'addUploadErr',
-  addDeletionErr = 'addDeletionErr',
+interface OverLimitsItem {
+  count: number;
+  isMax: boolean;
 }
-
-const photoBaseName = 'Снимок';
-
-const maxImgSizeInBytes = 525288;
+interface OverLimits {
+  totalSize: OverLimitsItem;
+  totalAmount: OverLimitsItem;
+  amount: OverLimitsItem;
+}
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
   templateUrl: './file-upload-item.component.html',
   styleUrls: ['./file-upload-item.component.scss'],
-  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadItemComponent implements OnInit, OnDestroy {
@@ -65,550 +62,523 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
-    this.listIsUploadingNow = true;
-    this.files$$.next([]);
-    this.terabyteService
-      .getListByObjectId(this.objectId)
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        catchError((e: HttpErrorResponse) => {
-          if (e.status === 404) {
-            return of([]);
-          }
-          this.listIsUploadingNow = false;
-          this.changeDetectionRef.markForCheck();
-          return throwError(e);
-        }),
-        map((result) => this.filterServerListItemsForCurrentForm(result)),
-        map((list: TerabyteListItem[]) => this.transformTerabyteItemsToUploadedFiles(list)),
-      )
-      .subscribe((list) => {
-        this.listIsUploadingNow = false;
-        if (list.length) {
-          list.forEach((fileInfo: TerraUploadedFile) => {
-            this.updateUploadingInfo(fileInfo);
-          });
-          // eslint-disable-next-line no-console
-          this.files$$.next([...list]);
-          this.maxFileNumber = this.getMaxFileNumberFromList(list);
-        }
-
-        this.changeDetectionRef.markForCheck();
-      });
+    this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
+    this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
+    this.updateAcceptTypes();
   }
+  maxTotalSize: number;
+  maxTotalAmount: number;
+  acceptTypes?: string;
 
-  @ViewChild('fileUploadInput', { static: true })
-  uploadInput: ElementRef;
+  itemPluralMapping = {
+    file: {
+      '=0': '0 файлов',
+      '=1': '1 файл',
+      other: '# файлов',
+    },
+  };
 
-  @ViewChild('cameraInput', { static: true })
-  cameraInput: ElementRef;
+  isMobile: boolean = this.deviceDetectorService.isMobile;
+  fileStatus = FileItemStatus;
 
-  isMobile: boolean;
-  uploadedCameraPhotoNumber = 0;
-  listIsUploadingNow = false; // Флаг, что загружается список ранее прикреплённых файлов
-  filesInUploading = 0; // Количество файлов, которое сейчас в состоянии загрузки на сервер
-  filesInCompression = 0; // Количество файлов, проходящих через компрессию
-  files$$ = new BehaviorSubject<TerraUploadedFile[]>([]); // Список уже загруженных файлов
-  suggestions$ = this.screenService.suggestions$;
-  componentId = this.screenService.component.id;
-  componentValues: string[];
-  attachUploadedFiles = ATTACH_UPLOADED_FILES;
+  listUploadingStatus = new BehaviorSubject<boolean>(false);
 
-  files$ = this.files$$
-    .asObservable()
-    .pipe(
-      takeUntil(this.ngUnsubscribe$),
-      tap((files) => {
-        if (this.loadData) {
-          this.eventBusService.emit('fileUploadItemValueChangedEvent', {
-            uploadId: this.loadData.uploadId,
-            value: files,
-            errors: this.errors,
-          } as FileResponseToBackendUploadsItem);
-        }
-      }),
-    )
-    .subscribe();
-  errors: string[] = [];
+  overTotalAmount = new BehaviorSubject<number>(0);
+  overTotalSize = new BehaviorSubject<number>(0);
+  overAmount = new BehaviorSubject<number>(0);
+  overLimits = new BehaviorSubject<OverLimits>({
+    totalSize: { count: 0, isMax: false },
+    totalAmount: { count: 0, isMax: false },
+    amount: { count: 0, isMax: false },
+  });
+
+  processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
+
+  processingFiles$ = this.processingFiles.pipe(
+    tap(() => this.resetLimits()), // Обнуляем каунтеры перебора
+    tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на upploaded статутс
+    tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
+    concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
+    map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
+    map((file: File) => new FileItem(FileItemStatus.preparation, file)), // Формируем FileItem
+    concatMap(
+      (file: FileItem) =>
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes), // Валидируем файл
+    ),
+    filter((file: FileItem) => this.limitFilter(file)), // Фильруем по лимитам
+    tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
+    filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
+    tap((file: FileItem) => this.incrementLimits(file)), // Обновляем лимиты
+    tap((file: FileItem) => this.addUpload(file)), // Эвент на згарузку
+  );
+
+  store = new FileItemStore();
+
+  files = this.store.files;
+  files$ = this.files.pipe(
+    concatMap((files) =>
+      from(files).pipe(
+        reduce<FileItem, FileResponseToBackendUploadsItem>(this.reduceChanges.bind(this), {
+          value: [],
+          errors: [],
+        }),
+      ),
+    ),
+    tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
+  );
 
   get data(): FileUploadItem {
     return this.loadData;
   }
 
-  get isButtonsDisabled(): boolean {
-    return Boolean(this.listIsUploadingNow || this.filesInUploading || this.filesInCompression);
-  }
+  operationsUploading: Record<string, Operation> = {};
+  operationsDownloading: Record<string, Operation> = {};
+  operationsDelition: Record<string, Operation> = {};
+  operationsPreparing: Record<string, Operation> = {};
+
+  processingOperations = new Subject<Operation>();
+  processingOperations$ = this.processingOperations.pipe(
+    mergeMap((operation: Operation) => {
+      const { status: fileStatus } = operation.item;
+
+      let storage: Record<string, Operation>;
+      let executor: Observable<void>;
+      switch (operation.type) {
+        case OperationType.delete: {
+          storage = this.operationsDelition;
+          executor = this.delition(operation);
+          break;
+        }
+        case OperationType.download: {
+          storage = this.operationsDownloading;
+          executor = this.downloading(operation);
+          break;
+        }
+        case OperationType.upload: {
+          storage = this.operationsUploading;
+          executor = this.uploading(operation);
+          break;
+        }
+        case OperationType.prepare: {
+          storage = this.operationsPreparing;
+          executor = this.preparing(operation);
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+      if (storage[operation.item.id]) {
+        return of(undefined);
+      }
+      storage[operation.item.id] = operation;
+      return executor.pipe(
+        takeUntil(
+          storage[operation.item.id].cancel.pipe(
+            filter((status) => status === true),
+            tap(() => this.store.changeStatus(operation.item, fileStatus)),
+            tap(() =>
+              operation.type === OperationType.upload || operation.type === OperationType.prepare
+                ? this.store.remove(operation.item)
+                : null,
+            ),
+          ),
+        ),
+        catchError(() => of(undefined)),
+        finalize(() => {
+          delete storage[operation.item.id];
+        }),
+      );
+    }),
+  );
+
+  subscriptions: Subscription = new Subscription()
+    .add(this.processingFiles$.subscribe())
+    .add(this.processingOperations$.subscribe());
 
   private loadData: FileUploadItem;
-  private subs: Subscription[] = [];
   private maxFileNumber = -1;
 
   constructor(
     private terabyteService: TerraByteApiService,
     private deviceDetectorService: DeviceDetectorService,
-    private compressionService: CompressionService,
-    private ngUnsubscribe$: UnsubscribeService,
     private fileUploadService: FileUploadService,
     public config: ConfigService,
     public modal: ModalService,
     private eventBusService: EventBusService,
-    private changeDetectionRef: ChangeDetectorRef,
-    private screenService: ScreenService,
-  ) {
-    this.isMobile = this.deviceDetectorService.isMobile;
+    private prepareService: PrepareService,
+  ) {}
+
+  resetLimits(): void {
+    const limits = { ...this.overLimits.getValue() };
+    limits.totalAmount.count = 0;
+    limits.totalSize.count = 0;
+    limits.amount.count = 0;
+    this.overLimits.next(limits);
+  }
+
+  limitFilter(file: FileItem): boolean {
+    const maxTotalAmount = file?.error?.type === ErrorActions.addMaxTotalAmount;
+    const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
+    const maxAmount = file?.error?.type === ErrorActions.addMaxAmount;
+    const limits = { ...this.overLimits.getValue() };
+    limits.totalAmount.count = maxTotalAmount
+      ? limits.totalAmount.count + 1
+      : limits.totalAmount.count;
+    limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
+    limits.amount.count = maxAmount ? limits.amount.count + 1 : limits.amount.count;
+    this.overLimits.next(limits);
+    return !maxAmount && !maxTotalSize && !maxTotalAmount;
+  }
+
+  reduceChanges(
+    acc: FileResponseToBackendUploadsItem,
+    value: FileItem,
+  ): FileResponseToBackendUploadsItem {
+    if (value.item) {
+      acc.value.push(value.item);
+    }
+    if (value.error) {
+      acc.errors.push(value.error.text);
+    }
+    return acc;
+  }
+
+  update(fileItem: FileItem): void {
+    this.addPrepare(fileItem);
+  }
+
+  cancelOperation(type: OperationType, item: FileItem): void {
+    let storage: Record<string, Operation>;
+    switch (type) {
+      case OperationType.delete: {
+        storage = this.operationsDelition;
+        break;
+      }
+      case OperationType.download: {
+        storage = this.operationsDownloading;
+        break;
+      }
+      case OperationType.upload: {
+        storage = this.operationsUploading;
+        break;
+      }
+      case OperationType.prepare: {
+        storage = this.operationsPreparing;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    storage[item.id]?.cancel.next(true);
+  }
+  createOperation(type: OperationType, item: FileItem): void {
+    const operation = {
+      type,
+      item,
+      cancel: new BehaviorSubject<boolean>(false),
+    } as Operation;
+    this.processingOperations.next(operation);
+  }
+
+  repeat(file: FileItem): void {
+    const files = this.store.files.getValue();
+    files.forEach((item) =>
+      item?.error?.type === file?.error?.type ? this.addPrepare(item) : null,
+    );
+  }
+  addPrepare(file: FileItem): void {
+    this.createOperation(OperationType.prepare, file);
+  }
+
+  preparing(operation: Operation): Observable<void> {
+    const fileItem = operation.item;
+    return of(fileItem).pipe(
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.preparation)),
+      concatMap((file: FileItem) =>
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes),
+      ),
+      tap((file: FileItem) => this.store.update(file)),
+      tap((file: FileItem) => (file.status !== FileItemStatus.error ? this.addUpload(file) : null)),
+      map(() => undefined),
+    );
+  }
+  addDownload(file: FileItem): void {
+    this.createOperation(OperationType.download, file);
+  }
+  downloading(operation: Operation): Observable<void> {
+    const fileItem = operation.item;
+    const { status } = fileItem;
+    return of(fileItem).pipe(
+      tap((file) => this.store.changeStatus(file, FileItemStatus.downloading)),
+      concatMap((file) => this.terabyteService.downloadFile(file.createUploadedParams())),
+      tap((result) => {
+        this.terabyteService.pushFileToBrowserForDownload(result, fileItem.item);
+      }),
+      finalize(() => {
+        this.store.changeStatus(fileItem, status);
+      }),
+      map(() => undefined),
+    );
+  }
+
+  addDelete(file: FileItem): void {
+    this.createOperation(OperationType.delete, file);
+  }
+
+  delition(operation: Operation): Observable<void> {
+    const fileItem = operation.item;
+    const { status } = fileItem;
+    return of(fileItem).pipe(
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.delition)),
+      concatMap((file) =>
+        status === FileItemStatus.uploaded
+          ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
+              tap(() => this.decrementLimits(fileItem)),
+              tap(() => this.resetLimits()),
+              map(() => undefined),
+            )
+          : of(undefined),
+      ),
+      catchError((e) => {
+        this.store.update(fileItem.setError(this.getError(ErrorActions.addDeletionErr)));
+        return throwError(e);
+      }),
+      tap(() => this.store.remove(fileItem)),
+    );
+  }
+
+  addUpload(file: FileItem): void {
+    this.createOperation(OperationType.upload, file);
+  }
+
+  incrementLimits(file: FileItem): void {
+    if (file.limited) {
+      return;
+    }
+    this.updateUploadingInfo(file);
+    this.maxLimitUpdate();
+    this.store.update(file.setLimited(true));
+  }
+  decrementLimits(file: FileItem): void {
+    if (!file.limited) {
+      return;
+    }
+    this.updateUploadingInfo(file, true);
+    this.maxLimitUpdate();
+    this.store.update(file.setLimited(false));
+  }
+
+  maxLimitUpdate(): void {
+    const limits = { ...this.overLimits.getValue() };
+    const checkSize = this.fileUploadService.checkFilesSize(1, this.data.uploadId);
+    const checkAmount = this.fileUploadService.checkFilesAmount(1, this.data.uploadId);
+    limits.totalSize.isMax = checkSize?.reason === CheckFailedReasons.total;
+    limits.amount.isMax = checkAmount?.reason === CheckFailedReasons.uploaderRestriction;
+    limits.totalAmount.isMax = checkAmount?.reason === CheckFailedReasons.total;
+    this.overLimits.next(limits);
+  }
+
+  uploading(operation: Operation): Observable<void> {
+    const { item } = operation;
+    const options = item.createUploadOptions(this.objectId, UPLOAD_OBJECT_TYPE, this.getMnemonic());
+
+    return of(item).pipe(
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.uploading)),
+      tap((file: FileItem) => this.incrementLimits(file)),
+      concatMap((file) => this.terabyteService.uploadFile(options, file.raw)),
+      catchError((e) => {
+        this.store.update(item.setError(this.getError(ErrorActions.addUploadErr)));
+        this.decrementLimits(item);
+        return throwError(e);
+      }),
+      concatMap(() => this.terabyteService.getFileInfo(options)),
+      map((upploaded) => {
+        item.setItem(upploaded as UploadedFile).setStatus(FileItemStatus.uploaded);
+        this.store.update(item);
+      }),
+      map(() => undefined),
+    );
+  }
+
+  sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
+    this.eventBusService.emit('fileUploadItemValueChangedEvent', {
+      uploadId: this.loadData.uploadId,
+      value,
+      errors,
+    } as FileResponseToBackendUploadsItem);
+  }
+
+  updateSelectedFilesInfoAndSend(fileList: FileList): void {
+    this.processingFiles.next(fileList);
+  }
+
+  getListStream(objectId: string): Observable<UploadedFile> {
+    return of(objectId).pipe(
+      tap(() => this.listUploadingStatus.next(true)),
+      concatMap((id) => this.terabyteService.getListByObjectId(id) as Observable<UploadedFile[]>),
+      catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
+      concatMap((files: UploadedFile[]) => from(files)),
+      filter(
+        (file) =>
+          file?.mnemonic?.includes(this.getSubMnemonicPath()) && file?.objectId === this.objectId,
+      ),
+      finalize(() => this.listUploadingStatus.next(false)),
+    );
+  }
+
+  updateMaxFileNumber(file: UploadedFile): void {
+    const index = Number(file.mnemonic.split('.').pop());
+    this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;
+  }
+
+  loadImage(file: FileItem): Observable<FileItem> {
+    return !file.isImage
+      ? of(file)
+      : this.terabyteService.downloadFile(file.createUploadedParams()).pipe(
+          catchError((e) => {
+            return throwError(e);
+          }),
+          map((blob: Blob) =>
+            file.setRaw(new File([blob], file.raw.name, { type: file.raw.type })),
+          ),
+        );
+  }
+
+  loadList(): Observable<FileItem> {
+    return this.getListStream(this.objectId).pipe(
+      map((file) => new FileItem(FileItemStatus.uploaded, null, file)),
+      mergeMap((file: FileItem) => this.loadImage(file)),
+      tap((file: FileItem) => this.store.add(file)),
+      tap((file: FileItem) => this.incrementLimits(file)),
+      tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
+    );
   }
 
   ngOnInit(): void {
-    this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      const componentList = (suggestions && suggestions[this.componentId]?.list) || [];
-      componentList.forEach((item) => {
-        const parsedValue = JSON.parse(item.originValue);
-        this.componentValues = [
-          ...parsedValue.uploads.reduce((acc, upload) => {
-            acc.push(
-              ...upload.value.map((value) => {
-                return `
-                ${value.fileName}<br>
-                ${value.mnemonic}<br>
-                ${value.realPath}<br>
-                https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${value.objectId}/${value.objectTypeId}?mnemonic=${value.mnemonic}
-                `;
-              }),
-            );
-            return acc;
-          }, []),
-        ];
-      });
-    });
+    this.maxFileNumber = -1;
+    this.subscriptions.add(this.loadList().subscribe());
+    this.subscriptions.add(this.files$.subscribe());
   }
 
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
+  polyfillFile(file: File): File {
+    const { type, lastModified, name } = file;
 
-  updateUploadedCameraPhotosInfo(addPhoto: boolean, fileName: string): void {
-    if (!fileName?.includes(photoBaseName)) {
-      return;
-    }
-    if (addPhoto) {
-      this.uploadedCameraPhotoNumber += 1;
-    }
-  }
-
-  createCustomFile(file: File, fileName: string): File {
-    const { type, lastModified } = file;
-
-    return new FilePonyfill([file], fileName, {
+    return new FilePonyfill([file], name, {
       type,
       lastModified,
     });
   }
 
-  compressImages(files: File[]): Array<Observable<unknown>> {
-    this.filesInCompression += files.length;
-
-    const compressedImageOptions: CompressionOptions = {
-      maxSizeMB: getSizeInMB(maxImgSizeInBytes),
-      deepChecking: true,
-      maxWidthOrHeight: 1024,
-    };
-
-    return files.map((file: File) => {
-      const terabyteFiles = this.files$$.value;
-      let fileToAction = this.createCustomFile(file, file.name);
-      const fileName = file.name;
-
-      const fileToUpload = new TerraUploadedFile({
-        fileName,
-        objectId: this.objectId,
-        objectTypeId: UPLOAD_OBJECT_TYPE,
-        mnemonic: this.getMnemonic(),
-      });
-
-      this.files$$.next([fileToUpload, ...terabyteFiles]);
-      if (this.compressionService.isValidImageType(fileToAction)) {
-        fileToAction = this.createCustomFile(fileToAction, fileName);
-
-        return from(
-          this.compressionService.imageCompression(fileToAction, compressedImageOptions),
-        ).pipe(
-          catchError(() => {
-            this.handleError(ErrorActions.addInvalidFile, fileToAction);
-            this.filesInCompression -= 1;
-            this.removeFileFromStore(fileToUpload);
-            return of();
-          }),
-        );
-      }
-
-      fileToAction = this.createCustomFile(fileToAction, fileName);
-
-      return of(fileToAction);
-    });
-  }
-
-  validateAndHandleFilesSize(file: File): boolean {
-    const {
-      isValid: isSizeValid,
-      reason: failedSizeReason,
-    } = this.fileUploadService.checkFilesSize(file.size, this.loadData.uploadId);
-
-    if (isSizeValid) {
-      this.fileUploadService.updateFilesSize(file.size, this.loadData.uploadId);
-      this.filesInCompression -= 1;
-    } else {
-      if (failedSizeReason === CheckFailedReasons.total) {
-        this.handleError(ErrorActions.addMaxTotalSize);
-      }
-      if (failedSizeReason === CheckFailedReasons.uploaderRestriction) {
-        this.handleError(ErrorActions.addMaxSize);
-      }
-      this.filesInCompression = 0;
-      this.removeFileFromStore(file);
-    }
-    return isSizeValid;
-  }
-
-  filterValidFiles(files: FileList): File[] {
-    return Array.from(files).reduce((acc: File[], file: File) => {
-      if (this.isFileTypeValid(file)) {
-        acc.push(file);
-      } else {
-        this.handleError(ErrorActions.addInvalidType, file);
-      }
-      return acc;
-    }, []);
-  }
-
-  handleError(action: ErrorActions, file?: Partial<File>): void {
-    const errorHandler = {};
-    errorHandler[
-      ErrorActions.addMaxTotalAmount
-    ] = `Максимальное количество всех файлов - ${this.fileUploadService.getMaxTotalFilesAmount()}`;
-
-    errorHandler[ErrorActions.addMaxTotalSize] = `Размер всех файлов превышает ${getSizeInMB(
-      this.fileUploadService.getMaxTotalFilesSize(),
-    )} МБ`;
-
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[
-      ErrorActions.addMaxAmount
-    ] = `Максимальное количество файлов для документа - ${this.data.maxFileCount}`;
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxSize] = `Размер файлов для документа превышает ${getSizeInMB(
-      this.data.maxSize,
-    )} МБ`;
-    errorHandler[ErrorActions.addInvalidType] = `Недопустимый тип файла "${file?.name}"`;
-    errorHandler[ErrorActions.addInvalidFile] = `Ошибка загрузки файла "${file?.name}"`;
-    errorHandler[ErrorActions.addDownloadErr] = `Не удалось скачать файл "${file?.name}"`;
-    errorHandler[ErrorActions.addUploadErr] = `Ошибка загрузки файла "${file?.name}" на сервер`;
-    errorHandler[ErrorActions.addDeletionErr] = `Не удалось удалить файл "${file?.name}"`;
-
-    if (action === ErrorActions.clear) {
-      this.errors = [];
-    } else {
-      this.errors.push(errorHandler[action]);
-      this.eventBusService.emit('fileUploadItemValueChangedEvent', {
-        errors: this.errors,
-      } as FileResponseToBackendUploadsItem);
-    }
-  }
-
-  /**
-   * Возращает типы файлов, которые должны принимать
-   */
-  getAcceptTypes(): string {
-    if (!this.data.fileType.length) {
-      return null;
-    }
-    return this.data.fileType
-      .map((fileType) => `.${fileType}`)
-      .join(',')
-      .toLowerCase();
-  }
-
-  removeFileFromStore(file: TerraUploadedFile | File): void {
-    let files = this.files$$.value;
-    if (file instanceof File) {
-      files = files.filter((terabyteFile) => terabyteFile.fileName !== file.name);
-    } else {
-      files = files.filter((f) => f.mnemonic !== file.mnemonic);
-    }
-    this.files$$.next(files);
-  }
-
-  /**
-   * Удаление файла из стека
-   * @param file - объект файла на удаление
-   */
-  deleteFile(file: TerraUploadedFile): void {
-    this.handleError(ErrorActions.clear);
-
-    if (file.uploaded) {
-      this.filesInUploading += 1;
-      this.terabyteService
-        .deleteFile(file.getParamsForFileOptions())
-        .pipe(
-          takeUntil(this.ngUnsubscribe$),
-          catchError((e) => {
-            this.filesInUploading -= 1;
-            this.handleError(ErrorActions.addDeletionErr, { name: file.fileName });
-            return throwError(e);
-          }),
-        )
-        .subscribe((deletedFileInfo: TerraUploadedFile) => {
-          this.filesInUploading -= 1;
-          this.updateUploadedCameraPhotosInfo(false, deletedFileInfo.fileName);
-          this.updateUploadingInfo(deletedFileInfo, true);
-          this.removeFileFromStore(file);
-
-          this.changeDetectionRef.markForCheck();
-        });
-    } else {
-      let files = this.files$$.value;
-      files = files.filter((f) => f.mnemonic !== file.mnemonic);
-      this.files$$.next(files);
-    }
-    this.uploadInput.nativeElement.value = '';
-  }
-
-  updateUploadingInfo(fileInfo: TerraUploadedFile, isDeleted?: boolean): void {
-    if (isDeleted) {
-      this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
-      this.fileUploadService.updateFilesSize(-fileInfo.fileSize, this.loadData.uploadId);
-    } else {
-      this.fileUploadService.updateFilesAmount(1, this.loadData.uploadId);
-      this.fileUploadService.updateFilesSize(fileInfo.fileSize, this.loadData.uploadId);
-    }
-  }
-
-  resetFileInputState(htmlInput: HTMLInputElement): void {
-    // eslint-disable-next-line no-param-reassign
-    htmlInput.value = null;
-  }
-
-  /**
-   * Обновляет данные о файлах, которые были загружены
-   */
-  updateSelectedFilesInfoAndSend(fileList: FileList, isPhoto?: boolean): void {
-    this.prepareFilesToUpload(fileList, isPhoto).subscribe((file: File) => this.sendFile(file));
-  }
-
-  isFileTypeValid(file: File): boolean {
-    const fileExtension = `.${file.name.split('.').pop()}`;
-    const validTypes = this.getAcceptTypes().split(',');
-
-    return validTypes.some((validType) => validType.toLowerCase() === fileExtension.toLowerCase());
-  }
-
-  /**
-   * Загрузка файлов на сервер террабайта через стандартный выбор
-   */
-  selectFilesEvent(): void {
-    this.uploadInput.nativeElement.click();
-  }
-
-  /**
-   * Открытие камеры для получения изображения и последующей загрузки
-   */
-  openCamera(): void {
-    this.cameraInput.nativeElement.click();
-  }
-
-  /**
-   * Запрос на скачивание файла и отдачу пользователю
-   * @param file - объект файла
-   */
-  // TODO избавиться от any в шаблоне
-  downloadFile(file: TerraUploadedFile): void {
-    this.handleError(ErrorActions.clear);
-    const subs: Subscription = this.terabyteService
-      .downloadFile(file.getParamsForFileOptions())
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        catchError((e) => {
-          this.handleError(ErrorActions.addDownloadErr, { name: file.fileName });
-          return throwError(e);
-        }),
-      )
-      .subscribe((result) => {
-        this.terabyteService.pushFileToBrowserForDownload(result, file);
-        subs.unsubscribe();
-      });
-  }
-
-  /**
-   * Переводит список файлов с сервера в файлы для отображения
-   * @param list - массив информациио файлах на сервере
-   * @private
-   */
-  private transformTerabyteItemsToUploadedFiles(
-    list: TerabyteListItem[] = [],
-  ): TerraUploadedFile[] {
-    let filesList: TerraUploadedFile[] = [];
-    if (list.length) {
-      filesList = list.map((terraFile: TerabyteListItem) => {
-        const file = new TerraUploadedFile(terraFile);
-        file.uploaded = true;
-        return file;
-      });
-    }
-    return filesList;
-  }
-
-  /**
-   * Фильтрует список файлов полученных с сервера, чтобы были только для этой формы
-   * @param result - список файлов, хранящихся на сервере
-   * @private
-   */
-  private filterServerListItemsForCurrentForm(result: TerabyteListItem[]): TerabyteListItem[] {
-    return result.filter(
-      (fileInfo) =>
-        fileInfo?.mnemonic?.includes(this.getSubMnemonicPath()) &&
-        fileInfo?.objectId === this.objectId,
-    );
-  }
-
   /**
    * Возращает промежуточный путь для формирования мнемомники, конретно для этой формы
-   * @private
    */
-  private getSubMnemonicPath(): string {
+  getSubMnemonicPath(): string {
     return [this.prefixForMnemonic, this.data.uploadId].join('.');
   }
 
   /**
    * Возвращает мнемонику для файла, формируя уникальный префикс
-   * @private
    */
-  private getMnemonic(): string {
+  getMnemonic(): string {
     this.maxFileNumber += 1;
     return [this.getSubMnemonicPath(), this.maxFileNumber].join('.');
   }
 
-  /**
-   * Устанавливает сведения Файла
-   * @param uploadedFile - файл загружаемый на сервер
-   * @param fileSize - размер фай
-   * @param uploaded - файл загружен?
-   * @private
-   */
-  private setFileInfoUploaded(
-    uploadedFile: TerraUploadedFile,
-    terraFile: TerabyteListItem,
-    uploaded: boolean,
-  ): void {
-    const files = this.files$$.value;
-    files.forEach((f: TerraUploadedFile) => {
-      if (f.mnemonic === uploadedFile.mnemonic) {
-        f.setParamsForUploadedFile(terraFile, uploaded);
-      }
-    });
-    this.files$$.next(files);
+  getError(action: ErrorActions): FileItemError {
+    const errorHandler = {};
+    // eslint-disable-next-line prettier/prettier
+    errorHandler[ErrorActions.addMaxTotalSize] = {
+      text: ``,
+      description: ``,
+    };
+    errorHandler[ErrorActions.addMaxAmount] = {
+      text: ``,
+      description: ``,
+    };
+    errorHandler[ErrorActions.addMaxTotalAmount] = {
+      text: ``,
+      description: ``,
+    };
+    errorHandler[ErrorActions.addMaxSize] = {
+      text: `Файл тяжелее ${getSizeInMB(this.data.maxSize)} МБ`,
+      description: `Попробуйте уменьшить размер или загрузите файл полегче`,
+    };
+    errorHandler[ErrorActions.addInvalidType] = {
+      text: `Проверьте формат файла`,
+      description: `Попробуйте заменить на другой. Доступны для загрузки ${this.acceptTypes
+        .replace(/\./gi, '')
+        .replace(/,/gi, ', ')
+        .toUpperCase()}`,
+    };
+    errorHandler[ErrorActions.addInvalidFile] = {
+      text: `Файл повреждён`,
+      description: `Что-то не так с файлом. Попробуйте заменить на другой`,
+    };
+    errorHandler[ErrorActions.addDownloadErr] = {
+      text: `Ошибка при скачивании`,
+      description: `Не удалось скачать файл. Попробуйте снова`,
+    };
+    errorHandler[ErrorActions.addUploadErr] = {
+      text: `Ошибка при загрузке`,
+      description: `Попробуйте отправить снова или замените документ.`,
+    };
+    errorHandler[ErrorActions.addDeletionErr] = {
+      text: `Ошибка при удалении`,
+      description: `Не получилось удалить файл. Попробуйте снова`,
+    };
+
+    return { ...errorHandler[action], type: action };
   }
 
-  /**
-   * Подгружает информацию с сервера
-   *
-   * @param uploadedFile - файл предварительно загруженный на сервер
-   * @param uploaded - признак что файл загружен
-   * @private
-   */
-  private updateFileInfoFromServer(
-    uploadedFile: TerraUploadedFile,
-    uploaded: boolean = true,
-  ): void {
-    this.filesInUploading -= 1;
+  updateAcceptTypes(): void {
+    this.acceptTypes = !this.data.fileType.length
+      ? null
+      : this.data.fileType
+          .map((fileType) => `.${fileType}`)
+          .join(',')
+          .toLowerCase();
+  }
 
-    if (uploaded) {
-      this.updateUploadingInfo(uploadedFile);
+  checkMaxTotalAmount(amountFiles: number = 1): boolean {
+    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
+      amountFiles,
+      this.data.uploadId,
+    );
+    return !(!isValid && reason === CheckFailedReasons.total);
+  }
 
-      this.terabyteService
-        .getFileInfo(uploadedFile.getParamsForFileOptions())
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((terraFile: TerabyteListItem) =>
-          this.setFileInfoUploaded(uploadedFile, terraFile, uploaded),
-        );
+  checkMaxAmount(amountFiles: number = 1): boolean {
+    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
+      amountFiles,
+      this.data.uploadId,
+    );
+    return !(!isValid && reason === CheckFailedReasons.uploaderRestriction);
+  }
+
+  checkAmount(amountFiles: number = 1): boolean {
+    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
+      amountFiles,
+      this.data.uploadId,
+    );
+    return !(
+      !isValid &&
+      (reason === CheckFailedReasons.total || reason === CheckFailedReasons.uploaderRestriction)
+    );
+  }
+
+  updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {
+    if (isDeleted) {
+      this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(-file.raw.size, this.loadData.uploadId);
     } else {
-      this.removeFileFromStore(uploadedFile);
+      this.fileUploadService.updateFilesAmount(1, this.loadData.uploadId);
+      this.fileUploadService.updateFilesSize(file.raw.size, this.loadData.uploadId);
     }
   }
 
-  /**
-   * Отправляет файл на сервер
-   * @param file - file object to upload
-   * @private
-   */
-  private sendFile(file: File): void {
-    this.filesInUploading += 1;
-
-    const terabyteFiles = this.files$$.value;
-    const fileToUpload = terabyteFiles.filter(
-      (terabyteFile) => terabyteFile.fileName === file.name,
-    )[0];
-    this.listIsUploadingNow = false;
-    fileToUpload.mimeType = file.type;
-
-    this.subs.push(
-      this.terabyteService
-        .uploadFile(fileToUpload.getParamsForUploadFileOptions(), file)
-        .pipe(
-          takeUntil(this.ngUnsubscribe$),
-          catchError((e) => {
-            this.handleError(ErrorActions.addUploadErr, file);
-            this.updateFileInfoFromServer(fileToUpload, false);
-            return throwError(e);
-          }),
-        )
-        .subscribe(() => {
-          this.updateUploadedCameraPhotosInfo(true, file.name);
-          this.updateFileInfoFromServer(fileToUpload);
-        }),
-    );
-  }
-
-  /**
-   * Подготавливает файлы на загрузку и возращает итоговый проверенный
-   * список для загрузки и добавления в общий список загружаемых файлов
-   * @param filesToUpload
-   * @param isPhoto
-   * @private
-   */
-  private prepareFilesToUpload(filesToUpload: FileList, isPhoto?: boolean): Observable<File> {
-    this.handleError(ErrorActions.clear);
-    const files = isPhoto ? Array.from(filesToUpload) : this.filterValidFiles(filesToUpload);
-
-    const {
-      isValid: isAmountValid,
-      reason: amountFailedReason,
-    } = this.fileUploadService.checkFilesAmount(files.length, this.loadData.uploadId);
-
-    if (!isAmountValid) {
-      if (amountFailedReason === CheckFailedReasons.total) {
-        this.handleError(ErrorActions.addMaxTotalAmount);
-      } else if (amountFailedReason === CheckFailedReasons.uploaderRestriction) {
-        this.handleError(ErrorActions.addMaxAmount);
-      }
-      return of();
-    }
-
-    const compressedFiles = this.compressImages(files);
-
-    return merge(...compressedFiles).pipe(
-      takeWhile((file: File) => this.validateAndHandleFilesSize(file)),
-    );
-  }
-
-  /**
-   * Возвращает максимальный индекс файла загрузки из списка уже загруженных
-   * @param list - список файлов загруженных с сервера
-   * @private
-   */
-  private getMaxFileNumberFromList(list: TerraUploadedFile[]): number {
-    const maxIndex = -1;
-    return list.reduce((item, file) => {
-      const index = Number(file.mnemonic.split('.').pop());
-      return index > maxIndex ? index : item;
-    }, -1);
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

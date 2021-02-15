@@ -6,7 +6,7 @@ import { SharedModalModule } from './shared/shared-modal.module';
 import { ScreenModalModule } from './screen-modal/screen-modal.module';
 import { ContinueOrderModalService } from './continue-order-modal/continue-order-modal.service';
 import { BaseModule } from '../shared/base.module';
-
+import { DropdownListModalModule } from './dropdown-list-modal/dropdown-list-modal.module';
 
 /**
  * Домен модал. Тут храним что необходимо для модалок.
@@ -21,13 +21,15 @@ import { BaseModule } from '../shared/base.module';
     SharedModalModule,
     ConfirmationModalModule,
     UsePaymentsModalModule,
-    ScreenModalModule
+    ScreenModalModule,
+    DropdownListModalModule
   ],
   exports: [
     SharedModalModule,
     ConfirmationModalModule,
     UsePaymentsModalModule,
-    ScreenModalModule
+    ScreenModalModule,
+    DropdownListModalModule
   ]
 })
 export class ModalModule {}

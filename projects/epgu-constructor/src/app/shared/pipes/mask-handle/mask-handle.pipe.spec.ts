@@ -1,5 +1,5 @@
 import { MaskHandlePipe } from './mask-handle.pipe';
-import { MASKS } from './mask.constant';
+import { MASKS, MASKS_HANDLERS } from './mask.constant';
 import { NumberMaskOptionsInterface } from './interface/number-mask-options.interface';
 
 describe('MaskHandlePipe', () => {
@@ -16,12 +16,12 @@ describe('MaskHandlePipe', () => {
   });
 
   it('test KadastrNumberInput transform', () => {
-    const result = pipe.transform('KadastrNumberInput');
-    expect(result).toBe(MASKS.KadastrNumberInput);
+    const result = pipe.transform(MASKS.KadastrNumberInput);
+    expect(result).toBe(MASKS_HANDLERS.KadastrNumberInput);
   });
 
   it('test NumberMaskInput transform', () => {
-    const priceMaskSpy = jest.spyOn(MASKS, 'NumberMaskInput');
+    const priceMaskSpy = jest.spyOn(MASKS_HANDLERS, MASKS.NumberMaskInput);
 
     pipe.transform('NumberMaskInput');
 
@@ -39,14 +39,15 @@ describe('MaskHandlePipe', () => {
 
     it('provide correct mask for simple number', () => {
       const { numberMaskTransform } = setup();
-      expect(numberMaskTransform('123')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('123')).toEqual([/\d/, /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('1234')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/, /\d/]);
     });
 
     it('provide correct mask for big number', () => {
       const { numberMaskTransform } = setup();
       const triple = [/\d/, /\d/, /\d/];
 
-      expect(numberMaskTransform('12345678900')).toEqual([
+      expect(numberMaskTransform('123456789000')).toEqual([
         ...triple,
         ' ',
         ...triple,
@@ -54,11 +55,12 @@ describe('MaskHandlePipe', () => {
         ...triple,
         ' ',
         ...triple,
+        /\d/,
       ]);
     });
 
     it('provide correct mask for number with decimals', () => {
-      const { numberMaskTransform } = setup();
+      const { numberMaskTransform } = setup({ decimalSymbol: ',' });
 
       expect(numberMaskTransform('123,99')).toEqual([/\d/, /\d/, /\d/, ',', /\d/, /\d/]);
     });
@@ -72,8 +74,8 @@ describe('MaskHandlePipe', () => {
     it('show mask for decimals if user add decimalSeparator', () => {
       const { numberMaskTransform } = setup({ decimalSymbol: '.' });
 
-      expect(numberMaskTransform('123')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/]);
-      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
+      expect(numberMaskTransform('123')).toEqual([/\d/, /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, '.', /\d/]);
       expect(numberMaskTransform('123.9')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
     });
 
@@ -82,25 +84,25 @@ describe('MaskHandlePipe', () => {
 
       expect(numberMaskTransform('123.99')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
       expect(numberMaskTransform('123.9')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
-      expect(numberMaskTransform('123.')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, /\d/]);
     });
 
     it('show mask for decimals if user add/remove then add again decimalSeparator', () => {
       const { numberMaskTransform } = setup({ decimalSymbol: '.' });
 
-      expect(numberMaskTransform('123')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/]);
-      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
+      expect(numberMaskTransform('123')).toEqual([/\d/, /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, '.', /\d/]);
       expect(numberMaskTransform('123.9')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
       expect(numberMaskTransform('123.99')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
       expect(numberMaskTransform('123.9')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
-      expect(numberMaskTransform('123.')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/]);
-      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, '.', /\d/, /\d/]);
+      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('123.')).toEqual([/\d/, /\d/, /\d/, '.', /\d/]);
     });
 
     it('provide correct mask when user try to pass invalid chars like letters', () => {
       const { numberMaskTransform } = setup();
 
-      expect(numberMaskTransform('123afds')).toEqual([/\d/, ' ', /\d/, /\d/, /\d/]);
+      expect(numberMaskTransform('123afds')).toEqual([/\d/, /\d/, /\d/, /\d/]);
     });
   });
 });

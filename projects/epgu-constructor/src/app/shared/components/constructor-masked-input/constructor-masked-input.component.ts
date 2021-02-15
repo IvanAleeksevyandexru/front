@@ -5,6 +5,7 @@ import { CustomComponent } from '../../../component/shared/components/components
 import { ISuggestionItem, ISuggestionItemList } from '../../../core/services/autocomplete/autocomplete.inteface';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { TextTransform } from '../../types/textTransform';
+import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/number-mask-options.interface';
 
 @Component({
   selector: 'epgu-constructor-masked-input',
@@ -21,7 +22,8 @@ export class ConstructorMaskedInputComponent {
   @Input() showMaskAsPlaceholder: boolean;
   @Input() clearable: boolean;
   @Input() invalid: boolean;
-  @Input() mask: Array<string> | Array<string | RegExp>;
+  @Input() mask: string | string[];
+  @Input() maskOptions?: Partial<NumberMaskOptionsInterface>;
   @Input() name: string;
   @Input() id: string;
   @Input() placeholder: string;

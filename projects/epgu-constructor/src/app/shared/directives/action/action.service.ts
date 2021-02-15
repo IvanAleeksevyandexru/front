@@ -24,9 +24,11 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModalBaseComponent } from '../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
+import { ModalService } from '../../../modal/modal.service';
+import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
+
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -42,7 +44,6 @@ export class ActionService {
     private screenService: ScreenService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
-    private modalService: ModalService,
     private utilsService: UtilsService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
@@ -50,6 +51,7 @@ export class ActionService {
     private currentAnswersService: CurrentAnswersService,
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
+    private modalService: ModalService,
   ) {
   }
 
@@ -90,6 +92,9 @@ export class ActionService {
         break;
       case ActionType.attachUploadedFiles:
         this.attachUploadedFiles(action);
+        break;
+      case ActionType.dropdownListModal:
+        this.openDropdownListModal(action);
         break;
     }
   }
@@ -235,5 +240,12 @@ export class ActionService {
       showCloseButton: false,
       showCrossButton: true,
     });
+  }
+
+  private openDropdownListModal({ value }: ComponentActionDto): void {
+    this.modalService.openModal(
+      DropdownListModalComponent,
+      { componentId: value }
+    );
   }
 }
