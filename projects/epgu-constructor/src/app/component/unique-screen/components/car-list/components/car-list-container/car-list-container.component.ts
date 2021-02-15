@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
@@ -20,6 +20,7 @@ import {
 } from '../../models/car-list.interface';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 
 @Component({
   selector: 'epgu-constructor-car-list-container',
@@ -27,7 +28,7 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
   styleUrls: ['./car-list-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarListContainerComponent {
+export class CarListContainerComponent implements OnDestroy {
   showNav$: Observable<boolean> = this.screenService.showNav$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   display$: Observable<DisplayDto> = this.screenService.display$;
@@ -70,7 +71,12 @@ export class CarListContainerComponent {
     public screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     public config: ConfigService,
+    private httpCancelService: HttpCancelService,
   ) {}
+
+  ngOnDestroy(): void {
+    this.httpCancelService.cancelPendingRequests();
+  }
 
   setState(carOriginalItem: VehicleOwnerInfo): void {
     if (carOriginalItem) {
