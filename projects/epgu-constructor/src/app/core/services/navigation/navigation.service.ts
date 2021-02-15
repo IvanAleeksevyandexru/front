@@ -71,9 +71,9 @@ export class NavigationService {
 
   redirectToLK(): void {
     if (this.isWebView) {
-      this.navigateInsideWebView(MobilViewEvents.feed);
+      this.navigateInsideWebView(MobilViewEvents.exit);
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/orders/all`);
+      this.locationService.href(`${this.configService.lkUrl}/notifications`);
     }
   }
 
