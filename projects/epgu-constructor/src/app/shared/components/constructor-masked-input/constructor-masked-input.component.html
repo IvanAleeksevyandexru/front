@@ -2,10 +2,12 @@
   epgu-constructor-trim
   epgu-constructor-text-transform
   epgu-constructor-validation-type
+  [epgu-constructor-mask-transform]="mask"
+  [maskOptions]="maskOptions"
   [isTrim]="isTrim"
   [textTransformType]="textTransformType"
   [clearable]="clearable"
-  [mask]="$any(mask)"
+  [mask]="$any(mask | maskHandle:maskOptions)"
   [name]="name"
   [id]="id"
   [showMaskAsPlaceholder]="showMaskAsPlaceholder"
