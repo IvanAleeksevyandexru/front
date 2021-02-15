@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -26,7 +31,7 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
   styleUrls: ['./employee-history-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EmployeeHistoryContainerComponent {
+export class EmployeeHistoryContainerComponent implements AfterViewInit {
   component$: Observable<ComponentDto> = this.screenService.component$;
   header$: Observable<string> = this.screenService.header$;
   gender$: Observable<Gender> = this.screenService.gender$;
@@ -47,14 +52,21 @@ export class EmployeeHistoryContainerComponent {
     public currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private dataSourceService: EmployeeHistoryDataSourceService,
+    private cdr: ChangeDetectorRef,
   ) {}
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
 
   public updateEmployeeHistory({ data, isValid }: EmployeeHistoryFormData): void {
     this.currentAnswersService.isValid = isValid;
-    const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = data.map(
-      (employee: EmployeeHistoryModel) => this.formatToServerModel(employee),
-    );
-    this.currentAnswersService.state = JSON.stringify(employeeHistoryBeforeSend);
+    if (isValid) {
+      const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = data.map(
+        (employee: EmployeeHistoryModel) => this.formatToServerModel(employee),
+      );
+      this.currentAnswersService.state = JSON.stringify(employeeHistoryBeforeSend);
+    }
   }
 
   private formatToServerModel(employee: EmployeeHistoryModel): EmployeeHistoryServerModel {

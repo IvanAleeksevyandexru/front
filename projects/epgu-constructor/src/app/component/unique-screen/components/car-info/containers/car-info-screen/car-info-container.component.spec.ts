@@ -125,7 +125,7 @@ describe('CarInfoContainerComponent', () => {
       });
     });
 
-    it("should map errors if there aren't values", () => {
+    it('should map errors if there aren\'t values', () => {
       const res = component.mapCarInfoErrors(errors, {
         vehicleServiceCallResult: ServiceResult.SUCCESS,
         notaryServiceCallResult: ServiceResult.SUCCESS,
