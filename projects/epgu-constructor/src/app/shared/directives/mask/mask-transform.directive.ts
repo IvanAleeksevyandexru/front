@@ -8,9 +8,7 @@ import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/nu
 })
 export class MaskTransformDirective implements OnInit {
   @Input('epgu-constructor-mask-transform') mask: string | string[];
-  @Input() maskOptions: Partial<
-    NumberMaskOptionsInterface
-  >;
+  @Input() maskOptions?: Partial<NumberMaskOptionsInterface>;
 
   private localeThousandSeparator = ',';
   private localeDecimalSeparator = '.';
@@ -40,8 +38,10 @@ export class MaskTransformDirective implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.localeThousandSeparator = this.decimalPipe.transform(1234, '0.0-0').replace(/\d/g, '');
-    this.localeDecimalSeparator = this.decimalPipe.transform(1.23, '0.2-2').replace(/\d/g, '');
-    this.options = { ...numberMaskDefaultOptions, ...this.maskOptions };
+    if (this.mask === MASKS.NumberMaskInput) {
+      this.localeThousandSeparator = this.decimalPipe.transform(1234, '0.0-0').replace(/\d/g, '');
+      this.localeDecimalSeparator = this.decimalPipe.transform(1.23, '0.2-2').replace(/\d/g, '');
+      this.options = { ...numberMaskDefaultOptions, ...this.maskOptions };
+    }
   }
 }
