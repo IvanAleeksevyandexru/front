@@ -18,6 +18,7 @@ import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { ScreenTypes } from '../../../screen/screen.types';
 
 declare global {
   namespace NodeJS {
@@ -180,6 +181,41 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(service['updateLoading']).toHaveBeenCalled();
+    });
+  });
+
+  describe('patchStore()',() => {
+
+    it('should call updateLoading with false true', () => {
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.patchStore({});
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
+
+    it('should call processResponse with new state', () => {
+      const state = JSON.parse(JSON.stringify(response));
+      const newScenarioDtoDiff = { display: {
+          components: [{
+            attrs: {},
+            id: '1112',
+            label: 'some label 3',
+            type: 'some type',
+            value: 'some value',
+            required: false,
+            visited: false
+          }],
+          header: 'some header',
+          label: 'some label',
+          id: '2222',
+          name: 'some name 2',
+          submitLabel: 'some submit label',
+          terminal: false,
+          type: ScreenTypes.COMPONENT
+      }};
+      state.scenarioDto = { ...state.scenarioDto, ...newScenarioDtoDiff };
+      spyOn<any>(service, 'processResponse').and.callThrough();
+      service.patchStore(newScenarioDtoDiff);
+      expect(service['processResponse']).toHaveBeenCalledWith(state);
     });
   });
 

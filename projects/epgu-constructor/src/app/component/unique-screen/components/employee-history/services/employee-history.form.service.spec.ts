@@ -37,12 +37,6 @@ describe('EmployeeHistoryFormService', () => {
   });
 
   describe('newGeneration', () => {
-    it('should be not creat form if !isScreensAvailable', () => {
-      jest.spyOn(service.employeeHistoryForm, 'length', 'get').mockReturnValue(21);
-      service.newGeneration();
-      expect(service.employeeHistoryForm.value.length).toBe(0);
-    });
-
     it('should be creat form', () => {
       service.newGeneration();
       expect(service.employeeHistoryForm.length).toBe(1);

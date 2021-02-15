@@ -11,7 +11,7 @@
       [validationShowOn]="touchedUnfocused"
       [invalid]="passportForm.controls[field.fieldName].invalid"
       [control]="$any(passportForm.controls[field.fieldName])"
-      [mask]="field.mask | maskHandle"
+      [mask]="field.mask"
       [showMaskAsPlaceholder]="!field.placeholder"
       [placeholder]="field.placeholder"
       [showConstantMaskSymbols]="true"

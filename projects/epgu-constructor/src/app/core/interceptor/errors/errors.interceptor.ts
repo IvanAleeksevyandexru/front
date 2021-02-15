@@ -20,6 +20,7 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 import { LocationService } from '../../services/location/location.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
+import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/400-error';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
@@ -46,6 +47,8 @@ export class ErrorsInterceptorService implements HttpInterceptor {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
+    } else if (status === 400 && url.includes('scenario/getNextStep')) {
+      this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
         this.showModal(DRAFT_STATEMENT_NOT_FOUND).then((redirectToLk) => {

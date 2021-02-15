@@ -5,13 +5,13 @@ interface UploadersRestriction {
 }
 
 interface CheckValueOptions {
-  totalMax: number,
-  maxUploadersRes: UploadersRestriction,
-  currentUploadersRes: UploadersRestriction,
+  totalMax: number;
+  maxUploadersRes: UploadersRestriction;
+  currentUploadersRes: UploadersRestriction;
 }
 
 export enum Uploaders {
-  total= 'total',
+  total = 'total',
 }
 
 export enum CheckFailedReasons {
@@ -54,7 +54,7 @@ export class FileUploadService {
       return;
     }
 
-    if(uploader === Uploaders.total) {
+    if (uploader === Uploaders.total) {
       this.totalMaxFilesSize = value;
     } else {
       this.maxFilesSize[uploader] = value;
@@ -68,7 +68,10 @@ export class FileUploadService {
     }
   }
 
-  checkFilesAmount(valueForUpdating: number = 0, uploader: string): { isValid: boolean, reason?: CheckFailedReasons } {
+  checkFilesAmount(
+    valueForUpdating: number = 0,
+    uploader: string,
+  ): { isValid: boolean; reason?: CheckFailedReasons } {
     const options = {
       totalMax: this.totalMaxFilesAmount,
       maxUploadersRes: this.maxFilesAmount,
@@ -77,13 +80,21 @@ export class FileUploadService {
     return this.checkFiles(valueForUpdating, uploader, options);
   }
 
-  updateFilesSize(valueForUpdating: number = 0, uploader: string): void  {
+  updateFilesSize(valueForUpdating: number = 0, uploader: string): void {
     if (this.checkFilesSize(valueForUpdating, uploader).isValid) {
       this.uploadedFilesSize[uploader] += valueForUpdating;
     }
   }
+  decrementFilesSize(valueForUpdating: number = 0, uploader: string): void {
+    if (this.checkFilesSize(valueForUpdating, uploader).isValid) {
+      this.uploadedFilesSize[uploader] -= valueForUpdating;
+    }
+  }
 
-  checkFilesSize(valueForUpdating: number = 0, uploader: string): { isValid: boolean, reason?: CheckFailedReasons } {
+  checkFilesSize(
+    valueForUpdating: number = 0,
+    uploader: string,
+  ): { isValid: boolean; reason?: CheckFailedReasons } {
     const options = {
       totalMax: this.totalMaxFilesSize,
       maxUploadersRes: this.maxFilesSize,
@@ -92,14 +103,18 @@ export class FileUploadService {
     return this.checkFiles(valueForUpdating, uploader, options);
   }
 
-  private checkFiles(valueForUpdating: number = 0, uploader: string, options: CheckValueOptions)
-    : { isValid: boolean, reason?: CheckFailedReasons } {
-
+  private checkFiles(
+    valueForUpdating: number = 0,
+    uploader: string,
+    options: CheckValueOptions,
+  ): { isValid: boolean; reason?: CheckFailedReasons } {
     const { totalMax, maxUploadersRes, currentUploadersRes } = options;
 
     if (totalMax) {
-      const currentTotal = Object.values(currentUploadersRes)
-        .reduce((total, current) => total + current, 0);
+      const currentTotal = Object.values(currentUploadersRes).reduce(
+        (total, current) => total + current,
+        0,
+      );
       const newTotal = currentTotal + valueForUpdating;
 
       const invalidTotal = newTotal < 0 || newTotal > totalMax;
@@ -111,7 +126,8 @@ export class FileUploadService {
 
     if (maxUploadersRes[uploader]) {
       const newUploaderResValue = currentUploadersRes[uploader] + valueForUpdating;
-      const invalidUploaderResValue = newUploaderResValue < 0 || newUploaderResValue > maxUploadersRes[uploader];
+      const invalidUploaderResValue =
+        newUploaderResValue < 0 || newUploaderResValue > maxUploadersRes[uploader];
 
       if (invalidUploaderResValue) {
         return { isValid: false, reason: CheckFailedReasons.uploaderRestriction };
