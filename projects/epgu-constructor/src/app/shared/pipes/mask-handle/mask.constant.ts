@@ -59,7 +59,7 @@ export const MASKS_HANDLERS = {
       const mask: Array<string | RegExp> = [];
 
       if (maskForDecimalsShown) {
-        for (let i = 0; i < Math.min(options.decimalLimit, decimalPart.length + 1); i += 1) {
+        for (let i = 0, length = Math.min(options.decimalLimit, decimalPart.length + 1); i < length; i += 1) {
           mask.unshift(/\d/);
         }
         mask.unshift(options.decimalSymbol);

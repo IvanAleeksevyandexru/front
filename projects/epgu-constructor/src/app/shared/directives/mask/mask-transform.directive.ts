@@ -29,7 +29,7 @@ export class MaskTransformDirective implements OnInit {
             `0.${this.options.decimalLimit}-${this.options.decimalLimit}`,
           )
           .replace(
-            this.localeThousandSeparator,
+            new RegExp(this.localeThousandSeparator, 'g'),
             this.options.includeThousandsSeparator ? this.options.thousandsSeparatorSymbol : '',
           )
           .replace(this.localeDecimalSeparator, this.options.decimalSymbol);
