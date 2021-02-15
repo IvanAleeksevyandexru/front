@@ -37,6 +37,8 @@ import {
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
+import { ATTACH_UPLOADED_FILES } from '../../../../../../shared/constants/actions';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 interface OverLimitsItem {
   count: number;
@@ -113,6 +115,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
 
   store = new FileItemStore();
+  attachUploadedFiles = ATTACH_UPLOADED_FILES;
+  componentId = this.screenService.component?.id || null;
+  componentValues: string[] = [];
+  suggestionFiles: UploadedFile[] = [];
 
   files = this.store.files;
   files$ = this.files.pipe(
@@ -126,6 +132,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     ),
     tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
+  suggestions$ = this.screenService.suggestions$;
 
   get data(): FileUploadItem {
     return this.loadData;
@@ -207,6 +214,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
+    private screenService: ScreenService,
   ) {}
 
   resetLimits(): void {
@@ -460,6 +468,48 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
+    this.subscriptions.add(
+      this.suggestions$.subscribe((suggestions) => {
+        const componentList = (suggestions && suggestions[this.componentId]?.list) || [];
+        const modalContent = componentList.reduce((result, item) => {
+          const parsedValue = JSON.parse(item.originValue);
+          const componentValues = [
+            ...parsedValue.uploads.reduce((acc, upload) => {
+              acc.push(
+                ...upload.value.map((value) => {
+                  this.suggestionFiles.push(value);
+                  const { objectId, objectTypeId, mnemonic, created } = value;
+                  return `
+                  <button
+                    class="file-preview"
+                    data-action-type="previewFile"
+                    data-action-value="${mnemonic}"
+                    title="${created}"
+                  >
+                    <img
+                      class="file-preview__img"
+                      src="https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${objectId}/${objectTypeId}/download?mnemonic=${mnemonic}"
+                      onerror="this.src='../../../../../../../assets/icons/svg/image-error.svg'"
+                    />
+                  </button>
+                `;
+                }),
+              );
+              return acc;
+            }, []),
+          ];
+          result.push(...componentValues);
+          return result;
+        }, []);
+        this.attachUploadedFiles.value = `<p class="mb-24">Вы можете снова прикрепить эти файлы к заявлению.<br> Проверьте, чтобы они не были просрочены.</p>
+          <div class="file-preview__wrapper">
+            ${modalContent.join('')}
+          </div>`;
+      }),
+    );
+    this.eventBusService.on('previewFileEvent').subscribe((payload) => {
+      console.log({ payload }, this.suggestionFiles);
+    });
   }
 
   polyfillFile(file: File): File {
