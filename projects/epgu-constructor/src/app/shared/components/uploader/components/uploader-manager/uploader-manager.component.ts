@@ -43,7 +43,9 @@ export class UploaderManagerComponent implements OnDestroy {
   constructor(private viewer: ViewerService) {}
 
   view(index: number): void {
-    this.viewer.open(index, this.list, false);
+    const sub = this.viewer.open(index, this.list, false).subscribe(() => {
+      sub.unsubscribe();
+    });
   }
 
   ngOnDestroy(): void {

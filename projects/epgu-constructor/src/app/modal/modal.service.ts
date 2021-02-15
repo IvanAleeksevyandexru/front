@@ -1,7 +1,6 @@
 import {
   ApplicationRef,
   ComponentFactoryResolver,
-  ComponentRef,
   Injectable,
   Injector,
   Renderer2,
@@ -24,13 +23,7 @@ export class ModalService {
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public openModal<T, K = any>(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    modalComponent: Type<any>,
-    modalParameters?: K,
-    isReturnComponent: boolean = false,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Observable<T> | ComponentRef<any> {
+  public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = 'hidden';
       const screenResolver = document.querySelector<HTMLElement>(
@@ -61,10 +54,7 @@ export class ModalService {
       modalResult.next(data);
     };
 
-    if (isReturnComponent) {
-      return componentRef;
-    }
-    return isReturnComponent ? componentRef : modalResult.asObservable().pipe(take(1));
+    return modalResult.asObservable().pipe(take(1));
   }
 
   public registerInjector(injector: Injector): void {

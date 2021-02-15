@@ -4,6 +4,7 @@ import { UploaderViewerComponent } from '../../components/uploader-viewer/upload
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 
 import { SudjectAction } from '../../data';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ViewerService {
@@ -13,17 +14,17 @@ export class ViewerService {
 
   constructor(private modal: ModalService) {}
 
-  open(index: number, files: FileItem[], isSudject: boolean, sudjects: FileItem[] = []): void {
-    const component = this.modal.openModal(
-      UploaderViewerComponent,
-      {
-        isSudject,
-        files,
-        sudjects,
-        index,
-      },
-      true,
-    ) as ComponentRef<UploaderViewerComponent>;
-    console.log(component);
+  open(
+    index: number,
+    files: FileItem[],
+    isSudject: boolean,
+    sudjects: FileItem[] = [],
+  ): Observable<void> {
+    return this.modal.openModal(UploaderViewerComponent, {
+      isSudject,
+      files,
+      sudjects,
+      index,
+    });
   }
 }
