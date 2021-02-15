@@ -1,32 +1,19 @@
-<epgu-constructor-screen-container
-  class="employee-history"
-  [show-nav]="screenService.showNav$ | async"
-  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+<epgu-constructor-default-unique-screen-wrapper
+  *ngIf="data$ | async as data"
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenActionButtons]="screenService.buttons$ | async"
+  [actionButtons]="screenService.actions$ | async"
+  [isShowActionBtn]="true"
+  [showNav]="screenService.showNav$ | async"
+  [submitLabel]="screenService.submitLabel$ | async"
 >
-  <div class="screen-body">
-    <epgu-constructor-page-name>{{ header$ | async }}</epgu-constructor-page-name>
-
-    <epgu-constructor-information-center-form
-      [infoCenterList]="infoCenterList"
-      [isLoadingInfoCenter]="isLoadingInfoCenter"
-      [sourceDictionaryLabel]="(data$ | async)?.attrs.sourceDictionary.label"
-      [dictionaryToRequestLabel]="(data$ | async)?.attrs.dictionaryToRequest.label"
-      [sourceList]="sourceList"
-      (handleSelectEvent)="handleSelect($event)"
-    ></epgu-constructor-information-center-form>
-  </div>
-
-  <div class="screen-footer">
-    <ng-container *ngFor="let action of (data$ | async)?.attrs.actions">
-      <lib-button
-        epgu-constructor-action
-        [action]="action"
-        [color]="action.color"
-        [disabled]="isLoading$ | async"
-        [showLoader]="isLoading$ | async"
-        class="screen-footer__btn"
-        >{{ action.label }}</lib-button
-      >
-    </ng-container>
-  </div>
-</epgu-constructor-screen-container>
+  <epgu-constructor-information-center-form
+    [infoCenterList]="infoCenterList"
+    [isLoadingInfoCenter]="isLoadingInfoCenter"
+    [sourceDictionaryLabel]="(data$ | async)?.attrs.sourceDictionary.label"
+    [dictionaryToRequestLabel]="(data$ | async)?.attrs.dictionaryToRequest.label"
+    [sourceList]="sourceList"
+    (handleSelectEvent)="handleSelect($event)"
+  ></epgu-constructor-information-center-form>
+</epgu-constructor-default-unique-screen-wrapper>
