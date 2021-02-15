@@ -10,6 +10,7 @@ import {
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { LocationService } from '../location/location.service';
+import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 /**
  * Этот сервис должен быть запровайден только на уровне компанент, не стоит его провайдить через модули.
@@ -26,10 +27,14 @@ export class NavigationService {
   get skipStep$(): Observable<Navigation> {
     return this.skipStep.asObservable();
   }
+  get patchStepOnCli$(): Observable<Partial<ScenarioDto>> {
+    return this.patchStepOnCli.asObservable();
+  }
 
   private nextStep = new Subject<Navigation>();
   private prevStep = new Subject<Navigation>();
   private skipStep = new Subject<Navigation>();
+  private patchStepOnCli = new Subject<Partial<ScenarioDto>>();
 
   constructor(
     private smuEventsService: SmuEventsService,
@@ -52,6 +57,10 @@ export class NavigationService {
     this.skipStep.next(navigation);
   }
 
+  patchOnCli(newScenarioDtoDiff?: Partial<ScenarioDto>): void {
+    this.patchStepOnCli.next(newScenarioDtoDiff);
+  }
+
   redirectToProfileEdit(): void {
     if (this.isWebView) {
       this.locationService.href('/profile/user');
@@ -62,9 +71,9 @@ export class NavigationService {
 
   redirectToLK(): void {
     if (this.isWebView) {
-      this.navigateInsideWebView(MobilViewEvents.feed);
+      this.navigateInsideWebView(MobilViewEvents.exit);
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/orders/all`);
+      this.locationService.href(`${this.configService.lkUrl}/notifications`);
     }
   }
 

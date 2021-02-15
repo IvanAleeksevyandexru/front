@@ -5,8 +5,7 @@ import { NavigationPayload } from '../../form-player/form-player.types';
 
 @Injectable()
 export class CustomScreenService {
-
-  constructor(private datesToolsService: DatesToolsService) { }
+  constructor(private datesToolsService: DatesToolsService) {}
 
   /**
    * Форматируем данные перед отправкой
@@ -30,19 +29,22 @@ export class CustomScreenService {
         if (this.datesToolsService.isValid(dataValue)) {
           value = this.datesToolsService.format(dataValue);
         } else {
-          value = JSON.stringify(dataValue || {});
+          value = dataValue ? JSON.stringify(dataValue ) : null;
         }
       } else {
         value = dataValue;
       }
 
-      acc[key] = {
+      const payload = {
         visited: true,
         value,
         disabled: data[key].disabled,
       };
 
-      return acc;
+      return {
+        ...acc,
+        [key]: payload,
+      };
     }, {});
   }
 }

@@ -1,0 +1,10 @@
+<epgu-constructor-uploader-manager-item
+  *ngFor="let file of list"
+  [file]="file"
+  (update)="update.emit($event)"
+  (delete)="delete.emit($event)"
+  (cancel)="cancel.emit($event)"
+  (download)="download.emit($event)"
+  (repeat)="repeat.emit($event)"
+  class="manager-item"
+></epgu-constructor-uploader-manager-item>

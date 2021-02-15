@@ -190,7 +190,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public showTimeSlots(date: Date): void {
     this.currentSlot = null;
-    this.timeSlotsService.getAvailableSlots(date).subscribe(
+    this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
       (timeSlots) => {
         this.timeSlots = timeSlots;
         if (this.timeSlotsService.hasError()) {
