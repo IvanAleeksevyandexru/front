@@ -18,28 +18,3 @@
   >
   </epgu-constructor-employee-history-form>
 </epgu-constructor-default-unique-screen-wrapper>
-<!--<epgu-constructor-screen-container-->
-<!--  class="employee-history"-->
-<!--  *ngIf="init$ | async as data"-->
-<!--  [show-nav]="screenService.showNav$ | async"-->
-<!--  [class.screen-container-mt]="!(screenService.showNav$ | async)"-->
-<!--&gt;-->
-<!--  <div class="screen-body">-->
-<!--    <epgu-constructor-page-name>{{ header$ | async }}</epgu-constructor-page-name>-->
-
-<!--    <epgu-constructor-employee-history-form-->
-<!--      [fstuc]="(screenService.component$ | async).attrs?.fstuc"-->
-<!--      [componentValue]="$any(screenService.componentValue$ | async)"-->
-<!--      [init]="init$ | async"-->
-<!--      [ds]="ds"-->
-<!--      (updateFormEvent)="updateEmployeeHistory($event)"-->
-<!--    >-->
-<!--    </epgu-constructor-employee-history-form>-->
-<!--  </div>-->
-
-<!--  <div class="screen-footer">-->
-<!--    <lib-button (click)="getNextScreen()" [disabled]="!isValid" class="submit-button">-->
-<!--      {{ screenService.submitLabel || 'Продолжить' }}-->
-<!--    </lib-button>-->
-<!--  </div>-->
-<!--</epgu-constructor-screen-container>-->
