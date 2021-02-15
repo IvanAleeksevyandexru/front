@@ -1,11 +1,21 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
 } from '../../component/shared/components/components-list/components-list.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { ComponentActionDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentActionDto,
+  ScreenActionDto,
+} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenBase } from '../screenBase';
 import { CustomScreenService } from './custom-screen.service';
 import { NEXT_STEP_ACTION } from '../../shared/constants/actions';
@@ -17,13 +27,27 @@ import { NEXT_STEP_ACTION } from '../../shared/constants/actions';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class CustomScreenComponent extends ScreenBase {
+export class CustomScreenComponent extends ScreenBase implements OnInit {
+  screenActionButtons: ScreenActionDto[] = [];
   dataToSend: NavigationPayload;
   isValid: boolean;
   nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
-  constructor(public injector: Injector, private customScreenService: CustomScreenService) {
+  constructor(
+    public injector: Injector,
+    private customScreenService: CustomScreenService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    this.screenService.buttons$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((buttons: Array<ScreenActionDto>) => {
+        this.screenActionButtons = buttons || [];
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   nextStep(): void {

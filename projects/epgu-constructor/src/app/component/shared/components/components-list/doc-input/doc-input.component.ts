@@ -6,7 +6,6 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
@@ -18,6 +17,7 @@ import {
   DocInputControl,
   DocInputField,
   DocInputFields,
+  DocInputFieldsTypes,
   DocInputFormFields,
 } from './doc-input.types';
 
@@ -30,11 +30,14 @@ import {
 })
 export class DocInputComponent implements OnInit, AfterViewInit {
   @Input() data: AbstractControl | DocInputControl;
-
+  docInputFieldsTypes = DocInputFieldsTypes;
   fields: { [fieldName: string]: DocInputField };
-  fieldsNames = ['series', 'number', 'date', 'emitter'];
-  expirationDateName = 'expirationDate';
-  seriesNumDateGroup = 'seriesNumDate'; // name of nested form group
+  fieldsNames = [
+    this.docInputFieldsTypes.series,
+    this.docInputFieldsTypes.number,
+    this.docInputFieldsTypes.date,
+    this.docInputFieldsTypes.emitter,
+  ];
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
@@ -76,12 +79,13 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       const fields = [...this.fieldsNames];
 
       if (this.hasExpirationDate) {
-        fields.push(this.expirationDateName);
+        fields.push(this.docInputFieldsTypes.expirationDate);
       }
 
       fields.forEach((fieldName: string) => {
         const fieldControl =
-          this.form.get(fieldName) || this.form.get([this.seriesNumDateGroup, fieldName]);
+          this.form.get(fieldName) ||
+          this.form.get([this.docInputFieldsTypes.seriesNumDate, fieldName]);
         if (serverError[fieldName] && fieldControl) {
           fieldControl.setErrors({ msg: serverError[fieldName] });
           fieldControl.markAsDirty();
@@ -106,8 +110,8 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   formatFormFields(formFields: DocInputFormFields): DocInputFields {
     const expirationDate = this.hasExpirationDate
       ? {
-          expirationDate: formFields[this.expirationDateName]
-            ? this.datesToolsService.format(formFields[this.expirationDateName])
+          expirationDate: formFields[this.docInputFieldsTypes.expirationDate]
+            ? this.datesToolsService.format(formFields[this.docInputFieldsTypes.expirationDate])
             : null,
         }
       : {};
@@ -153,18 +157,22 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     });
 
     this.form = this.fb.group({
-      [this.seriesNumDateGroup]: this.fb.group(seriesNumDate),
+      [this.docInputFieldsTypes.seriesNumDate]: this.fb.group(seriesNumDate),
       ...emitter,
     });
 
     if (this.hasExpirationDate) {
-      const expirationDate = componentValues[this.expirationDateName]
-        ? new Date(componentValues[this.expirationDateName])
+      const expirationDate = componentValues[this.docInputFieldsTypes.expirationDate]
+        ? new Date(componentValues[this.docInputFieldsTypes.expirationDate])
         : null;
       this.form.setControl(
-        this.expirationDateName,
+        this.docInputFieldsTypes.expirationDate,
         new FormControl(expirationDate, [
-          ...[this.validationService.customValidator(this.fields[this.expirationDateName])],
+          ...[
+            this.validationService.customValidator(
+              this.fields[this.docInputFieldsTypes.expirationDate],
+            ),
+          ],
         ]),
       );
     }

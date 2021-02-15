@@ -40,7 +40,7 @@ import { ValidationService } from '../../projects/epgu-constructor/src/app/share
 import { ValueLoaderService } from '../../projects/epgu-constructor/src/app/shared/services/value-loader/value-loader.service';
 import { TextTransform } from '../../projects/epgu-constructor/src/app/shared/types/textTransform';
 import { CarInfoModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/car-info.module';
-import { CarInfoComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/components/car-info-screen/car-info.component';
+import { CarInfoComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/components/car-info/car-info.component';
 import { FormPlayerApiService } from '../../projects/epgu-constructor/src/app/form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../../projects/epgu-constructor/src/app/core/services/init-data/init-data.service';
 import { LoggerService } from '../../projects/epgu-constructor/src/app/core/services/logger/logger.service';

@@ -15,6 +15,8 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
   let component: PaymentTypeSelectorButtonComponent;
@@ -37,6 +39,7 @@ describe('PaymentTypeSelectorButtonComponent', () => {
         HtmlRemoverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         CurrentAnswersService,
       ],
     })

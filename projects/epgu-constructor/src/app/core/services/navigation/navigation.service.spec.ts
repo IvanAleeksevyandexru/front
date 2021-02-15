@@ -61,6 +61,13 @@ describe('NavigationService', () => {
     });
     navigationService.prev(null);
   });
+  it('test patch', (done) => {
+    navigationService.patchStepOnCli$.subscribe((v) => {
+      expect(v).toBe(null);
+      done();
+    });
+    navigationService.patchOnCli(null);
+  });
   it('test redirectToProfileEdit', () => {
     navigationService.isWebView = true;
     navigationService.redirectToProfileEdit();
@@ -72,11 +79,11 @@ describe('NavigationService', () => {
   it('test redirectToLK', () => {
     navigationService.isWebView = false;
     navigationService.redirectToLK();
-    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
     navigationService.isWebView = true;
     spyOn(smuEventsService, 'notify').and.callThrough();
     navigationService.redirectToLK();
-    expect(smuEventsService.notify).toHaveBeenCalledWith(MobilViewEvents.feed);
+    expect(smuEventsService.notify).toHaveBeenCalledWith(MobilViewEvents.exit);
   });
   it('test redirectToHome', () => {
     navigationService.isWebView = false;

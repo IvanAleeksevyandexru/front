@@ -2,6 +2,7 @@
 
 exports[`CustomScreenComponent check snapshot 1`] = `
 <epgu-constructor-custom-screen
+  changeDetectionRef={[Function ViewRef_]}
   currentAnswersService={[Function CurrentAnswersService]}
   customScreenService={[Function CustomScreenService]}
   eventBusService={[Function EventBusService]}
@@ -9,6 +10,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
   navigationService={[Function NavigationServiceStub]}
   nextStepAction={[Function Object]}
   ngUnsubscribe$={[Function UnsubscribeService]}
+  screenActionButtons={[Function Array]}
   screenService={[Function ScreenServiceStub]}
 >
   <epgu-constructor-screen-container
@@ -30,6 +32,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
     <div
       class="screen-footer"
     >
+      
       
     </div>
   </epgu-constructor-screen-container>

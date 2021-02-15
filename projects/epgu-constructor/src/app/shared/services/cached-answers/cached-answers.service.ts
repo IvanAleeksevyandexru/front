@@ -8,6 +8,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [
   UniqueScreenComponentTypes.carInfo,
+  UniqueScreenComponentTypes.carOwnerInfo,
   UniqueScreenComponentTypes.confirmPersonalUserPhone,
   UniqueScreenComponentTypes.confirmPersonalUserEmail,
   UniqueScreenComponentTypes.paymentScr,

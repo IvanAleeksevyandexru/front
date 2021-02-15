@@ -16,6 +16,7 @@ import {
   setYear as _setYear,
   startOfYear as _startOfYear,
   setMonth as _setMonth,
+  getDate as _getDate,
   getMonth as _getMonth,
   startOfMonth as _startOfMonth,
   endOfMonth as _endOfMonth,
@@ -30,7 +31,11 @@ import {
   intervalToDuration as _intervalToDuration,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
-import { DATE_ISO_STRING_FORMAT, DurationTimeTypes } from '../../../shared/constants/dates';
+import {
+  DATE_ISO_STRING_FORMAT,
+  DurationTimeTypes,
+  StartOfTypes,
+} from '../../../shared/constants/dates';
 
 interface Duration {
   years?: number;
@@ -211,7 +216,7 @@ export class DatesToolsService {
    * @param {DurationTimeTypes} unit ед. измерения (секунды, минуты, часы, дни, недели, месяца, года)
    */
   public add(date: number | Date, amount: number | string, unit: DurationTimeTypes): Date {
-    const duration = { [unit]: Number(amount) };
+    const duration = this.getDuration(amount, unit);
     return _add(date, duration);
   }
 
@@ -222,7 +227,7 @@ export class DatesToolsService {
    * @param {DurationTimeTypes} unit ед. измерения (секунды, минуты, часы, дни, недели, месяца, года)
    */
   public sub(date: number | Date, amount: number | string, unit: DurationTimeTypes): Date {
-    const duration = { [unit]: Number(amount) };
+    const duration = this.getDuration(amount, unit);
     return _sub(date, duration);
   }
 
@@ -243,7 +248,7 @@ export class DatesToolsService {
     return _startOfYear(date);
   }
 
-    /**
+  /**
    * Возвращает новый объект даты с заданным месяцем
    * @param {Date | Number} date исходная дата
    * @param {Number} month указанный месяц
@@ -277,7 +282,7 @@ export class DatesToolsService {
     return _getISODay(date);
   }
 
-  public startOf(date: Date | number, startType: 'day' | 'month' | 'year'): Date {
+  public startOf(date: Date | number, startType: StartOfTypes): Date {
     switch (startType) {
       case 'day':
         return this.startOfDay(date);
@@ -288,8 +293,7 @@ export class DatesToolsService {
     }
   }
 
-
-    /**
+  /**
    * Возвращает новый объект даты с заданными аргументами
    * @param {Date | Number} date исходная дата
    * @param {Number} year указанный год
@@ -324,6 +328,14 @@ export class DatesToolsService {
   }
 
   /**
+   * Возвращает день месяца
+   * @param {Date} date исходная дата
+   */
+  public getDate(date: Date): number {
+    return _getDate(date);
+  }
+
+  /**
    * Возвращает объект даты с началом месяца
    * @param {Date | Number} date исходная дата
    */
@@ -340,13 +352,12 @@ export class DatesToolsService {
   }
 
   /**
-   * Возвращает кол-во дней в переданной дате
-   * @param {Date | Number} date исходная дата
+   * Возврпащает количество дней в месяце
+   * @param {Date} date исходная дата
    */
-  public getDaysInMonth(date: Date | number): number {
+  public getDaysInMonth(date: Date): number {
     return _getDaysInMonth(date);
   }
-
 
   /**
    * Возвращает самую раннюю дату из массива дат
@@ -368,7 +379,72 @@ export class DatesToolsService {
    * Возвращает duration объект для переданного отрезка времени
    * @param {start: Date | Number, end: Date | Number} interval объект интервала, состоящий из начала и конца временного отрезка
    */
-  public intervalToDuration(interval: { start: Date | number, end: Date | number }): Duration {
+  public intervalToDuration(interval: { start: Date | number; end: Date | number }): Duration {
     return _intervalToDuration(interval);
+  }
+
+  /**
+   * Аналог utcOffset у moment. Смещает время относительно таймзоны.
+   * @param {Date} date исходная дата
+   * @param {String} timezone Таймзона в формате '+HH:mm'
+   */
+  public utcOffset(date: Date, timezone: string): Date {
+    let copiedDate = this.toDate(date);
+    copiedDate.setMinutes(copiedDate.getMinutes() + copiedDate.getTimezoneOffset());
+
+    const pattern = /^((\+|-)?[0-9]{2}):([0-9]{2})$/;
+    if (timezone.match(pattern)) {
+      const [, hours, , minutes] = timezone.match(pattern);
+
+      copiedDate = this.add(copiedDate, Number(hours), 'hours');
+      copiedDate = this.add(copiedDate, Number(minutes), 'minutes');
+    }
+
+    return copiedDate;
+  }
+
+  /**
+   * Преобразовывает продолжительность из формата moment.js в dateFns
+   * Нужно например для restrictions формата 30, 'd'
+   * @param {Number | String} amount длина продолжительности
+   * @param {String} unit Единицы измерения продолжительности
+   * @throws Error бросает ошибку если передать неизвестные единицы измерения
+   * это ведь лучше чем тихо ничего не менять
+   */
+  private getDuration(
+    amount: number | string,
+    unit: string,
+  ): { [key in DurationTimeTypes]: number } {
+    const momentToDateFnsUnits: { [key: string]: DurationTimeTypes } = {
+      y: 'years',
+      year: 'years',
+      years: 'years',
+      M: 'months',
+      month: 'months',
+      months: 'months',
+      w: 'weeks',
+      week: 'weeks',
+      weeks: 'weeks',
+      d: 'days',
+      day: 'days',
+      days: 'days',
+      h: 'hours',
+      hour: 'hours',
+      hours: 'hours',
+      m: 'minutes',
+      minute: 'minutes',
+      minutes: 'minutes',
+      s: 'seconds',
+      second: 'seconds',
+      seconds: 'seconds',
+    };
+
+    if (!(unit in momentToDateFnsUnits)) {
+      throw new Error(`${unit} in not supported yet or incorrect`);
+    }
+
+    const translatedUnit: DurationTimeTypes = momentToDateFnsUnits[unit];
+
+    return { [translatedUnit]: Number(amount) } as { [key in DurationTimeTypes]: number };
   }
 }

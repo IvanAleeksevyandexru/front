@@ -20,6 +20,10 @@ export interface TimeSlotValueInterface {
   serviceId?: string;
   waitingTimeExpired: boolean;
   subject?: string;
+  calendarName?: string;
+  eserviceId?: string;
+  serviceCode?: string;
+  organizationId?: string;
 }
 
 export interface DepartmentInterface {

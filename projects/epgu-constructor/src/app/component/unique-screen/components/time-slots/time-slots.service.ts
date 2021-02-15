@@ -29,10 +29,11 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { get } from 'lodash';
+import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 
 @Injectable()
 export class TimeSlotsService {
-  public activeMonthNumber: number;
+  public activeMonthNumber: number; // 0..11
   public activeYearNumber: number;
   public bookId;
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
@@ -40,20 +41,18 @@ export class TimeSlotsService {
   public timeSlotsType: TimeSlotsTypes;
 
   public department: DepartmentInterface;
-  private serviceId: string;
-  private subject: string;
   private solemn: boolean;
   private slotsPeriod;
-  private orderId;
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
   private availableMonths: string[];
   private areas: string[];
+  private config: { [key: string]: string } = {};
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
-    private config: ConfigService,
+    private configService: ConfigService,
     private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
@@ -201,6 +200,16 @@ export class TimeSlotsService {
       this.department = department;
     }
 
+    const config = {
+      orderId: data.orderId,
+      serviceId: data.serviceId,
+      subject: data.subject,
+      calendarName: data.calendarName,
+      eserviceId: data.eserviceId,
+      serviceCode: data.serviceCode,
+      organizationId: data.organizationId,
+    };
+
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
       let solemn = data.solemn == 'Да';
       if (this.solemn !== solemn) {
@@ -218,22 +227,9 @@ export class TimeSlotsService {
       }
     }
 
-    let orderId = data.orderId;
-    if (!this.orderId || this.orderId !== orderId) {
+    if (JSON.stringify(this.config) !== JSON.stringify(config)) {
       changed = true;
-      this.orderId = orderId;
-    }
-
-    let serviceId = data.serviceId;
-    if (!this.serviceId || this.serviceId !== serviceId) {
-      changed = true;
-      this.serviceId = serviceId;
-    }
-
-    let subject = data.subject;
-    if (!this.subject || this.subject !== subject) {
-      changed = true;
-      this.subject = subject;
+      this.config = config;
     }
 
     return changed;
@@ -249,11 +245,11 @@ export class TimeSlotsService {
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
-    const { eserviceId } = this.config.timeSlots[this.timeSlotsType];
+    const { eserviceId } = this.configService.timeSlots[this.timeSlotsType];
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
-        eserviceId,
+        eserviceId: this.config.eserviceId || eserviceId,
         bookId: bookId,
       })
       .pipe(
@@ -276,13 +272,13 @@ export class TimeSlotsService {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    const { serviceId, eserviceId, routeNumber } = this.config.timeSlots[this.timeSlotsType];
+    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
 
     return {
-      organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber: this.orderId,
-      serviceId: [this.serviceId || serviceId],
-      eserviceId,
+      organizationId: [this.config.organizationId || this.getSlotsRequestOrganizationId(this.timeSlotsType)],
+      caseNumber: this.config.orderId,
+      serviceId: [this.config.serviceId || serviceId],
+      eserviceId: this.config.eserviceId || eserviceId,
       routeNumber,
       attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
     };
@@ -301,7 +297,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.MVD]: [],
       [TimeSlotsTypes.GIBDD]: [
         { name: 'organizationId', value: this.department.attributeValues.code },
-        { name: 'serviceId', value: this.serviceId || serviceId },
+        { name: 'serviceId', value: this.config.serviceId || serviceId },
       ],
     };
 
@@ -333,37 +329,37 @@ export class TimeSlotsService {
       calendarName,
       preliminaryReservationPeriod,
       routeNumber,
-    } = this.config.timeSlots[this.timeSlotsType];
+    } = this.configService.timeSlots[this.timeSlotsType];
 
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject: this.subject || subject,
+      subject: this.config.subject || subject,
       params: [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
         },
       ],
-      eserviceId,
-      serviceCode,
+      eserviceId: this.config.eserviceId || eserviceId,
+      serviceCode: this.config.serviceCode || serviceCode,
       bookId: this.bookId,
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
-      calendarName,
+      calendarName: this.config.calendarName || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
-      parentOrderId: this.orderId,
+      parentOrderId: this.config.orderId,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
-      serviceId: [this.serviceId || serviceId],
+      serviceId: [this.config.serviceId || serviceId],
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {
       requestBody.parentOrderId = '';
-      requestBody.caseNumber = this.orderId;
+      requestBody.caseNumber = this.config.orderId;
     }
 
     return requestBody;
@@ -375,9 +371,9 @@ export class TimeSlotsService {
   ): Array<{ name: string; value: string }> {
     const settings = {
       [TimeSlotsTypes.BRAK]: [],
-      [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.serviceId || serviceId }],
+      [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
       [TimeSlotsTypes.MVD]: [],
-      [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.serviceId || serviceId }],
+      [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
     };
 
     return settings[slotsType];
@@ -397,7 +393,7 @@ export class TimeSlotsService {
       let monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
-        const month = this.datesToolsService.format(slotDate, 'yyyy-MM');
+        const month = this.datesToolsService.format(slotDate, DATE_STRING_YEAR_MONTH);
         this.availableMonths.push(month);
       }
 

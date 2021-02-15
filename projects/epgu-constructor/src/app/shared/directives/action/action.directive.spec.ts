@@ -28,9 +28,8 @@ import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ActionDirective } from './action.directive';
 import { ActionService } from './action.service';
-
-
-
+import { ModalService } from '../../../modal/modal.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -143,6 +142,7 @@ describe('ActionDirective', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         HtmlRemoverService,
         CurrentAnswersService,
         ActionService,
