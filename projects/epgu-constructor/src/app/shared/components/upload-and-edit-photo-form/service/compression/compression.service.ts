@@ -423,7 +423,7 @@ export class CompressionService {
   }
 
   private addImageProcess(file: File | Blob): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const objUrl = URL.createObjectURL(file);
       let img = new Image();
 
@@ -433,7 +433,7 @@ export class CompressionService {
       };
       img.onerror = (): void => {
         URL.revokeObjectURL(objUrl);
-        return reject(false);
+        return resolve(false);
       };
 
       img.src = objUrl;
