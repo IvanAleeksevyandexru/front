@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -25,6 +26,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address',
@@ -33,7 +35,7 @@ import {
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit {
+export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('dataForm', { static: false }) dataForm;
   data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
@@ -57,6 +59,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     private changeDetection: ChangeDetectorRef,
     private changeDetectionRef: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
+    private httpCancelService: HttpCancelService,
   ) {}
 
   ngOnInit(): void {
@@ -79,6 +82,10 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   ngAfterViewInit(): void {
     this.subscribeFormChanges();
     this.changeDetection.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.httpCancelService.cancelPendingRequests();
   }
 
   setState(data: ConfirmAddressInterface): void {
