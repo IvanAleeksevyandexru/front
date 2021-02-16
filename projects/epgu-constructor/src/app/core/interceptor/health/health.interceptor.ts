@@ -21,6 +21,7 @@ interface ConfigParams {
   orderId?: number;
   error?: string;
   errorMessage?: string;
+  dictionaryUrl?: string;
 }
 
 enum RequestStatus {
@@ -93,7 +94,16 @@ export class HealthInterceptor implements HttpInterceptor {
         if (this.isValid(error)) {
           if (error.status !== 404) {
             this.configParams['error'] = error.status;
-            this.configParams['errorMessage'] = error.message;
+
+            if (error.status === 506) {
+              const { id, url, message } = error.value;
+              
+              this.configParams['id'] = id;
+              this.configParams['dictionaryUrl'] = url;
+              this.configParams['errorMessage'] = this.utils.cyrillicToLatin(message);
+            } else {
+              this.configParams['errorMessage'] = this.utils.cyrillicToLatin(error.message);
+            }
 
             this.health.measureEnd(serviceName, RequestStatus.Failed, this.configParams);
           } else {
