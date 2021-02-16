@@ -468,47 +468,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
-    this.subscriptions.add(
-      this.suggestions$.subscribe((suggestions) => {
-        const componentList = (suggestions && suggestions[this.componentId]?.list) || [];
-        const modalContent = componentList.reduce((result, item) => {
-          const parsedValue = JSON.parse(item.originValue);
-          const componentValues = [
-            ...parsedValue.uploads.reduce((acc, upload) => {
-              acc.push(
-                ...upload.value.map((value) => {
-                  this.suggestionFiles.push(value);
-                  const { objectId, objectTypeId, mnemonic, created } = value;
-                  return `
-                  <button
-                    class="file-preview"
-                    data-action-type="previewFile"
-                    data-action-value="${mnemonic}"
-                    title="${created}"
-                  >
-                    <img
-                      class="file-preview__img"
-                      src="https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files/${objectId}/${objectTypeId}/download?mnemonic=${mnemonic}"
-                      onerror="this.src='../../../../../../../assets/icons/svg/image-error.svg'"
-                    />
-                  </button>
-                `;
-                }),
-              );
-              return acc;
-            }, []),
-          ];
-          result.push(...componentValues);
-          return result;
-        }, []);
-        this.attachUploadedFiles.value = `<p class="mb-24">Вы можете снова прикрепить эти файлы к заявлению.<br> Проверьте, чтобы они не были просрочены.</p>
-          <div class="file-preview__wrapper">
-            ${modalContent.join('')}
-          </div>`;
-      }),
-    );
     this.eventBusService.on('previewFileEvent').subscribe((payload) => {
-      console.log({ payload }, this.suggestionFiles);
+      console.log({ payload }, this.componentId);
     });
   }
 

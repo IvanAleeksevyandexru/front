@@ -1,0 +1,46 @@
+@import '../../../styles/core';
+
+::ng-deep .conf-modal {
+  @include tablets-up {
+    width: 690px !important;
+  }
+}
+
+.wrapper {
+  margin: -8px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.file-item {
+  margin: 8px;
+  display: inline-block;
+}
+
+.button {
+  cursor: pointer;
+  border: 2px solid $color-tag-line;
+  outline: none;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: $color-background;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  padding: 0;
+  width: 195px;
+  height: 195px;
+}
+
+.img {
+  object-fit: contain;
+  max-height: 100%;
+  max-width: 100%;
+  margin-bottom: 0 !important;
+}
+
+.caption {
+  @include typ-plain-text();
+  max-height: 100px;
+  overflow: hidden;
+}
