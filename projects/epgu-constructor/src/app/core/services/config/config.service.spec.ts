@@ -19,6 +19,7 @@ const configMock: Config = {
   yandexMapsApiKey: 'yandexMapsApiKey',
   invitationUrl: 'invitationUrl',
   staticDomainAssetsPath: 'staticDomainAssetsPath',
+  staticDomainContentPath: 'staticDomainContentPath',
   mocks: ['mvd', 'selectMap', 'timeSlot', 'payment'],
   mockUrl: 'mockUrl',
   timeSlots: {
@@ -89,6 +90,7 @@ describe('ConfigService', () => {
     expect(service.yandexMapsApiKey).toBe(configMock.yandexMapsApiKey);
     expect(service.invitationUrl).toBe(configMock.invitationUrl);
     expect(service.staticDomainAssetsPath).toBe(configMock.staticDomainAssetsPath);
+    expect(service.staticDomainContentPath).toBe(configMock.staticDomainContentPath);
     expect(service.mocks).toBe(configMock.mocks);
     expect(service.mockUrl).toBe(configMock.mockUrl);
     expect(service.timeSlots).toBe(configMock.timeSlots);

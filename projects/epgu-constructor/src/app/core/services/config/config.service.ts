@@ -24,6 +24,7 @@ export class ConfigService implements Config {
   private _invitationUrl: string;
   private _yandexMapsApiKey: string;
   private _staticDomainAssetsPath: string;
+  private _staticDomainContentPath: string;
   private _mocks: MockApi[];
   private _timeSlots?: TimeSlotsApi;
   private _mockUrl: string;
@@ -114,6 +115,10 @@ export class ConfigService implements Config {
     return this._staticDomainAssetsPath;
   }
 
+  get staticDomainContentPath(): string {
+    return this._staticDomainContentPath;
+  }
+
   get mocks(): MockApi[] {
     return this._mocks;
   }
@@ -156,6 +161,7 @@ export class ConfigService implements Config {
     this._yandexMapsApiKey =
       config.yandexMapsApiKey ?? `${this.loadService.config.yandexMapsApiKey}`;
     this._staticDomainAssetsPath = config.staticDomainAssetsPath ?? this.getStaticDomainCfg();
+    this._staticDomainContentPath = config.staticDomainContentPath;
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
   }

@@ -62,7 +62,7 @@ $minModalHeight: 293px;
 
     &__body {
       overflow: auto; // для отработки скрола в модалке в моб
-      @include rubles('.conf-modal__body', '../../../../../src/assets/img/ruble.svg');
+      @include rubles('.conf-modal__body', '../../../../../src/assets/icons/svg/ruble.svg');
       &.preview .text {
         padding: 0;
       }
