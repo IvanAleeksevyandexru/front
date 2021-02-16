@@ -27,6 +27,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { AttachUploadedFilesModalComponent } from '../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 
 
 const navActionToNavMethodMap = {
@@ -91,9 +92,6 @@ export class ActionService {
         break;
       case ActionType.attachUploadedFiles:
         this.attachUploadedFiles(action);
-        break;
-      case ActionType.previewFile:
-        this.previewFile(action);
         break;
       case ActionType.dropdownListModal:
         this.openDropdownListModal(action);
@@ -237,16 +235,11 @@ export class ActionService {
   private attachUploadedFiles(action: ComponentActionDto): void {
     console.log({ action });
     const { value } = action;
-    this.modalService.openModal(ConfirmationModalComponent, {
-      title: 'Ранее загруженные файлы',
+    this.modalService.openModal(AttachUploadedFilesModalComponent, {
       text: value,
       showCloseButton: false,
       showCrossButton: true,
     });
-  }
-
-  private previewFile(action: ComponentActionDto): void {
-    this.eventBusService.emit('previewFileEvent', action);
   }
 
   private openDropdownListModal({ value }: ComponentActionDto): void {

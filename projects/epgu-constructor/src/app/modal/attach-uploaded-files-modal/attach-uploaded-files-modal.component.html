@@ -1,0 +1,38 @@
+<ng-container>
+  <epgu-constructor-confirmation-modal-base
+    [title]="title"
+    [showCrossButton]="true"
+    text="previewFiles"
+  >
+    <div>
+      <p class="mb-24">Вы можете снова прикрепить эти файлы к заявлению.<br> Проверьте, чтобы они не были просрочены.</p>
+      <div *ngFor="let group of suggestionsFilesGroupByDate">
+        <h4 class="mb-12 mt-24">{{ group[0] }}</h4>
+        <div class="wrapper">
+          <div *ngFor="let file of group[1]" class="file-item">
+            <button
+              (click)="previewFile(file)"
+              class="button"
+            >
+              <img
+                *ngIf="file.isImage"
+                class="img"
+                src="{{fileUploadApiUrl}}/{{file.item.objectId}}/{{file.item.objectTypeId}}/download?mnemonic={{file.item.mnemonic}}"
+                onerror="this.src='../../../../../../../assets/icons/svg/image-error.svg'"
+              />
+              <object
+                *ngIfElse
+                data="{{fileUploadApiUrl}}/{{file.item.objectId}}/{{file.item.objectTypeId}}/download?mnemonic={{file.item.mnemonic}}"
+              ></object>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </epgu-constructor-confirmation-modal-base>
+</ng-container>
+
+<ng-template #fileThumbnail let-file>
+  <!-- TODO -->
+
+</ng-template>

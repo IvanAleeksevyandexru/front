@@ -421,7 +421,6 @@ export enum ActionType {
   profileEdit = 'profileEdit',
   home = 'home',
   deleteSuggest = 'deleteSuggest',
-  previewFile = 'previewFile',
   attachUploadedFiles = 'attachUploadedFiles',
   dropdownListModal = 'dropdownListModal',
 }

@@ -203,31 +203,4 @@ input[type='file'] {
   }
 }
 
-::ng-deep {
-  & .file-preview {
-    &__wrapper {
-      margin: -8px;
-    }
-    cursor: pointer;
-    border: 2px solid $color-tag-line;
-    outline: none;
-    overflow: hidden;
-    border-radius: 12px;
-    background-color: $color-background;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    padding: 0;
-    width: 200px;
-    height: 200px;
-    margin: 8px;
-    &__img {
-      object-fit: contain;
-      max-height: 100%;
-      max-width: 100%;
-      margin-bottom: 0 !important;
-    }
-  }
-}
-
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');

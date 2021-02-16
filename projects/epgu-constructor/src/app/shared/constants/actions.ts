@@ -10,6 +10,6 @@ export const NEXT_STEP_ACTION: ComponentActionDto = {
 export const ATTACH_UPLOADED_FILES: ComponentActionDto = {
   label: 'Ранее загруженные',
   action: DTOActionAction.attachUploadedFiles,
-  value: '',
+  value: '123',
   type: ActionType.attachUploadedFiles,
 };
