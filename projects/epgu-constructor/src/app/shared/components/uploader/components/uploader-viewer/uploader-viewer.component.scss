@@ -14,6 +14,10 @@
   .LyImageCropper-defaultContent-f {
     pointer-events: none;
   }
+  .photo-editor__cropper-lib {
+    height: 400px;
+    width: 100%;
+  }
 
   .uploader-viewer {
     display: flex;
@@ -89,15 +93,6 @@
 
       @include phones-down {
         margin-bottom: 16px;
-      }
-    }
-
-    &__error-text {
-      color: $color-gosred;
-      margin-top: 28px;
-
-      @include phones-up {
-        text-align: center;
       }
     }
   }

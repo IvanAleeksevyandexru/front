@@ -13,7 +13,7 @@ import {
   FileItem,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ViewerService } from '../../services/viewer/viewer.service';
-import { SudjectAction } from '../../data';
+import { SuggestAction } from '../../data';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager',
@@ -27,23 +27,23 @@ export class UploaderManagerComponent implements OnDestroy {
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
   @Output() repeat = new EventEmitter<FileItem>();
-  @Output() sudject = new EventEmitter<SudjectAction>();
+  @Output() suggest = new EventEmitter<SuggestAction>();
 
   @Input() list: FileItem[];
 
   deleteViewer = this.viewer.delete.pipe(tap((file) => this.delete.emit(file)));
   downloadViewer = this.viewer.download.pipe(tap((file) => this.download.emit(file)));
-  sudjectViewer = this.viewer.sudjest.pipe(tap((sudject) => this.sudject.emit(sudject)));
+  suggestViewer = this.viewer.suggest.pipe(tap((sudject) => this.suggest.emit(sudject)));
 
   subscriptions = new Subscription()
     .add(this.deleteViewer.subscribe())
     .add(this.downloadViewer.subscribe())
-    .add(this.sudjectViewer.subscribe());
+    .add(this.suggestViewer.subscribe());
 
   constructor(private viewer: ViewerService) {}
 
-  view(index: number): void {
-    const sub = this.viewer.open(index, this.list, false).subscribe(() => {
+  view(file: FileItem): void {
+    const sub = this.viewer.open(file.id, this.list, false).subscribe(() => {
       sub.unsubscribe();
     });
   }

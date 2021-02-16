@@ -26,7 +26,7 @@ export const iconsTypes = {
   zip: 'ZIP',
 };
 
-export interface SudjectAction {
+export interface SuggestAction {
   file: FileItem;
   isAdd: boolean;
 }
