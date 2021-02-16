@@ -58,7 +58,7 @@ export class ScreenService extends ScreenContent {
    */
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
-    this.updateScreenContent(newState);
+    this.updateScreenContent(this.screenStore);
   }
 
   /**
