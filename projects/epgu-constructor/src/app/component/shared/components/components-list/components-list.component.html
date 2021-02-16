@@ -158,7 +158,7 @@
           "
         >
           <epgu-constructor-constructor-checkbox
-            checkboxId="{{ componentData.value?.id }}_{{ componentsGroupIndex }}"
+            checkboxId="{{ componentData.value?.id }}_{{ componentsGroupIndex || 0 }}"
             [control]="componentData.get('value')"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
@@ -354,6 +354,7 @@
     [placeholder]="data.value?.attrs?.placeholder"
     [component]="data.value"
     [suggestions]="(suggestions$ | async) && (suggestions$ | async)[data.value?.id]"
+    (selectSuggest)="suggestHandle($event)"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -376,5 +377,6 @@
     [component]="data.value"
     [showPlaceholderOnFocus]="data.value?.attrs?.showPlaceholderOnFocus"
     [suggestions]="(suggestions$ | async) && (suggestions$ | async)[data.value?.id]"
+    (selectSuggest)="suggestHandle($event)"
   ></epgu-constructor-masked-input>
 </ng-template>
