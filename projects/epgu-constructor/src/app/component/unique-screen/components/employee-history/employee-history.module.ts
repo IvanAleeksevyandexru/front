@@ -7,7 +7,6 @@ import { ConstructorPlainInputModule } from '../../../../shared/components/const
 import { ConstructorMonthPickerModule } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
 import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { EmployeeHistoryContainerComponent } from './container/employee-history-container.component';
@@ -15,6 +14,7 @@ import { EmployeeHistoryDescriptionComponent } from './components/employee-histo
 import { EmployeeHistoryFormComponent } from './components/employee-history-form/employee-history-form.component';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +28,9 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
     ConstructorMonthPickerModule,
     ConstructorCheckboxModule,
     BaseComponentsModule,
-    ScreenContainerModule,
     CloneButtonModule,
     MemoModule,
+    DefaultUniqueScreenWrapperModule,
   ],
   exports: [
     EmployeeHistoryContainerComponent,

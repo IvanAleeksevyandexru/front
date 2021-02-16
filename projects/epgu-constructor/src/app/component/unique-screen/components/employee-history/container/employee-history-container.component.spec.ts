@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MonthYear } from 'epgu-lib';
 
 import { EmployeeHistoryContainerComponent } from './employee-history-container.component';
 import { EmployeeHistoryDescriptionComponent } from '../components/employee-history-desription/employee-history-description.component';
@@ -13,9 +12,10 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { EmployeeHistoryDataSourceService } from '../services/employee-history.data-source.service';
 import { BaseModule } from '../../../../../shared/base.module';
-import { ScreenContainerModule } from '../../../../../shared/components/screen-container/screen-container.module';
 import { Gender } from '../../../../../shared/types/gender';
-import { EmployeeHistoryFormData, EmployeeHistoryModel } from '../employee-history.types';
+import { EmployeeHistoryFormData } from '../employee-history.types';
+import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 
 describe('EmployeeHistoryContainerComponent', () => {
   let component: EmployeeHistoryContainerComponent;
@@ -44,11 +44,12 @@ describe('EmployeeHistoryContainerComponent', () => {
       imports: [
         MockModule(BaseComponentsModule),
         MockModule(BaseModule),
-        MockModule(ScreenContainerModule),
+        MockModule(DefaultUniqueScreenWrapperModule),
       ],
       providers: [
         EventBusService,
         EmployeeHistoryDataSourceService,
+        CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
@@ -70,10 +71,6 @@ describe('EmployeeHistoryContainerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('nothing', () => {
-    expect(true).toBeTruthy();
-  });
-
   it('should be update employeeHistoryData and isValid', () => {
     const mockData: EmployeeHistoryFormData = {
       isValid: true,
@@ -82,8 +79,8 @@ describe('EmployeeHistoryContainerComponent', () => {
     const debugEl = fixture.debugElement.query(By.css('epgu-constructor-employee-history-form'));
     debugEl.triggerEventHandler('updateFormEvent', mockData);
 
-    expect(component.isValid).toBe(mockData.isValid);
-    expect(component.employeeHistoryData).toEqual(mockData.data);
+    expect(component.currentAnswersService.isValid).toBe(mockData.isValid);
+    expect(component.currentAnswersService.state).toEqual(JSON.stringify(mockData.data));
   });
 
   describe('init$', () => {
@@ -91,46 +88,6 @@ describe('EmployeeHistoryContainerComponent', () => {
       component.init$.subscribe((value) => {
         expect(component.ds.length).toBeGreaterThan(0);
       });
-    });
-  });
-
-  describe('getNextScreen', () => {
-    it('should be call eventBusService with data', () => {
-      jest.spyOn(eventBusService, 'emit');
-      const employeeHistoryDataMock: EmployeeHistoryModel[] = [
-        {
-          address: '',
-          from: new MonthYear(1, 2021),
-          to: new MonthYear(1, 2021),
-          place: '',
-          position: '',
-          type: 'employed',
-          label: 'Я работала',
-        },
-      ];
-      component.employeeHistoryData = employeeHistoryDataMock;
-      component.getNextScreen();
-
-      const expectData = [
-        {
-          address: '',
-          place: '',
-          position: '',
-          type: 'employed',
-          label: 'Я работала',
-          to: {
-            year: 2021,
-            month: 1,
-            monthCode: 'Февраль',
-          },
-          from: {
-            year: 2021,
-            month: 1,
-            monthCode: 'Февраль',
-          },
-        },
-      ];
-      expect(eventBusService.emit).toBeCalledWith('nextStepEvent', JSON.stringify(expectData));
     });
   });
 });

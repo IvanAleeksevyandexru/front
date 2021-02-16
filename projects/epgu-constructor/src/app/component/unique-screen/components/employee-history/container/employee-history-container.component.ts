@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentActionDto,
+  ComponentDto,
+} from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { months } from '../../../../../shared/constants/dates';
 import { Gender } from '../../../../../shared/types/gender';
@@ -15,6 +22,8 @@ import {
   EmployeeHistoryServerModel,
 } from '../employee-history.types';
 import { EmployeeHistoryDataSourceService } from '../services/employee-history.data-source.service';
+import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-employee-history-container',
@@ -22,7 +31,7 @@ import { EmployeeHistoryDataSourceService } from '../services/employee-history.d
   styleUrls: ['./employee-history-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EmployeeHistoryContainerComponent {
+export class EmployeeHistoryContainerComponent implements AfterViewInit {
   component$: Observable<ComponentDto> = this.screenService.component$;
   header$: Observable<string> = this.screenService.header$;
   gender$: Observable<Gender> = this.screenService.gender$;
@@ -37,25 +46,27 @@ export class EmployeeHistoryContainerComponent {
 
   ds: Array<EmployeeHistoryDataSource>;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  isValid: boolean;
-  employeeHistoryData: EmployeeHistoryModel[];
+  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
+    public currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
     private dataSourceService: EmployeeHistoryDataSourceService,
-    private eventBusService: EventBusService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
-  public updateEmployeeHistory({ data, isValid }: EmployeeHistoryFormData): void {
-    this.isValid = isValid;
-    this.employeeHistoryData = data;
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
-  public getNextScreen(): void {
-    const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = this.employeeHistoryData.map(
-      (employee: EmployeeHistoryModel) => this.formatToServerModel(employee),
-    );
-    this.eventBusService.emit('nextStepEvent', JSON.stringify(employeeHistoryBeforeSend));
+  public updateEmployeeHistory({ data, isValid }: EmployeeHistoryFormData): void {
+    this.currentAnswersService.isValid = isValid;
+    if (isValid) {
+      const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = data.map(
+        (employee: EmployeeHistoryModel) => this.formatToServerModel(employee),
+      );
+      this.currentAnswersService.state = JSON.stringify(employeeHistoryBeforeSend);
+    }
   }
 
   private formatToServerModel(employee: EmployeeHistoryModel): EmployeeHistoryServerModel {

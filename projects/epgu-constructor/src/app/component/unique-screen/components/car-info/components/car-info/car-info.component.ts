@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
 
 @Component({
@@ -7,9 +7,7 @@ import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
   styleUrls: ['./car-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CarInfoComponent implements OnInit {
+export class CarInfoComponent {
   @Input() carInfo: CarInfo;
   @Input() carInfoErrors: CarInfoErrors;
-
-  ngOnInit(): void {}
 }
