@@ -6,6 +6,8 @@ import * as moment_ from 'moment';
 const moment = moment_;
 moment.locale('ru');
 
+jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
+
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
   beforeEach(() => {

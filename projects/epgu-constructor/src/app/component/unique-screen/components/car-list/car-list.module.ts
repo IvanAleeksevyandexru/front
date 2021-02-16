@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CarInfoContainerComponent } from '../car-info/containers/car-info-screen/car-info-container.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../../../shared/base.module';
@@ -23,6 +22,6 @@ const COMPONENTS = [
   imports: [
     BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule, ConstructorLookupModule
   ],
-  entryComponents: [CarInfoContainerComponent]
+  entryComponents: [CarListContainerComponent]
 })
 export class CarListModule { }

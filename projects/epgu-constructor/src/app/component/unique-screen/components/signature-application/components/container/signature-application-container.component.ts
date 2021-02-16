@@ -9,7 +9,10 @@ import {
   ComponentActionDto,
   ComponentDto,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../../../../modal/modal.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenStore } from '../../../../../../screen/screen.types';
 import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
 import { SignatureApplicationData } from '../../models/application.interface';
 
@@ -21,6 +24,7 @@ import { SignatureApplicationData } from '../../models/application.interface';
 })
 export class SignatureApplicationContainerComponent implements OnInit {
   data: SignatureApplicationData = this.screenService.componentValue as SignatureApplicationData;
+  error: string = this.screenService.componentError;
 
   isMobile = this.deviceDetector.isMobile;
   showNav$: Observable<boolean> = this.screenService.showNav$;
@@ -36,6 +40,7 @@ export class SignatureApplicationContainerComponent implements OnInit {
     private localStorageService: LocalStorageService,
     private locationService: LocationService,
     private eventBusService: EventBusService,
+    private modalService: ModalService,
   ) {}
 
   @HostListener('click', ['$event'])
@@ -48,12 +53,28 @@ export class SignatureApplicationContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.isSigned()) {
-      this.localStorageService.delete(LAST_SCENARIO_KEY);
-      this.nextStep();
-    } else if (!this.isMobile) {
-      this.redirectToSignatureWindow();
+    if (this.error) {
+      this.showError(this.error).subscribe(() => this.init());
+    } else {
+      this.init();
     }
+  }
+
+  public showError(errorMessage: string): Observable<string> {
+    const params = {
+      title: 'Ошибка подписания',
+      text: errorMessage,
+      showCloseButton: false,
+      showCrossButton: true,
+      buttons: [
+        {
+          label: 'Вернуться к заявлению',
+          closeModal: true,
+          value: 'ok',
+        },
+      ],
+    };
+    return this.modalService.openModal(ConfirmationModalComponent, params);
   }
 
   public redirectToLK(): void {
@@ -64,18 +85,33 @@ export class SignatureApplicationContainerComponent implements OnInit {
     this.eventBusService.emit('nextStepEvent', JSON.stringify({ ...this.data, success: true }));
   }
 
+  private init(): void {
+    if (this.isSigned()) {
+      this.localStorageService.delete(LAST_SCENARIO_KEY);
+      this.locationService.deleteParam('result', 'opid');
+      this.nextStep();
+    } else if (!this.isMobile) {
+      this.redirectToSignatureWindow();
+    }
+  }
+
   private isSigned(): boolean {
     return (
       !!this.screenService.applicantAnswers[this.screenService.component.id]?.value ||
-      this.locationService.getHref().includes('signatureSuccess')
+      this.locationService.getHref().includes('result=0')
     );
   }
 
   private redirectToSignatureWindow(): void {
+    // очищаем ошибку в стейте чтобы при возврате с сервиса подписания можно было отправить nextStep
+    const newState = {
+      errors: {},
+    };
+    this.screenService.updateScreenStore(newState as ScreenStore);
     this.setDataToLocalStorage();
 
     const { url } = this.data;
-    this.locationService.href(`${url}?getLastScreen=signatureSuccess`);
+    this.locationService.href(url);
   }
 
   private setDataToLocalStorage(): void {
