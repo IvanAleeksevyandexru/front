@@ -3,16 +3,8 @@
     <a class="modal__close" (click)="closeModal()"></a>
     <h4 class="modal__title">{{ isSuggests ? 'Ранее загруженные файлы' : 'Просмотр фото' }}</h4>
   </div>
-  <div class="uploader-viewer__body-scroll">
-    <div class="uploader-viewer__body">
-      <ly-img-cropper
-        #cropper
-        class="photo-editor__cropper-lib"
-        [config]="cropConfig"
-        [(scale)]="scale"
-        (ready)="imageLoaded()"
-      ></ly-img-cropper>
-      <div class="uploader-viewer__footer"></div>
-    </div>
+  <div class="uploader-viewer__body">
+    <epgu-constructor-zoom *ngIf="imageURL" [imageURL]="imageURL"> </epgu-constructor-zoom>
   </div>
+  <div class="uploader-viewer__footer"></div>
 </div>

@@ -9,9 +9,8 @@ import { BaseModule } from '../../base.module';
 import { UploaderViewerComponent } from './components/uploader-viewer/uploader-viewer.component';
 import { ModalService } from '../../../modal/modal.service';
 import { ViewerService } from './services/viewer/viewer.service';
-import { LyImageCropperModule } from '@alyle/ui/image-cropper';
-import { AngularResizedEventModule } from 'angular-resize-event';
-import { DragAndDropModule } from '../../directives/drag-and-drop/drag-and-drop.module';
+
+import { ZoomModule } from '../zoom/zoom.module';
 
 @NgModule({
   declarations: [
@@ -23,14 +22,7 @@ import { DragAndDropModule } from '../../directives/drag-and-drop/drag-and-drop.
   ],
 
   providers: [ModalService, ViewerService],
-  imports: [
-    CommonModule,
-    FileSizeModule,
-    BaseModule,
-    LyImageCropperModule,
-    AngularResizedEventModule,
-    DragAndDropModule,
-  ],
+  imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
   entryComponents: [UploaderViewerComponent],
 })

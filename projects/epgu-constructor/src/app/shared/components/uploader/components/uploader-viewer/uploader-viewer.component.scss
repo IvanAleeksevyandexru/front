@@ -58,7 +58,6 @@
       flex-direction: column;
       position: relative;
       padding: 0 32px;
-
       @include phones-down {
         padding: 0 24px;
       }
