@@ -6,7 +6,7 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { Navigation, NavigationOptions, NavigationParams } from '../../../form-player/form-player.types';
+import { Navigation, NavigationOptions, NavigationParams, } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   ActionApiResponse,
@@ -24,7 +24,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
-
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -34,7 +34,6 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionService {
-
   constructor(
     private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
@@ -46,8 +45,7 @@ export class ActionService {
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
     private modalService: ModalService,
-  ) {
-  }
+  ) {}
 
   switchAction(action: ComponentActionDto, componentId: string): void {
     switch (action.type) {
@@ -61,13 +59,16 @@ export class ActionService {
         this.navigateModal(action, componentId, 'nextStep');
         break;
       case ActionType.skipStep:
-        this.navigate(action, componentId,'skipStep');
+        this.navigate(action, componentId, 'skipStep');
         break;
       case ActionType.prevStep:
-        this.navigate(action, componentId,'prevStep');
+        this.navigate(action, componentId, 'prevStep');
         break;
       case ActionType.nextStep:
-        this.navigate(action, componentId,'nextStep');
+        this.navigate(action, componentId, 'nextStep');
+        break;
+      case ActionType.confirmModalStep:
+        this.openConfirmationModal(action, componentId);
         break;
       case ActionType.quizToOrder:
         this.quizToOrder(action);
@@ -107,7 +108,10 @@ export class ActionService {
   }
 
   private prepareNavigationData(action: ComponentActionDto, componentId: string): Navigation {
-    const payload = this.getComponentStateForNavigate(action, componentId || this.screenService.component.id);
+    const payload = this.getComponentStateForNavigate(
+      action,
+      componentId || this.screenService.component.id,
+    );
     const params = this.getParams(action);
     const options = { ...this.getOptions(action), params };
     return { payload, options };
@@ -133,7 +137,10 @@ export class ActionService {
     return stepsBack ? { stepsBack } : {};
   }
 
-  private getComponentStateForNavigate(action: ComponentActionDto, componentId: string): ComponentStateForNavigate {
+  private getComponentStateForNavigate(
+    action: ComponentActionDto,
+    componentId: string,
+  ): ComponentStateForNavigate {
     // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
     if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
       if (this.isTimerComponent(componentId)) {
@@ -145,12 +152,13 @@ export class ActionService {
         };
       }
       return {
-        ...this.currentAnswersService.state as object
+        ...(this.currentAnswersService.state as object),
       };
     }
-    const value: string = typeof this.currentAnswersService.state === 'object'
-      ? JSON.stringify(this.currentAnswersService.state)
-      : this.currentAnswersService.state;
+    const value: string =
+      typeof this.currentAnswersService.state === 'object'
+        ? JSON.stringify(this.currentAnswersService.state)
+        : this.currentAnswersService.state;
     return {
       [componentId]: {
         visited: true,
@@ -160,8 +168,10 @@ export class ActionService {
   }
 
   private isTimerComponent(componentId: string): boolean {
-    return this.screenService.display.components
-      .some(component => component.id === componentId && component.type === CustomScreenComponentTypes.Timer);
+    return this.screenService.display.components.some(
+      (component) =>
+        component.id === componentId && component.type === CustomScreenComponentTypes.Timer,
+    );
   }
 
   private downloadAction(action: ComponentActionDto): void {
@@ -178,7 +188,7 @@ export class ActionService {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
-    if (action?.action.indexOf('addToCalendar') !== -1) {
+    if (action?.action?.indexOf('addToCalendar') !== -1) {
       bodyResult.scenarioDto = {
         ...bodyResult.scenarioDto,
         currentUrl: this.configService.addToCalendarUrl,
@@ -198,10 +208,10 @@ export class ActionService {
     const store = this.screenService.getStore();
     store.applicantAnswers[this.screenService.component.id] = {
       visited: true,
-      value: ''
+      value: '',
     };
     return store;
-  };
+  }
 
   private redirectToEdit({ action }: ComponentActionDto): void {
     switch (action) {
@@ -212,10 +222,34 @@ export class ActionService {
     }
   }
 
+  private openConfirmationModal(action: ComponentActionDto, componentId: string): void {
+    const data = this.getActionDTO(action);
+    const confirmations = data.scenarioDto?.display?.confirmations;
+    if (!confirmations || !confirmations[action.value]) {
+      console.log(data);
+      throw new Error(`Invalid confirmation with name "${action.value}"`);
+    }
+
+    const confirmation = confirmations[action.value];
+
+    this.modalService.openModal(ConfirmationModalComponent, {
+      title: confirmation?.title || '',
+      text: confirmation?.text || '',
+      buttons : [
+        {
+          label: confirmation?.submitLabel || 'Отправить',
+          closeModal: true,
+          handler: (): void => {
+            this.navigate(action, componentId, 'nextStep');
+          },
+        },
+      ],
+      showCrossButton: true,
+      showCloseButton: false,
+    });
+  }
+
   private openDropdownListModal({ value }: ComponentActionDto): void {
-    this.modalService.openModal(
-      DropdownListModalComponent,
-      { componentId: value }
-    );
+    this.modalService.openModal(DropdownListModalComponent, { componentId: value });
   }
 }

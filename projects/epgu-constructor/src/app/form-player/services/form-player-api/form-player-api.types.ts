@@ -307,6 +307,14 @@ export interface DisplaySubjHead {
   clarifications: Clarifications;
 }
 
+export interface ActionConfirmationsDto {
+  [key: string]: {
+    title?: string;
+    text?: string;
+    submitLabel?: string;
+  };
+}
+
 /**
  * @property {}components
  * @property {boolean}firstScreen - ствойсвто отвечает на вопрос, на первом ли экране мы находимся,
@@ -327,6 +335,7 @@ export interface DisplayDto {
   terminal: boolean;
   firstScreen?: boolean;
   subHeader?: DisplaySubjHead;
+  confirmations?: ActionConfirmationsDto;
   label?: string;
   cssClass?: string;
   isSocialButtonsHidden?: boolean;
@@ -407,6 +416,7 @@ export enum ActionType {
   download = 'download',
   prevStepModal = 'prevStepModal',
   nextStepModal = 'nextStepModal',
+  confirmModalStep = 'confirmModalStep',
   modalRedirectTo = 'modalRedirectTo',
   prevStep = 'prevStep',
   nextStep = 'nextStep',
