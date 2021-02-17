@@ -79,11 +79,11 @@ describe('NavigationService', () => {
   it('test redirectToLK', () => {
     navigationService.isWebView = false;
     navigationService.redirectToLK();
-    expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
     navigationService.isWebView = true;
     spyOn(smuEventsService, 'notify').and.callThrough();
     navigationService.redirectToLK();
-    expect(smuEventsService.notify).toHaveBeenCalledWith(MobilViewEvents.exit);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
   });
   it('test redirectToHome', () => {
     navigationService.isWebView = false;
