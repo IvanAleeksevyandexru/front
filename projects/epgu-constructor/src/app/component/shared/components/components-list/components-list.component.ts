@@ -49,7 +49,11 @@ const halfWidthItemTypes = [
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges {
-  @Input() componentsGroupIndex = 0;
+  /**
+   * Если компонент подключается в цикле (например в RepeatableFieldsComponent), то значение componentsGroupIndex будет
+   * равным индексу компонента в массиве. В остальных случаях componentsGroupIndex будет undefined
+   */
+  @Input() componentsGroupIndex?: number;
   @Input() components: Array<CustomComponent>;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
@@ -86,6 +90,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
+
     const components: Array<CustomComponent> = changes.components?.currentValue;
     const isErrorsChanged =
       JSON.stringify(changes.errors?.currentValue) !==
@@ -110,7 +115,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
       this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
     } else {
-      this.eventBusService.emit('suggestionSelectedEvent', event as ISuggestionItemList);
+      this.eventBusService.emit('suggestionSelectedEvent', {
+        ...event,
+        componentsGroupIndex: this.componentsGroupIndex,
+      } as ISuggestionItemList);
     }
   }
 

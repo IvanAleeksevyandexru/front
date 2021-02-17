@@ -10,6 +10,7 @@ export interface ISuggestionItemList {
   originValue?: string;
   id?: number;
   hints?: ISuggestionItemListHints[];
+  componentsGroupIndex?: number;
 }
 
 export interface ISuggestionItemListHints {
