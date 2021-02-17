@@ -82,7 +82,7 @@ export class AutocompleteService {
             this.findAndUpdateComponentWithValue(mnemonic, value, id, componentsGroupIndex);
           });
         } else {
-          this.findAndUpdateComponentWithValue(mnemonic, value);
+          this.findAndUpdateComponentWithValue(mnemonic, value, null, componentsGroupIndex);
         }
 
         this.screenService.updateScreenContent(this.screenService);
