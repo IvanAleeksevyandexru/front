@@ -263,7 +263,10 @@ describe('ScreenService', () => {
       screenService.updateScreenStore(mergeWithState);
 
       expect(updateScreenContentSpy).toBeCalledTimes(1);
-      expect(updateScreenContentSpy).toBeCalledWith(mergeWithState);
+      expect(updateScreenContentSpy).toBeCalledWith({
+        ...store,
+        ...mergeWithState
+      });
     });
   });
 
