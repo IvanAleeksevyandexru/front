@@ -26,7 +26,6 @@ import { AutocompleteApiService } from '../../../core/services/autocomplete/auto
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { AttachUploadedFilesModalComponent } from '../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 
 

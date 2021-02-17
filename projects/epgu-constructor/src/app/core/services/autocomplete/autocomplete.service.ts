@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
+import { cloneDeep as _cloneDeep } from 'lodash';
 import {
   ComponentDto,
   DisplayDto,
@@ -20,6 +21,7 @@ import {
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 @Injectable()
 export class AutocompleteService {
@@ -35,6 +37,7 @@ export class AutocompleteService {
     private autocompleteApiService: AutocompleteApiService,
     private utilsService: UtilsService,
     private datesToolsService: DatesToolsService,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   public init(): void {
@@ -66,12 +69,17 @@ export class AutocompleteService {
       .on('suggestionSelectedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
-        let { mnemonic, value, id } = payload;
+        let { mnemonic, value, id, componentsGroupIndex } = payload;
+
+        // с помощью автоподстановки будут заполнены некоторые компоненты.
+        // для того, чтобы остальные компоненты не потеряли свои значения мы
+        // сохраняем их из currentAnswersService в screenService
+        this.loadValuesFromCurrentAnswer();
 
         if (this.groupId) {
           Object.keys(this.screenService.suggestions).forEach((componentId: string) => {
             mnemonic = this.screenService.suggestions[componentId].mnemonic;
-            this.findAndUpdateComponentWithValue(mnemonic, value, id);
+            this.findAndUpdateComponentWithValue(mnemonic, value, id, componentsGroupIndex);
           });
         } else {
           this.findAndUpdateComponentWithValue(mnemonic, value);
@@ -122,6 +130,34 @@ export class AutocompleteService {
         });
   }
 
+  /**
+   * Записывает данные из currentAnswersService в screenService. Это делается для того, чтобы
+   * введенные пользователем данные не потерялись после вызова screenService.updateScreenContent()
+   */
+  private loadValuesFromCurrentAnswer(): void {
+    if (this.repeatableComponents.length) {
+      const currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
+
+      // оставляем первый элемент, чтобы правильно обрабатывалось удаление пользователем repeatable fields
+      this.repeatableComponents.splice(1);
+
+      currentAnswerParsedValue.forEach((currentAnswerItem: unknown, index: number) => {
+        if (!this.repeatableComponents[index]) {
+          const repeatableComponentsItemClone = _cloneDeep(this.repeatableComponents[0]);
+          this.repeatableComponents.push(repeatableComponentsItemClone);
+        }
+
+        for (const repeatableComponentItem of this.repeatableComponents[index]) {
+          repeatableComponentItem.value = currentAnswerItem[repeatableComponentItem.id];
+        }
+      });
+    } else {
+      for (const component of this.screenService.display.components) {
+        component.value = this.currentAnswersService.state[component.id].value;
+      }
+    }
+  }
+
   private groupSuggestionsApiCall(): void {
     this.autocompleteApiService.getSuggestionsGroup(this.groupId).subscribe((suggestions: ISuggestionApi[]) => {
       this.formatAndPassDataToComponents(suggestions);
@@ -136,8 +172,8 @@ export class AutocompleteService {
     );
   }
 
-  private findAndUpdateComponentWithValue(mnemonic: string, value: string, id?: number): void {
-    const component = this.findComponent(mnemonic);
+  private findAndUpdateComponentWithValue(mnemonic: string, value: string, id?: number, componentsGroupIndex?: number): void {
+    const component = this.findComponent(mnemonic, componentsGroupIndex);
     const componentValue = this.findComponentValue(component, id, value);
     this.setComponentValue(component, componentValue);
   }
@@ -152,9 +188,9 @@ export class AutocompleteService {
     })?.originValue || '';
   }
 
-  private findComponent(mnemonic: string): ComponentDto {
+  private findComponent(mnemonic: string, componentsGroupIndex?: number): ComponentDto {
     if (this.repeatableComponents.length) {
-      return this.repeatableComponents[0].find((component) => {
+      return this.repeatableComponents[componentsGroupIndex].find((component) => {
         return this.componentsSuggestionsMap[mnemonic] === component.id;
       });
     } else {
