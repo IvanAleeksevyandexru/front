@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
+import { cloneDeep as _cloneDeep } from 'lodash';
 import {
   ComponentDto,
   DisplayDto,
@@ -135,13 +136,21 @@ export class AutocompleteService {
    */
   private loadValuesFromCurrentAnswer(): void {
     if (this.repeatableComponents.length) {
-      this.screenService.component.attrs.repeatableComponents = [];
-      this.screenService.cachedAnswers[this.screenService.component.id] = {
-        visited: true,
-        value: this.currentAnswersService.state as string
-      };
-      this.screenService.initScreenStore(this.screenService);
-      this.repeatableComponents = this.screenService.component.attrs.repeatableComponents;
+      const currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
+
+      // оставляем первый элемент, чтобы правильно обрабатывалось удаление пользователем repeatable fields
+      this.repeatableComponents.splice(1);
+
+      currentAnswerParsedValue.forEach((currentAnswerItem: unknown, index: number) => {
+        if (!this.repeatableComponents[index]) {
+          const repeatableComponentsItemClone = _cloneDeep(this.repeatableComponents[0]);
+          this.repeatableComponents.push(repeatableComponentsItemClone);
+        }
+
+        for (const repeatableComponentItem of this.repeatableComponents[index]) {
+          repeatableComponentItem.value = currentAnswerItem[repeatableComponentItem.id];
+        }
+      });
     } else {
       for (const component of this.screenService.display.components) {
         component.value = this.currentAnswersService.state[component.id].value;
