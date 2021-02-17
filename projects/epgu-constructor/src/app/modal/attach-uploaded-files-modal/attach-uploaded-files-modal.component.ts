@@ -101,8 +101,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
           return acc;
         }, []),
       ];
-      result.push(...componentValues);
-      return result;
+      return [...result, ...componentValues];
     }, []);
   }
 }
