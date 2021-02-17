@@ -159,8 +159,8 @@ input[type='file'] {
 }
 
 .fileupload__link-button {
-  display: block;
-  margin: 0 auto;
+  display: inline-block;
+  margin: 0 11px;
   text-align: center;
   @include typ-plain-text;
   color: $color-gosblue;
@@ -188,6 +188,19 @@ input[type='file'] {
 .message__description {
   @include typ-plain-small;
   color: $color-text-helper;
+}
+
+.fileupload {
+  &__icon {
+    display: inline-block;
+    background-color: $color-gosblue;
+    mask: url('../../../../../../../assets/icons/svg/clock.svg');
+    mask-size: 100%;
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    transform: translateY(2px);
+  }
 }
 
 @include rubles('.info__text', '../../../../../../../assets/img/ruble.svg');

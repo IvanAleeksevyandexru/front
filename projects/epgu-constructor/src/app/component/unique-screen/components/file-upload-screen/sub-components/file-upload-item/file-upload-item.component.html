@@ -39,6 +39,10 @@
         <span *ngIf="isMobile">Выберите файл или сделайте фото</span>
       </div>
       <div class="uploader-buttons">
+        <button *ngIf="(suggestions$ | async) && (suggestions$ | async)[componentId]" class="fileupload__link-button" epgu-constructor-action [action]="attachUploadedFiles">
+          <div class="fileupload__icon"></div>
+          Ранее загруженные
+        </button>
         <epgu-constructor-uploader-button capture="environment" accept="image/*">
           <button *ngIf="this.isMobile" class="fileupload__link-button">
             <img

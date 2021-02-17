@@ -37,6 +37,8 @@ import {
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
+import { ATTACH_UPLOADED_FILES } from '../../../../../../shared/constants/actions';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 interface OverLimitsItem {
   count: number;
@@ -113,6 +115,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
 
   store = new FileItemStore();
+  attachUploadedFiles = ATTACH_UPLOADED_FILES;
+  componentId = this.screenService.component?.id || null;
+  componentValues: string[] = [];
+  suggestionFiles: UploadedFile[] = [];
 
   files = this.store.files;
   files$ = this.files.pipe(
@@ -126,6 +132,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     ),
     tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
+  suggestions$ = this.screenService.suggestions$;
 
   get data(): FileUploadItem {
     return this.loadData;
@@ -207,6 +214,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
+    private screenService: ScreenService,
   ) {}
 
   resetLimits(): void {
@@ -460,6 +468,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
+    this.eventBusService.on('previewFileEvent').subscribe((payload) => {
+      console.log({ payload }, this.componentId);
+    });
   }
 
   polyfillFile(file: File): File {
