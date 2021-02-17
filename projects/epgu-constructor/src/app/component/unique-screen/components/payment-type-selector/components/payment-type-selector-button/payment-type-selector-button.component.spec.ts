@@ -1,20 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { MockModule } from 'ng-mocks';
 
-import { CoreModule } from '../../../../../../core/core.module';
-import { LocationService } from '../../../../../../core/services/location/location.service';
-import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ComponentActionDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
-import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
@@ -32,14 +24,7 @@ describe('PaymentTypeSelectorButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorButtonComponent],
-      imports: [BaseModule, CoreModule, RouterTestingModule, AnswerButtonModule, ActionModule],
-      providers: [
-        LocationService,
-        HtmlRemoverService,
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        CurrentAnswersService,
-      ],
+      imports: [MockModule(AnswerButtonModule), MockModule(ActionModule), MockModule(BaseModule)],
     })
       .overrideComponent(PaymentTypeSelectorButtonComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
