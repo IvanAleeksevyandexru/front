@@ -1,28 +1,19 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Directive({
   selector: '[epgu-constructor-trim]',
 })
 export class TrimDirective {
   @Input() isTrim = true;
-  @Input() trimControl?: FormControl;
+  @Input() isMultiline = false;
 
   @HostListener('focusout', ['$event.target'])
   onFocusOut(target: HTMLInputElement): void {
     if (this.isTrim) {
-      if (this.trimControl) {
-        let value = this.removeUnacceptableSymbolsFromBeginning(
-          this.trimControl.value as string,
-        );
-        value = this.removeExtraSpacesBetweenWords(value);
-        this.trimControl.setValue(value.trim());
-      } else {
-        let value = this.removeUnacceptableSymbolsFromBeginning(target.value);
-        value = this.removeExtraSpacesBetweenWords(value);
-        target.value = value.trim();
-        target.dispatchEvent(new Event('input')); // triggers input event for updating value in model
-      }
+      const key = this.isMultiline ? 'textContent' : 'value';
+      const value = this.removeUnacceptableSymbolsFromBeginning(target[key]);
+      target[key] = this.removeExtraSpacesBetweenWords(value).trim();
+      target.dispatchEvent(new Event('input')); // triggers input event for updating value in model
     }
   }
 

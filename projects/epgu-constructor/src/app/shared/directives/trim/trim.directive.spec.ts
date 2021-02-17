@@ -1,7 +1,7 @@
-import { TrimDirective } from './trim.directive';
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormControl } from '@angular/forms';
+
+import { TrimDirective } from './trim.directive';
 
 @Component({
   template: ' <input [value]="value" epgu-constructor-trim /> ',
@@ -23,13 +23,7 @@ describe('TrimDirective', () => {
   it('should create an instance', () => {
     expect(directive).toBeTruthy();
   });
-  it('should check for trimControl', () => {
-    directive.trimControl = new FormControl(' dsf sdfsdf ');
 
-    directive.onFocusOut(null as any);
-
-    expect(directive.trimControl.value).toBe('dsf sdfsdf');
-  });
   it('should remove unacceptable symbols from beginning', () => {
     inputValue = '   42Тыц   8тыц -тац тац-тац';
     const value = directive.removeUnacceptableSymbolsFromBeginning(inputValue);
