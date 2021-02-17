@@ -99,7 +99,7 @@ describe('FormPlayerComponent', () => {
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: FormPlayerStartManager, useClass: FormPlayerStartManagerStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub}
+        { provide: ModalService, useClass: ModalServiceStub }
       ]
     }).compileComponents();
 

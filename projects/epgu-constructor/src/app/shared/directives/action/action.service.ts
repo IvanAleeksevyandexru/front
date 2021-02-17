@@ -24,7 +24,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+// eslint-disable-next-line max-len
 import { ConfirmationModalBaseComponent } from '../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
