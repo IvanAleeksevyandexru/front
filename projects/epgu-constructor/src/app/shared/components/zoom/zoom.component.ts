@@ -1,5 +1,4 @@
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -60,6 +59,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
     }),
   );
 
+  // eslint-disable-next-line no-return-assign
   mouseup$ = fromEvent(this.document, 'mouseup').pipe(tap(() => (this.isMove = false)));
 
   constructor(
@@ -68,17 +68,17 @@ export class ZoomComponent implements OnInit, OnDestroy {
     @Inject(DOCUMENT) private document: Document,
   ) {}
 
-  updateZoomLimits(): void {
-    const { clientWidth, naturalWidth } = this.el.nativeElement;
-    const naturalMax = 1 + (naturalWidth - clientWidth) / clientWidth;
-    this.maxZoom = naturalMax > 1 ? naturalMax : 1;
-  }
-
   @HostListener('window:resize', [])
   onWindowResize(): void {
     if (this.el?.nativeElement) {
       this.checkAvailable(this.el.nativeElement);
     }
+  }
+
+  updateZoomLimits(): void {
+    const { clientWidth, naturalWidth } = this.el.nativeElement;
+    const naturalMax = 1 + (naturalWidth - clientWidth) / clientWidth;
+    this.maxZoom = naturalMax > 1 ? naturalMax : 1;
   }
 
   targetFilter(ev: Event): boolean {

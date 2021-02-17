@@ -5,10 +5,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
+
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { SuggestAction } from '../../data';
