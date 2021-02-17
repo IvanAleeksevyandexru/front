@@ -20,6 +20,7 @@ import { DateRangeService } from '../services/date-range/date-range.service';
 import { ComponentListToolsService } from '../services/component-list-tools/component-list-tools.service';
 import { HtmlRemoverService } from '../../../../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { AutocompleteApiService } from '../../../../../core/services/autocomplete/autocomplete-api.service';
 
 //TODO написать тесты
 describe('DocInputComponent', () => {
@@ -54,6 +55,7 @@ describe('DocInputComponent', () => {
         DateRangeService,
         HtmlRemoverService,
         CurrentAnswersService,
+        AutocompleteApiService,
       ],
       imports: [
         RouterTestingModule,

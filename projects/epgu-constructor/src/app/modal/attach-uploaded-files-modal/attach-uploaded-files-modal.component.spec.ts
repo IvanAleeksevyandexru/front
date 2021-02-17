@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { DeviceDetectorServiceStub } from '../../core/services/device-detector/device-detector.service.stub';
 import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
@@ -8,6 +7,10 @@ import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
+import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
+import { ConfigService } from '../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -20,12 +23,15 @@ describe('AttachUploadedFilesModalComponent', () => {
       ],
       imports:[
         BaseModule,
+        ConfirmationModalModule,
       ],
       providers:[
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         EventBusService,
         UnsubscribeService,
+        DatesToolsService,
       ]
     }).compileComponents();
   });
@@ -33,8 +39,6 @@ describe('AttachUploadedFilesModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AttachUploadedFilesModalComponent);
     component = fixture.componentInstance;
-    // component.componentId = '';
-    // component.data$ = of({ title: '', items: [] } as any);
     fixture.detectChanges();
   });
 

@@ -43,6 +43,7 @@ import { ModalService } from '../modal/modal.service';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { CurrentAnswersService } from '../screen/current-answers.service';
 
 
 describe('FormPlayerComponent', () => {
@@ -87,6 +88,7 @@ describe('FormPlayerComponent', () => {
         ModalService,
         UtilsService,
         DatesToolsService,
+        CurrentAnswersService,
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
