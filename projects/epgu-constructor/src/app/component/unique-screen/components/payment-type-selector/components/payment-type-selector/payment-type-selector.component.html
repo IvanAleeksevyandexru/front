@@ -33,6 +33,8 @@
     <div class="screen-footer">
       <ng-container *ngFor="let action of paymentTypeSelector.actions">
         <epgu-constructor-payment-type-selector-button
+          [class.answer-btn]="!isErrorTemplate"
+          *ngIf="applicantType === action.applicantType ? true : !action.applicantType"
           [applicantType]="applicantType"
           [isErrorTemplate]="isErrorTemplate"
           [action]="action"

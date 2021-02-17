@@ -4,7 +4,6 @@ import { ComponentActionDto } from '../../../../../../form-player/services/form-
 @Component({
   selector: 'epgu-constructor-payment-type-selector-button',
   templateUrl: './payment-type-selector-button.component.html',
-  styleUrls: ['./payment-type-selector-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentTypeSelectorButtonComponent {

@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+
 import { CoreModule } from '../../../../../../core/core.module';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
@@ -12,11 +15,7 @@ import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
 import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
   let component: PaymentTypeSelectorButtonComponent;
@@ -39,7 +38,6 @@ describe('PaymentTypeSelectorButtonComponent', () => {
         HtmlRemoverService,
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
         CurrentAnswersService,
       ],
     })
