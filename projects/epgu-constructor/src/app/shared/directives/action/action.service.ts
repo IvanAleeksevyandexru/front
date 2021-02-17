@@ -226,7 +226,6 @@ export class ActionService {
     const data = this.getActionDTO(action);
     const confirmations = data.scenarioDto?.display?.confirmations;
     if (!confirmations || !confirmations[action.value]) {
-      console.log(data);
       throw new Error(`Invalid confirmation with name "${action.value}"`);
     }
 
