@@ -1,4 +1,4 @@
-import { ApplicationRef, ComponentRef, EventEmitter, Injectable } from '@angular/core';
+import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ModalService } from '../../../../../modal/modal.service';
 import { UploaderViewerComponent } from '../../components/uploader-viewer/uploader-viewer.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
@@ -36,7 +36,7 @@ export class ViewerService {
 
   type: FilesCollection;
 
-  constructor(private modal: ModalService, private appRef: ApplicationRef) {}
+  constructor(private modal: ModalService) {}
 
   getSelectedFileByType(): Observable<FileItem | null> {
     return this.type === FilesCollection.suggest ? this.selectedSuggest : this.selectedFile;
