@@ -194,6 +194,7 @@ export interface PaymentInfoValue {
   billName: string;
   billDate: string;
   payCode: number;
+  originalAmount?: string;
 }
 
 /**
