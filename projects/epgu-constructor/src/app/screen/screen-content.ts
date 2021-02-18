@@ -20,7 +20,7 @@ export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
   private _display = new BehaviorSubject<DisplayDto>(null);
-  private _suggestions = new BehaviorSubject<{ [key: string]: ISuggestionItem }>(null);
+  private _suggestions = new BehaviorSubject<{ [key: string]: ISuggestionItem }>({});
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   private _submitLabel = new BehaviorSubject<string>(null);

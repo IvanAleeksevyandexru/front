@@ -45,7 +45,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   ngOnInit(): void {
-    this.suggestions$.subscribe((suggestions) => {
+    this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
       const suggestionsFilesList: ISuggestionItemList[] =
         (suggestions && suggestions[this.componentId]?.list) || [];
       const suggestionsUploadedFiles = this.getParsedSuggestionsUploadedFiles(suggestionsFilesList);
@@ -68,8 +68,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.eventBusService.emit('previewFileEvent', file);
   }
 
-  public handleImgError(event): void {
-    const { target } = event;
+  public handleImgError(event: Event): void {
+    const target = event.target as HTMLImageElement;
     target.src = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/image-error.svg`;
   }
 

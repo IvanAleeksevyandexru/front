@@ -63,7 +63,7 @@
           [clearable]="true"
           [localSearch]="componentData.get('attrs').value.localSearch"
           class="cs__select cs-select"
-          [suggest]="(suggestions$ | async) && (suggestions$ | async)[componentData.value?.id]"
+          [suggest]="(suggestions$ | async)[componentData.value?.id]"
           (selectSuggest)="suggestHandle($event)"
         >
         </lib-dropdown>
@@ -118,7 +118,7 @@
             [virtualScroll]="true"
             [clearable]="true"
             [required]="componentData.value?.required"
-            [suggest]="(suggestions$ | async) && (suggestions$ | async)[componentData.value?.id]"
+            [suggest]="(suggestions$ | async)[componentData.value?.id]"
             (selectSuggest)="suggestHandle($event)"
           >
           </lib-lookup>
@@ -353,7 +353,7 @@
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
     [component]="data.value"
-    [suggestions]="(suggestions$ | async) && (suggestions$ | async)[data.value?.id]"
+    [suggestions]="(suggestions$ | async)[data.value?.id]"
     (selectSuggest)="suggestHandle($event)"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
@@ -376,7 +376,7 @@
     [isTrim]="false"
     [component]="data.value"
     [showPlaceholderOnFocus]="data.value?.attrs?.showPlaceholderOnFocus"
-    [suggestions]="(suggestions$ | async) && (suggestions$ | async)[data.value?.id]"
+    [suggestions]="(suggestions$ | async)[data.value?.id]"
     (selectSuggest)="suggestHandle($event)"
   ></epgu-constructor-masked-input>
 </ng-template>

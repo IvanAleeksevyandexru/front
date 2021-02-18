@@ -112,6 +112,9 @@ export class ComponentsListComponent implements OnInit, OnChanges {
   }
 
   public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
+    // NOTICE: необходимо различать два ивента: клик по ссылке "Есть неактуальные данные?" (передается с доп.атрибутом `isEdit`)
+    // и обычный выбор опции из списка саджестов, соответственно, вызывать модалку для удаления неактуальных саджестов или
+    // запускать механизм подстановки выбранного значения в инпут.
     if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
       this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
     } else {
