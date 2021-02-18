@@ -7,7 +7,7 @@
     <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
 
     <div class="payment" [class.inloading]="inLoading" [ngSwitch]="status">
-      <div class="info" >
+      <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
         <div class="info__text">
           <strong>{{ paymentPurpose }}</strong>
         </div>
