@@ -155,10 +155,16 @@ export class ActionService {
         ...(this.currentAnswersService.state as object),
       };
     }
-    const value: string =
-      typeof this.currentAnswersService.state === 'object'
+
+    let value: string;
+    if (action.type === ActionType.skipStep) {
+      value = '';
+    } else {
+      value = typeof this.currentAnswersService.state === 'object'
         ? JSON.stringify(this.currentAnswersService.state)
         : this.currentAnswersService.state;
+    }
+
     return {
       [componentId]: {
         visited: true,
