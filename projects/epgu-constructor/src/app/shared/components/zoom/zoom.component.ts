@@ -167,6 +167,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
     if (!this.isTouch) {
       return;
     }
+    this.updateZoomLimits();
 
     if (this.zoom$$.getValue() !== 1) {
       this.x = this.lastX + ev.deltaX;

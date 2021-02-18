@@ -30,3 +30,8 @@ export interface SuggestAction {
   file: FileItem;
   isAdd: boolean;
 }
+
+export enum FilesCollection {
+  uploader = 1,
+  suggest,
+}

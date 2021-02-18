@@ -13,7 +13,7 @@ import {
   FileItem,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ViewerService } from '../../services/viewer/viewer.service';
-import { SuggestAction } from '../../data';
+import { FilesCollection, SuggestAction } from '../../data';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager',
@@ -43,7 +43,7 @@ export class UploaderManagerComponent implements OnDestroy {
   constructor(private viewer: ViewerService) {}
 
   view(file: FileItem): void {
-    const sub = this.viewer.open(file.id, this.list, false).subscribe(() => {
+    const sub = this.viewer.open(FilesCollection.uploader, file.id, this.list).subscribe(() => {
       sub.unsubscribe();
     });
   }

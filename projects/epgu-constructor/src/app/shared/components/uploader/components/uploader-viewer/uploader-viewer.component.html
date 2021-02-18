@@ -1,10 +1,16 @@
 <div class="uploader-viewer">
   <div class="uploader-viewer__header">
     <a class="modal__close" (click)="closeModal()"></a>
-    <h4 class="modal__title">{{ isSuggests ? 'Ранее загруженные файлы' : 'Просмотр фото' }}</h4>
+    <h4 class="modal__title">
+      {{ type === filesType.suggest ? 'Ранее загруженные файлы' : 'Просмотр фото' }}
+    </h4>
   </div>
   <div class="uploader-viewer__body">
-    <epgu-constructor-zoom *ngIf="imageURL" [imageURL]="imageURL"> </epgu-constructor-zoom>
+    <ng-container *ngIf="selectedItem | async">
+      <epgu-constructor-zoom *ngIf="imageURL" [imageURL]="imageURL"> </epgu-constructor-zoom>
+      <button (click)="nextAction()">next</button>
+      <button (click)="prevAction()">prev</button>
+    </ng-container>
   </div>
   <div class="uploader-viewer__footer"></div>
 </div>

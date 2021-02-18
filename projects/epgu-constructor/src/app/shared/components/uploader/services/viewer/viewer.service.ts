@@ -3,7 +3,7 @@ import { ModalService } from '../../../../../modal/modal.service';
 import { UploaderViewerComponent } from '../../components/uploader-viewer/uploader-viewer.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 
-import { SuggestAction } from '../../data';
+import { FilesCollection, SuggestAction } from '../../data';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { filter, finalize, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';
 
@@ -16,21 +16,112 @@ export class ViewerService {
   isOpen = new BehaviorSubject<boolean>(false);
   result = new Subject<null>();
 
+  files = new BehaviorSubject<FileItem[]>([]);
+  suggests = new BehaviorSubject<FileItem[]>([]);
+
+  selectedFilesId: string;
+  selectedSuggestId: string;
+  selectedFilesIndex = new BehaviorSubject<number>(0);
+  selectedSuggestsIndex = new BehaviorSubject<number>(0);
+  description = new BehaviorSubject<string>('');
+
+  selectedSuggest: Observable<FileItem | null> = combineLatest([
+    this.selectedSuggestsIndex,
+    this.suggests,
+  ]).pipe(map(this.fileSelector.bind(this)));
+  selectedFile: Observable<FileItem | null> = combineLatest([
+    this.selectedFilesIndex,
+    this.files,
+  ]).pipe(map(this.fileSelector.bind(this)));
+
+  type: FilesCollection;
+
   constructor(private modal: ModalService, private appRef: ApplicationRef) {}
 
-  open(
-    selectedId: string,
-    files: FileItem[],
-    isSuggest: boolean,
-    suggests: FileItem[] = [],
-  ): Observable<void> {
+  getSelectedFileByType(): Observable<FileItem | null> {
+    return this.type === FilesCollection.suggest ? this.selectedSuggest : this.selectedFile;
+  }
+
+  fileSelector([index, collection]: [number, FileItem[]]): FileItem | null {
+    const item = collection[index];
+    if (!item) {
+      return null;
+    }
+    return collection[index];
+  }
+
+  setDescription(text: string): void {
+    this.description.next(text);
+  }
+
+  prev(): void {
+    const selectedIndexSubject = this.getSelectedIndexByType();
+    const collection = this.getCollectionByType().getValue();
+    const selectedIndex = selectedIndexSubject.getValue();
+    selectedIndexSubject.next((selectedIndex === 0 ? collection.length : selectedIndex) - 1);
+    console.log(selectedIndexSubject.getValue());
+  }
+
+  next(): void {
+    const selectedIndexSubject = this.getSelectedIndexByType();
+    const collection = this.getCollectionByType().getValue();
+    const selectedIndex = selectedIndexSubject.getValue();
+    selectedIndexSubject.next(selectedIndex === collection.length - 1 ? 0 : selectedIndex + 1);
+    console.log(selectedIndexSubject.getValue());
+  }
+
+  changeSelectedIndexById(id: string): void {
+    const index = this.getSelectedIndexById(id);
+    const selectedIndex = this.getSelectedIndexByType();
+    if (this.type === FilesCollection.suggest) {
+      this.selectedSuggestId = id;
+    } else {
+      this.selectedFilesId = id;
+    }
+    selectedIndex.next(index !== -1 ? index : 0);
+  }
+
+  getSelectedIndexByType(): BehaviorSubject<number> {
+    return this.type === FilesCollection.suggest
+      ? this.selectedSuggestsIndex
+      : this.selectedFilesIndex;
+  }
+
+  getCollectionByType(): BehaviorSubject<FileItem[]> {
+    return this.type === FilesCollection.suggest ? this.suggests : this.files;
+  }
+
+  getSelectedIndexById(id: string): number {
+    const collection = this.getCollectionByType().getValue();
+    return collection.findIndex((item) => item.id === id);
+  }
+
+  update(type: FilesCollection, items: FileItem[]): void {
+    this.type = type;
+    const collection = this.getCollectionByType();
+    collection.next([...items]);
+    this.updateIndexByType();
+  }
+
+  updateIndexByType(): void {
+    const id =
+      this.type === FilesCollection.suggest ? this.selectedSuggestId : this.selectedFilesId;
+    this.changeSelectedIndexById(id);
+  }
+
+  open(type: FilesCollection, id?: string, collection?: FileItem[]): Observable<void> {
+    this.type = type;
+    if (collection) {
+      this.update(type, collection);
+    }
+    if (id) {
+      this.changeSelectedIndexById(id);
+    }
     return this.isOpen.getValue()
       ? of(null)
       : of({
-          isSuggest,
-          files,
-          suggests,
-          selectedId,
+          type,
+          item: this.getSelectedFileByType(),
         }).pipe(
           tap(() => this.isOpen.next(true)),
           map((params) => this.modal.createModal(UploaderViewerComponent, params)),
@@ -58,12 +149,22 @@ export class ViewerService {
         filter((deleteEvent) => !!deleteEvent),
         tap((deleteEvent) => this.delete.emit(deleteEvent)),
       ),
+      modal.instance.prev.pipe(
+        startWith(null),
+        filter((deleteEvent) => !!deleteEvent),
+        tap(() => this.prev()),
+      ),
+      modal.instance.next.pipe(
+        startWith(null),
+        filter((deleteEvent) => !!deleteEvent),
+        tap(() => this.next()),
+      ),
     ]).pipe(map(() => undefined));
   }
 
   addDetachToModal<T extends UploaderViewerComponent>(modal: ComponentRef<T>): ComponentRef<T> {
     modal.instance.detachView = (): void => {
-      this.appRef.detachView(modal.hostView);
+      modal.destroy();
       this.result.next(null);
     };
     return modal;
