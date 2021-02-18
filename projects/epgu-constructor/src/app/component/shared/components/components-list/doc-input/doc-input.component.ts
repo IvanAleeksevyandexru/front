@@ -1,3 +1,5 @@
+import { EventEmitter } from '@angular/core';
+import { Output } from '@angular/core';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,6 +11,7 @@ import {
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
+import { ISuggestionItem, ISuggestionItemList } from '../../../../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
@@ -30,6 +33,10 @@ import {
 })
 export class DocInputComponent implements OnInit, AfterViewInit {
   @Input() data: AbstractControl | DocInputControl;
+  @Input() suggest: ISuggestionItem;
+  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
+    ISuggestionItem | ISuggestionItemList
+  >();
   docInputFieldsTypes = DocInputFieldsTypes;
   fields: { [fieldName: string]: DocInputField };
   fieldsNames = [

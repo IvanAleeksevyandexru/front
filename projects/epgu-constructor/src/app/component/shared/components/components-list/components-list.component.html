@@ -310,7 +310,12 @@
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
+      <epgu-constructor-doc-input
+        *ngSwitchCase="componentType.DocInput"
+        [data]="componentData"
+        [suggest]="(suggestions$ | async)[componentData.value?.id]"
+        (selectSuggest)="suggestHandle($event)"
+      >
       </epgu-constructor-doc-input>
       <epgu-constructor-field-list
         [data]="$any(componentData.get('value'))"
