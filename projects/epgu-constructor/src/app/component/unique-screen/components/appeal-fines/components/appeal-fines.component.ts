@@ -29,8 +29,10 @@ import { AppealFines } from '../appeal-fines.types';
 })
 export class AppealFinesComponent implements OnInit {
   @Input() components: AppealFines[];
-  @Output() updateCurrentAnswerServiceValidationEvent = new EventEmitter<boolean>();
-  @Output() updateCurrentAnswerServiceStateEvent = new EventEmitter<string>();
+  @Output() updateCurrentAnswerServiceEvent = new EventEmitter<{
+    isValid: boolean;
+    state: string;
+  }>();
   @ViewChildren(FileUploadComponent) fileUploadComponents: QueryList<FileUploadComponent>;
 
   hasUploadFiles$ = this.eventBusService.on('fileUploadValueChangedEvent').pipe(
@@ -52,16 +54,15 @@ export class AppealFinesComponent implements OnInit {
   ngOnInit(): void {
     this.initFormControl();
 
-    combineLatest([this.formControl.valueChanges, this.hasUploadFiles$])
-      .pipe(
-        map(([, hasFiles]) => this.formControl.valid && hasFiles),
-        takeUntil(this.unsubscribeService),
-      )
-      .subscribe((isValid) => this.updateCurrentAnswerServiceValidationEvent.next(isValid));
-
-    this.formControl.valueChanges
+    combineLatest([
+      this.formControl.valueChanges.pipe(startWith(this.formControl.value as string)),
+      this.hasUploadFiles$,
+    ])
       .pipe(takeUntil(this.unsubscribeService))
-      .subscribe((value) => this.updateCurrentAnswerServiceStateEvent.next(value));
+      .subscribe(([state, hasFiles]) => {
+        const isValid = this.formControl.valid && hasFiles;
+        this.updateCurrentAnswerServiceEvent.next({ state, isValid });
+      });
   }
 
   private initFormControl(): void {
@@ -70,7 +71,7 @@ export class AppealFinesComponent implements OnInit {
     );
     if (textAreaCmp) {
       const validators = [this.validationService.customValidator(textAreaCmp)];
-      this.formControl = new FormControl(textAreaCmp.value, [...validators]);
+      this.formControl = new FormControl(textAreaCmp.value, validators);
     }
   }
 

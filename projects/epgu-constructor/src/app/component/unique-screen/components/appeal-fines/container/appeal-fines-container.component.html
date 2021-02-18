@@ -11,8 +11,7 @@
 >
   <epgu-constructor-appeal-fines
   [components]="components$ | async"
-  (updateCurrentAnswerServiceValidationEvent)="updateCurrentAnswersValid($event)"
-  (updateCurrentAnswerServiceStateEvent)="updateCurrentAnswersState($event)"
+  (updateCurrentAnswerServiceEvent)="updateCurrentAnswers($event)"
   >
   </epgu-constructor-appeal-fines>
 </epgu-constructor-default-unique-screen-wrapper>

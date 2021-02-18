@@ -40,11 +40,8 @@ export class AppealFinesContainerComponent {
     public currentAnswersService: CurrentAnswersService,
   ) {}
 
-  public updateCurrentAnswersValid(isValid: boolean): void {
-    this.currentAnswersService.isValid = isValid;
-  }
-
-  public updateCurrentAnswersState(state: string): void {
-    this.currentAnswersService.state = JSON.stringify(state);
+  public updateCurrentAnswers($event: { isValid: boolean; state: string }): void {
+    this.currentAnswersService.isValid = $event.isValid;
+    this.currentAnswersService.state = JSON.stringify($event.state);
   }
 }

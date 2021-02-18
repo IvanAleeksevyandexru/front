@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { AppealFinesComponent } from './appeal-fines.component';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -17,6 +18,7 @@ import { ValidationService } from '../../../../../shared/services/validation/val
 import { DateRangeService } from '../../../../shared/components/components-list/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { By } from '@angular/platform-browser';
+
 
 describe('AppealFinesComponent', () => {
   let component: AppealFinesComponent;
@@ -71,6 +73,8 @@ describe('AppealFinesComponent', () => {
         DateRangeService,
         DatesToolsService
       ]
+    }).overrideComponent(AppealFinesComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default },
     }).compileComponents();
   });
 
@@ -95,23 +99,16 @@ describe('AppealFinesComponent', () => {
     expect(component.formControl).toBeDefined();
   });
 
-  // @TODO дописать
-  describe('updateCurrentAnswerServiceValidationEvent', () => {
+  // @TODO дописать для true
+  describe('updateCurrentAnswerServiceEvent', () => {
     it('should be not call, if form change invalid', () => {
-      jest.spyOn(component.updateCurrentAnswerServiceValidationEvent, 'emit');
-      expect(component.updateCurrentAnswerServiceValidationEvent.emit).toBeCalledTimes(0);
+      jest.spyOn(component.updateCurrentAnswerServiceEvent, 'emit');
+      expect(component.updateCurrentAnswerServiceEvent.emit).toBeCalledTimes(0);
     });
     it('should call with false', () => {
-      jest.spyOn(component.updateCurrentAnswerServiceValidationEvent, 'next');
+      jest.spyOn(component.updateCurrentAnswerServiceEvent, 'next');
       component.formControl.setValue('123');
-      expect(component.updateCurrentAnswerServiceValidationEvent.next).toHaveBeenCalledWith(false);
+      expect(component.updateCurrentAnswerServiceEvent.next).toHaveBeenCalledWith({ isValid: false, state: '123' });
     });
-  });
-
-  it('should call updateCurrentAnswerServiceStateEvent', () => {
-    jest.spyOn(component.updateCurrentAnswerServiceStateEvent, 'next');
-    component.formControl.setValue('1234');
-    expect(component.updateCurrentAnswerServiceStateEvent.next).toHaveBeenCalled();
-    expect(component.updateCurrentAnswerServiceStateEvent.next).toHaveBeenCalledWith('1234');
   });
 });
