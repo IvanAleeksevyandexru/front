@@ -26,7 +26,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 @Injectable()
 export class AutocompleteService {
   componentsSuggestionsMap: { [key: string]: string } = {};
-  groupSuggestion: { id?: string, accumulator?: string, name?: string } = {};
+  suggestionGroupId: string = null;
   repeatableComponents: Array<Array<ComponentDto>> = [];
 
   constructor(
@@ -49,13 +49,13 @@ export class AutocompleteService {
       )
       .subscribe((display: DisplayDto) => {
         this.resetComponentsSuggestionsMap();
-        this.groupSuggestion = this.getGroupSuggestionProps(display);
+        this.suggestionGroupId = this.getSuggestionGroupId(display);
         this.repeatableComponents = display.components[0]?.attrs?.repeatableComponents || [];
         const componentsSuggestionsFieldsIds: string[] = this.getComponentsSuggestionsFieldsIds(
           display,
         ) || [];
 
-        if (this.groupSuggestion) {
+        if (this.suggestionGroupId) {
           this.groupSuggestionsApiCall();
           return;
         }
@@ -76,7 +76,7 @@ export class AutocompleteService {
         // сохраняем их из currentAnswersService в screenService
         this.loadValuesFromCurrentAnswer();
 
-        if (this.groupSuggestion) {
+        if (this.suggestionGroupId) {
           Object.keys(this.screenService.suggestions).forEach((componentId: string) => {
             mnemonic = this.screenService.suggestions[componentId].mnemonic;
             this.findAndUpdateComponentWithValue(mnemonic, value, id, componentsGroupIndex);
@@ -122,7 +122,7 @@ export class AutocompleteService {
         .subscribe((payload: ISuggestionItemList): void => {
           let { mnemonic } = payload;
 
-          if (this.groupSuggestion) {
+          if (this.suggestionGroupId) {
             this.groupSuggestionsApiCall();
           } else {
             this.fieldsSuggestionsApiCall([mnemonic]);
@@ -159,7 +159,7 @@ export class AutocompleteService {
   }
 
   private groupSuggestionsApiCall(): void {
-    this.autocompleteApiService.getSuggestionsGroup(this.groupSuggestion.id).subscribe((suggestions: ISuggestionApi[]) => {
+    this.autocompleteApiService.getSuggestionsGroup(this.suggestionGroupId).subscribe((suggestions: ISuggestionApi[]) => {
       this.formatAndPassDataToComponents(suggestions);
     });
   }
@@ -179,13 +179,15 @@ export class AutocompleteService {
   }
 
   private findComponentValue(component: ComponentDto, id: number, value: string): string {
-    return this.screenService.suggestions[component.id]?.list.find(item => {
+    const result = component &&  this.screenService.suggestions[component.id]?.list.find(item => {
       if (typeof id === 'number') {
         return item.id === id;
       } else {
         return item.value === value;
       }
-    })?.originValue || '';
+    });
+
+    return result?.originalItem || '';
   }
 
   private findComponent(mnemonic: string, componentsGroupIndex?: number): ComponentDto {
@@ -205,6 +207,15 @@ export class AutocompleteService {
     if (component && value) {
       if (component.type === CustomScreenComponentTypes.DateInput) {
         value = (this.datesToolsService.parse(value, DATE_STRING_DOT_FORMAT) as unknown) as string;
+      }
+
+      // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
+      if (this.utilsService.hasJsonStructure(value)) {
+        const parsedValue = JSON.parse(value);
+        if (Array.isArray(parsedValue)) {
+          const parsedlItem = parsedValue.find(item => Object.keys(item)[0] === component.id);
+          value = JSON.stringify(parsedlItem[component.id]);
+        }
       }
 
       component.value = value;
@@ -247,12 +258,12 @@ export class AutocompleteService {
     const field = fields.find((field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic);
     if (field) {
       let { value, mnemonic } = field;
-      let originValue = value;
+      let originalItem = value;
       value = this.prepareValue(value);
       return {
         value,
         mnemonic,
-        originValue,
+        originalItem,
         id,
         hints,
       };
@@ -295,14 +306,11 @@ export class AutocompleteService {
 
   private resetComponentsSuggestionsMap(): void {
     this.componentsSuggestionsMap = {};
-    this.groupSuggestion = {};
+    this.suggestionGroupId = null;
   }
 
-  private getGroupSuggestionProps(display: DisplayDto): { id?: string, accumulator?: string, name?: string } {
-    const { groupId } = display.suggestion;
-    return {
-      id: groupId || null,
-    };
+  private getSuggestionGroupId(display: DisplayDto): string {
+    return display.suggestion?.groupId;
   }
 
   private getComponentsSuggestionsFieldsIds(display: DisplayDto): string[] {

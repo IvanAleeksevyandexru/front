@@ -18,7 +18,7 @@
                 *ngIf="file.isImage"
                 class="img"
                 src="{{fileUploadApiUrl}}/{{file.item.objectId}}/{{file.item.objectTypeId}}/download?mnemonic={{file.item.mnemonic}}"
-                (error)="this.src='{{configService.staticDomainAssetsPath}}/assets/icons/svg/image-error.svg'"
+                (error)="handleImgError($event)"
                 [alt]="file.item.fileName"
               />
               <div *ngIf="!file.isImage">

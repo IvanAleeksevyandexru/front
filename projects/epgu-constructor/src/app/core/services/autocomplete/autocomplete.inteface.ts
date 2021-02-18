@@ -7,9 +7,9 @@ export interface ISuggestionItem {
 export interface ISuggestionItemList {
   value: string;
   mnemonic: string;
-  originValue?: string;
-  id?: number;
   hints?: ISuggestionItemListHints[];
+  originalItem?: string;
+  id?: number;
   componentsGroupIndex?: number;
 }
 

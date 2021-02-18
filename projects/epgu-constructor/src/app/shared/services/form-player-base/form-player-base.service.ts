@@ -198,8 +198,6 @@ export abstract class FormPlayerBaseService {
     this._store = response;
     const scenarioDto = response.scenarioDto;
 
-    scenarioDto.display.suggestion = { groupId: 'bank_account', accumulatorId: 'accumulator_payment_name', namedGroupId: 'payment_name' };
-
     this.initScreenStore(scenarioDto);
     this.updatePlayerLoaded(true);
 

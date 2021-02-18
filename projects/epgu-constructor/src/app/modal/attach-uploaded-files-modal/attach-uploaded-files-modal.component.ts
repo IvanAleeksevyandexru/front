@@ -68,6 +68,11 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.eventBusService.emit('previewFileEvent', file);
   }
 
+  public handleImgError(event): void {
+    const { target } = event;
+    target.src = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/image-error.svg`;
+  }
+
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
     return suggestionsUploadedFiles.map(
       (file: UploadedFile) => new FileItem(FileItemStatus.uploaded, null, file),
@@ -94,7 +99,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   private getParsedSuggestionsUploadedFiles(componentList: ISuggestionItemList[]): UploadedFile[] {
     return componentList.reduce((result, item) => {
-      const parsedValue = item?.originValue && JSON.parse(item.originValue);
+      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
       const componentValues = [
         ...parsedValue?.uploads.reduce((acc, upload) => {
           acc.push(...upload.value);
