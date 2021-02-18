@@ -340,7 +340,7 @@ export class TimeSlotsService {
       eserviceId: this.config.eserviceId || eserviceId,
       serviceCode: this.config.serviceCode || serviceCode,
       bookId: this.bookId,
-      organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
+      organizationId: this.config.organizationId || this.getSlotsRequestOrganizationId(this.timeSlotsType),
       calendarName: this.config.calendarName || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
