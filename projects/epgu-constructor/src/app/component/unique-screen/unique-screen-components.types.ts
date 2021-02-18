@@ -34,5 +34,6 @@ export enum UniqueScreenComponentTypes {
   docInput = 'DocInput',
   confirmLegalData = 'ConfirmLegalData',
   confirmLegalPhone = 'ConfirmLegalPhone',
-  confirmLegalEmail = 'ConfirmLegalEmail'
+  confirmLegalEmail = 'ConfirmLegalEmail',
+  appealFines = 'AppealFines',
 }

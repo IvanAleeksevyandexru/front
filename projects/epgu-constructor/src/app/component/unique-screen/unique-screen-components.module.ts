@@ -35,6 +35,7 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
 import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
 import { CarListModule } from './components/car-list/car-list.module';
+import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { CarListModule } from './components/car-list/car-list.module';
     BaseComponentsModule,
     FieldListScreenModule,
     TimerScreenModule,
-    CarListModule
+    CarListModule,
+    AppealFinesModule,
   ],
   exports: [
     RepeatableFieldsModule,
@@ -90,7 +92,8 @@ import { CarListModule } from './components/car-list/car-list.module';
     AddPassportModule,
     FieldListScreenModule,
     TimerScreenModule,
-    CarListModule
+    CarListModule,
+    AppealFinesModule,
   ],
   providers: [
     WebcamService,
