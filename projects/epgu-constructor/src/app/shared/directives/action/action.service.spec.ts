@@ -112,6 +112,13 @@ const openDropdownModalAction: ComponentActionDto = {
   type: ActionType.dropdownListModal
 };
 
+const openConfirmationModalAction: ComponentActionDto = {
+  label: 'test',
+  value: 'confirmation',
+  action: null,
+  type: ActionType.confirmModalStep
+};
+
 const sendActionMock = of({
   errorList: [],
   responseData: { value: 'value', type: 'type' },
@@ -249,6 +256,23 @@ describe('ActionService', () => {
   it('should call switchAction openDropdownListModal', () => {
     spyOn(modalService, 'openModal').and.callThrough();
     actionService.switchAction(openDropdownModalAction, null);
+    expect(modalService.openModal).toHaveBeenCalled();
+  });
+
+  it('should call switchAction openConfirmationModal', () => {
+    spyOn(screenService, 'getStore').and.returnValue({
+      display: {
+        confirmations: {
+          confirmation: {
+            title: 'Some title',
+            text: 'Some text',
+            submitLabel: 'Send'
+          }
+        }
+      }
+    });
+    spyOn(modalService, 'openModal').and.callThrough();
+    actionService.switchAction(openConfirmationModalAction, null);
     expect(modalService.openModal).toHaveBeenCalled();
   });
 });
