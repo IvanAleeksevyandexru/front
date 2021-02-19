@@ -24,6 +24,7 @@ export interface TimeSlotValueInterface {
   eserviceId?: string;
   serviceCode?: string;
   organizationId?: string;
+  bookAttributes?: string;
 }
 
 export interface DepartmentInterface {
