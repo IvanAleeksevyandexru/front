@@ -52,7 +52,7 @@ export class UploaderManagerItemComponent {
     this.type = file.raw.type;
     this.status = file.status;
     if (this.isImage) {
-      this.imageUrl = window.URL.createObjectURL(file.raw);
+      this.imageUrl = file.urlToFile();
     }
     this.selectedIconType = iconsTypes[this.extension] ?? 'TXT';
   }

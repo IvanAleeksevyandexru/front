@@ -151,12 +151,12 @@ export class ViewerService {
       ),
       modal.instance.prev.pipe(
         startWith(null),
-        filter((deleteEvent) => !!deleteEvent),
+        filter((prevEvent) => !!prevEvent),
         tap(() => this.prev()),
       ),
       modal.instance.next.pipe(
         startWith(null),
-        filter((deleteEvent) => !!deleteEvent),
+        filter((nextEvent) => !!nextEvent),
         tap(() => this.next()),
       ),
     ]).pipe(map(() => undefined));

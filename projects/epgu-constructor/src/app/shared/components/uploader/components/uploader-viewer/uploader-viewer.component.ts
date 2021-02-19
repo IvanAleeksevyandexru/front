@@ -5,6 +5,7 @@ import {
   Injector,
   Input,
   Output,
+  ViewChild,
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -15,6 +16,7 @@ import { FileItem } from '../../../../../component/unique-screen/components/file
 import { FilesCollection, SuggestAction } from '../../data';
 // eslint-disable-next-line import/no-cycle
 import { ViewerService } from '../../services/viewer/viewer.service';
+import { ZoomComponent } from '../../../zoom/zoom.component';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer',
@@ -23,6 +25,7 @@ import { ViewerService } from '../../services/viewer/viewer.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploaderViewerComponent extends ModalBaseComponent {
+  @ViewChild('zoom', { static: true }) zoom: ZoomComponent;
   @Input() type: FilesCollection;
 
   @Output() delete = new EventEmitter<FileItem>();
@@ -39,14 +42,26 @@ export class UploaderViewerComponent extends ModalBaseComponent {
   item: FileItem;
   imageURL: string;
   filesType = FilesCollection;
+  isMoveZoom = false;
 
   constructor(public injector: Injector, private viewerService: ViewerService) {
     super(injector);
   }
 
+  onClickComponent(event: MouseEvent): void {
+    if (!this.isMoveZoom) {
+      super.onClickComponent(event);
+    }
+    this.isMoveZoom = false;
+  }
+
+  zoomMoveEnd(): void {
+    this.isMoveZoom = true;
+  }
+
   init(file: FileItem): void {
-    if (file.isImage && file?.raw) {
-      this.imageURL = window.URL.createObjectURL(file?.raw);
+    if (file.isImage) {
+      this.imageURL = file.urlToFile();
     } else {
       this.imageURL = null;
     }

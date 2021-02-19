@@ -7,7 +7,8 @@
   </div>
   <div class="uploader-viewer__body">
     <ng-container *ngIf="selectedItem | async">
-      <epgu-constructor-zoom *ngIf="imageURL" [imageURL]="imageURL"> </epgu-constructor-zoom>
+      <epgu-constructor-zoom *ngIf="imageURL" [imageURL]="imageURL" (moveEnd)="zoomMoveEnd()">
+      </epgu-constructor-zoom>
       <button (click)="nextAction()">next</button>
       <button (click)="prevAction()">prev</button>
     </ng-container>

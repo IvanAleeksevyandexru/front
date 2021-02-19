@@ -2,11 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Inject,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -24,6 +26,8 @@ import { DeviceDetectorService } from '../../../core/services/device-detector/de
 export class ZoomComponent implements OnInit, OnDestroy {
   @Input() imageURL: string;
   @ViewChild('el', { static: true }) el: ElementRef<HTMLImageElement>;
+  @Output() moveStart = new EventEmitter<null>();
+  @Output() moveEnd = new EventEmitter<null>();
   x = 0;
   y = 0;
   lastX = 0;
@@ -55,12 +59,18 @@ export class ZoomComponent implements OnInit, OnDestroy {
   mousedown$ = fromEvent<MouseEvent>(this.document, 'mousedown').pipe(
     filter((e) => this.targetFilter(e)),
     tap(() => {
+      this.moveStart.emit();
       this.isMove = true;
     }),
   );
 
-  // eslint-disable-next-line no-return-assign
-  mouseup$ = fromEvent(this.document, 'mouseup').pipe(tap(() => (this.isMove = false)));
+  mouseup$ = fromEvent(this.document, 'mouseup').pipe(
+    filter(() => this.isMove),
+    tap(() => {
+      this.moveEnd.emit();
+      this.isMove = false;
+    }),
+  );
 
   constructor(
     private deviceService: DeviceDetectorService,
@@ -106,11 +116,35 @@ export class ZoomComponent implements OnInit, OnDestroy {
   }
 
   zoomHandler(event: WheelEvent): void {
-    this.zoomCompute(event.target as Element, event.deltaY);
+    this.zoomCompute(event.deltaY);
   }
 
-  zoomCompute(element: Element, delta: number): void {
+  zoomIn(): void {
+    this.changeZoom(this.zoom$$.getValue() + this.speedZoom);
+  }
+
+  zoomOut(): void {
+    this.changeZoom(this.zoom$$.getValue() - this.speedZoom);
+  }
+
+  resetZoom(): void {
+    this.changeZoom(this.minZoom);
+  }
+
+  updateSize(): void {
+    this.checkAvailable(this.el.nativeElement);
+    this.updateStyle();
+  }
+
+  changeZoom(zoom: number): void {
     this.updateZoomLimits();
+    const minZoom = zoom < this.minZoom ? this.minZoom : zoom;
+
+    this.zoom$$.next(zoom > this.maxZoom ? this.maxZoom : minZoom);
+    this.updateSize();
+  }
+
+  zoomCompute(delta: number): void {
     const direction = delta < 0 ? 1 : -1;
     const zoom =
       direction === -1
@@ -119,11 +153,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
 
     this.x = 0;
     this.y = 0;
-    const minZoom = zoom < this.minZoom ? this.minZoom : zoom;
-
-    this.zoom$$.next(zoom > this.maxZoom ? this.maxZoom : minZoom);
-    this.checkAvailable(element);
-    this.updateStyle();
+    this.changeZoom(zoom);
   }
 
   getAvailableSize(target: Element): { h: number; w: number } {
