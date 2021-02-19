@@ -16,7 +16,6 @@ import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { filter, tap } from 'rxjs/operators';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
-import { FilesCollection } from '../uploader/data';
 
 @Component({
   selector: 'epgu-constructor-zoom',
