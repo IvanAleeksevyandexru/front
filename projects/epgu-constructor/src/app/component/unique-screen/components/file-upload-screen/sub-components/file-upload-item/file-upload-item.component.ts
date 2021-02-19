@@ -472,9 +472,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
-    this.eventBusService.on('previewFileEvent').subscribe((payload) => {
-      console.log({ payload }, this.componentId);
-    });
   }
 
   polyfillFile(file: File): File {

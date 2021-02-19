@@ -14,6 +14,8 @@ import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/co
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ICONS_TYPES } from '../../shared/constants/uploader';
+import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
+import { FilesCollection } from '../../shared/components/uploader/data';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -40,6 +42,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
+    private viewerService: ViewerService,
   ) {
     super(injector);
   }
@@ -53,7 +56,6 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       this.suggestionsFilesGroupByDate = this.getSuggestionsFilesGroupedByDate(
         this.suggestionsFiles,
       );
-      console.log(this.suggestionsFilesGroupByDate, this.suggestionsFiles);
     });
 
     this.eventBusService
@@ -65,7 +67,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   public previewFile(file: FileItem): void {
-    this.eventBusService.emit('previewFileEvent', file);
+    this.viewerService.open(FilesCollection.suggest, file.id, this.suggestionsFiles).subscribe();
   }
 
   public handleImgError(event: Event): void {
@@ -75,7 +77,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
     return suggestionsUploadedFiles.map(
-      (file: UploadedFile) => new FileItem(FileItemStatus.uploaded, null, file),
+      (file: UploadedFile) =>
+        new FileItem(FileItemStatus.uploaded, `${this.fileUploadApiUrl}/`, null, file),
     );
   }
 
