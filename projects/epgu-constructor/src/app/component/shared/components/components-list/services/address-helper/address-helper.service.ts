@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { pluck, concatMap, reduce } from 'rxjs/operators';
+import { concatMap, filter, pluck, reduce } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
 import { DadataSuggestionsAddress } from '../../../../services/dictionary-api/dictionary-api.types';
+import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 
 export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddress {
   id: string;
@@ -11,34 +12,52 @@ export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddr
 
 @Injectable()
 export class AddressHelperService {
-  // Провайдер поиска для передачи в lib-lookup
-  // с функцией поиска для lib-lookup. Сам поиск осуществляется за счет suggestions дадаты
-  public providers = {
-    city: {
-      search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
-        searchString ? this.getSuggestions(searchString) : of([]),
-    },
-    region: {
-      search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
-        searchString ? this.getSuggestions(searchString, { isRegion: 'true' }) : of([]),
-    },
-  };
-
   constructor(private dictionaryApiService: DictionaryApiService) {}
+
+  public getProvider(searchType: string = 'city', cityFilter?: string[]): LookupProvider | LookupPartialProvider {
+    const providers = {
+      city: {
+        search: (searchString: string): Observable<DadataSuggestionsAddressForLookup[]> => {
+          return searchString
+            ? this.getSuggestions(searchString, { isCity: 'true' }, cityFilter)
+            : of([]);
+        },
+      },
+      region: {
+        search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
+          searchString
+            ? this.getSuggestions(searchString, { isRegion: 'true' }, cityFilter)
+            : of([]),
+      },
+    };
+
+    return providers[searchType];
+  }
 
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text
    * @param qString - строка для поиска
    * @param {{ [key: string]: string }} [params={ isCity: 'true' }] - параметры запроса.
+   * @param cityFilter - массив для фильтрации
    */
   public getSuggestions(
     qString: string,
-    params: { [key: string]: string } = { isCity: 'true' },
+    params: { [key: string]: string },
+    cityFilter?: string[],
   ): Observable<Array<DadataSuggestionsAddressForLookup>> {
     return this.dictionaryApiService.getDadataSuggestions(qString, params).pipe(
       pluck('suggestions', 'addresses'),
       concatMap((addresses: Array<DadataSuggestionsAddress>) => {
-        return from(addresses);
+        return cityFilter
+          ? from(addresses).pipe(
+              filter(({ address }: DadataSuggestionsAddress) => {
+                const test: string = address.toLowerCase();
+                return cityFilter.some(
+                  (filter: string) => test.indexOf(filter.toLowerCase()) !== -1,
+                );
+              }),
+            )
+          : from(addresses);
       }),
       reduce<DadataSuggestionsAddress, DadataSuggestionsAddressForLookup[]>((acc, value) => {
         acc.push({
