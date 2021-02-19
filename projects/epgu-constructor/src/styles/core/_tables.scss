@@ -1,0 +1,42 @@
+@import "../core/palettes";
+table {
+  width: 100%;
+  margin-bottom: 24px;
+  thead {
+    color: $color-text-helper;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  tbody {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  th, td {
+    vertical-align: top;
+    text-align: center;
+    padding: 2px 8px;
+    &:first-child {
+      padding-left: 0;
+      text-align: left;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+    &.nowrap{
+      white-space: nowrap;
+    }
+  }
+}
+
+table.table-bordered {
+  border: 2px solid $color-gosblue;
+  border-collapse: collapse;
+  th, td {
+    border: 2px solid $color-gosblue;
+    padding: 2px 8px;
+    text-align: center;
+  }
+}
+
+
+
