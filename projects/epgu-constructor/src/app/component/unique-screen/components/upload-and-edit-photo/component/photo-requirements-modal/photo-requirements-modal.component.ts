@@ -27,7 +27,7 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
   buttons: ConfirmationModalBaseButton[] = [];
   validIconPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/icon-valid.svg`;
   invalidIconPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/icon-invalid.svg`;
-
+  modalName = 'photoRequirementsModal';
   constructor(
     public injector: Injector,
     public config: ConfigService,
@@ -47,7 +47,7 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
     ];
 
     this.eventBusService
-      .on('closeModalEvent')
+      .on(`closeModalEvent_${this.modalName}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.closeModal();
