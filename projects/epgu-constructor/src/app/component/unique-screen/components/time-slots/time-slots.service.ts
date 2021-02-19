@@ -269,7 +269,7 @@ export class TimeSlotsService {
     const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
 
     return {
-      organizationId: [this.config.organizationId || this.getSlotsRequestOrganizationId(this.timeSlotsType)],
+      organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
       caseNumber: this.config.orderId,
       serviceId: [this.config.serviceId || serviceId],
       eserviceId: this.config.eserviceId || eserviceId,
@@ -306,7 +306,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.GIBDD]: this.department.attributeValues.code,
     };
 
-    return settings[slotsType];
+    return this.config.organizationId || settings[slotsType];
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
@@ -340,7 +340,7 @@ export class TimeSlotsService {
       eserviceId: this.config.eserviceId || eserviceId,
       serviceCode: this.config.serviceCode || serviceCode,
       bookId: this.bookId,
-      organizationId: this.config.organizationId || this.getSlotsRequestOrganizationId(this.timeSlotsType),
+      organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
       calendarName: this.config.calendarName || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
