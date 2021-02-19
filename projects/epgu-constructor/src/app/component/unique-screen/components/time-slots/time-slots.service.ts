@@ -30,6 +30,13 @@ import {
 } from './time-slots.types';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
+
+type attributesMapType = Array<{ name: string; value: string }>;
+
+type configType = {
+  [key: string]: string | attributesMapType,
+};
 
 @Injectable()
 export class TimeSlotsService {
@@ -48,7 +55,7 @@ export class TimeSlotsService {
   private errorMessage;
   private availableMonths: string[];
   private areas: string[];
-  private config: { [key: string]: string } = {};
+  private config: configType = {};
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -56,6 +63,7 @@ export class TimeSlotsService {
     private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
+    private utilsService: UtilsService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -194,7 +202,7 @@ export class TimeSlotsService {
       this.department = department;
     }
 
-    const config = {
+    const config: configType = {
       orderId: data.orderId,
       serviceId: data.serviceId,
       subject: data.subject,
@@ -202,6 +210,7 @@ export class TimeSlotsService {
       eserviceId: data.eserviceId,
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
+      bookAttributes: this.utilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
@@ -243,7 +252,7 @@ export class TimeSlotsService {
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
-        eserviceId: this.config.eserviceId || eserviceId,
+        eserviceId: this.config.eserviceId as string || eserviceId,
         bookId: bookId,
       })
       .pipe(
@@ -270,9 +279,9 @@ export class TimeSlotsService {
 
     return {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber: this.config.orderId,
-      serviceId: [this.config.serviceId || serviceId],
-      eserviceId: this.config.eserviceId || eserviceId,
+      caseNumber: this.config.orderId as string,
+      serviceId: [this.config.serviceId as string || serviceId],
+      eserviceId: this.config.eserviceId as string || eserviceId,
       routeNumber,
       attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
     };
@@ -291,7 +300,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.MVD]: [],
       [TimeSlotsTypes.GIBDD]: [
         { name: 'organizationId', value: this.department.attributeValues.code },
-        { name: 'serviceId', value: this.config.serviceId || serviceId },
+        { name: 'serviceId', value: this.config.serviceId as string || serviceId },
       ],
     };
 
@@ -306,7 +315,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.GIBDD]: this.department.attributeValues.code,
     };
 
-    return this.config.organizationId || settings[slotsType];
+    return this.config.organizationId as string || settings[slotsType];
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
@@ -330,30 +339,30 @@ export class TimeSlotsService {
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject: this.config.subject || subject,
+      subject: this.config.subject as string || subject,
       params: [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
         },
       ],
-      eserviceId: this.config.eserviceId || eserviceId,
-      serviceCode: this.config.serviceCode || serviceCode,
+      eserviceId: this.config.eserviceId as string || eserviceId,
+      serviceCode: this.config.serviceCode as string || serviceCode,
       bookId: this.bookId,
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
-      calendarName: this.config.calendarName || calendarName,
+      calendarName: this.config.calendarName as string || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
-      parentOrderId: this.config.orderId,
+      parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
-      serviceId: [this.config.serviceId || serviceId],
+      serviceId: [this.config.serviceId as string || serviceId],
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {
       requestBody.parentOrderId = '';
-      requestBody.caseNumber = this.config.orderId;
+      requestBody.caseNumber = this.config.orderId as string;
     }
 
     return requestBody;
@@ -362,7 +371,7 @@ export class TimeSlotsService {
   private getBookRequestAttributes(
     slotsType: TimeSlotsTypes,
     serviceId: string,
-  ): Array<{ name: string; value: string }> {
+  ): attributesMapType {
     const settings = {
       [TimeSlotsTypes.BRAK]: [],
       [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
@@ -370,7 +379,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
     };
 
-    return settings[slotsType];
+    return this.config.bookAttributes as attributesMapType || settings[slotsType];
   }
 
   private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {

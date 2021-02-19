@@ -29,6 +29,7 @@ import { EventBusService } from 'projects/epgu-constructor/src/app/core/services
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 const moment = moment_;
 moment.locale('ru');
@@ -63,6 +64,7 @@ describe('TimeSlotsComponent', () => {
         EventBusService,
         DatesToolsService,
         TimeSlotsService,
+        UtilsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
