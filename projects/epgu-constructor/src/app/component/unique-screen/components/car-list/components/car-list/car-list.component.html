@@ -1,19 +1,9 @@
-<epgu-constructor-screen-pad *ngIf="errorDisplayDto; else carList">
+<epgu-constructor-screen-pad *ngIf="errorTemplateLabel; else carList">
 
-  <img
-    [class]="errorDisplayDto.imageClass"
-    src="{{ staticDomainAssetsPath }}{{ errorDisplayDto.imageSrc }}"
-    alt=""
-  />
-
-  <h3 class="car-error-title">{{errorDisplayDto.title}}</h3>
-
-  <div class="car-list-error-label">
-    <epgu-constructor-output-html
-      [html]="errorDisplayDto.label"
-      [clarifications]="clarifications"
-    ></epgu-constructor-output-html>
-  </div>
+  <epgu-constructor-output-html
+    [html]="errorTemplateLabel"
+    [clarifications]="clarifications"
+  ></epgu-constructor-output-html>
 
 </epgu-constructor-screen-pad>
 

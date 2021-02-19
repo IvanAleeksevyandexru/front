@@ -15,7 +15,7 @@
       <div
         *ngIf="display.header"
         class="head">
-        <epgu-constructor-page-name>{{ display.header }}</epgu-constructor-page-name>
+        <epgu-constructor-page-name *ngIf="!hasError">{{ display.header }}</epgu-constructor-page-name>
       </div>
 
       <epgu-constructor-car-list
@@ -24,7 +24,7 @@
         [provider]="lookupProvider"
         [control]="control"
         [carFixedItems]="carFixedItems"
-        [errorDisplayDto]="errorTemplate?.display"
+        [errorTemplateLabel]="errorTemplate?.label"
         [formatter]="lookupFormatter"
         [searchCaseSensitive]="lookupSearchCaseSensitive"
         [staticDomainAssetsPath]="config.staticDomainAssetsPath"
