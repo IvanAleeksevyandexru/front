@@ -206,7 +206,7 @@ export class ComponentListFormService {
   }
 
   private relationPatch(component: CustomComponent, patch: object): void {
-    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch } };
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
     const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
 
