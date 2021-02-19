@@ -15,6 +15,13 @@ import { UtilsService } from '../../services/utils/utils.service';
 
 const EXCEPTIONS = ['lib-assets'];
 
+interface DictionaryError {
+  code?: number | string;
+  errorCode?: number | string;
+  message?: string;
+  errorMessage?: string;
+}
+
 interface ConfigParams {
   id: string;
   name: string;
@@ -22,6 +29,7 @@ interface ConfigParams {
   error?: string;
   errorMessage?: string;
   dictionaryUrl?: string;
+  successfulDictionaryRequests?: string;
 }
 
 enum RequestStatus {
@@ -53,9 +61,14 @@ export class HealthInterceptor implements HttpInterceptor {
           const validationStatus = this.utils.isValidScenarioDto(result);
           let successRequestPayload = null;
           let dictionaryValidationStatus = false;
+          const isInvalidOldDictionary = this.isDefinedErrorForDictionaries(result?.error, 'code');
+          const isInvalidNewDictionary = this.isDefinedErrorForDictionaries(
+            result?.error,
+            'errorCode',
+          );
 
           if (validationStatus) {
-            const { scenarioDto } = result;
+            const { scenarioDto, health } = result;
 
             this.configParams = {
               id: scenarioDto.display.id,
@@ -63,46 +76,72 @@ export class HealthInterceptor implements HttpInterceptor {
               orderId: this.utils.isValidOrderId(scenarioDto.orderId)
                 ? scenarioDto.orderId
                 : result.callBackOrderId,
+              successfulDictionaryRequests:
+                this.utils.isDefined(health) &&
+                this.utils.isDefined(health?.dictionaries) &&
+                health.dictionaries.length > 0
+                  ? JSON.stringify(health.dictionaries)
+                  : null,
             };
           }
 
-          if (this.utils.isDefined(result?.error) && this.utils.isDefined(result.error?.code) && Number(result.error.code) !== 0) {
-            successRequestPayload = { 
-              ...successRequestPayload, 
-              error: result.error.code,
-              errorMessage: this.utils.isDefined(result.error.message) ? result.error.message : null,
+          if (isInvalidOldDictionary || isInvalidNewDictionary) {
+            successRequestPayload = {
+              ...successRequestPayload,
+              error: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
+              errorMessage: isInvalidOldDictionary
+                ? this.utils.isDefined(result.error.message)
+                  ? result.error.message
+                  : null
+                : this.utils.isDefined(result.error.errorMessage)
+                ? result.error.errorMessage
+                : null,
             };
             dictionaryValidationStatus = true;
           }
 
           if (!(Object.keys(this.configParams).length === 0)) {
-            const { id, name, orderId } = this.configParams;
-            successRequestPayload = { id, name, orderId };
+            const {
+              id,
+              name,
+              orderId,
+              successfulDictionaryRequests,
+              error,
+              errorMessage,
+            } = this.configParams;
+            successRequestPayload = {
+              id,
+              name,
+              orderId,
+              successfulDictionaryRequests,
+              error,
+              errorMessage,
+            };
             successRequestPayload = this.utils.filterIncorrectObjectFields(
               successRequestPayload,
             ) as ConfigParams;
           }
 
           this.health.measureEnd(
-            serviceName, 
-            dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Successed, 
-            successRequestPayload
+            serviceName,
+            dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Successed,
+            successRequestPayload,
           );
         }
       }),
-      catchError((error) => {
-        if (this.isValid(error)) {
-          if (error.status !== 404) {
-            this.configParams['error'] = error.status;
+      catchError((err) => {
+        if (this.isValid(err)) {
+          if (err.status !== 404) {
+            this.configParams['error'] = err.status;
 
-            if (error.status === 506) {
-              const { id, url, message } = error.value;
-              
+            if (err.status === 506) {
+              const { id, url, message } = err.error.value;
+
               this.configParams['id'] = id;
               this.configParams['dictionaryUrl'] = url;
               this.configParams['errorMessage'] = this.utils.cyrillicToLatin(message);
             } else {
-              this.configParams['errorMessage'] = this.utils.cyrillicToLatin(error.message);
+              this.configParams['errorMessage'] = this.utils.cyrillicToLatin(err.message);
             }
 
             this.health.measureEnd(serviceName, RequestStatus.Failed, this.configParams);
@@ -110,7 +149,7 @@ export class HealthInterceptor implements HttpInterceptor {
             this.health.measureEnd(serviceName, RequestStatus.Successed, this.configParams);
           }
         }
-        return throwError(error);
+        return throwError(err);
       }),
     );
   }
@@ -124,6 +163,14 @@ export class HealthInterceptor implements HttpInterceptor {
     const exceptValidationStatus = splitByDirLocation.some((name) => EXCEPTIONS.includes(name));
 
     return exceptValidationStatus;
+  }
+
+  private isDefinedErrorForDictionaries(error: undefined | DictionaryError, key: string): boolean {
+    return (
+      this.utils.isDefined(error) &&
+      this.utils.isDefined(error[key]) &&
+      (Number(error[key]) !== 0 || error[key] !== '0')
+    );
   }
 
   /**
