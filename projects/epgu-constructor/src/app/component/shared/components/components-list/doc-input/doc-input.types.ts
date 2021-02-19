@@ -28,6 +28,8 @@ interface DocInputField extends CustomComponent {
     validation?: CustomComponentAttrValidation[];
     maxDate?: string;
     minDate?: string;
+    minDateRef?: string;
+    maxDateRef?: string;
     accuracy?: string;
     fstuc?: TextTransform;
     hidden?: boolean;
