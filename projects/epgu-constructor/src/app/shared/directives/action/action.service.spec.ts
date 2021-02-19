@@ -26,6 +26,8 @@ import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { ModalService } from '../../../modal/modal.service';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { ScreenTypes } from '../../../screen/screen.types';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -136,6 +138,7 @@ describe('ActionService', () => {
   let localStorageService: LocalStorageService;
   let formPlayerApiService: FormPlayerApiService;
   let modalService: ModalService;
+  let currentAnswersService: CurrentAnswersService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -166,6 +169,7 @@ describe('ActionService', () => {
     localStorageService = TestBed.inject(LocalStorageService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     modalService = TestBed.inject(ModalService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -275,4 +279,46 @@ describe('ActionService', () => {
     actionService.switchAction(openConfirmationModalAction, null);
     expect(modalService.openModal).toHaveBeenCalled();
   });
+
+  describe('getComponentStateForNavigate()', () => {
+    it('should return current value for custom screen', () => {
+      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      display.type = ScreenTypes.CUSTOM;
+      screenService.display = display;
+      spyOn<any>(actionService, 'isTimerComponent').and.returnValue(false);
+      const expectedValue = { 123: { value: 'some value' }};
+      currentAnswersService.state = expectedValue;
+      const value = actionService['getComponentStateForNavigate'](nextAction, '123');
+      expect(value).toEqual(expectedValue);
+    });
+
+    it('should return current value for timer case', () => {
+      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      display.type = ScreenTypes.CUSTOM;
+      screenService.display = display;
+      spyOn<any>(actionService, 'isTimerComponent').and.returnValue(true);
+      const expectedValue = { 123: { visited: true, value: nextAction.value }};
+      const value = actionService['getComponentStateForNavigate'](nextAction, '123');
+      expect(value).toEqual(expectedValue);
+    });
+
+    it('should return current value for unique screen', () => {
+      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      screenService.display = display;
+      const expectedValue = { 123: { value: 'some value', visited: true }};
+      currentAnswersService.state = 'some value';
+      const value = actionService['getComponentStateForNavigate'](nextAction, '123');
+      expect(value).toEqual(expectedValue);
+    });
+
+    it('should return current value for unique screen with skipAction', () => {
+      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      screenService.display = display;
+      const expectedValue = { 123: { value: '', visited: true }};
+      currentAnswersService.state = 'some value';
+      const value = actionService['getComponentStateForNavigate'](skipAction, '123');
+      expect(value).toEqual(expectedValue);
+    });
+  });
+
 });
