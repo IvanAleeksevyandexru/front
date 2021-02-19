@@ -30,6 +30,7 @@ import {
 } from './time-slots.types';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 
@@ -62,6 +63,7 @@ export class TimeSlotsService {
     private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
+    private utilsService: UtilsService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -208,7 +210,7 @@ export class TimeSlotsService {
       eserviceId: data.eserviceId,
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
-      bookAttributes: data.bookAttributes && JSON.parse(data.bookAttributes),
+      bookAttributes: this.utilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
