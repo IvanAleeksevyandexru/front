@@ -24,10 +24,13 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  UpdateOn
+  UpdateOn,
 } from '../../components-list.types';
 import { isDropDown } from '../../tools/custom-screen-tools';
-import { AddressHelperService, DadataSuggestionsAddressForLookup } from '../address-helper/address-helper.service';
+import {
+  AddressHelperService,
+  DadataSuggestionsAddressForLookup,
+} from '../address-helper/address-helper.service';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
 
@@ -145,8 +148,8 @@ export class ComponentListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  addressHelperServiceProvider(searchType: string = 'city'): LookupProvider | LookupPartialProvider {
-    return this.addressHelperService.providers[searchType];
+  addressHelperServiceProvider(attrs: CustomComponentAttr): LookupProvider | LookupPartialProvider {
+    return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
   }
 
   private getPreparedStateForSending(): CustomComponentOutputData {
@@ -186,10 +189,11 @@ export class ComponentListFormService {
     const { dateLeft, dateRight } = this.parsedDates(value, params);
     return this.datesHelperService.isSameOrBefore(dateLeft, dateRight);
   }
-  private parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date; } {
-    const dateLeft = typeof value === 'string'
-      ? this.datesHelperService.parse(value)
-      : this.datesHelperService.toDate(value);
+  private parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date } {
+    const dateLeft =
+      typeof value === 'string'
+        ? this.datesHelperService.parse(value)
+        : this.datesHelperService.toDate(value);
     const dateRight = this.datesHelperService.parse(params, DATE_STRING_DOT_FORMAT);
     return { dateLeft, dateRight };
   }
@@ -202,7 +206,7 @@ export class ComponentListFormService {
   }
 
   private relationPatch(component: CustomComponent, patch: object): void {
-    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch } };
 
     const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
 
@@ -311,7 +315,7 @@ export class ComponentListFormService {
           this.shownElements,
           this.form,
           this.repository.dictionaries,
-          true
+          true,
         );
         ////////HARDCODE!!!
         // TODO: избавиться от хардкода

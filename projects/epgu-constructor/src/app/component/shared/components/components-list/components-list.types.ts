@@ -120,6 +120,8 @@ export interface CustomComponentAttr {
   maxDate?: string;
   onlyFirstScreen?: boolean;
   add?: { component: string; caption: string[] };
+  searchType?: string;
+  cityFilter?: string[];
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
