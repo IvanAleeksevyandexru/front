@@ -111,7 +111,7 @@ export class FileItem {
     }
 
     return this.item
-      ? `${this.fileUploadApiUrl}${this.item?.objectId}/${this.item?.objectTypeId}/download?mnemonic=${this.item?.mnemonic}`
+      ? `${this.fileUploadApiUrl}/${this.item?.objectId}/${this.item?.objectTypeId}/download?mnemonic=${this.item?.mnemonic}`
       : '';
   }
 

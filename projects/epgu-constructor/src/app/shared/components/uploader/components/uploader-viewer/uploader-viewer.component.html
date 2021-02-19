@@ -7,10 +7,22 @@
   </div>
   <div class="uploader-viewer__body">
     <ng-container *ngIf="selectedItem | async">
-      <epgu-constructor-zoom *ngIf="imageURL" [imageURL]="imageURL" (moveEnd)="zoomMoveEnd()">
+      <epgu-constructor-zoom
+        #zoomComponent
+        *ngIf="imageURL"
+        [imageURL]="imageURL"
+        (moveEnd)="zoomMoveEnd()"
+      >
       </epgu-constructor-zoom>
-      <button (click)="nextAction()">next</button>
-      <button (click)="prevAction()">prev</button>
+      <button (click)="nextAction()">Вперед</button>
+      <button (click)="prevAction()">Назад</button>
+      <button (click)="deleteAction()">Удалить</button>
+      <button (click)="zoomIn()">Приблизить</button>
+      <button (click)="zoomOut()">Отдалить</button>
+      <button (click)="downloadAction()">Скачать</button>
+      <button *ngIf="type === filesType.suggest" (click)="suggestAction(true)">+Прикрепить</button>
+      <button *ngIf="type === filesType.suggest" (click)="suggestAction(false)">-Открепить</button>
+      {{ position }}/{{ size }}
     </ng-container>
   </div>
   <div class="uploader-viewer__footer"></div>

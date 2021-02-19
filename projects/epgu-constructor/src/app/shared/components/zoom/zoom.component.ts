@@ -104,9 +104,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
   }
 
   initSubscribes(): void {
-    if (this.isTouch) {
-      // this.subs.add(this.mobileEvents$.subscribe((e) => this.pinchZoom(e)));
-    } else {
+    if (!this.isTouch) {
       this.subs
         .add(this.mousemove$.subscribe())
         .add(this.mousewheel$.subscribe())

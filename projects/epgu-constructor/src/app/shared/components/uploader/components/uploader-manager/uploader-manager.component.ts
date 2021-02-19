@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { takeUntil, tap } from 'rxjs/operators';
+import { take, takeUntil, tap } from 'rxjs/operators';
 import {
   CancelAction,
+  ErrorActions,
   FileItem,
+  FileItemStatus,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { FilesCollection, SuggestAction } from '../../data';
@@ -23,7 +25,22 @@ export class UploaderManagerComponent {
   @Output() repeat = new EventEmitter<FileItem>();
   @Output() suggest = new EventEmitter<SuggestAction>();
 
-  @Input() list: FileItem[];
+  @Input() set list(items: FileItem[]) {
+    this.listItems = items;
+    this.viewer.update(
+      FilesCollection.uploader,
+      items.filter(
+        (item) =>
+          (item.status === FileItemStatus.error &&
+            item?.error?.type === ErrorActions.addDeletionErr) ||
+          item.status === FileItemStatus.uploaded ||
+          item.status === FileItemStatus.downloading ||
+          item.status === FileItemStatus.delition,
+      ),
+    );
+  }
+
+  listItems: FileItem[];
 
   deleteViewer = this.viewer.delete
     .pipe(
@@ -49,8 +66,6 @@ export class UploaderManagerComponent {
   constructor(private viewer: ViewerService, private unsubscribeService: UnsubscribeService) {}
 
   view(file: FileItem): void {
-    const sub = this.viewer.open(FilesCollection.uploader, file.id, this.list).subscribe(() => {
-      sub.unsubscribe();
-    });
+    this.viewer.open(FilesCollection.uploader, file.id).pipe(take(1)).subscribe();
   }
 }

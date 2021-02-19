@@ -435,25 +435,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;
   }
 
-  loadImage(file: FileItem): Observable<FileItem> {
-    return !file.isImage
-      ? of(file)
-      : this.terabyteService.downloadFile(file.createUploadedParams()).pipe(
-          catchError((e) => {
-            return throwError(e);
-          }),
-          map((blob: Blob) =>
-            file.setRaw(new File([blob], file.raw.name, { type: file.raw.type })),
-          ),
-        );
-  }
-
   loadList(): Observable<FileItem> {
     return this.getListStream(this.objectId).pipe(
       map(
         (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
       ),
-      mergeMap((file: FileItem) => this.loadImage(file)),
       tap((file: FileItem) => this.store.add(file)),
       tap((file: FileItem) => this.incrementLimits(file)),
       tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
@@ -543,33 +529,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           .map((fileType) => `.${fileType}`)
           .join(',')
           .toLowerCase();
-  }
-
-  checkMaxTotalAmount(amountFiles: number = 1): boolean {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
-      amountFiles,
-      this.data.uploadId,
-    );
-    return !(!isValid && reason === CheckFailedReasons.total);
-  }
-
-  checkMaxAmount(amountFiles: number = 1): boolean {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
-      amountFiles,
-      this.data.uploadId,
-    );
-    return !(!isValid && reason === CheckFailedReasons.uploaderRestriction);
-  }
-
-  checkAmount(amountFiles: number = 1): boolean {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
-      amountFiles,
-      this.data.uploadId,
-    );
-    return !(
-      !isValid &&
-      (reason === CheckFailedReasons.total || reason === CheckFailedReasons.uploaderRestriction)
-    );
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {
