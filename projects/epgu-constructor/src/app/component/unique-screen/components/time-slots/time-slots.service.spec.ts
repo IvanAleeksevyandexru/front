@@ -22,6 +22,7 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
@@ -38,6 +39,7 @@ describe('TimeSlotsComponent', () => {
         EventBusService,
         DatesToolsService,
         TimeSlotsService,
+        UtilsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
