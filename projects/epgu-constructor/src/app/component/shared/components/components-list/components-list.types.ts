@@ -168,7 +168,8 @@ export interface CustomComponentRef {
   relatedRel: string;
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
-  defaultValue: string | boolean;
+  defaultValue?: string | boolean;
+  valueFromCache?: string;
 }
 
 export interface CustomListFormGroup {
