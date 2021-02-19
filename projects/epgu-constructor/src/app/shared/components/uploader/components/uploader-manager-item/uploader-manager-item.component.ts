@@ -17,7 +17,7 @@ import {
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ICONS_TYPES } from '../../../../constants/uploader';
+import { iconsTypes } from '../../data';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',
@@ -31,6 +31,8 @@ export class UploaderManagerItemComponent {
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
   @Output() repeat = new EventEmitter<FileItem>();
+  @Output() view = new EventEmitter<FileItem>();
+
   @ViewChild('elementLink', { read: ElementRef, static: true }) elementLink: ElementRef;
   @Input() set file(file: FileItem) {
     this.fileItem = file;
@@ -52,7 +54,7 @@ export class UploaderManagerItemComponent {
     if (this.isImage) {
       this.imageUrl = window.URL.createObjectURL(file.raw);
     }
-    this.selectedIconType = ICONS_TYPES[this.extension] ?? 'TXT';
+    this.selectedIconType = iconsTypes[this.extension] ?? 'TXT';
   }
   selectedIconType: string;
 
@@ -75,6 +77,8 @@ export class UploaderManagerItemComponent {
   basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   errorIcon = 'Error';
 
+  iconsType = iconsTypes;
+
   constructor(private teraService: TerraByteApiService, public config: ConfigService) {}
 
   cancelAction(type: OperationType): void {
@@ -90,5 +94,7 @@ export class UploaderManagerItemComponent {
     }
   }
 
-  preview(): void {}
+  preview(): void {
+    this.view.emit(this.fileItem);
+  }
 }

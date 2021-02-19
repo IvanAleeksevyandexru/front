@@ -29,7 +29,8 @@
       "file-saver": "FileSaver",
       "date-fns": "dateFns",
       "date-fns/locale": "locale",
-      "lodash": "lodash"
+      "lodash": "lodash",
+      "hammerjs": "hammerjs"
     },
     "styleIncludePaths": ["."]
   }

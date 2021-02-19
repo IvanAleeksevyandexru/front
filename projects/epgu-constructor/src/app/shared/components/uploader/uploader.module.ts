@@ -6,6 +6,12 @@ import { UploaderManagerComponent } from './components/uploader-manager/uploader
 import { UploaderManagerItemComponent } from './components/uploader-manager-item/uploader-manager-item.component';
 import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 import { BaseModule } from '../../base.module';
+import { UploaderViewerComponent } from './components/uploader-viewer/uploader-viewer.component';
+import { ModalService } from '../../../modal/modal.service';
+import { ViewerService } from './services/viewer/viewer.service';
+
+import { ZoomModule } from '../zoom/zoom.module';
+import { MemoModule } from '../../pipes/memo/memo.module';
 
 @NgModule({
   declarations: [
@@ -13,9 +19,12 @@ import { BaseModule } from '../../base.module';
     UploaderButtonComponent,
     UploaderManagerComponent,
     UploaderManagerItemComponent,
+    UploaderViewerComponent,
   ],
 
-  imports: [CommonModule, FileSizeModule, BaseModule],
+  providers: [ModalService, ViewerService],
+  imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule, MemoModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
+  entryComponents: [UploaderViewerComponent],
 })
 export class UploaderModule {}
