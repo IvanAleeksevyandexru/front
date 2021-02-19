@@ -100,7 +100,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
-    map((file: File) => new FileItem(FileItemStatus.preparation, file)), // Формируем FileItem
+    map(
+      (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
+    ), // Формируем FileItem
     concatMap(
       (file: FileItem) =>
         this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes), // Валидируем файл
@@ -448,7 +450,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   loadList(): Observable<FileItem> {
     return this.getListStream(this.objectId).pipe(
-      map((file) => new FileItem(FileItemStatus.uploaded, null, file)),
+      map(
+        (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
+      ),
       mergeMap((file: FileItem) => this.loadImage(file)),
       tap((file: FileItem) => this.store.add(file)),
       tap((file: FileItem) => this.incrementLimits(file)),

@@ -11,6 +11,8 @@ import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 
+import 'hammerjs'; // HAMMER TIME
+
 /**
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
  */
