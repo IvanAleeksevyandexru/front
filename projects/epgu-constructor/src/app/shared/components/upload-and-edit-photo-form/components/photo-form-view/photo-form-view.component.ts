@@ -24,7 +24,7 @@ export class PhotoFormViewComponent implements OnInit {
   mobileIcon: string;
 
   ngOnInit(): void {
-    this.desktopIcon = `${this.staticDomainAssetsPath}/assets/img/photo-upload-area-desktop.svg`;
-    this.mobileIcon = `${this.staticDomainAssetsPath}/assets/img/photo-upload-area-mobile.svg`;
+    this.desktopIcon = `${this.staticDomainAssetsPath}/assets/icons/svg/photo-upload-area-desktop.svg`;
+    this.mobileIcon = `${this.staticDomainAssetsPath}/assets/icons/svg/photo-upload-area-mobile.svg`;
   }
 }

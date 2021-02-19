@@ -19,6 +19,7 @@ export class ConfigServiceStub implements Config {
   _invitationUrl = '';
   _yandexMapsApiKey = '';
   _staticDomainAssetsPath = '';
+  _staticDomainContentPath = '';
   _mocks = [];
   _mockUrl = '';
   _timeSlots = {};
@@ -134,6 +135,10 @@ export class ConfigServiceStub implements Config {
     return this._staticDomainAssetsPath;
   }
 
+  get staticDomainContentPath(): string {
+    return this._staticDomainContentPath;
+  }
+
   get mocks(): MockApi[] {
     return this._mocks;
   }
@@ -178,6 +183,7 @@ export class ConfigServiceStub implements Config {
     this._invitationUrl = config.invitationUrl;
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = '';
+    this._staticDomainContentPath = '';
     this._mocks = config.mocks;
     this._mockUrl = config.mockUrl;
     this._timeSlots = config.timeSlots;
