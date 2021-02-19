@@ -313,13 +313,14 @@
       <epgu-constructor-doc-input
         *ngSwitchCase="componentType.DocInput"
         [data]="componentData"
-        [suggest]="(suggestions$ | async)[componentData.value?.id]"
+        [suggestions]="(suggestions$ | async)[componentData.value?.id]"
         (selectSuggest)="suggestHandle($event)"
       >
       </epgu-constructor-doc-input>
+
       <epgu-constructor-field-list
-        [data]="$any(componentData.get('value'))"
         *ngSwitchCase="componentType.FieldList"
+        [data]="$any(componentData.get('value'))"
       >
       </epgu-constructor-field-list>
     </ng-container>
