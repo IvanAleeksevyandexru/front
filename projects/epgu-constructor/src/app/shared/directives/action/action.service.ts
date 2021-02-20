@@ -26,7 +26,6 @@ import { AutocompleteApiService } from '../../../core/services/autocomplete/auto
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
-import { AttachUploadedFilesModalComponent } from '../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 const navActionToNavMethodMap = {
@@ -89,9 +88,6 @@ export class ActionService {
         break;
       case ActionType.deleteSuggest:
         this.deleteSuggestAction(action, targetElement);
-        break;
-      case ActionType.attachUploadedFiles:
-        this.attachUploadedFiles(action);
         break;
       case ActionType.dropdownListModal:
         this.openDropdownListModal(action);
@@ -245,15 +241,6 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
-  }
-
-  private attachUploadedFiles(action: ComponentActionDto): void {
-    const { value } = action;
-    this.modalService.openModal(AttachUploadedFilesModalComponent, {
-      text: value,
-      showCloseButton: false,
-      showCrossButton: true,
-    });
   }
 
   private openConfirmationModal(action: ComponentActionDto, componentId: string): void {

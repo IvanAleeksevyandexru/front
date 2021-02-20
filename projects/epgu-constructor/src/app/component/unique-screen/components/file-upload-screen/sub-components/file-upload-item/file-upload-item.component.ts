@@ -37,8 +37,8 @@ import {
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
-import { ATTACH_UPLOADED_FILES } from '../../../../../../shared/constants/actions';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { AttachUploadedFilesModalComponent } from '../../../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 
 interface OverLimitsItem {
   count: number;
@@ -117,10 +117,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
 
   store = new FileItemStore();
-  attachUploadedFiles = ATTACH_UPLOADED_FILES;
   componentId = this.screenService.component?.id || null;
   componentValues: string[] = [];
-  suggestionFiles: UploadedFile[] = [];
 
   files = this.store.files;
   files$ = this.files.pipe(
@@ -219,11 +217,25 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private screenService: ScreenService,
   ) {}
 
+  ngOnInit(): void {
+    this.maxFileNumber = -1;
+    this.subscriptions.add(this.loadList().subscribe());
+    this.subscriptions.add(this.files$.subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   suggest({ isAdd, file }): void {
     if (isAdd) {
       this.store.add(file.setAttached(isAdd));
     } else {
-      this.store.remove(file);
+      file.setAttached(false);
+      const storedFile = this.files
+        .getValue()
+        .find((sFile) => sFile.item.mnemonic === file.item.mnemonic);
+      this.store.remove(storedFile);
     }
   }
 
@@ -462,12 +474,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(): void {
-    this.maxFileNumber = -1;
-    this.subscriptions.add(this.loadList().subscribe());
-    this.subscriptions.add(this.files$.subscribe());
-  }
-
   polyfillFile(file: File): File {
     const { type, lastModified, name } = file;
 
@@ -557,7 +563,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+  attachUploadedFiles(): void {
+    this.modal.openModal(AttachUploadedFilesModalComponent, {
+      text: 'attachUploadedFiles',
+      showCloseButton: false,
+      showCrossButton: true,
+      filesList: this.files.getValue(),
+    });
   }
 }

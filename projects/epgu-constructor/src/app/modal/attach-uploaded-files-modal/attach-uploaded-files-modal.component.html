@@ -13,6 +13,7 @@
             <button
               (click)="previewFile(file)"
               class="button"
+              [ngClass]="{'attached': file.attached}"
             >
               <img
                 *ngIf="file.isImage"
