@@ -228,12 +228,12 @@ export class ValueLoaderService {
       const fields = attrs.fields as DocInputField[];
       const haveDateRef = ({ attrs }: DocInputField): boolean => Boolean(attrs?.minDateRef || attrs?.minDateRef);
 
-      Object.values(fields).filter((field) => haveDateRef(field)).map(({ attrs }) => {
+      Object.values(fields).filter((field) => haveDateRef(field)).forEach(({ attrs }) => {
         this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
       });
+    }else {
+      this.setAttrsDateRef(component.attrs, cachedAnswers);
     }
-
-    this.setAttrsDateRef(component.attrs, cachedAnswers);
     return component;
   }
 
