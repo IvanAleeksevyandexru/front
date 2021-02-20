@@ -12,7 +12,7 @@ import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.s
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
 
-describe('AttachUploadedFilesModalComponent', () => {
+xdescribe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
   let fixture: ComponentFixture<AttachUploadedFilesModalComponent>;
 
