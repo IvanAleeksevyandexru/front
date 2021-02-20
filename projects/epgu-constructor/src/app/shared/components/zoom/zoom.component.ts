@@ -53,7 +53,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
 
   mousewheel$ = fromEvent<WheelEvent>(this.document, 'mousewheel').pipe(
     filter((e) => this.targetFilter(e)),
-    tap((e) => this.zoomHandler(e)),
+    tap((e: WheelEvent) => this.zoomHandler(e)),
   );
 
   mousedown$ = fromEvent<MouseEvent>(this.document, 'mousedown').pipe(
@@ -83,6 +83,15 @@ export class ZoomComponent implements OnInit, OnDestroy {
     if (this.el?.nativeElement) {
       this.checkAvailable(this.el.nativeElement);
     }
+  }
+
+  getZoom(): number {
+    return this.zoom$$.getValue();
+  }
+
+  loadImage(): void {
+    this.updateZoomLimits();
+    this.zoom$$.next(this.getZoom());
   }
 
   updateZoomLimits(): void {

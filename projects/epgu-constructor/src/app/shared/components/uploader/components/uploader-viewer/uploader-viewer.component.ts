@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -10,7 +11,7 @@ import {
 
 import { Observable } from 'rxjs';
 
-import { filter, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
@@ -24,7 +25,7 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
   styleUrls: ['./uploader-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderViewerComponent extends ModalBaseComponent {
+export class UploaderViewerComponent extends ModalBaseComponent implements AfterViewInit {
   @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
 
@@ -45,6 +46,7 @@ export class UploaderViewerComponent extends ModalBaseComponent {
   isMoveZoom = false;
   size: number;
   position: number;
+  zoom: Observable<{ zoom: number; max: number }>;
   constructor(public injector: Injector, private viewerService: ViewerService) {
     super(injector);
   }
@@ -64,6 +66,7 @@ export class UploaderViewerComponent extends ModalBaseComponent {
     this.size = size;
     this.position = position;
     this.item = file;
+    this.zoomComponent?.resetZoom();
     this.imageURL = file.isImage ? file.urlToFile() : null;
   }
 
@@ -95,5 +98,11 @@ export class UploaderViewerComponent extends ModalBaseComponent {
 
   suggestAction(isAdd: boolean): void {
     this.suggest.emit({ file: this.item, isAdd });
+  }
+
+  ngAfterViewInit(): void {
+    this.zoom = this.zoomComponent?.zoom$$.pipe(
+      map((zoom: number) => ({ zoom, max: this.zoomComponent.maxZoom })),
+    );
   }
 }

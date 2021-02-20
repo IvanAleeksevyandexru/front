@@ -211,6 +211,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private prepareService: PrepareService,
   ) {}
 
+  suggest({ isAdd, file }): void {
+    if (isAdd) {
+      this.store.add(file.setAttached(isAdd));
+    } else {
+      this.store.remove(file);
+    }
+  }
+
   resetLimits(): void {
     const limits = { ...this.overLimits.getValue() };
     limits.totalAmount.count = 0;

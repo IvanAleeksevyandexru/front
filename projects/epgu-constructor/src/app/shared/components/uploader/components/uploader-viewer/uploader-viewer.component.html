@@ -17,11 +17,19 @@
       <button (click)="nextAction()">Вперед</button>
       <button (click)="prevAction()">Назад</button>
       <button (click)="deleteAction()">Удалить</button>
-      <button (click)="zoomIn()">Приблизить</button>
-      <button (click)="zoomOut()">Отдалить</button>
+      <ng-container *ngIf="zoom | async as status">
+        <button *ngIf="status.max !== 1 && status.zoom < status.max" (click)="zoomIn()">
+          Приблизить
+        </button>
+        <button *ngIf="status.max !== 1 && status.zoom >= status.max" (click)="zoomOut()">
+          Отдалить
+        </button>
+      </ng-container>
       <button (click)="downloadAction()">Скачать</button>
-      <button *ngIf="type === filesType.suggest" (click)="suggestAction(true)">+Прикрепить</button>
-      <button *ngIf="type === filesType.suggest" (click)="suggestAction(false)">-Открепить</button>
+      <button *ngIf="type === filesType.suggest && !item.attached" (click)="suggestAction(true)">
+        +Прикрепить
+      </button>
+      <button *ngIf="item.attached" (click)="suggestAction(false)">-Открепить</button>
       {{ position }}/{{ size }}
     </ng-container>
   </div>

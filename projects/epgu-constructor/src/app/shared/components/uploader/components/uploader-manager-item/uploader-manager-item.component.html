@@ -58,11 +58,18 @@
 
       <div class="uploader-manager-item__action">
         <button
-          *ngIf="status === fileStatus.error || status === fileStatus.uploaded"
+          *ngIf="
+            !fileItem?.attached && (status === fileStatus.error || status === fileStatus.uploaded)
+          "
           (click)="delete.emit(fileItem)"
           class="uploader-manager-item__button remove_button {{
             status === fileStatus.error ? 'uploader-manager-item__button_error' : ''
           }}"
+        ></button>
+        <button
+          *ngIf="fileItem?.attached"
+          (click)="detach()"
+          class="uploader-manager-item__button detach_button"
         ></button>
         <button
           class="uploader-manager-item__button"

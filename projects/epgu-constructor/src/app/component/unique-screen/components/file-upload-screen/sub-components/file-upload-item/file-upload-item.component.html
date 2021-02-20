@@ -19,6 +19,7 @@
     (download)="addDownload($event)"
     (cancel)="cancelOperation($event.type, $event.item)"
     (repeat)="repeat($event)"
+    (suggest)="suggest($event)"
     [list]="files | async"
   ></epgu-constructor-uploader-manager>
   <ng-container *ngIf="overLimits | async as limits">
