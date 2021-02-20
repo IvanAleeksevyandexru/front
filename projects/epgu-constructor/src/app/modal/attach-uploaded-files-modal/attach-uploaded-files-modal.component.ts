@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
   FileItem,
@@ -67,7 +67,10 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   public previewFile(file: FileItem): void {
-    this.viewerService.open(FilesCollection.suggest, file.id, this.suggestionsFiles).subscribe();
+    this.viewerService
+      .open(FilesCollection.suggest, file.id, this.suggestionsFiles)
+      .pipe(take(1))
+      .subscribe();
   }
 
   public handleImgError(event: Event): void {
@@ -76,10 +79,18 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
-    return suggestionsUploadedFiles.map(
-      (file: UploadedFile) =>
-        new FileItem(FileItemStatus.uploaded, `${this.fileUploadApiUrl}/`, null, file),
-    );
+    return suggestionsUploadedFiles.map((file: UploadedFile) => {
+      const resultFile = new FileItem(
+        FileItemStatus.uploaded,
+        `${this.fileUploadApiUrl}/`,
+        null,
+        file,
+      );
+      if (this.filesList.some((fileItem) => fileItem.item.mnemonic === resultFile.item.mnemonic)) {
+        resultFile.setAttached(true);
+      }
+      return resultFile;
+    });
   }
 
   private getSuggestionsFilesGroupedByDate(suggestionsFiles: FileItem[]): [string, FileItem[]][] {

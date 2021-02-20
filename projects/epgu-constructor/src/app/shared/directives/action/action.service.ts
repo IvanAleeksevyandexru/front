@@ -90,9 +90,6 @@ export class ActionService {
       case ActionType.deleteSuggest:
         this.deleteSuggestAction(action, targetElement);
         break;
-      case ActionType.attachUploadedFiles:
-        this.attachUploadedFiles(action);
-        break;
       case ActionType.dropdownListModal:
         this.openDropdownListModal(action);
         break;
@@ -245,15 +242,6 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
-  }
-
-  private attachUploadedFiles(action: ComponentActionDto): void {
-    const { value } = action;
-    this.modalService.openModal(AttachUploadedFilesModalComponent, {
-      text: value,
-      showCloseButton: false,
-      showCrossButton: true,
-    });
   }
 
   private openConfirmationModal(action: ComponentActionDto, componentId: string): void {
