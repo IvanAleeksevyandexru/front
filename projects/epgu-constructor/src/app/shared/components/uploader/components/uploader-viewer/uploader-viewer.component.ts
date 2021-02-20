@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Injector,
   Input,
+  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -25,7 +26,7 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
   styleUrls: ['./uploader-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderViewerComponent extends ModalBaseComponent implements AfterViewInit {
+export class UploaderViewerComponent extends ModalBaseComponent implements AfterViewInit, OnInit {
   @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
 
@@ -35,10 +36,7 @@ export class UploaderViewerComponent extends ModalBaseComponent implements After
   @Output() next = new EventEmitter<FilesCollection>();
   @Output() prev = new EventEmitter<FilesCollection>();
 
-  selectedItem: Observable<ViewerInfo> = this.viewerService.getSelectedFileByType().pipe(
-    filter((info) => !!info),
-    tap((info) => this.init(info)),
-  );
+  selectedItem: Observable<ViewerInfo>;
 
   item: FileItem;
   imageURL: string;
@@ -103,6 +101,13 @@ export class UploaderViewerComponent extends ModalBaseComponent implements After
   ngAfterViewInit(): void {
     this.zoom = this.zoomComponent?.zoom$$.pipe(
       map((zoom: number) => ({ zoom, max: this.zoomComponent.maxZoom })),
+    );
+  }
+
+  ngOnInit(): void {
+    this.selectedItem = this.viewerService.getSelectedFileByType(this.type).pipe(
+      filter((info) => !!info),
+      tap((info) => this.init(info)),
     );
   }
 }

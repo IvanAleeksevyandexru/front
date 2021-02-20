@@ -34,12 +34,10 @@ export class ViewerService {
     this.files,
   ]).pipe(map(this.fileSelector.bind(this)));
 
-  type: FilesCollection;
-
   constructor(private modal: ModalService) {}
 
-  getSelectedFileByType(): Observable<ViewerInfo | null> {
-    return this.type === FilesCollection.suggest ? this.selectedSuggest : this.selectedFile;
+  getSelectedFileByType(type: FilesCollection): Observable<ViewerInfo | null> {
+    return type === FilesCollection.suggest ? this.selectedSuggest : this.selectedFile;
   }
 
   fileSelector([index, collection]: [number, FileItem[]]): ViewerInfo | null {
@@ -58,36 +56,36 @@ export class ViewerService {
     this.description.next(text);
   }
 
-  updateIdbyIndex(): void {
-    const collection = this.getCollectionByType().getValue();
-    const selectedIndex = this.getSelectedIndexByType().getValue();
-    if (this.type === FilesCollection.suggest) {
+  updateIdbyIndex(type: FilesCollection): void {
+    const collection = this.getCollectionByType(type).getValue();
+    const selectedIndex = this.getSelectedIndexByType(type).getValue();
+    if (type === FilesCollection.suggest) {
       this.selectedSuggestId = collection[selectedIndex].id;
     } else {
       this.selectedFilesId = collection[selectedIndex].id;
     }
   }
 
-  prev(): void {
-    const selectedIndexSubject = this.getSelectedIndexByType();
-    const collection = this.getCollectionByType().getValue();
+  prev(type: FilesCollection): void {
+    const selectedIndexSubject = this.getSelectedIndexByType(type);
+    const collection = this.getCollectionByType(type).getValue();
     const selectedIndex = selectedIndexSubject.getValue();
     selectedIndexSubject.next((selectedIndex === 0 ? collection.length : selectedIndex) - 1);
-    this.updateIdbyIndex();
+    this.updateIdbyIndex(type);
   }
 
-  next(): void {
-    const selectedIndexSubject = this.getSelectedIndexByType();
-    const collection = this.getCollectionByType().getValue();
+  next(type: FilesCollection): void {
+    const selectedIndexSubject = this.getSelectedIndexByType(type);
+    const collection = this.getCollectionByType(type).getValue();
     const selectedIndex = selectedIndexSubject.getValue();
     selectedIndexSubject.next(selectedIndex === collection.length - 1 ? 0 : selectedIndex + 1);
-    this.updateIdbyIndex();
+    this.updateIdbyIndex(type);
   }
 
-  changeSelectedIndexById(id: string): void {
-    const index = this.getSelectedIndexById(id);
-    const selectedIndex = this.getSelectedIndexByType();
-    if (this.type === FilesCollection.suggest) {
+  changeSelectedIndexById(id: string, type: FilesCollection): void {
+    const index = this.getSelectedIndexById(id, type);
+    const selectedIndex = this.getSelectedIndexByType(type);
+    if (type === FilesCollection.suggest) {
       this.selectedSuggestId = id;
     } else {
       this.selectedFilesId = id;
@@ -95,60 +93,57 @@ export class ViewerService {
     selectedIndex.next(index !== -1 ? index : 0);
   }
 
-  getSelectedIndexByType(): BehaviorSubject<number> {
-    return this.type === FilesCollection.suggest
-      ? this.selectedSuggestsIndex
-      : this.selectedFilesIndex;
+  getSelectedIndexByType(type: FilesCollection): BehaviorSubject<number> {
+    return type === FilesCollection.suggest ? this.selectedSuggestsIndex : this.selectedFilesIndex;
   }
 
-  getCollectionByType(): BehaviorSubject<FileItem[]> {
-    return this.type === FilesCollection.suggest ? this.suggests : this.files;
+  getCollectionByType(type: FilesCollection): BehaviorSubject<FileItem[]> {
+    return type === FilesCollection.suggest ? this.suggests : this.files;
   }
 
-  getSelectedIndexById(id: string): number {
-    const collection = this.getCollectionByType().getValue();
+  getSelectedIndexById(id: string, type: FilesCollection): number {
+    const collection = this.getCollectionByType(type).getValue();
     return collection.findIndex((item) => item.id === id);
   }
 
   update(type: FilesCollection, items: FileItem[]): void {
-    this.type = type;
-    const collection = this.getCollectionByType();
+    const collection = this.getCollectionByType(type);
     collection.next([...items]);
-    this.updateIndexByType();
+    this.updateIndexByType(type);
   }
 
-  updateIndexByType(): void {
-    const id =
-      this.type === FilesCollection.suggest ? this.selectedSuggestId : this.selectedFilesId;
-    this.changeSelectedIndexById(id);
+  updateIndexByType(type: FilesCollection): void {
+    const id = type === FilesCollection.suggest ? this.selectedSuggestId : this.selectedFilesId;
+    this.changeSelectedIndexById(id, type);
   }
 
   open(type: FilesCollection, id?: string, collection?: FileItem[]): Observable<void> {
-    this.type = type;
     if (collection) {
       this.update(type, collection);
     }
     if (id) {
-      this.changeSelectedIndexById(id);
+      this.changeSelectedIndexById(id, type);
     }
     return this.isOpen.getValue()
       ? of(null)
       : of({
           type,
-          item: this.getSelectedFileByType(),
         }).pipe(
           tap(() => this.isOpen.next(true)),
           map((params) => this.modal.createModal(UploaderViewerComponent, params)),
           map((modal) => this.addDetachToModal(modal)),
-          mergeMap((modal) => this.observeOutputs(modal)),
+          mergeMap((modal) => this.observeOutputs(modal, type)),
           finalize(() => this.isOpen.next(false)),
           takeUntil(this.result),
         );
   }
 
-  observeOutputs<T extends UploaderViewerComponent>(modal: ComponentRef<T>): Observable<void> {
+  observeOutputs<T extends UploaderViewerComponent>(
+    modal: ComponentRef<T>,
+    type: FilesCollection,
+  ): Observable<void> {
     return combineLatest([
-      this.getCollectionByType().pipe(
+      this.getCollectionByType(type).pipe(
         tap((collection) => {
           if (collection.length === 0) {
             modal.instance.closeModal();
@@ -173,12 +168,12 @@ export class ViewerService {
       modal.instance.prev.pipe(
         startWith(null),
         filter((prevEvent) => !!prevEvent),
-        tap(() => this.prev()),
+        tap((type: FilesCollection) => this.prev(type)),
       ),
       modal.instance.next.pipe(
         startWith(null),
         filter((nextEvent) => !!nextEvent),
-        tap(() => this.next()),
+        tap((type: FilesCollection) => this.next(type)),
       ),
     ]).pipe(map(() => undefined));
   }
