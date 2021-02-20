@@ -1,15 +1,14 @@
 @import "../core/palettes";
-table {
+@import "../core/typography";
+.epgu-constructor-table {
   width: 100%;
   margin-bottom: 24px;
   thead {
     color: $color-text-helper;
-    font-size: 14px;
-    line-height: 20px;
+    @include typ-plain-small();
   }
   tbody {
-    font-size: 16px;
-    line-height: 24px;
+    @include typ-plain-text();
   }
   th, td {
     vertical-align: top;
@@ -28,7 +27,7 @@ table {
   }
 }
 
-table.table-bordered {
+.epgu-constructor-table.table-bordered {
   border: 2px solid $color-gosblue;
   border-collapse: collapse;
   th, td {
