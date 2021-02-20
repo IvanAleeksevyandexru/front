@@ -14,12 +14,19 @@ describe('FilterPipe', () => {
   });
 
   it('should transform by tags', () => {
-    const items = [{ label: 'ааа', tags: ['учитель', 'педагог'] }, { label: 'бб', tags: ['учитель', 'педагог'] }] as any;
-    expect(pipe.transform(items, 'учитель')).toEqual(items);
+    const items = [{ label: 'ааа', tags: ['учитель'] }, { label: 'бб', tags: [ 'педагог'] }] as any;
+    expect(pipe.transform(items, 'учитель')).toEqual([items[0]]);
+  });
+
+  it('should transform by tags only if searchText > 3', () => {
+    const items = [{ label: 'ааа', tags: ['учитель'] }, { label: 'бб', tags: ['учитель', 'педагог'] }] as any;
+    expect(pipe.transform(items, 'уч')).toEqual([]);
+    expect(pipe.transform(items, 'учит')).toEqual(items);
   });
 
   it('should return empty array', () => {
     const items = [{ label: 'ааа', tags: ['учитель', 'педагог'] }, { label: 'бб', tags: ['учитель', 'педагог'] }] as any;
     expect(pipe.transform(items, 'учить')).toEqual([]);
+    expect(pipe.transform(items, '123')).toEqual([]);
   });
 });
