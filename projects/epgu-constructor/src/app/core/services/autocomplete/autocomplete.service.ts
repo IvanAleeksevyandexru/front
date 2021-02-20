@@ -182,6 +182,8 @@ export class AutocompleteService {
     const result = component &&  this.screenService.suggestions[component.id]?.list.find(item => {
       if (typeof id === 'number') {
         return item.id === id;
+      } else if (item.originalItem.includes(value)) {
+        return true;
       } else {
         return item.value === value;
       }
@@ -191,13 +193,16 @@ export class AutocompleteService {
   }
 
   private findComponent(mnemonic: string, componentsGroupIndex?: number): ComponentDto {
+    /* Иногда сюда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
+    вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput */
+    const [componentMnemonic] = mnemonic.split('.');
     if (this.repeatableComponents.length) {
       return this.repeatableComponents[componentsGroupIndex].find((component) => {
-        return this.componentsSuggestionsMap[mnemonic] === component.id;
+        return this.componentsSuggestionsMap[componentMnemonic] === component.id;
       });
     } else {
       return this.screenService.display?.components?.find((component) => {
-        return this.componentsSuggestionsMap[mnemonic] === component.id;
+        return this.componentsSuggestionsMap[componentMnemonic] === component.id;
       });
     }
   }
@@ -315,13 +320,26 @@ export class AutocompleteService {
 
   private getComponentsSuggestionsFieldsIds(display: DisplayDto): string[] {
     const getSuggestionsIds = (components: ComponentDto[]): string[] => {
-      return components
+      let fieldSuggestionIdsSet: Set<string> = new Set();
+      const result = components
         .filter((component) => component.suggestionId)
         .map((component) => {
           const { suggestionId } = component;
+          const { fields } = component.attrs;
           this.componentsSuggestionsMap[suggestionId] = component.id;
+          if (component.type === CustomScreenComponentTypes.DocInput) {
+            Object.keys(fields).forEach(fieldName => {
+              const field = fields[fieldName];
+              const fieldSuggestionId = field?.attrs.suggestionId;
+              if (fieldSuggestionId) {
+                this.componentsSuggestionsMap[fieldSuggestionId] = `${component.id}.${fieldName}`;
+                fieldSuggestionIdsSet.add(fieldSuggestionId);
+              }
+            });
+          }
           return suggestionId;
         });
+      return [...result, ...Array.from(fieldSuggestionIdsSet)];
     };
 
     if (this.repeatableComponents.length) {

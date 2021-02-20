@@ -3,14 +3,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
+  OnChanges,
   OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../../../screen/screen.service';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ComponentListFormService } from '../services/component-list-form/component-list-form.service';
 import {
@@ -28,8 +37,16 @@ import {
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class DocInputComponent implements OnInit, AfterViewInit {
+export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() data: AbstractControl | DocInputControl;
+  @Input() suggestions: ISuggestionItem;
+
+  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
+    ISuggestionItem | ISuggestionItemList
+  >();
+
+  suggestions$ = this.screenService.suggestions$;
+  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;
   fields: { [fieldName: string]: DocInputField };
   fieldsNames = [
@@ -51,6 +68,7 @@ export class DocInputComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
+    private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +83,34 @@ export class DocInputComponent implements OnInit, AfterViewInit {
       this.handleServerErrors();
       this.changeDetectionRef.markForCheck();
     }); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.suggestions.currentValue) {
+      this.prepareClassifiedSuggestionItems(this.suggestions);
+    }
+  }
+
+  prepareClassifiedSuggestionItems(suggestions): void {
+    const { mnemonic } = suggestions;
+    const parsedOriginalItem = JSON.parse(suggestions.list[0].originalItem);
+    const { id } = suggestions.list[0];
+    this.classifiedSuggestionItems = Object.keys(parsedOriginalItem).reduce((acc, fieldName) => {
+      const suggestItem = {
+        [fieldName]: {
+          mnemonic: fieldName,
+          list: [
+            {
+              value: parsedOriginalItem[fieldName],
+              mnemonic: `${mnemonic}.${fieldName}`,
+              id,
+            },
+          ],
+        },
+      };
+
+      return { ...acc, ...suggestItem };
+    }, {});
   }
 
   /**

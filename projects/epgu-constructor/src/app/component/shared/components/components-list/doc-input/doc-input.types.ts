@@ -31,6 +31,7 @@ interface DocInputField extends CustomComponent {
     accuracy?: string;
     fstuc?: TextTransform;
     hidden?: boolean;
+    suggestionId?: string;
   };
 }
 
