@@ -118,7 +118,10 @@ export class ComponentListToolsService {
     /* TODO: подумать над реалзиацией сервиса, директивы или отдельного модуля,
       который бы отвечал за работу с предазгруженными данными, в том числе с механизмом рефов.
       А в идеале передать всю эту историю на бэк */
-    if (reference.relation === CustomComponentRefRelation.autofillFromDictionary && initInitialValues) {
+    if (
+      reference.relation === CustomComponentRefRelation.autofillFromDictionary &&
+      initInitialValues
+    ) {
       const attributeName = reference.val as string;
       const componentId = reference.relatedRel;
       const dictionaryAttributeValue = this.getDictionaryAttributeValue(
@@ -132,11 +135,13 @@ export class ComponentListToolsService {
       if (dictionaryAttributeValue === undefined) {
         dependentControl.get('value').patchValue('');
       } else {
-        dependentControl.get('value').patchValue(
-          dependentControl.value.value !== ''
-            ? dependentControl.value.value
-            : dictionaryAttributeValue
-        );
+        dependentControl
+          .get('value')
+          .patchValue(
+            dependentControl.value.value !== ''
+              ? dependentControl.value.value
+              : dictionaryAttributeValue,
+          );
       }
 
       dependentControl.markAsUntouched();
@@ -159,7 +164,7 @@ export class ComponentListToolsService {
     shownElements: CustomListStatusElements,
     form: FormArray,
     dictionaries: CustomListDictionaries,
-    initInitialValues = false
+    initInitialValues = false,
   ): CustomListStatusElements {
     const isComponentDependent = (arr = []): boolean =>
       arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
@@ -168,23 +173,28 @@ export class ComponentListToolsService {
       components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
 
     getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
-      const reference = dependentComponent.attrs?.ref?.find((el) => el.relatedRel === component.id);
+      dependentComponent.attrs?.ref
+        ?.filter((el) => el.relatedRel === component.id)
+        .forEach((reference) => {
+          const value = reference.valueFromCache
+            ? this.screenService.cachedAnswers[reference.valueFromCache].value
+            : component.value;
+
+          shownElements = this.updateStatusElements(
+            dependentComponent,
+            reference,
+            value as { [key: string]: string },
+            components,
+            form,
+            shownElements,
+            dictionaries,
+            initInitialValues,
+          );
+        });
+
       const referenceDate = dependentComponent.attrs?.ref?.find(
         (el) => el.relatedDate === component.id,
       );
-
-      if (reference) {
-        shownElements = this.updateStatusElements(
-          dependentComponent,
-          reference,
-          component.value as { [key: string]: string },
-          components,
-          form,
-          shownElements,
-          dictionaries,
-          initInitialValues
-        );
-      }
 
       if (referenceDate) {
         this.updateLimitDate(form, component as CustomComponent, dependentComponent);

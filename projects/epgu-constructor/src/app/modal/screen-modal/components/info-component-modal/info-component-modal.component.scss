@@ -5,7 +5,7 @@
   display: block;
 }
 
-@include rubles('.info__text', '../../../../../../src/assets/img/ruble.svg');
+@include rubles('.info__text', '../../../../../../src/assets/icons/svg/ruble.svg');
 
 .info {
   display: flex;

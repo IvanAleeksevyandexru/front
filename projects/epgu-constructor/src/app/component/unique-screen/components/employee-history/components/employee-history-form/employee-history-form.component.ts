@@ -9,7 +9,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
@@ -61,6 +61,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
     combineLatest([
       this.monthsService.isMonthComplete$,
       this.employeeFormService.employeeHistoryForm.statusChanges.pipe(
+        startWith(this.employeeFormService.employeeHistoryForm.status),
         map((status) => status === 'VALID'),
       ),
     ])

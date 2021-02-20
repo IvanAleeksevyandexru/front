@@ -15,15 +15,8 @@ export interface CarInfoErrorsDto {
 }
 
 export interface ErrorTemplate {
-  display: ErrorDisplayDto;
-  actions: ComponentActionDto[];
-}
-
-export interface ErrorDisplayDto {
-  imageClass: string;
-  imageSrc: string;
-  title: string;
   label: string;
+  actions: ComponentActionDto[];
 }
 
 export interface CarList {

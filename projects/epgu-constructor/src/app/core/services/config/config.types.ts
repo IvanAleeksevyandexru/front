@@ -31,6 +31,7 @@ export type TimeSlotsApi = {
  * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
  * @property {string}staticDomainAssetsPath - путь до статики
+ * @property {string}staticDomainContentPath - путь до контента
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
@@ -54,6 +55,7 @@ export interface Config {
   yandexMapsApiKey: string;
   invitationUrl: string;
   staticDomainAssetsPath: string;
+  staticDomainContentPath: string;
   mocks?: MockApi[];
   mockUrl?: string;
   timeSlots?: TimeSlotsApi;

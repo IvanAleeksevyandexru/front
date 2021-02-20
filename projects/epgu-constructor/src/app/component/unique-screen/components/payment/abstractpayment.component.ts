@@ -146,9 +146,16 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   protected loadPaymentInfo(): void {
     this.orderId = this.screenService.orderId;
     const value = this.getDataFromValue<PaymentInfoValue>();
-
     if (value) {
-      const { billNumber, billId, amount, billName, billDate, payCode } = value;
+      const {
+        billNumber,
+        billId,
+        amount,
+        billName,
+        billDate,
+        payCode,
+        originalAmount = '',
+      } = value;
       this.uin = billNumber;
       this.sum = amount;
       this.paymentPurpose = billName;
@@ -158,6 +165,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       this.inLoading = true;
       this.isShown = true;
       this.status = PaymentStatus.SUCCESS;
+      this.sumWithoutDiscount = originalAmount;
 
       // Проверим оплачено ли ранее
       this.paymentService

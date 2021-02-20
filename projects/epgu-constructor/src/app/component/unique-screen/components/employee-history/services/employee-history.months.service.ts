@@ -10,7 +10,7 @@ import {
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import {
   DATE_MONTH_YEAR_FORMAT,
-  DATE_STRING_MMMM_YYYY_FORMAT,
+  DATE_STRING_LLLL_YYYY_FORMAT,
   DATE_STRING_SLASH_FORMAT,
 } from '../../../../../shared/constants/dates';
 
@@ -58,7 +58,7 @@ export class EmployeeHistoryMonthsService {
 
     const getPeriod = (type: 'min' | 'max', convertedDates: Array<Date>): string => {
       const date = this.datesToolsService[type](convertedDates);
-      return this.datesToolsService.format(date, DATE_STRING_MMMM_YYYY_FORMAT);
+      return this.datesToolsService.format(date, DATE_STRING_LLLL_YYYY_FORMAT);
     };
 
     return periods

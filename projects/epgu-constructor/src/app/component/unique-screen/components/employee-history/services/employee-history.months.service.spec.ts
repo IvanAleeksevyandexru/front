@@ -45,8 +45,8 @@ describe('EmployeeHistoryMonthsService', () => {
     it('should be return EmployeeHistoryUncheckedPeriod array', () => {
       const expectedValue = [
         {
-          from: 'января 2020',
-          to: 'января 2020',
+          from: 'январь 2020',
+          to: 'январь 2020',
         },
       ];
       const availableMonths: EmployeeHistoryAvailableDates[] = [

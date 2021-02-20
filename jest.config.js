@@ -6,7 +6,7 @@ module.exports = {
   moduleDirectories: [
     'node_modules'
   ],
-  setupFiles: ['<rootDir>/setup-jest.ts'],
+  setupFiles: ['<rootDir>/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest-env.ts'],
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',

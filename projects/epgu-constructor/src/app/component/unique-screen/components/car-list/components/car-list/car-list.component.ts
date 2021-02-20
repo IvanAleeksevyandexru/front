@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ListItem } from 'epgu-lib';
-import { ErrorDisplayDto, VehicleOwnerInfo } from '../../models/car-list.interface';
+import { VehicleOwnerInfo } from '../../models/car-list.interface';
 import { ClarificationsDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
@@ -19,7 +19,7 @@ export class CarListComponent {
   @Input() formatter: (item: ListItem) => string;
   @Input() label: string;
   @Input() carFixedItems: Partial<ListItem>[];
-  @Input() errorDisplayDto: ErrorDisplayDto;
+  @Input() errorTemplateLabel: string;
   @Input() control: FormControl;
 
   @Output() formChangeEvent = new EventEmitter<VehicleOwnerInfo>();

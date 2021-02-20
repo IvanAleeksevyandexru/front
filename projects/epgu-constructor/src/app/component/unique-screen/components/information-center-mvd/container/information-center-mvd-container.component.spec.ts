@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -15,10 +16,9 @@ import { InformationCenterMvdI } from '../interface/information-center-mvd.inter
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { InformationCenterCardComponent } from '../components/information-center-card/information-center-card.component';
 import { InformationCenterFormComponent } from '../components/information-center-form/information-center-form.component';
-import { ScreenContainerModule } from '../../../../../shared/components/screen-container/screen-container.module';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -63,7 +63,7 @@ describe('InformationCenterMvdContainerComponent', () => {
         MockComponent(InformationCenterFormComponent),
       ],
       imports: [
-        MockModule(ScreenContainerModule),
+        MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(BaseModule),
         MockModule(BaseComponentsModule),
       ],

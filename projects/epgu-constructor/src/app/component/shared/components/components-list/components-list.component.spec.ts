@@ -36,6 +36,7 @@ import { ValueLoaderService } from '../../../../shared/services/value-loader/val
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -48,6 +49,7 @@ describe('ComponentsListComponent', () => {
         HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
+        MemoModule,
       ],
       declarations: [
         ComponentsListComponent,

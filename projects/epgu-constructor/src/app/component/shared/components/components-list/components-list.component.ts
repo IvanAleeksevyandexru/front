@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -35,6 +36,7 @@ import {
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository/component-list-repository.service';
 import { DateRangeService } from './services/date-range/date-range.service';
+import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,
@@ -48,7 +50,7 @@ const halfWidthItemTypes = [
   providers: [ComponentListFormService, ComponentListRepositoryService, UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class ComponentsListComponent implements OnInit, OnChanges {
+export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * Если компонент подключается в цикле (например в RepeatableFieldsComponent), то значение componentsGroupIndex будет
    * равным индексу компонента в массиве. В остальных случаях componentsGroupIndex будет undefined
@@ -77,6 +79,7 @@ export class ComponentsListComponent implements OnInit, OnChanges {
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     public screenService: ScreenService,
+    private httpCancelService: HttpCancelService,
   ) {
     this.changes = this.formService.changes;
   }
@@ -101,6 +104,10 @@ export class ComponentsListComponent implements OnInit, OnChanges {
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.httpCancelService.cancelPendingRequests();
   }
 
   public getDictKeyByComp(component: CustomComponent): string {

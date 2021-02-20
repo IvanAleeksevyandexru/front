@@ -2,6 +2,7 @@
   class="req-modal"
   title="Требования к фото"
   [buttons]="buttons"
+  [text]="modalName"
   [showCrossButton]="true"
 >
   <div *ngIf="setting.warning" class="req-modal__warning">
@@ -15,7 +16,7 @@
         <div class="req-item__photo-item" *ngFor="let photo of requirement.examplePhotos">
           <img
             class="req-item__photo"
-            src="{{ config.staticDomainAssetsPath }}/assets/img/screens/upload-and-edit-photo/{{
+            src="{{config.staticDomainContentPath}}/catalog/new/photo/{{
               requirement.type
             }}-{{ photo.type }}.png"
             alt=""

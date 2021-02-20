@@ -130,7 +130,7 @@ describe('PhotoEditorModalComponent', () => {
     it('should be set cropped size', () => {
       component.onResized({ newWidth: 100, oldWidth: 50, newHeight: 100, oldHeight: 50 });
       expect(component.isPhoneSize).toBeFalsy();
-      expect(component.maskSrc).toBe('/assets/img/photo-mask-desktop.svg');
+      expect(component.maskSrc).toBe('/assets/icons/svg/photo-mask-desktop.svg');
     });
 
     it('should be fit image to crop area', () => {

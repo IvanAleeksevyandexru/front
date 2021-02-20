@@ -19,12 +19,9 @@ import {
   DictionaryItem,
 } from '../../../../shared/services/dictionary-api/dictionary-api.types';
 import { DictionaryUtilities } from '../../select-map-object/dictionary-utilities';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-information-center-pfr',
@@ -71,12 +68,7 @@ export class InformationCenterPfrContainerComponent {
   public districtDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public cityDistrictDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public territoryDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
-  public nextStepAction: ComponentActionDto = {
-    label: 'Далее',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
+  public nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
   private dictionaryType: string;
 
   constructor(

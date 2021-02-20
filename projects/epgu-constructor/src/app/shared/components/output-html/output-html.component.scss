@@ -3,10 +3,12 @@
 :host {
   display: block;
 }
+
 :host::ng-deep {
   & > * {
     margin: 0;
     line-height: 24px;
+
     &:not(:first-child) {
       margin-top: 24px;
     }
@@ -15,10 +17,12 @@
   & img {
     max-width: 200px;
     margin-bottom: 24px;
+
     &.width--auto {
       max-width: 100%;
       width: auto;
     }
+
     @include tablets-down {
       max-width: 66%;
     }
@@ -30,6 +34,7 @@
 
   li {
     line-height: 24px;
+
     &:first-letter {
       margin-top: 0;
       text-transform: uppercase;
@@ -41,14 +46,10 @@
     padding: 0;
     margin: 0 0 0 12px;
     list-style: none;
-
-    &:not(:first-child) {
-      margin: 24px 0 0 12px;
-    }
   }
 
   ol li {
-    padding-left: 24px;
+    padding-left: 18px;
     position: relative;
 
     &::before {
@@ -74,6 +75,40 @@
       vertical-align: top;
       font-size: 17px;
     }
+  }
+
+  ul li > ul,
+  ol li > ul {
+    margin: 12px 0 0 0;
+
+    li {
+      padding-left: 20px;
+
+      &:first-letter {
+        text-transform: lowercase;
+      }
+    }
+  }
+
+  ul li > ul li {
+    &::before {
+      content: '—';
+      margin-left: -1.2em;
+      width: 1.2em;
+    }
+  }
+
+  ol li > ul li {
+    &::before {
+      counter-increment: inherit;
+      content: '—';
+      margin-left: 0;
+    }
+  }
+
+  ul:not(:first-child),
+  ol:not(:first-child) {
+    margin: 24px 0 0 12px;
   }
 
   li:not(:first-child) {

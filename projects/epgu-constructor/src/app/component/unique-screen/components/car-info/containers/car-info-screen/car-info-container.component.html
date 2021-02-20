@@ -1,36 +1,16 @@
-<ng-container
-  *ngTemplateOutlet="
-    templateContent;
-    context: { carInfo: (carInfo$ | async), display: (display$ | async), isLoading: (isLoading$ | async),
-    showNav: (showNav$ | async)  }
-  "
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenActionButtons]="screenService.buttons$ | async"
+  [actionButtons]="screenService.actions$ | async"
+  [isShowActionBtn]="false"
+  [showNav]="screenService.showNav$ | async"
+  [submitLabel]="screenService.submitLabel$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+  [nextStepAction]="nextStepAction"
 >
-</ng-container>
-<ng-template #templateContent let-carInfo="carInfo" let-display="display" let-isLoading="isLoading"
-             let-showNav="showNav">
-  <epgu-constructor-screen-container
-    [show-nav]="showNav"
-    [class.screen-container-mt]="!showNav"
-  >
-    <div class="screen-body">
-      <div class="head">
-        <epgu-constructor-page-name>{{ display.header }}</epgu-constructor-page-name>
-      </div>
-
-      <epgu-constructor-car-info
-        [carInfo]="carInfo"
-        [carInfoErrors]="carInfoErrors"
-      ></epgu-constructor-car-info>
-    </div>
-    <div class="screen-footer">
-      <lib-button
-        [showLoader]="isLoading"
-        epgu-constructor-action
-        [action]="nextStepAction"
-        class="submit-button"
-      >
-        {{ display?.submitLabel || 'Продолжить' }}
-      </lib-button>
-    </div>
-  </epgu-constructor-screen-container>
-</ng-template>
+  <epgu-constructor-car-info
+    [carInfo]="carInfo$ | async"
+    [carInfoErrors]="carInfoErrors"
+  ></epgu-constructor-car-info>
+</epgu-constructor-default-unique-screen-wrapper>

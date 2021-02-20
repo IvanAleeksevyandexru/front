@@ -117,6 +117,8 @@ export interface CustomComponentAttr {
   onlyFirstScreen?: boolean;
   add?: { component: string; caption: string[] };
   suggestionId?: string;
+  searchType?: string;
+  cityFilter?: string[];
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -165,7 +167,8 @@ export interface CustomComponentRef {
   relatedRel: string;
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
-  defaultValue: string | boolean;
+  defaultValue?: string | boolean;
+  valueFromCache?: string;
 }
 
 export interface CustomListFormGroup {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentAttrsDto, ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
@@ -7,6 +7,8 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { DocInputField } from '../../../component/shared/components/components-list/doc-input/doc-input.types';
+
 
 @Injectable()
 export class ValueLoaderService {
@@ -221,12 +223,27 @@ export class ValueLoaderService {
 
   private getComponentWithAttrsDateRef(component: ComponentDto, cachedAnswers: CachedAnswers): ComponentDto {
     const { attrs } = component;
+
+    if(component.type === CustomScreenComponentTypes.DocInput) {
+      const fields = attrs.fields as DocInputField[];
+      const haveDateRef = ({ attrs }: DocInputField): boolean => Boolean(attrs?.minDateRef || attrs?.minDateRef);
+
+      Object.values(fields).filter((field) => haveDateRef(field)).forEach(({ attrs }) => {
+        this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
+      });
+    }else {
+      this.setAttrsDateRef(component.attrs, cachedAnswers);
+    }
+    return component;
+  }
+
+
+  private setAttrsDateRef(attrs: ComponentAttrsDto, cachedAnswers: CachedAnswers): void {
     if (attrs.minDateRef) {
       attrs.minDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
     }
     if (attrs.maxDateRef) {
       attrs.maxDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
     }
-    return component;
-  };
+  }
 }

@@ -24,9 +24,9 @@ describe('TrimDirective', () => {
     expect(directive).toBeTruthy();
   });
 
-  it('should remove non alphabetic or numeral symbols from beginning', () => {
+  it('should remove unacceptable symbols from beginning', () => {
     inputValue = '   42Тыц   8тыц -тац тац-тац';
-    const value = directive.removeNonAlphabeticOrNumeralSymbolsFromBeginning(inputValue);
+    const value = directive.removeUnacceptableSymbolsFromBeginning(inputValue);
     expect(value).toEqual('42Тыц   8тыц -тац тац-тац');
   });
 
