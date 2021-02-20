@@ -104,7 +104,7 @@ export interface ComponentAttrsDto {
   hint?: string;
   russia?: boolean;
   ussr?: boolean;
-  accuracy?: boolean;
+  accuracy?: string;
   disabled?: boolean;
   hidden?: boolean;
   defaultValue?: boolean;
