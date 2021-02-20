@@ -107,9 +107,15 @@ export class ValidationService {
 
   public validationBackendError(errorMsg: string, component: CustomComponent): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
-      const isErrorValue = component.value !== control.value;
+      let controlValue = control.value;
 
-      if (isErrorValue) {
+      if (CustomScreenComponentTypes.DateInput === component.type && controlValue instanceof Date) {
+        controlValue = this.datesToolsService.format(controlValue);
+      }
+
+      const valueChanged = component.value !== controlValue;
+
+      if (valueChanged) {
         return null;
       } else if (errorMsg) {
         return { serverError: errorMsg };
