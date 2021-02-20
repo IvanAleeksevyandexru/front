@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -10,10 +11,10 @@ import {
 
 import { Observable } from 'rxjs';
 
-import { filter, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
-import { FilesCollection, SuggestAction } from '../../data';
+import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
 // eslint-disable-next-line import/no-cycle
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { ZoomComponent } from '../../../zoom/zoom.component';
@@ -24,8 +25,8 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
   styleUrls: ['./uploader-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderViewerComponent extends ModalBaseComponent {
-  @ViewChild('zoom', { static: true }) zoom: ZoomComponent;
+export class UploaderViewerComponent extends ModalBaseComponent implements AfterViewInit {
+  @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
 
   @Output() delete = new EventEmitter<FileItem>();
@@ -34,16 +35,18 @@ export class UploaderViewerComponent extends ModalBaseComponent {
   @Output() next = new EventEmitter<FilesCollection>();
   @Output() prev = new EventEmitter<FilesCollection>();
 
-  selectedItem: Observable<FileItem> = this.viewerService.getSelectedFileByType().pipe(
-    tap(() => console.log('changed')),
-    filter((file) => !!file),
-    tap((file) => this.init(file)),
+  selectedItem: Observable<ViewerInfo> = this.viewerService.getSelectedFileByType().pipe(
+    filter((info) => !!info),
+    tap((info) => this.init(info)),
   );
+
   item: FileItem;
   imageURL: string;
   filesType = FilesCollection;
   isMoveZoom = false;
-
+  size: number;
+  position: number;
+  zoom: Observable<{ zoom: number; max: number }>;
   constructor(public injector: Injector, private viewerService: ViewerService) {
     super(injector);
   }
@@ -59,19 +62,47 @@ export class UploaderViewerComponent extends ModalBaseComponent {
     this.isMoveZoom = true;
   }
 
-  init(file: FileItem): void {
-    if (file.isImage) {
-      this.imageURL = file.urlToFile();
-    } else {
-      this.imageURL = null;
-    }
+  init({ file, size, position }): void {
+    this.size = size;
+    this.position = position;
+    this.item = file;
+    this.zoomComponent?.resetZoom();
+    this.imageURL = file.isImage ? file.urlToFile() : null;
+  }
+
+  zoomIn(): void {
+    this.zoomComponent?.zoomIn();
+  }
+
+  zoomOut(): void {
+    this.zoomComponent?.resetZoom();
+  }
+
+  downloadAction(): void {
+    this.download.emit(this.item);
   }
 
   nextAction(): void {
     this.next.emit(this.type);
   }
 
+  deleteAction(): void {
+    if (window.confirm('Удалить навсегда?')) {
+      this.delete.emit(this.item);
+    }
+  }
+
   prevAction(): void {
     this.prev.emit(this.type);
+  }
+
+  suggestAction(isAdd: boolean): void {
+    this.suggest.emit({ file: this.item, isAdd });
+  }
+
+  ngAfterViewInit(): void {
+    this.zoom = this.zoomComponent?.zoom$$.pipe(
+      map((zoom: number) => ({ zoom, max: this.zoomComponent.maxZoom })),
+    );
   }
 }

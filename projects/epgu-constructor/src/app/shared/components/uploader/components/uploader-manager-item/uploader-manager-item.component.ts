@@ -17,7 +17,7 @@ import {
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
-import { iconsTypes } from '../../data';
+import { iconsTypes, SuggestAction } from '../../data';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',
@@ -32,6 +32,7 @@ export class UploaderManagerItemComponent {
   @Output() download = new EventEmitter<FileItem>();
   @Output() repeat = new EventEmitter<FileItem>();
   @Output() view = new EventEmitter<FileItem>();
+  @Output() suggest = new EventEmitter<SuggestAction>();
 
   @ViewChild('elementLink', { read: ElementRef, static: true }) elementLink: ElementRef;
   @Input() set file(file: FileItem) {
@@ -92,6 +93,10 @@ export class UploaderManagerItemComponent {
         this.elementLink.nativeElement.click();
       }
     }
+  }
+
+  detach(): void {
+    this.suggest.emit({ isAdd: false, file: this.fileItem });
   }
 
   preview(): void {

@@ -3,7 +3,7 @@ import { ModalService } from '../../../../../modal/modal.service';
 import { UploaderViewerComponent } from '../../components/uploader-viewer/uploader-viewer.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 
-import { FilesCollection, SuggestAction } from '../../data';
+import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { filter, finalize, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';
 
@@ -25,11 +25,11 @@ export class ViewerService {
   selectedSuggestsIndex = new BehaviorSubject<number>(0);
   description = new BehaviorSubject<string>('');
 
-  selectedSuggest: Observable<FileItem | null> = combineLatest([
+  selectedSuggest: Observable<ViewerInfo | null> = combineLatest([
     this.selectedSuggestsIndex,
     this.suggests,
   ]).pipe(map(this.fileSelector.bind(this)));
-  selectedFile: Observable<FileItem | null> = combineLatest([
+  selectedFile: Observable<ViewerInfo | null> = combineLatest([
     this.selectedFilesIndex,
     this.files,
   ]).pipe(map(this.fileSelector.bind(this)));
@@ -38,20 +38,34 @@ export class ViewerService {
 
   constructor(private modal: ModalService) {}
 
-  getSelectedFileByType(): Observable<FileItem | null> {
+  getSelectedFileByType(): Observable<ViewerInfo | null> {
     return this.type === FilesCollection.suggest ? this.selectedSuggest : this.selectedFile;
   }
 
-  fileSelector([index, collection]: [number, FileItem[]]): FileItem | null {
+  fileSelector([index, collection]: [number, FileItem[]]): ViewerInfo | null {
     const item = collection[index];
     if (!item) {
       return null;
     }
-    return collection[index];
+    return {
+      size: collection.length,
+      position: index + 1,
+      file: collection[index],
+    };
   }
 
   setDescription(text: string): void {
     this.description.next(text);
+  }
+
+  updateIdbyIndex(): void {
+    const collection = this.getCollectionByType().getValue();
+    const selectedIndex = this.getSelectedIndexByType().getValue();
+    if (this.type === FilesCollection.suggest) {
+      this.selectedSuggestId = collection[selectedIndex].id;
+    } else {
+      this.selectedFilesId = collection[selectedIndex].id;
+    }
   }
 
   prev(): void {
@@ -59,7 +73,7 @@ export class ViewerService {
     const collection = this.getCollectionByType().getValue();
     const selectedIndex = selectedIndexSubject.getValue();
     selectedIndexSubject.next((selectedIndex === 0 ? collection.length : selectedIndex) - 1);
-    console.log(selectedIndexSubject.getValue());
+    this.updateIdbyIndex();
   }
 
   next(): void {
@@ -67,7 +81,7 @@ export class ViewerService {
     const collection = this.getCollectionByType().getValue();
     const selectedIndex = selectedIndexSubject.getValue();
     selectedIndexSubject.next(selectedIndex === collection.length - 1 ? 0 : selectedIndex + 1);
-    console.log(selectedIndexSubject.getValue());
+    this.updateIdbyIndex();
   }
 
   changeSelectedIndexById(id: string): void {
@@ -134,6 +148,13 @@ export class ViewerService {
 
   observeOutputs<T extends UploaderViewerComponent>(modal: ComponentRef<T>): Observable<void> {
     return combineLatest([
+      this.getCollectionByType().pipe(
+        tap((collection) => {
+          if (collection.length === 0) {
+            modal.instance.closeModal();
+          }
+        }),
+      ),
       modal.instance.suggest.pipe(
         startWith(null),
         filter((sudjectEvent) => !!sudjectEvent),

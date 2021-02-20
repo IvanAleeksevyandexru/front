@@ -53,7 +53,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
 
   mousewheel$ = fromEvent<WheelEvent>(this.document, 'mousewheel').pipe(
     filter((e) => this.targetFilter(e)),
-    tap((e) => this.zoomHandler(e)),
+    tap((e: WheelEvent) => this.zoomHandler(e)),
   );
 
   mousedown$ = fromEvent<MouseEvent>(this.document, 'mousedown').pipe(
@@ -85,6 +85,15 @@ export class ZoomComponent implements OnInit, OnDestroy {
     }
   }
 
+  getZoom(): number {
+    return this.zoom$$.getValue();
+  }
+
+  loadImage(): void {
+    this.updateZoomLimits();
+    this.zoom$$.next(this.getZoom());
+  }
+
   updateZoomLimits(): void {
     const { clientWidth, naturalWidth } = this.el.nativeElement;
     const naturalMax = 1 + (naturalWidth - clientWidth) / clientWidth;
@@ -104,9 +113,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
   }
 
   initSubscribes(): void {
-    if (this.isTouch) {
-      // this.subs.add(this.mobileEvents$.subscribe((e) => this.pinchZoom(e)));
-    } else {
+    if (!this.isTouch) {
       this.subs
         .add(this.mousemove$.subscribe())
         .add(this.mousewheel$.subscribe())

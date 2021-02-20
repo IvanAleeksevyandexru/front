@@ -85,6 +85,7 @@ export class FileItem {
   isImage: boolean;
   limited = false;
   isRawMock = false;
+  attached = false;
   constructor(
     public status: FileItemStatus,
     public fileUploadApiUrl: string,
@@ -105,13 +106,18 @@ export class FileItem {
     this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
   }
 
+  setAttached(attached: boolean): FileItem {
+    this.attached = attached;
+    return this;
+  }
+
   urlToFile(): string {
     if (!this.isRawMock) {
       return window.URL.createObjectURL(this.raw);
     }
 
     return this.item
-      ? `${this.fileUploadApiUrl}${this.item?.objectId}/${this.item?.objectTypeId}/download?mnemonic=${this.item?.mnemonic}`
+      ? `${this.fileUploadApiUrl}/${this.item?.objectId}/${this.item?.objectTypeId}/download?mnemonic=${this.item?.mnemonic}`
       : '';
   }
 

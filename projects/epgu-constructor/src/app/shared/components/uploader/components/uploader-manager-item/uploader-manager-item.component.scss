@@ -189,6 +189,21 @@
   }
 }
 
+.detach_button {
+  &:after {
+    content: 'Открепить';
+    @include phones-down {
+      content: '';
+    }
+  }
+  @include phones-down {
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.72) url('../../../../../../assets/icons/svg/arrow-back.svg')
+      no-repeat center center;
+  }
+}
+
 .link {
   display: none;
 }

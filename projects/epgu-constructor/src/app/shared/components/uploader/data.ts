@@ -35,3 +35,9 @@ export enum FilesCollection {
   uploader = 1,
   suggest,
 }
+
+export interface ViewerInfo {
+  size: number;
+  position: number;
+  file: FileItem;
+}

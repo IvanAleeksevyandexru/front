@@ -5,5 +5,5 @@
   (pinchend)="pinchZoom($event)"
   class="zoom"
 >
-  <img #el [src]="imageURL | safe: 'url'" [alt]="'zoom'" />
+  <img #el (load)="loadImage()" [src]="imageURL | safe: 'url'" [alt]="'zoom'" />
 </div>
