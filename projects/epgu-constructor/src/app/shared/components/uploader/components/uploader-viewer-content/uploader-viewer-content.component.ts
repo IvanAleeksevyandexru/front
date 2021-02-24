@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -9,13 +8,15 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { filter, map, tap } from 'rxjs/operators';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
-import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
+import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { ZoomComponent } from '../../../zoom/zoom.component';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ZoomEvent } from '../../../zoom/typings';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
@@ -23,7 +24,7 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
   styleUrls: ['./uploader-viewer-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderViewerContentComponent implements AfterViewInit, OnInit {
+export class UploaderViewerContentComponent implements OnInit {
   @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
 
@@ -41,15 +42,27 @@ export class UploaderViewerContentComponent implements AfterViewInit, OnInit {
   filesType = FilesCollection;
   size: number;
   position: number;
-  zoom: Observable<{ zoom: number; max: number }>;
+  zoom = new BehaviorSubject<ZoomEvent>({ zoom: 1, max: 1 });
   date: number;
 
-  constructor(private viewerService: ViewerService) {}
+  basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/`;
+  arrowIcon = `${this.basePath}arrow-circle.svg`;
+  iconsType = iconsTypes;
+  selectedIconType: string;
+  isPDF = false;
+
+  baseFileTypeIconPath = `${this.basePath}file-types/`;
+  constructor(private viewerService: ViewerService, private config: ConfigService) {}
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);
   }
 
+  open($event: MouseEvent): void {
+    if (!this.isPDF) {
+      $event.preventDefault();
+    }
+  }
   init({ file, size, position }): void {
     this.size = size;
     this.position = position;
@@ -57,8 +70,14 @@ export class UploaderViewerContentComponent implements AfterViewInit, OnInit {
     this.zoomComponent?.resetZoom();
     this.imageURL = file.isImage ? file.urlToFile() : null;
     this.date = new Date(file?.item?.udapted || file?.item?.created).getTime();
+    const extension = file.raw.name.split('.').pop().toLowerCase();
+    this.isPDF = extension === 'pdf';
+    this.selectedIconType = this.iconsType[extension] ?? 'TXT';
   }
 
+  zoomAction(zoom: ZoomEvent): void {
+    this.zoom.next(zoom);
+  }
   zoomIn(): void {
     this.zoomComponent?.zoomIn();
   }
@@ -87,12 +106,6 @@ export class UploaderViewerContentComponent implements AfterViewInit, OnInit {
 
   suggestAction(isAdd: boolean): void {
     this.suggest.emit({ file: this.item, isAdd });
-  }
-
-  ngAfterViewInit(): void {
-    this.zoom = this.zoomComponent?.zoom$$.pipe(
-      map((zoom: number) => ({ zoom, max: this.zoomComponent.maxZoom })),
-    );
   }
 
   ngOnInit(): void {

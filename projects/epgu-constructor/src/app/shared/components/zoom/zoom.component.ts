@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -16,6 +17,7 @@ import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { filter, tap } from 'rxjs/operators';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { ZoomEvent } from './typings';
 
 @Component({
   selector: 'epgu-constructor-zoom',
@@ -28,6 +30,8 @@ export class ZoomComponent implements OnInit, OnDestroy {
   @ViewChild('el', { static: true }) el: ElementRef<HTMLImageElement>;
   @Output() moveStart = new EventEmitter<null>();
   @Output() moveEnd = new EventEmitter<null>();
+  @Output() zoom = new EventEmitter<ZoomEvent>();
+
   x = 0;
   y = 0;
   lastX = 0;
@@ -43,7 +47,9 @@ export class ZoomComponent implements OnInit, OnDestroy {
   minZoom = 1;
   isMove = false;
 
-  subs = new Subscription();
+  subs = new Subscription().add(
+    this.zoom$$.pipe(tap((zoom) => this.zoom.emit({ zoom, max: this.maxZoom }))).subscribe(),
+  );
 
   mousemove$ = fromEvent<MouseEvent>(this.document, 'mousemove').pipe(
     filter((e) => this.targetFilter(e)),
@@ -127,7 +133,8 @@ export class ZoomComponent implements OnInit, OnDestroy {
   }
 
   zoomIn(): void {
-    this.changeZoom(this.zoom$$.getValue() + this.speedZoom);
+    this.updateZoomLimits();
+    this.changeZoom(this.maxZoom);
   }
 
   zoomOut(): void {
