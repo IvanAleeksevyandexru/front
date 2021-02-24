@@ -84,7 +84,14 @@ export class FileItem {
   error: FileItemError;
   isImage: boolean;
   limited = false;
-  constructor(public status: FileItemStatus, public raw?: File, public item?: UploadedFile) {
+  isRawMock = false;
+  attached = false;
+  constructor(
+    public status: FileItemStatus,
+    public fileUploadApiUrl: string,
+    public raw?: File,
+    public item?: UploadedFile,
+  ) {
     if (item) {
       this.item.uploaded = true;
     }
@@ -94,8 +101,24 @@ export class FileItem {
         name: item.fileName,
         type: item.mimeType,
       } as File;
+      this.isRawMock = true;
     }
     this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
+  }
+
+  setAttached(attached: boolean): FileItem {
+    this.attached = attached;
+    return this;
+  }
+
+  urlToFile(): string {
+    if (!this.isRawMock) {
+      return window.URL.createObjectURL(this.raw);
+    }
+
+    return this.item
+      ? `${this.fileUploadApiUrl}/${this.item?.objectId}/${this.item?.objectTypeId}/download?mnemonic=${this.item?.mnemonic}`
+      : '';
   }
 
   setLimited(limit: boolean): FileItem {
@@ -118,6 +141,7 @@ export class FileItem {
   }
   setRaw(raw: File): FileItem {
     this.raw = raw;
+    this.isRawMock = false;
     return this;
   }
   setItem(item: UploadedFile): FileItem {

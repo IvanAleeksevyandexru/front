@@ -12,12 +12,18 @@ import {
 import { AbstractControl } from '@angular/forms';
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { takeUntil } from 'rxjs/operators';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenService } from '../../../../screen/screen.service';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import {
   CustomComponent,
@@ -45,7 +51,11 @@ const halfWidthItemTypes = [
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() componentsGroupIndex = 0;
+  /**
+   * Если компонент подключается в цикле (например в RepeatableFieldsComponent), то значение componentsGroupIndex будет
+   * равным индексу компонента в массиве. В остальных случаях componentsGroupIndex будет undefined
+   */
+  @Input() componentsGroupIndex?: number;
   @Input() components: Array<CustomComponent>;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
@@ -56,6 +66,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
+  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
@@ -67,6 +78,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     private repository: ComponentListRepositoryService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
+    public screenService: ScreenService,
     private httpCancelService: HttpCancelService,
   ) {
     this.changes = this.formService.changes;
@@ -81,6 +93,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
+
     const components: Array<CustomComponent> = changes.components?.currentValue;
     const isErrorsChanged =
       JSON.stringify(changes.errors?.currentValue) !==
@@ -103,6 +116,20 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public isHalfWidthItem(componentData: AbstractControl): boolean {
     return halfWidthItemTypes.includes(componentData.value?.type);
+  }
+
+  public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
+    // NOTICE: необходимо различать два ивента: клик по ссылке "Есть неактуальные данные?" (передается с доп.атрибутом `isEdit`)
+    // и обычный выбор опции из списка саджестов, соответственно, вызывать модалку для удаления неактуальных саджестов или
+    // запускать механизм подстановки выбранного значения в инпут.
+    if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
+      this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
+    } else {
+      this.eventBusService.emit('suggestionSelectedEvent', {
+        ...event,
+        componentsGroupIndex: this.componentsGroupIndex,
+      } as ISuggestionItemList);
+    }
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

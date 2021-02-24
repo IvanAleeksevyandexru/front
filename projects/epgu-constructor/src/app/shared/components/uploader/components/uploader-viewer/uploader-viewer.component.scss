@@ -1,0 +1,98 @@
+@import '../../../../../../styles/core/index';
+
+:host::ng-deep {
+  .LyImageCropper-area-d {
+    &:after {
+      border: none;
+    }
+
+    &:before {
+      border: none;
+    }
+  }
+
+  .LyImageCropper-defaultContent-f {
+    pointer-events: none;
+  }
+  .photo-editor__cropper-lib {
+    height: 400px;
+    width: 100%;
+  }
+
+  .uploader-viewer {
+    display: flex;
+    flex-direction: column;
+    @include modal-body();
+    width: 799px;
+    height: fit-content;
+    padding: 32px 0;
+    border-radius: 12px;
+
+    @include tablets-down {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    @include phones-down {
+      padding: 24px 0;
+    }
+
+    &__header {
+      padding-bottom: 22px;
+      margin: 0 32px;
+
+      @include phones-down {
+        margin: 0 24px;
+        border-bottom: 1px solid $color-divider;
+      }
+    }
+
+    &__body-scroll {
+      overflow-y: auto;
+    }
+
+    &__body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      position: relative;
+      padding: 0 32px;
+      @include phones-down {
+        padding: 0 24px;
+      }
+    }
+
+    &__footer {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    &__buttons {
+      display: flex;
+      margin-top: 18px;
+      border: 0;
+
+      @include phones-down {
+        flex-direction: column;
+      }
+
+      button {
+        height: 52px;
+      }
+    }
+
+    &__button:first-child {
+      @include phones-up {
+        margin-right: 24px;
+      }
+
+      @include phones-down {
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

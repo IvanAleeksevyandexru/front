@@ -22,6 +22,8 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
@@ -44,10 +46,12 @@ export class ActionService {
     private localStorageService: LocalStorageService,
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
+    private autocompleteApiService: AutocompleteApiService,
+    private eventBusService: EventBusService,
     private modalService: ModalService,
   ) {}
 
-  switchAction(action: ComponentActionDto, componentId: string): void {
+  switchAction(action: ComponentActionDto, componentId: string, targetElement?: HTMLElement): void {
     switch (action.type) {
       case ActionType.download:
         this.downloadAction(action);
@@ -81,6 +85,9 @@ export class ActionService {
         break;
       case ActionType.home:
         this.navService.redirectToHome();
+        break;
+      case ActionType.deleteSuggest:
+        this.deleteSuggestAction(action, targetElement);
         break;
       case ActionType.dropdownListModal:
         this.openDropdownListModal(action);
@@ -187,6 +194,14 @@ export class ActionService {
         ({ responseData }) => this.utilsService.downloadFile(responseData),
         (error) => console.log(error),
       );
+  }
+
+  private deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {
+    const [mnemonic, value, id] = action.value.split(':');
+    targetElement.setAttribute('disabled', 'disabled');
+    this.autocompleteApiService.deleteSuggestionsField(Number(id)).subscribe(() => {
+      this.eventBusService.emit('suggestionDeleteEvent', { mnemonic, value, id });
+    });
   }
 
   private getActionDTO(action: ComponentActionDto): ActionDTO {

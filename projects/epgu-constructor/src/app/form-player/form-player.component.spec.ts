@@ -36,6 +36,14 @@ import { LocationService } from '../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
 import { SimpleChange } from '@angular/core';
 import { EpguLibModuleInited } from '../shared/base.module';
+import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
+import { EventBusService } from '../core/services/event-bus/event-bus.service';
+import { ModalServiceStub } from '../modal/modal.service.stub';
+import { ModalService } from '../modal/modal.service';
+import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
+import { UtilsService } from '../core/services/utils/utils.service';
+import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { CurrentAnswersService } from '../screen/current-answers.service';
 
 
 describe('FormPlayerComponent', () => {
@@ -74,6 +82,13 @@ describe('FormPlayerComponent', () => {
       providers: [
         UnsubscribeService,
         LocationService,
+        AutocompleteService,
+        AutocompleteApiService,
+        EventBusService,
+        ModalService,
+        UtilsService,
+        DatesToolsService,
+        CurrentAnswersService,
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
@@ -85,7 +100,8 @@ describe('FormPlayerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: FormPlayerStartManager, useClass: FormPlayerStartManagerStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub }
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub }
       ]
     }).compileComponents();
 

@@ -1,7 +1,7 @@
 <div class="conf-modal">
   <div *ngIf="showCrossButton" class="modal__close" (click)="closeModal()"></div>
   <div class="conf-modal__header">
-    <h4 *ngIf="title" class="modal__title" [innerHTML]="title | safe: 'html'"></h4>
+    <h3 *ngIf="title" class="modal__title" [innerHTML]="title | safe: 'html'"></h3>
   </div>
   <div class="conf-modal__body" [class.preview]="preview">
     <perfect-scrollbar class="perfect-scrollbar" *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">

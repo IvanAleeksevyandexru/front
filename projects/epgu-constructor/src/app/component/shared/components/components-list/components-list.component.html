@@ -63,6 +63,8 @@
           [clearable]="true"
           [localSearch]="componentData.get('attrs').value.localSearch"
           class="cs__select cs-select"
+          [suggest]="(suggestions$ | async)[componentData.value?.id]"
+          (selectSuggest)="suggestHandle($event)"
         >
         </lib-dropdown>
       </epgu-constructor-component-item>
@@ -116,6 +118,8 @@
             [virtualScroll]="true"
             [clearable]="true"
             [required]="componentData.value?.required"
+            [suggest]="(suggestions$ | async)[componentData.value?.id]"
+            (selectSuggest)="suggestHandle($event)"
           >
           </lib-lookup>
         </epgu-constructor-component-item>
@@ -154,7 +158,7 @@
           "
         >
           <epgu-constructor-constructor-checkbox
-            checkboxId="{{ componentData.value?.id }}_{{ componentsGroupIndex }}"
+            checkboxId="{{ componentData.value?.id }}_{{ componentsGroupIndex || 0 }}"
             [control]="componentData.get('value')"
             [labelText]="componentData.value?.label"
             [required]="componentData.value?.required"
@@ -307,11 +311,17 @@
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-doc-input [data]="componentData" *ngSwitchCase="componentType.DocInput">
+      <epgu-constructor-doc-input
+        *ngSwitchCase="componentType.DocInput"
+        [data]="componentData"
+        [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+        (selectSuggest)="suggestHandle($event)"
+      >
       </epgu-constructor-doc-input>
+
       <epgu-constructor-field-list
-        [data]="$any(componentData.get('value'))"
         *ngSwitchCase="componentType.FieldList"
+        [data]="$any(componentData.get('value'))"
       >
       </epgu-constructor-field-list>
     </ng-container>
@@ -350,6 +360,8 @@
     [readOnly]="data.value?.attrs?.readonly"
     [placeholder]="data.value?.attrs?.placeholder"
     [component]="data.value"
+    [suggestions]="(suggestions$ | async)[data.value?.id]"
+    (selectSuggest)="suggestHandle($event)"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -371,5 +383,7 @@
     [isTrim]="false"
     [component]="data.value"
     [showPlaceholderOnFocus]="data.value?.attrs?.showPlaceholderOnFocus"
+    [suggestions]="(suggestions$ | async)[data.value?.id]"
+    (selectSuggest)="suggestHandle($event)"
   ></epgu-constructor-masked-input>
 </ng-template>

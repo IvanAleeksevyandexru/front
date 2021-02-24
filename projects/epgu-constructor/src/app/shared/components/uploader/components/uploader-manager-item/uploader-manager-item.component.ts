@@ -17,6 +17,7 @@ import {
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
+import { iconsTypes, SuggestAction } from '../../data';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',
@@ -30,6 +31,9 @@ export class UploaderManagerItemComponent {
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
   @Output() repeat = new EventEmitter<FileItem>();
+  @Output() view = new EventEmitter<FileItem>();
+  @Output() suggest = new EventEmitter<SuggestAction>();
+
   @ViewChild('elementLink', { read: ElementRef, static: true }) elementLink: ElementRef;
   @Input() set file(file: FileItem) {
     this.fileItem = file;
@@ -49,9 +53,9 @@ export class UploaderManagerItemComponent {
     this.type = file.raw.type;
     this.status = file.status;
     if (this.isImage) {
-      this.imageUrl = window.URL.createObjectURL(file.raw);
+      this.imageUrl = file.urlToFile();
     }
-    this.selectedIconType = this.iconsType[this.extension] ?? 'TXT';
+    this.selectedIconType = iconsTypes[this.extension] ?? 'TXT';
   }
   selectedIconType: string;
 
@@ -74,31 +78,7 @@ export class UploaderManagerItemComponent {
   basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   errorIcon = 'Error';
 
-  iconsType = {
-    doc: 'DOC',
-    docx: 'DOC',
-    jpg: 'JPG',
-    jpeg: 'JPG',
-    bmp: 'BMP',
-    csv: 'CSV',
-    flv: 'FLV',
-    gif: 'GIF',
-    key: 'KEY',
-    mov: 'MOV',
-    mpg: 'MPG',
-    pdf: 'PDF',
-    png: 'PNG',
-    ppt: 'PPT',
-    rar: 'RAR',
-    rtf: 'RTF',
-    sig: 'SIG',
-    tif: 'TIF',
-    tiff: 'TIF',
-    txt: 'TXT',
-    xls: 'XLS',
-    xml: 'XML',
-    zip: 'ZIP',
-  };
+  iconsType = iconsTypes;
 
   constructor(private teraService: TerraByteApiService, public config: ConfigService) {}
 
@@ -115,5 +95,11 @@ export class UploaderManagerItemComponent {
     }
   }
 
-  preview(): void {}
+  detach(): void {
+    this.suggest.emit({ isAdd: false, file: this.fileItem });
+  }
+
+  preview(): void {
+    this.view.emit(this.fileItem);
+  }
 }

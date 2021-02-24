@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { CustomComponent } from '../../../component/shared/components/components-list/components-list.types';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../core/services/autocomplete/autocomplete.inteface';
 import { TextTransform } from '../../types/textTransform';
 import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/number-mask-options.interface';
 
@@ -27,7 +31,12 @@ export class ConstructorMaskedInputComponent {
   @Input() placeholder: string;
   @Input() isTrim?: boolean;
   @Input() component?: CustomComponent;
+  @Input() suggestions?: ISuggestionItem;
   @Input() showPlaceholderOnFocus?: boolean;
+
+  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
+    ISuggestionItem | ISuggestionItemList
+  >();
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {

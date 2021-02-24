@@ -1,10 +1,6 @@
 // eslint-disable-next-line max-len
 import { ConfirmUserDataStyle } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import {
-  TimerComponentDtoAction,
-  TimerLabelSection,
-} from '../../../shared/components/timer/timer.interface';
-import {
   DictionaryConditions,
   DictionaryOptions,
 } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
@@ -13,6 +9,7 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
+import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -49,6 +46,7 @@ export interface ComponentDto {
   visited?: boolean;
   presetValue?: string;
   valueFromCache?: boolean;
+  suggestionId?: string;
 }
 
 export interface ComponentAnswerDto {
@@ -343,6 +341,13 @@ export interface DisplayDto {
   displayCssClass?: string;
   buttons?: Array<ScreenActionDto>;
   infoComponents?: string[];
+  suggestion?: SuggestionGroup;
+}
+
+export interface SuggestionGroup {
+  groupId: string;
+  namedGroupId?: string;
+  accumulatorId?: string;
 }
 
 export interface ScenarioErrorsDto {
@@ -426,6 +431,8 @@ export enum ActionType {
   quizToOrder = 'quizToOrder',
   profileEdit = 'profileEdit',
   home = 'home',
+  deleteSuggest = 'deleteSuggest',
+  attachUploadedFiles = 'attachUploadedFiles',
   dropdownListModal = 'dropdownListModal',
 }
 
@@ -441,6 +448,7 @@ export enum DTOActionAction {
   editPassportData = 'editPassportData',
   editLegalPhone = 'editLegalPhone',
   editLegalEmail = 'editLegalEmail',
+  attachUploadedFiles = 'attachUploadedFiles',
 }
 
 export interface CheckOrderApiResponse {

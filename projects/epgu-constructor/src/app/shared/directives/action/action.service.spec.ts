@@ -24,6 +24,9 @@ import {
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
@@ -158,6 +161,10 @@ describe('ActionService', () => {
         ActionService,
         NavigationModalService,
         CurrentAnswersService,
+        AutocompleteApiService,
+        HttpClient,
+        HttpHandler,
+        EventBusService,
       ],
     });
 

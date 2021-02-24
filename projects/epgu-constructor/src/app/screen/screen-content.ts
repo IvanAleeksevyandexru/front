@@ -13,12 +13,14 @@ import {
 import { Gender } from '../shared/types/gender';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { concatMap, map } from 'rxjs/operators';
+import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
 
 type ComponentValueGeneric<T> = T;
 export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
 
 export class ScreenContent {
   private _display = new BehaviorSubject<DisplayDto>(null);
+  private _suggestions = new BehaviorSubject<{ [key: string]: ISuggestionItem }>({});
   private _header = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   private _submitLabel = new BehaviorSubject<string>(null);
@@ -77,6 +79,16 @@ export class ScreenContent {
   }
   public get display$(): Observable<DisplayDto> {
     return this._display.asObservable();
+  }
+
+  public get suggestions(): { [key: string]: ISuggestionItem } {
+    return this._suggestions.getValue();
+  }
+  public set suggestions(val: { [key: string]: ISuggestionItem }) {
+    this._suggestions.next(val);
+  }
+  public get suggestions$(): Observable<{ [key: string]: ISuggestionItem }> {
+    return this._suggestions.asObservable();
   }
 
   public get header(): string {

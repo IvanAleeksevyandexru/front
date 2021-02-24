@@ -1,0 +1,20 @@
+<div class="uploader-viewer">
+  <div class="uploader-viewer__header">
+    <a class="modal__close" (click)="closeModal()"></a>
+    <h4 class="modal__title">
+      {{ type === filesType.suggest ? 'Ранее загруженные файлы' : 'Просмотр фото' }}
+    </h4>
+  </div>
+  <div class="uploader-viewer__body">
+    <epgu-constructor-uploader-viewer-content
+      (suggest)="suggest.emit($event)"
+      (delete)="delete.emit($event)"
+      (download)="download.emit($event)"
+      (moveZoom)="isMoveZoom = $event"
+      (next)="next.emit($event)"
+      (prev)="prev.emit($event)"
+      [type]="type"
+    ></epgu-constructor-uploader-viewer-content>
+  </div>
+  <div class="uploader-viewer__footer"></div>
+</div>

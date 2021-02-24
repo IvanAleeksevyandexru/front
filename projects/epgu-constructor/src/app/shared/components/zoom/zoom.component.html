@@ -1,0 +1,9 @@
+<div
+  (pan)="pinchZoom($event)"
+  (pinch)="pinchZoom($event)"
+  (panend)="pinchZoom($event)"
+  (pinchend)="pinchZoom($event)"
+  class="zoom"
+>
+  <img #el (load)="loadImage()" [src]="imageURL | safe: 'url'" [alt]="'zoom'" />
+</div>

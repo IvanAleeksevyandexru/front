@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { CustomComponent } from '../../../component/shared/components/components-list/components-list.types';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../core/services/autocomplete/autocomplete.inteface';
 import { TextTransform } from '../../types/textTransform';
 
 @Component({
@@ -24,4 +28,9 @@ export class ConstructorPlainInputComponent {
   @Input() type?: string;
   @Input() pattern?: string;
   @Input() component?: CustomComponent;
+  @Input() suggestions?: ISuggestionItem;
+
+  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
+    ISuggestionItem | ISuggestionItemList
+  >();
 }

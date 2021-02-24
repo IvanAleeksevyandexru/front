@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConstructorMaskedInputComponent } from './constructor-masked-input.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { MaskModule } from '../../directives/mask/mask.module';
 import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 
@@ -11,10 +12,12 @@ describe('ConstructorMaskedInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
       imports: [MaskModule, MaskHandleModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [ConstructorMaskedInputComponent],
-    }).compileComponents();
+      providers: [EventBusService]
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {

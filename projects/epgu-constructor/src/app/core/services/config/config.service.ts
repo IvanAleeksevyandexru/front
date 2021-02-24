@@ -11,6 +11,7 @@ export class ConfigService implements Config {
   private _isLoaded = false;
   private _billsApiUrl: string;
   private _apiUrl: string;
+  private _suggestionsApiUrl: string;
   private _configApiUrl: string;
   private _configId: string;
   private _dictionaryUrl: string;
@@ -53,6 +54,10 @@ export class ConfigService implements Config {
 
   get apiUrl(): string {
     return this._apiUrl;
+  }
+
+  get suggestionsApiUrl(): string {
+    return this._suggestionsApiUrl;
   }
 
   get configApiUrl(): string {
@@ -145,6 +150,7 @@ export class ConfigService implements Config {
 
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
+    this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;

@@ -28,7 +28,9 @@
       "@tanker/file-ponyfill": "@tanker/file-ponyfill",
       "file-saver": "FileSaver",
       "date-fns": "dateFns",
-      "date-fns/locale": "locale"
+      "date-fns/locale": "locale",
+      "lodash": "lodash",
+      "hammerjs": "hammerjs"
     },
     "styleIncludePaths": ["."]
   }

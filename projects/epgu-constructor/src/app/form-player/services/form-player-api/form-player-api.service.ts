@@ -1,7 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ConfigService } from '../../../core/services/config/config.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
+import { LocationService } from '../../../core/services/location/location.service';
+import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
 import {
   ActionApiResponse,
   ActionDTO,
@@ -10,9 +13,6 @@ import {
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
 } from './form-player-api.types';
-import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { LocationService } from '../../../core/services/location/location.service';
 
 @Injectable()
 export class FormPlayerApiService {

@@ -6,12 +6,12 @@ import { CustomScreenComponentTypes } from '../../../component/shared/components
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/shared/components/components-list/doc-input/doc-input.types';
 
 
 @Injectable()
 export class ValueLoaderService {
-  private repeatableFields = 'RepeatableFields';
 
   constructor(
     private cachedAnswersService: CachedAnswersService,
@@ -25,7 +25,7 @@ export class ValueLoaderService {
   ): Array<ScreenStoreComponentDtoI> {
     return components.map((item) => {
       item.valueFromCache = false;
-      if (item.type === this.repeatableFields) {
+      if (item.type === UniqueScreenComponentTypes.repeatableFields) {
         const components = item.attrs.components.map((component) =>
           this.getComponentWithAttrsDateRef(component, cachedAnswers),
         );

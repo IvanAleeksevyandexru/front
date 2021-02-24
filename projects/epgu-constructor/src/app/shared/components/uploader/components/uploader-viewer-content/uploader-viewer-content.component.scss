@@ -1,0 +1,14 @@
+@import '../../../../../../styles/core/index';
+
+.file-viewer {
+  min-height: 362px;
+  max-height: 611px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-input;
+}
+.viewer__info {
+  display: flex;
+  justify-content: space-between;
+}

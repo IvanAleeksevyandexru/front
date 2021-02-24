@@ -26,6 +26,7 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { PaymentTypeSelectorContainerComponent } from './payment-type-selector-container.component';
 import { PaymentTypeSelectorComponent } from '../payment-type-selector/payment-type-selector.component';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
+import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;
@@ -90,6 +91,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
+        AutocompleteApiService,
       ],
     }).compileComponents();
   });

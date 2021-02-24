@@ -37,6 +37,8 @@ import {
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { AttachUploadedFilesModalComponent } from '../../../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 
 interface OverLimitsItem {
   count: number;
@@ -100,7 +102,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
-    map((file: File) => new FileItem(FileItemStatus.preparation, file)), // Формируем FileItem
+    map(
+      (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
+    ), // Формируем FileItem
     concatMap(
       (file: FileItem) =>
         this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes), // Валидируем файл
@@ -113,6 +117,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
 
   store = new FileItemStore();
+  componentId = this.screenService.component?.id || null;
+  componentValues: string[] = [];
 
   files = this.store.files;
   files$ = this.files.pipe(
@@ -126,6 +132,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     ),
     tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
+  suggestions$ = this.screenService.suggestions$;
 
   get data(): FileUploadItem {
     return this.loadData;
@@ -207,7 +214,30 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     public modal: ModalService,
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
+    private screenService: ScreenService,
   ) {}
+
+  ngOnInit(): void {
+    this.maxFileNumber = -1;
+    this.subscriptions.add(this.loadList().subscribe());
+    this.subscriptions.add(this.files$.subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  suggest({ isAdd, file }): void {
+    if (isAdd) {
+      this.store.add(file.setAttached(isAdd));
+    } else {
+      file.setAttached(false);
+      const storedFile = this.files
+        .getValue()
+        .find((sFile) => sFile.item.mnemonic === file.item.mnemonic);
+      this.store.remove(storedFile);
+    }
+  }
 
   resetLimits(): void {
     const limits = { ...this.overLimits.getValue() };
@@ -433,33 +463,15 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;
   }
 
-  loadImage(file: FileItem): Observable<FileItem> {
-    return !file.isImage
-      ? of(file)
-      : this.terabyteService.downloadFile(file.createUploadedParams()).pipe(
-          catchError((e) => {
-            return throwError(e);
-          }),
-          map((blob: Blob) =>
-            file.setRaw(new File([blob], file.raw.name, { type: file.raw.type })),
-          ),
-        );
-  }
-
   loadList(): Observable<FileItem> {
     return this.getListStream(this.objectId).pipe(
-      map((file) => new FileItem(FileItemStatus.uploaded, null, file)),
-      mergeMap((file: FileItem) => this.loadImage(file)),
+      map(
+        (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
+      ),
       tap((file: FileItem) => this.store.add(file)),
       tap((file: FileItem) => this.incrementLimits(file)),
       tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
     );
-  }
-
-  ngOnInit(): void {
-    this.maxFileNumber = -1;
-    this.subscriptions.add(this.loadList().subscribe());
-    this.subscriptions.add(this.files$.subscribe());
   }
 
   polyfillFile(file: File): File {
@@ -541,33 +553,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           .toLowerCase();
   }
 
-  checkMaxTotalAmount(amountFiles: number = 1): boolean {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
-      amountFiles,
-      this.data.uploadId,
-    );
-    return !(!isValid && reason === CheckFailedReasons.total);
-  }
-
-  checkMaxAmount(amountFiles: number = 1): boolean {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
-      amountFiles,
-      this.data.uploadId,
-    );
-    return !(!isValid && reason === CheckFailedReasons.uploaderRestriction);
-  }
-
-  checkAmount(amountFiles: number = 1): boolean {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(
-      amountFiles,
-      this.data.uploadId,
-    );
-    return !(
-      !isValid &&
-      (reason === CheckFailedReasons.total || reason === CheckFailedReasons.uploaderRestriction)
-    );
-  }
-
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {
     if (isDeleted) {
       this.fileUploadService.updateFilesAmount(-1, this.loadData.uploadId);
@@ -578,7 +563,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+  attachUploadedFiles(): void {
+    this.modal.openModal(AttachUploadedFilesModalComponent, {
+      text: 'attachUploadedFiles',
+      showCloseButton: false,
+      showCrossButton: true,
+      filesList: this.files.getValue(),
+    });
   }
 }

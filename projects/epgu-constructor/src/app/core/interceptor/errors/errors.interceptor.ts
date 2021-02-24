@@ -20,6 +20,7 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 import { LocationService } from '../../services/location/location.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
+import { ConfigService } from '../../services/config/config.service';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/400-error';
 
 @Injectable()
@@ -28,6 +29,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     private modalService: ModalService,
     private locationService: LocationService,
     private navigationService: NavigationService,
+    private configService: ConfigService,
   ) {}
 
   public intercept(
@@ -56,6 +58,8 @@ export class ErrorsInterceptorService implements HttpInterceptor {
             this.navigationService.redirectToLK();
           }
         });
+      } else if (status === 500 && url.includes(this.configService.suggestionsApiUrl)) {
+        return throwError(httpErrorResponse);
       } else {
         this.showModal(COMMON_ERROR_MODAL_PARAMS).then();
       }

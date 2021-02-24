@@ -1,11 +1,12 @@
 import {
   ApplicationRef,
   ComponentFactoryResolver,
+  ComponentRef,
   Injectable,
   Injector,
   Renderer2,
   RendererFactory2,
-  Type
+  Type,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -19,11 +20,24 @@ export class ModalService {
   constructor(
     private cfr: ComponentFactoryResolver,
     private rendererFactory: RendererFactory2,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public openModal<T, K = any>(modalComponent: Type<any>, modalParameters?: K): Observable<T> {
+    const componentRef = this.createModal(modalComponent, modalParameters);
+    const modalResult = new Subject<T>();
+
+    componentRef.instance['detachView'] = (data): void => {
+      this.appRef.detachView(componentRef.hostView);
+      modalResult.next(data);
+    };
+
+    return modalResult.asObservable().pipe(take(1));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public createModal<R, K = any>(modalComponent: Type<R>, modalParameters?: K): ComponentRef<R> {
     if (HelperService.isTouchDevice()) {
       document.body.style.overflow = 'hidden';
       const screenResolver = document.querySelector<HTMLElement>(
@@ -34,10 +48,7 @@ export class ModalService {
         screenResolver.style.visibility = 'hidden';
       }
     }
-
-    const modalResult = new Subject<T>();
-
-    const componentFactory = this.cfr.resolveComponentFactory(modalComponent);
+    const componentFactory = this.cfr.resolveComponentFactory<R>(modalComponent);
     const modalContainer = document.getElementById('modal-container');
     const modalRootNode = this.renderer.createElement('div');
     this.renderer.addClass(modalRootNode, 'modal-overlay');
@@ -48,13 +59,7 @@ export class ModalService {
     Object.assign(componentRef.instance, modalParameters);
     this.appRef.attachView(componentRef.hostView);
     componentRef.changeDetectorRef.detectChanges();
-
-    componentRef.instance['detachView'] = (data): void => {
-      this.appRef.detachView(componentRef.hostView);
-      modalResult.next(data);
-    };
-
-    return modalResult.asObservable().pipe(take(1));
+    return componentRef;
   }
 
   public registerInjector(injector: Injector): void {
