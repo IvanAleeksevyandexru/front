@@ -55,7 +55,7 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
   }
 
   /**
-   * Фasdfasdfasdf
+   * Форматируем данные перед отправкой
    * @param changes - данные на отправку
    */
   changeComponentsList(changes: CustomComponentOutputData): void {
