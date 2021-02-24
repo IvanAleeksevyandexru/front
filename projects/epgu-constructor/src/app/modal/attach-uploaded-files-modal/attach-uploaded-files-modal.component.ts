@@ -8,7 +8,10 @@ import {
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UploadedFile } from '../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
-import { ISuggestionItemList } from '../../core/services/autocomplete/autocomplete.inteface';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/constants/dates';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
@@ -28,8 +31,10 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   @Input() filesList: FileItem[];
   title = 'Ранее загруженные файлы';
   componentId = this.screenService.component?.id || null;
+  suggestions: { [key: string]: ISuggestionItem } = {};
   suggestions$ = this.screenService.suggestions$;
   suggestionsFiles: FileItem[] = [];
+  suggestionsFilesList: ISuggestionItemList[] = [];
   suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
@@ -49,9 +54,11 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   ngOnInit(): void {
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      const suggestionsFilesList: ISuggestionItemList[] =
-        (suggestions && suggestions[this.componentId]?.list) || [];
-      const suggestionsUploadedFiles = this.getParsedSuggestionsUploadedFiles(suggestionsFilesList);
+      this.suggestions = suggestions;
+      this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
+      const suggestionsUploadedFiles = this.getParsedSuggestionsUploadedFiles(
+        this.suggestionsFilesList,
+      );
       this.suggestionsFiles = this.getSuggestionFiles(suggestionsUploadedFiles);
       this.suggestionsFilesGroupByDate = this.getSuggestionsFilesGroupedByDate(
         this.suggestionsFiles,
@@ -64,6 +71,11 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .subscribe(() => {
         this.closeModal();
       });
+
+    this.eventBusService
+      .on('fileDeletedEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileItem) => this.handleFileDeleted(payload));
   }
 
   public previewFile(file: FileItem): void {
@@ -76,6 +88,22 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   public handleImgError(event: Event): void {
     const target = event.target as HTMLImageElement;
     target.src = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/image-error.svg`;
+  }
+
+  private handleFileDeleted(file: FileItem): void {
+    // TODO: доделать, когда будет готова ручка на беке микросервиса саджестов
+    const deletedFileId = file.item.fileUid;
+    const updatedSuggestionsFilesList = this.suggestionsFilesList.map((item) => {
+      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
+      parsedValue?.uploads.filter(
+        (uploadedFile: UploadedFile) => uploadedFile.fileUid !== deletedFileId,
+      );
+      const newItem = { ...item, originalItem: JSON.stringify(parsedValue) };
+      return newItem;
+    });
+    this.suggestions[this.componentId].list = updatedSuggestionsFilesList;
+    const result = this.suggestions[this.componentId];
+    // this.autocompleteApiService.updateFile(result).subscribe();
   }
 
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
