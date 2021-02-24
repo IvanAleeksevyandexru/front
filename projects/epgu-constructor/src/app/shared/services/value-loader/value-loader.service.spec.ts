@@ -146,20 +146,20 @@ describe('ValueLoaderService', () => {
   });
 
   describe('loadValueFromCachedAnswer() for refDate', () => {
-    it('should be return minDate, maxDate if has minRefDate, maxDateRef', () => {
-      const cachedAnswers: CachedAnswers = {
-        pd1: {
-          visited: true,
-          disabled: false,
-          value: '12.12.2020',
-        },
-        pd2: {
-          visited: true,
-          disabled: false,
-          value: '{date: 15.12.2020}',
-        },
-      };
+    const cachedAnswers: CachedAnswers = {
+      pd1: {
+        visited: true,
+        disabled: false,
+        value: '12.12.2020',
+      },
+      pd2: {
+        visited: true,
+        disabled: false,
+        value: '{date: 15.12.2020}',
+      },
+    };
 
+    it('should be return minDate, maxDate if has minRefDate, maxDateRef', () => {
       const componentMock: ComponentDto = {
         id: 'ai4',
         type: '',
@@ -194,6 +194,38 @@ describe('ValueLoaderService', () => {
       const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([component]);
     });
+
+    it('should be return minDate, maxDate for DocInput', () => {
+      const componentMock: any = {
+        id: 'zp1',
+        type: 'DocInput',
+        label: 'Загранпаспорт',
+        attrs: {
+          fields: {
+            date: {
+              type: 'date',
+              label: 'Дата выдачи',
+              required: true,
+              attrs: {
+                minDateRef: 'pd1.value',
+                maxDateRef: 'pd2.value.date',
+              }
+            }
+          }
+        },
+        value: '',
+        required: true,
+        valueFromCache: false,
+      };
+
+      const component = { ...componentMock, presetValue: '' };
+      component.attrs.fields.date.attrs.maxDate = '15.12.2020';
+      component.attrs.fields.date.attrs.minDate = '12.12.2020';
+
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      expect(componentDtoIS).toEqual([component]);
+    });
+
   });
 
   it('should be created', () => {

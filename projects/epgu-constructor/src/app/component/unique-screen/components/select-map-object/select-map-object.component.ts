@@ -61,6 +61,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private componentValue: ComponentValue;
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
+  private needToAutoCenterAllPoints = false;
+
+  private DEFAULT_ZOOM = 9;
 
   private initData$ = combineLatest([
     this.screenService.component$,
@@ -166,6 +169,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
+    this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
     this.componentValue = JSON.parse(this.data?.value || '{}');
     this.screenStore = this.screenService.getStore();
   }
@@ -181,6 +185,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
       } else if (this.needToAutoFocus) {
         this.selectClosestMapObject();
+      } else if (this.needToAutoCenterAllPoints) {
+        this.centerAllPoints();
       }
     }
   }
@@ -410,5 +416,22 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       }
     });
     this.selectMapObjectService.centeredPlaceMark(chosenMapObject.center, chosenMapObject.idForMap);
+  }
+
+  private centerAllPoints(): void {
+    const bounds = this.yaMapService.map.geoObjects.getBounds();
+    if (bounds) {
+      this.yaMapService.map
+        .setBounds(bounds, {
+          checkZoomRange: true,
+        })
+        .then(() => {
+          const zoom = this.yaMapService.map.getZoom();
+          // Уменьшаем зум в случае если точки близко или точка одна
+          if (zoom > this.DEFAULT_ZOOM) {
+            this.yaMapService.map.setZoom(this.DEFAULT_ZOOM);
+          }
+        });
+    }
   }
 }
