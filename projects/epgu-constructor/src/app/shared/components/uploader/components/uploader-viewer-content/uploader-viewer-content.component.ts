@@ -10,7 +10,7 @@ import {
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ViewerService } from '../../services/viewer/viewer.service';
