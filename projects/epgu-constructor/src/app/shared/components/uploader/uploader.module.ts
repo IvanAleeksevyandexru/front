@@ -11,6 +11,7 @@ import { ModalService } from '../../../modal/modal.service';
 import { ViewerService } from './services/viewer/viewer.service';
 
 import { ZoomModule } from '../zoom/zoom.module';
+import { UploaderViewerContentComponent } from './components/uploader-viewer-content/uploader-viewer-content.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ZoomModule } from '../zoom/zoom.module';
     UploaderManagerComponent,
     UploaderManagerItemComponent,
     UploaderViewerComponent,
+    UploaderViewerContentComponent,
   ],
 
   providers: [ModalService, ViewerService],
