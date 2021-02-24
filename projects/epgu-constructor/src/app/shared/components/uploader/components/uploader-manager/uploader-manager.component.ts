@@ -28,7 +28,7 @@ export class UploaderManagerComponent {
   @Input() set list(items: FileItem[]) {
     this.listItems = items;
     this.viewer.update(
-      FilesCollection.suggest,
+      FilesCollection.uploader,
       items.filter(
         (item) =>
           (item.status === FileItemStatus.error &&
@@ -66,6 +66,6 @@ export class UploaderManagerComponent {
   constructor(private viewer: ViewerService, private unsubscribeService: UnsubscribeService) {}
 
   view(file: FileItem): void {
-    this.viewer.open(FilesCollection.suggest, file.id).pipe(take(1)).subscribe();
+    this.viewer.open(FilesCollection.uploader, file.id).pipe(take(1)).subscribe();
   }
 }
