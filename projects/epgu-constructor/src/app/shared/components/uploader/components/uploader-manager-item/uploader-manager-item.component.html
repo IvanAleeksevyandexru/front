@@ -99,15 +99,6 @@
     >
       {{ statusText[status] }}
     </div>
-    <button
-      *ngIf="
-        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading
-      "
-      (click)="viewAction()"
-      class="uploader-manager-item__button view_button"
-    >
-      Посмотреть
-    </button>
   </div>
 </div>
 <div *ngIf="isError" class="uploader-manager-item__error">
