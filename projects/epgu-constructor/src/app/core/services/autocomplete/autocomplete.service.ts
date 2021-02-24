@@ -301,7 +301,7 @@ export class AutocompleteService {
   private prepareValue(value: string): string {
     if (this.utilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
-      if (this.repeatableComponents.length) {
+      if (this.repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];
       }
       value = parsedValue['text'];
