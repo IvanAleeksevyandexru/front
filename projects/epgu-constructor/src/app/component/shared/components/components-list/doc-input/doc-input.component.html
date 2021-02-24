@@ -46,6 +46,7 @@
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.series]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
+        (selectSuggest)="selectSuggest.emit($event)"
       ></epgu-constructor-masked-input>
       <ng-template #plainInputSeries>
         <epgu-constructor-constructor-plain-input
@@ -61,6 +62,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
+          (selectSuggest)="selectSuggest.emit($event)"
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-constructor-helper-text
@@ -95,6 +97,7 @@
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.number]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
+        (selectSuggest)="selectSuggest.emit($event)"
       ></epgu-constructor-masked-input>
       <ng-template #plainInputNumber>
         <epgu-constructor-constructor-plain-input
@@ -110,6 +113,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
+          (selectSuggest)="selectSuggest.emit($event)"
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-constructor-helper-text
@@ -175,6 +179,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
+          (selectSuggest)="selectSuggest.emit($event)"
         ></epgu-constructor-masked-input>
         <ng-template #plainInputSeries>
           <epgu-constructor-constructor-plain-input
@@ -190,6 +195,7 @@
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.series]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
+            (selectSuggest)="selectSuggest.emit($event)"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
         <epgu-constructor-helper-text
@@ -225,6 +231,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
+          (selectSuggest)="selectSuggest.emit($event)"
         ></epgu-constructor-masked-input>
         <ng-template #plainInputNumber>
           <epgu-constructor-constructor-plain-input
@@ -240,6 +247,7 @@
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.number]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
+            (selectSuggest)="selectSuggest.emit($event)"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
         <epgu-constructor-helper-text
