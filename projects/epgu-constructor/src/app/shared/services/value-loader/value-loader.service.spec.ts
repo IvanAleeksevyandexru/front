@@ -197,33 +197,21 @@ describe('ValueLoaderService', () => {
 
     it('should be return minDate, maxDate for DocInput', () => {
       const componentMock: any = {
-        id: 'ai4',
-        type: '',
-        label: '',
+        id: 'zp1',
+        type: 'DocInput',
+        label: 'Загранпаспорт',
         attrs: {
-          components: [
-            {
-              id: 'zp1',
-              type: 'DocInput',
-              label: 'Загранпаспорт',
-              attrs: {
-                fields: {
-                  date: {
-                    type: 'date',
-                    label: 'Дата выдачи',
-                    required: true,
-                    attrs: {
-                      minDateRef: 'pd1.value',
-                      maxDateRef: 'pd2.value.date',
-                    }
-                  }
-                }
-              },
-              value: '',
+          fields: {
+            date: {
+              type: 'date',
+              label: 'Дата выдачи',
               required: true,
-              valueFromCache: false,
-            },
-          ],
+              attrs: {
+                minDateRef: 'pd1.value',
+                maxDateRef: 'pd2.value.date',
+              }
+            }
+          }
         },
         value: '',
         required: true,
@@ -231,8 +219,8 @@ describe('ValueLoaderService', () => {
       };
 
       const component = { ...componentMock, presetValue: '' };
-      component.attrs.maxDate = '15.12.2020';
-      component.attrs.minDate = '12.12.2020';
+      component.attrs.fields.date.attrs.maxDate = '15.12.2020';
+      component.attrs.fields.date.attrs.minDate = '12.12.2020';
 
       const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([component]);
