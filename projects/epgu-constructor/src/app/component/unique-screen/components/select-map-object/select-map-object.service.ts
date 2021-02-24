@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConfigService } from '../../../../core/services/config/config.service';
@@ -8,11 +8,12 @@ import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.inte
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
-  DictionaryYMapItem
+  DictionaryYMapItem,
 } from '../../../shared/services/dictionary-api/dictionary-api.types';
 import { filter } from 'rxjs/operators';
 import {
-  ComponentBaloonContentDto, ComponentDictionaryFilterDto
+  ComponentBaloonContentDto,
+  ComponentDictionaryFilterDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 export interface SelectMapComponentAttrs {
@@ -24,7 +25,6 @@ export interface SelectMapComponentAttrs {
 
 @Injectable()
 export class SelectMapObjectService implements OnDestroy {
-
   public dictionary: DictionaryResponseForYMap;
   public filteredDictionaryItems = [];
   public selectedValue = new Subject();
@@ -59,9 +59,15 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public getCoordsByAddress(items: Array<DictionaryItem>): Observable<IGeoCoordsResponse> {
     const path = `${this.config.externalApiUrl}/address/resolve`;
-    return this.http.post<IGeoCoordsResponse>(path, {
-      address: items.map(item => item.attributeValues[this.componentAttrs.attributeNameWithAddress]),
-    });
+    if (items.length) {
+      return this.http.post<IGeoCoordsResponse>(path, {
+        address: items.map(
+          (item) => item.attributeValues[this.componentAttrs.attributeNameWithAddress],
+        ),
+      });
+    } else {
+      return of({ coords: [], error: '' });
+    }
   }
 
   /**
@@ -71,7 +77,7 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse): void {
     const hashMap = {};
-    coords.coords.forEach(coord => {
+    coords.coords.forEach((coord) => {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
     });
     this.dictionary.items.forEach((item, index) => {
@@ -80,7 +86,8 @@ export class SelectMapObjectService implements OnDestroy {
       if (coords) {
         item.center = [coords.longitude, coords.latitude];
       }
-      item.baloonContent = this.getMappedAttrsForBaloon(this.componentAttrs.baloonContent, item) || [];
+      item.baloonContent =
+        this.getMappedAttrsForBaloon(this.componentAttrs.baloonContent, item) || [];
     });
     this.filteredDictionaryItems = this.dictionary.items;
   }
@@ -116,7 +123,10 @@ export class SelectMapObjectService implements OnDestroy {
 
     this.objectManager = this.createMapsObjectManager();
     this.objectManager.objects.options.set(this.icons.blue);
-    this.objectManager.objects.options.set('balloonContentLayout', this.getCustomBalloonContentLayout());
+    this.objectManager.objects.options.set(
+      'balloonContentLayout',
+      this.getCustomBalloonContentLayout(),
+    );
     this.objectManager.objects.options.set('balloonLayout', this.getCustomBalloonContentLayout());
     this.objectManager.add(objects);
     map.geoObjects.removeAll();
@@ -150,14 +160,17 @@ export class SelectMapObjectService implements OnDestroy {
           // Таймаут нужен что бы балун всегда нормально открывался
           // по непонятным причинам без таймаута балун иногда не открывается
           setTimeout(() => {
-            serviceContext.objectManager && serviceContext.objectManager.objects.setObjectOptions(objectId, {
-              iconImageHref: serviceContext.icons.red.iconImageHref
-            });
+            serviceContext.objectManager &&
+              serviceContext.objectManager.objects.setObjectOptions(objectId, {
+                iconImageHref: serviceContext.icons.red.iconImageHref,
+              });
             serviceContext.objectManager.objects.balloon.open(objectId);
             serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
             serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
             serviceContext.mapOpenedBalloonId = objectId;
-            serviceContext.selectedValue.next(serviceContext.objectManager.objects.getById(objectId).properties.res);
+            serviceContext.selectedValue.next(
+              serviceContext.objectManager.objects.getById(objectId).properties.res,
+            );
           }, 200);
         });
       }
@@ -171,9 +184,13 @@ export class SelectMapObjectService implements OnDestroy {
   public searchMapObject(searchString: string): void {
     const searchStringLower = searchString.toLowerCase();
     this.filteredDictionaryItems = this.dictionary.items.filter((item) => {
-      const address = (item.attributeValues[this.componentAttrs.attributeNameWithAddress])?.toLowerCase();
-      return item.title?.toLowerCase().includes(searchStringLower)
-        || address?.includes(searchStringLower);
+      const address = item.attributeValues[
+        this.componentAttrs.attributeNameWithAddress
+      ]?.toLowerCase();
+      return (
+        item.title?.toLowerCase().includes(searchStringLower) ||
+        address?.includes(searchStringLower)
+      );
     });
     this.placeOjectsOnMap(this.yaMapService.map);
   }
@@ -239,9 +256,9 @@ export class SelectMapObjectService implements OnDestroy {
    * @param item
    */
   private getMappedAttrsForBaloon(
-    attrs: Array<{ name: string, label: string }>,
-    item: DictionaryYMapItem
-  ): Array<{ name: string, label: string }> {
+    attrs: Array<{ name: string; label: string }>,
+    item: DictionaryYMapItem,
+  ): Array<{ name: string; label: string }> {
     const res = [];
     attrs.forEach((attr) => {
       let itemValue = item.attributeValues[attr.name];
@@ -269,7 +286,7 @@ export class SelectMapObjectService implements OnDestroy {
       geoObjectIconColor: '#0D69AF',
       viewportMargin: 300,
       zoomMargin: 64,
-      clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout()
+      clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
     };
 
     const objectManager = new this.ymaps.ObjectManager(OMSettings);
@@ -284,7 +301,7 @@ export class SelectMapObjectService implements OnDestroy {
 
     objectManager.objects.balloon.events.add('userclose', () => {
       objectManager.objects.setObjectOptions(this.activePlacemarkId, {
-        iconImageHref: this.icons.blue.iconImageHref
+        iconImageHref: this.icons.blue.iconImageHref,
       });
       this.selectedValue.next(null);
     });
