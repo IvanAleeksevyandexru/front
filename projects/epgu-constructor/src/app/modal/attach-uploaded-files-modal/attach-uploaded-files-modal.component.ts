@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { take, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
+  ErrorActions,
   FileItem,
   FileItemStatus,
 } from '../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
@@ -85,9 +86,10 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .subscribe();
   }
 
-  public handleImgError(event: Event): void {
+  public handleImgError(event: Event, file: FileItem): void {
     const target = event.target as HTMLImageElement;
-    target.src = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/image-error.svg`;
+    target.src = `${this.basePath}${this.iconsTypes.error}.svg`;
+    file.setError({ type: ErrorActions.addInvalidFile, text: 'Что-то пошло не так' });
   }
 
   private handleFileDeleted(file: FileItem): void {

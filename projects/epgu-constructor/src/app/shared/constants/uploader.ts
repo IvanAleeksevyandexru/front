@@ -22,4 +22,5 @@ export const ICONS_TYPES = {
   xls: 'XLS',
   xml: 'XML',
   zip: 'ZIP',
+  error: 'Error'
 };
