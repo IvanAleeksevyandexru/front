@@ -18,6 +18,7 @@ export interface PassportFields {
   placeholder?: string;
   maxlength?: number;
   minlength?: number;
+  suggestionId?: string;
 }
 
 export type PassportFormFields = { rfPasportNumber: string; rfPasportSeries: string };

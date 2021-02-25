@@ -19,7 +19,6 @@ import {
 } from '../../../../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenService } from '../../../../../screen/screen.service';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ComponentListFormService } from '../services/component-list-form/component-list-form.service';
 import {
@@ -29,6 +28,7 @@ import {
   DocInputFieldsTypes,
   DocInputFormFields,
 } from './doc-input.types';
+import { prepareClassifiedSuggestionItems } from '../../../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -40,12 +40,10 @@ import {
 export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() data: AbstractControl | DocInputControl;
   @Input() suggestions: ISuggestionItem;
-
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
     ISuggestionItem | ISuggestionItemList
   >();
 
-  suggestions$ = this.screenService.suggestions$;
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;
   fields: { [fieldName: string]: DocInputField };
@@ -68,7 +66,6 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
-    private screenService: ScreenService,
   ) {}
 
   ngOnInit(): void {
@@ -87,30 +84,8 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.suggestions.currentValue) {
-      this.prepareClassifiedSuggestionItems(this.suggestions);
+      this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(this.suggestions);
     }
-  }
-
-  prepareClassifiedSuggestionItems(suggestions): void {
-    const { mnemonic } = suggestions;
-    const parsedOriginalItem = JSON.parse(suggestions.list[0].originalItem);
-    const { id } = suggestions.list[0];
-    this.classifiedSuggestionItems = Object.keys(parsedOriginalItem).reduce((acc, fieldName) => {
-      const suggestItem = {
-        [fieldName]: {
-          mnemonic: fieldName,
-          list: [
-            {
-              value: parsedOriginalItem[fieldName],
-              mnemonic: `${mnemonic}.${fieldName}`,
-              id,
-            },
-          ],
-        },
-      };
-
-      return { ...acc, ...suggestItem };
-    }, {});
   }
 
   /**
