@@ -307,6 +307,8 @@
         <epgu-constructor-passport
           [formControl]="$any(componentData.get('value'))"
           [attrs]="componentData.value?.attrs"
+          [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+          (selectSuggest)="suggestHandle($event)"
         >
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
