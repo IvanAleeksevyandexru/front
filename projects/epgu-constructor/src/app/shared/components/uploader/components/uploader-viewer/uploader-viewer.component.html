@@ -6,8 +6,8 @@
     </h4>
   </div>
   <div class="uploader-viewer__body">
-    <div class="divider"></div>
     <epgu-constructor-uploader-viewer-content
+      *ngIf="selectedItem"
       (suggest)="suggest.emit($event)"
       (delete)="delete.emit($event)"
       (download)="download.emit($event)"
@@ -15,7 +15,7 @@
       (next)="next.emit($event)"
       (prev)="prev.emit($event)"
       [type]="type"
+      [selectedItem]="selectedItem"
     ></epgu-constructor-uploader-viewer-content>
   </div>
-  <div class="uploader-viewer__footer"></div>
 </div>

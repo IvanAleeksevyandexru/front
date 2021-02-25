@@ -3,15 +3,16 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-import { filter, tap } from 'rxjs/operators';
-import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import {
+  FileItem,
+  FileItemStatus,
+} from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { ZoomComponent } from '../../../zoom/zoom.component';
@@ -24,7 +25,7 @@ import { ZoomEvent } from '../../../zoom/typings';
   styleUrls: ['./uploader-viewer-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderViewerContentComponent implements OnInit {
+export class UploaderViewerContentComponent {
   @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
 
@@ -34,8 +35,9 @@ export class UploaderViewerContentComponent implements OnInit {
   @Output() next = new EventEmitter<FilesCollection>();
   @Output() prev = new EventEmitter<FilesCollection>();
   @Output() moveZoom = new EventEmitter<boolean>();
-
-  selectedItem: Observable<ViewerInfo>;
+  @Input() set selectedItem(info: ViewerInfo) {
+    this.init(info);
+  }
 
   item: FileItem;
   imageURL: string;
@@ -44,14 +46,17 @@ export class UploaderViewerContentComponent implements OnInit {
   position: number;
   zoom = new BehaviorSubject<ZoomEvent>({ zoom: 1, max: 1 });
   date: number;
+  isConfirm = false;
 
   basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/`;
   arrowIcon = `${this.basePath}arrow-circle.svg`;
   iconsType = iconsTypes;
   selectedIconType: string;
   isPDF = false;
+  isError = false;
 
   baseFileTypeIconPath = `${this.basePath}file-types/`;
+  errorIcon = 'Error';
   constructor(private viewerService: ViewerService, private config: ConfigService) {}
 
   zoomMoveEnd(): void {
@@ -63,13 +68,15 @@ export class UploaderViewerContentComponent implements OnInit {
       $event.preventDefault();
     }
   }
-  init({ file, size, position }): void {
+  init({ file, size, position }: ViewerInfo): void {
+    this.isError = file.status === FileItemStatus.error;
+    this.isConfirm = false;
     this.size = size;
     this.position = position;
     this.item = file;
     this.zoomComponent?.resetZoom();
     this.imageURL = file.isImage ? file.urlToFile() : null;
-    this.date = new Date(file?.item?.udapted || file?.item?.created).getTime();
+    this.date = new Date(file?.item?.updated || file?.item?.created).getTime();
     const extension = file.raw.name.split('.').pop().toLowerCase();
     this.isPDF = extension === 'pdf';
     this.selectedIconType = this.iconsType[extension] ?? 'TXT';
@@ -95,8 +102,17 @@ export class UploaderViewerContentComponent implements OnInit {
   }
 
   deleteAction(): void {
-    if (window.confirm('Удалить навсегда?')) {
-      this.delete.emit(this.item);
+    this.delete.emit(this.item);
+  }
+
+  cancelAction(): void {
+    this.isConfirm = false;
+  }
+  confirmAction(): void {
+    if (this.type === FilesCollection.suggest) {
+      this.isConfirm = true;
+    } else {
+      this.deleteAction();
     }
   }
 
@@ -106,12 +122,5 @@ export class UploaderViewerContentComponent implements OnInit {
 
   suggestAction(isAdd: boolean): void {
     this.suggest.emit({ file: this.item, isAdd });
-  }
-
-  ngOnInit(): void {
-    this.selectedItem = this.viewerService.getSelectedFileByType(this.type).pipe(
-      filter((info) => !!info),
-      tap((info) => this.init(info)),
-    );
   }
 }

@@ -6,13 +6,16 @@
     flex-direction: column;
     @include modal-body();
     width: 799px;
-    height: fit-content;
+    height: calc(100vh - 192px);
+    min-height: 446px;
+    max-height: calc(100vh - 192px);
     padding: 24px 0;
     border-radius: 12px;
 
     @include tablets-down {
       width: 100%;
       height: 100%;
+      max-height: 100%;
       border-radius: 0;
     }
 
@@ -21,12 +24,15 @@
     }
 
     &__header {
-      padding-bottom: 24px;
       margin: 0 24px;
-
+      display: flex;
+      align-items: center;
+      .modal__title {
+        flex-grow: 1;
+        @include typ-h3;
+      }
       @include phones-down {
         margin: 0 24px;
-        border-bottom: 1px solid $color-divider;
       }
     }
 

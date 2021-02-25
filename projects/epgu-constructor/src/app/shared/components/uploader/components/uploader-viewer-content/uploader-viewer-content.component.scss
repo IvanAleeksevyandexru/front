@@ -4,13 +4,14 @@
   padding-top: 24px;
   display: flex;
   flex-direction: column;
-  flex-shrink: 1;
+  flex-grow: 1;
+  max-height: 100%;
+  position: relative;
 }
 
 .file-viewer {
-  //min-height: 362px;
-  //max-height: 611px;
-  height: 611px;
+  flex-grow: 1;
+  height: 1px;
   width: 100%;
   background-color: $color-input;
   display: flex;
@@ -29,9 +30,17 @@
     flex-direction: column;
     cursor: default;
     img {
-      margin-bottom: 5px;
+      margin-bottom: 16px;
     }
-
+    .file-viewer__error-title {
+      color: $color-tela-rossa;
+      @include typ-plain-text;
+      margin-bottom: 4px;
+    }
+    .file-viewer__error-description {
+      color: $color-summer-night;
+      @include typ-plain-small;
+    }
     &_link {
       cursor: pointer;
     }
@@ -149,6 +158,55 @@
     }
     &.detach {
       background-color: $color-active-item;
+    }
+  }
+}
+.divider {
+  margin-bottom: 24px;
+}
+
+.viewer__confirmation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px;
+  background-color: rgba(11, 31, 51, 0.96);
+  color: $color-white;
+  text-align: center;
+  border-radius: 8px;
+  .viewer__confirmation-title {
+    @include typ-h5;
+  }
+  .viewer__confirmation-description {
+    margin-top: 8px;
+    @include typ-plain-small;
+  }
+  .viewer__confirmation-buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    .viewer__confirmation-button {
+      margin-right: 16px;
+      padding: 14px 24px;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      @include typ-plain-text;
+      color: $color-white;
+      &_cancel {
+        background-color: transparent;
+
+        border: 2px solid $color-white;
+      }
+      &_confirm {
+        background-color: $color-blu-digitale;
+      }
+    }
+    .viewer__confirmation-button:nth-last-of-type(1) {
+      margin-right: 0;
     }
   }
 }
