@@ -20,6 +20,7 @@ import { ConfigService } from '../../core/services/config/config.service';
 import { ICONS_TYPES } from '../../shared/constants/uploader';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection } from '../../shared/components/uploader/data';
+import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -49,6 +50,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
     private viewerService: ViewerService,
+    private autocompleteApiService: AutocompleteApiService,
   ) {
     super(injector);
   }
@@ -93,19 +95,27 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   private handleFileDeleted(file: FileItem): void {
-    // TODO: доделать, когда будет готова ручка на беке микросервиса саджестов
     const deletedFileId = file.item.fileUid;
+    let valueGroupId: number;
+    let mnemonic: string;
+    let newValue: string;
+
     const updatedSuggestionsFilesList = this.suggestionsFilesList.map((item) => {
       const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
-      parsedValue?.uploads.filter(
-        (uploadedFile: UploadedFile) => uploadedFile.fileUid !== deletedFileId,
+      const fileToDeleteIdx = parsedValue.uploads[0].value.findIndex(
+        (uploadedFileValue: UploadedFile) => uploadedFileValue.fileUid === deletedFileId,
       );
-      const newItem = { ...item, originalItem: JSON.stringify(parsedValue) };
+      if (fileToDeleteIdx > -1) {
+        parsedValue.uploads[0].value.splice(fileToDeleteIdx, 1);
+        valueGroupId = item.id;
+        mnemonic = item.mnemonic;
+      }
+      newValue = JSON.stringify(parsedValue);
+      const newItem = { ...item, originalItem: newValue };
       return newItem;
     });
     this.suggestions[this.componentId].list = updatedSuggestionsFilesList;
-    const result = this.suggestions[this.componentId];
-    // this.autocompleteApiService.updateFile(result).subscribe();
+    this.autocompleteApiService.updateSuggestionField(valueGroupId, mnemonic, newValue).subscribe();
   }
 
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
