@@ -14,7 +14,6 @@ import {
   FileItemStatus,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
-import { ViewerService } from '../../services/viewer/viewer.service';
 import { ZoomComponent } from '../../../zoom/zoom.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ZoomEvent } from '../../../zoom/typings';
@@ -57,7 +56,7 @@ export class UploaderViewerContentComponent {
 
   baseFileTypeIconPath = `${this.basePath}file-types/`;
   errorIcon = 'Error';
-  constructor(private viewerService: ViewerService, private config: ConfigService) {}
+  constructor(private config: ConfigService) {}
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);

@@ -9,12 +9,13 @@
     Убедитесь, что документ не просрочен, страницы хорошо видны, данные не прикрыты пальцами и не
     обрезаны. Это важно, чтобы заявление приняли.
   </div>
-  <div class="file-viewer {{ imageURL ? 'file-viewer__image' : '' }}">
+  <div [ngClass]="{ 'file-viewer__image': imageURL }" class="file-viewer">
     <button (click)="prevAction()" class="prev"><img [src]="arrowIcon" /></button>
     <button (click)="nextAction()" class="next"><img [src]="arrowIcon" /></button>
     <a
       *ngIf="!imageURL && !isError"
-      class="file-viewer__file {{ isPDF ? 'file-viewer__file_link' : '' }}"
+      [ngClass]="{ 'file-viewer__file_link': isPDF }"
+      class="file-viewer__file"
       (click)="open($event)"
       [href]="item.urlToFile() | safe: 'url'"
       target="_blank"
@@ -23,7 +24,8 @@
     /></a>
     <div
       *ngIf="!imageURL && isError"
-      class="file-viewer__file {{ isPDF ? 'file-viewer__file_link' : '' }}"
+      [ngClass]="{ 'file-viewer__file_link': isPDF }"
+      class="file-viewer__file"
     >
       <img [src]="baseFileTypeIconPath + errorIcon + '.svg'" alt="Ошибка" />
       <div class="file-viewer__error-title">Что-то пошло не так</div>
