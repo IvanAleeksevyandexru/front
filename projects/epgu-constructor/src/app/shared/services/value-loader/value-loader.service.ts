@@ -190,7 +190,20 @@ export class ValueLoaderService {
     return component;
   }
 
-  private getLimitDate(cachedAnswers: CachedAnswers, preset: string): string {
+  private getLimitDate(cachedAnswers: CachedAnswers, rawPresets: string): string {
+    const presets = this.getPresetsFromRawPresets(rawPresets);
+    for (let i = 0; i < presets.length; i++) {
+      const result = this.getLimitDateFromPreset(cachedAnswers, presets[i]);
+
+      if (result) {
+        return result;
+      }
+    }
+
+    return null;
+  }
+
+  private getLimitDateFromPreset(cachedAnswers: CachedAnswers, preset: string): string {
     const { path, id } = this.getPathFromPreset(preset);
     const cache = cachedAnswers[id].value;
 
@@ -210,6 +223,10 @@ export class ValueLoaderService {
         return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
       }
     }
+  }
+
+  private getPresetsFromRawPresets(preset: string): Array<string> {
+    return preset.split('||').map(ref => ref.trim());
   }
 
   private getPathFromPreset(value: string): { id: string; path: string } {
