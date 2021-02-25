@@ -38,9 +38,10 @@ export class AutocompleteService {
     private utilsService: UtilsService,
     private datesToolsService: DatesToolsService,
     private currentAnswersService: CurrentAnswersService,
-  ) {}
+  ) { }
 
-  public init(): void {
+  public init(isDisabled: boolean = false): void {
+    if (isDisabled) return;
     this.screenService.display$
       .pipe(
         filter((display) => display !== null),
@@ -99,7 +100,7 @@ export class AutocompleteService {
           <div class="suggest-item">
             <div>${value}</div>
             <div class="suggest-hint">${hints}</div>
-            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${mnemonic+':'+value+':'+id}">
+            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${mnemonic + ':' + value + ':' + id}">
             </button>
           </div>
           `;
@@ -116,18 +117,18 @@ export class AutocompleteService {
         );
       });
 
-      this.eventBusService
-        .on('suggestionDeleteEvent')
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((payload: ISuggestionItemList): void => {
-          let { mnemonic } = payload;
+    this.eventBusService
+      .on('suggestionDeleteEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: ISuggestionItemList): void => {
+        let { mnemonic } = payload;
 
-          if (this.suggestionGroupId) {
-            this.groupSuggestionsApiCall();
-          } else {
-            this.fieldsSuggestionsApiCall([mnemonic]);
-          }
-        });
+        if (this.suggestionGroupId) {
+          this.groupSuggestionsApiCall();
+        } else {
+          this.fieldsSuggestionsApiCall([mnemonic]);
+        }
+      });
   }
 
   /**
@@ -179,7 +180,7 @@ export class AutocompleteService {
   }
 
   private findComponentValue(component: ComponentDto, id: number, value: string): string {
-    const result = component &&  this.screenService.suggestions[component.id]?.list.find(item => {
+    const result = component && this.screenService.suggestions[component.id]?.list.find(item => {
       if (typeof id === 'number') {
         return item.id === id;
       } else if (item.originalItem.includes(value)) {

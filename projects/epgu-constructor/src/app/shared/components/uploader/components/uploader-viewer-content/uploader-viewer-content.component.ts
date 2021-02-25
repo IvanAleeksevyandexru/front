@@ -57,7 +57,7 @@ export class UploaderViewerContentComponent implements OnInit {
     private viewerService: ViewerService,
     private config: ConfigService,
     private eventBusService: EventBusService,
-    ) { }
+  ) {}
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);
@@ -100,6 +100,7 @@ export class UploaderViewerContentComponent implements OnInit {
   }
 
   deleteAction(): void {
+    // eslint-disable-no-alert
     if (window.confirm('Удалить навсегда?')) {
       this.delete.emit(this.item);
       this.eventBusService.emit('fileDeletedEvent', this.item);

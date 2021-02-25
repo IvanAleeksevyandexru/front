@@ -72,7 +72,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
-    this.autocompleteService.init();
+    this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
   }
 
   ngAfterViewInit(): void {

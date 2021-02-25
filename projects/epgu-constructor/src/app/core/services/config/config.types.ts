@@ -37,6 +37,7 @@ export type TimeSlotsApi = {
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
+ * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
  */
 export interface Config {
   apiUrl: string;
@@ -61,6 +62,7 @@ export interface Config {
   timeSlots?: TimeSlotsApi;
   disableUnderConstructionMode?: boolean;
   isSocialShareDisabled?: boolean;
+  isAutocompleteServiceDisabled?: boolean;
   addToCalendarUrl?: string;
 }
 
