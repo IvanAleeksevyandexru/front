@@ -193,8 +193,14 @@ export class ValueLoaderService {
   private getLimitDate(cachedAnswers: CachedAnswers, rawPresets: string): string {
     const presets = this.getPresetsFromRawPresets(rawPresets);
     for (let i = 0; i < presets.length; i++) {
-      return this.getLimitDateFromPreset(cachedAnswers, presets[i]);
+      const result = this.getLimitDateFromPreset(cachedAnswers, presets[i]);
+
+      if (result) {
+        return result;
+      }
     }
+
+    return null;
   }
 
   private getLimitDateFromPreset(cachedAnswers: CachedAnswers, preset: string): string {
