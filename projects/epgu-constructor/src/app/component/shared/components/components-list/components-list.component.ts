@@ -147,7 +147,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   private watchForFilters(components: Array<CustomComponent>): void {
     this.repository
-      .watchForFilters$(components)
+      .watchForFilters(components)
+      .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);

@@ -49,24 +49,16 @@ export class ComponentListRepositoryService {
     private toolsService: ComponentListToolsService,
   ) {}
 
-  watchForFilters$(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
+  watchForFilters(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
     return this.toolsService.filters$.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
-        const data: Array<Observable<CustomListReferenceData>> = [];
-
-        components.forEach((component: CustomComponent) => {
-          if (filters[component.id] !== undefined && likeDictionary(component.type)) {
-            const { dictionaryType, dictionaryOptions } = component.attrs;
-            const options: DictionaryOptions = dictionaryOptions
-              ? dictionaryOptions
-              : { pageNum: 0 };
-
-            options.filter = filters[component.id];
-            data.push(this.getDictionaries$(dictionaryType, component, options));
-          }
-        });
-
-        return forkJoin(data);
+        return forkJoin(
+          components.reduce(
+            (data: Array<Observable<CustomListReferenceData>>, component: CustomComponent) =>
+              this.getDictionariesByFilter(data, component, filters),
+            [],
+          ),
+        );
       }),
       tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference)),
     );
@@ -168,5 +160,21 @@ export class ComponentListRepositoryService {
     dropDowns[reference.component.id] = reference.data;
 
     this.dropDowns$.next(dropDowns);
+  }
+
+  private getDictionariesByFilter(
+    data: Array<Observable<CustomListReferenceData>>,
+    component: CustomComponent,
+    filters: ComponentDictionaryFilters,
+  ): Array<Observable<CustomListReferenceData>> {
+    if (filters[component.id] !== undefined && likeDictionary(component.type)) {
+      const { dictionaryType, dictionaryOptions } = component.attrs;
+      const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+
+      options.filter = filters[component.id];
+      data.push(this.getDictionaries$(dictionaryType, component, options));
+    }
+
+    return data;
   }
 }

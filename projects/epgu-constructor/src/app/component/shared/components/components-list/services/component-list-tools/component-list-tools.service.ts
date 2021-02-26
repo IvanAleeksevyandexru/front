@@ -431,6 +431,12 @@ export class ComponentListToolsService {
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }
 
+  private getValueFromComponentVal(componentVal: { id?: string } | string): string {
+    return (['string', 'boolean'].includes(typeof componentVal)
+      ? (componentVal as string)
+      : (componentVal as { id?: string })?.id);
+  }
+
   /**
    * Сравнивает значание в зависимости от типа
    * @param value - value из зависимого компонета
@@ -440,9 +446,7 @@ export class ComponentListToolsService {
     value: string | Array<string> | boolean,
     componentVal: { id?: string },
   ): boolean {
-    const componentValue = (['string', 'boolean'].includes(typeof componentVal)
-      ? componentVal
-      : componentVal?.id) as string;
+    const componentValue = this.getValueFromComponentVal(componentVal);
 
     if (value === EMPTY_VALUE) {
       return !componentValue;
@@ -464,9 +468,7 @@ export class ComponentListToolsService {
     filter: DictionaryFilters['filter'],
     componentVal: { id?: string },
   ): void {
-    const value = (['string', 'boolean'].includes(typeof componentVal)
-      ? componentVal
-      : componentVal?.id) as string;
+    const value = this.getValueFromComponentVal(componentVal);
 
     if (filter.simple) {
       filter.simple.value.asString = value;
