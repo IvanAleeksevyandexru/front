@@ -5,10 +5,6 @@
     text="previewFiles"
   >
     <div>
-      <p class="mb-24">
-        Вы можете снова прикрепить эти файлы к заявлению.<br />
-        Проверьте, чтобы они не были просрочены.
-      </p>
       <div *ngFor="let group of suggestionsFilesGroupByDate">
         <h4 class="mb-12 mt-24">{{ group[0] }}</h4>
         <div class="wrapper">

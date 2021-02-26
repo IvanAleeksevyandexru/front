@@ -120,7 +120,7 @@ export class AutocompleteService {
       .on('suggestionDeleteEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
-        let { mnemonic } = payload;
+        const { mnemonic } = payload;
 
         if (this.suggestionGroupId) {
           this.groupSuggestionsApiCall();

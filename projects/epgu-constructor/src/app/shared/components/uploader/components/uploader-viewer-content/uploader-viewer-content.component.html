@@ -23,7 +23,7 @@
       <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName"
     /></a>
     <div
-      *ngIf="!imageURL || isError"
+      *ngIf="isError"
       [ngClass]="{ 'file-viewer__file_link': isPDF }"
       class="file-viewer__file"
     >
