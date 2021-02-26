@@ -108,11 +108,16 @@ export class UploaderViewerContentComponent {
     this.isConfirm = false;
   }
   confirmAction(): void {
-    if (this.type === FilesCollection.suggest) {
-      this.isConfirm = true;
+    if (this.item.attached) {
+      this.suggestAction(false);
     } else {
       this.deleteAction();
     }
+    // if (this.type === FilesCollection.suggest) {
+    //   this.isConfirm = true;
+    // } else {
+    //   this.deleteAction();
+    // }
   }
 
   prevAction(): void {

@@ -79,6 +79,10 @@
   color: $color-summer-night;
   @include typ-plain-text;
   margin-bottom: 12px;
+  display: none;
+  @include phones-up {
+    display: block;
+  }
 }
 .prev,
 .next {
@@ -142,6 +146,7 @@
     border: none;
     outline: none;
     height: 100%;
+    margin: 0;
     background-color: transparent;
     &[disabled] {
       opacity: 0.5;
@@ -150,14 +155,32 @@
     &[hidden] {
       display: none;
     }
+
+    &.hide-text > span {
+      display: none;
+      @include phones-up {
+        display: inline;
+      }
+    }
     img {
       margin-right: 7px;
+    }
+    &.zoom {
+      @include phones-down {
+        display: none;
+      }
     }
     &.attach {
       background-color: $color-blu-digitale;
     }
     &.detach {
       background-color: $color-active-item;
+    }
+    &.attach,
+    &.detach {
+      &[disabled] {
+        background-color: $color-blu-selvaggio;
+      }
     }
   }
 }
