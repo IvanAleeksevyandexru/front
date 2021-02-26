@@ -21,19 +21,8 @@
       >
       </epgu-constructor-constructor-lookup>
     </div>
-    <div *ngIf="isNoDepartmentErrorVisible" class="error-region">
-      <ng-container *ngIf="!data.attrs.noDepartmentsErrorMsg">
-        <h6 class="red-line">Нет доступных подразделений</h6>
-        <span
-          class="text-color--text-helper"
-        >Для подачи документов выберите подразделение в другом регионе
-        </span>
-      </ng-container>
-      <epgu-constructor-output-html
-        *ngIf="data.attrs.noDepartmentsErrorMsg"
-        [html]="data.attrs.noDepartmentsErrorMsg"
-      ></epgu-constructor-output-html>
-    </div>
+    <ng-container *ngTemplateOutlet="errorRegion">
+    </ng-container>
   </div>
   <lib-map
     *ngIf="showMap"
@@ -143,5 +132,21 @@
       >
       </lib-checkbox>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #errorRegion>
+  <div *ngIf="isNoDepartmentErrorVisible" class="error-region">
+    <ng-container *ngIf="!data.attrs.noDepartmentsErrorMsg">
+      <h6 class="red-line">Нет доступных подразделений</h6>
+      <span
+        class="text-color--text-helper"
+      >Для подачи документов выберите подразделение в другом регионе
+      </span>
+    </ng-container>
+    <epgu-constructor-output-html
+      *ngIf="data.attrs.noDepartmentsErrorMsg"
+      [html]="data.attrs.noDepartmentsErrorMsg"
+    ></epgu-constructor-output-html>
   </div>
 </ng-template>
