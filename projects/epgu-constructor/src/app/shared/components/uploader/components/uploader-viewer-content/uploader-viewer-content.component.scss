@@ -41,6 +41,11 @@
       color: $color-summer-night;
       @include typ-plain-small;
     }
+    .file-viewer__error-title,
+    .file-viewer__error-description {
+      text-align: center;
+      margin: 0 24px;
+    }
     &_link {
       cursor: pointer;
     }
