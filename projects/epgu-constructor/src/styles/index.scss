@@ -99,6 +99,10 @@
     text-decoration: none;
     color: $color-gosblue;
     cursor: pointer;
+
+    &:hover {
+      color: $color-active-item;
+    }
   }
 
   button {

@@ -25,6 +25,7 @@ import { DateRangeService } from './services/date-range/date-range.service';
 // eslint-disable-next-line max-len
 import { ConstructorMultilineInputModule } from '../../../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
+import { MultipleChoiceDictionaryModule } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.module';
 
 const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputComponent];
 
@@ -48,6 +49,7 @@ const COMPONENTS = [ComponentsListComponent, ComponentItemComponent, DocInputCom
     ConstructorDatePickerModule,
     ConstructorMultilineInputModule,
     MemoModule,
+    MultipleChoiceDictionaryModule,
   ],
   providers: [
     ValidationService,

@@ -1,0 +1,48 @@
+<epgu-constructor-confirmation-modal-base
+  [title]="title"
+  [showCrossButton]="true"
+  [buttons]="!isLoading && buttons"
+  text="multi-choice-dictionary"
+>
+  <ng-container *ngIf="!isLoading; else loading">
+    <div [formGroup]="form">
+      <lib-search-bar
+        formControlName="input"
+        [placeholder]="inputPlaceholder$ | async"
+        contextClass="mb-24"
+      ></lib-search-bar>
+
+      <ng-container *ngIf="(filteredItems$ | async).length === items.length; then selectButtons">
+      </ng-container>
+
+      <ng-container [formGroupName]="formField.checkbox">
+        <lib-checkbox
+          *ngFor="let item of filteredItems$ | async"
+          [labelText]="item.text"
+          [formControlName]="item.id"
+        ></lib-checkbox>
+      </ng-container>
+    </div>
+  </ng-container>
+</epgu-constructor-confirmation-modal-base>
+
+<ng-template #loading>
+  <div class="loading">
+    <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+  </div>
+</ng-template>
+
+<ng-template #selectButtons>
+  <button
+    class="link-btn mb-6"
+    *ngIf="isSelectAll$ | async; else selectAll"
+    (click)="select(false)"
+  >
+    Сбросить все
+  </button>
+  <ng-template #selectAll>
+    <button class="link-btn mb-6" (click)="select(true)">
+      Выбрать все
+    </button>
+  </ng-template>
+</ng-template>
