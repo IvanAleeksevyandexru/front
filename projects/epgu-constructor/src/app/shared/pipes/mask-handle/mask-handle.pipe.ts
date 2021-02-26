@@ -22,7 +22,7 @@ export class MaskHandlePipe implements PipeTransform {
 
     if (Array.isArray(input)) {
       return input.map((char) => {
-        const isRegExp = char[0] === '/';
+        const isRegExp = char[0] === '/' && char.length > 1;
         return isRegExp ? this.strToRegExp(char) : char;
       });
     }
