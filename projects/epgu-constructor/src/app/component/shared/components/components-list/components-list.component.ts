@@ -89,6 +89,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       .on('validateOnBlur')
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe(() => this.formService.emitChanges());
+
+    this.watchForFilters(this.components);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -135,6 +137,17 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   private loadRepository(components: Array<CustomComponent>): void {
     this.repository
       .loadReferenceData$(components)
+      .subscribe((references: Array<CustomListReferenceData>) => {
+        references.forEach((reference: CustomListReferenceData) => {
+          setTimeout(() => this.formService.patch(reference.component), 0);
+          this.formService.emitChanges();
+        });
+      });
+  }
+
+  private watchForFilters(components: Array<CustomComponent>): void {
+    this.repository
+      .watchForFilters$(components)
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);
