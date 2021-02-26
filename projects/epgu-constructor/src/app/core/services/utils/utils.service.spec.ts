@@ -44,6 +44,13 @@ describe('UtilsService', () => {
     });
   });
 
+  describe('htmlToText()', () => {
+    it('should return text from html', () => {
+      expect(UtilsService.htmlToText('Text <span>additional info</span>'))
+        .toBe('Text additional info');
+    });
+  });
+
   describe('getDeclension()', () => {
     const forms = ['год', 'года', 'лет'];
 

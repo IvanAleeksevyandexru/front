@@ -122,6 +122,12 @@ export class UtilsService {
     return component.attrs.dictionaryType + component.id;
   }
 
+  public static htmlToText(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    return doc.body ? doc.body.textContent : '';
+  }
+
   public getDeclension(num: number, forms: string[]): string {
     const num0 = Math.abs(num) % 100;
     const n1 = num0 % 10;
@@ -260,4 +266,5 @@ export class UtilsService {
   private sliceArrayFromRight(arr: string[], from: number, includeFirst: boolean = true): string[] {
     return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
   }
+
 }
