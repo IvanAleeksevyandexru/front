@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -19,7 +27,7 @@ import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/co
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
-import { FilesCollection, iconsTypes } from '../../shared/components/uploader/data';
+import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 
 @Component({
@@ -31,7 +39,14 @@ import { AutocompleteApiService } from '../../core/services/autocomplete/autocom
 })
 export class AttachUploadedFilesModalComponent extends ModalBaseComponent implements OnInit {
   @Input() filesList: FileItem[];
+  @Input() modalId: string;
+
+  @Output() delete = new EventEmitter<FileItem>();
+  @Output() download = new EventEmitter<FileItem>();
+  @Output() suggest = new EventEmitter<SuggestAction>();
+
   title = 'Ранее загруженные файлы';
+  text: string;
   componentId = this.screenService.component?.id || null;
   suggestions: { [key: string]: ISuggestionItem } = {};
   suggestions$ = this.screenService.suggestions$;
@@ -79,11 +94,30 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .on('fileDeletedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileItem) => this.handleFileDeleted(payload));
+
+    this.delete.subscribe((payload) => {
+      this.eventBusService.emit(`fileDeleteEvent_${this.modalId}`, payload);
+    });
+
+    this.download.subscribe((payload) => {
+      this.eventBusService.emit(`fileDownloadEvent_${this.modalId}`, payload);
+    });
+
+    this.suggest.subscribe((payload) => {
+      this.eventBusService.emit(`fileSuggestEvent_${this.modalId}`, payload);
+    });
   }
 
   public previewFile(file: FileItem): void {
     this.viewerService
-      .open(FilesCollection.suggest, file.id, of(this.suggestionsFiles))
+      .open(
+        FilesCollection.suggest,
+        file.id,
+        of(this.suggestionsFiles),
+        this.suggest,
+        this.delete,
+        this.download,
+      )
       .pipe(take(1))
       .subscribe();
   }
