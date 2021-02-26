@@ -1,25 +1,38 @@
-<ng-container *ngIf="selectedItem | async">
+<ng-container *ngIf="item">
+  <div class="divider"></div>
   <div class="viewer__info">
     <div class="viewer__info-date">{{ date | date: 'MM.dd.yyyy' }}</div>
-    <div class="viewer__info-name">{{ item.item.fileName }}</div>
-    <div class="viewer__info-size">{{ item.item.fileSize | fileSize }}</div>
+    <div class="viewer__info-name">{{ item?.raw?.name }}</div>
+    <div class="viewer__info-size">{{ item?.raw?.size | fileSize }}</div>
   </div>
   <div class="viewer__description">
     Убедитесь, что документ не просрочен, страницы хорошо видны, данные не прикрыты пальцами и не
     обрезаны. Это важно, чтобы заявление приняли.
   </div>
-  <div class="file-viewer {{ imageURL ? 'file-viewer__image' : '' }}">
+  <div [ngClass]="{ 'file-viewer__image': imageURL }" class="file-viewer">
     <button (click)="prevAction()" class="prev"><img [src]="arrowIcon" /></button>
     <button (click)="nextAction()" class="next"><img [src]="arrowIcon" /></button>
     <a
-      *ngIf="!imageURL"
-      class="file-viewer__file {{ isPDF ? 'file-viewer__file_link' : '' }}"
+      *ngIf="!imageURL && !isError"
+      [ngClass]="{ 'file-viewer__file_link': isPDF }"
+      class="file-viewer__file"
       (click)="open($event)"
-      [href]="item.urlToFile()"
+      [href]="item.urlToFile() | safe: 'url'"
       target="_blank"
     >
       <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName"
     /></a>
+    <div
+      *ngIf="!imageURL && isError"
+      [ngClass]="{ 'file-viewer__file_link': isPDF }"
+      class="file-viewer__file"
+    >
+      <img [src]="baseFileTypeIconPath + iconsType.error + '.svg'" alt="Ошибка" />
+      <div class="file-viewer__error-title">Что-то пошло не так</div>
+      <div class="file-viewer__error-description">
+        Попробуйте открыть файл снова или загрузите новый
+      </div>
+    </div>
     <epgu-constructor-zoom
       *ngIf="imageURL"
       #zoomComponent
@@ -28,6 +41,27 @@
       (moveEnd)="zoomMoveEnd()"
     >
     </epgu-constructor-zoom>
+  </div>
+
+  <div *ngIf="isConfirm" class="viewer__confirmation">
+    <div class="viewer__confirmation-title">Удалить файл из ранее загруженных?</div>
+    <div class="viewer__confirmation-description">
+      Вы больше не сможете его использовать в заявлениях
+    </div>
+    <div class="viewer__confirmation-buttons">
+      <button
+        (click)="cancelAction()"
+        class="viewer__confirmation-button viewer__confirmation-button_cancel"
+      >
+        Оставить
+      </button>
+      <button
+        (click)="deleteAction()"
+        class="viewer__confirmation-button viewer__confirmation-button_confirm"
+      >
+        Удалить
+      </button>
+    </div>
   </div>
 
   <div class="viewer__toolbar">
@@ -54,7 +88,7 @@
     <button class="viewer__toolbar-action" (click)="downloadAction()">
       <img [src]="basePath + 'download.svg'" alt="Скачать" />Скачать
     </button>
-    <button class="viewer__toolbar-action" (click)="deleteAction()">
+    <button class="viewer__toolbar-action" (click)="confirmAction()">
       <img [src]="basePath + 'remove-file.svg'" alt="Удалить" />Удалить
     </button>
     <div class="viewer__toolbar-counter">{{ position }}/{{ size }}</div>
