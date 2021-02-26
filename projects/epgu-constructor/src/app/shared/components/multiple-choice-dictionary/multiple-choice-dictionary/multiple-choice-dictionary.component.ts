@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-import { map, switchMap } from 'rxjs/operators';
+import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 import { ModalService } from '../../../../modal/modal.service';
@@ -101,7 +101,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   private openErrorModal(): Observable<ListElement[]> {
     return this.modalService
       .openModal(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS)
-      .pipe(map(() => this.selectedItems));
+      .pipe(mapTo(this.selectedItems));
   }
 
   // TODO: сделать приведение к единому типу данных на бэке

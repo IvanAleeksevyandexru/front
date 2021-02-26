@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule } from 'ng-mocks';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { FormBuilder } from '@angular/forms';
 
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -9,21 +11,50 @@ import { DictionaryApiService } from '../../../../component/shared/services/dict
 import { DictionaryApiServiceStub } from '../../../../component/shared/services/dictionary-api/dictionary-api.service.stub';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { BaseModule } from '../../../base.module';
-import { ConstructorPlainInputModule } from '../../constructor-plain-input/constructor-plain-input.module';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
   let fixture: ComponentFixture<MultiChoiceDictionaryModalComponent>;
+  let dictionaryApiService: DictionaryApiService;
+  const mockDictionaryValue: ListElement[] = [
+    {
+      id: 'AUT',
+      text: 'АВСТРИЯ',
+      formatted: '',
+      originalItem: {
+        value: 'AUT',
+        parentValue: null,
+        title: 'АВСТРИЯ',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+    },
+    {
+      id: 'AUT2',
+      text: 'АВСТРИЯ2',
+      formatted: '',
+      originalItem: {
+        value: 'AUT',
+        parentValue: null,
+        title: 'АВСТРИЯ',
+        isLeaf: true,
+        children: [],
+        attributes: [],
+        source: null,
+        attributeValues: {},
+      },
+    },
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MultiChoiceDictionaryModalComponent],
-      imports: [
-        MockModule(ConfirmationModalModule),
-        MockModule(BaseModule),
-        MockModule(ConstructorPlainInputModule),
-      ],
+      imports: [MockModule(ConfirmationModalModule), MockModule(BaseModule)],
       providers: [
+        FormBuilder,
         UnsubscribeService,
         EventBusService,
         {
@@ -40,11 +71,68 @@ describe('MultiChoiceDictionaryModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MultiChoiceDictionaryModalComponent);
+    dictionaryApiService = TestBed.inject(DictionaryApiService);
     component = fixture.componentInstance;
+    component.title = 'title';
+    component.dictionaryList = mockDictionaryValue;
+    component.selectedItems = [];
+    component.items = [];
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('select', () => {
+    it('should be select all', () => {
+      jest.spyOn(component.isSelectAll$, 'next');
+      fixture.detectChanges();
+      component.select(true);
+      const formValue = Object.values(component.form.get('checkbox').value).every(
+        (isSelect) => isSelect,
+      );
+      expect(formValue).toBeTruthy();
+      expect(component.isSelectAll$.next).toHaveBeenCalledWith(true);
+    });
+
+    it('should be unselect all', () => {
+      jest.spyOn(component.isSelectAll$, 'next');
+      fixture.detectChanges();
+      component.select(false);
+      const formValue = Object.values(component.form.get('checkbox').value).every(
+        (isSelect) => isSelect,
+      );
+      expect(formValue).toBeFalsy();
+      expect(component.isSelectAll$.next).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('getFilteredItems$', () => {
+    it('should return all items', () => {
+      component.form.get('input').setValue('');
+      component.filteredItems$.subscribe((items) => {
+        expect(items).toEqual(mockDictionaryValue);
+      });
+
+      component.isSelectAll$.next(true);
+      component.filteredItems$.subscribe((items) => {
+        expect(items).toEqual(mockDictionaryValue);
+      });
+    });
+
+    it('should return filtered items', () => {
+      component.form.get('input').setValue('АВСТРИЯ');
+      component.filteredItems$.subscribe((items) => {
+        expect(items).toEqual(mockDictionaryValue[0]);
+      });
+    });
+  });
+
+  describe('onClose', () => {
+    it('should close modal', () => {
+      jest.spyOn(component, 'closeModal');
+      // eslint-disable-next-line no-empty-function
+      component.detachView = (): void => {};
+      component.select(true);
+      component.onClose();
+      expect(component.closeModal).toHaveBeenCalledWith(mockDictionaryValue);
+    });
   });
 });
