@@ -1,38 +1,112 @@
-<ng-container *ngIf="selectedItem | async">
+<ng-container *ngIf="item">
+  <div class="divider"></div>
   <div class="viewer__info">
     <div class="viewer__info-date">{{ date | date: 'MM.dd.yyyy' }}</div>
-    <div class="viewer__info-name">{{ item.item.fileName }}</div>
-    <div class="viewer__info-size">{{ item.item.fileSize | fileSize }}</div>
+    <div class="viewer__info-name">{{ item?.raw?.name }}</div>
+    <div class="viewer__info-size">{{ item?.raw?.size | fileSize }}</div>
   </div>
   <div class="viewer__description">
     Убедитесь, что документ не просрочен, страницы хорошо видны, данные не прикрыты пальцами и не
     обрезаны. Это важно, чтобы заявление приняли.
   </div>
-  <div class="file-viewer">
+  <div [ngClass]="{ 'file-viewer__image': imageURL }" class="file-viewer">
+    <button (click)="prevAction()" class="prev"><img [src]="arrowIcon" /></button>
+    <button (click)="nextAction()" class="next"><img [src]="arrowIcon" /></button>
+    <a
+      *ngIf="!imageURL && !isError"
+      [ngClass]="{ 'file-viewer__file_link': isPDF }"
+      class="file-viewer__file"
+      (click)="open($event)"
+      [href]="item.urlToFile() | safe: 'url'"
+      target="_blank"
+    >
+      <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName"
+    /></a>
+    <div
+      *ngIf="!imageURL && isError"
+      [ngClass]="{ 'file-viewer__file_link': isPDF }"
+      class="file-viewer__file"
+    >
+      <img [src]="baseFileTypeIconPath + errorIcon + '.svg'" alt="Ошибка" />
+      <div class="file-viewer__error-title">Что-то пошло не так</div>
+      <div class="file-viewer__error-description">
+        Попробуйте открыть файл снова или загрузите новый
+      </div>
+    </div>
     <epgu-constructor-zoom
-      #zoomComponent
       *ngIf="imageURL"
+      #zoomComponent
       [imageURL]="imageURL"
+      (zoom)="zoomAction($event)"
       (moveEnd)="zoomMoveEnd()"
     >
     </epgu-constructor-zoom>
   </div>
 
-  <button (click)="nextAction()">Вперед</button>
-  <button (click)="prevAction()">Назад</button>
-  <button (click)="deleteAction()">Удалить</button>
-  <ng-container *ngIf="zoom | async as status">
-    <button *ngIf="status.max !== 1 && status.zoom < status.max" (click)="zoomIn()">
-      Приблизить
+  <div *ngIf="isConfirm" class="viewer__confirmation">
+    <div class="viewer__confirmation-title">Удалить файл из ранее загруженных?</div>
+    <div class="viewer__confirmation-description">
+      Вы больше не сможете его использовать в заявлениях
+    </div>
+    <div class="viewer__confirmation-buttons">
+      <button
+        (click)="cancelAction()"
+        class="viewer__confirmation-button viewer__confirmation-button_cancel"
+      >
+        Оставить
+      </button>
+      <button
+        (click)="deleteAction()"
+        class="viewer__confirmation-button viewer__confirmation-button_confirm"
+      >
+        Удалить
+      </button>
+    </div>
+  </div>
+
+  <div class="viewer__toolbar">
+    <ng-container *ngIf="zoom | async as status">
+      <button
+        class="viewer__toolbar-action"
+        [disabled]="status.zoom == status.max || !imageURL"
+        [hidden]="status.zoom >= status.max && status.max != 1"
+        (click)="zoomIn()"
+      >
+        <img [src]="basePath + 'zoom-in-white.svg'" alt="Приблизить" />
+        Приблизить
+      </button>
+      <button
+        class="viewer__toolbar-action"
+        [hidden]="status.zoom < status.max || status.max == 1"
+        (click)="zoomOut()"
+      >
+        <img [src]="basePath + 'zoom-out-white.svg'" alt="Приблизить" />
+        Отдалить
+      </button>
+    </ng-container>
+
+    <button class="viewer__toolbar-action" (click)="downloadAction()">
+      <img [src]="basePath + 'download.svg'" alt="Скачать" />Скачать
     </button>
-    <button *ngIf="status.max !== 1 && status.zoom >= status.max" (click)="zoomOut()">
-      Отдалить
+    <button class="viewer__toolbar-action" (click)="confirmAction()">
+      <img [src]="basePath + 'remove-file.svg'" alt="Удалить" />Удалить
     </button>
-  </ng-container>
-  <button (click)="downloadAction()">Скачать</button>
-  <button *ngIf="type === filesType.suggest && !item.attached" (click)="suggestAction(true)">
-    +Прикрепить
-  </button>
-  <button *ngIf="item.attached" (click)="suggestAction(false)">-Открепить</button>
-  {{ position }}/{{ size }}
+    <div class="viewer__toolbar-counter">{{ position }}/{{ size }}</div>
+    <button
+      class="viewer__toolbar-action attach"
+      *ngIf="type === filesType.suggest && !item.attached"
+      (click)="suggestAction(true)"
+    >
+      <img [src]="basePath + 'plus-white.svg'" alt="Прикрепить" />
+      Прикрепить
+    </button>
+    <button
+      class="viewer__toolbar-action detach"
+      *ngIf="item.attached"
+      (click)="suggestAction(false)"
+    >
+      <img [src]="basePath + 'arrow-back-white.svg'" alt="Открепить" />
+      Открепить
+    </button>
+  </div>
 </ng-container>

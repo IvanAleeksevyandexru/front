@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { take, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import {
   CancelAction,
   ErrorActions,
@@ -27,8 +28,7 @@ export class UploaderManagerComponent {
 
   @Input() set list(items: FileItem[]) {
     this.listItems = items;
-    this.viewer.update(
-      FilesCollection.uploader,
+    this.viewerItems.next(
       items.filter(
         (item) =>
           (item.status === FileItemStatus.error &&
@@ -40,6 +40,7 @@ export class UploaderManagerComponent {
     );
   }
 
+  viewerItems = new BehaviorSubject<FileItem[]>([]);
   listItems: FileItem[];
 
   deleteViewer = this.viewer.delete
@@ -66,6 +67,6 @@ export class UploaderManagerComponent {
   constructor(private viewer: ViewerService, private unsubscribeService: UnsubscribeService) {}
 
   view(file: FileItem): void {
-    this.viewer.open(FilesCollection.uploader, file.id).pipe(take(1)).subscribe();
+    this.viewer.open(FilesCollection.uploader, file.id, this.viewerItems).pipe(take(1)).subscribe();
   }
 }
