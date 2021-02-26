@@ -205,7 +205,7 @@ export class AutocompleteService {
     /* Иногда сюда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
     вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput */
     const [componentMnemonic] = mnemonic.split('.');
-    if (this.repeatableComponents.length) {
+    if (this.repeatableComponents.length && componentsGroupIndex > -1) {
       return this.repeatableComponents[componentsGroupIndex].find((component) => {
         return this.componentsSuggestionsMap[componentMnemonic] === component.id;
       });
@@ -347,7 +347,9 @@ export class AutocompleteService {
     }
 
     const component = this.findComponent(componentMnemonic);
-    value = this.setDateValueIfDateInput(component, value, true);
+    if (component) {
+      value = this.setDateValueIfDateInput(component, value, true);
+    }
 
     return value;
   }
