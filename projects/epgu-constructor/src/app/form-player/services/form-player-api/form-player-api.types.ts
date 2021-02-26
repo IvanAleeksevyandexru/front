@@ -10,6 +10,7 @@ import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
+import { CustomComponentRef } from '../../../component/shared/components/components-list/components-list.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -67,7 +68,9 @@ export interface ComponentAttrsDto {
   clarifications?: ClarificationsDto;
   fields?: Array<ComponentFieldDto>;
   dictionaryType?: Array<string> | string; //TODO: прояснить почему либо массив объектов либо строка
-  ref?: Array<ComponentRefDto> | string | { fiasCode: string }; //TODO: прояснить почему либо массив объектов либо строка
+
+  //TODO: прояснить почему либо массив объектов либо строка
+  ref?: Array<ComponentRefDto> | string | { fiasCode: string } | Array<CustomComponentRef>;
   validation?: Array<ComponentValidationDto>;
   mask?: Array<string>;
   relationField?: ComponentRelationFieldDto;

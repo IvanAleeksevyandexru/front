@@ -22,6 +22,7 @@ import {
   DictionaryFilters,
   DictionarySubFilter,
 } from '../../../../services/dictionary-api/dictionary-api.types';
+import { likeDictionary } from '../../tools/custom-screen-tools';
 
 const EMPTY_VALUE = '';
 const NON_EMPTY_VALUE = '*';
@@ -106,7 +107,7 @@ export class ComponentListToolsService {
     if (reference.relation === CustomComponentRefRelation.filterOn) {
       if (
         this.isValueEquals(reference.val, componentVal) &&
-        dependentComponent.type === CustomScreenComponentTypes.Dictionary
+        likeDictionary(dependentComponent.type)
       ) {
         this.applyFilter(dependentComponent, reference.filter, componentVal);
       } else {
