@@ -145,6 +145,7 @@ export interface ComponentAttrsDto {
   hideAddNewChildButton?: boolean;
   dateType?: string;
   refDate?: string;
+  noDepartmentsErrorMsg?: string;
 }
 
 export interface ComponentUploadedFileDto {
