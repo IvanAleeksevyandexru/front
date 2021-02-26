@@ -5,7 +5,6 @@
     text="previewFiles"
   >
     <div>
-      <p class="mb-24">Вы можете снова прикрепить эти файлы к заявлению.<br> Проверьте, чтобы они не были просрочены.</p>
       <div *ngFor="let group of suggestionsFilesGroupByDate">
         <h4 class="mb-12 mt-24">{{ group[0] }}</h4>
         <div class="wrapper">
@@ -13,15 +12,21 @@
             <button
               (click)="previewFile(file)"
               class="button"
-              [ngClass]="{'attached': file.attached}"
+              [ngClass]="{ attached: file.attached }"
             >
               <img
                 *ngIf="file.isImage"
                 class="img"
-                src="{{fileUploadApiUrl}}/{{file.item.objectId}}/{{file.item.objectTypeId}}/download?mnemonic={{file.item.mnemonic}}"
-                (error)="handleImgError($event)"
+                src="{{ fileUploadApiUrl }}/{{ file.item.objectId }}/{{
+                  file.item.objectTypeId
+                }}/download?mnemonic={{ file.item.mnemonic }}"
+                (error)="handleImgError($event, file)"
                 [alt]="file.item.fileName"
               />
+              <div *ngIf="file.error">
+                <figcaption class="caption">{{ file.item.fileName }}</figcaption>
+                <figcaption class="caption small mt-16">{{ file.error.text }}</figcaption>
+              </div>
               <div *ngIf="!file.isImage">
                 <img
                   class="img"

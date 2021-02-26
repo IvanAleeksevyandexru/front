@@ -10,7 +10,7 @@
     <ng-template #contentBlock>
       <div class="conf-modal__content" [class.conf-modal__short-modal]="isShortModal">
         <ng-content></ng-content>
-        <div class="conf-modal__controls">
+        <div *ngIf="buttons.length" class="conf-modal__controls">
           <lib-button
             *ngFor="let button of buttons"
             [showLoader]="button.loader"

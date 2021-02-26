@@ -23,18 +23,18 @@
       <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName"
     /></a>
     <div
-      *ngIf="!imageURL && isError"
+      *ngIf="isError"
       [ngClass]="{ 'file-viewer__file_link': isPDF }"
       class="file-viewer__file"
     >
-      <img [src]="baseFileTypeIconPath + errorIcon + '.svg'" alt="Ошибка" />
+      <img [src]="baseFileTypeIconPath + iconsType.error + '.svg'" alt="Ошибка" />
       <div class="file-viewer__error-title">Что-то пошло не так</div>
       <div class="file-viewer__error-description">
         Попробуйте открыть файл снова или загрузите новый
       </div>
     </div>
     <epgu-constructor-zoom
-      *ngIf="imageURL"
+      *ngIf="imageURL && !isError"
       #zoomComponent
       [imageURL]="imageURL"
       (zoom)="zoomAction($event)"

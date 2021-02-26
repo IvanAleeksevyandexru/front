@@ -58,7 +58,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
             this.navigationService.redirectToLK();
           }
         });
-      } else if (status === 500 && url.includes(this.configService.suggestionsApiUrl)) {
+      } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
         this.showModal(COMMON_ERROR_MODAL_PARAMS).then();

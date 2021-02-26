@@ -1,0 +1,14 @@
+@import '../../../../../styles/core/typography';
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.item {
+  margin: 0 8px 8px 0;
+}
+
+.header {
+  @include typ-h5;
+}

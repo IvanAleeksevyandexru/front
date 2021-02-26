@@ -1,21 +1,34 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
+  ErrorActions,
   FileItem,
   FileItemStatus,
 } from '../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UploadedFile } from '../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
-import { ISuggestionItemList } from '../../core/services/autocomplete/autocomplete.inteface';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/constants/dates';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { ConfigService } from '../../core/services/config/config.service';
-import { ICONS_TYPES } from '../../shared/constants/uploader';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
-import { FilesCollection } from '../../shared/components/uploader/data';
+import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
+import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -26,14 +39,23 @@ import { FilesCollection } from '../../shared/components/uploader/data';
 })
 export class AttachUploadedFilesModalComponent extends ModalBaseComponent implements OnInit {
   @Input() filesList: FileItem[];
+  @Input() modalId: string;
+
+  @Output() delete = new EventEmitter<FileItem>();
+  @Output() download = new EventEmitter<FileItem>();
+  @Output() suggest = new EventEmitter<SuggestAction>();
+
   title = 'Ранее загруженные файлы';
+  text: string;
   componentId = this.screenService.component?.id || null;
+  suggestions: { [key: string]: ISuggestionItem } = {};
   suggestions$ = this.screenService.suggestions$;
   suggestionsFiles: FileItem[] = [];
+  suggestionsFilesList: ISuggestionItemList[] = [];
   suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
-  iconsTypes = ICONS_TYPES;
+  iconsTypes = iconsTypes;
 
   constructor(
     public injector: Injector,
@@ -43,15 +65,18 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
     private viewerService: ViewerService,
+    private autocompleteApiService: AutocompleteApiService,
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      const suggestionsFilesList: ISuggestionItemList[] =
-        (suggestions && suggestions[this.componentId]?.list) || [];
-      const suggestionsUploadedFiles = this.getParsedSuggestionsUploadedFiles(suggestionsFilesList);
+      this.suggestions = suggestions;
+      this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
+      const suggestionsUploadedFiles = this.getParsedSuggestionsUploadedFiles(
+        this.suggestionsFilesList,
+      );
       this.suggestionsFiles = this.getSuggestionFiles(suggestionsUploadedFiles);
       this.suggestionsFilesGroupByDate = this.getSuggestionsFilesGroupedByDate(
         this.suggestionsFiles,
@@ -64,18 +89,67 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .subscribe(() => {
         this.closeModal();
       });
+
+    this.eventBusService
+      .on('fileDeletedEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileItem) => this.handleFileDeleted(payload));
+
+    this.delete.subscribe((payload) => {
+      this.eventBusService.emit(`fileDeleteEvent_${this.modalId}`, payload);
+    });
+
+    this.download.subscribe((payload) => {
+      this.eventBusService.emit(`fileDownloadEvent_${this.modalId}`, payload);
+    });
+
+    this.suggest.subscribe((payload) => {
+      this.eventBusService.emit(`fileSuggestEvent_${this.modalId}`, payload);
+    });
   }
 
   public previewFile(file: FileItem): void {
     this.viewerService
-      .open(FilesCollection.suggest, file.id, this.suggestionsFiles)
+      .open(
+        FilesCollection.suggest,
+        file.id,
+        of(this.suggestionsFiles),
+        this.suggest,
+        this.delete,
+        this.download,
+      )
       .pipe(take(1))
       .subscribe();
   }
 
-  public handleImgError(event: Event): void {
+  public handleImgError(event: Event, file: FileItem): void {
     const target = event.target as HTMLImageElement;
-    target.src = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/image-error.svg`;
+    target.src = `${this.basePath}${this.iconsTypes.error}.svg`;
+    file.setError({ type: ErrorActions.addInvalidFile, text: 'Что-то пошло не так' });
+  }
+
+  private handleFileDeleted(file: FileItem): void {
+    const deletedFileId = file.item.fileUid;
+    let valueGroupId: number;
+    let mnemonic: string;
+    let newValue: string;
+
+    const updatedSuggestionsFilesList = this.suggestionsFilesList.map((item) => {
+      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
+      const fileToDeleteIdx = parsedValue.uploads[0].value.findIndex(
+        (uploadedFileValue: UploadedFile) => uploadedFileValue.fileUid === deletedFileId,
+      );
+      if (fileToDeleteIdx > -1) {
+        parsedValue.uploads[0].value.splice(fileToDeleteIdx, 1);
+        valueGroupId = item.id;
+        mnemonic = item.mnemonic;
+      }
+      newValue = JSON.stringify(parsedValue);
+      const newItem = { ...item, originalItem: newValue };
+      return newItem;
+    });
+    this.suggestions[this.componentId].list = updatedSuggestionsFilesList;
+    this.autocompleteApiService.updateSuggestionField(valueGroupId, mnemonic, newValue).subscribe();
   }
 
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {

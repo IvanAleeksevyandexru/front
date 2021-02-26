@@ -32,6 +32,7 @@ export class ConfigService implements Config {
   private _disableUnderConstructionMode: boolean;
   private _isSocialShareDisabled: boolean;
   private _addToCalendarUrl: string;
+  private _isAutocompleteServiceDisabled: boolean;
 
   constructor(
     private loadService: LoadService,
@@ -144,6 +145,10 @@ export class ConfigService implements Config {
     return this._isSocialShareDisabled;
   }
 
+  get isAutocompleteServiceDisabled(): boolean {
+    return this._isAutocompleteServiceDisabled;
+  }
+
   get addToCalendarUrl(): string {
     return this._addToCalendarUrl;
   }
@@ -181,6 +186,7 @@ export class ConfigService implements Config {
     this._timeSlots = config.timeSlots || {};
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
+    this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

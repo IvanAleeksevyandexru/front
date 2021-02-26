@@ -40,7 +40,8 @@ export class AutocompleteService {
     private currentAnswersService: CurrentAnswersService,
   ) {}
 
-  public init(): void {
+  public init(isDisabled: boolean = false): void {
+    if (isDisabled) return;
     this.screenService.display$
       .pipe(
         filter((display) => display !== null),
@@ -51,9 +52,8 @@ export class AutocompleteService {
         this.resetComponentsSuggestionsMap();
         this.suggestionGroupId = this.getSuggestionGroupId(display);
         this.repeatableComponents = display.components[0]?.attrs?.repeatableComponents || [];
-        const componentsSuggestionsFieldsIds: string[] = this.getComponentsSuggestionsFieldsIds(
-          display,
-        ) || [];
+        const componentsSuggestionsFieldsIds: string[] =
+          this.getComponentsSuggestionsFieldsIds(display) || [];
 
         if (this.suggestionGroupId) {
           this.groupSuggestionsApiCall();
@@ -99,35 +99,35 @@ export class AutocompleteService {
           <div class="suggest-item">
             <div>${value}</div>
             <div class="suggest-hint">${hints}</div>
-            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${mnemonic+':'+value+':'+id}">
+            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${
+              mnemonic + ':' + value + ':' + id
+            }">
             </button>
           </div>
           `;
           return acc.concat(html);
         }, '');
-        this.modalService.openModal(ConfirmationModalComponent,
-          {
-            title: 'Ранее заполненные данные',
-            text,
-            showCloseButton: true,
-            showCrossButton: true,
-            isShortModal: true,
-          }
-        );
+        this.modalService.openModal(ConfirmationModalComponent, {
+          title: 'Ранее заполненные данные',
+          text,
+          showCloseButton: true,
+          showCrossButton: true,
+          isShortModal: true,
+        });
       });
 
-      this.eventBusService
-        .on('suggestionDeleteEvent')
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((payload: ISuggestionItemList): void => {
-          let { mnemonic } = payload;
+    this.eventBusService
+      .on('suggestionDeleteEvent')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: ISuggestionItemList): void => {
+        const { mnemonic } = payload;
 
-          if (this.suggestionGroupId) {
-            this.groupSuggestionsApiCall();
-          } else {
-            this.fieldsSuggestionsApiCall([mnemonic]);
-          }
-        });
+        if (this.suggestionGroupId) {
+          this.groupSuggestionsApiCall();
+        } else {
+          this.fieldsSuggestionsApiCall([mnemonic]);
+        }
+      });
   }
 
   /**
@@ -159,35 +159,44 @@ export class AutocompleteService {
   }
 
   private groupSuggestionsApiCall(): void {
-    this.autocompleteApiService.getSuggestionsGroup(this.suggestionGroupId).subscribe((suggestions: ISuggestionApi[]) => {
-      this.formatAndPassDataToComponents(suggestions);
-    });
+    this.autocompleteApiService
+      .getSuggestionsGroup(this.suggestionGroupId)
+      .subscribe((suggestions: ISuggestionApi[]) => {
+        this.formatAndPassDataToComponents(suggestions);
+      });
   }
 
   private fieldsSuggestionsApiCall(componentsSuggestionsFieldsIds: string[]): void {
-    this.autocompleteApiService.getSuggestionsFields(componentsSuggestionsFieldsIds).subscribe(
-      (suggestions: ISuggestionApi[]) => {
+    this.autocompleteApiService
+      .getSuggestionsFields(componentsSuggestionsFieldsIds)
+      .subscribe((suggestions: ISuggestionApi[]) => {
         this.formatAndPassDataToComponents(suggestions);
-      }
-    );
+      });
   }
 
-  private findAndUpdateComponentWithValue(mnemonic: string, value: string, id?: number, componentsGroupIndex?: number): void {
+  private findAndUpdateComponentWithValue(
+    mnemonic: string,
+    value: string,
+    id?: number,
+    componentsGroupIndex?: number,
+  ): void {
     const component = this.findComponent(mnemonic, componentsGroupIndex);
     const componentValue = this.findComponentValue(component, id, value);
     this.setComponentValue(component, componentValue);
   }
 
   private findComponentValue(component: ComponentDto, id: number, value: string): string {
-    const result = component &&  this.screenService.suggestions[component.id]?.list.find(item => {
-      if (typeof id === 'number') {
-        return item.id === id;
-      } else if (item.originalItem.includes(value)) {
-        return true;
-      } else {
-        return item.value === value;
-      }
-    });
+    const result =
+      component &&
+      this.screenService.suggestions[component.id]?.list.find((item) => {
+        if (typeof id === 'number') {
+          return item.id === id;
+        } else if (item.originalItem.includes(value)) {
+          return true;
+        } else {
+          return item.value === value;
+        }
+      });
 
     return result?.originalItem || '';
   }
@@ -207,24 +216,45 @@ export class AutocompleteService {
     }
   }
 
-
   private setComponentValue(component: ComponentDto, value: string): void {
     if (component && value) {
-      if (component.type === CustomScreenComponentTypes.DateInput) {
-        value = (this.datesToolsService.parse(value, DATE_STRING_DOT_FORMAT) as unknown) as string;
-      }
+      value = this.setDateValueIfDateInput(component, value);
 
       // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
       if (this.utilsService.hasJsonStructure(value)) {
         const parsedValue = JSON.parse(value);
         if (Array.isArray(parsedValue)) {
-          const parsedlItem = parsedValue.find(item => Object.keys(item)[0] === component.id);
+          const parsedlItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
           value = JSON.stringify(parsedlItem[component.id]);
         }
       }
 
       component.value = value;
     }
+  }
+
+  private setDateValueIfDateInput(
+    component: ComponentDto,
+    value: string,
+    isFormattedReturn?: boolean,
+  ): string {
+    if (component.type === CustomScreenComponentTypes.DateInput) {
+      let dateValue = (this.datesToolsService.parse(
+        value,
+        DATE_STRING_DOT_FORMAT,
+      ) as unknown) as string;
+      if (this.datesToolsService.isValid(dateValue)) {
+        return isFormattedReturn
+          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
+          : dateValue;
+      } else {
+        dateValue = (this.datesToolsService.parse(value) as unknown) as string;
+        return isFormattedReturn
+          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
+          : dateValue;
+      }
+    }
+    return value;
   }
 
   private formatAndPassDataToComponents(suggestions: ISuggestionApi[]): void {
@@ -236,7 +266,11 @@ export class AutocompleteService {
       values.forEach((value) => {
         const { fields, id } = value;
         componentsEntries.forEach(([componentMnemonic, componentId]) => {
-          const componentList: ISuggestionItemList = this.getFormattedList(fields, id, componentMnemonic);
+          const componentList: ISuggestionItemList = this.getFormattedList(
+            fields,
+            id,
+            componentMnemonic,
+          );
           if (componentList) {
             if (result[componentId]) {
               result[componentId].list.push(componentList);
@@ -259,12 +293,17 @@ export class AutocompleteService {
     id: number,
     componentMnemonic: string,
   ): ISuggestionItemList {
-    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(fields, componentMnemonic);
-    const field = fields.find((field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic);
+    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
+      fields,
+      componentMnemonic,
+    );
+    const field = fields.find(
+      (field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic,
+    );
     if (field) {
       let { value, mnemonic } = field;
       let originalItem = value;
-      value = this.prepareValue(value);
+      value = this.prepareValue(value, mnemonic);
       return {
         value,
         mnemonic,
@@ -277,28 +316,28 @@ export class AutocompleteService {
     }
   }
 
-  private getFormattedHints(fields: ISuggestionApiValueField[], componentMnemonic: string): { value: string; mnemonic: string; }[] {
+  private getFormattedHints(
+    fields: ISuggestionApiValueField[],
+    componentMnemonic: string,
+  ): { value: string; mnemonic: string }[] {
     const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
       return Object.keys(this.componentsSuggestionsMap).includes(mnemonic);
     };
 
-    return fields.reduce(
-      (acc: { value: string; mnemonic: string; }[], field) => {
-        let { value, mnemonic } = field;
-        if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
-          value = this.prepareValue(value);
-          acc.push({
-            value,
-            mnemonic,
-          });
-        }
-        return acc;
-      },
-      []
-    );
+    return fields.reduce((acc: { value: string; mnemonic: string }[], field) => {
+      let { value, mnemonic } = field;
+      if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
+        value = this.prepareValue(value, mnemonic);
+        acc.push({
+          value,
+          mnemonic,
+        });
+      }
+      return acc;
+    }, []);
   }
 
-  private prepareValue(value: string): string {
+  private prepareValue(value: string, componentMnemonic?: string): string {
     if (this.utilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
       if (this.repeatableComponents.length && parsedValue.length) {
@@ -306,6 +345,10 @@ export class AutocompleteService {
       }
       value = parsedValue['text'];
     }
+
+    const component = this.findComponent(componentMnemonic);
+    value = this.setDateValueIfDateInput(component, value, true);
+
     return value;
   }
 
@@ -328,7 +371,7 @@ export class AutocompleteService {
           const { fields } = component.attrs;
           this.componentsSuggestionsMap[suggestionId] = component.id;
           if (component.type === CustomScreenComponentTypes.DocInput) {
-            Object.keys(fields).forEach(fieldName => {
+            Object.keys(fields).forEach((fieldName) => {
               const field = fields[fieldName];
               const fieldSuggestionId = field?.attrs.suggestionId;
               if (fieldSuggestionId) {
