@@ -1,0 +1,27 @@
+@import '../../../../styles/core';
+
+.chip {
+  min-height: 40px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $color-tag-line;
+  padding: 8px 16px;
+  word-break: break-word;
+}
+.cross-btn {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-left: 10px;
+  min-width: 20px;
+  &:before,
+  &:after {
+    background: $color-blue-selvaggio;
+  }
+  &:hover:before,
+  &:hover:after {
+    background: $color-gosblue;
+  }
+}

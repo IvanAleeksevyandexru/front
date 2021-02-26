@@ -34,6 +34,7 @@ export enum CustomScreenComponentTypes {
   FieldList = 'FieldList',
   Timer = 'Timer',
   TextArea = 'TextArea',
+  MultipleChoiceDictionary = 'MultipleChoiceDictionary',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
