@@ -9,16 +9,19 @@ import { filter, finalize, map, mergeMap, startWith, takeUntil, tap } from 'rxjs
 
 @Injectable()
 export class ViewerService {
-  delete = new EventEmitter<FileItem>();
-  download = new EventEmitter<FileItem>();
-  suggest = new EventEmitter<SuggestAction>();
-
   isOpen = new BehaviorSubject<boolean>(false);
   result = new Subject<null>();
 
   constructor(private modal: ModalService) {}
 
-  open(type: FilesCollection, id: string, collection$: Observable<FileItem[]>): Observable<void> {
+  open(
+    type: FilesCollection,
+    id: string,
+    collection$: Observable<FileItem[]>,
+    suggest?: EventEmitter<SuggestAction>,
+    remove?: EventEmitter<FileItem>,
+    download?: EventEmitter<FileItem>,
+  ): Observable<void> {
     const selectedIndex = new BehaviorSubject<number>(null);
 
     return this.isOpen.getValue()
@@ -29,7 +32,9 @@ export class ViewerService {
           tap(() => this.isOpen.next(true)),
           map((params) => this.modal.createModal(UploaderViewerComponent, params)),
           map((modal) => this.addDetachToModal(modal)),
-          mergeMap((modal) => this.observeOutputs(modal, selectedIndex, id, collection$)),
+          mergeMap((modal) =>
+            this.observeOutputs(modal, selectedIndex, id, collection$, suggest, remove, download),
+          ),
           finalize(() => this.isOpen.next(false)),
           takeUntil(this.result),
         );
@@ -104,6 +109,9 @@ export class ViewerService {
     selectedIndex$: BehaviorSubject<number>,
     selectedId: string,
     collection$: Observable<FileItem[]>,
+    suggest?: EventEmitter<SuggestAction>,
+    remove?: EventEmitter<FileItem>,
+    download?: EventEmitter<FileItem>,
   ): Observable<void> {
     return combineLatest([
       combineLatest([collection$, selectedIndex$]).pipe(
@@ -117,17 +125,17 @@ export class ViewerService {
       modal.instance.suggest.pipe(
         startWith(null),
         filter((sudjectEvent) => !!sudjectEvent),
-        tap((sudjectEvent) => this.suggest.emit(sudjectEvent)),
+        tap((sudjectEvent) => suggest?.emit(sudjectEvent)),
       ),
       modal.instance.download.pipe(
         startWith(null),
         filter((downloadEvent) => !!downloadEvent),
-        tap((downloadEvent) => this.download.emit(downloadEvent)),
+        tap((downloadEvent) => download?.emit(downloadEvent)),
       ),
       modal.instance.delete.pipe(
         startWith(null),
         filter((deleteEvent) => !!deleteEvent),
-        tap((deleteEvent) => this.delete.emit(deleteEvent)),
+        tap((deleteEvent) => remove?.emit(deleteEvent)),
       ),
       modal.instance.prev.pipe(
         startWith(null),
