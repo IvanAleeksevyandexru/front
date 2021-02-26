@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { isUndefined, toBoolean } from '../../../../../../shared/constants/uttils';
 import {
   CustomComponent,
@@ -17,6 +18,18 @@ import { ListItem } from 'epgu-lib';
 import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import {
+  DictionaryFilters,
+  DictionarySubFilter,
+} from '../../../../services/dictionary-api/dictionary-api.types';
+import { likeDictionary } from '../../tools/custom-screen-tools';
+
+const EMPTY_VALUE = '';
+const NON_EMPTY_VALUE = '*';
+
+export interface ComponentDictionaryFilters {
+  [key: string]: DictionaryFilters['filter'] | null;
+}
 
 @Injectable()
 export class ComponentListToolsService {
@@ -31,6 +44,7 @@ export class ComponentListToolsService {
   ];
 
   private prevValues: { [key: string]: string | number } = {};
+  private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
 
   constructor(private dateRangeService: DateRangeService, private screenService: ScreenService) {}
 
@@ -87,6 +101,17 @@ export class ComponentListToolsService {
         patchValueAndDisable(dependentControl, reference.defaultValue);
       } else {
         patchToPrevValueAndEnable(dependentControl);
+      }
+    }
+
+    if (reference.relation === CustomComponentRefRelation.filterOn) {
+      if (
+        this.isValueEquals(reference.val, componentVal) &&
+        likeDictionary(dependentComponent.type)
+      ) {
+        this.applyFilter(dependentComponent, reference.filter, componentVal);
+      } else {
+        this.clearFilter(dependentComponent);
       }
     }
 
@@ -319,6 +344,16 @@ export class ComponentListToolsService {
     return type === CustomScreenComponentTypes.DateInput;
   }
 
+  public get filters(): ComponentDictionaryFilters {
+    return this._filters$.getValue();
+  }
+  public set filters(val: ComponentDictionaryFilters) {
+    this._filters$.next(val);
+  }
+  public get filters$(): Observable<ComponentDictionaryFilters> {
+    return this._filters$.asObservable();
+  }
+
   /**
    * Возвращает значение атрибута attributeName из словаря компонента componentId.
    * Если атрибут не найден, то возвращается undefined.
@@ -345,10 +380,7 @@ export class ComponentListToolsService {
         if (componentVal) {
           const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
 
-          const dictionaryAttributeValue =
-            dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
-
-          return dictionaryAttributeValue;
+          return dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
         }
       }
     }
@@ -399,6 +431,12 @@ export class ComponentListToolsService {
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }
 
+  private getValueFromComponentVal(componentVal: { id?: string } | string): string {
+    return (['string', 'boolean'].includes(typeof componentVal)
+      ? (componentVal as string)
+      : (componentVal as { id?: string })?.id);
+  }
+
   /**
    * Сравнивает значание в зависимости от типа
    * @param value - value из зависимого компонета
@@ -408,15 +446,49 @@ export class ComponentListToolsService {
     value: string | Array<string> | boolean,
     componentVal: { id?: string },
   ): boolean {
-    if (['string', 'boolean'].includes(typeof componentVal)) {
-      return value === componentVal;
+    const componentValue = this.getValueFromComponentVal(componentVal);
+
+    if (value === EMPTY_VALUE) {
+      return !componentValue;
+    }
+
+    if (value === NON_EMPTY_VALUE) {
+      return !!componentValue;
     }
 
     if (Array.isArray(value)) {
-      return value.some((values) => values === componentVal?.id);
+      return value.some((values) => values === componentValue);
     }
 
-    return value === componentVal?.id;
+    return value === componentValue;
+  }
+
+  private applyFilter(
+    dependentComponent: CustomComponent,
+    filter: DictionaryFilters['filter'],
+    componentVal: { id?: string },
+  ): void {
+    const value = this.getValueFromComponentVal(componentVal);
+
+    if (filter.simple) {
+      filter.simple.value.asString = value;
+    } else if (filter.union) {
+      filter.union.subs = filter.union.subs.map(
+        (subFilter: DictionarySubFilter): DictionarySubFilter => {
+          subFilter.simple.value.asString = value;
+
+          return subFilter;
+        },
+      );
+    }
+
+    this.filters = { [dependentComponent.id]: filter };
+  }
+
+  private clearFilter(dependentComponent: CustomComponent): void {
+    if (this.filters[dependentComponent.id]) {
+      this.filters = { [dependentComponent.id]: null };
+    }
   }
 
   private updateLimitDate(

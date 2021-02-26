@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ComponentAttrsDto, ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentAttrsDto,
+  ComponentDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
@@ -8,7 +11,8 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/shared/components/components-list/doc-input/doc-input.types';
-
+import { likeDictionary } from '../../../component/shared/components/components-list/tools/custom-screen-tools';
+import { DictionaryFilters } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
 
 @Injectable()
 export class ValueLoaderService {
@@ -17,7 +21,7 @@ export class ValueLoaderService {
     private cachedAnswersService: CachedAnswersService,
     private utils: UtilsService,
     private datesToolsService: DatesToolsService,
-  ) { }
+  ) {}
 
   public loadValueFromCachedAnswer(
     components: Array<ComponentDto>,
@@ -50,13 +54,13 @@ export class ValueLoaderService {
       if (hasPresetTypeRef && !cachedValue) {
         return this.getPresetValue(
           this.getComponentWithAttrsDateRef(item, cachedAnswers),
-          cachedAnswers
+          cachedAnswers,
         );
       }
 
       return this.getComponentWithCaches(
         this.getComponentWithAttrsDateRef(item, cachedAnswers),
-        cachedValue
+        cachedValue,
       );
     });
   }
@@ -125,7 +129,7 @@ export class ValueLoaderService {
       } else {
         return JSON.stringify({
           ...parsedPreset,
-          ...parsedCachedValue as object,
+          ...(parsedCachedValue as object),
         });
       }
     }
@@ -177,13 +181,8 @@ export class ValueLoaderService {
     if (cachedValue) {
       return {
         ...component,
-        value: this.mergePresetCacheValue(
-          cachedValue,
-          component,
-          parentId,
-          parentIndex,
-        ),
-        valueFromCache: true
+        value: this.mergePresetCacheValue(cachedValue, component, parentId, parentIndex),
+        valueFromCache: true,
       };
     }
 
@@ -226,7 +225,7 @@ export class ValueLoaderService {
   }
 
   private getPresetsFromRawPresets(preset: string): Array<string> {
-    return preset.split('||').map(ref => ref.trim());
+    return preset.split('||').map((ref) => ref.trim());
   }
 
   private getPathFromPreset(value: string): { id: string; path: string } {
@@ -238,22 +237,29 @@ export class ValueLoaderService {
     return /^\d{1,2}.\d{1,2}.\d{1,4}$/.test(date);
   }
 
-  private getComponentWithAttrsDateRef(component: ComponentDto, cachedAnswers: CachedAnswers): ComponentDto {
+  private getComponentWithAttrsDateRef(
+    component: ComponentDto,
+    cachedAnswers: CachedAnswers,
+  ): ComponentDto {
     const { attrs } = component;
 
-    if(component.type === CustomScreenComponentTypes.DocInput) {
+    if (component.type === CustomScreenComponentTypes.DocInput) {
       const fields = attrs.fields as DocInputField[];
-      const haveDateRef = ({ attrs }: DocInputField): boolean => Boolean(attrs?.minDateRef || attrs?.minDateRef);
+      const haveDateRef = ({ attrs }: DocInputField): boolean =>
+        Boolean(attrs?.minDateRef || attrs?.minDateRef);
 
-      Object.values(fields).filter((field) => haveDateRef(field)).forEach(({ attrs }) => {
-        this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
-      });
-    }else {
+      Object.values(fields)
+        .filter((field) => haveDateRef(field))
+        .forEach(({ attrs }) => {
+          this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
+        });
+    } else if (likeDictionary(component.type as CustomScreenComponentTypes)) {
+      component.attrs = this.setAttrsFilters(component.attrs, cachedAnswers);
+    } else {
       this.setAttrsDateRef(component.attrs, cachedAnswers);
     }
     return component;
   }
-
 
   private setAttrsDateRef(attrs: ComponentAttrsDto, cachedAnswers: CachedAnswers): void {
     if (attrs.minDateRef) {
@@ -262,5 +268,55 @@ export class ValueLoaderService {
     if (attrs.maxDateRef) {
       attrs.maxDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
     }
+  }
+
+  private setAttrsFilters(
+    attrs: ComponentAttrsDto,
+    cachedAnswers: CachedAnswers,
+  ): ComponentAttrsDto {
+    return Object.keys(attrs.refs).reduce((resultAttrs: ComponentAttrsDto, key: string) => {
+      return this.getPresetsFromRawPresets(resultAttrs.refs[key]).reduce(
+        (attrsWithFilter: ComponentAttrsDto, preset) => {
+          const { path, id } = this.getPathFromPreset(preset);
+          const cache = cachedAnswers[id].value;
+
+          if (!this.utils.hasJsonStructure(cache)) {
+            return attrsWithFilter;
+          }
+
+          const value: string = UtilsService.getObjectProperty(
+            { value: JSON.parse(cache) },
+            path,
+            '',
+          );
+
+          return this.putValueToFilters(key, value, attrsWithFilter);
+        },
+        resultAttrs,
+      );
+    }, attrs);
+  }
+
+  private putValueToFilters(
+    key: string,
+    value: string,
+    attrs: ComponentAttrsDto,
+  ): ComponentAttrsDto {
+    const filter = attrs?.dictionaryOptions?.filter as DictionaryFilters['filter'];
+    if (filter?.simple?.value?.asString) {
+      const valueRef = filter.simple.value;
+
+      valueRef.asString = valueRef.asString.replace(`\${${key}}`, value);
+    } else if (filter?.union?.subs) {
+      const subs = filter.union.subs;
+
+      filter.union.subs = subs.map((subFilter) => {
+        subFilter.simple.value.asString.replace(`\${${key}}`, value);
+
+        return subFilter;
+      });
+    }
+
+    return attrs;
   }
 }

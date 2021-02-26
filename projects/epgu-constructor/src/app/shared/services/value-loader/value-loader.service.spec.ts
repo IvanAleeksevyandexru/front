@@ -209,9 +209,9 @@ describe('ValueLoaderService', () => {
               attrs: {
                 minDateRef: 'pd1.value',
                 maxDateRef: 'pd2.value.date',
-              }
-            }
-          }
+              },
+            },
+          },
         },
         value: '',
         required: true,
@@ -225,7 +225,84 @@ describe('ValueLoaderService', () => {
       const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([component]);
     });
+  });
 
+  it('should put value to filter object in attrs', () => {
+    const attrs = {
+      dictionaryOptions: {
+        filter: {
+          simple: {
+            attributeName: 'title',
+            condition: 'CONTAINS',
+            value: {
+              asString: '${testVal}',
+            },
+          },
+        },
+      },
+    };
+
+    const expectedAttrs = {
+      dictionaryOptions: {
+        filter: {
+          simple: {
+            attributeName: 'title',
+            condition: 'CONTAINS',
+            value: {
+              asString: 'Some value',
+            },
+          },
+        },
+      },
+    };
+
+    const actualAttrs = service['putValueToFilters']('testVal', 'Some value', attrs);
+
+    expect(actualAttrs).toEqual(expectedAttrs);
+  });
+
+  it('should set filter in attrs', () => {
+    const cachedAnswers = {
+      pd1: { value: '{"storedValues":{"middleName": "Middle"} }' },
+    } as any as CachedAnswers;
+
+    const attrs = {
+      dictionaryOptions: {
+        filter: {
+          simple: {
+            attributeName: 'title',
+            condition: 'CONTAINS',
+            value: {
+              asString: '${testVal}',
+            },
+          },
+        },
+      },
+      refs: {
+        testVal: 'pd1.value.storedValues.middleName',
+      },
+    };
+
+    const expectedAttrs = {
+      dictionaryOptions: {
+        filter: {
+          simple: {
+            attributeName: 'title',
+            condition: 'CONTAINS',
+            value: {
+              asString: 'Middle',
+            },
+          },
+        },
+      },
+      refs: {
+        testVal: 'pd1.value.storedValues.middleName',
+      },
+    };
+
+    const actualAttrs = service['setAttrsFilters'](attrs, cachedAnswers);
+
+    expect(actualAttrs).toEqual(expectedAttrs);
   });
 
   it('should be created', () => {
