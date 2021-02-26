@@ -367,6 +367,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
               tap(() => this.decrementLimits(fileItem)),
               tap(() => this.resetLimits()),
+              tap(() => this.eventBusService.emit('fileDeletedEvent', file)),
               map(() => undefined),
             )
           : of(undefined),

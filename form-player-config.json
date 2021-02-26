@@ -55,6 +55,7 @@
     },
     "disableUnderConstructionMode": false,
     "isSocialShareDisabled": true,
+    "isAutocompleteServiceDisabled": false,
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
     "suggestionsApiUrl": "/suggests/api/drafts/v1/suggests",
     "staticDomainContentPath": "https://gu-st.ru/content"

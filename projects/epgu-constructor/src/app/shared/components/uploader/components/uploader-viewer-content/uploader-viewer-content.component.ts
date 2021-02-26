@@ -17,6 +17,7 @@ import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../da
 import { ZoomComponent } from '../../../zoom/zoom.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ZoomEvent } from '../../../zoom/typings';
+import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
@@ -53,10 +54,9 @@ export class UploaderViewerContentComponent {
   selectedIconType: string;
   isPDF = false;
   isError = false;
-
   baseFileTypeIconPath = `${this.basePath}file-types/`;
-  errorIcon = 'Error';
-  constructor(private config: ConfigService) {}
+
+  constructor(private config: ConfigService, private eventBusService: EventBusService) {}
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);
@@ -102,6 +102,7 @@ export class UploaderViewerContentComponent {
 
   deleteAction(): void {
     this.delete.emit(this.item);
+    this.eventBusService.emit('fileDeletedEvent', this.item);
   }
 
   cancelAction(): void {

@@ -24,6 +24,7 @@ export const iconsTypes = {
   xls: 'XLS',
   xml: 'XML',
   zip: 'ZIP',
+  error: 'Error',
 };
 
 export interface SuggestAction {
