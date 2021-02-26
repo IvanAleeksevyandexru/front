@@ -137,7 +137,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     }
   }
 
-  private getAcceptType(): string {
+  public getAcceptType(): string {
     if (this.deviceDetector.isMiAndroid()) {
       return 'image/*';
     }
