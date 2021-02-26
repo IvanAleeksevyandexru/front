@@ -114,7 +114,7 @@ export interface ComponentAttrsDto {
   startTime?: string;
   expirationTime?: string;
   timerRules?: TimerRulesDto;
-  refs?: RefsTimeDto;
+  refs?: RefsTimeDto | { [key: string]: string };
   autoMapFocus?: boolean; //TODO: в json нет этого атрибута, но в коде есть, возможно рудимент
   autoCenterAllPoints?: boolean;
   selectedValue?: string;

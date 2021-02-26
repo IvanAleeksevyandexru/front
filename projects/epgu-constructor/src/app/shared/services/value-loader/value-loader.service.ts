@@ -254,7 +254,7 @@ export class ValueLoaderService {
           this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
         });
     } else if (likeDictionary(component.type as CustomScreenComponentTypes)) {
-      this.setAttrsFilters(component.attrs, cachedAnswers);
+      component.attrs = this.setAttrsFilters(component.attrs, cachedAnswers);
     } else {
       this.setAttrsDateRef(component.attrs, cachedAnswers);
     }
@@ -270,27 +270,38 @@ export class ValueLoaderService {
     }
   }
 
-  private setAttrsFilters(attrs: ComponentAttrsDto, cachedAnswers: CachedAnswers): void {
-    Object.keys(attrs.refs).forEach((key: string) => {
-      const presets = this.getPresetsFromRawPresets(attrs.refs[key]);
-      for (let i = 0; i < presets.length; i++) {
-        const { path, id } = this.getPathFromPreset(presets[i]);
-        const cache = cachedAnswers[id].value;
+  private setAttrsFilters(
+    attrs: ComponentAttrsDto,
+    cachedAnswers: CachedAnswers,
+  ): ComponentAttrsDto {
+    return Object.keys(attrs.refs).reduce((resultAttrs: ComponentAttrsDto, key: string) => {
+      return this.getPresetsFromRawPresets(resultAttrs.refs[key]).reduce(
+        (attrsWithFilter: ComponentAttrsDto, preset) => {
+          const { path, id } = this.getPathFromPreset(preset);
+          const cache = cachedAnswers[id].value;
 
-        if (this.utils.hasJsonStructure(cache)) {
+          if (!this.utils.hasJsonStructure(cache)) {
+            return attrsWithFilter;
+          }
+
           const value: string = UtilsService.getObjectProperty(
             { value: JSON.parse(cache) },
             path,
             '',
           );
 
-          this.putValueToFilters(key, value, attrs);
-        }
-      }
-    });
+          return this.putValueToFilters(key, value, attrsWithFilter);
+        },
+        resultAttrs,
+      );
+    }, attrs);
   }
 
-  private putValueToFilters(key: string, value: string, attrs: ComponentAttrsDto): void {
+  private putValueToFilters(
+    key: string,
+    value: string,
+    attrs: ComponentAttrsDto,
+  ): ComponentAttrsDto {
     const filter = attrs?.dictionaryOptions?.filter as DictionaryFilters['filter'];
     if (filter?.simple?.value?.asString) {
       const valueRef = filter.simple.value;
@@ -305,5 +316,7 @@ export class ValueLoaderService {
         return subFilter;
       });
     }
+
+    return attrs;
   }
 }
