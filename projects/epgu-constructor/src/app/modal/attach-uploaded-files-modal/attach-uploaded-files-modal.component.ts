@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
   ErrorActions,
@@ -17,9 +18,8 @@ import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.s
 import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/constants/dates';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { ConfigService } from '../../core/services/config/config.service';
-import { ICONS_TYPES } from '../../shared/constants/uploader';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
-import { FilesCollection } from '../../shared/components/uploader/data';
+import { FilesCollection, iconsTypes } from '../../shared/components/uploader/data';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
-  iconsTypes = ICONS_TYPES;
+  iconsTypes = iconsTypes;
 
   constructor(
     public injector: Injector,
@@ -83,7 +83,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   public previewFile(file: FileItem): void {
     this.viewerService
-      .open(FilesCollection.suggest, file.id, this.suggestionsFiles)
+      .open(FilesCollection.suggest, file.id, of(this.suggestionsFiles))
       .pipe(take(1))
       .subscribe();
   }

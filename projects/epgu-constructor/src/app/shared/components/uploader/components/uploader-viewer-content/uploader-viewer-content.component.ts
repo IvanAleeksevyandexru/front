@@ -56,7 +56,7 @@ export class UploaderViewerContentComponent {
   isError = false;
   baseFileTypeIconPath = `${this.basePath}file-types/`;
 
-  constructor(private config: ConfigService, private eventBusService: EventBusService) { }
+  constructor(private config: ConfigService, private eventBusService: EventBusService) {}
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);
