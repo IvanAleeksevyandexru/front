@@ -138,6 +138,10 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   }
 
   private getAcceptType(): string {
+    if (this.deviceDetector.isMiAndroid()) {
+      return 'image/*';
+    }
+
     return this.allowedImgTypes
       .map((fileType) => `.${fileType}`)
       .join(',')
