@@ -46,7 +46,6 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   @Output() suggest = new EventEmitter<SuggestAction>();
 
   title = 'Ранее загруженные файлы';
-  text: string;
   componentId = this.screenService.component?.id || null;
   suggestions: { [key: string]: ISuggestionItem } = {};
   suggestions$ = this.screenService.suggestions$;
@@ -175,10 +174,12 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
           DATE_STRING_DASH_FORMAT,
         );
         date = this.datesToolsService.format(date, DATE_TIME_STRING_SHORT);
-        if (acc[date]) {
-          acc[date].push(file);
-        } else {
-          acc[date] = [file];
+        if (file.item.mnemonic.includes(this.modalId)) {
+          if (acc[date]) {
+            acc[date].push(file);
+          } else {
+            acc[date] = [file];
+          }
         }
         return acc;
       }, {}),
