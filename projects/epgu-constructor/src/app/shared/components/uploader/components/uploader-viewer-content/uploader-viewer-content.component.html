@@ -67,46 +67,59 @@
   <div class="viewer__toolbar">
     <ng-container *ngIf="zoom | async as status">
       <button
-        class="viewer__toolbar-action"
-        [disabled]="status.zoom == status.max || !imageURL"
+        class="viewer__toolbar-action zoom hide-text"
+        [disabled]="status.zoom == status.max || !imageURL || isError"
         [hidden]="status.zoom >= status.max && status.max != 1"
         (click)="zoomIn()"
       >
         <img [src]="basePath + 'zoom-in-white.svg'" alt="Приблизить" />
-        Приблизить
+        <span>Приблизить</span>
       </button>
       <button
-        class="viewer__toolbar-action"
+        class="viewer__toolbar-action zoom hide-text"
         [hidden]="status.zoom < status.max || status.max == 1"
+        [disabled]="isError"
         (click)="zoomOut()"
       >
         <img [src]="basePath + 'zoom-out-white.svg'" alt="Приблизить" />
-        Отдалить
+        <span>Отдалить</span>
       </button>
     </ng-container>
 
-    <button class="viewer__toolbar-action" (click)="downloadAction()">
-      <img [src]="basePath + 'download.svg'" alt="Скачать" />Скачать
+    <button
+      [disabled]="isError"
+      class="viewer__toolbar-action hide-text"
+      (click)="downloadAction()"
+    >
+      <img [src]="basePath + 'download.svg'" alt="Скачать" />
+      <span>Скачать</span>
     </button>
-    <button class="viewer__toolbar-action" (click)="confirmAction()">
-      <img [src]="basePath + 'remove-file.svg'" alt="Удалить" />Удалить
+    <button
+      *ngIf="type !== filesType.suggest"
+      class="viewer__toolbar-action hide-text"
+      (click)="confirmAction()"
+    >
+      <img [src]="basePath + 'remove-file.svg'" alt="Удалить" />
+      <span>Удалить</span>
     </button>
     <div class="viewer__toolbar-counter">{{ position }}/{{ size }}</div>
     <button
+      [disabled]="isError"
       class="viewer__toolbar-action attach"
       *ngIf="type === filesType.suggest && !item.attached"
       (click)="suggestAction(true)"
     >
       <img [src]="basePath + 'plus-white.svg'" alt="Прикрепить" />
-      Прикрепить
+      <span>Добавить</span>
     </button>
     <button
+      [disabled]="isError"
       class="viewer__toolbar-action detach"
-      *ngIf="item.attached"
+      *ngIf="type === filesType.suggest && item.attached"
       (click)="suggestAction(false)"
     >
       <img [src]="basePath + 'arrow-back-white.svg'" alt="Открепить" />
-      Открепить
+      <span>Убрать</span>
     </button>
   </div>
 </ng-container>
