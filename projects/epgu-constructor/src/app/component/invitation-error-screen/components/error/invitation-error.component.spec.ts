@@ -23,11 +23,15 @@ import { LocationServiceStub } from '../../../../core/services/location/location
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
+import { CustomComponent } from '../../../shared/components/components-list/components-list.types';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
+  let validationService: ValidationService;
+  let locationService: LocationService;
   let fixture: ComponentFixture<InvitationErrorComponent>;
   const mockData = { label: '', attrs: { url: '' }, id: '', type: '' } as ComponentBase;
+  const mockAnswers = { d1: { visited: true, value: '010-732-732 01' }};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,12 +65,39 @@ describe('InvitationErrorComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorComponent);
+    validationService = TestBed.inject(ValidationService);
+    locationService = TestBed.inject(LocationService);
     component = fixture.componentInstance;
     component.data = mockData;
+    component.config = TestBed.inject(ConfigService);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit()', () => {
+    it('should set custom validator', () => {
+      const form = component.email;
+      spyOn(validationService, 'customValidator').and.callThrough();
+      form.setValidators(validationService.customValidator(mockData as CustomComponent));
+      expect(validationService.customValidator).toBeCalledWith(mockData as CustomComponent);
+    });
+  });
+
+  describe('redirectToLK()', () => {
+    it('should redirect to lk', () => {
+      spyOn(locationService, 'href').and.callThrough();
+      component.redirectToLK();
+      expect(locationService.href).toBeCalledWith('');
+    });
+  });
+
+  describe('sendEmail()', () => {
+    it('should set flag emailSent to true', () => {
+      component.data = mockData;
+      component.applicantAnswers = mockAnswers;
+
+      component['sendEmail']();
+      fixture.detectChanges();
+      expect(component['emailSent']).toBe(true);
+    });
   });
 });
