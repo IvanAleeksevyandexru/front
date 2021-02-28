@@ -33,7 +33,7 @@ interface ConfigParams {
 }
 
 enum RequestStatus {
-  Successed = 0,
+  Succeed = 0,
   Failed = 1,
 }
 
@@ -86,8 +86,8 @@ export class HealthInterceptor implements HttpInterceptor {
           }
 
           if (isInvalidOldDictionary || isInvalidNewDictionary) {
-            successRequestPayload = {
-              ...successRequestPayload,
+            this.configParams = {
+              ...this.configParams,
               error: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
               errorMessage: isInvalidOldDictionary
                 ? this.utils.isDefined(result.error.message)
@@ -124,7 +124,7 @@ export class HealthInterceptor implements HttpInterceptor {
 
           this.health.measureEnd(
             serviceName,
-            dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Successed,
+            dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Succeed,
             successRequestPayload,
           );
         }
@@ -146,7 +146,7 @@ export class HealthInterceptor implements HttpInterceptor {
 
             this.health.measureEnd(serviceName, RequestStatus.Failed, this.configParams);
           } else {
-            this.health.measureEnd(serviceName, RequestStatus.Successed, this.configParams);
+            this.health.measureEnd(serviceName, RequestStatus.Succeed, this.configParams);
           }
         }
         return throwError(err);
