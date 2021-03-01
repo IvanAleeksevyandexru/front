@@ -86,8 +86,8 @@ export class HealthInterceptor implements HttpInterceptor {
           }
 
           if (isInvalidOldDictionary || isInvalidNewDictionary) {
-            successRequestPayload = {
-              ...successRequestPayload,
+            this.configParams = {
+              ...this.configParams,
               error: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
               errorMessage: isInvalidOldDictionary
                 ? this.utils.isDefined(result.error.message)
