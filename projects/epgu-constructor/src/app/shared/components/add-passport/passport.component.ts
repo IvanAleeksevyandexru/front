@@ -2,11 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   forwardRef,
   Input,
+  OnChanges,
   OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-/* eslint-disable import/no-extraneous-dependencies */
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -23,8 +26,12 @@ import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentBase } from '../../../screen/screen.types';
-// eslint-disable-next-line import/named
 import { PassportAttr, PassportFields, PassportFormFields } from './passport.interface';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../core/services/autocomplete/autocomplete.inteface';
+import { prepareClassifiedSuggestionItems } from '../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-passport',
@@ -47,12 +54,17 @@ import { PassportAttr, PassportFields, PassportFormFields } from './passport.int
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PassportComponent implements OnInit, ControlValueAccessor, Validator {
+export class PassportComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
   @Input() attrs: PassportAttr;
+  @Input() suggestions: ISuggestionItem;
+  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
+    ISuggestionItem | ISuggestionItemList
+  >();
 
   public passportForm: FormGroup;
   public fieldsNames: Array<string> = [];
 
+  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
@@ -65,6 +77,12 @@ export class PassportComponent implements OnInit, ControlValueAccessor, Validato
   ngOnInit(): void {
     this.initFormGroup();
     this.subscribeToFormChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.suggestions.currentValue) {
+      this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(this.suggestions);
+    }
   }
 
   initFormGroup(): void {

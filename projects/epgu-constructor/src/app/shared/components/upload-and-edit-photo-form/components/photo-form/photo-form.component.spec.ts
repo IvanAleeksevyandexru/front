@@ -93,6 +93,17 @@ describe('PhotoFormComponent', () => {
     });
   });
 
+  describe('getAcceptType()', () => {
+    it('should be set value to getAcceptType', () => {
+      expect(component.getAcceptType()).toBe('.jpeg,.jpg,.png,.bmp');
+    });
+
+    it('should be set image/* to getAcceptType if MI browser', () => {
+      jest.spyOn(deviceDetector, 'isMiAndroid').mockReturnValue(true);
+      expect(component.getAcceptType()).toBe('image/*');
+    });
+  });
+
   describe('changeCroppedPhoto', () => {
     it('should be change photo', () => {
       jest.spyOn(component.img$, 'next');

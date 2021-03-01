@@ -39,6 +39,7 @@ import {
 import { PrepareService } from '../prepare.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
+import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 
 interface OverLimitsItem {
   count: number;
@@ -215,19 +216,39 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private eventBusService: EventBusService,
     private prepareService: PrepareService,
     private screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
+
+    this.eventBusService
+      .on(`fileDeleteEvent_${this.loadData.uploadId}`)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileItem) => {
+        this.addDelete(payload);
+      });
+    this.eventBusService
+      .on(`fileDownloadEvent_${this.loadData.uploadId}`)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileItem) => {
+        this.addDownload(payload);
+      });
+    this.eventBusService
+      .on(`fileSuggestEvent_${this.loadData.uploadId}`)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: { isAdd: boolean; file: FileItem }) => {
+        this.suggest(payload);
+      });
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  suggest({ isAdd, file }): void {
+  suggest({ isAdd, file }: { isAdd: boolean; file: FileItem }): void {
     if (isAdd) {
       this.store.add(file.setAttached(isAdd));
     } else {
@@ -565,7 +586,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   attachUploadedFiles(): void {
     this.modal.openModal(AttachUploadedFilesModalComponent, {
-      text: 'attachUploadedFiles',
+      modalId: `${this.loadData.uploadId}`,
       showCloseButton: false,
       showCrossButton: true,
       filesList: this.files.getValue(),

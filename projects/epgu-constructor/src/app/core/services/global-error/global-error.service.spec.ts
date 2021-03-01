@@ -33,12 +33,14 @@ describe('GlobalErrorHandler', () => {
 
   it('test base error', () => {
     spyOn(healthService, 'measureStart').and.callThrough();
+    // @ts-ignore
     globalError.handleError(new Error());
     expect(healthService.measureStart).toHaveBeenCalled();
   });
 
   it('test httpError', () => {
     spyOn(healthService, 'measureStart').and.callThrough();
+    // @ts-ignore
     globalError.handleError(new HttpErrorResponse({}));
     expect(healthService.measureStart).toHaveBeenCalledTimes(0);
   });

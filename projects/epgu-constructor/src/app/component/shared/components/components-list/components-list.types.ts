@@ -6,8 +6,13 @@ import {
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { TextTransform } from '../../../../shared/types/textTransform';
-import { DictionaryItem, DictionaryOptions, DictionaryResponse } from '../../services/dictionary-api/dictionary-api.types';
 import { Ref } from './services/date-range/date-range.models';
+import {
+  DictionaryFilters,
+  DictionaryItem,
+  DictionaryOptions,
+  DictionaryResponse,
+} from '../../services/dictionary-api/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -34,6 +39,7 @@ export enum CustomScreenComponentTypes {
   FieldList = 'FieldList',
   Timer = 'Timer',
   TextArea = 'TextArea',
+  MultipleChoiceDictionary = 'MultipleChoiceDictionary',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
@@ -149,6 +155,7 @@ export interface CustomComponentOutputData {
 export enum CustomComponentRefRelation {
   displayOn = 'displayOn',
   displayOff = 'displayOff',
+  filterOn = 'filterOn',
   disabled = 'disabled',
   calc = 'calc',
   autofillFromDictionary = 'autofillFromDictionary',
@@ -169,6 +176,7 @@ export interface CustomComponentRef {
   relation: CustomComponentRefRelation;
   defaultValue?: string | boolean;
   valueFromCache?: string;
+  filter: DictionaryFilters['filter'];
 }
 
 export interface CustomListFormGroup {

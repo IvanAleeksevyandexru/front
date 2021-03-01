@@ -307,6 +307,8 @@
         <epgu-constructor-passport
           [formControl]="$any(componentData.get('value'))"
           [attrs]="componentData.value?.attrs"
+          [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+          (selectSuggest)="suggestHandle($event)"
         >
         </epgu-constructor-passport>
       </epgu-constructor-component-item>
@@ -324,6 +326,20 @@
         [data]="$any(componentData.get('value'))"
       >
       </epgu-constructor-field-list>
+
+      <epgu-constructor-component-item
+        *ngSwitchCase="componentType.MultipleChoiceDictionary"
+        [data]="componentData"
+        [disableLabel]="true"
+      >
+        <epgu-constructor-multiple-choice-dictionary
+          [formControl]="$any(componentData.get('value'))"
+          [dictionaryList]="componentData.get('attrs').value.dictionaryList"
+          [dictionaryType]="componentData.get('attrs').value.dictionaryType"
+          [subLabel]="componentData.get('attrs').value.subLabel"
+          [label]="componentData.get('label').value"
+        ></epgu-constructor-multiple-choice-dictionary>
+      </epgu-constructor-component-item>
     </ng-container>
   </div>
 </form>

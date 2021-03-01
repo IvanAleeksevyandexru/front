@@ -7,6 +7,7 @@ import {
   CustomListReferenceData,
 } from '../../components-list.types';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import {
   getCustomScreenDictionaryFirstState,
   getNormalizeDataCustomScreenDictionary,
@@ -19,7 +20,10 @@ import {
 } from '../../../../services/dictionary-api/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
-import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
+import {
+  ComponentDictionaryFilters,
+  ComponentListToolsService,
+} from '../component-list-tools/component-list-tools.service';
 import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 import { ListItem } from 'epgu-lib';
 
@@ -44,6 +48,21 @@ export class ComponentListRepositoryService {
     private dictionaryApiService: DictionaryApiService,
     private toolsService: ComponentListToolsService,
   ) {}
+
+  watchForFilters(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
+    return this.toolsService.filters$.pipe(
+      switchMap((filters: ComponentDictionaryFilters) => {
+        return forkJoin(
+          components.reduce(
+            (data: Array<Observable<CustomListReferenceData>>, component: CustomComponent) =>
+              this.getDictionariesByFilter(data, component, filters),
+            [],
+          ),
+        );
+      }),
+      tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference)),
+    );
+  }
 
   loadReferenceData$(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
@@ -141,5 +160,21 @@ export class ComponentListRepositoryService {
     dropDowns[reference.component.id] = reference.data;
 
     this.dropDowns$.next(dropDowns);
+  }
+
+  private getDictionariesByFilter(
+    data: Array<Observable<CustomListReferenceData>>,
+    component: CustomComponent,
+    filters: ComponentDictionaryFilters,
+  ): Array<Observable<CustomListReferenceData>> {
+    if (filters[component.id] !== undefined && likeDictionary(component.type)) {
+      const { dictionaryType, dictionaryOptions } = component.attrs;
+      const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+
+      options.filter = filters[component.id];
+      data.push(this.getDictionaries$(dictionaryType, component, options));
+    }
+
+    return data;
   }
 }

@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import localeRu from '@angular/common/locales/ru';
+import { registerLocaleData } from '@angular/common';
 import { SmuEventsService } from 'epgu-lib';
 import { ConfigService } from '../core/services/config/config.service';
 import { FormPlayerComponent } from './form-player.component';
@@ -11,6 +13,8 @@ import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 import { AutocompleteModule } from '../core/services/autocomplete/autocomplete.module';
+
+registerLocaleData(localeRu);
 
 import 'hammerjs'; // HAMMER TIME
 
@@ -33,6 +37,7 @@ import 'hammerjs'; // HAMMER TIME
     CookieService,
     SmuEventsService,
     ConfigService,
+    { provide: LOCALE_ID, useValue: 'ru' },
   ],
   exports: [FormPlayerComponent],
   entryComponents: [FormPlayerComponent],

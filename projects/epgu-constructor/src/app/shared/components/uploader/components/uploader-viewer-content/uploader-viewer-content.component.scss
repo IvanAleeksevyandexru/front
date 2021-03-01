@@ -1,14 +1,240 @@
 @import '../../../../../../styles/core/index';
 
-.file-viewer {
-  min-height: 362px;
-  max-height: 611px;
+:host {
+  padding-top: 24px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  flex-grow: 1;
+  max-height: 100%;
+  position: relative;
+}
+
+.file-viewer {
+  flex-grow: 1;
+  height: 1px;
+  width: 100%;
   background-color: $color-input;
+  display: flex;
+  border-top: 2px solid $color-mercury;
+  border-left: 2px solid $color-mercury;
+  border-right: 2px solid $color-mercury;
+  position: relative;
+  &__image {
+    background-color: $color-white;
+  }
+  &__file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100%;
+    flex-direction: column;
+    cursor: default;
+    img {
+      margin-bottom: 16px;
+    }
+    .file-viewer__error-title {
+      color: $color-tela-rossa;
+      @include typ-plain-text;
+      margin-bottom: 4px;
+    }
+    .file-viewer__error-description {
+      color: $color-summer-night;
+      @include typ-plain-small;
+    }
+    .file-viewer__error-title,
+    .file-viewer__error-description {
+      text-align: center;
+      margin: 0 24px;
+    }
+    &_link {
+      cursor: pointer;
+    }
+  }
 }
 .viewer__info {
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-width: 1%;
+  margin-bottom: 16px;
+  .viewer__info-date,
+  .viewer__info-size,
+  .viewer__info-name {
+    color: $color-telegray-scuro;
+    white-space: nowrap;
+    @include typ-plain-text;
+    font-weight: $fw-bold;
+  }
+  .viewer__info-date {
+    margin-right: 16px;
+  }
+  .viewer__info-size {
+    margin-left: 16px;
+  }
+  .viewer__info-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    text-align: left;
+    color: $color-summer-night;
+  }
+}
+.viewer__description {
+  color: $color-summer-night;
+  @include typ-plain-text;
+  margin-bottom: 12px;
+  display: none;
+  @include phones-up {
+    display: block;
+  }
+}
+.prev,
+.next {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  padding: 0;
+  top: 50%;
+  width: 60px;
+  height: 86px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.prev {
+  left: 0;
+  transform: translateY(-50%);
+}
+.next {
+  right: 0;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.viewer__toolbar {
+  height: 48px;
+  background-color: $color-summer-night;
+  color: $color-white;
+  border-radius: 0 0 8px 8px;
+  @include typ-plain-small;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow: hidden;
+  .viewer__toolbar-action,
+  .viewer__toolbar-counter {
+    padding: 0 16px;
+  }
+
+  .viewer__toolbar-counter {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .viewer__toolbar-action {
+    color: $color-white;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    height: 100%;
+    margin: 0;
+    background-color: transparent;
+    &[disabled] {
+      opacity: 0.5;
+      cursor: default;
+    }
+    &[hidden] {
+      display: none;
+    }
+
+    &.hide-text > span {
+      display: none;
+      @include phones-up {
+        display: inline;
+      }
+    }
+    img {
+      margin-right: 7px;
+    }
+    &.zoom {
+      @include phones-down {
+        display: none;
+      }
+    }
+    &.attach {
+      background-color: $color-blu-digitale;
+    }
+    &.detach {
+      background-color: $color-active-item;
+    }
+    &.attach,
+    &.detach {
+      &[disabled] {
+        background-color: $color-blu-selvaggio;
+      }
+    }
+  }
+}
+.divider {
+  margin-bottom: 24px;
+}
+
+.viewer__confirmation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px;
+  background-color: rgba(11, 31, 51, 0.96);
+  color: $color-white;
+  text-align: center;
+  border-radius: 8px;
+  .viewer__confirmation-title {
+    @include typ-h5;
+  }
+  .viewer__confirmation-description {
+    margin-top: 8px;
+    @include typ-plain-small;
+  }
+  .viewer__confirmation-buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    .viewer__confirmation-button {
+      margin-right: 16px;
+      padding: 14px 24px;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      @include typ-plain-text;
+      color: $color-white;
+      &_cancel {
+        background-color: transparent;
+
+        border: 2px solid $color-white;
+      }
+      &_confirm {
+        background-color: rgba(77, 131, 250, 0.96);
+      }
+    }
+    .viewer__confirmation-button:nth-last-of-type(1) {
+      margin-right: 0;
+    }
+  }
 }

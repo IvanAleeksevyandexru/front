@@ -15,6 +15,8 @@
       [showMaskAsPlaceholder]="!field.placeholder"
       [placeholder]="field.placeholder"
       [showConstantMaskSymbols]="true"
+      [suggestions]="classifiedSuggestionItems[field.fieldName]"
+      (selectSuggest)="selectSuggest.emit($event)"
     ></epgu-constructor-masked-input>
   </div>
 </form>

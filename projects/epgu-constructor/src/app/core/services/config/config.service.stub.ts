@@ -25,6 +25,7 @@ export class ConfigServiceStub implements Config {
   _timeSlots = {};
   _disableUnderConstructionMode = false;
   _isSocialShareDisabled = false;
+  _isAutocompleteServiceDisabled = false;
   _addToCalendarUrl = '';
   _isLoaded$ = of(false);
 
@@ -159,11 +160,15 @@ export class ConfigServiceStub implements Config {
     return this._isSocialShareDisabled;
   }
 
+  get isAutocompleteServiceDisabled(): boolean {
+    return this._isAutocompleteServiceDisabled;
+  }
+
   get isLoaded$(): Observable<boolean> {
     return this._isLoaded$;
   }
 
-  initCore(): void {}
+  initCore(): void { }
 
   get addToCalendarUrl(): string {
     return this._addToCalendarUrl;

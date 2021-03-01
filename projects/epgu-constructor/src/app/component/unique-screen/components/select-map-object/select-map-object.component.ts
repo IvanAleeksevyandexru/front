@@ -57,6 +57,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
   public isSearchTitleVisible = true;
+  public isNoDepartmentErrorVisible = false;
 
   private componentValue: ComponentValue;
   private screenStore: ScreenStore;
@@ -297,6 +298,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .getSelectMapDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
       .pipe(
         switchMap((dictionary: DictionaryResponseForYMap) => {
+          this.isNoDepartmentErrorVisible = !dictionary.total;
           this.selectMapObjectService.dictionary = dictionary;
           // Параллелим получение геоточек на 4 запроса
           const items = [...dictionary.items];

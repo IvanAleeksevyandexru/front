@@ -49,3 +49,19 @@
     transform: rotate(-45deg);
   }
 }
+
+.link-btn {
+  color: $color-gosblue;
+  @include typ-plain-text;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: $color-active-item;
+  }
+}

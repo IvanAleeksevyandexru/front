@@ -1,17 +1,16 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
+  Injector,
   Input,
   Output,
-  ViewChild,
 } from '@angular/core';
 
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
 import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
-import { FilesCollection, SuggestAction } from '../../data';
-
-import { ZoomComponent } from '../../../zoom/zoom.component';
+import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer',
@@ -20,8 +19,11 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploaderViewerComponent extends ModalBaseComponent {
-  @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
+  @Input() set item(item: ViewerInfo) {
+    this.selectedItem = item;
+    this.changeDetector.markForCheck();
+  }
 
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
@@ -29,8 +31,13 @@ export class UploaderViewerComponent extends ModalBaseComponent {
   @Output() next = new EventEmitter<FilesCollection>();
   @Output() prev = new EventEmitter<FilesCollection>();
 
+  selectedItem: ViewerInfo;
   filesType = FilesCollection;
   isMoveZoom = false;
+
+  constructor(public injector: Injector, public changeDetector: ChangeDetectorRef) {
+    super(injector);
+  }
 
   onClickComponent(event: MouseEvent): void {
     if (!this.isMoveZoom) {
