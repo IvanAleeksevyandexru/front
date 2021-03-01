@@ -15,13 +15,14 @@ import {
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
 } from './errors.interceptor.constants';
+import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
+import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { ModalService } from '../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 import { LocationService } from '../../services/location/location.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { ConfigService } from '../../services/config/config.service';
-import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/400-error';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
@@ -51,6 +52,8 @@ export class ErrorsInterceptorService implements HttpInterceptor {
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
+    } else if (status === 410 && url.includes('getOrderStatus')) {
+      this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
         this.showModal(DRAFT_STATEMENT_NOT_FOUND).then((redirectToLk) => {
