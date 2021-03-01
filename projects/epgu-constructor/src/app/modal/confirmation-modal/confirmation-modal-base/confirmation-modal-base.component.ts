@@ -17,6 +17,7 @@ export class ConfirmationModalBaseComponent {
   @Input() showCrossButton?: boolean;
   @Input() preview?: boolean;
   @Input() isShortModal?: boolean;
+  @Input() isButtonsOutsideContent? = false;
 
   public isMobile: boolean;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
