@@ -7,7 +7,16 @@ import {
 } from '@angular/core';
 import { ListElement } from 'epgu-lib';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { catchError, debounceTime, delay, map, retry, startWith, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  delay,
+  map,
+  mapTo,
+  retry,
+  startWith,
+  takeUntil,
+} from 'rxjs/operators';
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 
 import { ModalBaseComponent } from '../../../../modal/shared/modal-base/modal-base.component';
@@ -32,7 +41,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   selectedItems: ListElement[];
   items: ListElement[];
   form: FormGroup;
-  filteredItems$: Observable<ListElement[]>;
+  filteredItems$: Observable<ListElement[]> = of([]);
   isSelectAll$ = new BehaviorSubject<boolean>(false);
   inputPlaceholder$ = new BehaviorSubject('Поиск по списку');
   readonly formField = FormField;
@@ -65,7 +74,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   public getFilteredItems$(): Observable<ListElement[]> {
     return merge(
       this.form.get(this.formField.input).valueChanges.pipe(debounceTime(300)),
-      this.isSelectAll$.pipe(map(() => '')),
+      this.isSelectAll$.pipe(mapTo('')),
     ).pipe(
       startWith(''),
       map((value) => {
@@ -98,6 +107,16 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
     this.isSelectAll$.next(isAll);
   }
 
+  public onClose(): void {
+    const selectedItems = Object.entries(this.form.get(this.formField.checkbox).value)
+      .filter(([, value]) => value)
+      .reduce<ListElement[]>((acc, [key, value]) => {
+        const selectedItem = value && this.items.find((item) => item.id === key);
+        return [...acc, selectedItem];
+      }, []);
+    this.closeModal(selectedItems);
+  }
+
   private initForm(items: ListElement[]): void {
     this.form = this.fb.group({
       [this.formField.input]: [null],
@@ -115,10 +134,13 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
       ),
     });
 
-    this.form.get(this.formField.checkbox).valueChanges.subscribe((value) => {
-      const { length } = Object.values(value).filter((val) => val);
-      this.updateInputPlaceholder(length);
-    });
+    this.form
+      .get(this.formField.checkbox)
+      .valueChanges.pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((value) => {
+        const { length } = Object.values(value).filter((val) => val);
+        this.updateInputPlaceholder(length);
+      });
   }
 
   private getDictionary(): void {
@@ -156,15 +178,5 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
 
   private updateInputPlaceholder(length: number): void {
     this.inputPlaceholder$.next(length ? `Выбрано ${length}` : 'Поиск по списку');
-  }
-
-  private onClose(): void {
-    const selectedItems = Object.entries(this.form.get(this.formField.checkbox).value)
-      .filter(([, value]) => value)
-      .reduce<ListElement[]>((acc, [key, value]) => {
-        const selectedItem = value && this.items.find((item) => item.id === key);
-        return [...acc, selectedItem];
-      }, []);
-    this.closeModal(selectedItems);
   }
 }
