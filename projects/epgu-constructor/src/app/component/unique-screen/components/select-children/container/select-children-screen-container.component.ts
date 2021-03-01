@@ -23,7 +23,7 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 })
 export class SelectChildrenScreenContainerComponent implements AfterViewInit {
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
-    map((label) => label || 'Добавить ребенка'),
+    map((label) => label || 'Добавить ребёнка'),
   );
   cachedValue$: Observable<CachedValue> = this.screenService.component$.pipe(
     map((data) => {
