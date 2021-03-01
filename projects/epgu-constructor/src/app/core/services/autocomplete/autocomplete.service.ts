@@ -42,6 +42,7 @@ export class AutocompleteService {
 
   public init(isDisabled: boolean = false): void {
     if (isDisabled) return;
+
     this.screenService.display$
       .pipe(
         filter((display) => display !== null),
