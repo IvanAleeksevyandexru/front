@@ -17,6 +17,21 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _configId: string;
   private _queryParams: QueryParams;
 
+  constructor(private loggerService: LoggerService) { }
+
+  init(service: ServiceEntity, context?: FormPlayerContext): void {
+    this.checkProps(service);
+    this.serviceId = service.serviceId;
+    this.targetId = service.targetId;
+    this.serviceInfo = service.serviceInfo;
+    this.orderId = service.orderId;
+    this.invited = service.invited;
+    this.canStartNew = service.canStartNew;
+    this.initState = context?.initState;
+    this.configId = context?.configId;
+    this.queryParams = context?.queryParams;
+  }
+
   get serviceId(): string {
     return this._serviceId;
   }
@@ -87,21 +102,6 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
 
   set queryParams(queryParams: QueryParams) {
     this._queryParams = queryParams;
-  }
-
-  constructor(private loggerService: LoggerService) { }
-
-  init(service: ServiceEntity, context?: FormPlayerContext): void {
-    this.checkProps(service);
-    this.serviceId = service.serviceId;
-    this.targetId = service.targetId;
-    this.serviceInfo = service.serviceInfo;
-    this.orderId = service.orderId;
-    this.invited = service.invited;
-    this.canStartNew = service.canStartNew;
-    this.initState = context?.initState;
-    this.configId = context?.configId;
-    this.queryParams = context?.queryParams;
   }
 
   private checkProps(service: ServiceEntity): void {
