@@ -21,6 +21,7 @@ import {
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
+import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-car-list-container',
@@ -101,12 +102,13 @@ export class CarListContainerComponent implements OnDestroy {
     return this.getHtmlItemTemplate(item.originalItem.originalItem);
   };
 
-  private initControl(value: Partial<ListItem>): void {
-    this.control = new FormControl({ value, disabled: false });
-    this.setState(value?.originalItem);
+  getHtmlItemTemplate(originalItem: VehicleOwnerInfo): string {
+    return `${this.getModelMarkName(originalItem)}, <span style="white-space: nowrap">${
+      originalItem?.govRegNumber
+    }</span>`;
   }
 
-  private getCarFixedItems(value: CarList): Partial<ListItem>[] {
+  getCarFixedItems(value: CarList): Partial<ListItem>[] {
     return value?.vehicles?.map((vehicleInfo) => {
       return {
         id: vehicleInfo.govRegNumber,
@@ -118,22 +120,21 @@ export class CarListContainerComponent implements OnDestroy {
     });
   }
 
-  private filterBySearchString(searchString): Partial<ListItem>[] {
+  filterBySearchString(searchString): Partial<ListItem>[] {
     return this.carFixedItems.filter((carItemList) => {
       const pattern = new RegExp(`(${searchString})`, this.lookupSearchCaseSensitive ? 'g' : 'gi');
       const template = this.getHtmlItemTemplate(carItemList.originalItem);
-      return pattern.test(this.htmlToText(template));
+      return pattern.test(utils.htmlToText(template));
     });
   }
 
-  private getHtmlItemTemplate(originalItem: VehicleOwnerInfo): string {
-    return `${this.getModelMarkName(originalItem)}, <span style="white-space: nowrap">${
-      originalItem?.govRegNumber
-    }</span>`;
+  getModelMarkName({ modelMarkName, modelName, markName }: VehicleOwnerInfo): string {
+    return modelMarkName || [markName, modelName].filter((value) => !!value).join(' ');
   }
 
-  private getModelMarkName({ modelMarkName, modelName, markName }: VehicleOwnerInfo): string {
-    return modelMarkName || [markName, modelName].filter((value) => !!value).join(' ');
+  private initControl(value: Partial<ListItem>): void {
+    this.control = new FormControl({ value, disabled: false });
+    this.setState(value?.originalItem);
   }
 
   private isNotFoundError(carList: CarList): boolean {
@@ -142,11 +143,5 @@ export class CarListContainerComponent implements OnDestroy {
 
   private isExternalError(carList: CarList): boolean {
     return carList.vehicleServiceCallResult === ServiceResult.EXTERNAL_SERVER_ERROR;
-  }
-
-  private htmlToText(html: string): string {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    return doc.body ? doc.body.textContent : '';
   }
 }
