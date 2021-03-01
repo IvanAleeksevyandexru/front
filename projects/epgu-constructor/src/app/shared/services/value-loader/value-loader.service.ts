@@ -16,7 +16,6 @@ import { DictionaryFilters } from '../../../component/shared/services/dictionary
 
 @Injectable()
 export class ValueLoaderService {
-
   constructor(
     private cachedAnswersService: CachedAnswersService,
     private utils: UtilsService,
@@ -274,6 +273,10 @@ export class ValueLoaderService {
     attrs: ComponentAttrsDto,
     cachedAnswers: CachedAnswers,
   ): ComponentAttrsDto {
+    if (!attrs.refs || typeof attrs.refs !== 'object') {
+      return attrs;
+    }
+
     return Object.keys(attrs.refs).reduce((resultAttrs: ComponentAttrsDto, key: string) => {
       return this.getPresetsFromRawPresets(resultAttrs.refs[key]).reduce(
         (attrsWithFilter: ComponentAttrsDto, preset) => {
