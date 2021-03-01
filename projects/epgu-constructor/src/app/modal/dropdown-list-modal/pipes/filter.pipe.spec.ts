@@ -18,7 +18,7 @@ describe('FilterPipe', () => {
     expect(pipe.transform(items, 'учитель')).toEqual([items[0]]);
   });
 
-  it('should transform by tags only if searchText > 3', () => {
+  it('should transform by tags only if searchText > 2', () => {
     const items = [{ label: 'ааа', tags: ['учитель'] }, { label: 'бб', tags: ['учитель', 'педагог'] }] as any;
     expect(pipe.transform(items, 'уч')).toEqual([]);
     expect(pipe.transform(items, 'учит')).toEqual(items);
