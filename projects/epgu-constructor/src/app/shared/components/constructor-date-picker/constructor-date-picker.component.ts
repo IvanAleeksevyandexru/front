@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Align, BrokenDateFixStrategy, RelativeDate } from 'epgu-lib';
 import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
@@ -6,6 +6,7 @@ import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
 @Component({
   selector: 'epgu-constructor-constructor-date-picker',
   templateUrl: './constructor-date-picker.component.html',
+  changeDetection: ChangeDetectionStrategy.Default, // @todo поменять на OnPush
 })
 export class ConstructorDatePickerComponent {
   @Input() invalid: boolean;
