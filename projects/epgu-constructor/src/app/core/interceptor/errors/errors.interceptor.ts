@@ -52,7 +52,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
-    } else if (status === 410 && url.includes('getOrderStatus')) {
+    } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
