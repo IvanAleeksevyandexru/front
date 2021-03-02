@@ -22,9 +22,16 @@ import { NavigationService } from '../../services/navigation/navigation.service'
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
+import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
+import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
+import { FormPlayerNavigation } from '../../../form-player/form-player.types';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+
+const responseDto = new FormPlayerServiceStub()._store;
 
 describe('ErrorsInterceptor', () => {
   let modalService: ModalService;
+  let navigationService: NavigationService;
   let formPlayerApi: FormPlayerApiService;
   let config: ConfigService;
   let init: InitDataService;
@@ -56,6 +63,7 @@ describe('ErrorsInterceptor', () => {
 
   beforeEach(() => {
     modalService = TestBed.inject(ModalService);
+    navigationService = TestBed.inject(NavigationService);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
     config = TestBed.inject(ConfigService);
     init = TestBed.inject(InitDataService);
@@ -153,6 +161,48 @@ describe('ErrorsInterceptor', () => {
       ConfirmationModalComponent,
       ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
     );
+    tick();
+  }));
+
+  it('should switch screen to double order display error when get 409 status code on getNextStep request', fakeAsync(() => {
+    spyOn(navigationService, 'patchOnCli').and.callThrough();
+    formPlayerApi.navigate(responseDto, {}, FormPlayerNavigation.NEXT).subscribe(() => fail('should have failed with the 409 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(409);
+      }
+    );
+    const requestToError = httpMock.expectOne(`${config.apiUrl}/service/${init.serviceId}/scenario/getNextStep`);
+    const body = new HttpErrorResponse({
+      status: 409,
+      statusText: 'Conflict',
+      url: `${config.apiUrl}/service/${init.serviceId}/scenario/getNextStep`,
+    });
+    requestToError.flush({
+      name: 'Conflict',
+      description: 'Заявление уже было подано'
+    }, body);
+    expect(navigationService.patchOnCli).toHaveBeenCalledWith({ display: DOUBLE_ORDER_ERROR_DISPLAY });
+    tick();
+  }));
+
+  it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
+    spyOn(navigationService, 'patchOnCli').and.callThrough();
+    const orderId = '42';
+    formPlayerApi.getOrderStatus(orderId).subscribe(() => fail('should have failed with the 410 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(410);
+      }
+    );
+    const requestToError = httpMock.expectOne(`${config.apiUrl}/service/${init.serviceId}/scenario/getOrderStatus`);
+    const body = new HttpErrorResponse({
+      status: 410,
+      statusText: 'Gone',
+    });
+    requestToError.flush({
+      name: 'Gone',
+      description: 'Ссылка уже не актуальна'
+    }, body);
+    expect(navigationService.patchOnCli).toHaveBeenCalledWith({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     tick();
   }));
 });
