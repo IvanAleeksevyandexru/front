@@ -4,23 +4,39 @@
     <h3 *ngIf="title" class="modal__title" [innerHTML]="title | safe: 'html'"></h3>
   </div>
   <div class="conf-modal__body" [class.preview]="preview">
-    <perfect-scrollbar class="perfect-scrollbar" *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
+    <perfect-scrollbar
+      class="perfect-scrollbar"
+      *ngIf="!isMobile; else contentBlock"
+      [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
+      [config]="scrollConfig"
+    >
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
+    <ng-container *ngIf="isButtonsOutsideContent && !isMobile">
+      <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+    </ng-container>
+
     <ng-template #contentBlock>
       <div class="conf-modal__content" [class.conf-modal__short-modal]="isShortModal">
         <ng-content></ng-content>
-        <div *ngIf="buttons.length" class="conf-modal__controls">
-          <lib-button
-            *ngFor="let button of buttons"
-            [showLoader]="button.loader"
-            class="conf-modal__button"
-            [color]="button.color || ''"
-            (click)="button.handler()"
-          >{{ button.label }}</lib-button>
-        </div>
+        <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
+          <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+        </ng-container>
       </div>
     </ng-template>
   </div>
 </div>
-{{preview|json}}
+{{ preview | json }}
+
+<ng-template #buttonsTemplate>
+  <div *ngIf="buttons.length" class="conf-modal__controls">
+    <lib-button
+      *ngFor="let button of buttons"
+      [showLoader]="button.loader"
+      class="conf-modal__button"
+      [color]="button.color || ''"
+      (click)="button.handler()"
+      >{{ button.label }}</lib-button
+    >
+  </div>
+</ng-template>
