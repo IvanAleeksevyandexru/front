@@ -104,7 +104,7 @@ export class FileUploadScreenComponent implements OnInit {
    * Принимает новое значение от компонентов и провеяет доступность кнопки далее
    * @param $eventData - данные из компонента
    */
-  handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
+  private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
         if ($eventData.uploadId === value.uploadId) {
@@ -130,7 +130,7 @@ export class FileUploadScreenComponent implements OnInit {
     /**
      * Блокируем кнопку если:
      * 1. Не в каждом загрузчике есть файл
-     * И
+     * Или
      * 2. Если не все файлы загрузились на терабайт
      */
     this.disabled = !(
