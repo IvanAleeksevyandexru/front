@@ -40,6 +40,8 @@ import { PrepareService } from '../prepare.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
+import { AutocompleteService } from '../../../../../../core/services/autocomplete/autocomplete.service';
 
 interface OverLimitsItem {
   count: number;
@@ -134,6 +136,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
   suggestions$ = this.screenService.suggestions$;
+  suggestions: ISuggestionItem;
 
   get data(): FileUploadItem {
     return this.loadData;
@@ -217,12 +220,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private prepareService: PrepareService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
+    private autocompleteService: AutocompleteService,
   ) {}
 
   ngOnInit(): void {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
+    this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
+      this.suggestions = suggestions[this.componentId];
+    });
 
     this.eventBusService
       .on(`fileDeleteEvent_${this.loadData.uploadId}`)
@@ -376,6 +383,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   addDelete(file: FileItem): void {
     this.createOperation(OperationType.delete, file);
+  }
+
+  isPrevUploadedFilesButtonShown(): boolean {
+    if (!this.suggestions) return false;
+
+    const { list } = this.suggestions;
+    const filteredUploadedFiles = this.autocompleteService
+      .getParsedSuggestionsUploadedFiles(list)
+      .filter((file: UploadedFile) => file.mnemonic.includes(this.loadData?.uploadId));
+    return !!filteredUploadedFiles.length;
   }
 
   delition(operation: Operation): Observable<void> {

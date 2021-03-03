@@ -59,7 +59,7 @@ describe('AutocompleteService', () => {
           required: true,
         },
       ],
-      subHeader: { text: '', clarifications: {} },
+      subHeader: { text: '', clarifications: {}},
       header: '',
       label: '',
       id: '',

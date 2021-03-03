@@ -22,6 +22,7 @@ import { CustomScreenComponentTypes } from '../../../component/shared/components
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { UploadedFile } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 
 @Injectable()
 export class AutocompleteService {
@@ -129,6 +130,19 @@ export class AutocompleteService {
           this.fieldsSuggestionsApiCall([mnemonic]);
         }
       });
+  }
+
+  public getParsedSuggestionsUploadedFiles(componentList: ISuggestionItemList[]): UploadedFile[] {
+    return componentList.reduce((result, item) => {
+      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
+      const componentValues = [
+        ...parsedValue?.uploads.reduce((acc, upload) => {
+          acc.push(...upload.value);
+          return acc;
+        }, []),
+      ];
+      return [...result, ...componentValues];
+    }, []);
   }
 
   /**
