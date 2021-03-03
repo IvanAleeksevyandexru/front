@@ -243,3 +243,30 @@ export const mockSlots = {
   ],
   error: { errorDetail: { errorCode: 0, errorMessage: 'Operation completed' }, fieldErrors: [] },
 };
+
+export const EMPTY_SLOT = {
+  slotId: '',
+  slotTime: new Date(),
+  timezone: '',
+};
+
+export const brakBookRequest = {
+  preliminaryReservation: 'true',
+  address: 'г Москва, п Новофедоровское, д Яковлевское , д.4',
+  orgName: 'Новофедоровский отдел ЗАГС Управления ЗАГС Москвы',
+  routeNumber: '00000000002',
+  subject: 'Регистрация заключения брака',
+  params: [{ name: 'phone', value: '8(495)842-03-57' }],
+  eserviceId: '10000057526',
+  serviceCode: '-100000100821',
+  bookId: '6641c8d2-0024-4a68-939e-caa5d36c7d5c',
+  organizationId: 'R7700019',
+  calendarName: 'на услугу «Регистрация заключения брака»',
+  areaId: ['Торжественный (утреннее расписание)'],
+  selectedHallTitle: '9f5e8262-4ca6-4bd7-a8c5-94ab37b8683d',
+  parentOrderId: '763694032',
+  preliminaryReservationPeriod: '1440',
+  attributes: [],
+  slotId: ['9f5e8262-4ca6-4bd7-a8c5-94ab37b8683d'],
+  serviceId: ['ЗагсБрак'],
+};

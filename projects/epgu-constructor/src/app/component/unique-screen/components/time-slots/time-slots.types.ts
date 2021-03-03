@@ -117,7 +117,7 @@ export interface TimeSlotReq {
   caseNumber?: string;
   serviceId?: string[];
   eserviceId?: string;
-  attributes?: { name: string; value: string; }[];
+  attributes?: { name: string; value: string | boolean; }[];
   routeNumber?: string;
   serviceCode?: string;
 }
