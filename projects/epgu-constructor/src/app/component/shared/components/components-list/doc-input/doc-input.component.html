@@ -20,7 +20,7 @@
     </epgu-constructor-input-error>
   </div>
 
-  <div *ngIf="true; else expireDate" class="doc-input__group">
+  <div *ngIf="!hasExpirationDate; else expireDate" class="doc-input__group">
     <div
       class="doc-input__group-item doc-input__series"
       *ngIf="!fields[docInputFieldsTypes.series]?.attrs.hidden"
