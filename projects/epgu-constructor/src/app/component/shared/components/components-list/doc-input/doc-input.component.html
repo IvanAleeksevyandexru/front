@@ -20,7 +20,7 @@
     </epgu-constructor-input-error>
   </div>
 
-  <div *ngIf="!hasExpirationDate; else expireDate" class="doc-input__group">
+  <div *ngIf="true; else expireDate" class="doc-input__group">
     <div
       class="doc-input__group-item doc-input__series"
       *ngIf="!fields[docInputFieldsTypes.series]?.attrs.hidden"
@@ -123,7 +123,9 @@
         {{ hint }}
       </epgu-constructor-helper-text>
     </div>
-    <div class="doc-input__group-item doc-input__date">
+    <div class="doc-input__group-item doc-input__date" 
+    *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
+    [class.collapsed]="fields[docInputFieldsTypes.series]?.attrs.hidden || fields[docInputFieldsTypes.number]?.attrs.hidden">
       <epgu-constructor-label
         [tips]="fields[docInputFieldsTypes.date]?.attrs?.labelHint"
         [label]="fields[docInputFieldsTypes.date]?.label"
@@ -320,7 +322,7 @@
     {{ label }}
   </epgu-constructor-helper-text>
 
-  <div class="doc-input__emmiter">
+  <div class="doc-input__emmiter" *ngIf="!fields[docInputFieldsTypes.emitter]?.attrs?.hidden">
     <epgu-constructor-label
       [tips]="fields[docInputFieldsTypes.emitter]?.attrs?.labelHint"
       [label]="fields[docInputFieldsTypes.emitter]?.label"
