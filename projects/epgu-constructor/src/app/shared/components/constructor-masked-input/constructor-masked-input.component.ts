@@ -39,10 +39,8 @@ export class ConstructorMaskedInputComponent {
   >();
 
   public onChange($event: Event): void {
-    if (this.control.updateOn === 'blur') {
-      const input = $event.target as HTMLInputElement;
-      this.control.setValue(input.value);
-      this.control.updateValueAndValidity();
-    }
+    const input = $event.target as HTMLInputElement;
+    this.control.setValue(input.value);
+    this.control.updateValueAndValidity();
   }
 }
