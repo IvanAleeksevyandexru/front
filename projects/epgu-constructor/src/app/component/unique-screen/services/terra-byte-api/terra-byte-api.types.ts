@@ -121,6 +121,7 @@ export interface UploadedFile {
   relativePath?: string;
   updated?: string;
   userId?: number;
+  bucket?: string;
 }
 
 /***

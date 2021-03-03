@@ -12,6 +12,9 @@ describe('AutocompleteApiService', () => {
   let config: ConfigService;
   let apiUrl: string;
   let fields = ['CHILD_SNILS'];
+  let fieldId = 123456;
+  let mnemonic = 'mnemonic';
+  let newValue = 'newValue';
   let groupId = 'PASSPORT_DATA';
   let responseMock = [42];
 
@@ -81,6 +84,60 @@ describe('AutocompleteApiService', () => {
     }));
 
     it('should call http get with withCredentials equals true', fakeAsync(() => {
+      const withCredentials = req.request.withCredentials;
+      expect(withCredentials).toBe(true);
+    }));
+  });
+
+  describe('deleteSuggestionsField()', () => {
+    let req;
+    beforeEach(fakeAsync(() => {
+      service.deleteSuggestionsField(fieldId).subscribe(response => expect(response).toBe(responseMock));
+      req = http.expectOne(`${apiUrl}?valueGroupId=${fieldId}`);
+    }));
+
+    afterEach(fakeAsync(() => {
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call http with delete method', fakeAsync(() => {
+      expect(req.request.method).toBe('DELETE');
+    }));
+
+    it('should call with fieldId', fakeAsync(() => {
+      const includesFieldId = req.request.url.includes(fieldId);
+      expect(includesFieldId).toBeTruthy();
+    }));
+
+    it('should call http delete with withCredentials equals true', fakeAsync(() => {
+      const withCredentials = req.request.withCredentials;
+      expect(withCredentials).toBe(true);
+    }));
+  });
+
+  describe('updateSuggestionField()', () => {
+    let req;
+    beforeEach(fakeAsync(() => {
+      service.updateSuggestionField(fieldId, mnemonic, newValue).subscribe(response => expect(response).toBe(responseMock));
+      req = http.expectOne(`${apiUrl}/update`);
+    }));
+
+    afterEach(fakeAsync(() => {
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call http with post method', fakeAsync(() => {
+      expect(req.request.method).toBe('POST');
+    }));
+
+    it('should call with non empty body', fakeAsync(() => {
+      const includesBody = !!req.request.body.valueGroupId;
+      expect(includesBody).toBeTruthy();
+    }));
+
+    it('should call http post with withCredentials equals true', fakeAsync(() => {
       const withCredentials = req.request.withCredentials;
       expect(withCredentials).toBe(true);
     }));
