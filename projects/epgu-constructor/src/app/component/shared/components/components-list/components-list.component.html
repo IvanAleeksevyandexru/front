@@ -215,8 +215,7 @@
           [validationShowOn]="validationShowOn"
           [control]="$any(componentData.get('value'))"
           [itemsProvider]="
-            componentData.value?.attrs
-              | memo: formService.addressHelperServiceProvider:formService
+            componentData.value?.attrs | memo: formService.addressHelperServiceProvider:formService
           "
           [clearable]="true"
         >

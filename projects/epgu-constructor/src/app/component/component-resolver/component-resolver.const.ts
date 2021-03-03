@@ -26,7 +26,7 @@ import { BillInfoComponent } from '../unique-screen/components/payment/component
 // eslint-disable-next-line max-len
 import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/components/payment-type-selector-container/payment-type-selector-container.component';
 // eslint-disable-next-line max-len
-import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/unused-payments-container.component';
+import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/container/unused-payments-container.component';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 // eslint-disable-next-line max-len
 import { InformationCenterMvdContainerComponent } from '../unique-screen/components/information-center-mvd/container/information-center-mvd-container.component';
