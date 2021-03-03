@@ -41,7 +41,6 @@ describe('FormPlayerApiService', () => {
   describe('getTimeSlots()', () => {
     it('should call getTimeSlots with post method', fakeAsync(() => {
       smevService.getTimeSlots(slotReqBody).subscribe((response) => {
-        console.log(responseMock);
         expect(response).toBe(responseMock);
       });
       const req = http.expectOne('/slots');
@@ -63,7 +62,6 @@ describe('FormPlayerApiService', () => {
   describe('bookTimeSlot()', () => {
     it('should call bookTimeSlot with post method', fakeAsync(() => {
       smevService.bookTimeSlot(brakBookRequest).subscribe((response) => {
-        console.log(responseMock);
         expect(response).toBe(responseMock);
       });
       const req = http.expectOne('/book?srcSystem=BETA');
@@ -89,7 +87,6 @@ describe('FormPlayerApiService', () => {
     };
     it('should call cancelSlot with post method', fakeAsync(() => {
       smevService.cancelSlot(cancelRequestBody).subscribe((response) => {
-        console.log(responseMock);
         expect(response).toBe(responseMock);
       });
       const req = http.expectOne('/cancel');
