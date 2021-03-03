@@ -1,7 +1,7 @@
 <div class="component-list" [style.minHeight.px]="screenModalService.minContentHeight$ | async">
   <div class="component-list__body">
     <epgu-constructor-components-list
-      [arePendingRequestsAllowedAfterDestroy]="true"
+      [shouldPendingRequestsBeCancelledAfterDestroy]="false"
       [components]="$any((screenService.display$ | async).components)"
       [errors]="screenService.componentErrors$ | async"
       (changes)="changeComponentsList($event)">
