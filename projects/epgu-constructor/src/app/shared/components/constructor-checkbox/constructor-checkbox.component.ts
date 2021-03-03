@@ -4,7 +4,7 @@ import { AbstractControl } from '@angular/forms';
 @Component({
   selector: 'epgu-constructor-constructor-checkbox',
   templateUrl: './constructor-checkbox.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo поменять на OnPush
 })
 export class ConstructorCheckboxComponent {
   @Input() checkboxId: string;

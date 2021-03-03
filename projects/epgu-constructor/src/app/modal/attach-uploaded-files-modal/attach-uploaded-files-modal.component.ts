@@ -50,6 +50,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   suggestions: { [key: string]: ISuggestionItem } = {};
   suggestions$ = this.screenService.suggestions$;
   suggestionsFiles: FileItem[] = [];
+  suggestionsFilesFiltered: FileItem[] = [];
   suggestionsFilesList: ISuggestionItemList[] = [];
   suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
@@ -112,7 +113,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .open(
         FilesCollection.suggest,
         file.id,
-        of(this.suggestionsFiles),
+        of(this.suggestionsFilesFiltered),
         this.suggest,
         this.delete,
         this.download,
@@ -175,6 +176,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
         );
         date = this.datesToolsService.format(date, DATE_TIME_STRING_SHORT);
         if (file.item.mnemonic.includes(this.modalId)) {
+          this.suggestionsFilesFiltered.push(file);
           if (acc[date]) {
             acc[date].push(file);
           } else {

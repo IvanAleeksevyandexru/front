@@ -56,9 +56,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   }
 
   private isValidOrderId(store: ScreenStore): boolean {
-    return !this.utils.isValidOrderId(store.callBackOrderId) &&
-      !this.utils.isValidOrderId(store.orderId)
-      ? false
-      : true;
+    return !(!this.utils.isValidOrderId(store.callBackOrderId) &&
+      !this.utils.isValidOrderId(store.orderId));
   }
 }

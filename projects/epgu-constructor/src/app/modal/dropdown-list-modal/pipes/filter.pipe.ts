@@ -12,7 +12,7 @@ export class FilterPipe implements PipeTransform {
 
     return items.filter(({ label, tags }) => {
       const labelIncludes = String(label).toLocaleLowerCase().includes(searchTextUp);
-      const tagsEqual = searchTextUp.length > 3 && tags.some((tag) => String(tag).toLocaleLowerCase().includes(searchTextUp));
+      const tagsEqual = searchTextUp.length > 2 && tags.some((tag) => String(tag).toLocaleLowerCase().includes(searchTextUp));
       return labelIncludes || tagsEqual;
     });
   }

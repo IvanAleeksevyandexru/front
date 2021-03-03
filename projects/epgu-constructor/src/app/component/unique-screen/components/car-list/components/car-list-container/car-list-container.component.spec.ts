@@ -116,11 +116,26 @@ describe('CarInfoContainerComponent', () => {
   });
 
   describe('handleErrors()', () => {
-    it('should define hasError and errorTemplate after call', () => {
+    it('should define hasError and not found errorTemplate after call', () => {
       const carList = { vehicleServiceCallResult: ServiceResult.NOT_FOUND_ERROR } as CarList;
-      const attrs = { errors: {
+      const attrs = {
+        errors: {
           NOT_FOUND_ERROR: {} as any
-      }};
+        }
+      };
+      component.handleErrors(carList, attrs);
+
+      expect(component.hasError).toEqual(true);
+      expect(component.errorTemplate).toEqual({});
+    });
+
+    it('should define hasError and external errorTemplate after call', () => {
+      const carList = { vehicleServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR } as CarList;
+      const attrs = {
+        errors: {
+          EXTERNAL_SERVER_ERROR: {} as any
+        }
+      };
       component.handleErrors(carList, attrs);
 
       expect(component.hasError).toEqual(true);
@@ -135,5 +150,35 @@ describe('CarInfoContainerComponent', () => {
     });
   });
 
+  describe('getHtmlItemTemplate()', () => {
+    it('should return html iem template', () => {
+      expect(component.getHtmlItemTemplate(mockCarList.vehicles[0] as any)).toEqual(
+        'Киа Рио, <span style="white-space: nowrap">А 777 АА</span>'
+      );
+    });
+  });
+
+  describe('getCarFixedItems()', () => {
+    it('should return fixed items', () => {
+      expect(component.getCarFixedItems(mockCarList as any)[0].originalItem).toEqual(mockCarList.vehicles[0]);
+    });
+  });
+
+  describe('getModelMarkName()', () => {
+    it('should return model mark name', () => {
+      expect(component.getModelMarkName(mockCarList.vehicles[0] as any)).toEqual('Киа Рио');
+    });
+
+    it('should return empty string if there are no values', () => {
+      expect(component.getModelMarkName({} as any)).toEqual('');
+    });
+  });
+
+  describe('filterBySearchString()', () => {
+    it('should return filtered car fixed items', () => {
+      component.carFixedItems = component.getCarFixedItems(mockCarList as any);
+      expect(component.filterBySearchString('Киа')).toEqual([component.carFixedItems[0]]);
+    });
+  });
 
 });
