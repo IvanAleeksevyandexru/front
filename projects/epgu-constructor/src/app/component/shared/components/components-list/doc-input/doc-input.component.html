@@ -47,6 +47,9 @@
         [component]="fields[docInputFieldsTypes.series]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
         (selectSuggest)="selectSuggest.emit($event)"
+        (blurEvent)="
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+        "
       ></epgu-constructor-masked-input>
       <ng-template #plainInputSeries>
         <epgu-constructor-constructor-plain-input
@@ -98,6 +101,9 @@
         [component]="fields[docInputFieldsTypes.number]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
         (selectSuggest)="selectSuggest.emit($event)"
+        (blurEvent)="
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+        "
       ></epgu-constructor-masked-input>
       <ng-template #plainInputNumber>
         <epgu-constructor-constructor-plain-input
@@ -114,6 +120,9 @@
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
           (selectSuggest)="selectSuggest.emit($event)"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          "
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-constructor-helper-text
@@ -180,6 +189,9 @@
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
           (selectSuggest)="selectSuggest.emit($event)"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+          "
         ></epgu-constructor-masked-input>
         <ng-template #plainInputSeries>
           <epgu-constructor-constructor-plain-input
@@ -232,6 +244,9 @@
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
           (selectSuggest)="selectSuggest.emit($event)"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          "
         ></epgu-constructor-masked-input>
         <ng-template #plainInputNumber>
           <epgu-constructor-constructor-plain-input
