@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  DadataNormalizeAnswer,
-  DadataSuggestionsAnswer,
+  DadataNormalizeResponse,
+  DadataSuggestionsResponse,
   DictionaryOptions,
   DictionaryResponse
 } from './dictionary-api.types';
@@ -25,7 +25,7 @@ export class DictionaryApiService {
    * @param dictionaryName - название справочника
    * @param options - опции для получения данных
    */
-  getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
+  public getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
     const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
     const cacheId = dictionaryName + JSON.stringify(options);
 
@@ -40,7 +40,7 @@ export class DictionaryApiService {
           status[id] = true;
           this.processStatus.next(status);
 
-          return this.post(path, options).pipe(
+          return this.post<DictionaryResponse>(path, options).pipe(
             tap((response) => {
               this.dictionaryCache[id] = response;
             }),
@@ -55,21 +55,21 @@ export class DictionaryApiService {
     );
   }
 
-  getMvdDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
+  public getMvdDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
     const urlPrefix = this.config.mocks.includes('mvd') ? `${this.config.mockUrl}/nsi/v1/dictionary` : this.config.dictionaryUrl;
     const path = `${urlPrefix}/${dictionaryName}`;
-    return this.post(path, options);
+    return this.post<DictionaryResponse>(path, options);
   }
 
-  getSelectMapDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
+  public getSelectMapDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
     const urlPrefix = this.config.mocks.includes('selectMap') ? `${this.config.mockUrl}/nsi/v1/dictionary` : this.config.dictionaryUrl;
     const path = `${urlPrefix}/${dictionaryName}`;
-    return this.post(path, options);
+    return this.post<DictionaryResponse>(path, options);
   }
 
-  public getDadataSuggestions(qString: string, params?: { [key: string]: string }): Observable<DadataSuggestionsAnswer> {
+  public getDadataSuggestions(qString: string, params?: { [key: string]: string }): Observable<DadataSuggestionsResponse> {
     const path = `${this.config.externalApiUrl}/dadata/suggestions`;
-    return this.http.get<DadataSuggestionsAnswer>(path, {
+    return this.http.get<DadataSuggestionsResponse>(path, {
       params: {
         q: qString,
         ...params,
@@ -77,17 +77,17 @@ export class DictionaryApiService {
     });
   }
 
-  public getDadataNormalize(qString: string): Observable<DadataNormalizeAnswer> {
+  public getDadataNormalize(qString: string): Observable<DadataNormalizeResponse> {
     const path = `${this.config.externalApiUrl}/dadata/normalize`;
-    return this.http.get<DadataNormalizeAnswer>(path, {
+    return this.http.get<DadataNormalizeResponse>(path, {
       params: {
         q: qString,
       }
     });
   }
 
-  private post(path: string, options: DictionaryOptions): Observable<DictionaryResponse> {
-    return this.http.post<DictionaryResponse>(
+  private post<T>(path: string, options: DictionaryOptions): Observable<T> {
+    return this.http.post<T>(
       path,
       {
         filter: options.filter,

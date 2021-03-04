@@ -3,7 +3,7 @@ import { ValidationService } from '../../../../shared/services/validation/valida
 import { AddressHelperService } from './services/address-helper/address-helper.service';
 import { ComponentListToolsService } from './services/component-list-tools/component-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';
-import { DictionaryApiService } from '../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
 import { ComponentItemComponent } from './component-item/component-item.component';
 import { DocInputComponent } from './doc-input/doc-input.component';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';

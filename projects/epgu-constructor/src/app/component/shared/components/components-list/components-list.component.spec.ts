@@ -7,8 +7,8 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { MaskHandlePipe } from '../../../../shared/pipes/mask-handle/mask-handle.pipe';
-import { DictionaryApiService } from '../../services/dictionary-api/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../services/dictionary/dictionary-api.service.stub';
 import { ComponentsListComponent } from './components-list.component';
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 import { ComponentListToolsService } from './services/component-list-tools/component-list-tools.service';
@@ -37,6 +37,7 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
+import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -84,7 +85,8 @@ describe('ComponentsListComponent', () => {
         ValueLoaderService,
         CachedAnswersService,
         UtilsService,
-        LoggerService
+        LoggerService,
+        DictionaryToolsService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

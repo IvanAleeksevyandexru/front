@@ -1,5 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { DictionaryToolsService } from '../../../component/shared/services/dictionary/dictionary-tools.service';
 import {
   DisplayDto,
   ScenarioDto,
@@ -102,6 +103,7 @@ describe('AutocompleteService', () => {
         DatesToolsService,
         EventBusService,
         ModalService,
+        DictionaryToolsService,
       ],
     });
     service = TestBed.inject(AutocompleteService);

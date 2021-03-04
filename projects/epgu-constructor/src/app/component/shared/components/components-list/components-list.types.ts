@@ -12,7 +12,7 @@ import {
   DictionaryItem,
   DictionaryOptions,
   DictionaryResponse,
-} from '../../services/dictionary-api/dictionary-api.types';
+} from '../../services/dictionary/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -107,8 +107,6 @@ export interface CustomComponentAttr {
   updateOnValidation?: UpdateOn;
   supportedValues?: Array<SupportedValue>;
   relation?: { ref: string; conditions: RelationCondition[] };
-  russia?: boolean;
-  ussr?: boolean;
   disabled?: boolean;
   hidden?: boolean;
   defaultValue?: boolean;

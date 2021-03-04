@@ -22,7 +22,7 @@ import {
 } from './health.interceptor';
 
 import { ActionDTO } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { DictionaryApiService } from '../../../component/shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../component/shared/services/dictionary/dictionary-api.service';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;

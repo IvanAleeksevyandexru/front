@@ -6,15 +6,16 @@ import { ValidationService } from '../../../../../../shared/services/validation/
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
 import { AddressHelperService } from '../address-helper/address-helper.service';
-import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../services/dictionary/dictionary-api.service';
 // eslint-disable-next-line max-len
-import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/app/component/shared/services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/app/component/shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 
 describe('ComponentListFormService', () => {
   let service: ComponentListFormService;
@@ -34,6 +35,7 @@ describe('ComponentListFormService', () => {
         DateRangeService,
         DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DictionaryToolsService,
       ],
     });
     service = TestBed.inject(ComponentListFormService);

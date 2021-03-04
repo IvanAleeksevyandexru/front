@@ -3,7 +3,7 @@ import { ConfirmUserDataStyle } from '../../../component/unique-screen/component
 import {
   DictionaryConditions,
   DictionaryOptions,
-} from '../../../component/shared/services/dictionary-api/dictionary-api.types';
+} from '../../../component/shared/services/dictionary/dictionary-api.types';
 import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
@@ -190,6 +190,7 @@ export interface TimerRulesDto {
 export interface ComponentFilterDto {
   key: string;
   value: Array<string>;
+  isExcludeType: boolean;
 }
 
 export interface ComponentImageDto {

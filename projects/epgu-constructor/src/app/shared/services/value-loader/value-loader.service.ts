@@ -11,8 +11,8 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/shared/components/components-list/doc-input/doc-input.types';
-import { likeDictionary } from '../../../component/shared/components/components-list/tools/custom-screen-tools';
-import { DictionaryFilters } from '../../../component/shared/services/dictionary-api/dictionary-api.types';
+import { DictionaryFilters } from '../../../component/shared/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../component/shared/services/dictionary/dictionary-tools.service';
 
 @Injectable()
 export class ValueLoaderService {
@@ -20,6 +20,7 @@ export class ValueLoaderService {
     private cachedAnswersService: CachedAnswersService,
     private utils: UtilsService,
     private datesToolsService: DatesToolsService,
+    private dictionaryToolsService: DictionaryToolsService,
   ) {}
 
   public loadValueFromCachedAnswer(
@@ -252,7 +253,7 @@ export class ValueLoaderService {
         .forEach(({ attrs }) => {
           this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
         });
-    } else if (likeDictionary(component.type as CustomScreenComponentTypes)) {
+    } else if (this.dictionaryToolsService.isDictionaryOrLookup(component.type as CustomScreenComponentTypes)) {
       component.attrs = this.setAttrsFilters(component.attrs, cachedAnswers);
     } else {
       this.setAttrsDateRef(component.attrs, cachedAnswers);

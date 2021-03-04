@@ -20,6 +20,7 @@ import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { ValueLoaderService } from '../../shared/services/value-loader/value-loader.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { DictionaryToolsService } from '../../component/shared/services/dictionary/dictionary-tools.service';
 
 // TODO написать тесты
 describe('ScreenModalComponent', () => {
@@ -28,7 +29,7 @@ describe('ScreenModalComponent', () => {
   let screenService: ScreenService;
 
   beforeEach(async() => {
-     await TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ScreenModalComponent, MockComponent(ComponentListModalComponent)],
       imports: [
         RouterTestingModule,
@@ -49,7 +50,8 @@ describe('ScreenModalComponent', () => {
         CurrentAnswersService,
         ValueLoaderService,
         CachedAnswersService,
-        UnsubscribeService
+        UnsubscribeService,
+        DictionaryToolsService,
       ]
     })
     .compileComponents();

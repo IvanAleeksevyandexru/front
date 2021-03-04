@@ -21,6 +21,7 @@ import { ComponentListToolsService } from '../services/component-list-tools/comp
 import { HtmlRemoverService } from '../../../../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../../../core/services/autocomplete/autocomplete-api.service';
+import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 
 //TODO написать тесты
 describe('DocInputComponent', () => {
@@ -56,6 +57,7 @@ describe('DocInputComponent', () => {
         HtmlRemoverService,
         CurrentAnswersService,
         AutocompleteApiService,
+        DictionaryToolsService,
       ],
       imports: [
         RouterTestingModule,

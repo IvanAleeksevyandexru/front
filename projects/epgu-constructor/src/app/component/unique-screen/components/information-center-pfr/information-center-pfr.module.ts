@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { InformationCenterPfrContainerComponent } from './container/information-center-pfr-container.component';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { CoreModule } from '../../../../core/core.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { BaseModule } from '../../../../shared/base.module';

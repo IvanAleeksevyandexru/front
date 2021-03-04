@@ -24,13 +24,16 @@ import { CommonModalComponent } from '../../../../modal/shared/common-modal/comm
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import {
   DictionaryOptions,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
-} from '../../../shared/services/dictionary-api/dictionary-api.types';
-import { ComponentValue, DictionaryUtilities } from './dictionary-utilities';
+} from '../../../shared/services/dictionary/dictionary-api.types';
+import {
+  ComponentValue,
+  DictionaryToolsService,
+} from '../../../shared/services/dictionary/dictionary-tools.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
@@ -83,6 +86,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private zone: NgZone,
     private deviceDetector: DeviceDetectorService,
     private eventBusService: EventBusService,
+    private dictionaryToolsService: DictionaryToolsService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -120,7 +124,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return (searchString): Observable<Partial<ListElement>[]> => {
       this.selectMapObjectService.searchMapObject(searchString);
       return of(
-        DictionaryUtilities.adaptDictionaryToListItem(
+        this.dictionaryToolsService.adaptDictionaryToListItem(
           this.selectMapObjectService.filteredDictionaryItems,
         ),
       );
@@ -324,7 +328,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryOptions {
     return {
-      ...DictionaryUtilities.getFilterOptions(
+      ...this.dictionaryToolsService.getFilterOptions(
         this.componentValue,
         this.screenStore,
         dictionaryFilters,

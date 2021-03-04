@@ -121,7 +121,7 @@ export interface DadataSuggestions {
   error: DictionaryResponseError;
 }
 
-export interface DadataSuggestionsAnswer {
+export interface DadataSuggestionsResponse {
   normalized: string;
   suggestions: DadataSuggestions;
   userSelectedRegion: string;
@@ -148,7 +148,7 @@ export interface DadataNormalizeAddress {
   postIndex: string;
 }
 
-export interface DadataNormalizeAnswer {
+export interface DadataNormalizeResponse {
   address: DadataNormalizeAddress;
   dadataQc: string;
   dadataQcComplete: string;

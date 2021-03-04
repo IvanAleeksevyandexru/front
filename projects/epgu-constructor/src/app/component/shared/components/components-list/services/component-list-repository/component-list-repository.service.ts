@@ -9,23 +9,18 @@ import {
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
-  getCustomScreenDictionaryFirstState,
-  getNormalizeDataCustomScreenDictionary,
-  isDropDown,
-  likeDictionary,
-} from '../../tools/custom-screen-tools';
-import {
   DictionaryOptions,
   DictionaryResponse,
-} from '../../../../services/dictionary-api/dictionary-api.types';
+} from '../../../../services/dictionary/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
-import { DictionaryApiService } from '../../../../services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../services/dictionary/dictionary-api.service';
 import {
   ComponentDictionaryFilters,
   ComponentListToolsService,
 } from '../component-list-tools/component-list-tools.service';
 import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 import { ListItem } from 'epgu-lib';
+import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 
 @Injectable()
 export class ComponentListRepositoryService {
@@ -46,6 +41,7 @@ export class ComponentListRepositoryService {
 
   constructor(
     private dictionaryApiService: DictionaryApiService,
+    private dictionaryToolsService: DictionaryToolsService,
     private toolsService: ComponentListToolsService,
   ) {}
 
@@ -67,11 +63,11 @@ export class ComponentListRepositoryService {
   loadReferenceData$(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
     components.forEach((component: CustomComponent) => {
-      if (isDropDown(component.type)) {
+      if (this.dictionaryToolsService.isDropDownOrMvdGiac(component.type)) {
         data.push(this.getDropDowns$(component));
       }
 
-      if (likeDictionary(component.type)) {
+      if (this.dictionaryToolsService.isDictionaryOrLookup(component.type)) {
         const { dictionaryType, dictionaryOptions } = component.attrs;
         const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
         data.push(this.getDictionaries$(dictionaryType, component, options));
@@ -94,11 +90,15 @@ export class ComponentListRepositoryService {
         data: { ...dictionary },
       })),
       map((dictionary) => {
-        // TODO: удалить когда будет реализована фильтрация справочника на строне RTlabs
+        // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
         if (component.attrs.filter) {
-          const items = dictionary.data.items.filter((data) =>
-            component.attrs.filter.value.includes(data[component.attrs.filter.key]),
-          );
+          const items = dictionary.data.items.filter((item) => {
+            if (component.attrs.filter.isExcludeType) {
+              return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+            } else {
+              return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+            }
+          });
           const data: DictionaryResponse = {
             ...dictionary.data,
             items,
@@ -128,11 +128,11 @@ export class ComponentListRepositoryService {
 
   initDataAfterLoading(references: Array<CustomListReferenceData>): void {
     references.forEach((reference: CustomListReferenceData) => {
-      if (isDropDown(reference.component.type)) {
+      if (this.dictionaryToolsService.isDropDownOrMvdGiac(reference.component.type)) {
         this.initDropDown(reference as CustomListGenericData<Partial<ListItem>[]>);
       }
 
-      if (likeDictionary(reference.component.type)) {
+      if (this.dictionaryToolsService.isDictionaryOrLookup(reference.component.type)) {
         this.initDictionary(reference as CustomListGenericData<DictionaryResponse>);
       }
     });
@@ -142,15 +142,12 @@ export class ComponentListRepositoryService {
     const dictionaries = this.dictionaries;
     const id = utils.getDictKeyByComp(reference.component);
 
-    dictionaries[id] = getCustomScreenDictionaryFirstState();
+    dictionaries[id] = this.dictionaryToolsService.getDictionaryFirstState();
     dictionaries[id].loading = false;
     dictionaries[id].paginationLoading = false;
     dictionaries[id].data = reference.data;
     dictionaries[id].origin = reference.component;
-    dictionaries[id].list = getNormalizeDataCustomScreenDictionary(
-      reference.data.items,
-      reference.component,
-    );
+    dictionaries[id].list = this.dictionaryToolsService.adaptDictionaryToListItem(reference.data.items);
 
     this.dictionaries$.next(dictionaries);
   }
@@ -167,7 +164,7 @@ export class ComponentListRepositoryService {
     component: CustomComponent,
     filters: ComponentDictionaryFilters,
   ): Array<Observable<CustomListReferenceData>> {
-    if (filters[component.id] !== undefined && likeDictionary(component.type)) {
+    if (filters[component.id] !== undefined && this.dictionaryToolsService.isDictionaryOrLookup(component.type)) {
       const { dictionaryType, dictionaryOptions } = component.attrs;
       const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
 

@@ -5,7 +5,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { DictionaryApiService } from '../../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
   CachedValue,
   FormChangeEvent,
@@ -17,8 +17,8 @@ import {
 import {
   DictionaryFilters,
   DictionaryItem,
-} from '../../../../shared/services/dictionary-api/dictionary-api.types';
-import { DictionaryUtilities } from '../../select-map-object/dictionary-utilities';
+} from '../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
@@ -52,7 +52,9 @@ export class InformationCenterPfrContainerComponent {
       const { simple } = component.attrs;
       const data: Simple = {
         ...simple,
-        items: DictionaryUtilities.adaptDictionaryToListItem(simple.items as Array<DictionaryItem>),
+        items: this.dictionaryToolsService.adaptDictionaryToListItem(
+          simple.items as Array<DictionaryItem>,
+        ),
       };
 
       return {
@@ -75,6 +77,7 @@ export class InformationCenterPfrContainerComponent {
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,
     private readonly dictionaryApiService: DictionaryApiService,
+    private readonly dictionaryToolsService: DictionaryToolsService,
     private cdr: ChangeDetectorRef,
     public currentAnswersService: CurrentAnswersService,
   ) {}
@@ -97,7 +100,7 @@ export class InformationCenterPfrContainerComponent {
       .getDictionary(this.dictionaryType, options)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        const items = DictionaryUtilities.adaptDictionaryToListItem(data.items);
+        const items = this.dictionaryToolsService.adaptDictionaryToListItem(data.items);
         this.updateDictionary(type, items);
       });
   }
@@ -212,7 +215,7 @@ export class InformationCenterPfrContainerComponent {
       }),
     ).subscribe((response) => {
       response.forEach(({ items }, index) => {
-        const dictionary = DictionaryUtilities.adaptDictionaryToListItem(items);
+        const dictionary = this.dictionaryToolsService.adaptDictionaryToListItem(items);
         this.updateDictionaryFromCache(data[index].type, dictionary);
       });
     });

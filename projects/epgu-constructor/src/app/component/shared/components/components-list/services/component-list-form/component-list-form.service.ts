@@ -12,7 +12,8 @@ import { ScenarioErrorsDto } from '../../../../../../form-player/services/form-p
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import { isEqualObj } from '../../../../../../shared/constants/uttils';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
-import { DictionaryConditions } from '../../../../services/dictionary-api/dictionary-api.types';
+import { DictionaryConditions } from '../../../../services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -26,7 +27,6 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components-list.types';
-import { isDropDown } from '../../tools/custom-screen-tools';
 import {
   AddressHelperService,
   DadataSuggestionsAddressForLookup,
@@ -68,6 +68,7 @@ export class ComponentListFormService {
     private repository: ComponentListRepositoryService,
     private logger: LoggerService,
     private datesHelperService: DatesToolsService,
+    private dictionaryToolsService: DictionaryToolsService,
   ) {}
 
   create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
@@ -109,7 +110,7 @@ export class ComponentListFormService {
     const defaultIndex = component.attrs?.defaultIndex;
     // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
-      if (isDropDown(component.type)) {
+      if (this.dictionaryToolsService.isDropDownOrMvdGiac(component.type)) {
         const dicts: CustomListDropDowns = this.repository.dropDowns$.getValue();
         const key: string = component.id;
         const value: ListItem = dicts[key][defaultIndex];

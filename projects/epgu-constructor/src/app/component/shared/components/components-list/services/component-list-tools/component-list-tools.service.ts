@@ -21,8 +21,8 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   DictionaryFilters,
   DictionarySubFilter,
-} from '../../../../services/dictionary-api/dictionary-api.types';
-import { likeDictionary } from '../../tools/custom-screen-tools';
+} from '../../../../services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 
 const EMPTY_VALUE = '';
 const NON_EMPTY_VALUE = '*';
@@ -46,7 +46,11 @@ export class ComponentListToolsService {
   private prevValues: { [key: string]: string | number } = {};
   private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
 
-  constructor(private dateRangeService: DateRangeService, private screenService: ScreenService) {}
+  constructor(
+    private dateRangeService: DateRangeService,
+    private screenService: ScreenService,
+    private dictionaryToolsService: DictionaryToolsService,
+  ) { }
 
   updateStatusElements(
     dependentComponent: CustomComponent,
@@ -107,7 +111,7 @@ export class ComponentListToolsService {
     if (reference.relation === CustomComponentRefRelation.filterOn) {
       if (
         this.isValueEquals(reference.val, componentVal) &&
-        likeDictionary(dependentComponent.type)
+        this.dictionaryToolsService.isDictionaryOrLookup(dependentComponent.type)
       ) {
         this.applyFilter(dependentComponent, reference.filter, componentVal);
       } else {
@@ -435,7 +439,7 @@ export class ComponentListToolsService {
     let haveAllValues = true;
     componentKeys.forEach((key: string) => {
       const k = key.replace('{', '').replace('}', '');
-      const targetFormKey = `${components.findIndex((c) => c.id === k)}.value`;
+      const targetFormKey = `${components.findIndex((component) => component.id === k)}.value`;
       const control = form.get(targetFormKey);
       const val = Number(control?.value);
       // eslint-disable-next-line no-restricted-globals

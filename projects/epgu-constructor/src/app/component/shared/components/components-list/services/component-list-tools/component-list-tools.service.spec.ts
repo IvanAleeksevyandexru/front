@@ -5,6 +5,7 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 
 describe('ComponentListToolsService', () => {
   let service: ComponentListToolsService;
@@ -16,6 +17,7 @@ describe('ComponentListToolsService', () => {
         DateRangeService,
         DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DictionaryToolsService,
       ],
     });
     service = TestBed.inject(ComponentListToolsService);

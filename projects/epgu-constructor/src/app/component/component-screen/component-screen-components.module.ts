@@ -3,7 +3,7 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-personal-user/screens/confirm-personal-user-address-screen/confirm-personal-user-address-screen.module';

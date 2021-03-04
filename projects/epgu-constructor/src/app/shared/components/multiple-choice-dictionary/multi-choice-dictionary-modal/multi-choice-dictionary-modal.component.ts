@@ -20,8 +20,8 @@ import {
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 
 import { ModalBaseComponent } from '../../../../modal/shared/modal-base/modal-base.component';
-import { DictionaryApiService } from '../../../../component/shared/services/dictionary-api/dictionary-api.service';
-import { DictionaryUtilities } from '../../../../component/unique-screen/components/select-map-object/dictionary-utilities';
+import { DictionaryApiService } from '../../../../component/shared/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '../../../../component/shared/services/dictionary/dictionary-tools.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { FormField } from '../multiple-choice-dictionary.models';
@@ -55,6 +55,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   constructor(
     public injector: Injector,
     private dictionaryApiService: DictionaryApiService,
+    private dictionaryToolsService: DictionaryToolsService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private eventBusService: EventBusService,
@@ -169,7 +170,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
         if (response.error.code !== 0) {
           throw new Error('Dictionary error');
         }
-        return DictionaryUtilities.adaptDictionaryToListItem(response.items);
+        return this.dictionaryToolsService.adaptDictionaryToListItem(response.items);
       }),
       retry(1),
       catchError(() => of([])),

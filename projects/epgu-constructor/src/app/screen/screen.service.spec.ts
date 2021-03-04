@@ -9,6 +9,7 @@ import { ScreenStore, ScreenTypes } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { DictionaryToolsService } from '../component/shared/services/dictionary/dictionary-tools.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',
@@ -82,6 +83,7 @@ describe('ScreenService', () => {
         UtilsService,
         ValueLoaderService,
         DatesToolsService,
+        DictionaryToolsService,
       ],
     });
     screenService = TestBed.inject(ScreenService);

@@ -18,6 +18,7 @@ import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -74,7 +75,8 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
+        DictionaryToolsService,
       ],
     }).compileComponents();
   });

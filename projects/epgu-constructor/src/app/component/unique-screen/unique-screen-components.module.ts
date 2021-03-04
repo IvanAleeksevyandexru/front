@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ModalModule } from '../../modal/modal.module';
 import { BaseModule } from '../../shared/base.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
-import { DictionaryApiService } from '../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
