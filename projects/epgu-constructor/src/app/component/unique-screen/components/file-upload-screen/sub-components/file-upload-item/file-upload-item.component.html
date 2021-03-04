@@ -41,7 +41,7 @@
       </div>
       <div class="uploader-buttons">
         <button
-          *ngIf="isPrevUploadedFilesButtonShown()"
+          *ngIf="isPrevUploadedFilesButtonShown((suggestions$ | async)[componentId])"
           class="fileupload__link-button"
           (click)="attachUploadedFiles()"
         >
