@@ -136,7 +136,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
   suggestions$ = this.screenService.suggestions$;
-  suggestions: ISuggestionItem;
 
   get data(): FileUploadItem {
     return this.loadData;
@@ -227,9 +226,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxFileNumber = -1;
     this.subscriptions.add(this.loadList().subscribe());
     this.subscriptions.add(this.files$.subscribe());
-    this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      this.suggestions = suggestions[this.componentId];
-    });
 
     this.eventBusService
       .on(`fileDeleteEvent_${this.loadData.uploadId}`)
@@ -385,10 +381,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.createOperation(OperationType.delete, file);
   }
 
-  isPrevUploadedFilesButtonShown(): boolean {
-    if (!this.suggestions) return false;
+  isPrevUploadedFilesButtonShown(suggestions: ISuggestionItem): boolean {
+    if (!suggestions) return false;
 
-    const { list } = this.suggestions;
+    const { list } = suggestions;
     const filteredUploadedFiles = this.autocompleteService
       .getParsedSuggestionsUploadedFiles(list)
       .filter((file: UploadedFile) => file.mnemonic.includes(this.loadData?.uploadId));
