@@ -34,6 +34,7 @@ export class ConstructorMaskedInputComponent {
   @Input() suggestions?: ISuggestionItem;
   @Input() showPlaceholderOnFocus?: boolean;
 
+  @Output() blurEvent = new EventEmitter<void>();
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
     ISuggestionItem | ISuggestionItemList
   >();
@@ -44,5 +45,9 @@ export class ConstructorMaskedInputComponent {
       this.control.setValue(input.value);
       this.control.updateValueAndValidity();
     }
+  }
+
+  public onBlur(): void {
+    this.blurEvent.emit();
   }
 }
