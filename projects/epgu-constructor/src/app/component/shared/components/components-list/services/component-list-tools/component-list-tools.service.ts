@@ -116,13 +116,15 @@ export class ComponentListToolsService {
     }
 
     if (reference.relation === CustomComponentRefRelation.calc) {
-      const calcRelation: CustomComponentRef = dependentComponent.attrs?.ref?.find(
-        (item) => item.relation === reference.relation,
-      );
+      const relation: CustomComponentRef = this.getRelation(dependentComponent ,reference);
+      const newValue = this.calculateValueFromRelation(relation, components, form);
+      dependentControl.get('value').patchValue(newValue);
+    }
 
-      dependentControl
-        .get('value')
-        .patchValue(this.calculateValueFromRelation(calcRelation, components, form));
+    if (reference.relation === CustomComponentRefRelation.getValue) {
+      const relation: CustomComponentRef = this.getRelation(dependentComponent ,reference);
+      const newValue = this.getValueFromRelationComponent(relation, components, componentVal, form);
+      dependentControl.get('value').patchValue(newValue);
     }
 
     if (reference.relation === CustomComponentRefRelation.displayOff) {
@@ -354,6 +356,10 @@ export class ComponentListToolsService {
     return this._filters$.asObservable();
   }
 
+  private getRelation(component: CustomComponent, reference: CustomComponentRef): CustomComponentRef {
+    return component.attrs?.ref?.find((item) => item.relation === reference.relation);
+  }
+
   /**
    * Возвращает значение атрибута attributeName из словаря компонента componentId.
    * Если атрибут не найден, то возвращается undefined.
@@ -389,9 +395,35 @@ export class ComponentListToolsService {
   }
 
   /**
+   * Возвращает значение из другого компанента
+   * @param itemRef - объект с информацией о связи
+   * @param components - компоненты с информацией
+   * @param componentVal - значение компаненты
+   * @param form - ссылка на объект формы
+   */
+  private getValueFromRelationComponent(
+    itemRef: CustomComponentRef,
+    components: CustomComponent[],
+    componentVal: { [key: string]: string } | '',
+    form: FormArray,
+  ): number | string {
+    const conditionValue = itemRef.val;
+    let resultValue;
+
+    if (componentVal === conditionValue) {
+      const sourceComponentIndex = components.findIndex(item => item.id === itemRef.sourceId);
+      const control = form.get(sourceComponentIndex.toString());
+      resultValue = control?.value?.value ?? control?.value;
+    }
+
+    return resultValue;
+  }
+
+  /**
    * Подсчитывает автовычисляемое значение из формулы, которую передали
    * @param itemRef - объект с информацией о связи
    * @param components - компоненты с информацией
+   * @param form - ссылка на объект формы
    * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
    */
   private calculateValueFromRelation(

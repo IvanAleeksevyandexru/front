@@ -158,6 +158,7 @@ export enum CustomComponentRefRelation {
   filterOn = 'filterOn',
   disabled = 'disabled',
   calc = 'calc',
+  getValue = 'getValue',
   autofillFromDictionary = 'autofillFromDictionary',
 }
 
@@ -172,6 +173,7 @@ export enum CustomComponentValidationConditions {
  */
 export interface CustomComponentRef {
   relatedRel: string;
+  sourceId: string;
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
   defaultValue?: string | boolean;

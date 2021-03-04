@@ -360,7 +360,7 @@ export class ComponentListFormService {
 
   private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
     return form.valueChanges.pipe(
-      startWith(form.getRawValue()),
+      startWith(form.getRawValue()), // TODO: заменить устаревший метод
       pairwise(),
       takeUntil(this.unsubscribeService),
     );
