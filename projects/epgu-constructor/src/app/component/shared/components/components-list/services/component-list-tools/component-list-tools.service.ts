@@ -357,7 +357,7 @@ export class ComponentListToolsService {
   }
 
   private getRelation(component: CustomComponent, reference: CustomComponentRef): CustomComponentRef {
-    return component.attrs?.ref?.find((item) => item.relation === reference.relation);
+    return component.attrs?.ref?.find(({ relation }) => relation === reference.relation);
   }
 
   /**
@@ -406,17 +406,13 @@ export class ComponentListToolsService {
     components: CustomComponent[],
     componentVal: { [key: string]: string } | '',
     form: FormArray,
-  ): number | string {
+  ): number | string | undefined {
     const conditionValue = itemRef.val;
-    let resultValue;
-
     if (componentVal === conditionValue) {
-      const sourceComponentIndex = components.findIndex(item => item.id === itemRef.sourceId);
+      const sourceComponentIndex = components.findIndex(({ id }) => id === itemRef.sourceId);
       const control = form.get(sourceComponentIndex.toString());
-      resultValue = control?.value?.value ?? control?.value;
+      return control?.value?.value ?? control?.value;
     }
-
-    return resultValue;
   }
 
   /**
