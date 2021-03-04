@@ -55,8 +55,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
    * Если компонент подключается в цикле (например в RepeatableFieldsComponent), то значение componentsGroupIndex будет
    * равным индексу компонента в массиве. В остальных случаях componentsGroupIndex будет undefined
    */
-  @Input() shouldPendingRequestsBeCancelledAfterDestroy = true;
   @Input() componentsGroupIndex?: number;
+  @Input() shouldPendingRequestsBeCancelledAfterDestroy = true;
   @Input() components: Array<CustomComponent>;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
