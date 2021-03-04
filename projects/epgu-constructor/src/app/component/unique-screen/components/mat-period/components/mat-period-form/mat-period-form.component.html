@@ -1,0 +1,73 @@
+<form [formGroup]="form" *ngIf="form">
+  <div class="mb-24">
+    <lib-radio formControlName="paymentType" value="one" labelText="Единовременно"></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio
+      formControlName="paymentType"
+      value="month"
+      labelText="Ежемесячный платеж"
+    ></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio
+      formControlName="paymentType"
+      value="quarter"
+      labelText="Ежеквартальный платеж"
+    ></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio
+      formControlName="paymentType"
+      value="halfYear"
+      labelText="Полугодовой платеж"
+    ></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio formControlName="paymentType" value="year" labelText="Ежегодный платеж"></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <epgu-constructor-label label="Сумма"></epgu-constructor-label>
+    <epgu-constructor-constructor-plain-input
+      [control]="$any(form.get(formField.amount))"
+    ></epgu-constructor-constructor-plain-input>
+  </div>
+
+  <ng-container *ngIf="form.get(formField.paymentType).value !== 'one'">
+    <div class="mb-24">
+      <epgu-constructor-label label="Начало"></epgu-constructor-label>
+      <epgu-constructor-constructor-dropdown
+        [control]="$any(form.get(formField.startPayment))"
+        [items]="
+          durations[form.get(formField.paymentType).value]
+            | filter: 0:durations[form.get(formField.paymentType).value].length - 1
+        "
+      ></epgu-constructor-constructor-dropdown>
+    </div>
+
+    <div class="mb-24">
+      <epgu-constructor-label label="Окончание"></epgu-constructor-label>
+      <epgu-constructor-constructor-dropdown
+        [control]="$any(form.get(formField.finishPayment))"
+        [items]="
+          durations[form.get(formField.paymentType).value]
+            | filter
+              : form.get(formField.startPayment).value?.id + 1
+              : durations[form.get(formField.paymentType).value].length
+        "
+      ></epgu-constructor-constructor-dropdown>
+    </div>
+  </ng-container>
+
+  <div class="mb-24">
+    <epgu-constructor-label label="Какого числа"></epgu-constructor-label>
+    <epgu-constructor-constructor-plain-input
+      [control]="$any(form.get(formField.paymentDate))"
+    ></epgu-constructor-constructor-plain-input>
+  </div>
+</form>
