@@ -41,6 +41,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   buttons: ConfirmationModal['buttons'] = [];
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
+  backdropDismiss = true;
 
   constructor(
     public injector: Injector,
