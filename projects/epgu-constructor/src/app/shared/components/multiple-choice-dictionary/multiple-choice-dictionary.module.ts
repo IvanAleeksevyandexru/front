@@ -26,5 +26,6 @@ import { ConstructorCheckboxModule } from '../constructor-checkbox/constructor-c
   ],
   providers: [ModalService],
   exports: [MultipleChoiceDictionaryComponent],
+  entryComponents: [MultiChoiceDictionaryModalComponent],
 })
 export class MultipleChoiceDictionaryModule {}
