@@ -56,6 +56,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
    * равным индексу компонента в массиве. В остальных случаях componentsGroupIndex будет undefined
    */
   @Input() componentsGroupIndex?: number;
+  @Input() shouldPendingRequestsBeCancelledAfterDestroy = true;
   @Input() components: Array<CustomComponent>;
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
@@ -109,7 +110,9 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.httpCancelService.cancelPendingRequests();
+    if (this.shouldPendingRequestsBeCancelledAfterDestroy) {
+      this.httpCancelService.cancelPendingRequests();
+    }
   }
 
   public getDictKeyByComp(component: CustomComponent): string {

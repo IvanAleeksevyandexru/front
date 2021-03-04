@@ -47,6 +47,9 @@
         [component]="fields[docInputFieldsTypes.series]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
         (selectSuggest)="selectSuggest.emit($event)"
+        (blurEvent)="
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+        "
       ></epgu-constructor-masked-input>
       <ng-template #plainInputSeries>
         <epgu-constructor-constructor-plain-input
@@ -98,6 +101,9 @@
         [component]="fields[docInputFieldsTypes.number]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
         (selectSuggest)="selectSuggest.emit($event)"
+        (blurEvent)="
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+        "
       ></epgu-constructor-masked-input>
       <ng-template #plainInputNumber>
         <epgu-constructor-constructor-plain-input
@@ -114,6 +120,9 @@
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
           (selectSuggest)="selectSuggest.emit($event)"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          "
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-constructor-helper-text
@@ -123,7 +132,9 @@
         {{ hint }}
       </epgu-constructor-helper-text>
     </div>
-    <div class="doc-input__group-item doc-input__date">
+    <div class="doc-input__group-item doc-input__date" 
+    *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
+    [class.collapsed]="fields[docInputFieldsTypes.series]?.attrs.hidden || fields[docInputFieldsTypes.number]?.attrs.hidden">
       <epgu-constructor-label
         [tips]="fields[docInputFieldsTypes.date]?.attrs?.labelHint"
         [label]="fields[docInputFieldsTypes.date]?.label"
@@ -180,6 +191,9 @@
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
           (selectSuggest)="selectSuggest.emit($event)"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+          "
         ></epgu-constructor-masked-input>
         <ng-template #plainInputSeries>
           <epgu-constructor-constructor-plain-input
@@ -232,6 +246,9 @@
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
           (selectSuggest)="selectSuggest.emit($event)"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          "
         ></epgu-constructor-masked-input>
         <ng-template #plainInputNumber>
           <epgu-constructor-constructor-plain-input
@@ -320,7 +337,7 @@
     {{ label }}
   </epgu-constructor-helper-text>
 
-  <div class="doc-input__emmiter">
+  <div class="doc-input__emmiter" *ngIf="!fields[docInputFieldsTypes.emitter]?.attrs?.hidden">
     <epgu-constructor-label
       [tips]="fields[docInputFieldsTypes.emitter]?.attrs?.labelHint"
       [label]="fields[docInputFieldsTypes.emitter]?.label"
