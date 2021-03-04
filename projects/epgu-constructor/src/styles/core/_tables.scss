@@ -1,7 +1,6 @@
 @import "../core/palettes";
 @import "../core/typography";
-
-$screen-sm-max: 575.98px;
+@import "./breakpoint";
 
 .epgu-constructor-table {
   width: 100%;
@@ -28,7 +27,7 @@ $screen-sm-max: 575.98px;
       white-space: nowrap;
     }
   }
-  .header{
+  & .header{
     display: none;
   }
 }
@@ -42,6 +41,7 @@ $screen-sm-max: 575.98px;
     text-align: center;
   }
 }
+
 @media(max-width: $screen-sm-max) {
   .epgu-constructor-table {
     &, thead, tbody, th, td, tr{
@@ -57,12 +57,8 @@ $screen-sm-max: 575.98px;
       text-align: left;
       margin-bottom: 24px;
       padding: 0;
-      &:last-child {
-        border-bottom: 1px solid $color-mercury;
-        padding-bottom: 24px;
-      }
     }
-    .header{
+    & .header{
       display: block;
       margin-bottom: 4px;
     }
@@ -73,6 +69,13 @@ $screen-sm-max: 575.98px;
         padding: 0;
         text-align: left;
       }
+    }
+  }
+  .epgu-constructor-table,
+  .epgu-constructor-table.table-bordered {
+    & td:last-child {
+      border-bottom: 1px solid $color-mercury;
+      padding-bottom: 24px;
     }
   }
 }
