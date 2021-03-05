@@ -9,7 +9,6 @@ import {
   CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomScreenComponentTypes,
 } from '../../components/components-list/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
 import {
@@ -38,16 +37,6 @@ export class ComponentsListRelationsService {
   public get filters$(): Observable<ComponentDictionaryFilters> {
     return this._filters$.asObservable();
   }
-
-  private readonly availableComponentTypesToJsonParse = [
-    CustomScreenComponentTypes.DropDown,
-    CustomScreenComponentTypes.Lookup,
-    CustomScreenComponentTypes.Dictionary,
-    CustomScreenComponentTypes.AddressInput,
-    CustomScreenComponentTypes.CityInput,
-    CustomScreenComponentTypes.PassportLookup,
-    CustomScreenComponentTypes.DocInput,
-  ];
 
   private prevValues: { [key: string]: string | number } = {};
   private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});

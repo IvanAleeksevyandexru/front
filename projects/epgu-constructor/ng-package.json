@@ -13,7 +13,6 @@
     "entryFile": "src/public-api.ts",
     "cssUrl": "inline",
     "umdModuleIds": {
-      "moment": "moment",
       "ru-validation-codes": "ru-validation-codes",
       "ngx-cookie-service": "ngx-cookie-service",
       "uuid": "uuid",
