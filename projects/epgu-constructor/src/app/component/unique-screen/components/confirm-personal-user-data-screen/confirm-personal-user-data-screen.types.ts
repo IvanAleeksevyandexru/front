@@ -35,7 +35,7 @@ export interface ConfirmUserDataFieldsState {
 export interface ConfirmUserDataState {
   states: ConfirmUserDataFieldsState[];
   storedValues: { [key: string]: string | boolean | object };
-  error?: ConfirmUserDataError;
+  errors?: ConfirmUserDataError[];
 }
 
 export interface ConfirmUserDataStyle {
@@ -48,7 +48,13 @@ export interface ConfirmUserDataStyle {
   divider: string;
 }
 
+export enum ConfirmUserDataErrorType {
+  warn = 'warn',
+  error = 'error',
+}
+
 export interface ConfirmUserDataError {
+  type?: ConfirmUserDataErrorType;
   title?: string;
   desc?: string;
   icon?: string;
