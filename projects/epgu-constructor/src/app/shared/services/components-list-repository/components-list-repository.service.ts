@@ -15,15 +15,15 @@ import {
 import { map, tap } from 'rxjs/operators';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import {
-  ComponentDictionaryFilters,
-  ComponentListToolsService,
-} from '../component-list-tools/component-list-tools.service';
+  ComponentsListToolsService,
+} from '../components-list-tools/components-list-tools.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ListItem } from 'epgu-lib';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
+import { ComponentDictionaryFilters, ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 
 @Injectable()
-export class ComponentListRepositoryService {
+export class ComponenstListRepositoryService {
   private _dropDowns$ = new BehaviorSubject<CustomListDropDowns>([]);
   private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
 
@@ -42,11 +42,12 @@ export class ComponentListRepositoryService {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private dictionaryToolsService: DictionaryToolsService,
-    private toolsService: ComponentListToolsService,
+    private componentsListToolsService: ComponentsListToolsService,
+    private componentsListRelationsService: ComponentsListRelationsService,
   ) {}
 
   watchForFilters(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
-    return this.toolsService.filters$.pipe(
+    return this.componentsListRelationsService.filters$.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
         return forkJoin(
           components.reduce(
@@ -121,8 +122,8 @@ export class ComponentListRepositoryService {
     return of({
       component,
       data: component.attrs?.add
-        ? this.toolsService.loadCycledDropdown(component)
-        : this.toolsService.adaptiveDropDown(component.attrs.dictionaryList),
+        ? this.componentsListToolsService.loadCycledDropdown(component)
+        : this.componentsListToolsService.adaptDropdown(component.attrs.dictionaryList),
     });
   }
 

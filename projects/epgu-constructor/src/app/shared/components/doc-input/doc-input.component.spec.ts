@@ -6,18 +6,18 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { RouterTestingModule } from '@angular/router/testing';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ComponentListFormService } from '../../services/component-list-form/component-list-form.service';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
-import { ComponentListRepositoryService } from '../../services/component-list-repository/component-list-repository.service';
+import { ComponentsListRepositoryService } from '../../services/components-list-repository/components-list-repository.service';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { EpguLibModule } from 'epgu-lib';
 import { DateRangeService } from '../../services/date-range/date-range.service';
-import { ComponentListToolsService } from '../../services/component-list-tools/component-list-tools.service';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
@@ -47,9 +47,9 @@ describe('DocInputComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        ComponentListFormService,
-        ComponentListToolsService,
-        ComponentListRepositoryService,
+        ComponentsListFormService,
+        ComponentsListToolsService,
+        ComponentsListRepositoryService,
         UnsubscribeService,
         DatesToolsService,
         ValidationService,

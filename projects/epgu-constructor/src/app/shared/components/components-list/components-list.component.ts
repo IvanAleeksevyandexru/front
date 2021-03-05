@@ -34,8 +34,8 @@ import {
   CustomScreenComponentTypes,
 } from './components-list.types';
 import { HttpCancelService } from '../../../core/interceptor/http-cancel/http-cancel.service';
-import { ComponentListFormService } from '../../services/component-list-form/component-list-form.service';
-import { ComponentListRepositoryService } from '../../services/component-list-repository/component-list-repository.service';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ComponenstListRepositoryService } from '../../services/components-list-repository/components-list-repository.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 
 const halfWidthItemTypes = [
@@ -47,7 +47,7 @@ const halfWidthItemTypes = [
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [ComponentListFormService, ComponentListRepositoryService, UnsubscribeService],
+  providers: [ComponentsListFormService, ComponenstListRepositoryService, UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
@@ -74,9 +74,9 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     public configService: ConfigService,
-    public formService: ComponentListFormService,
+    public formService: ComponentsListFormService,
     public dateRangeService: DateRangeService,
-    private repository: ComponentListRepositoryService,
+    private repository: ComponenstListRepositoryService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     public screenService: ScreenService,

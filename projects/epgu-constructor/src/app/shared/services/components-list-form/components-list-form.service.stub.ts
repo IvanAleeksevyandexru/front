@@ -4,7 +4,7 @@ import { FormArray } from '@angular/forms';
 import { CustomComponentOutputData } from '../../components/components-list/components-list.types';
 
 @Injectable()
-export class ComponentListFormServiceStub {
+export class ComponentsListFormServiceStub {
   private _form = new FormArray([]);
   private _changes = new EventEmitter<CustomComponentOutputData>();
 

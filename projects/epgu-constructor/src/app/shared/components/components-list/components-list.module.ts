@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ValidationService } from '../../services/validation/validation.service';
 import { AddressHelperService } from '../../services/address-helper/address-helper.service';
-import { ComponentListToolsService } from '../../services/component-list-tools/component-list-tools.service';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { ComponentsListComponent } from './components-list.component';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
 import { TimerModule } from '../timer/timer.module';
@@ -26,6 +26,7 @@ import { MemoModule } from '../../pipes/memo/memo.module';
 import { MultipleChoiceDictionaryModule } from '../multiple-choice-dictionary/multiple-choice-dictionary.module';
 import { DocInputModule } from '../doc-input/doc-input.module';
 import { ComponentItemModule } from '../component-item/component-item.module';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 
 const COMPONENTS = [ComponentsListComponent];
 
@@ -56,7 +57,8 @@ const COMPONENTS = [ComponentsListComponent];
   providers: [
     ValidationService,
     AddressHelperService,
-    ComponentListToolsService,
+    ComponentsListToolsService,
+    ComponentsListRelationsService,
     DictionaryApiService,
     DateRangeService,
   ],

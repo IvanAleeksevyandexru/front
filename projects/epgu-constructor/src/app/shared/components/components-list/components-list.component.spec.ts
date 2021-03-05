@@ -10,8 +10,8 @@ import { MaskHandlePipe } from '../../pipes/mask-handle/mask-handle.pipe';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../services/dictionary/dictionary-api.service.stub';
 import { ComponentsListComponent } from './components-list.component';
-import { ComponentListFormService } from '../../services/component-list-form/component-list-form.service';
-import { ComponentListToolsService } from '../../services/component-list-tools/component-list-tools.service';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { ConstructorPlainInputComponent } from '../constructor-plain-input/constructor-plain-input.component';
 // eslint-disable-next-line max-len
@@ -75,9 +75,9 @@ describe('ComponentsListComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
         ValidationService,
-        ComponentListToolsService,
+        ComponentsListToolsService,
         ScreenService,
-        ComponentListFormService,
+        ComponentsListFormService,
         DateRangeService,
         DatesToolsService,
         AddressHelperService,

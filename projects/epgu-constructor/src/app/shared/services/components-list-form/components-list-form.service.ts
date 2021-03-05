@@ -9,7 +9,6 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { isEqualObj } from '../../constants/uttils';
 import { ValidationService } from '../validation/validation.service';
 import { DictionaryConditions } from '../dictionary/dictionary-api.types';
@@ -31,11 +30,13 @@ import {
   AddressHelperService,
   DadataSuggestionsAddressForLookup,
 } from '../address-helper/address-helper.service';
-import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
-import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
+import { ComponenstListRepositoryService } from '../components-list-repository/components-list-repository.service';
+import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
+import { DateRangeService } from '../date-range/date-range.service';
+import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 
 @Injectable()
-export class ComponentListFormService {
+export class ComponentsListFormService {
   private _form = new FormArray([]);
   private _shownElements: CustomListStatusElements = {};
   private _changes = new EventEmitter<CustomComponentOutputData>();
@@ -63,17 +64,19 @@ export class ComponentListFormService {
     private fb: FormBuilder,
     private validationService: ValidationService,
     private ngUnsubscribe$: UnsubscribeService,
-    private toolsService: ComponentListToolsService,
+    private componentsListToolsService: ComponentsListToolsService,
+    private componentsListRelationsService: ComponentsListRelationsService,
     private addressHelperService: AddressHelperService,
-    private repository: ComponentListRepositoryService,
+    private repository: ComponenstListRepositoryService,
     private logger: LoggerService,
-    private datesHelperService: DatesToolsService,
+    private datesToolsService: DatesToolsService,
+    private datesRangeService: DateRangeService,
     private dictionaryToolsService: DictionaryToolsService,
   ) {}
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
     this.errors = errors;
-    this.toolsService.createStatusElements(components, this.shownElements);
+    this.componentsListRelationsService.createStatusElements(components, this.shownElements);
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -87,11 +90,11 @@ export class ComponentListFormService {
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
-      this._shownElements = this.toolsService.updateDependents(
+      this._shownElements = this.componentsListRelationsService.updateDependents(
         components,
         {
           ...component,
-          value: this.toolsService.convertedValue(component),
+          value: this.componentsListToolsService.convertedValue(component),
         } as CustomComponent,
         this.shownElements,
         this.form,
@@ -122,7 +125,7 @@ export class ComponentListFormService {
         control.get('value').patchValue(value);
       }
     } else {
-      control.get('value').patchValue(this.toolsService.convertedValue(component));
+      control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
   }
 
@@ -161,7 +164,7 @@ export class ComponentListFormService {
 
       if (this.shownElements[val.id].isShown) {
         if (type === CustomScreenComponentTypes.DateInput && value) {
-          value = this.datesHelperService.format(value);
+          value = this.datesToolsService.format(value);
         }
         acc[val.id] = { value, isValid, disabled, condition };
       }
@@ -174,20 +177,12 @@ export class ComponentListFormService {
     return String(value).match(params);
   }
   private relationMinDate(value: string | Date, params: string): boolean {
-    const { dateLeft, dateRight } = this.parsedDates(value, params);
-    return this.datesHelperService.isSameOrAfter(dateLeft, dateRight);
+    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
+    return this.datesToolsService.isSameOrAfter(dateLeft, dateRight);
   }
   private relationMaxDate(value: string | Date, params: string): boolean {
-    const { dateLeft, dateRight } = this.parsedDates(value, params);
-    return this.datesHelperService.isSameOrBefore(dateLeft, dateRight);
-  }
-  private parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date } {
-    const dateLeft =
-      typeof value === 'string'
-        ? this.datesHelperService.parse(value)
-        : this.datesHelperService.toDate(value);
-    const dateRight = this.datesHelperService.parse(params, DATE_STRING_DOT_FORMAT);
-    return { dateLeft, dateRight };
+    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
+    return this.datesToolsService.isSameOrBefore(dateLeft, dateRight);
   }
 
   private changeValidators(component: CustomComponent, control: AbstractControl): void {
@@ -285,7 +280,7 @@ export class ComponentListFormService {
         ...component,
         value: [
           {
-            value: this.toolsService.convertedValue(component),
+            value: this.componentsListToolsService.convertedValue(component),
             disabled: component.attrs.disabled,
           },
           validators,
@@ -301,7 +296,7 @@ export class ComponentListFormService {
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
-        this._shownElements = this.toolsService.updateDependents(
+        this._shownElements = this.componentsListRelationsService.updateDependents(
           components,
           next,
           this.shownElements,

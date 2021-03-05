@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
+import { FormArray } from '@angular/forms';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { ScreenService } from '../../../screen/screen.service';
+import { CustomComponent } from '../../components/components-list/components-list.types';
+import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { Attrs, DateRange, Range, Ref } from './date-range.models';
 
 @Injectable()
 export class DateRangeService {
   rangeMap = new Map<string, Range>();
 
-  constructor(public screenService: ScreenService, private datesToolsService: DatesToolsService) {}
+  constructor(
+    public screenService: ScreenService,
+    private datesToolsService: DatesToolsService
+  ) { }
 
   /**
    * Устанавливает максимальную и минимальную дату для календарей
@@ -15,7 +21,7 @@ export class DateRangeService {
    * @param attrs аттрибуты компонента календаря
    * @param id id компонента
    */
-  changeDate(attrs: Attrs, date: DateRange): void {
+  public changeDate(attrs: Attrs, date: DateRange): void {
     if (!attrs?.limit) return;
 
     if (attrs?.to) {
@@ -34,19 +40,57 @@ export class DateRangeService {
    * @param id айди компонента
    * @param attrs аттрибуты компонента календаря
    */
-  clearDate(id: string, attrs: Attrs): void {
+  public clearDate(id: string, attrs: Attrs): void {
     if (!attrs?.limit) return;
     let componentId = attrs.to ?? attrs.from;
     this.rangeMap.set(componentId, { max: null, min: null });
     this.rangeMap.set(id, { max: null, min: null });
   }
 
-  getMinDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
+  public getMinDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
     return this.calcDateRange(ref, id, relatedDate).min;
   }
 
-  getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
+  public getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
     return this.calcDateRange(ref, id, relatedDate).max;
+  }
+
+  public parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date } {
+    const dateLeft =
+      typeof value === 'string'
+        ? this.datesToolsService.parse(value)
+        : this.datesToolsService.toDate(value);
+    const dateRight = this.datesToolsService.parse(params, DATE_STRING_DOT_FORMAT);
+    return { dateLeft, dateRight };
+  }
+
+  public updateLimitDate(
+    form: FormArray,
+    component: CustomComponent,
+    dependentComponent: CustomComponent,
+  ): void {
+    const dependentControl = form.controls.find(
+      (control) => control.value.id === dependentComponent.id,
+    );
+
+    if (dependentControl) {
+      const relatedDate = component.value !== '' ? new Date(component.value) : null;
+      const { attrs, id, value } = dependentControl.value;
+      const minDate = this.getMinDate(attrs.ref, id, relatedDate);
+      const maxDate = this.getMaxDate(attrs.ref, id, relatedDate);
+      this.changeDate(attrs.ref, relatedDate);
+
+      dependentControl.get('attrs').patchValue({
+        ...attrs,
+        minDate: minDate || attrs.minDate,
+        maxDate: maxDate || attrs.maxDate,
+      });
+
+      const isDateInRange = value >= minDate?.getTime() && value <= maxDate?.getTime();
+      if (!isDateInRange) {
+        dependentControl.get('value').patchValue('');
+      }
+    }
   }
 
   private calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date): Range {

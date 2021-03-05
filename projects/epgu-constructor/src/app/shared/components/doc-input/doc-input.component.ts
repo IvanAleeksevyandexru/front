@@ -20,7 +20,7 @@ import {
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../services/validation/validation.service';
-import { ComponentListFormService } from '../../services/component-list-form/component-list-form.service';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import {
   DocInputControl,
   DocInputField,
@@ -61,7 +61,7 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
-    private formService: ComponentListFormService,
+    private formService: ComponentsListFormService,
     private validationService: ValidationService,
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,

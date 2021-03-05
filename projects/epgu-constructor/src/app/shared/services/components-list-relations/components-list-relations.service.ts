@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined, toBoolean } from '../../constants/uttils';
+import { isUndefined } from '../../constants/uttils';
 import {
   CustomComponent,
-  CustomComponentDropDownItem,
-  CustomComponentDropDownItemList,
   CustomComponentRef,
   CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomScreenComponentValueTypes,
 } from '../../components/components-list/components-list.types';
-import { ListItem } from 'epgu-lib';
-import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import {
@@ -23,6 +18,7 @@ import {
   DictionarySubFilter,
 } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
+import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 
 const EMPTY_VALUE = '';
 const NON_EMPTY_VALUE = '*';
@@ -32,7 +28,17 @@ export interface ComponentDictionaryFilters {
 }
 
 @Injectable()
-export class ComponentListToolsService {
+export class ComponentsListRelationsService {
+  public get filters(): ComponentDictionaryFilters {
+    return this._filters$.getValue();
+  }
+  public set filters(val: ComponentDictionaryFilters) {
+    this._filters$.next(val);
+  }
+  public get filters$(): Observable<ComponentDictionaryFilters> {
+    return this._filters$.asObservable();
+  }
+
   private readonly availableComponentTypesToJsonParse = [
     CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.Lookup,
@@ -52,7 +58,67 @@ export class ComponentListToolsService {
     private dictionaryToolsService: DictionaryToolsService,
   ) { }
 
-  updateStatusElements(
+  public updateDependents(
+    components: Array<CustomComponent>,
+    component: CustomListFormGroup | CustomComponent,
+    shownElements: CustomListStatusElements,
+    form: FormArray,
+    dictionaries: CustomListDictionaries,
+    initInitialValues = false,
+  ): CustomListStatusElements {
+    const isComponentDependent = (arr = []): boolean =>
+      arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
+
+    const getDependentComponents = (components): Array<CustomComponent> =>
+      components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
+
+    getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
+      dependentComponent.attrs?.ref
+        ?.filter((el) => el.relatedRel === component.id)
+        .forEach((reference) => {
+          const value = reference.valueFromCache
+            ? this.screenService.cachedAnswers[reference.valueFromCache].value
+            : component.value;
+
+          shownElements = this.updateStatusElements(
+            dependentComponent,
+            reference,
+            value as { [key: string]: string },
+            components,
+            form,
+            shownElements,
+            dictionaries,
+            initInitialValues,
+          );
+        });
+
+      const referenceDate = dependentComponent.attrs?.ref?.find(
+        (el) => el.relatedDate === component.id,
+      );
+
+      if (referenceDate) {
+        this.dateRangeService.updateLimitDate(form, component as CustomComponent, dependentComponent);
+      }
+    });
+
+    return shownElements;
+  }
+
+  public createStatusElements(
+    components: Array<CustomComponent>,
+    shownElements: CustomListStatusElements,
+  ): CustomListStatusElements {
+    components.forEach((component: CustomComponent) => {
+      shownElements[component.id] = {
+        relation: CustomComponentRefRelation.displayOn,
+        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+      };
+    });
+
+    return shownElements;
+  }
+
+  private updateStatusElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
@@ -185,183 +251,8 @@ export class ComponentListToolsService {
     return shownElements;
   }
 
-  hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
+  private hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
     return component.attrs?.ref?.some((o) => o.relation === relation);
-  }
-
-  updateDependents(
-    components: Array<CustomComponent>,
-    component: CustomListFormGroup | CustomComponent,
-    shownElements: CustomListStatusElements,
-    form: FormArray,
-    dictionaries: CustomListDictionaries,
-    initInitialValues = false,
-  ): CustomListStatusElements {
-    const isComponentDependent = (arr = []): boolean =>
-      arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
-
-    const getDependentComponents = (components): Array<CustomComponent> =>
-      components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
-
-    getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
-      dependentComponent.attrs?.ref
-        ?.filter((el) => el.relatedRel === component.id)
-        .forEach((reference) => {
-          const value = reference.valueFromCache
-            ? this.screenService.cachedAnswers[reference.valueFromCache].value
-            : component.value;
-
-          shownElements = this.updateStatusElements(
-            dependentComponent,
-            reference,
-            value as { [key: string]: string },
-            components,
-            form,
-            shownElements,
-            dictionaries,
-            initInitialValues,
-          );
-        });
-
-      const referenceDate = dependentComponent.attrs?.ref?.find(
-        (el) => el.relatedDate === component.id,
-      );
-
-      if (referenceDate) {
-        this.updateLimitDate(form, component as CustomComponent, dependentComponent);
-      }
-    });
-
-    return shownElements;
-  }
-
-  createStatusElements(
-    components: Array<CustomComponent>,
-    shownElements: CustomListStatusElements,
-  ): CustomListStatusElements {
-    components.forEach((component: CustomComponent) => {
-      shownElements[component.id] = {
-        relation: CustomComponentRefRelation.displayOn,
-        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
-      };
-    });
-
-    return shownElements;
-  }
-
-  convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
-    const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value): CustomScreenComponentValueTypes => {
-      if (isDateAndValue) {
-        return new Date(value);
-      } else if (this.isAddress(component.type)) {
-        try {
-          return JSON.parse(value).fullAddress;
-        } catch (e) {
-          return value;
-        }
-      } else if (this.isJson(component.type)) {
-        try {
-          return JSON.parse(value);
-        } catch (e) {
-          return value;
-        }
-      } else if (this.isCheckBox(component.type)) {
-        return toBoolean(value);
-      } else {
-        return value;
-      }
-    };
-
-    if (typeof component.value === 'string' && component.value.length) {
-      return parseValue(component.value);
-    } else if (!isUndefined(component.attrs?.defaultValue)) {
-      return parseValue(component.attrs?.defaultValue);
-    } else {
-      return component.value;
-    }
-  }
-
-  loadCycledDropdown(itemComponent: CustomComponent): Partial<ListItem>[] {
-    if (!itemComponent?.attrs?.add) {
-      return [];
-    }
-
-    const { component, caption } = itemComponent?.attrs?.add;
-    const answers = this.screenService.cachedAnswers;
-    const items = answers[component];
-    if (!items) {
-      return [];
-    }
-    let result:
-      | string
-      | Array<Record<string, string | boolean | number>>
-      | Record<string, string | boolean | number>;
-    try {
-      result = JSON.parse(items.value);
-    } catch (e) {
-      return [];
-    }
-    if (!Array.isArray(result)) {
-      return [];
-    }
-    return (result as Array<Record<string, string | boolean | number>>).map((answer) => {
-      const text = caption
-        .reduce((acc, value) => {
-          acc.push(answer[value]);
-          return acc;
-        }, [])
-        .join(' ');
-      return {
-        text,
-        id: JSON.stringify(answer),
-        originalItem: answer,
-      };
-    });
-  }
-
-  adaptiveDropDown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
-    return items.map((item: CustomComponentDropDownItem, index: number) => {
-      const itemText = item.label || item.title;
-      const itemCode = item.code || item?.value || `${itemText}-${index}`;
-      return {
-        id: itemCode,
-        text: itemText,
-        unselectable: !!item.disable,
-        originalItem: item,
-        compare: (): boolean => false,
-      };
-    });
-  }
-
-  isAddress(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.AddressInput;
-  }
-
-  isJson(type: CustomScreenComponentTypes): boolean {
-    return this.availableComponentTypesToJsonParse.includes(type);
-  }
-
-  isCheckBox(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.CheckBox;
-  }
-
-  isDate(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.DateInput;
-  }
-
-  public get filters(): ComponentDictionaryFilters {
-    return this._filters$.getValue();
-  }
-  public set filters(val: ComponentDictionaryFilters) {
-    this._filters$.next(val);
-  }
-  public get filters$(): Observable<ComponentDictionaryFilters> {
-    return this._filters$.asObservable();
-  }
-
-  private getRelation(component: CustomComponent, reference: CustomComponentRef): CustomComponentRef {
-    return component.attrs?.ref?.find(({ relation }) => relation === reference.relation);
   }
 
   /**
@@ -396,6 +287,10 @@ export class ComponentListToolsService {
     }
 
     return undefined;
+  }
+
+  private getRelation(component: CustomComponent, reference: CustomComponentRef): CustomComponentRef {
+    return component.attrs?.ref?.find(({ relation }) => relation === reference.relation);
   }
 
   /**
@@ -520,35 +415,6 @@ export class ComponentListToolsService {
   private clearFilter(dependentComponent: CustomComponent): void {
     if (this.filters[dependentComponent.id]) {
       this.filters = { [dependentComponent.id]: null };
-    }
-  }
-
-  private updateLimitDate(
-    form: FormArray,
-    component: CustomComponent,
-    dependentComponent: CustomComponent,
-  ): void {
-    const dependentControl = form.controls.find(
-      (control) => control.value.id === dependentComponent.id,
-    );
-
-    if (dependentControl) {
-      const relatedDate = component.value !== '' ? new Date(component.value) : null;
-      const { attrs, id, value } = dependentControl.value;
-      const minDate = this.dateRangeService.getMinDate(attrs.ref, id, relatedDate);
-      const maxDate = this.dateRangeService.getMaxDate(attrs.ref, id, relatedDate);
-      this.dateRangeService.changeDate(attrs.ref, relatedDate);
-
-      dependentControl.get('attrs').patchValue({
-        ...attrs,
-        minDate: minDate || attrs.minDate,
-        maxDate: maxDate || attrs.maxDate,
-      });
-
-      const isDateInRange = value >= minDate?.getTime() && value <= maxDate?.getTime();
-      if (!isDateInRange) {
-        dependentControl.get('value').patchValue('');
-      }
     }
   }
 }
