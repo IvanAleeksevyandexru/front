@@ -1,0 +1,8 @@
+<div class="error" *ngIf="!disableError">
+  <small *ngIf="data.get('value')?.invalid && data.get('value').touched">
+    {{ data.get('value')?.getError('msg') }}
+  </small>
+  <small *ngIf="data.get('value')?.hasError('serverError')">
+    {{ data.get('value')?.getError('serverError') }}
+  </small>
+</div>

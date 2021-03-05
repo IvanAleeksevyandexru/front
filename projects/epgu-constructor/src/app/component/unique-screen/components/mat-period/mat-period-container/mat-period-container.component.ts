@@ -26,10 +26,21 @@ export class MatPeriodContainerComponent implements OnInit, AfterViewInit {
   cachedValue$: Observable<FormValue> = combineLatest([
     this.screenService.cachedAnswers$,
     this.component$,
-  ]).pipe(map(([cash, component]) => JSON.parse(cash[component.id]?.value || '{}')));
+  ]).pipe(
+    map(([cash, component]) => {
+      const parsedValue = JSON.parse(cash[component.id]?.value || '{}') as FormValue;
+      if (parsedValue[FormField.paymentType] && parsedValue[FormField.paymentType] !== 'one') {
+        return {
+          ...parsedValue,
+          [FormField.paymentDate]: parsedValue[FormField.paymentDate].split('.')[0],
+        };
+      }
+      return parsedValue;
+    }),
+  );
   components$ = this.component$.pipe(map((component) => component.attrs.components));
   nextStepAction = NEXT_STEP_ACTION;
-  balanceAmount: number;
+  balanceAmount: string;
   durationAmount: number;
   paymentType: PaymentType;
 
@@ -62,9 +73,9 @@ export class MatPeriodContainerComponent implements OnInit, AfterViewInit {
     finishPayment: null | number,
     startPayment: null | number,
   ): void {
-    const x = parseFloat(balanceAmount?.replace(/ /g, '').replace(',', '.'));
+    const parsedBalanceAmount = parseFloat(balanceAmount?.replace(/ /g, '').replace(',', '.'));
     const duration = finishPayment + 1 - startPayment || null;
-    this.balanceAmount = (x || 0) * (duration || 1);
+    this.balanceAmount = ((parsedBalanceAmount || 0) * (duration || 1)).toFixed(2);
     this.durationAmount = duration;
   }
 

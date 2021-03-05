@@ -69,28 +69,26 @@ export class MatPeriodFormComponent implements OnInit {
     });
 
     this.form.valueChanges
-      .pipe(startWith({}), takeUntil(this.ngUnsubscribe$))
+      .pipe(startWith(this.form.value), takeUntil(this.ngUnsubscribe$))
       .subscribe((value: FormValue) => {
         console.log(this.form.value);
-        // const paymentDate = this.durationService.transformDayToDate(
-        //   value[FormField.paymentDate],
-        //   value[FormField.startPayment]?.date,
-        //   value[FormField.paymentType],
-        // );
+        const paymentDate = this.durationService.transformDayToDate(
+          value[FormField.paymentDate],
+          value[FormField.startPayment]?.date,
+          value[FormField.paymentType],
+        );
         this.updateStateEvent.emit({
           ...value,
-          // paymentDate,
+          paymentDate,
         });
       });
 
     this.form
       .get(this.formField.startPayment)
-      .valueChanges.pipe(
-        startWith(this.form.get(this.formField.startPayment).value),
-        takeUntil(this.ngUnsubscribe$),
-      )
+      .valueChanges.pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((date) => {
         if (date) {
+          this.form.get(this.formField.finishPayment).setValue(null);
           this.form.get(this.formField.finishPayment).enable();
         } else {
           this.form.get(this.formField.finishPayment).setValue(null);

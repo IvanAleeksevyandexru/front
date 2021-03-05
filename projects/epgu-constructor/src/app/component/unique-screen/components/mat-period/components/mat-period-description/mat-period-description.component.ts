@@ -17,7 +17,7 @@ import { MatPeriodDescription, PaymentType } from '../../mat-period.models';
 export class MatPeriodDescriptionComponent implements OnInit, OnChanges {
   @Input() description: MatPeriodDescription;
   @Input() durationAmount: number;
-  @Input() balanceAmount: number;
+  @Input() balanceAmount: string;
   @Input() paymentType: PaymentType;
   arrayForPluralize = {
     month: ['месяц', 'месяца', 'месяцев'],

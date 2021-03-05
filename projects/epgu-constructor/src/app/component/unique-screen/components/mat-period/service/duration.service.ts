@@ -64,8 +64,8 @@ export class DurationService {
       this.datesToolsService.add(startMonth, 18, 'months'),
     ].map((halfYear, index) => {
       const year = this.datesToolsService.format(halfYear, 'yyyy');
-      const isEndOfHalYear = halfYear.getMonth() === 6;
-      const text = `${isEndOfHalYear ? '2' : '1'} полугодие ${year}`;
+      const isStartOfHalYear = halfYear.getMonth() !== 6;
+      const text = `${isStartOfHalYear ? '2' : '1'} полугодие ${year}`;
       const date = this.datesToolsService.format(halfYear, 'dd.MM.yyyy');
       return this.createListElement(text, index, date, index);
     });
@@ -98,22 +98,33 @@ export class DurationService {
       });
   }
 
-  public transformDayToDate(day: string, date: any, paymentType: PaymentType): any {
-    // const parseDate = date2.split('.');
-    // const date = new Date(`${parseDate[1]}.${parseDate[0]}.${parseDate[2]}`);
+  public transformDayToDate(day: string, date: string, paymentType: PaymentType): string {
+    if (paymentType === 'one' || !date || !day) return day;
+
+    const parseDate = this.datesToolsService.parse(date, 'dd.MM.yyyy');
     switch (paymentType) {
-      case 'one':
-        return day;
       case 'month':
-        const y = this.datesToolsService.parse(date, 'dd.MM.yyyy');
-        const x = this.datesToolsService.setDate(startOfMonth(y), day);
-        return this.datesToolsService.format(x, 'dd.MM.yyyy');
+        return this.datesToolsService.format(
+          this.datesToolsService.setDate(startOfMonth(parseDate), day),
+          'dd.MM.yyyy',
+        );
       case 'halfYear':
-        return day;
+        return this.datesToolsService.format(
+          this.datesToolsService.setDate(parseDate, day),
+          'dd.MM.yyyy',
+        );
       case 'quarter':
-        return this.datesToolsService.setDate(startOfQuarter(date), day);
+        return this.datesToolsService.format(
+          this.datesToolsService.setDate(startOfQuarter(parseDate), day),
+          'dd.MM.yyyy',
+        );
       case 'year':
-        return this.datesToolsService.setDate(startOfYear(date), day);
+        return this.datesToolsService.format(
+          this.datesToolsService.setDate(startOfYear(parseDate), day),
+          'dd.MM.yyyy',
+        );
+      default:
+        return day;
     }
   }
 

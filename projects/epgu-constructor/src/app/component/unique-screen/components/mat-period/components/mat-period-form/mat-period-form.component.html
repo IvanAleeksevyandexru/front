@@ -33,10 +33,12 @@
 
   <div class="mb-24">
     <epgu-constructor-label label="Сумма"></epgu-constructor-label>
+    <epgu-constructor-error [data]="form.get(formField.amount)"></epgu-constructor-error>
     <epgu-constructor-masked-input
       [control]="$any(form.get(formField.amount))"
       mask="NumberMaskInput"
       [maskOptions]="maskOptions"
+      [showConstantMaskSymbols]="false"
     ></epgu-constructor-masked-input>
   </div>
 
@@ -69,6 +71,7 @@
 
   <div class="mb-24">
     <epgu-constructor-label label="Какого числа"></epgu-constructor-label>
+    <epgu-constructor-error [data]="form.get(formField.paymentDate)"></epgu-constructor-error>
     <epgu-constructor-constructor-plain-input
       *ngIf="form.get(formField.paymentType).value !== 'one'; else paymentDatePicker"
       [control]="$any(form.get(formField.paymentDate))"

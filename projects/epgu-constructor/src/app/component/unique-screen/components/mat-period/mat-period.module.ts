@@ -16,6 +16,7 @@ import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
 import { DurationService } from './service/duration.service';
 import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { ErrorModule } from '../../../../shared/components/error/error.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ConstructorDatePickerModule } from '../../../../shared/components/const
     MemoModule,
     ConstructorMaskedInputModule,
     ConstructorDatePickerModule,
+    ErrorModule,
   ],
   providers: [DurationService]
 })
