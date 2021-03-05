@@ -14,6 +14,9 @@ import { UnusedPaymentInterface } from '../unused-payment.interface';
 import { UnusedPaymentsContainerComponent } from './unused-payments-container.component';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { UnusedPaymentsComponent } from '../component/unused-payments.component';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
+import { UtilsService } from '../../../../../core/services/utils/utils.service';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
@@ -47,7 +50,12 @@ describe('UnusedPaymentsContainerComponent', () => {
           MockComponent(RadioTaxComponent),
         ],
         imports: [MockModule(DefaultUniqueScreenWrapperModule)],
-        providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+        providers: [
+          { provide: ScreenService, useClass: ScreenServiceStub },
+          CurrentAnswersService,
+          CachedAnswersService,
+          UtilsService,
+        ],
       }).compileComponents();
     }),
   );

@@ -28,6 +28,7 @@ describe('RadioTaxComponent', () => {
 
   it('should be call paymentSelectEvent with select item', () => {
     jest.spyOn(component.paymentSelectEvent, 'emit');
+    component.onSelect();
     expect(component.paymentSelectEvent.emit).toHaveBeenCalledWith(component.payment);
   });
 });
