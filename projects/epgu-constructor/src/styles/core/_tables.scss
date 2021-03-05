@@ -1,9 +1,11 @@
 @import "../core/palettes";
 @import "../core/typography";
+@import "./breakpoint";
+
 .epgu-constructor-table {
   width: 100%;
   margin-bottom: 24px;
-  thead {
+  thead, .header {
     color: $color-text-helper;
     @include typ-plain-small();
   }
@@ -25,6 +27,9 @@
       white-space: nowrap;
     }
   }
+  & .header{
+    display: none;
+  }
 }
 
 .epgu-constructor-table.table-bordered {
@@ -34,6 +39,44 @@
     border: 2px solid $color-gosblue;
     padding: 2px 8px;
     text-align: center;
+  }
+}
+
+@media(max-width: $screen-sm-max) {
+  .epgu-constructor-table {
+    &, thead, tbody, th, td, tr{
+      display: block;
+    }
+    thead tr, th, &:not(thead) tr:first-child {
+      display: none;
+    }
+    td {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      margin-bottom: 24px;
+      padding: 0;
+    }
+    & .header{
+      display: block;
+      margin-bottom: 4px;
+    }
+    &.table-bordered {
+      border: none;
+      th, td {
+        border: none;
+        padding: 0;
+        text-align: left;
+      }
+    }
+  }
+  .epgu-constructor-table,
+  .epgu-constructor-table.table-bordered {
+    & td:last-child {
+      border-bottom: 1px solid $color-mercury;
+      padding-bottom: 24px;
+    }
   }
 }
 

@@ -392,7 +392,7 @@
     [clearable]="true"
     [name]="data.value?.id"
     [showMaskAsPlaceholder]="!data.value?.attrs?.placeholder"
-    [showConstantMaskSymbols]="true"
+    [showConstantMaskSymbols]="data.value?.attrs?.showMaskSymbols"
     [placeholder]="data.value?.attrs?.placeholder"
     [control]="data.get('value')"
     [invalid]="data.get('value').invalid && data.get('value').touched"

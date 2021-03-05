@@ -14,6 +14,8 @@ import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../services/utils/utils.service';
 
 const EXCEPTIONS = ['lib-assets'];
+export const RENDER_FORM_SERVICE_NAME = 'renderForm';
+export const ERROR_UPDATE_DRAFT_SERVICE_NAME = 'errorUpdateDraft';
 
 interface DictionaryError {
   code?: number | string;
@@ -22,7 +24,7 @@ interface DictionaryError {
   errorMessage?: string;
 }
 
-interface ConfigParams {
+export interface ConfigParams {
   id: string;
   name: string;
   orderId?: number;
@@ -32,7 +34,7 @@ interface ConfigParams {
   successfulDictionaryRequests?: string;
 }
 
-enum RequestStatus {
+export enum RequestStatus {
   Succeed = 0,
   Failed = 1,
 }
@@ -49,8 +51,8 @@ export class HealthInterceptor implements HttpInterceptor {
 
     if (this.isValid(req)) {
       serviceName = this.utils.getServiceName(req['url']);
-      serviceName = serviceName === 'scenarioGetNextStepService' ? 'renderForm' : serviceName;
-      this.health.measureStart(serviceName);
+      serviceName = serviceName === 'scenarioGetNextStepService' ? RENDER_FORM_SERVICE_NAME : serviceName;
+      this.startMeasureHealth(serviceName);
     }
 
     return next.handle(req).pipe(
@@ -122,11 +124,8 @@ export class HealthInterceptor implements HttpInterceptor {
             ) as ConfigParams;
           }
 
-          this.health.measureEnd(
-            serviceName,
-            dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Succeed,
-            successRequestPayload,
-          );
+          const requestStatus = dictionaryValidationStatus ? RequestStatus.Failed : RequestStatus.Succeed;
+          this.endMeasureHealth(serviceName, requestStatus, successRequestPayload);
         }
       }),
       catchError((err) => {
@@ -144,14 +143,32 @@ export class HealthInterceptor implements HttpInterceptor {
               this.configParams['errorMessage'] = this.utils.cyrillicToLatin(err.message);
             }
 
-            this.health.measureEnd(serviceName, RequestStatus.Failed, this.configParams);
+            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.configParams);
           } else {
-            this.health.measureEnd(serviceName, RequestStatus.Succeed, this.configParams);
+            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.configParams);
           }
         }
         return throwError(err);
       }),
     );
+  }
+
+  private startMeasureHealth(serviceName: string): void {
+    this.health.measureStart(serviceName);
+
+    // TODO: удалить когда запросят убрать дубль рендер форм хелса
+    if(serviceName === RENDER_FORM_SERVICE_NAME) {
+      this.health.measureStart(ERROR_UPDATE_DRAFT_SERVICE_NAME);
+    }
+  }
+
+  private endMeasureHealth(serviceName: string, requestStatus: RequestStatus, configParams: ConfigParams): void {
+    this.health.measureEnd(serviceName, requestStatus, configParams);
+
+    // TODO: удалить когда запросят убрать дубль рендер форм хелса
+    if(serviceName === RENDER_FORM_SERVICE_NAME) {
+      this.health.measureEnd(ERROR_UPDATE_DRAFT_SERVICE_NAME, requestStatus, configParams);
+    }
   }
 
   /**
