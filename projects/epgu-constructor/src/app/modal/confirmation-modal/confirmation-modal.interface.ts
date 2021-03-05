@@ -1,4 +1,5 @@
 export interface ConfirmationModal {
+  backdropDismiss?: boolean;
   title?: string;
   text?: string;
   showCloseButton?: boolean;

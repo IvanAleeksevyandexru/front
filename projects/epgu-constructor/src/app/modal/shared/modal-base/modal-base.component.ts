@@ -16,6 +16,10 @@ export class ModalBaseComponent {
   detachView: Function;
   modalResult = new BehaviorSubject(null);
   protected elemRef: ElementRef;
+  /**
+   * Если TRUE, то модальное окно закроется при клике на подложку
+   */
+  protected backdropDismiss = true;
 
   constructor(public injector: Injector) {
     this.elemRef = this.injector.get(ElementRef);
@@ -30,7 +34,7 @@ export class ModalBaseComponent {
   @HostListener('document:click', ['$event']) onClickComponent(event: MouseEvent): void {
     const target = event.target as Element;
     const isElement = this.elemRef?.nativeElement.contains(target);
-    if (target.className === 'modal-overlay' && isElement) {
+    if (this.backdropDismiss && target.className === 'modal-overlay' && isElement) {
       this.closeModal();
     }
   }
