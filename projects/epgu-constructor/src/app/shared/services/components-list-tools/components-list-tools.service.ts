@@ -2,13 +2,9 @@ import { Injectable } from '@angular/core';
 import { isUndefined, toBoolean } from '../../constants/uttils';
 import {
   CustomComponent,
-  CustomComponentDropDownItem,
-  CustomComponentDropDownItemList,
   CustomScreenComponentTypes,
   CustomScreenComponentValueTypes,
 } from '../../components/components-list/components-list.types';
-import { ListItem } from 'epgu-lib';
-import { ScreenService } from '../../../screen/screen.service';
 
 @Injectable()
 export class ComponentsListToolsService {
@@ -22,9 +18,7 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.DocInput,
   ];
 
-  constructor(
-    private screenService: ScreenService,
-  ) { }
+  constructor() { }
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
@@ -57,58 +51,6 @@ export class ComponentsListToolsService {
     } else {
       return component.value;
     }
-  }
-
-  public loadCycledDropdown(itemComponent: CustomComponent): Partial<ListItem>[] {
-    if (!itemComponent?.attrs?.add) {
-      return [];
-    }
-
-    const { component, caption } = itemComponent?.attrs?.add;
-    const answers = this.screenService.cachedAnswers;
-    const items = answers[component];
-    if (!items) {
-      return [];
-    }
-    let result:
-      | string
-      | Array<Record<string, string | boolean | number>>
-      | Record<string, string | boolean | number>;
-    try {
-      result = JSON.parse(items.value);
-    } catch (e) {
-      return [];
-    }
-    if (!Array.isArray(result)) {
-      return [];
-    }
-    return (result as Array<Record<string, string | boolean | number>>).map((answer) => {
-      const text = caption
-        .reduce((acc, value) => {
-          acc.push(answer[value]);
-          return acc;
-        }, [])
-        .join(' ');
-      return {
-        text,
-        id: JSON.stringify(answer),
-        originalItem: answer,
-      };
-    });
-  }
-
-  public adaptDropdown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
-    return items.map((item: CustomComponentDropDownItem, index: number) => {
-      const itemText = item.label || item.title;
-      const itemCode = item.code || item?.value || `${itemText}-${index}`;
-      return {
-        id: itemCode,
-        text: itemText,
-        unselectable: !!item.disable,
-        originalItem: item,
-        compare: (): boolean => false,
-      };
-    });
   }
 
   public isAddress(type: CustomScreenComponentTypes): boolean {

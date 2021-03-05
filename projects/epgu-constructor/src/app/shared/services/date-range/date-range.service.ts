@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { ScreenService } from '../../../screen/screen.service';
+import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CustomComponent } from '../../components/components-list/components-list.types';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { Attrs, DateRange, Range, Ref } from './date-range.models';
@@ -11,7 +11,6 @@ export class DateRangeService {
   rangeMap = new Map<string, Range>();
 
   constructor(
-    public screenService: ScreenService,
     private datesToolsService: DatesToolsService
   ) { }
 
@@ -47,14 +46,6 @@ export class DateRangeService {
     this.rangeMap.set(id, { max: null, min: null });
   }
 
-  public getMinDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
-    return this.calcDateRange(ref, id, relatedDate).min;
-  }
-
-  public getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
-    return this.calcDateRange(ref, id, relatedDate).max;
-  }
-
   public parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date } {
     const dateLeft =
       typeof value === 'string'
@@ -68,6 +59,7 @@ export class DateRangeService {
     form: FormArray,
     component: CustomComponent,
     dependentComponent: CustomComponent,
+    applicantAnswers: ApplicantAnswersDto,
   ): void {
     const dependentControl = form.controls.find(
       (control) => control.value.id === dependentComponent.id,
@@ -76,8 +68,8 @@ export class DateRangeService {
     if (dependentControl) {
       const relatedDate = component.value !== '' ? new Date(component.value) : null;
       const { attrs, id, value } = dependentControl.value;
-      const minDate = this.getMinDate(attrs.ref, id, relatedDate);
-      const maxDate = this.getMaxDate(attrs.ref, id, relatedDate);
+      const minDate = this.getMinDate(attrs.ref, id, relatedDate, applicantAnswers);
+      const maxDate = this.getMaxDate(attrs.ref, id, relatedDate, applicantAnswers);
       this.changeDate(attrs.ref, relatedDate);
 
       dependentControl.get('attrs').patchValue({
@@ -93,7 +85,15 @@ export class DateRangeService {
     }
   }
 
-  private calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date): Range {
+  private getMinDate(ref: Array<Ref>, id: string, relatedDate: Date, applicantAnswers: ApplicantAnswersDto): Date {
+    return this.calcDateRange(ref, id, relatedDate, applicantAnswers).min;
+  }
+
+  private getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date, applicantAnswers: ApplicantAnswersDto): Date {
+    return this.calcDateRange(ref, id, relatedDate, applicantAnswers).max;
+  }
+
+  private calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date, applicantAnswers: ApplicantAnswersDto): Range {
     let range = { max: null, min: null };
     this.rangeMap.set(id, range);
 
@@ -107,8 +107,7 @@ export class DateRangeService {
       return range;
     }
 
-    const refDate =
-      this.screenService.applicantAnswers[refParams.relatedDate]?.value || relatedDate;
+    const refDate = applicantAnswers[refParams.relatedDate]?.value || relatedDate;
 
     if (!refDate) {
       return range;

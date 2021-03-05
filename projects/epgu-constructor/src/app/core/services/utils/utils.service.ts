@@ -115,7 +115,7 @@ export class UtilsService {
   }
 
   /**
-   * Функция возвращает ключ для получения словаря из ComponenstListRepositoryService
+   * Функция возвращает ключ для получения словаря
    * @param component экземпляр компонента
    */
   public static getDictKeyByComp(component: CustomComponent): string {

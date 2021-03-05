@@ -35,8 +35,8 @@ import {
 } from './components-list.types';
 import { HttpCancelService } from '../../../core/interceptor/http-cancel/http-cancel.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ComponenstListRepositoryService } from '../../services/components-list-repository/components-list-repository.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
+import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,
@@ -47,7 +47,7 @@ const halfWidthItemTypes = [
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
-  providers: [ComponentsListFormService, ComponenstListRepositoryService, UnsubscribeService],
+  providers: [ComponentsListFormService, UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
@@ -65,8 +65,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   shownElements: { [key: string]: boolean } = {};
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
-  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.repository.dropDowns$;
-  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.repository.dictionaries$;
+  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
+  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService.dictionaries$;
   suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
@@ -76,7 +76,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     public configService: ConfigService,
     public formService: ComponentsListFormService,
     public dateRangeService: DateRangeService,
-    private repository: ComponenstListRepositoryService,
+    private dictionaryToolsService: DictionaryToolsService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     public screenService: ScreenService,
@@ -138,8 +138,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
-    this.repository
-      .loadReferenceData$(components)
+    this.dictionaryToolsService
+      .loadReferenceData$(components, this.screenService.cachedAnswers)
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);
@@ -149,7 +149,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private watchForFilters(components: Array<CustomComponent>): void {
-    this.repository
+    this.dictionaryToolsService
       .watchForFilters(components)
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe((references: Array<CustomListReferenceData>) => {

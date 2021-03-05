@@ -12,13 +12,13 @@ import {
   CustomScreenComponentTypes,
 } from '../../components/components-list/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
-import { ScreenService } from '../../../screen/screen.service';
 import {
   DictionaryFilters,
   DictionarySubFilter,
 } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
+import { ScreenService } from '../../../screen/screen.service';
 
 const EMPTY_VALUE = '';
 const NON_EMPTY_VALUE = '*';
@@ -54,8 +54,6 @@ export class ComponentsListRelationsService {
 
   constructor(
     private dateRangeService: DateRangeService,
-    private screenService: ScreenService,
-    private dictionaryToolsService: DictionaryToolsService,
   ) { }
 
   public updateDependents(
@@ -65,6 +63,8 @@ export class ComponentsListRelationsService {
     form: FormArray,
     dictionaries: CustomListDictionaries,
     initInitialValues = false,
+    screenService: ScreenService,
+    dictionaryToolsService: DictionaryToolsService,
   ): CustomListStatusElements {
     const isComponentDependent = (arr = []): boolean =>
       arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
@@ -77,7 +77,7 @@ export class ComponentsListRelationsService {
         ?.filter((el) => el.relatedRel === component.id)
         .forEach((reference) => {
           const value = reference.valueFromCache
-            ? this.screenService.cachedAnswers[reference.valueFromCache].value
+            ? screenService.cachedAnswers[reference.valueFromCache].value
             : component.value;
 
           shownElements = this.updateStatusElements(
@@ -89,6 +89,7 @@ export class ComponentsListRelationsService {
             shownElements,
             dictionaries,
             initInitialValues,
+            dictionaryToolsService,
           );
         });
 
@@ -97,7 +98,7 @@ export class ComponentsListRelationsService {
       );
 
       if (referenceDate) {
-        this.dateRangeService.updateLimitDate(form, component as CustomComponent, dependentComponent);
+        this.dateRangeService.updateLimitDate(form, component as CustomComponent, dependentComponent, screenService.applicantAnswers);
       }
     });
 
@@ -127,6 +128,7 @@ export class ComponentsListRelationsService {
     shownElements: CustomListStatusElements,
     dictionaries: CustomListDictionaries,
     initInitialValues: boolean,
+    dictionaryToolsService: DictionaryToolsService,
   ): CustomListStatusElements {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id,
@@ -177,7 +179,7 @@ export class ComponentsListRelationsService {
     if (reference.relation === CustomComponentRefRelation.filterOn) {
       if (
         this.isValueEquals(reference.val, componentVal) &&
-        this.dictionaryToolsService.isDictionaryOrLookup(dependentComponent.type)
+        dictionaryToolsService.isDictionaryOrLookup(dependentComponent.type)
       ) {
         this.applyFilter(dependentComponent, reference.filter, componentVal);
       } else {

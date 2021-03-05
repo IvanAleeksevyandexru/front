@@ -30,10 +30,10 @@ import {
   AddressHelperService,
   DadataSuggestionsAddressForLookup,
 } from '../address-helper/address-helper.service';
-import { ComponenstListRepositoryService } from '../components-list-repository/components-list-repository.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { ScreenService } from '../../../screen/screen.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -67,11 +67,11 @@ export class ComponentsListFormService {
     private componentsListToolsService: ComponentsListToolsService,
     private componentsListRelationsService: ComponentsListRelationsService,
     private addressHelperService: AddressHelperService,
-    private repository: ComponenstListRepositoryService,
     private logger: LoggerService,
     private datesToolsService: DatesToolsService,
     private datesRangeService: DateRangeService,
     private dictionaryToolsService: DictionaryToolsService,
+    private screenService: ScreenService,
   ) {}
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
@@ -98,7 +98,10 @@ export class ComponentsListFormService {
         } as CustomComponent,
         this.shownElements,
         this.form,
-        this.repository.dictionaries,
+        this.dictionaryToolsService.dictionaries,
+        false,
+        this.screenService,
+        this.dictionaryToolsService,
       );
     });
 
@@ -114,12 +117,12 @@ export class ComponentsListFormService {
     // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
       if (this.dictionaryToolsService.isDropDownOrMvdGiac(component.type)) {
-        const dicts: CustomListDropDowns = this.repository.dropDowns$.getValue();
+        const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
         const key: string = component.id;
         const value: ListItem = dicts[key][defaultIndex];
         control.get('value').patchValue(value);
       } else {
-        const dicts: CustomListDictionaries = this.repository.dictionaries;
+        const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
         const key: string = utils.getDictKeyByComp(component);
         const value: ListItem = dicts[key].list[defaultIndex];
         control.get('value').patchValue(value);
@@ -301,8 +304,10 @@ export class ComponentsListFormService {
           next,
           this.shownElements,
           this.form,
-          this.repository.dictionaries,
+          this.dictionaryToolsService.dictionaries,
           true,
+          this.screenService,
+          this.dictionaryToolsService,
         );
         // TODO: в перспективе избавиться от этой хардкодной логики
         this.checkAndFetchCarModel(next, prev);
@@ -337,10 +342,10 @@ export class ComponentsListFormService {
 
       model.get('value').patchValue('');
 
-      this.repository
+      this.dictionaryToolsService
         .getDictionaries$('MODEL_TS', model?.value, options)
         .subscribe((dictionary) => {
-          this.repository.initDictionary(dictionary);
+          this.dictionaryToolsService.initDictionary(dictionary);
         });
     }
   }
