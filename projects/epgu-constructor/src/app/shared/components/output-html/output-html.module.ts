@@ -5,10 +5,11 @@ import { SafeModule } from '../../pipes/safe/safe.module';
 import { ImgPrefixerModule } from '../../pipes/img-prefixer/img-prefixer.module';
 import { ActionModule } from '../../directives/action/action.module';
 import { ClickableLabelModule } from '../../directives/clickable-label/clickable-label.module';
+import { TableModule } from '../../directives/table/table.module';
 
 @NgModule({
   declarations: [OutputHtmlComponent],
-  imports: [CommonModule, ActionModule, SafeModule, ImgPrefixerModule, ClickableLabelModule],
+  imports: [CommonModule, ActionModule, SafeModule, ImgPrefixerModule, ClickableLabelModule, TableModule],
   exports: [OutputHtmlComponent],
 })
 export class OutputHtmlModule {}

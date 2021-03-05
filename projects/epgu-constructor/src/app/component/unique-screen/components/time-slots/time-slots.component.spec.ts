@@ -30,6 +30,7 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { EMPTY_SLOT } from './mocks/mock-time-slots';
 
 const moment = moment_;
 moment.locale('ru');
@@ -40,11 +41,6 @@ describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
   let fixture: ComponentFixture<TimeSlotsComponent>;
   let screenService: ScreenServiceStub;
-  const EMPTY_SLOT = {
-    slotId: '',
-    slotTime: new Date(),
-    timezone: '',
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

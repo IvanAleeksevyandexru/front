@@ -2,6 +2,7 @@
   [title]="title"
   [showCrossButton]="true"
   [buttons]="!isLoading && buttons"
+  [isButtonsOutsideContent]="true"
   text="multi-choice-dictionary"
 >
   <ng-container *ngIf="!isLoading; else loading">

@@ -40,6 +40,8 @@ import { PrepareService } from '../prepare.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
+import { AutocompleteService } from '../../../../../../core/services/autocomplete/autocomplete.service';
 
 interface OverLimitsItem {
   count: number;
@@ -217,6 +219,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private prepareService: PrepareService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
+    private autocompleteService: AutocompleteService,
   ) {}
 
   ngOnInit(): void {
@@ -376,6 +379,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   addDelete(file: FileItem): void {
     this.createOperation(OperationType.delete, file);
+  }
+
+  isPrevUploadedFilesButtonShown(suggestions: ISuggestionItem): boolean {
+    if (!suggestions) return false;
+
+    const { list } = suggestions;
+    const filteredUploadedFiles = this.autocompleteService
+      .getParsedSuggestionsUploadedFiles(list)
+      .filter((file: UploadedFile) => file.mnemonic.includes(this.loadData?.uploadId));
+    return !!filteredUploadedFiles.length;
   }
 
   delition(operation: Operation): Observable<void> {

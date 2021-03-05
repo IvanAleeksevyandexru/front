@@ -291,7 +291,7 @@ export class SelectChildrenComponent implements OnInit {
   private getChildForAddNewChildButton(prop: string): ChildI {
     return {
       id: this.NEW_ID,
-      text: 'Добавить нового ребенка',
+      text: 'Добавить нового ребёнка',
       [prop]: this.NEW_ID,
     };
   }
