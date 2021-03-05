@@ -6,13 +6,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
   DictionaryResponse,
   DictionaryUnionKind,
-} from '../../../shared/services/dictionary/dictionary-api.types';
+} from '../../../../core/services/dictionary/dictionary-api.types';
 import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsTypes } from './time-slots.constants';

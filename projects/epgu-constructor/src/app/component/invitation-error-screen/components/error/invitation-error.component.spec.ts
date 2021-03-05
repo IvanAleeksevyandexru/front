@@ -14,7 +14,7 @@ import { ConstructorPlainInputComponent } from '../../../../shared/components/co
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DateRangeService } from '../../../shared/components/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../../../../core/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';

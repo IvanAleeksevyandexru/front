@@ -7,11 +7,11 @@ import { FormBuilder } from '@angular/forms';
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { DictionaryApiService } from '../../../../component/shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../component/shared/services/dictionary/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../core/services/dictionary/dictionary-api.service.stub';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { BaseModule } from '../../../base.module';
-import { DictionaryToolsService } from '../../../../component/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../core/services/dictionary/dictionary-tools.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from 
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { FormControl } from '@angular/forms';
 
-import { DictionaryItem } from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryItem } from '../../../../../../core/services/dictionary/dictionary-api.types';
 
 @Component({
   selector: 'epgu-constructor-information-center-form',

@@ -14,7 +14,7 @@ import { ComponentsListModule } from '../../../../component/shared/components/co
 import { UniqueComponentModalModule } from '../unique-component-modal/unique-component-modal.module';
 import { InfoComponentModalModule } from '../info-component-modal/info-component-modal.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DictionaryToolsService } from '../../../../component/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../core/services/dictionary/dictionary-tools.service';
 
 //TODO дописать тесты
 describe('ComponentListModalComponent', () => {

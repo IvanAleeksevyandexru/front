@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 
 import { UploadService } from './upload.service';
-import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { CompressionService } from '../compression/compression.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';

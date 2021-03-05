@@ -12,8 +12,8 @@ import { Observable, range, from, combineLatest } from 'rxjs';
 import {
   BYTES_IN_KB,
   TerraUploadedFile,
-} from '../../components/file-upload-screen/sub-components/file-upload-item/data';
-import { ConfigService } from '../../../../core/services/config/config.service';
+} from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { ConfigService } from '../config/config.service';
 import * as FileSaver from 'file-saver';
 import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
 import { of } from 'rxjs';

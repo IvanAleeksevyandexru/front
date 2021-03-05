@@ -16,13 +16,13 @@ import {
 } from '../../components-list.types';
 import { ListItem } from 'epgu-lib';
 import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
-import { DateRangeService } from '../date-range/date-range.service';
+import { DateRangeService } from '../../../../../../core/services/date-range/date-range.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   DictionaryFilters,
   DictionarySubFilter,
-} from '../../../../services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
+} from '../../../../../../core/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../../../core/services/dictionary/dictionary-tools.service';
 
 const EMPTY_VALUE = '';
 const NON_EMPTY_VALUE = '*';

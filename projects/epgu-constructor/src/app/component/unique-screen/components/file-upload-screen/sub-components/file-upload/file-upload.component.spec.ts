@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { FileUploadAttributes } from '../../../../services/terra-byte-api/terra-byte-api.types';
+import { FileUploadAttributes } from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 import { FileUploadService } from '../file-upload.service';
 import { FileUploadComponent } from './file-upload.component';

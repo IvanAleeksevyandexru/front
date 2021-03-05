@@ -1,5 +1,5 @@
-import { DurationTimeTypes } from '../../../../../../shared/constants/dates';
-import { CustomComponentAttr, CustomComponentRef } from '../../components-list.types';
+import { DurationTimeTypes } from '../../../shared/constants/dates';
+import { CustomComponentAttr, CustomComponentRef } from '../../../component/shared/components/components-list/components-list.types';
 
 export interface Attrs extends CustomComponentAttr {
   limit?: string;

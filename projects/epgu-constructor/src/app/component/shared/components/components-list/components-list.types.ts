@@ -6,13 +6,13 @@ import {
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { TextTransform } from '../../../../shared/types/textTransform';
-import { Ref } from './services/date-range/date-range.models';
+import { Ref } from '../../../../core/services/date-range/date-range.models';
 import {
   DictionaryFilters,
   DictionaryItem,
   DictionaryOptions,
   DictionaryResponse,
-} from '../../services/dictionary/dictionary-api.types';
+} from '../../../../core/services/dictionary/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',

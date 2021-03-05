@@ -9,7 +9,7 @@ import {
   DictionaryItem,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
-} from '../../../shared/services/dictionary/dictionary-api.types';
+} from '../../../../core/services/dictionary/dictionary-api.types';
 import { filter } from 'rxjs/operators';
 import {
   ComponentBaloonContentDto,

@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ModalModule } from '../../modal/modal.module';
 import { BaseModule } from '../../shared/base.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
-import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiService } from '../../core/services/dictionary/dictionary-api.service';
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
 import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
@@ -18,7 +18,7 @@ import { SignatureApplicationModule } from './components/signature-application/s
 import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
-import { WebcamService } from './services/webcam/webcam.service';
+import { WebcamService } from '../../core/services/webcam/webcam.service';
 import { RepeatableFieldsModule } from './components/repeatable-fields/repeatable-fields.module';
 import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
 // eslint-disable-next-line max-len

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from 'epgu-lib';
-import { DateRangeService } from '../../../component/shared/components/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../../../core/services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';

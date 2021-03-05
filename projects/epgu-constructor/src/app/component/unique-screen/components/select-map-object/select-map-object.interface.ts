@@ -1,4 +1,4 @@
-import { DictionaryConditions, DictionaryYMapItem } from '../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryConditions, DictionaryYMapItem } from '../../../../core/services/dictionary/dictionary-api.types';
 
 export interface IGeoCoords {
   address: string;

@@ -1,5 +1,5 @@
-import { IdictionaryFilter } from '../../../unique-screen/components/select-map-object/select-map-object.interface';
-import { CachedAnswers, ScreenStore } from '../../../../screen/screen.types';
+import { IdictionaryFilter } from '../../../component/unique-screen/components/select-map-object/select-map-object.interface';
+import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import {
   DictionaryFilters,
   DictionaryItem,
@@ -8,7 +8,7 @@ import {
   DictionaryValue
 } from './dictionary-api.types';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
-import { CustomComponent, CustomListDictionary, CustomScreenComponentTypes } from '../../components/components-list/components-list.types';
+import { CustomComponent, CustomListDictionary, CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
 
 export type ComponentValue = {
   [key: string]: string | number

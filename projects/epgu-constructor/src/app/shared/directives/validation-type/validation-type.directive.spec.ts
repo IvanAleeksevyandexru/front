@@ -7,7 +7,7 @@ import {
   CustomComponent,
   CustomScreenComponentTypes
 } from '../../../component/shared/components/components-list/components-list.types';
-import { DateRangeService } from '../../../component/shared/components/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../../../core/services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';

@@ -20,8 +20,8 @@ import {
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 
 import { ModalBaseComponent } from '../../../../modal/shared/modal-base/modal-base.component';
-import { DictionaryApiService } from '../../../../component/shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../../../../component/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '../../../../core/services/dictionary/dictionary-tools.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { FormField } from '../multiple-choice-dictionary.models';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
+import { DatesToolsService } from '../dates-tools/dates-tools.service';
+import { ScreenService } from '../../../screen/screen.service';
 import { Attrs, DateRange, Range, Ref } from './date-range.models';
 
 @Injectable()

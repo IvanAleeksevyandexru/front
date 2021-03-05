@@ -11,16 +11,16 @@ import { switchMap } from 'rxjs/operators';
 import {
   DictionaryOptions,
   DictionaryResponse,
-} from '../../../../services/dictionary/dictionary-api.types';
+} from '../../../../../../core/services/dictionary/dictionary-api.types';
 import { map, tap } from 'rxjs/operators';
-import { DictionaryApiService } from '../../../../services/dictionary/dictionary-api.service';
+import { DictionaryApiService } from '../../../../../../core/services/dictionary/dictionary-api.service';
 import {
   ComponentDictionaryFilters,
   ComponentListToolsService,
 } from '../component-list-tools/component-list-tools.service';
 import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 import { ListItem } from 'epgu-lib';
-import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../../../core/services/dictionary/dictionary-tools.service';
 
 @Injectable()
 export class ComponentListRepositoryService {

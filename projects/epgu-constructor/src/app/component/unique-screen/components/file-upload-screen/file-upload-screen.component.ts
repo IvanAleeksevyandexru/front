@@ -17,7 +17,7 @@ import {
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
-} from '../../services/terra-byte-api/terra-byte-api.types';
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { TerraUploadedFile } from './sub-components/file-upload-item/data';
 

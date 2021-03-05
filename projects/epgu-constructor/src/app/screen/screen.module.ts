@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { DictionaryToolsService } from '../component/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../core/services/dictionary/dictionary-tools.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../core/services/event-bus/event-bus.service';
 import { ModalModule } from '../modal/modal.module';

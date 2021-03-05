@@ -7,7 +7,7 @@ import {
 import {
   DictionaryConditions,
   DictionaryUnionKind
-} from '../../../shared/services/dictionary/dictionary-api.types';
+} from '../../../../core/services/dictionary/dictionary-api.types';
 
 /**
  * Тип справочников для услуг

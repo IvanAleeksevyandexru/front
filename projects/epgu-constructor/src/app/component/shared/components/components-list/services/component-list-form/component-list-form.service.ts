@@ -12,8 +12,8 @@ import { ScenarioErrorsDto } from '../../../../../../form-player/services/form-p
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import { isEqualObj } from '../../../../../../shared/constants/uttils';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
-import { DictionaryConditions } from '../../../../services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
+import { DictionaryConditions } from '../../../../../../core/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../../../core/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -30,7 +30,7 @@ import {
 import {
   AddressHelperService,
   DadataSuggestionsAddressForLookup,
-} from '../address-helper/address-helper.service';
+} from '../../../../../../core/services/address-helper/address-helper.service';
 import { ComponentListRepositoryService } from '../component-list-repository/component-list-repository.service';
 import { ComponentListToolsService } from '../component-list-tools/component-list-tools.service';
 

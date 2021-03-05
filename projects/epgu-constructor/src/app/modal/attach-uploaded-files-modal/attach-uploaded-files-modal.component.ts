@@ -17,7 +17,7 @@ import {
 } from '../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
-import { UploadedFile } from '../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
+import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import {
   ISuggestionItem,
   ISuggestionItemList,

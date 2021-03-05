@@ -1,6 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { DictionaryToolsService } from '../../../component/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import {
   DisplayDto,
   ScenarioDto,

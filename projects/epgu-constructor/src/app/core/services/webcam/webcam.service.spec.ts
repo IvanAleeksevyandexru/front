@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { UtilsService } from '../utils/utils.service';
 
 describe('WebcamService', () => {
   let service: UtilsService;

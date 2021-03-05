@@ -1,9 +1,9 @@
 import { ComponentRef, ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
-import { WebcamEvents } from '../../../../shared/components/webcam-shoot/webcamevents';
+import { WebcamEvents } from '../../../shared/components/webcam-shoot/webcamevents';
 import {
   WebcamShootComponent
-} from '../../../../shared/components/webcam-shoot/webcam-shoot.component';
+} from '../../../shared/components/webcam-shoot/webcam-shoot.component';
 import { catchError, map } from 'rxjs/operators';
 import { from, Observable, throwError } from 'rxjs';
 

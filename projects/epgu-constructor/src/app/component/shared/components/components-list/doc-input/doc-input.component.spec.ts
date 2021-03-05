@@ -16,12 +16,12 @@ import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { FormPlayerApiService } from '../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { EpguLibModule } from 'epgu-lib';
-import { DateRangeService } from '../services/date-range/date-range.service';
+import { DateRangeService } from '../../../../../core/services/date-range/date-range.service';
 import { ComponentListToolsService } from '../services/component-list-tools/component-list-tools.service';
 import { HtmlRemoverService } from '../../../../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../../../core/services/autocomplete/autocomplete-api.service';
-import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../../core/services/dictionary/dictionary-tools.service';
 
 //TODO написать тесты
 describe('DocInputComponent', () => {

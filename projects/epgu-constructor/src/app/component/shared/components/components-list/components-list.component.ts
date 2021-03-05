@@ -36,7 +36,7 @@ import {
 import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 import { ComponentListRepositoryService } from './services/component-list-repository/component-list-repository.service';
-import { DateRangeService } from './services/date-range/date-range.service';
+import { DateRangeService } from '../../../../core/services/date-range/date-range.service';
 
 const halfWidthItemTypes = [
   CustomScreenComponentTypes.NewEmailInput,

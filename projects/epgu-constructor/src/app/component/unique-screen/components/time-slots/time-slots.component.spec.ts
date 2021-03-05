@@ -10,8 +10,8 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../shared/services/dictionary/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../core/services/dictionary/dictionary-api.service.stub';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';

@@ -6,7 +6,7 @@ import {
   DictionaryOptions,
   DictionaryResponse
 } from './dictionary-api.types';
-import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigService } from '../config/config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
 

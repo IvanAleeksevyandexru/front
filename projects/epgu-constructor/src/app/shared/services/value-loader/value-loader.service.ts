@@ -11,8 +11,8 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/shared/components/components-list/doc-input/doc-input.types';
-import { DictionaryFilters } from '../../../component/shared/services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../component/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryFilters } from '../../../core/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../core/services/dictionary/dictionary-tools.service';
 
 @Injectable()
 export class ValueLoaderService {

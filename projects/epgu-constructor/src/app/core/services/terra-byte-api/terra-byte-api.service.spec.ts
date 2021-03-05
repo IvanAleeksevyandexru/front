@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { TerraByteApiService } from './terra-byte-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { ConfigService } from '../config/config.service';
+import { ConfigServiceStub } from '../config/config.service.stub';
+import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
+import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { of } from 'rxjs';
 import { Chunk, ChunkPacket, TerraUploadFileOptions } from './terra-byte-api.types';
 

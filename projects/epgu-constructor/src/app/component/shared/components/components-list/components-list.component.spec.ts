@@ -7,12 +7,12 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { MaskHandlePipe } from '../../../../shared/pipes/mask-handle/mask-handle.pipe';
-import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../services/dictionary/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../core/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListComponent } from './components-list.component';
 import { ComponentListFormService } from './services/component-list-form/component-list-form.service';
 import { ComponentListToolsService } from './services/component-list-tools/component-list-tools.service';
-import { DateRangeService } from './services/date-range/date-range.service';
+import { DateRangeService } from '../../../../core/services/date-range/date-range.service';
 import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
 // eslint-disable-next-line max-len
 import { ConstructorDadataWidgetComponent } from '../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.component';
@@ -30,14 +30,14 @@ import { OutputHtmlComponent } from '../../../../shared/components/output-html/o
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { AddressHelperService } from './services/address-helper/address-helper.service';
+import { AddressHelperService } from '../../../../core/services/address-helper/address-helper.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
-import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../core/services/dictionary/dictionary-tools.service';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { concatMap, filter, pluck, reduce } from 'rxjs/operators';
-import { DictionaryApiService } from '../../../../services/dictionary/dictionary-api.service';
-import { DadataSuggestionsAddress } from '../../../../services/dictionary/dictionary-api.types';
+import { DictionaryApiService } from '../dictionary/dictionary-api.service';
+import { DadataSuggestionsAddress } from '../dictionary/dictionary-api.types';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 
 export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddress {

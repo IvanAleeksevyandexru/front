@@ -22,7 +22,7 @@ import { CustomScreenComponentTypes } from '../../../component/shared/components
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { UploadedFile } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
+import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
 
 @Injectable()
 export class AutocompleteService {

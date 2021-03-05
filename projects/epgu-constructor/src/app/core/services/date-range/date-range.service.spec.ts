@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { DateRangeService } from './date-range.service';
-import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { ApplicantAnswersDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { CustomComponent, CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { Attrs } from './date-range.models';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '../dates-tools/dates-tools.service';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;

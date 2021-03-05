@@ -8,12 +8,12 @@ import {
   DictionaryToRequestI,
   InformationCenterMvdI,
 } from '../interface/information-center-mvd.interface';
-import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '../../../../../core/services/dictionary/dictionary-tools.service';
 import {
   DictionaryFilters,
   DictionaryItem,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
+} from '../../../../../core/services/dictionary/dictionary-api.types';
 
 @Component({
   selector: 'epgu-constructor-information-center-mvd-container',
