@@ -78,11 +78,15 @@ export class MatPeriodContainerComponent implements AfterViewInit {
 
   private isValidForm(formValue: FormValue['data']): boolean {
     if (formValue[FormField.paymentType] === 'one') {
-      return Object.entries(formValue)
-        .filter(
-          ([key]) => ![FormField.startPayment, FormField.finishPayment].includes(key as FormField),
-        )
-        .every(([_, value]) => value);
+      return (
+        Object.entries(formValue)
+          .filter(
+            ([key]) =>
+              ![FormField.startPayment, FormField.finishPayment].includes(key as FormField),
+          )
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .every(([_, value]) => value)
+      );
     }
     return Object.values(formValue).every((value) => value);
   }
