@@ -31,7 +31,8 @@ export interface ConfigParams {
   error?: string;
   errorMessage?: string;
   dictionaryUrl?: string;
-  successfulDictionaryRequests?: string;
+  status?: string;
+  method?: string;
 }
 
 export enum RequestStatus {
@@ -78,13 +79,20 @@ export class HealthInterceptor implements HttpInterceptor {
               orderId: this.utils.isValidOrderId(scenarioDto.orderId)
                 ? scenarioDto.orderId
                 : result.callBackOrderId,
-              successfulDictionaryRequests:
-                this.utils.isDefined(health) &&
-                this.utils.isDefined(health?.dictionaries) &&
-                health.dictionaries.length > 0
-                  ? JSON.stringify(health.dictionaries)
-                  : null,
             };
+
+            if (this.utils.isDefined(health) && this.utils.isDefined(health?.dictionaries) && health.dictionaries.length > 0) {
+              health.dictionaries.forEach((dictionary) => {
+                const event = `${dictionary.id}Service`;
+                this.startMeasureHealth(event);
+                this.endMeasureHealth(event, RequestStatus.Succeed, {
+                  id: dictionary.id,
+                  name: dictionary.name,
+                  status: dictionary.status,
+                  method: dictionary.method,
+                });
+              });
+            }
           }
 
           if (isInvalidOldDictionary || isInvalidNewDictionary) {
@@ -107,7 +115,6 @@ export class HealthInterceptor implements HttpInterceptor {
               id,
               name,
               orderId,
-              successfulDictionaryRequests,
               error,
               errorMessage,
             } = this.configParams;
@@ -115,7 +122,6 @@ export class HealthInterceptor implements HttpInterceptor {
               id,
               name,
               orderId,
-              successfulDictionaryRequests,
               error,
               errorMessage,
             };
