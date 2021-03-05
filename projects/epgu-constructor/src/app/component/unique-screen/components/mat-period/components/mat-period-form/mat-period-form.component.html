@@ -33,9 +33,11 @@
 
   <div class="mb-24">
     <epgu-constructor-label label="Сумма"></epgu-constructor-label>
-    <epgu-constructor-constructor-plain-input
+    <epgu-constructor-masked-input
       [control]="$any(form.get(formField.amount))"
-    ></epgu-constructor-constructor-plain-input>
+      mask="NumberMaskInput"
+      [maskOptions]="maskOptions"
+    ></epgu-constructor-masked-input>
   </div>
 
   <ng-container *ngIf="form.get(formField.paymentType).value !== 'one'">
@@ -53,6 +55,7 @@
     <div class="mb-24">
       <epgu-constructor-label label="Окончание"></epgu-constructor-label>
       <epgu-constructor-constructor-dropdown
+        *ngIf="form.get(formField.paymentType).value !== 'year'; else yearDropdown"
         [control]="$any(form.get(formField.finishPayment))"
         [items]="
           durations[form.get(formField.paymentType).value]
@@ -67,7 +70,24 @@
   <div class="mb-24">
     <epgu-constructor-label label="Какого числа"></epgu-constructor-label>
     <epgu-constructor-constructor-plain-input
+      *ngIf="form.get(formField.paymentType).value !== 'one'; else paymentDatePicker"
       [control]="$any(form.get(formField.paymentDate))"
     ></epgu-constructor-constructor-plain-input>
   </div>
 </form>
+
+<ng-template #yearDropdown>
+  <epgu-constructor-constructor-dropdown
+    [control]="$any(form.get(formField.finishPayment))"
+    [items]="
+      form.get(formField.startPayment).value | memo: durationService.getYearFinishRange:durationService | filter: 1
+    "
+  ></epgu-constructor-constructor-dropdown>
+</ng-template>
+
+<ng-template #paymentDatePicker>
+  <lib-date-picker
+    [textModelValue]="true"
+    [formControl]="$any(form.get(formField.paymentDate))"
+  ></lib-date-picker>
+</ng-template>

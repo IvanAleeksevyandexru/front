@@ -11,7 +11,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BaseModule } from '../../../../shared/base.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { FilterPipe } from './pipe/filter.pipe';
+import { FilterPipe } from './pipe/filter/filter.pipe';
+import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
+import { DurationService } from './service/duration.service';
+import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
+import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,19 @@ import { FilterPipe } from './pipe/filter.pipe';
     MatPeriodDescriptionComponent,
     FilterPipe,
   ],
-  imports: [CommonModule, ScreenPadModule, BaseComponentsModule, DefaultUniqueScreenWrapperModule, ReactiveFormsModule, BaseModule, ConstructorPlainInputModule, ConstructorDropdownModule],
+  imports: [
+    CommonModule,
+    ScreenPadModule,
+    BaseComponentsModule,
+    DefaultUniqueScreenWrapperModule,
+    ReactiveFormsModule,
+    BaseModule,
+    ConstructorPlainInputModule,
+    ConstructorDropdownModule,
+    MemoModule,
+    ConstructorMaskedInputModule,
+    ConstructorDatePickerModule,
+  ],
+  providers: [DurationService]
 })
 export class MatPeriodModule {}

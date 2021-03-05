@@ -11,13 +11,16 @@
 >
   <epgu-constructor-screen-pad class="mb-24">
     <epgu-constructor-mat-period-form
-    (updateStateEvent)="updateState($event)"></epgu-constructor-mat-period-form>
+      [cachedValue]="cachedValue$ | async"
+      (updateStateEvent)="updateState($event)"
+    ></epgu-constructor-mat-period-form>
   </epgu-constructor-screen-pad>
 
   <epgu-constructor-mat-period-description
     [description]="description$ | async"
     [balanceAmount]="balanceAmount"
     [durationAmount]="durationAmount"
+    [paymentType]="paymentType"
   >
   </epgu-constructor-mat-period-description>
 </epgu-constructor-default-unique-screen-wrapper>
