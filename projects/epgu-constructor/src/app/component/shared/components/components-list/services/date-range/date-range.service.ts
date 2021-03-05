@@ -41,15 +41,15 @@ export class DateRangeService {
     this.rangeMap.set(id, { max: null, min: null });
   }
 
-  getMinDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
-    return this.calcDateRange(ref, id, relatedDate).min;
+  async getMinDate(ref: Array<Ref>, id: string, relatedDate: Date): Promise<Date> {
+    return (await this.calcDateRange(ref, id, relatedDate)).min;
   }
 
-  getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date): Date {
-    return this.calcDateRange(ref, id, relatedDate).max;
+  async getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date): Promise<Date> {
+    return (await this.calcDateRange(ref, id, relatedDate)).max;
   }
 
-  private calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date): Range {
+  private async calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date): Promise<Range> {
     let range = { max: null, min: null };
     this.rangeMap.set(id, range);
 
@@ -71,13 +71,13 @@ export class DateRangeService {
     }
 
     const date = this.datesToolsService.toDate(refDate);
-    [range.min, range.max] = this.chooseOperation(refParams, date);
+    [range.min, range.max] = await this.chooseOperation(refParams, date);
 
     return range;
   }
 
-  private chooseOperation(refParams: Ref, date: Date): Array<Date> {
-    const today = this.datesToolsService.getToday();
+  private async chooseOperation(refParams: Ref, date: Date): Promise<Array<Date>> {
+    const today = await this.datesToolsService.getToday();
     switch (refParams.condition) {
       case '>=today':
         return [date, today];

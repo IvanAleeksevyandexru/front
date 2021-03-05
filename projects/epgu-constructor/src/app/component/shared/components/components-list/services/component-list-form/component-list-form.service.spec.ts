@@ -15,13 +15,17 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ComponentListFormService', () => {
   let service: ComponentListFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         ComponentListFormService,
         ValidationService,

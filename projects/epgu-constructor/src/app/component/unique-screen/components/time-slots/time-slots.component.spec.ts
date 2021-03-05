@@ -31,6 +31,7 @@ import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EMPTY_SLOT } from './mocks/mock-time-slots';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const moment = moment_;
 moment.locale('ru');
@@ -44,7 +45,7 @@ describe('TimeSlotsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EpguLibModule],
+      imports: [EpguLibModule, HttpClientTestingModule],
       declarations: [
         TimeSlotsComponent,
         MockComponents(
