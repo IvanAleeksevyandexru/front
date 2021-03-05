@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatPeriodDescription, PaymentType } from '../../mat-period.models';
 
 @Component({
@@ -14,23 +7,15 @@ import { MatPeriodDescription, PaymentType } from '../../mat-period.models';
   styleUrls: ['./mat-period-description.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatPeriodDescriptionComponent implements OnInit, OnChanges {
+export class MatPeriodDescriptionComponent {
   @Input() description: MatPeriodDescription;
   @Input() durationAmount: number;
-  @Input() balanceAmount: string;
+  @Input() balanceAmount: number;
   @Input() paymentType: PaymentType;
-  arrayForPluralize = {
-    month: ['месяц', 'месяца', 'месяцев'],
-    year: ['год', 'года', 'лет'],
-    quarter: ['квартала', 'кварталов', 'кварталов'],
-    halfYear: ['полугодия', 'полугодий', 'полугодий'],
+  readonly duration = {
+    month: 'месяцев',
+    year: 'лет',
+    quarter: 'кварталов',
+    halfYear: 'полугодий',
   };
-
-  ngOnInit(): void {
-    console.log(this.description);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
 }

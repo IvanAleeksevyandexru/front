@@ -8,9 +8,8 @@ describe('MatPeriodDescriptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MatPeriodDescriptionComponent ]
-    })
-    .compileComponents();
+      declarations: [MatPeriodDescriptionComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

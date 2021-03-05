@@ -32,15 +32,16 @@ export class DurationService {
       year: this.getMonthRange(
         this.datesToolsService.sub(startOfMonth(date), 3, 'months'),
         this.datesToolsService.add(startOfMonth(date), 12, 'months'),
+        0,
       ),
     };
   }
 
-  getMonthRange(start: Date, end: Date): ListElement[] {
+  getMonthRange(start: Date, end: Date, value?: number): ListElement[] {
     return eachMonthOfInterval({ start, end }).map((month, index) => {
       const text = this.datesToolsService.format(month, 'LLLL yyyy');
       const date = this.datesToolsService.format(month, 'dd.MM.yyyy');
-      return this.createListElement(text, index, date, index);
+      return this.createListElement(text, index, date, value ?? index);
     });
   }
 
@@ -65,17 +66,9 @@ export class DurationService {
     ].map((halfYear, index) => {
       const year = this.datesToolsService.format(halfYear, 'yyyy');
       const isStartOfHalYear = halfYear.getMonth() !== 6;
-      const text = `${isStartOfHalYear ? '2' : '1'} полугодие ${year}`;
+      const text = `${isStartOfHalYear ? '1' : '2'} полугодие ${year}`;
       const date = this.datesToolsService.format(halfYear, 'dd.MM.yyyy');
       return this.createListElement(text, index, date, index);
-    });
-  }
-
-  getYearRange(start: Date, end: Date): ListElement[] {
-    return eachYearOfInterval({ start, end }).map((year, index) => {
-      const text = this.datesToolsService.format(year, 'LLLL yyyy');
-      const date = this.datesToolsService.format(year, 'dd.MM.yyyy');
-      return this.createListElement(text, index, date, 0);
     });
   }
 

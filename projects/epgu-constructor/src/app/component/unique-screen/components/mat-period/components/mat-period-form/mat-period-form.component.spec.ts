@@ -8,9 +8,8 @@ describe('MatPeriodFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MatPeriodFormComponent ]
-    })
-    .compileComponents();
+      declarations: [MatPeriodFormComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

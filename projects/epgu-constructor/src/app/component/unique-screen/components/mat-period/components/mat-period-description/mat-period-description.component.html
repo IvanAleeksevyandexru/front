@@ -1,9 +1,15 @@
-<p *ngIf="durationAmount || (paymentType === 'one' && durationAmount)" class="mb-18">
+<p
+  *ngIf="(durationAmount && balanceAmount) || (paymentType === 'one' && durationAmount)"
+  class="mb-18"
+>
   <span class="helper-text"> {{ description.durationLabel }}</span
   ><br />
-  <span>{{ durationAmount }} {{ arrayForPluralize[paymentType] | pluralize: durationAmount }}</span>
+  <span>{{ durationAmount }} {{ duration[paymentType] }}</span>
 </p>
-<p *ngIf="(durationAmount && balanceAmount) || (paymentType === 'one' && balanceAmount)" class="mb-18">
+<p
+  *ngIf="(durationAmount && balanceAmount) || (paymentType === 'one' && balanceAmount)"
+  class="mb-18"
+>
   <span class="helper-text">{{ description.balanceLabel }}</span>
   <br />
   <span>{{ balanceAmount | toMoney }} руб.</span>

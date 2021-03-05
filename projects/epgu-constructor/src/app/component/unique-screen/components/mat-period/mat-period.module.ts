@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BaseModule } from '../../../../shared/base.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { FilterPipe } from './pipe/filter/filter.pipe';
+import { FilterPipe } from './pipe/filter.pipe';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
 import { DurationService } from './service/duration.service';
 import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
@@ -39,6 +39,6 @@ import { ErrorModule } from '../../../../shared/components/error/error.module';
     ConstructorDatePickerModule,
     ErrorModule,
   ],
-  providers: [DurationService]
+  providers: [DurationService],
 })
 export class MatPeriodModule {}

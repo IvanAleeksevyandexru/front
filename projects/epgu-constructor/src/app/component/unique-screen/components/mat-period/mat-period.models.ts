@@ -31,9 +31,12 @@ export enum FormField {
 export type PaymentType = 'one' | 'month' | 'quarter' | 'halfYear' | 'year';
 
 export interface FormValue {
-  [FormField.paymentType]: PaymentType;
-  [FormField.amount]: string;
-  [FormField.startPayment]: ListElement;
-  [FormField.finishPayment]: ListElement;
-  [FormField.paymentDate]: string;
+  data: {
+    [FormField.paymentType]: PaymentType;
+    [FormField.amount]: string;
+    [FormField.startPayment]: ListElement;
+    [FormField.finishPayment]: ListElement;
+    [FormField.paymentDate]: string;
+  };
+  isValid: boolean;
 }

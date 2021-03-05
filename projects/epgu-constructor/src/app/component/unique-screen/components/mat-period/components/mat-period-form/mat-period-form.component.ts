@@ -27,13 +27,9 @@ export class MatPeriodFormComponent implements OnInit {
   @Input() components: { [key in FormField]: CustomComponent };
   @Input() cachedValue?: FormValue;
   @Output() updateStateEvent = new EventEmitter<FormValue>();
-  form: FormGroup;
   durations: { [key in PaymentType]: ListElement[] };
   formField = FormField;
-  readonly maskOptions = {
-    decimalSymbol: ',',
-    allowDecimal: true,
-  };
+  form: FormGroup;
 
   constructor(
     public durationService: DurationService,
@@ -70,16 +66,20 @@ export class MatPeriodFormComponent implements OnInit {
 
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: FormValue) => {
+      .subscribe((value: FormValue['data']) => {
         console.log(this.form.value);
-        const paymentDate = this.durationService.transformDayToDate(
-          value[FormField.paymentDate],
-          value[FormField.startPayment]?.date,
-          value[FormField.paymentType],
+        const { paymentDate, startPayment, paymentType } = value;
+        const transformedPaymentDate = this.durationService.transformDayToDate(
+          paymentDate,
+          startPayment?.date,
+          paymentType,
         );
         this.updateStateEvent.emit({
-          ...value,
-          paymentDate,
+          isValid: this.form.valid,
+          data: {
+            ...value,
+            paymentDate: transformedPaymentDate,
+          },
         });
       });
 

@@ -9,5 +9,4 @@ import { AbstractControl } from '@angular/forms';
 })
 export class ErrorComponent {
   @Input() data: AbstractControl;
-  @Input() disableError = false;
 }
