@@ -232,6 +232,12 @@
       justify-content: center;
       align-items: center;
     }
+    &--description {
+      background: $color-selago;
+      border: none;
+      border-top: 3px solid $color-science-blue;
+      padding: 1em;
+    }
   }
 
   .container {
