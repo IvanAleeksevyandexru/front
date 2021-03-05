@@ -15,6 +15,8 @@ import { LocationService } from '../../../../core/services/location/location.ser
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentsListRelationsService } from '../../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -38,6 +40,8 @@ describe('PaymentService', () => {
         ValueLoaderService,
         DatesToolsService,
         DictionaryToolsService,
+        ComponentsListRelationsService,
+        DateRangeService,
       ],
     });
     service = TestBed.inject(PaymentService);

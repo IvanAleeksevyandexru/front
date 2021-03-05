@@ -22,6 +22,9 @@ import { UtilsService } from '../utils/utils.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -104,6 +107,9 @@ describe('AutocompleteService', () => {
         EventBusService,
         ModalService,
         DictionaryToolsService,
+        DictionaryApiService,
+        ComponentsListRelationsService,
+        DateRangeService,
       ],
     });
     service = TestBed.inject(AutocompleteService);

@@ -14,13 +14,11 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { ConstructorPlainInputComponent } from '../constructor-plain-input/constructor-plain-input.component';
-// eslint-disable-next-line max-len
 import { ConstructorDadataWidgetComponent } from '../constructor-dadata-widget/constructor-dadata-widget.component';
 import { ConstructorDropdownComponent } from '../constructor-dropdown/constructor-dropdown.component';
 import { ConstructorLookupComponent } from '../constructor-lookup/constructor-lookup.component';
 import { ConstructorCheckboxComponent } from '../constructor-checkbox/constructor-checkbox.component';
 import { ConstructorDatePickerComponent } from '../constructor-date-picker/constructor-date-picker.component';
-// eslint-disable-next-line max-len
 import { ConstructorMultilineInputComponent } from '../constructor-multiline-input/constructor-multiline-input.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { PassportComponent } from '../add-passport/passport.component';
@@ -38,6 +36,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -87,6 +86,7 @@ describe('ComponentsListComponent', () => {
         UtilsService,
         LoggerService,
         DictionaryToolsService,
+        ComponentsListRelationsService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

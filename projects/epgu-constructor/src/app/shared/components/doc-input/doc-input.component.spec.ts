@@ -10,7 +10,6 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { MockComponent, MockModule } from 'ng-mocks';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
-import { ComponentsListRepositoryService } from '../../services/components-list-repository/components-list-repository.service';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -49,7 +48,6 @@ describe('DocInputComponent', () => {
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         ComponentsListFormService,
         ComponentsListToolsService,
-        ComponentsListRepositoryService,
         UnsubscribeService,
         DatesToolsService,
         ValidationService,

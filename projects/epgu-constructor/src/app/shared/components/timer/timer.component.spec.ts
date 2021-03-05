@@ -14,6 +14,9 @@ import { CachedAnswersService } from '../../services/cached-answers/cached-answe
 import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
+import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../services/date-range/date-range.service';
 
 
 describe('TimerComponent', () => {
@@ -40,6 +43,9 @@ describe('TimerComponent', () => {
         EventBusService,
         DatesToolsService,
         DictionaryToolsService,
+        DictionaryApiService,
+        ComponentsListRelationsService,
+        DateRangeService,
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();
