@@ -146,6 +146,7 @@ export interface ComponentAttrsDto {
   dateType?: string;
   refDate?: string;
   noDepartmentsErrorMsg?: string;
+  showMaskSymbols?: boolean;
 }
 
 export interface ComponentUploadedFileDto {
