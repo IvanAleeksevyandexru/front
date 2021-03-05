@@ -1,5 +1,8 @@
 @import "../core/palettes";
+@import "../core/typography";
 @import '../core/functions';
+
+$color-highlighted: rgba(153, 177, 230, .5);
 
 .card-toggle-pad{
   padding: $screen-pad-p;
@@ -18,7 +21,6 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
-    line-height: 24px;
     &::after {
       content: "\276F";
       width: 24px;
@@ -38,26 +40,29 @@
     & .card-toggle-label{
       max-width: 90%;
       display: flex;
-      font-size: 18px;
+      @include typ-h5();
+      padding-left: 1px;
       flex-direction: column;
-      & > *:not(:last-child) {
-        margin-bottom: 24px;
-      }
       & .highlighted {
-        color: $color-gosblue;
+        color: inherit;
+        display: inline-block;
+        border-radius: 2px;
+        line-height: 20px;
+        background-color: $color-highlighted;
+        box-shadow: 1px 0 0 $color-highlighted, -1px 0 0 $color-highlighted;
       }
     }
   }
   &-content {
     max-height: 0;
     transition: all .35s;
-    font-size: 16px;
+    @include typ-plain-text();
     padding: 0;
     .close {
       display: inline-block;
       color: $color-gosblue;
-      font-size: 16px;
-      margin-top: 24px;
+      @include typ-plain-text();
+      margin-top: 16px;
     }
   }
   input {
@@ -73,7 +78,7 @@
     ~ .card-toggle-content {
       max-height: initial;
       height: auto;
-      padding-top: 24px;
+      padding-top: 12px;
     }
   }
 }
