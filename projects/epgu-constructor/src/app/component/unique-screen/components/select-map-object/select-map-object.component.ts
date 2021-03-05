@@ -17,7 +17,10 @@ import { DeviceDetectorService } from '../../../../core/services/device-detector
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { ApplicantAnswersDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ApplicantAnswersDto,
+  ScreenActionDto,
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
@@ -34,6 +37,7 @@ import { ComponentValue, DictionaryUtilities } from './dictionary-utilities';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
+import { ActionService } from '../../../../shared/directives/action/action.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -58,6 +62,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public isMobile: boolean;
   public isSearchTitleVisible = true;
   public isNoDepartmentErrorVisible = false;
+  public screenActionButtons: ScreenActionDto[] = [];
 
   private componentValue: ComponentValue;
   private screenStore: ScreenStore;
@@ -83,6 +88,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private zone: NgZone,
     private deviceDetector: DeviceDetectorService,
     private eventBusService: EventBusService,
+    private actionService: ActionService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -95,6 +101,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         this.applicantAnswers = applicantAnswers;
         this.initVariable();
         this.subscribeToEmmitNextStepData();
+      });
+
+    this.screenService.buttons$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((buttons: Array<ScreenActionDto>) => {
+        this.screenActionButtons = buttons || [];
+        this.cdr.markForCheck();
       });
   }
 
@@ -351,7 +364,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         regOkato: this.componentValue?.regOkato,
         okato: this.componentValue?.okato,
       };
-      this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+
+      if (this.screenActionButtons.length > 0) {
+        this.actionService.switchAction(this.screenActionButtons[0], this.data.id);
+      } else {
+        this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+      }
     });
   }
 
