@@ -72,13 +72,14 @@ export class HealthInterceptor implements HttpInterceptor {
 
           if (validationStatus) {
             const { scenarioDto, health } = result;
+            const orderId = this.utils.isValidOrderId(scenarioDto.orderId)
+            ? scenarioDto.orderId
+            : result.callBackOrderId;
 
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
-              orderId: this.utils.isValidOrderId(scenarioDto.orderId)
-                ? scenarioDto.orderId
-                : result.callBackOrderId,
+              orderId,
             };
 
             if (this.utils.isDefined(health) && this.utils.isDefined(health?.dictionaries) && health.dictionaries.length > 0) {
@@ -90,6 +91,7 @@ export class HealthInterceptor implements HttpInterceptor {
                   name: dictionary.name,
                   status: dictionary.status,
                   method: dictionary.method,
+                  orderId,
                 });
               });
             }
