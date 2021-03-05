@@ -11,16 +11,18 @@ import { ComponentBase } from '../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import {
   ActionType,
-  ComponentActionDto,
+  ComponentActionDto, DTOActionAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 
 
 describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   let component: ConfirmPersonalUserPhoneEmailComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserPhoneEmailComponent>;
   let screenService: ScreenService;
+  let currentAnswersService: CurrentAnswersService;
   const mockData: ComponentBase = {
     attrs: {},
     id: '',
@@ -58,6 +60,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     fixture = TestBed.createComponent(ConfirmPersonalUserPhoneEmailComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     component.data$ = of(mockData);
     fixture.detectChanges();
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
@@ -65,5 +68,65 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('updateValue()', () => {
+    it('should update value', () => {
+      component.updateValue('test@gmail.com');
+
+      expect(currentAnswersService.isValid).toEqual(true);
+      expect(currentAnswersService.state).toEqual('test@gmail.com');
+    });
+
+    it('shouldn\'t update value', () => {
+      component.updateValue(null);
+
+      expect(currentAnswersService.isValid).toEqual(false);
+      expect(currentAnswersService.state).toEqual(undefined);
+    });
+  });
+
+  describe('ngOnInit()', () => {
+    it('should set initial state', () => {
+      const updateValue = spyOn(component, 'updateValue');
+      component.ngOnInit();
+      expect(updateValue).toHaveBeenCalled();
+    });
+
+    it('should set isEditContactAction for editPhoneNumber action', () => {
+      jest.spyOn(screenService, 'action', 'get').mockReturnValue({ action: DTOActionAction.editPhoneNumber } as any);
+      component.ngOnInit();
+      expect(component.isEditContactAction).toEqual(true);
+    });
+
+    it('should set isEditContactAction for editLegalEmail action', () => {
+      jest.spyOn(screenService, 'action', 'get').mockReturnValue({ action: DTOActionAction.editLegalEmail } as any);
+      component.ngOnInit();
+      expect(component.isEditContactAction).toEqual(true);
+    });
+
+    it('should set isEditContactAction as false', () => {
+      jest.spyOn(screenService, 'action', 'get').mockReturnValue({} as any);
+      component.ngOnInit();
+      expect(component.isEditContactAction).toEqual(false);
+    });
+
+    it('should set isPhoneScreenType for confirmPersonalUserPhone', () => {
+      jest.spyOn(screenService, 'component', 'get').mockReturnValue({ type: UniqueScreenComponentTypes.confirmPersonalUserPhone } as any);
+      component.ngOnInit();
+      expect(component.isPhoneScreenType).toEqual(true);
+    });
+
+    it('should set isPhoneScreenType for confirmLegalPhone', () => {
+      jest.spyOn(screenService, 'component', 'get').mockReturnValue({ type: UniqueScreenComponentTypes.confirmLegalPhone } as any);
+      component.ngOnInit();
+      expect(component.isPhoneScreenType).toEqual(true);
+    });
+
+    it('should set isPhoneScreenType as false', () => {
+      jest.spyOn(screenService, 'component', 'get').mockReturnValue({ type: UniqueScreenComponentTypes.confirmPersonalUserEmail } as any);
+      component.ngOnInit();
+      expect(component.isPhoneScreenType).toEqual(false);
+    });
   });
 });
