@@ -66,7 +66,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
-  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService.dictionaries$;
+  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService
+    .dictionaries$;
   suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
 
   readonly optionalField = OPTIONAL_FIELD;
