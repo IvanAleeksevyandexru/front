@@ -16,7 +16,6 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 @Component({
   selector: 'epgu-constructor-mat-period-container',
   templateUrl: './mat-period-container.component.html',
-  styleUrls: ['./mat-period-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatPeriodContainerComponent implements AfterViewInit {

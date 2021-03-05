@@ -19,7 +19,6 @@ import { CustomComponent } from '../../../../../shared/components/components-lis
 @Component({
   selector: 'epgu-constructor-mat-period-form',
   templateUrl: './mat-period-form.component.html',
-  styleUrls: ['./mat-period-form.component.scss'],
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -67,7 +66,6 @@ export class MatPeriodFormComponent implements OnInit {
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntil(this.ngUnsubscribe$))
       .subscribe((value: FormValue['data']) => {
-        console.log(this.form.value);
         const { paymentDate, startPayment, paymentType } = value;
         const transformedPaymentDate = this.durationService.transformDayToDate(
           paymentDate,
