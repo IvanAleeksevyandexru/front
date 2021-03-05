@@ -20,6 +20,7 @@ export class ConstructorDatePickerComponent {
   @Input() align: Align | string;
   @Input() disabled: boolean;
   @Input() brokenDateFixStrategy?: BrokenDateFixStrategy;
+  @Input() textModelValue: boolean;
 
   @Output() dateSelectedEvent = new EventEmitter<Date>();
   @Output() clearedEvent = new EventEmitter<void>();

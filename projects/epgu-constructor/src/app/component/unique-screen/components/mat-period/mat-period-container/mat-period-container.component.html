@@ -11,6 +11,7 @@
 >
   <epgu-constructor-screen-pad class="mb-24">
     <epgu-constructor-mat-period-form
+      [components]="components$ | async"
       [cachedValue]="cachedValue$ | async"
       (updateStateEvent)="updateState($event)"
     ></epgu-constructor-mat-period-form>

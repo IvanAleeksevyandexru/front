@@ -30,7 +30,7 @@ export class DurationService {
       ),
       halfYear: this.getHalfYearRange(date),
       year: this.getMonthRange(
-        startOfMonth(date),
+        this.datesToolsService.sub(startOfMonth(date), 3, 'months'),
         this.datesToolsService.add(startOfMonth(date), 12, 'months'),
       ),
     };
@@ -61,6 +61,7 @@ export class DurationService {
       startMonth,
       this.datesToolsService.add(startMonth, 6, 'months'),
       this.datesToolsService.add(startMonth, 12, 'months'),
+      this.datesToolsService.add(startMonth, 18, 'months'),
     ].map((halfYear, index) => {
       const year = this.datesToolsService.format(halfYear, 'yyyy');
       const isEndOfHalYear = halfYear.getMonth() === 6;
@@ -95,6 +96,25 @@ export class DurationService {
         const formatDate = this.datesToolsService.format(year, 'dd.MM.yyyy');
         return this.createListElement(text, index, formatDate, index);
       });
+  }
+
+  public transformDayToDate(day: string, date: any, paymentType: PaymentType): any {
+    // const parseDate = date2.split('.');
+    // const date = new Date(`${parseDate[1]}.${parseDate[0]}.${parseDate[2]}`);
+    switch (paymentType) {
+      case 'one':
+        return day;
+      case 'month':
+        const y = this.datesToolsService.parse(date, 'dd.MM.yyyy');
+        const x = this.datesToolsService.setDate(startOfMonth(y), day);
+        return this.datesToolsService.format(x, 'dd.MM.yyyy');
+      case 'halfYear':
+        return day;
+      case 'quarter':
+        return this.datesToolsService.setDate(startOfQuarter(date), day);
+      case 'year':
+        return this.datesToolsService.setDate(startOfYear(date), day);
+    }
   }
 
   private createListElement(text: string, id: number, date: string, value: number): ListElement {

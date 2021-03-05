@@ -1,12 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
+import { combineLatest } from 'rxjs';
 
 import { ScreenService } from '../../../../../screen/screen.service';
 import { FormField, FormValue, MatPeriod, PaymentType } from '../mat-period.models';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
-import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'epgu-constructor-mat-period-container',
@@ -14,17 +20,14 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./mat-period-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatPeriodContainerComponent implements OnInit {
-  component$ = this.screenService.component$ as Observable<MatPeriod>;
+export class MatPeriodContainerComponent implements OnInit, AfterViewInit {
+  component$ = (this.screenService.component$ as unknown) as Observable<MatPeriod>;
   description$ = this.component$.pipe(map((component) => component.attrs.description));
-  cachedValue$: Observable<FormValue | null> = combineLatest([
+  cachedValue$: Observable<FormValue> = combineLatest([
     this.screenService.cachedAnswers$,
     this.component$,
-  ]).pipe(
-    map(([cash, component]) => {
-      return JSON.parse(cash[component.id]?.value || '{}');
-    }),
-  );
+  ]).pipe(map(([cash, component]) => JSON.parse(cash[component.id]?.value || '{}')));
+  components$ = this.component$.pipe(map((component) => component.attrs.components));
   nextStepAction = NEXT_STEP_ACTION;
   balanceAmount: number;
   durationAmount: number;
@@ -33,9 +36,14 @@ export class MatPeriodContainerComponent implements OnInit {
   constructor(
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
 
   updateState(formValue: FormValue): void {
     this.currentAnswersService.state = formValue;
@@ -55,7 +63,7 @@ export class MatPeriodContainerComponent implements OnInit {
     startPayment: null | number,
   ): void {
     const x = parseFloat(balanceAmount?.replace(/ /g, '').replace(',', '.'));
-    const duration = finishPayment - startPayment || null;
+    const duration = finishPayment + 1 - startPayment || null;
     this.balanceAmount = (x || 0) * (duration || 1);
     this.durationAmount = duration;
   }

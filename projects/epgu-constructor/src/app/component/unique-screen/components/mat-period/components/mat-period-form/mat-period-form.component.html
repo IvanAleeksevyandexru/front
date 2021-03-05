@@ -72,6 +72,7 @@
     <epgu-constructor-constructor-plain-input
       *ngIf="form.get(formField.paymentType).value !== 'one'; else paymentDatePicker"
       [control]="$any(form.get(formField.paymentDate))"
+      [maxlength]="2"
     ></epgu-constructor-constructor-plain-input>
   </div>
 </form>
@@ -80,14 +81,16 @@
   <epgu-constructor-constructor-dropdown
     [control]="$any(form.get(formField.finishPayment))"
     [items]="
-      form.get(formField.startPayment).value | memo: durationService.getYearFinishRange:durationService | filter: 1
+      form.get(formField.startPayment).value
+        | memo: durationService.getYearFinishRange:durationService
+        | filter: 1
     "
   ></epgu-constructor-constructor-dropdown>
 </ng-template>
 
 <ng-template #paymentDatePicker>
-  <lib-date-picker
+  <epgu-constructor-constructor-date-picker
     [textModelValue]="true"
-    [formControl]="$any(form.get(formField.paymentDate))"
-  ></lib-date-picker>
+    [control]="$any(form.get(formField.paymentDate))"
+  ></epgu-constructor-constructor-date-picker>
 </ng-template>
