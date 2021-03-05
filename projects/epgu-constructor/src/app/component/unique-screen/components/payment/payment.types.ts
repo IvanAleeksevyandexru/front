@@ -3,7 +3,7 @@ import {
   DictionarySimpleFilter,
   DictionarySubFilter,
   DictionaryUnionKind,
-} from '../../../../core/services/dictionary/dictionary-api.types';
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 
 /**
  * Информация о нужном платеже

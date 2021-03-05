@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { getPaymentRequestOptions } from './payment.constants';
 import {
   BillsInfoResponse,
@@ -17,7 +17,7 @@ import { LocationService } from '../../../../core/services/location/location.ser
 import {
   DictionaryItem,
   DictionaryResponse,
-} from '../../../../core/services/dictionary/dictionary-api.types';
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 
 /**
  * Сервис для оплаты услуг пользователем

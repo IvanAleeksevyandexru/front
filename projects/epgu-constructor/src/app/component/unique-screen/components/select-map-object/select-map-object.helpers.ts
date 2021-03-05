@@ -6,7 +6,7 @@ import {
   DictionaryConditions,
   DictionaryOptions,
   DictionaryUnionKind
-} from '../../../../core/services/dictionary/dictionary-api.types';
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 
 export const getPaymentRequestOptionGIBDD = (id: number): DictionaryOptions => {
   return {

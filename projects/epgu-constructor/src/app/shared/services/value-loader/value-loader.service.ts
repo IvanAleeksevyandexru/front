@@ -5,14 +5,14 @@ import {
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
-import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../components/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { DocInputField } from '../../../component/shared/components/components-list/doc-input/doc-input.types';
-import { DictionaryFilters } from '../../../core/services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../core/services/dictionary/dictionary-tools.service';
+import { DocInputField } from '../../components/doc-input/doc-input.types';
+import { DictionaryFilters } from '../dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 
 @Injectable()
 export class ValueLoaderService {

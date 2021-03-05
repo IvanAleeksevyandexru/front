@@ -6,8 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {
   CustomComponent,
   CustomScreenComponentTypes
-} from '../../../component/shared/components/components-list/components-list.types';
-import { DateRangeService } from '../../../core/services/date-range/date-range.service';
+} from '../../components/components-list/components-list.types';
+import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';

@@ -16,7 +16,7 @@ import {
   ComponentDto,
   ScenarioErrorsDto,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { CustomComponentOutputData } from '../../../../../shared/components/components-list/components-list.types';
+import { CustomComponentOutputData } from '../../../../../../shared/components/components-list/components-list.types';
 import { CachedValue, ChildI, ClearEvent, ItemStatus } from '../../select-children.models';
 
 @Component({

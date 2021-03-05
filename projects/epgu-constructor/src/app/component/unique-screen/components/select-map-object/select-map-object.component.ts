@@ -24,16 +24,16 @@ import { CommonModalComponent } from '../../../../modal/shared/common-modal/comm
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
-import { DictionaryApiService } from '../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
   DictionaryOptions,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
-} from '../../../../core/services/dictionary/dictionary-api.types';
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 import {
   ComponentValue,
   DictionaryToolsService,
-} from '../../../../core/services/dictionary/dictionary-tools.service';
+} from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';

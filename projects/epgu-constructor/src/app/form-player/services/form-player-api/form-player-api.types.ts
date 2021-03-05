@@ -3,14 +3,14 @@ import { ConfirmUserDataStyle } from '../../../component/unique-screen/component
 import {
   DictionaryConditions,
   DictionaryOptions,
-} from '../../../core/services/dictionary/dictionary-api.types';
+} from '../../../shared/services/dictionary/dictionary-api.types';
 import { Clarifications } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
-import { CustomComponentRef } from '../../../component/shared/components/components-list/components-list.types';
+import { CustomComponentRef } from '../../../shared/components/components-list/components-list.types';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;

@@ -9,14 +9,14 @@ import { takeUntil } from 'rxjs/operators';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
-} from '../../component/shared/components/components-list/components-list.types';
+} from '../../shared/components/components-list/components-list.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {
   ComponentActionDto,
   ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenBase } from '../screenBase';
+import { ScreenBase } from '../screen-base';
 import { CustomScreenService } from './custom-screen.service';
 import { NEXT_STEP_ACTION } from '../../shared/constants/actions';
 

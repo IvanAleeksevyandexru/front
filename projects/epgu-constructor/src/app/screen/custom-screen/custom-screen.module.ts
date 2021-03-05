@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ComponentsListModule } from '../../component/shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../shared/components/components-list/components-list.module';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';

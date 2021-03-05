@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
-import { CustomComponent } from '../../../component/shared/components/components-list/components-list.types';
+import { CustomComponent } from '../components-list/components-list.types';
 import {
   ISuggestionItem,
   ISuggestionItemList,

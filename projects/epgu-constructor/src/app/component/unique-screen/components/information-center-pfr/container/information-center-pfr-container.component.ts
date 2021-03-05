@@ -5,7 +5,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { DictionaryApiService } from '../../../../../core/services/dictionary/dictionary-api.service';
+import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import {
   CachedValue,
   FormChangeEvent,
@@ -17,8 +17,8 @@ import {
 import {
   DictionaryFilters,
   DictionaryItem,
-} from '../../../../../core/services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../../../core/services/dictionary/dictionary-tools.service';
+} from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';

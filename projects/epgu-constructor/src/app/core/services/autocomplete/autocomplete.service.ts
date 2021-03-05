@@ -18,7 +18,7 @@ import {
   ISuggestionApiValueField,
   ISuggestionItemList,
 } from './autocomplete.inteface';
-import { CustomScreenComponentTypes } from '../../../component/shared/components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../shared/components/components-list/components-list.types';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';

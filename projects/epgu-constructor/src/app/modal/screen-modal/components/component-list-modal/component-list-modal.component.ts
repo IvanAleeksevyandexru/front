@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CustomComponentOutputData } from '../../../../component/shared/components/components-list/components-list.types';
+import { CustomComponentOutputData } from '../../../../shared/components/components-list/components-list.types';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { Navigation, NavigationPayload } from '../../../../form-player/form-player.types';

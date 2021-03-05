@@ -7,7 +7,7 @@ import { CloneButtonModule } from '../../../../shared/components/clone-button/cl
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
-import { ComponentsListModule } from '../../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../../../shared/components/components-list/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './container/select-children-screen-container.component';
 import { SelectChildrenItemComponent } from './components/select-children-item/select-children-item.component';
 import { SelectChildrenItemWrapperComponent } from './components/select-children-item-wrapper/select-children-item-wrapper.component';
