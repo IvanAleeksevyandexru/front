@@ -6,12 +6,14 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ValueLoaderService', () => {
   let service: ValueLoaderService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [CachedAnswersService, UtilsService, ValueLoaderService, DatesToolsService],
     });
     service = TestBed.inject(ValueLoaderService);

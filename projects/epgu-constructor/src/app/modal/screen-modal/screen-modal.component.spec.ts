@@ -20,6 +20,7 @@ import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { ValueLoaderService } from '../../shared/services/value-loader/value-loader.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 // TODO написать тесты
 describe('ScreenModalComponent', () => {
@@ -35,7 +36,8 @@ describe('ScreenModalComponent', () => {
         BaseModule,
         ComponentsListModule,
         UniqueComponentModalModule,
-        InfoComponentModalModule
+        InfoComponentModalModule,
+        HttpClientTestingModule,
       ],
       providers: [
         NavigationModalService,

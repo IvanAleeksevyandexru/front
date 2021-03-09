@@ -519,11 +519,11 @@ export class ComponentListToolsService {
     }
   }
 
-  private updateLimitDate(
+  private async updateLimitDate(
     form: FormArray,
     component: CustomComponent,
     dependentComponent: CustomComponent,
-  ): void {
+  ): Promise<void> {
     const dependentControl = form.controls.find(
       (control) => control.value.id === dependentComponent.id,
     );
@@ -531,8 +531,11 @@ export class ComponentListToolsService {
     if (dependentControl) {
       const relatedDate = component.value !== '' ? new Date(component.value) : null;
       const { attrs, id, value } = dependentControl.value;
-      const minDate = this.dateRangeService.getMinDate(attrs.ref, id, relatedDate);
-      const maxDate = this.dateRangeService.getMaxDate(attrs.ref, id, relatedDate);
+      const [minDate, maxDate] = await Promise.all([
+        this.dateRangeService.getMinDate(attrs.ref, id, relatedDate),
+        this.dateRangeService.getMaxDate(attrs.ref, id, relatedDate)
+      ]);
+      
       this.dateRangeService.changeDate(attrs.ref, relatedDate);
 
       dependentControl.get('attrs').patchValue({
