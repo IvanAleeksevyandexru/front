@@ -1,11 +1,6 @@
 import { FilterPipe } from './filter.pipe';
 
 describe('FilterPipe', () => {
-  it('create an instance', () => {
-    const pipe = new FilterPipe();
-    expect(pipe).toBeTruthy();
-  });
-
   describe('filtered array', () => {
     const pipe = new FilterPipe();
     const list = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
