@@ -14,7 +14,7 @@ import { ScreenPadModule } from '../../../../../shared/components/screen-pad/scr
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { MatPeriod } from '../mat-period.models';
 
-xdescribe('MatPeriodContainerComponent', () => {
+describe('MatPeriodContainerComponent', () => {
   let component: MatPeriodContainerComponent;
   let fixture: ComponentFixture<MatPeriodContainerComponent>;
   let screenService: ScreenService;
@@ -85,8 +85,10 @@ xdescribe('MatPeriodContainerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatPeriodContainerComponent);
     screenService = TestBed.inject(ScreenService);
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData))
+    // screenService.component = mockData as any;
+
     component = fixture.componentInstance;
-    screenService.component = mockData as any;
     fixture.detectChanges();
   });
 

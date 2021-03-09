@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
+import { FormBuilder } from '@angular/forms';
 
 import { MatPeriodFormComponent } from './mat-period-form.component';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
@@ -9,7 +10,6 @@ import { ErrorModule } from '../../../../../../shared/components/error/error.mod
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMaskedInputModule } from '../../../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { BaseModule } from '../../../../../../shared/base.module';
-import { FormBuilder } from '@angular/forms';
 import { MemoModule } from '../../../../../../shared/pipes/memo/memo.module';
 import { FilterPipe } from '../../pipe/filter.pipe';
 import { DurationService } from '../../service/duration.service';
@@ -22,6 +22,13 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
   let fixture: ComponentFixture<MatPeriodFormComponent>;
+  const mockCachedValue = {
+    paymentType: 'month',
+    amount: '2,00',
+    startPayment: { text: 'декабрь 2020', id: 0, date: '01.12.2020', value: 0 },
+    finishPayment: { text: 'январь 2021', id: 1, date: '01.01.2021', value: 1 },
+    paymentDate: '23.12.2020',
+  };
   const mockComponents = {
     paymentType: {
       attrs: {
@@ -57,6 +64,13 @@ describe('MatPeriodFormComponent', () => {
       label: 'paymentDate',
     },
   };
+  const mockFormValue = {
+    paymentType: 'month',
+    amount: '2,00',
+    startPayment: { text: 'декабрь 2020', id: 0, date: '01.12.2020', value: 0 },
+    finishPayment: { text: 'январь 2021', id: 1, date: '01.01.2021', value: 1 },
+    paymentDate: '23',
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MatPeriodFormComponent, FilterPipe],
@@ -89,7 +103,82 @@ describe('MatPeriodFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be i', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('init form', () => {
+    it('should be init form', () => {
+      const expectedFormValue = {
+        paymentType: 'one',
+        amount: null,
+        startPayment: null,
+        finishPayment: null,
+        paymentDate: null,
+      };
+      expect(component.form.value).toEqual(expectedFormValue);
+    });
+
+    it('should be init form with cashedValue', () => {
+      component.cachedValue = mockCachedValue as any;
+      fixture.detectChanges();
+      component.ngOnInit();
+      const expectedFormValue = {
+        paymentType: 'month',
+        amount: '2,00',
+        startPayment: { text: 'декабрь 2020', id: 0, date: '01.12.2020', value: 0 },
+        finishPayment: { text: 'январь 2021', id: 1, date: '01.01.2021', value: 1 },
+        paymentDate: '23.12.2020',
+      };
+      expect(component.form.value).toEqual(expectedFormValue);
+    });
+  });
+
+  it('should be call updateStateEvent with value', () => {
+    const expectedParams = {
+      data: {
+        paymentType: 'month',
+        amount: '2,00',
+        startPayment: { text: 'декабрь 2020', id: 0, date: '01.12.2020', value: 0 },
+        finishPayment: { text: 'январь 2021', id: 1, date: '01.01.2021', value: 1 },
+        paymentDate: '23.12.2020',
+      },
+      isValid: true,
+    };
+    jest.spyOn(component.updateStateEvent, 'emit');
+    component.form.setValue(mockFormValue);
+    expect(component.updateStateEvent.emit).toHaveBeenLastCalledWith(expectedParams);
+  });
+
+  it('should be update field startPayment, finishPayment, paymentDate after paymentType change', () => {
+    const expectedData = {
+      paymentType: 'one',
+      amount: '2,00',
+      startPayment: null,
+      paymentDate: null,
+    };
+    component.form.setValue(mockFormValue);
+    component.form.get('paymentType').setValue('one');
+    expect(component.form.value).toEqual(expectedData);
+  });
+
+  describe('startPayment form field', () => {
+    it('should be set null and enable finishPayment field', () => {
+      component.form.setValue(mockFormValue);
+      component.form
+        .get('startPayment')
+        .setValue({ text: 'декабрь 2021', id: 0, date: '01.12.2021', value: 0 });
+      const finishPaymentControl = component.form.get('finishPayment');
+      expect(finishPaymentControl.value).toBeNull();
+      expect(finishPaymentControl.disabled).toBeFalsy();
+    });
+
+    it('should be set null and disable finishPayment field', () => {
+      component.form.setValue(mockFormValue);
+      component.form.get('startPayment').setValue(null);
+      const finishPaymentControl = component.form.get('finishPayment');
+      expect(finishPaymentControl.value).toBeNull();
+      expect(finishPaymentControl.disabled).toBeTruthy();
+    });
   });
 });

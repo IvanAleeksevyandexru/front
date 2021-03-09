@@ -24,7 +24,7 @@ import { CustomComponent } from '../../../../../shared/components/components-lis
 })
 export class MatPeriodFormComponent implements OnInit {
   @Input() components: { [key in FormField]: CustomComponent };
-  @Input() cachedValue?: FormValue;
+  @Input() cachedValue?: FormValue['data'];
   @Output() updateStateEvent = new EventEmitter<FormValue>();
   durations: { [key in PaymentType]: ListElement[] };
   formField = FormField;
@@ -42,7 +42,7 @@ export class MatPeriodFormComponent implements OnInit {
     this.durations = this.durationService.initDurations();
   }
 
-  initForm(cachedValue: FormValue | null): void {
+  private initForm(cachedValue: FormValue['data'] | null): void {
     this.form = this.fb.group({
       [this.formField.paymentType]: new FormControl(
         cachedValue[this.formField.paymentType] || 'one',

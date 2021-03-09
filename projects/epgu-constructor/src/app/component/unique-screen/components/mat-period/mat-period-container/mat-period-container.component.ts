@@ -21,12 +21,12 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 export class MatPeriodContainerComponent implements AfterViewInit {
   component$ = (this.screenService.component$ as unknown) as Observable<MatPeriod>;
   description$ = this.component$.pipe(map((component) => component.attrs.description));
-  cachedValue$: Observable<FormValue> = combineLatest([
+  cachedValue$: Observable<FormValue['data']> = combineLatest([
     this.screenService.cachedAnswers$,
     this.component$,
   ]).pipe(
     map(([cash, component]) => {
-      const parsedValue = JSON.parse(cash[component.id]?.value || '{}') as FormValue;
+      const parsedValue = JSON.parse(cash[component.id]?.value || '{}') as FormValue['data'];
       if (parsedValue[FormField.paymentType] && parsedValue[FormField.paymentType] !== 'one') {
         const paymentDate = parseFloat(parsedValue[FormField.paymentDate].split('.')[0]).toFixed(0);
         return {
