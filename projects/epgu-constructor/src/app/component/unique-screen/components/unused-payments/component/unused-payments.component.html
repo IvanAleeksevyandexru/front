@@ -1,29 +1,9 @@
-<epgu-constructor-screen-container
-  [show-nav]="showNav"
-  [class.screen-container-mt]="!showNav"
->
-  <div class="screen-body">
-    <div class="inner">
-      <div *ngIf="data?.name" class="head">
-        <epgu-constructor-page-name>{{ data.name }}</epgu-constructor-page-name>
-      </div>
-      <div class="unused-payments__description">
-        Выберите пошлину, которую вы оплатили, но еще не использовали
-      </div>
-    </div>
-  </div>
-  <div class="screen-footer">
-    <div class="radio-list" *ngIf="paymentsData?.length > 0; else emptyList">
-      <epgu-constructor-radio-tax [data]="paymentsData"></epgu-constructor-radio-tax>
-      <lib-button class="submit-button" (click)="nextAction()">
-        <div class="secondary-font">{{ data?.submitLabel || 'Продолжить' }}</div>
-      </lib-button>
-    </div>
-  </div>
+<div class="mb-24">{{ description }}</div>
 
-  <ng-template #emptyList>
-    <div class="text--center">
-      У вас нет ранее оплаченных пошлин для использования. Выберите другой вид оплаты
-    </div>
-  </ng-template>
-</epgu-constructor-screen-container>
+<epgu-constructor-radio-tax
+  *ngFor="let payment of payments; let i = index"
+  [payment]="payment"
+  [isSelect]="payment.uin === selectedPayment.uin"
+  (paymentSelectEvent)="handleSelect($event)"
+  [class.mb-24]="payments.length - 1 !== i"
+></epgu-constructor-radio-tax>

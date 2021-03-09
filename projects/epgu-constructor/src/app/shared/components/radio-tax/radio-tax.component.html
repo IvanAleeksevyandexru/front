@@ -1,9 +1,11 @@
-<div *ngFor="let item of data; let i = index" (click)="select(i)" class="radio-tax__container">
-  <div  [class.active]="selectedItem === item" class="radio-tax__button"></div>
+<div (click)="onSelect()" class="radio-tax__container">
+  <div [class.active]="isSelect" class="radio-tax__button"></div>
   <div class="radio-tax__info">
-    <div class="radio-tax__title">Пошлина от {{item.payDate | date:'shortDate'}}</div>
-    <div class="radio-tax__uin">УИН: {{item.uin}}</div>
-    <a [href]="item.link" target="_blank" class="radio-tax__link">Детали платежа</a>
+    <div class="radio-tax__title">Пошлина от {{ payment.payDate | date: 'shortDate' }}</div>
+    <div class="radio-tax__uin">УИН: {{ payment.uin }}</div>
+    <a [href]="payment.link" target="_blank" class="radio-tax__link">Детали платежа</a>
   </div>
-  <div class="radio-tax__amount">{{item.amount | currency:'RUB':'symbol-narrow':'0.0-2' }}</div>
+  <div class="radio-tax__amount">
+    {{ payment.amount | currency: 'RUB':'symbol-narrow':'0.0-2' }}
+  </div>
 </div>
