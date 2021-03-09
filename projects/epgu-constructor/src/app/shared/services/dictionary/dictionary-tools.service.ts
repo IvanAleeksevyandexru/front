@@ -72,11 +72,11 @@ export class DictionaryToolsService {
   public loadReferenceData$(components: Array<CustomComponent>, cachedAnswers: CachedAnswersDto): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
     components.forEach((component: CustomComponent) => {
-      if (this.isDropDownOrMvdGiac(component.type)) {
+      if (this.isDropdownLike(component.type)) {
         data.push(this.getDropdowns$(component, cachedAnswers));
       }
 
-      if (this.isDictionaryOrLookup(component.type)) {
+      if (this.isDictionaryLike(component.type)) {
         const { dictionaryType, dictionaryOptions } = component.attrs;
         const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
         data.push(this.getDictionaries$(dictionaryType, component, options));
@@ -194,13 +194,13 @@ export class DictionaryToolsService {
     };
   }
 
-  public isDictionaryOrLookup(type: CustomScreenComponentTypes): boolean {
+  public isDictionaryLike(type: CustomScreenComponentTypes): boolean {
     return (
       CustomScreenComponentTypes.Dictionary === type || CustomScreenComponentTypes.Lookup === type
     );
   }
 
-  public isDropDownOrMvdGiac(type: CustomScreenComponentTypes): boolean {
+  public isDropdownLike(type: CustomScreenComponentTypes): boolean {
     return (
       type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac
     );
@@ -208,11 +208,11 @@ export class DictionaryToolsService {
 
   private initDataAfterLoading(references: Array<CustomListReferenceData>): void {
     references.forEach((reference: CustomListReferenceData) => {
-      if (this.isDropDownOrMvdGiac(reference.component.type)) {
+      if (this.isDropdownLike(reference.component.type)) {
         this.initDropdown(reference as CustomListGenericData<Partial<ListItem>[]>);
       }
 
-      if (this.isDictionaryOrLookup(reference.component.type)) {
+      if (this.isDictionaryLike(reference.component.type)) {
         this.initDictionary(reference as CustomListGenericData<DictionaryResponse>);
       }
     });
@@ -309,7 +309,7 @@ export class DictionaryToolsService {
     component: CustomComponent,
     filters: ComponentDictionaryFilters,
   ): Array<Observable<CustomListReferenceData>> {
-    if (filters[component.id] !== undefined && this.isDictionaryOrLookup(component.type)) {
+    if (filters[component.id] !== undefined && this.isDictionaryLike(component.type)) {
       const { dictionaryType, dictionaryOptions } = component.attrs;
       const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
 

@@ -22,32 +22,11 @@ export class ComponentsListToolsService {
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
-    const parseValue = (value): CustomScreenComponentValueTypes => {
-      if (isDateAndValue) {
-        return new Date(value);
-      } else if (this.isAddress(component.type)) {
-        try {
-          return JSON.parse(value).fullAddress;
-        } catch (e) {
-          return value;
-        }
-      } else if (this.isJson(component.type)) {
-        try {
-          return JSON.parse(value);
-        } catch (e) {
-          return value;
-        }
-      } else if (this.isCheckBox(component.type)) {
-        return toBoolean(value);
-      } else {
-        return value;
-      }
-    };
 
     if (typeof component.value === 'string' && component.value.length) {
-      return parseValue(component.value);
-    } else if (!isUndefined(component.attrs?.defaultValue)) {
-      return parseValue(component.attrs?.defaultValue);
+      return this.parseValue(component.value, isDateAndValue, component.type);
+    } else if (!isUndefined(component.attrs.defaultValue)) {
+      return this.parseValue((component.attrs.defaultValue as unknown) as string, isDateAndValue, component.type);
     } else {
       return component.value;
     }
@@ -68,4 +47,26 @@ export class ComponentsListToolsService {
   public isDate(type: CustomScreenComponentTypes): boolean {
     return type === CustomScreenComponentTypes.DateInput;
   }
+
+  private parseValue(value: string, isDateAndValue: boolean, componentType: CustomScreenComponentTypes): CustomScreenComponentValueTypes {
+    if (isDateAndValue) {
+      return new Date(value);
+    } else if (this.isAddress(componentType)) {
+      try {
+        return JSON.parse(value).fullAddress;
+      } catch (e) {
+        return value;
+      }
+    } else if (this.isJson(componentType)) {
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return value;
+      }
+    } else if (this.isCheckBox(componentType)) {
+      return toBoolean(value);
+    } else {
+      return value;
+    }
+  };
 }

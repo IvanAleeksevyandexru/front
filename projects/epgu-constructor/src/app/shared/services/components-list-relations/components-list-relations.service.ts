@@ -168,7 +168,7 @@ export class ComponentsListRelationsService {
     if (reference.relation === CustomComponentRefRelation.filterOn) {
       if (
         this.isValueEquals(reference.val, componentVal) &&
-        dictionaryToolsService.isDictionaryOrLookup(dependentComponent.type)
+        dictionaryToolsService.isDictionaryLike(dependentComponent.type)
       ) {
         this.applyFilter(dependentComponent, reference.filter, componentVal);
       } else {

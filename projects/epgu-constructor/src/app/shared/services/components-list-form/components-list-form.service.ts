@@ -116,7 +116,7 @@ export class ComponentsListFormService {
     const defaultIndex = component.attrs?.defaultIndex;
     // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
     if (defaultIndex !== undefined && !component.value) {
-      if (this.dictionaryToolsService.isDropDownOrMvdGiac(component.type)) {
+      if (this.dictionaryToolsService.isDropdownLike(component.type)) {
         const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
         const key: string = component.id;
         const value: ListItem = dicts[key][defaultIndex];
