@@ -37,5 +37,5 @@ export enum UniqueScreenComponentTypes {
   confirmLegalEmail = 'ConfirmLegalEmail',
   appealFines = 'AppealFines',
   matPeriod = 'MatPeriod',
-  сheckboxCube = 'CheckboxCube',
+  checkboxCube = 'CheckboxCube',
 }
