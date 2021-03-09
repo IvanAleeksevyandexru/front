@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { DurationService } from './duration.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
-import { DateRangeService } from '../../../../shared/components/components-list/services/date-range/date-range.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
+import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 
 describe('DurationService', () => {
   let service: DurationService;
