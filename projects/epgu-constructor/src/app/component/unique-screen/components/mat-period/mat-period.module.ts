@@ -40,5 +40,6 @@ import { ErrorModule } from '../../../../shared/components/error/error.module';
     ErrorModule,
   ],
   providers: [DurationService],
+  entryComponents: [MatPeriodContainerComponent],
 })
 export class MatPeriodModule {}
