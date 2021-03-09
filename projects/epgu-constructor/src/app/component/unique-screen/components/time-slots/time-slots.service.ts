@@ -477,20 +477,6 @@ export class TimeSlotsService {
     };
   }
 
-  private getTimeFinish(timeStart: Date): Date {
-    if (!timeStart) {
-      return;
-    }
-    const settings = {
-      [TimeSlotsTypes.BRAK]: 1440,
-      [TimeSlotsTypes.RAZBRAK]: 1440,
-      [TimeSlotsTypes.MVD]: 240,
-      [TimeSlotsTypes.GIBDD]: 240,
-    };
-
-    return this.datesToolsService.add(timeStart, settings[this.timeSlotsType], 'minutes');
-  }
-
   private isCancelCondition(): boolean {
     return (
       this.timeSlotsType !== TimeSlotsTypes.MVD &&
