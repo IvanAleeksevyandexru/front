@@ -2,7 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/epgu-constructor",
   "assets": ["src/assets"],
-  "allowedNonPeerDependencies": [
+  "whitelistedNonPeerDependencies": [
     "epgu-lib",
     "ics",
     "@alyle/ui",
