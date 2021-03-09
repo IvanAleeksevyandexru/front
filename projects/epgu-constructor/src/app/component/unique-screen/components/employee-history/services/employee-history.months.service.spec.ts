@@ -4,6 +4,7 @@ import { MonthYear } from 'epgu-lib';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('EmployeeHistoryMonthsService', () => {
   let service: EmployeeHistoryMonthsService;
@@ -11,6 +12,7 @@ describe('EmployeeHistoryMonthsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [EmployeeHistoryMonthsService, DatesToolsService],
     });
     service = TestBed.inject(EmployeeHistoryMonthsService);

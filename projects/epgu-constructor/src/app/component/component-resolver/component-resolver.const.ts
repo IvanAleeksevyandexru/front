@@ -26,7 +26,7 @@ import { BillInfoComponent } from '../unique-screen/components/payment/component
 // eslint-disable-next-line max-len
 import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/components/payment-type-selector-container/payment-type-selector-container.component';
 // eslint-disable-next-line max-len
-import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/unused-payments-container.component';
+import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/container/unused-payments-container.component';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 // eslint-disable-next-line max-len
 import { InformationCenterMvdContainerComponent } from '../unique-screen/components/information-center-mvd/container/information-center-mvd-container.component';
@@ -41,6 +41,7 @@ import { CarOwnerInfoContainerComponent } from '../unique-screen/components/car-
 import { AppealFinesContainerComponent } from '../unique-screen/components/appeal-fines/container/appeal-fines-container.component';
 // eslint-disable-next-line max-len
 import { CheckboxCubeContainerComponent } from '../unique-screen/components/checkbox-cube/checkbox-cube-container/checkbox-cube-container.component';
+import { MatPeriodContainerComponent } from '../unique-screen/components/mat-period/mat-period-container/mat-period-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -71,6 +72,7 @@ type UniqueScreenComponent =
   | FieldListScreenComponent
   | TimerScreenComponent
   | AppealFinesContainerComponent
+  | MatPeriodContainerComponent
   | CheckboxCubeContainerComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
@@ -110,5 +112,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   FieldList: FieldListScreenComponent,
   Timer: TimerScreenComponent,
   AppealFines: AppealFinesContainerComponent,
+  MatPeriod: MatPeriodContainerComponent,
   CheckboxCube: CheckboxCubeContainerComponent
 };

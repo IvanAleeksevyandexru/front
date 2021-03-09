@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfirmUserData } from '../../confirm-personal-user-data-screen.types';
+import {
+  ConfirmUserData,
+  ConfirmUserDataErrorType,
+} from '../../confirm-personal-user-data-screen.types';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
@@ -35,15 +38,16 @@ export class ConfirmPersonalUserDataComponent implements OnInit {
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.updateValue(data.value);
-      const { error = null } = JSON.parse(data.value);
-      this.currentAnswersService.isValid = !error;
       this.changeDetectionRef.markForCheck();
     });
   }
 
-  updateValue(value: string): void {
+  private updateValue(value: string): void {
     if (value) {
       this.currentAnswersService.state = value;
+      const { errors = [] } = JSON.parse(value);
+      const hasErrors = errors.some((error) => error?.type === ConfirmUserDataErrorType.error);
+      this.currentAnswersService.isValid = !hasErrors;
     }
   }
 }

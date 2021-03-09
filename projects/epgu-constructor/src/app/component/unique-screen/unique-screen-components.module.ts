@@ -36,6 +36,7 @@ import { FieldListScreenModule } from './components/field-list-screen/field-list
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
 import { CarListModule } from './components/car-list/car-list.module';
 import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module';
+import { MatPeriodModule } from './components/mat-period/mat-period.module';
 import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
 
 @NgModule({
@@ -69,6 +70,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     TimerScreenModule,
     CarListModule,
     AppealFinesModule,
+    MatPeriodModule,
     CheckboxCubeModule
   ],
   exports: [
@@ -96,6 +98,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     TimerScreenModule,
     CarListModule,
     AppealFinesModule,
+    MatPeriodModule,
     CheckboxCubeModule
   ],
   providers: [
