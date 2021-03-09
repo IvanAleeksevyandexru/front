@@ -36,6 +36,7 @@ import { FieldListScreenModule } from './components/field-list-screen/field-list
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
 import { CarListModule } from './components/car-list/car-list.module';
 import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module';
+import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module
     TimerScreenModule,
     CarListModule,
     AppealFinesModule,
+    CheckboxCubeModule
   ],
   exports: [
     RepeatableFieldsModule,
@@ -94,6 +96,7 @@ import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module
     TimerScreenModule,
     CarListModule,
     AppealFinesModule,
+    CheckboxCubeModule
   ],
   providers: [
     WebcamService,
