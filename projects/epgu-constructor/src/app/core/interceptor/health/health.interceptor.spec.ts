@@ -110,41 +110,6 @@ describe('HealthInterceptor', () => {
       expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
       tick();
     }));
-
-    it('should set successfulDictionaryRequests param', fakeAsync(() => {
-      spyOn(healthService, 'measureStart').and.callThrough();
-      spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
-      const dataToFlush = {
-        scenarioDto: {
-          ...dto.scenarioDto,
-          orderId,
-        },
-        health: {
-          dictionaries: [
-            {
-              id: 'dadataAddress',
-              url: 'http://pgu-uat-fednlb.test.gosuslugi.ru/api/nsi/v1/dadata/normalize?q={q}',
-              method: 'GET',
-              status: 'OK'
-            }
-          ]
-        }
-      };
-      requestToSucceed.flush(dataToFlush);
-      const params = {
-        id: dto.scenarioDto.display.id,
-        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        orderId,
-        successfulDictionaryRequests: JSON.stringify(dataToFlush.health.dictionaries)
-      };
-      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
-      tick();
-    }));
   });
 
   describe('client dictionary with error', () => {

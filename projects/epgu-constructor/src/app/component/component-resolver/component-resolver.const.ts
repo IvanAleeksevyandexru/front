@@ -26,7 +26,7 @@ import { BillInfoComponent } from '../unique-screen/components/payment/component
 // eslint-disable-next-line max-len
 import { PaymentTypeSelectorContainerComponent } from '../unique-screen/components/payment-type-selector/components/payment-type-selector-container/payment-type-selector-container.component';
 // eslint-disable-next-line max-len
-import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/unused-payments-container.component';
+import { UnusedPaymentsContainerComponent } from '../unique-screen/components/unused-payments/container/unused-payments-container.component';
 import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
 // eslint-disable-next-line max-len
 import { InformationCenterMvdContainerComponent } from '../unique-screen/components/information-center-mvd/container/information-center-mvd-container.component';
@@ -39,6 +39,7 @@ import { CarListContainerComponent } from '../unique-screen/components/car-list/
 // eslint-disable-next-line max-len
 import { CarOwnerInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-owner-info-screen/car-owner-info-container.component';
 import { AppealFinesContainerComponent } from '../unique-screen/components/appeal-fines/container/appeal-fines-container.component';
+import { MatPeriodContainerComponent } from '../unique-screen/components/mat-period/mat-period-container/mat-period-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -68,7 +69,8 @@ type UniqueScreenComponent =
   | SelectChildrenScreenContainerComponent
   | FieldListScreenComponent
   | TimerScreenComponent
-  | AppealFinesContainerComponent;
+  | AppealFinesContainerComponent
+  | MatPeriodContainerComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -106,5 +108,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
   FieldList: FieldListScreenComponent,
   Timer: TimerScreenComponent,
-  AppealFines: AppealFinesContainerComponent
+  AppealFines: AppealFinesContainerComponent,
+  MatPeriod: MatPeriodContainerComponent,
 };

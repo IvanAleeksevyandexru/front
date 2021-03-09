@@ -13,6 +13,7 @@ import {
   DictionaryOptions,
   DictionaryResponse,
 } from '../../services/dictionary/dictionary-api.types';
+import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/number-mask-options.interface';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -123,6 +124,7 @@ export interface CustomComponentAttr {
   suggestionId?: string;
   searchType?: string;
   cityFilter?: string[];
+  maskOptions?: NumberMaskOptionsInterface;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

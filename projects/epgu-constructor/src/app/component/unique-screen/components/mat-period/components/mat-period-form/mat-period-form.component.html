@@ -1,0 +1,106 @@
+<form [formGroup]="form" *ngIf="form">
+  <div class="mb-24">
+    <lib-radio formControlName="paymentType" value="one" labelText="Единовременно"></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio
+      formControlName="paymentType"
+      value="month"
+      labelText="Ежемесячный платеж"
+    ></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio
+      formControlName="paymentType"
+      value="quarter"
+      labelText="Ежеквартальный платеж"
+    ></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio
+      formControlName="paymentType"
+      value="halfYear"
+      labelText="Полугодовой платеж"
+    ></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <lib-radio formControlName="paymentType" value="year" labelText="Ежегодный платеж"></lib-radio>
+  </div>
+
+  <div class="mb-24">
+    <epgu-constructor-label [label]="components[formField.amount].label"></epgu-constructor-label>
+    <epgu-constructor-error [data]="form.get(formField.amount)"></epgu-constructor-error>
+    <epgu-constructor-masked-input
+      [control]="$any(form.get(formField.amount))"
+      mask="NumberMaskInput"
+      [maskOptions]="components[formField.amount].attrs.maskOptions"
+      [showConstantMaskSymbols]="false"
+    ></epgu-constructor-masked-input>
+  </div>
+
+  <ng-container *ngIf="form.get(formField.paymentType).value !== 'one'">
+    <div class="mb-24">
+      <epgu-constructor-label
+        [label]="components[formField.startPayment].label"
+      ></epgu-constructor-label>
+      <epgu-constructor-constructor-dropdown
+        [control]="$any(form.get(formField.startPayment))"
+        [items]="
+          durations[form.get(formField.paymentType).value]
+            | filter: 0:durations[form.get(formField.paymentType).value].length - 1
+        "
+      ></epgu-constructor-constructor-dropdown>
+    </div>
+
+    <div class="mb-24">
+      <epgu-constructor-label
+        [label]="components[formField.finishPayment].label"
+      ></epgu-constructor-label>
+      <epgu-constructor-error [data]="form.get(formField.paymentType)"></epgu-constructor-error>
+      <epgu-constructor-constructor-dropdown
+        *ngIf="form.get(formField.paymentType).value !== 'year'; else yearDropdown"
+        [control]="$any(form.get(formField.finishPayment))"
+        [items]="
+          durations[form.get(formField.paymentType).value]
+            | filter
+              : form.get(formField.startPayment).value?.id + 1
+              : durations[form.get(formField.paymentType).value].length
+        "
+      ></epgu-constructor-constructor-dropdown>
+    </div>
+  </ng-container>
+
+  <div class="mb-24">
+    <epgu-constructor-label
+      [label]="components[formField.paymentDate].label"
+    ></epgu-constructor-label>
+    <epgu-constructor-error [data]="form.get(formField.paymentDate)"></epgu-constructor-error>
+    <epgu-constructor-constructor-plain-input
+      *ngIf="form.get(formField.paymentType).value !== 'one'; else paymentDatePicker"
+      [control]="$any(form.get(formField.paymentDate))"
+      [maxlength]="2"
+    ></epgu-constructor-constructor-plain-input>
+  </div>
+</form>
+
+<ng-template #yearDropdown>
+  <epgu-constructor-constructor-dropdown
+    [control]="$any(form.get(formField.finishPayment))"
+    [items]="
+      form.get(formField.startPayment).value
+        | memo: durationService.getYearFinishRange:durationService
+        | filter: 1
+    "
+  ></epgu-constructor-constructor-dropdown>
+</ng-template>
+
+<ng-template #paymentDatePicker>
+  <epgu-constructor-constructor-date-picker
+    [textModelValue]="true"
+    [control]="$any(form.get(formField.paymentDate))"
+  ></epgu-constructor-constructor-date-picker>
+</ng-template>
