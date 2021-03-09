@@ -14,6 +14,8 @@ import { ValueLoaderService } from '../../../../shared/services/value-loader/val
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -36,6 +38,7 @@ describe('PaymentService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValueLoaderService,
         DatesToolsService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
     service = TestBed.inject(PaymentService);

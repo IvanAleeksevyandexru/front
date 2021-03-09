@@ -37,6 +37,8 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -84,7 +86,8 @@ describe('ComponentsListComponent', () => {
         ValueLoaderService,
         CachedAnswersService,
         UtilsService,
-        LoggerService
+        LoggerService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

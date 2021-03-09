@@ -9,6 +9,8 @@ import { ScreenStore, ScreenTypes } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',
@@ -72,6 +74,7 @@ describe('ScreenService', () => {
 
   let cachedAnswersService: CachedAnswersService;
   let currentAnswersService: CurrentAnswersService;
+  let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -82,12 +85,14 @@ describe('ScreenService', () => {
         UtilsService,
         ValueLoaderService,
         DatesToolsService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
     screenService = TestBed.inject(ScreenService);
 
     cachedAnswersService = TestBed.inject(CachedAnswersService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
   });
 
   it('should extend ScreenContent', () => {
@@ -115,7 +120,7 @@ describe('ScreenService', () => {
       screenService.initScreenStore(store);
 
       expect(updateScreenContentSpy).toBeCalledTimes(1);
-      expect(updateScreenContentSpy).toBeCalledWith(store);
+      expect(updateScreenContentSpy).toBeCalledWith(store, deviceDetectorService.isWebView);
     });
 
     describe('loadValueFromCachedAnswer', () => {
@@ -266,7 +271,7 @@ describe('ScreenService', () => {
       expect(updateScreenContentSpy).toBeCalledWith({
         ...store,
         ...mergeWithState
-      });
+      }, deviceDetectorService.isWebView);
     });
   });
 
