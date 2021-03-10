@@ -37,7 +37,7 @@ export class MatPeriodContainerComponent implements AfterViewInit {
       return parsedValue;
     }),
   );
-  components$ = this.component$.pipe(map((component) => component.attrs.components));
+  components$ = this.component$.pipe(map((component) => component.attrs.fields));
   nextStepAction = NEXT_STEP_ACTION;
   balanceAmount: number;
   durationAmount: number;
