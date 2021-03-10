@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockModule } from 'ng-mocks';
+import { of } from 'rxjs';
+
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -8,18 +10,16 @@ import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.c
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   ActionType,
-  DTOActionAction
+  DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { SafePipe } from 'projects/epgu-constructor/src/app/shared/pipes/safe/safe.pipe';
-import { FieldListComponent } from 'projects/epgu-constructor/src/app/shared/components/field-list/field-list.component';
-import { of } from 'rxjs';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenPadComponent } from '../../../../../../shared/components/screen-pad/screen-pad.component';
-import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
-// eslint-disable-next-line max-len
-import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
+import { OutputHtmlModule } from '../../../../../../shared/components/output-html/output-html.module';
+import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { BaseModule } from '../../../../../../shared/base.module';
+import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
+import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 
 describe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
@@ -66,14 +66,14 @@ describe('ConfirmPersonalUserDataComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          ConfirmPersonalUserDataComponent,
-          MockComponent(DefaultUniqueScreenWrapperComponent),
-          ScreenPadComponent,
-          FieldListComponent,
-          SafePipe,
-          ImgPrefixerPipe,
-          MockDirective(ActionDirective),
+        declarations: [ConfirmPersonalUserDataComponent],
+        imports: [
+          MockModule(OutputHtmlModule),
+          MockModule(DefaultUniqueScreenWrapperModule),
+          MockModule(BaseComponentsModule),
+          MockModule(BaseModule),
+          MockModule(FieldListModule),
+          MockModule(ScreenPadModule),
         ],
         providers: [
           CurrentAnswersService,
