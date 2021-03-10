@@ -23,6 +23,7 @@ import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
+import { DeviceDetectorService } from '../device-detector/device-detector.service';
 
 @Injectable()
 export class AutocompleteService {
@@ -39,6 +40,7 @@ export class AutocompleteService {
     private utilsService: UtilsService,
     private datesToolsService: DatesToolsService,
     private currentAnswersService: CurrentAnswersService,
+    private deviceDetectorService: DeviceDetectorService,
   ) {}
 
   public init(isDisabled: boolean = false): void {
@@ -87,7 +89,7 @@ export class AutocompleteService {
           this.findAndUpdateComponentWithValue(mnemonic, value, null, componentsGroupIndex);
         }
 
-        this.screenService.updateScreenContent(this.screenService);
+        this.screenService.updateScreenContent(this.screenService, this.deviceDetectorService.isWebView);
       });
 
     this.eventBusService

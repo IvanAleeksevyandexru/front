@@ -4,6 +4,7 @@ import { PrepareComponentsService } from '../shared/services/prepare-components/
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
+import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -17,6 +18,7 @@ export class ScreenService extends ScreenContent {
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
+    private deviceDetectorService: DeviceDetectorService,
     private valueLoaderService: PrepareComponentsService,
   ) {
     super();
@@ -49,7 +51,7 @@ export class ScreenService extends ScreenContent {
     this.screenStore = store;
     this.prepareComponents();
     this.initComponentStateService();
-    this.updateScreenContent(store);
+    this.updateScreenContent(store, this.deviceDetectorService.isWebView);
   }
 
   /**
@@ -58,7 +60,7 @@ export class ScreenService extends ScreenContent {
    */
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
-    this.updateScreenContent(this.screenStore);
+    this.updateScreenContent(this.screenStore, this.deviceDetectorService.isWebView);
   }
 
   /**

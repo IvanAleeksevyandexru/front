@@ -30,8 +30,8 @@ import { ScreenService } from '../../../screen/screen.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { AddressHelperService } from '../../services/address-helper/address-helper.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
+import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { MemoModule } from '../../pipes/memo/memo.module';
@@ -41,6 +41,8 @@ import { ComponentDto } from '../../../form-player/services/form-player-api/form
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { CustomListStatusElements } from './components-list.types';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -92,7 +94,8 @@ describe('ComponentsListComponent', () => {
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,
-        UnsubscribeService
+        UnsubscribeService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

@@ -14,6 +14,8 @@ import { PrepareComponentsService } from '../../../../shared/services/prepare-co
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../shared/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
@@ -42,6 +44,7 @@ describe('PaymentService', () => {
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
     service = TestBed.inject(PaymentService);

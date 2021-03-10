@@ -44,6 +44,8 @@ import { AutocompleteApiService } from '../core/services/autocomplete/autocomple
 import { UtilsService } from '../core/services/utils/utils.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../screen/current-answers.service';
+import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 
 
 describe('FormPlayerComponent', () => {
@@ -101,7 +103,8 @@ describe('FormPlayerComponent', () => {
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: FormPlayerStartManager, useClass: FormPlayerStartManagerStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub }
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ]
     }).compileComponents();
 

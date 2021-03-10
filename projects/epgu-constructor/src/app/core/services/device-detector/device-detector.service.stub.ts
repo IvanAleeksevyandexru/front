@@ -6,7 +6,7 @@ export class DeviceDetectorServiceStub {
   isMobile = false;
   isTablet = false;
   isDesktop = false;
-  isWebView = true;
+  isWebView = false;
 
   initState() {}
 }
