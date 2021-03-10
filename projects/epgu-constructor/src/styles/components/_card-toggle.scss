@@ -63,6 +63,7 @@ $color-highlighted: rgba(153, 177, 230, .5);
       color: $color-gosblue;
       @include typ-plain-text();
       margin-top: 16px;
+      cursor: pointer;
     }
   }
   input {
