@@ -1,0 +1,24 @@
+@import "../../../../../../styles/core/breakpoint";
+$items-in-line: 6;
+$items-in-line-mobile: 3;
+
+.checkbox-cube {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: -17px;
+
+  @include phones-down {
+    margin-top: -31px;
+  }
+}
+
+.checkbox-cube-item {
+  flex: 0 0 calc(100% / #{$items-in-line});
+  margin-top: 17px;
+
+  @include phones-down {
+    flex: 0 0 calc(100% / #{$items-in-line-mobile});
+    margin-top: 31px;
+  }
+}

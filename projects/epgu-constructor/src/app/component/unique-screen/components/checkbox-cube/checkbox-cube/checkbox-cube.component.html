@@ -1,0 +1,19 @@
+<epgu-constructor-screen-pad>
+  <epgu-constructor-output-html
+    *ngIf="label"
+    [html]="label"
+    [clarifications]="clarifications"
+  ></epgu-constructor-output-html>
+
+  <div [formGroup]="formGroup" class="checkbox-cube">
+    <div *ngFor="let checkbox of checkboxes"
+         class="checkbox-cube-item">
+      <epgu-constructor-constructor-checkbox
+        [checkboxId]="checkbox.id"
+        [control]="formGroup.get(checkbox.id)"
+        [labelText]="checkbox.label"
+      >
+      </epgu-constructor-constructor-checkbox>
+    </div>
+  </div>
+</epgu-constructor-screen-pad>
