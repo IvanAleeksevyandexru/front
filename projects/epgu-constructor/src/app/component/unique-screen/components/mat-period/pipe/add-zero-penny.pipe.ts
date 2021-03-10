@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'addZeroPenny',
 })
 export class AddZeroPennyPipe implements PipeTransform {
-  transform(money: string): unknown {
+  transform(money: string): string {
     return /,\d{1,2}$/.exec(money) ? money : `${money},00`;
   }
 }
