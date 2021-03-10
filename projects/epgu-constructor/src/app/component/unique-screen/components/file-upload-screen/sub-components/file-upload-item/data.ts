@@ -99,7 +99,7 @@ export class FileItem {
       this.raw = {
         size: item.fileSize,
         name: item.fileName,
-        type: item.mimeType,
+        type: item.mimeType || '',
       } as File;
       this.isRawMock = true;
     }
