@@ -38,6 +38,7 @@ import { CarListModule } from './components/car-list/car-list.module';
 import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module';
 import { MatPeriodModule } from './components/mat-period/mat-period.module';
 import { DateTimePeriodModule } from './components/date-time-period/date-time-period.module';
+import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import { DateTimePeriodModule } from './components/date-time-period/date-time-pe
     CarListModule,
     AppealFinesModule,
     MatPeriodModule,
+    CheckboxCubeModule,
     DateTimePeriodModule
   ],
   exports: [
@@ -99,7 +101,8 @@ import { DateTimePeriodModule } from './components/date-time-period/date-time-pe
     CarListModule,
     AppealFinesModule,
     MatPeriodModule,
-    DateTimePeriodModule
+    CheckboxCubeModule,
+    DateTimePeriodModule,
   ],
   providers: [
     WebcamService,
