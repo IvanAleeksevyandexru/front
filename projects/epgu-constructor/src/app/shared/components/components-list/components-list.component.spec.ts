@@ -37,6 +37,8 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -87,6 +89,7 @@ describe('ComponentsListComponent', () => {
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

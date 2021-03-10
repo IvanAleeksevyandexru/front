@@ -25,6 +25,8 @@ import { AutocompleteService } from './autocomplete.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
+import { DeviceDetectorService } from '../device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -88,6 +90,7 @@ describe('AutocompleteService', () => {
     id: 123,
     componentsGroupIndex: 0,
   };
+  let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -106,6 +109,7 @@ describe('AutocompleteService', () => {
         DatesToolsService,
         EventBusService,
         ModalService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
@@ -116,7 +120,7 @@ describe('AutocompleteService', () => {
     screenService = TestBed.inject(ScreenService);
     eventBusService = TestBed.inject(EventBusService);
     modalService = TestBed.inject(ModalService);
-
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
     screenService.display = mockData.display;
   });
 

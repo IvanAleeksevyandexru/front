@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { ComponentsListFormService } from './components-list-form.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { ComponentsListFormService } from './components-list-form.service';
 import { ValidationService } from '../validation/validation.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
@@ -20,7 +22,7 @@ describe('ComponentsListFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         ComponentsListFormService,
         ValidationService,
