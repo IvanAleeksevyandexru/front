@@ -17,7 +17,7 @@ import { FormPlayerService } from '../../form-player/services/form-player/form-p
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
-import { ValueLoaderService } from '../../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
@@ -48,7 +48,7 @@ describe('ScreenModalComponent', () => {
         DatesToolsService,
         HtmlRemoverService,
         CurrentAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         CachedAnswersService,
         UnsubscribeService,
         DictionaryToolsService,

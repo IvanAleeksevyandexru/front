@@ -30,7 +30,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { AddressHelperService } from '../../services/address-helper/address-helper.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
@@ -81,7 +81,7 @@ describe('ComponentsListComponent', () => {
         DatesToolsService,
         AddressHelperService,
         CurrentAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
         LoggerService,

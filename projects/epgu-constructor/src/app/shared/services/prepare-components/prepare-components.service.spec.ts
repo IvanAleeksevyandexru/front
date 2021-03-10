@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ValueLoaderService } from './value-loader.service';
+import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { CachedAnswers } from '../../../screen/screen.types';
@@ -14,15 +14,15 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
 
-describe('ValueLoaderService', () => {
-  let service: ValueLoaderService;
+describe('PrepareComponentsService', () => {
+  let service: PrepareComponentsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         CachedAnswersService,
         UtilsService,
-        ValueLoaderService,
+        PrepareComponentsService,
         DatesToolsService,
         DictionaryToolsService,
         DictionaryApiService,
@@ -34,7 +34,7 @@ describe('ValueLoaderService', () => {
         DateRangeService,
       ],
     });
-    service = TestBed.inject(ValueLoaderService);
+    service = TestBed.inject(PrepareComponentsService);
   });
 
   describe('loadValueFromCachedAnswer()', () => {
@@ -69,7 +69,7 @@ describe('ValueLoaderService', () => {
       };
 
       const components = { ...componentMock, value: 'Ываыавыва', presetValue: '' };
-      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([components]);
     });
   });
@@ -118,7 +118,7 @@ describe('ValueLoaderService', () => {
         ],
       ];
 
-      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([repeatableComponents]);
     });
 
@@ -160,7 +160,7 @@ describe('ValueLoaderService', () => {
         ],
       ];
 
-      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([repeatableComponents]);
     });
   });
@@ -211,7 +211,7 @@ describe('ValueLoaderService', () => {
       component.attrs.maxDate = '15.12.2020';
       component.attrs.minDate = '12.12.2020';
 
-      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([component]);
     });
 
@@ -242,7 +242,7 @@ describe('ValueLoaderService', () => {
       component.attrs.fields.date.attrs.maxDate = '15.12.2020';
       component.attrs.fields.date.attrs.minDate = '12.12.2020';
 
-      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], cachedAnswers);
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
       expect(componentDtoIS).toEqual([component]);
     });
   });

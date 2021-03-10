@@ -7,7 +7,7 @@ import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
-import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
@@ -87,7 +87,7 @@ describe('ScreenService', () => {
         CachedAnswersService,
         CurrentAnswersService,
         UtilsService,
-        ValueLoaderService,
+        PrepareComponentsService,
         DatesToolsService,
         DictionaryToolsService,
         DictionaryApiService,

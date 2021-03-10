@@ -7,7 +7,7 @@
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
-      *ngIf="formService.shownElements[componentData.value?.id]?.isShown"
+      *ngIf="showComponent(componentData.value)"
     >
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <ng-container

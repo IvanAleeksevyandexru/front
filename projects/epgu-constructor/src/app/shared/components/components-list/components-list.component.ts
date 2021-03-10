@@ -22,7 +22,10 @@ import { ConfigService } from '../../../core/services/config/config.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
-import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentDto,
+  ScenarioErrorsDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { OPTIONAL_FIELD } from '../../constants/helper-texts';
 import {
@@ -136,6 +139,10 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
         componentsGroupIndex: this.componentsGroupIndex,
       } as ISuggestionItemList);
     }
+  }
+
+  public showComponent(component: ComponentDto): boolean {
+    return this.formService.shownElements[component?.id]?.isShown && !component?.attrs?.hidden;
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

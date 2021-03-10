@@ -11,7 +11,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { ValueLoaderService } from '../../../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { Gender } from '../../../shared/types/gender';
 import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
@@ -100,7 +100,7 @@ describe('AutocompleteService', () => {
         AutocompleteApiService,
         HttpHandler,
         CurrentAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
         DatesToolsService,

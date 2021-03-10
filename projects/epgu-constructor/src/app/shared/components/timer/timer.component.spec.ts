@@ -11,7 +11,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { BaseModule } from '../../base.module';
 import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
-import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
@@ -39,7 +39,7 @@ describe('TimerComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         CachedAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         EventBusService,
         DatesToolsService,
         DictionaryToolsService,

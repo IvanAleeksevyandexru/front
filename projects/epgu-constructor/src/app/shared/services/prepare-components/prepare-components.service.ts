@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  ComponentAttrsDto,
-  ComponentDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentAttrsDto, ComponentDto, } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
-import { CustomScreenComponentTypes } from '../../components/components-list/components-list.types';
+import {
+  CustomComponentRef,
+  CustomComponentRefRelation,
+  CustomScreenComponentTypes
+} from '../../components/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
@@ -15,7 +16,7 @@ import { DictionaryFilters } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 
 @Injectable()
-export class ValueLoaderService {
+export class PrepareComponentsService {
   constructor(
     private cachedAnswersService: CachedAnswersService,
     private utils: UtilsService,
@@ -23,43 +24,54 @@ export class ValueLoaderService {
     private dictionaryToolsService: DictionaryToolsService,
   ) {}
 
-  public loadValueFromCachedAnswer(
+
+  public prepareComponents(
     components: Array<ComponentDto>,
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
-    return components.map((item) => {
-      item.valueFromCache = false;
-      if (item.type === UniqueScreenComponentTypes.repeatableFields) {
-        const components = item.attrs.components.map((component) =>
+    let preparedComponents;
+    preparedComponents = this.loadValueFromCachedAnswer(components, cachedAnswers);
+    preparedComponents = this.hideComponents(preparedComponents, cachedAnswers);
+    return preparedComponents;
+  }
+
+  private loadValueFromCachedAnswer(
+    components: Array<ComponentDto>,
+    cachedAnswers: CachedAnswers,
+  ): Array<ScreenStoreComponentDtoI> {
+    return components.map((component) => {
+      component.valueFromCache = false;
+      if (component.type === UniqueScreenComponentTypes.repeatableFields) {
+        const components = component.attrs.components.map((component) =>
           this.getComponentWithAttrsDateRef(component, cachedAnswers),
         );
 
         const repeatableFieldsComponents = this.setRepeatableFields(
           components,
           cachedAnswers,
-          item,
+          component,
         );
 
-        item.attrs.repeatableComponents = [
-          ...(item.attrs.repeatableComponents || []),
+        component.attrs.repeatableComponents = [
+          ...(component.attrs.repeatableComponents || []),
           ...repeatableFieldsComponents,
         ];
 
-        return item;
+        return component;
       }
 
-      const hasPresetTypeRef = item.attrs?.preset?.type === 'REF';
-      const cachedValue = this.getCache(item.type, item.id, cachedAnswers);
+      const hasPresetTypeRef = component.attrs?.preset?.type === 'REF';
+      const cachedValue = this.getCache(component.type, component.id, cachedAnswers);
 
       if (hasPresetTypeRef && !cachedValue) {
         return this.getPresetValue(
-          this.getComponentWithAttrsDateRef(item, cachedAnswers),
+          this.getComponentWithAttrsDateRef(component, cachedAnswers),
           cachedAnswers,
         );
       }
 
       return this.getComponentWithCaches(
-        this.getComponentWithAttrsDateRef(item, cachedAnswers),
+        this.getComponentWithAttrsDateRef(component, cachedAnswers),
         cachedValue,
       );
     });
@@ -323,4 +335,49 @@ export class ValueLoaderService {
 
     return attrs;
   }
+
+  private hideComponents(
+    components: Array<ComponentDto>,
+    cachedAnswers: CachedAnswers,
+  ): Array<ScreenStoreComponentDtoI> {
+
+    return components.map((component) => {
+
+      const ref = component.attrs?.ref;
+      if (ref && Array.isArray(ref)) {
+        return this.handleCustomComponentRef(component, ref as CustomComponentRef[], components, cachedAnswers);
+      }
+
+      return component;
+    });
+  }
+
+  private handleCustomComponentRef(
+    component: ComponentDto,
+    refs: CustomComponentRef[],
+    components: Array<ComponentDto>,
+    cachedAnswers: CachedAnswers,
+  ): ScreenStoreComponentDtoI {
+
+    refs.forEach(ref => {
+      const isPrevScreenRelation = components.filter(item => item.id === ref.relatedRel).length === 0;
+
+      if(isPrevScreenRelation) {
+        if(ref.relation === CustomComponentRefRelation.displayOff) {
+          this.hideComponent(component, ref, cachedAnswers);
+        }
+      }
+    });
+
+    return component;
+  }
+
+  private hideComponent(component: ComponentDto, ref: CustomComponentRef, cachedAnswers: CachedAnswers,): void {
+    const cache = cachedAnswers[ref.relatedRel].value;
+    if (ref.val === cache) {
+      console.log('hideComponent');
+      component.attrs.hidden = true;
+    }
+  }
+
 }
