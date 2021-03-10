@@ -147,6 +147,19 @@ export interface ComponentAttrsDto {
   refDate?: string;
   noDepartmentsErrorMsg?: string;
   showMaskSymbols?: boolean;
+  step?: number;
+  beginDate?: ComponentDateTimeDto;
+  endDate?: ComponentDateTimeDto;
+  beginTime?: ComponentDateTimeDto;
+  endTime?: ComponentDateTimeDto;
+}
+
+export interface ComponentDateTimeDto {
+  label: string;
+  valueType: string;
+  value: string;
+  required: boolean;
+  hidden: boolean;
 }
 
 export interface ComponentUploadedFileDto {
