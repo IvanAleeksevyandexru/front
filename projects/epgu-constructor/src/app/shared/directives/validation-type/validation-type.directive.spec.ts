@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
@@ -66,7 +67,7 @@ describe('ValidationTypeDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule],
+      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
       providers: [
         ValidationService,
         NgControl,

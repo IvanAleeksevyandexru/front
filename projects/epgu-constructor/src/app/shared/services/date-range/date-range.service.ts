@@ -10,9 +10,7 @@ import { Attrs, DateRange, Range, Ref } from './date-range.models';
 export class DateRangeService {
   rangeMap = new Map<string, Range>();
 
-  constructor(
-    private datesToolsService: DatesToolsService
-  ) { }
+  constructor(private datesToolsService: DatesToolsService) {}
 
   /**
    * Устанавливает максимальную и минимальную дату для календарей
@@ -55,12 +53,12 @@ export class DateRangeService {
     return { dateLeft, dateRight };
   }
 
-  public updateLimitDate(
+  public async updateLimitDate(
     form: FormArray,
     component: CustomComponent,
     dependentComponent: CustomComponent,
     applicantAnswers: ApplicantAnswersDto,
-  ): void {
+  ): Promise<void> {
     const dependentControl = form.controls.find(
       (control) => control.value.id === dependentComponent.id,
     );
@@ -68,8 +66,11 @@ export class DateRangeService {
     if (dependentControl) {
       const relatedDate = component.value !== '' ? new Date(component.value) : null;
       const { attrs, id, value } = dependentControl.value;
-      const minDate = this.getMinDate(attrs.ref, id, relatedDate, applicantAnswers);
-      const maxDate = this.getMaxDate(attrs.ref, id, relatedDate, applicantAnswers);
+      const [minDate, maxDate] = await Promise.all([
+        this.getMinDate(attrs.ref, id, relatedDate, applicantAnswers),
+        this.getMaxDate(attrs.ref, id, relatedDate, applicantAnswers),
+      ]);
+
       this.changeDate(attrs.ref, relatedDate);
 
       dependentControl.get('attrs').patchValue({
@@ -85,15 +86,30 @@ export class DateRangeService {
     }
   }
 
-  private getMinDate(ref: Array<Ref>, id: string, relatedDate: Date, applicantAnswers: ApplicantAnswersDto): Date {
-    return this.calcDateRange(ref, id, relatedDate, applicantAnswers).min;
+  async getMinDate(
+    ref: Array<Ref>,
+    id: string,
+    relatedDate: Date,
+    applicantAnswers: ApplicantAnswersDto,
+  ): Promise<Date> {
+    return (await this.calcDateRange(ref, id, relatedDate, applicantAnswers)).min;
   }
 
-  private getMaxDate(ref: Array<Ref>, id: string, relatedDate: Date, applicantAnswers: ApplicantAnswersDto): Date {
-    return this.calcDateRange(ref, id, relatedDate, applicantAnswers).max;
+  async getMaxDate(
+    ref: Array<Ref>,
+    id: string,
+    relatedDate: Date,
+    applicantAnswers: ApplicantAnswersDto,
+  ): Promise<Date> {
+    return (await this.calcDateRange(ref, id, relatedDate, applicantAnswers)).max;
   }
 
-  private calcDateRange(ref: Array<Ref>, id: string, relatedDate: Date, applicantAnswers: ApplicantAnswersDto): Range {
+  private async calcDateRange(
+    ref: Array<Ref>,
+    id: string,
+    relatedDate: Date,
+    applicantAnswers: ApplicantAnswersDto,
+  ): Promise<Range> {
     let range = { max: null, min: null };
     this.rangeMap.set(id, range);
 
@@ -114,13 +130,13 @@ export class DateRangeService {
     }
 
     const date = this.datesToolsService.toDate(refDate);
-    [range.min, range.max] = this.chooseOperation(refParams, date);
+    [range.min, range.max] = await this.chooseOperation(refParams, date);
 
     return range;
   }
 
-  private chooseOperation(refParams: Ref, date: Date): Array<Date> {
-    const today = this.datesToolsService.getToday();
+  private async chooseOperation(refParams: Ref, date: Date): Promise<Array<Date>> {
+    const today = await this.datesToolsService.getToday();
     switch (refParams.condition) {
       case '>=today':
         return [date, today];
@@ -138,7 +154,10 @@ export class DateRangeService {
       case '<=':
         return [this.datesToolsService.sub(date, refParams.val, refParams.period), date];
       case '>':
-        return [this.datesToolsService.add(date, 1, 'days'), this.datesToolsService.add(date, refParams.val, refParams.period)];
+        return [
+          this.datesToolsService.add(date, 1, 'days'),
+          this.datesToolsService.add(date, refParams.val, refParams.period),
+        ];
       case '>=':
         return [date, this.datesToolsService.add(date, refParams.val, refParams.period)];
     }

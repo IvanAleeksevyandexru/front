@@ -32,7 +32,9 @@
   </div>
 
   <div class="mb-24">
-    <epgu-constructor-label [label]="components[formField.amount].label"></epgu-constructor-label>
+    <epgu-constructor-label
+      [label]="components[formField.amount].label[form.get(formField.paymentType).value]"
+    ></epgu-constructor-label>
     <epgu-constructor-error [data]="form.get(formField.amount)"></epgu-constructor-error>
     <epgu-constructor-masked-input
       [control]="$any(form.get(formField.amount))"

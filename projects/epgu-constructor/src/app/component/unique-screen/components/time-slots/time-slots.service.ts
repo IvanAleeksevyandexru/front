@@ -105,8 +105,6 @@ export class TimeSlotsService {
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-          response.timeStart = new Date();
-          response.timeFinish = this.getTimeFinish(response.timeStart);
         }
       }),
       catchError((error) => {
@@ -477,20 +475,6 @@ export class TimeSlotsService {
       selectAttributes: ['*'],
       pageSize: '10000',
     };
-  }
-
-  private getTimeFinish(timeStart: Date): Date {
-    if (!timeStart) {
-      return;
-    }
-    const settings = {
-      [TimeSlotsTypes.BRAK]: 1440,
-      [TimeSlotsTypes.RAZBRAK]: 1440,
-      [TimeSlotsTypes.MVD]: 240,
-      [TimeSlotsTypes.GIBDD]: 240,
-    };
-
-    return this.datesToolsService.add(timeStart, settings[this.timeSlotsType], 'minutes');
   }
 
   private isCancelCondition(): boolean {

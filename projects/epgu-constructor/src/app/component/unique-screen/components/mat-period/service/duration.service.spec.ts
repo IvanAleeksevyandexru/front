@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DurationService } from './duration.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
@@ -19,6 +20,7 @@ describe('DurationService', () => {
         DateRangeService,
         { provide: ScreenService, use: ScreenServiceStub },
       ],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(DurationService);
   });
