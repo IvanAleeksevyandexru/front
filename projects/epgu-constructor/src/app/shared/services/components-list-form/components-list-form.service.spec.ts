@@ -16,6 +16,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -36,6 +37,8 @@ describe('ComponentsListFormService', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
         ComponentsListRelationsService,
+        HttpClient,
+        HttpHandler,
       ],
     });
     service = TestBed.inject(ComponentsListFormService);
