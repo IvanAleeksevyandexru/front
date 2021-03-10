@@ -7,15 +7,18 @@ import { FormBuilder } from '@angular/forms';
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { DictionaryApiService } from '../../../../component/shared/services/dictionary-api/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../component/shared/services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionary-api.service.stub';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { BaseModule } from '../../../base.module';
+import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
+import { ComponentsListRelationsService } from '../../../services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../services/date-range/date-range.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
   let fixture: ComponentFixture<MultiChoiceDictionaryModalComponent>;
-  let dictionaryApiService: DictionaryApiService;
   const mockDictionaryValue: ListElement[] = [
     {
       id: 'AUT',
@@ -61,6 +64,11 @@ describe('MultiChoiceDictionaryModalComponent', () => {
           provide: DictionaryApiService,
           useClass: DictionaryApiServiceStub,
         },
+
+        DictionaryToolsService,
+        ComponentsListRelationsService,
+        DateRangeService,
+        DatesToolsService,
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {
@@ -71,7 +79,6 @@ describe('MultiChoiceDictionaryModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MultiChoiceDictionaryModalComponent);
-    dictionaryApiService = TestBed.inject(DictionaryApiService);
     component = fixture.componentInstance;
     component.title = 'title';
     component.dictionaryList = mockDictionaryValue;

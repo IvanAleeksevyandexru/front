@@ -3,11 +3,11 @@ import { FormControl } from '@angular/forms';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
-} from '../../../component/shared/components/components-list/components-list.types';
+} from '../../components/components-list/components-list.types';
 // eslint-disable-next-line max-len
-import { ComponentListToolsService } from '../../../component/shared/components/components-list/services/component-list-tools/component-list-tools.service';
+import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { ValidationService } from './validation.service';
-import { DateRangeService } from '../../../component/shared/components/components-list/services/date-range/date-range.service';
+import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
@@ -107,7 +107,7 @@ describe('ValidationService', () => {
     TestBed.configureTestingModule({
       providers: [
         ValidationService,
-        ComponentListToolsService,
+        ComponentsListToolsService,
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,

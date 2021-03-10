@@ -7,10 +7,10 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { DictionaryApiService } from '../../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { DTOActionAction } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { InformationCenterMvdI } from '../interface/information-center-mvd.interface';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
@@ -19,6 +19,10 @@ import { InformationCenterFormComponent } from '../components/information-center
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentsListRelationsService } from '../../../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -72,6 +76,10 @@ describe('InformationCenterMvdContainerComponent', () => {
         UtilsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DictionaryToolsService,
+        ComponentsListRelationsService,
+        DateRangeService,
+        DatesToolsService,
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {

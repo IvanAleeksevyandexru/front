@@ -1,5 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import {
   DisplayDto,
   ScenarioDto,
@@ -21,6 +22,9 @@ import { UtilsService } from '../utils/utils.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -102,6 +106,10 @@ describe('AutocompleteService', () => {
         DatesToolsService,
         EventBusService,
         ModalService,
+        DictionaryToolsService,
+        DictionaryApiService,
+        ComponentsListRelationsService,
+        DateRangeService,
       ],
     });
     service = TestBed.inject(AutocompleteService);

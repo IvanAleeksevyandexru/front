@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { ScreenBase } from '../screenBase';
+import { ScreenBase } from '../screen-base';
 
 @Component({
   selector: 'epgu-constructor-unique-screen',

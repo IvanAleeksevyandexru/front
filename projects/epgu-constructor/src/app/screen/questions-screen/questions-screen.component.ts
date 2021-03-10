@@ -22,7 +22,7 @@ import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confi
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../modal/modal.service';
 import { Answer } from '../../shared/types/answer';
-import { ScreenBase } from '../screenBase';
+import { ScreenBase } from '../screen-base';
 
 @Component({
   selector: 'epgu-constructor-question-screen',

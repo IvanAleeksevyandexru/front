@@ -3,11 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { ComponentsListComponent } from '../../component/shared/components/components-list/components-list.component';
+import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions
-} from '../../component/shared/components/components-list/components-list.types';
+} from '../../shared/components/components-list/components-list.types';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';

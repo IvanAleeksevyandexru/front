@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../core/services/event-bus/event-bus.service';
 import { ModalModule } from '../modal/modal.module';
@@ -45,6 +46,7 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
     HtmlRemoverService,
     EventBusService,
     DatesToolsService,
+    DictionaryToolsService,
   ],
   exports: [ScreenResolverComponent],
   entryComponents: [

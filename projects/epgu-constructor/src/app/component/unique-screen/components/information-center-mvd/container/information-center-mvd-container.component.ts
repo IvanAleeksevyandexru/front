@@ -8,12 +8,12 @@ import {
   DictionaryToRequestI,
   InformationCenterMvdI,
 } from '../interface/information-center-mvd.interface';
-import { DictionaryApiService } from '../../../../shared/services/dictionary-api/dictionary-api.service';
-import { DictionaryUtilities } from '../../select-map-object/dictionary-utilities';
+import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   DictionaryFilters,
   DictionaryItem,
-} from '../../../../shared/services/dictionary-api/dictionary-api.types';
+} from '../../../../../shared/services/dictionary/dictionary-api.types';
 
 @Component({
   selector: 'epgu-constructor-information-center-mvd-container',
@@ -36,6 +36,7 @@ export class InformationCenterMvdContainerComponent implements OnInit {
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,
     private readonly dictionaryApiService: DictionaryApiService,
+    private readonly dictionaryToolsService: DictionaryToolsService,
   ) {}
 
   ngOnInit(): void {
@@ -74,8 +75,7 @@ export class InformationCenterMvdContainerComponent implements OnInit {
       .getMvdDictionary(dictionaryName)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        // @todo вынести DictionaryUtilities из select-map-object на более глобальный уровень
-        this.sourceList = DictionaryUtilities.adaptDictionaryToListItem(data.items);
+        this.sourceList = this.dictionaryToolsService.adaptDictionaryToListItem(data.items);
       });
   }
 
