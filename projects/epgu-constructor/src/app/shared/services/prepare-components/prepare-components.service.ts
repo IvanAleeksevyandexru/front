@@ -265,7 +265,7 @@ export class PrepareComponentsService {
         .forEach(({ attrs }) => {
           this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
         });
-    } else if (this.dictionaryToolsService.isDictionaryOrLookup(component.type as CustomScreenComponentTypes)) {
+    } else if (this.dictionaryToolsService.isDictionaryLike(component.type as CustomScreenComponentTypes)) {
       component.attrs = this.setAttrsFilters(component.attrs, cachedAnswers);
     } else {
       this.setAttrsDateRef(component.attrs, cachedAnswers);

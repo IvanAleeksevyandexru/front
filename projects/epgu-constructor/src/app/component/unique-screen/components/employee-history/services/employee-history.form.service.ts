@@ -8,7 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
 
@@ -110,7 +110,10 @@ export class EmployeeHistoryFormService {
 
     combineLatest(form.get('from').valueChanges, form.get('to').valueChanges)
       .pipe(
-        tap(([fromDateValue, toDateValue]) => this.checkDates(form, fromDateValue, toDateValue)),
+        switchMap(async ([fromDateValue, toDateValue]) => {
+          await this.checkDates(form, fromDateValue, toDateValue);
+          return [fromDateValue, toDateValue];
+        }),
         filter(([, toDate]) => toDate),
         takeUntil(this.unsubscribeService),
       )
@@ -119,9 +122,9 @@ export class EmployeeHistoryFormService {
       });
   }
 
-  private checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear): void {
+  private async checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear): Promise<void> {
     if (toDateValue) {
-      const today = this.datesToolsService.getToday();
+      const today = await this.datesToolsService.getToday();
       const toDate: Date =  this.datesToolsService.setCalendarDate(today, toDateValue.year, toDateValue.month, null);
       const minDate = this.datesToolsService.sub(today, this.monthsService.years, 'years');
       const toDateMinDateDiff = this.datesToolsService.diff(toDate, minDate);

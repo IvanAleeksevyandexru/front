@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DATE_ISO_STRING_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { DatesToolsService } from './dates-tools.service';
 import * as moment_ from 'moment';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const moment = moment_;
 moment.locale('ru');
@@ -10,11 +11,14 @@ jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
 
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
+  const MOCK_TODAY = '2020-01-01T00:00:00.000Z';
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [DatesToolsService],
     });
     service = TestBed.inject(DatesToolsService);
+    jest.spyOn(service, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
   });
 
   describe('isToday() method', () => {
@@ -29,9 +33,9 @@ describe('DatesToolsService', () => {
   });
 
   describe('getToday() method', () => {
-    it('should return today date', () => {
+    it('should return today date', async () => {
       const today = service.format(new Date(), DATE_TIME_STRING_DOT_FORMAT);
-      const serviceToday = service.format(service.getToday(), DATE_TIME_STRING_DOT_FORMAT);
+      const serviceToday = service.format(await service.getToday(), DATE_TIME_STRING_DOT_FORMAT);
       expect(serviceToday).toEqual(today);
     });
   });
@@ -73,76 +77,76 @@ describe('DatesToolsService', () => {
   });
 
   describe('isSameDate() method', () => {
-    it('should return true if two dates are equal', () => {
+    it('should return true if two dates are equal', async () => {
       const today = new Date();
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isSameDate(today, serviceToday)).toBeTruthy();
     });
-    it('should return false if two dates are not equal', () => {
+    it('should return false if two dates are not equal', async () => {
       const notToday = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isSameDate(notToday, serviceToday)).toBeFalsy();
     });
   });
 
   describe('isBefore() method', () => {
-    it('should return true if first date is before second date', () => {
+    it('should return true if first date is before second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isBefore(beforeDate, serviceToday)).toBeTruthy();
     });
-    it('should return false if first date is not before second date', () => {
+    it('should return false if first date is not before second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isBefore(serviceToday, beforeDate)).toBeFalsy();
     });
   });
 
   describe('isSameOrBefore() method', () => {
-    it('should return true if first date is before second date', () => {
+    it('should return true if first date is before second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isSameOrBefore(beforeDate, serviceToday)).toBeTruthy();
     });
-    it('should return true if first date is same as second date', () => {
+    it('should return true if first date is same as second date', async () => {
       const today = new Date();
-      const serviceToday = service.toDate(today);
+      const serviceToday = await service.toDate(today);
       expect(service.isSameOrBefore(serviceToday, today)).toBeTruthy();
     });
-    it('should return false if first date is not before second date', () => {
+    it('should return false if first date is not before second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isSameOrBefore(serviceToday, beforeDate)).toBeFalsy();
     });
   });
 
   describe('isAfter() method', () => {
-    it('should return true if first date is after second date', () => {
+    it('should return true if first date is after second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isAfter(serviceToday, beforeDate)).toBeTruthy();
     });
-    it('should return false if first date is not after second date', () => {
+    it('should return false if first date is not after second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isAfter(beforeDate, serviceToday)).toBeFalsy();
     });
   });
 
   describe('isSameOrAfter() method', () => {
-    it('should return true if first date is after second date', () => {
+    it('should return true if first date is after second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isSameOrAfter(serviceToday, beforeDate)).toBeTruthy();
     });
-    it('should return true if first date is same as second date', () => {
+    it('should return true if first date is same as second date', async () => {
       const today = new Date();
-      const serviceToday = service.toDate(today);
+      const serviceToday = await service.toDate(today);
       expect(service.isSameOrAfter(serviceToday, today)).toBeTruthy();
     });
-    it('should return false if first date is not after second date', () => {
+    it('should return false if first date is not after second date', async () => {
       const beforeDate = new Date(1);
-      const serviceToday = service.getToday();
+      const serviceToday = await service.getToday();
       expect(service.isSameOrAfter(beforeDate, serviceToday)).toBeFalsy();
     });
   });
