@@ -37,6 +37,7 @@ import { TimerScreenModule } from './components/timer-screen/timer-screen.module
 import { CarListModule } from './components/car-list/car-list.module';
 import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module';
 import { MatPeriodModule } from './components/mat-period/mat-period.module';
+import { DateTimePeriodModule } from './components/date-time-period/date-time-period.module';
 
 @NgModule({
   imports: [
@@ -70,6 +71,7 @@ import { MatPeriodModule } from './components/mat-period/mat-period.module';
     CarListModule,
     AppealFinesModule,
     MatPeriodModule,
+    DateTimePeriodModule
   ],
   exports: [
     RepeatableFieldsModule,
@@ -97,6 +99,7 @@ import { MatPeriodModule } from './components/mat-period/mat-period.module';
     CarListModule,
     AppealFinesModule,
     MatPeriodModule,
+    DateTimePeriodModule
   ],
   providers: [
     WebcamService,
