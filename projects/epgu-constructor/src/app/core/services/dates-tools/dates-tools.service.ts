@@ -1,5 +1,5 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-// TODO: перейти на использование ECMAScript Modules версии либы 'date-fns/esm' для tree-shaking
 import {
   isToday as _isToday,
   toDate as _toDate,
@@ -49,7 +49,8 @@ interface Duration {
 
 @Injectable()
 export class DatesToolsService {
-  constructor() {}
+
+  constructor(private http?: HttpClient) {}
 
   /**
    * Возвращает true, если переданная дата является сегодняшней датой,
@@ -63,8 +64,10 @@ export class DatesToolsService {
   /**
    * Возвращает сегодняшнюю дату
    */
-  public getToday(): Date {
-    return _toDate(new Date());
+  public async getToday(): Promise<Date> {
+    const path = 'api/service/actions/currentDateTime';
+    const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
+    return new Date(timeString);
   }
 
   /**

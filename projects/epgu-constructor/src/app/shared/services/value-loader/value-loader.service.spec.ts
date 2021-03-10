@@ -6,13 +6,35 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { LoggerService } from '../../../core/services/logger/logger.service';
+import { DateRangeService } from '../date-range/date-range.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../dictionary/dictionary-api.service';
+import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 
 describe('ValueLoaderService', () => {
   let service: ValueLoaderService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CachedAnswersService, UtilsService, ValueLoaderService, DatesToolsService],
+      providers: [
+        CachedAnswersService,
+        UtilsService,
+        ValueLoaderService,
+        DatesToolsService,
+        DictionaryToolsService,
+        DictionaryApiService,
+        HttpClient,
+        HttpHandler,
+        ConfigService,
+        LoggerService,
+        ComponentsListRelationsService,
+        DateRangeService,
+      ],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(ValueLoaderService);
   });

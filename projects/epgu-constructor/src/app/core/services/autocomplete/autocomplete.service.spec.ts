@@ -1,5 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import {
   DisplayDto,
   ScenarioDto,
@@ -21,6 +22,11 @@ import { UtilsService } from '../utils/utils.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
+import { DeviceDetectorService } from '../device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -84,6 +90,7 @@ describe('AutocompleteService', () => {
     id: 123,
     componentsGroupIndex: 0,
   };
+  let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -102,13 +109,18 @@ describe('AutocompleteService', () => {
         DatesToolsService,
         EventBusService,
         ModalService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        DictionaryToolsService,
+        DictionaryApiService,
+        ComponentsListRelationsService,
+        DateRangeService,
       ],
     });
     service = TestBed.inject(AutocompleteService);
     screenService = TestBed.inject(ScreenService);
     eventBusService = TestBed.inject(EventBusService);
     modalService = TestBed.inject(ModalService);
-
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
     screenService.display = mockData.display;
   });
 

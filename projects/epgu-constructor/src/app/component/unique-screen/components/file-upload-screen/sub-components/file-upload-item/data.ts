@@ -3,7 +3,7 @@ import {
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
-} from '../../../../services/terra-byte-api/terra-byte-api.types';
+} from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { BehaviorSubject } from 'rxjs';
 import { v4 } from 'uuid';
 
@@ -99,7 +99,7 @@ export class FileItem {
       this.raw = {
         size: item.fileSize,
         name: item.fileName,
-        type: item.mimeType,
+        type: item.mimeType || '',
       } as File;
       this.isRawMock = true;
     }

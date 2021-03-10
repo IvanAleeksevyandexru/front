@@ -10,7 +10,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../action/action.service';
 import { ActionServiceStub } from '../action/action.service.stub';
-import { Clarifications } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.types';
+import { Clarifications } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { SafePipe } from '../../pipes/safe/safe.pipe';
 import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
 import { By } from '@angular/platform-browser';

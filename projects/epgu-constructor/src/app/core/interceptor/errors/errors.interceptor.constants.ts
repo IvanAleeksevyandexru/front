@@ -1,24 +1,24 @@
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
-const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div style="text-align: center">
+const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Не сработало</h4>
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
 <a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a>.</span></div>`;
 
-const AUTH_ERROR_MODAL_PARAMS_TEXT = `<div style="text-align: center">
+const AUTH_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Войдите, чтобы продолжить</h4>
 <span>Войдите с паролем, чтобы получить услугу. У вас должна быть
 <a target="_blank" href="https://www.gosuslugi.ru/help/faq/c-1/1">подтвержденная учетная запись</a>.</span></div>`;
 
-const ORDER_NOT_FOUND_ERROR_PARAMS_TEXT = `<div style="text-align: center">
+const ORDER_NOT_FOUND_ERROR_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Запрашиваемого черновика не существует</h4>
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
 <a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a>.</span></div>`;
 
-const DRAFT_STATEMENT_NOT_FOUND_TEXT = `<div style="text-align: center">
+const DRAFT_STATEMENT_NOT_FOUND_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Черновик заявления не найден</h4>
 <span>Проверьте в личном кабинете или создайте заявление заново.</span></div>`;
@@ -56,7 +56,7 @@ export const ORDER_NOT_FOUND_ERROR_MODAL_PARAMS: ConfirmationModal = {
   showCloseButton: false,
   showCrossButton: true,
   buttons: [{
-    label: 'Попоробовать снова',
+    label: 'Попробовать снова',
     closeModal: true,
     value: 'reload'
   }],

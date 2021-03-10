@@ -13,7 +13,7 @@ import { Observable, of } from 'rxjs';
 
 import { ModalService } from '../../../../modal/modal.service';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
-import { CustomComponentDropDownItem } from '../../../../component/shared/components/components-list/components-list.types';
+import { CustomComponentDropDownItem } from '../../components-list/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 

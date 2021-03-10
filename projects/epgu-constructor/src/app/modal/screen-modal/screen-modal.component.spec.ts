@@ -3,7 +3,6 @@ import { MockComponent } from 'ng-mocks';
 import { ScreenModalComponent } from './screen-modal.component';
 import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
 import { BaseModule } from '../../shared/base.module';
-import { ComponentsListModule } from '../../component/shared/components/components-list/components-list.module';
 import { UniqueComponentModalModule } from './components/unique-component-modal/unique-component-modal.module';
 import { InfoComponentModalModule } from './components/info-component-modal/info-component-modal.module';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -20,6 +19,9 @@ import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { ValueLoaderService } from '../../shared/services/value-loader/value-loader.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentsListModule } from '../../shared/components/components-list/components-list.module';
 
 // TODO написать тесты
 describe('ScreenModalComponent', () => {
@@ -28,14 +30,15 @@ describe('ScreenModalComponent', () => {
   let screenService: ScreenService;
 
   beforeEach(async() => {
-     await TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ScreenModalComponent, MockComponent(ComponentListModalComponent)],
       imports: [
         RouterTestingModule,
         BaseModule,
         ComponentsListModule,
         UniqueComponentModalModule,
-        InfoComponentModalModule
+        InfoComponentModalModule,
+        HttpClientTestingModule,
       ],
       providers: [
         NavigationModalService,
@@ -49,7 +52,8 @@ describe('ScreenModalComponent', () => {
         CurrentAnswersService,
         ValueLoaderService,
         CachedAnswersService,
-        UnsubscribeService
+        UnsubscribeService,
+        DictionaryToolsService,
       ]
     })
     .compileComponents();

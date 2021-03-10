@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ScreenModalComponent } from './screen-modal.component';
-import { ComponentsListModule } from '../../component/shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../shared/components/components-list/components-list.module';
 import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
 import { UniqueComponentModalModule } from './components/unique-component-modal/unique-component-modal.module';
 import { InfoComponentModalModule } from './components/info-component-modal/info-component-modal.module';

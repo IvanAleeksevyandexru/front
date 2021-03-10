@@ -11,7 +11,7 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
-import { ScreenBase } from '../screenBase';
+import { ScreenBase } from '../screen-base';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

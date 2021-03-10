@@ -10,8 +10,8 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../shared/services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -31,6 +31,7 @@ import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EMPTY_SLOT } from './mocks/mock-time-slots';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const moment = moment_;
 moment.locale('ru');
@@ -44,7 +45,7 @@ describe('TimeSlotsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EpguLibModule],
+      imports: [EpguLibModule, HttpClientTestingModule],
       declarations: [
         TimeSlotsComponent,
         MockComponents(

@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule } from '../../../../../core/core.module';
@@ -38,7 +39,7 @@ describe('ConfirmEmailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
-      imports: [BaseModule, CoreModule, RouterTestingModule],
+      imports: [BaseModule, CoreModule, RouterTestingModule, HttpClientTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,

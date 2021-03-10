@@ -8,12 +8,17 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { PaymentService } from './payment.service';
 import { ValueLoaderService } from '../../../../shared/services/value-loader/value-loader.service';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../../core/providers/window.provider';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentsListRelationsService } from '../../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -36,6 +41,10 @@ describe('PaymentService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValueLoaderService,
         DatesToolsService,
+        DictionaryToolsService,
+        ComponentsListRelationsService,
+        DateRangeService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
     service = TestBed.inject(PaymentService);

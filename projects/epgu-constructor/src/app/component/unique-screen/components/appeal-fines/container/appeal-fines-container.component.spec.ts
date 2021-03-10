@@ -8,7 +8,7 @@ import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
-import { CustomScreenComponentTypes } from '../../../../shared/components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../../../shared/components/components-list/components-list.types';
 
 describe('EmployeeHistoryContainerComponent', () => {
   let component: AppealFinesContainerComponent;

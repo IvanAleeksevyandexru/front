@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent } from '../../../component/shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../shared/components/components-list/components-list.types';
 import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 interface TranslitAlphabet {
@@ -115,7 +115,7 @@ export class UtilsService {
   }
 
   /**
-   * Функция возвращает ключ для получения словаря из ComponentListRepositoryService
+   * Функция возвращает ключ для получения словаря
    * @param component экземпляр компонента
    */
   public static getDictKeyByComp(component: CustomComponent): string {

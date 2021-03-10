@@ -10,6 +10,7 @@ import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stu
 import { ConstructorCheckboxComponent } from './constructor-checkbox.component';
 import { BaseModule } from '../../base.module';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;
@@ -18,7 +19,7 @@ describe('ConstructorCheckboxComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorCheckboxComponent],
-      imports: [CoreModule, BaseModule, RouterTestingModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, HttpClientTestingModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },

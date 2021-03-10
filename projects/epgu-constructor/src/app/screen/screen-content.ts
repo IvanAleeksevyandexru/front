@@ -302,7 +302,7 @@ export class ScreenContent {
     return this._cachedAnswers.asObservable();
   }
 
-  public updateScreenContent(screenStore: ScreenStore): void {
+  public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {
     const {
       errors = {} as ScenarioErrorsDto,
       display = {} as DisplayDto,
@@ -320,6 +320,7 @@ export class ScreenContent {
       terminal,
       cssClass,
       buttons,
+      firstScreen,
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
     this.screenType = type;
@@ -329,7 +330,7 @@ export class ScreenContent {
     this.submitLabel = submitLabel;
     this.gender = gender;
     this.terminal = terminal;
-    this.showNav = !terminal;
+    this.showNav = !terminal && !(isWebView && firstScreen);
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;

@@ -22,6 +22,7 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { Gender } from '../../../../../../shared/types/gender';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { EmployeeHistoryModel } from '../../employee-history.types';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -29,6 +30,9 @@ describe('EmployeeHistoryFormComponent', () => {
   let employeeHistoryFormService: EmployeeHistoryFormService;
   let employeeHistoryDataSourceService: EmployeeHistoryDataSourceService;
   let employeeHistoryMonthsService: EmployeeHistoryMonthsService;
+  let datesToolsService: DatesToolsService;
+
+  const MOCK_TODAY = '2021-01-01T00:00:00.000Z';
   const mockComponent = {
     id: 'eh1',
     type: 'EmployeeHistory',
@@ -55,6 +59,7 @@ describe('EmployeeHistoryFormComponent', () => {
         MockModule(BaseComponentsModule),
         MockModule(CloneButtonModule),
         MockModule(MemoModule),
+        HttpClientTestingModule,
       ],
       providers: [
         FormBuilder,
@@ -70,6 +75,8 @@ describe('EmployeeHistoryFormComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
+    datesToolsService = TestBed.inject(DatesToolsService);
+    jest.spyOn(datesToolsService, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
   });
 
   beforeEach(() => {

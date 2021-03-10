@@ -12,6 +12,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { of } from 'rxjs';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -32,7 +33,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientTestingModule],
       declarations: [ ConfirmPersonalUserAddressComponent ],
       providers: [
         UnsubscribeService,
