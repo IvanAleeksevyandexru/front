@@ -1,17 +1,22 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
 
-import { CustomComponentOutputData } from '../../components/components-list/components-list.types';
+import { CustomComponentOutputData, CustomListStatusElements } from '../../components/components-list/components-list.types';
 
 @Injectable()
 export class ComponentsListFormServiceStub {
   private _form = new FormArray([]);
   private _changes = new EventEmitter<CustomComponentOutputData>();
+  private _shownElements: CustomListStatusElements = {};
+
 
   get form(): FormArray {
     return this._form;
   }
   get changes(): EventEmitter<CustomComponentOutputData> {
     return this._changes;
+  }
+  get shownElements(): CustomListStatusElements {
+    return this._shownElements;
   }
 }

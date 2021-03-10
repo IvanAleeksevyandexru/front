@@ -14,13 +14,14 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         ComponentsListFormService,
         ValidationService,

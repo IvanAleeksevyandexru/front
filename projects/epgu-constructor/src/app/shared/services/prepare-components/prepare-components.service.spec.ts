@@ -14,9 +14,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { CustomComponentRef, CustomComponentRefRelation } from '../../components/components-list/components-list.types';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
+  let components: ComponentDto[];
+  let cachedAnswers: CachedAnswers;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,6 +40,43 @@ describe('PrepareComponentsService', () => {
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(PrepareComponentsService);
+  });
+
+  beforeEach(() => {
+    components = [
+      { id: 'a1', type: 'HtmlString', attrs: {}},
+      { id: 'a2', type: 'HtmlString', attrs: {}},
+    ];
+    cachedAnswers = {};
+  });
+
+  describe('prepareComponents()', () => {
+    it('should call loadValueFromCachedAnswer with component from params', () => {
+      spyOn<any>(service, 'loadValueFromCachedAnswer').and.callThrough();
+      service.prepareComponents(components, cachedAnswers);
+      expect(service['loadValueFromCachedAnswer']).toBeCalledWith(components, cachedAnswers);
+    });
+
+    it('should call hideComponents with component returned from loadValueFromCachedAnswer method', () => {
+      const loadedValueComponents = [
+        { id: 'a1', type: 'HtmlString', attrs: {}},
+        { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
+      ];
+      spyOn<any>(service, 'loadValueFromCachedAnswer').and.returnValue(loadedValueComponents);
+      spyOn<any>(service, 'handleRelatedRelComponents').and.callThrough();
+      service.prepareComponents(components, cachedAnswers);
+      expect(service['handleRelatedRelComponents']).toBeCalledWith(loadedValueComponents, cachedAnswers);
+    });
+
+    it('should return components that was returned from handleRelatedRelComponents method', () => {
+      const relatedRelComponents = [
+        { id: 'a1', type: 'HtmlString', attrs: { hidden: true }},
+        { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
+      ];
+      spyOn<any>(service, 'handleRelatedRelComponents').and.returnValue(relatedRelComponents);
+      const result = service.prepareComponents(components, cachedAnswers);
+      expect(result).toBe(relatedRelComponents);
+    });
   });
 
   describe('loadValueFromCachedAnswer()', () => {
@@ -249,85 +289,228 @@ describe('PrepareComponentsService', () => {
     });
   });
 
-  it('should put value to filter object in attrs', () => {
-    const attrs = {
-      dictionaryOptions: {
-        filter: {
-          simple: {
-            attributeName: 'title',
-            condition: 'CONTAINS',
-            value: {
-              asString: '${testVal}',
+  describe('Other cases', () => {
+    it('should put value to filter object in attrs', () => {
+      const attrs = {
+        dictionaryOptions: {
+          filter: {
+            simple: {
+              attributeName: 'title',
+              condition: 'CONTAINS',
+              value: {
+                asString: '${testVal}',
+              },
             },
           },
         },
-      },
-    };
+      };
 
-    const expectedAttrs = {
-      dictionaryOptions: {
-        filter: {
-          simple: {
-            attributeName: 'title',
-            condition: 'CONTAINS',
-            value: {
-              asString: 'Some value',
+      const expectedAttrs = {
+        dictionaryOptions: {
+          filter: {
+            simple: {
+              attributeName: 'title',
+              condition: 'CONTAINS',
+              value: {
+                asString: 'Some value',
+              },
             },
           },
         },
-      },
-    };
+      };
 
-    const actualAttrs = service['putValueToFilters']('testVal', 'Some value', attrs);
+      const actualAttrs = service['putValueToFilters']('testVal', 'Some value', attrs);
 
-    expect(actualAttrs).toEqual(expectedAttrs);
+      expect(actualAttrs).toEqual(expectedAttrs);
+    });
+
+    it('should set filter in attrs', () => {
+      const cachedAnswers = {
+        pd1: { value: '{"storedValues":{"middleName": "Middle"} }' },
+      } as any as CachedAnswers;
+
+      const attrs = {
+        dictionaryOptions: {
+          filter: {
+            simple: {
+              attributeName: 'title',
+              condition: 'CONTAINS',
+              value: {
+                asString: '${testVal}',
+              },
+            },
+          },
+        },
+        refs: {
+          testVal: 'pd1.value.storedValues.middleName',
+        },
+      };
+
+      const expectedAttrs = {
+        dictionaryOptions: {
+          filter: {
+            simple: {
+              attributeName: 'title',
+              condition: 'CONTAINS',
+              value: {
+                asString: 'Middle',
+              },
+            },
+          },
+        },
+        refs: {
+          testVal: 'pd1.value.storedValues.middleName',
+        },
+      };
+
+      const actualAttrs = service['setAttrsFilters'](attrs, cachedAnswers);
+
+      expect(actualAttrs).toEqual(expectedAttrs);
+    });
   });
 
-  it('should set filter in attrs', () => {
-    const cachedAnswers = {
-      pd1: { value: '{"storedValues":{"middleName": "Middle"} }' },
-    } as any as CachedAnswers;
-
-    const attrs = {
-      dictionaryOptions: {
-        filter: {
-          simple: {
-            attributeName: 'title',
-            condition: 'CONTAINS',
-            value: {
-              asString: '${testVal}',
-            },
-          },
-        },
-      },
-      refs: {
-        testVal: 'pd1.value.storedValues.middleName',
-      },
+  describe('handleRelatedRelComponents()', () => {
+    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: true };
+    const prepareRef = () => {
+      components[0].attrs.ref = [
+        relation
+      ];
+      cachedAnswers = {
+        s2: {
+          visited: true,
+          value: 'true'
+        }
+      };
     };
 
-    const expectedAttrs = {
-      dictionaryOptions: {
-        filter: {
-          simple: {
-            attributeName: 'title',
-            condition: 'CONTAINS',
-            value: {
-              asString: 'Middle',
-            },
-          },
-        },
-      },
-      refs: {
-        testVal: 'pd1.value.storedValues.middleName',
-      },
-    };
+    it('should return components that passed in to params', () => {
+      const result = service['handleRelatedRelComponents'](components, cachedAnswers);
+      expect(result).toEqual(components);
+    });
 
-    const actualAttrs = service['setAttrsFilters'](attrs, cachedAnswers);
+    it('should return changed components that passed in to params', () => {
+      prepareRef();
+      spyOn<any>(service, 'handleCustomComponentRef').and.returnValue(
+        { id: 'a1', type: 'HtmlString', attrs: { ref: [relation], hidden: true }},
+      );
+      const result = service['handleRelatedRelComponents'](components, cachedAnswers);
+      components[0].attrs.hidden = true;
+      expect(result).toEqual(components);
+    });
 
-    expect(actualAttrs).toEqual(expectedAttrs);
+    it('should call once handleRelatedRelComponents', () => {
+      prepareRef();
+      spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
+      service['handleRelatedRelComponents'](components, cachedAnswers);
+      expect(service['handleCustomComponentRef']).toBeCalledTimes(1);
+    });
+
+    it('shouldn\'t call handleRelatedRelComponents', () => {
+      spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
+      service['handleRelatedRelComponents'](components, cachedAnswers);
+      expect(service['handleCustomComponentRef']).toBeCalledTimes(0);
+    });
+
+    it('should call handleRelatedRelComponents with params', () => {
+      prepareRef();
+      spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
+      service['handleRelatedRelComponents'](components, cachedAnswers);
+      expect(service['handleCustomComponentRef']).toBeCalledWith(components[0], components[0].attrs.ref, components, cachedAnswers);
+    });
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('handleCustomComponentRef()', () => {
+    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: true };
+    const prepareRef = () => {
+      components[0].attrs.ref = [
+        relation
+      ];
+      cachedAnswers = {
+        s2: {
+          visited: true,
+          value: 'true'
+        }
+      };
+    };
+
+    it('should return component that passed in to params', () => {
+      const result = service['handleCustomComponentRef'](
+        components[0],
+        components[0].attrs.ref as CustomComponentRef[],
+        components,
+        cachedAnswers
+      );
+      expect(result).toEqual(components[0]);
+    });
+
+    it('should return component with changed component with hidden', () => {
+      prepareRef();
+      const result = service['handleCustomComponentRef'](
+        components[0],
+        components[0].attrs.ref as CustomComponentRef[],
+        components,
+        cachedAnswers
+      );
+      components[0].attrs.hidden = true;
+      expect(result).toEqual(components[0]);
+    });
+
+    it('should call hideComponent with params', () => {
+      prepareRef();
+      spyOn<any>(service, 'hideComponent').and.callThrough();
+      service['handleCustomComponentRef'](
+        components[0],
+        components[0].attrs.ref as CustomComponentRef[],
+        components,
+        cachedAnswers
+      );
+      expect(service['hideComponent']).toBeCalledWith(components[0], components[0].attrs.ref[0] as CustomComponentRef[], cachedAnswers);
+    });
+
+    it('shouldn\'t call hideComponent', () => {
+      spyOn<any>(service, 'hideComponent').and.callThrough();
+      service['handleCustomComponentRef'](
+        components[0],
+        components[0].attrs.ref as CustomComponentRef[],
+        components,
+        cachedAnswers
+      );
+      expect(service['hideComponent']).not.toBeCalled();
+    });
+  });
+
+  describe('hideComponent()', () => {
+    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: true };
+    const prepareRef = () => {
+      components[0].attrs.ref = [
+        relation
+      ];
+      cachedAnswers = {
+        s2: {
+          visited: true,
+          value: true
+        }
+      };
+    };
+
+    it('shouldn\'t set hidden if cachedAnswers hasn\'t component', () => {
+      prepareRef();
+      cachedAnswers = {};
+      service['hideComponent'](components[0], relation, cachedAnswers);
+      expect(components[0].attrs.hidden).toBeFalsy();
+    });
+
+    it('shouldn\'t set hidden if value in cachedAnswers not equal', () => {
+      prepareRef();
+      cachedAnswers.s2.value = 42;
+      service['hideComponent'](components[0], relation, cachedAnswers);
+      expect(components[0].attrs.hidden).toBeFalsy();
+    });
+
+    it('should set hidden if value in cachedAnswers is equal', () => {
+      prepareRef();
+      service['hideComponent'](components[0], relation, cachedAnswers);
+      expect(components[0].attrs.hidden).toBeTruthy();
+    });
   });
 });

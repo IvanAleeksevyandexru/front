@@ -31,7 +31,7 @@ export class PrepareComponentsService {
   ): Array<ScreenStoreComponentDtoI> {
     let preparedComponents;
     preparedComponents = this.loadValueFromCachedAnswer(components, cachedAnswers);
-    preparedComponents = this.hideComponents(preparedComponents, cachedAnswers);
+    preparedComponents = this.handleRelatedRelComponents(preparedComponents, cachedAnswers);
     return preparedComponents;
   }
 
@@ -336,7 +336,7 @@ export class PrepareComponentsService {
     return attrs;
   }
 
-  private hideComponents(
+  private handleRelatedRelComponents(
     components: Array<ComponentDto>,
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
@@ -359,7 +359,7 @@ export class PrepareComponentsService {
     cachedAnswers: CachedAnswers,
   ): ScreenStoreComponentDtoI {
 
-    refs.forEach(ref => {
+    refs?.forEach(ref => {
       const isPrevScreenRelation = components.filter(item => item.id === ref.relatedRel).length === 0;
 
       if(isPrevScreenRelation) {
@@ -373,7 +373,7 @@ export class PrepareComponentsService {
   }
 
   private hideComponent(component: ComponentDto, ref: CustomComponentRef, cachedAnswers: CachedAnswers,): void {
-    const cache = cachedAnswers[ref.relatedRel].value;
+    const cache = cachedAnswers[ref.relatedRel]?.value;
     if (ref.val === cache) {
       console.log('hideComponent');
       component.attrs.hidden = true;

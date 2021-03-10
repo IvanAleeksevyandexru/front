@@ -34,6 +34,7 @@ import {
   CustomListDictionaries,
   CustomListDropDowns,
   CustomListReferenceData,
+  CustomListStatusElements,
   CustomScreenComponentTypes,
 } from './components-list.types';
 import { HttpCancelService } from '../../../core/interceptor/http-cancel/http-cancel.service';
@@ -65,7 +66,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
 
-  shownElements: { [key: string]: boolean } = {};
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
@@ -141,8 +141,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public showComponent(component: ComponentDto): boolean {
-    return this.formService.shownElements[component?.id]?.isShown && !component?.attrs?.hidden;
+  public showComponent(shownElements: CustomListStatusElements, component: ComponentDto): boolean {
+    return shownElements[component?.id]?.isShown && !component?.attrs?.hidden;
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

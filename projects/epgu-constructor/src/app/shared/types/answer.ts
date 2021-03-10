@@ -1,5 +1,5 @@
 export interface Answer {
   visited: boolean;
-  value: string;
+  value: string | boolean | number;
   disabled?: boolean;
 }

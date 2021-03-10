@@ -37,11 +37,16 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { CustomListStatusElements } from './components-list.types';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
   let component: ComponentsListComponent;
   let fixture: ComponentFixture<ComponentsListComponent>;
+  let formService: ComponentsListFormService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,11 +77,11 @@ describe('ComponentsListComponent', () => {
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         EventBusService,
         ValidationService,
         ComponentsListToolsService,
         ScreenService,
-        ComponentsListFormService,
         DateRangeService,
         DatesToolsService,
         AddressHelperService,
@@ -87,20 +92,65 @@ describe('ComponentsListComponent', () => {
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,
+        UnsubscribeService
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
+      set: { changeDetection: ChangeDetectionStrategy.Default,
+        providers: [
+          { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        ]
+      },
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentsListComponent);
     component = fixture.componentInstance;
+    formService = TestBed.inject(ComponentsListFormService);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('showComponent()', () => {
+    let componentItem: ComponentDto;
+    let shownElements: CustomListStatusElements;
+
+    beforeEach(() => {
+      componentItem = {
+        id: 'a2',
+        attrs: {},
+        type: 'HtmlString'
+      };
+      shownElements = {
+        a2: {
+          isShown: true,
+          relation: null
+        }
+      };
+    });
+
+    it('should return true when isShown and not hidden', () => {
+      const result = component.showComponent(shownElements, componentItem);
+      expect(result).toBeTruthy();
+    });
+
+    it('should return false when not isShown and not hidden', () => {
+      shownElements.a2.isShown = false;
+      const result = component.showComponent(shownElements, componentItem);
+      expect(result).toBeFalsy();
+    });
+
+    it('should return false when isShown and hidden', () => {
+      componentItem.attrs.hidden = true;
+      const result = component.showComponent(shownElements, componentItem);
+      expect(result).toBeFalsy();
+    });
+
+    it('should return false when not isShown and hidden', () => {
+      shownElements.a2.isShown = false;
+      componentItem.attrs.hidden = true;
+      const result = component.showComponent(shownElements, componentItem);
+      expect(result).toBeFalsy();
+    });
   });
 });

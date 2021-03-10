@@ -173,12 +173,12 @@ export enum CustomComponentValidationConditions {
  */
 export interface CustomComponentRef {
   relatedRel: string;
-  sourceId: string;
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
+  sourceId?: string;
   defaultValue?: string | boolean;
   valueFromCache?: string;
-  filter: DictionaryFilters['filter'];
+  filter?: DictionaryFilters['filter'];
 }
 
 export interface CustomListFormGroup {
