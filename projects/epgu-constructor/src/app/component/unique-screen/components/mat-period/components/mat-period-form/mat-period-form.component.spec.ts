@@ -103,10 +103,6 @@ describe('MatPeriodFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be i', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('init form', () => {
     it('should be init form', () => {
       const expectedFormValue = {
