@@ -125,5 +125,15 @@ $minModalHeight: 293px;
         width: 100%;
       }
     }
+
+    .text_modal_error {
+      text-align: center;
+      h4 {
+        margin-bottom: 8px;
+      }
+      span {
+        color: $color-text-helper;
+      }
+    }
   }
 }
