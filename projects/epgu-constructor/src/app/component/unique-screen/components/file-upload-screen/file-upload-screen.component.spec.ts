@@ -11,7 +11,7 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from './sub-components/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { FileResponseToBackendUploadsItem, UploadedFile } from '../../services/terra-byte-api/terra-byte-api.types';
+import { FileResponseToBackendUploadsItem, UploadedFile } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
 import {
   ActionType,

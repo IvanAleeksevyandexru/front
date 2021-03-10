@@ -97,8 +97,8 @@ export interface OwnerInfo {
 }
 
 export interface Document {
-  series: string;
-  number: string;
+  seriesAndNumber: string;
   issueDate: string;
+  documentType: string;
 }
 

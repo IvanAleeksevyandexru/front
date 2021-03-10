@@ -4,7 +4,7 @@ import { RepeatableFieldsComponent } from './repeatable-fields.component';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
-import { ComponentsListModule } from '../../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../../../shared/components/components-list/components-list.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 
 @NgModule({

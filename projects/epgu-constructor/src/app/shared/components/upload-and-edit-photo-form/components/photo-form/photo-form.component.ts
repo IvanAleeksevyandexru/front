@@ -21,8 +21,8 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../modal/modal.service';
-import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../../../../component/unique-screen/services/webcam/webcam.service';
+import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
 import { PhotoEditorModalComponent } from '../photo-editor-modal/photo-editor-modal.component';
 import { PhotoErrorModalComponent } from '../photo-error-modal/photo-error-modal.component';
 import { ValidationService } from '../../service/validation/validation.service';

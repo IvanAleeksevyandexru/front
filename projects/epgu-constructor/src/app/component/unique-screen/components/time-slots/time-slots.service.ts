@@ -6,13 +6,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary-api/dictionary-api.service';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
   DictionaryResponse,
   DictionaryUnionKind,
-} from '../../../shared/services/dictionary-api/dictionary-api.types';
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsTypes } from './time-slots.constants';
@@ -105,8 +105,6 @@ export class TimeSlotsService {
           this.bookId = response.bookId;
           this.activeMonthNumber = selectedSlot.slotTime.getMonth();
           this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-          response.timeStart = new Date();
-          response.timeFinish = this.getTimeFinish(response.timeStart);
         }
       }),
       catchError((error) => {
@@ -477,20 +475,6 @@ export class TimeSlotsService {
       selectAttributes: ['*'],
       pageSize: '10000',
     };
-  }
-
-  private getTimeFinish(timeStart: Date): Date {
-    if (!timeStart) {
-      return;
-    }
-    const settings = {
-      [TimeSlotsTypes.BRAK]: 1440,
-      [TimeSlotsTypes.RAZBRAK]: 1440,
-      [TimeSlotsTypes.MVD]: 240,
-      [TimeSlotsTypes.GIBDD]: 240,
-    };
-
-    return this.datesToolsService.add(timeStart, settings[this.timeSlotsType], 'minutes');
   }
 
   private isCancelCondition(): boolean {

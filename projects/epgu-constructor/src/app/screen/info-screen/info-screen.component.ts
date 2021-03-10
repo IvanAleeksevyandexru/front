@@ -16,7 +16,7 @@ import {
   DTOActionAction,
   ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenBase } from '../screenBase';
+import { ScreenBase } from '../screen-base';
 
 /**
  * Особенность этого типа компонента в том что заголовок и submit кнопка находится внутри белой плашки.

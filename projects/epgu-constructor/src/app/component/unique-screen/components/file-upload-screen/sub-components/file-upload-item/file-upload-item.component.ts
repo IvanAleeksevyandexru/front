@@ -17,13 +17,13 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../../../../modal/modal.service';
-import { TerraByteApiService } from '../../../../services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiService } from '../../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
   Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
   UploadedFile,
-} from '../../../../services/terra-byte-api/terra-byte-api.types';
+} from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 import {
   ErrorActions,

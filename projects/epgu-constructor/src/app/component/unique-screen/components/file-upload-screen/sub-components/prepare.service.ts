@@ -6,7 +6,7 @@ import {
   FileItemStatus,
   getSizeInMB,
 } from './file-upload-item/data';
-import { FileUploadItem } from '../../../services/terra-byte-api/terra-byte-api.types';
+import { FileUploadItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { CheckFailedReasons, FileUploadService } from './file-upload.service';

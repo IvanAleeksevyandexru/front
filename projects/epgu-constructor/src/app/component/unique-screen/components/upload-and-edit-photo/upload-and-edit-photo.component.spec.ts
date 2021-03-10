@@ -10,8 +10,8 @@ import { LocationService } from '../../../../core/services/location/location.ser
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { TerraByteApiService } from '../../services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../services/webcam/webcam.service';
+import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../../../core/services/webcam/webcam.service';
 import { UploadAndEditPhotoContainerComponent } from './container/upload-and-edit-photo-container.component';
 import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
 

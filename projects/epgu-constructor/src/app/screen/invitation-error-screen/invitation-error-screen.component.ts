@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenBase } from '../screenBase';
+import { ScreenBase } from '../screen-base';
 
 @Component({
   selector: 'epgu-constructor-invitation-screen',

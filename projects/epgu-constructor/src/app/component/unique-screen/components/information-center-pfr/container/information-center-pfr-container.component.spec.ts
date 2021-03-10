@@ -7,8 +7,8 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { DictionaryApiService } from '../../../../shared/services/dictionary-api/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary-api/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { InformationCenterPfrSimpleComponent } from '../component/information-center-pfr-short/information-center-pfr-simple.component';
 import { InformationCenterPfrFullComponent } from '../component/information-center-pfr-full/information-center-pfr-full.component';
 import { BaseModule } from '../../../../../shared/base.module';
@@ -18,6 +18,10 @@ import { ScreenPadModule } from '../../../../../shared/components/screen-pad/scr
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { InformationCenterPfr, PfrAreaType } from '../information-center-pfr.models';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentsListRelationsService } from '../../../../../shared/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 
 describe('InformationCenterPfrContainerComponent', () => {
   let component: InformationCenterPfrContainerComponent;
@@ -116,6 +120,10 @@ describe('InformationCenterPfrContainerComponent', () => {
         CurrentAnswersService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        DictionaryToolsService,
+        ComponentsListRelationsService,
+        DateRangeService,
+        DatesToolsService,
       ],
     }).compileComponents();
   });

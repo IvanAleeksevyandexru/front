@@ -29,6 +29,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -64,6 +65,7 @@ describe('PaymentTypeSelectorComponent', () => {
         ScreenPadModule,
         AnswerButtonModule,
         ActionModule,
+        HttpClientTestingModule,
       ],
       providers: [
         HealthService,

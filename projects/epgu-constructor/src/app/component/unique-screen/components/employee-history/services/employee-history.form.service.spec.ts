@@ -9,6 +9,7 @@ import { EmployeeHistoryDataSourceService } from './employee-history.data-source
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { Gender } from '../../../../../shared/types/gender';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;
@@ -17,7 +18,10 @@ describe('EmployeeHistoryFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         UnsubscribeService,
         EmployeeHistoryMonthsService,

@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
@@ -6,8 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {
   CustomComponent,
   CustomScreenComponentTypes
-} from '../../../component/shared/components/components-list/components-list.types';
-import { DateRangeService } from '../../../component/shared/components/components-list/services/date-range/date-range.service';
+} from '../../components/components-list/components-list.types';
+import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
@@ -66,7 +67,7 @@ describe('ValidationTypeDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule],
+      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
       providers: [
         ValidationService,
         NgControl,

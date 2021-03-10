@@ -18,7 +18,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { ComponentsListModule } from '../../../../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../../../../../shared/components/components-list/components-list.module';
 import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ItemStatus } from '../../select-children.models';
 import { ConfigService } from '../../../../../../core/services/config/config.service';

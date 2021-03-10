@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { ComponentsListModule } from '../../../../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../../../../../shared/components/components-list/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -18,6 +18,7 @@ import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -74,7 +75,8 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
+        DictionaryToolsService,
       ],
     }).compileComponents();
   });

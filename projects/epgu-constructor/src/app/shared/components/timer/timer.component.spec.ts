@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
+import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { CoreModule } from '../../../core/core.module';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
@@ -13,6 +14,9 @@ import { CachedAnswersService } from '../../services/cached-answers/cached-answe
 import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
+import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../services/date-range/date-range.service';
 
 
 describe('TimerComponent', () => {
@@ -38,6 +42,10 @@ describe('TimerComponent', () => {
         ValueLoaderService,
         EventBusService,
         DatesToolsService,
+        DictionaryToolsService,
+        DictionaryApiService,
+        ComponentsListRelationsService,
+        DateRangeService,
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();

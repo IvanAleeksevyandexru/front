@@ -9,6 +9,14 @@ import { ScreenStore, ScreenTypes } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { ConfigService } from '../core/services/config/config.service';
+import { LoggerService } from '../core/services/logger/logger.service';
+import { DateRangeService } from '../shared/services/date-range/date-range.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentsListRelationsService } from '../shared/services/components-list-relations/components-list-relations.service';
+import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 
@@ -78,6 +86,7 @@ describe('ScreenService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [
         ScreenService,
         CachedAnswersService,
@@ -85,6 +94,14 @@ describe('ScreenService', () => {
         UtilsService,
         ValueLoaderService,
         DatesToolsService,
+        DictionaryToolsService,
+        DictionaryApiService,
+        HttpClient,
+        HttpHandler,
+        ConfigService,
+        LoggerService,
+        ComponentsListRelationsService,
+        DateRangeService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });

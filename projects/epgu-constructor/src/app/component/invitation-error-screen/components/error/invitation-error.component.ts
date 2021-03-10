@@ -18,7 +18,7 @@ import {
   ComponentDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { CustomComponent } from '../../../shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../../shared/components/components-list/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-invitation-error',

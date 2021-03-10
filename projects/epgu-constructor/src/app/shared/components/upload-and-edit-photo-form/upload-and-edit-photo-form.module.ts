@@ -13,7 +13,7 @@ import { ModalModule } from '../../../modal/modal.module';
 import { WebcamShootModule } from '../webcam-shoot/webcam-shoot.module';
 import { DragAndDropModule } from '../../directives/drag-and-drop/drag-and-drop.module';
 import { CompressionService } from './service/compression/compression.service';
-import { TerraByteApiService } from '../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiService } from '../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ValidationService } from './service/validation/validation.service';
 import { UploadService } from './service/upload/upload.service';
 import { BaseModule } from '../../base.module';

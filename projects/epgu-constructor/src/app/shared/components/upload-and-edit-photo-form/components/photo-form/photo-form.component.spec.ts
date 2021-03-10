@@ -11,8 +11,8 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { ModalService } from '../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
-import { TerraByteApiService } from '../../../../../component/unique-screen/services/terra-byte-api/terra-byte-api.service';
-import { WebcamService } from '../../../../../component/unique-screen/services/webcam/webcam.service';
+import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ValidationService } from '../../service/validation/validation.service';

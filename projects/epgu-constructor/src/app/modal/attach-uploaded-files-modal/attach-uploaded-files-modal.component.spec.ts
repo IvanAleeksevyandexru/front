@@ -18,6 +18,7 @@ import { FileItem, FileItemStatus } from '../../component/unique-screen/componen
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
 import { UtilsService } from '../../core/services/utils/utils.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -71,6 +72,7 @@ describe('AttachUploadedFilesModalComponent', () => {
       imports:[
         BaseModule,
         ConfirmationModalModule,
+        HttpClientTestingModule,
       ],
       providers:[
         { provide: ScreenService, useClass: ScreenServiceStub },
