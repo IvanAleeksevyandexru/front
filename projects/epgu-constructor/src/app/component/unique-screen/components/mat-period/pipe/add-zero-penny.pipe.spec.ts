@@ -13,7 +13,7 @@ describe('AddZeroPennyPipe', () => {
     expect(value).toBe('100,26');
   });
 
-  it('should be return 100,10', () => {
+  it('should be return 100,01', () => {
     const value = pipe.transform('100,01');
     expect(value).toBe('100,01');
   });
