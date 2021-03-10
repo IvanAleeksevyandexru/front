@@ -21,7 +21,6 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
 @Component({
   selector: 'epgu-constructor-checkbox-cube-container',
   templateUrl: './checkbox-cube-container.component.html',
-  styleUrls: ['./checkbox-cube-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxCubeContainerComponent implements AfterViewInit {
@@ -69,9 +68,10 @@ export class CheckboxCubeContainerComponent implements AfterViewInit {
   }
 
   private getCheckboxes(cubeElements: { [p: string]: CubeElement }): Checkbox[] {
-    return Object.entries(cubeElements).map(([id, cubeElement]) => {
-      return { id, label: cubeElement.label } as Checkbox;
-    });
+    return Object.entries(cubeElements).map<Checkbox>(([id, cubeElement]) => ({
+      id,
+      label: cubeElement.label,
+    }));
   }
 
   private initForm(cubeElements: { [id: string]: CubeElement }): void {
