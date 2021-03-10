@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { NgControl } from '@angular/forms';
 
 @Component({
   selector: 'epgu-constructor-mask-transform-test-component',
@@ -24,7 +25,7 @@ describe('MaskTransformDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
-      providers: [DecimalPipe],
+      providers: [DecimalPipe, NgControl],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents()

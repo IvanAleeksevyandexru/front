@@ -55,7 +55,6 @@ export const MASKS_HANDLERS = {
       const [integerPart, decimalPart] = parts;
       const emptyDecimals: boolean = !hasDecimals || decimalPart === '';
       const maskForDecimalsShown = hasDecimals && (!hadDecimals || !emptyDecimals);
-      const maskLength = integerPart.length + (maskForDecimalsShown ? 0 : 1);
       const mask: Array<string | RegExp> = [];
 
       if (maskForDecimalsShown) {
@@ -67,12 +66,10 @@ export const MASKS_HANDLERS = {
 
       hadDecimals = maskForDecimalsShown;
 
-      for (let i = 0; i < maskLength; i += 1) {
+      for (let i = 0; i < integerPart.length; i += 1) {
         mask.unshift(/\d/);
-        const isLastSymbol = i === maskLength - 1;
-
-        // -1 означает, что справа 4 символа (3 числа и _ от маски), потом идёт по три, между ними разделитель тысяч
-        const isSeparatorTime = (i - 1) % 3 === 2;
+        const isLastSymbol = i === integerPart.length - 1;
+        const isSeparatorTime = i % 3 === 2;
 
         if (options.includeThousandsSeparator && isSeparatorTime && !isLastSymbol) {
           mask.unshift(options.thousandsSeparatorSymbol);
