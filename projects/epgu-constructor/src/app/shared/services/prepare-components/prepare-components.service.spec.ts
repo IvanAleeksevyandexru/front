@@ -480,7 +480,7 @@ describe('PrepareComponentsService', () => {
   });
 
   describe('hideComponent()', () => {
-    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: true };
+    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: 'v3' };
     const prepareRef = () => {
       components[0].attrs.ref = [
         relation
@@ -488,7 +488,7 @@ describe('PrepareComponentsService', () => {
       cachedAnswers = {
         s2: {
           visited: true,
-          value: true
+          value: 'v3'
         }
       };
     };
@@ -502,7 +502,7 @@ describe('PrepareComponentsService', () => {
 
     it('shouldn\'t set hidden if value in cachedAnswers not equal', () => {
       prepareRef();
-      cachedAnswers.s2.value = 42;
+      cachedAnswers.s2.value = 'v42';
       service['hideComponent'](components[0], relation, cachedAnswers);
       expect(components[0].attrs.hidden).toBeFalsy();
     });
