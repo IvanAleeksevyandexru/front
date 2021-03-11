@@ -360,7 +360,7 @@ export class PrepareComponentsService {
     cachedAnswers: CachedAnswers,
   ): ScreenStoreComponentDtoI {
 
-    refs?.forEach(ref => {
+    refs.forEach(ref => {
       const isPrevScreenRelation = components.filter(item => item.id === ref.relatedRel).length === 0;
 
       if(isPrevScreenRelation) {

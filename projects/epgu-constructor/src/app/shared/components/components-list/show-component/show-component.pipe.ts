@@ -10,6 +10,6 @@ export class ShowComponentPipe implements PipeTransform {
   constructor (public formService: ComponentsListFormService) {}
 
   transform(component: ComponentDto): boolean {
-    return this.formService.shownElements[component?.id]?.isShown && !component?.attrs?.hidden;
+    return this.formService.shownElements[component.id]?.isShown && !component.attrs?.hidden;
   }
 }
