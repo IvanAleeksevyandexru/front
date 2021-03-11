@@ -1,0 +1,58 @@
+@import "../../../../../../../styles/core";
+
+$item-hint-mx: 13px;
+
+.date-time-period-title {
+  margin-bottom: 16px;
+}
+
+.date-time-period-btns-wrapper {
+  display: flex;
+  margin-bottom: 18px;
+  flex-direction: row;
+}
+
+
+.item {
+  &__hint {
+    color: $color-gosblue;
+    background: $color-light-gray;
+    border-radius: 4px;
+    padding: 12px;
+    margin: $item-hint-mx $item-hint-mx 0;
+    cursor: pointer;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 24px;
+
+    &:hover {
+      background: $color-hawkes-blue;
+    }
+  }
+}
+
+.hint-wrapper {
+  margin-left: -$item-hint-mx;
+  margin-right: -$item-hint-mx;
+  margin-top: -$item-hint-mx;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.form {
+  @include flex-container();
+  flex-flow: wrap;
+  margin-left: -$screen-pad-small-gap / 2;
+  margin-right: -$screen-pad-small-gap / 2;
+
+  &__item {
+    @include flex-container();
+    justify-content: flex-start;
+    flex: 1 1 100%;
+    margin-left: $screen-pad-small-gap / 2;
+    margin-right: $screen-pad-small-gap / 2;
+    max-width: calc(100% - #{$screen-pad-small-gap});
+    margin-bottom: $screen-pad-p;
+  }
+}

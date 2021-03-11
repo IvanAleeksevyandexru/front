@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { MaskModule } from '../../directives/mask/mask.module';
 import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
+import { NgControl } from '@angular/forms';
 
 describe('ConstructorMaskedInputComponent', () => {
   let component: ConstructorMaskedInputComponent;
@@ -17,7 +18,7 @@ describe('ConstructorMaskedInputComponent', () => {
       imports: [MaskModule, MaskHandleModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ConstructorMaskedInputComponent],
-      providers: [EventBusService]
+      providers: [EventBusService, NgControl]
     })
     .compileComponents();
   });

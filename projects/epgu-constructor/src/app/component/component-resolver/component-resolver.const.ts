@@ -42,6 +42,8 @@ import { AppealFinesContainerComponent } from '../unique-screen/components/appea
 // eslint-disable-next-line max-len
 import { CheckboxCubeContainerComponent } from '../unique-screen/components/checkbox-cube/checkbox-cube-container/checkbox-cube-container.component';
 import { MatPeriodContainerComponent } from '../unique-screen/components/mat-period/mat-period-container/mat-period-container.component';
+// eslint-disable-next-line max-len
+import { DateTimePeriodContainerComponent } from '../unique-screen/components/date-time-period/components/date-time-period-container/date-time-period-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -73,6 +75,7 @@ type UniqueScreenComponent =
   | TimerScreenComponent
   | AppealFinesContainerComponent
   | MatPeriodContainerComponent
+  | DateTimePeriodContainerComponent
   | CheckboxCubeContainerComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
@@ -113,5 +116,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   Timer: TimerScreenComponent,
   AppealFines: AppealFinesContainerComponent,
   MatPeriod: MatPeriodContainerComponent,
-  CheckboxCube: CheckboxCubeContainerComponent
+  DateTimePeriod: DateTimePeriodContainerComponent,
+  CheckboxCube: CheckboxCubeContainerComponent,
 };
