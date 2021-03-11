@@ -4,7 +4,6 @@ import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import {
   CustomComponentRef,
-  CustomComponentRefRelation,
   CustomScreenComponentTypes
 } from '../../components/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
