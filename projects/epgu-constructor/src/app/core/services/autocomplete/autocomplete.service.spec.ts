@@ -27,6 +27,7 @@ import { ComponentsListRelationsService } from '../../../shared/services/compone
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
+import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -114,6 +115,7 @@ describe('AutocompleteService', () => {
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService
       ],
     });
     service = TestBed.inject(AutocompleteService);

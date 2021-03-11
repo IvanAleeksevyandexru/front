@@ -14,6 +14,7 @@ import { UniqueScreenComponentTypes } from '../../../component/unique-screen/uni
 import { DocInputField } from '../../components/doc-input/doc-input.types';
 import { DictionaryFilters } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
+import { RefRelationService } from '../ref-relation/ref-relation.service';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -22,6 +23,7 @@ export class PrepareComponentsService {
     private utils: UtilsService,
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
+    private refRelationService: RefRelationService,
   ) {}
 
 
@@ -363,7 +365,7 @@ export class PrepareComponentsService {
       const isPrevScreenRelation = components.filter(item => item.id === ref.relatedRel).length === 0;
 
       if(isPrevScreenRelation) {
-        if(ref.relation === CustomComponentRefRelation.displayOff) {
+        if(this.refRelationService.isDisplayOffRelation(ref.relation)) {
           this.hideComponent(component, ref, cachedAnswers);
         }
       }
@@ -373,9 +375,8 @@ export class PrepareComponentsService {
   }
 
   private hideComponent(component: ComponentDto, ref: CustomComponentRef, cachedAnswers: CachedAnswers,): void {
-    const cache = cachedAnswers[ref.relatedRel]?.value;
-    if (ref.val === cache) {
-      console.log('hideComponent');
+    const cachedValue = this.cachedAnswersService.getCachedValueById(cachedAnswers, ref.relatedRel);
+    if (ref.val === cachedValue) {
       component.attrs.hidden = true;
     }
   }

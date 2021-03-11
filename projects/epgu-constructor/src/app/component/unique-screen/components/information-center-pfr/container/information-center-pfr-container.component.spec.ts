@@ -22,6 +22,7 @@ import { DictionaryToolsService } from '../../../../../shared/services/dictionar
 import { ComponentsListRelationsService } from '../../../../../shared/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 
 describe('InformationCenterPfrContainerComponent', () => {
   let component: InformationCenterPfrContainerComponent;
@@ -124,6 +125,7 @@ describe('InformationCenterPfrContainerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
+        RefRelationService
       ],
     }).compileComponents();
   });

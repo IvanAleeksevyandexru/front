@@ -17,6 +17,7 @@ import { TimerComponent } from './timer.component';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
+import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 
 
 describe('TimerComponent', () => {
@@ -46,6 +47,7 @@ describe('TimerComponent', () => {
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService,
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();

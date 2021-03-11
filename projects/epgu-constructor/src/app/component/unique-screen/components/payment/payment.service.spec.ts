@@ -19,6 +19,7 @@ import { DeviceDetectorServiceStub } from '../../../../core/services/device-dete
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../shared/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
+import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -44,6 +45,7 @@ describe('PaymentService', () => {
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });

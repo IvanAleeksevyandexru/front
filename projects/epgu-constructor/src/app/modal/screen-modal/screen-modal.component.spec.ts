@@ -22,6 +22,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListModule } from '../../shared/components/components-list/components-list.module';
+import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 
 // TODO написать тесты
 describe('ScreenModalComponent', () => {
@@ -54,6 +55,7 @@ describe('ScreenModalComponent', () => {
         CachedAnswersService,
         UnsubscribeService,
         DictionaryToolsService,
+        RefRelationService
       ]
     })
     .compileComponents();

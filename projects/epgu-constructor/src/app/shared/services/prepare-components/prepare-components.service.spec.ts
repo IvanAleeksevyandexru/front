@@ -15,6 +15,7 @@ import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { CustomComponentRef, CustomComponentRefRelation } from '../../components/components-list/components-list.types';
+import { RefRelationService } from '../ref-relation/ref-relation.service';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -36,6 +37,7 @@ describe('PrepareComponentsService', () => {
         LoggerService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService
       ],
       imports: [HttpClientTestingModule],
     });

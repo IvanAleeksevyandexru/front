@@ -19,6 +19,7 @@ import { DictionaryApiService } from '../shared/services/dictionary/dictionary-a
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
+import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',
@@ -102,6 +103,7 @@ describe('ScreenService', () => {
         LoggerService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });

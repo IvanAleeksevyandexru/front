@@ -42,6 +42,7 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
+import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -95,6 +96,7 @@ describe('ComponentsListComponent', () => {
         DictionaryToolsService,
         ComponentsListRelationsService,
         UnsubscribeService,
+        RefRelationService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],

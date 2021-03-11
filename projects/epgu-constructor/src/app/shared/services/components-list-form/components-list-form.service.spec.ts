@@ -17,6 +17,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { RefRelationService } from '../ref-relation/ref-relation.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -39,6 +40,7 @@ describe('ComponentsListFormService', () => {
         ComponentsListRelationsService,
         HttpClient,
         HttpHandler,
+        RefRelationService
       ],
     });
     service = TestBed.inject(ComponentsListFormService);
