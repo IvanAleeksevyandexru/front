@@ -12,7 +12,7 @@ export interface MatPeriod {
 
 export interface MatPeriodAttrs {
   description: MatPeriodDescription;
-  components: { [key in FormField]: CustomComponent };
+  fields: { [key in FormField]: CustomComponent };
 }
 
 export interface MatPeriodDescription {
