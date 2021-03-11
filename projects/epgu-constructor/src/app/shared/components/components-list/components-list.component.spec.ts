@@ -37,12 +37,11 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { CustomListStatusElements } from './components-list.types';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+import { ShowComponentPipe } from './show-component/show-component.pipe';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -60,6 +59,7 @@ describe('ComponentsListComponent', () => {
       ],
       declarations: [
         ComponentsListComponent,
+        ShowComponentPipe,
         MockPipe(MaskHandlePipe),
         MockComponents(
           ConstructorPlainInputComponent,
@@ -114,46 +114,7 @@ describe('ComponentsListComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('showComponent()', () => {
-    let componentItem: ComponentDto;
-    let shownElements: CustomListStatusElements;
-
-    beforeEach(() => {
-      componentItem = {
-        id: 'a2',
-        attrs: {},
-        type: 'HtmlString'
-      };
-      shownElements = {
-        a2: {
-          isShown: true,
-          relation: null
-        }
-      };
-    });
-
-    it('should return true when isShown and not hidden', () => {
-      const result = component.showComponent(shownElements, componentItem);
-      expect(result).toBeTruthy();
-    });
-
-    it('should return false when not isShown and not hidden', () => {
-      shownElements.a2.isShown = false;
-      const result = component.showComponent(shownElements, componentItem);
-      expect(result).toBeFalsy();
-    });
-
-    it('should return false when isShown and hidden', () => {
-      componentItem.attrs.hidden = true;
-      const result = component.showComponent(shownElements, componentItem);
-      expect(result).toBeFalsy();
-    });
-
-    it('should return false when not isShown and hidden', () => {
-      shownElements.a2.isShown = false;
-      componentItem.attrs.hidden = true;
-      const result = component.showComponent(shownElements, componentItem);
-      expect(result).toBeFalsy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });
