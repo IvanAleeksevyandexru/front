@@ -31,7 +31,7 @@ import { ScreenBase } from '../screen-base';
 export class InfoScreenComponent extends ScreenBase implements OnInit {
   actionButtons: ComponentActionDto[] = [];
   screenActionButtons: ScreenActionDto[] = [];
-  isSocialShareDisabled = true;
+  isSocialShareDisabled: boolean;
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
     action: DTOActionAction.getNextStep,
@@ -56,7 +56,6 @@ export class InfoScreenComponent extends ScreenBase implements OnInit {
         this.setActionButtons(component);
         this.changeDetectionRef.markForCheck();
       });
-
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((buttons: Array<ScreenActionDto>) => {
