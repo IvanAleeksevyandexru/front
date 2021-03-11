@@ -10,6 +10,10 @@ import {
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { PaymentType } from '../mat-period.models';
+import {
+  DATE_STRING_DOT_FORMAT,
+  DATE_STRING_LLLL_YYYY_FORMAT,
+} from '../../../../../shared/constants/dates';
 
 @Injectable()
 export class DurationService {
@@ -39,8 +43,8 @@ export class DurationService {
 
   getMonthRange(start: Date, end: Date, value?: number): ListElement[] {
     return eachMonthOfInterval({ start, end }).map((month, index) => {
-      const text = this.datesToolsService.format(month, 'LLLL yyyy');
-      const date = this.datesToolsService.format(month, 'dd.MM.yyyy');
+      const text = this.datesToolsService.format(month, DATE_STRING_LLLL_YYYY_FORMAT);
+      const date = this.datesToolsService.format(month, DATE_STRING_DOT_FORMAT);
       return this.createListElement(text, index, date, value ?? index);
     });
   }
@@ -48,7 +52,7 @@ export class DurationService {
   getQuarterRange(start: Date, end: Date): ListElement[] {
     return eachQuarterOfInterval({ start, end }).map((quarter, index) => {
       const text = this.datesToolsService.format(quarter, 'qqqq yyyy').replace(/-й/, '');
-      const date = this.datesToolsService.format(quarter, 'dd.MM.yyyy');
+      const date = this.datesToolsService.format(quarter, DATE_STRING_DOT_FORMAT);
       return this.createListElement(text, index, date, index);
     });
   }
@@ -67,7 +71,7 @@ export class DurationService {
       const year = this.datesToolsService.format(halfYear, 'yyyy');
       const isStartOfHalYear = halfYear.getMonth() !== 6;
       const text = `${isStartOfHalYear ? '1' : '2'} полугодие ${year}`;
-      const date = this.datesToolsService.format(halfYear, 'dd.MM.yyyy');
+      const date = this.datesToolsService.format(halfYear, DATE_STRING_DOT_FORMAT);
       return this.createListElement(text, index, date, index);
     });
   }
@@ -75,8 +79,7 @@ export class DurationService {
   getYearFinishRange(start: ListElement): ListElement[] {
     if (!start) return [];
 
-    const parseDate = start.date.split('.');
-    const date = new Date(`${parseDate[1]}.${parseDate[0]}.${parseDate[2]}`);
+    const date = this.datesToolsService.parse(start.date, DATE_STRING_DOT_FORMAT);
     const month = date.getMonth();
     const startYear = startOfMonth(date);
     return eachYearOfInterval({
@@ -85,8 +88,8 @@ export class DurationService {
     })
       .map((rangeDate) => this.datesToolsService.add(rangeDate, month, 'months'))
       .map((year, index) => {
-        const text = this.datesToolsService.format(year, 'LLLL yyyy');
-        const formatDate = this.datesToolsService.format(year, 'dd.MM.yyyy');
+        const text = this.datesToolsService.format(year, DATE_STRING_LLLL_YYYY_FORMAT);
+        const formatDate = this.datesToolsService.format(year, DATE_STRING_DOT_FORMAT);
         return this.createListElement(text, index, formatDate, index);
       });
   }
@@ -94,31 +97,12 @@ export class DurationService {
   public transformDayToDate(day: string, date: string, paymentType: PaymentType): string {
     if (paymentType === 'one' || !date || !day) return day;
 
-    const parseDate = this.datesToolsService.parse(date, 'dd.MM.yyyy');
-    switch (paymentType) {
-      case 'month':
-        return this.datesToolsService.format(
-          this.datesToolsService.setDate(startOfMonth(parseDate), day),
-          'dd.MM.yyyy',
-        );
-      case 'halfYear':
-        return this.datesToolsService.format(
-          this.datesToolsService.setDate(parseDate, day),
-          'dd.MM.yyyy',
-        );
-      case 'quarter':
-        return this.datesToolsService.format(
-          this.datesToolsService.setDate(startOfQuarter(parseDate), day),
-          'dd.MM.yyyy',
-        );
-      case 'year':
-        return this.datesToolsService.format(
-          this.datesToolsService.setDate(startOfYear(parseDate), day),
-          'dd.MM.yyyy',
-        );
-      default:
-        return day;
-    }
+    const parseDate = this.datesToolsService.parse(date, DATE_STRING_DOT_FORMAT);
+
+    return this.datesToolsService.format(
+      this.datesToolsService.setDate(parseDate, day),
+      DATE_STRING_DOT_FORMAT,
+    );
   }
 
   private createListElement(text: string, id: number, date: string, value: number): ListElement {
