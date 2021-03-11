@@ -32,7 +32,11 @@
   <ng-template ngFor let-error [ngForOf]="errors">
     <div *ngIf="error" class="error" [class.mb-24]="error.fields">
       <p class="title"><span [class]="error.icon"></span>{{ error.title }}</p>
-      <p class="description">{{ error.desc }}</p>
+      <epgu-constructor-output-html
+        class="description"
+        [html]="error.desc"
+        [clarifications]="data.attrs.clarifications"
+      ></epgu-constructor-output-html>
       <p *ngFor="let field of error.fields" class="description">- {{ field }}</p>
     </div>
   </ng-template>
