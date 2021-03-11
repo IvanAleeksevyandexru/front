@@ -17,6 +17,7 @@ import { DurationService } from './service/duration.service';
 import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { ErrorModule } from '../../../../shared/components/error/error.module';
+import { AddZeroPennyPipe } from './pipe/add-zero-penny.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ErrorModule } from '../../../../shared/components/error/error.module';
     MatPeriodFormComponent,
     MatPeriodDescriptionComponent,
     FilterPipe,
+    AddZeroPennyPipe,
   ],
   imports: [
     CommonModule,

@@ -62,7 +62,7 @@ xdescribe('MatPeriodContainerComponent', () => {
         balanceLabel: '',
         durationLabel: '',
       },
-      components: mockComponents as any,
+      fields: mockComponents as any,
     },
     value: '',
   };
