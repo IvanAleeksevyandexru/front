@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ComponentsListFormService } from './components-list-form.service';
 import { ValidationService } from '../validation/validation.service';
@@ -16,7 +17,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { RefRelationService } from '../ref-relation/ref-relation.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -39,6 +40,7 @@ describe('ComponentsListFormService', () => {
         ComponentsListRelationsService,
         HttpClient,
         HttpHandler,
+        RefRelationService
       ],
     });
     service = TestBed.inject(ComponentsListFormService);

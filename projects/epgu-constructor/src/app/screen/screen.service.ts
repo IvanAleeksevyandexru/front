@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
@@ -18,8 +18,8 @@ export class ScreenService extends ScreenContent {
 
   constructor(
     private currentAnswersService: CurrentAnswersService,
-    private valueLoaderService: ValueLoaderService,
     private deviceDetectorService: DeviceDetectorService,
+    private valueLoaderService: PrepareComponentsService,
   ) {
     super();
   }
@@ -49,7 +49,7 @@ export class ScreenService extends ScreenContent {
    */
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
-    this.loadValueFromCachedAnswer();
+    this.prepareComponents();
     this.initComponentStateService();
     this.updateScreenContent(store, this.deviceDetectorService.isWebView);
   }
@@ -81,10 +81,10 @@ export class ScreenService extends ScreenContent {
     this.currentAnswersService.isValid = true;
   }
 
-  private loadValueFromCachedAnswer(): void {
+  private prepareComponents(): void {
     const components = this.screenStore.display.components;
     const cashedAnswers = this.screenStore.cachedAnswers;
-    const screenStoreComponent = this.valueLoaderService.loadValueFromCachedAnswer(components, cashedAnswers);
+    const screenStoreComponent = this.valueLoaderService.prepareComponents(components, cashedAnswers);
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };

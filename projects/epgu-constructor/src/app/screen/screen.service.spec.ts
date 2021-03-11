@@ -7,7 +7,7 @@ import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
-import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ConfigService } from '../core/services/config/config.service';
@@ -19,6 +19,7 @@ import { DictionaryApiService } from '../shared/services/dictionary/dictionary-a
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
+import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: '653920',
@@ -92,7 +93,7 @@ describe('ScreenService', () => {
         CachedAnswersService,
         CurrentAnswersService,
         UtilsService,
-        ValueLoaderService,
+        PrepareComponentsService,
         DatesToolsService,
         DictionaryToolsService,
         DictionaryApiService,
@@ -102,6 +103,7 @@ describe('ScreenService', () => {
         LoggerService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });

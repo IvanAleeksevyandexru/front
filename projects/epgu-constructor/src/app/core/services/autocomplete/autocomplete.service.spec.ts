@@ -11,7 +11,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { ValueLoaderService } from '../../../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { Gender } from '../../../shared/types/gender';
 import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
@@ -27,6 +27,7 @@ import { ComponentsListRelationsService } from '../../../shared/services/compone
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
+import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -103,7 +104,7 @@ describe('AutocompleteService', () => {
         AutocompleteApiService,
         HttpHandler,
         CurrentAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
         DatesToolsService,
@@ -114,6 +115,7 @@ describe('AutocompleteService', () => {
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService
       ],
     });
     service = TestBed.inject(AutocompleteService);

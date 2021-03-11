@@ -6,7 +6,7 @@ import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
-import { ValueLoaderService } from '../shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { CustomScreenComponent } from './custom-screen/custom-screen.component';
 import { CustomScreenModule } from './custom-screen/custom-screen.module';
@@ -42,7 +42,7 @@ import { UniqueScreenModule } from './unique-screen/unique-screen.module';
     ScreenService,
     CachedAnswersService,
     CurrentAnswersService,
-    ValueLoaderService,
+    PrepareComponentsService,
     HtmlRemoverService,
     EventBusService,
     DatesToolsService,

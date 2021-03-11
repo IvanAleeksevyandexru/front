@@ -11,6 +11,7 @@ import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 
 const mockData: TimerComponentBase = {
   id: null,
@@ -47,6 +48,7 @@ describe('TimerScreenComponent', () => {
       providers: [
         CurrentAnswersService,
         DatesToolsService,
+        RefRelationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
