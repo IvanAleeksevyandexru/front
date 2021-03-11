@@ -235,7 +235,7 @@ export class AutocompleteService {
 
   private setComponentValue(component: ComponentDto, value: string): void {
     if (component && value) {
-      value = this.setDateValueIfDateInput(component, value);
+      value = this.getDateValueIfDateInput(component, value);
 
       // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
       if (this.utilsService.hasJsonStructure(value)) {
@@ -250,7 +250,7 @@ export class AutocompleteService {
     }
   }
 
-  private setDateValueIfDateInput(
+  private getDateValueIfDateInput(
     component: ComponentDto,
     value: string,
     isFormattedReturn?: boolean,
@@ -365,7 +365,7 @@ export class AutocompleteService {
 
     const component = this.findComponent(componentMnemonic);
     if (component) {
-      value = this.setDateValueIfDateInput(component, value, true);
+      value = this.getDateValueIfDateInput(component, value, true);
     }
 
     return value;
