@@ -436,6 +436,7 @@ describe('PrepareComponentsService', () => {
     };
 
     it('should return component that passed in to params', () => {
+      components[0].attrs.ref = [];
       const result = service['handleCustomComponentRef'](
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
@@ -471,6 +472,7 @@ describe('PrepareComponentsService', () => {
 
     it('shouldn\'t call hideComponent', () => {
       spyOn<any>(service, 'hideComponent').and.callThrough();
+      components[0].attrs.ref = [];
       service['handleCustomComponentRef'](
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
