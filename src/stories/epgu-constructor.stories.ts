@@ -37,7 +37,7 @@ import { AnswerButtonComponent } from '../../projects/epgu-constructor/src/app/s
 import { AnswerButtonModule } from '../../projects/epgu-constructor/src/app/shared/components/answer-button/answer-button.module';
 import { CachedAnswersService } from '../../projects/epgu-constructor/src/app/shared/services/cached-answers/cached-answers.service';
 import { ValidationService } from '../../projects/epgu-constructor/src/app/shared/services/validation/validation.service';
-import { ValueLoaderService } from '../../projects/epgu-constructor/src/app/shared/services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../projects/epgu-constructor/src/app/shared/services/prepare-components/prepare-components.service';
 import { TextTransform } from '../../projects/epgu-constructor/src/app/shared/types/textTransform';
 import { CarInfoModule } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/car-info.module';
 import { CarInfoComponent } from '../../projects/epgu-constructor/src/app/component/unique-screen/components/car-info/components/car-info/car-info.component';
@@ -80,7 +80,7 @@ export default {
         CachedAnswersService,
         CurrentAnswersService,
         UtilsService,
-        ValueLoaderService,
+        PrepareComponentsService,
         NavigationService,
         DeviceDetectorService,
         ConfigService,

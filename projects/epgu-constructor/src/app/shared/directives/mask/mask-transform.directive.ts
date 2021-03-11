@@ -2,6 +2,7 @@ import { Directive, HostListener, Input, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { numberMaskDefaultOptions, MASKS } from '../../pipes/mask-handle/mask.constant';
 import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/number-mask-options.interface';
+import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[epgu-constructor-mask-transform]',
@@ -14,7 +15,10 @@ export class MaskTransformDirective implements OnInit {
   private localeDecimalSeparator = '.';
   private options: Partial<NumberMaskOptionsInterface> = {};
 
-  constructor(private decimalPipe: DecimalPipe) {}
+  constructor(
+      private decimalPipe: DecimalPipe,
+      private ngControl: NgControl,
+  ) {}
 
   @HostListener('change', ['$event.target'])
   onBlur(target: HTMLInputElement): void {
@@ -33,6 +37,8 @@ export class MaskTransformDirective implements OnInit {
             this.options.includeThousandsSeparator ? this.options.thousandsSeparatorSymbol : '',
           )
           .replace(this.localeDecimalSeparator, this.options.decimalSymbol);
+        this.ngControl.control.patchValue(target.value, { emitEvent: false });
+        this.ngControl.control.updateValueAndValidity();
       }
     }
   }

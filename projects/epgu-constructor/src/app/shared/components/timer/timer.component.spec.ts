@@ -11,12 +11,13 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { BaseModule } from '../../base.module';
 import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
-import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
+import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
+import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 
 
 describe('TimerComponent', () => {
@@ -39,13 +40,14 @@ describe('TimerComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         CachedAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         EventBusService,
         DatesToolsService,
         DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
+        RefRelationService,
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();

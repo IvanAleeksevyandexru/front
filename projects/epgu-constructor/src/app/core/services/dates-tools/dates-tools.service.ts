@@ -187,6 +187,9 @@ export class DatesToolsService {
    * @param {string} format строка маска для распарсивания строки с датой (по умолчанию ISOString вида yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx )
    */
   public format(date: Date | number | string, format: string = DATE_ISO_STRING_FORMAT): string {
+    if (!date) {
+      return '';
+    }
     if (typeof date === 'string') {
       date = this.parse(date, format);
     }

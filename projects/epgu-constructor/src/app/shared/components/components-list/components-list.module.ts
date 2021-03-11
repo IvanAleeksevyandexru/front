@@ -27,12 +27,11 @@ import { MultipleChoiceDictionaryModule } from '../multiple-choice-dictionary/mu
 import { DocInputModule } from '../doc-input/doc-input.module';
 import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
-
-const COMPONENTS = [ComponentsListComponent];
+import { ShowComponentPipe } from './show-component/show-component.pipe';
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  declarations: [ComponentsListComponent, ShowComponentPipe],
+  exports: [ComponentsListComponent],
   imports: [
     BaseModule,
     TimerModule,

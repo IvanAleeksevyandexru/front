@@ -15,6 +15,7 @@ import { UniqueComponentModalModule } from '../unique-component-modal/unique-com
 import { InfoComponentModalModule } from '../info-component-modal/info-component-modal.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 
 //TODO дописать тесты
 describe('ComponentListModalComponent', () => {
@@ -51,6 +52,7 @@ describe('ComponentListModalComponent', () => {
         CustomScreenService,
         DatesToolsService,
         DictionaryToolsService,
+        RefRelationService
       ]
     })
     .compileComponents();

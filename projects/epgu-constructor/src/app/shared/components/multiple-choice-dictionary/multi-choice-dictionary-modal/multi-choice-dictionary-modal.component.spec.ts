@@ -15,6 +15,7 @@ import { DictionaryToolsService } from '../../../services/dictionary/dictionary-
 import { ComponentsListRelationsService } from '../../../services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -69,6 +70,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
+        RefRelationService
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {

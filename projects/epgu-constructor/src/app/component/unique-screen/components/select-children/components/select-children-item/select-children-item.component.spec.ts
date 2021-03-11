@@ -19,6 +19,7 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -77,6 +78,7 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         DictionaryToolsService,
+        RefRelationService
       ],
     }).compileComponents();
   });

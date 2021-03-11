@@ -30,20 +30,25 @@ import { ScreenService } from '../../../screen/screen.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { AddressHelperService } from '../../services/address-helper/address-helper.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ValueLoaderService } from '../../services/value-loader/value-loader.service';
 import { CachedAnswersService } from '../../services/cached-answers/cached-answers.service';
+import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+import { ShowComponentPipe } from './show-component/show-component.pipe';
+import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
   let component: ComponentsListComponent;
   let fixture: ComponentFixture<ComponentsListComponent>;
+  let formService: ComponentsListFormService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -55,6 +60,7 @@ describe('ComponentsListComponent', () => {
       ],
       declarations: [
         ComponentsListComponent,
+        ShowComponentPipe,
         MockPipe(MaskHandlePipe),
         MockComponents(
           ConstructorPlainInputComponent,
@@ -74,32 +80,39 @@ describe('ComponentsListComponent', () => {
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         EventBusService,
         ValidationService,
         ComponentsListToolsService,
         ScreenService,
-        ComponentsListFormService,
         DateRangeService,
         DatesToolsService,
         AddressHelperService,
         CurrentAnswersService,
-        ValueLoaderService,
+        PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,
+        UnsubscribeService,
+        RefRelationService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
+      set: { changeDetection: ChangeDetectionStrategy.Default,
+        providers: [
+          { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        ]
+      },
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentsListComponent);
     component = fixture.componentInstance;
+    formService = TestBed.inject(ComponentsListFormService);
     fixture.detectChanges();
   });
 

@@ -20,7 +20,7 @@ export class ConstructorMaskedInputComponent {
   @Input() validationShowOn: ValidationShowOn;
   @Input() textTransformType: TextTransform;
   @Input() readonly: boolean;
-  @Input() showConstantMaskSymbols: boolean;
+  @Input() showConstantMaskSymbols = true;
   @Input() showMaskAsPlaceholder: boolean;
   @Input() clearable: boolean;
   @Input() invalid: boolean;
@@ -40,9 +40,11 @@ export class ConstructorMaskedInputComponent {
   >();
 
   public onChange($event: Event): void {
-    const input = $event.target as HTMLInputElement;
-    this.control.setValue(input.value);
-    this.control.updateValueAndValidity();
+    if (this.control.updateOn === 'blur') {
+      const input = $event.target as HTMLInputElement;
+      this.control.setValue(input.value);
+      this.control.updateValueAndValidity();
+    }
   }
 
   public onBlur(): void {
