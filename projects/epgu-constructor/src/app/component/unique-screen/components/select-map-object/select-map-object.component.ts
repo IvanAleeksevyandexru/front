@@ -366,7 +366,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       };
 
       if (this.screenActionButtons.length > 0) {
-        this.actionService.switchAction(this.screenActionButtons[0], this.data.id);
+        this.actionService.openConfirmationModal(this.screenActionButtons[0], this.data.id, () => {
+          this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+        });
       } else {
         this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
       }

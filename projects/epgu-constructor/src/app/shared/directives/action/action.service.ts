@@ -51,7 +51,7 @@ export class ActionService {
     private modalService: ModalService,
   ) {}
 
-  switchAction(action: ComponentActionDto, componentId: string, targetElement?: HTMLElement): void {
+  public switchAction(action: ComponentActionDto, componentId: string, targetElement?: HTMLElement): void {
     switch (action.type) {
       case ActionType.download:
         this.downloadAction(action);
@@ -93,6 +93,32 @@ export class ActionService {
         this.openDropdownListModal(action);
         break;
     }
+  }
+
+  public openConfirmationModal(action: ComponentActionDto, componentId: string, handler?: Function): void {
+    const data = this.getActionDTO(action);
+    const confirmations = data.scenarioDto?.display?.confirmations;
+    if (!confirmations || !confirmations[action.value]) {
+      throw new Error(`Invalid confirmation with name "${action.value}"`);
+    }
+
+    const confirmation = confirmations[action.value];
+
+    this.modalService.openModal(ConfirmationModalComponent, {
+      title: confirmation?.title || '',
+      text: confirmation?.text || '',
+      buttons : [
+        {
+          label: confirmation?.submitLabel || 'Отправить',
+          closeModal: true,
+          handler: handler ? handler : (): void => {
+            this.navigate(action, componentId, 'nextStep');
+          },
+        },
+      ],
+      showCrossButton: true,
+      showCloseButton: false,
+    });
   }
 
   private navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
@@ -241,32 +267,6 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
-  }
-
-  private openConfirmationModal(action: ComponentActionDto, componentId: string): void {
-    const data = this.getActionDTO(action);
-    const confirmations = data.scenarioDto?.display?.confirmations;
-    if (!confirmations || !confirmations[action.value]) {
-      throw new Error(`Invalid confirmation with name "${action.value}"`);
-    }
-
-    const confirmation = confirmations[action.value];
-
-    this.modalService.openModal(ConfirmationModalComponent, {
-      title: confirmation?.title || '',
-      text: confirmation?.text || '',
-      buttons : [
-        {
-          label: confirmation?.submitLabel || 'Отправить',
-          closeModal: true,
-          handler: (): void => {
-            this.navigate(action, componentId, 'nextStep');
-          },
-        },
-      ],
-      showCrossButton: true,
-      showCloseButton: false,
-    });
   }
 
   private openDropdownListModal({ value }: ComponentActionDto): void {
