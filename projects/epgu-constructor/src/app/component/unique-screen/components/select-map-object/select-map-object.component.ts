@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
-import { combineLatest, merge, Observable, of } from 'rxjs';
-import { filter, map, reduce, switchMap, takeUntil } from 'rxjs/operators';
+import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
@@ -41,6 +41,7 @@ import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ModalErrorService } from '../../../../modal/modal-error.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -88,6 +89,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private modalService: ModalService,
+    private modalErrorService: ModalErrorService,
     private zone: NgZone,
     private deviceDetector: DeviceDetectorService,
     private eventBusService: EventBusService,
@@ -247,14 +249,22 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private initMap(): void {
     this.setMapOpstions();
-    this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter).subscribe(
-      (coords: IGeoCoordsResponse) => {
-        this.handleFilledCoordinate(coords);
-        this.mapIsLoaded = true;
-        this.initSelectedValue();
-        this.cdr.detectChanges();
-      },
-    );
+    this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter)
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        catchError((error) => {
+          this.modalErrorService.showError(error);
+          return of(null);
+        }),
+        filter((coords: IGeoCoordsResponse) => !!coords),
+        tap((coords: IGeoCoordsResponse) => {
+          this.handleFilledCoordinate(coords);
+          this.mapIsLoaded = true;
+          this.initSelectedValue();
+          this.cdr.detectChanges();
+        }),
+      )
+      .subscribe();
   }
 
   private setMapOpstions(): void {
@@ -311,28 +321,32 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
   private fillCoords(dictionaryFilters: Array<IdictionaryFilter>): Observable<IGeoCoordsResponse> {
-    return this.dictionaryApiService
-      .getSelectMapDictionary(this.getDictionaryType(), this.getOptions(dictionaryFilters))
-      .pipe(
-        switchMap((dictionary: DictionaryResponseForYMap) => {
-          this.isNoDepartmentErrorVisible = !dictionary.total;
-          this.selectMapObjectService.dictionary = dictionary;
-          // Параллелим получение геоточек на 4 запроса
-          const items = [...dictionary.items];
-          const chunkSize = items.length / 4;
-          return merge(
-            this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
-            this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
-            this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
-            this.selectMapObjectService.getCoordsByAddress(items),
-          ).pipe(
-            reduce((acc, val) => {
-              acc.coords = acc.coords.concat(val.coords);
-              return acc;
-            }),
-          );
-        }),
-      );
+    let options;
+    try {
+      options = this.getOptions(dictionaryFilters);
+    } catch (e) {
+      return throwError(e);
+    }
+    return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options).pipe(
+      switchMap((dictionary: DictionaryResponseForYMap) => {
+        this.isNoDepartmentErrorVisible = !dictionary.total;
+        this.selectMapObjectService.dictionary = dictionary;
+        // Параллелим получение геоточек на 4 запроса
+        const items = [...dictionary.items];
+        const chunkSize = items.length / 4;
+        return merge(
+          this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
+          this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
+          this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
+          this.selectMapObjectService.getCoordsByAddress(items),
+        ).pipe(
+          reduce((acc, val) => {
+            acc.coords = acc.coords.concat(val.coords);
+            return acc;
+          }),
+        );
+      }),
+    );
   }
 
   /**

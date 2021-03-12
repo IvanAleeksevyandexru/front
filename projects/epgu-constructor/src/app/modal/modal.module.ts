@@ -8,6 +8,7 @@ import { ContinueOrderModalService } from './continue-order-modal/continue-order
 import { BaseModule } from '../shared/base.module';
 import { DropdownListModalModule } from './dropdown-list-modal/dropdown-list-modal.module';
 import { AttachUploadedFilesModalModule } from './attach-uploaded-files-modal/attach-uploaded-files-modal.module';
+import { ModalErrorService } from './modal-error.service';
 
 /**
  * Домен модал. Тут храним что необходимо для модалок.
@@ -16,6 +17,7 @@ import { AttachUploadedFilesModalModule } from './attach-uploaded-files-modal/at
   providers: [
     ModalService,
     ContinueOrderModalService,
+    ModalErrorService,
   ],
   imports: [
     BaseModule,
