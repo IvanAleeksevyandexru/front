@@ -4,7 +4,6 @@ import {
   CustomComponent,
   CustomScreenComponentTypes,
 } from '../../components/components-list/components-list.types';
-// eslint-disable-next-line max-len
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { ValidationService } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
@@ -136,6 +135,21 @@ describe('ValidationService', () => {
         msg: 'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
       });
     });
+
+    it('should break validation if LabelSection', () => {
+      const labelCmp = { ...mockComponent, type: CustomScreenComponentTypes.LabelSection };
+      const customValidator = service.customValidator(labelCmp);
+      const control = new FormControl(null);
+      expect(customValidator(control)).toEqual(null);
+    });
+
+    it('should return required error if empty value', () => {
+      const customValidator = service.customValidator(mockComponent);
+      const control = new FormControl(null);
+      expect(customValidator(control)).toEqual({ msg: '' });
+      control.markAsTouched();
+      expect(customValidator(control)).toEqual({ msg: 'Обязательно для заполнения' });
+    });
   });
 
   describe('customValidator', () => {
@@ -167,6 +181,38 @@ describe('ValidationService', () => {
       customAsyncValidator(control).subscribe((obj) => {
         expect(obj).toEqual({ msg: 'Обязательно для заполнения' });
         done();
+      });
+    });
+  });
+
+  describe('should return customMessage if validation-fn', () => {
+    const attrs = { validation: [{ type: 'validation-fn', errorMsg: 'ошибка' }] };
+    const components = [
+      { type: CustomScreenComponentTypes.OgrnInput, attrs },
+      { type: CustomScreenComponentTypes.OgrnipInput, attrs },
+      { type: CustomScreenComponentTypes.SnilsInput, attrs },
+      { type: CustomScreenComponentTypes.PersonInnInput, attrs },
+      { type: CustomScreenComponentTypes.LegalInnInput, attrs }
+    ];
+    const control = new FormControl('input');
+    control.setValue('12');
+
+    it('for customValidator', () => {
+      components.forEach((component) => {
+        const customValidator = service.customValidator(component as any);
+        expect(customValidator(control)).toEqual({ msg: 'ошибка' });
+      });
+    });
+
+    it('for customAsyncValidator', (done) => {
+      control.markAsTouched();
+      components.forEach((component) => {
+        component.attrs.validation[0]['updateOn'] = 'blur';
+        const customAsyncValidator = service.customAsyncValidator(component as any, 'blur');
+        customAsyncValidator(control).subscribe((obj) => {
+          expect(obj).toEqual({ msg: 'ошибка' });
+          done();
+        });
       });
     });
   });
