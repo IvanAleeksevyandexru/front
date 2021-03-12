@@ -61,6 +61,7 @@ describe('NavigationComponent', () => {
     it('should be call clickGoBack after enter press', () => {
       const event = {
         code: 'Enter',
+        // eslint-disable-next-line no-empty-function
         preventDefault: () => {},
       };
       jest.spyOn(component, 'clickGoBack');
@@ -71,6 +72,7 @@ describe('NavigationComponent', () => {
     it('should be call clickGoBack after space press', () => {
       const event = {
         code: 'Space',
+        // eslint-disable-next-line no-empty-function
         preventDefault: () => {},
       };
       jest.spyOn(component, 'clickGoBack');

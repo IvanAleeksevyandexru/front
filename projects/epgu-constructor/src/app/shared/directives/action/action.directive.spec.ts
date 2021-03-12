@@ -260,7 +260,7 @@ describe('ActionDirective', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.quizToOrder')).nativeElement;
     fixture.detectChanges();
     spyOn(navigationService, 'redirectTo').and.callThrough();
-    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {} });
+    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {}});
     spyOn(localStorageService, 'set').and.callThrough();
     button.click();
 
