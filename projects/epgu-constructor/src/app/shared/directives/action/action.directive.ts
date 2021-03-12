@@ -19,7 +19,6 @@ export class ActionDirective {
   ) {}
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
-    console.log('test');
     const target = event.target as HTMLButtonElement;
     if (this.canSwitchActionAfterKeyDown(event, target)) {
       event.preventDefault();
