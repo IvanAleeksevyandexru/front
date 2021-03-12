@@ -1,11 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import {
-  DisplayDto,
-  ScenarioDto,
-  ScenarioErrorsDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -20,7 +16,7 @@ import { EventBusService } from '../event-bus/event-bus.service';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { UtilsService } from '../utils/utils.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
-import { ISuggestionItemList } from './autocomplete.inteface';
+import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
@@ -69,7 +65,7 @@ describe('AutocompleteService', () => {
           required: true,
         },
       ],
-      subHeader: { text: '', clarifications: {} },
+      subHeader: { text: '', clarifications: {}},
       header: '',
       label: '',
       id: '',
@@ -94,6 +90,23 @@ describe('AutocompleteService', () => {
     id: 123,
     componentsGroupIndex: 0,
   };
+  let mockSuggestionApi: ISuggestionApi[] = [{
+    mnemonic: 'prev_region',
+    multiple: false,
+    values: [
+      {
+        createdOn: new Date().toISOString(),
+        id: 123,
+        fields: [
+          {
+            keyField: false,
+            mnemonic: 'prev_region',
+            value: 'value',
+          }
+        ]
+      }
+    ]
+  }];
   let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(() => {
@@ -234,30 +247,24 @@ describe('AutocompleteService', () => {
     });
   });
 
-  xdescribe('loadValuesFromCurrentAnswer()', () => {
-    it('should be', () => {
-      expect(service).toBeTruthy();
-    });
-  });
-
   describe('groupSuggestionsApiCall()', () => {
-    it('should autocompleteApiService() and formatAndPassDataToComponents() be called', () => {
+    it('should autocompleteApiService() and formatAndPassDataToSuggestions() be called', () => {
       const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(autocompleteApiService, 'getSuggestionsGroup');
-      const serviceFormatAndPassDataToComponents = spyOn(service, 'formatAndPassDataToComponents');
+      const serviceFormatAndPassDataToSuggestions = spyOn(service, 'formatAndPassDataToSuggestions');
       screenService.display$.subscribe(() => {
         expect(autocompleteApiServiceGetSuggestionFieldsSpy).toBeCalled();
-        expect(serviceFormatAndPassDataToComponents).toBeCalled();
+        expect(serviceFormatAndPassDataToSuggestions).toBeCalled();
       });
     });
   });
 
   describe('fieldsSuggestionsApiCall()', () => {
-    it('should autocompleteApiService() and formatAndPassDataToComponents() be called', () => {
+    it('should autocompleteApiService() and formatAndPassDataToSuggestions() be called', () => {
       const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(autocompleteApiService, 'getSuggestionsFields');
-      const serviceFormatAndPassDataToComponents = spyOn(service, 'formatAndPassDataToComponents');
+      const serviceFormatAndPassDataToSuggestions = spyOn(service, 'formatAndPassDataToSuggestions');
       screenService.display$.subscribe(() => {
         expect(autocompleteApiServiceGetSuggestionFieldsSpy).toBeCalled();
-        expect(serviceFormatAndPassDataToComponents).toBeCalled();
+        expect(serviceFormatAndPassDataToSuggestions).toBeCalled();
       });
     });
   });
@@ -304,7 +311,7 @@ describe('AutocompleteService', () => {
     describe('should return date string', () => {
       const component = _cloneDeep(mockData.display.components[0]);
       component.type = 'DateInput';
-      const value = "2020-01-01T00:00:00.000Z";
+      const value = '2020-01-01T00:00:00.000Z';
       it('formatted', () => {
         expect(service.getDateValueIfDateInput(component, value, true)).toEqual('01.01.2020');
       });
@@ -315,9 +322,12 @@ describe('AutocompleteService', () => {
     });
   });
 
-  xdescribe('formatAndPassDataToComponents()', () => {
-    it('should be', () => {
-      expect(service).toBeTruthy();
+  describe('formatAndPassDataToSuggestions()', () => {
+    it('should return formatted data for suggestions', () => {
+      screenService.display$.subscribe(() => {
+        const result = { pd8_1: { mnemonic: 'prev_region', list: [{ value: 'value', mnemonic: 'prev_region' }] }};
+        expect(service.formatAndPassDataToSuggestions(mockSuggestionApi)).toEqual(result);
+      });
     });
   });
 
@@ -372,7 +382,7 @@ describe('AutocompleteService', () => {
       expect(service.getSuggestionGroupId(mockData.display)).toEqual('groupId');
     });
     it('should return undefined, if suggestionGroupId not presented', () => {
-      const display = mockData.display;
+      const display = _cloneDeep(mockData.display);
       delete display.suggestion.groupId;
       expect(service.getSuggestionGroupId(display)).toBeUndefined();
     });

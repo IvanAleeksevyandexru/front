@@ -179,7 +179,7 @@ export class AutocompleteService {
     this.autocompleteApiService
       .getSuggestionsGroup(this.suggestionGroupId)
       .subscribe((suggestions: ISuggestionApi[]) => {
-        this.formatAndPassDataToComponents(suggestions);
+        this.formatAndPassDataToSuggestions(suggestions);
       });
   }
 
@@ -187,7 +187,7 @@ export class AutocompleteService {
     this.autocompleteApiService
       .getSuggestionsFields(componentsSuggestionsFieldsIds)
       .subscribe((suggestions: ISuggestionApi[]) => {
-        this.formatAndPassDataToComponents(suggestions);
+        this.formatAndPassDataToSuggestions(suggestions);
       });
   }
 
@@ -274,7 +274,7 @@ export class AutocompleteService {
     return value;
   }
 
-  private formatAndPassDataToComponents(suggestions: ISuggestionApi[]): void {
+  private formatAndPassDataToSuggestions(suggestions: ISuggestionApi[]): void {
     let result: { [key: string]: ISuggestionItem } = {};
 
     suggestions.forEach((suggestion) => {
