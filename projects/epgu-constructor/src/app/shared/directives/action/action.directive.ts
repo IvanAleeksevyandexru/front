@@ -19,11 +19,12 @@ export class ActionDirective {
   ) {}
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
-    const target: Element = event.target as Element;
+    const target = event.target as HTMLButtonElement;
     if (
       event.key === 'Enter' &&
       this.action.type === ActionType.nextStep &&
-      !target.classList.contains('multiline-input')
+      !target.classList.contains('multiline-input') &&
+      target?.name !== 'prev'
     ) {
       event.preventDefault();
       this.currentAnswersService.isValid &&

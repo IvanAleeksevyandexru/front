@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../screen/screen.service';
 
@@ -8,10 +8,8 @@ import { ScreenService } from '../../../screen/screen.service';
   styleUrls: ['./navigation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent {
   constructor(private navService: NavigationService, private screenService: ScreenService) {}
-
-  ngOnInit(): void {}
 
   clickGoBack(): void {
     const { firstScreen } = this.screenService.display;
@@ -23,7 +21,7 @@ export class NavigationComponent implements OnInit {
   }
 
   handleKeyEvent(event: KeyboardEvent): void {
-    if (event.code === 'Space') {
+    if (['Space', 'Enter'].includes(event.code)) {
       event.preventDefault();
       this.clickGoBack();
     }
