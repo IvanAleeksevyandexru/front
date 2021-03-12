@@ -268,7 +268,9 @@ describe('InfoScreenComponent', () => {
       let debugEl: DebugElement;
       screenService.component = {
         ...componentSample, 
-        attrs: {hideSocialShare: false}
+        attrs: {
+          hideSocialShare: false
+        }
       };
       screenService.terminal = false;
       fixture.detectChanges();
@@ -277,7 +279,9 @@ describe('InfoScreenComponent', () => {
 
       screenService.component = {
         ...componentSample, 
-        attrs: {hideSocialShare: false}
+        attrs: {
+          hideSocialShare: false
+        }
       };
       screenService.terminal = true;
       fixture.detectChanges();
@@ -286,7 +290,9 @@ describe('InfoScreenComponent', () => {
 
       screenService.component = {
         ...componentSample,
-        attrs: {hideSocialShare: true}
+        attrs: {
+          hideSocialShare: true
+        }
       };
       screenService.terminal = false;
       fixture.detectChanges();
