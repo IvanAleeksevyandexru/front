@@ -52,6 +52,7 @@ describe('InfoScreenComponent', () => {
 
   let navigationService: NavigationServiceStub;
   let screenService: ScreenServiceStub;
+  let locationService: LocationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -87,6 +88,7 @@ describe('InfoScreenComponent', () => {
 
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
+    locationService = TestBed.inject(LocationService);
   });
 
   describe('actionButtons property', () => {
@@ -310,6 +312,18 @@ describe('InfoScreenComponent', () => {
       component.isSocialShareDisabled = true;
       fixture.detectChanges();
       expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
+    });
+
+    it('url property', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      jest.spyOn(locationService, 'getHref').mockReturnValue('http://example.com')
+      fixture.detectChanges();
+      expect(debugEl.componentInstance.url).toBe('http://example.com');
+    });
+  
+    it('isNewDesign property should be true', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
     });
   });
   
