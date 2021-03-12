@@ -19,13 +19,9 @@ export class ActionDirective {
   ) {}
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
+    console.log('test');
     const target = event.target as HTMLButtonElement;
-    if (
-      event.key === 'Enter' &&
-      this.action.type === ActionType.nextStep &&
-      !target.classList.contains('multiline-input') &&
-      target?.name !== 'prev'
-    ) {
+    if (this.canSwitchActionAfterKeyDown(event, target)) {
       event.preventDefault();
       this.currentAnswersService.isValid &&
         this.actionService.switchAction(this.action, this.componentId);
@@ -34,5 +30,14 @@ export class ActionDirective {
 
   @HostListener('click') onClick(): void {
     this.actionService.switchAction(this.action, this.componentId);
+  }
+
+  canSwitchActionAfterKeyDown(event: KeyboardEvent, target: HTMLButtonElement): boolean {
+    return (
+      event.key === 'Enter' &&
+      this.action.type === ActionType.nextStep &&
+      !target.classList.contains('multiline-input') &&
+      target?.name !== 'prev'
+    );
   }
 }
