@@ -44,8 +44,6 @@ export class FileUploadService {
     return this.maxFilesSize;
   }
 
-
-
   getMaxTotalFilesAmount(): number {
     return this.totalMaxFilesAmount;
   }
