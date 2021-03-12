@@ -84,7 +84,7 @@ export class DurationService {
     const startYear = startOfMonth(date);
     return eachYearOfInterval({
       start: startYear,
-      end: this.datesToolsService.add(startYear, 60, 'months'),
+      end: this.datesToolsService.add(startYear, 48, 'months'),
     })
       .map((rangeDate) => this.datesToolsService.add(rangeDate, month, 'months'))
       .map((year, index) => {
