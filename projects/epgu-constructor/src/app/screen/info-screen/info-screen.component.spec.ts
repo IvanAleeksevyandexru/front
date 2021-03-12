@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
@@ -264,29 +264,44 @@ describe('InfoScreenComponent', () => {
   describe('lib-social-share', () => {
     const selector = 'epgu-constructor-screen-container lib-social-share';
 
-    it('should be rendered', () => {
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
+    it('should be rendered if not hideSocialShare and not terminal', () => {
+      let debugEl: DebugElement;
+      screenService.component = {
+        ...componentSample, 
+        attrs: {hideSocialShare: false}
+      };
+      screenService.terminal = false;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
 
-      expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
+      screenService.component = {
+        ...componentSample, 
+        attrs: {hideSocialShare: false}
+      };
+      screenService.terminal = true;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+
+      screenService.component = {
+        ...componentSample,
+        attrs: {hideSocialShare: true}
+      };
+      screenService.terminal = false;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
     });
 
-    it('isNewDesignDisabled property should be true if isSocialShareDisabled or screenService.terminal true', () => {
+    it('isNewDesignDisabled property should be true if isSocialShareDisabled true', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
       
       component.isSocialShareDisabled = false;
-      screenService.terminal = false;
       fixture.detectChanges();
       expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
       
       component.isSocialShareDisabled = true;
-      screenService.terminal = false;
-      fixture.detectChanges();
-      expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
-
-      component.isSocialShareDisabled = false;
-      screenService.terminal = true;
       fixture.detectChanges();
       expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
     });
