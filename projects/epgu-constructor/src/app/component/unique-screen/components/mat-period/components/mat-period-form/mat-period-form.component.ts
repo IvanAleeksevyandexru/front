@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { startWith, takeUntil } from 'rxjs/operators';
 
@@ -59,7 +59,7 @@ export class MatPeriodFormComponent implements OnInit {
       ),
       [this.formField.paymentDate]: new FormControl(
         cachedValue[this.formField.paymentDate] || null,
-        this.validationService.customValidator(this.components[this.formField.paymentDate]),
+        this.getPaymentDateValidators(cachedValue[this.formField.paymentType] || 'one'),
       ),
     });
 
@@ -97,10 +97,18 @@ export class MatPeriodFormComponent implements OnInit {
     this.form
       .get(this.formField.paymentType)
       .valueChanges.pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
+      .subscribe((paymentType: PaymentType) => {
         this.form.get(this.formField.startPayment).setValue(null);
         this.form.get(this.formField.finishPayment).setValue(null);
-        this.form.get(this.formField.paymentDate).setValue(null);
+        const paymentDateControl = this.form.get(this.formField.paymentDate);
+        paymentDateControl.setValue(null);
+        paymentDateControl.setValidators(this.getPaymentDateValidators(paymentType));
       });
+  }
+
+  private getPaymentDateValidators(paymentType: PaymentType): ValidatorFn | null {
+    return paymentType === 'one'
+      ? this.validationService.dateValidator(this.components[this.formField.paymentDate])
+      : this.validationService.customValidator(this.components[this.formField.paymentDate]);
   }
 }
