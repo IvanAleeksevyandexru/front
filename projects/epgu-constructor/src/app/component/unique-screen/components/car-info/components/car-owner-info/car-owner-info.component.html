@@ -7,10 +7,11 @@
         <div class="info-list-value">{{ carOwnerInfo.ownerInfo?.fullName | defaultValue }}</div>
       </div>
 
-      <div class="info-list-group-item" *ngIf="carOwnerInfo.ownerInfo?.document as document">
-        <div class="info-list-subtitle">{{ document.documentType }}</div>
+      <div class="info-list-group-item">
+        <div class="info-list-subtitle">Паспорт собственника</div>
         <div class="info-list-value">
-          {{ document | documentInfo | defaultValue }}
+          <div>серия и номер: {{ carOwnerInfo.ownerInfo?.document?.seriesAndNumber | defaultValue }}</div>
+          <div>дата выдачи: {{ carOwnerInfo.ownerInfo?.document?.issueDate | defaultValue }}</div>
         </div>
       </div>
 

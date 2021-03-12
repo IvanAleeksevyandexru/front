@@ -33,7 +33,6 @@ import { CarOwnerInfoComponent } from '../../components/car-owner-info/car-owner
 import { CarOwnersComponent } from '../../components/car-owners/car-owners.component';
 import { LegalComplianceComponent } from '../../components/legal-compliance/legal-compliance.component';
 import { NotaryInfoComponent } from '../../components/notary-info/notary-info.component';
-import { DocumentInfoPipe } from '../../pipes/document-info.pipe';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 
 describe('CarInfoContainerComponent', () => {
@@ -57,7 +56,6 @@ describe('CarInfoContainerComponent', () => {
         EnginePowerPipe,
         ModelMarkNamePipe,
         CarDatePipe,
-        DocumentInfoPipe,
         DefaultValuePipe,
       ],
       providers: [
