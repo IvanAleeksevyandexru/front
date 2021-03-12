@@ -15,6 +15,7 @@ import {
   Simple,
 } from '../information-center-pfr.models';
 import {
+  DictionaryConditions,
   DictionaryFilters,
   DictionaryItem,
 } from '../../../../../shared/services/dictionary/dictionary-api.types';
@@ -162,7 +163,7 @@ export class InformationCenterPfrContainerComponent {
 
   private getInfoCenterOptionsRequest(
     attributeName: string,
-    condition: string,
+    condition: DictionaryConditions,
     id: string = '',
   ): DictionaryFilters {
     return {

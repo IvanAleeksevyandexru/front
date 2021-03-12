@@ -11,6 +11,7 @@ import {
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import {
+  DictionaryConditions,
   DictionaryFilters,
   DictionaryItem,
 } from '../../../../../shared/services/dictionary/dictionary-api.types';
@@ -84,7 +85,7 @@ export class InformationCenterMvdContainerComponent implements OnInit {
       filter: {
         simple: {
           attributeName: 'REGION_CODE',
-          condition: 'CONTAINS',
+          condition: DictionaryConditions.CONTAINS,
           value: { asString: id },
         },
         tx: 'e838ab71-49dd-11eb-9135-fa163e1007b9',

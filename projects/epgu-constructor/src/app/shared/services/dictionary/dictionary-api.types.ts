@@ -78,28 +78,33 @@ export enum DictionaryUnionKind {
   OR = 'OR'
 }
 
+export enum DictionaryValueTypes {
+  value = 'value',
+  preset = 'preset',
+  root = 'root',
+  ref = 'ref'
+}
+
 export interface DictionarySimpleFilter {
   attributeName: string;
   condition: DictionaryConditions;
   value: DictionaryValue;
+  valueType?: DictionaryValueTypes;
 }
+
 export interface DictionarySubFilter {
   simple: DictionarySimpleFilter;
 }
 
+export interface DictionaryUnionFilter {
+    unionKind: DictionaryUnionKind;
+    subs: Array<DictionarySubFilter>;
+}
+
 export interface DictionaryFilters {
   filter: {
-    union?:
-      {
-        unionKind: DictionaryUnionKind;
-        subs: Array<DictionarySubFilter>;
-      },
-    simple?:
-      {
-        attributeName: string;
-        condition: string;
-        value: { [key: string]: string };
-      }
+    union?: DictionaryUnionFilter,
+    simple?: DictionarySimpleFilter,
     pageNum?: number;
     pageSize?: string;
     parentRefItemValue?: string;

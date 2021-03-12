@@ -29,6 +29,7 @@ import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
+import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 
 @NgModule({
   declarations: [ComponentsListComponent, ShowComponentPipe],
@@ -54,6 +55,7 @@ import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
     ComponentItemModule,
     DocInputModule,
     CheckboxListModule,
+    DropDownDeptsModule
   ],
   providers: [
     ValidationService,
