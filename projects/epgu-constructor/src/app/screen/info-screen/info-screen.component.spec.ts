@@ -316,7 +316,7 @@ describe('InfoScreenComponent', () => {
 
     it('url property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
-      jest.spyOn(locationService, 'getHref').mockReturnValue('http://example.com')
+      jest.spyOn(locationService, 'getHref').mockReturnValue('http://example.com');
       fixture.detectChanges();
       expect(debugEl.componentInstance.url).toBe('http://example.com');
     });
