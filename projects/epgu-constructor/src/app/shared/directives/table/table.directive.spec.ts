@@ -39,6 +39,43 @@ describe('TableDirective', () => {
 
     it('should`n modify', () => {
       expect(outerHtmlEl.querySelectorAll('.header').length).toBe(0);
+      expect(outerHtmlEl.querySelectorAll('.media-table').length).toBeFalsy();
+    });
+  });
+
+  describe('created without data-header', () => {
+    beforeEach( () => {
+      createNewViewChild();
+      component.html = '<table class="epgu-constructor-table"><tr><th></th></tr></table>';
+      fixture.detectChanges();
+    });
+
+    it('should`n modify', () => {
+      expect(outerHtmlEl.querySelectorAll('.header').length).toBe(0);
+      expect(outerHtmlEl.querySelectorAll('.media-table').length).toBeFalsy();
+    });
+  });
+
+
+  describe('should modify', () => {
+    beforeEach( () => {
+      createNewViewChild();
+      component.html = `
+          <table class="epgu-constructor-table">
+              <tr>
+                <td data-header="media"></td>
+              </tr>
+              <tr>
+                <td>...</td>
+              </tr>
+          </table>
+      `;
+      fixture.detectChanges();
+    });
+
+    it('and set .media-table', () => {
+      expect(outerHtmlEl.querySelectorAll('.header').length).toBe(1);
+      expect(outerHtmlEl.querySelectorAll('.media-table').length).toBeTruthy();
     });
   });
 
