@@ -14,6 +14,7 @@ import { ErrorTemplatePipe } from './pipes/error-template.pipe';
 import { EnginePowerPipe } from './pipes/engine-power.pipe';
 import { ModelMarkNamePipe } from './pipes/model-mark-name.pipe';
 import { CarDatePipe } from './pipes/car-date.pipe';
+import { EcologyClassPipe } from './pipes/ecology-class.pipe';
 import { CarOwnerInfoContainerComponent } from './containers/car-owner-info-screen/car-owner-info-container.component';
 import { CarOwnerInfoComponent } from './components/car-owner-info/car-owner-info.component';
 import { DocumentInfoPipe } from './pipes/document-info.pipe';
@@ -38,6 +39,7 @@ const COMPONENTS = [
   CarDatePipe,
   DocumentInfoPipe,
   DefaultValuePipe,
+  EcologyClassPipe,
 ];
 
 @NgModule({

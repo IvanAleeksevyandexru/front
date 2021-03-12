@@ -98,6 +98,12 @@
             <div class="info-list-value">{{ carInfo?.vehicleInfo?.vehicleType | defaultValue}}</div>
           </div>
 
+          <div class="info-list-group-item">
+            <div class="info-list-subtitle">Экологический класс</div>
+            <div class="info-list-value">{{ carInfo?.vehicleInfo?.ecologyClass | ecologyClass | defaultValue}}</div>
+          </div>
+
+
         </div>
 
         <div class="divider info-list-divider"></div>
