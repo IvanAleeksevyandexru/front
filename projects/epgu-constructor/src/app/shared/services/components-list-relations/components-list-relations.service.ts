@@ -148,7 +148,7 @@ export class ComponentsListRelationsService {
     const element = shownElements[dependentComponent.id];
 
     if (this.refRelationService.isDisplayOnRelation(reference.relation)) {
-      const isDisplayOff = this.refRelationService.isDisplayOnRelation(reference.relation);
+      const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
 
       if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
         shownElements[dependentComponent.id] = {
