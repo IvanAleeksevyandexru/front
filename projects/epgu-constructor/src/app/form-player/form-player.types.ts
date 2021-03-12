@@ -47,7 +47,7 @@ export interface ServiceEntity {
   serviceId: string;
   targetId: string;
   serviceInfo?: ServiceInfo;
-  orderId?: string;
+  orderId?: number;
   invited?: boolean;
   canStartNew?: boolean;
 }

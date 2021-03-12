@@ -123,7 +123,7 @@ export class PaymentServiceStub {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(
-    orderId: string,
+    orderId: number,
     code: number = 1,
     attributeValues: PaymentInfoInterface,
   ): Observable<{ value: string }> {
@@ -135,7 +135,7 @@ export class PaymentServiceStub {
    * @param uin - уникальный идентификатор патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByUIN(uin: string | number, orderId: string): Observable<BillsInfoResponse> {
+  getBillsInfoByUIN(uin: string | number, orderId: number): Observable<BillsInfoResponse> {
     return of(billsInfo);
   }
 
@@ -144,7 +144,7 @@ export class PaymentServiceStub {
    * @param billId - номер патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByBillId(billId: number, orderId: string): Observable<BillsInfoResponse> {
+  getBillsInfoByBillId(billId: number, orderId: number): Observable<BillsInfoResponse> {
     return of(billsInfo);
   }
 
@@ -154,7 +154,7 @@ export class PaymentServiceStub {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(
-    orderId: string,
+    orderId: number,
     code: number = 1,
   ): Observable<PaymentInfoForPaidStatusData> {
     return of({

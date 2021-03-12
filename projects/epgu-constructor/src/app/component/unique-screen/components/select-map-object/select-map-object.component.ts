@@ -340,9 +340,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
           this.selectMapObjectService.getCoordsByAddress(items),
         ).pipe(
-          reduce((acc, val) => {
-            acc.coords = acc.coords.concat(val.coords);
-            return acc;
+          reduce((acc, { coords }) => {
+            return { ...acc, coords: [...acc.coords, ...coords] };
           }),
         );
       }),

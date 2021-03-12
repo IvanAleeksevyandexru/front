@@ -40,7 +40,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   @Input() staticDomainAssetsPath: string;
   @Input() uploadedFile: ComponentUploadedFileDto;
   @Input() fileName: string;
-  @Input() orderId: string;
+  @Input() orderId: number;
   @Input() allowedImgTypes: string[];
   @Input() startToUploadPhoto: { isStart: boolean };
   @Input() startToChangeCroppedImageUrl: { isStart: boolean };

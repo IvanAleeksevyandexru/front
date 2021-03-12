@@ -21,8 +21,8 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 
 const makeScreenStoreSample = (): ScreenStore => ({
-  orderId: '653920',
-  currentScenarioId: '1',
+  orderId: 653920,
+  currentScenarioId: 1,
   finishedAndCurrentScreens: ['s1'],
   cachedAnswers: {},
   currentValue: {},

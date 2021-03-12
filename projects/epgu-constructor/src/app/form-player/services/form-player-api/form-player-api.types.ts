@@ -376,14 +376,14 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  currentScenarioId: string;
+  currentScenarioId: number;
   cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
   display: DisplayDto;
   errors: ScenarioErrorsDto;
   gender: Gender;
   finishedAndCurrentScreens: string[];
-  orderId: string;
+  orderId: number;
   callBackOrderId?: string;
   isInternalScenario?: boolean;
   serviceId?: string;
@@ -458,7 +458,7 @@ export enum DTOActionAction {
 }
 
 export interface CheckOrderApiResponse {
-  orderId: string;
+  orderId: number;
   isInviteScenario: boolean;
   canStartNew: boolean;
 }

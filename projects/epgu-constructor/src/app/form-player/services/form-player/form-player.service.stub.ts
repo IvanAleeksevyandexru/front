@@ -9,7 +9,7 @@ export class FormPlayerServiceStub {
   _store: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
       cachedAnswers: {},
-      currentScenarioId: '1',
+      currentScenarioId: 1,
       currentValue: {},
       finishedAndCurrentScreens: [],
       display: {
@@ -32,7 +32,7 @@ export class FormPlayerServiceStub {
       },
       errors: {},
       gender: Gender.male,
-      orderId: '1',
+      orderId: 1,
     }};
   componentId: string;
   componentType: string;

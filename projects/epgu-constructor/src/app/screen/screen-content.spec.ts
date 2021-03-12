@@ -11,8 +11,8 @@ import {
 import { Gender } from '../shared/types/gender';
 
 const screenStoreSample: ScreenStore = {
-  orderId: '653920',
-  currentScenarioId: '1',
+  orderId: 653920,
+  currentScenarioId: 1,
   finishedAndCurrentScreens: ['s1'],
   cachedAnswers: {},
   currentValue: {},

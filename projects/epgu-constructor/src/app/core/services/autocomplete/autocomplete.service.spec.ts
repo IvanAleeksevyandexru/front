@@ -35,7 +35,7 @@ describe('AutocompleteService', () => {
   let modalService: ModalService;
   let mockData: ScenarioDto = {
     applicantAnswers: {},
-    currentScenarioId: '',
+    currentScenarioId: null,
     cachedAnswers: {},
     currentValue: {},
     display: {
@@ -79,7 +79,7 @@ describe('AutocompleteService', () => {
     errors: {},
     gender: Gender.male,
     finishedAndCurrentScreens: [],
-    orderId: '10462',
+    orderId: 10462,
     isInternalScenario: false,
     serviceId: '487545987',
     currentUrl: '487545987',

@@ -30,7 +30,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     return this.formPlayerApiService.checkIfOrderExist();
   }
 
-  public getOrderStatus(orderId: string): Observable<CheckOrderApiResponse> {
+  public getOrderStatus(orderId: number): Observable<CheckOrderApiResponse> {
     return this.formPlayerApiService.getOrderStatus(orderId);
   }
 
@@ -62,7 +62,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Получает и устанавливает данные для заявления для id услуги
    * @param orderId - идентификатор черновика
    */
-  getOrderData(orderId: string): void {
+  getOrderData(orderId: number): void {
     this.formPlayerApiService.getServiceData(orderId).subscribe(
       (response) => this.processResponse(response),
       (error) => this.sendDataError(error),

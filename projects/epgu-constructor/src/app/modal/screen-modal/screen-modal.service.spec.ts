@@ -21,7 +21,7 @@ describe('ScreenModalService', () => {
   let formPlayerService: FormPlayerService;
   let formPlayerApiService: FormPlayerApiService;
   let logger: LoggerService;
-  let orderId: string;
+  let orderId: number;
   let navigation: Navigation;
 
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe('ScreenModalService', () => {
   });
 
   beforeEach(() => {
-    orderId = '1234';
+    orderId = 1234;
     service['_store'] = JSON.parse(JSON.stringify(response));
   });
 

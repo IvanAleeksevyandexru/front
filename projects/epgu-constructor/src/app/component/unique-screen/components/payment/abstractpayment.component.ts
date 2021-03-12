@@ -79,7 +79,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   private payStatusIntervalLink = null;
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
-  private orderId: string; // Номер заявления
+  private orderId: number; // Номер заявления
 
   constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
