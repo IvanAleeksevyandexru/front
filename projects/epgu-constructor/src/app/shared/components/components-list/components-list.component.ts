@@ -62,7 +62,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
 
-  shownElements: { [key: string]: boolean } = {};
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;

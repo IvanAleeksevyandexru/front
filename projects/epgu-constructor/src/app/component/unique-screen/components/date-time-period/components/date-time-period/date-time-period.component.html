@@ -1,0 +1,97 @@
+<epgu-constructor-screen-pad [formGroup]="group">
+  <h5 class="date-time-period-title">Начало периода</h5>
+  <epgu-constructor-input-error
+    *ngIf="(this.group.controls.startDate.invalid && this.group.controls.startDate.touched) || (this.group.controls.startTime.invalid && this.group.controls.startTime.touched)"
+  >
+    не все поля заполнены
+  </epgu-constructor-input-error>
+  <div class="form">
+    <div class="grid-col-6 grid-col-12-sm form__item">
+      <epgu-constructor-label
+        [label]="attrs.beginDate?.label || ''"
+        [for]="'startDate'"
+      ></epgu-constructor-label>
+
+      <epgu-constructor-constructor-date-picker
+        [id]="'startDate'"
+        [minDate]="'today'"
+        [control]="group.controls.startDate"
+        [clearable]="true"
+        [invalid]="group.controls.startDate.invalid && group.controls.startDate.touched"
+      ></epgu-constructor-constructor-date-picker>
+    </div>
+
+    <div class="grid-col-6 grid-col-12-sm form__item">
+      <epgu-constructor-label
+        [label]="attrs.beginTime?.label || ''"
+        [for]="'startTime'"
+      ></epgu-constructor-label>
+
+      <epgu-constructor-constructor-dropdown
+        [id]="'startTime'"
+        [items]="startTimeDropdownItems"
+        [control]="group.controls.startTime"
+        [invalid]="group.controls.startTime.invalid && group.controls.startTime.touched"
+      ></epgu-constructor-constructor-dropdown>
+    </div>
+  </div>
+
+
+  <h5 class="date-time-period-title">Окончание периода</h5>
+
+  <div class="date-time-period-btns-wrapper">
+    <div class="item hint-wrapper">
+      <div class="item__hint" (click)="setOneDayPeriod()">
+        Сутки
+      </div>
+    </div>
+
+    <div class="item hint-wrapper">
+      <div class="item__hint" (click)="setOneYearPeriod()">
+        Год
+      </div>
+    </div>
+
+    <div class="item hint-wrapper">
+      <div class="item__hint" (click)="setOneHundredYearsPeriod()">
+        Бессрочно
+      </div>
+    </div>
+  </div>
+
+  <epgu-constructor-input-error
+    *ngIf="(this.group.controls.endDate.invalid && this.group.controls.endDate.touched) || (this.group.controls.endTime.invalid && this.group.controls.endTime.touched)"
+  >
+    не все поля заполнены
+  </epgu-constructor-input-error>
+  <div class="form">
+    <div class="grid-col-6 grid-col-12-sm form__item">
+      <epgu-constructor-label
+        [label]="attrs.endDate?.label || ''"
+        [for]="'endDate'"
+      ></epgu-constructor-label>
+
+      <epgu-constructor-constructor-date-picker
+        [id]="'endDate'"
+        [minDate]="group.controls.startDate.value"
+        [control]="group.controls.endDate"
+        [clearable]="true"
+        [invalid]="group.controls.endDate.invalid && group.controls.endDate.touched"
+      ></epgu-constructor-constructor-date-picker>
+    </div>
+
+    <div class="grid-col-6 grid-col-12-sm form__item">
+      <epgu-constructor-label
+        [label]="attrs.endTime?.label || ''"
+        [for]="'endTime'"
+      ></epgu-constructor-label>
+
+      <epgu-constructor-constructor-dropdown
+        [id]="'endTime'"
+        [items]="endTimeDropdownItems"
+        [control]="group.controls.endTime"
+        [invalid]="group.controls.endTime.invalid && group.controls.endTime.touched"
+      ></epgu-constructor-constructor-dropdown>
+    </div>
+  </div>
+</epgu-constructor-screen-pad>

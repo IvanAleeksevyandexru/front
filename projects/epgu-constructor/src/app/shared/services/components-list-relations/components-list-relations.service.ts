@@ -18,6 +18,7 @@ import {
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../screen/screen.service';
+import { RefRelationService } from '../ref-relation/ref-relation.service';
 
 const EMPTY_VALUE = '';
 const NON_EMPTY_VALUE = '*';
@@ -43,6 +44,7 @@ export class ComponentsListRelationsService {
 
   constructor(
     private dateRangeService: DateRangeService,
+    private refRelationService: RefRelationService,
   ) { }
 
   public updateDependents(
@@ -145,8 +147,8 @@ export class ComponentsListRelationsService {
     const isDependentDisabled: boolean = dependentComponent.attrs?.disabled;
     const element = shownElements[dependentComponent.id];
 
-    if (reference.relation === CustomComponentRefRelation.displayOn) {
-      const isDisplayOff = element.relation === CustomComponentRefRelation.displayOff;
+    if (this.refRelationService.isDisplayOnRelation(reference.relation)) {
+      const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
 
       if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
         shownElements[dependentComponent.id] = {
@@ -157,7 +159,7 @@ export class ComponentsListRelationsService {
       }
     }
 
-    if (reference.relation === CustomComponentRefRelation.disabled) {
+    if (this.refRelationService.isDisabledRelation(reference.relation)) {
       if (this.isValueEquals(reference.val, componentVal)) {
         patchValueAndDisable(dependentControl, reference.defaultValue);
       } else {
@@ -165,7 +167,7 @@ export class ComponentsListRelationsService {
       }
     }
 
-    if (reference.relation === CustomComponentRefRelation.filterOn) {
+    if (this.refRelationService.isFilterOnRelation(reference.relation)) {
       if (
         this.isValueEquals(reference.val, componentVal) &&
         dictionaryToolsService.isDictionaryLike(dependentComponent.type)
@@ -176,20 +178,20 @@ export class ComponentsListRelationsService {
       }
     }
 
-    if (reference.relation === CustomComponentRefRelation.calc) {
+    if (this.refRelationService.isCalcRelation(reference.relation)) {
       const relation: CustomComponentRef = this.getRelation(dependentComponent ,reference);
       const newValue = this.calculateValueFromRelation(relation, components, form);
       dependentControl.get('value').patchValue(newValue);
     }
 
-    if (reference.relation === CustomComponentRefRelation.getValue) {
+    if (this.refRelationService.isGetValueRelation(reference.relation)) {
       const relation: CustomComponentRef = this.getRelation(dependentComponent ,reference);
       const newValue = this.getValueFromRelationComponent(relation, components, componentVal, form);
       dependentControl.get('value').patchValue(newValue);
     }
 
-    if (reference.relation === CustomComponentRefRelation.displayOff) {
-      const isDisplayOn = element.relation === CustomComponentRefRelation.displayOn;
+    if (this.refRelationService.isDisplayOffRelation(reference.relation)) {
+      const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
 
       if ((isDisplayOn && element.isShown === true) || !isDisplayOn) {
         shownElements[dependentComponent.id] = {
@@ -207,7 +209,7 @@ export class ComponentsListRelationsService {
       который бы отвечал за работу с предазгруженными данными, в том числе с механизмом рефов.
       А в идеале передать всю эту историю на бэк */
     if (
-      reference.relation === CustomComponentRefRelation.autofillFromDictionary &&
+      this.refRelationService.isAutofillFromDictionaryRelation(reference.relation) &&
       initInitialValues
     ) {
       const attributeName = reference.val as string;
