@@ -76,7 +76,9 @@ describe('EmployeeHistoryFormComponent', () => {
       })
       .compileComponents();
     datesToolsService = TestBed.inject(DatesToolsService);
-    jest.spyOn(datesToolsService, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
+    jest
+      .spyOn(datesToolsService, 'getToday')
+      .mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
   });
 
   beforeEach(() => {
@@ -145,28 +147,28 @@ describe('EmployeeHistoryFormComponent', () => {
       fixture.detectChanges();
       const expectedValue = [
         {
+          type: 'student',
+          from: { year: 2010, month: 0, monthCode: 'JANUARY' },
+          to: { year: 2016, month: 0, monthCode: 'JANUARY' },
+          error: null,
+          position: '',
+          place: 'test',
           address: 'test',
           checkboxToDate: false,
-          error: null,
-          from: { month: 0, monthCode: 'JANUARY', year: 2010 },
+          minDateTo: { year: 2010, month: 0, monthCode: 'JANUARY' },
           label: 'Я учился',
-          minDateTo: { month: 0, monthCode: 'JANUARY', year: 2010 },
-          place: 'test',
-          position: '',
-          to: { month: 0, monthCode: 'JANUARY', year: 2016 },
-          type: 'student',
         },
         {
+          type: 'student',
+          from: { year: 2016, month: 1, monthCode: 'FEBRUARY' },
+          to: { year: 2021, month: 0, monthCode: 'JANUARY' },
+          error: null,
+          position: '',
+          place: 'test',
           address: 'test',
           checkboxToDate: true,
-          error: null,
-          from: { month: 1, monthCode: 'FEBRUARY', year: 2016 },
+          minDateTo: { year: 2016, month: 1, monthCode: 'FEBRUARY' },
           label: 'Я учился',
-          minDateTo: { month: 1, monthCode: 'FEBRUARY', year: 2016 },
-          place: 'test',
-          position: '',
-          to: { month: 1, monthCode: 'FEBRUARY', year: 2021 },
-          type: 'student',
         },
       ];
 
