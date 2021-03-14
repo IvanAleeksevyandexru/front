@@ -204,6 +204,7 @@ export interface TimerRulesDto {
 export interface ComponentFilterDto {
   key: string;
   value: Array<string>;
+  isExcludeType: boolean;
 }
 
 export interface ComponentImageDto {

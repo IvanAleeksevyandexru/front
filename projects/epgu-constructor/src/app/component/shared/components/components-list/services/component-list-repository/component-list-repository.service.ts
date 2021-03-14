@@ -96,9 +96,13 @@ export class ComponentListRepositoryService {
       map((dictionary) => {
         // TODO: удалить когда будет реализована фильтрация справочника на строне RTlabs
         if (component.attrs.filter) {
-          const items = dictionary.data.items.filter((data) =>
-            component.attrs.filter.value.includes(data[component.attrs.filter.key]),
-          );
+          const items = dictionary.data.items.filter((item) => {
+            if (component.attrs.filter.isExcludeType) {
+              return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+            } else {
+              return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+            }
+          });
           const data: DictionaryResponse = {
             ...dictionary.data,
             items,
