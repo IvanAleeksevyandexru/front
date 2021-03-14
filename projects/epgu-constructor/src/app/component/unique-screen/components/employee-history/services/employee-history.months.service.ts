@@ -13,7 +13,6 @@ import {
   DATE_STRING_LLLL_YYYY_FORMAT,
   DATE_STRING_SLASH_FORMAT,
 } from '../../../../../shared/constants/dates';
-import { eachMonthOfInterval } from "date-fns";
 
 @Injectable()
 export class EmployeeHistoryMonthsService {
