@@ -11,4 +11,5 @@ export class ConstructorCheckboxComponent {
   @Input() control: AbstractControl;
   @Input() labelText: string;
   @Input() required: boolean;
+  @Input() hidden: boolean;
 }
