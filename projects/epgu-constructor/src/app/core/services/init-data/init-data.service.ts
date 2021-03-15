@@ -24,7 +24,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this.serviceId = service.serviceId;
     this.targetId = service.targetId;
     this.serviceInfo = service.serviceInfo;
-    this.orderId = service.orderId;
+    this.orderId = service.orderId as unknown as number;
     this.invited = service.invited;
     this.canStartNew = service.canStartNew;
     this.initState = context?.initState;
