@@ -65,45 +65,51 @@ export class MatPeriodFormComponent implements OnInit {
 
     this.form.valueChanges
       .pipe(startWith(this.form.value), takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: FormValue['data']) => {
-        const { paymentDate, startPayment, paymentType } = value;
-        const transformedPaymentDate = this.durationService.transformDayToDate(
-          paymentDate,
-          startPayment?.date,
-          paymentType,
-        );
-        this.updateStateEvent.emit({
-          isValid: this.form.valid,
-          data: {
-            ...value,
-            paymentDate: transformedPaymentDate,
-          },
-        });
-      });
+      .subscribe((value: FormValue['data']) => this.updateState(value));
 
     this.form
       .get(this.formField.startPayment)
       .valueChanges.pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((date) => {
-        if (date) {
-          this.form.get(this.formField.finishPayment).setValue(null);
-          this.form.get(this.formField.finishPayment).enable();
-        } else {
-          this.form.get(this.formField.finishPayment).setValue(null);
-          this.form.get(this.formField.finishPayment).disable();
-        }
-      });
+      .subscribe((date) => this.updateFinishPaymentControl(date));
 
     this.form
       .get(this.formField.paymentType)
       .valueChanges.pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((paymentType: PaymentType) => {
-        this.form.get(this.formField.startPayment).setValue(null);
-        this.form.get(this.formField.finishPayment).setValue(null);
-        const paymentDateControl = this.form.get(this.formField.paymentDate);
-        paymentDateControl.setValue(null);
-        paymentDateControl.setValidators(this.getPaymentDateValidators(paymentType));
-      });
+      .subscribe((paymentType: PaymentType) => this.updatePaymentDateControl(paymentType));
+  }
+
+  private updateState(value: FormValue['data']): void {
+    const { paymentDate, startPayment, paymentType } = value;
+    const transformedPaymentDate = this.durationService.transformDayToDate(
+      paymentDate,
+      startPayment?.date,
+      paymentType,
+    );
+    this.updateStateEvent.emit({
+      isValid: this.form.valid,
+      data: {
+        ...value,
+        paymentDate: transformedPaymentDate,
+      },
+    });
+  }
+
+  private updateFinishPaymentControl(date: string): void {
+    if (date) {
+      this.form.get(this.formField.finishPayment).setValue(null);
+      this.form.get(this.formField.finishPayment).enable();
+    } else {
+      this.form.get(this.formField.finishPayment).setValue(null);
+      this.form.get(this.formField.finishPayment).disable();
+    }
+  }
+
+  private updatePaymentDateControl(paymentType: PaymentType): void {
+    this.form.get(this.formField.startPayment).setValue(null);
+    this.form.get(this.formField.finishPayment).setValue(null);
+    const paymentDateControl = this.form.get(this.formField.paymentDate);
+    paymentDateControl.setValue(null);
+    paymentDateControl.setValidators(this.getPaymentDateValidators(paymentType));
   }
 
   private getPaymentDateValidators(paymentType: PaymentType): ValidatorFn | null {
