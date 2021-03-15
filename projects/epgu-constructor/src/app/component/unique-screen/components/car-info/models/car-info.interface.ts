@@ -47,6 +47,7 @@ export interface VehicleInfo {
   chassisNumber: string;
   carcaseNumber: string;
   vehicleType: string;
+  ecologyClass: string | number;
   engineVolume: string;
   enginePowerHorse: string;
   enginePowerVt: string;

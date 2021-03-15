@@ -27,6 +27,7 @@ import { EnginePowerPipe } from '../../pipes/engine-power.pipe';
 import { ModelMarkNamePipe } from '../../pipes/model-mark-name.pipe';
 import { CarDatePipe } from '../../pipes/car-date.pipe';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
+import { EcologyClassPipe } from '../../pipes/ecology-class.pipe';
 import { ExpansionLinkComponent } from '../../components/expansion-link/expansion-link.component';
 import { CarOwnerInfoContainerComponent } from '../car-owner-info-screen/car-owner-info-container.component';
 import { CarOwnerInfoComponent } from '../../components/car-owner-info/car-owner-info.component';
@@ -57,6 +58,7 @@ describe('CarInfoContainerComponent', () => {
         ModelMarkNamePipe,
         CarDatePipe,
         DefaultValuePipe,
+        EcologyClassPipe
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
