@@ -15,7 +15,7 @@ interface ErrorParams {
   clientError: string;
   id: string;
   name: string;
-  orderId: string;
+  orderId: number;
   stack: string;
 }
 

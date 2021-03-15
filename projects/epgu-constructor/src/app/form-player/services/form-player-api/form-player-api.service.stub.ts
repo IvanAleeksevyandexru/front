@@ -32,7 +32,7 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
-  public getOrderId(): Observable<string> {
+  public getOrderId(): Observable<number> {
     return of(null);
   }
 }

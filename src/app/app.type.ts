@@ -4,7 +4,7 @@ export interface AppConfig {
   serviceId: string;
   targetId: string;
   serviceInfo: string;
-  orderId?: string;
+  orderId?: number;
   invited?: boolean;
   canStartNew?: boolean;
   initState?: string;

@@ -30,7 +30,7 @@ import { CustomComponent } from '../../../../shared/components/components-list/c
 export class InvitationErrorComponent implements OnInit {
   @Input() data: ComponentDto;
   @Input() applicantAnswers: ApplicantAnswersDto;
-  @Input() orderId: string;
+  @Input() orderId: number;
   @Input() header: string;
 
   public defaultImgSrc = `${this.config.staticDomainAssetsPath}/assets/icons/svg/warn.svg`;

@@ -340,6 +340,10 @@ export class DictionaryToolsService {
         asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
       }),
     };
-    return filterTypes[dFilter.valueType](dFilter);
+    const calcFunc = filterTypes[dFilter.valueType];
+    if (!calcFunc) {
+      throw `Неверный valueType для фильтров карты - ${dFilter.valueType}`;
+    }
+    return calcFunc(dFilter);
   }
 }

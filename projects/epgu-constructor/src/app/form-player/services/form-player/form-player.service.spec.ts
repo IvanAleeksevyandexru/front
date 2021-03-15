@@ -36,7 +36,7 @@ describe('FormPlayerService', () => {
   let formPlayerApiService: FormPlayerApiService;
   let logger: LoggerService;
   let location: Location;
-  let orderId: string;
+  let orderId: number;
   let navigation: Navigation;
   beforeEach(() => {
     global.window.scroll = jest.fn();
