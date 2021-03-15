@@ -54,8 +54,6 @@ export class MatPeriodContainerComponent implements AfterViewInit {
   }
 
   updateState({ data, isValid }: FormValue): void {
-    this.currentAnswersService.state = data;
-    this.currentAnswersService.isValid = this.isValidForm(data) && isValid;
     this.paymentType = data[FormField.paymentType];
 
     this.updateDescription(
@@ -63,6 +61,9 @@ export class MatPeriodContainerComponent implements AfterViewInit {
       data[FormField.finishPayment]?.value,
       data[FormField.startPayment]?.value,
     );
+
+    this.currentAnswersService.state = { ...data, totalAmount: this.balanceAmount.toFixed(2) };
+    this.currentAnswersService.isValid = this.isValidForm(data) && isValid;
   }
 
   private updateDescription(

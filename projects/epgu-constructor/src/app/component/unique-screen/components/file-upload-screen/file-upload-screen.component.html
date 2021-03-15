@@ -27,7 +27,7 @@
       <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
 
       <epgu-constructor-file-upload
-        [objectId]="screenService.orderId$ | async"
+        [objectId]="screenService.orderIdAsString$ | async"
         [applicantAnswers]="applicantAnswers"
         [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
         [attributes]="$any(data).attrs"

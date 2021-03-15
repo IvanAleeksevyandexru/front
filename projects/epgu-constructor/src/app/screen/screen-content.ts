@@ -29,7 +29,7 @@ export class ScreenContent {
   private _showNav = new BehaviorSubject<boolean>(null);
   private _displayCssClass = new BehaviorSubject<string>(null);
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
-  private _orderId = new BehaviorSubject<string>(null);
+  private _orderId = new BehaviorSubject<number>(null);
   private _component = new BehaviorSubject<ComponentDto>(null);
   private _componentType = new BehaviorSubject<string>(null);
   private _componentValue = new BehaviorSubject<ComponentValue>(null);
@@ -171,14 +171,17 @@ export class ScreenContent {
     return this._screenType.asObservable();
   }
 
-  public get orderId(): string {
+  public get orderId(): number {
     return this._orderId.getValue();
   }
-  public set orderId(val: string) {
+  public set orderId(val: number) {
     this._orderId.next(val);
   }
-  public get orderId$(): Observable<string> {
+  public get orderId$(): Observable<number> {
     return this._orderId.asObservable();
+  }
+  public get orderIdAsString$(): Observable<string> {
+    return this._orderId.asObservable().pipe(map(id => id.toString()));
   }
 
   public get component(): ComponentDto {

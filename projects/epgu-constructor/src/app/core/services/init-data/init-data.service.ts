@@ -8,7 +8,7 @@ import { LoggerService } from '../logger/logger.service';
 @Injectable()
 export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _serviceId: string;
-  private _orderId: string;
+  private _orderId: number;
   private _targetId: string;
   private _serviceInfo: ServiceInfo;
   private _invited: boolean;
@@ -56,11 +56,11 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this._serviceInfo = serviceInfo;
   }
 
-  get orderId(): string {
+  get orderId(): number {
     return this._orderId;
   }
 
-  set orderId(orderId: string) {
+  set orderId(orderId: number) {
     this._orderId = orderId;
   }
 

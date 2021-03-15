@@ -38,7 +38,7 @@ describe('ErrorsInterceptor', () => {
   let httpMock: HttpTestingController;
 
   let serviceId = 'local';
-  let orderId = '12345';
+  let orderId = 12345;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

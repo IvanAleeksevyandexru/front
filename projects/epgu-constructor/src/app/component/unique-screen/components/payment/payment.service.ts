@@ -61,7 +61,7 @@ export class PaymentService {
    * @param attributeValues - дополнительные параметры
    */
   getUinByOrderId(
-    orderId: string,
+    orderId: number,
     code: number = 1,
     attributeValues: PaymentInfoInterface,
   ): Observable<{ value: string }> {
@@ -77,7 +77,7 @@ export class PaymentService {
    * @param uin - уникальный идентификатор патежа
    * @param orderId - идентификатор заявления
    */
-  getBillsInfoByUIN(uin: string | number, orderId: string): Observable<BillsInfoResponse> {
+  getBillsInfoByUIN(uin: string | number, orderId: number): Observable<BillsInfoResponse> {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/pay/v1/bills`
       : `${this.config.billsApiUrl}bills`;
@@ -109,7 +109,7 @@ export class PaymentService {
    * @param code - идентификатор заявителя
    */
   getPaymentStatusByUIN(
-    orderId: string,
+    orderId: number,
     code: number = 1,
   ): Observable<PaymentInfoForPaidStatusData> {
     const urlPrefix = this.config.mocks.includes('payment')

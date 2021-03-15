@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   serviceId: '10000000100',
   targetId: '-10000000100',
-  orderId: '',
+  orderId: null,
   invited: false,
   core: {
     config: {
