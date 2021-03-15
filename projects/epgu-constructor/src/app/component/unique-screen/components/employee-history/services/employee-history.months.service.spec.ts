@@ -24,10 +24,11 @@ describe('EmployeeHistoryMonthsService', () => {
   });
 
   describe('initSettings', () => {
-    it('should be set minDateFrom, minDateTo, maxDate, availableMonths', () => {
+    it('should be set minDateFrom, minDateTo, maxDate, availableMonths', async () => {
+      jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date());
       const dateMock = new MonthYear(1, 2021);
       jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
-      service.initSettings();
+      await service.initSettings();
 
       expect(service.minDateFrom).toEqual(dateMock);
       expect(service.minDateTo).toEqual(dateMock);
@@ -63,7 +64,8 @@ describe('EmployeeHistoryMonthsService', () => {
   });
 
   describe('updateAvailableMonths', () => {
-    it('should be change availableMonths', () => {
+    it('should be change availableMonths', async () => {
+      jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date());
       const expectedMonth: EmployeeHistoryAvailableDates = {
         date: '01/2021',
         checked: true,
@@ -84,22 +86,24 @@ describe('EmployeeHistoryMonthsService', () => {
       ];
       const dateMock = new MonthYear(1, 2021);
       jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
-      service.initSettings();
-      service.updateAvailableMonths(generation);
+      await service.initSettings();
+      await service.updateAvailableMonths(generation);
       const month = service.availableMonths.find((month) => month.date === '01/2021');
       expect(month).toEqual(expectedMonth);
     });
 
-    it('should be call isMonthComplete$', () => {
+    it('should be call isMonthComplete$', async () => {
+      jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date());
       jest.spyOn(service.isMonthComplete$, 'next');
-      service.updateAvailableMonths([]);
+      await service.updateAvailableMonths([]);
       expect(service.isMonthComplete$.next).toHaveBeenCalled();
     });
 
-    it('should be call isMonthComplete$ if isNonStop', () => {
+    it('should be call isMonthComplete$ if isNonStop', async () => {
+      jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date());
       jest.spyOn(service.isMonthComplete$, 'next');
       service.isNonStop = true;
-      service.updateAvailableMonths([]);
+      await service.updateAvailableMonths([]);
       expect(service.isMonthComplete$.next).toHaveBeenCalled();
     });
   });
