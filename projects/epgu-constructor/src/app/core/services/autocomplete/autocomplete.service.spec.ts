@@ -23,8 +23,8 @@ import { ComponentsListRelationsService } from '../../../shared/services/compone
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
+import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
-import { RefRelationService, } from '../../../shared/services/ref-relation/ref-relation.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -57,6 +57,19 @@ describe('AutocompleteService', () => {
                 suggestionId: 'prev_region',
               },
             ],
+            repeatableComponents: [
+              [
+                {
+                  id: 'pd8_1',
+                  type: 'Lookup',
+                  label: 'Прежний регион',
+                  attrs: { dictionaryType: 'regions_56555' },
+                  value: '',
+                  required: true,
+                  suggestionId: 'prev_region',
+                },
+              ],
+            ],
             fields: [],
             actions: [],
             refs: {},
@@ -65,7 +78,7 @@ describe('AutocompleteService', () => {
           required: true,
         },
       ],
-      subHeader: { text: '', clarifications: {}},
+      subHeader: { text: '', clarifications: {} },
       header: '',
       label: '',
       id: '',
@@ -90,23 +103,25 @@ describe('AutocompleteService', () => {
     id: 123,
     componentsGroupIndex: 0,
   };
-  let mockSuggestionApi: ISuggestionApi[] = [{
-    mnemonic: 'prev_region',
-    multiple: false,
-    values: [
-      {
-        createdOn: new Date().toISOString(),
-        id: 123,
-        fields: [
-          {
-            keyField: false,
-            mnemonic: 'prev_region',
-            value: 'value',
-          }
-        ]
-      }
-    ]
-  }];
+  let mockSuggestionApi: ISuggestionApi[] = [
+    {
+      mnemonic: 'prev_region',
+      multiple: false,
+      values: [
+        {
+          createdOn: new Date().toISOString(),
+          id: 123,
+          fields: [
+            {
+              keyField: false,
+              mnemonic: 'prev_region',
+              value: 'value',
+            },
+          ],
+        },
+      ],
+    },
+  ];
   let deviceDetectorService: DeviceDetectorService;
 
   beforeEach(() => {
@@ -144,57 +159,45 @@ describe('AutocompleteService', () => {
     screenService.display = mockData.display;
   });
 
-  afterEach(() => {
-    service.init();
-  });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
   describe('init()', () => {
     it('should set suggestionGroupId after inited, if any', () => {
-      screenService.display$.subscribe(() => {
-        expect(service.suggestionGroupId).toEqual('groupId');
-      });
+      service.init();
+      expect(service.suggestionGroupId).toEqual('groupId');
     });
 
     it('should collect componentsSuggestionsFieldsIds after inited, if any', () => {
-      screenService.display$.subscribe(() => {
-        expect(service.getComponentsSuggestionsFieldsIds(mockData.display)).toBeGreaterThan(0);
-      });
+      service.init();
+      expect(service.getComponentsSuggestionsFieldsIds(mockData.display).length).toBeGreaterThan(0);
     });
 
     it('should collect repeatableComponents after inited, if any', () => {
-      screenService.display$.subscribe(() => {
-        expect(service.repeatableComponents.length).toBeGreaterThan(0);
-      });
+      service.init();
+      expect(service.repeatableComponents.length).toBeGreaterThan(0);
     });
 
     it('should only call groupSuggestionsApiCall() after inited, if groupId is presented', () => {
       const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
       const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
-      screenService.display$.subscribe(() => {
-        expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
-        expect(serviceFieldsSuggestionsApiCallSpy).toBeCalledTimes(0);
-      });
+      service.init();
+      expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
+      expect(serviceFieldsSuggestionsApiCallSpy).toBeCalledTimes(0);
     });
 
-    it(
-      `should only call fieldsSuggestionsApiCall() after inited,
-      if groupId is not presented and componentsSuggestionsFieldsIds is not empty`,
-      () => {
-        const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
-        const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
-        const display = { ...mockData.display };
-        delete display.suggestion;
-        screenService.display = display;
-        screenService.display$.subscribe(() => {
-          expect(serviceGroupSuggestionsApiCallSpy).toBeCalledTimes(0);
-          expect(serviceFieldsSuggestionsApiCallSpy).toBeCalled();
-        });
-      }
-    );
+    it(`should only call fieldsSuggestionsApiCall() after inited,
+      if groupId is not presented and componentsSuggestionsFieldsIds is not empty`, () => {
+      const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
+      const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
+      const display = _cloneDeep(mockData.display);
+      delete display.suggestion;
+      screenService.display = display;
+      service.init();
+      expect(serviceGroupSuggestionsApiCallSpy).toBeCalledTimes(0);
+      expect(serviceFieldsSuggestionsApiCallSpy).toBeCalled();
+    });
 
     it('should call loadValuesFromCurrentAnswer() on "suggestionSelectedEvent"', () => {
       const serviceLoadValuesFromCurrentAnswerSpy = spyOn(service, 'loadValuesFromCurrentAnswer');
@@ -205,7 +208,10 @@ describe('AutocompleteService', () => {
     });
 
     it('should call findAndUpdateComponentWithValue() on "suggestionSelectedEvent"', () => {
-      const serviceFindAndUpdateComponentWithValueSpy = spyOn(service, 'findAndUpdateComponentWithValue');
+      const serviceFindAndUpdateComponentWithValueSpy = spyOn(
+        service,
+        'findAndUpdateComponentWithValue',
+      );
       eventBusService.on('suggestionSelectedEvent').subscribe(() => {
         expect(serviceFindAndUpdateComponentWithValueSpy).toBeCalled();
       });
@@ -238,7 +244,7 @@ describe('AutocompleteService', () => {
 
     it('should call fieldsSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
       const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
-      const display = { ...mockData.display };
+      const display = _cloneDeep(mockData.display);
       delete display.suggestion;
       eventBusService.on('suggestionDeleteEvent').subscribe(() => {
         expect(serviceFieldsSuggestionsApiCallSpy).toBeCalled();
@@ -248,53 +254,62 @@ describe('AutocompleteService', () => {
   });
 
   describe('groupSuggestionsApiCall()', () => {
-    it('should autocompleteApiService() and formatAndPassDataToSuggestions() be called', () => {
-      const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(autocompleteApiService, 'getSuggestionsGroup');
-      const serviceFormatAndPassDataToSuggestions = spyOn(service, 'formatAndPassDataToSuggestions');
-      screenService.display$.subscribe(() => {
-        expect(autocompleteApiServiceGetSuggestionFieldsSpy).toBeCalled();
-        expect(serviceFormatAndPassDataToSuggestions).toBeCalled();
-      });
+    it('should autocompleteApiService() be called', () => {
+      const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(
+        autocompleteApiService,
+        'getSuggestionsGroup',
+      );
+      service.init();
+      expect(autocompleteApiServiceGetSuggestionFieldsSpy).toBeCalled();
     });
   });
 
   describe('fieldsSuggestionsApiCall()', () => {
-    it('should autocompleteApiService() and formatAndPassDataToSuggestions() be called', () => {
-      const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(autocompleteApiService, 'getSuggestionsFields');
-      const serviceFormatAndPassDataToSuggestions = spyOn(service, 'formatAndPassDataToSuggestions');
-      screenService.display$.subscribe(() => {
-        expect(autocompleteApiServiceGetSuggestionFieldsSpy).toBeCalled();
-        expect(serviceFormatAndPassDataToSuggestions).toBeCalled();
-      });
+    it('should autocompleteApiService() be called', () => {
+      const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(
+        autocompleteApiService,
+        'getSuggestionsFields',
+      );
+      const display = _cloneDeep(mockData.display);
+      delete display.suggestion;
+      screenService.display = display;
+      service.init();
+      expect(autocompleteApiServiceGetSuggestionFieldsSpy).toBeCalled();
     });
   });
 
   describe('findAndUpdateComponentWithValue()', () => {
     it('should setComponentValue() be called', () => {
       const serviceSetComponentValue = spyOn(service, 'setComponentValue');
-      screenService.display$.subscribe(() => {
-        expect(serviceSetComponentValue).toBeCalled();
-      });
+      service.findAndUpdateComponentWithValue('prev_region', 'value');
+      expect(serviceSetComponentValue).toBeCalled();
     });
   });
 
   describe('findComponentValue()', () => {
-    it('should return string value of passed component', () => {
+    it('should return string value of passed component via suggestions', () => {
       const component = mockData.display.components[0];
       const componentValue = 'value';
-      screenService.display$.subscribe(() => {
-        expect(service.findComponentValue(component, null, componentValue)).toEqual(componentValue);
-      });
+      screenService.suggestions['pd8'] = {
+        mnemonic: 'prev_region',
+        list: [
+          {
+            mnemonic: 'prev_region',
+            value: 'value',
+            originalItem: 'value',
+          },
+        ],
+      };
+      expect(service.findComponentValue(component, null, componentValue)).toEqual(componentValue);
     });
   });
 
   describe('findComponent()', () => {
     it('should return finded component', () => {
-      const component = mockData.display.components[0];
+      const component = mockData.display.components[0].attrs.components[0];
       const componentMnemonic = 'prev_region';
-      screenService.display$.subscribe(() => {
-        expect(service.findComponent(componentMnemonic)).toEqual(component);
-      });
+      service.init();
+      expect(service.findComponent(componentMnemonic, 0)).toEqual(component);
     });
   });
 
@@ -316,55 +331,68 @@ describe('AutocompleteService', () => {
         expect(service.getDateValueIfDateInput(component, value, true)).toEqual('01.01.2020');
       });
       it('not formatted', () => {
-        console.log({ value });
-        expect(service.getDateValueIfDateInput(component, value, false)).toEqual(datesToolsService.toDate(value));
+        expect(service.getDateValueIfDateInput(component, value, false)).toEqual(
+          datesToolsService.toDate(value),
+        );
       });
     });
   });
 
   describe('formatAndPassDataToSuggestions()', () => {
-    it('should return formatted data for suggestions', () => {
-      screenService.display$.subscribe(() => {
-        const result = { pd8_1: { mnemonic: 'prev_region', list: [{ value: 'value', mnemonic: 'prev_region' }] }};
-        expect(service.formatAndPassDataToSuggestions(mockSuggestionApi)).toEqual(result);
-      });
+    it('should set formatted data for suggestions', () => {
+      const result = {
+        pd8_1: {
+          mnemonic: 'prev_region',
+          list: [
+            { value: 'value', mnemonic: 'prev_region', hints: [], id: 123, originalItem: 'value' },
+          ],
+        },
+      };
+      service.init();
+      service.formatAndPassDataToSuggestions(mockSuggestionApi);
+      expect(screenService.suggestions).toEqual(result);
     });
   });
 
   describe('getFormattedList()', () => {
     it('should return specific list item object', () => {
-      screenService.display$.subscribe(() => {
-        const fields = [{ keyField: false, mnemonic: 'prev_region', value: 'value' }];
-        const componentMnemonic = mockSuggestionItemList.mnemonic;
-        const result = [{ value: 'value', mnemonic: 'prev_region', originalItem: 'value', id: null, hints: [] }];
-        expect(service.getFormattedList(fields, null, componentMnemonic)).toEqual(result);
-      });
+      const fields = [{ keyField: false, mnemonic: 'prev_region', value: 'value' }];
+      const componentMnemonic = mockSuggestionItemList.mnemonic;
+      const result = {
+        value: 'value',
+        mnemonic: 'prev_region',
+        originalItem: 'value',
+        id: null,
+        hints: [],
+      };
+      expect(service.getFormattedList(fields, null, componentMnemonic)).toEqual(result);
     });
   });
 
   describe('getFormattedHints()', () => {
-      it('should return array of specific hints object', () => { screenService.display$.subscribe(() => {
-        const fields = [{ keyField: false, mnemonic: 'prev_region', value: 'value' }];
-        const componentMnemonic = mockSuggestionItemList.mnemonic;
-        const result = [{ value: 'value', mnemonic: 'prev_region' }];
-        expect(service.getFormattedHints(fields, componentMnemonic)).toEqual(result);
-      });
+    it('should return array of specific hints object, if more than one field', () => {
+      const fields = [
+        { keyField: false, mnemonic: 'prev_region', value: 'value' },
+        { keyField: false, mnemonic: 'mnemonic', value: 'value' },
+      ];
+      const componentMnemonic = 'mnemonic';
+      const result = [{ value: 'value', mnemonic: 'prev_region' }];
+      service.init();
+      expect(service.getFormattedHints(fields, componentMnemonic)).toEqual(result);
     });
   });
 
   describe('prepareValue()', () => {
     describe('should return prepared string value by componentMnemonic', () => {
       it('if value has json structure', () => {
-        screenService.display$.subscribe(() => {
-          const value = '[{ text: "value" }]';
-          expect(service.prepareValue(value, 'prev_region')).toBeInstanceOf(String);
-        });
+        const value = '[{"pd_8": { "text": "value" }}]';
+        service.init();
+        expect(service.prepareValue(value, 'prev_region')).toBe('value');
       });
       it('if value is not json structure', () => {
-        screenService.display$.subscribe(() => {
-          const value = mockSuggestionItemList.value;
-          expect(service.prepareValue(value, 'prev_region')).toBeInstanceOf(String);
-        });
+        const value = mockSuggestionItemList.value;
+        service.init();
+        expect(service.prepareValue(value, 'prev_region')).toBe('value');
       });
     });
   });
@@ -390,15 +418,16 @@ describe('AutocompleteService', () => {
 
   describe('getComponentsSuggestionsFieldsIds()', () => {
     it('should return suggestions repeatable components ids, if RepeatableFields presented', () => {
-      screenService.display$.subscribe(() => {
-        expect(service.getComponentsSuggestionsFieldsIds(mockData.display)).toEqual(service.repeatableComponents[0]);
-      });
+      service.init();
+      expect(service.getComponentsSuggestionsFieldsIds(mockData.display)).toEqual(['prev_region']);
     });
     it('should return suggestions components ids, if RepeatableFields not presented', () => {
-      screenService.display$.subscribe(() => {
-        service.repeatableComponents.length = 0;
-        expect(service.getComponentsSuggestionsFieldsIds(mockData.display)).toEqual(['pd8']);
-      });
+      const display = _cloneDeep(mockData.display);
+      display.components[0].suggestionId = 'prev_region';
+      service.init();
+      service.repeatableComponents.length = 0;
+      service.componentsSuggestionsMap['prev_region'] = 'pd8';
+      expect(service.getComponentsSuggestionsFieldsIds(display)).toEqual(['prev_region']);
     });
   });
 });
