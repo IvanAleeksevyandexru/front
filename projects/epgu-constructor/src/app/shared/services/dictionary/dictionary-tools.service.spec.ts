@@ -12,8 +12,9 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
 import { DictionaryConditions } from './dictionary-api.types';
 import { DictionaryToolsService } from './dictionary-tools.service';
+import { RefRelationService } from '../ref-relation/ref-relation.service';
 
-describe('DictionaryApiService', () => {
+describe('DictionaryToolsService', () => {
   let service: DictionaryToolsService;
   let MapStore: ScenarioDto;
   let compValue;
@@ -27,6 +28,7 @@ describe('DictionaryApiService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
+        RefRelationService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });

@@ -43,6 +43,7 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
+import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -68,6 +69,7 @@ describe('SelectMapObjectComponent', () => {
         HtmlRemoverService,
         CurrentAnswersService,
         AutocompleteApiService,
+        RefRelationService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
