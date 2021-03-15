@@ -124,6 +124,14 @@ const openConfirmationModalAction: ComponentActionDto = {
   type: ActionType.confirmModalStep
 };
 
+const deliriumAction: ComponentActionDto = {
+  label: 'delirium',
+  value: 'delirium',
+  action: DTOActionAction.getNextStep,
+  type: ActionType.deliriumNextStep,
+  deliriumAction: 'edit',
+};
+
 const sendActionMock = of({
   errorList: [],
   responseData: { value: 'value', type: 'type' },
@@ -142,6 +150,7 @@ describe('ActionService', () => {
   let formPlayerApiService: FormPlayerApiService;
   let modalService: ModalService;
   let currentAnswersService: CurrentAnswersService;
+  let htmlRemover: HtmlRemoverService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -177,6 +186,7 @@ describe('ActionService', () => {
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     modalService = TestBed.inject(ModalService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
+    htmlRemover = TestBed.inject(HtmlRemoverService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -287,6 +297,12 @@ describe('ActionService', () => {
     expect(modalService.openModal).toHaveBeenCalled();
   });
 
+  it('should call switchAction handleDeliriumAction', () => {
+    spyOn(actionService, 'handleDeliriumAction').and.callThrough();
+    actionService.switchAction(deliriumAction, null);
+    expect(actionService.handleDeliriumAction).toHaveBeenCalled();
+  });
+
   describe('getComponentStateForNavigate()', () => {
     it('should return current value for custom screen', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
@@ -328,4 +344,16 @@ describe('ActionService', () => {
     });
   });
 
+  describe('handleDeliriumAction()', () => {
+    it('sould call htmlRemover.delete()', () => {
+      const htmlRemoverDeleteSpy = spyOn(htmlRemover, 'delete');
+      actionService.handleDeliriumAction(deliriumAction);
+      expect(htmlRemoverDeleteSpy).toBeCalled();
+    });
+    it('sould call actionApiService.sendAction()', () => {
+      const actionApiServiceSendActionSpy = spyOn(formPlayerApiService, 'sendAction');
+      actionService.handleDeliriumAction(deliriumAction);
+      expect(actionApiServiceSendActionSpy).toBeCalled();
+    });
+  });
 });
