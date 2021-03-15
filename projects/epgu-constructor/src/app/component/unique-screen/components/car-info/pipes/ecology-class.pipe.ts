@@ -2,10 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 enum EcologyClass {
   'Первый' = 1,
-  'Второй',
-  'Третий',
-  'Четвертый',
-  'Пятый',
+  'Второй' = 2,
+  'Третий' = 3,
+  'Четвертый' = 4,
+  'Пятый' = 5,
 }
 
 @Pipe({
@@ -13,11 +13,8 @@ enum EcologyClass {
 })
 export class EcologyClassPipe implements PipeTransform {
 
-  transform(ecologyNumber: string | number): string {
-    if(ecologyNumber) {
-      return EcologyClass[ecologyNumber] || null;
-    }
-    return null;
+  transform(ecologyNumber: string | number | undefined): string {
+    return EcologyClass[ecologyNumber] || null;
   }
 
 }
