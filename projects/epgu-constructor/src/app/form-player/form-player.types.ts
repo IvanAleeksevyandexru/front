@@ -47,7 +47,7 @@ export interface ServiceEntity {
   serviceId: string;
   targetId: string;
   serviceInfo?: ServiceInfo;
-  orderId?: string | number; // TODO: убрать string, нужно будет нормализовать тип на стороне портала
+  orderId?: number;
   invited?: boolean;
   canStartNew?: boolean;
 }

@@ -24,7 +24,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this.serviceId = service.serviceId;
     this.targetId = service.targetId;
     this.serviceInfo = service.serviceInfo;
-    this.orderId = service.orderId as unknown as number;  // TODO: убрать typecast, нужно будет нормализовать тип на стороне портала
+    this.orderId = service.orderId;
     this.invited = service.invited;
     this.canStartNew = service.canStartNew;
     this.initState = context?.initState;
