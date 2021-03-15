@@ -28,6 +28,22 @@ export class FileUploadService {
   private maxFilesAmount: UploadersRestriction = {};
   private maxFilesSize: UploadersRestriction = {};
 
+  getUploadedFilesAmount(): UploadersRestriction {
+    return this.uploadedFilesAmount;
+  }
+
+  getUploadedFilesSize(): UploadersRestriction {
+    return this.uploadedFilesSize;
+  }
+
+  getMaxFilesAmount(): UploadersRestriction {
+    return this.maxFilesAmount;
+  }
+
+  getMaxFilesSize(): UploadersRestriction {
+    return this.maxFilesSize;
+  }
+
   getMaxTotalFilesAmount(): number {
     return this.totalMaxFilesAmount;
   }

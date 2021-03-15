@@ -16,7 +16,6 @@ import { ModelMarkNamePipe } from './pipes/model-mark-name.pipe';
 import { CarDatePipe } from './pipes/car-date.pipe';
 import { CarOwnerInfoContainerComponent } from './containers/car-owner-info-screen/car-owner-info-container.component';
 import { CarOwnerInfoComponent } from './components/car-owner-info/car-owner-info.component';
-import { DocumentInfoPipe } from './pipes/document-info.pipe';
 import { CarOwnersComponent } from './components/car-owners/car-owners.component';
 import { LegalComplianceComponent } from './components/legal-compliance/legal-compliance.component';
 import { NotaryInfoComponent } from './components/notary-info/notary-info.component';
@@ -36,7 +35,6 @@ const COMPONENTS = [
   EnginePowerPipe,
   ModelMarkNamePipe,
   CarDatePipe,
-  DocumentInfoPipe,
   DefaultValuePipe,
 ];
 
