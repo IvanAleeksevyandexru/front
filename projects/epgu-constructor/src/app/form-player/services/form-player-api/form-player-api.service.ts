@@ -39,7 +39,7 @@ export class FormPlayerApiService {
     return this.post<CheckOrderApiResponse>(path, body);
   }
 
-  public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
+  public getServiceData(orderId?: number): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId, serviceInfo } = this.initDataService;
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };

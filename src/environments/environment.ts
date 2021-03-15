@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   serviceId: '10000000100',
   targetId: '-10000000100',
-  orderId: '',
+  orderId: null,
   invited: false,
   core: {}
 };

@@ -174,11 +174,14 @@ export class ScreenContent {
   public get orderId(): number {
     return this._orderId.getValue();
   }
-  public set orderId(val: string) {
+  public set orderId(val: number) {
     this._orderId.next(val);
   }
-  public get orderId$(): Observable<string> {
+  public get orderId$(): Observable<number> {
     return this._orderId.asObservable();
+  }
+  public get orderIdAsString$(): Observable<string> {
+    return this._orderId.asObservable().pipe(map(id => id.toString()));
   }
 
   public get component(): ComponentDto {

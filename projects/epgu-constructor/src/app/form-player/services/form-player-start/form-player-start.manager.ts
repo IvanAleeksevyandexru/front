@@ -99,7 +99,7 @@ export class FormPlayerStartManager {
     this.locationService.deleteParam('fromQuiz');
   }
 
-  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
+  private handleOrder(orderId?: number, invited?: boolean, canStartNew?: boolean): void {
     if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
       this.showContinueOrderModal();
     } else {
@@ -108,7 +108,7 @@ export class FormPlayerStartManager {
   }
 
   private shouldShowContinueOrderModal(
-    orderId?: string,
+    orderId?: number,
     invited?: boolean,
     canStartNew?: boolean,
   ): boolean {

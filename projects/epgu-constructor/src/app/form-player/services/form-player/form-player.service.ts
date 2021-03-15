@@ -38,7 +38,7 @@ export class FormPlayerService extends FormPlayerBaseService {
    * Инициализирует данные для показа, смотрим откуда брать данные
    * @param orderId - id заявления
    */
-  initData(orderId?: string): void {
+  initData(orderId?: number): void {
     this.updateLoading(true);
     this.getOrderData(orderId);
   }

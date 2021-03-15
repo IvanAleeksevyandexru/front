@@ -28,7 +28,7 @@ export class InitDataServiceStub implements ServiceEntity {
     this._targetId = targetId;
   }
 
-  get orderId(): string {
+  get orderId(): number {
     return this._orderId;
   }
 

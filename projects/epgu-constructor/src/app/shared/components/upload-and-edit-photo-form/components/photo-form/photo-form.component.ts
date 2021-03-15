@@ -202,7 +202,13 @@ export class PhotoFormComponent implements OnChanges, OnInit {
 
   private getRequestData(): ComponentUploadedFileDto {
     const { mnemonic = null, name = null, objectType = 2 } = this.uploadedFile;
-    return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
+    return {
+      mnemonic,
+      name,
+      objectType,
+      objectId: this.orderId.toString(),
+      mimeType: 'image/jpeg',
+    };
   }
 
   private setImageUrl(imageUrl: string): void {

@@ -115,7 +115,6 @@ describe('SelectMapObjectComponent', () => {
       .spyOn(dictionaryApiService, 'getSelectMapDictionary')
       .mockReturnValue(of((mockMapDictionary as unknown) as DictionaryResponse));
     component['fillCoords'](comp.attrs.dictionaryFilter).subscribe((coords: IGeoCoordsResponse) => {
-      console.log(coords.coords.length);
       expect(coords.coords.length).toBe(122);
       expect(coords.coords[0]).toEqual({
         address: 'Российская Федерация, г. Москва, ул. Ялтинская',
