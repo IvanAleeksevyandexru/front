@@ -78,7 +78,7 @@ describe('EmployeeHistoryFormComponent', () => {
     datesToolsService = TestBed.inject(DatesToolsService);
     jest
       .spyOn(datesToolsService, 'getToday')
-      .mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
+      .mockResolvedValue(new Date(MOCK_TODAY));
   });
 
   beforeEach(() => {
