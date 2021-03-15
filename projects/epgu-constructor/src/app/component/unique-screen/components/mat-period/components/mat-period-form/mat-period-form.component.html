@@ -104,5 +104,7 @@
   <epgu-constructor-constructor-date-picker
     [textModelValue]="true"
     [control]="$any(form.get(formField.paymentDate))"
+    [minDate]="components[formField.paymentDate].attrs.minDate"
+    [maxDate]="components[formField.paymentDate].attrs.maxDate"
   ></epgu-constructor-constructor-date-picker>
 </ng-template>

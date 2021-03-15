@@ -17,6 +17,8 @@ import {
 
 @Injectable()
 export class DurationService {
+  private readonly durationYearEnd = 48;
+
   constructor(private datesToolsService: DatesToolsService) {}
 
   initDurations(): { [key in PaymentType]: ListElement[] } {
@@ -84,7 +86,7 @@ export class DurationService {
     const startYear = startOfMonth(date);
     return eachYearOfInterval({
       start: startYear,
-      end: this.datesToolsService.add(startYear, 60, 'months'),
+      end: this.datesToolsService.add(startYear, this.durationYearEnd, 'months'),
     })
       .map((rangeDate) => this.datesToolsService.add(rangeDate, month, 'months'))
       .map((year, index) => {
