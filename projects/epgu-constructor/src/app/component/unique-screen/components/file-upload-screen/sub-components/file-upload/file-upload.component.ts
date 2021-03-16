@@ -113,6 +113,8 @@ export class FileUploadComponent implements OnInit {
       if (valueItem.uploadId === $eventData.uploadId) {
         // eslint-disable-next-line no-param-reassign
         valueItem.value = $eventData.value;
+        // eslint-disable-next-line no-param-reassign
+        valueItem.required = $eventData.required;
       }
       return valueItem;
     });
@@ -123,6 +125,7 @@ export class FileUploadComponent implements OnInit {
     } else {
       this.eventBusService.emit('fileUploadRelatedValueChangedEvent', {
         uploadId: this.uploadId,
+        required: $eventData.required,
         uploads: this.value.files,
       } as FileResponseToBackendWithRelatedUploads);
     }

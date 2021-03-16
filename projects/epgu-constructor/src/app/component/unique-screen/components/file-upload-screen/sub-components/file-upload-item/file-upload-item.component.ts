@@ -67,6 +67,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
+
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
     this.updateAcceptTypes();
@@ -469,6 +470,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit('fileUploadItemValueChangedEvent', {
       uploadId: this.loadData.uploadId,
+      required: this.loadData?.required ?? true,
       value,
       errors,
     } as FileResponseToBackendUploadsItem);

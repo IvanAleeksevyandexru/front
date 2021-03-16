@@ -31,6 +31,7 @@ export interface TerraUploadFileOptions extends TerraFileOptions {
  */
 export interface FileResponseToBackendUploadsItem {
   uploadId?: string;
+  required?: boolean;
   value?: UploadedFile[];
   relatedUploads?: {
     uploads: FileResponseToBackendUploadsItem[];
@@ -43,6 +44,7 @@ export interface FileResponseToBackendUploadsItem {
  */
 export interface FileResponseToBackendWithRelatedUploads {
   uploadId: string;
+  required?: boolean;
   uploads?: FileResponseToBackendUploadsItem[];
 }
 
@@ -94,6 +96,7 @@ export interface FileUploadItem {
   fileType: string[];
   maxFileCount?: number;
   maxSize?: number;
+  required?: boolean;
   relatedUploads?: RelatedUploads;
 }
 
@@ -154,6 +157,7 @@ export interface TerabyteListItem {
 export interface FileUploadEmitValue {
   uploadId: string;
   value: TerraUploadedFile[];
+  required: boolean;
   relatedUploads?: {
     uploads: FileUploadEmitValue[];
   };
