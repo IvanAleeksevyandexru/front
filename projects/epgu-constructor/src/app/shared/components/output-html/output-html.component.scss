@@ -77,8 +77,8 @@
     }
   }
 
-  ul li > ul,
-  ol li > ul {
+  ul li ul,
+  ol li ul {
     margin: 12px 0 0 0;
 
     li {
@@ -90,7 +90,7 @@
     }
   }
 
-  ul li > ul li {
+  ul li ul li {
     &::before {
       content: '—';
       margin-left: -1.2em;
@@ -98,7 +98,7 @@
     }
   }
 
-  ol li > ul li {
+  ol li ul li {
     &::before {
       counter-increment: inherit;
       content: '—';

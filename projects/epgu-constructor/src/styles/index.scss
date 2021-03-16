@@ -235,8 +235,39 @@
     &--description {
       background: $color-selago;
       border: none;
-      border-top: 3px solid $color-science-blue;
-      padding: 1em;
+      border-top: 3px solid $color-gosblue;
+      border-radius: 3px 3px 0 0;
+      padding: 16px 28px 16px 16px;
+      margin-top: 8px;
+      position: relative;
+      &--close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        z-index: 2;
+    
+        &:before,
+        &:after {
+          content: '';
+          position: absolute;
+          width: 2px;
+          height: 12px;
+          left: 5px;
+          background: $color-gosblue;
+          transform: rotate(45deg);
+        }
+    
+        &:before {
+          transform: rotate(45deg);
+        }
+    
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
     }
   }
 

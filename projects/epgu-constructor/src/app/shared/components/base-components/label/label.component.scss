@@ -6,6 +6,12 @@
   margin: 0 0 4px;
 }
 
+.label {
+  @include phones-down {
+    font-weight: bold;
+  }
+}
+
 .label-text {
   display: block;
   text-align: left;

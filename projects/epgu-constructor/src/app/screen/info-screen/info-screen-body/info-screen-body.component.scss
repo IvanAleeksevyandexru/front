@@ -15,3 +15,58 @@
     max-width: 200px;
   }
 }
+//.new-design {
+  :host::ng-deep {
+    .info__text {
+      h2 {
+        font-weight: bold;
+        font-size: $font-xl;
+        line-height: $font-xxl;
+        text-align: center;
+        margin: 24px 0 16px 0;
+      }
+      h2 + p, h2 + div {
+        margin-top: 16px;
+      }
+      h5 {
+        margin: 24px 0 8px 0;
+        font-size: $font-md;
+        line-height: $font-xl;
+      }
+      h5 ~ p {
+        margin-top: 8px;
+      }
+      h5 + p {
+        margin-top: 12px;
+      }
+      .block_context {
+        p:not(:first-child) {
+          margin-top: 16px;
+        }
+      }
+      a.block_link {
+        margin-top: 8px;
+        display: block;
+      }
+      .background_white {
+        background-color: $color-white;
+        padding: 0 24px;
+        border-radius: 8px;
+        margin-top: 24px;
+        overflow: hidden;
+        > *:first-child {
+          margin-top: 24px;
+        }
+        > *:last-child {
+          margin-bottom: 24px;
+        }
+      }
+      .text_alignment {
+        text-align: center;
+        @include phones-down {
+          text-align: left;
+        }
+      }
+    }
+  }
+//}
