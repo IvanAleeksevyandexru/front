@@ -12,5 +12,5 @@
 >
   <span class="helper-text">{{ description.balanceLabel }}</span>
   <br />
-  <span>{{ balanceAmount | toMoney | addZeroPenny }} руб.</span>
+  <span class="balance-amount">{{ balanceAmount | toMoney | addZeroPenny }} <span class="rubles"></span></span>
 </p>

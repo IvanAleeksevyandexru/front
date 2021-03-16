@@ -4,6 +4,7 @@ import { MatPeriodDescription, PaymentType } from '../../mat-period.models';
 @Component({
   selector: 'epgu-constructor-mat-period-description',
   templateUrl: './mat-period-description.component.html',
+  styleUrls: ['./mat-period-description.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatPeriodDescriptionComponent {
