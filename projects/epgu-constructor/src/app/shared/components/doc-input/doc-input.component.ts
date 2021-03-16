@@ -208,6 +208,7 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
 
   markControlAsDirty(control: string | string[]): void {
     this.form.get(control).markAsDirty();
+    this.form.get(control).updateValueAndValidity();
   }
 
   isValidationShown(control: string | string[]): boolean {
