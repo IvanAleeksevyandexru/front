@@ -191,14 +191,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
-  uploadersCounterChanges = this.fileUploadService.uploaderChanges.pipe(
+  uploadersCounterChanges$ = this.fileUploadService.uploaderChanges.pipe(
     tap(() => this.maxLimitUpdate()),
   );
 
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
     .add(this.processingOperations$.subscribe())
-    .add(this.uploadersCounterChanges.subscribe());
+    .add(this.uploadersCounterChanges$.subscribe());
 
   private loadData: FileUploadItem;
   private maxFileNumber = -1;
