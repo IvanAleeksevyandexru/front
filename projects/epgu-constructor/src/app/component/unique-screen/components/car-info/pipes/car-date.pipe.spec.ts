@@ -12,6 +12,6 @@ describe('CarDatePipe', () => {
   });
 
   it('shouldn\'t transform dates into a period if one of the dates is missing', () => {
-    expect(pipe.transform('10.10.2010', null)).toBe(null);
+    expect(pipe.transform('10.10.2010', null)).toBe('10.10.2010 - настоящее время');
   });
 });
