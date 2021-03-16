@@ -316,6 +316,7 @@ export interface ComponentActionDto {
   attrs?: {
     stepsBack?: number;
   };
+  deliriumAction?: string;
 }
 
 export interface ScreenActionDto extends ComponentActionDto {}
@@ -453,6 +454,7 @@ export enum ActionType {
   deleteSuggest = 'deleteSuggest',
   attachUploadedFiles = 'attachUploadedFiles',
   dropdownListModal = 'dropdownListModal',
+  deliriumNextStep = 'deliriumNextStep',
 }
 
 export enum DTOActionAction {
@@ -479,6 +481,7 @@ export interface CheckOrderApiResponse {
 export interface ActionDTO<T = {}> {
   scenarioDto: Partial<ScenarioDto>;
   additionalParams?: T;
+  deliriumAction?: string;
 }
 
 export interface ActionApiResponse<T> {
