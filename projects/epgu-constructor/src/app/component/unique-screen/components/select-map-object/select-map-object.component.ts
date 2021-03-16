@@ -192,8 +192,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
-    this.componentValue = JSON.parse(this.data?.value || '{}');
-    this.componentPresetValue = JSON.parse(this.data?.presetValue || '{}');
+    this.componentValue = JSON.parse(this.data.value || '{}');
+    this.componentPresetValue = JSON.parse(this.data.presetValue || '{}');
     this.screenStore = this.screenService.getStore();
   }
 
