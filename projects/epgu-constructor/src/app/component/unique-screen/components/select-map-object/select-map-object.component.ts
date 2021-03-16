@@ -12,6 +12,7 @@ import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { isEqual as _isEqual } from 'lodash';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
@@ -69,6 +70,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public screenActionButtons: ScreenActionDto[] = [];
 
   private componentValue: ComponentValue;
+  private componentPresetValue: ComponentValue;
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
   private needToAutoCenterAllPoints = false;
@@ -190,7 +192,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
-    this.componentValue = JSON.parse(this.data?.value || '{}');
+    this.componentValue = JSON.parse(this.data.value || '{}');
+    this.componentPresetValue = JSON.parse(this.data.presetValue || '{}');
     this.screenStore = this.screenService.getStore();
   }
 
@@ -198,7 +201,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     if (this.data?.value && this.data?.value !== '{}') {
       const mapObject = JSON.parse(this.data?.value);
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
-      if (mapObject.idForMap) {
+      if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
@@ -249,7 +252,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private initMap(): void {
     this.setMapOpstions();
-    this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter)
+    this.fillCoords(this.data.attrs.dictionaryFilter)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         catchError((error) => {
@@ -355,7 +358,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryOptions {
     return {
       ...this.dictionaryToolsService.getFilterOptions(
-        this.componentValue,
+        this.componentPresetValue,
         this.screenStore,
         dictionaryFilters,
       ),
@@ -472,5 +475,19 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           }
         });
     }
+  }
+
+  private isFiltersSame(): boolean {
+    const valueFilters = this.dictionaryToolsService.getFilterOptions(
+      this.componentValue,
+      this.screenStore,
+      this.data.attrs.dictionaryFilter,
+    );
+    const valuePresetFilters = this.dictionaryToolsService.getFilterOptions(
+      this.componentPresetValue,
+      this.screenStore,
+      this.data.attrs.dictionaryFilter,
+    );
+    return _isEqual(valueFilters, valuePresetFilters);
   }
 }

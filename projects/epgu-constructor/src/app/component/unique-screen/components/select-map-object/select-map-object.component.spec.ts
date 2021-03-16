@@ -34,16 +34,18 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { Icons } from './constants';
-import { mockSelectMapObjectData, mockSelectMapObjectStore } from './mocks/mock-select-map-object';
+import { mockSelectMapObjectStore } from './mocks/mock-select-map-object';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
 import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
+import { PrepareComponentsService } from '../../../../shared/services/prepare-components/prepare-components.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -70,9 +72,11 @@ describe('SelectMapObjectComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         RefRelationService,
+        ScreenService,
+        PrepareComponentsService,
+        CachedAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
@@ -91,12 +95,12 @@ describe('SelectMapObjectComponent', () => {
         MapStore = cloneDeep(mockSelectMapObjectStore);
         comp = MapStore.display.components[0];
         compValue = JSON.parse(comp.value);
-        screenService.initScreenStore(mockSelectMapObjectStore);
+        screenService.initScreenStore(MapStore);
         fixture.detectChanges();
       });
   });
 
-   it('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -125,5 +129,16 @@ describe('SelectMapObjectComponent', () => {
       });
       done();
     });
+  });
+
+  it('isFiltersSame() should return true', () => {
+    const isFiltersSame = component['isFiltersSame']();
+    expect(isFiltersSame).toBeTruthy();
+  });
+
+  it('isFiltersSame() should return false', () => {
+    component['componentPresetValue'].regCode = 'R66';
+    const isFiltersSame = component['isFiltersSame']();
+    expect(isFiltersSame).toBeFalsy();
   });
 });
