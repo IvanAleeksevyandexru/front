@@ -52,6 +52,10 @@
       }
     }
   }
+
+  &__radio &__radio-item:last-child {
+    margin-bottom: 0;
+  }
 }
 
 @include rubles('.custom__screen-html', '../../../../assets/icons/svg/ruble.svg');
