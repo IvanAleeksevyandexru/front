@@ -36,7 +36,7 @@ export class ComponentsListToolsService {
     return type === CustomScreenComponentTypes.AddressInput;
   }
 
-  public isJson(type: CustomScreenComponentTypes): boolean {
+  public isJsonType(type: CustomScreenComponentTypes): boolean {
     return this.availableComponentTypesToJsonParse.includes(type);
   }
 
@@ -57,7 +57,7 @@ export class ComponentsListToolsService {
       } catch (e) {
         return value;
       }
-    } else if (this.isJson(componentType)) {
+    } else if (this.isJsonType(componentType)) {
       try {
         return JSON.parse(value);
       } catch (e) {
