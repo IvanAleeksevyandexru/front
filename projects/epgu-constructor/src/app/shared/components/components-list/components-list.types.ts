@@ -1,5 +1,6 @@
 import { ListItem } from 'epgu-lib';
 import {
+  ClarificationsDto,
   ComponentFilterDto,
   ComponentRelationFieldDto,
   DisplayDto,
@@ -125,6 +126,11 @@ export interface CustomComponentAttr {
   searchType?: string;
   cityFilter?: string[];
   maskOptions?: NumberMaskOptionsInterface;
+  labelHint?: string;
+  hint?: string;
+  customUnrecLabel?: string;
+  clarifications?: ClarificationsDto;
+  isTextHelper?: boolean;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
