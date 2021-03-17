@@ -13,11 +13,13 @@ export interface MatPeriod {
 export interface MatPeriodAttrs {
   description: MatPeriodDescription;
   fields: { [key in FormField]: CustomComponent };
+  maxTotalBalance: number;
 }
 
 export interface MatPeriodDescription {
   durationLabel: string;
   balanceLabel: string;
+  balanceError: string;
 }
 
 export enum FormField {

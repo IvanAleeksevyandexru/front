@@ -31,8 +31,13 @@ describe('MatPeriodFormComponent', () => {
   };
   const mockComponents = {
     paymentType: {
-      attrs: {
-        label: 'paymentType',
+      attrs: {},
+      label: {
+        one: 'Единовременно',
+        month: 'Ежемесячный платеж',
+        quarter: 'Ежеквартальный платеж',
+        halfYear: 'Полугодовой платеж',
+        year: 'Ежегодный платеж',
       },
     },
     amount: {
