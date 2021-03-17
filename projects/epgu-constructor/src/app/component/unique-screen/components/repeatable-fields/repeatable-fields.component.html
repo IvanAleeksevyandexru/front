@@ -19,7 +19,7 @@
       >
         <div
           class="icon-close"
-          *ngIf="objectKeys(screens).length !== 1"
+          *ngIf="canDeleteFirstScreen ? (objectKeys(screens).length > 1) : (i > 0)"
           (click)="removeItem(screenKey, i)"
         ></div>
         <epgu-constructor-components-list
