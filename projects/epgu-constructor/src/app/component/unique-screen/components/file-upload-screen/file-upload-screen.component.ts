@@ -108,8 +108,7 @@ export class FileUploadScreenComponent implements OnInit {
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
         if ($eventData.uploadId === value.uploadId) {
-          // eslint-disable-next-line no-param-reassign
-          value = {
+          return {
             ...value,
             relatedUploads: $eventData.relatedUploads,
             required: $eventData.required,
@@ -166,20 +165,19 @@ export class FileUploadScreenComponent implements OnInit {
    * @private
    */
   private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
-    const totalUploaders = uploaders?.filter((uploader) => uploader?.required)?.length;
+    const requiredUploaders = uploaders.filter((uploader) => uploader?.required);
+    const totalUploaders = requiredUploaders?.length;
 
     if (totalUploaders === 0) {
       return false;
     }
 
-    const uploadersWithFiles = uploaders
-      .filter((uploader) => uploader?.required)
-      .filter((fileUploaderInfo: FileUploadEmitValue) => {
-        // Если это зависимые подэлементы для загрузки
-        return fileUploaderInfo.relatedUploads
-          ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
-          : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
-      }).length;
+    const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
+      // Если это зависимые подэлементы для загрузки
+      return fileUploaderInfo.relatedUploads
+        ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
+        : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
+    }).length;
 
     return totalUploaders === uploadersWithFiles;
   }

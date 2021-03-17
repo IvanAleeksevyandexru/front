@@ -109,14 +109,13 @@ export class FileUploadComponent implements OnInit {
    * @param $eventData - новые значения от формы
    */
   handleNewValueForItem($eventData: FileResponseToBackendUploadsItem): void {
-    this.value.files.forEach((valueItem: FileResponseToBackendUploadsItem) => {
+    this.value.files = this.value.files.map((valueItem: FileResponseToBackendUploadsItem) => {
+      const value = { ...valueItem };
       if (valueItem.uploadId === $eventData.uploadId) {
-        // eslint-disable-next-line no-param-reassign
-        valueItem.value = $eventData.value;
-        // eslint-disable-next-line no-param-reassign
-        valueItem.required = $eventData.required;
+        value.value = $eventData.value;
+        value.required = $eventData.required;
       }
-      return valueItem;
+      return value;
     });
     this.value.errors = $eventData.errors;
 
