@@ -34,10 +34,6 @@ describe('ComponentsListToolsService', () => {
     service = TestBed.inject(ComponentsListToolsService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('convertedValue()', () => {
     it('should call parseValue()', () => {
       const parseValueSpy = spyOn(service, 'parseValue');

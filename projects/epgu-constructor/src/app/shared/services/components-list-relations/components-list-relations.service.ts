@@ -11,21 +11,14 @@ import {
   CustomListStatusElements,
 } from '../../components/components-list/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
-import {
-  DictionaryFilters,
-  DictionarySubFilter,
-} from '../dictionary/dictionary-api.types';
+import { DictionaryFilters, DictionarySubFilter } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-
-const EMPTY_VALUE = '';
-const NON_EMPTY_VALUE = '*';
-
-export interface ComponentDictionaryFilters {
-  [key: string]: DictionaryFilters['filter'] | null;
-}
+import { ComponentDictionaryFilters } from './components-list-relations.interface';
+import { EMPTY_VALUE, NON_EMPTY_VALUE } from './components-list-relations.contant';
+import { DateRangeRef } from '../date-range/date-range.models';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -45,9 +38,9 @@ export class ComponentsListRelationsService {
   constructor(
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
-  ) { }
+  ) {}
 
-  public updateDependents(
+  public getUpdatedShownElements(
     components: Array<CustomComponent>,
     component: CustomListFormGroup | CustomComponent,
     shownElements: CustomListStatusElements,
@@ -57,41 +50,16 @@ export class ComponentsListRelationsService {
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
   ): CustomListStatusElements {
-    const isComponentDependent = (arr = []): boolean =>
-      arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
-
-    const getDependentComponents = (components): Array<CustomComponent> =>
-      components.filter((c: CustomComponent) => isComponentDependent(c.attrs?.ref));
-
-    getDependentComponents(components).forEach((dependentComponent: CustomComponent) => {
-      dependentComponent.attrs?.ref
-        ?.filter((el) => el.relatedRel === component.id)
-        .forEach((reference) => {
-          const value = reference.valueFromCache
-            ? screenService.cachedAnswers[reference.valueFromCache].value
-            : component.value;
-
-          shownElements = this.updateStatusElements(
-            dependentComponent,
-            reference,
-            value as { [key: string]: string },
-            components,
-            form,
-            shownElements,
-            dictionaries,
-            initInitialValues,
-            dictionaryToolsService,
-          );
-        });
-
-      const referenceDate = dependentComponent.attrs?.ref?.find(
-        (el) => el.relatedDate === component.id,
-      );
-
-      if (referenceDate) {
-        this.dateRangeService.updateLimitDate(form, component as CustomComponent, dependentComponent, screenService.applicantAnswers);
-      }
-    });
+    shownElements = this.getPreparedShownElements(
+      components,
+      component,
+      screenService,
+      shownElements,
+      form,
+      dictionaries,
+      initInitialValues,
+      dictionaryToolsService,
+    );
 
     return shownElements;
   }
@@ -110,7 +78,55 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  private updateStatusElements(
+  private getPreparedShownElements(
+    components: CustomComponent[],
+    component: CustomComponent | CustomListFormGroup,
+    screenService: ScreenService,
+    shownElements: CustomListStatusElements,
+    form: FormArray,
+    dictionaries: CustomListDictionaries,
+    initInitialValues: boolean,
+    dictionaryToolsService: DictionaryToolsService,
+  ): CustomListStatusElements {
+    this.getDependentComponents(components, <CustomComponent>component).forEach((dependentComponent: CustomComponent) => {
+      dependentComponent.attrs?.ref?.filter((el) => el.relatedRel === component.id)
+        .forEach((reference) => {
+          const value = reference.valueFromCache
+            ? screenService.cachedAnswers[reference.valueFromCache].value
+            : component.value;
+
+          shownElements = this._getUpdatedShownElements(
+            dependentComponent,
+            reference,
+            value as { [key: string]: string },
+            components,
+            form,
+            shownElements,
+            dictionaries,
+            initInitialValues,
+            dictionaryToolsService,
+          );
+        });
+
+      // TODO: вынести side-effect в отдельную функцию
+      const referenceDate = dependentComponent.attrs?.ref?.find(
+        (el: DateRangeRef) => el.relatedDate === component.id,
+      );
+
+      if (referenceDate) {
+        this.dateRangeService.updateLimitDate(
+          form,
+          component as CustomComponent,
+          dependentComponent,
+          screenService.applicantAnswers,
+        );
+      }
+    });
+
+    return shownElements;
+  }
+
+  private _getUpdatedShownElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
@@ -172,20 +188,20 @@ export class ComponentsListRelationsService {
         this.isValueEquals(reference.val, componentVal) &&
         dictionaryToolsService.isDictionaryLike(dependentComponent.type)
       ) {
-        this.applyFilter(dependentComponent, reference.filter, componentVal);
+        this.applyFilter(dependentComponent.id, reference.filter, componentVal);
       } else {
-        this.clearFilter(dependentComponent);
+        this.clearFilter(dependentComponent.id);
       }
     }
 
     if (this.refRelationService.isCalcRelation(reference.relation)) {
-      const relation: CustomComponentRef = this.getRelation(dependentComponent ,reference);
-      const newValue = this.calculateValueFromRelation(relation, components, form);
+      const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
+      const newValue = this.getCalcValueFromRelation(relation, components, form);
       dependentControl.get('value').patchValue(newValue);
     }
 
     if (this.refRelationService.isGetValueRelation(reference.relation)) {
-      const relation: CustomComponentRef = this.getRelation(dependentComponent ,reference);
+      const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
       const newValue = this.getValueFromRelationComponent(relation, components, componentVal, form);
       dependentControl.get('value').patchValue(newValue);
     }
@@ -248,6 +264,16 @@ export class ComponentsListRelationsService {
     return component.attrs?.ref?.some((o) => o.relation === relation);
   }
 
+  private isComponentDependent(arr = [], component: CustomComponent): boolean {
+    return arr?.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
+  }
+
+  private getDependentComponents(components: CustomComponent[], component: CustomComponent): Array<CustomComponent> {
+    return components.filter((_component: CustomComponent) =>
+      this.isComponentDependent(_component.attrs?.ref, component),
+    );
+  }
+
   /**
    * Возвращает значение атрибута attributeName из словаря компонента componentId.
    * Если атрибут не найден, то возвращается undefined.
@@ -282,7 +308,10 @@ export class ComponentsListRelationsService {
     return undefined;
   }
 
-  private getRelation(component: CustomComponent, reference: CustomComponentRef): CustomComponentRef {
+  private getRelation(
+    component: CustomComponent,
+    reference: CustomComponentRef,
+  ): CustomComponentRef {
     return component.attrs?.ref?.find(({ relation }) => relation === reference.relation);
   }
 
@@ -314,7 +343,7 @@ export class ComponentsListRelationsService {
    * @param form - ссылка на объект формы
    * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
    */
-  private calculateValueFromRelation(
+  private getCalcValueFromRelation(
     itemRef: CustomComponentRef,
     components: CustomComponent[],
     form: FormArray,
@@ -343,7 +372,7 @@ export class ComponentsListRelationsService {
   }
 
   /**
-   * Возвращает вычисленное значение по формуле по формуле
+   * Возвращает вычисленное значение по формуле
    * @param formula - формула для расчета
    */
   private getCalcFieldValue(formula: string): number {
@@ -352,9 +381,9 @@ export class ComponentsListRelationsService {
   }
 
   private getValueFromComponentVal(componentVal: { id?: string } | string): string {
-    return (['string', 'boolean'].includes(typeof componentVal)
+    return ['string', 'boolean'].includes(typeof componentVal)
       ? (componentVal as string)
-      : (componentVal as { id?: string })?.id);
+      : (componentVal as { id?: string })?.id;
   }
 
   /**
@@ -384,7 +413,7 @@ export class ComponentsListRelationsService {
   }
 
   private applyFilter(
-    dependentComponent: CustomComponent,
+    dependentComponentId: CustomComponent['id'],
     filter: DictionaryFilters['filter'],
     componentVal: { id?: string },
   ): void {
@@ -402,12 +431,12 @@ export class ComponentsListRelationsService {
       );
     }
 
-    this.filters = { [dependentComponent.id]: filter };
+    this.filters = { [dependentComponentId]: filter };
   }
 
-  private clearFilter(dependentComponent: CustomComponent): void {
-    if (this.filters[dependentComponent.id]) {
-      this.filters = { [dependentComponent.id]: null };
+  private clearFilter(dependentComponentId: CustomComponent['id']): void {
+    if (this.filters[dependentComponentId]) {
+      this.filters = { [dependentComponentId]: null };
     }
   }
 }

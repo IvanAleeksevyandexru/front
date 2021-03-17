@@ -82,7 +82,7 @@
     "postcss": "^8.2.4",
     "ru-validation-codes": "2.8.0",
     "rxjs": "6.6.6",
-    "tslib": "2.0.0",
+    "tslib": "2.1.0",
     "uuid": "8.3.0",
     "web-animations-js": "^2.3.2",
     "zone.js": "0.10.2"

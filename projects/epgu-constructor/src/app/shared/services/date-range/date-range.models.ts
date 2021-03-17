@@ -1,13 +1,13 @@
 import { DurationTimeTypes } from '../../constants/dates';
 import { CustomComponentAttr, CustomComponentRef } from '../../components/components-list/components-list.types';
 
-export interface Attrs extends CustomComponentAttr {
+export interface DateRangeAttrs extends CustomComponentAttr {
   limit?: string;
   to?: string;
   from?: string;
 }
 
-export interface Ref extends CustomComponentRef{
+export interface DateRangeRef extends CustomComponentRef{
   relatedDate: string;
   val: string;
   period: DurationTimeTypes;

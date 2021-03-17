@@ -90,7 +90,7 @@ export class ComponentsListFormService {
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
-      this._shownElements = this.componentsListRelationsService.updateDependents(
+      this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
         components,
         {
           ...component,
@@ -299,7 +299,7 @@ export class ComponentsListFormService {
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
-        this._shownElements = this.componentsListRelationsService.updateDependents(
+        this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
           components,
           next,
           this.shownElements,
