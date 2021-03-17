@@ -63,7 +63,12 @@ export class DateTimePeriodComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentAnswersService.isValid = false;
+    // без setTimeout кнопка "Отправить заявление" будет активной, если перейти на этот экран с предыдущего,
+    // хотя форма при этом будет с незаполненными полями.
+    setTimeout(() => {
+      this.currentAnswersService.isValid = false;
+    }, 0);
+
     const startDate = this.initStartDate();
     const startTime = this.initStartTime();
     const endDate = this.initEndDate();
