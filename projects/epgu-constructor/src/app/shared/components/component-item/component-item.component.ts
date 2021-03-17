@@ -30,22 +30,22 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   public component: FormControl & CustomComponent;
 
   ngOnInit(): void {
-    this.component = this.data.value;
-    this.checkThatItemHasErrors();
-    this.setHints();
-    this.setHelperTextVisibility();
-    this.checkThatItemHasInfo();
+    this.setState();
   }
 
   ngOnChanges(): void {
-    this.component = this.data.value;
-    this.checkThatItemHasErrors();
-    this.setHints();
-    this.setHelperTextVisibility();
-    this.checkThatItemHasInfo();
+    this.setState();
   }
 
-  private checkThatItemHasErrors(): void {
+  private setState(): void {
+    this.component = this.data.value;
+    this.checkItemHasErrors();
+    this.setHints();
+    this.setHelperTextVisibility();
+    this.checkItemHasInfo();
+  }
+
+  private checkItemHasErrors(): void {
     this.hasUiError =
       this.component?.invalid && this.component?.touched && this.component?.hasError
         ? this.component?.hasError('msg')
@@ -56,7 +56,7 @@ export class ComponentItemComponent implements OnInit, OnChanges {
     this.hasErrors = !this.disableError && (this.hasUiError || this.hasServerError);
   }
 
-  private checkThatItemHasInfo(): void {
+  private checkItemHasInfo(): void {
     this.hasInfo = !this.disableHint && (this.isHelperTextVisible || !!this.hint);
   }
 
