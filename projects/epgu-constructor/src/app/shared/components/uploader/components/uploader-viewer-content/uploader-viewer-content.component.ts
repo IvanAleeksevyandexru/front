@@ -9,6 +9,7 @@ import {
 
 import { BehaviorSubject } from 'rxjs';
 
+import { SmuEventsService } from 'epgu-lib';
 import {
   FileItem,
   FileItemStatus,
@@ -23,7 +24,6 @@ import {
 import { ZoomComponent } from '../../../zoom/zoom.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ZoomEvent } from '../../../zoom/typings';
-import { SmuEventsService } from 'epgu-lib';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 
