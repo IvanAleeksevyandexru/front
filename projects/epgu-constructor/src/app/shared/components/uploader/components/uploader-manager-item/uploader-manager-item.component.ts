@@ -7,6 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { SmuEventsService } from 'epgu-lib';
 import {
   CancelAction,
   ErrorActions,
@@ -18,7 +19,6 @@ import {
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { createDownloadEvent, iconsTypes, SuggestAction } from '../../data';
-import { SmuEventsService } from 'epgu-lib';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 
 @Component({
