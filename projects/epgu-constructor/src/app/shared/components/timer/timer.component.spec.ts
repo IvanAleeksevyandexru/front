@@ -18,18 +18,18 @@ import { DictionaryApiService } from '../../services/dictionary/dictionary-api.s
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
+import { TimerComponentBase } from './timer.interface';
 
+const someDate = '2020-01-01T00:00:00.000Z';
+const millisecondsOfSomeDate = new Date(someDate).getTime();
+Date.now = jest.fn().mockReturnValue(millisecondsOfSomeDate);
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
   let fixture: ComponentFixture<TimerComponent>;
-  const timer = {
-    isWarning: false,
-    isFinish: false,
-    time: 123456,
-    start: 123,
-    finish: 200000,
-  };
+  let startTime = millisecondsOfSomeDate;
+  let currentTime = millisecondsOfSomeDate + 2000;
+  let expirationTime = millisecondsOfSomeDate + 10000;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,11 +56,36 @@ describe('TimerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TimerComponent);
     component = fixture.componentInstance;
-    component.timer = timer;
+    component.data = {
+      attrs: { startTime, currentTime, expirationTime }
+    } as any as TimerComponentBase;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should support serverTime', () => {
+    expect(component.timer.time).toBe(expirationTime - currentTime);
+  });
+
+  describe('when serverTime not provided', () => {
+    const savedCurrentTime = currentTime;
+    beforeAll(() => {
+      currentTime = undefined;
+    });
+
+    afterAll(() => {
+      currentTime = savedCurrentTime;
+    });
+
+    it('should use local time', () => {
+      expect(component.timer.time).toBe(expirationTime - millisecondsOfSomeDate);
+    });
+  });
+
+  it('should use serverTime', () => {
+    expect(component.timer.time).toBe(expirationTime - currentTime);
   });
 });
