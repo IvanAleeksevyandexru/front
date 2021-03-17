@@ -64,10 +64,6 @@ describe('CheckboxListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('setLabels', () => {
     it('should set labels', () => {
       component.attrs = mockComponent.attrs;
@@ -123,7 +119,7 @@ describe('CheckboxListComponent', () => {
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
         { id: 'checkbox2', label: 'label2', showOn: false, hidden: true }
       ]);
-      let hideShowEl = fixture.debugElement.nativeElement.querySelector('a');
+      let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
       expect(component.hideShow).toHaveBeenCalled();
       expect(component.checkboxes).toEqual([
@@ -133,7 +129,7 @@ describe('CheckboxListComponent', () => {
     });
 
     it('show checkboxes', fakeAsync(() => {
-      let hideShowEl = fixture.debugElement.nativeElement.querySelector('a');
+      let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
       expect(component.hideShow).toHaveBeenCalled();
       hideShowEl.click();
@@ -144,5 +140,28 @@ describe('CheckboxListComponent', () => {
         { id: 'checkbox2', label: 'label2', showOn: false, hidden: true }
       ]);
     }));
+  });
+
+  describe('formChanges', () => {
+    const currentValue = {
+      checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false,
+    };
+    it('call onChanges', () => {
+      jest.spyOn(component, 'onChange');
+      const setValue = { checkbox1: true };
+      component.checkBoxForm.patchValue(setValue as any);
+      fixture.detectChanges();
+      expect(component.onChange).toHaveBeenCalledWith({
+        ...currentValue, ...setValue
+      });
+    });
+
+    it('call writeValue', () => {
+      const setValue = { checkbox1: true, checkbox2: true };
+      fixture.componentInstance.writeValue(JSON.stringify(setValue));
+      expect(component.checkBoxForm.value).toEqual({
+        ...currentValue, ...setValue
+      });
+    });
   });
 });
