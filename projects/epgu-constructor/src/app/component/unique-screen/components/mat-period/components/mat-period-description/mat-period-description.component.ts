@@ -12,6 +12,7 @@ export class MatPeriodDescriptionComponent {
   @Input() durationAmount: number;
   @Input() balanceAmount: number;
   @Input() paymentType: PaymentType;
+  @Input() isValidBalanceAmount: boolean;
   readonly duration = {
     month: 'месяцев',
     year: 'лет',
