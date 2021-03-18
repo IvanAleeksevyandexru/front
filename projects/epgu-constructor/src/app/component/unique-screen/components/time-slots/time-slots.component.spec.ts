@@ -359,11 +359,6 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
 
-      // const today = new Date(Date.now());
-      // const nextMonth = today.getMonth() === 11 ? '01' : `0${today.getMonth() + 2}`.substr(-2);
-      // const year = today.getMonth() === 11 ? today.getFullYear() + 1 : today.getFullYear();
-      // const selectedMonth = new ListItem({ id: `${year}-${nextMonth}` } as ListItem);
-      // component.monthChanged(selectedMonth);
       fixture.detectChanges();
     });
 
@@ -382,7 +377,6 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.refDate = '2021-02-05T00:00:00.000Z';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
-      // component.monthChanged(new ListItem({ id: '2020-01' } as ListItem));
       fixture.detectChanges();
     });
 
