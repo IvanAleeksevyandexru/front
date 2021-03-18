@@ -4,12 +4,22 @@ export enum MobileEventType {
   file_download = 'file_download',
 }
 
+interface MobileEventParam<T> {
+  key: string;
+  value: T;
+}
+
+export interface MobileEvent<T> {
+  eventType: MobileEventType;
+  eventParams: MobileEventParam<T>[];
+}
+
 /**
  * Опции для перенаправления на страницу со списком отправленных
  * заявлений в MobileView (для новая версия приложения - native)
  */
 
-export const OPTIONS_FEED_MV = {
+export const OPTIONS_FEED_MV: MobileEvent<string> = {
   eventType: MobileEventType.open_screen,
   eventParams: [{ key: 'screen', value: 'Feed' }], // реализовано в новой версии, в нативном МП
 };
@@ -26,25 +36,15 @@ export const OPTIONS_FEED_MV = {
 //   ]
 // };
 
-export const OPTIONS_FEED_EXIT = {
+export const OPTIONS_FEED_EXIT: MobileEvent<string> = {
   eventType: MobileEventType.exit,
   eventParams: [],
 };
 
-export const MobilViewEvents = {
+export const MobilViewEvents: Record<string, MobileEvent<string>> = {
   feed: OPTIONS_FEED_MV,
   exit: OPTIONS_FEED_EXIT,
 };
-
-interface MobileEventParam<T> {
-  key: string;
-  value: T;
-}
-
-export interface MobileEvent<T> {
-  eventType: MobileEventType;
-  eventParams: MobileEventParam<T>[];
-}
 
 export const createMobileEvent = <T>(
   type: MobileEventType,
