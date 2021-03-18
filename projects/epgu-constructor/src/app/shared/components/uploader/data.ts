@@ -42,10 +42,3 @@ export interface ViewerInfo {
   position: number;
   file: FileItem;
 }
-
-export const createDownloadEvent: (
-  link: string,
-) => { eventType: string; eventParams: { key: string; value: string }[] } = (link: string) => ({
-  eventType: 'file_download',
-  eventParams: [{ key: 'file_path', value: link }],
-});

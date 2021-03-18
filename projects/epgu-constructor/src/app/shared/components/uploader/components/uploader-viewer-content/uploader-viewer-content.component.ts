@@ -14,18 +14,13 @@ import {
   FileItem,
   FileItemStatus,
 } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
-import {
-  createDownloadEvent,
-  FilesCollection,
-  iconsTypes,
-  SuggestAction,
-  ViewerInfo,
-} from '../../data';
+import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ZoomComponent } from '../../../zoom/zoom.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ZoomEvent } from '../../../zoom/typings';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { createDownloadEvent } from '../../../../constants/redirect-event';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
