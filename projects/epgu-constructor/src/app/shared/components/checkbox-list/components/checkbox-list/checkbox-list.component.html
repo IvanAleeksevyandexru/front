@@ -1,0 +1,13 @@
+<div [formGroup]="checkBoxForm" class="mb-24">
+  <ng-template ngFor let-checkbox [ngForOf]="checkboxes" [ngForTrackBy]="checkboxesTrackBy">
+    <epgu-constructor-constructor-checkbox
+      [labelText]="checkbox.label"
+      [checkboxId]="checkbox.id"
+      [control]="checkBoxForm.get(checkbox.id)"
+      [hidden]="checkbox.hidden"
+    >
+    </epgu-constructor-constructor-checkbox>
+  </ng-template>
+</div>
+
+<button class="link-btn" (click)="toggle()">{{ hidden ? labels.show : labels.hide}}</button>
