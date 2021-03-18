@@ -67,6 +67,7 @@ export class DateTimePeriodComponent implements OnInit {
     // хотя форма при этом будет с незаполненными полями.
     setTimeout(() => {
       this.currentAnswersService.isValid = false;
+      this.cdr.markForCheck();
     }, 0);
 
     const startDate = this.initStartDate();
