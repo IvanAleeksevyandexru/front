@@ -153,6 +153,7 @@ export interface ComponentAttrsDto {
   endDate?: ComponentDateTimeDto;
   beginTime?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
+  canDeleteFirstScreen?: boolean;
 }
 
 export interface ComponentDateTimeDto {
