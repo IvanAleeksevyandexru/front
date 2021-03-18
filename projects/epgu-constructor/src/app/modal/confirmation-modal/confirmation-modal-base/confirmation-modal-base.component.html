@@ -32,6 +32,8 @@
   <div *ngIf="buttons.length" class="conf-modal__controls">
     <lib-button
       *ngFor="let button of buttons"
+      epgu-constructor-action
+      [action]="button.action"
       [showLoader]="button.loader"
       class="conf-modal__button"
       [color]="button.color || ''"

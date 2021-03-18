@@ -155,8 +155,8 @@ export class ActionService {
 
   private getOptions(action: ComponentActionDto): NavigationOptions {
     const dtoAction = action.action;
-    const isService = dtoAction.includes('service');
-    const isLastPageInInternalScenario = dtoAction.includes('goBackToMainScenario');
+    const isService = dtoAction?.includes('service');
+    const isLastPageInInternalScenario = dtoAction?.includes('goBackToMainScenario');
 
     if (isService) {
       return { url: dtoAction };
