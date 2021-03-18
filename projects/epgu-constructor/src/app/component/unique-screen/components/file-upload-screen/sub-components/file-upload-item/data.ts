@@ -303,3 +303,9 @@ export const getSizeInKB = (bytes): number =>
  */
 export const getSizeInMB = (bytes): number =>
   Math.round((bytes / BYTES_IN_KB / BYTES_IN_KB + Number.EPSILON) * 100) / 100;
+
+export const plurals = {
+  files: ['файл', 'файла', 'файлов'],
+  attach: ['прикрепился', 'прикрепилось', 'прикрепилось'],
+  before: ['', 'до', 'до'],
+};

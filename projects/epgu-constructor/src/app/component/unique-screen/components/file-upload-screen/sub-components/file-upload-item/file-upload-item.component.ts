@@ -34,6 +34,7 @@ import {
   getSizeInMB,
   Operation,
   OperationType,
+  plurals,
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
@@ -72,6 +73,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
     this.updateAcceptTypes();
   }
+
+  plurals = plurals;
+
   maxTotalSize: number;
   maxTotalAmount: number;
   acceptTypes?: string;

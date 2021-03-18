@@ -7,13 +7,14 @@ import { UserInfoLoaderModule } from '../../../../../shared/components/user-info
 import { UploaderModule } from '../../../../../shared/components/uploader/uploader.module';
 import { FileSizeModule } from '../../../../../shared/pipes/file-size/file-size.module';
 import { PrepareService } from './prepare.service';
+import { EpguLibModule } from 'epgu-lib';
 
 const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
-  imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
+  imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, EpguLibModule],
   providers: [FileUploadService, PrepareService],
   entryComponents: [...COMPONENTS],
 })
