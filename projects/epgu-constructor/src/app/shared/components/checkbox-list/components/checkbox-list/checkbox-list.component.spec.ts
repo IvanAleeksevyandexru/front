@@ -60,20 +60,21 @@ describe('CheckboxListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxListComponent);
     component = fixture.componentInstance;
+    component.required = true;
     component.attrs = mockComponent.attrs;
+    component.ngOnChanges();
     fixture.detectChanges();
   });
 
   describe('setLabels', () => {
     it('should set labels', () => {
-      component.attrs = mockComponent.attrs;
-      fixture.detectChanges();
       expect(component.labels).toEqual({ show: 'Развернуть все приоды', hide: 'Показать меньше' });
     });
 
     it('should set default labels', () => {
       component.attrs = { checkBoxes: mockComponent.attrs.checkBoxes } as any;
       component.labels = { show: 'show', hide: 'hide' };
+      component.ngOnChanges();
       fixture.detectChanges();
       expect(component.labels).toBe(component.labels);
     });
@@ -89,6 +90,7 @@ describe('CheckboxListComponent', () => {
         }
       }
     };
+    component.ngOnChanges();
     fixture.detectChanges();
     expect(component.checkboxes).toEqual([ { id: 'checkbox1', label: 'Оформление инвалидности', showOn: true, hidden: false }]);
   });
@@ -112,6 +114,8 @@ describe('CheckboxListComponent', () => {
     beforeEach(() => {
       jest.spyOn(component, 'toggle');
       component.attrs = mockAttrs;
+      component.ngOnChanges();
+      fixture.detectChanges();
     });
 
     it('hide checkboxes', () => {
@@ -146,6 +150,7 @@ describe('CheckboxListComponent', () => {
     const currentValue = {
       checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false,
     };
+
     it('call onChanges', () => {
       jest.spyOn(component, 'onChange');
       const setValue = { checkbox1: true };
@@ -155,13 +160,31 @@ describe('CheckboxListComponent', () => {
         ...currentValue, ...setValue
       });
     });
+  });
 
-    it('call writeValue', () => {
-      const setValue = { checkbox1: true, checkbox2: true };
-      fixture.componentInstance.writeValue(JSON.stringify(setValue));
-      expect(component.checkBoxForm.value).toEqual({
-        ...currentValue, ...setValue
+  describe('form status', () => {
+    const currentValue = {
+      checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false,
+    };
+
+    beforeEach(() => {
+      component.required = true;
+      component.ngOnChanges();
+      fixture.detectChanges();
+    });
+
+    it('form valid, if at least one is checked', () => {
+      component.checkBoxForm.setValue({
+        ...currentValue, checkbox1: true
       });
+      expect(component.checkBoxForm.valid).toBe(true);
+      expect(component.checkBoxForm.errors).toBe(null);
+    });
+
+    it('form invalid', () => {
+      component.checkBoxForm.setValue(currentValue);
+      expect(component.checkBoxForm.valid).toBe(false);
+      expect(component.checkBoxForm.errors).toEqual({ required: true });
     });
   });
 });
