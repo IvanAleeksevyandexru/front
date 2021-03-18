@@ -123,8 +123,8 @@ describe('ComponentsListRelationsService', () => {
   });
 
   xdescribe('getUpdatedShownElements()', () => {
-    it('should return prepared and updated shown elements', () => {
-      // expect(service.getUpdatedShownElements()).toBeTruthy();
+    it('should be created', () => {
+      expect(service).toBeTruthy();
     });
   });
 
