@@ -1,23 +1,23 @@
 <epgu-constructor-label
-  [isTextHelper]="data.value?.attrs?.isTextHelper"
-  [tips]="data.value?.attrs?.labelHint"
-  [label]="data.value?.label"
-  [clarifications]="data.value?.attrs?.clarifications"
+  [isTextHelper]="component?.attrs?.isTextHelper"
+  [tips]="component?.attrs?.labelHint"
+  [label]="component?.label"
+  [clarifications]="component?.attrs?.clarifications"
   *ngIf="!disableLabel"
 ></epgu-constructor-label>
-<div class="form__error" *ngIf="!disableError">
-  <small *ngIf="data.get('value')?.invalid && data.get('value').touched">
-    {{ data.get('value')?.getError('msg') }}
+<div class="form__error" *ngIf="hasErrors">
+  <small *ngIf="hasUiError">
+    {{ component?.getError('msg') }}
   </small>
-  <small *ngIf="data.get('value')?.hasError('serverError')">
-    {{ data.get('value')?.getError('serverError') }}
+  <small *ngIf="hasServerError">
+    {{ component?.getError('serverError') }}
   </small>
 </div>
 <div>
   <ng-content></ng-content>
 </div>
-<div class="form__info" *ngIf="!disableHint">
-  <span *ngIf="data.value?.attrs?.hint as hint" class="form__hint">
+<div class="form__info" *ngIf="hasInfo">
+  <span *ngIf="hint" class="form__hint">
     {{ hint }}
   </span>
   <epgu-constructor-helper-text *ngIf="isHelperTextVisible">

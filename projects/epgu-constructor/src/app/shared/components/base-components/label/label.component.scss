@@ -21,6 +21,10 @@
   &::first-letter {
     text-transform: uppercase;
   }
+
+  @include phones-down {
+    font-weight: bold;
+  }
 }
 
 .label-tip {
