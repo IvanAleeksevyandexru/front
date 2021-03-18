@@ -63,7 +63,7 @@ export class CheckboxListComponent extends DefaultValueAccessor implements After
       .subscribe((changes) => this.onChange(changes));
   }
 
-  hideShow(): void {
+  toggle(): void {
     this.hidden = !this.hidden;
     this.checkboxes = this.checkboxes.map((el) => ({ ...el, hidden: !el.showOn && this.hidden }));
   }

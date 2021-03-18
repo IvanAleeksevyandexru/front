@@ -93,7 +93,7 @@ describe('CheckboxListComponent', () => {
     expect(component.checkboxes).toEqual([ { id: 'checkbox1', label: 'Оформление инвалидности', showOn: true, hidden: false }]);
   });
 
-  describe('hideShow', () => {
+  describe('toggle', () => {
     const mockAttrs = {
       ...mockComponent.attrs, checkBoxes: {
         checkbox1: {
@@ -110,7 +110,7 @@ describe('CheckboxListComponent', () => {
     };
 
     beforeEach(() => {
-      jest.spyOn(component, 'hideShow');
+      jest.spyOn(component, 'toggle');
       component.attrs = mockAttrs;
     });
 
@@ -121,7 +121,7 @@ describe('CheckboxListComponent', () => {
       ]);
       let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
-      expect(component.hideShow).toHaveBeenCalled();
+      expect(component.toggle).toHaveBeenCalled();
       expect(component.checkboxes).toEqual([
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
         { id: 'checkbox2', label: 'label2', showOn: false, hidden: false }
@@ -131,10 +131,10 @@ describe('CheckboxListComponent', () => {
     it('show checkboxes', fakeAsync(() => {
       let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
-      expect(component.hideShow).toHaveBeenCalled();
+      expect(component.toggle).toHaveBeenCalled();
       hideShowEl.click();
       tick();
-      expect(component.hideShow).toHaveBeenCalled();
+      expect(component.toggle).toHaveBeenCalled();
       expect(component.checkboxes).toEqual([
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
         { id: 'checkbox2', label: 'label2', showOn: false, hidden: true }
