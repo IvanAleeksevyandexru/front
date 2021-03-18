@@ -63,7 +63,7 @@ describe('ComponentItemComponent', () => {
     fixture = TestBed.createComponent(ComponentItemComponent);
     component = fixture.componentInstance;
     formData = fb.group(mockData);
-    component.data = formData;
+    component.control = formData;
     fixture.detectChanges();
   });
 
