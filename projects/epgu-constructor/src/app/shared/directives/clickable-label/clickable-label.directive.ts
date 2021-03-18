@@ -28,8 +28,10 @@ export class ClickableLabelDirective {
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
 
     if (targetElementActionType) {
+      event.preventDefault();
       this._handleAction(targetElementActionType, targetElementActionValue, targetElement);
     } else if (targetElement.id) {
+      event.preventDefault();
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
     }
   }
