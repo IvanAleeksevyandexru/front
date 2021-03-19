@@ -32,12 +32,21 @@ import { DatesToolsServiceStub } from '../../../../../../core/services/dates-too
 import {
   FileUploadItem,
   FileUploadItemTypes,
+  TerabyteListItem,
+  TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { LoggerService } from '../../../../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
+import { ErrorActions, FileItem } from './data';
+import { of } from 'rxjs';
+import { CompressionService } from '../../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
+  title: 'title',
   uploadId: 'passport',
   type: FileUploadItemTypes.single,
   label: 'label',
@@ -46,26 +55,20 @@ const uploadMock: FileUploadItem = {
   maxFileCount: 10,
 };
 
-const createFileMock = (name: string, options: Record<string, any>): File => {
-  return new File([], name, { type: 'text/plain', lastModified: 0 });
+const createFileMock = (name: string, options: Record<string, any> = {}): File => {
+  return new File([], name, { type: 'text/plain', lastModified: 0, ...options });
 };
 
 const createFileList = (files: File[]): FileList => {
   return (files as unknown) as FileList;
 };
-const createUploadedFileMock = (
-  fileName: string,
-  objectId: string,
-  mnemonic: string,
-  mimeType: string,
-  fileSize: number,
-): UploadedFile => {
+const createUploadedFileMock = (options: Partial<TerraUploadFileOptions>): UploadedFile => {
   return {
-    fileName,
-    objectId,
-    mnemonic, //fu1.FileUploadComponent.passport.1
-    mimeType,
-    fileSize,
+    fileName: '123.pdf',
+    objectId: '123',
+    mnemonic: 'fu1.FileUploadComponent.passport.1',
+    mimeType: 'pdf',
+    fileSize: 123,
     fileUid: 1882985687,
     metaId: 1874756798,
     objectTypeId: 2,
@@ -88,6 +91,8 @@ const createUploadedFileMock = (
 describe('FileUploadItemComponent', () => {
   let component: FileUploadItemComponent;
   let fixture: ComponentFixture<FileUploadItemComponent>;
+  let prepateService: PrepareService;
+  let terabyteService: TerraByteApiService;
 
   beforeEach(
     waitForAsync(() => {
@@ -101,15 +106,18 @@ describe('FileUploadItemComponent', () => {
           AutocompleteService,
           ModalService,
           CurrentAnswersService,
+          PrepareService,
+          CompressionService,
           { provide: DatesToolsService, useClass: DatesToolsServiceStub },
           { provide: UtilsService, useClass: UtilsServiceStub },
           { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
           { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-          { provide: PrepareService, useClass: PrepareServiceStub },
+          //  { provide: PrepareService, useClass: PrepareServiceStub },
           { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ActionService, useClass: ActionServiceStub },
           { provide: ScreenService, useClass: ScreenServiceStub },
+          { provide: LoggerService, useClass: LoggerServiceStub },
         ],
       })
         .overrideComponent(FileUploadItemComponent, {
@@ -120,14 +128,72 @@ describe('FileUploadItemComponent', () => {
   );
 
   beforeEach(() => {
+    prepateService = TestBed.inject(PrepareService);
+    terabyteService = TestBed.inject(TerraByteApiService);
     fixture = TestBed.createComponent(FileUploadItemComponent);
     component = fixture.componentInstance;
     component.data = uploadMock;
     component.objectId = objectIdMock;
+
+    // jest.spyOn(prepateService, 'prepare').mockImplementation((file: FileItem) => of(file));
+    jest.spyOn(terabyteService, 'uploadFile').mockImplementation(() => of(null));
+    jest
+      .spyOn(terabyteService, 'getFileInfo')
+      .mockImplementation((options: Partial<TerraUploadFileOptions>) =>
+        of(createUploadedFileMock(options) as TerabyteListItem),
+      );
+    window.URL.createObjectURL = () => {
+      return '';
+    };
+
     fixture.detectChanges();
+    jest.useFakeTimers();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be title', () => {
+    const debugEl = fixture.debugElement.query(By.css('.title'));
+    expect(debugEl?.nativeElement?.innerHTML?.indexOf(uploadMock.title)).not.toBe(-1);
+  });
+
+  it('should be label', () => {
+    const debugEl = fixture.debugElement.query(By.css('.info__text'));
+    expect(debugEl?.nativeElement?.innerHTML?.indexOf(uploadMock.label)).not.toBe(-1);
+  });
+  it('should load file success', () => {
+    const files = createFileList([createFileMock('test.png')]);
+    component.updateSelectedFilesInfoAndSend(files);
+    fixture.detectChanges();
+    jest.runAllTimers();
+
+    expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).toBeNull();
+  });
+  it('should load file error', () => {
+    // jest
+    //   .spyOn(prepateService, 'prepare')
+    //   .mockImplementation((file: FileItem) =>
+    //     of(file.setError({ type: ErrorActions.addUploadErr, text: '' })),
+    //   );
+    const files = createFileList([createFileMock('test.pdf')]);
+    component.updateSelectedFilesInfoAndSend(files);
+    fixture.detectChanges();
+    jest.runAllTimers();
+
+    console.log(fixture.debugElement.nativeElement.innerHTML);
+    expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).not.toBeNull();
+  });
+  it('should load file attach', () => {
+    expect(0).toBe(0);
+  });
+  it('should detach file', () => {
+    expect(0).toBe(0);
+  });
+  it('should delete file', () => {
+    expect(0).toBe(0);
+  });
+  it('should open link', () => {
+    expect(0).toBe(0);
+  });
+  it('should open viewer', () => {
+    expect(0).toBe(0);
   });
 });
