@@ -278,9 +278,13 @@ export class ComponentsListFormService {
       validators.push(this.validationService.dateValidator(component));
     }
 
+    const { type, attrs, id } = component;
+
     const form: FormGroup = this.fb.group(
       {
-        ...component,
+        type,
+        attrs,
+        id,
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
