@@ -2,9 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ConfigService } from '../../../../../core/services/config/config.service';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-upload-and-edit-photo-container',
@@ -17,10 +19,13 @@ export class UploadAndEditPhotoContainerComponent {
   startToChangeCroppedImageUrl$ = new BehaviorSubject<{ isStart: boolean }>({ isStart: false });
   data$: Observable<ComponentDto> = this.screenService.component$;
 
+  private nextStepAction = NEXT_STEP_ACTION;
+
   constructor(
     public screenService: ScreenService,
     public config: ConfigService,
-    private eventBusService: EventBusService,
+    private actionService: ActionService,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   changeCroppedImageUrl(imageUrl: string): void {
@@ -36,6 +41,7 @@ export class UploadAndEditPhotoContainerComponent {
   }
 
   nextStep(mergedData): void {
-    this.eventBusService.emit('nextStepEvent', JSON.stringify(mergedData));
+    this.currentAnswersService.state = mergedData;
+    this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
   }
 }

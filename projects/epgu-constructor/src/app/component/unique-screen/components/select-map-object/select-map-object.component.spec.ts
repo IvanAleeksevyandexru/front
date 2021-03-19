@@ -6,7 +6,6 @@ import { ConfigServiceStub } from '../../../../core/services/config/config.servi
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../../core/services/local-storage/local-storage.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
@@ -46,6 +45,8 @@ import {
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { PrepareComponentsService } from '../../../../shared/services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -63,7 +64,6 @@ describe('SelectMapObjectComponent', () => {
       providers: [
         Icons,
         ModalErrorService,
-        EventBusService,
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
@@ -72,9 +72,9 @@ describe('SelectMapObjectComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         RefRelationService,
-        ScreenService,
         PrepareComponentsService,
         CachedAnswersService,
+        ScreenService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -84,6 +84,8 @@ describe('SelectMapObjectComponent', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
       ],
     })
       .compileComponents()

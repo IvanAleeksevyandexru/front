@@ -96,17 +96,6 @@ describe('UniqueScreenComponent', () => {
       });
       nextStepSpy.calls.reset();
     });
-
-    it('should call nextDataForStep() on eventBusService nextStepEvent', () => {
-      screenService.component = componentDtoSample;
-      fixture.detectChanges();
-      const nextDataForStepSpy = spyOn(component, 'nextDataForStep');
-
-      eventBusService.emit('nextStepEvent', 'any');
-
-      expect(nextDataForStepSpy).toBeCalledTimes(1);
-      expect(nextDataForStepSpy).toBeCalledWith('any');
-    });
   });
 
   describe('nextStep() method', () => {

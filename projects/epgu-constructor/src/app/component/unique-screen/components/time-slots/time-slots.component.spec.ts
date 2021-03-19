@@ -25,13 +25,14 @@ import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.ser
 import { of } from 'rxjs';
 import { LoggerService } from 'projects/epgu-constructor/src/app/core/services/logger/logger.service';
 import { LoggerServiceStub } from 'projects/epgu-constructor/src/app/core/services/logger/logger.service.stub';
-import { EventBusService } from 'projects/epgu-constructor/src/app/core/services/event-bus/event-bus.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EMPTY_SLOT, mockSlots } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { SmevSlotsResponseInterface, TimeSlotsAnswerInterface } from './time-slots.types';
 
 const moment = moment_;
@@ -61,7 +62,6 @@ describe('TimeSlotsComponent', () => {
       providers: [
         CurrentAnswersService,
         TimeSlotsConstants,
-        EventBusService,
         DatesToolsService,
         TimeSlotsService,
         UtilsService,
@@ -71,6 +71,7 @@ describe('TimeSlotsComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: Smev3TimeSlotsRestService, useClass: Smev3TimeSlotsRestServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
     timeSlotsService = TestBed.inject(TimeSlotsService);

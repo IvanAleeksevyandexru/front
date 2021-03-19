@@ -15,7 +15,6 @@ import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs
 import { isEqual as _isEqual } from 'lodash';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import {
@@ -43,6 +42,8 @@ import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.inter
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -74,8 +75,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
   private needToAutoCenterAllPoints = false;
-
   private DEFAULT_ZOOM = 9;
+  private nextStepAction = NEXT_STEP_ACTION;
 
   private initData$ = combineLatest([
     this.screenService.component$,
@@ -94,9 +95,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private modalErrorService: ModalErrorService,
     private zone: NgZone,
     private deviceDetector: DeviceDetectorService,
-    private eventBusService: EventBusService,
     private dictionaryToolsService: DictionaryToolsService,
     private actionService: ActionService,
+    private currentAnswersService: CurrentAnswersService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -387,10 +388,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
       if (this.screenActionButtons.length > 0) {
         this.actionService.openConfirmationModal(this.screenActionButtons[0], this.data.id, () => {
-          this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+          this.currentAnswersService.state = answer;
+          this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         });
       } else {
-        this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+        this.currentAnswersService.state = answer;
+        this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
       }
     });
   }
