@@ -29,22 +29,25 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { EMPTY_SLOT } from './mocks/mock-time-slots';
+import { EMPTY_SLOT, mockSlots } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { SmevSlotsResponseInterface, TimeSlotsAnswerInterface } from './time-slots.types';
 
 const moment = moment_;
 moment.locale('ru');
-
-Date.now = jest.fn().mockReturnValue(new Date('2020-01-01T00:00:00.000Z'));
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
   let fixture: ComponentFixture<TimeSlotsComponent>;
   let screenService: ScreenServiceStub;
+  let timeSlotsService: TimeSlotsService;
+  let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
+  let store: ScreenStore;
 
   beforeEach(async () => {
+    Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     await TestBed.configureTestingModule({
       imports: [EpguLibModule, HttpClientTestingModule],
       declarations: [
@@ -71,14 +74,29 @@ describe('TimeSlotsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
+    timeSlotsService = TestBed.inject(TimeSlotsService);
+    smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-    const store = cloneDeep(mockScreenDivorceStore);
-    screenService.initScreenStore((store as unknown) as ScreenStore);
+    store = cloneDeep(mockScreenDivorceStore);
+    screenService.initScreenStore(store);
     fixture = TestBed.createComponent(TimeSlotsComponent);
     component = fixture.componentInstance;
+
+    const compValue = JSON.parse(screenService.component.value);
+    let cachedAnswer = screenService.getCompValueFromCachedAnswers();
+    if (cachedAnswer) {
+      cachedAnswer = JSON.parse(cachedAnswer);
+    }
+    jest
+      .spyOn(timeSlotsService as any, 'getAvailableAreaNames')
+      .mockReturnValue(of(['Кабинет отдела']));
+    jest
+      .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
+      .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
+    await timeSlotsService.init(compValue, cachedAnswer as unknown as TimeSlotsAnswerInterface, compValue.timeSlotType).toPromise();
   });
 
   it('should create', () => {
@@ -110,11 +128,14 @@ describe('TimeSlotsComponent', () => {
     expect(check).toBeTruthy();
     date = new Date('2020-02-01T10:00:00.000Z');
     check = checkDateRestrictions(date);
-    expect(check).toBeFalsy();
+    expect(check).toBeTruthy();
     date = new Date('2021-01-01T10:00:00.000Z');
     check = checkDateRestrictions(date);
     expect(check).toBeTruthy();
     date = new Date('2020-12-31T10:00:00.000Z');
+    check = checkDateRestrictions(date);
+    expect(check).toBeTruthy();
+    date = new Date('2021-03-01T10:00:00.000Z');
     check = checkDateRestrictions(date);
     expect(check).toBeFalsy();
   });
@@ -334,15 +355,11 @@ describe('TimeSlotsComponent', () => {
 
   describe('when dateType is today', () => {
     beforeEach(() => {
+      Date.now = jest.fn().mockReturnValue(new Date('2021-02-15T00:00:00.000Z'));
       screenService.component.attrs.dateType = 'today';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
 
-      const today = new Date(Date.now());
-      const nextMonth = today.getMonth() === 11 ? '01' : `0${(today.getMonth() + 2)}`.substr(-2);
-      const year = today.getMonth() === 11 ? today.getFullYear() + 1 : today.getFullYear();
-      const selectedMonth = new ListItem({ id: `${year}-${nextMonth}` } as ListItem);
-      component.monthChanged(selectedMonth);
       fixture.detectChanges();
     });
 
@@ -351,17 +368,16 @@ describe('TimeSlotsComponent', () => {
       expect(allDays.length).toEqual(35);
 
       const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
-      expect(lockedDays.length).toEqual(7);
+      expect(lockedDays.length).toEqual(19);
     });
   });
 
   describe('when dateType is refDate', () => {
     beforeEach(() => {
       screenService.component.attrs.dateType = 'refDate';
-      screenService.component.attrs.refDate = '2019-12-15T00:00:00.000Z';
+      screenService.component.attrs.refDate = '2021-02-05T00:00:00.000Z';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
-      component.monthChanged(new ListItem({ id: '2020-01' } as ListItem));
       fixture.detectChanges();
     });
 
@@ -370,7 +386,24 @@ describe('TimeSlotsComponent', () => {
       expect(allDays.length).toEqual(35);
 
       const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
-      expect(lockedDays.length).toEqual(18);
+      expect(lockedDays.length).toEqual(9);
     });
+  });
+
+  it('should call modal for no slots case', () => {
+    const modalParams = { text: 'temp' };
+    store.display.components[0].attrs.emptySlotsModal = modalParams;
+    screenService.initScreenStore(store);
+    const modalSpy = jest.spyOn(component, 'showModal');
+    timeSlotsService['slotsMap'] = [];
+    fixture.detectChanges();
+    expect(modalSpy).toBeCalledWith(modalParams);
+  });
+
+  it('should not call modal for no slots case and without options', () => {
+    const modalSpy = jest.spyOn(component, 'showModal');
+    timeSlotsService['slotsMap'] = [];
+    fixture.detectChanges();
+    expect(modalSpy).not.toBeCalled();
   });
 });

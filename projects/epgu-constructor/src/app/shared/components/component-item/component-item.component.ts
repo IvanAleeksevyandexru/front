@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { OPTIONAL_FIELD } from '../../constants/helper-texts';
 import {
   CustomComponent,
@@ -10,10 +10,12 @@ import {
   selector: 'epgu-constructor-component-item',
   templateUrl: './component-item.component.html',
   styleUrls: ['./component-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentItemComponent implements OnInit, OnChanges {
-  @Input() data: AbstractControl;
-
+  @Input() control: AbstractControl;
+  @Input() component: CustomComponent;
+  @Input() invalid: boolean;
   @Input() disableLabel = false;
   @Input() disableError = false;
   @Input() disableHint = false;
@@ -27,7 +29,6 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   public hasErrors = false;
   public hasUiError = false;
   public hasServerError = false;
-  public component: FormControl & CustomComponent;
 
   ngOnInit(): void {
     this.setState();
@@ -38,7 +39,6 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   }
 
   private setState(): void {
-    this.component = this.data.value;
     this.checkItemHasErrors();
     this.setHints();
     this.setHelperTextVisibility();
@@ -47,12 +47,8 @@ export class ComponentItemComponent implements OnInit, OnChanges {
 
   private checkItemHasErrors(): void {
     this.hasUiError =
-      this.component?.invalid && this.component?.touched && this.component?.hasError
-        ? this.component?.hasError('msg')
-        : false;
-    this.hasServerError = this.component?.hasError
-      ? this.component?.hasError('serverError')
-      : false;
+      this.control.invalid && this.control.touched ? this.control.hasError('msg') : false;
+    this.hasServerError = this.control.hasError('serverError');
     this.hasErrors = !this.disableError && (this.hasUiError || this.hasServerError);
   }
 

@@ -4,7 +4,7 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CustomComponent } from '../../components/components-list/components-list.types';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
-import { Attrs, DateRange, Range, Ref } from './date-range.models';
+import { DateRangeAttrs, DateRange, Range, DateRangeRef } from './date-range.models';
 
 @Injectable()
 export class DateRangeService {
@@ -18,7 +18,7 @@ export class DateRangeService {
    * @param attrs аттрибуты компонента календаря
    * @param id id компонента
    */
-  public changeDate(attrs: Attrs, date: DateRange): void {
+  public changeDate(attrs: DateRangeAttrs, date: DateRange): void {
     if (!attrs?.limit) return;
 
     if (attrs?.to) {
@@ -37,7 +37,7 @@ export class DateRangeService {
    * @param id айди компонента
    * @param attrs аттрибуты компонента календаря
    */
-  public clearDate(id: string, attrs: Attrs): void {
+  public clearDate(id: string, attrs: DateRangeAttrs): void {
     if (!attrs?.limit) return;
     let componentId = attrs.to ?? attrs.from;
     this.rangeMap.set(componentId, { max: null, min: null });
@@ -87,7 +87,7 @@ export class DateRangeService {
   }
 
   async getMinDate(
-    ref: Array<Ref>,
+    ref: Array<DateRangeRef>,
     id: string,
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
@@ -96,7 +96,7 @@ export class DateRangeService {
   }
 
   async getMaxDate(
-    ref: Array<Ref>,
+    ref: Array<DateRangeRef>,
     id: string,
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
@@ -105,7 +105,7 @@ export class DateRangeService {
   }
 
   private async calcDateRange(
-    ref: Array<Ref>,
+    ref: Array<DateRangeRef>,
     id: string,
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
@@ -135,7 +135,7 @@ export class DateRangeService {
     return range;
   }
 
-  private async chooseOperation(refParams: Ref, date: Date): Promise<Array<Date>> {
+  private async chooseOperation(refParams: DateRangeRef, date: Date): Promise<Array<Date>> {
     const today = await this.datesToolsService.getToday();
     switch (refParams.condition) {
       case '>=today':

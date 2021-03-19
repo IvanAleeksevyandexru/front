@@ -7,7 +7,7 @@ import {
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../screen/screen.types';
 import { TextTransform } from '../../types/textTransform';
-import { Ref } from '../../services/date-range/date-range.models';
+import { DateRangeRef } from '../../services/date-range/date-range.models';
 import {
   DictionaryFilters,
   DictionaryItem,
@@ -104,7 +104,7 @@ export interface CustomComponentAttr {
     label?: string;
     type?: string;
   }>;
-  ref?: Array<CustomComponentRef & Ref>; //TODO разобраться с типами
+  ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;

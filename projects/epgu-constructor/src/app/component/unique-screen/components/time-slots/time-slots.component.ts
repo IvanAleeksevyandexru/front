@@ -95,6 +95,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private cachedAnswer: TimeSlotsAnswerInterface;
   private timeSlotType: TimeSlotsTypes;
   private nextStepAction = NEXT_STEP_ACTION;
+  private emptySlotsModal: ConfirmationModal = null;
 
   constructor(
     private modalService: ModalService,
@@ -110,6 +111,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.initModalsSettings();
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
@@ -340,6 +342,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.inProgress = false;
 
         this.checkExistenceSlots();
+
+        if (!this.isExistsSlots && this.emptySlotsModal) {
+          this.showModal(this.emptySlotsModal);
+        }
 
         this.changeDetectionRef.markForCheck();
       },
@@ -595,5 +601,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       [this.currentArea] = this.areas;
       this.isAreasVisible = this.areas.length > 0;
     }
+  }
+
+  private initModalsSettings(): void {
+    this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
   }
 }

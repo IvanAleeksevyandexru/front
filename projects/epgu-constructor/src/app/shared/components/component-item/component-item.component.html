@@ -7,10 +7,10 @@
 ></epgu-constructor-label>
 <div class="form__error" *ngIf="hasErrors">
   <small *ngIf="hasUiError">
-    {{ component?.getError('msg') }}
+    {{ control.getError('msg') }}
   </small>
   <small *ngIf="hasServerError">
-    {{ component?.getError('serverError') }}
+    {{ control.getError('serverError') }}
   </small>
 </div>
 <div>

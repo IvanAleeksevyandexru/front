@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@tanker/file-ponyfill": "^2.6.3",
-    "tslib": "2.0.0",
+    "tslib": "2.1.0",
     "ics": "^2.24.0",
     "@alyle/ui": "^10.5.1",
     "angular-resize-event": "^2.0.0"
