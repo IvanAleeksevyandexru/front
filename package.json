@@ -7,6 +7,7 @@
     "start": "ng serve --host 0.0.0.0 --disable-host-check",
     "start:stage": "ng serve --configuration staging",
     "start:backend": "java -jar pgu-form-service-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
+    "start:backend:local": "java -jar ./fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --spring.profiles.active=local",
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
     "build": "ng build --configuration production",
     "lib:build": "ng build epgu-constructor --prod",
