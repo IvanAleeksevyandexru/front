@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
 interface UploadersRestriction {
   [uploader: string]: number;
@@ -22,8 +21,6 @@ export enum CheckFailedReasons {
 
 @Injectable()
 export class FileUploadService {
-  uploaderChanges = new Subject<true>();
-
   private totalMaxFilesAmount = 0;
   private totalMaxFilesSize = 0;
   private uploadedFilesSize: UploadersRestriction = {};
@@ -66,7 +63,6 @@ export class FileUploadService {
       this.maxFilesAmount[uploader] = value;
       this.uploadedFilesAmount[uploader] = 0;
     }
-    this.uploaderChanges.next(true);
   }
 
   setMaxFilesSize(value: number, uploader: string): void {
@@ -80,13 +76,11 @@ export class FileUploadService {
       this.maxFilesSize[uploader] = value;
       this.uploadedFilesSize[uploader] = 0;
     }
-    this.uploaderChanges.next(true);
   }
 
   updateFilesAmount(valueForUpdating: number = 0, uploader: string): void {
     if (this.checkFilesAmount(valueForUpdating, uploader).isValid) {
       this.uploadedFilesAmount[uploader] += valueForUpdating;
-      this.uploaderChanges.next(true);
     }
   }
 
@@ -105,13 +99,11 @@ export class FileUploadService {
   updateFilesSize(valueForUpdating: number = 0, uploader: string): void {
     if (this.checkFilesSize(valueForUpdating, uploader).isValid) {
       this.uploadedFilesSize[uploader] += valueForUpdating;
-      this.uploaderChanges.next(true);
     }
   }
   decrementFilesSize(valueForUpdating: number = 0, uploader: string): void {
     if (this.checkFilesSize(valueForUpdating, uploader).isValid) {
       this.uploadedFilesSize[uploader] -= valueForUpdating;
-      this.uploaderChanges.next(true);
     }
   }
 
