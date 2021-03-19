@@ -390,6 +390,7 @@
       <epgu-constructor-checkbox-list
         *ngSwitchCase="componentType.CheckBoxList"
         [attrs]="componentData.get('attrs').value"
+        [required]="componentData.get('required').value"
         [formControl]="$any(componentData.get('value'))"
       >
       </epgu-constructor-checkbox-list>
