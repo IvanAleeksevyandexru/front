@@ -47,6 +47,8 @@
     }
   }
 }
+
+/* stylelint-disable no-descending-specificity */
 .new-design {
   :host::ng-deep {
     .info__text {
@@ -74,3 +76,4 @@
     }
   }
 }
+/* stylelint-enable no-descending-specificity */
