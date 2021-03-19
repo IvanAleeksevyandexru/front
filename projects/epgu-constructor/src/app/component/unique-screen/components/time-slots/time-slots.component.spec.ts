@@ -29,11 +29,12 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { EMPTY_SLOT, mockSlots } from './mocks/mock-time-slots';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { SmevSlotsResponseInterface, TimeSlotsAnswerInterface } from './time-slots.types';
+import { slotsError } from './mocks/mock-time-slots';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const moment = moment_;
 moment.locale('ru');
@@ -76,10 +77,10 @@ describe('TimeSlotsComponent', () => {
     }).compileComponents();
     timeSlotsService = TestBed.inject(TimeSlotsService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
+    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
   beforeEach(async () => {
-    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
     fixture = TestBed.createComponent(TimeSlotsComponent);
@@ -96,7 +97,6 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
-    await timeSlotsService.init(compValue, cachedAnswer as unknown as TimeSlotsAnswerInterface, compValue.timeSlotType).toPromise();
   });
 
   it('should create', () => {
@@ -395,7 +395,9 @@ describe('TimeSlotsComponent', () => {
     store.display.components[0].attrs.emptySlotsModal = modalParams;
     screenService.initScreenStore(store);
     const modalSpy = jest.spyOn(component, 'showModal');
-    timeSlotsService['slotsMap'] = [];
+    jest
+      .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
+      .mockReturnValue(of(mockEmptySlots as SmevSlotsResponseInterface));
     fixture.detectChanges();
     expect(modalSpy).toBeCalledWith(modalParams);
   });
@@ -405,5 +407,12 @@ describe('TimeSlotsComponent', () => {
     timeSlotsService['slotsMap'] = [];
     fixture.detectChanges();
     expect(modalSpy).not.toBeCalled();
+  });
+
+  it('should call error modal if slots request returned error', () => {
+    jest.spyOn(smev3TimeSlotsRestService, 'getTimeSlots').mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
+    const modalSpy = jest.spyOn(component, 'showError');
+    fixture.detectChanges();
+    expect(modalSpy).toBeCalled();
   });
 });
