@@ -87,8 +87,7 @@
   <div class="mb-24">
     <epgu-constructor-label
       [label]="
-        components[formField.paymentDate].label[form.get(formField.paymentType).value] ||
-        components[formField.paymentDate].label['default']
+        $any(components[formField.paymentDate].label) | label: form.get(formField.paymentType).value
       "
     ></epgu-constructor-label>
     <epgu-constructor-error [data]="form.get(formField.paymentDate)"></epgu-constructor-error>
