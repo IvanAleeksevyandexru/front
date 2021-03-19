@@ -7,7 +7,10 @@
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
-      *ngIf="formService.shownElements[componentData.value?.id]?.isShown | showComponent:componentData.value?.attrs?.hidden"
+      *ngIf="
+        formService.shownElements[componentData.value?.id]?.isShown
+          | showComponent: componentData.value?.attrs?.hidden
+      "
     >
       <ng-container *ngSwitchCase="componentType.LabelSection">
         <ng-container
@@ -31,7 +34,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.NewEmailInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [isHalfWidthItem]="isHalfWidthItem(componentData)"
       >
         <ng-container
@@ -41,7 +46,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.StringInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [hidden]="componentData.value?.attrs?.hidden"
       >
         <ng-container
@@ -51,7 +58,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.DropDown"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <lib-dropdown
           *ngIf="dropDowns$ | async as dropDowns"
@@ -69,7 +78,12 @@
         </lib-dropdown>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item *ngSwitchCase="componentType.MvdGiac" [data]="componentData">
+      <epgu-constructor-component-item
+        *ngSwitchCase="componentType.MvdGiac"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
+      >
         <lib-lookup
           *ngIf="dropDowns$ | async as dropDowns"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
@@ -88,7 +102,9 @@
       <ng-container>
         <epgu-constructor-component-item
           *ngSwitchCase="componentType.Dictionary"
-          [data]="componentData"
+          [control]="componentData.get('value')"
+          [component]="componentData.value"
+          [invalid]="componentData.invalid"
         >
           <lib-dropdown
             *ngIf="dictionaries$ | async as dictionaries"
@@ -105,7 +121,9 @@
 
         <epgu-constructor-component-item
           *ngSwitchCase="componentType.Lookup"
-          [data]="componentData"
+          [control]="componentData.get('value')"
+          [component]="componentData.value"
+          [invalid]="componentData.invalid"
         >
           <lib-lookup
             *ngIf="dictionaries$ | async as dictionaries"
@@ -127,7 +145,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.RadioInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [hidden]="componentData.value?.attrs?.hidden"
       >
         <div
@@ -150,7 +170,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.CheckBox"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [disableLabel]="true"
       >
         <div
@@ -170,7 +192,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.DateInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <epgu-constructor-constructor-date-picker
           (clearedEvent)="
@@ -193,7 +217,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.AddressInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <epgu-constructor-constructor-dadata-widget
           [simpleMode]="true"
@@ -209,7 +235,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.CityInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <epgu-constructor-constructor-lookup
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
@@ -225,7 +253,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.TextArea"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <epgu-constructor-constructor-multiline-input
           [textTransformType]="componentData.value?.attrs?.fstuc"
@@ -243,7 +273,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.PhoneNumberChangeInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [isHalfWidthItem]="isHalfWidthItem(componentData)"
       >
         <ng-container
@@ -253,7 +285,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.OgrnInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
@@ -262,7 +296,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.OgrnipInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
@@ -271,7 +307,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.LegalInnInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
@@ -280,7 +318,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.SnilsInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [hidden]="componentData.value?.attrs?.hidden"
       >
         <ng-container
@@ -290,7 +330,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.PersonInnInput"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <ng-container
           *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
@@ -302,7 +344,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.PassportLookup"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
       >
         <epgu-constructor-passport
           [formControl]="$any(componentData.get('value'))"
@@ -329,7 +373,9 @@
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.MultipleChoiceDictionary"
-        [data]="componentData"
+        [control]="componentData.get('value')"
+        [component]="componentData.value"
+        [invalid]="componentData.invalid"
         [disableLabel]="true"
       >
         <epgu-constructor-multiple-choice-dictionary
