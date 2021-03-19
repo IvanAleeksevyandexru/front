@@ -11,6 +11,7 @@ import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
 import { CustomComponentRef } from '../../../shared/components/components-list/components-list.types';
+import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -154,6 +155,7 @@ export interface ComponentAttrsDto {
   beginTime?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   canDeleteFirstScreen?: boolean;
+  emptySlotsModal?: ConfirmationModal;
 }
 
 export interface ComponentDateTimeDto {
