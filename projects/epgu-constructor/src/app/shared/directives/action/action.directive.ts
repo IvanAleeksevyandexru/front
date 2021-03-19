@@ -22,13 +22,15 @@ export class ActionDirective {
     const target = event.target as HTMLButtonElement;
     if (this.canSwitchActionAfterKeyDown(event, target)) {
       event.preventDefault();
-      this.currentAnswersService.isValid &&
+      this.currentAnswersService.isValid && this.action &&
         this.actionService.switchAction(this.action, this.componentId);
     }
   }
 
   @HostListener('click') onClick(): void {
-    this.actionService.switchAction(this.action, this.componentId);
+    if (this.action) {
+      this.actionService.switchAction(this.action, this.componentId);
+    }
   }
 
   canSwitchActionAfterKeyDown(event: KeyboardEvent, target: HTMLButtonElement): boolean {
