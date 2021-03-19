@@ -29,9 +29,10 @@ import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
+import { ComponentsListInputComponent } from './components/components-list-input/components-list-input.component';
 
 @NgModule({
-  declarations: [ComponentsListComponent, ShowComponentPipe],
+  declarations: [ComponentsListComponent, ShowComponentPipe, ComponentsListInputComponent],
   exports: [ComponentsListComponent],
   imports: [
     BaseModule,
