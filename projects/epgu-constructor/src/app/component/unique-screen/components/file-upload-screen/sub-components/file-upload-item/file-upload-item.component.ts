@@ -483,7 +483,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((files: UploadedFile[]) => from(files)),
       filter(
         (file) =>
-          file?.mnemonic?.includes(this.getSubMnemonicPath()) && file?.objectId === this.objectId,
+          file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+          file?.objectId.toString() === this.objectId.toString(),
       ),
       finalize(() => this.listUploadingStatus.next(false)),
     );
