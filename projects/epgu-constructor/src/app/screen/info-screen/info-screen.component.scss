@@ -32,8 +32,10 @@
   &__action {
     margin-top: 24px;
 
-    @include tablets-up {
-      margin-right: 32px;
+    &:not(:first-child) {
+      @include tablets-up {
+        margin-left: 32px;
+      }
     }
   }
 }
