@@ -1,3 +1,4 @@
-<img class="user-info-icon" alt="" [src]="path + icons[value.ageType][value.gender]"  />
-<div class="user-info-text">{{value.name + ', ' + value.ageText}}</div>
-
+<ng-container *ngIf="value">
+  <img class="user-info-icon" alt="" [src]="path + icons[value.ageType][value.gender]" />
+  <div class="user-info-text">{{ value.name + ', ' + value.ageText }}</div>
+</ng-container>
