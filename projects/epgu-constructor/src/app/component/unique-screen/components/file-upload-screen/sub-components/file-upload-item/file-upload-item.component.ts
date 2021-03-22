@@ -115,7 +115,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   store = new FileItemStore();
   componentId = this.screenService.component?.id || null;
-  componentValues: string[] = [];
 
   files = this.store.files;
   files$ = this.files.pipe(
