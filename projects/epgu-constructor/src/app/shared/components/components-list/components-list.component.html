@@ -70,7 +70,7 @@
           [validationShowOn]="validationShowOn"
           [formControl]="$any(componentData.get('value'))"
           [clearable]="true"
-          [localSearch]="componentData.get('attrs').value.localSearch"
+          [localSearch]="componentData.value.attrs.localSearch"
           class="cs__select cs-select"
           [suggest]="(suggestions$ | async)[componentData.value?.id]"
           (selectSuggest)="suggestHandle($event)"
@@ -380,17 +380,17 @@
       >
         <epgu-constructor-multiple-choice-dictionary
           [formControl]="$any(componentData.get('value'))"
-          [dictionaryList]="componentData.get('attrs').value.dictionaryList"
-          [dictionaryType]="componentData.get('attrs').value.dictionaryType"
-          [subLabel]="componentData.get('attrs').value.subLabel"
-          [label]="componentData.get('label').value"
+          [dictionaryList]="componentData.value.attrs.dictionaryList"
+          [dictionaryType]="componentData.value.attrs.dictionaryType"
+          [subLabel]="componentData.value.attrs.subLabel"
+          [label]="componentData.value.label"
         ></epgu-constructor-multiple-choice-dictionary>
       </epgu-constructor-component-item>
 
       <epgu-constructor-checkbox-list
         *ngSwitchCase="componentType.CheckBoxList"
-        [attrs]="componentData.get('attrs').value"
-        [required]="componentData.get('required').value"
+        [attrs]="componentData.value.attrs"
+        [required]="componentData.value.required"
         [formControl]="$any(componentData.get('value'))"
       >
       </epgu-constructor-checkbox-list>
