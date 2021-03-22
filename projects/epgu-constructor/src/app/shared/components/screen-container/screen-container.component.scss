@@ -19,11 +19,15 @@
 
 :host::ng-deep .screen-body {
   margin-bottom: 24px;
+
+  @include tablets-up {
+    margin-bottom: 20px;
+  }
 }
 
 :host::ng-deep .screen-footer {
   $footer-item-mx: 16px;
-  $footer-mt: 24px;
+  $footer-mt: 20px;
   $footer-mb: 24px;
 
   display: flex;
