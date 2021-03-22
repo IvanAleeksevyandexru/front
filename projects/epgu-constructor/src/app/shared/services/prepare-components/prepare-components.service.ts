@@ -364,8 +364,12 @@ export class PrepareComponentsService {
       const isPrevScreenRelation = components.filter(item => item.id === ref.relatedRel).length === 0;
 
       if(isPrevScreenRelation) {
+        const cachedValue = this.cachedAnswersService.getCachedValueById(cachedAnswers, ref.relatedRel);
+
         if(this.refRelationService.isDisplayOffRelation(ref.relation)) {
-          this.hideComponent(component, ref, cachedAnswers);
+          this.handleDisplayOff(component, ref, cachedValue);
+        } else if(this.refRelationService.isDisplayOnRelation(ref.relation)) {
+          this.handleDisplayOn(component, ref, cachedValue);
         }
       }
     });
@@ -373,11 +377,11 @@ export class PrepareComponentsService {
     return component;
   }
 
-  private hideComponent(component: ComponentDto, ref: CustomComponentRef, cachedAnswers: CachedAnswers,): void {
-    const cachedValue = this.cachedAnswersService.getCachedValueById(cachedAnswers, ref.relatedRel);
-    if (ref.val === cachedValue) {
-      component.attrs.hidden = true;
-    }
+  private handleDisplayOff(component: ComponentDto, ref: CustomComponentRef, cachedValue: string): void {
+    component.attrs.hidden = this.refRelationService.isValueEquals(ref.val, cachedValue);
   }
 
+  private handleDisplayOn(component: ComponentDto, ref: CustomComponentRef, cachedValue: string): void {
+    component.attrs.hidden = !this.refRelationService.isValueEquals(ref.val, cachedValue);
+  }
 }

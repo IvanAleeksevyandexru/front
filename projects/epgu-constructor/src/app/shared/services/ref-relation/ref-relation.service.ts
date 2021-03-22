@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CustomComponentRefRelation } from '../../components/components-list/components-list.types';
+import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 
 @Injectable()
 export class RefRelationService {
@@ -29,5 +30,37 @@ export class RefRelationService {
 
   public isFilterOnRelation(relation: CustomComponentRefRelation): boolean {
     return relation === CustomComponentRefRelation.filterOn;
+  }
+
+  /**
+   * Сравнивает значание в зависимости от типа
+   * @param value - value из зависимого компонета
+   * @param componentVal - value из компонета
+   */
+  public isValueEquals(
+    value: string | Array<string> | boolean,
+    componentVal: { id?: string } | string, //TODO: нормализовать типы
+  ): boolean {
+    const componentValue = this.getValueFromComponentVal(componentVal);
+
+    if (value === EMPTY_VALUE) {
+      return !componentValue;
+    }
+
+    if (value === NON_EMPTY_VALUE) {
+      return !!componentValue;
+    }
+
+    if (Array.isArray(value)) {
+      return value.some((values) => values === componentValue);
+    }
+
+    return value === componentValue;
+  }
+
+  public getValueFromComponentVal(componentVal: { id?: string } | string): string {
+    return ['string', 'boolean'].includes(typeof componentVal)
+      ? (componentVal as string)
+      : (componentVal as { id?: string })?.id;
   }
 }
