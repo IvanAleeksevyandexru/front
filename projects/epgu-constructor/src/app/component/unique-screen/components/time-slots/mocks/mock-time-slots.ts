@@ -244,6 +244,11 @@ export const mockSlots = {
   error: { errorDetail: { errorCode: 0, errorMessage: 'Operation completed' }, fieldErrors: [] },
 };
 
+export const mockEmptySlots = {
+  slots: [],
+  error: { errorDetail: { errorCode: 0, errorMessage: 'Operation completed' }, fieldErrors: [] },
+};
+
 export const EMPTY_SLOT = {
   slotId: '',
   slotTime: new Date(),
@@ -269,4 +274,12 @@ export const brakBookRequest = {
   attributes: [],
   slotId: ['9f5e8262-4ca6-4bd7-a8c5-94ab37b8683d'],
   serviceId: ['ЗагсБрак'],
+};
+
+export const slotsError = {
+  slots: [],
+  error: {
+    errorDetail: { errorCode: 6, errorMessage: 'Произошла ошибка. Повторите попытку позже.' },
+    fieldErrors: [],
+  },
 };
