@@ -12,24 +12,16 @@
           | showComponent: componentData.value?.attrs?.hidden
       "
     >
-      <ng-container *ngSwitchCase="componentType.LabelSection">
-        <ng-container
-          *ngTemplateOutlet="
-            formOutputHtml;
-            context: { $implicit: { class: 'label', value: componentData.value } }
-          "
-        >
-        </ng-container>
-      </ng-container>
 
-      <ng-container *ngSwitchCase="componentType.HtmlString">
-        <ng-container
-          *ngTemplateOutlet="
-            formOutputHtml;
-            context: { $implicit: { class: 'info__text', value: componentData.value } }
-          "
-        >
-        </ng-container>
+      <ng-container
+        *ngIf="[
+          componentType.HtmlString,
+          componentType.LabelSection
+        ].includes(componentData.value?.type)"
+      >
+        <epgu-constructor-form-output-html
+          [control]="componentData"
+        ></epgu-constructor-form-output-html>
       </ng-container>
 
       <!-- TODO  NewEmailInput, PhoneNumberChangeInput в json не найдены, уточнить-->
@@ -51,7 +43,6 @@
         (selectSuggest)="suggestHandle($event)"
       >
       </epgu-constructor-masked-and-plain-input>
-
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.DropDown"
@@ -329,13 +320,3 @@
     </ng-container>
   </div>
 </form>
-
-<ng-template #formOutputHtml let-data>
-  <epgu-constructor-output-html
-    class="custom__screen-html"
-    [class]="data.class"
-    [html]="data.value?.label"
-    [clarifications]="data.value?.attrs?.clarifications"
-  >
-  </epgu-constructor-output-html>
-</ng-template>

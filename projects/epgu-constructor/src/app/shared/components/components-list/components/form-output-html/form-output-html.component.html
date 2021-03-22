@@ -1,0 +1,16 @@
+<ng-container
+  *ngTemplateOutlet="
+    formOutputHtml;
+    context: { $implicit: control.value }
+  "
+>
+</ng-container>
+
+<ng-template #formOutputHtml let-component>
+  <epgu-constructor-output-html
+    [class]="outputHtmlClass[component?.type]"
+    [html]="component?.label"
+    [clarifications]="component?.attrs?.clarifications"
+  >
+  </epgu-constructor-output-html>
+</ng-template>
