@@ -58,9 +58,27 @@ export class CheckboxCubeContainerComponent implements AfterViewInit {
     this.required = component.required;
 
     this.checkboxes = this.getCheckboxes(cubeElements);
-    this.initForm(cubeElements);
+
+    this.initForm(
+      component.valueFromCache ? this.getPresetCubeElements(component, cubeElements) : cubeElements,
+    );
 
     this.setState(this.checkboxCubeForm.value);
+  }
+
+  private getPresetCubeElements(
+    component: ComponentDto,
+    cubeElements: { [p: string]: CubeElement },
+  ): { [id: string]: CubeElement } {
+    const value = JSON.parse(component.value);
+
+    return Object.entries(cubeElements).reduce(
+      (presetCubeElements, [id, cubeElement]) => ({
+        ...presetCubeElements,
+        [id]: { ...cubeElement, value: value[id].value },
+      }),
+      {},
+    );
   }
 
   private isValid(): boolean {
