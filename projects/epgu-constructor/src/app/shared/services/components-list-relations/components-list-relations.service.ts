@@ -277,7 +277,7 @@ export class ComponentsListRelationsService {
     if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOn,
-        isShown: this.isValueEquals(reference.val, componentVal),
+        isShown: this.refRelationService.isValueEquals(reference.val, componentVal),
       };
       dependentControl.markAsUntouched();
     }
@@ -356,25 +356,6 @@ export class ComponentsListRelationsService {
       patchValueAndDisable(dependentControl, reference.defaultValue);
     } else {
       patchToPrevValueAndEnable(dependentControl);
-    }
-  }
-
-  private handleIsDisplayOnRelation(
-    element: CustomStatusElement,
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
-    reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
-    dependentControl: AbstractControl,
-  ): void {
-    const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
-
-    if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
-      shownElements[dependentComponent.id] = {
-        relation: CustomComponentRefRelation.displayOn,
-        isShown: this.refRelationService.isValueEquals(reference.val, componentVal),
-      };
-      dependentControl.markAsUntouched();
     }
   }
 
