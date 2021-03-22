@@ -14,6 +14,10 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
 import { WebcamService } from '../../../../core/services/webcam/webcam.service';
 import { UploadAndEditPhotoContainerComponent } from './container/upload-and-edit-photo-container.component';
 import { UploadAndEditPhotoModule } from './upload-and-edit-photo.module';
+import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
+import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 
 
 
@@ -66,6 +70,10 @@ describe('UploadAndEditPhotoComponent', () => {
         { provide: ScreenService, useClass: MockScreenService },
         EventBusService,
         UnsubscribeService,
+        FormPlayerApiService,
+        HtmlRemoverService,
+        CurrentAnswersService,
+        AutocompleteApiService,
       ],
     })
     .compileComponents();

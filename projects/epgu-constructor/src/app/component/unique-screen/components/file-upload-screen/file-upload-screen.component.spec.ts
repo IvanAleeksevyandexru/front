@@ -11,12 +11,15 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from './sub-components/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { FileResponseToBackendUploadsItem, UploadedFile } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileResponseToBackendUploadsItem,
+  UploadedFile,
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
 import {
   ActionType,
   ComponentDto,
-  DTOActionAction
+  DTOActionAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 const screenServiceComponentMockData: ComponentDto = {
@@ -59,22 +62,22 @@ describe('FileUploadScreenComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         // MockModule(FileUploadModule),
-        MockModule(EpguLibModule)
+        MockModule(EpguLibModule),
       ],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(ScreenContainerComponent),
         MockComponent(FileUploadComponent),
         MockComponent(PageNameComponent),
-        MockDirective(ActionDirective)
+        MockDirective(ActionDirective),
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
-        CurrentAnswersService
-      ]
+        CurrentAnswersService,
+      ],
     }).overrideComponent(FileUploadScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
+      set: { changeDetection: ChangeDetectionStrategy.Default },
     });
   });
 
@@ -103,9 +106,9 @@ describe('FileUploadScreenComponent', () => {
         uploadId: 'id1',
         files: [
           {
-            value: [fileSample]
-          }
-        ]
+            value: [fileSample],
+          },
+        ],
       };
 
       eventBusService.emit('fileUploadValueChangedEvent', eventData);
@@ -114,9 +117,9 @@ describe('FileUploadScreenComponent', () => {
         type: 'FileUploadComponent',
         uploads: [
           {
-            value: [fileSample]
-          }
-        ]
+            value: [fileSample],
+          },
+        ],
       });
     });
 
@@ -127,23 +130,25 @@ describe('FileUploadScreenComponent', () => {
         type: 'FileUploadComponent',
         uploads: [
           {
-            value: [fileSample]
-          }
-        ]
+            value: [fileSample],
+          },
+        ],
       };
 
       const eventData: FileResponseToBackendUploadsItem = {
         files: [
           {
-            value: [fileSample]
-          }
+            value: [fileSample],
+          },
         ],
         relatedUploads: {
-          uploads: [{
-            uploadId: 'id1',
-            files: [],
-          }]
-        }
+          uploads: [
+            {
+              uploadId: 'id1',
+              files: [],
+            },
+          ],
+        },
       };
 
       eventBusService.emit('fileUploadValueChangedEvent', eventData);
@@ -152,9 +157,9 @@ describe('FileUploadScreenComponent', () => {
         type: 'FileUploadComponent',
         uploads: [
           {
-            value: [fileSample]
-          }
-        ]
+            value: [fileSample],
+          },
+        ],
       });
     });
   });
@@ -178,7 +183,6 @@ describe('FileUploadScreenComponent', () => {
 
       expect(debugEl.componentInstance.showNav).toBeTruthy();
     });
-
   });
 
   describe('epgu-constructor-page-name', () => {
@@ -191,7 +195,7 @@ describe('FileUploadScreenComponent', () => {
       screenService.header = 'some header';
       screenService.component = {
         ...screenServiceComponentMockData,
-        label: ''
+        label: '',
       };
       fixture.detectChanges();
 
@@ -201,15 +205,13 @@ describe('FileUploadScreenComponent', () => {
       screenService.header = '';
       screenService.component = {
         ...screenServiceComponentMockData,
-        label: 'some label'
+        label: 'some label',
       };
       fixture.detectChanges();
 
       debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
-
     });
-
   });
 
   describe('epgu-constructor-file-upload', () => {
@@ -241,7 +243,7 @@ describe('FileUploadScreenComponent', () => {
         someKey: {
           visited: true,
           value: 'some value',
-        }
+        },
       };
       fixture.detectChanges();
 
@@ -249,14 +251,14 @@ describe('FileUploadScreenComponent', () => {
         someKey: {
           visited: true,
           value: 'some value',
-        }
+        },
       });
     });
 
     it('prefixForMnemonic property', () => {
       screenService.component = {
         ...screenServiceComponentMockData,
-        id: 'some-id'
+        id: 'some-id',
       };
       fixture.detectChanges();
 
@@ -296,7 +298,6 @@ describe('FileUploadScreenComponent', () => {
         ],
       });
     });
-
   });
 
   describe('lib-button', () => {
@@ -333,15 +334,17 @@ describe('FileUploadScreenComponent', () => {
         eventBusService.emit('fileUploadValueChangedEvent', {
           files: [
             {
-              value: []
-            }
+              value: [],
+            },
           ],
           relatedUploads: {
-            uploads: [{
-              uploadId: 'id1',
-              files: [],
-            }]
-          }
+            uploads: [
+              {
+                uploadId: 'id1',
+                files: [],
+              },
+            ],
+          },
         });
         fixture.detectChanges();
         expect(debugEl.componentInstance.disabled).toBeTruthy();
@@ -350,11 +353,13 @@ describe('FileUploadScreenComponent', () => {
         eventBusService.emit('fileUploadValueChangedEvent', {
           files: [
             {
-              value: [{
-                ...fileSample,
-                uploaded: false
-              }]
-            }
+              value: [
+                {
+                  ...fileSample,
+                  uploaded: false,
+                },
+              ],
+            },
           ],
         });
         fixture.detectChanges();
@@ -367,21 +372,29 @@ describe('FileUploadScreenComponent', () => {
         eventBusService.emit('fileUploadValueChangedEvent', {
           files: [
             {
-              value: [{
-                ...fileSample,
-                uploaded: true
-              }]
-            }
+              required: true,
+              value: [
+                {
+                  ...fileSample,
+                  uploaded: true,
+                },
+              ],
+            },
           ],
           relatedUploads: {
-            uploads: [{
-              uploadId: 'id1',
-              files: [{
-                ...fileSample,
-                uploaded: true
-              }],
-            }]
-          }
+            uploads: [
+              {
+                uploadId: 'id1',
+                required: true,
+                files: [
+                  {
+                    ...fileSample,
+                    uploaded: true,
+                  },
+                ],
+              },
+            ],
+          },
         });
         fixture.detectChanges();
         expect(debugEl.componentInstance.disabled).toBeFalsy();
@@ -400,5 +413,3 @@ describe('FileUploadScreenComponent', () => {
     });
   });
 });
-
-

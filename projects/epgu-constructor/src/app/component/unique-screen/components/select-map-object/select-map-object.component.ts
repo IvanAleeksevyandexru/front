@@ -12,9 +12,9 @@ import { YaMapService } from 'epgu-lib';
 import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { isEqual as _isEqual } from 'lodash';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import {
@@ -42,6 +42,8 @@ import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.inter
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -69,11 +71,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public screenActionButtons: ScreenActionDto[] = [];
 
   private componentValue: ComponentValue;
+  private componentPresetValue: ComponentValue;
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
   private needToAutoCenterAllPoints = false;
-
   private DEFAULT_ZOOM = 9;
+  private nextStepAction = NEXT_STEP_ACTION;
 
   private initData$ = combineLatest([
     this.screenService.component$,
@@ -92,9 +95,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private modalErrorService: ModalErrorService,
     private zone: NgZone,
     private deviceDetector: DeviceDetectorService,
-    private eventBusService: EventBusService,
     private dictionaryToolsService: DictionaryToolsService,
     private actionService: ActionService,
+    private currentAnswersService: CurrentAnswersService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -190,7 +193,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
-    this.componentValue = JSON.parse(this.data?.value || '{}');
+    this.componentValue = JSON.parse(this.data.value || '{}');
+    this.componentPresetValue = JSON.parse(this.data.presetValue || '{}');
     this.screenStore = this.screenService.getStore();
   }
 
@@ -198,7 +202,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     if (this.data?.value && this.data?.value !== '{}') {
       const mapObject = JSON.parse(this.data?.value);
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
-      if (mapObject.idForMap) {
+      if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
@@ -249,7 +253,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private initMap(): void {
     this.setMapOpstions();
-    this.fillCoords(this.selectMapObjectService.componentAttrs.dictionaryFilter)
+    this.fillCoords(this.data.attrs.dictionaryFilter)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         catchError((error) => {
@@ -355,7 +359,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryOptions {
     return {
       ...this.dictionaryToolsService.getFilterOptions(
-        this.componentValue,
+        this.componentPresetValue,
         this.screenStore,
         dictionaryFilters,
       ),
@@ -384,10 +388,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
       if (this.screenActionButtons.length > 0) {
         this.actionService.openConfirmationModal(this.screenActionButtons[0], this.data.id, () => {
-          this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+          this.currentAnswersService.state = answer;
+          this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         });
       } else {
-        this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+        this.currentAnswersService.state = answer;
+        this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
       }
     });
   }
@@ -472,5 +478,19 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           }
         });
     }
+  }
+
+  private isFiltersSame(): boolean {
+    const valueFilters = this.dictionaryToolsService.getFilterOptions(
+      this.componentValue,
+      this.screenStore,
+      this.data.attrs.dictionaryFilter,
+    );
+    const valuePresetFilters = this.dictionaryToolsService.getFilterOptions(
+      this.componentPresetValue,
+      this.screenStore,
+      this.data.attrs.dictionaryFilter,
+    );
+    return _isEqual(valueFilters, valuePresetFilters);
   }
 }

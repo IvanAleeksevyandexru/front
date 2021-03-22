@@ -205,4 +205,27 @@ describe('ErrorsInterceptor', () => {
     expect(navigationService.patchOnCli).toHaveBeenCalledWith({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     tick();
   }));
+
+  it('should open modal with errorModalWindow params', fakeAsync(() => {
+    jest.spyOn(modalService, 'openModal');
+    formPlayerApi.navigate(responseDto, {}, FormPlayerNavigation.NEXT).subscribe(() => fail('should have failed with the 409 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(409);
+      }
+    );
+    const requestToError = httpMock.expectOne(`${config.apiUrl}/service/${init.serviceId}/scenario/getNextStep`);
+    const body = new HttpErrorResponse({
+      status: 409,
+      statusText: '',
+      url: `${config.apiUrl}/service/${init.serviceId}/scenario/getNextStep`,
+    });
+    requestToError.flush({
+      errorModalWindow : ORDER_NOT_FOUND_ERROR_MODAL_PARAMS
+    }, body);
+    expect(modalService.openModal).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
+    );
+    tick();
+  }));
 });

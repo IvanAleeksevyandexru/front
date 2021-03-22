@@ -1,12 +1,13 @@
 import { ListItem } from 'epgu-lib';
 import {
+  ClarificationsDto,
   ComponentFilterDto,
   ComponentRelationFieldDto,
   DisplayDto,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../screen/screen.types';
 import { TextTransform } from '../../types/textTransform';
-import { Ref } from '../../services/date-range/date-range.models';
+import { DateRangeRef } from '../../services/date-range/date-range.models';
 import {
   DictionaryFilters,
   DictionaryItem,
@@ -41,6 +42,7 @@ export enum CustomScreenComponentTypes {
   Timer = 'Timer',
   TextArea = 'TextArea',
   MultipleChoiceDictionary = 'MultipleChoiceDictionary',
+  CheckBoxList = 'CheckBoxList',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
@@ -102,7 +104,7 @@ export interface CustomComponentAttr {
     label?: string;
     type?: string;
   }>;
-  ref?: Array<CustomComponentRef & Ref>; //TODO разобраться с типами
+  ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
@@ -125,6 +127,11 @@ export interface CustomComponentAttr {
   searchType?: string;
   cityFilter?: string[];
   maskOptions?: NumberMaskOptionsInterface;
+  labelHint?: string;
+  hint?: string;
+  customUnrecLabel?: string;
+  clarifications?: ClarificationsDto;
+  isTextHelper?: boolean;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

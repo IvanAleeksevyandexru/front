@@ -10,15 +10,16 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
+import { ActionService } from '../../../../shared/directives/action/action.service';
 import {
   getDiscountDate,
   getDiscountPrice,
@@ -64,7 +65,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public currentAnswersService: CurrentAnswersService;
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
-  public eventBusService: EventBusService;
+  public actionService: ActionService;
 
   data: ComponentBase;
   header$: Observable<string>;
@@ -80,11 +81,12 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   private payStatusInterval = 30;
   private billPosition = 0; // Какой счет брать из списка
   private orderId: number; // Номер заявления
+  private nextStepAction = NEXT_STEP_ACTION;
 
   constructor(public injector: Injector) {
     this.paymentService = this.injector.get(PaymentService);
     this.screenService = this.injector.get(ScreenService);
-    this.eventBusService = this.injector.get(EventBusService);
+    this.actionService = this.injector.get(ActionService);
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.config = this.injector.get(ConfigService);
@@ -121,7 +123,8 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       receiver: this.docInfo ? this.docInfo : null,
       billId: this.billId ? this.billId : null,
     } as PaymentInfoEventValue;
-    this.eventBusService.emit('nextStepEvent', JSON.stringify(exportValue));
+    this.currentAnswersService.state = exportValue;
+    this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
   }
 
   /**

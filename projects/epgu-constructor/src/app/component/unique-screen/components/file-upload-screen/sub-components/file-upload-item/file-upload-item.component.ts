@@ -34,6 +34,7 @@ import {
   getSizeInMB,
   Operation,
   OperationType,
+  plurals,
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
@@ -67,10 +68,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
+
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
     this.updateAcceptTypes();
   }
+
+  plurals = plurals;
+
   maxTotalSize: number;
   maxTotalAmount: number;
   acceptTypes?: string;
@@ -469,6 +474,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit('fileUploadItemValueChangedEvent', {
       uploadId: this.loadData.uploadId,
+      required: this.loadData?.required ?? true,
       value,
       errors,
     } as FileResponseToBackendUploadsItem);
@@ -486,7 +492,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((files: UploadedFile[]) => from(files)),
       filter(
         (file) =>
-          file?.mnemonic?.includes(this.getSubMnemonicPath()) && file?.objectId === this.objectId,
+          file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+          file?.objectId.toString() === this.objectId.toString(),
       ),
       finalize(() => this.listUploadingStatus.next(false)),
     );

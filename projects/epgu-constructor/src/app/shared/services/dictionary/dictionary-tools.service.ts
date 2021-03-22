@@ -23,7 +23,8 @@ import {
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
-import { ComponentDictionaryFilters, ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { ComponentDictionaryFilters } from '../components-list-relations/components-list-relations.interface';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { CachedAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';

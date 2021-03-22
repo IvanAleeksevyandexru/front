@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentItemComponent } from './component-item.component';
-import { AbstractControl, FormBuilder } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { WebcamShootModule } from '../webcam-shoot/webcam-shoot.module';
@@ -23,7 +23,6 @@ describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
   let fixture: ComponentFixture<ComponentItemComponent>;
   let fb: FormBuilder;
-  let formData: AbstractControl;
   let mockData = {
     data: {
       value: {
@@ -62,8 +61,8 @@ describe('ComponentItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentItemComponent);
     component = fixture.componentInstance;
-    formData = fb.group(mockData);
-    component.data = formData;
+    component.control = new FormControl();
+    component.component = mockData as any;
     fixture.detectChanges();
   });
 

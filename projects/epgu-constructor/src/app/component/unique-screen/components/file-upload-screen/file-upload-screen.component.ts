@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -49,7 +49,7 @@ export class FileUploadScreenComponent implements OnInit {
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
-  disabled = true;
+  disabled = new BehaviorSubject<boolean>(true);
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -108,8 +108,11 @@ export class FileUploadScreenComponent implements OnInit {
     if ($eventData.relatedUploads && this.value?.uploads) {
       this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
         if ($eventData.uploadId === value.uploadId) {
-          // eslint-disable-next-line no-param-reassign
-          value = { ...value, relatedUploads: $eventData.relatedUploads } as FileUploadEmitValue;
+          return {
+            ...value,
+            relatedUploads: $eventData.relatedUploads,
+            required: $eventData.required,
+          } as FileUploadEmitValue;
         }
         return value;
       });
@@ -133,8 +136,11 @@ export class FileUploadScreenComponent implements OnInit {
      * Или
      * 2. Если не все файлы загрузились на терабайт
      */
-    this.disabled = !(
-      this.isEveryUploaderHasFile(this.value.uploads) && this.isAllFilesUploaded(this.value.uploads)
+    this.disabled.next(
+      !(
+        this.isEveryUploaderHasFile(this.value.uploads) &&
+        this.isAllFilesUploaded(this.value.uploads)
+      ),
     );
   }
 
@@ -159,8 +165,14 @@ export class FileUploadScreenComponent implements OnInit {
    * @private
    */
   private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
-    const totalUploaders = uploaders?.length;
-    const uploadersWithFiles = uploaders?.filter((fileUploaderInfo: FileUploadEmitValue) => {
+    const requiredUploaders = uploaders.filter((uploader) => uploader?.required);
+    const totalUploaders = requiredUploaders?.length;
+
+    if (totalUploaders === 0) {
+      return false;
+    }
+
+    const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
       // Если это зависимые подэлементы для загрузки
       return fileUploaderInfo.relatedUploads
         ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)

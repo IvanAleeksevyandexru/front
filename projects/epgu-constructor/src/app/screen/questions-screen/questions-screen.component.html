@@ -46,7 +46,8 @@
         [selectedValue]="selectedAnswer"
         *ngIf="showAnswerAsLongBtn(action)"
         (click)="answerChoose(action)"
-        (keydown)="handleKeyEvent($event, action)"
+        (keydown.enter)="answerChoose(action)"
+        (keydown.space)="answerChoose(action)"
       >
       </epgu-constructor-answer-button>
     </ng-container>
@@ -63,7 +64,8 @@
         [selectedValue]="selectedAnswer"
         *ngIf="showAnswerAsLongBtn(answer)"
         (click)="answerChoose(answer)"
-        (keydown)="handleKeyEvent($event, answer)"
+        (keydown.enter)="answerChoose(answer)"
+        (keydown.space)="answerChoose(answer)"
       >
       </epgu-constructor-answer-button>
     </ng-container>

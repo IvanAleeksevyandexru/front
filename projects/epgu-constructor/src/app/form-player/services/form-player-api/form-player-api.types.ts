@@ -11,6 +11,7 @@ import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
 import { CustomComponentRef } from '../../../shared/components/components-list/components-list.types';
+import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -102,6 +103,7 @@ export interface ComponentAttrsDto {
   image?: ComponentImageDto;
   labelAttr?: string;
   labelHint?: string;
+  customUnrecLabel?: string;
   hint?: string;
   russia?: boolean;
   ussr?: boolean;
@@ -152,6 +154,8 @@ export interface ComponentAttrsDto {
   endDate?: ComponentDateTimeDto;
   beginTime?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
+  canDeleteFirstScreen?: boolean;
+  emptySlotsModal?: ConfirmationModal;
 }
 
 export interface ComponentDateTimeDto {
@@ -316,6 +320,7 @@ export interface ComponentActionDto {
   attrs?: {
     stepsBack?: number;
   };
+  deliriumAction?: string;
 }
 
 export interface ScreenActionDto extends ComponentActionDto {}
@@ -453,6 +458,7 @@ export enum ActionType {
   deleteSuggest = 'deleteSuggest',
   attachUploadedFiles = 'attachUploadedFiles',
   dropdownListModal = 'dropdownListModal',
+  deliriumNextStep = 'deliriumNextStep',
 }
 
 export enum DTOActionAction {
@@ -479,6 +485,7 @@ export interface CheckOrderApiResponse {
 export interface ActionDTO<T = {}> {
   scenarioDto: Partial<ScenarioDto>;
   additionalParams?: T;
+  deliriumAction?: string;
 }
 
 export interface ActionApiResponse<T> {

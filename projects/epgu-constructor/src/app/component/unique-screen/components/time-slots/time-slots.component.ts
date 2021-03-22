@@ -11,7 +11,6 @@ import { takeUntil } from 'rxjs/operators';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
@@ -19,6 +18,7 @@ import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirma
 import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import {
   DATE_STRING_YEAR_MONTH,
   DATE_TIME_STRING_FULL,
@@ -26,6 +26,7 @@ import {
   StartOfTypes,
   weekDaysAbbr,
 } from '../../../../shared/constants/dates';
+import { ActionService } from '../../../../shared/directives/action/action.service';
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import {
@@ -93,6 +94,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private errorModalResultSub = new Subscription();
   private cachedAnswer: TimeSlotsAnswerInterface;
   private timeSlotType: TimeSlotsTypes;
+  private nextStepAction = NEXT_STEP_ACTION;
+  private emptySlotsModal: ConfirmationModal = null;
 
   constructor(
     private modalService: ModalService,
@@ -100,14 +103,15 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
-    private eventBusService: EventBusService,
     private changeDetectionRef: ChangeDetectorRef,
     private datesHelperService: DatesToolsService,
     private httpCancelService: HttpCancelService,
     private timeSlotsService: TimeSlotsService,
+    private actionService: ActionService,
   ) {}
 
   ngOnInit(): void {
+    this.initModalsSettings();
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
@@ -237,7 +241,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       if (this.isCachedValueChanged()) {
         this.showModal(this.confirmModalParameters);
       } else {
-        this.eventBusService.emit('nextStepEvent', JSON.stringify(this.cachedAnswer));
+        this.currentAnswersService.state = this.cachedAnswer;
+        this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
       }
     } else {
       this.bookTimeSlot();
@@ -260,7 +265,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           department: this.timeSlotsService.department,
         };
         this.setBookedTimeStr(this.currentSlot);
-        this.eventBusService.emit('nextStepEvent', JSON.stringify(answer));
+        this.currentAnswersService.state = answer;
+        this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         this.changeDetectionRef.markForCheck();
       },
       () => {
@@ -272,16 +278,17 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   showError(errorMessage: string): void {
-    const params = this.constants.errorModal;
-    params.text = errorMessage;
-    params.buttons = [
-      {
-        label: 'Попробовать ещё раз',
-        closeModal: true,
-        value: 'ok',
-      },
-    ];
     this.errorModalResultSub.unsubscribe();
+    const params = {
+      ...COMMON_ERROR_MODAL_PARAMS,
+      buttons: [
+        {
+          label: 'Попробовать ещё раз',
+          closeModal: true,
+          value: errorMessage,
+        },
+      ],
+    };
     const errorModalResult$ = this.showModal(params);
 
     this.errorModalResultSub = errorModalResult$
@@ -336,6 +343,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.inProgress = false;
 
         this.checkExistenceSlots();
+
+        if (!this.isExistsSlots && this.emptySlotsModal) {
+          this.showModal(this.emptySlotsModal);
+        }
 
         this.changeDetectionRef.markForCheck();
       },
@@ -591,5 +602,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       [this.currentArea] = this.areas;
       this.isAreasVisible = this.areas.length > 0;
     }
+  }
+
+  private initModalsSettings(): void {
+    this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
   }
 }

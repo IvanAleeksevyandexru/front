@@ -76,7 +76,7 @@ export class ComponentsListFormService {
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
     this.errors = errors;
-    this.componentsListRelationsService.createStatusElements(components, this.shownElements);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(components);
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -90,7 +90,7 @@ export class ComponentsListFormService {
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
-      this._shownElements = this.componentsListRelationsService.updateDependents(
+      this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
         components,
         {
           ...component,
@@ -278,9 +278,15 @@ export class ComponentsListFormService {
       validators.push(this.validationService.dateValidator(component));
     }
 
+    const { type, attrs, id, label, required } = component;
+
     const form: FormGroup = this.fb.group(
       {
-        ...component,
+        type,
+        attrs,
+        id,
+        label,
+        required,
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
@@ -299,7 +305,7 @@ export class ComponentsListFormService {
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
-        this._shownElements = this.componentsListRelationsService.updateDependents(
+        this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
           components,
           next,
           this.shownElements,

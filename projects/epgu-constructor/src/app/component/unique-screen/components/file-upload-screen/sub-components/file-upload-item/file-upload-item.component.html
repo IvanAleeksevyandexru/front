@@ -101,43 +101,41 @@
 
     <ng-template #totalAmount>
       <div class="message__text message__text_error">
-        {{ limits.totalAmount.count }}&nbsp;
         <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: limits.totalAmount.count }"
+          *ngTemplateOutlet="filesPluralAttach; context: { $implicit: limits.totalAmount.count }"
         ></ng-container>
-        не прикрепилось
       </div>
       <div class="message__description">
-        Всего в заявлении можно загрузить до {{ maxTotalAmount }}&nbsp;
-        <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: maxTotalAmount }"
-        ></ng-container
-        >. Чтобы выбрать другие файлы, удалите часть прикрепленных
+        Всего в заявлении можно загрузить
+        {{plurals.before | pluralize: maxTotalAmount}}
+        {{ maxTotalAmount }}
+        {{plurals.files | pluralize: maxTotalAmount}}.
+        <ng-container *ngIf="maxTotalAmount > 1"
+          >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
+        >
       </div>
     </ng-template>
     <ng-template #amount>
       <div class="message__text message__text_error">
-        {{ limits.amount.count }}&nbsp;
         <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: limits.amount.count }"
+          *ngTemplateOutlet="filesPluralAttach; context: { $implicit: limits.amount.count }"
         ></ng-container>
-        не прикрепилось
       </div>
       <div class="message__description">
-        Здесь можно загрузить до {{ data.maxFileCount }}&nbsp;
-        <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: data.maxFileCount }"
-        ></ng-container
-        >. Чтобы выбрать другие файлы, удалите часть прикрепленных
+        Здесь можно загрузить
+         {{plurals.before | pluralize: data.maxFileCount}}
+        {{ data.maxFileCount }}
+        {{plurals.files | pluralize: data.maxFileCount}}.
+        <ng-container *ngIf="data.maxFileCount > 1"
+          >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
+        >
       </div>
     </ng-template>
     <ng-template #totalSize>
       <div class="message__text message__text_error">
-        {{ limits.totalSize.count }}&nbsp;
         <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: limits.totalSize.count }"
+          *ngTemplateOutlet="filesPluralAttach; context: { $implicit: limits.totalSize.count }"
         ></ng-container>
-        не прикрепилось
       </div>
       <div class="message__description">
         Всего в заявлении можно загрузить файлов на {{ maxTotalSize | fileSize }}. Чтобы выбрать
@@ -148,21 +146,23 @@
     <ng-template #totalAmountMax>
       <div class="message__text">Выбрано максимальное количество файлов</div>
       <div class="message__description">
-        Всего в заявлении можно загрузить до {{ maxTotalAmount }}&nbsp;
-        <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: maxTotalAmount }"
-        ></ng-container
-        >. Если хотите выбрать еще файлы, удалите часть прикрепленных
+        Всего в заявлении можно загрузить
+        {{plurals.before | pluralize: maxTotalAmount}}
+        {{ maxTotalAmount }}&nbsp;
+        {{plurals.files | pluralize: maxTotalAmount}}.
+        <ng-container *ngIf="maxTotalAmount > 1"
+          >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
+        >
       </div>
     </ng-template>
     <ng-template #amountMax>
       <div class="message__text">Выбрано максимальное количество файлов</div>
       <div class="message__description">
-        Здесь можно загрузить до {{ data.maxFileCount }}&nbsp;
-        <ng-container
-          *ngTemplateOutlet="filesPlural; context: { $implicit: data.maxFileCount }"
-        ></ng-container
-        >. Если хотите выбрать еще файлы, удалите часть прикрепленных
+        Здесь можно загрузить до {{ data.maxFileCount }}
+        {{plurals.files | pluralize: data.maxFileCount}}.
+        <ng-container *ngIf="data.maxFileCount > 1"
+          >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
+        >
       </div>
     </ng-template>
     <ng-template #totalSizeMax>
@@ -175,10 +175,8 @@
   </ng-container>
 </div>
 
-<ng-template #filesPlural let-value>
-  <ng-container [ngPlural]="value">
-    <ng-template ngPluralCase="one">файл</ng-template>
-    <ng-template ngPluralCase="few">файла</ng-template>
-    <ng-template ngPluralCase="other">файлов</ng-template>
-  </ng-container>
+<ng-template #filesPluralAttach let-value>
+  {{ value }}
+  {{plurals.files | pluralize:value}}
+  не {{plurals.attach | pluralize:value}}
 </ng-template>

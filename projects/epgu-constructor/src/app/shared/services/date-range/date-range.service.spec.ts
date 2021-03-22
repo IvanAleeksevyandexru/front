@@ -7,7 +7,7 @@ import {
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { Attrs } from './date-range.models';
+import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
@@ -101,7 +101,7 @@ describe('DateRangeService', () => {
     });
 
     it('should be set date to if has attrs.to', () => {
-      const mockAttrs: Attrs = {
+      const mockAttrs: DateRangeAttrs = {
         limit: '4',
         to: '2',
       } as any;
@@ -117,7 +117,7 @@ describe('DateRangeService', () => {
     });
 
     it('should be set date to if has attrs.from', () => {
-      const mockAttrs: Attrs = {
+      const mockAttrs: DateRangeAttrs = {
         limit: '4',
         from: '2',
       } as any;

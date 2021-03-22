@@ -32,8 +32,10 @@
   &__action {
     margin-top: 24px;
 
-    @include tablets-up {
-      margin-right: 32px;
+    &:not(:first-child) {
+      @include tablets-up {
+        margin-left: 32px;
+      }
     }
   }
 }
@@ -69,7 +71,7 @@
   background-color: transparent;
   box-shadow: none;
 
-  &::ng-deep ul {
+  &::ng-deep .text > ul {
     background-color: $color-white;
     border-radius: 8px;
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);

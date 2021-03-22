@@ -26,13 +26,17 @@ export class EmployeeHistoryMonthsService {
 
   constructor(private datesToolsService: DatesToolsService) {}
 
-  initSettings(): void {
-    this.maxDate = MonthYear.fromDate(this.datesToolsService.endOfMonth(new Date()));
+  async initSettings(): Promise<void> {
+    const date = await this.datesToolsService.getToday();
+    this.maxDate = MonthYear.fromDate(this.datesToolsService.endOfMonth(date));
     this.minDateFrom = MonthYear.fromDate(
-      this.datesToolsService.sub(new Date(), this.years + 60, 'years'),
+      this.datesToolsService.sub(date, this.years + 60, 'years'),
     );
     this.minDateTo = this.minDateFrom;
-    this.availableMonths = this.getAvailableMonths();
+    this.availableMonths = this.getAvailableMonths(
+      this.datesToolsService.sub(date, this.years, 'years'),
+      date,
+    );
   }
 
   getUncheckedPeriods(
@@ -75,14 +79,14 @@ export class EmployeeHistoryMonthsService {
       });
   }
 
-  updateAvailableMonths(generation: Array<EmployeeHistoryModel>): void {
+  async updateAvailableMonths(generation: Array<EmployeeHistoryModel>): Promise<void> {
     this.uncheckAvailableMonths();
-
+    const date = await this.datesToolsService.getToday();
     generation.forEach((e: EmployeeHistoryModel) => {
       if (e.from && e.to) {
         const availableMonths: Array<string> = this.getAvailableMonths(
-          this.datesToolsService.setCalendarDate(new Date(), e.from.year, e.from.month, null),
-          this.datesToolsService.setCalendarDate(new Date(), e.to.year, e.to.month, null),
+          this.datesToolsService.setCalendarDate(date, e.from.year, e.from.month, null),
+          this.datesToolsService.setCalendarDate(date, e.to.year, e.to.month, null),
         ).map((e: EmployeeHistoryAvailableDates) => e.date);
 
         this.availableMonths = this.availableMonths.map((e: EmployeeHistoryAvailableDates) => ({
@@ -95,10 +99,7 @@ export class EmployeeHistoryMonthsService {
     this.checkMonthCompleted();
   }
 
-  private getAvailableMonths(
-    fromDate: Date = this.datesToolsService.sub(new Date(), this.years, 'years'),
-    toDate: Date = new Date(),
-  ): EmployeeHistoryAvailableDates[] {
+  private getAvailableMonths(fromDate: Date, toDate: Date): EmployeeHistoryAvailableDates[] {
     const availableDates = [];
 
     while (this.datesToolsService.diff(toDate, fromDate) >= 0) {

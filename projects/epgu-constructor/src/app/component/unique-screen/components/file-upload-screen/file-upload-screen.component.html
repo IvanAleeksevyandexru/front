@@ -38,7 +38,7 @@
     <div class="screen-footer">
       <lib-button
         [showLoader]="isLoading"
-        [disabled]="disabled"
+        [disabled]="disabled | async"
         epgu-constructor-action
         [action]="nextStepAction"
         class="submit-button"

@@ -6,7 +6,6 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 import { LocationService } from '../../../../../../core/services/location/location.service';
@@ -34,6 +33,9 @@ import { SignatureApplicationData } from '../../models/application.interface';
 import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
 import { SignatureApplicationContainerComponent } from './signature-application-container.component';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
@@ -92,7 +94,8 @@ describe('SignatureApplicationContainerComponent', () => {
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: LocationService, useClass: LocationServiceStub },
           { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-          EventBusService,
+          { provide: ActionService, useClass: ActionServiceStub },
+          CurrentAnswersService,
         ],
       }).compileComponents();
     }),

@@ -6,7 +6,6 @@ import { ConfigServiceStub } from '../../../../core/services/config/config.servi
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../../core/services/local-storage/local-storage.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
@@ -34,16 +33,20 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { Icons } from './constants';
-import { mockSelectMapObjectData, mockSelectMapObjectStore } from './mocks/mock-select-map-object';
+import { mockSelectMapObjectStore } from './mocks/mock-select-map-object';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
 import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
+import { PrepareComponentsService } from '../../../../shared/services/prepare-components/prepare-components.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -61,7 +64,6 @@ describe('SelectMapObjectComponent', () => {
       providers: [
         Icons,
         ModalErrorService,
-        EventBusService,
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
@@ -70,9 +72,11 @@ describe('SelectMapObjectComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         RefRelationService,
+        PrepareComponentsService,
+        CachedAnswersService,
+        ScreenService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
@@ -80,6 +84,8 @@ describe('SelectMapObjectComponent', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
       ],
     })
       .compileComponents()
@@ -91,12 +97,12 @@ describe('SelectMapObjectComponent', () => {
         MapStore = cloneDeep(mockSelectMapObjectStore);
         comp = MapStore.display.components[0];
         compValue = JSON.parse(comp.value);
-        screenService.initScreenStore(mockSelectMapObjectStore);
+        screenService.initScreenStore(MapStore);
         fixture.detectChanges();
       });
   });
 
-   it('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -125,5 +131,16 @@ describe('SelectMapObjectComponent', () => {
       });
       done();
     });
+  });
+
+  it('isFiltersSame() should return true', () => {
+    const isFiltersSame = component['isFiltersSame']();
+    expect(isFiltersSame).toBeTruthy();
+  });
+
+  it('isFiltersSame() should return false', () => {
+    component['componentPresetValue'].regCode = 'R66';
+    const isFiltersSame = component['isFiltersSame']();
+    expect(isFiltersSame).toBeFalsy();
   });
 });
