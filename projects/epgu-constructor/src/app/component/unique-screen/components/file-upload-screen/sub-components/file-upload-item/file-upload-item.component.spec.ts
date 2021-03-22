@@ -36,13 +36,20 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, ComponentRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
-import { ErrorActions, FileItem } from './data';
+import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from './data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
+import {
+  ComponentAttrsDto,
+  ComponentDto,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ViewerService } from '../../../../../../shared/components/uploader/services/viewer/viewer.service';
+import { ViewerServiceStub } from '../../../../../../shared/components/uploader/services/viewer/viewer.service.stub';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -62,7 +69,7 @@ const createFileMock = (name: string, options: Record<string, any> = {}): File =
 const createFileList = (files: File[]): FileList => {
   return (files as unknown) as FileList;
 };
-const createUploadedFileMock = (options: Partial<TerraUploadFileOptions>): UploadedFile => {
+const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
     fileName: '123.pdf',
     objectId: '123',
@@ -84,15 +91,28 @@ const createUploadedFileMock = (options: Partial<TerraUploadFileOptions>): Uploa
     uploaded: true,
     hasError: false,
     alternativeMimeTypes: [],
+    ...options,
   };
 };
+const mockComponent: ComponentDto = {
+  attrs: {} as ComponentAttrsDto,
+  label: 'testComponent',
+  type: '',
+  id: '12',
+  value: '',
+};
 
-// TODO: дописать тесты
+const mockFileItem: () => FileItem = () =>
+  new FileItem(FileItemStatus.uploaded, '', null, createUploadedFileMock());
+
 describe('FileUploadItemComponent', () => {
   let component: FileUploadItemComponent;
   let fixture: ComponentFixture<FileUploadItemComponent>;
   let prepateService: PrepareService;
   let terabyteService: TerraByteApiService;
+  let screenService: ScreenService;
+  let viewerService: ViewerService;
+  let modalSerivce: ModalService;
 
   beforeEach(
     waitForAsync(() => {
@@ -104,20 +124,20 @@ describe('FileUploadItemComponent', () => {
           FileUploadService,
           UnsubscribeService,
           AutocompleteService,
-          ModalService,
           CurrentAnswersService,
-          PrepareService,
           CompressionService,
+          { provide: ModalService, useClass: ModalServiceStub },
           { provide: DatesToolsService, useClass: DatesToolsServiceStub },
           { provide: UtilsService, useClass: UtilsServiceStub },
           { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
           { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-          //  { provide: PrepareService, useClass: PrepareServiceStub },
+          { provide: PrepareService, useClass: PrepareServiceStub },
           { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
           { provide: ActionService, useClass: ActionServiceStub },
           { provide: ScreenService, useClass: ScreenServiceStub },
           { provide: LoggerService, useClass: LoggerServiceStub },
+          { provide: ViewerService, useClass: ViewerServiceStub },
         ],
       })
         .overrideComponent(FileUploadItemComponent, {
@@ -130,24 +150,36 @@ describe('FileUploadItemComponent', () => {
   beforeEach(() => {
     prepateService = TestBed.inject(PrepareService);
     terabyteService = TestBed.inject(TerraByteApiService);
+    screenService = TestBed.inject(ScreenService);
+    viewerService = TestBed.inject(ViewerService);
+    modalSerivce = TestBed.inject(ModalService);
     fixture = TestBed.createComponent(FileUploadItemComponent);
     component = fixture.componentInstance;
     component.data = uploadMock;
     component.objectId = objectIdMock;
 
-    // jest.spyOn(prepateService, 'prepare').mockImplementation((file: FileItem) => of(file));
+    jest.spyOn(viewerService, 'open').mockImplementation(() => of());
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
+    jest.spyOn(prepateService, 'prepare').mockImplementation((file: FileItem) => of(file));
     jest.spyOn(terabyteService, 'uploadFile').mockImplementation(() => of(null));
+    jest
+      .spyOn(terabyteService, 'deleteFile')
+      .mockImplementation((options: Partial<TerraUploadFileOptions>) =>
+        of(createUploadedFileMock(options) as TerraUploadedFile),
+      );
+    jest
+      .spyOn(terabyteService, 'getListByObjectId')
+      .mockImplementation(() => of([] as TerabyteListItem[]));
+
     jest
       .spyOn(terabyteService, 'getFileInfo')
       .mockImplementation((options: Partial<TerraUploadFileOptions>) =>
         of(createUploadedFileMock(options) as TerabyteListItem),
       );
-    window.URL.createObjectURL = () => {
-      return '';
-    };
+    jest.spyOn(terabyteService, 'getDownloadApiPath').mockImplementation(() => 'link');
+    window.URL.createObjectURL = () => '';
 
     fixture.detectChanges();
-    jest.useFakeTimers();
   });
 
   it('should be title', () => {
@@ -159,41 +191,103 @@ describe('FileUploadItemComponent', () => {
     const debugEl = fixture.debugElement.query(By.css('.info__text'));
     expect(debugEl?.nativeElement?.innerHTML?.indexOf(uploadMock.label)).not.toBe(-1);
   });
+
   it('should load file success', () => {
     const files = createFileList([createFileMock('test.png')]);
     component.updateSelectedFilesInfoAndSend(files);
     fixture.detectChanges();
-    jest.runAllTimers();
 
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).toBeNull();
   });
+
   it('should load file error', () => {
-    // jest
-    //   .spyOn(prepateService, 'prepare')
-    //   .mockImplementation((file: FileItem) =>
-    //     of(file.setError({ type: ErrorActions.addUploadErr, text: '' })),
-    //   );
+    jest
+      .spyOn(prepateService, 'prepare')
+      .mockImplementation((file: FileItem) =>
+        of(file.setError({ type: ErrorActions.addUploadErr, text: '' })),
+      );
     const files = createFileList([createFileMock('test.pdf')]);
     component.updateSelectedFilesInfoAndSend(files);
     fixture.detectChanges();
-    jest.runAllTimers();
 
-    console.log(fixture.debugElement.nativeElement.innerHTML);
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).not.toBeNull();
   });
-  it('should load file attach', () => {
-    expect(0).toBe(0);
+
+  it('should attach file', () => {
+    component.suggest({ isAdd: true, file: mockFileItem() });
+    fixture.detectChanges();
+    expect(
+      fixture.debugElement.query(By.css('.uploader-manager-item__button.detach_button')),
+    ).not.toBeNull();
   });
+
   it('should detach file', () => {
-    expect(0).toBe(0);
+    component.suggest({ isAdd: true, file: mockFileItem() });
+    fixture.detectChanges();
+    const detach: HTMLButtonElement = fixture.debugElement.query(
+      By.css('.uploader-manager-item__button.detach_button'),
+    )?.nativeElement;
+    detach.click();
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.uploader-manager-item__container'))).toBeNull();
   });
+
   it('should delete file', () => {
-    expect(0).toBe(0);
+    const files = createFileList([createFileMock('test.png')]);
+    component.updateSelectedFilesInfoAndSend(files);
+    fixture.detectChanges();
+    const deleteButton: HTMLButtonElement = fixture.debugElement.query(
+      By.css('.uploader-manager-item__button.remove_button'),
+    )?.nativeElement;
+    deleteButton?.click();
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.uploader-manager-item__container'))).toBeNull();
   });
+
   it('should open link', () => {
-    expect(0).toBe(0);
+    const files = createFileList([createFileMock('test.pdf', { type: 'application/pdf' })]);
+    component.updateSelectedFilesInfoAndSend(files);
+    fixture.detectChanges();
+    const name: HTMLDivElement = fixture.debugElement.query(
+      By.css('.uploader-manager-item__title > .name'),
+    )?.nativeElement;
+
+    const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
+    spyOn(link, 'click').and.callThrough();
+    name.click();
+
+    fixture.detectChanges();
+    expect(link.click).toHaveBeenCalled();
   });
+
   it('should open viewer', () => {
-    expect(0).toBe(0);
+    const files = createFileList([createFileMock('test.png', { type: 'image/png' })]);
+    component.updateSelectedFilesInfoAndSend(files);
+    fixture.detectChanges();
+    const manager = fixture.debugElement.query(By.css('epgu-constructor-uploader-manager'))
+      .componentInstance;
+
+    spyOn(manager, 'view').and.callThrough();
+
+    const name: HTMLDivElement = fixture.debugElement.query(
+      By.css('.uploader-manager-item__title > .name'),
+    )?.nativeElement;
+    name.click();
+
+    fixture.detectChanges();
+    expect(manager.view).toHaveBeenCalled();
+  });
+
+  it('should open attached viewer', () => {
+    jest.spyOn(component, 'isPrevUploadedFilesButtonShown').mockImplementation(() => true);
+    spyOn(modalSerivce, 'openModal').and.callThrough();
+    fixture.detectChanges();
+    const button: HTMLDivElement = fixture.debugElement.queryAll(
+      By.css('.fileupload__link-button'),
+    )[0]?.nativeElement;
+    button?.click();
+    fixture.detectChanges();
+
+    expect(modalSerivce.openModal).toHaveBeenCalled();
   });
 });
