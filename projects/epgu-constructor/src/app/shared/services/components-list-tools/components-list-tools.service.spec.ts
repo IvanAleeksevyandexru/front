@@ -95,6 +95,11 @@ describe('ComponentsListToolsService', () => {
       component.value = result;
       expect(service.convertedValue(component)).toEqual(result);
     });
+    it('should return empty string as default value', () => {
+      const component = JSON.parse(JSON.stringify(mockComponent));
+      component.value = undefined;
+      expect(service.convertedValue(component)).toEqual('');
+    });
   });
 
   describe('isAddress()', () => {
