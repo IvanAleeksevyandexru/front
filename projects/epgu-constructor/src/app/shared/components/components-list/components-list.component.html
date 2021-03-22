@@ -32,29 +32,26 @@
         </ng-container>
       </ng-container>
 
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.NewEmailInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [isHalfWidthItem]="isHalfWidthItem(componentData)"
+      <!-- TODO  NewEmailInput, PhoneNumberChangeInput в json не найдены, уточнить-->
+      <epgu-constructor-masked-and-plain-input
+        *ngIf="[
+          componentType.NewEmailInput,
+          componentType.PhoneNumberChangeInput,
+          componentType.StringInput,
+          componentType.OgrnInput,
+          componentType.OgrnipInput,
+          componentType.LegalInnInput,
+          componentType.SnilsInput,
+          componentType.PersonInnInput
+        ]
+        .includes(componentData.value?.type)
+      "
+        [control]="componentData"
+        [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+        (selectSuggest)="suggestHandle($event)"
       >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
+      </epgu-constructor-masked-and-plain-input>
 
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.StringInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [hidden]="componentData.value?.attrs?.hidden"
-      >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.DropDown"
@@ -271,75 +268,10 @@
         </epgu-constructor-constructor-multiline-input>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.PhoneNumberChangeInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [isHalfWidthItem]="isHalfWidthItem(componentData)"
+      <epgu-constructor-timer
+        *ngSwitchCase="componentType.Timer"
+        [data]="componentData.value"
       >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.OgrnInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.OgrnipInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.LegalInnInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.SnilsInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [hidden]="componentData.value?.attrs?.hidden"
-      >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.PersonInnInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <ng-container
-          *ngTemplateOutlet="maskedAndPlainInput; context: { $implicit: componentData }"
-        ></ng-container>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-timer [data]="componentData.value" *ngSwitchCase="componentType.Timer">
       </epgu-constructor-timer>
 
       <epgu-constructor-component-item
@@ -406,54 +338,4 @@
     [clarifications]="data.value?.attrs?.clarifications"
   >
   </epgu-constructor-output-html>
-</ng-template>
-
-<ng-template #maskedAndPlainInput let-data>
-  <ng-container
-    *ngTemplateOutlet="
-      data.value?.attrs?.mask ? maskedInput : plainInput;
-      context: { $implicit: data }
-    "
-  >
-  </ng-container>
-</ng-template>
-
-<ng-template #plainInput let-data>
-  <epgu-constructor-constructor-plain-input
-    [price]="data.value?.attrs?.price"
-    [rank]="data.value?.attrs?.rank"
-    [textTransformType]="data.value?.attrs?.fstuc"
-    [invalid]="data.get('value').invalid && data.get('value').touched"
-    [name]="data.value?.id"
-    [control]="data.get('value')"
-    [validationShowOn]="validationShowOn"
-    [readOnly]="data.value?.attrs?.readonly"
-    [placeholder]="data.value?.attrs?.placeholder"
-    [component]="data.value"
-    [suggestions]="(suggestions$ | async)[data.value?.id]"
-    (selectSuggest)="suggestHandle($event)"
-  ></epgu-constructor-constructor-plain-input>
-</ng-template>
-
-<ng-template #maskedInput let-data>
-  <epgu-constructor-masked-input
-    *ngIf="data.value?.attrs?.mask"
-    [validationShowOn]="validationShowOn"
-    [readonly]="data.value?.attrs?.readonly"
-    [mask]="data.value?.attrs?.mask"
-    [maskOptions]="data.value?.attrs?.maskOptions"
-    [textTransformType]="data.value?.attrs?.fstuc"
-    [clearable]="true"
-    [name]="data.value?.id"
-    [showMaskAsPlaceholder]="!data.value?.attrs?.placeholder"
-    [showConstantMaskSymbols]="data.value?.attrs?.showMaskSymbols"
-    [placeholder]="data.value?.attrs?.placeholder"
-    [control]="data.get('value')"
-    [invalid]="data.get('value').invalid && data.get('value').touched"
-    [isTrim]="false"
-    [component]="data.value"
-    [showPlaceholderOnFocus]="data.value?.attrs?.showPlaceholderOnFocus"
-    [suggestions]="(suggestions$ | async)[data.value?.id]"
-    (selectSuggest)="suggestHandle($event)"
-  ></epgu-constructor-masked-input>
 </ng-template>
