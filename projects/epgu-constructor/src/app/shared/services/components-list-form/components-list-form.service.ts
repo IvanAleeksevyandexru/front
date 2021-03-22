@@ -9,7 +9,7 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { isEqualObj } from '../../constants/uttils';
+import { isEqualObj } from '../../constants/utils';
 import { ValidationService } from '../validation/validation.service';
 import { DictionaryConditions } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
@@ -119,12 +119,12 @@ export class ComponentsListFormService {
       if (this.dictionaryToolsService.isDropdownLike(component.type)) {
         const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
         const key: string = component.id;
-        const value: ListItem = dicts[key][defaultIndex];
+        const value: ListItem = dicts[key] && dicts[key][defaultIndex];
         control.get('value').patchValue(value);
       } else {
         const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
         const key: string = utils.getDictKeyByComp(component);
-        const value: ListItem = dicts[key].list[defaultIndex];
+        const value: ListItem = dicts[key]?.list[defaultIndex];
         control.get('value').patchValue(value);
       }
     } else {
@@ -324,8 +324,10 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (next.attrs.dictionaryType === 'MARKI_TS' &&
-      !isEqualObj<CustomListFormGroup>(prev, next)) {
+    if (
+      next.attrs.dictionaryType === 'MARKI_TS' &&
+      !isEqualObj<CustomListFormGroup>(prev, next)
+    ) {
       const indexVehicle: number = this.form.controls.findIndex(
         (control: AbstractControl) => control.value?.id === next.id
       );
@@ -358,7 +360,7 @@ export class ComponentsListFormService {
 
   private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
     return form.valueChanges.pipe(
-      startWith(form.getRawValue()), // TODO: заменить устаревший метод
+      startWith(<unknown>form.getRawValue()),
       pairwise(),
       takeUntil(this.ngUnsubscribe$),
     );
