@@ -28,7 +28,7 @@ export class ComponentsListToolsService {
     } else if (!isUndefined(component.attrs.defaultValue)) {
       return this.parseValue((component.attrs.defaultValue as unknown) as string, isDateAndValue, component.type);
     } else {
-      return component.value;
+      return component.value || '';
     }
   }
 
