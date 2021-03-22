@@ -9,7 +9,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -37,11 +36,6 @@ import { HttpCancelService } from '../../../core/interceptor/http-cancel/http-ca
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
-
-const halfWidthItemTypes = [
-  CustomScreenComponentTypes.NewEmailInput,
-  CustomScreenComponentTypes.PhoneNumberChangeInput,
-];
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -117,10 +111,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
-  }
-
-  public isHalfWidthItem(componentData: AbstractControl): boolean {
-    return halfWidthItemTypes.includes(componentData.value?.type);
   }
 
   public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {

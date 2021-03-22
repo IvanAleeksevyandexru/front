@@ -33,32 +33,25 @@
       </ng-container>
 
       <!-- TODO  NewEmailInput, PhoneNumberChangeInput в json не найдены, уточнить-->
-      <epgu-constructor-component-item
+      <epgu-constructor-masked-and-plain-input
         *ngIf="[
-            componentType.NewEmailInput,
-            componentType.PhoneNumberChangeInput,
-            componentType.StringInput,
-            componentType.OgrnInput,
-            componentType.OgrnipInput,
-            componentType.LegalInnInput,
-            componentType.SnilsInput,
-            componentType.PersonInnInput
-          ]
-          .includes(componentData.value?.type)
-        "
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [isHalfWidthItem]="isHalfWidthItem(componentData)"
-        [hidden]="componentData.value?.attrs?.hidden"
+          componentType.NewEmailInput,
+          componentType.PhoneNumberChangeInput,
+          componentType.StringInput,
+          componentType.OgrnInput,
+          componentType.OgrnipInput,
+          componentType.LegalInnInput,
+          componentType.SnilsInput,
+          componentType.PersonInnInput
+        ]
+        .includes(componentData.value?.type)
+      "
+        [control]="componentData"
+        [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+        (selectSuggest)="suggestHandle($event)"
       >
-        <epgu-constructor-components-list-input
-          [control]="componentData"
-          [suggestions]="(suggestions$ | async)[componentData.value?.id]"
-          (selectSuggest)="suggestHandle($event)"
-        >
-        </epgu-constructor-components-list-input>
-      </epgu-constructor-component-item>
+      </epgu-constructor-masked-and-plain-input>
+
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.DropDown"

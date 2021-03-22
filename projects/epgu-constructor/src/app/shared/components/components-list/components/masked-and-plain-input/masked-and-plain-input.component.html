@@ -1,10 +1,17 @@
-<ng-container
-  *ngTemplateOutlet="
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+  [hidden]="control.value?.attrs?.hidden"
+>
+  <ng-container
+    *ngTemplateOutlet="
       control.value?.attrs?.mask ? maskedInput : plainInput;
       context: { $implicit: control.value  }
     "
->
-</ng-container>
+  >
+  </ng-container>
+</epgu-constructor-component-item>
 
 <ng-template #plainInput let-component>
   <epgu-constructor-constructor-plain-input

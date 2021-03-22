@@ -29,10 +29,10 @@ import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
-import { ComponentsListInputComponent } from './components/components-list-input/components-list-input.component';
+import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 
 @NgModule({
-  declarations: [ComponentsListComponent, ShowComponentPipe, ComponentsListInputComponent],
+  declarations: [ComponentsListComponent, ShowComponentPipe, MaskedAndPlainInputComponent],
   exports: [ComponentsListComponent],
   imports: [
     BaseModule,

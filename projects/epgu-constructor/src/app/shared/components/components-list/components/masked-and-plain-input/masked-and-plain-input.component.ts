@@ -7,11 +7,11 @@ import {
 } from '../../../../../core/services/autocomplete/autocomplete.inteface';
 
 @Component({
-  selector: 'epgu-constructor-components-list-input',
-  templateUrl: './components-list-input.component.html',
+  selector: 'epgu-constructor-masked-and-plain-input',
+  templateUrl: './masked-and-plain-input.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComponentsListInputComponent {
+export class MaskedAndPlainInputComponent {
   @Input() control: FormGroup | AbstractControl;
   @Input() suggestions: ISuggestionItem;
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
