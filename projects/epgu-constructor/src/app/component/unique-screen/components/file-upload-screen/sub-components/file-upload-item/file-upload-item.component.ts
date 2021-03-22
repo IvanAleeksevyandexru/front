@@ -80,22 +80,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   maxTotalAmount: number;
   acceptTypes?: string;
 
-  itemPluralMapping = {
-    file: {
-      '=0': '0 файлов',
-      '=1': '1 файл',
-      other: '# файлов',
-    },
-  };
-
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;
 
   listUploadingStatus = new BehaviorSubject<boolean>(false);
 
-  overTotalAmount = new BehaviorSubject<number>(0);
-  overTotalSize = new BehaviorSubject<number>(0);
-  overAmount = new BehaviorSubject<number>(0);
   overLimits = new BehaviorSubject<OverLimits>({
     totalSize: { count: 0, isMax: false },
     totalAmount: { count: 0, isMax: false },
@@ -207,9 +196,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
+  uploadersCounterChanges$ = this.fileUploadService.uploaderChanges.pipe(
+    tap(() => this.maxLimitUpdate()),
+  );
+
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
-    .add(this.processingOperations$.subscribe());
+    .add(this.processingOperations$.subscribe())
+    .add(this.uploadersCounterChanges$.subscribe());
 
   private loadData: FileUploadItem;
   private maxFileNumber = -1;
@@ -442,6 +436,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   maxLimitUpdate(): void {
     const limits = { ...this.overLimits.getValue() };
     const checkSize = this.fileUploadService.checkFilesSize(1, this.data.uploadId);
+
     const checkAmount = this.fileUploadService.checkFilesAmount(1, this.data.uploadId);
     limits.totalSize.isMax = checkSize?.reason === CheckFailedReasons.total;
     limits.amount.isMax = checkAmount?.reason === CheckFailedReasons.uploaderRestriction;
