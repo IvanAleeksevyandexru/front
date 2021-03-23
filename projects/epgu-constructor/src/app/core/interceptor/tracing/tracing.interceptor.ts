@@ -12,12 +12,11 @@ import { UtilsService } from '../../services/utils/utils.service';
 
 @Injectable()
 export class TracingHttpInterceptor implements HttpInterceptor {
-  private allowedRemoteServices: Array<string> = [];
+
   constructor(
     private tracingService: TracingService,
     private utils: UtilsService,
-  ) {
-  }
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { tracer }: { tracer: Tracer } = this.tracingService;
