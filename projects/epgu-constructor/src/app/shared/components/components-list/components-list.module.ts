@@ -19,9 +19,7 @@ import { CurrencyModule } from '../../directives/currency/currency.module';
 import { ConstructorDatePickerModule } from '../constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../base.module';
 import { DateRangeService } from '../../services/date-range/date-range.service';
-import {
-  ConstructorMultilineInputModule
-} from '../constructor-multiline-input/constructor-multiline-input.module';
+import { ConstructorMultilineInputModule } from '../constructor-multiline-input/constructor-multiline-input.module';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { MultipleChoiceDictionaryModule } from '../multiple-choice-dictionary/multiple-choice-dictionary.module';
 import { DocInputModule } from '../doc-input/doc-input.module';
@@ -32,13 +30,15 @@ import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
+import { DateInputComponent } from './components/date-input/date-input.component';
 
 @NgModule({
   declarations: [
     ComponentsListComponent,
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
-    FormOutputHtmlComponent
+    FormOutputHtmlComponent,
+    DateInputComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -62,7 +62,7 @@ import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
     ComponentItemModule,
     DocInputModule,
     CheckboxListModule,
-    DropDownDeptsModule
+    DropDownDeptsModule,
   ],
   providers: [
     ValidationService,
