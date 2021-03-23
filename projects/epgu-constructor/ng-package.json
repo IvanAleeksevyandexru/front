@@ -25,11 +25,13 @@
       "@alyle/ui/themes/minima": "minima",
       "angular-resize-event": "angular-resize-event",
       "@tanker/file-ponyfill": "@tanker/file-ponyfill",
-      "file-saver": "FileSaver",
-      "date-fns": "dateFns",
+      "file-saver": "file-saver",
+      "date-fns": "date-fns",
       "date-fns/locale": "locale",
       "lodash": "lodash",
-      "hammerjs": "hammerjs"
+      "hammerjs": "hammerjs",
+      "zipkin": "zipkin",
+      "zipkin-transport-http": "zipkin-transport-http",
     },
     "styleIncludePaths": ["."]
   }
