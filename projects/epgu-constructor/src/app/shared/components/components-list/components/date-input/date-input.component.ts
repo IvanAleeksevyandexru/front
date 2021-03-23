@@ -11,11 +11,11 @@ import { DateRangeAttrs } from '../../../../services/date-range/date-range.model
 })
 export class DateInputComponent {
   @Input() control: FormGroup | AbstractControl;
-  @Input() validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  @Input() minDateDefault = '-120y';
-  @Input() maxDateDefault = '+50y';
-  @Input() clearable = true;
-  @Input() align = 'left';
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  minDateDefault = '-120y';
+  maxDateDefault = '+50y';
+  clearable = true;
+  align = 'left';
 
   strategy = BrokenDateFixStrategy;
   constructor(public dateRangeService: DateRangeService) {}
