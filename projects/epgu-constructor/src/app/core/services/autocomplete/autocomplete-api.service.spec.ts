@@ -93,7 +93,7 @@ describe('AutocompleteApiService', () => {
     let req;
     beforeEach(fakeAsync(() => {
       service.deleteSuggestionsField(fieldId).subscribe(response => expect(response).toBe(responseMock));
-      req = http.expectOne(`${apiUrl}?valueGroupId=${fieldId}`);
+      req = http.expectOne(`${apiUrl}`);
     }));
 
     afterEach(fakeAsync(() => {
@@ -105,9 +105,9 @@ describe('AutocompleteApiService', () => {
       expect(req.request.method).toBe('DELETE');
     }));
 
-    it('should call with fieldId', fakeAsync(() => {
-      const includesFieldId = req.request.url.includes(fieldId);
-      expect(includesFieldId).toBeTruthy();
+    it('should call with body { ids: [fieldId] }', fakeAsync(() => {
+      const body = req.request.body;
+      expect(body).toEqual({ ids: [fieldId] });
     }));
 
     it('should call http delete with withCredentials equals true', fakeAsync(() => {
