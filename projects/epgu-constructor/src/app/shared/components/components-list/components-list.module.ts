@@ -32,13 +32,15 @@ import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
+import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
 
 @NgModule({
   declarations: [
     ComponentsListComponent,
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
-    FormOutputHtmlComponent
+    FormOutputHtmlComponent,
+    FormMultiChoiceDictionaryComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [

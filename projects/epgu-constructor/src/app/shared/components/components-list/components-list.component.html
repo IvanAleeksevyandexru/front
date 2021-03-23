@@ -315,21 +315,10 @@
       >
       </epgu-constructor-field-list>
 
-      <epgu-constructor-component-item
+      <epgu-constructor-form-multi-choice-dictionary
         *ngSwitchCase="componentType.MultipleChoiceDictionary"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [disableLabel]="true"
-      >
-        <epgu-constructor-multiple-choice-dictionary
-          [formControl]="$any(componentData.get('value'))"
-          [dictionaryList]="componentData.value.attrs.dictionaryList"
-          [dictionaryType]="componentData.value.attrs.dictionaryType"
-          [subLabel]="componentData.value.attrs.subLabel"
-          [label]="componentData.value.label"
-        ></epgu-constructor-multiple-choice-dictionary>
-      </epgu-constructor-component-item>
+        [control]="componentData"
+      ></epgu-constructor-form-multi-choice-dictionary>
 
       <epgu-constructor-checkbox-list
         *ngSwitchCase="componentType.CheckBoxList"
