@@ -46,10 +46,19 @@
       }
     }
   }
+  .info_screen_start
+  .info_screen_quiz
+  .info_screen_solution_page
+  .info_screen_deadlock
+  .info_screen_status {
+    .divider {
+      display: none;
+    }
+  }
 }
 
 /* stylelint-disable no-descending-specificity */
-.new-text-margin {
+.info_screen_normalise_margin {
   :host::ng-deep {
     .info__text {
       h3 {
