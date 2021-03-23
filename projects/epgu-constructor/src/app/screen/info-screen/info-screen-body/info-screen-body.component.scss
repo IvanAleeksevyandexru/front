@@ -15,6 +15,7 @@
     max-width: 200px;
   }
 }
+
 :host::ng-deep {
   .info__text {
     a.block_link {
@@ -46,43 +47,5 @@
       }
     }
   }
-  .info_screen_start
-  .info_screen_quiz
-  .info_screen_solution_page
-  .info_screen_deadlock
-  .info_screen_status {
-    .divider {
-      display: none;
-    }
-  }
 }
 
-/* stylelint-disable no-descending-specificity */
-.info_screen_normalise_margin {
-  :host::ng-deep {
-    .info__text {
-      h3 {
-        font-weight: bold;
-        font-size: $font-xl;
-        line-height: $font-xxl;
-        text-align: center;
-        margin: 24px 0 16px 0;
-      }
-      h3 + p, h3 + div {
-        margin-top: 16px;
-      }
-      h5 {
-        margin: 24px 0 8px 0;
-        font-size: $font-md;
-        line-height: $font-xl;
-      }
-      h5 ~ p {
-        margin-top: 8px;
-      }
-      h5 + p {
-        margin-top: 12px;
-      }
-    }
-  }
-}
-/* stylelint-enable no-descending-specificity */
