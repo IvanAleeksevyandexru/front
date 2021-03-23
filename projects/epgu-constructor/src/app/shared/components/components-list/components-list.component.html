@@ -12,12 +12,10 @@
           | showComponent: componentData.value?.attrs?.hidden
       "
     >
-
       <ng-container
-        *ngIf="[
-          componentType.HtmlString,
-          componentType.LabelSection
-        ].includes(componentData.value?.type)"
+        *ngIf="
+          [componentType.HtmlString, componentType.LabelSection].includes(componentData.value?.type)
+        "
       >
         <epgu-constructor-form-output-html
           [control]="componentData"
@@ -93,19 +91,10 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
       >
-        <lib-lookup
-          *ngIf="dropDowns$ | async as dropDowns"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [fixedItems]="$any(dropDowns[componentData.value?.id])"
-          [disabled]="$any(dropDowns[componentData.value?.id].length === 1)"
-          [validationShowOn]="validationShowOn"
-          [formControl]="$any(componentData.get('value'))"
-          [clearable]="true"
-          [queryMinSymbolsCount]="0"
-          [searchCaseSensitive]="false"
-          [virtualScroll]="true"
-        >
-        </lib-lookup>
+        <epgu-constructor-mvd-giac-lookup
+          [control]="componentData"
+          [dropdownList]="dropDowns$ | async"
+        ></epgu-constructor-mvd-giac-lookup>
       </epgu-constructor-component-item>
 
       <ng-container>
@@ -280,10 +269,7 @@
         </epgu-constructor-constructor-multiline-input>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-timer
-        *ngSwitchCase="componentType.Timer"
-        [data]="componentData.value"
-      >
+      <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">
       </epgu-constructor-timer>
 
       <epgu-constructor-component-item

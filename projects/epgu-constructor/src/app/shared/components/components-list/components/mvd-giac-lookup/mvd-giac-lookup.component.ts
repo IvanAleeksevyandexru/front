@@ -1,0 +1,20 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ValidationShowOn } from 'epgu-lib';
+import { AbstractControl, FormGroup } from '@angular/forms';
+
+import { CustomListDropDowns } from '../../components-list.types';
+
+@Component({
+  selector: 'epgu-constructor-mvd-giac-lookup',
+  templateUrl: './mvd-giac-lookup.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MvdGiacLookupComponent {
+  @Input() control: FormGroup | AbstractControl;
+  @Input() dropdownList: CustomListDropDowns;
+  @Input() validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  @Input() clearable = true;
+  @Input() queryMinSymbolsCount = 0;
+  @Input() searchCaseSensitive = false;
+  @Input() virtualScroll = true;
+}

@@ -1,0 +1,13 @@
+<lib-lookup
+  *ngIf="dropdownList"
+  [invalid]="control.get('value').invalid && control.get('value').touched"
+  [fixedItems]="$any(dropdownList[control.value?.id])"
+  [disabled]="$any(dropdownList[control.value?.id].length === 1)"
+  [validationShowOn]="validationShowOn"
+  [formControl]="$any(control.get('value'))"
+  [clearable]="clearable"
+  [queryMinSymbolsCount]="queryMinSymbolsCount"
+  [searchCaseSensitive]="searchCaseSensitive"
+  [virtualScroll]="virtualScroll"
+>
+</lib-lookup>
