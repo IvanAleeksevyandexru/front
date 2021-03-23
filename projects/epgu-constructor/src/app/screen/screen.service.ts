@@ -19,7 +19,7 @@ export class ScreenService extends ScreenContent {
   constructor(
     private currentAnswersService: CurrentAnswersService,
     private deviceDetectorService: DeviceDetectorService,
-    private valueLoaderService: PrepareComponentsService,
+    private prepareComponentsService: PrepareComponentsService,
   ) {
     super();
   }
@@ -84,7 +84,7 @@ export class ScreenService extends ScreenContent {
   private prepareComponents(): void {
     const components = this.screenStore.display.components;
     const cashedAnswers = this.screenStore.cachedAnswers;
-    const screenStoreComponent = this.valueLoaderService.prepareComponents(components, cashedAnswers);
+    const screenStoreComponent = this.prepareComponentsService.prepareComponents(components, cashedAnswers);
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };

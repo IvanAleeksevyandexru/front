@@ -11,7 +11,7 @@ import { ConfigService } from '../../../../../core/services/config/config.servic
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { isBoolean } from '../../../../constants/uttils';
+import { isBoolean } from '../../../../constants/utils';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

@@ -129,7 +129,11 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   private loadRepository(components: Array<CustomComponent>): void {
     this.dictionaryToolsService
-      .loadReferenceData$(components, this.screenService.cachedAnswers)
+      .loadReferenceData$(
+        components,
+        this.screenService.cachedAnswers,
+        this.screenService.getStore(),
+      )
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);

@@ -19,7 +19,7 @@ import {
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenTypes } from '../../../../screen/screen.types';
-import { isEqualObj } from '../../../../shared/constants/uttils';
+import { isEqualObj } from '../../../../shared/constants/utils';
 import {
   CustomComponent,
   CustomComponentOutputData,

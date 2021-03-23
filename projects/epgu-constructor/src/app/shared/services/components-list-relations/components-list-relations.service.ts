@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined } from '../../constants/uttils';
+import { isUndefined } from '../../constants/utils';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -18,7 +18,6 @@ import { UtilsService as utils } from '../../../core/services/utils/utils.servic
 import { ScreenService } from '../../../screen/screen.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
-import { EMPTY_VALUE, NON_EMPTY_VALUE } from './components-list-relations.contant';
 import { DateRangeRef } from '../date-range/date-range.models';
 
 @Injectable()
@@ -259,7 +258,7 @@ export class ComponentsListRelationsService {
     if ((isDisplayOn && element.isShown === true) || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOff,
-        isShown: !this.isValueEquals(reference.val, componentVal),
+        isShown: !this.refRelationService.isValueEquals(reference.val, componentVal),
       };
       dependentControl.markAsUntouched();
     }
@@ -278,7 +277,7 @@ export class ComponentsListRelationsService {
     if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOn,
-        isShown: this.isValueEquals(reference.val, componentVal),
+        isShown: this.refRelationService.isValueEquals(reference.val, componentVal),
       };
       dependentControl.markAsUntouched();
     }
@@ -316,7 +315,7 @@ export class ComponentsListRelationsService {
     dependentComponent: CustomComponent,
   ): void {
     if (
-      this.isValueEquals(reference.val, componentVal) &&
+      this.refRelationService.isValueEquals(reference.val, componentVal) &&
       dictionaryToolsService.isDictionaryLike(dependentComponent.type)
     ) {
       this.applyFilter(dependentComponent.id, reference.filter, componentVal);
@@ -353,7 +352,7 @@ export class ComponentsListRelationsService {
       control.enable({ onlySelf: true });
     };
 
-    if (this.isValueEquals(reference.val, componentVal)) {
+    if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
       patchValueAndDisable(dependentControl, reference.defaultValue);
     } else {
       patchToPrevValueAndEnable(dependentControl);
@@ -483,44 +482,12 @@ export class ComponentsListRelationsService {
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }
 
-  private getValueFromComponentVal(componentVal: { id?: string } | string): string {
-    return ['string', 'boolean'].includes(typeof componentVal)
-      ? (componentVal as string)
-      : (componentVal as { id?: string })?.id;
-  }
-
-  /**
-   * Сравнивает значание в зависимости от типа
-   * @param value - value из зависимого компонета
-   * @param componentVal - value из компонета
-   */
-  private isValueEquals(
-    value: string | Array<string> | boolean,
-    componentVal: { id?: string },
-  ): boolean {
-    const componentValue = this.getValueFromComponentVal(componentVal);
-
-    if (value === EMPTY_VALUE) {
-      return !componentValue;
-    }
-
-    if (value === NON_EMPTY_VALUE) {
-      return !!componentValue;
-    }
-
-    if (Array.isArray(value)) {
-      return value.some((values) => values === componentValue);
-    }
-
-    return value === componentValue;
-  }
-
   private applyFilter(
     dependentComponentId: CustomComponent['id'],
     filter: DictionaryFilters['filter'],
     componentVal: { id?: string },
   ): void {
-    const value = this.getValueFromComponentVal(componentVal);
+    const value = this.refRelationService.getValueFromComponentVal(componentVal);
 
     if (filter.simple) {
       filter.simple.value.asString = value;

@@ -31,6 +31,7 @@ import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
+import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { FormOutputHtmlComponent } from './components/form-output-html/form-outp
     ComponentItemModule,
     DocInputModule,
     CheckboxListModule,
+    DropDownDeptsModule
   ],
   providers: [
     ValidationService,

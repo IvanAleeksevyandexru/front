@@ -105,5 +105,34 @@ describe('RefRelationService', () => {
         expect(result).toBeFalsy();
       });
     });
+
+    describe('getValueFromComponentVal()', () => {
+      it('should return component string value, if arg is string', () => {
+        const value = 'value';
+        expect(service.getValueFromComponentVal(value)).toBe(value);
+      });
+      it('should return component string value, if arg is {id: string}', () => {
+        const value = { id: 'value' };
+        expect(service.getValueFromComponentVal(value)).toBe('value');
+      });
+    });
+
+    describe('isValueEquals()', () => {
+      it('should return false, if value is empty and componentValue is not empty', () => {
+        expect(service.isValueEquals('', { id: 'value' })).toBe(false);
+      });
+      it('should return true, if value is not empty and componentValue is not empty', () => {
+        expect(service.isValueEquals('*', { id: 'value' })).toBe(true);
+      });
+      it('should return true, if value is array and some items equals to componentValue', () => {
+        expect(service.isValueEquals(['value', 'non_value'], { id: 'value' })).toBe(true);
+      });
+      it('should return false, if value is array and none items are equal to componentValue', () => {
+        expect(service.isValueEquals(['values', 'non_value'], { id: 'value' })).toBe(false);
+      });
+      it('should return true, if value is string and componentValue has equal string', () => {
+        expect(service.isValueEquals('value', { id: 'value' })).toBe(true);
+      });
+    });
   });
 });

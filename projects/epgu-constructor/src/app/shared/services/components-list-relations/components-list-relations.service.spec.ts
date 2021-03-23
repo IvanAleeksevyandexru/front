@@ -1,6 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { FormArray } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
@@ -8,10 +8,8 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import {
   CustomComponent,
-  CustomComponentRef,
   CustomComponentRefRelation,
   CustomListDictionaries,
-  CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
 } from '../../components/components-list/components-list.types';
@@ -20,6 +18,7 @@ import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentsListRelationsService } from './components-list-relations.service';
+import { calcRefMock } from '../ref-relation/ref-relation.mock';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -78,7 +77,7 @@ describe('ComponentsListRelationsService', () => {
         },
       ],
     },
-    value: '',
+    value: '4',
     required: true,
   };
   let mockComponents: CustomComponent[] = [mockComponent];
@@ -88,7 +87,6 @@ describe('ComponentsListRelationsService', () => {
       relation: CustomComponentRefRelation.disabled,
     }
   };
-  let mockForm: FormArray;
   let mockDictionaries: CustomListDictionaries;
   let screenService: ScreenService;
   let dictionaryToolsService: DictionaryToolsService;
@@ -122,55 +120,31 @@ describe('ComponentsListRelationsService', () => {
     });
   });
 
-  xdescribe('getUpdatedShownElements()', () => {
-    it('should be created', () => {
-      expect(service).toBeTruthy();
-    });
-  });
-
-  xdescribe('createStatusElements()', () => {
-    it('should be created', () => {
-      expect(service).toBeTruthy();
-    });
-  });
-
-  xdescribe('updateStatusElements()', () => {
-    it('should be created', () => {
-      expect(service).toBeTruthy();
-    });
-  });
-
   describe('hasRelation()', () => {
     it('should return true, if component has identic relation', () => {
       const relation = CustomComponentRefRelation.displayOn;
-      expect(service.hasRelation(mockComponent, relation)).toBe(true);
+      expect(service['hasRelation'](mockComponent, relation)).toBe(true);
     });
     it('should return false, if component has no identic relation', () => {
       const relation = CustomComponentRefRelation.displayOff;
-      expect(service.hasRelation(mockComponent, relation)).toBe(false);
+      expect(service['hasRelation'](mockComponent, relation)).toBe(false);
     });
   });
 
   describe('isComponentDependent()', () => {
     it('should return true, if component is dependent', () => {
-      expect(service.isComponentDependent(mockComponent.attrs.ref, mockComponent)).toBe(true);
+      expect(service['isComponentDependent'](mockComponent.attrs.ref, mockComponent)).toBe(true);
     });
     it('should return false, if component is not dependent', () => {
       const component = JSON.parse(JSON.stringify(mockComponent));
       component.attrs.ref[0].relatedRel = 'pd4';
-      expect(service.isComponentDependent(component.attrs.ref, mockComponent)).toBe(false);
+      expect(service['isComponentDependent'](component.attrs.ref, mockComponent)).toBe(false);
     });
   });
 
   describe('getDependentComponents()', () => {
     it('should return array of components with dependency', () => {
-      expect(service.getDependentComponents(mockComponents, mockComponent)).toEqual([mockComponent]);
-    });
-  });
-
-  xdescribe('getDictionaryAttributeValue()', () => {
-    it('should be created', () => {
-      expect(service).toBeTruthy();
+      expect(service['getDependentComponents'](mockComponents, mockComponent)).toEqual([mockComponent]);
     });
   });
 
@@ -182,57 +156,28 @@ describe('ComponentsListRelationsService', () => {
         val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
         relation: CustomComponentRefRelation.displayOn,
       };
-      expect(service.getRelation(component, reference)).toEqual(reference);
+      expect(service['getRelation'](component, reference)).toEqual(reference);
     });
   });
 
-  xdescribe('getValueFromRelationComponent()', () => {
-    it('should be created', () => {
-      expect(service).toBeTruthy();
-    });
-  });
+  describe('getCalcValueFromRelation()', () => {
+    const components = [mockComponent];
+    let mockForm: FormArray;
 
-  xdescribe('getCalcValueFromRelation()', () => {
     it('should return empty string, if not all components have valid values', () => {
-      expect(service.getCalcValueFromRelation(itemRef, components, form)).toBe('');
+      mockForm = new FormArray([]);
+      expect(service['getCalcValueFromRelation'](calcRefMock, components, mockForm)).toBe('');
     });
     it('should return number calculated by formula, if components have valid values', () => {
-      expect(service.getCalcValueFromRelation(itemRef, components, form)).toBe(2);
+      const form = new FormBuilder().group({ ...mockComponent });
+      mockForm = new FormArray([form]);
+      expect(service['getCalcValueFromRelation'](calcRefMock, components, mockForm)).toBe(2);
     });
   });
 
   describe('getCalcFieldValue()', () => {
     it('should return number calculated from passed string formula', () => {
-      expect(service.getCalcFieldValue('(50 + 150) / 100')).toBe(2);
-    });
-  });
-
-  describe('getValueFromComponentVal()', () => {
-    it('should return component string value, if arg is string', () => {
-      const value = 'value';
-      expect(service.getValueFromComponentVal(value)).toBe(value);
-    });
-    it('should return component string value, if arg is {id: string}', () => {
-      const value = { id: 'value' };
-      expect(service.getValueFromComponentVal(value)).toBe('value');
-    });
-  });
-
-  describe('isValueEquals()', () => {
-    it('should return false, if value is empty and componentValue is not empty', () => {
-      expect(service.isValueEquals('', { id: 'value' })).toBe(false);
-    });
-    it('should return true, if value is not empty and componentValue is not empty', () => {
-      expect(service.isValueEquals('*', { id: 'value' })).toBe(true);
-    });
-    it('should return true, if value is array and some items equals to componentValue', () => {
-      expect(service.isValueEquals(['value', 'non_value'], { id: 'value' })).toBe(true);
-    });
-    it('should return false, if value is array and none items are equal to componentValue', () => {
-      expect(service.isValueEquals(['values', 'non_value'], { id: 'value' })).toBe(false);
-    });
-    it('should return true, if value is string and componentValue has equal string', () => {
-      expect(service.isValueEquals('value', { id: 'value' })).toBe(true);
+      expect(service['getCalcFieldValue']('(50 + 150) / 100')).toBe(2);
     });
   });
 
@@ -241,7 +186,7 @@ describe('ComponentsListRelationsService', () => {
       const dependentComponentId = mockComponent.id;
       const filter = { pageNum: 0, simple: { value: { asString: 'value' }, condition: 'CONTAINS', attributeName: 'value' }};
       const componentVal = { id: 'value' };
-      service.applyFilter(dependentComponentId, filter, componentVal);
+      service['applyFilter'](dependentComponentId, filter, componentVal);
       expect(service.filters[dependentComponentId]).toEqual(filter);
     });
   });
@@ -250,7 +195,7 @@ describe('ComponentsListRelationsService', () => {
     it('should clear filter for passped dependent component', () => {
       const dependentComponentId = mockComponent.id;
       service.filters[dependentComponentId] = { pageNum: 0 };
-      service.clearFilter(dependentComponentId);
+      service['clearFilter'](dependentComponentId);
       expect(service.filters[dependentComponentId]).toBeNull();
     });
   });

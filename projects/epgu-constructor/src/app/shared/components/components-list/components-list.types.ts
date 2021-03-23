@@ -1,6 +1,7 @@
 import { ListItem } from 'epgu-lib';
 import {
   ClarificationsDto,
+  ComponentDictionaryFilterDto,
   ComponentFilterDto,
   ComponentRelationFieldDto,
   DisplayDto,
@@ -20,6 +21,7 @@ export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
+  DropDownDepts = 'DropDownDepts',
   MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
@@ -66,6 +68,7 @@ export interface CustomListDictionary {
   list: Array<ListItem>;
   page: number;
   selectedItem: DictionaryItem;
+  repeatedWithNoFilters?: boolean;
 }
 
 export interface CustomListStatusElements {
@@ -80,6 +83,9 @@ export interface CustomStatusElement {
 export interface CustomListGenericData<T> {
   component: CustomComponent;
   data: T;
+  meta?: {
+    repeatedWithNoFilters: boolean;
+  };
 }
 
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
@@ -99,6 +105,8 @@ export type CustomComponentDropDownItem = {
 export interface CustomComponentAttr {
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType?: string;
+  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   labelAttr?: string;
   fields?: Array<{
     fieldName?: string;
@@ -133,6 +141,8 @@ export interface CustomComponentAttr {
   customUnrecLabel?: string;
   clarifications?: ClarificationsDto;
   isTextHelper?: boolean;
+  lockedValue?: boolean;
+  repeatWithNoFilters?: boolean;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
