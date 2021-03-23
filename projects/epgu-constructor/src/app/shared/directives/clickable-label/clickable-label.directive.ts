@@ -4,7 +4,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ActionType, DTOActionAction, } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { getHiddenBlock } from '../../constants/uttils';
+import { getHiddenBlock } from '../../constants/utils';
 import { Clarifications } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
