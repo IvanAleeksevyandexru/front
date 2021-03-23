@@ -18,7 +18,7 @@ export class DateInputComponent {
   align = 'left';
 
   strategy = BrokenDateFixStrategy;
-  constructor(public dateRangeService: DateRangeService) {}
+  constructor(private dateRangeService: DateRangeService) {}
 
   clearDate(id: string, attrs: DateRangeAttrs): void {
     this.dateRangeService.clearDate(id, attrs);
