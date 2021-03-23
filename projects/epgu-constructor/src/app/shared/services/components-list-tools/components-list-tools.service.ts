@@ -65,6 +65,8 @@ export class ComponentsListToolsService {
       }
     } else if (this.isCheckBox(componentType)) {
       return toBoolean(value);
+    } else if (componentType === CustomScreenComponentTypes.DropDownDepts) {
+      return ''; // Подавляем значение value т.к. оно используется для вставки данных в фильтр
     } else {
       return value;
     }
