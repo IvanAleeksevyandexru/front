@@ -3,6 +3,8 @@ import { ValidationShowOn } from 'epgu-lib';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 import { CustomListDropDowns } from '../../components-list.types';
+import { BehaviorSubject } from 'rxjs';
+import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac-lookup',
@@ -11,10 +13,12 @@ import { CustomListDropDowns } from '../../components-list.types';
 })
 export class MvdGiacLookupComponent {
   @Input() control: FormGroup | AbstractControl;
-  @Input() dropdownList: CustomListDropDowns;
   @Input() validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   @Input() clearable = true;
   @Input() queryMinSymbolsCount = 0;
   @Input() searchCaseSensitive = false;
   @Input() virtualScroll = true;
+  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
+
+  constructor(private dictionaryToolsService: DictionaryToolsService) {}
 }
