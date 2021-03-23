@@ -360,7 +360,7 @@ export class ComponentsListFormService {
 
   private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
     return form.valueChanges.pipe(
-      startWith(<unknown>form.getRawValue()),
+      startWith(form.getRawValue() as unknown),
       pairwise(),
       takeUntil(this.ngUnsubscribe$),
     );
