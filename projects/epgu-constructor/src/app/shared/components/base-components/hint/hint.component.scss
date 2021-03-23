@@ -1,0 +1,11 @@
+@import '../../../../../styles/core/typography';
+@import '../../../../../styles/core/functions';
+@import '../../../../../styles/core/palettes';
+
+.hint {
+  @include first-letter-uppercase();
+  display: block;
+  margin-top: 4px;
+  color: $color-text-helper;
+  @include typ-plain-small();
+}
