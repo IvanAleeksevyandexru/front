@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib';
 import { AbstractControl, FormGroup } from '@angular/forms';
-
-import { CustomListDropDowns } from '../../components-list.types';
 import { BehaviorSubject } from 'rxjs';
+import { CustomListDropDowns } from '../../components-list.types';
 import { DictionaryToolsService } from '../../../../services/dictionary/dictionary-tools.service';
 
 @Component({
