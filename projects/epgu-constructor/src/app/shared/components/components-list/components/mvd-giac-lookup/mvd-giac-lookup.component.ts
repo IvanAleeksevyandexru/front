@@ -12,11 +12,11 @@ import { DictionaryToolsService } from '../../../../services/dictionary/dictiona
 })
 export class MvdGiacLookupComponent {
   @Input() control: FormGroup | AbstractControl;
-  @Input() validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  @Input() clearable = true;
-  @Input() queryMinSymbolsCount = 0;
-  @Input() searchCaseSensitive = false;
-  @Input() virtualScroll = true;
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  clearable = true;
+  queryMinSymbolsCount = 0;
+  searchCaseSensitive = false;
+  virtualScroll = true;
   dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
 
   constructor(private dictionaryToolsService: DictionaryToolsService) {}
