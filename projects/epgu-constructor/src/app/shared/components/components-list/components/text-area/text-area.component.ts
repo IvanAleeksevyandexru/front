@@ -9,5 +9,5 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 })
 export class TextAreaComponent {
   @Input() control: FormGroup | AbstractControl;
-  @Input() validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 }
