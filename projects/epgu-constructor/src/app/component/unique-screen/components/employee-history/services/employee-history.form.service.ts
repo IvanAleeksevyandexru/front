@@ -185,7 +185,7 @@ export class EmployeeHistoryFormService {
       'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
 
     return (control: AbstractControl): ValidationErrors => {
-      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/, 'gm');
+      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,255}$/, 'gm');
       const hasError = !pattern.test(control.value);
 
       return hasError ? { errorMsg } : null;
