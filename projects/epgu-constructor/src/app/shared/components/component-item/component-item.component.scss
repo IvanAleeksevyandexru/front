@@ -1,17 +1,7 @@
 @import '../../../../styles/core/palettes';
-@import '../../../../styles/core/typography';
 @import '../../../../styles/core/variables';
-@import '../../../../styles/core/functions';
 
 .form {
-  &__hint {
-    @include first-letter-uppercase();
-    display: block;
-    margin-top: 4px;
-    color: $color-text-helper;
-    @include typ-plain-small();
-  }
-
   &__error {
     margin-bottom: 4px;
     color: $color-gosred;

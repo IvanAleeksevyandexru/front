@@ -254,18 +254,7 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
       >
-        <epgu-constructor-constructor-multiline-input
-          [textTransformType]="componentData.value?.attrs?.fstuc"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [name]="componentData.value?.id"
-          [maxlength]="componentData.value?.attrs?.charsAmount"
-          [control]="$any(componentData.get('value'))"
-          [validationShowOn]="validationShowOn"
-          [readOnly]="componentData.value?.attrs?.readonly"
-          [placeholder]="componentData.value?.attrs?.placeholder"
-          [component]="componentData.value"
-        >
-        </epgu-constructor-constructor-multiline-input>
+        <epgu-constructor-text-area [control]="componentData"></epgu-constructor-text-area>
       </epgu-constructor-component-item>
 
       <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">

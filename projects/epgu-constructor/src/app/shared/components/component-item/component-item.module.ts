@@ -6,11 +6,6 @@ import { ComponentItemComponent } from './component-item.component';
 @NgModule({
   declarations: [ComponentItemComponent],
   exports: [ComponentItemComponent],
-  imports: [
-    BaseModule,
-    BaseComponentsModule,
-  ],
-  providers: [
-  ],
+  imports: [BaseModule, BaseComponentsModule],
 })
 export class ComponentItemModule {}
