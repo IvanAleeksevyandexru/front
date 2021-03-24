@@ -105,6 +105,7 @@ export type CustomComponentDropDownItem = {
 export interface CustomComponentAttr {
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType?: string;
+  subLabel?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   labelAttr?: string;
