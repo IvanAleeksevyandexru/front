@@ -27,12 +27,15 @@ export class ClickableLabelDirective {
     const targetElement = event.target as HTMLElement;
     const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
+    const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
     if (targetElementActionType) {
       event.preventDefault();
       this._runActionInAngularZone(targetElementActionType, targetElementActionValue, targetElement);
-    } else if (targetElement.id && targetElement.nodeName === 'A') {
-      event.preventDefault();
+    } else if (targetElement.id) {
+      if(needPrevent) {
+        event.preventDefault();
+      }
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
     }
   }
