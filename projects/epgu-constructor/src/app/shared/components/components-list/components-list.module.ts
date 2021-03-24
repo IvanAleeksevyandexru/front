@@ -34,6 +34,7 @@ import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
+import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lo
     MvdGiacLookupComponent,
     TextAreaComponent,
     FormMultiChoiceDictionaryComponent,
+    CheckboxInputComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [

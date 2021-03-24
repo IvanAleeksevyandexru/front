@@ -159,27 +159,13 @@
         </div>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item
+      <epgu-constructor-checkbox-input
         *ngSwitchCase="componentType.CheckBox"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [disableLabel]="true"
+        [control]="componentData"
+        [groupIndex]="componentsGroupIndex"
       >
-        <div
-          [ngClass]="
-            componentData.value?.attrs?.isHorizontal ? 'form__radio_inline' : 'form__radio_block'
-          "
-        >
-          <epgu-constructor-constructor-checkbox
-            checkboxId="{{ componentData.value?.id }}_{{ componentsGroupIndex || 0 }}"
-            [control]="componentData.get('value')"
-            [labelText]="componentData.value?.label"
-            [required]="componentData.value?.required"
-          >
-          </epgu-constructor-constructor-checkbox>
-        </div>
-      </epgu-constructor-component-item>
+      </epgu-constructor-checkbox-input>
+
       <epgu-constructor-date-input
         *ngSwitchCase="componentType.DateInput"
         [control]="componentData"
