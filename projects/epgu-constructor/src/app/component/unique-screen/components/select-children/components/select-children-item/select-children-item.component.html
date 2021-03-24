@@ -11,7 +11,8 @@
     [components]="components"
     [errors]="errors"
     (changes)="updateChild($event)"
-    (emitFormStatus)="updateItemValidationStatus($event)"
+    (emitFormStatus)="updateItemValueAndValidity()"
+    (emitFormCreated)="updateItemValidators($event)"
   >
   </epgu-constructor-components-list>
 </section>
