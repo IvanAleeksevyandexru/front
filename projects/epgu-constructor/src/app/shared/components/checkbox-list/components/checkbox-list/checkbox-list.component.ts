@@ -29,6 +29,7 @@ import {
 @Component({
   selector: 'epgu-constructor-checkbox-list',
   templateUrl: './checkbox-list.component.html',
+  styleUrls: ['./checkbox-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {

@@ -31,7 +31,7 @@ export class ClickableLabelDirective {
     if (targetElementActionType) {
       event.preventDefault();
       this._runActionInAngularZone(targetElementActionType, targetElementActionValue, targetElement);
-    } else if (targetElement.id) {
+    } else if (targetElement.id && targetElement.nodeName === 'A') {
       event.preventDefault();
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
     }
@@ -43,8 +43,9 @@ export class ClickableLabelDirective {
     targetElement: HTMLElement): void {
     if (NgZone.isInAngularZone()) {
       this._handleAction(targetElementActionType, targetElementActionValue, targetElement);
+    } else {
+      this._ngZone.run(() => this._handleAction(targetElementActionType, targetElementActionValue, targetElement));
     }
-    this._ngZone.run(() => this._handleAction(targetElementActionType, targetElementActionValue, targetElement));
   }
 
   private _handleAction(type: ActionType, value?: string, targetElement?: HTMLElement): void {

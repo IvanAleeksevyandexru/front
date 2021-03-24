@@ -29,8 +29,10 @@ import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
+import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 import { DateInputComponent } from './components/date-input/date-input.component';
+import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { DateInputComponent } from './components/date-input/date-input.component
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
     DateInputComponent,
+    MvdGiacLookupComponent,
+    TextAreaComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [

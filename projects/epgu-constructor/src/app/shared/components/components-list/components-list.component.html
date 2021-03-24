@@ -91,19 +91,9 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
       >
-        <lib-lookup
-          *ngIf="dropDowns$ | async as dropDowns"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [fixedItems]="$any(dropDowns[componentData.value?.id])"
-          [disabled]="$any(dropDowns[componentData.value?.id].length === 1)"
-          [validationShowOn]="validationShowOn"
-          [formControl]="$any(componentData.get('value'))"
-          [clearable]="true"
-          [queryMinSymbolsCount]="0"
-          [searchCaseSensitive]="false"
-          [virtualScroll]="true"
-        >
-        </lib-lookup>
+        <epgu-constructor-mvd-giac-lookup
+          [control]="componentData"
+        ></epgu-constructor-mvd-giac-lookup>
       </epgu-constructor-component-item>
 
       <ng-container>
@@ -248,18 +238,7 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
       >
-        <epgu-constructor-constructor-multiline-input
-          [textTransformType]="componentData.value?.attrs?.fstuc"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [name]="componentData.value?.id"
-          [maxlength]="componentData.value?.attrs?.charsAmount"
-          [control]="$any(componentData.get('value'))"
-          [validationShowOn]="validationShowOn"
-          [readOnly]="componentData.value?.attrs?.readonly"
-          [placeholder]="componentData.value?.attrs?.placeholder"
-          [component]="componentData.value"
-        >
-        </epgu-constructor-constructor-multiline-input>
+        <epgu-constructor-text-area [control]="componentData"></epgu-constructor-text-area>
       </epgu-constructor-component-item>
 
       <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">
