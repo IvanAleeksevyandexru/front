@@ -79,109 +79,17 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  public getDependentComponentUpdatedShownElements(
-    dependentComponent: CustomComponent,
-    reference: CustomComponentRef,
-    componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
-    components: Array<CustomComponent>,
-    form: FormArray,
-    shownElements: CustomListStatusElements,
-    dictionaries: CustomListDictionaries,
-    initInitialValues: boolean,
-    dictionaryToolsService: DictionaryToolsService,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
+  public createStatusElements(components: Array<CustomComponent>): CustomListStatusElements {
+    return components.reduce(
+      (acc, component: CustomComponent) => ({
+        ...acc,
+        [component.id]: {
+          relation: CustomComponentRefRelation.displayOn,
+          isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+        },
+      }),
+      {},
     );
-    const isDependentDisabled: boolean = dependentComponent.attrs.disabled;
-    const element = shownElements[dependentComponent.id];
-
-    switch (reference.relation) {
-      case CustomComponentRefRelation.displayOff:
-        this.handleIsDisplayOffRelation(
-          element,
-          shownElements,
-          dependentComponent,
-          reference,
-          componentVal,
-          dependentControl,
-        );
-        break;
-      case CustomComponentRefRelation.displayOn:
-        this.handleIsDisplayOnRelation(
-          element,
-          shownElements,
-          dependentComponent,
-          reference,
-          componentVal,
-          dependentControl,
-        );
-        break;
-      case CustomComponentRefRelation.getValue:
-        this.handleIsGetValueRelation(
-          dependentComponent,
-          reference,
-          components,
-          componentVal,
-          form,
-          dependentControl,
-        );
-        break;
-      case CustomComponentRefRelation.autofillFromDictionary:
-        this.handleIsAutofillFromDictionaryRelation(
-          reference,
-          components,
-          componentVal,
-          dictionaries,
-          dependentControl,
-          initInitialValues,
-        );
-        break;
-      case CustomComponentRefRelation.calc:
-        this.handleIsCalcRelation(
-          dependentComponent,
-          reference,
-          components,
-          form,
-          dependentControl
-        );
-        break;
-      case CustomComponentRefRelation.disabled:
-        this.handleIsDisabledRelation(
-          reference,
-          componentVal,
-          dependentControl,
-          dependentComponent.id,
-
-        );
-        break;
-      case CustomComponentRefRelation.filterOn:
-        this.handleIsFilterOnRelation(
-          reference,
-          componentVal,
-          dictionaryToolsService,
-          dependentComponent,
-        );
-        break;
-    }
-
-    if (isDependentDisabled) {
-      dependentControl.disable();
-    }
-
-    return shownElements;
-  }
-
-  public createStatusElements(
-    components: Array<CustomComponent>,
-  ): CustomListStatusElements {
-    return components.reduce((acc, component: CustomComponent) => ({
-      ...acc,
-      [component.id]: {
-        relation: CustomComponentRefRelation.displayOn,
-        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
-      }
-    }), {});
   }
 
   /**
@@ -332,6 +240,101 @@ export class ComponentsListRelationsService {
         screenService.applicantAnswers,
       );
     }
+  }
+
+  private getDependentComponentUpdatedShownElements(
+    dependentComponent: CustomComponent,
+    reference: CustomComponentRef,
+    componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
+    components: Array<CustomComponent>,
+    form: FormArray,
+    shownElements: CustomListStatusElements,
+    dictionaries: CustomListDictionaries,
+    initInitialValues: boolean,
+    dictionaryToolsService: DictionaryToolsService,
+  ): CustomListStatusElements {
+    const dependentControl: AbstractControl = form.controls.find(
+      (control: AbstractControl) => control.value.id === dependentComponent.id,
+    );
+    const isDependentDisabled: boolean = dependentComponent.attrs.disabled;
+    const element = shownElements[dependentComponent.id];
+
+    switch (reference.relation) {
+      case CustomComponentRefRelation.displayOff:
+        this.handleIsDisplayOffRelation(
+          element,
+          shownElements,
+          dependentComponent,
+          reference,
+          componentVal,
+          dependentControl,
+        );
+        break;
+      case CustomComponentRefRelation.displayOn:
+        this.handleIsDisplayOnRelation(
+          element,
+          shownElements,
+          dependentComponent,
+          reference,
+          componentVal,
+          dependentControl,
+        );
+        break;
+      case CustomComponentRefRelation.getValue:
+        this.handleIsGetValueRelation(
+          dependentComponent,
+          reference,
+          components,
+          componentVal,
+          form,
+          dependentControl,
+        );
+        break;
+      case CustomComponentRefRelation.autofillFromDictionary:
+        this.handleIsAutofillFromDictionaryRelation(
+          reference,
+          components,
+          componentVal,
+          dictionaries,
+          dependentControl,
+          initInitialValues,
+        );
+        break;
+      case CustomComponentRefRelation.calc:
+        this.handleIsCalcRelation(
+          dependentComponent,
+          reference,
+          components,
+          form,
+          dependentControl,
+        );
+        break;
+      case CustomComponentRefRelation.disabled:
+        this.handleIsDisabledRelation(
+          reference,
+          componentVal,
+          dependentControl,
+          dependentComponent.id,
+        );
+        break;
+      case CustomComponentRefRelation.filterOn:
+        this.handleIsFilterOnRelation(
+          reference,
+          componentVal,
+          dictionaryToolsService,
+          dependentComponent,
+        );
+        break;
+      case CustomComponentRefRelation.reset:
+        this.handleResetControl(dependentControl, form, reference);
+        break;
+    }
+
+    if (isDependentDisabled) {
+      dependentControl.disable();
+    }
+
+    return shownElements;
   }
 
   private handleIsAutofillFromDictionaryRelation(
@@ -508,5 +511,18 @@ export class ComponentsListRelationsService {
       const control = form.get(sourceComponentIndex.toString());
       return control?.value?.value ?? control?.value;
     }
+  }
+
+  private handleResetControl(
+    dependentControl: AbstractControl,
+    form: FormArray,
+    reference: CustomComponentRef,
+  ): void {
+    const { value } = form.controls.find((control) => control.value.id === reference.relatedRel);
+    const controlValue = value.value?.id || value.value;
+    if (!this.refRelationService.isValueEquals(controlValue, this.prevValues[value.id])) {
+      dependentControl.get('value').reset();
+    }
+    this.prevValues[value.id] = controlValue;
   }
 }

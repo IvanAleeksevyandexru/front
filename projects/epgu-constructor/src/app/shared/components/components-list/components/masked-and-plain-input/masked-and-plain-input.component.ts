@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'epgu-constructor-masked-and-plain-input',
   templateUrl: './masked-and-plain-input.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // onPush не отрабатывает в relation reset, из-за @Input control
 })
 export class MaskedAndPlainInputComponent {
   @Input() control: FormGroup | AbstractControl;

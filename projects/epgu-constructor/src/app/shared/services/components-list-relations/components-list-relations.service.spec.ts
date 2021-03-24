@@ -25,76 +25,82 @@ import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
 import { DictionaryConditions, DictionaryFilters } from '../dictionary/dictionary-api.types';
 import { calcRefMock } from '../ref-relation/ref-relation.mock';
 
-const componentMock: CustomComponent = {
-  id: 'rf1',
-  type: CustomScreenComponentTypes.StringInput,
-  label: 'Прежняя фамилия',
-  attrs: {
-    dictionaryType: '',
-    ref: [
-      {
-        relatedRel: 'rf1',
-        val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-        relation: CustomComponentRefRelation.displayOn,
-      },
-    ],
-    labelAttr: '',
-    fields: [],
-    validation: [
-      {
-        type: 'RegExp',
-        value: '^.{0,10}$',
-        ref: '',
-        dataType: '',
-        condition: '',
-        errorMsg: 'Поле может содержать не более 10 символов',
-        updateOn: 'change',
-      },
-      {
-        type: 'RegExp',
-        value: '^[-а-яА-ЯЁё0-9 .,/]+$',
-        ref: '',
-        dataType: '',
-        condition: '',
-        errorMsg:
-          'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-        updateOn: 'change',
-      },
-      {
-        type: 'RegExp',
-        value: '^.{9}$',
-        ref: '',
-        dataType: '',
-        condition: '',
-        errorMsg: 'Поле должно содержать 9 символов',
-        updateOn: 'blur',
-      },
-      {
-        type: 'RegExp',
-        value: '.*[0-9]+.*',
-        ref: '',
-        dataType: '',
-        condition: '',
-        errorMsg: 'Поле должно содержать хотя бы одну цифру',
-        updateOn: 'blur',
-      },
-    ],
-  },
-  value: '',
-  required: true,
-};
-const componentsMock: CustomComponent[] = [componentMock];
-
-const createComponentMock = (mergedData: unknown = {}, component: CustomComponent = componentMock): CustomComponent => {
-  return _mergeWith({}, component, mergedData, (objValue, srcValue) => {
-    if (_isArray(objValue)) {
-      return srcValue;
-    }
-  });
-};
-
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
+  let componentMock: CustomComponent = {
+    id: 'rf1',
+    type: CustomScreenComponentTypes.StringInput,
+    label: 'Прежняя фамилия',
+    attrs: {
+      dictionaryType: '',
+      ref: [
+        {
+          relatedRel: 'rf1',
+          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+          relation: CustomComponentRefRelation.displayOn,
+        },
+      ],
+      labelAttr: '',
+      fields: [],
+      validation: [
+        {
+          type: 'RegExp',
+          value: '^.{0,10}$',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg: 'Поле может содержать не более 10 символов',
+          updateOn: 'change',
+        },
+        {
+          type: 'RegExp',
+          value: '^[-а-яА-ЯЁё0-9 .,/]+$',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg:
+            'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
+          updateOn: 'change',
+        },
+        {
+          type: 'RegExp',
+          value: '^.{9}$',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg: 'Поле должно содержать 9 символов',
+          updateOn: 'blur',
+        },
+        {
+          type: 'RegExp',
+          value: '.*[0-9]+.*',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg: 'Поле должно содержать хотя бы одну цифру',
+          updateOn: 'blur',
+        },
+      ],
+    },
+    value: '4',
+    required: true,
+  };
+  const componentsMock: CustomComponent[] = [componentMock];
+  const createComponentMock = (mergedData: unknown = {}, component: CustomComponent = componentMock): CustomComponent => {
+    return _mergeWith({}, component, mergedData, (objValue, srcValue) => {
+      if (_isArray(objValue)) {
+        return srcValue;
+      }
+    });
+  };
+
+  let mockShownElements: CustomListStatusElements = {
+    rf1: {
+      isShown: true,
+      relation: CustomComponentRefRelation.disabled,
+    },
+  };
+  let mockDictionaries: CustomListDictionaries;
   let screenService: ScreenService;
   let dictionaryToolsService: DictionaryToolsService;
   let refRelationService: RefRelationService;
@@ -114,6 +120,7 @@ describe('ComponentsListRelationsService', () => {
         DictionaryApiService,
         ConfigService,
         LoggerService,
+        FormBuilder,
       ],
     });
 
@@ -165,7 +172,7 @@ describe('ComponentsListRelationsService', () => {
 
     it('should do nothing if there is no dependent components', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate');
-      jest.spyOn(service, 'getDependentComponentUpdatedShownElements');
+      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements');
 
       let result = service.getUpdatedShownElements(
         [],
@@ -182,7 +189,7 @@ describe('ComponentsListRelationsService', () => {
 
       // ничего не делаем, потому что массив components пустой (функция возвращает shownElements без изменений)
       expect(dateRangeService.updateLimitDate).not.toBeCalled();
-      expect(service.getDependentComponentUpdatedShownElements).not.toBeCalled();
+      expect(service['getDependentComponentUpdatedShownElements']).not.toBeCalled();
       expect(result).toEqual({
         foo: {
           isShown: true,
@@ -220,7 +227,7 @@ describe('ComponentsListRelationsService', () => {
       // (component.id (compId) !== attrs.ref[0].relatedRel (rf1) )
       // (функция возвращает shownElements без изменений)
       expect(dateRangeService.updateLimitDate).not.toBeCalled();
-      expect(service.getDependentComponentUpdatedShownElements).not.toBeCalled();
+      expect(service['getDependentComponentUpdatedShownElements']).not.toBeCalled();
       expect(result).toEqual({
         foo: {
           isShown: true,
@@ -231,7 +238,7 @@ describe('ComponentsListRelationsService', () => {
 
     it('should update shown elements for dependent components if el.relatedRel === component.id', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate').mockImplementation(() => undefined);
-      jest.spyOn(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
+      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
         bar: {
           isShown: false,
           relation: CustomComponentRefRelation.calc
@@ -269,20 +276,7 @@ describe('ComponentsListRelationsService', () => {
         dictionaryToolsService
       );
 
-      expect(service.getDependentComponentUpdatedShownElements).toBeCalledTimes(1);
-      expect(service.getDependentComponentUpdatedShownElements).toBeCalledWith(
-        dependentComponent,
-        reference,
-        '',
-        [
-          dependentComponent
-        ],
-        form,
-        shownElements,
-        dictionaries,
-        initInitialValues,
-        dictionaryToolsService,
-      );
+      expect(service['getDependentComponentUpdatedShownElements']).toBeCalledTimes(1);
       expect(result).toEqual({
         bar: {
           isShown: false,
@@ -293,7 +287,7 @@ describe('ComponentsListRelationsService', () => {
 
     it('should update limit date of dependent components if el.relatedDate === component.id', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate').mockImplementation(() => undefined);
-      jest.spyOn(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
+      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
         bar: {
           isShown: false,
           relation: CustomComponentRefRelation.calc
@@ -432,7 +426,7 @@ describe('ComponentsListRelationsService', () => {
           relation: CustomComponentRefRelation.displayOff,
         };
 
-        updatedShownElements = service.getDependentComponentUpdatedShownElements(
+        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -458,7 +452,7 @@ describe('ComponentsListRelationsService', () => {
           }
         });
 
-        updatedShownElements = service.getDependentComponentUpdatedShownElements(
+        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -486,7 +480,7 @@ describe('ComponentsListRelationsService', () => {
 
         dependentControl.markAsTouched();
 
-        updatedShownElements = service.getDependentComponentUpdatedShownElements(
+        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -526,7 +520,7 @@ describe('ComponentsListRelationsService', () => {
           relation: CustomComponentRefRelation.displayOn,
         };
 
-        updatedShownElements = service.getDependentComponentUpdatedShownElements(
+        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -552,7 +546,7 @@ describe('ComponentsListRelationsService', () => {
           }
         });
 
-        updatedShownElements = service.getDependentComponentUpdatedShownElements(
+        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -579,7 +573,7 @@ describe('ComponentsListRelationsService', () => {
         });
 
         dependentControl.markAsTouched();
-        updatedShownElements = service.getDependentComponentUpdatedShownElements(
+        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -648,7 +642,7 @@ describe('ComponentsListRelationsService', () => {
           dependentControl
         ]);
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -696,7 +690,7 @@ describe('ComponentsListRelationsService', () => {
         dictionaries = {} as CustomListDictionaries;
 
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -713,7 +707,7 @@ describe('ComponentsListRelationsService', () => {
         expect(dependentControl.get('value').value).toBe( 'some value');
 
         initInitialValues = true;
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -751,7 +745,7 @@ describe('ComponentsListRelationsService', () => {
           }
         } as unknown as CustomListDictionaries;
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -800,7 +794,7 @@ describe('ComponentsListRelationsService', () => {
 
         jest.spyOn(service, 'getCalcValueFromRelation').mockReturnValue('some value');
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -835,7 +829,7 @@ describe('ComponentsListRelationsService', () => {
         ]);
         dependentControl.markAsTouched();
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -869,7 +863,7 @@ describe('ComponentsListRelationsService', () => {
         ]);
         dependentControl.markAsTouched();
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -904,7 +898,7 @@ describe('ComponentsListRelationsService', () => {
           dependentControl
         ]);
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -923,7 +917,7 @@ describe('ComponentsListRelationsService', () => {
 
         // делаем это для того, чтобы в кэше сервиса (this.prevValues) сохранилось значение для компонента
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -944,7 +938,7 @@ describe('ComponentsListRelationsService', () => {
         ]);
 
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -975,7 +969,7 @@ describe('ComponentsListRelationsService', () => {
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
         jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -1006,7 +1000,7 @@ describe('ComponentsListRelationsService', () => {
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
         jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(false);
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -1027,7 +1021,7 @@ describe('ComponentsListRelationsService', () => {
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
         jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
 
-        service.getDependentComponentUpdatedShownElements(
+        service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
           componentVal,
@@ -1179,6 +1173,31 @@ describe('ComponentsListRelationsService', () => {
       service.filters[dependentComponentId] = { pageNum: 0 };
       service.clearFilter(dependentComponentId);
       expect(service.filters[dependentComponentId]).toBeNull();
+    });
+  });
+
+  describe('handleResetControl()', () => {
+    const relatedComponent = {
+      id: 'acc_org',
+      type: 'CheckingAccount',
+      required: true,
+      label: 'Расчётный счёт',
+      attrs: {
+        refs: {},
+        ref: [{ relatedRel: 'rf1', val: '', relation: 'reset' }],
+      },
+      value: '',
+      visited: false,
+    };
+    const reference = { relatedRel: 'rf1', val: '', relation: 'reset' };
+    it('should reset dependent control', () => {
+      const fb = new FormBuilder();
+      const form =  fb.group({ ...componentMock } );
+      const form2 = fb.group({ ...relatedComponent } );
+      const mockForm = new FormArray([form, form2]);
+      const control = mockForm.controls[1];
+      service['handleResetControl'](control, mockForm, reference as any);
+      expect(control.value.value).toBeNull();
     });
   });
 });
