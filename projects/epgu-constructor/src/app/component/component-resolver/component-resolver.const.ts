@@ -119,4 +119,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   DateTimePeriod: DateTimePeriodContainerComponent,
   CheckboxCube: CheckboxCubeContainerComponent,
   ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
 };
