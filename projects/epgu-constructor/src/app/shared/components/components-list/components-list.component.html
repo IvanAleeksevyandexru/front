@@ -91,19 +91,9 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
       >
-        <lib-lookup
-          *ngIf="dropDowns$ | async as dropDowns"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [fixedItems]="$any(dropDowns[componentData.value?.id])"
-          [disabled]="$any(dropDowns[componentData.value?.id].length === 1)"
-          [validationShowOn]="validationShowOn"
-          [formControl]="$any(componentData.get('value'))"
-          [clearable]="true"
-          [queryMinSymbolsCount]="0"
-          [searchCaseSensitive]="false"
-          [virtualScroll]="true"
-        >
-        </lib-lookup>
+        <epgu-constructor-mvd-giac-lookup
+          [control]="componentData"
+        ></epgu-constructor-mvd-giac-lookup>
       </epgu-constructor-component-item>
 
       <ng-container>

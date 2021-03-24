@@ -31,6 +31,7 @@ import { MaskedAndPlainInputComponent } from './components/masked-and-plain-inpu
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
+import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
+    MvdGiacLookupComponent,
     TextAreaComponent,
   ],
   exports: [ComponentsListComponent],
