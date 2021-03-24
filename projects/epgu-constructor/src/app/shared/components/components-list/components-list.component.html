@@ -4,6 +4,7 @@
     class="form__item {{
       componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
     }}"
+    [class.form__item-radio]="[componentType.RadioInput, componentType.CheckBox].includes(componentData.value?.type)"
   >
     <ng-container
       [ngSwitch]="componentData.value?.type"
