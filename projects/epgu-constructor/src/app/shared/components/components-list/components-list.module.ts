@@ -32,6 +32,7 @@ import { FormOutputHtmlComponent } from './components/form-output-html/form-outp
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
+import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-c
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
+    MvdGiacLookupComponent,
     TextAreaComponent,
     FormMultiChoiceDictionaryComponent,
   ],
