@@ -5,3 +5,9 @@
   [orderId]="screenService.orderId$ | async"
   [header]="this.screenService.header$ | async"
 ></epgu-constructor-invitation-error>
+
+<epgu-constructor-lk-invitation-input
+  *ngIf="(screenService.componentType$ | async) === typeComponent.lkInvitationInput"
+  [data]="screenService.component$ | async"
+  [header]="this.screenService.header$ | async"
+></epgu-constructor-lk-invitation-input>

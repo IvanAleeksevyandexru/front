@@ -156,6 +156,11 @@ export interface ComponentAttrsDto {
   endTime?: ComponentDateTimeDto;
   canDeleteFirstScreen?: boolean;
   emptySlotsModal?: ConfirmationModal;
+  fio?: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  gender?: string;
 }
 
 export interface ComponentDateTimeDto {
