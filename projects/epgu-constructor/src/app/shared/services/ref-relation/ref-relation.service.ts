@@ -39,7 +39,7 @@ export class RefRelationService {
    */
   public isValueEquals(
     value: string | Array<string> | boolean,
-    componentVal: { id?: string } | string, //TODO: нормализовать типы
+    componentVal: { id?: string } | string | number, //TODO: нормализовать типы
   ): boolean {
     const componentValue = this.getValueFromComponentVal(componentVal);
 
@@ -58,7 +58,7 @@ export class RefRelationService {
     return value === componentValue;
   }
 
-  public getValueFromComponentVal(componentVal: { id?: string } | string): string {
+  public getValueFromComponentVal(componentVal: { id?: string } | string | number): string {
     return ['string', 'boolean'].includes(typeof componentVal)
       ? (componentVal as string)
       : (componentVal as { id?: string })?.id;
