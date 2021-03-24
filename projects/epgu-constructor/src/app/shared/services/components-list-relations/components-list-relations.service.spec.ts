@@ -85,7 +85,7 @@ describe('ComponentsListRelationsService', () => {
     rf1: {
       isShown: true,
       relation: CustomComponentRefRelation.disabled,
-    }
+    },
   };
   let mockDictionaries: CustomListDictionaries;
   let screenService: ScreenService;
@@ -105,6 +105,7 @@ describe('ComponentsListRelationsService', () => {
         DictionaryApiService,
         ConfigService,
         LoggerService,
+        FormBuilder,
       ],
     });
 
@@ -144,7 +145,9 @@ describe('ComponentsListRelationsService', () => {
 
   describe('getDependentComponents()', () => {
     it('should return array of components with dependency', () => {
-      expect(service['getDependentComponents'](mockComponents, mockComponent)).toEqual([mockComponent]);
+      expect(service['getDependentComponents'](mockComponents, mockComponent)).toEqual([
+        mockComponent,
+      ]);
     });
   });
 
@@ -184,7 +187,10 @@ describe('ComponentsListRelationsService', () => {
   describe('applyFilter()', () => {
     it('should apply passed filter for dependent component', () => {
       const dependentComponentId = mockComponent.id;
-      const filter = { pageNum: 0, simple: { value: { asString: 'value' }, condition: 'CONTAINS', attributeName: 'value' }};
+      const filter = {
+        pageNum: 0,
+        simple: { value: { asString: 'value' }, condition: 'CONTAINS', attributeName: 'value' },
+      };
       const componentVal = { id: 'value' };
       service['applyFilter'](dependentComponentId, filter, componentVal);
       expect(service.filters[dependentComponentId]).toEqual(filter);
@@ -197,6 +203,31 @@ describe('ComponentsListRelationsService', () => {
       service.filters[dependentComponentId] = { pageNum: 0 };
       service['clearFilter'](dependentComponentId);
       expect(service.filters[dependentComponentId]).toBeNull();
+    });
+  });
+
+  describe('handleResetControl()', () => {
+    const relatedComponent = {
+      id: 'acc_org',
+      type: 'CheckingAccount',
+      required: true,
+      label: 'Расчётный счёт',
+      attrs: {
+        refs: {},
+        ref: [{ relatedRel: 'rf1', val: '', relation: 'reset' }],
+      },
+      value: '',
+      visited: false,
+    };
+    const reference = { relatedRel: 'rf1', val: '', relation: 'reset' };
+    it('should reset dependent control', () => {
+      const fb = new FormBuilder();
+      const form =  fb.group({ ...mockComponent } );
+      const form2 = fb.group({ ...relatedComponent } );
+      const mockForm = new FormArray([form, form2]);
+      const control = mockForm.controls[1];
+      service['handleResetControl'](control, mockForm, reference as any);
+      expect(control.value.value).toBeNull();
     });
   });
 });

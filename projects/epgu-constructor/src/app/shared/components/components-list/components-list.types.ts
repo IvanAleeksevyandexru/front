@@ -178,6 +178,7 @@ export enum CustomComponentRefRelation {
   calc = 'calc',
   getValue = 'getValue',
   autofillFromDictionary = 'autofillFromDictionary',
+  reset = 'reset',
 }
 
 export enum CustomComponentValidationConditions {

@@ -79,16 +79,17 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  public createStatusElements(
-    components: Array<CustomComponent>,
-  ): CustomListStatusElements {
-    return components.reduce((acc, component: CustomComponent) => ({
-      ...acc,
-      [component.id]: {
-        relation: CustomComponentRefRelation.displayOn,
-        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
-      }
-    }), {});
+  public createStatusElements(components: Array<CustomComponent>): CustomListStatusElements {
+    return components.reduce(
+      (acc, component: CustomComponent) => ({
+        ...acc,
+        [component.id]: {
+          relation: CustomComponentRefRelation.displayOn,
+          isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+        },
+      }),
+      {},
+    );
   }
 
   private updateReferenceLimitDate(
@@ -175,7 +176,7 @@ export class ComponentsListRelationsService {
           reference,
           components,
           form,
-          dependentControl
+          dependentControl,
         );
         break;
       case CustomComponentRefRelation.disabled:
@@ -184,7 +185,6 @@ export class ComponentsListRelationsService {
           componentVal,
           dependentControl,
           dependentComponent.id,
-
         );
         break;
       case CustomComponentRefRelation.filterOn:
@@ -194,6 +194,9 @@ export class ComponentsListRelationsService {
           dictionaryToolsService,
           dependentComponent,
         );
+        break;
+      case CustomComponentRefRelation.reset:
+        this.handleResetControl(dependentControl, form, reference);
         break;
     }
 
@@ -508,5 +511,18 @@ export class ComponentsListRelationsService {
     if (this.filters[dependentComponentId]) {
       this.filters = { [dependentComponentId]: null };
     }
+  }
+
+  private handleResetControl(
+    dependentControl: AbstractControl,
+    form: FormArray,
+    reference: CustomComponentRef,
+  ): void {
+    const { value } = form.controls.find((control) => control.value.id === reference.relatedRel);
+    const controlValue = value.value?.id || value.value;
+    if (!this.refRelationService.isValueEquals(controlValue, this.prevValues[value.id])) {
+      dependentControl.get('value').reset();
+    }
+    this.prevValues[value.id] = controlValue;
   }
 }
