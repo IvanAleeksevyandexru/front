@@ -1,35 +1,20 @@
-<epgu-constructor-screen-pad *ngIf="errorTemplateLabel; else carList">
+<epgu-constructor-output-html
+  *ngIf="label"
+  [html]="label"
+  [clarifications]="clarifications"
+></epgu-constructor-output-html>
 
-  <epgu-constructor-output-html
-    [html]="errorTemplateLabel"
-    [clarifications]="clarifications"
-  ></epgu-constructor-output-html>
-
-</epgu-constructor-screen-pad>
-
-<ng-template #carList>
-  <epgu-constructor-output-html
-    *ngIf="label"
-    [html]="label"
-    [clarifications]="clarifications"
-  ></epgu-constructor-output-html>
-
-  <epgu-constructor-constructor-lookup
-    *ngIf="carFixedItems"
-    [showNotFound]="true"
-    [searchCaseSensitive]="searchCaseSensitive"
-    [fixedItems]="$any(carFixedItems)"
-    [itemsProvider]="provider"
-    [disabled]="carFixedItems.length === 1"
-    [formatter]="formatter"
-    [showExpandCollapse]="true"
-    [showMagnifyingGlass]="true"
-    [control]="control"
-    (changed)="lookupChanged()"
-  >
-  </epgu-constructor-constructor-lookup>
-</ng-template>
-
-
-
-
+<epgu-constructor-constructor-lookup
+  *ngIf="carFixedItems"
+  [showNotFound]="true"
+  [searchCaseSensitive]="searchCaseSensitive"
+  [fixedItems]="$any(carFixedItems)"
+  [itemsProvider]="provider"
+  [disabled]="carFixedItems.length === 1"
+  [formatter]="formatter"
+  [showExpandCollapse]="true"
+  [showMagnifyingGlass]="true"
+  [control]="control"
+  (changed)="lookupChanged()"
+>
+</epgu-constructor-constructor-lookup>

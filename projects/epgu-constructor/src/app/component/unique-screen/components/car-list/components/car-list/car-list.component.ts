@@ -19,7 +19,6 @@ export class CarListComponent {
   @Input() formatter: (item: ListItem) => string;
   @Input() label: string;
   @Input() carFixedItems: Partial<ListItem>[];
-  @Input() errorTemplateLabel: string;
   @Input() control: FormControl;
 
   @Output() formChangeEvent = new EventEmitter<VehicleOwnerInfo>();

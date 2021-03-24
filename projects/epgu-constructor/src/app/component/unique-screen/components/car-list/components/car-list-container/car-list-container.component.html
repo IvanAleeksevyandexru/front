@@ -1,35 +1,51 @@
 <ng-container
   *ngTemplateOutlet="
     templateContent;
-    context: { component: (component$ | async), display: (display$ | async), showNav: (showNav$ | async)  }
+    context: { component: component$ | async, display: display$ | async, showNav: showNav$ | async }
   "
 >
 </ng-container>
 
 <ng-template #templateContent let-component="component" let-display="display" let-showNav="showNav">
-  <epgu-constructor-screen-container
-    [show-nav]="showNav"
-    [class.screen-container-mt]="!showNav"
-  >
+  <epgu-constructor-screen-container [show-nav]="showNav" [class.screen-container-mt]="!showNav">
     <div class="screen-body">
-      <div
-        *ngIf="display.header"
-        class="head">
-        <epgu-constructor-page-name *ngIf="!hasError">{{ display.header }}</epgu-constructor-page-name>
+      <div *ngIf="display.header" class="head">
+        <epgu-constructor-page-name *ngIf="!hasError">{{
+          display.header
+        }}</epgu-constructor-page-name>
       </div>
 
-      <epgu-constructor-car-list
-        [label]="component?.attrs?.label"
-        [clarifications]="component?.attrs?.clarifications"
-        [provider]="lookupProvider"
-        [control]="control"
-        [carFixedItems]="carFixedItems"
-        [errorTemplateLabel]="errorTemplate?.label"
-        [formatter]="lookupFormatter"
-        [searchCaseSensitive]="lookupSearchCaseSensitive"
-        [staticDomainAssetsPath]="config.staticDomainAssetsPath"
-        (formChangeEvent)="setState($event)"
-      ></epgu-constructor-car-list>
+      <epgu-constructor-screen-pad *ngIf="errorTemplate; else carList">
+        <epgu-constructor-output-html
+          [html]="errorTemplate.label"
+          [clarifications]="component.attrs?.clarifications"
+        ></epgu-constructor-output-html>
+
+        <div class="error__submit">
+          <lib-button
+            *ngFor="let action of errorTemplate.actions"
+            epgu-constructor-action
+            [action]="action"
+            [color]="action.color"
+            class="screen-footer__btn"
+            >{{ action.label }}</lib-button
+          >
+        </div>
+      </epgu-constructor-screen-pad>
+
+      <ng-template #carList>
+        <epgu-constructor-car-list
+          [label]="component?.attrs?.label"
+          [clarifications]="component?.attrs?.clarifications"
+          [provider]="lookupProvider"
+          [control]="control"
+          [carFixedItems]="carFixedItems"
+          [formatter]="lookupFormatter"
+          [searchCaseSensitive]="lookupSearchCaseSensitive"
+          [staticDomainAssetsPath]="config.staticDomainAssetsPath"
+          (formChangeEvent)="setState($event)"
+        ></epgu-constructor-car-list>
+      </ng-template>
     </div>
 
     <div class="screen-footer">
@@ -42,17 +58,6 @@
       >
         {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
       </lib-button>
-
-      <ng-container *ngIf="hasError && errorTemplate?.actions">
-        <lib-button
-          *ngFor="let action of errorTemplate.actions"
-          epgu-constructor-action
-          [action]="action"
-          [color]="action.color"
-          class="screen-footer__btn"
-        >{{ action.label }}</lib-button>
-      </ng-container>
-
     </div>
   </epgu-constructor-screen-container>
 </ng-template>
