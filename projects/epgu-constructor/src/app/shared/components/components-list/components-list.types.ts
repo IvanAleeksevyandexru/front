@@ -51,6 +51,7 @@ export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string 
 // type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
 
 export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+// @todo. выяснить, почему в коде CustomListDictionaries как объект, а не массив
 export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
 export type CustomListReferenceData = CustomListGenericData<
   Partial<ListItem>[] | DictionaryResponse
