@@ -1,12 +1,18 @@
-<epgu-constructor-constructor-multiline-input
-  [textTransformType]="control.value?.attrs?.fstuc"
-  [invalid]="control.get('value').invalid && control.get('value').touched"
-  [name]="control.value?.id"
-  [maxlength]="control.value?.attrs?.charsAmount"
-  [control]="$any(control.get('value'))"
-  [validationShowOn]="validationShowOn"
-  [readOnly]="control.value?.attrs?.readonly"
-  [placeholder]="control.value?.attrs?.placeholder"
+<epgu-constructor-component-item
+  [control]="control.get('value')"
   [component]="control.value"
+  [invalid]="control.invalid"
 >
-</epgu-constructor-constructor-multiline-input>
+  <epgu-constructor-constructor-multiline-input
+    [textTransformType]="control.value?.attrs?.fstuc"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [name]="control.value?.id"
+    [maxlength]="control.value?.attrs?.charsAmount"
+    [control]="$any(control.get('value'))"
+    [validationShowOn]="validationShowOn"
+    [readOnly]="control.value?.attrs?.readonly"
+    [placeholder]="control.value?.attrs?.placeholder"
+    [component]="control.value"
+  >
+  </epgu-constructor-constructor-multiline-input>
+</epgu-constructor-component-item>

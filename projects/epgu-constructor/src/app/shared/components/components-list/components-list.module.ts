@@ -31,6 +31,7 @@ import { MaskedAndPlainInputComponent } from './components/masked-and-plain-inpu
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
+import { DateInputComponent } from './components/date-input/date-input.component';
 import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 
@@ -40,6 +41,7 @@ import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lo
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
+    DateInputComponent,
     MvdGiacLookupComponent,
     TextAreaComponent,
     FormMultiChoiceDictionaryComponent,
