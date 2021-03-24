@@ -168,8 +168,9 @@ export class ValidationService {
       case CustomScreenComponentTypes.SnilsInput:
         return checkSnils(value);
       case CustomScreenComponentTypes.PersonInnInput:
+        return value.length === 12 && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
-        return checkINN(value);
+        return value.length === 10 && checkINN(value);
       default:
         return true;
     }
