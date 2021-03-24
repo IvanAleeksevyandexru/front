@@ -32,6 +32,7 @@ import { FormOutputHtmlComponent } from './components/form-output-html/form-outp
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
+import { PassportLookupComponent } from './components/passport-lookup/passport-lookup.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lo
     FormOutputHtmlComponent,
     MvdGiacLookupComponent,
     TextAreaComponent,
+    PassportLookupComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [

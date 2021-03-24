@@ -260,20 +260,13 @@
       <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">
       </epgu-constructor-timer>
 
-      <epgu-constructor-component-item
+      <epgu-constructor-passport-lookup
         *ngSwitchCase="componentType.PassportLookup"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
+        [control]="componentData"
+        [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+        (selectSuggest)="suggestHandle($event)"
       >
-        <epgu-constructor-passport
-          [formControl]="$any(componentData.get('value'))"
-          [attrs]="componentData.value?.attrs"
-          [suggestions]="(suggestions$ | async)[componentData.value?.id]"
-          (selectSuggest)="suggestHandle($event)"
-        >
-        </epgu-constructor-passport>
-      </epgu-constructor-component-item>
+      </epgu-constructor-passport-lookup>
 
       <epgu-constructor-doc-input
         *ngSwitchCase="componentType.DocInput"
