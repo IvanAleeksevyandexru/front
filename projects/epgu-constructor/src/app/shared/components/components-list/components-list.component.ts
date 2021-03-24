@@ -61,6 +61,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
+  @Output() emitFormCreated = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
@@ -103,7 +104,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       JSON.stringify(changes.errors?.previousValue);
 
     if (components || isErrorsChanged) {
-      this.formService.create(this.components, this.errors);
+      const formArray = this.formService.create(this.components, this.errors);
+      this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);
     }

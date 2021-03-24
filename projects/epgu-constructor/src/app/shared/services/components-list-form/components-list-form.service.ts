@@ -74,7 +74,7 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
+  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
     this._shownElements = this.componentsListRelationsService.createStatusElements(components);
 
@@ -109,6 +109,8 @@ export class ComponentsListFormService {
       .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent[1])))
       .subscribe(() => this.emitChanges());
     this.emitChanges();
+
+    return this._form;
   }
 
   public patch(component: CustomComponent): void {
