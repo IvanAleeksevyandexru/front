@@ -59,7 +59,7 @@ export class ComponentsListRelationsService {
               ? screenService.cachedAnswers[reference.valueFromCache].value
               : component.value;
 
-            shownElements = this._getUpdatedShownElements(
+            shownElements = this.getDependentComponentUpdatedShownElements(
               dependentComponent,
               reference,
               value as { [key: string]: string },
@@ -79,39 +79,7 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  public createStatusElements(
-    components: Array<CustomComponent>,
-  ): CustomListStatusElements {
-    return components.reduce((acc, component: CustomComponent) => ({
-      ...acc,
-      [component.id]: {
-        relation: CustomComponentRefRelation.displayOn,
-        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
-      }
-    }), {});
-  }
-
-  private updateReferenceLimitDate(
-    dependentComponent: CustomComponent,
-    component: CustomComponent | CustomListFormGroup,
-    form: FormArray,
-    screenService: ScreenService,
-  ): void {
-    const referenceDate = dependentComponent.attrs.ref?.find(
-      (el: DateRangeRef) => el.relatedDate === component.id,
-    );
-
-    if (referenceDate) {
-      this.dateRangeService.updateLimitDate(
-        form,
-        component as CustomComponent,
-        dependentComponent,
-        screenService.applicantAnswers,
-      );
-    }
-  }
-
-  private _getUpdatedShownElements(
+  public getDependentComponentUpdatedShownElements(
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
@@ -204,6 +172,168 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
+  public createStatusElements(
+    components: Array<CustomComponent>,
+  ): CustomListStatusElements {
+    return components.reduce((acc, component: CustomComponent) => ({
+      ...acc,
+      [component.id]: {
+        relation: CustomComponentRefRelation.displayOn,
+        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+      }
+    }), {});
+  }
+
+  /**
+   * Подсчитывает автовычисляемое значение из формулы, которую передали
+   * @param itemRef - объект с информацией о связи
+   * @param components - компоненты с информацией
+   * @param form - ссылка на объект формы
+   * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
+   */
+  public getCalcValueFromRelation(
+    itemRef: CustomComponentRef,
+    components: CustomComponent[],
+    form: FormArray,
+  ): number | string {
+    let str = itemRef.val as string;
+    const lettersAnNumberItemRegExp = /\{\w+\}/gm;
+    const matches = str.match(lettersAnNumberItemRegExp);
+    const componentKeys = Array.isArray(matches) ? [...matches] : [];
+
+    let haveAllValues = true;
+    componentKeys.forEach((key: string) => {
+      const k = key.replace('{', '').replace('}', '');
+      const targetFormKey = `${components.findIndex((component) => component.id === k)}.value`;
+      const control = form.get(targetFormKey);
+      const val = Number(control?.value);
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(val)) {
+        haveAllValues = false;
+      } else {
+        str = str.replace(key, val.toString());
+      }
+    });
+
+    // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
+    return haveAllValues ? this.getCalcFieldValue(str) : '';
+  }
+
+  public applyFilter(
+    dependentComponentId: CustomComponent['id'],
+    filter: DictionaryFilters['filter'],
+    componentVal: { id?: string },
+  ): void {
+    const value = this.refRelationService.getValueFromComponentVal(componentVal);
+
+    if (filter.simple) {
+      filter.simple.value.asString = value;
+    } else if (filter.union) {
+      filter.union.subs = filter.union.subs.map(
+        (subFilter: DictionarySubFilter): DictionarySubFilter => {
+          subFilter.simple.value.asString = value;
+
+          return subFilter;
+        },
+      );
+    }
+
+    this.filters = { [dependentComponentId]: filter };
+  }
+
+  public clearFilter(dependentComponentId: CustomComponent['id']): void {
+    if (this.filters[dependentComponentId]) {
+      this.filters = { [dependentComponentId]: null };
+    }
+  }
+
+  public hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
+    return component.attrs.ref?.some((o) => o.relation === relation);
+  }
+
+  public isComponentDependent(arr = [], component: CustomComponent): boolean {
+    return arr.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
+  }
+
+  public getDependentComponents(
+    components: CustomComponent[],
+    component: CustomComponent,
+  ): Array<CustomComponent> {
+    return components.filter((_component: CustomComponent) =>
+      this.isComponentDependent(_component.attrs.ref, component),
+    );
+  }
+
+  /**
+   * Возвращает значение атрибута attributeName из словаря компонента componentId.
+   * Если атрибут не найден, то возвращается undefined.
+   *
+   * @param dictionaryAttributeName - название атрибута из словаря
+   * @param componentId - ID компонента
+   * @param components - компоненты с информацией
+   */
+  public getDictionaryAttributeValue(
+    dictionaryAttributeName: string,
+    componentId: string,
+    components: CustomComponent[],
+    componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
+    dictionaries: CustomListDictionaries,
+  ): unknown {
+    const relatedComponent = components.find((item) => item.id === componentId);
+
+    if (relatedComponent) {
+      const dictKey = utils.getDictKeyByComp(relatedComponent);
+
+      const dictionary = dictionaries[dictKey];
+
+      if (dictionary) {
+        if (componentVal) {
+          const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
+
+          return dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  public getRelation(
+    component: CustomComponent,
+    reference: CustomComponentRef,
+  ): CustomComponentRef {
+    return component.attrs.ref?.find(({ relation }) => relation === reference.relation);
+  }
+
+  /**
+   * Возвращает вычисленное значение по формуле
+   * @param formula - формула для расчета
+   */
+  public getCalcFieldValue(formula: string): number {
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
+    return Function(`'use strict'; return (Math.round(${formula}))`)();
+  }
+
+  private updateReferenceLimitDate(
+    dependentComponent: CustomComponent,
+    component: CustomComponent | CustomListFormGroup,
+    form: FormArray,
+    screenService: ScreenService,
+  ): void {
+    const referenceDate = dependentComponent.attrs.ref?.find(
+      (el: DateRangeRef) => el.relatedDate === component.id,
+    );
+
+    if (referenceDate) {
+      this.dateRangeService.updateLimitDate(
+        form,
+        component as CustomComponent,
+        dependentComponent,
+        screenService.applicantAnswers,
+      );
+    }
+  }
+
   private handleIsAutofillFromDictionaryRelation(
     reference: CustomComponentRef,
     components: CustomComponent[],
@@ -255,7 +385,7 @@ export class ComponentsListRelationsService {
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
 
-    if ((isDisplayOn && element.isShown === true) || !isDisplayOn) {
+    if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOff,
         isShown: !this.refRelationService.isValueEquals(reference.val, componentVal),
@@ -274,7 +404,7 @@ export class ComponentsListRelationsService {
   ): void {
     const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
 
-    if ((isDisplayOff && element.isShown === true) || !isDisplayOff) {
+    if (element.isShown === true || !isDisplayOff) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOn,
         isShown: this.refRelationService.isValueEquals(reference.val, componentVal),
@@ -359,64 +489,6 @@ export class ComponentsListRelationsService {
     }
   }
 
-  private hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
-    return component.attrs.ref?.some((o) => o.relation === relation);
-  }
-
-  private isComponentDependent(arr = [], component: CustomComponent): boolean {
-    return arr.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
-  }
-
-  private getDependentComponents(
-    components: CustomComponent[],
-    component: CustomComponent,
-  ): Array<CustomComponent> {
-    return components.filter((_component: CustomComponent) =>
-      this.isComponentDependent(_component.attrs.ref, component),
-    );
-  }
-
-  /**
-   * Возвращает значение атрибута attributeName из словаря компонента componentId.
-   * Если атрибут не найден, то возвращается undefined.
-   *
-   * @param dictionaryAttributeName - название атрибута из словаря
-   * @param componentId - ID компонента
-   * @param components - компоненты с информацией
-   */
-  private getDictionaryAttributeValue(
-    dictionaryAttributeName: string,
-    componentId: string,
-    components: CustomComponent[],
-    componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
-    dictionaries: CustomListDictionaries,
-  ): unknown {
-    const relatedComponent = components.find((item) => item.id === componentId);
-
-    if (relatedComponent) {
-      const dictKey = utils.getDictKeyByComp(relatedComponent);
-
-      const dictionary = dictionaries[dictKey];
-
-      if (dictionary) {
-        if (componentVal) {
-          const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
-
-          return dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
-        }
-      }
-    }
-
-    return undefined;
-  }
-
-  private getRelation(
-    component: CustomComponent,
-    reference: CustomComponentRef,
-  ): CustomComponentRef {
-    return component.attrs.ref?.find(({ relation }) => relation === reference.relation);
-  }
-
   /**
    * Возвращает значение из другого компанента
    * @param itemRef - объект с информацией о связи
@@ -435,78 +507,6 @@ export class ComponentsListRelationsService {
       const sourceComponentIndex = components.findIndex(({ id }) => id === itemRef.sourceId);
       const control = form.get(sourceComponentIndex.toString());
       return control?.value?.value ?? control?.value;
-    }
-  }
-
-  /**
-   * Подсчитывает автовычисляемое значение из формулы, которую передали
-   * @param itemRef - объект с информацией о связи
-   * @param components - компоненты с информацией
-   * @param form - ссылка на объект формы
-   * @example {val: '{add16} + {add17} / 100'} => 50 + 150 / 100
-   */
-  private getCalcValueFromRelation(
-    itemRef: CustomComponentRef,
-    components: CustomComponent[],
-    form: FormArray,
-  ): number | string {
-    let str = itemRef.val as string;
-    const lettersAnNumberItemRegExp = /\{\w+\}/gm;
-    const matches = str.match(lettersAnNumberItemRegExp);
-    const componentKeys = Array.isArray(matches) ? [...matches] : [];
-
-    let haveAllValues = true;
-    componentKeys.forEach((key: string) => {
-      const k = key.replace('{', '').replace('}', '');
-      const targetFormKey = `${components.findIndex((component) => component.id === k)}.value`;
-      const control = form.get(targetFormKey);
-      const val = Number(control?.value);
-      // eslint-disable-next-line no-restricted-globals
-      if (isNaN(val)) {
-        haveAllValues = false;
-      } else {
-        str = str.replace(key, val.toString());
-      }
-    });
-
-    // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
-    return haveAllValues ? this.getCalcFieldValue(str) : '';
-  }
-
-  /**
-   * Возвращает вычисленное значение по формуле
-   * @param formula - формула для расчета
-   */
-  private getCalcFieldValue(formula: string): number {
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
-    return Function(`'use strict'; return (Math.round(${formula}))`)();
-  }
-
-  private applyFilter(
-    dependentComponentId: CustomComponent['id'],
-    filter: DictionaryFilters['filter'],
-    componentVal: { id?: string },
-  ): void {
-    const value = this.refRelationService.getValueFromComponentVal(componentVal);
-
-    if (filter.simple) {
-      filter.simple.value.asString = value;
-    } else if (filter.union) {
-      filter.union.subs = filter.union.subs.map(
-        (subFilter: DictionarySubFilter): DictionarySubFilter => {
-          subFilter.simple.value.asString = value;
-
-          return subFilter;
-        },
-      );
-    }
-
-    this.filters = { [dependentComponentId]: filter };
-  }
-
-  private clearFilter(dependentComponentId: CustomComponent['id']): void {
-    if (this.filters[dependentComponentId]) {
-      this.filters = { [dependentComponentId]: null };
     }
   }
 }
