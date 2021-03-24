@@ -17,9 +17,10 @@
   <ng-content></ng-content>
 </div>
 <div class="form__info" *ngIf="hasInfo">
-  <span *ngIf="hint" class="form__hint">
-    {{ hint }}
-  </span>
+  <epgu-constructor-hint
+    [hint]="hint"
+    [clarifications]="component?.attrs?.clarifications"
+  ></epgu-constructor-hint>
   <epgu-constructor-helper-text *ngIf="isHelperTextVisible">
     {{ customUnRecLabel }}
   </epgu-constructor-helper-text>
