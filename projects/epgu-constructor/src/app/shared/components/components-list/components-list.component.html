@@ -85,16 +85,10 @@
         </epgu-constructor-drop-down-depts>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item
+      <epgu-constructor-mvd-giac-lookup
         *ngSwitchCase="componentType.MvdGiac"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <epgu-constructor-mvd-giac-lookup
-          [control]="componentData"
-        ></epgu-constructor-mvd-giac-lookup>
-      </epgu-constructor-component-item>
+        [control]="componentData"
+      ></epgu-constructor-mvd-giac-lookup>
 
       <ng-container>
         <epgu-constructor-component-item
@@ -186,15 +180,10 @@
           </epgu-constructor-constructor-checkbox>
         </div>
       </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
+      <epgu-constructor-date-input
         *ngSwitchCase="componentType.DateInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <epgu-constructor-date-input [control]="componentData"></epgu-constructor-date-input>
-      </epgu-constructor-component-item>
+        [control]="componentData"
+      ></epgu-constructor-date-input>
 
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.AddressInput"
@@ -232,14 +221,10 @@
         </epgu-constructor-constructor-lookup>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item
+      <epgu-constructor-text-area
         *ngSwitchCase="componentType.TextArea"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <epgu-constructor-text-area [control]="componentData"></epgu-constructor-text-area>
-      </epgu-constructor-component-item>
+        [control]="componentData"
+      ></epgu-constructor-text-area>
 
       <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">
       </epgu-constructor-timer>
