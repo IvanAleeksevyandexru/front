@@ -89,22 +89,55 @@
   }
 }
 
+.info-screen--status {
+  .divider {
+    display: none;
+  }
+}
+
 :host::ng-deep {
-  .info-screen--start {
+  .info-screen--start,
+  .info-screen--quiz,
+  .info-screen--solution_page_2,
+  .info-screen--deadlock,
+  .info-screen--status {
     .info__text {
-      @include info-screen__h3();
-      @include info-screen__h5();
+      h3 {
+        font-weight: bold;
+        font-size: $font-xl;
+        line-height: $font-xxl;
+        text-align: center;
+        margin: 24px 0 16px 0;
+      }
+      h3 + p, h3 + div {
+        margin-top: 16px;
+      }
+      h5 {
+        margin: 24px 0 8px 0;
+        font-size: $font-md;
+        line-height: $font-xl;
+      }
+      h5 ~ p {
+        margin-top: 8px;
+      }
+      h5 + p {
+        margin-top: 12px;
+      }
     }
   }
-  .info-screen--quiz {
-    .info__text {
-      @include info-screen__h3();
-      @include info-screen__h5();
-    }
-  }
+
   .info-screen--solution_page_1 {
     .info__text {
-      @include info-screen__h3();
+      h3 {
+        font-weight: bold;
+        font-size: $font-xl;
+        line-height: $font-xxl;
+        text-align: center;
+        margin: 24px 0 16px 0;
+      }
+      h3 + p, h3 + div {
+        margin-top: 16px;
+      }
       h5 {
         margin: 24px 0 8px 0;
         font-size: $font-md;
@@ -121,25 +154,5 @@
       }
     }
   }
-  .info-screen--solution_page_2 {
-    .info__text {
-      @include info-screen__h3();
-      @include info-screen__h5();
-    }
-  }
-  .info-screen--deadlock {
-    .info__text {
-      @include info-screen__h3();
-      @include info-screen__h5();
-    }
-  }
-  .info-screen--status {
-    .info__text {
-      @include info-screen__h3();
-      @include info-screen__h5();
-    }
-    .divider {
-      display: none;
-    }
-  }
-}
+
+}  
