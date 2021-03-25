@@ -14,6 +14,7 @@ export const componentsNoCache: Array<string> = [
   UniqueScreenComponentTypes.paymentScr,
   UniqueScreenComponentTypes.timeSlot,
   UniqueScreenComponentTypes.unusedPayments,
+  UniqueScreenComponentTypes.carList,
 ];
 
 @Injectable()
