@@ -6,19 +6,24 @@ $items-in-line-mobile: 3;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: -17px;
-
-  @include phones-down {
-    margin-top: -31px;
-  }
 }
 
 .checkbox-cube-item {
   flex: 0 0 calc(100% / #{$items-in-line});
   margin-top: 17px;
 
+  &:nth-child(-n+#{$items-in-line}) {
+    margin-top: 0px;
+  }
+
   @include phones-down {
     flex: 0 0 calc(100% / #{$items-in-line-mobile});
-    margin-top: 31px;
+    &:nth-child(n) {
+      margin-top: 31px;
+    }
+
+    &:nth-child(-n+#{$items-in-line-mobile}) {
+      margin-top: 0px;
+    }
   }
 }
