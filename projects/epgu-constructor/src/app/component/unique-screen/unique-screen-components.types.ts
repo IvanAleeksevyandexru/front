@@ -40,4 +40,5 @@ export enum UniqueScreenComponentTypes {
   checkboxCube = 'CheckboxCube',
   dateTimePeriod = 'DateTimePeriod',
   confirmUserCorpEmail = 'ConfirmUserCorpEmail',
+  confirmUserCorpPhone = 'ConfirmUserCorpPhone',
 }
