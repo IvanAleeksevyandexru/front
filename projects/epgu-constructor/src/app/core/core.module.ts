@@ -56,12 +56,12 @@ import { TracingHttpInterceptor } from './interceptor/tracing/tracing.intercepto
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpCancelInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TracingHttpInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: APP_INITIALIZER,

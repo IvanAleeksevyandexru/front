@@ -16,7 +16,8 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     private tracingService: TracingService,
   ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const remoteService = 'form-backend';
     const { tracer }: { tracer: Tracer } = this.tracingService;
     if (!tracer) {
       return next.handle(req);
@@ -27,15 +28,10 @@ export class TracingHttpInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const remoteService = 'form-backend';
-    if (!remoteService) {
-      return next.handle(req);
-    }
-
     return this.doIntercept(tracer, url, remoteService, req, next);
   }
 
-  protected doIntercept(
+  private doIntercept(
     tracer: Tracer,
     url: string,
     remoteServiceName: string,

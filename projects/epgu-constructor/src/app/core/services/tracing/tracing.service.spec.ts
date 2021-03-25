@@ -1,5 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { BatchRecorder, Tracer } from 'zipkin';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
@@ -48,7 +49,34 @@ describe('TracingService', () => {
     service = TestBed.inject(TracingService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('init()', () => {
+    it('should not call onServiceCodeChangeHandler(), if isEnabled not passed', () => {
+      const onServiceCodeChangeHandlerSpy = jest.spyOn(service, 'onServiceCodeChangeHandler');
+      service.init();
+      expect(onServiceCodeChangeHandlerSpy).not.toBeCalled();
+    });
+    it('should call onServiceCodeChangeHandler(), if isEnabled passed', () => {
+      const onServiceCodeChangeHandlerSpy = jest.spyOn(service, 'onServiceCodeChangeHandler');
+      service.init(true);
+      expect(onServiceCodeChangeHandlerSpy).toBeCalled();
+    });
+    it('should init recorder', () => {
+      service.init(true);
+      expect(service['recorder']).not.toBeNull();
+      expect(service['recorder']).toBeInstanceOf(BatchRecorder);
+    });
+    it('should init tracer', () => {
+      service.init(true);
+      expect(service.tracer).not.toBeNull();
+      expect(service.tracer).toBeInstanceOf(Tracer);
+    });
+    it('should init allowedRemoteServices and fill it with values', () => {
+      service.init(true);
+      expect(service.allowedRemoteServices.length).toBeGreaterThan(0);
+    });
+    it('should init defaultTags', () => {
+      service.init(true);
+      expect(Object.keys(service['defaultTags']).length).toBeGreaterThan(0);
+    });
   });
 });
