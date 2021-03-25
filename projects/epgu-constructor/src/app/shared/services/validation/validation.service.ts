@@ -27,6 +27,10 @@ export class ValidationService {
     CustomScreenComponentTypes.HtmlString,
   ];
 
+  private readonly personInnLength = 12;
+
+  private readonly legalInnLength = 10;
+
   constructor(
     private dateRangeService: DateRangeService,
     private datesToolsService: DatesToolsService,
@@ -168,9 +172,9 @@ export class ValidationService {
       case CustomScreenComponentTypes.SnilsInput:
         return checkSnils(value);
       case CustomScreenComponentTypes.PersonInnInput:
-        return value.length === 12 && checkINN(value);
+        return value.length === this.personInnLength && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
-        return value.length === 10 && checkINN(value);
+        return value.length === this.legalInnLength && checkINN(value);
       default:
         return true;
     }
