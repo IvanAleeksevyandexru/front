@@ -59,6 +59,7 @@ export class TracingService {
 
     this.onServiceCodeChangeHandler();
   }
+
   private onServiceCodeChangeHandler(): void {
     this.screenService.serviceCode$
       .pipe(

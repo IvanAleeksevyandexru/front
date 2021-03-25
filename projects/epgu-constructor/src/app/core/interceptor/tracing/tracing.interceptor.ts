@@ -8,14 +8,12 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import * as zipkin from 'zipkin';
 import ZipkinHttpClient = zipkin.Instrumentation.HttpClient;
 import { Injectable } from '@angular/core';
-import { UtilsService } from '../../services/utils/utils.service';
 
 @Injectable()
 export class TracingHttpInterceptor implements HttpInterceptor {
 
   constructor(
     private tracingService: TracingService,
-    private utils: UtilsService,
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -29,7 +27,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const remoteService: string = 'form-backend' || this.utils.getServiceName(req.url);
+    const remoteService = 'form-backend';
     if (!remoteService) {
       return next.handle(req);
     }
