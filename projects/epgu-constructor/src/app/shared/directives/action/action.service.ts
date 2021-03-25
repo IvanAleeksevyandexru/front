@@ -90,7 +90,7 @@ export class ActionService {
         this.deleteSuggestAction(action, targetElement);
         break;
       case ActionType.dropdownListModal:
-        this.openDropdownListModal(action);
+        this.openDropdownListModal(action, componentId);
         break;
       case ActionType.deliriumNextStep:
         this.handleDeliriumAction(action);
@@ -277,8 +277,8 @@ export class ActionService {
     }
   }
 
-  private openDropdownListModal({ value }: ComponentActionDto): void {
-    this.modalService.openModal(DropdownListModalComponent, { componentId: value });
+  private openDropdownListModal({ value: clarificationId }: ComponentActionDto, componentId: string): void {
+    this.modalService.openModal(DropdownListModalComponent, { componentId, clarificationId });
   }
 
   private handleDeliriumAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
