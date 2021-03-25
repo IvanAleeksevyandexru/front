@@ -18,11 +18,11 @@
 
 :host::ng-deep {
   .info__text {
-    a.block_link {
+    a.block-link {
       margin-top: 8px;
       display: block;
     }
-    .background_white {
+    .background-white {
       background-color: $color-white;
       padding: 0 24px;
       border-radius: 8px;
@@ -35,13 +35,13 @@
         margin-bottom: 24px;
       }
     }
-    .text_alignment {
+    .text-alignment {
       text-align: center;
       @include phones-down {
         text-align: left;
       }
     }
-    .block_context {
+    .block-context {
       p:not(:first-child) {
         margin-top: 16px;
       }
