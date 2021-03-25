@@ -10,12 +10,14 @@
   <ng-template #templateRef>
     <div class="screen-body">
       <div *ngIf="paymentTypeSelector.srcImg" class="payment-type-selector__img">
-        <img src="{{ paymentTypeSelector.srcImg }}" />
+        <img src="{{ paymentTypeSelector.srcImg }}" alt="" />
       </div>
 
-      <epgu-constructor-page-name class="payment-type-selector__header">{{
-        paymentTypeSelector.header
-      }}</epgu-constructor-page-name>
+      <epgu-constructor-page-name
+        class="payment-type-selector__header"
+        [class.payment-type-selector__header-center]="isErrorTemplate"
+        >{{ paymentTypeSelector.header }}</epgu-constructor-page-name
+      >
 
       <epgu-constructor-output-html
         *ngIf="paymentTypeSelector.subHeader"
