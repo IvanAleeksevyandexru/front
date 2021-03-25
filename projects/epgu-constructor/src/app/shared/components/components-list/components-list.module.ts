@@ -32,8 +32,9 @@ import { FormOutputHtmlComponent } from './components/form-output-html/form-outp
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 import { DateInputComponent } from './components/date-input/date-input.component';
-import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
+import { MultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
+import { ComponentResolverModule } from '../../../component/component-resolver/component-resolver.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lo
     DateInputComponent,
     MvdGiacLookupComponent,
     TextAreaComponent,
-    FormMultiChoiceDictionaryComponent,
+    MultiChoiceDictionaryComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -69,6 +70,7 @@ import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lo
     DocInputModule,
     CheckboxListModule,
     DropDownDeptsModule,
+    ComponentResolverModule,
   ],
   providers: [
     ValidationService,
