@@ -15,3 +15,37 @@
     max-width: 200px;
   }
 }
+
+:host::ng-deep {
+  .info__text {
+    a.block_link {
+      margin-top: 8px;
+      display: block;
+    }
+    .background_white {
+      background-color: $color-white;
+      padding: 0 24px;
+      border-radius: 8px;
+      margin-top: 24px;
+      overflow: hidden;
+      > *:first-child {
+        margin-top: 24px;
+      }
+      > *:last-child {
+        margin-bottom: 24px;
+      }
+    }
+    .text_alignment {
+      text-align: center;
+      @include phones-down {
+        text-align: left;
+      }
+    }
+    .block_context {
+      p:not(:first-child) {
+        margin-top: 16px;
+      }
+    }
+  }
+}
+
