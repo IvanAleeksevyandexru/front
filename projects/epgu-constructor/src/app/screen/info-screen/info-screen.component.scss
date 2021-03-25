@@ -98,7 +98,7 @@
 :host::ng-deep {
   .info-screen--start,
   .info-screen--quiz,
-  .info-screen--solution_page_2,
+  .info-screen--solution-page-2,
   .info-screen--deadlock,
   .info-screen--status {
     .info__text {
@@ -125,8 +125,8 @@
       }
     }
   }
-
-  .info-screen--solution_page_1 {
+ 
+  .info-screen--solution-page {
     .info__text {
       h3 {
         font-weight: bold;
