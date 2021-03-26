@@ -26,10 +26,7 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components/components-list/components-list.types';
-import {
-  AddressHelperService,
-  DadataSuggestionsAddressForLookup,
-} from '../address-helper/address-helper.service';
+import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
@@ -74,7 +71,7 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
+  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
     this._shownElements = this.componentsListRelationsService.createStatusElements(components);
 
@@ -109,6 +106,8 @@ export class ComponentsListFormService {
       .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent[1])))
       .subscribe(() => this.emitChanges());
     this.emitChanges();
+
+    return this._form;
   }
 
   public patch(component: CustomComponent): void {
@@ -124,6 +123,16 @@ export class ComponentsListFormService {
       } else {
         const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
         const key: string = utils.getDictKeyByComp(component);
+        const value: ListItem = dicts[key]?.list[defaultIndex];
+        control.get('value').patchValue(value);
+      }
+    } else if (component.type === CustomScreenComponentTypes.DropDownDepts) {
+      const lockedValue = component.attrs?.lockedValue;
+      const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+      const key: string = utils.getDictKeyByComp(component);
+      const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
+
+      if (lockedValue && !repeatedWithNoFilters) {
         const value: ListItem = dicts[key]?.list[defaultIndex];
         control.get('value').patchValue(value);
       }

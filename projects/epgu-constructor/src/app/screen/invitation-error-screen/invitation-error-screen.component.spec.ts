@@ -1,17 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { InvitationErrorComponent } from '../../component/invitation-error-screen/components/error/invitation-error.component';
+import { InvitationErrorComponent } from '../../component/invitation-error-screen/components/invitation-error/invitation-error.component';
 import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ApplicantAnswersDto, ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ApplicantAnswersDto,
+  ComponentDto,
+} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { ScreenBase } from '../screen-base';
+/* eslint-disable max-len */
+import { LkInvitationInputComponent } from '../../component/invitation-error-screen/components/lk-Invitation-input/lk-invitation-input.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -46,7 +51,11 @@ describe('InvitationErrorScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InvitationErrorScreenComponent, MockComponent(InvitationErrorComponent)],
+      declarations: [
+        InvitationErrorScreenComponent,
+        MockComponent(InvitationErrorComponent),
+        MockComponent(LkInvitationInputComponent),
+      ],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
