@@ -5,7 +5,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
 import { of } from 'rxjs';
-import { Chunk, ChunkPacket, TerabyteListItem, TerraUploadFileOptions } from './terra-byte-api.types';
+import {
+  Chunk,
+  ChunkPacket,
+  TerabyteListItem,
+  TerraUploadFileOptions,
+} from './terra-byte-api.types';
 import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import * as FileSaver from 'file-saver';
 
@@ -39,11 +44,10 @@ const teraByteItemSample: TerabyteListItem = {
   userId: 1,
 };
 
-const teraByteListSample: TerabyteListItem[] = [
-  teraByteItemSample
-];
+const teraByteListSample: TerabyteListItem[] = [teraByteItemSample];
 
-const imageBase64Sample = 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA\n' +
+const imageBase64Sample =
+  'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA\n' +
   '    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO\n' +
   '        9TXL0Y4OHwAAAABJRU5ErkJggg==';
 
@@ -55,15 +59,12 @@ describe('TerraByteApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        TerraByteApiService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-      ],
+      providers: [TerraByteApiService, { provide: ConfigService, useClass: ConfigServiceStub }],
     });
     service = TestBed.inject(TerraByteApiService);
     http = TestBed.inject(HttpTestingController);
 
-    configService = TestBed.inject(ConfigService) as unknown as ConfigServiceStub;
+    configService = (TestBed.inject(ConfigService) as unknown) as ConfigServiceStub;
     configService._fileUploadApiUrl = '/file-upload-api';
   });
 
@@ -76,8 +77,8 @@ describe('TerraByteApiService', () => {
     expect(service.chunkSize).toBe(6291456);
   });
 
-  it('chunkPacketMaxSize should be 5', () => {
-    expect(service.chunkPacketMaxSize).toBe(5);
+  it('chunkPacketMaxSize should be 1', () => {
+    expect(service.chunkPacketMaxSize).toBe(1);
   });
 
   describe('base64toBlob() method', () => {
@@ -100,7 +101,7 @@ describe('TerraByteApiService', () => {
   });
 
   it('getListByObjectId() method', (done) => {
-    service.getListByObjectId('some-id').subscribe(res => {
+    service.getListByObjectId('some-id').subscribe((res) => {
       expect(res).toBe(teraByteListSample);
       done();
     });
@@ -111,14 +112,16 @@ describe('TerraByteApiService', () => {
   });
 
   it('getFileInfo() method', (done) => {
-    service.getFileInfo({
-      objectId: 'some-id',
-      objectType: 1,
-      mnemonic: 'someMnemonic',
-    }).subscribe(res => {
-      expect(res).toBe(teraByteItemSample);
-      done();
-    });
+    service
+      .getFileInfo({
+        objectId: 'some-id',
+        objectType: 1,
+        mnemonic: 'someMnemonic',
+      })
+      .subscribe((res) => {
+        expect(res).toBe(teraByteItemSample);
+        done();
+      });
 
     const req = http.expectOne('/file-upload-api/some-id/1?mnemonic=someMnemonic');
     expect(req.request.method).toBe('GET');
@@ -150,7 +153,7 @@ describe('TerraByteApiService', () => {
 
     expect(result).toEqual({
       chunk: 0,
-      form: {}
+      form: {},
     });
 
     result = service.createChunk([10, chunks, blobMock, {} as TerraUploadFileOptions]);
@@ -158,7 +161,7 @@ describe('TerraByteApiService', () => {
 
     expect(result).toEqual({
       chunk: 10,
-      form: {}
+      form: {},
     });
   });
 
@@ -218,32 +221,40 @@ describe('TerraByteApiService', () => {
     it('should call uploadForm()', (done) => {
       service.chunkSize = 2;
 
-      const file =  new File(['1234567890'], 'someFileName');
+      const file = new File(['1234567890'], 'someFileName');
 
       jest.spyOn(service, 'uploadForm').mockReturnValue(of(undefined));
 
-      service.uploadByChunkFile({
-        name: 'some name',
-        objectId: 'some-id',
-        objectType: 1,
-        mnemonic: 'someMnemonic',
-      }, file).subscribe(res => {
-        done();
-      });
+      service
+        .uploadByChunkFile(
+          {
+            name: 'some name',
+            objectId: 'some-id',
+            objectType: 1,
+            mnemonic: 'someMnemonic',
+          },
+          file,
+        )
+        .subscribe((res) => {
+          done();
+        });
 
       expect(service.uploadForm).toBeCalledTimes(5); // 10 / 2 (10 - размер файла, 2 - размер чанка)
     });
   });
 
   it('createFormData() method', () => {
-    const file =  new File(['1234567890'], 'someFileName');
+    const file = new File(['1234567890'], 'someFileName');
 
-    const form = service.createFormData({
-      name: 'some name',
-      objectId: 'some-id',
-      objectType: 1,
-      mnemonic: 'someMnemonic',
-    }, file);
+    const form = service.createFormData(
+      {
+        name: 'some name',
+        objectId: 'some-id',
+        objectType: 1,
+        mnemonic: 'someMnemonic',
+      },
+      file,
+    );
 
     expect(form).toBeInstanceOf(FormData);
 
@@ -257,14 +268,16 @@ describe('TerraByteApiService', () => {
   it('deleteFile() method', (done) => {
     const file = {} as TerraUploadedFile;
 
-    service.deleteFile({
-      objectId: 'some-id',
-      objectType: 1,
-      mnemonic: 'someMnemonic',
-    }).subscribe(res => {
-      expect(res).toBe(file);
-      done();
-    });
+    service
+      .deleteFile({
+        objectId: 'some-id',
+        objectType: 1,
+        mnemonic: 'someMnemonic',
+      })
+      .subscribe((res) => {
+        expect(res).toBe(file);
+        done();
+      });
 
     const req = http.expectOne('/file-upload-api/some-id/1?mnemonic=someMnemonic');
     expect(req.request.method).toBe('DELETE');
@@ -272,24 +285,28 @@ describe('TerraByteApiService', () => {
   });
 
   it('getDownloadApiPath() method', () => {
-    expect(service.getDownloadApiPath({
-      objectId: 'some-id',
-      objectType: 1,
-      mnemonic: 'someMnemonic',
-    })).toBe('/file-upload-api/some-id/1/download?mnemonic=someMnemonic');
+    expect(
+      service.getDownloadApiPath({
+        objectId: 'some-id',
+        objectType: 1,
+        mnemonic: 'someMnemonic',
+      }),
+    ).toBe('/file-upload-api/some-id/1/download?mnemonic=someMnemonic');
   });
 
   it('downloadFile() method', (done) => {
     const blob = new Blob(['foo'], { type: 'text/plain' });
 
-    service.downloadFile({
-      objectId: 'some-id',
-      objectType: 1,
-      mnemonic: 'someMnemonic',
-    }).subscribe(res => {
-      expect(res).toBe(blob);
-      done();
-    });
+    service
+      .downloadFile({
+        objectId: 'some-id',
+        objectType: 1,
+        mnemonic: 'someMnemonic',
+      })
+      .subscribe((res) => {
+        expect(res).toBe(blob);
+        done();
+      });
 
     const req = http.expectOne('/file-upload-api/some-id/1/download?mnemonic=someMnemonic');
     expect(req.request.method).toBe('GET');
@@ -300,10 +317,13 @@ describe('TerraByteApiService', () => {
     it('should save file without mimeType', () => {
       const blob = new Blob(['foo']);
 
-      jest.spyOn(FileSaver, 'saveAs').mockClear().mockImplementation(() => undefined);
+      jest
+        .spyOn(FileSaver, 'saveAs')
+        .mockClear()
+        .mockImplementation(() => undefined);
 
       service.pushFileToBrowserForDownload(blob, {
-        fileName: 'some file name'
+        fileName: 'some file name',
       } as TerraUploadedFile);
 
       expect(FileSaver.saveAs).toBeCalledTimes(1);
@@ -313,14 +333,17 @@ describe('TerraByteApiService', () => {
     it('should save file with mimeType', () => {
       const blob = new Blob(['foo']);
 
-      jest.spyOn(FileSaver, 'saveAs').mockClear().mockImplementation((file) => {
-        const updatedBlob = file as Blob;
-        expect(updatedBlob.type).toBe('text/plain');
-      });
+      jest
+        .spyOn(FileSaver, 'saveAs')
+        .mockClear()
+        .mockImplementation((file) => {
+          const updatedBlob = file as Blob;
+          expect(updatedBlob.type).toBe('text/plain');
+        });
 
       service.pushFileToBrowserForDownload(blob, {
         fileName: 'some file name',
-        mimeType: 'text/plain'
+        mimeType: 'text/plain',
       } as TerraUploadedFile);
 
       expect(FileSaver.saveAs).toBeCalledTimes(1);
