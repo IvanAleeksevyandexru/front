@@ -23,6 +23,12 @@ const DRAFT_STATEMENT_NOT_FOUND_TEXT = `<div class="text_modal_error">
 <h4>Черновик заявления не найден</h4>
 <span>Проверьте в личном кабинете или создайте заявление заново.</span></div>`;
 
+const BOOKING_ONLINE_ERROR_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>В подразделение нельзя записаться онлайн</h4>
+<span>Для получения справки приходите на приём без записи по адресу: <br>
+{addressLink} <br>
+Вы можете посмотреть дополнительную информацию на устройстве или <br> в браузере — нажмите «Скачать PDF» в личном кабинете</span></div>`;
 
 export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: COMMON_ERROR_MODAL_PARAMS_TEXT,
@@ -65,6 +71,19 @@ export const ORDER_NOT_FOUND_ERROR_MODAL_PARAMS: ConfirmationModal = {
 
 export const DRAFT_STATEMENT_NOT_FOUND: ConfirmationModal = {
   text: DRAFT_STATEMENT_NOT_FOUND_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [{
+    label: 'В личный кабинет',
+    closeModal: true,
+    value: 'redirectToLk'
+  }],
+  isShortModal: true,
+};
+
+export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
+  text: BOOKING_ONLINE_ERROR_TEXT,
   title: '',
   showCloseButton: false,
   showCrossButton: true,

@@ -333,4 +333,12 @@ describe('FormPlayerStartManager', () => {
       expect(formPlayerService.initData).toBeCalledWith(null);
     });
   });
+
+  describe('startBookingCase()', () => {
+    it('should call getBooking of formPlayerService', () => {
+      spyOn(formPlayerService, 'getBooking').and.callThrough();
+      service['startBookingCase']();
+      expect(formPlayerService.getBooking).toBeCalled();
+    });
+  });
 });
