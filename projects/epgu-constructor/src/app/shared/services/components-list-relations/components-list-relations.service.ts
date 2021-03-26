@@ -166,7 +166,7 @@ export class ComponentsListRelationsService {
     }
 
     if (isDependentDisabled) {
-      dependentControl.disable();
+      dependentControl.disable({ onlySelf: true, emitEvent: false });
     }
 
     return shownElements;
@@ -360,7 +360,7 @@ export class ComponentsListRelationsService {
       );
 
       if (dictionaryAttributeValue === undefined) {
-        dependentControl.get('value').patchValue('');
+        dependentControl.get('value').patchValue('', { onlySelf: true, emitEvent: false });
       } else {
         dependentControl
           .get('value')
@@ -368,6 +368,7 @@ export class ComponentsListRelationsService {
             dependentControl.value.value !== ''
               ? dependentControl.value.value
               : dictionaryAttributeValue,
+            { onlySelf: true, emitEvent: false }
           );
       }
 
@@ -423,7 +424,7 @@ export class ComponentsListRelationsService {
   ): void {
     const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
     const newValue = this.getValueFromRelationComponent(relation, components, componentVal, form);
-    dependentControl.get('value').patchValue(newValue);
+    dependentControl.get('value').patchValue(newValue, { onlySelf: true, emitEvent: false });
   }
 
   private handleIsCalcRelation(
@@ -435,7 +436,7 @@ export class ComponentsListRelationsService {
   ): void {
     const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
     const newValue = this.getCalcValueFromRelation(relation, components, form);
-    dependentControl.get('value').patchValue(newValue);
+    dependentControl.get('value').patchValue(newValue, { onlySelf: true, emitEvent: false });
   }
 
   private handleIsFilterOnRelation(
@@ -466,9 +467,9 @@ export class ComponentsListRelationsService {
     ): void => {
       const valueControl: AbstractControl = control.get('value');
       this.prevValues[dependentComponentId] = valueControl.value;
-      valueControl.patchValue(defaultValue || '');
+      valueControl.patchValue(defaultValue || '', { onlySelf: true, emitEvent: false });
       valueControl.markAsUntouched();
-      control.disable({ onlySelf: true });
+      control.disable({ onlySelf: true, emitEvent: false });
     };
 
     const patchToPrevValueAndEnable = (control: AbstractControl): void => {
@@ -476,10 +477,10 @@ export class ComponentsListRelationsService {
         !isUndefined(this.prevValues[dependentComponentId]) &&
         !!String(this.prevValues[dependentComponentId]);
       if (isFindAndValue) {
-        control.get('value').patchValue(this.prevValues[dependentComponentId]);
+        control.get('value').patchValue(this.prevValues[dependentComponentId], { onlySelf: true, emitEvent: false });
       }
 
-      control.enable({ onlySelf: true });
+      control.enable({ onlySelf: true, emitEvent: false });
     };
 
     if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
