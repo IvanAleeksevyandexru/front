@@ -26,6 +26,7 @@
     justify-content: center;
     @include tablets-down {
       margin-top: auto;
+      flex-wrap: wrap-reverse;
     }
   }
 
@@ -34,9 +35,15 @@
 
     &:not(:first-child) {
       @include tablets-up {
-        margin-left: 32px;
+        margin-left: 24px;
       }
     }
+    &:not(:last-child) {
+      @include tablets-down {
+        margin-top: 16px;
+      }
+    }
+    
   }
 }
 
