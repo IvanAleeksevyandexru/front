@@ -38,7 +38,11 @@ import {
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
-import { IdictionaryFilter, IGeoCoordsResponse } from './select-map-object.interface';
+import {
+  IdictionaryFilter,
+  IFillCoordsResponse,
+  IGeoCoordsResponse,
+} from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
@@ -256,6 +260,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.fillCoords(this.data.attrs.dictionaryFilter)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
+        switchMap((coords: IFillCoordsResponse) => {
+          if (this.isSecondReqNeeded(coords)) {
+            return this.fillCoords(this.data.attrs.secondaryDictionaryFilter);
+          }
+          return of(coords);
+        }),
         catchError((error) => {
           this.modalErrorService.showError(error);
           return of(null);
@@ -324,7 +334,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>): Observable<IGeoCoordsResponse> {
+  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>): Observable<IFillCoordsResponse> {
     let options;
     try {
       options = this.getOptions(dictionaryFilters);
@@ -346,6 +356,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         ).pipe(
           reduce((acc, { coords }) => {
             return { ...acc, coords: [...acc.coords, ...coords] };
+          }),
+          map((coords) => {
+            return {
+              ...coords,
+              dictionaryError: dictionary.error,
+            };
           }),
         );
       }),
@@ -492,5 +508,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       this.data.attrs.dictionaryFilter,
     );
     return _isEqual(valueFilters, valuePresetFilters);
+  }
+
+  private isSecondReqNeeded(coords: IFillCoordsResponse): boolean {
+    return (
+      coords.coords.length === 0 &&
+      coords.dictionaryError.code === 0 &&
+      !!this.data.attrs.secondaryDictionaryFilter
+    );
   }
 }
