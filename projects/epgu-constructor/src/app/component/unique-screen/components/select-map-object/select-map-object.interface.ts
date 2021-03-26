@@ -1,9 +1,17 @@
-import { DictionaryConditions, DictionaryYMapItem } from '../../../../shared/services/dictionary/dictionary-api.types';
+import {
+  DictionaryConditions,
+  DictionaryResponseError,
+  DictionaryYMapItem,
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 
 export interface IGeoCoords {
   address: string;
   latitude: number;
   longitude: number;
+}
+
+export interface IFillCoordsResponse extends IGeoCoordsResponse {
+  dictionaryError?: DictionaryResponseError;
 }
 
 export interface IGeoCoordsResponse {
@@ -25,7 +33,7 @@ export interface IFeatureCollection {
     properties: {
       res: IDictionaryYMapProperties;
     };
-  }>
+  }>;
 }
 
 export interface IdictionaryFilter {

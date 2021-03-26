@@ -92,6 +92,7 @@ export interface ComponentAttrsDto {
   GIBDDpaymentError?: ComponentGIBDDpaymentErrorDto;
   attributeNameWithAddress?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   baloonContent?: Array<ComponentBaloonContentDto>;
   addressString?: ComponentAddressStringDto;
   value?: string;
