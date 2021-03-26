@@ -13,7 +13,7 @@ import {
   AUTH_ERROR_MODAL_PARAMS,
   COMMON_ERROR_MODAL_PARAMS,
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
-  DRAFT_STATEMENT_NOT_FOUND,
+  DRAFT_STATEMENT_NOT_FOUND, BOOKING_ONLINE_ERROR,
 } from './errors.interceptor.constants';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
@@ -56,6 +56,16 @@ export class ErrorsInterceptorService implements HttpInterceptor {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
+    } else if (url.includes('service/booking')) {
+      const addressLink = `<a href="${error.payload.url}">${error.payload.text}</a>`;
+      const regExp = /\{addressLink\}?/g;
+      BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
+
+      this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
+        if (redirectToLk) {
+          this.navigationService.redirectToLK();
+        }
+      });
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
         this.showModal(DRAFT_STATEMENT_NOT_FOUND).then((redirectToLk) => {
