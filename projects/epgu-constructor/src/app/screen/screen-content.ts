@@ -22,6 +22,7 @@ export class ScreenContent {
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _suggestions = new BehaviorSubject<{ [key: string]: ISuggestionItem }>({});
   private _header = new BehaviorSubject<string>(null);
+  private _serviceCode = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   private _submitLabel = new BehaviorSubject<string>(null);
   private _gender = new BehaviorSubject<Gender>(null);
@@ -99,6 +100,16 @@ export class ScreenContent {
   }
   public get header$(): Observable<string> {
     return this._header.asObservable();
+  }
+
+  public get serviceCode(): string {
+    return this._serviceCode.getValue();
+  }
+  public set serviceCode(val: string) {
+    this._serviceCode.next(val);
+  }
+  public get serviceCode$(): Observable<string> {
+    return this._serviceCode.asObservable();
   }
 
   public get subHeader(): DisplaySubjHead {
@@ -313,6 +324,7 @@ export class ScreenContent {
       gender,
       applicantAnswers,
       cachedAnswers,
+      serviceCode,
     } = screenStore;
     const {
       header,
@@ -348,6 +360,7 @@ export class ScreenContent {
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;
+    this.serviceCode = serviceCode;
   }
 
   public getComponentData(str: string): ComponentValue {
