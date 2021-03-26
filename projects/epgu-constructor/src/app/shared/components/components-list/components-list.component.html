@@ -30,7 +30,7 @@
           [localSearch]="componentData.value.attrs.localSearch"
           class="cs__select cs-select"
           [suggest]="(suggestions$ | async)[componentData.value?.id]"
-          (selectSuggest)="suggestHandle($event)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
         >
         </lib-dropdown>
       </epgu-constructor-component-item>
@@ -50,7 +50,7 @@
           [required]="componentData.value?.required"
           [attrs]="componentData.value.attrs"
           [suggest]="(suggestions$ | async)[componentData.value?.id]"
-          (selectSuggest)="suggestHandle($event)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
         >
         </epgu-constructor-drop-down-depts>
       </epgu-constructor-component-item>
@@ -160,10 +160,6 @@
         </epgu-constructor-constructor-lookup>
       </epgu-constructor-component-item>
 
-
-
-<!--      resolve here-->
-
       <ng-container
         *ngIf="![
           componentType.DropDown,
@@ -182,94 +178,6 @@
         ></epgu-constructor-component-resolver>
       </ng-container>
 
-
-<!--      <epgu-constructor-checkbox-input-->
-<!--        *ngSwitchCase="componentType.CheckBox"-->
-<!--        [control]="componentData"-->
-<!--        [groupIndex]="componentsGroupIndex"-->
-<!--      >-->
-<!--      </epgu-constructor-checkbox-input>-->
-
-<!--      <epgu-constructor-passport-lookup-->
-<!--        *ngSwitchCase="componentType.PassportLookup"-->
-<!--        [control]="componentData"-->
-<!--        [suggestions]="(suggestions$ | async)[componentData.value?.id]"-->
-<!--        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"-->
-<!--      >-->
-<!--      </epgu-constructor-passport-lookup>-->
-
-
-<!--            <epgu-constructor-form-output-html-->
-<!--              *ngIf="[componentType.HtmlString, componentType.LabelSection].includes(componentData.value?.type)"-->
-<!--              [control]="componentData"-->
-
-<!--            ></epgu-constructor-form-output-html>-->
-
-
-<!--       TODO  NewEmailInput, PhoneNumberChangeInput в json не найдены, уточнить-->
-            <epgu-constructor-masked-and-plain-input
-              *ngIf="[
-                componentType.NewEmailInput,
-                componentType.PhoneNumberChangeInput,
-                componentType.StringInput,
-                componentType.OgrnInput,
-                componentType.OgrnipInput,
-                componentType.LegalInnInput,
-                componentType.SnilsInput,
-                componentType.PersonInnInput,
-                componentType.CheckingAccount,
-              ]
-              .includes(componentData.value?.type)
-            "
-              [control]="componentData"
-              [suggestions]="(suggestions$ | async)[componentData.value?.id]"
-            >
-            </epgu-constructor-masked-and-plain-input>
-
-<!--            <epgu-constructor-mvd-giac-lookup-->
-<!--              *ngSwitchCase="componentType.MvdGiac"-->
-<!--              [control]="componentData"-->
-<!--            ></epgu-constructor-mvd-giac-lookup>-->
-
-<!--            <epgu-constructor-date-input-->
-<!--              *ngSwitchCase="componentType.DateInput"-->
-<!--              [control]="componentData"-->
-<!--            ></epgu-constructor-date-input>-->
-
-<!--            <epgu-constructor-text-area-->
-<!--              *ngSwitchCase="componentType.TextArea"-->
-<!--              [control]="componentData"-->
-<!--            ></epgu-constructor-text-area>-->
-
-<!--            <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">-->
-<!--            </epgu-constructor-timer>-->
-
-<!--      <epgu-constructor-doc-input-->
-<!--        *ngSwitchCase="componentType.DocInput"-->
-<!--        [data]="componentData"-->
-<!--        [suggestions]="(suggestions$ | async)[componentData.value?.id]"-->
-<!--        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"-->
-<!--      >-->
-<!--      </epgu-constructor-doc-input>-->
-
-<!--      <epgu-constructor-field-list-->
-<!--        *ngSwitchCase="componentType.FieldList"-->
-<!--        [data]="$any(componentData.get('value'))"-->
-<!--      >-->
-<!--      </epgu-constructor-field-list>-->
-
-<!--      <epgu-constructor-multi-choice-dictionary-->
-<!--        *ngSwitchCase="componentType.MultipleChoiceDictionary"-->
-<!--        [control]="componentData"-->
-<!--      ></epgu-constructor-multi-choice-dictionary>-->
-
-<!--      <epgu-constructor-checkbox-list-->
-<!--        *ngSwitchCase="componentType.CheckBoxList"-->
-<!--        [attrs]="componentData.value.attrs"-->
-<!--        [required]="componentData.value.required"-->
-<!--        [formControl]="$any(componentData.get('value'))"-->
-<!--      >-->
-<!--      </epgu-constructor-checkbox-list>-->
     </ng-container>
   </div>
 </form>

@@ -3,32 +3,27 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
-  OnChanges,
   OnInit,
-  Output,
-  SimpleChanges,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
-import {
-  ISuggestionItem,
-  ISuggestionItemList,
-} from '../../../core/services/autocomplete/autocomplete.inteface';
+import { merge } from 'rxjs';
+import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import {
-  DocInputControl,
   DocInputField,
   DocInputFields,
   DocInputFieldsTypes,
   DocInputFormFields,
 } from './doc-input.types';
 import { prepareClassifiedSuggestionItems } from '../../../core/services/autocomplete/autocomplete.const';
+import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
+import { ScreenService } from '../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -37,12 +32,11 @@ import { prepareClassifiedSuggestionItems } from '../../../core/services/autocom
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
-  @Input() data: AbstractControl | DocInputControl;
-  @Input() suggestions: ISuggestionItem;
-  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
-    ISuggestionItem | ISuggestionItemList
-  >();
+export class DocInputComponent implements OnInit, AfterViewInit {
+  @Input() componentIndex = 0;
+  @Input() componentsGroupIndex = 0;
+
+  control: FormGroup | AbstractControl = this.formService.form.controls[this.componentIndex];
 
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;
@@ -60,40 +54,50 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
   form: FormGroup;
 
   constructor(
+    public suggestHandlerService: SuggestHandlerService,
+    public formService: ComponentsListFormService,
+    public screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private formService: ComponentsListFormService,
     private validationService: ValidationService,
     private fb: FormBuilder,
-    private changeDetectionRef: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
   ) {}
 
   ngOnInit(): void {
-    this.fields = this.data.value.attrs.fields;
+    this.fields = this.control.value.attrs.fields;
     this.hasExpirationDate = !!this.fields?.expirationDate;
     this.addFormGroupControls();
     this.subscribeOnFormChange();
     this.updateParentIfNotValid();
+
+    merge(this.control.statusChanges, this.control.valueChanges)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
+
+    this.screenService.suggestions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((suggestions) => {
+        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
+          suggestions[this.control.value?.id],
+        );
+      });
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.handleServerErrors();
-      this.changeDetectionRef.markForCheck();
+      this.cdr.markForCheck();
     }); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.suggestions.currentValue) {
-      this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(this.suggestions);
-    }
   }
 
   /**
    * If there are server errors - adds them to appropriate fields and displays by setting field's state to touched
    */
   handleServerErrors(): void {
-    const serverErrorJson = this.data?.get('value')?.errors?.serverError || null;
+    const serverErrorJson = this.control?.get('value')?.errors?.serverError || null;
 
     if (serverErrorJson) {
       const serverError = JSON.parse(serverErrorJson);
@@ -131,7 +135,7 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
       )
       .subscribe((formFields) => {
         this.emitToParentForm(formFields);
-        this.changeDetectionRef.markForCheck();
+        this.cdr.markForCheck();
       });
   }
 
@@ -155,9 +159,9 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
 
   emitToParentForm(formFields: DocInputFields): void {
     if (this.form.valid) {
-      this.data.get('value').setValue(formFields);
+      this.control.get('value').setValue(formFields);
     } else {
-      this.data.get('value').setErrors({ invalidForm: true });
+      this.control.get('value').setErrors({ invalidForm: true });
     }
     this.formService.emitChanges();
   }
@@ -217,9 +221,9 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
 
   private getParsedComponentValues(): DocInputFields {
     const componentValues =
-      typeof this.data.value.value === 'object'
-        ? this.data.value.value
-        : JSON.parse(this.data.value.value || '{}');
+      typeof this.control.value.value === 'object'
+        ? this.control.value.value
+        : JSON.parse(this.control.value.value || '{}');
 
     return {
       ...componentValues,

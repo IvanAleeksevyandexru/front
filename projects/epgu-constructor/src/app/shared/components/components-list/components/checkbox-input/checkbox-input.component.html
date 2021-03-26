@@ -15,7 +15,7 @@
   >
     <div [ngClass]="component?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'">
       <epgu-constructor-constructor-checkbox
-        checkboxId="{{ component?.id }}_{{ groupIndex }}"
+        checkboxId="{{ component?.id }}_{{ componentsGroupIndex }}"
         [control]="control.get('value')"
         [labelText]="component?.label"
         [required]="component?.required"

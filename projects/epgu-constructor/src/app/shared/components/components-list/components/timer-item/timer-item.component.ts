@@ -5,7 +5,6 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ValidationShowOn } from 'epgu-lib';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,16 +12,15 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
 import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 
 @Component({
-  selector: 'epgu-constructor-text-area',
-  templateUrl: './text-area.component.html',
+  selector: 'epgu-constructor-timer-item',
+  templateUrl: './timer-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class TextAreaComponent implements OnInit {
+export class TimerItemComponent implements OnInit {
   @Input() componentIndex = 0;
 
   control: FormGroup | AbstractControl = this.formService.form.controls[this.componentIndex];
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
     public formService: ComponentsListFormService,

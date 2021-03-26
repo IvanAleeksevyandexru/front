@@ -38,6 +38,8 @@ import { PassportLookupComponent } from './components/passport-lookup/passport-l
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
 import { ComponentResolverModule } from '../../../component/component-resolver/component-resolver.module';
 import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
+import { TimerItemComponent } from './components/timer-item/timer-item.component';
+import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { SuggestHandlerService } from '../../services/suggest-handler/suggest-ha
     MultiChoiceDictionaryComponent,
     PassportLookupComponent,
     CheckboxInputComponent,
+    TimerItemComponent,
+    FieldListItemComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [

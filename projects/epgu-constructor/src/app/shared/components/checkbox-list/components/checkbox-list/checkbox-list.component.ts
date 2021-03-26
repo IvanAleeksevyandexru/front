@@ -9,6 +9,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import {
+  AbstractControl,
   DefaultValueAccessor,
   FormBuilder,
   FormControl,
@@ -25,6 +26,7 @@ import {
   CheckboxListComponentAttrsDto,
   CheckboxListElement,
 } from '../../checkbox-list.types';
+import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 
 @Component({
   selector: 'epgu-constructor-checkbox-list',
@@ -47,15 +49,19 @@ import {
 })
 export class CheckboxListComponent extends DefaultValueAccessor
   implements AfterViewInit, OnChanges {
-  @Input() attrs: CheckboxListComponentAttrsDto;
-  @Input() required: boolean;
+  @Input() componentIndex = 0;
+  @Input() componentsGroupIndex = 0;
 
+  formControl: FormGroup | AbstractControl = this.formService.form.controls[this.componentIndex];
+  attrs: CheckboxListComponentAttrsDto = this.formControl.value.attrs;
+  required: boolean = this.formControl.value.required;
   checkboxes: CheckboxList[];
   labels = { show: 'Показать больше', hide: 'Показать меньше' };
   hidden = true;
   checkBoxForm: FormGroup;
 
   constructor(
+    public formService: ComponentsListFormService,
     protected renderer: Renderer2,
     protected elRef: ElementRef,
     private fb: FormBuilder,

@@ -51,14 +51,14 @@ import { CustomScreenComponentTypes } from '../../shared/components/components-l
 import { MvdGiacLookupComponent } from '../../shared/components/components-list/components/mvd-giac-lookup/mvd-giac-lookup.component';
 import { DateInputComponent } from '../../shared/components/components-list/components/date-input/date-input.component';
 import { TextAreaComponent } from '../../shared/components/components-list/components/text-area/text-area.component';
-import { TimerComponent } from '../../shared/components/timer/timer.component';
 import { DocInputComponent } from '../../shared/components/doc-input/doc-input.component';
-import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
 // eslint-disable-next-line max-len
 import { MultiChoiceDictionaryComponent } from '../../shared/components/components-list/components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
 import { CheckboxListComponent } from '../../shared/components/checkbox-list/components/checkbox-list/checkbox-list.component';
 import { CheckboxInputComponent } from '../../shared/components/components-list/components/checkbox-input/checkbox-input.component';
 import { PassportLookupComponent } from '../../shared/components/components-list/components/passport-lookup/passport-lookup.component';
+import { TimerItemComponent } from '../../shared/components/components-list/components/timer-item/timer-item.component';
+import { FieldListItemComponent } from '../../shared/components/components-list/components/field-list-item/field-list-item.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes | CustomScreenComponentTypes;
 
@@ -97,9 +97,9 @@ type CustomScreenComponent =
   | MvdGiacLookupComponent
   | DateInputComponent
   | TextAreaComponent
-  | TimerComponent
+  | TimerItemComponent
   | DocInputComponent
-  | FieldListComponent
+  | FieldListItemComponent
   | MultiChoiceDictionaryComponent
   | CheckboxListComponent
   | CheckboxInputComponent
@@ -164,9 +164,9 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   MvdGiac: MvdGiacLookupComponent,
   DateInput: DateInputComponent,
   TextArea: TextAreaComponent,
-  Timer: TimerComponent,
+  Timer: TimerItemComponent,
   DocInput: DocInputComponent,
-  FieldList: FieldListComponent,
+  FieldList: FieldListItemComponent,
   MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
   CheckBoxList: CheckboxListComponent,
   CheckBox: CheckboxInputComponent,
