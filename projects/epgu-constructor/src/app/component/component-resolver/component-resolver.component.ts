@@ -12,13 +12,14 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
-import { async } from 'rxjs/internal/scheduler/async';
+import { asyncScheduler } from 'rxjs/internal/scheduler/async';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../screen/screen.service';
 import {
   ScreenComponentTypes,
   ComponentTypes,
   UNIQUE_SCREEN_COMPONENTS,
+  CUSTOM_SCREEN_COMPONENTS,
 } from './component-resolver.const';
 import { ScreenTypes } from '../../screen/screen.types';
 
@@ -32,6 +33,8 @@ import { ScreenTypes } from '../../screen/screen.types';
 export class ComponentResolverComponent implements AfterViewInit {
   @ViewChild('componentContainer', { read: ViewContainerRef }) componentContainer: ViewContainerRef;
   @Input() componentIndex = 0;
+  @Input() componentsGroupIndex = 0;
+  @Input() componentType: ComponentTypes;
   componentRef: ComponentRef<ScreenComponentTypes>;
 
   constructor(
@@ -45,11 +48,12 @@ export class ComponentResolverComponent implements AfterViewInit {
     this.screenService.display$
       .pipe(
         tap(() => this.destroyComponent()),
-        subscribeOn(async), // fix dirty checked errors
+        subscribeOn(asyncScheduler), // fix dirty checked errors
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(({ components, type: screenType }) => {
-        const cmpType = components[this.componentIndex].type as ComponentTypes;
+        const cmpType =
+          this.componentType ?? (components[this.componentIndex].type as ComponentTypes);
         this.createComponent(cmpType, screenType);
         this.cdr.detectChanges();
       });
@@ -73,15 +77,25 @@ export class ComponentResolverComponent implements AfterViewInit {
       component,
     );
     this.componentRef = this.componentContainer.createComponent(componentFactory);
+
+    // @ts-ignore
+    this.componentRef.instance.componentIndex = this.componentIndex;
+    // @ts-ignore
+    this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
   }
 
   getComponentByType(cmpType: ComponentTypes, screenType: ScreenTypes): Type<ScreenComponentTypes> {
-    switch (screenType) {
-      case ScreenTypes.UNIQUE:
-        return UNIQUE_SCREEN_COMPONENTS[cmpType];
-      default:
-        return null;
+    if (screenType === ScreenTypes.CUSTOM || this.isRepeatableFieldCase(cmpType, screenType)) {
+      return CUSTOM_SCREEN_COMPONENTS[cmpType];
     }
+    if (screenType === ScreenTypes.UNIQUE) {
+      return UNIQUE_SCREEN_COMPONENTS[cmpType];
+    }
+    return null;
+  }
+
+  private isRepeatableFieldCase(cmpType: ComponentTypes, screenType: ScreenTypes): boolean {
+    return screenType === ScreenTypes.UNIQUE && CUSTOM_SCREEN_COMPONENTS[cmpType];
   }
 
   private handleComponentError(cmpType: ComponentTypes, screenType: ScreenTypes): never {

@@ -37,6 +37,7 @@ import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lo
 import { PassportLookupComponent } from './components/passport-lookup/passport-lookup.component';
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
 import { ComponentResolverModule } from '../../../component/component-resolver/component-resolver.module';
+import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { ComponentResolverModule } from '../../../component/component-resolver/c
     ComponentsListRelationsService,
     DictionaryApiService,
     DateRangeService,
+    SuggestHandlerService,
   ],
 })
 export class ComponentsListModule {}

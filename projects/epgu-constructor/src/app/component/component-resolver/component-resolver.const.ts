@@ -54,11 +54,13 @@ import { TextAreaComponent } from '../../shared/components/components-list/compo
 import { TimerComponent } from '../../shared/components/timer/timer.component';
 import { DocInputComponent } from '../../shared/components/doc-input/doc-input.component';
 import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
+// eslint-disable-next-line max-len
 import { MultiChoiceDictionaryComponent } from '../../shared/components/components-list/components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
 import { CheckboxListComponent } from '../../shared/components/checkbox-list/components/checkbox-list/checkbox-list.component';
+import { CheckboxInputComponent } from '../../shared/components/components-list/components/checkbox-input/checkbox-input.component';
+import { PassportLookupComponent } from '../../shared/components/components-list/components/passport-lookup/passport-lookup.component';
 
-export type ComponentTypes = UniqueScreenComponentTypes;
-
+export type ComponentTypes = UniqueScreenComponentTypes | CustomScreenComponentTypes;
 
 type UniqueScreenComponent =
   | InformationCenterMvdContainerComponent
@@ -100,6 +102,8 @@ type CustomScreenComponent =
   | FieldListComponent
   | MultiChoiceDictionaryComponent
   | CheckboxListComponent
+  | CheckboxInputComponent
+  | PassportLookupComponent
   | FormOutputHtmlComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent | CustomScreenComponent;
@@ -165,4 +169,6 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   FieldList: FieldListComponent,
   MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
   CheckBoxList: CheckboxListComponent,
+  CheckBox: CheckboxInputComponent,
+  PassportLookup: PassportLookupComponent,
 };

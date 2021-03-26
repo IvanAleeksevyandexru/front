@@ -93,7 +93,7 @@
             [clearable]="true"
             [required]="componentData.value?.required"
             [suggest]="(suggestions$ | async)[componentData.value?.id]"
-            (selectSuggest)="suggestHandle($event)"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
           >
           </lib-lookup>
         </epgu-constructor-component-item>
@@ -175,7 +175,11 @@
           componentType.CityInput,
         ].includes(componentData.value?.type)"
       >
-        <epgu-constructor-component-resolver></epgu-constructor-component-resolver>
+        <epgu-constructor-component-resolver
+          [componentIndex]="idx"
+          [componentsGroupIndex]="componentsGroupIndex"
+          [componentType]="componentData.value?.type"
+        ></epgu-constructor-component-resolver>
       </ng-container>
 
 
@@ -190,62 +194,61 @@
 <!--        *ngSwitchCase="componentType.PassportLookup"-->
 <!--        [control]="componentData"-->
 <!--        [suggestions]="(suggestions$ | async)[componentData.value?.id]"-->
-<!--        (selectSuggest)="suggestHandle($event)"-->
+<!--        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"-->
 <!--      >-->
 <!--      </epgu-constructor-passport-lookup>-->
 
 
-      <!--      <epgu-constructor-form-output-html-->
-      <!--        *ngIf="[componentType.HtmlString, componentType.LabelSection].includes(componentData.value?.type)"-->
-      <!--        [control]="componentData"-->
+<!--            <epgu-constructor-form-output-html-->
+<!--              *ngIf="[componentType.HtmlString, componentType.LabelSection].includes(componentData.value?.type)"-->
+<!--              [control]="componentData"-->
 
-      <!--      ></epgu-constructor-form-output-html>-->
+<!--            ></epgu-constructor-form-output-html>-->
 
 
-      <!-- TODO  NewEmailInput, PhoneNumberChangeInput в json не найдены, уточнить-->
-      <!--      <epgu-constructor-masked-and-plain-input-->
-      <!--        *ngIf="[-->
-      <!--          componentType.NewEmailInput,-->
-      <!--          componentType.PhoneNumberChangeInput,-->
-      <!--          componentType.StringInput,-->
-      <!--          componentType.OgrnInput,-->
-      <!--          componentType.OgrnipInput,-->
-      <!--          componentType.LegalInnInput,-->
-      <!--          componentType.SnilsInput,-->
-      <!--          componentType.PersonInnInput,-->
-      <!--          componentType.CheckingAccount,-->
-      <!--        ]-->
-      <!--        .includes(componentData.value?.type)-->
-      <!--      "-->
-      <!--        [control]="componentData"-->
-      <!--        [suggestions]="(suggestions$ | async)[componentData.value?.id]"-->
-      <!--        (selectSuggest)="suggestHandle($event)"-->
-      <!--      >-->
-      <!--      </epgu-constructor-masked-and-plain-input>-->
+<!--       TODO  NewEmailInput, PhoneNumberChangeInput в json не найдены, уточнить-->
+            <epgu-constructor-masked-and-plain-input
+              *ngIf="[
+                componentType.NewEmailInput,
+                componentType.PhoneNumberChangeInput,
+                componentType.StringInput,
+                componentType.OgrnInput,
+                componentType.OgrnipInput,
+                componentType.LegalInnInput,
+                componentType.SnilsInput,
+                componentType.PersonInnInput,
+                componentType.CheckingAccount,
+              ]
+              .includes(componentData.value?.type)
+            "
+              [control]="componentData"
+              [suggestions]="(suggestions$ | async)[componentData.value?.id]"
+            >
+            </epgu-constructor-masked-and-plain-input>
 
-      <!--      <epgu-constructor-mvd-giac-lookup-->
-      <!--        *ngSwitchCase="componentType.MvdGiac"-->
-      <!--        [control]="componentData"-->
-      <!--      ></epgu-constructor-mvd-giac-lookup>-->
+<!--            <epgu-constructor-mvd-giac-lookup-->
+<!--              *ngSwitchCase="componentType.MvdGiac"-->
+<!--              [control]="componentData"-->
+<!--            ></epgu-constructor-mvd-giac-lookup>-->
 
-      <!--      <epgu-constructor-date-input-->
-      <!--        *ngSwitchCase="componentType.DateInput"-->
-      <!--        [control]="componentData"-->
-      <!--      ></epgu-constructor-date-input>-->
+<!--            <epgu-constructor-date-input-->
+<!--              *ngSwitchCase="componentType.DateInput"-->
+<!--              [control]="componentData"-->
+<!--            ></epgu-constructor-date-input>-->
 
-      <!--      <epgu-constructor-text-area-->
-      <!--        *ngSwitchCase="componentType.TextArea"-->
-      <!--        [control]="componentData"-->
-      <!--      ></epgu-constructor-text-area>-->
+<!--            <epgu-constructor-text-area-->
+<!--              *ngSwitchCase="componentType.TextArea"-->
+<!--              [control]="componentData"-->
+<!--            ></epgu-constructor-text-area>-->
 
-      <!--      <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">-->
-      <!--      </epgu-constructor-timer>-->
+<!--            <epgu-constructor-timer *ngSwitchCase="componentType.Timer" [data]="componentData.value">-->
+<!--            </epgu-constructor-timer>-->
 
 <!--      <epgu-constructor-doc-input-->
 <!--        *ngSwitchCase="componentType.DocInput"-->
 <!--        [data]="componentData"-->
 <!--        [suggestions]="(suggestions$ | async)[componentData.value?.id]"-->
-<!--        (selectSuggest)="suggestHandle($event)"-->
+<!--        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"-->
 <!--      >-->
 <!--      </epgu-constructor-doc-input>-->
 

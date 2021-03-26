@@ -13,10 +13,7 @@ import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { takeUntil } from 'rxjs/operators';
-import {
-  ISuggestionItem,
-  ISuggestionItemList,
-} from '../../../core/services/autocomplete/autocomplete.inteface';
+import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
@@ -36,6 +33,7 @@ import { HttpCancelService } from '../../../core/interceptor/http-cancel/http-ca
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
+import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -68,6 +66,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     public configService: ConfigService,
+    public suggestHandlerService: SuggestHandlerService,
     public formService: ComponentsListFormService,
     public dateRangeService: DateRangeService,
     private dictionaryToolsService: DictionaryToolsService,
@@ -111,20 +110,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
-  }
-
-  public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
-    // NOTICE: необходимо различать два ивента: клик по ссылке "Есть неактуальные данные?" (передается с доп.атрибутом `isEdit`)
-    // и обычный выбор опции из списка саджестов, соответственно, вызывать модалку для удаления неактуальных саджестов или
-    // запускать механизм подстановки выбранного значения в инпут.
-    if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
-      this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
-    } else {
-      this.eventBusService.emit('suggestionSelectedEvent', {
-        ...event,
-        componentsGroupIndex: this.componentsGroupIndex,
-      } as ISuggestionItemList);
-    }
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

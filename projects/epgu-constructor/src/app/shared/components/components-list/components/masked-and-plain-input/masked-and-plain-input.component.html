@@ -25,8 +25,8 @@
     [readOnly]="component?.attrs?.readonly"
     [placeholder]="component?.attrs?.placeholder"
     [component]="component"
-    [suggestions]="suggestions"
-    (selectSuggest)="selectSuggest.emit($event)"
+    [suggestions]="suggestions$ | async"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
 
@@ -48,7 +48,7 @@
     [isTrim]="false"
     [component]="component"
     [showPlaceholderOnFocus]="component?.attrs?.showPlaceholderOnFocus"
-    [suggestions]="suggestions"
-    (selectSuggest)="selectSuggest.emit($event)"
+    [suggestions]="suggestions$ | async"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
   ></epgu-constructor-masked-input>
 </ng-template>
