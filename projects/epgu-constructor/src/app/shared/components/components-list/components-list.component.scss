@@ -18,6 +18,9 @@
     & > * {
       margin-bottom: $screen-pad-p;
     }
+    &-radio > * {
+      margin-bottom: $screen-pad-small-gap;
+    }
   }
   &::ng-deep .form__half {
     max-width: 50%;

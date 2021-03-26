@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScenarioErrorsDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ChildI, ItemStatus } from '../../select-children.models';
+import { ChildI } from '../../select-children.models';
 import {
   CustomComponent,
   CustomComponentOutputData,
@@ -26,7 +26,8 @@ export class SelectChildrenItemComponent {
   @Input() control: AbstractControl;
   @Output() selectChildrenEvent = new EventEmitter<ChildI>();
   @Output() updateChildEvent = new EventEmitter<CustomComponentOutputData>();
-  @Output() updateItemValidationStatusEvent = new EventEmitter<ItemStatus>();
+  @Output() updateItemValueAndValidityEvent = new EventEmitter<void>();
+  @Output() updateItemValidatorsEvent = new EventEmitter<FormArray>();
 
   public selectChildren(value: ChildI): void {
     this.selectChildrenEvent.emit(value);
@@ -36,7 +37,11 @@ export class SelectChildrenItemComponent {
     this.updateChildEvent.emit(childData);
   }
 
-  public updateItemValidationStatus(status: ItemStatus): void {
-    this.updateItemValidationStatusEvent.emit(status);
+  public updateItemValueAndValidity(): void {
+    this.updateItemValueAndValidityEvent.emit();
+  }
+
+  public updateItemValidators(form: FormArray): void {
+    this.updateItemValidatorsEvent.emit(form);
   }
 }

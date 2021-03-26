@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
@@ -19,8 +19,6 @@ import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
 import { ComponentsListModule } from '../../../../../../shared/components/components-list/components-list.module';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ItemStatus } from '../../select-children.models';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { ModalService } from '../../../../../../modal/modal.service';
@@ -28,54 +26,15 @@ import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { componentMock } from './mocks/select-children.mock';
+import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
+import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
   let fixture: ComponentFixture<SelectChildrenComponent>;
   let eventBusService: EventBusService;
-  let componentMock: ComponentDto = {
-    id: 'ai19',
-    type: 'ChildrenListAbove14',
-    label: '',
-    attrs: {
-      components: [
-        {
-          id: 'ai19_0',
-          type: 'StringInput',
-          label: 'Идентификатор',
-          attrs: {
-            hidden: true,
-            fields: [{ fieldName: 'id' }],
-            validation: [
-              {
-                type: 'RegExp',
-                value: '.+',
-                ref: '',
-                dataType: '',
-                condition: '',
-                errorMsg: 'Поле не может быть пустым',
-              },
-            ],
-          },
-          value: '',
-          required: true,
-        },
-        {
-          id: 'ai19_6',
-          type: 'RadioInput',
-          label: 'Ребенок новый?',
-          attrs: {
-            hidden: true,
-            fields: [{ fieldName: 'isNew' }],
-          },
-          value: '',
-          required: true,
-        },
-      ],
-    },
-    value: '[]',
-    required: true,
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -103,7 +62,10 @@ describe('SelectChildrenComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
+        DatesToolsService,
+        RefRelationService,
+        DictionaryToolsService,
       ],
     })
       .overrideComponent(SelectChildrenComponent, {
@@ -120,7 +82,6 @@ describe('SelectChildrenComponent', () => {
     component.cachedValue = null;
     component.component = componentMock;
     component.errors = {};
-    component.selectChildrenForm = new FormGroup({ child1: new FormControl(null) });
     fixture.detectChanges();
   });
 
@@ -131,7 +92,7 @@ describe('SelectChildrenComponent', () => {
   describe('handleSelect()', () => {
     it('should be call handleSelect()', () => {
       jest.spyOn(component, 'handleSelect');
-      component.handleSelect({ ai19_0: 'new' }, 0);
+      component.handleSelect({ ai15_0: 'new' }, 0);
 
       expect(component.handleSelect).toBeCalledTimes(2);
     });
@@ -146,7 +107,6 @@ describe('SelectChildrenComponent', () => {
 
   describe('removeChild()', () => {
     it('should be remove child', () => {
-      component.items = [{ controlId: 'child1' }];
       fixture.detectChanges();
       component.removeChild(0);
 
@@ -158,7 +118,7 @@ describe('SelectChildrenComponent', () => {
     it('should be return new child', () => {
       const newChild = component.createNewChild();
 
-      expect(newChild['ai19_6']).toBeTruthy();
+      expect(newChild['ai15_6']).toBeTruthy();
     });
   });
 
@@ -166,12 +126,13 @@ describe('SelectChildrenComponent', () => {
     it('should be return ref', () => {
       const ref = component.getRefFromComponent('id');
 
-      expect(ref).toBe('ai19_0');
+      expect(ref).toBe('ai15_0');
     });
   });
 
   describe('addMoreChild()', () => {
     it('should be call addMoreChild() after initStartValues()', () => {
+      console.log('test01', component.selectChildrenForm.controls.length);
       jest.spyOn(component, 'addMoreChild');
       component.initStartValues();
 
@@ -183,6 +144,25 @@ describe('SelectChildrenComponent', () => {
       eventBusService.emit('cloneButtonClickEvent');
 
       expect(component.addMoreChild).toHaveBeenCalled();
+    });
+
+    it('cloneButtonClickEvent should not make invalid form valid', () => {
+      let selector = 'epgu-constructor-constructor-dropdown';
+      const childId = component.items[0].controlId;
+      const itemToSelect = component.itemsToSelect[0];
+      const childElement = fixture.debugElement.query(By.css(selector));
+      childElement.triggerEventHandler('changed', itemToSelect);
+      const control = component.selectChildrenForm.get(childId);
+      control.setValue(itemToSelect);
+      expect(control.valid).toBeTruthy();
+      fixture.detectChanges();
+      expect(control.valid).toBeFalsy();
+      selector = 'epgu-constructor-masked-input[ng-reflect-id="rfPasportSeries"]';
+      const rfPasportSeriesElement = fixture.debugElement.query(By.css(selector));
+      rfPasportSeriesElement.context.control.setValue('3');
+      expect(control.valid).toBeFalsy();
+      eventBusService.emit('cloneButtonClickEvent');
+      expect(control.valid).toBeFalsy();
     });
   });
 
@@ -226,11 +206,10 @@ describe('SelectChildrenComponent', () => {
     });
 
     it('should call updateCurrentAnswerServiceValidation', () => {
-      jest.spyOn(component, 'updateCurrentAnswerServiceValidation');
-      component.updateItemValidationStatus(ItemStatus.valid, 'child1');
-      component.selectChildrenForm.get('child1').setValue('child');
-
-      expect(component.updateCurrentAnswerServiceValidation).toBeCalledTimes(2);
+      const spy = jest.spyOn(component, 'updateCurrentAnswerServiceValidation');
+      component.updateItemValueAndValidity(component.items[0].controlId);
+      component.selectChildrenForm.get(component.items[0].controlId).setValue('child');
+      expect(spy).toBeCalledTimes(3);
     });
 
     it('should call updateCurrentAnswerServiceStateEvent', () => {

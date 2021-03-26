@@ -26,6 +26,7 @@
     justify-content: center;
     @include tablets-down {
       margin-top: auto;
+      flex-wrap: wrap-reverse;
     }
   }
 
@@ -34,9 +35,15 @@
 
     &:not(:first-child) {
       @include tablets-up {
-        margin-left: 32px;
+        margin-left: 24px;
       }
     }
+    &:not(:last-child) {
+      @include tablets-down {
+        margin-top: 16px;
+      }
+    }
+    
   }
 }
 
@@ -77,10 +84,82 @@
     box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
     margin-left: 0;
     padding: 24px 24px 8px;
-
+    
     li {
       margin-top: 0;
       margin-bottom: 16px;
     }
   }
+
+  .divider {
+    display: none;
+  }
 }
+
+.info-screen--status {
+  .divider {
+    display: none;
+  }
+}
+
+:host::ng-deep {
+  .info-screen--start,
+  .info-screen--quiz,
+  .info-screen--solution-page-2,
+  .info-screen--deadlock,
+  .info-screen--status {
+    .info__text {
+      h3 {
+        font-weight: bold;
+        font-size: $font-xl;
+        line-height: $font-xxl;
+        text-align: center;
+        margin: 24px 0 16px 0;
+      }
+      h3 + p, h3 + div {
+        margin-top: 16px;
+      }
+      h5 {
+        margin: 24px 0 8px 0;
+        font-size: $font-md;
+        line-height: $font-xl;
+      }
+      h5 ~ p {
+        margin-top: 8px;
+      }
+      h5 + p {
+        margin-top: 12px;
+      }
+    }
+  }
+ 
+  .info-screen--solution-page {
+    .info__text {
+      h3 {
+        font-weight: bold;
+        font-size: $font-xl;
+        line-height: $font-xxl;
+        text-align: center;
+        margin: 24px 0 16px 0;
+      }
+      h3 + p, h3 + div {
+        margin-top: 16px;
+      }
+      h5 {
+        margin: 24px 0 8px 0;
+        font-size: $font-md;
+        line-height: $font-xl;
+      }
+      ul + h5 {
+        margin-top: 32px;
+      }
+      h5 ~ p {
+        margin-top: 24px;
+      }
+      h5 + p {
+        margin-top: 12px;
+      }
+    }
+  }
+
+}  

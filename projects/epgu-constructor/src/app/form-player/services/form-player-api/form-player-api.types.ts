@@ -92,6 +92,7 @@ export interface ComponentAttrsDto {
   GIBDDpaymentError?: ComponentGIBDDpaymentErrorDto;
   attributeNameWithAddress?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   baloonContent?: Array<ComponentBaloonContentDto>;
   addressString?: ComponentAddressStringDto;
   value?: string;
@@ -156,6 +157,11 @@ export interface ComponentAttrsDto {
   endTime?: ComponentDateTimeDto;
   canDeleteFirstScreen?: boolean;
   emptySlotsModal?: ConfirmationModal;
+  fio?: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  gender?: string;
 }
 
 export interface ComponentDateTimeDto {
