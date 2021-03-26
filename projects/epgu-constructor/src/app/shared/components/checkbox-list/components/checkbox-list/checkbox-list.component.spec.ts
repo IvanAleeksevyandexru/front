@@ -1,12 +1,15 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { CheckboxListComponent } from './checkbox-list.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConstructorCheckboxModule } from '../../../constructor-checkbox/constructor-checkbox.module';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
+import { ComponentsListFormServiceStub } from '../../../../services/components-list-form/components-list-form.service.stub';
 
 describe('CheckboxListComponent', () => {
   let component: CheckboxListComponent;
+  let formService: ComponentsListFormService;
   let fixture: ComponentFixture<CheckboxListComponent>;
 
   const mockComponent = {
@@ -49,7 +52,10 @@ describe('CheckboxListComponent', () => {
         CheckboxListComponent,
       ],
       imports: [FormsModule, ReactiveFormsModule, ConstructorCheckboxModule],
-      providers: [UnsubscribeService],
+      providers: [
+        UnsubscribeService,
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+      ],
     })
     .overrideComponent(CheckboxListComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -58,6 +64,13 @@ describe('CheckboxListComponent', () => {
   });
 
   beforeEach(() => {
+    const control = new FormControl({
+      id: 'dependentComponentId',
+      attrs: {},
+      required: false
+    });
+    formService = TestBed.inject(ComponentsListFormService);
+    formService['_form'] = new FormArray([ control ]);
     fixture = TestBed.createComponent(CheckboxListComponent);
     component = fixture.componentInstance;
     component.required = true;

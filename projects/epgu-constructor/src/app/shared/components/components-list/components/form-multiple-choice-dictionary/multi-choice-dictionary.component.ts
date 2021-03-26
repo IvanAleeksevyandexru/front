@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -11,7 +17,7 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class MultiChoiceDictionaryComponent {
+export class MultiChoiceDictionaryComponent implements OnInit {
   @Input() componentIndex = 0;
 
   control: FormGroup | AbstractControl = this.formService.form.controls[this.componentIndex];

@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SuggestHandlerService } from './suggest-handler.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 
 describe('SuggestHandlerService', () => {
   let service: SuggestHandlerService;
@@ -7,13 +8,14 @@ describe('SuggestHandlerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        SuggestHandlerService
+        SuggestHandlerService,
+        EventBusService
       ],
     });
     service = TestBed.inject(SuggestHandlerService);
   });
 
-  describe('Check relation type cases', () => {
-
+  it('should create', () => {
+    expect(service).toBeTruthy();
   });
 });
