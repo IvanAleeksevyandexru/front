@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LoadService, SmuEventsService } from 'epgu-lib';
 import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
+import { MOBILE_VIEW_COOKIE_NAME } from '../../../shared/constants/cookie';
+import { CookieService } from 'ngx-cookie-service';
 
 export enum LoadServiceDeviceType {
   'desk' = 'desk',
@@ -21,7 +23,9 @@ export class DeviceDetectorService {
   constructor(
     private loadService: LoadService,
     private smuEventsService: SmuEventsService,
+    private cookieService: CookieService,
   ) {
+    this.initSmuEventsService();
     this.initState();
   }
 
@@ -50,5 +54,13 @@ export class DeviceDetectorService {
    */
   isMiAndroid(): boolean {
     return /XiaoMi\/+/.test(navigator.userAgent);
+  }
+
+  initSmuEventsService(): void {
+    const isMobileView = this.cookieService.get(MOBILE_VIEW_COOKIE_NAME);
+
+    if (isMobileView) {
+      this.smuEventsService.init();
+    }
   }
 }
