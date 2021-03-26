@@ -40,6 +40,8 @@ import { ComponentResolverModule } from '../../../component/component-resolver/c
 import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
 import { TimerItemComponent } from './components/timer-item/timer-item.component';
 import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
+import { DocInputComponent } from '../doc-input/doc-input.component';
+import { CheckboxListComponent } from '../checkbox-list/components/checkbox-list/checkbox-list.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,20 @@ import { FieldListItemComponent } from './components/field-list-item/field-list-
     DictionaryApiService,
     DateRangeService,
     SuggestHandlerService,
+  ],
+  entryComponents: [
+    MaskedAndPlainInputComponent,
+    FormOutputHtmlComponent,
+    MvdGiacLookupComponent,
+    DateInputComponent,
+    TextAreaComponent,
+    TimerItemComponent,
+    DocInputComponent,
+    FieldListItemComponent,
+    MultiChoiceDictionaryComponent,
+    CheckboxListComponent,
+    CheckboxInputComponent,
+    PassportLookupComponent,
   ],
 })
 export class ComponentsListModule {}
