@@ -69,6 +69,8 @@ export class FormPlayerServiceStub {
 
   navigate(): void {}
 
+  getBooking(): void {}
+
   processResponse(): void {}
 
   initPlayerFromQuiz(): void {}

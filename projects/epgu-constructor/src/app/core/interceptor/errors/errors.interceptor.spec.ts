@@ -11,7 +11,7 @@ import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
   COMMON_ERROR_MODAL_PARAMS,
-  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
+  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, BOOKING_ONLINE_ERROR,
 } from './errors.interceptor.constants';
 import { LocationService } from '../../services/location/location.service';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
@@ -96,6 +96,23 @@ describe('ErrorsInterceptor', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       AUTH_ERROR_MODAL_PARAMS,
+    );
+    tick();
+  }));
+
+  it('should open modal with BOOKING_ONLINE_ERROR params', fakeAsync(() => {
+    spyOn(modalService, 'openModal').and.callThrough();
+    formPlayerApi.getBooking().subscribe(() => fail('should have failed with the 404 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(404);
+      }
+    );
+    const requestToError = httpMock.expectOne(`${config.apiUrl}/service/booking`);
+    const body = new HttpErrorResponse({ status: 404, statusText: 'Not found' });
+    requestToError.flush('Unauthorized', body);
+    expect(modalService.openModal).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      BOOKING_ONLINE_ERROR,
     );
     tick();
   }));

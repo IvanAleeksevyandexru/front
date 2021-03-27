@@ -28,6 +28,10 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
+  public getBooking(): Observable<{}> {
+    return of({});
+  }
+
   public sendAction(): Observable<{}> {
     return of({});
   }
