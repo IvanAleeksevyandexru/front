@@ -57,7 +57,8 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     } else if (url.includes('service/booking')) {
-      const addressLink = `<a href="${error.payload.url}">${error.payload.text}</a>`;
+      const payload = error.payload;
+      const addressLink = `<a href="${payload?.url}">${payload?.text}</a>`;
       const regExp = /\{addressLink\}?/g;
       BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
 
