@@ -1,16 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { merge } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CustomScreenComponentTypes } from '../../components-list.types';
-import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-form-output-html',
@@ -19,26 +10,13 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class FormOutputHtmlComponent implements OnInit {
-  @Input() componentIndex = 0;
-
-  control: FormGroup | AbstractControl = this.formService.form.controls[this.componentIndex];
+export class FormOutputHtmlComponent extends AbstractComponentListItemComponent {
   outputHtmlClass: Partial<Record<CustomScreenComponentTypes, string>> = {
     [CustomScreenComponentTypes.LabelSection]: 'label',
     [CustomScreenComponentTypes.HtmlString]: 'info__text',
   };
 
-  constructor(
-    public formService: ComponentsListFormService,
-    private ngUnsubscribe$: UnsubscribeService,
-    private cdr: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
-    merge(this.control.statusChanges, this.control.valueChanges)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
+  constructor(public injector: Injector) {
+    super(injector);
   }
 }

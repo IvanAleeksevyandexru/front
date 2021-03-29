@@ -51,10 +51,10 @@ import { CustomScreenComponentTypes } from '../../shared/components/components-l
 import { MvdGiacLookupComponent } from '../../shared/components/components-list/components/mvd-giac-lookup/mvd-giac-lookup.component';
 import { DateInputComponent } from '../../shared/components/components-list/components/date-input/date-input.component';
 import { TextAreaComponent } from '../../shared/components/components-list/components/text-area/text-area.component';
-import { DocInputComponent } from '../../shared/components/doc-input/doc-input.component';
+import { DocInputComponent } from '../../shared/components/components-list/components/doc-input/doc-input.component';
 // eslint-disable-next-line max-len
 import { MultiChoiceDictionaryComponent } from '../../shared/components/components-list/components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
-import { CheckboxListComponent } from '../../shared/components/checkbox-list/components/checkbox-list/checkbox-list.component';
+import { CheckboxListComponent } from '../../shared/components/components-list/components/checkbox-list/checkbox-list.component';
 import { CheckboxInputComponent } from '../../shared/components/components-list/components/checkbox-input/checkbox-input.component';
 import { PassportLookupComponent } from '../../shared/components/components-list/components/passport-lookup/passport-lookup.component';
 import { TimerItemComponent } from '../../shared/components/components-list/components/timer-item/timer-item.component';
