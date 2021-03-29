@@ -268,4 +268,31 @@ describe('FormPlayerApiService', () => {
       tick();
     }));
   });
+
+  describe('getBooking()', () => {
+    it('should call http with post method', fakeAsync(() => {
+      const path = 'service/booking';
+      const responseMockData = {};
+
+      service.getBooking().subscribe((response) => expect(response).toBe(responseMockData));
+      const req = http.expectOne(`${apiUrl}/${path}`);
+      expect(req.request.method).toBe('POST');
+      req.flush(responseMockData);
+      tick();
+    }));
+
+    it('should call http with body', fakeAsync(() => {
+      service.getBooking()
+        .subscribe(response => expect(response).toBe(responseMock));
+      const url = `${apiUrl}/service/booking`;
+      const req = http.expectOne(url);
+      const body = {
+        serviceId,
+        orderId
+      };
+      expect(req.request.body).toEqual(body);
+      req.flush(responseMock);
+      tick();
+    }));
+  });
 });

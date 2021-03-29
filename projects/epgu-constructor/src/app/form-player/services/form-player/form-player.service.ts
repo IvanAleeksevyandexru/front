@@ -86,6 +86,21 @@ export class FormPlayerService extends FormPlayerBaseService {
       );
   }
 
+  getBooking(): void {
+    this.updateLoading(true);
+    this.formPlayerApiService
+      .getBooking()
+      .subscribe(
+        (response) => {
+          this.processResponse(response);
+        },
+        (error) => {
+          this.sendDataError(error);
+        },
+        () => this.updateLoading(false),
+      );
+  }
+
   patchStore(newScenarioDtoDiff: Partial<ScenarioDto>): void {
     this.updateLoading(true);
     const newStore = JSON.parse(JSON.stringify(this._store));

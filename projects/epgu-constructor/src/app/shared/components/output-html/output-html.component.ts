@@ -10,4 +10,5 @@ import { Clarifications } from '../../../core/services/terra-byte-api/terra-byte
 export class OutputHtmlComponent {
   @Input() html: string;
   @Input() clarifications: Clarifications;
+  @Input() componentId: string;
 }

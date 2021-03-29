@@ -80,6 +80,16 @@ export class FormPlayerApiService {
     return this.post<FormPlayerApiResponse>(path, body, params);
   }
 
+  public getBooking(): Observable<FormPlayerApiResponse> {
+    const { orderId, serviceId } = this.initDataService;
+    const body = {
+      orderId,
+      serviceId
+    };
+    const path = `${this.configService.apiUrl}/service/booking`;
+    return this.post<FormPlayerApiResponse>(path, body);
+  }
+
   public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
     let path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
 
