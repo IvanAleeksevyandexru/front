@@ -125,6 +125,7 @@ export interface UploadedFile {
   updated?: string;
   userId?: number;
   bucket?: string;
+  isFromSuggests?: boolean;
 }
 
 /***
@@ -137,7 +138,6 @@ export interface TerabyteListItem {
   mnemonic: string;
   updated: string;
   fileSize: number;
-
   alternativeMimeTypes: string[];
   created: string;
   deleted: boolean;
