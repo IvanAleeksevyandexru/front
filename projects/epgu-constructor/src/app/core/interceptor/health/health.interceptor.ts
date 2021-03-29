@@ -47,6 +47,7 @@ export enum RequestStatus {
 export class HealthInterceptor implements HttpInterceptor {
   private configParams: ConfigParams = {} as ConfigParams;
   private lastUtlPart: string = null;
+  private region: number = null;
 
   constructor(private health: HealthService, private utils: UtilsService) {}
 
@@ -76,10 +77,6 @@ export class HealthInterceptor implements HttpInterceptor {
           );
 
           if (validationStatus) {
-            let isEmpty = null;
-            let region = null;
-            let regdictname = null;
-
             const { scenarioDto, health, serviceInfo } = result;
             const orderId = this.utils.isValidOrderId(scenarioDto.orderId)
             ? scenarioDto.orderId
@@ -90,21 +87,14 @@ export class HealthInterceptor implements HttpInterceptor {
               this.utils.isDefined(serviceInfo.userRegion) &&
               this.utils.isDefined(serviceInfo.userRegion.codes)
             ) {
-              region = serviceInfo.userRegion.codes[0];
-            }
-            
-            if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
-              isEmpty = result.total > 0 ? false : true;
-              regdictname = this.lastUtlPart;
+              this.region = serviceInfo.userRegion.codes[0];
             }
 
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
               orderId,
-              region,
-              regdictname,
-              isEmpty,
+              region: this.region,
             };
 
             if (this.utils.isDefined(health) && this.utils.isDefined(health?.dictionaries) && health.dictionaries.length > 0) {
@@ -120,6 +110,14 @@ export class HealthInterceptor implements HttpInterceptor {
                 });
               });
             }
+          }
+
+          if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
+            this.configParams = {
+              ...this.configParams,
+              isEmpty: result.total > 0 ? false : true,
+              regdictname: this.lastUtlPart,
+            };
           }
 
           if (isInvalidOldDictionary || isInvalidNewDictionary) {
@@ -181,10 +179,16 @@ export class HealthInterceptor implements HttpInterceptor {
             } else {
               this.configParams['errorMessage'] = this.utils.cyrillicToLatin(err.message);
             }
-
-            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.configParams);
+            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields(
+              this.configParams,
+            ) as ConfigParams);
           } else {
-            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.configParams);
+            this.configParams = this.utils.filterIncorrectObjectFields(
+              this.configParams,
+            ) as ConfigParams;
+            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(
+              this.configParams,
+            ) as ConfigParams);
           }
         }
         return throwError(err);
@@ -223,7 +227,7 @@ export class HealthInterceptor implements HttpInterceptor {
     return (
       this.utils.isDefined(error) &&
       this.utils.isDefined(error[key]) &&
-      (Number(error[key]) !== 0 || error[key] !== '0')
+      Number(error[key]) !== 0
     );
   }
 
