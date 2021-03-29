@@ -44,6 +44,7 @@ export interface RegistrationAddrFields {
   attrs?: {labelHint?: string};
   validationShowOn?: string;
   disabled?: boolean;
+  hint?: string;
 }
 
 export enum FieldNames {
