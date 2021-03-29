@@ -233,10 +233,44 @@
       align-items: center;
     }
     &--description {
-      background: $color-selago;
-      border: none;
-      border-top: 3px solid $color-science-blue;
-      padding: 1em;
+      background: $color-tag-line;
+      border-radius: 0 4px 4px 4px;
+      padding: 16px;
+      margin-top: 4px;
+      position: relative;
+
+      &__link-close {
+        margin-top: 16px;
+        display: block;
+      }
+      &--close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        z-index: 2;
+    
+        &:before,
+        &:after {
+          content: '';
+          position: absolute;
+          width: 2px;
+          height: 12px;
+          left: 5px;
+          background: $color-gosblue;
+          transform: rotate(45deg);
+        }
+    
+        &:before {
+          transform: rotate(45deg);
+        }
+    
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
     }
   }
 

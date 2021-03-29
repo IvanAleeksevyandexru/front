@@ -1,0 +1,14 @@
+<lib-lookup
+  [invalid]="invalid"
+  [fixedItems]="dictionary?.list"
+  [disabled]="disabled"
+  [required]="required"
+  [validationShowOn]="validationShowOn"
+  [formControl]="$any(control)"
+  [clearable]="true"
+  [queryMinSymbolsCount]="0"
+  [searchCaseSensitive]="false"
+  [virtualScroll]="true"
+  (selectSuggest)="suggestHandle($event)"
+>
+</lib-lookup>

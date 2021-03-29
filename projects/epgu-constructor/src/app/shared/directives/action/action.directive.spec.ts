@@ -48,6 +48,7 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
     <button class="home" epgu-constructor-action [action]="homeAction"></button>
     <button class="quizToOrder" epgu-constructor-action [action]="quizToOrder"></button>
     <button class="prev" name="prev" epgu-constructor-action [action]="prevStepAction"></button>
+    <button class="empty" epgu-constructor-action [action]="emptyAction"></button>
   `,
 })
 export class ActionTestComponent {
@@ -111,6 +112,7 @@ export class ActionTestComponent {
     action: '/to-some-order' as DTOActionAction,
     type: ActionType.quizToOrder,
   };
+  emptyAction: ComponentActionDto = undefined;
 }
 
 const mockComponent: ComponentDto = {
@@ -275,18 +277,37 @@ describe('ActionDirective', () => {
     expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 
+  it('test directive - empty Action', () => {
+    const button: HTMLElement = fixture.debugElement.query(By.css('.empty')).nativeElement;
+    fixture.detectChanges();
+    const switchSpy = spyOn(actionService, 'switchAction').and.callThrough();
+    button.click();
+    expect(switchSpy).not.toBeCalled();
+  });
+
   describe('onKeyDown', () => {
-    it('should be call switchAction', () => {
+    it('should not call switchAction with name=prev', () => {
       const event = new KeyboardEvent('keydown', {
         key: 'Enter',
         bubbles: true,
       });
-      spyOn(event, 'preventDefault');
-      jest.spyOn(actionService, 'switchAction');
-      const button = fixture.debugElement.query(By.css('.home'));
+      const switchActionSpy = jest.spyOn(actionService, 'switchAction');
+      const button = fixture.debugElement.query(By.css('.prev'));
       fixture.detectChanges();
       button.nativeElement.dispatchEvent(event);
-      expect(actionService.switchAction).toHaveBeenCalledTimes(0);
+      expect(switchActionSpy).not.toBeCalled();
+    });
+
+    it('should not call switchAction with empty action', () => {
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      const switchActionSpy = jest.spyOn(actionService, 'switchAction');
+      const button = fixture.debugElement.query(By.css('.empty'));
+      fixture.detectChanges();
+      button.nativeElement.dispatchEvent(event);
+      expect(switchActionSpy).not.toBeCalled();
     });
   });
 });

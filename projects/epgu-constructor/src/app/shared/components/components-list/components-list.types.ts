@@ -1,12 +1,14 @@
 import { ListItem } from 'epgu-lib';
 import {
+  ClarificationsDto,
+  ComponentDictionaryFilterDto,
   ComponentFilterDto,
   ComponentRelationFieldDto,
   DisplayDto,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../screen/screen.types';
 import { TextTransform } from '../../types/textTransform';
-import { Ref } from '../../services/date-range/date-range.models';
+import { DateRangeRef } from '../../services/date-range/date-range.models';
 import {
   DictionaryFilters,
   DictionaryItem,
@@ -19,6 +21,7 @@ export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
+  DropDownDepts = 'DropDownDepts',
   MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
@@ -41,12 +44,15 @@ export enum CustomScreenComponentTypes {
   Timer = 'Timer',
   TextArea = 'TextArea',
   MultipleChoiceDictionary = 'MultipleChoiceDictionary',
+  CheckBoxList = 'CheckBoxList',
+  CheckingAccount = 'CheckingAccount',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
 // type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
 
 export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+// @todo. выяснить, почему в коде CustomListDictionaries как объект, а не массив
 export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
 export type CustomListReferenceData = CustomListGenericData<
   Partial<ListItem>[] | DictionaryResponse
@@ -63,6 +69,7 @@ export interface CustomListDictionary {
   list: Array<ListItem>;
   page: number;
   selectedItem: DictionaryItem;
+  repeatedWithNoFilters?: boolean;
 }
 
 export interface CustomListStatusElements {
@@ -77,6 +84,9 @@ export interface CustomStatusElement {
 export interface CustomListGenericData<T> {
   component: CustomComponent;
   data: T;
+  meta?: {
+    repeatedWithNoFilters: boolean;
+  };
 }
 
 export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
@@ -96,13 +106,16 @@ export type CustomComponentDropDownItem = {
 export interface CustomComponentAttr {
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType?: string;
+  subLabel?: string;
+  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   labelAttr?: string;
   fields?: Array<{
     fieldName?: string;
     label?: string;
     type?: string;
   }>;
-  ref?: Array<CustomComponentRef & Ref>; //TODO разобраться с типами
+  ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
   updateOnValidation?: UpdateOn;
@@ -125,6 +138,13 @@ export interface CustomComponentAttr {
   searchType?: string;
   cityFilter?: string[];
   maskOptions?: NumberMaskOptionsInterface;
+  labelHint?: string;
+  hint?: string;
+  customUnrecLabel?: string;
+  clarifications?: ClarificationsDto;
+  isTextHelper?: boolean;
+  lockedValue?: boolean;
+  repeatWithNoFilters?: boolean;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -160,6 +180,7 @@ export enum CustomComponentRefRelation {
   calc = 'calc',
   getValue = 'getValue',
   autofillFromDictionary = 'autofillFromDictionary',
+  reset = 'reset',
 }
 
 export enum CustomComponentValidationConditions {

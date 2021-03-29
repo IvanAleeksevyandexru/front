@@ -18,6 +18,7 @@ import { ValidationService } from '../../../../../../shared/services/validation/
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
+import { LabelPipe } from '../../pipe/label.pipe';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -31,8 +32,13 @@ describe('MatPeriodFormComponent', () => {
   };
   const mockComponents = {
     paymentType: {
-      attrs: {
-        label: 'paymentType',
+      attrs: {},
+      label: {
+        one: 'Единовременно',
+        month: 'Ежемесячный платеж',
+        quarter: 'Ежеквартальный платеж',
+        halfYear: 'Полугодовой платеж',
+        year: 'Ежегодный платеж',
       },
     },
     amount: {
@@ -74,7 +80,7 @@ describe('MatPeriodFormComponent', () => {
   let validationService: ValidationService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MatPeriodFormComponent, FilterPipe],
+      declarations: [MatPeriodFormComponent, FilterPipe, LabelPipe],
       imports: [
         MockModule(ConstructorDropdownModule),
         MockModule(ConstructorDatePickerModule),

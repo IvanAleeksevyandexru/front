@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isUndefined, toBoolean } from '../../constants/uttils';
+import { isUndefined, toBoolean } from '../../constants/utils';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
@@ -28,7 +28,7 @@ export class ComponentsListToolsService {
     } else if (!isUndefined(component.attrs.defaultValue)) {
       return this.parseValue((component.attrs.defaultValue as unknown) as string, isDateAndValue, component.type);
     } else {
-      return component.value;
+      return component.value || '';
     }
   }
 
@@ -36,7 +36,7 @@ export class ComponentsListToolsService {
     return type === CustomScreenComponentTypes.AddressInput;
   }
 
-  public isJson(type: CustomScreenComponentTypes): boolean {
+  public isJsonType(type: CustomScreenComponentTypes): boolean {
     return this.availableComponentTypesToJsonParse.includes(type);
   }
 
@@ -57,7 +57,7 @@ export class ComponentsListToolsService {
       } catch (e) {
         return value;
       }
-    } else if (this.isJson(componentType)) {
+    } else if (this.isJsonType(componentType)) {
       try {
         return JSON.parse(value);
       } catch (e) {
@@ -65,6 +65,8 @@ export class ComponentsListToolsService {
       }
     } else if (this.isCheckBox(componentType)) {
       return toBoolean(value);
+    } else if (componentType === CustomScreenComponentTypes.DropDownDepts) {
+      return ''; // Подавляем значение value т.к. оно используется для вставки данных в фильтр
     } else {
       return value;
     }

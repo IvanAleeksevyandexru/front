@@ -121,14 +121,14 @@ describe('SelectChildrenItemComponent', () => {
     expect(component.updateChildEvent.emit).toHaveBeenCalled();
   });
 
-  it('should call updateItemValidationStatus()', () => {
-    jest.spyOn(component, 'updateItemValidationStatus');
-    jest.spyOn(component.updateItemValidationStatusEvent, 'emit');
+  it('should call updateItemValueAndValidity()', () => {
+    jest.spyOn(component, 'updateItemValueAndValidity');
+    jest.spyOn(component.updateItemValueAndValidityEvent, 'emit');
     const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-list'));
     debugEl.triggerEventHandler('emitFormStatus', {});
     fixture.detectChanges();
 
-    expect(component.updateItemValidationStatus).toHaveBeenCalled();
-    expect(component.updateItemValidationStatusEvent.emit).toHaveBeenCalled();
+    expect(component.updateItemValueAndValidity).toHaveBeenCalled();
+    expect(component.updateItemValueAndValidityEvent.emit).toHaveBeenCalled();
   });
 });

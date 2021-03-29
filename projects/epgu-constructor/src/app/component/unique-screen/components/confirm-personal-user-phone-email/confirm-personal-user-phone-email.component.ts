@@ -67,6 +67,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
 
   private getIsPhoneScreenType(): boolean {
     return [
+      UniqueScreenComponentTypes.confirmUserCorpPhone,
       UniqueScreenComponentTypes.confirmPersonalUserPhone,
       UniqueScreenComponentTypes.confirmLegalPhone,
     ].includes(this.screenService.component?.type as UniqueScreenComponentTypes);

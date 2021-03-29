@@ -26,8 +26,8 @@ export const autofillFromDictionaryRefMock = {
 
 export const calcRefMock = {
   relatedRel: 's42',
-  val: 'true',
-  relation: CustomComponentRefRelation.calc
+  val: '{rf1}/2',
+  relation: CustomComponentRefRelation.calc,
 };
 
 export const disabledRefMock = {

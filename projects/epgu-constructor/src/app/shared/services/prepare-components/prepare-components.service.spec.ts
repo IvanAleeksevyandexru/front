@@ -16,6 +16,7 @@ import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { CustomComponentRef, CustomComponentRefRelation } from '../../components/components-list/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
+import { displayOnRefMock } from '../ref-relation/ref-relation.mock';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -458,20 +459,21 @@ describe('PrepareComponentsService', () => {
       expect(result).toEqual(components[0]);
     });
 
-    it('should call hideComponent with params', () => {
+    it('should call handleDisplayOff with params', () => {
       prepareRef();
-      spyOn<any>(service, 'hideComponent').and.callThrough();
+      spyOn<any>(service, 'handleDisplayOff').and.callThrough();
       service['handleCustomComponentRef'](
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
         cachedAnswers
       );
-      expect(service['hideComponent']).toBeCalledWith(components[0], components[0].attrs.ref[0] as CustomComponentRef[], cachedAnswers);
+      expect(service['handleDisplayOff'])
+        .toBeCalledWith(components[0], components[0].attrs.ref[0] as CustomComponentRef[], cachedAnswers.s2.value);
     });
 
-    it('shouldn\'t call hideComponent', () => {
-      spyOn<any>(service, 'hideComponent').and.callThrough();
+    it('shouldn\'t call handleDisplayOff', () => {
+      spyOn<any>(service, 'handleDisplayOff').and.callThrough();
       components[0].attrs.ref = [];
       service['handleCustomComponentRef'](
         components[0],
@@ -479,11 +481,37 @@ describe('PrepareComponentsService', () => {
         components,
         cachedAnswers
       );
-      expect(service['hideComponent']).not.toBeCalled();
+      expect(service['handleDisplayOff']).not.toBeCalled();
+    });
+
+    it('should call handleDisplayOn with params', () => {
+      prepareRef();
+      spyOn<any>(service, 'handleDisplayOn').and.callThrough();
+      components[0].attrs.ref[0].relation = CustomComponentRefRelation.displayOn;
+      service['handleCustomComponentRef'](
+        components[0],
+        components[0].attrs.ref as CustomComponentRef[],
+        components,
+        cachedAnswers
+      );
+      expect(service['handleDisplayOn'])
+        .toBeCalledWith(components[0], components[0].attrs.ref[0] as CustomComponentRef[], cachedAnswers.s2.value);
+    });
+
+    it('shouldn\'t call handleDisplayOn', () => {
+      spyOn<any>(service, 'handleDisplayOn').and.callThrough();
+      components[0].attrs.ref = [];
+      service['handleCustomComponentRef'](
+        components[0],
+        components[0].attrs.ref as CustomComponentRef[],
+        components,
+        cachedAnswers
+      );
+      expect(service['handleDisplayOn']).not.toBeCalled();
     });
   });
 
-  describe('hideComponent()', () => {
+  describe('handleDisplayOff()', () => {
     const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: 'v3' };
     const prepareRef = () => {
       components[0].attrs.ref = [
@@ -497,23 +525,16 @@ describe('PrepareComponentsService', () => {
       };
     };
 
-    it('shouldn\'t set hidden if cachedAnswers hasn\'t component', () => {
-      prepareRef();
-      cachedAnswers = {};
-      service['hideComponent'](components[0], relation, cachedAnswers);
-      expect(components[0].attrs.hidden).toBeFalsy();
-    });
-
     it('shouldn\'t set hidden if value in cachedAnswers not equal', () => {
       prepareRef();
       cachedAnswers.s2.value = 'v42';
-      service['hideComponent'](components[0], relation, cachedAnswers);
+      service['handleDisplayOff'](components[0], relation, cachedAnswers.s2.value);
       expect(components[0].attrs.hidden).toBeFalsy();
     });
 
     it('should set hidden if value in cachedAnswers is equal', () => {
       prepareRef();
-      service['hideComponent'](components[0], relation, cachedAnswers);
+      service['handleDisplayOff'](components[0], relation, cachedAnswers.s2.value);
       expect(components[0].attrs.hidden).toBeTruthy();
     });
   });

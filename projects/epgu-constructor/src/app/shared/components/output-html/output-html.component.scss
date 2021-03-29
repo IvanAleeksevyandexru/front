@@ -49,36 +49,43 @@
   }
 
   ol li {
-    padding-left: 18px;
+    padding-left: 24px;
     position: relative;
 
-    &::before {
+    &::after {
       counter-increment: number;
       content: counter(number) '.';
       color: $color-blu-digitale;
-      font-weight: $fw-bold;
       position: absolute;
-      left: 0;
+      left: 3px;
+      top: 0;
     }
   }
 
   ul li {
-    padding-left: 16px;
+    padding-left: 24px;
+    position: relative;
 
-    &::before {
+    &::after {
       color: $color-blu-digitale;
       content: '•';
       display: inline-block;
       font-weight: 900;
-      margin-left: -1em;
       width: 1em;
       vertical-align: top;
       font-size: 17px;
+      position: absolute;
+      left: 3px;
+      top: 0;
+    }
+
+    .block--description {
+      margin-left: -24px;
     }
   }
 
-  ul li > ul,
-  ol li > ul {
+  ul li ul,
+  ol li ul {
     margin: 12px 0 0 0;
 
     li {
@@ -87,22 +94,25 @@
       &:first-letter {
         text-transform: lowercase;
       }
-    }
-  }
 
-  ul li > ul li {
-    &::before {
-      content: '—';
-      margin-left: -1.2em;
-      width: 1.2em;
+      &::after {
+        content: ' ';
+        position: absolute;
+        top: 11px;
+        left: 0;
+        display: inline-block;
+        vertical-align: middle;
+        width: 8px;
+        height: 2px;
+        border-radius: 1px;
+        background-color: $color-blu-digitale;
+      }
     }
   }
 
   ol li > ul li {
-    &::before {
+    &::after {
       counter-increment: inherit;
-      content: '—';
-      margin-left: 0;
     }
   }
 

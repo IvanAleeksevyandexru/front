@@ -28,15 +28,18 @@ export class ActionDirective {
   }
 
   @HostListener('click') onClick(): void {
-    this.actionService.switchAction(this.action, this.componentId);
+    if (this.action) {
+      this.actionService.switchAction(this.action, this.componentId);
+    }
   }
 
   canSwitchActionAfterKeyDown(event: KeyboardEvent, target: HTMLButtonElement): boolean {
     return (
       event.key === 'Enter' &&
-      this.action.type === ActionType.nextStep &&
+      this.action?.type === ActionType.nextStep &&
       !target.classList.contains('multiline-input') &&
-      target?.name !== 'prev'
+      target?.name !== 'prev' &&
+      target.nodeName !== 'A'
     );
   }
 }

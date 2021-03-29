@@ -7,6 +7,7 @@
     "start": "ng serve --host 0.0.0.0 --disable-host-check",
     "start:stage": "ng serve --configuration staging",
     "start:backend": "java -jar pgu-form-service-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
+    "start:backend:local": "java -jar ./fs-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --spring.profiles.active=local",
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
     "build": "ng build --configuration production",
     "lib:build": "ng build epgu-constructor --prod",
@@ -82,9 +83,11 @@
     "postcss": "^8.2.4",
     "ru-validation-codes": "2.8.0",
     "rxjs": "6.6.6",
-    "tslib": "2.0.0",
+    "tslib": "2.1.0",
     "uuid": "8.3.0",
     "web-animations-js": "^2.3.2",
+    "zipkin": "^0.22.0",
+    "zipkin-transport-http": "^0.22.0",
     "zone.js": "0.10.2"
   },
   "devDependencies": {

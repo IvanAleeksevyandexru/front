@@ -62,8 +62,10 @@ describe('MatPeriodContainerComponent', () => {
       description: {
         balanceLabel: '',
         durationLabel: '',
+        balanceError: 'error',
       },
       fields: mockComponents as any,
+      maxTotalBalance: 100,
     },
     value: '',
   };
@@ -98,7 +100,7 @@ describe('MatPeriodContainerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatPeriodContainerComponent);
     screenService = TestBed.inject(ScreenService);
-    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData));
+    screenService.component = mockData as any;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -149,6 +151,11 @@ describe('MatPeriodContainerComponent', () => {
       component.updateState(data);
       expect(component.balanceAmount).toBe(4.22);
       expect(component.durationAmount).toBe(2);
+    });
+
+    it('should be update isValidBalanceAmount', () => {
+      component.updateState(data);
+      expect(component.isValidBalanceAmount).toBeTruthy();
     });
   });
 

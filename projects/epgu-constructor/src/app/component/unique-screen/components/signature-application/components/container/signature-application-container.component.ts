@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angul
 import { Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import {
@@ -11,9 +10,12 @@ import {
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../modal/modal.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenStore } from '../../../../../../screen/screen.types';
+import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { SignatureApplicationData } from '../../models/application.interface';
 
 @Component({
@@ -25,7 +27,6 @@ import { SignatureApplicationData } from '../../models/application.interface';
 export class SignatureApplicationContainerComponent implements OnInit {
   data: SignatureApplicationData = this.screenService.componentValue as SignatureApplicationData;
   error: string = this.screenService.componentError;
-
   isMobile = this.deviceDetector.isMobile;
   showNav$: Observable<boolean> = this.screenService.showNav$;
   header$: Observable<string> = this.screenService.header$;
@@ -33,14 +34,17 @@ export class SignatureApplicationContainerComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   actions$: Observable<ComponentActionDto[]> = this.screenService.actions$;
 
+  private nextStepAction = NEXT_STEP_ACTION;
+
   constructor(
     public config: ConfigService,
     public screenService: ScreenService,
     private deviceDetector: DeviceDetectorService,
     private localStorageService: LocalStorageService,
     private locationService: LocationService,
-    private eventBusService: EventBusService,
     private modalService: ModalService,
+    private actionService: ActionService,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   @HostListener('click', ['$event'])
@@ -82,7 +86,8 @@ export class SignatureApplicationContainerComponent implements OnInit {
   }
 
   private nextStep(): void {
-    this.eventBusService.emit('nextStepEvent', JSON.stringify({ ...this.data, success: true }));
+    this.currentAnswersService.state = { ...this.data, success: true };
+    this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
   }
 
   private init(): void {

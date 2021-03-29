@@ -19,7 +19,7 @@ import {
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenTypes } from '../../../../screen/screen.types';
-import { isEqualObj } from '../../../../shared/constants/uttils';
+import { isEqualObj } from '../../../../shared/constants/utils';
 import {
   CustomComponent,
   CustomComponentOutputData,
@@ -42,6 +42,7 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
+  canDeleteFirstScreen: boolean;
   componentValidation: Array<boolean> = [];
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -62,8 +63,8 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   init$: Observable<DisplayDto> = this.screenService.display$.pipe(
     filter((data) => data.type === ScreenTypes.UNIQUE),
     tap((data: DisplayDto) => {
-      this.initVariable();
       this.propData = data;
+      this.initVariable();
       this.duplicateScreen();
     }),
   );
@@ -165,21 +166,20 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  private duplicateScreen(isNew?: boolean): void {
+  private duplicateScreen(isDuplicate?: boolean): void {
     const isScreensAvailable = this.isScreensAvailable();
     const { attrs } = this.propData.components[0];
 
-    const notFirstScreenComponents = (components: unknown[]): CustomComponent[] =>
-      (components as CustomComponent[]).filter(({ attrs: cmpAttrs }) => !cmpAttrs.onlyFirstScreen);
+    const getScreenComponents = (components: unknown[], isFirst: boolean): CustomComponent[] =>
+      (components as CustomComponent[]).filter(({ attrs: { onlyFirstScreen = isFirst } }) =>
+        isFirst ? onlyFirstScreen : !onlyFirstScreen,
+      );
 
-    const getScreenComponents = (components: unknown[], index: number): unknown[] =>
-      index > 0 ? notFirstScreenComponents(components) : components;
-
-    if (isScreensAvailable && isNew) {
-      this.setNewScreen(notFirstScreenComponents(attrs.components));
+    if (isScreensAvailable && isDuplicate) {
+      this.setNewScreen(getScreenComponents(attrs.components, false));
     } else if (isScreensAvailable) {
       attrs.repeatableComponents.forEach((component, i) => {
-        this.setNewScreen(getScreenComponents(component, i) as CustomComponent[]);
+        this.setNewScreen(getScreenComponents(component, i < 1) as CustomComponent[]);
       });
     }
   }
@@ -198,5 +198,7 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
     this.screens = {};
     this.componentId = 0;
     this.saveState([]);
+    const { canDeleteFirstScreen = true } = this.propData.components[0].attrs;
+    this.canDeleteFirstScreen = canDeleteFirstScreen;
   }
 }

@@ -9,6 +9,7 @@ import {
 
 import { BehaviorSubject } from 'rxjs';
 
+import { SmuEventsService } from 'epgu-lib';
 import {
   FileItem,
   FileItemStatus,
@@ -17,6 +18,9 @@ import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../da
 import { ZoomComponent } from '../../../zoom/zoom.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ZoomEvent } from '../../../zoom/typings';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { createDownloadEvent } from '../../../../constants/redirect-event';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
@@ -55,7 +59,12 @@ export class UploaderViewerContentComponent {
   isError = false;
   baseFileTypeIconPath = `${this.basePath}file-types/`;
 
-  constructor(private config: ConfigService) {}
+  constructor(
+    private config: ConfigService,
+    private smu: SmuEventsService,
+    private deviceDetector: DeviceDetectorService,
+    private teraService: TerraByteApiService,
+  ) {}
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);
@@ -92,7 +101,13 @@ export class UploaderViewerContentComponent {
   }
 
   downloadAction(): void {
-    this.download.emit(this.item);
+    if (this.deviceDetector.isWebView) {
+      this.smu.notify(
+        createDownloadEvent(this.teraService.getDownloadApiPath(this.item.createUploadedParams())),
+      );
+    } else {
+      this.download.emit(this.item);
+    }
   }
 
   nextAction(): void {

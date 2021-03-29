@@ -64,9 +64,9 @@ export class RegistrationAddrComponent implements OnInit {
 
   initFormGroup(data: IRegistrationAddrComponent): void {
     const controls = {};
-    const initData = JSON.parse(data?.value || '{}');
+    const initData = JSON.parse(data.value || '{}');
 
-    data?.attrs?.fields.forEach((field) => {
+    data.attrs?.fields.forEach((field) => {
       const formControlValue = this.getInitFormValue(initData, field.fieldName);
       controls[field.fieldName] = this.fb.control(
         { value: formControlValue, disabled: field.disabled },

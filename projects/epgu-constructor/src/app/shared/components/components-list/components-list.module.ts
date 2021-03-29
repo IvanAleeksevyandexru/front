@@ -19,18 +19,37 @@ import { CurrencyModule } from '../../directives/currency/currency.module';
 import { ConstructorDatePickerModule } from '../constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../base.module';
 import { DateRangeService } from '../../services/date-range/date-range.service';
-import {
-  ConstructorMultilineInputModule
-} from '../constructor-multiline-input/constructor-multiline-input.module';
+import { ConstructorMultilineInputModule } from '../constructor-multiline-input/constructor-multiline-input.module';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { MultipleChoiceDictionaryModule } from '../multiple-choice-dictionary/multiple-choice-dictionary.module';
 import { DocInputModule } from '../doc-input/doc-input.module';
 import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
+import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
+import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
+import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
+import { TextAreaComponent } from './components/text-area/text-area.component';
+import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
+import { DateInputComponent } from './components/date-input/date-input.component';
+import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
+import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
+import { PassportLookupComponent } from './components/passport-lookup/passport-lookup.component';
+import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
 
 @NgModule({
-  declarations: [ComponentsListComponent, ShowComponentPipe],
+  declarations: [
+    ComponentsListComponent,
+    ShowComponentPipe,
+    MaskedAndPlainInputComponent,
+    FormOutputHtmlComponent,
+    DateInputComponent,
+    MvdGiacLookupComponent,
+    TextAreaComponent,
+    PassportLookupComponent,
+    FormMultiChoiceDictionaryComponent,
+    CheckboxInputComponent,
+  ],
   exports: [ComponentsListComponent],
   imports: [
     BaseModule,
@@ -52,6 +71,8 @@ import { ShowComponentPipe } from './show-component/show-component.pipe';
     MultipleChoiceDictionaryModule,
     ComponentItemModule,
     DocInputModule,
+    CheckboxListModule,
+    DropDownDeptsModule,
   ],
   providers: [
     ValidationService,

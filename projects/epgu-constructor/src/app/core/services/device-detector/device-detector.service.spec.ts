@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LoadService, SmuEventsService } from 'epgu-lib';
+import { CookieService, LoadService, SmuEventsService } from 'epgu-lib';
 import { LoadServiceStub } from '../config/load-service-stub';
 import { DeviceDetectorService } from './device-detector.service';
 import { SmuEventsServiceStub } from './smu-events.service.stub';
@@ -10,18 +10,21 @@ describe('DeviceDetectorService', () => {
   let loadService: LoadServiceStub;
   let smuEventsService: SmuEventsService;
   let userAgent: jest.SpyInstance;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
-        { provide: SmuEventsService, useClass: SmuEventsServiceStub },
+        CookieService,
+        SmuEventsService
       ],
     });
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     loadService = TestBed.inject(LoadService);
     smuEventsService = TestBed.inject(SmuEventsService);
+    cookieService = TestBed.inject(CookieService);
     userAgent = jest.spyOn(window.navigator, 'userAgent', 'get');
   });
 

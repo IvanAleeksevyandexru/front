@@ -5,8 +5,11 @@ import {
   DictionaryItem,
   DictionaryOptions,
   DictionaryResponse,
+  DictionarySimpleFilter,
+  DictionaryUnionFilter,
   DictionaryUnionKind,
   DictionaryValue,
+  DictionaryValueTypes,
 } from './dictionary-api.types';
 import { ListElement, ListItem } from 'epgu-lib/lib/models/dropdown.model';
 import {
@@ -23,10 +26,14 @@ import {
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
-import { ComponentDictionaryFilters, ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { ComponentDictionaryFilters } from '../components-list-relations/components-list-relations.interface';
+import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
-import { CachedAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  CachedAnswersDto,
+  ComponentDictionaryFilterDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -54,7 +61,9 @@ export class DictionaryToolsService {
     private componentsListRelationsService: ComponentsListRelationsService,
   ) {}
 
-  public watchForFilters(components: Array<CustomComponent>): Observable<CustomListReferenceData[]> {
+  public watchForFilters(
+    components: Array<CustomComponent>,
+  ): Observable<CustomListReferenceData[]> {
     return this.componentsListRelationsService.filters$.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
         return forkJoin(
@@ -69,7 +78,11 @@ export class DictionaryToolsService {
     );
   }
 
-  public loadReferenceData$(components: Array<CustomComponent>, cachedAnswers: CachedAnswersDto): Observable<CustomListReferenceData[]> {
+  public loadReferenceData$(
+    components: Array<CustomComponent>,
+    cachedAnswers: CachedAnswersDto,
+    screenStore: ScreenStore,
+  ): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
     components.forEach((component: CustomComponent) => {
       if (this.isDropdownLike(component.type)) {
@@ -77,9 +90,14 @@ export class DictionaryToolsService {
       }
 
       if (this.isDictionaryLike(component.type)) {
-        const { dictionaryType, dictionaryOptions } = component.attrs;
-        const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
-        data.push(this.getDictionaries$(dictionaryType, component, options));
+        if (component.type === CustomScreenComponentTypes.DropDownDepts) {
+          data.push(this.getDropDownDepts$(component, screenStore));
+        } else {
+          const { dictionaryType, dictionaryOptions = null } = component.attrs;
+          const options = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+
+          data.push(this.getDictionaries$(dictionaryType, component, options));
+        }
       }
     });
 
@@ -124,6 +142,38 @@ export class DictionaryToolsService {
     );
   }
 
+  public getDropDownDepts$(
+    component: CustomComponent,
+    screenStore: ScreenStore,
+  ): Observable<CustomListGenericData<DictionaryResponse>> {
+    const { dictionaryType, dictionaryFilter, repeatWithNoFilters } = component.attrs;
+    const firstQueryOptions: DictionaryOptions = dictionaryFilter
+      ? this.prepareOptions(component, screenStore, dictionaryFilter)
+      : { pageNum: 0 };
+
+    return this.getDictionaries$(dictionaryType, component, firstQueryOptions).pipe(
+      concatMap((value: CustomListGenericData<DictionaryResponse>) => {
+        if (value.data.items.length === 0 && repeatWithNoFilters) {
+          const { secondaryDictionaryFilter } = component.attrs;
+          const secondQueryOptions: DictionaryOptions = this.prepareOptions(
+            component,
+            screenStore,
+            secondaryDictionaryFilter,
+          );
+
+          return this.getDictionaries$(dictionaryType, component, secondQueryOptions).pipe(
+            map((value: CustomListGenericData<DictionaryResponse>) => ({
+              ...value,
+              meta: { repeatedWithNoFilters: true },
+            })),
+          );
+        }
+
+        return of({ ...value, meta: { repeatedWithNoFilters: false }});
+      }),
+    );
+  }
+
   public initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
     const dictionaries = this.dictionaries;
     const id = utils.getDictKeyByComp(reference.component);
@@ -134,8 +184,39 @@ export class DictionaryToolsService {
     dictionaries[id].data = reference.data;
     dictionaries[id].origin = reference.component;
     dictionaries[id].list = this.adaptDictionaryToListItem(reference.data.items);
+    dictionaries[id].repeatedWithNoFilters = reference?.meta?.repeatedWithNoFilters;
 
     this.dictionaries$.next(dictionaries);
+  }
+
+  public prepareSimpleFilter(
+    componentValue: ComponentValue,
+    screenStore: ScreenStore,
+    dFilter: IdictionaryFilter,
+  ): { simple: DictionarySimpleFilter } {
+    return {
+      simple: {
+        attributeName: dFilter.attributeName,
+        condition: dFilter.condition,
+        value: this.getValueForFilter(componentValue, screenStore, dFilter),
+      },
+    };
+  }
+
+  public prepareUnionFilter(
+    componentValue: ComponentValue,
+    screenStore: ScreenStore,
+    dictionaryFilters?: Array<IdictionaryFilter>,
+  ): { union: DictionaryUnionFilter } {
+    const filters = dictionaryFilters.map((dFilter: IdictionaryFilter) =>
+      this.prepareSimpleFilter(componentValue, screenStore, dFilter),
+    );
+    return {
+      union: {
+        unionKind: DictionaryUnionKind.AND,
+        subs: filters,
+      },
+    };
   }
 
   /**
@@ -149,23 +230,12 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dictionaryFilters?: Array<IdictionaryFilter>,
   ): DictionaryFilters {
-    const filters = dictionaryFilters.map((dFilter: IdictionaryFilter) => {
-      return {
-        simple: {
-          attributeName: dFilter.attributeName,
-          condition: dFilter.condition,
-          value: this.getValueForFilter(componentValue, screenStore, dFilter),
-        },
-      };
-    });
-    return {
-      filter: {
-        union: {
-          unionKind: DictionaryUnionKind.AND,
-          subs: filters,
-        },
-      },
-    };
+    const filter =
+      dictionaryFilters?.length === 1
+        ? this.prepareSimpleFilter(componentValue, screenStore, dictionaryFilters[0])
+        : this.prepareUnionFilter(componentValue, screenStore, dictionaryFilters);
+
+    return { filter };
   }
 
   /**
@@ -195,15 +265,39 @@ export class DictionaryToolsService {
   }
 
   public isDictionaryLike(type: CustomScreenComponentTypes): boolean {
-    return (
-      CustomScreenComponentTypes.Dictionary === type || CustomScreenComponentTypes.Lookup === type
-    );
+    return [
+      CustomScreenComponentTypes.Dictionary,
+      CustomScreenComponentTypes.DropDownDepts,
+      CustomScreenComponentTypes.Lookup,
+    ].includes(type);
   }
 
   public isDropdownLike(type: CustomScreenComponentTypes): boolean {
     return (
       type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac
     );
+  }
+
+  private prepareOptions(
+    component: CustomComponent,
+    screenStore: ScreenStore,
+    dictionaryFilter: Array<ComponentDictionaryFilterDto>,
+  ): DictionaryOptions {
+    let componentValue: ComponentValue;
+    try {
+      componentValue = JSON.parse(component.value || '{}');
+    } catch (err) {
+      componentValue = {};
+    }
+
+    if (!dictionaryFilter || dictionaryFilter.length === 0) {
+      return { pageNum: 0 };
+    }
+
+    return {
+      filter: this.getFilterOptions(componentValue, screenStore, dictionaryFilter).filter,
+      pageNum: 0,
+    };
   }
 
   private initDataAfterLoading(references: Array<CustomListReferenceData>): void {
@@ -237,7 +331,10 @@ export class DictionaryToolsService {
     });
   }
 
-  private loadCycledDropdown(itemComponent: CustomComponent, cachedAnswers: CachedAnswersDto): Partial<ListItem>[] {
+  private loadCycledDropdown(
+    itemComponent: CustomComponent,
+    cachedAnswers: CachedAnswersDto,
+  ): Partial<ListItem>[] {
     if (!itemComponent?.attrs?.add) {
       return [];
     }
@@ -320,7 +417,6 @@ export class DictionaryToolsService {
     return data;
   }
 
-
   /**
    * Получение значение для фильтра dictionary
    * @param componentValue значение value пришедшение с бэкэнда
@@ -332,11 +428,15 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dFilter: IdictionaryFilter,
   ): DictionaryValue {
-    const filterTypes = {
-      value: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
-      preset: (dFilter): DictionaryValue => ({ asString: componentValue[dFilter.value] as string }),
-      root: (dFilter): DictionaryValue => ({ asString: screenStore[dFilter.value] }),
-      ref: (dFilter): DictionaryValue => ({
+    const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
+      [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
+      [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({
+        asString: componentValue[dFilter.value] as string,
+      }),
+      [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
+        asString: screenStore[dFilter.value],
+      }),
+      [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
         asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
       }),
     };

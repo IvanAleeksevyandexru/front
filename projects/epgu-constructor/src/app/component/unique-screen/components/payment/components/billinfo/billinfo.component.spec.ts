@@ -4,15 +4,26 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
+import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
+import { LoggerService } from '../../../../../../core/services/logger/logger.service';
+import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
+import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
+import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
 
@@ -48,6 +59,17 @@ describe('BillInfoComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
         DatesToolsService,
+        ActionService,
+        FormPlayerApiService,
+        InitDataService,
+        LoggerService,
+        NavigationService,
+        NavigationModalService,
+        DeviceDetectorService,
+        UtilsService,
+        HtmlRemoverService,
+        AutocompleteApiService,
+        ModalService,
       ],
     }).compileComponents();
     screenService = TestBed.inject(ScreenService);
