@@ -21,10 +21,10 @@ export class AbstractComponentListItemDirective implements OnInit {
     this.formService = this.injector.get(ComponentsListFormService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.cdr = this.injector.get(ChangeDetectorRef);
-    this.control = this.formService.form.controls[this.componentIndex];
   }
 
   ngOnInit(): void {
+    this.control = this.formService.form.controls[this.componentIndex];
     merge(this.control.statusChanges, this.control.valueChanges)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
