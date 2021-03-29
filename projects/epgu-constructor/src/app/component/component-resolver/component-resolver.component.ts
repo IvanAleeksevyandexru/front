@@ -12,7 +12,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
-import { asyncScheduler } from 'rxjs/internal/scheduler/async';
+import { asyncScheduler } from 'rxjs';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../screen/screen.service';
 import {

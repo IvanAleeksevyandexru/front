@@ -10,7 +10,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { subscribeOn, takeUntil, tap } from 'rxjs/operators';
-import { asyncScheduler } from 'rxjs/internal/scheduler/async';
+import { asyncScheduler } from 'rxjs';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
