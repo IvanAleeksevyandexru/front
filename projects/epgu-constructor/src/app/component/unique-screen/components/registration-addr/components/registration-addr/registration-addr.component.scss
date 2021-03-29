@@ -26,10 +26,14 @@ $item-hint-mx: 13px;
       background: $color-hawkes-blue;
     }
   }
+
+  &__helper-text {
+    display: block;
+    margin-top: 8px;
+  }
 }
 
-.item:not(:last-child),
-.form {
+.item:not(:last-child) {
   margin-bottom: 20px;
 }
 
