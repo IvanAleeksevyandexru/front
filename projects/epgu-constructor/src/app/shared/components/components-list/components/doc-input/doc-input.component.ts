@@ -15,7 +15,7 @@ import {
 import { prepareClassifiedSuggestionItems } from '../../../../../core/services/autocomplete/autocomplete.const';
 import { SuggestHandlerService } from '../../../../services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { AbstractComponentListItemDirective } from '../abstract-component-list-item/abstract-component-list-item.directive';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -24,7 +24,7 @@ import { AbstractComponentListItemDirective } from '../abstract-component-list-i
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class DocInputComponent extends AbstractComponentListItemDirective
+export class DocInputComponent extends AbstractComponentListItemComponent
   implements OnInit, AfterViewInit {
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;

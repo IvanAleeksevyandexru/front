@@ -3,7 +3,7 @@ import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { DateRangeService } from '../../../../services/date-range/date-range.service';
 import { DateRangeAttrs } from '../../../../services/date-range/date-range.models';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { AbstractComponentListItemDirective } from '../abstract-component-list-item/abstract-component-list-item.directive';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-date-input',
@@ -11,7 +11,7 @@ import { AbstractComponentListItemDirective } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class DateInputComponent extends AbstractComponentListItemDirective {
+export class DateInputComponent extends AbstractComponentListItemComponent {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   minDateDefault = '-120y';
   maxDateDefault = '+50y';

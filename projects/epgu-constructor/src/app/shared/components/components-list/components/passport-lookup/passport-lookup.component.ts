@@ -5,7 +5,7 @@ import { ISuggestionItem } from '../../../../../core/services/autocomplete/autoc
 import { SuggestHandlerService } from '../../../../services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { AbstractComponentListItemDirective } from '../abstract-component-list-item/abstract-component-list-item.directive';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-passport-lookup',
@@ -13,7 +13,7 @@ import { AbstractComponentListItemDirective } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class PassportLookupComponent extends AbstractComponentListItemDirective {
+export class PassportLookupComponent extends AbstractComponentListItemComponent {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return suggestions[this.control.value?.id];

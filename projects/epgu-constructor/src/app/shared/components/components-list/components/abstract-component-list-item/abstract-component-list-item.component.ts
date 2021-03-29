@@ -1,14 +1,14 @@
-import { ChangeDetectorRef, Directive, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 
-@Directive({
-  selector: 'epgu-constructor-abstract-component-list-item'
+@Component({
+  template: '',
 })
-export class AbstractComponentListItemDirective implements OnInit {
+export class AbstractComponentListItemComponent implements OnInit {
   @Input() componentIndex;
   @Input() componentsGroupIndex;
 

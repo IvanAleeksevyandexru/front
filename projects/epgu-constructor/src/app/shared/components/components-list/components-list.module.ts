@@ -42,12 +42,12 @@ import { TimerItemComponent } from './components/timer-item/timer-item.component
 import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
 import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.component';
-import { AbstractComponentListItemDirective } from './components/abstract-component-list-item/abstract-component-list-item.directive';
+import { AbstractComponentListItemComponent } from './components/abstract-component-list-item/abstract-component-list-item.component';
 
 @NgModule({
   declarations: [
     ComponentsListComponent,
-    AbstractComponentListItemDirective,
+    AbstractComponentListItemComponent,
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
