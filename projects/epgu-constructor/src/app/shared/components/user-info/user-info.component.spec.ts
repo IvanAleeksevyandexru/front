@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserInfoComponent } from './user-info.component';
 import { AgeType, Gender, UserInfoType } from './user-info.type';
 import { ConfigService } from '../../../core/services/config/config.service';
+import { UtilsService } from '../../../core/services/utils/utils.service';
+
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 
 describe('UserInfoComponent', () => {
@@ -17,7 +19,7 @@ describe('UserInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserInfoComponent],
-      providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
+      providers: [UtilsService, { provide: ConfigService, useClass: ConfigServiceStub }],
     }).compileComponents();
   }));
 
