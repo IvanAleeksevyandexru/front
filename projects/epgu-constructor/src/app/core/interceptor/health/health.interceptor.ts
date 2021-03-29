@@ -31,6 +31,9 @@ export interface ConfigParams {
   error?: string;
   errorMessage?: string;
   dictionaryUrl?: string;
+  isEmpty?: boolean;
+  region?: number;
+  regdictname?: string;
 }
 
 export enum RequestStatus {
@@ -41,6 +44,7 @@ export enum RequestStatus {
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   private configParams: ConfigParams = {} as ConfigParams;
+  private lastUtlPart: string = null;
 
   constructor(private health: HealthService, private utils: UtilsService) {}
 
@@ -49,6 +53,7 @@ export class HealthInterceptor implements HttpInterceptor {
     let serviceName = '';
 
     if (this.isValid(req)) {
+      this.lastUtlPart = this.utils.getSplittedUrl(req['url']).slice(-1)[0];
       serviceName = this.utils.getServiceName(req['url']);
       serviceName = serviceName === 'scenarioGetNextStepService' ? RENDER_FORM_SERVICE_NAME : serviceName;
       this.startMeasureHealth(serviceName);
@@ -69,15 +74,35 @@ export class HealthInterceptor implements HttpInterceptor {
           );
 
           if (validationStatus) {
-            const { scenarioDto } = result;
+            let isEmpty = null;
+            let region = null;
+            let regdictname = null;
+
+            const { scenarioDto, serviceInfo } = result;
             const orderId = this.utils.isValidOrderId(scenarioDto.orderId)
             ? scenarioDto.orderId
             : result.callBackOrderId;
+
+            if (
+              this.utils.isDefined(serviceInfo) &&
+              this.utils.isDefined(serviceInfo.userRegion) &&
+              this.utils.isDefined(serviceInfo.userRegion.codes)
+            ) {
+              region = serviceInfo.userRegion.codes[0];
+            }
+
+            if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
+              isEmpty = result.total <= 0;
+              regdictname = this.lastUtlPart;
+            }
 
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
               orderId,
+              region,
+              regdictname,
+              isEmpty,
             };
           }
 
@@ -103,10 +128,16 @@ export class HealthInterceptor implements HttpInterceptor {
               orderId,
               error,
               errorMessage,
+              region,
+              isEmpty,
+              regdictname,
             } = this.configParams;
             successRequestPayload = {
               id,
               name,
+              region,
+              isEmpty,
+              regdictname,
               orderId,
               error,
               errorMessage,
