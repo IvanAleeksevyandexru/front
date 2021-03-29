@@ -50,8 +50,8 @@ describe('PrepareComponentsService', () => {
 
   beforeEach(() => {
     components = [
-      { id: 'a1', type: 'HtmlString', attrs: {} },
-      { id: 'a2', type: 'HtmlString', attrs: {} },
+      { id: 'a1', type: 'HtmlString', attrs: {}},
+      { id: 'a2', type: 'HtmlString', attrs: {}},
     ];
     cachedAnswers = {};
   });
@@ -65,7 +65,7 @@ describe('PrepareComponentsService', () => {
 
     it('should call hideComponents with component returned from loadValueFromCachedAnswer method', () => {
       const loadedValueComponents = [
-        { id: 'a1', type: 'HtmlString', attrs: {} },
+        { id: 'a1', type: 'HtmlString', attrs: {}},
         { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
       ];
       spyOn<any>(service, 'loadValueFromCachedAnswer').and.returnValue(loadedValueComponents);
@@ -79,7 +79,7 @@ describe('PrepareComponentsService', () => {
 
     it('should return components that was returned from handleRelatedRelComponents method', () => {
       const relatedRelComponents = [
-        { id: 'a1', type: 'HtmlString', attrs: { hidden: true } },
+        { id: 'a1', type: 'HtmlString', attrs: { hidden: true }},
         { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
       ];
       spyOn<any>(service, 'handleRelatedRelComponents').and.returnValue(relatedRelComponents);
@@ -418,7 +418,7 @@ describe('PrepareComponentsService', () => {
       expect(service['handleCustomComponentRef']).toBeCalledTimes(1);
     });
 
-    it("shouldn't call handleRelatedRelComponents", () => {
+    it('shouldn\'t call handleRelatedRelComponents', () => {
       spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
       service['handleRelatedRelComponents'](components, cachedAnswers);
       expect(service['handleCustomComponentRef']).toBeCalledTimes(0);
@@ -492,7 +492,7 @@ describe('PrepareComponentsService', () => {
       );
     });
 
-    it("shouldn't call handleDisplayOff", () => {
+    it('shouldn\'t call handleDisplayOff', () => {
       spyOn<any>(service, 'handleDisplayOff').and.callThrough();
       components[0].attrs.ref = [];
       service['handleCustomComponentRef'](
@@ -521,7 +521,7 @@ describe('PrepareComponentsService', () => {
       );
     });
 
-    it("shouldn't call handleDisplayOn", () => {
+    it('shouldn\'t call handleDisplayOn', () => {
       spyOn<any>(service, 'handleDisplayOn').and.callThrough();
       components[0].attrs.ref = [];
       service['handleCustomComponentRef'](
@@ -550,7 +550,7 @@ describe('PrepareComponentsService', () => {
       };
     };
 
-    it("shouldn't set hidden if value in cachedAnswers not equal", () => {
+    it('shouldn\'t set hidden if value in cachedAnswers not equal', () => {
       prepareRef();
       cachedAnswers.s2.value = 'v42';
       service['handleDisplayOff'](components[0], relation, cachedAnswers.s2.value);
