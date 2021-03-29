@@ -22,33 +22,43 @@ import { DateRangeService } from '../../services/date-range/date-range.service';
 import { ConstructorMultilineInputModule } from '../constructor-multiline-input/constructor-multiline-input.module';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { MultipleChoiceDictionaryModule } from '../multiple-choice-dictionary/multiple-choice-dictionary.module';
-import { DocInputModule } from '../doc-input/doc-input.module';
+import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
-import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
+import { CheckboxListModule } from './components/checkbox-list/checkbox-list.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
 import { DateInputComponent } from './components/date-input/date-input.component';
-import { FormMultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/form-multi-choice-dictionary.component';
+import { MultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 import { PassportLookupComponent } from './components/passport-lookup/passport-lookup.component';
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
+import { ComponentResolverModule } from '../../../component/component-resolver/component-resolver.module';
+import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
+import { TimerItemComponent } from './components/timer-item/timer-item.component';
+import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
+import { DocInputComponent } from './components/doc-input/doc-input.component';
+import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.component';
+import { AbstractComponentListItemComponent } from './components/abstract-component-list-item/abstract-component-list-item.component';
 
 @NgModule({
   declarations: [
     ComponentsListComponent,
+    AbstractComponentListItemComponent,
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
     DateInputComponent,
     MvdGiacLookupComponent,
     TextAreaComponent,
+    MultiChoiceDictionaryComponent,
     PassportLookupComponent,
-    FormMultiChoiceDictionaryComponent,
     CheckboxInputComponent,
+    TimerItemComponent,
+    FieldListItemComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -73,6 +83,7 @@ import { CheckboxInputComponent } from './components/checkbox-input/checkbox-inp
     DocInputModule,
     CheckboxListModule,
     DropDownDeptsModule,
+    ComponentResolverModule,
   ],
   providers: [
     ValidationService,
@@ -81,6 +92,21 @@ import { CheckboxInputComponent } from './components/checkbox-input/checkbox-inp
     ComponentsListRelationsService,
     DictionaryApiService,
     DateRangeService,
+    SuggestHandlerService,
+  ],
+  entryComponents: [
+    MaskedAndPlainInputComponent,
+    FormOutputHtmlComponent,
+    MvdGiacLookupComponent,
+    DateInputComponent,
+    TextAreaComponent,
+    TimerItemComponent,
+    DocInputComponent,
+    FieldListItemComponent,
+    MultiChoiceDictionaryComponent,
+    CheckboxListComponent,
+    CheckboxInputComponent,
+    PassportLookupComponent,
   ],
 })
 export class ComponentsListModule {}
