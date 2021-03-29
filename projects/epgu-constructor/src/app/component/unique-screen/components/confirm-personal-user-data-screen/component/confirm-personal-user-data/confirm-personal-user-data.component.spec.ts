@@ -22,7 +22,7 @@ import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
-import {ActionDirective} from "../../../../../../shared/directives/action/action.directive";
+import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 
 const componentMock: ConfirmUserData = {
   attrs: {
