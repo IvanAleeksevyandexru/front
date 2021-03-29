@@ -1,19 +1,30 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import {
-  ISuggestionItem,
-  ISuggestionItemList,
-} from '../../../../../core/services/autocomplete/autocomplete.inteface';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
+import { ISuggestionItem } from '../../../../../core/services/autocomplete/autocomplete.inteface';
+import { SuggestHandlerService } from '../../../../services/suggest-handler/suggest-handler.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-passport-lookup',
   templateUrl: './passport-lookup.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
-export class PassportLookupComponent {
-  @Input() control: FormGroup | AbstractControl;
-  @Input() suggestions: ISuggestionItem;
-  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
-    ISuggestionItem | ISuggestionItemList
-  >();
+export class PassportLookupComponent extends AbstractComponentListItemComponent {
+  suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
+    map((suggestions) => {
+      return suggestions[this.control.value?.id];
+    }),
+  );
+
+  constructor(
+    public suggestHandlerService: SuggestHandlerService,
+    public screenService: ScreenService,
+    public injector: Injector,
+  ) {
+    super(injector);
+  }
 }

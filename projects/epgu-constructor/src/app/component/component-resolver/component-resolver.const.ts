@@ -44,12 +44,26 @@ import { CheckboxCubeContainerComponent } from '../unique-screen/components/chec
 import { MatPeriodContainerComponent } from '../unique-screen/components/mat-period/mat-period-container/mat-period-container.component';
 // eslint-disable-next-line max-len
 import { DateTimePeriodContainerComponent } from '../unique-screen/components/date-time-period/components/date-time-period-container/date-time-period-container.component';
+// eslint-disable-next-line max-len
+import { MaskedAndPlainInputComponent } from '../../shared/components/components-list/components/masked-and-plain-input/masked-and-plain-input.component';
+import { FormOutputHtmlComponent } from '../../shared/components/components-list/components/form-output-html/form-output-html.component';
+import { CustomScreenComponentTypes } from '../../shared/components/components-list/components-list.types';
+import { MvdGiacLookupComponent } from '../../shared/components/components-list/components/mvd-giac-lookup/mvd-giac-lookup.component';
+import { DateInputComponent } from '../../shared/components/components-list/components/date-input/date-input.component';
+import { TextAreaComponent } from '../../shared/components/components-list/components/text-area/text-area.component';
+import { DocInputComponent } from '../../shared/components/components-list/components/doc-input/doc-input.component';
+// eslint-disable-next-line max-len
+import { MultiChoiceDictionaryComponent } from '../../shared/components/components-list/components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
+import { CheckboxListComponent } from '../../shared/components/components-list/components/checkbox-list/checkbox-list.component';
+import { CheckboxInputComponent } from '../../shared/components/components-list/components/checkbox-input/checkbox-input.component';
+import { PassportLookupComponent } from '../../shared/components/components-list/components/passport-lookup/passport-lookup.component';
+import { TimerItemComponent } from '../../shared/components/components-list/components/timer-item/timer-item.component';
+import { FieldListItemComponent } from '../../shared/components/components-list/components/field-list-item/field-list-item.component';
 
-export type ComponentTypes = UniqueScreenComponentTypes;
-
+export type ComponentTypes = UniqueScreenComponentTypes | CustomScreenComponentTypes;
 
 type UniqueScreenComponent =
-  InformationCenterMvdContainerComponent
+  | InformationCenterMvdContainerComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
   | FileUploadScreenComponent
@@ -78,7 +92,21 @@ type UniqueScreenComponent =
   | DateTimePeriodContainerComponent
   | CheckboxCubeContainerComponent;
 
-export type ScreenComponentTypes = UniqueScreenComponent;
+type CustomScreenComponent =
+  | MaskedAndPlainInputComponent
+  | MvdGiacLookupComponent
+  | DateInputComponent
+  | TextAreaComponent
+  | TimerItemComponent
+  | DocInputComponent
+  | FieldListItemComponent
+  | MultiChoiceDictionaryComponent
+  | CheckboxListComponent
+  | CheckboxInputComponent
+  | PassportLookupComponent
+  | FormOutputHtmlComponent;
+
+export type ScreenComponentTypes = UniqueScreenComponent | CustomScreenComponent;
 
 export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
   CityDepartment: InformationCenterMvdContainerComponent,
@@ -120,4 +148,28 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   CheckboxCube: CheckboxCubeContainerComponent,
   ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
+};
+
+export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes, Type<CustomScreenComponent>>> = {
+  NewEmailInput: MaskedAndPlainInputComponent,
+  PhoneNumberChangeInput: MaskedAndPlainInputComponent,
+  StringInput: MaskedAndPlainInputComponent,
+  OgrnInput: MaskedAndPlainInputComponent,
+  OgrnipInput: MaskedAndPlainInputComponent,
+  LegalInnInput: MaskedAndPlainInputComponent,
+  SnilsInput: MaskedAndPlainInputComponent,
+  PersonInnInput: MaskedAndPlainInputComponent,
+  CheckingAccount: MaskedAndPlainInputComponent,
+  HtmlString: FormOutputHtmlComponent,
+  LabelSection: FormOutputHtmlComponent,
+  MvdGiac: MvdGiacLookupComponent,
+  DateInput: DateInputComponent,
+  TextArea: TextAreaComponent,
+  Timer: TimerItemComponent,
+  DocInput: DocInputComponent,
+  FieldList: FieldListItemComponent,
+  MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
+  CheckBoxList: CheckboxListComponent,
+  CheckBox: CheckboxInputComponent,
+  PassportLookup: PassportLookupComponent,
 };

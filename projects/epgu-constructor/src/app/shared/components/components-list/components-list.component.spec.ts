@@ -22,7 +22,7 @@ import { ConstructorDatePickerComponent } from '../constructor-date-picker/const
 import { ConstructorMultilineInputComponent } from '../constructor-multiline-input/constructor-multiline-input.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { PassportComponent } from '../add-passport/passport.component';
-import { DocInputComponent } from '../doc-input/doc-input.component';
+import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { FieldListComponent } from '../field-list/field-list.component';
 import { OutputHtmlComponent } from '../output-html/output-html.component';
 import { ValidationService } from '../../services/validation/validation.service';
@@ -43,6 +43,7 @@ import { DeviceDetectorService } from '../../../core/services/device-detector/de
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
+import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
 
 // TODO написать тест
 describe('ComponentsListComponent', () => {
@@ -97,6 +98,7 @@ describe('ComponentsListComponent', () => {
         ComponentsListRelationsService,
         UnsubscribeService,
         RefRelationService,
+        SuggestHandlerService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],

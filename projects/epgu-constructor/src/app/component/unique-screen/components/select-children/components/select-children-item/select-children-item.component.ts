@@ -19,6 +19,7 @@ import {
 })
 export class SelectChildrenItemComponent {
   @Input() idx: number;
+  @Input() hint?: string;
   @Input() children: Array<ListElement>;
   @Input() errors: ScenarioErrorsDto;
   @Input() isNewChild: boolean;

@@ -1,23 +1,33 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import {
-  ISuggestionItem,
-  ISuggestionItemList,
-} from '../../../../../core/services/autocomplete/autocomplete.inteface';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
+import { ISuggestionItem } from '../../../../../core/services/autocomplete/autocomplete.inteface';
+import { SuggestHandlerService } from '../../../../services/suggest-handler/suggest-handler.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-masked-and-plain-input',
   templateUrl: './masked-and-plain-input.component.html',
-  changeDetection: ChangeDetectionStrategy.Default, // onPush не отрабатывает в relation reset, из-за @Input control
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
-export class MaskedAndPlainInputComponent {
-  @Input() control: FormGroup | AbstractControl;
-  @Input() suggestions: ISuggestionItem;
-  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
-    ISuggestionItem | ISuggestionItemList
-  >();
-
+export class MaskedAndPlainInputComponent extends AbstractComponentListItemComponent {
+  suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
+    map((suggestions) => {
+      return suggestions[this.control.value?.id];
+    }),
+  );
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
+
+  constructor(
+    public suggestHandlerService: SuggestHandlerService,
+    public screenService: ScreenService,
+    public injector: Injector,
+  ) {
+    super(injector);
+  }
 }

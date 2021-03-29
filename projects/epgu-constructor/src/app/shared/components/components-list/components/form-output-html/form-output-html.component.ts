@@ -1,18 +1,22 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { CustomScreenComponentTypes } from '../../components-list.types';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-form-output-html',
   templateUrl: './form-output-html.component.html',
   styleUrls: ['form-output-html.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
-export class FormOutputHtmlComponent {
-  @Input() control: FormGroup | AbstractControl;
-
+export class FormOutputHtmlComponent extends AbstractComponentListItemComponent {
   outputHtmlClass: Partial<Record<CustomScreenComponentTypes, string>> = {
     [CustomScreenComponentTypes.LabelSection]: 'label',
     [CustomScreenComponentTypes.HtmlString]: 'info__text',
   };
+
+  constructor(public injector: Injector) {
+    super(injector);
+  }
 }
