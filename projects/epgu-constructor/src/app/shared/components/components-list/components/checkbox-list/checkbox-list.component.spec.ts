@@ -174,30 +174,4 @@ describe('CheckboxListComponent', () => {
       });
     });
   });
-
-  describe('form status', () => {
-    const currentValue = {
-      checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false,
-    };
-
-    beforeEach(() => {
-      component.required = true;
-      component.ngOnChanges();
-      fixture.detectChanges();
-    });
-
-    it('form valid, if at least one is checked', () => {
-      component.checkBoxForm.setValue({
-        ...currentValue, checkbox1: true
-      });
-      expect(component.checkBoxForm.valid).toBe(true);
-      expect(component.checkBoxForm.errors).toBe(null);
-    });
-
-    it('form invalid', () => {
-      component.checkBoxForm.setValue(currentValue);
-      expect(component.checkBoxForm.valid).toBe(false);
-      expect(component.checkBoxForm.errors).toEqual({ required: true });
-    });
-  });
 });
