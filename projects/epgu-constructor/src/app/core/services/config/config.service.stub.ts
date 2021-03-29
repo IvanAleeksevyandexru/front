@@ -12,7 +12,7 @@ export class ConfigServiceStub implements Config {
   _timeSlotApiUrl = '';
   _listPaymentsApiUrl = '';
   _lkUrl = '';
-  _paymentUrl = '';
+  _paymentUrl = 'https://oplata.gosuslugi.ru';
   _fileUploadApiUrl = '';
   _uinApiUrl = '';
   _billsApiUrl = '';
