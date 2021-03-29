@@ -9,8 +9,8 @@ import { ComponentsListFormService } from '../../../../services/components-list-
   template: '',
 })
 export class AbstractComponentListItemComponent implements OnInit {
-  @Input() componentIndex;
-  @Input() componentsGroupIndex;
+  @Input() componentIndex: number;
+  @Input() componentsGroupIndex: number;
 
   public formService: ComponentsListFormService;
   public control: AbstractControl;
