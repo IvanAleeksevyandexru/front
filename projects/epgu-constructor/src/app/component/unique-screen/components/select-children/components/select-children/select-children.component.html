@@ -5,13 +5,13 @@
       *ngFor="let item of items; let idx = index"
     >
       <epgu-constructor-select-children-item-wrapper
-        [hint]="hint"
         [idx]="idx"
         [isMoreThanOneChild]="items.length > 1"
         [isSingleChild]="isSingleChild"
         (removeChildEvent)="removeChild($event)"
       >
         <epgu-constructor-select-children-item
+          [hint]="hint"
           [idx]="idx"
           [control]="selectChildrenForm.get(item.controlId)"
           [children]="$any(itemsToSelect)"
