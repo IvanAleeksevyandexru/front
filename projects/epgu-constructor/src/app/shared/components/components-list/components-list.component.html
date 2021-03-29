@@ -162,15 +162,7 @@
       </epgu-constructor-component-item>
 
       <ng-container
-        *ngIf="![
-          componentType.DropDown,
-          componentType.DropDownDepts,
-          componentType.Dictionary,
-          componentType.Lookup,
-          componentType.RadioInput,
-          componentType.AddressInput,
-          componentType.CityInput,
-        ].includes(componentData.value?.type)"
+        *ngIf="isResolverRender(componentData)"
       >
         <epgu-constructor-component-resolver
           [componentIndex]="idx"

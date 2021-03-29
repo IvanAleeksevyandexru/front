@@ -13,6 +13,7 @@ import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { takeUntil } from 'rxjs/operators';
+import { AbstractControl } from '@angular/forms';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
@@ -112,6 +113,18 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
+  }
+
+  public isResolverRender(componentData: AbstractControl): boolean {
+    return ![
+      CustomScreenComponentTypes.DropDown,
+      CustomScreenComponentTypes.DropDownDepts,
+      CustomScreenComponentTypes.Dictionary,
+      CustomScreenComponentTypes.Lookup,
+      CustomScreenComponentTypes.RadioInput,
+      CustomScreenComponentTypes.AddressInput,
+      CustomScreenComponentTypes.CityInput,
+    ].includes(componentData.value?.type);
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
