@@ -13,6 +13,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 })
 export class ClickableLabelDirective {
   @Input() public clarifications: Clarifications;
+  @Input() public componentId: string;
 
   constructor(
     private _modalService: ModalService,
@@ -61,7 +62,7 @@ export class ClickableLabelDirective {
 
     this._actionService.switchAction(
       { label: '', type, action, value },
-      this._screenService.component.id,
+      this.componentId || this._screenService.component.id,
       targetElement,
     );
   }
@@ -88,6 +89,7 @@ export class ClickableLabelDirective {
     this._modalService.openModal(ConfirmationModalComponent, {
       ...targetClarification,
       clarifications,
+      componentId: this.componentId,
       showCrossButton: true,
     });
   }
