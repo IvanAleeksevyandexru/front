@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IconList, UserInfoType } from './user-info.type';
 
 import { ConfigService } from '../../../core/services/config/config.service';
+import { UtilsService } from '../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-user-info',
@@ -10,7 +11,19 @@ import { ConfigService } from '../../../core/services/config/config.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent {
-  @Input() value: UserInfoType;
+  @Input() set value(user: UserInfoType) {
+    if (
+      this.utils.isDefined(user) &&
+      this.utils.isDefined(user.ageType) &&
+      this.utils.isDefined(user.gender) &&
+      this.utils.isDefined(user.name)
+    ) {
+      this.user.ageType = user.ageType;
+      this.user.gender = user.gender;
+      this.user.name = user.name;
+      this.iconPath = this.path + this.icons[user.ageType][user.gender];
+    }
+  }
 
   path = `${this.config.staticDomainAssetsPath}/assets/icons/svg/`;
 
@@ -18,6 +31,8 @@ export class UserInfoComponent {
     MATURE: { M: 'male-child.svg', F: 'female-child.svg' },
     YOUNG: { M: 'male-child.svg', F: 'female-child.svg' },
   };
+  user = {} as UserInfoType;
+  iconPath = '';
 
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService, private utils: UtilsService) {}
 }
