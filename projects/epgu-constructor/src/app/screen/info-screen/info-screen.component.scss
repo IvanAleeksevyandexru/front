@@ -78,14 +78,6 @@
   background-color: transparent;
   box-shadow: none;
 
-  &::ng-deep .text > ul {
-    background-color: $color-white;
-    border-radius: 8px;
-    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
-    margin-left: 0;
-    padding: 24px;
-  }
-
   .divider {
     display: none;
   }
@@ -156,5 +148,4 @@
       }
     }
   }
-
 }
