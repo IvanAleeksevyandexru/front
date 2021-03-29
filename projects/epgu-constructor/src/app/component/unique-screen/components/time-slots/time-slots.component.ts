@@ -344,7 +344,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
         this.checkExistenceSlots();
 
-        if (!this.isExistsSlots && this.emptySlotsModal) {
+        if (!this.isExistsSlots && this.emptySlotsModal && !this.timeSlotsService.hasError()) {
           this.showModal(this.emptySlotsModal);
         }
 
