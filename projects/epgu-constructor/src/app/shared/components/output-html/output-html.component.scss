@@ -47,6 +47,10 @@
     &:first-letter {
       text-transform: uppercase;
     }
+
+    .block--description {
+      margin-left: -24px;
+    }
   }
 
   ul li::after {
@@ -71,8 +75,8 @@
     top: 0;
   }
 
-  ul li > ul,
-  ol li > ul {
+  ul li ul,
+  ol li ul {
     margin: 12px 0 0 0;
 
     li {

@@ -1,7 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
-import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DropdownListModalComponent } from './dropdown-list-modal.component';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { FilterPipe } from '../pipes/filter.pipe';
@@ -11,26 +8,52 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { LoggerService } from '../../../core/services/logger/logger.service';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
-import { LocationServiceStub } from '../../../core/services/location/location.service.stub';
-import { LocationService } from '../../../core/services/location/location.service';
-import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
-import { UtilsService } from '../../../core/services/utils/utils.service';
-import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
-import { HtmlRemoverService } from '../../../shared/services/html-remover/html-remover.service';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { MockModule, MockProvider } from 'ng-mocks';
+import { ActionService } from '../../../shared/directives/action/action.service';
+
+const dropdownData = {
+  title: 'Категории граждан и условия для досрочного назначения пенсии',
+  items: [
+    {
+      label: 'Мужчины и женщины, осуществлявшие педагогическую деятельность в учреждениях для детей',
+      content: 'Если имеют стаж по профессии не менее 25 лет',
+      tags: []
+    }
+  ]
+};
+
+const components = [
+  {
+    id: 'string',
+    type: 'StringInput',
+    attrs: {},
+    value: '',
+    required: true
+  },
+  {
+    id: 'html-string',
+    type: 'HtmlString',
+    label: '<a data-action-value="test"></a>',
+    attrs: {
+      clarifications: {
+        test: {
+          title: 'Как определить тип стажа',
+          text: '<a data-action-type="dropdownListModal" data-action-value="dropdownListModal">Список</a>'
+        },
+        dropdownListModal: dropdownData
+      }
+    },
+    value: '',
+    required: true
+  }
+];
 
 describe('DropdownListModalComponent', () => {
   let component: DropdownListModalComponent;
   let fixture: ComponentFixture<DropdownListModalComponent>;
+  let screenService: ScreenService;
+  let eventBusService: EventBusService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,45 +63,77 @@ describe('DropdownListModalComponent', () => {
         FilterPipe,
       ],
       imports:[
-        BaseModule,
-        ConfirmationModalModule,
+        MockModule(BaseModule),
+        MockModule(ConfirmationModalModule)
       ],
       providers:[
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: LocationService, useClass: LocationServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         EventBusService,
         UnsubscribeService,
-        FormPlayerApiService,
-        InitDataService,
-        LoggerService,
-        NavigationModalService,
-        UtilsService,
-        HtmlRemoverService,
-        CurrentAnswersService,
-        AutocompleteApiService,
+        MockProvider(ActionService)
       ]
+    }).overrideComponent(DropdownListModalComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default },
     }).compileComponents();
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(DropdownListModalComponent);
     component = fixture.componentInstance;
-    component.componentId = '';
-    component.data$ = of({ title: '', items: [] } as any);
+    component.componentId = 'html-string';
+    component.clarificationId = 'dropdownListModal';
+  });
+
+  it('should create for repeatable screen', done => {
+    screenService.display = {
+      type: 'UNIQUE',
+      components: [
+        {
+          id: 'repeatable',
+          type: 'RepeatableFields',
+          attrs: { components },
+          value: '',
+          required: true
+        }
+      ]
+    } as any;
     fixture.detectChanges();
+    component.data$.subscribe((data) => {
+      expect(data).toEqual(dropdownData);
+      done();
+    });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create for custom screen', done => {
+    screenService.display = {
+      type: 'CUSTOM',
+      components
+    } as any;
+    fixture.detectChanges();
+    component.data$.subscribe((data) => {
+      expect(data).toEqual(dropdownData);
+      done();
+    });
   });
 
-  it('should close modal', () => {
+  it('should be empty data', done => {
+    screenService.display = {
+      type: 'CUSTOM',
+      components: [ { id: 'string' } ]
+    } as any;
+    fixture.detectChanges();
+    component.data$.subscribe((data) => {
+      expect(data).toBe(null);
+      done();
+    });
+  });
+
+  it('should call close modal', () => {
     jest.spyOn(component, 'closeModal');
-    component.detachView = () => null;
-    expect(component.closeModal).toHaveBeenCalledTimes(0);
+    eventBusService.on('closeModalEvent_dr_modal').subscribe(() => {
+      expect(component.closeModal).toBeCalledTimes(0);
+    });
   });
 });

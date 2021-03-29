@@ -13,6 +13,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 })
 export class ClickableLabelDirective {
   @Input() public clarifications: Clarifications;
+  @Input() public componentId: string;
 
   constructor(
     private _modalService: ModalService,
@@ -27,12 +28,15 @@ export class ClickableLabelDirective {
     const targetElement = event.target as HTMLElement;
     const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
+    const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
     if (targetElementActionType) {
       event.preventDefault();
       this._runActionInAngularZone(targetElementActionType, targetElementActionValue, targetElement);
-    } else if (targetElement.id && targetElement.nodeName === 'A') {
-      event.preventDefault();
+    } else if (targetElement.id) {
+      if(needPrevent) {
+        event.preventDefault();
+      }
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
     }
   }
@@ -58,7 +62,7 @@ export class ClickableLabelDirective {
 
     this._actionService.switchAction(
       { label: '', type, action, value },
-      this._screenService.component.id,
+      this.componentId || this._screenService.component.id,
       targetElement,
     );
   }
@@ -85,6 +89,7 @@ export class ClickableLabelDirective {
     this._modalService.openModal(ConfirmationModalComponent, {
       ...targetClarification,
       clarifications,
+      componentId: this.componentId,
       showCrossButton: true,
     });
   }

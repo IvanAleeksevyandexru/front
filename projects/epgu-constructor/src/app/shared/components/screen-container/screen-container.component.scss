@@ -38,6 +38,9 @@
     margin-left: -$footer-item-mx;
     margin-right: -$footer-item-mx;
   }
+  @include tablets-down {
+    flex-wrap: wrap-reverse;
+  }
   & > * {
     width: 100%;
     margin-bottom: $footer-mb;
@@ -46,6 +49,11 @@
       margin-top: $footer-mt;
       margin-left: $footer-item-mx;
       margin-right: $footer-item-mx;
+    }
+    &:not(:first-child) {
+      @include tablets-down {
+        margin-bottom: $footer-item-mx;
+      }
     }
   }
   & > .social-share {
