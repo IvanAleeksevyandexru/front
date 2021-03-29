@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Injector, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -13,7 +13,7 @@ export class AbstractComponentListItemComponent implements OnInit {
   @Input() componentsGroupIndex;
 
   public formService: ComponentsListFormService;
-  public control: FormGroup | AbstractControl;
+  public control: AbstractControl;
   public ngUnsubscribe$: UnsubscribeService;
   public cdr: ChangeDetectorRef;
 
