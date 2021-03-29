@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
 } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { combineLatest } from 'rxjs';
 
@@ -19,7 +19,11 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatPeriodContainerComponent implements AfterViewInit {
-  component$ = (this.screenService.component$ as unknown) as Observable<MatPeriod>;
+  component$ = ((this.screenService.component$ as unknown) as Observable<MatPeriod>).pipe(
+    tap((component) => {
+      this.maxTotalBalance = component.attrs.maxTotalBalance;
+    }),
+  );
   description$ = this.component$.pipe(map((component) => component.attrs.description));
   cachedValue$: Observable<FormValue['data']> = combineLatest([
     this.screenService.cachedAnswers$,
@@ -42,6 +46,8 @@ export class MatPeriodContainerComponent implements AfterViewInit {
   balanceAmount: number;
   durationAmount: number;
   paymentType: PaymentType;
+  isValidBalanceAmount: boolean;
+  maxTotalBalance: number;
 
   constructor(
     public screenService: ScreenService,
@@ -54,8 +60,6 @@ export class MatPeriodContainerComponent implements AfterViewInit {
   }
 
   updateState({ data, isValid }: FormValue): void {
-    this.currentAnswersService.state = data;
-    this.currentAnswersService.isValid = this.isValidForm(data) && isValid;
     this.paymentType = data[FormField.paymentType];
 
     this.updateDescription(
@@ -63,6 +67,10 @@ export class MatPeriodContainerComponent implements AfterViewInit {
       data[FormField.finishPayment]?.value,
       data[FormField.startPayment]?.value,
     );
+
+    this.currentAnswersService.state = { ...data, totalAmount: this.balanceAmount.toFixed(2) };
+    this.currentAnswersService.isValid =
+      this.isValidForm(data) && isValid && this.isValidBalanceAmount;
   }
 
   private updateDescription(
@@ -74,6 +82,7 @@ export class MatPeriodContainerComponent implements AfterViewInit {
     const duration = finishPayment + 1 - startPayment || null;
     this.balanceAmount = (parsedBalanceAmount || 0) * (duration || 1);
     this.durationAmount = duration;
+    this.isValidBalanceAmount = this.balanceAmount <= this.maxTotalBalance;
   }
 
   private isValidForm(formValue: FormValue['data']): boolean {

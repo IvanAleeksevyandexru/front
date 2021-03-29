@@ -36,7 +36,7 @@ describe('FormPlayerService', () => {
   let formPlayerApiService: FormPlayerApiService;
   let logger: LoggerService;
   let location: Location;
-  let orderId: string;
+  let orderId: number;
   let navigation: Navigation;
   beforeEach(() => {
     global.window.scroll = jest.fn();
@@ -180,6 +180,47 @@ describe('FormPlayerService', () => {
       spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.navigate(navigation, FormPlayerNavigation.NEXT);
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
+  });
+
+  describe('getBooking()',() => {
+
+    it('should call updateLoading with false true', () => {
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.getBooking();
+      expect(service['updateLoading']).toHaveBeenCalled();
+    });
+
+    it('should call getBooking of formPlayerApiService', () => {
+      spyOn(formPlayerApiService, 'getBooking').and.callThrough();
+      service.getBooking();
+      expect(formPlayerApiService.getBooking).toHaveBeenCalled();
+    });
+
+    it('should call processResponse with response when call navigate with success response case', () => {
+      spyOn(formPlayerApiService, 'getBooking').and.returnValue(of(response));
+      spyOn<any>(service, 'processResponse').and.callThrough();
+      service.getBooking();
+      expect(service.processResponse).toHaveBeenCalledWith(response);
+    });
+
+    it('should call sendDataError with error response when call navigate with error response case', () => {
+      const errorResponse = {
+        message: 'oops... i did it again',
+        description: 'a-e-e-e-e-e...',
+        status: 500
+      };
+      spyOn(formPlayerApiService, 'getBooking').and.returnValue(throwError(errorResponse));
+      spyOn<any>(service, 'sendDataError').and.callThrough();
+      service.getBooking();
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
+    });
+
+    it('should call updateLoading with false param when call navigate', () => {
+      spyOn(formPlayerApiService, 'getBooking').and.returnValue(of(response));
+      spyOn<any>(service, 'updateLoading').and.callThrough();
+      service.getBooking();
       expect(service['updateLoading']).toHaveBeenCalled();
     });
   });

@@ -18,6 +18,7 @@ import { ValidationService } from '../../../../../../shared/services/validation/
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
+import { LabelPipe } from '../../pipe/label.pipe';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -31,8 +32,13 @@ describe('MatPeriodFormComponent', () => {
   };
   const mockComponents = {
     paymentType: {
-      attrs: {
-        label: 'paymentType',
+      attrs: {},
+      label: {
+        one: 'Единовременно',
+        month: 'Ежемесячный платеж',
+        quarter: 'Ежеквартальный платеж',
+        halfYear: 'Полугодовой платеж',
+        year: 'Ежегодный платеж',
       },
     },
     amount: {
@@ -71,9 +77,10 @@ describe('MatPeriodFormComponent', () => {
     finishPayment: { text: 'январь 2021', id: 1, date: '01.01.2021', value: 1 },
     paymentDate: '23',
   };
+  let validationService: ValidationService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MatPeriodFormComponent, FilterPipe],
+      declarations: [MatPeriodFormComponent, FilterPipe, LabelPipe],
       imports: [
         MockModule(ConstructorDropdownModule),
         MockModule(ConstructorDatePickerModule),
@@ -97,6 +104,7 @@ describe('MatPeriodFormComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MatPeriodFormComponent);
+    validationService = TestBed.inject(ValidationService);
     component = fixture.componentInstance;
     component.cachedValue = {} as any;
     component.components = mockComponents as any;
@@ -156,6 +164,12 @@ describe('MatPeriodFormComponent', () => {
     component.form.setValue(mockFormValue);
     component.form.get('paymentType').setValue('one');
     expect(component.form.value).toEqual(expectedData);
+  });
+
+  it('should be change validation paymentDate after paymentType change', () => {
+    jest.spyOn(validationService, 'customValidator');
+    component.form.setValue(mockFormValue);
+    expect(validationService.customValidator).toHaveBeenCalled();
   });
 
   describe('startPayment form field', () => {

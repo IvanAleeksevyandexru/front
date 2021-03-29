@@ -62,8 +62,10 @@ describe('MatPeriodContainerComponent', () => {
       description: {
         balanceLabel: '',
         durationLabel: '',
+        balanceError: 'error',
       },
       fields: mockComponents as any,
+      maxTotalBalance: 100,
     },
     value: '',
   };
@@ -98,7 +100,7 @@ describe('MatPeriodContainerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatPeriodContainerComponent);
     screenService = TestBed.inject(ScreenService);
-    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData));
+    screenService.component = mockData as any;
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -126,7 +128,7 @@ describe('MatPeriodContainerComponent', () => {
     const data: FormValue = {
       data: {
         paymentType: 'month',
-        amount: '2,00',
+        amount: '2,11',
         startPayment: { text: 'декабрь 2020', id: 0, date: '01.12.2020', value: 0 },
         finishPayment: { text: 'январь 2021', id: 1, date: '01.01.2021', value: 1 },
         paymentDate: '23',
@@ -136,7 +138,7 @@ describe('MatPeriodContainerComponent', () => {
 
     it('should be update currentAnswersService', () => {
       component.updateState(data);
-      expect(component.currentAnswersService.state).toEqual(data.data);
+      expect(component.currentAnswersService.state).toEqual({ ...data.data, totalAmount: '4.22' });
       expect(component.currentAnswersService.isValid).toBeTruthy();
     });
 
@@ -147,8 +149,13 @@ describe('MatPeriodContainerComponent', () => {
 
     it('should be update description', () => {
       component.updateState(data);
-      expect(component.balanceAmount).toBe(4);
+      expect(component.balanceAmount).toBe(4.22);
       expect(component.durationAmount).toBe(2);
+    });
+
+    it('should be update isValidBalanceAmount', () => {
+      component.updateState(data);
+      expect(component.isValidBalanceAmount).toBeTruthy();
     });
   });
 

@@ -14,7 +14,7 @@
     </epgu-constructor-input-error>
     <epgu-constructor-input-error *ngIf="hasExpirationDate">
       <span *ngIf="isValidationShown(docInputFieldsTypes.expirationDate)">
-        {{ fields[docInputFieldsTypes.expirationDate]?.label }}:`
+        {{ fields[docInputFieldsTypes.expirationDate]?.label }}:
         {{ form.get(docInputFieldsTypes.expirationDate).errors.msg }}
       </span>
     </epgu-constructor-input-error>
@@ -48,7 +48,7 @@
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
         (selectSuggest)="selectSuggest.emit($event)"
         (blurEvent)="
-          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
         "
       ></epgu-constructor-masked-input>
       <ng-template #plainInputSeries>
@@ -132,7 +132,7 @@
         {{ hint }}
       </epgu-constructor-helper-text>
     </div>
-    <div class="doc-input__group-item doc-input__date" 
+    <div class="doc-input__group-item doc-input__date"
     *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
     [class.collapsed]="fields[docInputFieldsTypes.series]?.attrs.hidden || fields[docInputFieldsTypes.number]?.attrs.hidden">
       <epgu-constructor-label
@@ -146,13 +146,13 @@
         [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
         [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
         [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
-        (blurEvent)="
-          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
-        "
         [invalid]="isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
         [validationShowOn]="validationShowOn"
         [clearable]="true"
         [brokenDateFixStrategy]="brokenDateFixStrategy"
+        (blurEvent)="
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+        "
       ></epgu-constructor-constructor-date-picker>
       <epgu-constructor-helper-text
         *ngIf="fields[docInputFieldsTypes.date]?.hint as hint"
@@ -192,7 +192,7 @@
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
           (selectSuggest)="selectSuggest.emit($event)"
           (blurEvent)="
-            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
           "
         ></epgu-constructor-masked-input>
         <ng-template #plainInputSeries>
@@ -288,15 +288,15 @@
           [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
           [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
-          (blurEvent)="
-            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
-          "
           [invalid]="
             isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
           "
           [validationShowOn]="validationShowOn"
           [brokenDateFixStrategy]="brokenDateFixStrategy"
           [clearable]="true"
+          (blurEvent)="
+            markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+          "
         ></epgu-constructor-constructor-date-picker>
         <epgu-constructor-helper-text
           *ngIf="fields[docInputFieldsTypes.date]?.hint as hint"
@@ -317,11 +317,11 @@
           [control]="form.get(docInputFieldsTypes.expirationDate)"
           [minDate]="fields[docInputFieldsTypes.expirationDate]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[docInputFieldsTypes.expirationDate]?.attrs?.maxDate || 'today'"
-          (blurEvent)="markControlAsDirty(docInputFieldsTypes.expirationDate)"
           [invalid]="isValidationShown(docInputFieldsTypes.expirationDate)"
           [validationShowOn]="validationShowOn"
           [clearable]="true"
           [brokenDateFixStrategy]="brokenDateFixStrategy"
+          (blurEvent)="markControlAsDirty(docInputFieldsTypes.expirationDate)"
         ></epgu-constructor-constructor-date-picker>
         <epgu-constructor-helper-text
           *ngIf="fields[docInputFieldsTypes.expirationDate]?.hint as hint"

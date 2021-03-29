@@ -4,7 +4,9 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ModalBaseComponent } from '../../shared/modal-base/modal-base.component';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { DropdownListContent } from '../dropdown-list.types';
+import { DropdownListContent, DropdownListItem } from '../dropdown-list.types';
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-dropdown-list-modal',
@@ -14,12 +16,11 @@ import { DropdownListContent } from '../dropdown-list.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownListModalComponent extends ModalBaseComponent implements OnInit {
-  data$ = this.screenService.component$.pipe(
-    map(
-      ({ attrs: { clarifications } }) => (clarifications as DropdownListContent)[this.componentId],
-    ),
+  data$ = this.screenService.display$.pipe(
+    map(({ components }) => this.prepareClarifications(components)),
   );
   componentId: string;
+  clarificationId: string;
 
   buttons = [
     {
@@ -44,5 +45,33 @@ export class DropdownListModalComponent extends ModalBaseComponent implements On
       .subscribe(() => {
         this.closeModal();
       });
+  }
+
+  private prepareClarifications(
+    components: ComponentDto[],
+  ): { title: string; items: DropdownListItem[] } {
+    const componentWithClarifications = this.getComponentDto(components);
+
+    if (componentWithClarifications) {
+      const {
+        attrs: { clarifications },
+      } = componentWithClarifications;
+
+      return (clarifications as DropdownListContent)[this.clarificationId];
+    }
+    return null;
+  }
+
+  private getComponentDto(components: ComponentDto[]): ComponentDto {
+    const isUniqueWithRepeatable =
+      components[0].type === UniqueScreenComponentTypes.repeatableFields;
+
+    const findComponent = (cmp: ComponentDto[]): ComponentDto =>
+      cmp.find(({ id }) => id === this.componentId);
+
+    if (isUniqueWithRepeatable) {
+      return findComponent(components[0].attrs.components);
+    }
+    return findComponent(components);
   }
 }

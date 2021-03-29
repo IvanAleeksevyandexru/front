@@ -1,10 +1,10 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
 import { ModalService } from '../../../modal/modal.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ActionType, DTOActionAction, } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { getHiddenBlock } from '../../constants/uttils';
+import { getHiddenBlock } from '../../constants/utils';
 import { Clarifications } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
@@ -13,6 +13,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 })
 export class ClickableLabelDirective {
   @Input() public clarifications: Clarifications;
+  @Input() public componentId: string;
 
   constructor(
     private _modalService: ModalService,
@@ -20,17 +21,34 @@ export class ClickableLabelDirective {
     private _actionService: ActionService,
     private _elementRef: ElementRef,
     private _currentAnswersService: CurrentAnswersService,
+    private _ngZone: NgZone
   ) {}
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
     const targetElement = event.target as HTMLElement;
     const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
+    const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
     if (targetElementActionType) {
-      this._handleAction(targetElementActionType, targetElementActionValue, targetElement);
+      event.preventDefault();
+      this._runActionInAngularZone(targetElementActionType, targetElementActionValue, targetElement);
     } else if (targetElement.id) {
+      if(needPrevent) {
+        event.preventDefault();
+      }
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
+    }
+  }
+
+  private _runActionInAngularZone(
+    targetElementActionType: ActionType,
+    targetElementActionValue: string,
+    targetElement: HTMLElement): void {
+    if (NgZone.isInAngularZone()) {
+      this._handleAction(targetElementActionType, targetElementActionValue, targetElement);
+    } else {
+      this._ngZone.run(() => this._handleAction(targetElementActionType, targetElementActionValue, targetElement));
     }
   }
 
@@ -44,7 +62,7 @@ export class ClickableLabelDirective {
 
     this._actionService.switchAction(
       { label: '', type, action, value },
-      this._screenService.component.id,
+      this.componentId || this._screenService.component.id,
       targetElement,
     );
   }
@@ -71,6 +89,7 @@ export class ClickableLabelDirective {
     this._modalService.openModal(ConfirmationModalComponent, {
       ...targetClarification,
       clarifications,
+      componentId: this.componentId,
       showCrossButton: true,
     });
   }

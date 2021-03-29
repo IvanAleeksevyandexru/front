@@ -18,6 +18,7 @@ import { ConstructorMaskedInputModule } from '../../../../shared/components/cons
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { ErrorModule } from '../../../../shared/components/error/error.module';
 import { AddZeroPennyPipe } from './pipe/add-zero-penny.pipe';
+import { LabelPipe } from './pipe/label.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AddZeroPennyPipe } from './pipe/add-zero-penny.pipe';
     MatPeriodDescriptionComponent,
     FilterPipe,
     AddZeroPennyPipe,
+    LabelPipe,
   ],
   imports: [
     CommonModule,

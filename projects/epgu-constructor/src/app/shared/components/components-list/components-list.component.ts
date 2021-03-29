@@ -9,7 +9,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -38,11 +37,6 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 
-const halfWidthItemTypes = [
-  CustomScreenComponentTypes.NewEmailInput,
-  CustomScreenComponentTypes.PhoneNumberChangeInput,
-];
-
 @Component({
   selector: 'epgu-constructor-components-list',
   templateUrl: './components-list.component.html',
@@ -61,6 +55,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
+  @Output() emitFormCreated = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
@@ -103,7 +98,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       JSON.stringify(changes.errors?.previousValue);
 
     if (components || isErrorsChanged) {
-      this.formService.create(this.components, this.errors);
+      const formArray = this.formService.create(this.components, this.errors);
+      this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);
     }
@@ -117,10 +113,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
-  }
-
-  public isHalfWidthItem(componentData: AbstractControl): boolean {
-    return halfWidthItemTypes.includes(componentData.value?.type);
   }
 
   public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
@@ -139,7 +131,11 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   private loadRepository(components: Array<CustomComponent>): void {
     this.dictionaryToolsService
-      .loadReferenceData$(components, this.screenService.cachedAnswers)
+      .loadReferenceData$(
+        components,
+        this.screenService.cachedAnswers,
+        this.screenService.getStore(),
+      )
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);

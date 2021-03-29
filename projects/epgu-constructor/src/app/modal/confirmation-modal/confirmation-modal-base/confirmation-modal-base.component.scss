@@ -103,16 +103,18 @@ $minModalHeight: 293px;
       justify-content: center;
       flex: 0 1 auto;
       & > *:not(:last-child) {
-        margin-right: 20px;
+        margin-right: 16px;
       }
       @include tablets-down {
-        flex-direction: column;
+        flex-direction: column-reverse;
         justify-content: flex-end;
         margin-top: auto;
         padding-top: 24px;
         & > *:not(:last-child) {
           margin-right: 0;
-          margin-bottom: 20px;
+        }
+        & > *:not(:first-child) {
+          margin-bottom: 16px;
         }
       }
     }

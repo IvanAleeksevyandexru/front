@@ -17,7 +17,7 @@
 
   </epgu-constructor-screen-pad>
   <epgu-constructor-file-upload
-    [objectId]="screenService.orderId$ | async"
+    [objectId]="screenService.orderIdAsString$ | async"
     [applicantAnswers]="screenService.applicantAnswers$ | async"
     [attributes]="component.attrs"
   >

@@ -92,10 +92,13 @@ export class EmployeeHistoryFormService {
       .get('checkboxToDate')
       .valueChanges.pipe(
         filter((checked: boolean) => checked),
+        switchMap(() => {
+          return this.datesToolsService.getToday();
+        }),
         takeUntil(this.unsubscribeService),
       )
-      .subscribe(() => {
-        form.get('to').patchValue(MonthYear.fromDate(new Date()));
+      .subscribe((date) => {
+        form.get('to').patchValue(MonthYear.fromDate(date));
       });
 
     form
@@ -122,14 +125,28 @@ export class EmployeeHistoryFormService {
       });
   }
 
-  private async checkDates(form: FormGroup, fromDateValue?: MonthYear, toDateValue?: MonthYear): Promise<void> {
+  private async checkDates(
+    form: FormGroup,
+    fromDateValue?: MonthYear,
+    toDateValue?: MonthYear,
+  ): Promise<void> {
     if (toDateValue) {
       const today = await this.datesToolsService.getToday();
-      const toDate: Date =  this.datesToolsService.setCalendarDate(today, toDateValue.year, toDateValue.month, null);
+      const toDate: Date = this.datesToolsService.setCalendarDate(
+        today,
+        toDateValue.year,
+        toDateValue.month,
+        null,
+      );
       const minDate = this.datesToolsService.sub(today, this.monthsService.years, 'years');
       const toDateMinDateDiff = this.datesToolsService.diff(toDate, minDate);
       if (fromDateValue) {
-        const fromDate: Date = this.datesToolsService.setCalendarDate(today, fromDateValue.year, fromDateValue.month, null);
+        const fromDate: Date = this.datesToolsService.setCalendarDate(
+          today,
+          fromDateValue.year,
+          fromDateValue.month,
+          null,
+        );
         const fromDateToDateDiff = this.datesToolsService.diff(fromDate, toDate);
         if (fromDateToDateDiff > 0) {
           form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
@@ -168,7 +185,7 @@ export class EmployeeHistoryFormService {
       'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
 
     return (control: AbstractControl): ValidationErrors => {
-      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,5530}$/, 'gm');
+      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,255}$/, 'gm');
       const hasError = !pattern.test(control.value);
 
       return hasError ? { errorMsg } : null;

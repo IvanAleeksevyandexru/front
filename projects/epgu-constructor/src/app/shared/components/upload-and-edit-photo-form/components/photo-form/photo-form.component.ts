@@ -40,7 +40,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   @Input() staticDomainAssetsPath: string;
   @Input() uploadedFile: ComponentUploadedFileDto;
   @Input() fileName: string;
-  @Input() orderId: string;
+  @Input() orderId: number;
   @Input() allowedImgTypes: string[];
   @Input() startToUploadPhoto: { isStart: boolean };
   @Input() startToChangeCroppedImageUrl: { isStart: boolean };
@@ -202,7 +202,13 @@ export class PhotoFormComponent implements OnChanges, OnInit {
 
   private getRequestData(): ComponentUploadedFileDto {
     const { mnemonic = null, name = null, objectType = 2 } = this.uploadedFile;
-    return { mnemonic, name, objectType, objectId: this.orderId, mimeType: 'image/jpeg' };
+    return {
+      mnemonic,
+      name,
+      objectType,
+      objectId: this.orderId.toString(),
+      mimeType: 'image/jpeg',
+    };
   }
 
   private setImageUrl(imageUrl: string): void {

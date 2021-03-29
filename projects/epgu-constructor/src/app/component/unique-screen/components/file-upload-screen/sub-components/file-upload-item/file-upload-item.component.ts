@@ -34,6 +34,7 @@ import {
   getSizeInMB,
   Operation,
   OperationType,
+  plurals,
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
@@ -67,30 +68,23 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
+
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
     this.updateAcceptTypes();
   }
+
+  plurals = plurals;
+
   maxTotalSize: number;
   maxTotalAmount: number;
   acceptTypes?: string;
-
-  itemPluralMapping = {
-    file: {
-      '=0': '0 файлов',
-      '=1': '1 файл',
-      other: '# файлов',
-    },
-  };
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;
 
   listUploadingStatus = new BehaviorSubject<boolean>(false);
 
-  overTotalAmount = new BehaviorSubject<number>(0);
-  overTotalSize = new BehaviorSubject<number>(0);
-  overAmount = new BehaviorSubject<number>(0);
   overLimits = new BehaviorSubject<OverLimits>({
     totalSize: { count: 0, isMax: false },
     totalAmount: { count: 0, isMax: false },
@@ -121,7 +115,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   store = new FileItemStore();
   componentId = this.screenService.component?.id || null;
-  componentValues: string[] = [];
 
   files = this.store.files;
   files$ = this.files.pipe(
@@ -202,9 +195,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
+  uploadersCounterChanges$ = this.fileUploadService.uploaderChanges.pipe(
+    tap(() => this.maxLimitUpdate()),
+  );
+
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
-    .add(this.processingOperations$.subscribe());
+    .add(this.processingOperations$.subscribe())
+    .add(this.uploadersCounterChanges$.subscribe());
 
   private loadData: FileUploadItem;
   private maxFileNumber = -1;
@@ -437,6 +435,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   maxLimitUpdate(): void {
     const limits = { ...this.overLimits.getValue() };
     const checkSize = this.fileUploadService.checkFilesSize(1, this.data.uploadId);
+
     const checkAmount = this.fileUploadService.checkFilesAmount(1, this.data.uploadId);
     limits.totalSize.isMax = checkSize?.reason === CheckFailedReasons.total;
     limits.amount.isMax = checkAmount?.reason === CheckFailedReasons.uploaderRestriction;
@@ -469,6 +468,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit('fileUploadItemValueChangedEvent', {
       uploadId: this.loadData.uploadId,
+      required: this.loadData?.required ?? true,
       value,
       errors,
     } as FileResponseToBackendUploadsItem);
@@ -486,7 +486,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((files: UploadedFile[]) => from(files)),
       filter(
         (file) =>
-          file?.mnemonic?.includes(this.getSubMnemonicPath()) && file?.objectId === this.objectId,
+          file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+          file?.objectId.toString() === this.objectId.toString(),
       ),
       finalize(() => this.listUploadingStatus.next(false)),
     );

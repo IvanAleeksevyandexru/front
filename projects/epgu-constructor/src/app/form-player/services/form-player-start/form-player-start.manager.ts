@@ -42,6 +42,8 @@ export class FormPlayerStartManager {
       this.startLoadNextScreenCase();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
+    } else if (this.isBookingCase()) {
+      this.startBookingCase();
     } else if (orderId) {
       this.getOrderStatus();
     } else {
@@ -99,7 +101,7 @@ export class FormPlayerStartManager {
     this.locationService.deleteParam('fromQuiz');
   }
 
-  private handleOrder(orderId?: string, invited?: boolean, canStartNew?: boolean): void {
+  private handleOrder(orderId?: number, invited?: boolean, canStartNew?: boolean): void {
     if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
       this.showContinueOrderModal();
     } else {
@@ -108,7 +110,7 @@ export class FormPlayerStartManager {
   }
 
   private shouldShowContinueOrderModal(
-    orderId?: string,
+    orderId?: number,
     invited?: boolean,
     canStartNew?: boolean,
   ): boolean {
@@ -152,5 +154,13 @@ export class FormPlayerStartManager {
     this.initDataService.orderId = orderId;
     this.initDataService.canStartNew = canStartNew;
     this.handleOrder(orderId, invited, canStartNew);
+  }
+
+  private isBookingCase(): boolean {
+    return this.locationService.path(true).includes('/booking');
+  }
+
+  private startBookingCase(): void {
+    this.formPlayerService.getBooking();
   }
 }

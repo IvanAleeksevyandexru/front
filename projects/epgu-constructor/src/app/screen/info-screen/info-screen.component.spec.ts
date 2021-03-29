@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
@@ -52,6 +52,7 @@ describe('InfoScreenComponent', () => {
 
   let navigationService: NavigationServiceStub;
   let screenService: ScreenServiceStub;
+  let locationService: LocationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -87,6 +88,7 @@ describe('InfoScreenComponent', () => {
 
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
+    locationService = TestBed.inject(LocationService);
   });
 
   describe('actionButtons property', () => {
@@ -261,14 +263,68 @@ describe('InfoScreenComponent', () => {
     });
   });
 
-  it('should render lib-social-share', () => {
+  describe('lib-social-share', () => {
     const selector = 'epgu-constructor-screen-container lib-social-share';
 
-    const debugEl = fixture.debugElement.query(By.css(selector));
+    it('should be rendered if not hideSocialShare and not terminal', () => {
+      let debugEl: DebugElement;
+      screenService.component = {
+        ...componentSample, 
+        attrs: {
+          hideSocialShare: false
+        }
+      };
+      screenService.terminal = false;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
 
-    expect(debugEl).toBeTruthy();
+      screenService.component = {
+        ...componentSample, 
+        attrs: {
+          hideSocialShare: false
+        }
+      };
+      screenService.terminal = true;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
 
-    expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
-    expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
+      screenService.component = {
+        ...componentSample,
+        attrs: {
+          hideSocialShare: true
+        }
+      };
+      screenService.terminal = false;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+    });
+
+    it('isNewDesignDisabled property should be true if isSocialShareDisabled true', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      
+      component.isSocialShareDisabled = false;
+      fixture.detectChanges();
+      expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
+      
+      component.isSocialShareDisabled = true;
+      fixture.detectChanges();
+      expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
+    });
+
+    it('url property', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      jest.spyOn(locationService, 'getHref').mockReturnValue('http://example.com');
+      fixture.detectChanges();
+      expect(debugEl.componentInstance.url).toBe('http://example.com');
+    });
+  
+    it('isNewDesign property should be true', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
+    });
   });
+  
 });

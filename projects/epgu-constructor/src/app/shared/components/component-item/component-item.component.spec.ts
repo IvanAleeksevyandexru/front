@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentItemComponent } from './component-item.component';
-import { AbstractControl, FormBuilder } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { WebcamShootModule } from '../webcam-shoot/webcam-shoot.module';
@@ -18,12 +18,12 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { HintComponent } from '../base-components/hint/hint.component';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
   let fixture: ComponentFixture<ComponentItemComponent>;
   let fb: FormBuilder;
-  let formData: AbstractControl;
   let mockData = {
     data: {
       value: {
@@ -39,7 +39,7 @@ describe('ComponentItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent],
+      declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent, HintComponent],
       imports: [
         CoreModule,
         BaseModule,
@@ -53,7 +53,7 @@ describe('ComponentItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
       ],
     }).compileComponents();
     fb = TestBed.inject(FormBuilder);
@@ -62,8 +62,8 @@ describe('ComponentItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentItemComponent);
     component = fixture.componentInstance;
-    formData = fb.group(mockData);
-    component.data = formData;
+    component.control = new FormControl();
+    component.component = mockData as any;
     fixture.detectChanges();
   });
 

@@ -22,6 +22,7 @@ export class ScreenContent {
   private _display = new BehaviorSubject<DisplayDto>(null);
   private _suggestions = new BehaviorSubject<{ [key: string]: ISuggestionItem }>({});
   private _header = new BehaviorSubject<string>(null);
+  private _serviceCode = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
   private _submitLabel = new BehaviorSubject<string>(null);
   private _gender = new BehaviorSubject<Gender>(null);
@@ -29,7 +30,7 @@ export class ScreenContent {
   private _showNav = new BehaviorSubject<boolean>(null);
   private _displayCssClass = new BehaviorSubject<string>(null);
   private _screenType = new BehaviorSubject<ScreenTypes>(null);
-  private _orderId = new BehaviorSubject<string>(null);
+  private _orderId = new BehaviorSubject<number>(null);
   private _component = new BehaviorSubject<ComponentDto>(null);
   private _componentType = new BehaviorSubject<string>(null);
   private _componentValue = new BehaviorSubject<ComponentValue>(null);
@@ -99,6 +100,16 @@ export class ScreenContent {
   }
   public get header$(): Observable<string> {
     return this._header.asObservable();
+  }
+
+  public get serviceCode(): string {
+    return this._serviceCode.getValue();
+  }
+  public set serviceCode(val: string) {
+    this._serviceCode.next(val);
+  }
+  public get serviceCode$(): Observable<string> {
+    return this._serviceCode.asObservable();
   }
 
   public get subHeader(): DisplaySubjHead {
@@ -171,14 +182,17 @@ export class ScreenContent {
     return this._screenType.asObservable();
   }
 
-  public get orderId(): string {
+  public get orderId(): number {
     return this._orderId.getValue();
   }
-  public set orderId(val: string) {
+  public set orderId(val: number) {
     this._orderId.next(val);
   }
-  public get orderId$(): Observable<string> {
+  public get orderId$(): Observable<number> {
     return this._orderId.asObservable();
+  }
+  public get orderIdAsString$(): Observable<string> {
+    return this._orderId.asObservable().pipe(map(id => id.toString()));
   }
 
   public get component(): ComponentDto {
@@ -310,6 +324,7 @@ export class ScreenContent {
       gender,
       applicantAnswers,
       cachedAnswers,
+      serviceCode,
     } = screenStore;
     const {
       header,
@@ -345,6 +360,7 @@ export class ScreenContent {
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;
+    this.serviceCode = serviceCode;
   }
 
   public getComponentData(str: string): ComponentValue {

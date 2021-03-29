@@ -5,7 +5,8 @@
     displayCssClass: screenService.displayCssClass$ | async,
     header: screenService.header$ | async,
     submitLabel: screenService.submitLabel$ | async,
-    isLoading: screenService.isLoading$ | async
+    isLoading: screenService.isLoading$ | async,
+    terminal: screenService.terminal$ | async
   } as async"
   [show-nav]="async.showNav"
   [class.screen-container-mt]="!async.showNav"
@@ -46,7 +47,7 @@
 
   <div class="screen-footer">
     <lib-social-share
-      *ngIf="!async.hideSocialShare"
+      *ngIf="!async.hideSocialShare && !async.terminal"
       class="social-share"
       [isNewDesign]="true"
       [isNewDesignDisabled]="isSocialShareDisabled"

@@ -49,7 +49,7 @@ export class ActionService {
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
-  ) {}
+  ) { }
 
   public switchAction(action: ComponentActionDto, componentId: string, targetElement?: HTMLElement): void {
     switch (action.type) {
@@ -90,7 +90,10 @@ export class ActionService {
         this.deleteSuggestAction(action, targetElement);
         break;
       case ActionType.dropdownListModal:
-        this.openDropdownListModal(action);
+        this.openDropdownListModal(action, componentId);
+        break;
+      case ActionType.deliriumNextStep:
+        this.handleDeliriumAction(action);
         break;
     }
   }
@@ -107,7 +110,7 @@ export class ActionService {
     this.modalService.openModal(ConfirmationModalComponent, {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
-      buttons : [
+      buttons: [
         {
           label: confirmation?.submitLabel || 'Отправить',
           closeModal: true,
@@ -152,8 +155,8 @@ export class ActionService {
 
   private getOptions(action: ComponentActionDto): NavigationOptions {
     const dtoAction = action.action;
-    const isService = dtoAction.includes('service');
-    const isLastPageInInternalScenario = dtoAction.includes('goBackToMainScenario');
+    const isService = dtoAction?.includes('service');
+    const isLastPageInInternalScenario = dtoAction?.includes('goBackToMainScenario');
 
     if (isService) {
       return { url: dtoAction };
@@ -231,16 +234,21 @@ export class ActionService {
   }
 
   private getActionDTO(action: ComponentActionDto): ActionDTO {
-    let bodyResult: ActionDTO = {
+    const bodyResult: ActionDTO = {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
-    if (action?.action?.indexOf('addToCalendar') !== -1) {
+    if (action.action?.indexOf('addToCalendar') !== -1) {
       bodyResult.scenarioDto = {
         ...bodyResult.scenarioDto,
         currentUrl: this.configService.addToCalendarUrl,
       };
     }
+
+    if (action.deliriumAction) {
+      bodyResult.deliriumAction = action.deliriumAction;
+    }
+
     return bodyResult;
   }
 
@@ -269,7 +277,14 @@ export class ActionService {
     }
   }
 
-  private openDropdownListModal({ value }: ComponentActionDto): void {
-    this.modalService.openModal(DropdownListModalComponent, { componentId: value });
+  private openDropdownListModal({ value: clarificationId }: ComponentActionDto, componentId: string): void {
+    this.modalService.openModal(DropdownListModalComponent, { componentId, clarificationId });
+  }
+
+  private handleDeliriumAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
+    const body = this.getActionDTO(action);
+    const preparedBody = JSON.parse(JSON.stringify(body));
+    preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);
+    return this.actionApiService.sendAction<T>(action.type, preparedBody);
   }
 }

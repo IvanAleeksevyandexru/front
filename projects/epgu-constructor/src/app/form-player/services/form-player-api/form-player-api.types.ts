@@ -11,6 +11,7 @@ import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
 import { CustomComponentRef } from '../../../shared/components/components-list/components-list.types';
+import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
 export interface ApplicantAnswersDto {
   [key: string]: Answer;
@@ -91,6 +92,7 @@ export interface ComponentAttrsDto {
   GIBDDpaymentError?: ComponentGIBDDpaymentErrorDto;
   attributeNameWithAddress?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   baloonContent?: Array<ComponentBaloonContentDto>;
   addressString?: ComponentAddressStringDto;
   value?: string;
@@ -102,6 +104,7 @@ export interface ComponentAttrsDto {
   image?: ComponentImageDto;
   labelAttr?: string;
   labelHint?: string;
+  customUnrecLabel?: string;
   hint?: string;
   russia?: boolean;
   ussr?: boolean;
@@ -152,6 +155,13 @@ export interface ComponentAttrsDto {
   endDate?: ComponentDateTimeDto;
   beginTime?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
+  canDeleteFirstScreen?: boolean;
+  emptySlotsModal?: ConfirmationModal;
+  fio?: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  gender?: string;
 }
 
 export interface ComponentDateTimeDto {
@@ -316,6 +326,7 @@ export interface ComponentActionDto {
   attrs?: {
     stepsBack?: number;
   };
+  deliriumAction?: string;
 }
 
 export interface ScreenActionDto extends ComponentActionDto {}
@@ -389,14 +400,14 @@ export interface ScenarioErrorsDto {
  */
 export interface ScenarioDto {
   applicantAnswers: ApplicantAnswersDto;
-  currentScenarioId: string;
+  currentScenarioId: number;
   cachedAnswers: CachedAnswersDto;
   currentValue: CurrentValueDto;
   display: DisplayDto;
   errors: ScenarioErrorsDto;
   gender: Gender;
   finishedAndCurrentScreens: string[];
-  orderId: string;
+  orderId: number;
   callBackOrderId?: string;
   isInternalScenario?: boolean;
   serviceId?: string;
@@ -453,6 +464,7 @@ export enum ActionType {
   deleteSuggest = 'deleteSuggest',
   attachUploadedFiles = 'attachUploadedFiles',
   dropdownListModal = 'dropdownListModal',
+  deliriumNextStep = 'deliriumNextStep',
 }
 
 export enum DTOActionAction {
@@ -471,7 +483,7 @@ export enum DTOActionAction {
 }
 
 export interface CheckOrderApiResponse {
-  orderId: string;
+  orderId: number;
   isInviteScenario: boolean;
   canStartNew: boolean;
 }
@@ -479,6 +491,7 @@ export interface CheckOrderApiResponse {
 export interface ActionDTO<T = {}> {
   scenarioDto: Partial<ScenarioDto>;
   additionalParams?: T;
+  deliriumAction?: string;
 }
 
 export interface ActionApiResponse<T> {

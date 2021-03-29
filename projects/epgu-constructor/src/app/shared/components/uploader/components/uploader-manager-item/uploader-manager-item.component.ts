@@ -7,6 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { SmuEventsService } from 'epgu-lib';
 import {
   CancelAction,
   ErrorActions,
@@ -18,6 +19,8 @@ import {
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { iconsTypes, SuggestAction } from '../../data';
+import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
+import { createDownloadEvent } from '../../../../constants/redirect-event';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',
@@ -80,7 +83,12 @@ export class UploaderManagerItemComponent {
 
   iconsType = iconsTypes;
 
-  constructor(private teraService: TerraByteApiService, public config: ConfigService) {}
+  constructor(
+    private teraService: TerraByteApiService,
+    public config: ConfigService,
+    private smu: SmuEventsService,
+    private deviceDetector: DeviceDetectorService,
+  ) {}
 
   cancelAction(type: OperationType): void {
     this.cancel.emit({ type, item: this.fileItem });
@@ -90,7 +98,11 @@ export class UploaderManagerItemComponent {
       if (this.isImage) {
         this.preview();
       } else if (this.link) {
-        this.elementLink.nativeElement.click();
+        if (this.deviceDetector.isWebView) {
+          this.smu.notify(createDownloadEvent(this.link));
+        } else {
+          this.elementLink.nativeElement.click();
+        }
       }
     }
   }

@@ -123,12 +123,6 @@ describe('DurationService', () => {
         text: 'март 2024',
         value: 4,
       },
-      {
-        date: '01.03.2025',
-        id: 5,
-        text: 'март 2025',
-        value: 5,
-      },
     ];
     const start: ListElement = { text: 'март 2020', id: 2, date: '01.03.2020', value: 2 };
     const yearFinishRange = service.getYearFinishRange(start);

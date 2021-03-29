@@ -30,8 +30,10 @@ export class AutocompleteApiService {
   public deleteSuggestionsField(
     fieldId: number,
   ): Observable<ISuggestionApi[]> {
-    const path = `${this.configService.suggestionsApiUrl}?valueGroupId=${fieldId}`;
-    return this.httpDelete<ISuggestionApi[]>(path);
+    const path = `${this.configService.suggestionsApiUrl}`;
+    return this.httpDelete<ISuggestionApi[]>(path, {
+      ids: [fieldId],
+    });
   }
 
   public updateSuggestionField(
@@ -60,9 +62,14 @@ export class AutocompleteApiService {
   }
 
 
-  private httpDelete<T>(path: string): Observable<T> {
-    return this.http.delete<T>(path, {
+  private httpDelete<T>(path: string, body?: unknown): Observable<T> {
+    const options: { withCredentials: boolean, body?: unknown } = {
       withCredentials: true,
-    });
+    };
+
+    if (body) {
+      options.body = body;
+    }
+    return this.http.request<T>('DELETE', path, options);
   }
 }

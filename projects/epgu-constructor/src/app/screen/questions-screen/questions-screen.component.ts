@@ -98,13 +98,6 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     return !(answer.hidden || this.isRejectAction(answer.action));
   }
 
-  handleKeyEvent(event: KeyboardEvent, answer: ComponentActionDto | ComponentAnswerDto): void {
-    if (event.code === 'Space') {
-      event.preventDefault();
-      this.answerChoose(answer);
-    }
-  }
-
   private subscribeToComponent(): void {
     /* TODO: после переезда на механизм отдельных answers
     избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */

@@ -9,7 +9,7 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { ScenarioErrorsDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { isEqualObj } from '../../constants/uttils';
+import { isEqualObj } from '../../constants/utils';
 import { ValidationService } from '../validation/validation.service';
 import { DictionaryConditions } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
@@ -26,10 +26,7 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components/components-list/components-list.types';
-import {
-  AddressHelperService,
-  DadataSuggestionsAddressForLookup,
-} from '../address-helper/address-helper.service';
+import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
@@ -74,9 +71,9 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): void {
+  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
-    this.componentsListRelationsService.createStatusElements(components, this.shownElements);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(components);
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -90,7 +87,7 @@ export class ComponentsListFormService {
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
-      this._shownElements = this.componentsListRelationsService.updateDependents(
+      this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
         components,
         {
           ...component,
@@ -109,6 +106,8 @@ export class ComponentsListFormService {
       .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent[1])))
       .subscribe(() => this.emitChanges());
     this.emitChanges();
+
+    return this._form;
   }
 
   public patch(component: CustomComponent): void {
@@ -119,12 +118,22 @@ export class ComponentsListFormService {
       if (this.dictionaryToolsService.isDropdownLike(component.type)) {
         const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
         const key: string = component.id;
-        const value: ListItem = dicts[key][defaultIndex];
+        const value: ListItem = dicts[key] && dicts[key][defaultIndex];
         control.get('value').patchValue(value);
       } else {
         const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
         const key: string = utils.getDictKeyByComp(component);
-        const value: ListItem = dicts[key].list[defaultIndex];
+        const value: ListItem = dicts[key]?.list[defaultIndex];
+        control.get('value').patchValue(value);
+      }
+    } else if (component.type === CustomScreenComponentTypes.DropDownDepts) {
+      const lockedValue = component.attrs?.lockedValue;
+      const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+      const key: string = utils.getDictKeyByComp(component);
+      const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
+
+      if (lockedValue && !repeatedWithNoFilters) {
+        const value: ListItem = dicts[key]?.list[defaultIndex];
         control.get('value').patchValue(value);
       }
     } else {
@@ -278,9 +287,15 @@ export class ComponentsListFormService {
       validators.push(this.validationService.dateValidator(component));
     }
 
+    const { type, attrs, id, label, required } = component;
+
     const form: FormGroup = this.fb.group(
       {
-        ...component,
+        type,
+        attrs,
+        id,
+        label,
+        required,
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
@@ -299,7 +314,7 @@ export class ComponentsListFormService {
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
-        this._shownElements = this.componentsListRelationsService.updateDependents(
+        this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
           components,
           next,
           this.shownElements,
@@ -318,8 +333,10 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (next.attrs.dictionaryType === 'MARKI_TS' &&
-      !isEqualObj<CustomListFormGroup>(prev, next)) {
+    if (
+      next.attrs.dictionaryType === 'MARKI_TS' &&
+      !isEqualObj<CustomListFormGroup>(prev, next)
+    ) {
       const indexVehicle: number = this.form.controls.findIndex(
         (control: AbstractControl) => control.value?.id === next.id
       );
@@ -352,7 +369,7 @@ export class ComponentsListFormService {
 
   private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
     return form.valueChanges.pipe(
-      startWith(form.getRawValue()), // TODO: заменить устаревший метод
+      startWith(form.getRawValue() as unknown),
       pairwise(),
       takeUntil(this.ngUnsubscribe$),
     );

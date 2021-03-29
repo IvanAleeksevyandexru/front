@@ -31,8 +31,12 @@ export class ConfigService implements Config {
   private _mockUrl: string;
   private _disableUnderConstructionMode: boolean;
   private _isSocialShareDisabled: boolean;
-  private _addToCalendarUrl: string;
   private _isAutocompleteServiceDisabled: boolean;
+  private _addToCalendarUrl: string;
+  private _isZipkinEnabled: boolean;
+  private _zipkinUrl: string;
+  private _zipkinMaxPayloadSize: number;
+  private _zipkinEnv: string;
 
   constructor(
     private loadService: LoadService,
@@ -153,6 +157,22 @@ export class ConfigService implements Config {
     return this._addToCalendarUrl;
   }
 
+  get isZipkinEnabled(): boolean {
+    return this._isZipkinEnabled;
+  }
+
+  get zipkinUrl(): string {
+    return this._zipkinUrl;
+  }
+
+  get zipkinMaxPayloadSize(): number {
+    return this._zipkinMaxPayloadSize;
+  }
+
+  get zipkinEnv(): string {
+    return this._zipkinEnv;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
@@ -187,6 +207,10 @@ export class ConfigService implements Config {
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;
+    this._isZipkinEnabled = config.isZipkinEnabled || false;
+    this._zipkinUrl = config.zipkinUrl || '';
+    this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
+    this._zipkinEnv = config.zipkinEnv || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

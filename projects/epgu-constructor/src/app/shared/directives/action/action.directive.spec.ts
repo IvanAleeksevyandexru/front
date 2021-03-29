@@ -22,7 +22,7 @@ import {
   ActionType,
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction
+  DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -47,6 +47,8 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
     <button class="profileEdit" epgu-constructor-action [action]="profileEditAction"></button>
     <button class="home" epgu-constructor-action [action]="homeAction"></button>
     <button class="quizToOrder" epgu-constructor-action [action]="quizToOrder"></button>
+    <button class="prev" name="prev" epgu-constructor-action [action]="prevStepAction"></button>
+    <button class="empty" epgu-constructor-action [action]="emptyAction"></button>
   `,
 })
 export class ActionTestComponent {
@@ -110,6 +112,7 @@ export class ActionTestComponent {
     action: '/to-some-order' as DTOActionAction,
     type: ActionType.quizToOrder,
   };
+  emptyAction: ComponentActionDto = undefined;
 }
 
 const mockComponent: ComponentDto = {
@@ -127,13 +130,15 @@ const sendActionMock = of({
 
 describe('ActionDirective', () => {
   let fixture: ComponentFixture<ActionTestComponent>;
-  let comp: ActionTestComponent;
+  let component: ActionTestComponent;
   let formPlayerApiService: FormPlayerApiService;
   let screenService: ScreenService;
   let navigationService: NavigationService;
   let navigationModalService: NavigationModalService;
   let utilsService: UtilsService;
   let localStorageService: LocalStorageService;
+  let actionService: ActionService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ActionDirective, ActionTestComponent],
@@ -159,13 +164,14 @@ describe('ActionDirective', () => {
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(ActionTestComponent);
-        comp = fixture.componentInstance;
+        component = fixture.componentInstance;
         formPlayerApiService = TestBed.inject(FormPlayerApiService);
         screenService = TestBed.inject(ScreenService);
         navigationService = TestBed.inject(NavigationService);
         navigationModalService = TestBed.inject(NavigationModalService);
         utilsService = TestBed.inject(UtilsService);
         localStorageService = TestBed.inject(LocalStorageService);
+        actionService = TestBed.inject(ActionService);
         jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
         jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
       });
@@ -263,11 +269,45 @@ describe('ActionDirective', () => {
     const applicantAnswers = {
       12: {
         visited: true,
-        value: ''
-      }
+        value: '',
+      },
     };
 
     expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
     expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
+  });
+
+  it('test directive - empty Action', () => {
+    const button: HTMLElement = fixture.debugElement.query(By.css('.empty')).nativeElement;
+    fixture.detectChanges();
+    const switchSpy = spyOn(actionService, 'switchAction').and.callThrough();
+    button.click();
+    expect(switchSpy).not.toBeCalled();
+  });
+
+  describe('onKeyDown', () => {
+    it('should not call switchAction with name=prev', () => {
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      const switchActionSpy = jest.spyOn(actionService, 'switchAction');
+      const button = fixture.debugElement.query(By.css('.prev'));
+      fixture.detectChanges();
+      button.nativeElement.dispatchEvent(event);
+      expect(switchActionSpy).not.toBeCalled();
+    });
+
+    it('should not call switchAction with empty action', () => {
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+      });
+      const switchActionSpy = jest.spyOn(actionService, 'switchAction');
+      const button = fixture.debugElement.query(By.css('.empty'));
+      fixture.detectChanges();
+      button.nativeElement.dispatchEvent(event);
+      expect(switchActionSpy).not.toBeCalled();
+    });
   });
 });

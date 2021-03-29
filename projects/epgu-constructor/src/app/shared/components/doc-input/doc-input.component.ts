@@ -73,6 +73,7 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
     this.hasExpirationDate = !!this.fields?.expirationDate;
     this.addFormGroupControls();
     this.subscribeOnFormChange();
+    this.updateParentIfNotValid();
   }
 
   ngAfterViewInit(): void {
@@ -113,6 +114,12 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
           fieldControl.markAsTouched();
         }
       });
+    }
+  }
+
+  updateParentIfNotValid(): void {
+    if (!this.form.valid) {
+      this.emitToParentForm(null);
     }
   }
 
@@ -201,6 +208,7 @@ export class DocInputComponent implements OnInit, AfterViewInit, OnChanges {
 
   markControlAsDirty(control: string | string[]): void {
     this.form.get(control).markAsDirty();
+    this.form.get(control).updateValueAndValidity();
   }
 
   isValidationShown(control: string | string[]): boolean {

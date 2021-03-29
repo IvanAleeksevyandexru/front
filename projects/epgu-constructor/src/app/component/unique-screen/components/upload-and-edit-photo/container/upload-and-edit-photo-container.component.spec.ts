@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UploadAndEditPhotoContainerComponent } from './upload-and-edit-photo-container.component';
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
@@ -17,6 +16,9 @@ import { ScreenContainerModule } from '../../../../../shared/components/screen-c
 import { UserInfoLoaderModule } from '../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 
 describe('UploadAndEditPhotoContainerComponent', () => {
   let component: UploadAndEditPhotoContainerComponent;
@@ -43,6 +45,7 @@ describe('UploadAndEditPhotoContainerComponent', () => {
             '<ol style="padding-left: 20px"><br><li style="color: #0d4cd3"> <a id="requirements">примеры удачных фотографий</a></li></ol>',
         },
         requirements: {
+          title: '',
           setting: {
             warning:
               'Убедитесь, что ваша фотография соответствует требованиям ведомства. Это важно, чтобы заявление приняли.',
@@ -62,8 +65,6 @@ describe('UploadAndEditPhotoContainerComponent', () => {
         },
       },
     },
-    linkedValues: [],
-    arguments: {},
     value: '',
     required: true,
   };
@@ -86,7 +87,8 @@ describe('UploadAndEditPhotoContainerComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        EventBusService,
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
       ],
     })
       .overrideComponent(UploadAndEditPhotoContainerComponent, {

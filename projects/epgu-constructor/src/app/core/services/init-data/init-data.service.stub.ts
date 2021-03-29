@@ -4,7 +4,7 @@ import { FormPlayerContext, QueryParams, ServiceEntity } from '../../../form-pla
 @Injectable()
 export class InitDataServiceStub implements ServiceEntity {
   private _serviceId: string;
-  private _orderId: string;
+  private _orderId: number;
   private _targetId: string;
   private _invited: boolean;
   private _canStartNew: boolean;
@@ -28,11 +28,11 @@ export class InitDataServiceStub implements ServiceEntity {
     this._targetId = targetId;
   }
 
-  get orderId(): string {
+  get orderId(): number {
     return this._orderId;
   }
 
-  set orderId(orderId: string) {
+  set orderId(orderId: number) {
     this._orderId = orderId;
   }
 

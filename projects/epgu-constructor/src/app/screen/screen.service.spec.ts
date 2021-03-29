@@ -22,8 +22,8 @@ import { DeviceDetectorServiceStub } from '../core/services/device-detector/devi
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
-  orderId: '653920',
-  currentScenarioId: '1',
+  orderId: 653920,
+  currentScenarioId: 1,
   finishedAndCurrentScreens: ['s1'],
   cachedAnswers: {},
   currentValue: {},

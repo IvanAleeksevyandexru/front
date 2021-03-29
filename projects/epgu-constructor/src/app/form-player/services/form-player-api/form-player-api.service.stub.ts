@@ -28,11 +28,15 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
+  public getBooking(): Observable<{}> {
+    return of({});
+  }
+
   public sendAction(): Observable<{}> {
     return of({});
   }
 
-  public getOrderId(): Observable<string> {
+  public getOrderId(): Observable<number> {
     return of(null);
   }
 }

@@ -42,7 +42,7 @@
 }
 
 @media(max-width: $screen-sm-max) {
-  .epgu-constructor-table {
+  .epgu-constructor-table.media-table {
     &, thead, tbody, th, td, tr{
       display: block;
     }
@@ -70,8 +70,8 @@
       }
     }
   }
-  .epgu-constructor-table,
-  .epgu-constructor-table.table-bordered {
+  .epgu-constructor-table.media-table,
+  .epgu-constructor-table.table-bordered.media-table {
     & td:last-child {
       border-bottom: 1px solid $color-mercury;
       padding-bottom: 24px;

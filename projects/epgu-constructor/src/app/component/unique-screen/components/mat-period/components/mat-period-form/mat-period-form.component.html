@@ -1,13 +1,17 @@
 <form [formGroup]="form" *ngIf="form">
   <div class="mb-24">
-    <lib-radio formControlName="paymentType" value="one" labelText="Единовременно"></lib-radio>
+    <lib-radio
+      formControlName="paymentType"
+      value="one"
+      [labelText]="components[formField.paymentType].label['one']"
+    ></lib-radio>
   </div>
 
   <div class="mb-24">
     <lib-radio
       formControlName="paymentType"
       value="month"
-      labelText="Ежемесячный платеж"
+      [labelText]="components[formField.paymentType].label['month']"
     ></lib-radio>
   </div>
 
@@ -15,7 +19,7 @@
     <lib-radio
       formControlName="paymentType"
       value="quarter"
-      labelText="Ежеквартальный платеж"
+      [labelText]="components[formField.paymentType].label['quarter']"
     ></lib-radio>
   </div>
 
@@ -23,12 +27,16 @@
     <lib-radio
       formControlName="paymentType"
       value="halfYear"
-      labelText="Полугодовой платеж"
+      [labelText]="components[formField.paymentType].label['halfYear']"
     ></lib-radio>
   </div>
 
   <div class="mb-24">
-    <lib-radio formControlName="paymentType" value="year" labelText="Ежегодный платеж"></lib-radio>
+    <lib-radio
+      formControlName="paymentType"
+      value="year"
+      [labelText]="components[formField.paymentType].label['year']"
+    ></lib-radio>
   </div>
 
   <div class="mb-24">
@@ -78,7 +86,9 @@
 
   <div class="mb-24">
     <epgu-constructor-label
-      [label]="components[formField.paymentDate].label"
+      [label]="
+        $any(components[formField.paymentDate].label) | label: form.get(formField.paymentType).value
+      "
     ></epgu-constructor-label>
     <epgu-constructor-error [data]="form.get(formField.paymentDate)"></epgu-constructor-error>
     <epgu-constructor-constructor-plain-input
@@ -104,5 +114,7 @@
   <epgu-constructor-constructor-date-picker
     [textModelValue]="true"
     [control]="$any(form.get(formField.paymentDate))"
+    [minDate]="components[formField.paymentDate].attrs.minDate"
+    [maxDate]="components[formField.paymentDate].attrs.maxDate"
   ></epgu-constructor-constructor-date-picker>
 </ng-template>

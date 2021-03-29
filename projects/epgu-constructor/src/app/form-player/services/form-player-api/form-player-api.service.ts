@@ -31,7 +31,7 @@ export class FormPlayerApiService {
     return this.post<CheckOrderApiResponse>(path, body);
   }
 
-  public getOrderStatus(orderId: string): Observable<CheckOrderApiResponse> {
+  public getOrderStatus(orderId: number): Observable<CheckOrderApiResponse> {
     const { serviceId, targetId } = this.initDataService;
     const body = { targetId, orderId };
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getOrderStatus`;
@@ -39,7 +39,7 @@ export class FormPlayerApiService {
     return this.post<CheckOrderApiResponse>(path, body);
   }
 
-  public getServiceData(orderId?: string): Observable<FormPlayerApiResponse> {
+  public getServiceData(orderId?: number): Observable<FormPlayerApiResponse> {
     const { serviceId, targetId, serviceInfo } = this.initDataService;
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
@@ -78,6 +78,16 @@ export class FormPlayerApiService {
     const params = this.getNavigateParams(options.params);
 
     return this.post<FormPlayerApiResponse>(path, body, params);
+  }
+
+  public getBooking(): Observable<FormPlayerApiResponse> {
+    const { orderId, serviceId } = this.initDataService;
+    const body = {
+      orderId,
+      serviceId
+    };
+    const path = `${this.configService.apiUrl}/service/booking`;
+    return this.post<FormPlayerApiResponse>(path, body);
   }
 
   public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {

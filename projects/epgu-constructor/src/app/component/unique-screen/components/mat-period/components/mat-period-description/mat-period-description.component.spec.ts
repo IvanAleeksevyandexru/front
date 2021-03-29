@@ -19,6 +19,7 @@ describe('MatPeriodDescriptionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatPeriodDescriptionComponent);
     component = fixture.componentInstance;
+    component.isValidBalanceAmount = true;
     fixture.detectChanges();
   });
 
