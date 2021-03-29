@@ -20,6 +20,7 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -67,7 +68,7 @@ describe('SelectChildrenItemComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
-      imports: [RouterTestingModule, ConstructorDropdownModule, ComponentsListModule],
+      imports: [RouterTestingModule, ConstructorDropdownModule, ComponentsListModule, BaseComponentsModule],
       providers: [
         HealthService,
         { provide: ScreenService, useClass: ScreenServiceStub },
