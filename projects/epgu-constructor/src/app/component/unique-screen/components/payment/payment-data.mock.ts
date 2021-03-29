@@ -100,4 +100,4 @@ export const paymentInfoMock = {
   recipientTaxAuthorityName: '',
   recipientTitle: '',
   sum: '4564',
-}
+};
