@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
-import { TextTransform } from '../../types/textTransform';
-import { CustomComponent, CustomComponentAttrValidation } from '../components-list/components-list.types';
+import { TextTransform } from '../../../../types/textTransform';
+import { CustomComponent, CustomComponentAttrValidation } from '../../components-list.types';
 
 interface DocInputControl extends Partial<AbstractControl> {
   value: DocInputComponentData;

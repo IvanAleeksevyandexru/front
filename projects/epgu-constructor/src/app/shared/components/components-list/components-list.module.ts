@@ -22,11 +22,11 @@ import { DateRangeService } from '../../services/date-range/date-range.service';
 import { ConstructorMultilineInputModule } from '../constructor-multiline-input/constructor-multiline-input.module';
 import { MemoModule } from '../../pipes/memo/memo.module';
 import { MultipleChoiceDictionaryModule } from '../multiple-choice-dictionary/multiple-choice-dictionary.module';
-import { DocInputModule } from '../doc-input/doc-input.module';
+import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ComponentItemModule } from '../component-item/component-item.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
-import { CheckboxListModule } from '../checkbox-list/checkbox-list.module';
+import { CheckboxListModule } from './components/checkbox-list/checkbox-list.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
@@ -40,12 +40,14 @@ import { ComponentResolverModule } from '../../../component/component-resolver/c
 import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
 import { TimerItemComponent } from './components/timer-item/timer-item.component';
 import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
-import { DocInputComponent } from '../doc-input/doc-input.component';
-import { CheckboxListComponent } from '../checkbox-list/components/checkbox-list/checkbox-list.component';
+import { DocInputComponent } from './components/doc-input/doc-input.component';
+import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.component';
+import { AbstractComponentListItemDirective } from './components/abstract-component-list-item/abstract-component-list-item.directive';
 
 @NgModule({
   declarations: [
     ComponentsListComponent,
+    AbstractComponentListItemDirective,
     ShowComponentPipe,
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,

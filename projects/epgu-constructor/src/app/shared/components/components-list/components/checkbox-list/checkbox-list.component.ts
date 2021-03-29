@@ -25,7 +25,7 @@ import {
   CheckboxList,
   CheckboxListComponentAttrsDto,
   CheckboxListElement,
-} from '../../checkbox-list.types';
+} from './checkbox-list.types';
 import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 
 @Component({

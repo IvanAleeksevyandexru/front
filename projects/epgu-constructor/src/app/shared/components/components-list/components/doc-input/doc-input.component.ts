@@ -1,29 +1,21 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
-import { merge } from 'rxjs';
-import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { ValidationService } from '../../services/validation/validation.service';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ISuggestionItem } from '../../../../../core/services/autocomplete/autocomplete.inteface';
+import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ValidationService } from '../../../../services/validation/validation.service';
 import {
   DocInputField,
   DocInputFields,
   DocInputFieldsTypes,
   DocInputFormFields,
 } from './doc-input.types';
-import { prepareClassifiedSuggestionItems } from '../../../core/services/autocomplete/autocomplete.const';
-import { SuggestHandlerService } from '../../services/suggest-handler/suggest-handler.service';
-import { ScreenService } from '../../../screen/screen.service';
+import { prepareClassifiedSuggestionItems } from '../../../../../core/services/autocomplete/autocomplete.const';
+import { SuggestHandlerService } from '../../../../services/suggest-handler/suggest-handler.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { AbstractComponentListItemDirective } from '../abstract-component-list-item/abstract-component-list-item.directive';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -32,12 +24,8 @@ import { ScreenService } from '../../../screen/screen.service';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class DocInputComponent implements OnInit, AfterViewInit {
-  @Input() componentIndex = 0;
-  @Input() componentsGroupIndex = 0;
-
-  control: FormGroup | AbstractControl = this.formService.form.controls[this.componentIndex];
-
+export class DocInputComponent extends AbstractComponentListItemDirective
+  implements OnInit, AfterViewInit {
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;
   fields: { [fieldName: string]: DocInputField };
@@ -54,28 +42,23 @@ export class DocInputComponent implements OnInit, AfterViewInit {
   form: FormGroup;
 
   constructor(
+    public injector: Injector,
     public suggestHandlerService: SuggestHandlerService,
-    public formService: ComponentsListFormService,
     public screenService: ScreenService,
-    private ngUnsubscribe$: UnsubscribeService,
     private validationService: ValidationService,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
-  ) {}
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
+    super.ngOnInit();
     this.fields = this.control.value.attrs.fields;
     this.hasExpirationDate = !!this.fields?.expirationDate;
     this.addFormGroupControls();
     this.subscribeOnFormChange();
     this.updateParentIfNotValid();
-
-    merge(this.control.statusChanges, this.control.valueChanges)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        this.cdr.markForCheck();
-      });
 
     this.screenService.suggestions$
       .pipe(takeUntil(this.ngUnsubscribe$))
