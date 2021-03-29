@@ -9,6 +9,7 @@ import {
   map,
   mergeMap,
   reduce,
+  take,
   takeUntil,
   tap,
 } from 'rxjs/operators';
@@ -95,7 +96,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.resetLimits()), // Обнуляем каунтеры перебора
-    tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на upploaded статутс
+    tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
     tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
@@ -251,13 +252,30 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   suggest({ isAdd, file }: { isAdd: boolean; file: FileItem }): void {
     if (isAdd) {
-      this.store.add(file.setAttached(isAdd));
+      /* NOTICE: тут образовался небольшой костыль, призванный решить проблему того,
+       * что в терабайт должен улетать абсолютно новый инстанс файла для каждого objectId|orderId,
+       * чтобы файлы потом корректно загружались в ЛК
+       */
+      file.setAttached(true);
+      this.terabyteService.downloadFile(file.createUploadedParams()).subscribe((blob: Blob) => {
+        const rawFile = new File([blob], file.item.fileName);
+        const newFile = new FileItem(
+          FileItemStatus.preparation,
+          this.config.fileUploadApiUrl,
+          rawFile,
+          { ...file.item, isFromSuggests: true, objectId: this.screenService.orderId.toString() },
+        );
+        newFile.setAttached(true);
+        this.addPrepare(newFile);
+        this.store.add(newFile);
+      });
     } else {
       file.setAttached(false);
       const storedFile = this.files
         .getValue()
-        .find((sFile) => sFile.item.mnemonic === file.item.mnemonic);
+        .find((storeFile) => storeFile.item.fileName === file.item.fileName);
       this.store.remove(storedFile);
+      this.addDelete(storedFile);
     }
   }
 
@@ -457,8 +475,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         return throwError(e);
       }),
       concatMap(() => this.terabyteService.getFileInfo(options)),
-      map((upploaded) => {
-        item.setItem(upploaded as UploadedFile).setStatus(FileItemStatus.uploaded);
+      tap((uploaded) => {
+        const newUploaded = uploaded as UploadedFile;
+        if (item.item?.isFromSuggests) {
+          newUploaded.isFromSuggests = true;
+        }
+        item.setItem(newUploaded).setStatus(FileItemStatus.uploaded);
         this.store.update(item);
       }),
       map(() => undefined),
@@ -489,6 +511,26 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
           file?.objectId.toString() === this.objectId.toString(),
       ),
+      map((file) => {
+        let suggestionsFiles;
+        this.suggestions$.pipe(take(1)).subscribe((suggestions) => {
+          suggestionsFiles = suggestions[this.componentId]?.list;
+        });
+        const suggestionsUploadedFiles = this.autocompleteService.getParsedSuggestionsUploadedFiles(
+          suggestionsFiles,
+        );
+
+        if (
+          suggestionsUploadedFiles.some(
+            (uploadedFile: UploadedFile) => uploadedFile.fileName === file.fileName,
+          )
+        ) {
+          // eslint-disable-next-line no-param-reassign
+          file.isFromSuggests = true;
+        }
+
+        return file;
+      }),
       finalize(() => this.listUploadingStatus.next(false)),
     );
   }
