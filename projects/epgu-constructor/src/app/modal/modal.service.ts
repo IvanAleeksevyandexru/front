@@ -65,4 +65,13 @@ export class ModalService {
   public registerInjector(injector: Injector): void {
     this.injector = injector;
   }
+
+  public isModalOpen(): boolean {
+    const modalContainer = document.getElementById('modal-container');
+
+    if (modalContainer && modalContainer.innerHTML.length) {
+      return true;
+    }
+    return false;
+  }
 }
