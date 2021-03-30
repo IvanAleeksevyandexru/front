@@ -7,9 +7,7 @@
     "ics",
     "@alyle/ui",
     "angular-resize-event",
-    "@tanker/file-ponyfill",
-    "zipkin",
-    "zipkin-transport-http"
+    "@tanker/file-ponyfill"
   ],
   "lib": {
     "entryFile": "src/public-api.ts",
