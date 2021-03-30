@@ -20,7 +20,7 @@
             [ngClass]="style.label"
           ></div>
           <div
-            [innerHTML]="field?.value | imgPrefixer | safe: 'html'"
+            [innerHTML]="field?.value | imgPrefixer | rank: field?.rank | safe: 'html'"
             class="data-item__value"
             [ngClass]="style.value"
           ></div>
