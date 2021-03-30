@@ -134,7 +134,7 @@ export class AutocompleteService {
       });
   }
 
-  public getParsedSuggestionsUploadedFiles(componentList: ISuggestionItemList[] = []): UploadedFile[] {
+  public getParsedSuggestionsUploadedFiles(componentList: ISuggestionItemList[]): UploadedFile[] {
     return componentList.reduce((result, item) => {
       const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
       const componentValues = [
