@@ -6,13 +6,10 @@
     "target": "es2015",
     "declaration": true,
     "inlineSources": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": ["node"],
+    "types": [],
     "paths": {
       "@ifc/plugin": ["node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"],
+      "@ifc/common": ["node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"]
     },
     "lib": [
       "dom",
