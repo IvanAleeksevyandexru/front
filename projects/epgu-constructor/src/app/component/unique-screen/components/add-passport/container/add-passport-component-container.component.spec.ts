@@ -15,6 +15,7 @@ import { Passport } from '../add-passport.models';
 import { AddPassportComponent } from '../component/add-passport.component';
 import { AddPassportContainerComponent } from './add-passport-component-container.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
+import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 describe('AddPassportContainerComponent', () => {
   let component: AddPassportContainerComponent;
@@ -35,19 +36,15 @@ describe('AddPassportContainerComponent', () => {
         AddPassportContainerComponent,
         AddPassportComponent,
         ScreenPadComponent,
-        MockComponent(DefaultUniqueScreenWrapperComponent)
+        MockComponent(DefaultUniqueScreenWrapperComponent),
       ],
-      imports: [
-        RouterTestingModule,
-        PassportModule,
-        ReactiveFormsModule,
-        FormsModule
-      ],
+      imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
       providers: [
         CurrentAnswersService,
         HealthService,
         EventBusService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        SuggestHandlerService,
       ],
     }).compileComponents();
   }));

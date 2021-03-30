@@ -11,6 +11,7 @@
 </epgu-constructor-helper-text>
 <section class="card__content" *ngIf="isNewChild">
   <epgu-constructor-components-list
+    [componentsGroupIndex]="idx"
     [components]="components"
     [errors]="errors"
     (changes)="updateChild($event)"
