@@ -6,7 +6,11 @@ import {
 
 @Component({
   selector: 'epgu-constructor-long-button',
-  template: `<button [class.loading]="isLoading" [disabled]="data?.disabled || disabled">
+  template: `<button
+    [class.loading]="isLoading"
+    [disabled]="data?.disabled || disabled"
+    tabindex="-1"
+  >
     <ng-content></ng-content>
   </button>`,
   styleUrls: ['./long-button.component.scss'],
