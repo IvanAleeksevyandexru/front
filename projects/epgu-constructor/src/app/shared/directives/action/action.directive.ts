@@ -5,7 +5,7 @@ import {
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ActionService } from './action.service';
-import {ModalService} from "../../../modal/modal.service";
+import { ModalService } from '../../../modal/modal.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
