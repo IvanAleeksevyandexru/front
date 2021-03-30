@@ -168,6 +168,9 @@ describe('FileUploadItemComponent', () => {
         of(createUploadedFileMock(options) as TerraUploadedFile),
       );
     jest
+      .spyOn(terabyteService, 'downloadFile')
+      .mockImplementation((options: Partial<TerraUploadFileOptions>) => of(new Blob([])));
+    jest
       .spyOn(terabyteService, 'getListByObjectId')
       .mockImplementation(() => of([] as TerabyteListItem[]));
 
@@ -176,6 +179,9 @@ describe('FileUploadItemComponent', () => {
       .mockImplementation((options: Partial<TerraUploadFileOptions>) =>
         of(createUploadedFileMock(options) as TerabyteListItem),
       );
+
+    jest.spyOn(screenService, 'orderId', 'get').mockImplementation(() => 123);
+
     jest.spyOn(terabyteService, 'getDownloadApiPath').mockImplementation(() => 'link');
     window.URL.createObjectURL = () => '';
 
@@ -216,6 +222,7 @@ describe('FileUploadItemComponent', () => {
   it('should attach file', () => {
     component.suggest({ isAdd: true, file: mockFileItem() });
     fixture.detectChanges();
+
     expect(
       fixture.debugElement.query(By.css('.uploader-manager-item__button.detach_button')),
     ).not.toBeNull();
