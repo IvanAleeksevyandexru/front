@@ -12,10 +12,7 @@
       ],
       "epgu-constructor": [
         "dist/epgu-constructor"
-      ],
-      "os": [
-        "node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"
-      ],
+      ]
     }
   },
   "files": [

@@ -80,6 +80,8 @@
     "ngx-device-detector": "^2.0.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "ngx-webcam": "0.3.0",
+    "node-fetch": "^2.6.1",
+    "os": "^0.1.1",
     "postcss": "^8.2.4",
     "ru-validation-codes": "2.8.0",
     "rxjs": "6.6.6",
