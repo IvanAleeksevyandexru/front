@@ -51,6 +51,7 @@ export enum CustomScreenComponentTypes {
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
 // type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
 
+// @todo. выяснить, почему в коде CustomListDropDowns как объект, а не массив
 export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
 // @todo. выяснить, почему в коде CustomListDictionaries как объект, а не массив
 export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
