@@ -13,12 +13,12 @@ import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { FileUploadComponent } from '../../file-upload-screen/sub-components/file-upload/file-upload.component';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { CustomScreenComponentTypes } from '../../../../../shared/components/components-list/components-list.types';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { AppealFines } from '../appeal-fines.types';
+import { FileUploadComponent } from '../../../../../shared/components/file-upload/file-upload/file-upload.component';
 
 @Component({
   selector: 'epgu-constructor-appeal-fines',

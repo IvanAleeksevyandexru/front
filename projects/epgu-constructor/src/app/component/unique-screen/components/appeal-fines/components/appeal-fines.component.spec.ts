@@ -12,12 +12,12 @@ import { BaseComponentsModule } from '../../../../../shared/components/base-comp
 // eslint-disable-next-line max-len
 import { ConstructorMultilineInputComponent } from '../../../../../shared/components/constructor-multiline-input/constructor-multiline-input.component';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
-import { FileUploadComponent } from '../../file-upload-screen/sub-components/file-upload/file-upload.component';
 import { EpguLibModule } from 'epgu-lib';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { By } from '@angular/platform-browser';
+import { FileUploadComponent } from '../../../../../shared/components/file-upload/file-upload/file-upload.component';
 
 
 describe('AppealFinesComponent', () => {

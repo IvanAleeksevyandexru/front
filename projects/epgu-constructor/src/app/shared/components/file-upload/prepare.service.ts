@@ -6,14 +6,14 @@ import {
   FileItemStatus,
   getSizeInMB,
 } from './file-upload-item/data';
-import { FileUploadItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { FileUploadItem } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
 import { CheckFailedReasons, FileUploadService } from './file-upload.service';
 import {
   CompressionOptions,
   CompressionService,
-} from '../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
+} from '../upload-and-edit-photo-form/service/compression/compression.service';
 
 type getErrorType = (action: ErrorActions) => FileItemError;
 

@@ -1,55 +1,55 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { FileUploadItemComponent } from './file-upload-item.component';
-import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
-import { BaseModule } from '../../../../../../shared/base.module';
-import { UploaderModule } from '../../../../../../shared/components/uploader/uploader.module';
-import { FileSizeModule } from '../../../../../../shared/pipes/file-size/file-size.module';
-import { TerraByteApiService } from '../../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { TerraByteApiServiceStub } from '../../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
+import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
+import { BaseModule } from '../../../base.module';
+import { UploaderModule } from '../../uploader/uploader.module';
+import { FileSizeModule } from '../../../pipes/file-size/file-size.module';
+import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { PrepareService } from '../prepare.service';
 import { PrepareServiceStub } from '../prepare.service.stub';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 import { FileUploadService } from '../file-upload.service';
 
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { ActionService } from '../../../../../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { AutocompleteService } from '../../../../../../core/services/autocomplete/autocomplete.service';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { AutocompleteApiServiceStub } from '../../../../../../core/services/autocomplete/autocomplete-api.service.stub';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import { UtilsServiceStub } from '../../../../../../core/services/utils/utils.service.stub';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { DatesToolsServiceStub } from '../../../../../../core/services/dates-tools/dates-tools.service.stub';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { ActionService } from '../../../directives/action/action.service';
+import { ActionServiceStub } from '../../../directives/action/action.service.stub';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
+import { ModalService } from '../../../../modal/modal.service';
+import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
+import { AutocompleteApiServiceStub } from '../../../../core/services/autocomplete/autocomplete-api.service.stub';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
 import {
   FileUploadItem,
   FileUploadItemTypes,
   TerabyteListItem,
   TerraUploadFileOptions,
   UploadedFile,
-} from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { ChangeDetectionStrategy, ComponentRef } from '@angular/core';
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { LoggerService } from '../../../../../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from './data';
 import { of } from 'rxjs';
-import { CompressionService } from '../../../../../../shared/components/upload-and-edit-photo-form/service/compression/compression.service';
+import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import {
   ComponentAttrsDto,
   ComponentDto,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
-import { ViewerService } from '../../../../../../shared/components/uploader/services/viewer/viewer.service';
-import { ViewerServiceStub } from '../../../../../../shared/components/uploader/services/viewer/viewer.service.stub';
+} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { ViewerService } from '../../uploader/services/viewer/viewer.service';
+import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {

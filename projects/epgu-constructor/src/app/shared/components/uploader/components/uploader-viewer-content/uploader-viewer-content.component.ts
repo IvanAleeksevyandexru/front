@@ -6,14 +6,9 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-
 import { BehaviorSubject } from 'rxjs';
-
 import { SmuEventsService } from 'epgu-lib';
-import {
-  FileItem,
-  FileItemStatus,
-} from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ZoomComponent } from '../../../zoom/zoom.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AppealFinesComponent } from './components/appeal-fines.component';
 import { BaseModule } from '../../../../shared/base.module';
-import { SubComponentsModule } from '../file-upload-screen/sub-components/sub-components.module';
+import { FileUploadModule } from '../../../../shared/components/file-upload/file-upload.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
@@ -13,7 +13,7 @@ import { ConstructorMultilineInputModule } from '../../../../shared/components/c
   declarations: [AppealFinesComponent, AppealFinesContainerComponent],
   imports: [
     BaseModule,
-    SubComponentsModule,
+    FileUploadModule,
     DefaultUniqueScreenWrapperModule,
     ScreenPadModule,
     BaseComponentsModule,

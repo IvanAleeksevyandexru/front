@@ -7,10 +7,9 @@ import {
   Input,
   Output,
 } from '@angular/core';
-
 import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
-import { FileItem } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
+import { FileItem } from '../../../file-upload/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer',

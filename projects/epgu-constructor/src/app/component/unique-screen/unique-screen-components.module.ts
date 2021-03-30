@@ -8,7 +8,7 @@ import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-s
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
 import { CarInfoModule } from './components/car-info/car-info.module';
 import { EmployeeHistoryModule } from './components/employee-history/employee-history.module';
-import { FileUploadModule } from './components/file-upload-screen/file-upload.module';
+import { FileUploadScreenModule } from './components/file-upload-screen/file-upload-screen.module';
 import { InformationCenterMvdModule } from './components/information-center-mvd/information-center-mvd.module';
 import { PaymentTypeSelectorModule } from './components/payment-type-selector/payment-type-selector.module';
 import { BillinfoModule } from './components/payment/components/billinfo/billinfo.module';
@@ -45,7 +45,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     BaseModule,
     WebcamShootModule,
     ModalModule,
-    FileUploadModule,
+    FileUploadScreenModule,
     SelectMapObjectModule,
     CarInfoModule,
     EmployeeHistoryModule,
@@ -78,7 +78,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
   exports: [
     RepeatableFieldsModule,
     UploadAndEditPhotoModule,
-    FileUploadModule,
+    FileUploadScreenModule,
     SelectMapObjectModule,
     CarInfoModule,
     EmployeeHistoryModule,

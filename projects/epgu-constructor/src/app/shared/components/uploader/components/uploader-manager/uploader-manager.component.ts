@@ -6,7 +6,7 @@ import {
   ErrorActions,
   FileItem,
   FileItemStatus,
-} from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+} from '../../../file-upload/file-upload-item/data';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { FilesCollection, SuggestAction } from '../../data';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';

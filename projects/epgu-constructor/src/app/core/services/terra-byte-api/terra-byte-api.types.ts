@@ -1,4 +1,4 @@
-import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
 
 export interface Chunk {
   chunk: number;
