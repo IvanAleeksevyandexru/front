@@ -107,9 +107,9 @@
       </div>
       <div class="message__description">
         Всего в заявлении можно загрузить
-        {{plurals.before | pluralize: maxTotalAmount}}
+        {{ plurals.before | pluralize: maxTotalAmount }}
         {{ maxTotalAmount }}
-        {{plurals.files | pluralize: maxTotalAmount}}.
+        {{ plurals.files | pluralize: maxTotalAmount }}.
         <ng-container *ngIf="maxTotalAmount > 1"
           >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
         >
@@ -123,9 +123,9 @@
       </div>
       <div class="message__description">
         Здесь можно загрузить
-         {{plurals.before | pluralize: data.maxFileCount}}
+        {{ plurals.before | pluralize: data.maxFileCount }}
         {{ data.maxFileCount }}
-        {{plurals.files | pluralize: data.maxFileCount}}.
+        {{ plurals.files | pluralize: data.maxFileCount }}.
         <ng-container *ngIf="data.maxFileCount > 1"
           >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
         >
@@ -147,9 +147,8 @@
       <div class="message__text">Выбрано максимальное количество файлов</div>
       <div class="message__description">
         Всего в заявлении можно загрузить
-        {{plurals.before | pluralize: maxTotalAmount}}
-        {{ maxTotalAmount }}&nbsp;
-        {{plurals.files | pluralize: maxTotalAmount}}.
+        {{ plurals.before | pluralize: maxTotalAmount }}
+        {{ maxTotalAmount }}&nbsp; {{ plurals.files | pluralize: maxTotalAmount }}.
         <ng-container *ngIf="maxTotalAmount > 1"
           >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
         >
@@ -158,8 +157,8 @@
     <ng-template #amountMax>
       <div class="message__text">Выбрано максимальное количество файлов</div>
       <div class="message__description">
-        Здесь можно загрузить до {{ data.maxFileCount }}
-        {{plurals.files | pluralize: data.maxFileCount}}.
+        Здесь можно загрузить {{ plurals.before | pluralize: data.maxFileCount }}
+        {{ data.maxFileCount }} {{ plurals.files | pluralize: data.maxFileCount }}.
         <ng-container *ngIf="data.maxFileCount > 1"
           >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
         >
@@ -177,6 +176,6 @@
 
 <ng-template #filesPluralAttach let-value>
   {{ value }}
-  {{plurals.files | pluralize:value}}
-  не {{plurals.attach | pluralize:value}}
+  {{ plurals.files | pluralize: value }}
+  не {{ plurals.attach | pluralize: value }}
 </ng-template>
