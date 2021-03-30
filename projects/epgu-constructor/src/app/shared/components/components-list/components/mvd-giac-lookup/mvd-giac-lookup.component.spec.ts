@@ -13,8 +13,9 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { CustomListDropDowns } from '../../components-list.types';
 import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../../../services/components-list-form/components-list-form.service.stub';
+import {AbstractComponentListItemComponent} from "../abstract-component-list-item/abstract-component-list-item.component";
 
-xdescribe('MvdGiacLookupComponent', () => {
+describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
   let fixture: ComponentFixture<MvdGiacLookupComponent>;
 
@@ -40,39 +41,41 @@ xdescribe('MvdGiacLookupComponent', () => {
     }).compileComponents();
   });
 
-  beforeEach(() => {
-    const control = new FormControl({
-      id: 'dependentComponentId',
-      attrs: {},
-      required: false
-    });
+  let valueControl: FormControl;
+  let control: FormGroup;
 
+  beforeEach(() => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+
+    valueControl = new FormControl('some value');
+    control = new FormGroup({
+      id: new FormControl('someId'),
+      value: valueControl
+    });
     formService['_form'] = new FormArray([ control ]);
 
     fixture = TestBed.createComponent(MvdGiacLookupComponent);
     component = fixture.componentInstance;
 
     component.componentIndex = 0;
+
+    fixture.detectChanges();
+  });
+
+  it('should extend AbstractComponentListItemComponent', () => {
+    expect(component).toBeInstanceOf(AbstractComponentListItemComponent);
   });
 
   it('should render epgu-constructor-component-item', () => {
     const selector = 'epgu-constructor-component-item';
-
-    const valueControl = new FormControl('some value');
-
-    component.control = new FormGroup({
-      value: valueControl
-    });
-
-    fixture.detectChanges();
 
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.componentInstance.control).toBe(valueControl);
     expect(debugEl.componentInstance.component).toEqual({
+      id: 'someId',
       value: 'some value'
     });
     expect(debugEl.componentInstance.invalid).toBeFalsy();
@@ -90,14 +93,6 @@ xdescribe('MvdGiacLookupComponent', () => {
 
     it('should be rendered if dropDowns is TRUTHY', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
-      expect(debugEl).toBeNull();
-
-      component.control = new FormGroup({
-        value: new FormControl('some value')
-      });
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
       // по умолчанию dropDowns пустой массив, соответственно TRUTHY
       expect(debugEl).toBeTruthy();
 
@@ -109,12 +104,6 @@ xdescribe('MvdGiacLookupComponent', () => {
     });
 
     it('invalid property is TRUE if value control is invalid and touched', () => {
-      const valueControl = new FormControl('some value');
-      component.control = new FormGroup({
-        value: valueControl
-      });
-      fixture.detectChanges();
-
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl.componentInstance.invalid).toBeFalsy();
@@ -133,12 +122,6 @@ xdescribe('MvdGiacLookupComponent', () => {
     });
 
     it('fixedItems property', () => {
-      component.control = new FormGroup({
-        id: new FormControl('someId'),
-        value: new FormControl('some value')
-      });
-      fixture.detectChanges();
-
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl.componentInstance.fixedItems).toBeUndefined();
@@ -160,12 +143,6 @@ xdescribe('MvdGiacLookupComponent', () => {
     });
 
     it('disabled property', () => {
-      component.control = new FormGroup({
-        id: new FormControl('someId'),
-        value: new FormControl('some value')
-      });
-      fixture.detectChanges();
-
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl.componentInstance.disabled).toBeFalsy();
@@ -183,12 +160,6 @@ xdescribe('MvdGiacLookupComponent', () => {
     });
 
     it('validationShowOn, clearable, queryMinSymbolsCount, searchCaseSensitive, virtualScroll properties', () => {
-      component.control = new FormGroup({
-        id: new FormControl('someId'),
-        value: new FormControl('some value')
-      });
-      fixture.detectChanges();
-
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl.componentInstance.validationShowOn).toBe(ValidationShowOn.TOUCHED_UNFOCUSED);
