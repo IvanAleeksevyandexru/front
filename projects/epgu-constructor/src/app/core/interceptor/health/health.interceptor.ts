@@ -66,7 +66,7 @@ export class HealthInterceptor implements HttpInterceptor {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((response: HttpResponse<any>) => {
         if (this.isValid(response)) {
-          const result = response.body;
+          const result = response.body || {};
           const validationStatus = this.utils.isValidScenarioDto(result);
           let successRequestPayload = null;
           let dictionaryValidationStatus = false;
