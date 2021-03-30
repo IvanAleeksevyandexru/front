@@ -13,7 +13,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { CustomListDropDowns } from '../../components-list.types';
 import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../../../services/components-list-form/components-list-form.service.stub';
-import {AbstractComponentListItemComponent} from "../abstract-component-list-item/abstract-component-list-item.component";
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
