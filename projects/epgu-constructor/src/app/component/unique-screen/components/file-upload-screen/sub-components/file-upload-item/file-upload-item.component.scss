@@ -3,6 +3,9 @@
 @import '../../../../../../../styles/core/breakpoint';
 @import '../../../../../../../styles/components/rubles';
 
+:host {
+  display: block;
+}
 .info {
   font-size: 14px;
   line-height: 20px;
@@ -17,8 +20,8 @@
   font-weight: bold;
 }
 
+
 .fileupload__wrapper {
-  margin-bottom: 24px;
   box-sizing: border-box;
   background-color: $color-white;
   padding: 24px;
