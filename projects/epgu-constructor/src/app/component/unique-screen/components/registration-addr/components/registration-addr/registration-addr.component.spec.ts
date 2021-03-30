@@ -157,7 +157,7 @@ describe('RegistrationAddrComponent', () => {
     });
 
     it('should be update currentAnswersService', () => {
-      const date = new Date();
+      const date = new Date('2021-03-30T08:12:22.766Z');
       component.redAddrForm.patchValue({
         regAddr: '129090, г. Москва, пр-кт. Мира, д. 22, кв. 1',
         regDate: date,
@@ -165,7 +165,7 @@ describe('RegistrationAddrComponent', () => {
       expect(component.currentAnswersService.isValid).toBeTruthy();
       expect(component.currentAnswersService.state).toEqual({
         regAddr: '129090, г. Москва, пр-кт. Мира, д. 22, кв. 1',
-        regDate: date,
+        regDate: '2021-03-30T11:12:22.766+03:00',
       });
     });
   });
