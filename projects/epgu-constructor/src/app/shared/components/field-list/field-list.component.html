@@ -2,11 +2,12 @@
   <ng-container *ngFor="let groupItem of preparedData">
     <div class="data__group data-group" [ngClass]="[style.group]">
       <div class="flex-row">
-        <div
-          [innerHTML]="groupItem?.groupName | safe: 'html'"
-          [ngClass]="style.groupTitle"
-          class="data-group__title"
-        ></div>
+        <epgu-constructor-output-html
+            class="data-group__title"
+            [html]="groupItem?.groupName"
+            [clarifications]="data.attrs.clarifications"
+            [ngClass]="style.groupTitle"
+          ></epgu-constructor-output-html>
       </div>
       <div class="data-group__items">
         <div
@@ -14,20 +15,23 @@
           [ngClass]="style.field"
           *ngFor="let field of groupItem.fields"
         >
-          <div
-            [innerHTML]="field?.label | safe: 'html'"
+          <epgu-constructor-output-html
             class="data-item__label"
+            [html]="field?.label"
+            [clarifications]="data.attrs.clarifications"
             [ngClass]="style.label"
-          ></div>
-          <div
-            [innerHTML]="field?.value | imgPrefixer | safe: 'html'"
+          ></epgu-constructor-output-html>
+          <epgu-constructor-output-html
             class="data-item__value"
-            [ngClass]="style.value"
-          ></div>
+            [html]="field?.value"
+            [clarifications]="data.attrs.clarifications"
+            [ngClass]="style.label"
+          ></epgu-constructor-output-html>
         </div>
       </div>
     </div>
     <div *ngIf="groupItem.needDivider" [ngClass]="['group-divider', style.divider]"></div>
+
   </ng-container>
   <ng-template ngFor let-error [ngForOf]="errors">
     <div *ngIf="error" class="error" [class.mb-24]="error.fields">
