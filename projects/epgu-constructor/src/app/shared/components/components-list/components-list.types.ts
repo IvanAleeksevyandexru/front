@@ -46,6 +46,7 @@ export enum CustomScreenComponentTypes {
   MultipleChoiceDictionary = 'MultipleChoiceDictionary',
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
+  FileUploadComponent = 'FileUploadComponent',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;

@@ -60,6 +60,7 @@ export interface FileUploadAttributes {
   ref?: string;
   maxSize?: number;
   maxFileCount?: number;
+  minFileCount?: number;
 }
 
 export interface Clarifications {

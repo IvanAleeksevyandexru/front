@@ -31,6 +31,7 @@ import { MaskedAndPlainInputComponent } from './components/masked-and-plain-inpu
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../drop-down-depts/drop-down-depts.module';
+import { FileUploadModule } from '../file-upload/file-upload.module';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { MultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
@@ -44,6 +45,7 @@ import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.component';
 import { AbstractComponentListItemComponent } from './components/abstract-component-list-item/abstract-component-list-item.component';
 import { CityInputComponent } from './components/city-input/city-input.component';
+import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import { CityInputComponent } from './components/city-input/city-input.component
     TimerItemComponent,
     FieldListItemComponent,
     CityInputComponent,
+    FileUploadFormComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -85,6 +88,7 @@ import { CityInputComponent } from './components/city-input/city-input.component
     DocInputModule,
     CheckboxListModule,
     DropDownDeptsModule,
+    FileUploadModule,
     ComponentResolverModule,
   ],
   providers: [
@@ -109,7 +113,8 @@ import { CityInputComponent } from './components/city-input/city-input.component
     CheckboxListComponent,
     CheckboxInputComponent,
     PassportLookupComponent,
-    CityInputComponent
+    CityInputComponent,
+    FileUploadFormComponent,
   ],
 })
 export class ComponentsListModule {}
