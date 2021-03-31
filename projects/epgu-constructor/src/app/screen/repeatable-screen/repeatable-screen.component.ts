@@ -7,38 +7,38 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import {
   ActionType,
   ComponentActionDto,
   DisplayDto,
   DTOActionAction,
   ScenarioErrorsDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenTypes } from '../../../../screen/screen.types';
-import { isEqualObj } from '../../../../shared/constants/utils';
+} from '../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../current-answers.service';
+import { ScreenService } from '../screen.service';
+import { ScreenTypes } from '../screen.types';
+import { isEqualObj } from '../../shared/constants/utils';
 import {
   CustomComponent,
   CustomComponentOutputData,
-} from '../../../../shared/components/components-list/components-list.types';
+} from '../../shared/components/components-list/components-list.types';
 import {
   defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
   StateStatus,
-} from './repeatable-fields.constant';
+} from './repeatable-screen.constant';
 
 @Component({
-  selector: 'epgu-constructor-repeatable-fields',
-  templateUrl: './repeatable-fields.component.html',
-  styleUrls: ['./repeatable-fields.component.scss'],
+  selector: 'epgu-constructor-repeatable-screen',
+  templateUrl: './repeatable-screen.component.html',
+  styleUrls: ['./repeatable-screen.component.scss'],
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
+export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -61,7 +61,7 @@ export class RepeatableFieldsComponent implements OnInit, AfterViewChecked {
   );
 
   init$: Observable<DisplayDto> = this.screenService.display$.pipe(
-    filter((data) => data.type === ScreenTypes.UNIQUE),
+    filter((data) => data.type === ScreenTypes.REPEATABLE),
     tap((data: DisplayDto) => {
       this.propData = data;
       this.initVariable();

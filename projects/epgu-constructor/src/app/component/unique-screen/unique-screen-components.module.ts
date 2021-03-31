@@ -19,7 +19,6 @@ import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from '../../core/services/webcam/webcam.service';
-import { RepeatableFieldsModule } from './components/repeatable-fields/repeatable-fields.module';
 import { InformationCenterPfrModule } from './components/information-center-pfr/information-center-pfr.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserPhoneEmailModule } from './components/confirm-personal-user-phone-email/confirm-personal-user-phone-email.module';
@@ -57,7 +56,6 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     UploadAndEditPhotoModule,
     PaymentTypeSelectorModule,
     InformationCenterMvdModule,
-    RepeatableFieldsModule,
     InformationCenterPfrModule,
     ConfirmPersonalUserPhoneEmailModule,
     ConfirmPersonalUserAddressScreenModule,
@@ -76,7 +74,6 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     DateTimePeriodModule
   ],
   exports: [
-    RepeatableFieldsModule,
     UploadAndEditPhotoModule,
     FileUploadModule,
     SelectMapObjectModule,

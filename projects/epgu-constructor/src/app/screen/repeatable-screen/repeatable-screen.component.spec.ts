@@ -2,14 +2,14 @@ import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ScreenTypes } from '../../../../screen/screen.types';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
-import { RepeatableFieldsComponent } from './repeatable-fields.component';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { CurrentAnswersService } from '../current-answers.service';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
+import { ScreenTypes } from '../screen.types';
+import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { RepeatableScreenComponent } from './repeatable-screen.component';
 
 const displayMock = {
   id: 's113',
@@ -112,9 +112,9 @@ const displayMock = {
   firstScreen: false,
 } as DisplayDto;
 
-describe('RepeatableFieldsComponent', () => {
-  let component: RepeatableFieldsComponent;
-  let fixture: ComponentFixture<RepeatableFieldsComponent>;
+describe('RepeatableScreenComponent', () => {
+  let component: RepeatableScreenComponent;
+  let fixture: ComponentFixture<RepeatableScreenComponent>;
 
   let eventBusService: EventBusService;
   let screenService: ScreenService;
@@ -123,7 +123,7 @@ describe('RepeatableFieldsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-        declarations: [RepeatableFieldsComponent, MockComponent(ScreenContainerComponent)],
+        declarations: [RepeatableScreenComponent, MockComponent(ScreenContainerComponent)],
         providers: [
           CurrentAnswersService,
           ChangeDetectorRef,
@@ -137,7 +137,7 @@ describe('RepeatableFieldsComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RepeatableFieldsComponent);
+    fixture = TestBed.createComponent(RepeatableScreenComponent);
     eventBusService = TestBed.inject(EventBusService);
     component = fixture.componentInstance;
     fixture.detectChanges();

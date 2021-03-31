@@ -17,7 +17,7 @@ import { FileUploadScreenComponent } from '../unique-screen/components/file-uplo
 import { UploadAndEditPhotoContainerComponent } from '../unique-screen/components/upload-and-edit-photo/container/upload-and-edit-photo-container.component';
 // eslint-disable-next-line max-len
 import { EmployeeHistoryContainerComponent } from '../unique-screen/components/employee-history/container/employee-history-container.component';
-import { RepeatableFieldsComponent } from '../unique-screen/components/repeatable-fields/repeatable-fields.component';
+import { RepeatableScreenComponent } from '../../screen/repeatable-screen/repeatable-screen.component';
 import { TimeSlotsComponent } from '../unique-screen/components/time-slots/time-slots.component';
 // eslint-disable-next-line max-len
 import { SignatureApplicationContainerComponent } from '../unique-screen/components/signature-application/components/container/signature-application-container.component';
@@ -70,7 +70,7 @@ type UniqueScreenComponent =
   | FileUploadScreenComponent
   | UploadAndEditPhotoContainerComponent
   | EmployeeHistoryContainerComponent
-  | RepeatableFieldsComponent
+  | RepeatableScreenComponent
   | TimeSlotsComponent
   | CarInfoContainerComponent
   | CarOwnerInfoContainerComponent
@@ -117,7 +117,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
-  RepeatableFields: RepeatableFieldsComponent,
+  RepeatableFields: RepeatableScreenComponent,
   TimeSlot: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
