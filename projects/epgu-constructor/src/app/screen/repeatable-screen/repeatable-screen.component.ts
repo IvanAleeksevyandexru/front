@@ -61,6 +61,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   );
 
   init$: Observable<DisplayDto> = this.screenService.display$.pipe(
+    takeUntil(this.ngUnsubscribe$),
     filter((data) => data.type === ScreenTypes.REPEATABLE),
     tap((data: DisplayDto) => {
       this.propData = data;
@@ -103,6 +104,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
+    this.init$.subscribe();
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))

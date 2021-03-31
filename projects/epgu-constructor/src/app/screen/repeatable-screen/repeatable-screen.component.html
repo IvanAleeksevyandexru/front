@@ -1,5 +1,4 @@
 <epgu-constructor-screen-container
-  *ngIf="init$ | async"
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >

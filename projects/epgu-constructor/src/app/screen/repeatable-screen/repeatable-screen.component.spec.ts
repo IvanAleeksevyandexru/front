@@ -10,11 +10,26 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { RepeatableScreenComponent } from './repeatable-screen.component';
+import { BaseModule } from '../../shared/base.module';
+import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
+import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
+import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { CloneButtonComponent } from '../../shared/components/clone-button/clone-button.component';
+import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
+import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { ActionService } from '../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
+import { ModalService } from '../../modal/modal.service';
+import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
 const displayMock = {
   id: 's113',
   name: 'Укажите все изменения ФИО',
-  type: ScreenTypes.UNIQUE,
+  type: ScreenTypes.REPEATABLE,
   header: 'Укажите все изменения',
   submitLabel: 'Далее',
   components: [
@@ -119,26 +134,35 @@ describe('RepeatableScreenComponent', () => {
   let eventBusService: EventBusService;
   let screenService: ScreenService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-        declarations: [RepeatableScreenComponent, MockComponent(ScreenContainerComponent)],
-        providers: [
-          CurrentAnswersService,
-          ChangeDetectorRef,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          EventBusService,
-        ],
-      }).compileComponents();
-      screenService = TestBed.inject(ScreenService);
-      screenService.display = displayMock;
-    }),
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [BaseModule, BaseComponentsModule, ScreenPadModule],
+      declarations: [
+        RepeatableScreenComponent,
+        ScreenContainerComponent,
+        MockComponent(ComponentsListComponent),
+        MockComponent(CloneButtonComponent),
+        MockComponent(NavigationComponent),
+      ],
+      providers: [
+        CurrentAnswersService,
+        ChangeDetectorRef,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        UnsubscribeService,
+        EventBusService,
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RepeatableScreenComponent);
+    screenService = TestBed.inject(ScreenService);
+    screenService.display = displayMock;
     eventBusService = TestBed.inject(EventBusService);
+    fixture = TestBed.createComponent(RepeatableScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
