@@ -38,11 +38,6 @@ export type TimeSlotsApi = {
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
  * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
- * @property {string}addToCalendarUrl - url добавления ивента в календарь
- * @property {boolean}isZipkinEnabled - включен ли трейсинг Zipkin
- * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
- * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
- * @property {string}zipkinEnv - окружение запуска Zipkin
  */
 export interface Config {
   apiUrl: string;
@@ -69,10 +64,6 @@ export interface Config {
   isSocialShareDisabled?: boolean;
   isAutocompleteServiceDisabled?: boolean;
   addToCalendarUrl?: string;
-  isZipkinEnabled?: boolean;
-  zipkinUrl?: string;
-  zipkinMaxPayloadSize?: number;
-  zipkinEnv?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

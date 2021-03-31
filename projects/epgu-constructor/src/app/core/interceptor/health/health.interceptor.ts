@@ -46,7 +46,7 @@ export enum RequestStatus {
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   private configParams: ConfigParams = {} as ConfigParams;
-  private lastUtlPart: string = null;
+  private lastUrlPart: string = null;
   private region: number = null;
 
   constructor(private health: HealthService, private utils: UtilsService) {}
@@ -56,7 +56,7 @@ export class HealthInterceptor implements HttpInterceptor {
     let serviceName = '';
 
     if (this.isValid(req)) {
-      this.lastUtlPart = this.utils.getSplittedUrl(req['url']).slice(-1)[0];
+      this.lastUrlPart = this.utils.getSplittedUrl(req['url']).slice(-1)[0];
       serviceName = this.utils.getServiceName(req['url']);
       serviceName = serviceName === 'scenarioGetNextStepService' ? RENDER_FORM_SERVICE_NAME : serviceName;
       this.startMeasureHealth(serviceName);
@@ -66,7 +66,7 @@ export class HealthInterceptor implements HttpInterceptor {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((response: HttpResponse<any>) => {
         if (this.isValid(response)) {
-          const result = response.body;
+          const result = response.body || {};
           const validationStatus = this.utils.isValidScenarioDto(result);
           let successRequestPayload = null;
           let dictionaryValidationStatus = false;
@@ -77,17 +77,17 @@ export class HealthInterceptor implements HttpInterceptor {
           );
 
           if (validationStatus) {
-            const { scenarioDto, health, serviceInfo } = result;
+            const { scenarioDto, health } = result;
             const orderId = this.utils.isValidOrderId(scenarioDto.orderId)
             ? scenarioDto.orderId
             : result.callBackOrderId;
 
             if (
-              this.utils.isDefined(serviceInfo) &&
-              this.utils.isDefined(serviceInfo.userRegion) &&
-              this.utils.isDefined(serviceInfo.userRegion.codes)
+              this.utils.isDefined(scenarioDto?.serviceInfo) &&
+              this.utils.isDefined(scenarioDto?.serviceInfo?.userRegion) &&
+              this.utils.isDefined(scenarioDto?.serviceInfo?.userRegion?.codes)
             ) {
-              this.region = serviceInfo.userRegion.codes[0];
+              this.region = scenarioDto.serviceInfo.userRegion.codes[0];
             }
 
             this.configParams = {
@@ -116,7 +116,7 @@ export class HealthInterceptor implements HttpInterceptor {
             this.configParams = {
               ...this.configParams,
               isEmpty: result.total > 0 ? false : true,
-              regdictname: this.lastUtlPart,
+              regdictname: this.lastUrlPart,
             };
           }
 

@@ -19,8 +19,6 @@ import { NavigationModalService } from './services/navigation-modal/navigation-m
 import { NavigationService } from './services/navigation/navigation.service';
 import { SessionService } from './services/session/session.service';
 import { UtilsService } from './services/utils/utils.service';
-import { TracingService } from './services/tracing/tracing.service';
-import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -38,7 +36,6 @@ import { TracingHttpInterceptor } from './interceptor/tracing/tracing.intercepto
     SessionService,
     InitDataService,
     AutocompleteService,
-    TracingService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
@@ -56,12 +53,7 @@ import { TracingHttpInterceptor } from './interceptor/tracing/tracing.intercepto
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpCancelInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TracingHttpInterceptor,
-      multi: true,
+      multi: true
     },
     {
       provide: APP_INITIALIZER,

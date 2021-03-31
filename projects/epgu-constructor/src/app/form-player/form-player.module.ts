@@ -28,7 +28,7 @@ import 'hammerjs'; // HAMMER TIME
     CoreModule,
     BaseModule,
     ModalModule,
-    AutocompleteModule,
+    AutocompleteModule
   ],
   providers: [
     FormPlayerConfigApiService,
