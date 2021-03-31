@@ -7,11 +7,7 @@
     "ics",
     "@alyle/ui",
     "angular-resize-event",
-    "@tanker/file-ponyfill",
-    "zipkin",
-    "zipkin-transport-http",
-    "node-fetch",
-    "os"
+    "@tanker/file-ponyfill"
   ],
   "lib": {
     "entryFile": "src/public-api.ts",
@@ -29,13 +25,11 @@
       "@alyle/ui/themes/minima": "minima",
       "angular-resize-event": "angular-resize-event",
       "@tanker/file-ponyfill": "@tanker/file-ponyfill",
-      "file-saver": "file-saver",
-      "date-fns": "date-fns",
+      "file-saver": "FileSaver",
+      "date-fns": "dateFns",
       "date-fns/locale": "locale",
       "lodash": "lodash",
-      "hammerjs": "hammerjs",
-      "zipkin": "zipkin",
-      "zipkin-transport-http": "zipkin-transport-http"
+      "hammerjs": "hammerjs"
     },
     "styleIncludePaths": ["."]
   }
