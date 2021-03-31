@@ -119,6 +119,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   EmployeeHistory: EmployeeHistoryContainerComponent,
   RepeatableFields: RepeatableFieldsComponent,
   TimeSlot: TimeSlotsComponent,
+  TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
   CarOwnerInfo: CarOwnerInfoContainerComponent,
