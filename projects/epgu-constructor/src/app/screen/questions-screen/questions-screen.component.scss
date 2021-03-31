@@ -35,11 +35,6 @@
     @include tablets-up {
       margin: 0 0 24px 0;
     }
-    &:focus {
-      outline: none;
-      border-radius: $border-xl;
-      border: 1px dashed $color-divider;
-    }
   }
 }
 

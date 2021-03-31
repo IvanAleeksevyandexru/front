@@ -38,9 +38,8 @@
 <!-- TODO: удалить после переезда на механизм явных answers -->
 <ng-template #actionAsLongBtn>
   <div class="quiz__answers">
-    <ng-container *ngFor="let action of componentActions; let idx = index">
+    <ng-container *ngFor="let action of componentActions">
       <epgu-constructor-answer-button
-        [tabindex]="idx + 1"
         [data]="action"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
@@ -56,9 +55,8 @@
 
 <ng-template #answerAsLongBtn>
   <div class="quiz__answers">
-    <ng-container *ngFor="let answer of componentAnswers; let idx = index">
+    <ng-container *ngFor="let answer of componentAnswers">
       <epgu-constructor-answer-button
-        [tabindex]="idx + 1"
         [data]="answer"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
