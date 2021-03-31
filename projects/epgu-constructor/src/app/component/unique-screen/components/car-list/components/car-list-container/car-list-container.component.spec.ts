@@ -24,7 +24,7 @@ import { CarListComponent } from '../car-list/car-list.component';
 import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import { CarList } from '../../models/car-list.interface';
-import {ModalService} from "../../../../../../modal/modal.service";
+import { ModalService } from '../../../../../../modal/modal.service';
 
 
 describe('CarInfoContainerComponent', () => {
