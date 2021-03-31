@@ -1,4 +1,4 @@
-import { RelativeDate } from 'epgu-lib';
+import { DadataResult, RelativeDate } from 'epgu-lib';
 import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DurationTimeTypes } from '../../../../shared/constants/dates';
@@ -52,4 +52,10 @@ export enum FieldNames {
   regTo = 'regTo',
   regDate = 'regDate',
   regAddr = 'regAddr',
+}
+
+export interface RegistrationAddrFormValue {
+  regAddr: DadataResult;
+  regFrom: Date;
+  regTo: Date;
 }
