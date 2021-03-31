@@ -239,6 +239,10 @@
       margin-top: 4px;
       position: relative;
 
+      > *:first-child {
+        margin-top: 0px;
+      }
+
       &__link-close {
         margin-top: 16px;
         display: block;

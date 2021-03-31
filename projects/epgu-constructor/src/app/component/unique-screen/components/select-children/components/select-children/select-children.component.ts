@@ -6,7 +6,14 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
@@ -117,12 +124,9 @@ export class SelectChildrenComponent implements OnInit {
   }
 
   updateItemValidators(formArray: FormArray, itemId: string): void {
-    this.selectChildrenForm.get(itemId).setValidators([
-      Validators.required,
-      (): ValidationErrors => {
-        return formArray.status === ItemStatus.valid ? null : { invalidForm: true };
-      },
-    ]);
+    this.selectChildrenForm
+      .get(itemId)
+      .setValidators([Validators.required, this.childValidatorsFn(formArray)]);
     this.selectChildrenForm.updateValueAndValidity();
   }
 
@@ -302,6 +306,17 @@ export class SelectChildrenComponent implements OnInit {
       id: this.NEW_ID,
       text: 'Добавить нового ребёнка',
       [prop]: this.NEW_ID,
+    };
+  }
+
+  private childValidatorsFn(formArray: FormArray): ValidatorFn {
+    return (control: ChildI): ValidationErrors => {
+      const isValid =
+        control.value[this.isNewRef] === false || formArray.status === ItemStatus.valid;
+      if (isValid) {
+        return null;
+      }
+      return { invalidForm: true };
     };
   }
 }

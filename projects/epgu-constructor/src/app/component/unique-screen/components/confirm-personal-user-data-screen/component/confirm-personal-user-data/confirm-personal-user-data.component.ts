@@ -20,6 +20,7 @@ import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
   templateUrl: './confirm-personal-user-data.component.html',
   styleUrls: ['./confirm-personal-user-data.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
 export class ConfirmPersonalUserDataComponent implements OnInit {
   data$: Observable<ConfirmUserData> = this.screenService.component$ as Observable<ConfirmUserData>;

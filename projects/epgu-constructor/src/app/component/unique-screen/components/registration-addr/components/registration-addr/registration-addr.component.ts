@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { BrokenDateFixStrategy, DadataResult, ValidationShowOn } from 'epgu-lib';
+import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
@@ -12,6 +12,7 @@ import {
   FieldNames,
   IRegistrationAddrComponent,
   RegistrationAddrFields,
+  RegistrationAddrFormValue,
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
@@ -109,7 +110,7 @@ export class RegistrationAddrComponent implements OnInit {
           this.currentAnswersService.isValid = false;
         } else {
           this.currentAnswersService.isValid = true;
-          this.currentAnswersService.state = changes;
+          this.currentAnswersService.state = this.prepareFormValue(changes);
         }
       });
   }
@@ -130,10 +131,7 @@ export class RegistrationAddrComponent implements OnInit {
    * @param fieldName - имя поля
    * @param data строка с JSON объектом
    */
-  private getInitFormValue(
-    data: { regAddr: DadataResult; regFrom: string; regTo: string },
-    fieldName: FieldNames,
-  ): string | Date {
+  private getInitFormValue(data: RegistrationAddrFormValue, fieldName: FieldNames): string | Date {
     if (fieldName === FieldNames.regAddr) {
       return data?.regAddr?.fullAddress || null;
     }
@@ -145,5 +143,14 @@ export class RegistrationAddrComponent implements OnInit {
       return data[fieldName] ? new Date(data[fieldName]) : null;
     }
     return null;
+  }
+
+  private prepareFormValue(changes: RegistrationAddrFormValue): RegistrationAddrFormValue {
+    return Object.entries(changes).reduce((acc, [key, value]) => {
+      if (this.datesToolsService.isValid(value)) {
+        return { ...acc, [key]: this.datesToolsService.format(value as Date) };
+      }
+      return acc;
+    }, changes);
   }
 }

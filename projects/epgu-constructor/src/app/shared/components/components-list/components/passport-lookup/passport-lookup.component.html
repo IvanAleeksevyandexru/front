@@ -15,8 +15,8 @@
     <epgu-constructor-passport
       [formControl]="$any(control.get('value'))"
       [attrs]="component?.attrs"
-      [suggestions]="suggestions"
-      (selectSuggest)="selectSuggest.emit($event)"
+      [suggestions]="suggestions$ | async"
+      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
     >
     </epgu-constructor-passport>
   </epgu-constructor-component-item>

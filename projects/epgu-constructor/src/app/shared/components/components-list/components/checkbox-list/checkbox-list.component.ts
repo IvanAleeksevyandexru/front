@@ -1,14 +1,17 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
   Input,
   OnChanges,
+  OnInit,
   Renderer2,
 } from '@angular/core';
 import {
+  AbstractControl,
   DefaultValueAccessor,
   FormBuilder,
   FormControl,
@@ -19,12 +22,14 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
+import { merge } from 'rxjs';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   CheckboxList,
   CheckboxListComponentAttrsDto,
   CheckboxListElement,
-} from '../../checkbox-list.types';
+} from './checkbox-list.types';
+import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
 
 @Component({
   selector: 'epgu-constructor-checkbox-list',
@@ -46,25 +51,41 @@ import {
   ],
 })
 export class CheckboxListComponent extends DefaultValueAccessor
-  implements AfterViewInit, OnChanges {
-  @Input() attrs: CheckboxListComponentAttrsDto;
-  @Input() required: boolean;
+  implements AfterViewInit, OnInit, OnChanges {
+  @Input() componentIndex = 0;
+  @Input() componentsGroupIndex = 0;
 
+  control: FormGroup | AbstractControl;
+  attrs: CheckboxListComponentAttrsDto;
+  required: boolean;
   checkboxes: CheckboxList[];
   labels = { show: 'Показать больше', hide: 'Показать меньше' };
   hidden = true;
   checkBoxForm: FormGroup;
 
   constructor(
+    public formService: ComponentsListFormService,
     protected renderer: Renderer2,
     protected elRef: ElementRef,
     private fb: FormBuilder,
     private ngUnsubscribe$: UnsubscribeService,
+    public cdr: ChangeDetectorRef,
   ) {
     super(renderer, elRef, false);
   }
 
   checkboxesTrackBy = (_index, { id }: CheckboxList): string => id;
+
+  ngOnInit(): void {
+    this.control = this.formService.form.controls[this.componentIndex];
+    this.attrs = this.control.value.attrs;
+    this.required = this.control.value.required;
+    merge(this.control.statusChanges, this.control.valueChanges)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
+  }
 
   ngOnChanges(): void {
     const { checkBoxes, ...cmpAttrs } = this.attrs;

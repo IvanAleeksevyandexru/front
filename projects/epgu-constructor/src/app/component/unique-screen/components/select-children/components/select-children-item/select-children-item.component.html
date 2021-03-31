@@ -6,6 +6,9 @@
     (changed)="selectChildren($event)"
   ></epgu-constructor-constructor-dropdown>
 </div>
+<epgu-constructor-helper-text *ngIf="hint">
+  {{ hint }}
+</epgu-constructor-helper-text>
 <section class="card__content" *ngIf="isNewChild">
   <epgu-constructor-components-list
     [components]="components"

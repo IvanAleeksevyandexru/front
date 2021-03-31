@@ -9,60 +9,26 @@
     </epgu-constructor-page-name>
     <epgu-constructor-output-html
       class="quiz__text"
-      *ngIf="screenService.component?.label"
-      [html]="screenService.component?.label | imgPrefixer"
-      [clarifications]="screenService.component?.attrs?.clarifications"
+      *ngIf="screenService.componentLabel$ | async"
+      [html]="screenService.componentLabel$ | async | imgPrefixer"
+      [clarifications]="(screenService.component$ | async).attrs?.clarifications"
     >
     </epgu-constructor-output-html>
-    <ng-container *ngIf="rejectAction">
-      <ng-content *ngTemplateOutlet="actionAsLongBtn"></ng-content>
-    </ng-container>
   </div>
 
   <div class="screen-footer">
-    <ng-container *ngIf="isActionsAsLongBtsShown">
-      <ng-content *ngTemplateOutlet="actionAsLongBtn"></ng-content>
-    </ng-container>
-    <ng-container *ngIf="isAnswersAsLongBtsShown">
-      <ng-content *ngTemplateOutlet="answerAsLongBtn"></ng-content>
-    </ng-container>
-    <ng-container *ngIf="rejectAction">
-      <ng-content *ngTemplateOutlet="footerActionAndSubmit"></ng-content>
-    </ng-container>
-    <ng-container *ngIf="screenActionButtons.length">
-      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
-    </ng-container>
+    <ng-content *ngTemplateOutlet="answersButtons"></ng-content>
+    <ng-container *ngTemplateOutlet="screenButtons"></ng-container>
   </div>
 </epgu-constructor-screen-container>
 
-<!-- TODO: удалить после переезда на механизм явных answers -->
-<ng-template #actionAsLongBtn>
+<ng-template #answersButtons>
   <div class="quiz__answers">
-    <ng-container *ngFor="let action of componentActions; let idx = index">
+    <ng-container *ngFor="let answer of (answers$ | async)">
       <epgu-constructor-answer-button
-        [tabindex]="idx + 1"
-        [data]="action"
-        class="quiz__answer"
-        [selectedValue]="selectedAnswer"
-        *ngIf="showAnswerAsLongBtn(action)"
-        (click)="answerChoose(action)"
-        (keydown.enter)="answerChoose(action)"
-        (keydown.space)="answerChoose(action)"
-      >
-      </epgu-constructor-answer-button>
-    </ng-container>
-  </div>
-</ng-template>
-
-<ng-template #answerAsLongBtn>
-  <div class="quiz__answers">
-    <ng-container *ngFor="let answer of componentAnswers; let idx = index">
-      <epgu-constructor-answer-button
-        [tabindex]="idx + 1"
         [data]="answer"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
-        *ngIf="showAnswerAsLongBtn(answer)"
         (click)="answerChoose(answer)"
         (keydown.enter)="answerChoose(answer)"
         (keydown.space)="answerChoose(answer)"
@@ -72,29 +38,9 @@
   </div>
 </ng-template>
 
-<!-- TODO: переделать на прямой проброс всех actions после переезда на механизм явных answers -->
-<ng-template #footerActionAndSubmit>
-  <lib-button color="white"
-    epgu-constructor-action
-    [action]="rejectAction"
-  >
-    {{ rejectAction.label }}
-  </lib-button>
+<ng-template #screenButtons>
   <lib-button
-    *ngIf="submitLabel"
-    [showLoader]="screenService.isLoading$ | async"
-    epgu-constructor-action
-    [action]="nextStepAction"
-    class="submit-button"
-    data-testid="submit-btn"
-  >
-    {{ submitLabel }}
-  </lib-button>
-</ng-template>
-
-<ng-template #screenActionBtns>
-  <lib-button
-    *ngFor="let action of screenActionButtons"
+    *ngFor="let action of (screenButtons$ | async)"
     epgu-constructor-action
     [action]="action"
     [color]="action.color"

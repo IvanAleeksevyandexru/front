@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ComponentAttrsDto, ComponentDto, } from '../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentAttrsDto,
+  ComponentDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import {
   CustomComponentRef,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes,
 } from '../../components/components-list/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { DocInputField } from '../../components/doc-input/doc-input.types';
+import { DocInputField } from '../../components/components-list/components/doc-input/doc-input.types';
 import { DictionaryFilters } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
@@ -24,7 +27,6 @@ export class PrepareComponentsService {
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
   ) {}
-
 
   public prepareComponents(
     components: Array<ComponentDto>,
@@ -259,14 +261,16 @@ export class PrepareComponentsService {
     if (component.type === CustomScreenComponentTypes.DocInput) {
       const fields = attrs.fields as DocInputField[];
       const haveDateRef = ({ attrs }: DocInputField): boolean =>
-        Boolean(attrs?.minDateRef || attrs?.minDateRef);
+        Boolean(attrs?.minDateRef || attrs?.maxDateRef);
 
       Object.values(fields)
         .filter((field) => haveDateRef(field))
         .forEach(({ attrs }) => {
           this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
         });
-    } else if (this.dictionaryToolsService.isDictionaryLike(component.type as CustomScreenComponentTypes)) {
+    } else if (
+      this.dictionaryToolsService.isDictionaryLike(component.type as CustomScreenComponentTypes)
+    ) {
       component.attrs = this.setAttrsFilters(component.attrs, cachedAnswers);
     } else {
       this.setAttrsDateRef(component.attrs, cachedAnswers);
@@ -274,12 +278,20 @@ export class PrepareComponentsService {
     return component;
   }
 
+  private extractDateRef(refDate: string): string[] {
+    const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
+    return [ref, refDate.replace(ref, '')];
+  }
+
   private setAttrsDateRef(attrs: ComponentAttrsDto, cachedAnswers: CachedAnswers): void {
     if (attrs.minDateRef) {
-      attrs.minDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
+      const extract = this.extractDateRef(attrs.minDateRef);
+
+      attrs.minDate = this.getLimitDate(cachedAnswers, extract[0]) + extract[1];
     }
     if (attrs.maxDateRef) {
-      attrs.maxDate = this.getLimitDate(cachedAnswers, attrs.minDateRef);
+      const extract = this.extractDateRef(attrs.maxDateRef);
+      attrs.maxDate = this.getLimitDate(cachedAnswers, extract[0]) + extract[1];
     }
   }
 
@@ -341,12 +353,15 @@ export class PrepareComponentsService {
     components: Array<ComponentDto>,
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
-
     return components.map((component) => {
-
       const ref = component.attrs?.ref;
       if (ref && Array.isArray(ref)) {
-        return this.handleCustomComponentRef(component, ref as CustomComponentRef[], components, cachedAnswers);
+        return this.handleCustomComponentRef(
+          component,
+          ref as CustomComponentRef[],
+          components,
+          cachedAnswers,
+        );
       }
 
       return component;
@@ -359,16 +374,19 @@ export class PrepareComponentsService {
     components: Array<ComponentDto>,
     cachedAnswers: CachedAnswers,
   ): ScreenStoreComponentDtoI {
+    refs.forEach((ref) => {
+      const isPrevScreenRelation =
+        components.filter((item) => item.id === ref.relatedRel).length === 0;
 
-    refs.forEach(ref => {
-      const isPrevScreenRelation = components.filter(item => item.id === ref.relatedRel).length === 0;
+      if (isPrevScreenRelation) {
+        const cachedValue = this.cachedAnswersService.getCachedValueById(
+          cachedAnswers,
+          ref.relatedRel,
+        );
 
-      if(isPrevScreenRelation) {
-        const cachedValue = this.cachedAnswersService.getCachedValueById(cachedAnswers, ref.relatedRel);
-
-        if(this.refRelationService.isDisplayOffRelation(ref.relation)) {
+        if (this.refRelationService.isDisplayOffRelation(ref.relation)) {
           this.handleDisplayOff(component, ref, cachedValue);
-        } else if(this.refRelationService.isDisplayOnRelation(ref.relation)) {
+        } else if (this.refRelationService.isDisplayOnRelation(ref.relation)) {
           this.handleDisplayOn(component, ref, cachedValue);
         }
       }
@@ -377,11 +395,19 @@ export class PrepareComponentsService {
     return component;
   }
 
-  private handleDisplayOff(component: ComponentDto, ref: CustomComponentRef, cachedValue: string): void {
+  private handleDisplayOff(
+    component: ComponentDto,
+    ref: CustomComponentRef,
+    cachedValue: string,
+  ): void {
     component.attrs.hidden = this.refRelationService.isValueEquals(ref.val, cachedValue);
   }
 
-  private handleDisplayOn(component: ComponentDto, ref: CustomComponentRef, cachedValue: string): void {
+  private handleDisplayOn(
+    component: ComponentDto,
+    ref: CustomComponentRef,
+    cachedValue: string,
+  ): void {
     component.attrs.hidden = !this.refRelationService.isValueEquals(ref.val, cachedValue);
   }
 }
