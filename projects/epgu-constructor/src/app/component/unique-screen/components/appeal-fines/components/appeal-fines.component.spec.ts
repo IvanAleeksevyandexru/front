@@ -5,7 +5,7 @@ import { UnsubscribeService } from '../../../../../core/services/unsubscribe/uns
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { CustomScreenComponentTypes } from '../../../../../shared/components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../../custom-screen/components-list.types';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';

@@ -10,7 +10,7 @@ import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { ComponentsListModule } from '../../../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../../../component/custom-screen/components-list.module';
 import { UniqueComponentModalModule } from '../unique-component-modal/unique-component-modal.module';
 import { InfoComponentModalModule } from '../info-component-modal/info-component-modal.module';
 import { RouterTestingModule } from '@angular/router/testing';

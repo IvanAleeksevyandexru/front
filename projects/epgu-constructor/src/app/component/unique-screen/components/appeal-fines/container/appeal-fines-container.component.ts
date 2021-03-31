@@ -4,7 +4,7 @@ import { AppealFinesComponentAttrs } from '../appeal-fines.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { FileUploadComponent } from '../../file-upload-screen/sub-components/file-upload/file-upload.component';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { CustomScreenComponentTypes } from '../../../../../shared/components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../../custom-screen/components-list.types';
 import {
   ActionType,
   ComponentActionDto,

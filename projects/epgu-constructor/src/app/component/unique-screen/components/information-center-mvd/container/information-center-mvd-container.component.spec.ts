@@ -20,7 +20,7 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { ComponentsListRelationsService } from '../../../../../shared/services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';

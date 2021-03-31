@@ -10,7 +10,7 @@ import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
 import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
-import { CustomComponentRef } from '../../../shared/components/components-list/components-list.types';
+import { CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
 export interface ApplicantAnswersDto {

@@ -3,7 +3,7 @@ import { DateRangeService } from './date-range.service';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
-} from '../../components/components-list/components-list.types';
+} from '../../../component/custom-screen/components-list.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';

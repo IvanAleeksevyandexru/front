@@ -26,7 +26,7 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../shared/base.module';
 import { ConstructorLookupModule } from '../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
-import { ComponentsListRelationsService } from '../../../../shared/services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';

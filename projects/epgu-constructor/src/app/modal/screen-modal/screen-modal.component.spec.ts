@@ -21,7 +21,7 @@ import { CachedAnswersService } from '../../shared/services/cached-answers/cache
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
-import { ComponentsListModule } from '../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../component/custom-screen/components-list.module';
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { ScreenModalServiceStub } from './screen-modal.service.stub';

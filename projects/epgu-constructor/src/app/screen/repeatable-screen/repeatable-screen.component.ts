@@ -23,7 +23,7 @@ import { isEqualObj } from '../../shared/constants/utils';
 import {
   CustomComponent,
   CustomComponentOutputData,
-} from '../../shared/components/components-list/components-list.types';
+} from '../../component/custom-screen/components-list.types';
 import {
   defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,

@@ -12,7 +12,7 @@ import { ScreenContainerComponent } from '../../shared/components/screen-contain
 import { RepeatableScreenComponent } from './repeatable-screen.component';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
-import { ComponentsListComponent } from '../../shared/components/components-list/components-list.component';
+import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { CloneButtonComponent } from '../../shared/components/clone-button/clone-button.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';

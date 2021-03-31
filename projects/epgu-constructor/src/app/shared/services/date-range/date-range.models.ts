@@ -1,5 +1,5 @@
 import { DurationTimeTypes } from '../../constants/dates';
-import { CustomComponentAttr, CustomComponentRef } from '../../components/components-list/components-list.types';
+import { CustomComponentAttr, CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 
 export interface DateRangeAttrs extends CustomComponentAttr {
   limit?: string;

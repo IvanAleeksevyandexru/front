@@ -15,7 +15,7 @@ import { PrepareComponentsService } from '../../services/prepare-components/prep
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 import { TimerComponentBase } from './timer.interface';

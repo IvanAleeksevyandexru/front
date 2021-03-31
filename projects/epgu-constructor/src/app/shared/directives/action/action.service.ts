@@ -21,7 +21,7 @@ import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { CustomScreenComponentTypes } from '../../components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../modal/modal.service';
