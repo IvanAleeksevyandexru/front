@@ -35,7 +35,7 @@ import { ComponentsListFormService } from '../../../../services/components-list-
   selector: 'epgu-constructor-checkbox-list',
   templateUrl: './checkbox-list.component.html',
   styleUrls: ['./checkbox-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default, // @todo поменять на OnPush
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -56,8 +56,6 @@ export class CheckboxListComponent extends DefaultValueAccessor
   @Input() componentsGroupIndex = 0;
 
   control: FormGroup | AbstractControl;
-  attrs: CheckboxListComponentAttrsDto;
-  required: boolean;
   checkboxes: CheckboxList[];
   labels = { show: 'Показать больше', hide: 'Показать меньше' };
   hidden = true;
@@ -78,20 +76,16 @@ export class CheckboxListComponent extends DefaultValueAccessor
 
   ngOnInit(): void {
     this.control = this.formService.form.controls[this.componentIndex];
-    this.attrs = this.control.value.attrs;
-    this.required = this.control.value.required;
+    this.updateChekboxes();
     merge(this.control.statusChanges, this.control.valueChanges)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        this.cdr.markForCheck();
+        this.updateChekboxes();
       });
   }
 
   ngOnChanges(): void {
-    const { checkBoxes, ...cmpAttrs } = this.attrs;
-    this.initFormGroup(checkBoxes);
-    this.setLabels(cmpAttrs);
-    this.setCheckboxes(checkBoxes);
+    this.updateChekboxes();
   }
 
   ngAfterViewInit(): void {
@@ -100,9 +94,18 @@ export class CheckboxListComponent extends DefaultValueAccessor
       .subscribe((changes) => this.onChange(changes));
   }
 
+  updateChekboxes(): void {
+    const { checkBoxes, ...cmpAttrs } = this.control.value.attrs;
+    this.initFormGroup(checkBoxes);
+    this.setLabels(cmpAttrs);
+    this.setCheckboxes(checkBoxes);
+    this.cdr.markForCheck();
+  }
+
   toggle(): void {
     this.hidden = !this.hidden;
     this.checkboxes = this.checkboxes.map((el) => ({ ...el, hidden: !el.showOn && this.hidden }));
+    this.cdr.markForCheck();
   }
 
   writeValue(value: string): void {
@@ -114,7 +117,7 @@ export class CheckboxListComponent extends DefaultValueAccessor
   }
 
   private initFormGroup(checkboxes: { [key: string]: CheckboxListElement }): void {
-    const validators = this.required ? [this.requiredValidatorFn()] : [];
+    const validators = this.control.value.required ? [this.requiredValidatorFn()] : [];
     const formGroup = Object.entries(checkboxes).reduce((form, [id, checkbox]) => {
       const control = new FormControl({ value: checkbox.value, disabled: false });
       return { ...form, [id]: control };
@@ -123,6 +126,7 @@ export class CheckboxListComponent extends DefaultValueAccessor
   }
 
   private setCheckboxes(checkboxElements: { [key: string]: CheckboxListElement }): void {
+    console.log('setCheckboxes');
     this.checkboxes = Object.entries(checkboxElements).map<CheckboxList>(
       ([id, { label, showOn }]) => ({
         id,
@@ -131,6 +135,7 @@ export class CheckboxListComponent extends DefaultValueAccessor
         hidden: !showOn,
       }),
     );
+    console.log(this.checkboxes);
   }
 
   private setLabels({
