@@ -24,6 +24,7 @@ export interface ConfirmUserDataField {
 export interface ConfirmUserDataAdaptiveField {
   label: string;
   value: string;
+  rank: boolean;
 }
 
 export interface ConfirmUserDataFieldsState {

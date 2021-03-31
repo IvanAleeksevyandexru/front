@@ -9,4 +9,8 @@ export class ModalServiceStub {
   }
 
   public registerInjector(): void {}
+
+  public isModalOpen(): boolean {
+    return false;
+  }
 }

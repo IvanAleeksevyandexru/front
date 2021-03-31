@@ -1,23 +1,34 @@
 import { CurrencyTransformDirective } from './currency-transform.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyPipe } from '@angular/common';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { FormControl, NgControl } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BaseModule } from '../../base.module';
 
 @Component({
   selector: 'epgu-constructor-currency-transform-test-component',
-  template: ' <input type="text" [epgu-constructor-currency-transform]="true" /> ',
+  template: `
+    <input
+      type="text"
+      [epgu-constructor-currency-transform]="true"
+      [formControl]="control"
+    />`,
 })
-class CurrencyTransformTestComponent {}
+class CurrencyTransformTestComponent {
+  control =  new FormControl('');
+}
 
 describe('CurrencyTransformDirective', () => {
   let fixture: ComponentFixture<CurrencyTransformTestComponent>;
   let comp: CurrencyTransformTestComponent;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CurrencyTransformDirective, CurrencyTransformTestComponent],
-      providers: [CurrencyPipe],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, BaseModule],
+      providers: [CurrencyPipe, NgControl],
     })
       .compileComponents()
       .then(() => {
@@ -37,6 +48,6 @@ describe('CurrencyTransformDirective', () => {
 
     input.triggerEventHandler('change', { target: inputNative });
     fixture.detectChanges();
-    expect(inputNative.value).toBe('₽123,123');
+    expect(inputNative.value).toBe('123\u00a0123\u00a0₽');
   });
 });

@@ -24,9 +24,8 @@
 
 <ng-template #answersButtons>
   <div class="quiz__answers">
-    <ng-container *ngFor="let answer of (answers$ | async); let idx = index">
+    <ng-container *ngFor="let answer of (answers$ | async)">
       <epgu-constructor-answer-button
-        [tabindex]="idx + 1"
         [data]="answer"
         class="quiz__answer"
         [selectedValue]="selectedAnswer"
