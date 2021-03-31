@@ -167,7 +167,7 @@ describe('CheckboxListComponent', () => {
     it('call onChanges', () => {
       jest.spyOn(component, 'onChange');
       const setValue = { checkbox1: true };
-      component.checkBoxForm.patchValue(setValue as any);
+      component.form.patchValue(setValue as any);
       fixture.detectChanges();
       expect(component.onChange).toHaveBeenCalledWith({
         ...currentValue, ...setValue
