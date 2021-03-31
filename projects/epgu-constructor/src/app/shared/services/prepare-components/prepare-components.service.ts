@@ -25,7 +25,6 @@ export class PrepareComponentsService {
     private refRelationService: RefRelationService,
   ) {}
 
-
   public prepareComponents(
     components: Array<ComponentDto>,
     cachedAnswers: CachedAnswers,
