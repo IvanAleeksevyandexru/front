@@ -1,100 +1,84 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  ElementRef,
-  forwardRef,
-  Input,
+  Injector,
   OnChanges,
   OnInit,
-  Renderer2,
 } from '@angular/core';
-import {
-  AbstractControl,
-  DefaultValueAccessor,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { merge } from 'rxjs';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   CheckboxList,
   CheckboxListComponentAttrsDto,
   CheckboxListElement,
 } from './checkbox-list.types';
-import { ComponentsListFormService } from '../../../../services/components-list-form/components-list-form.service';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({
   selector: 'epgu-constructor-checkbox-list',
   templateUrl: './checkbox-list.component.html',
   styleUrls: ['./checkbox-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo поменять на OnPush
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CheckboxListComponent),
-      multi: true,
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => CheckboxListComponent),
-      multi: true,
-    },
-    UnsubscribeService,
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
-export class CheckboxListComponent extends DefaultValueAccessor
+export class CheckboxListComponent extends AbstractComponentListItemComponent
   implements AfterViewInit, OnInit, OnChanges {
-  @Input() componentIndex = 0;
-  @Input() componentsGroupIndex = 0;
-
-  control: FormGroup | AbstractControl;
   checkboxes: CheckboxList[];
   labels = { show: 'Показать больше', hide: 'Показать меньше' };
   hidden = true;
-  checkBoxForm: FormGroup;
+  form: FormGroup;
 
-  constructor(
-    public formService: ComponentsListFormService,
-    protected renderer: Renderer2,
-    protected elRef: ElementRef,
-    private fb: FormBuilder,
-    private ngUnsubscribe$: UnsubscribeService,
-    public cdr: ChangeDetectorRef,
-  ) {
-    super(renderer, elRef, false);
+  constructor(public injector: Injector, private fb: FormBuilder) {
+    super(injector);
   }
 
   checkboxesTrackBy = (_index, { id }: CheckboxList): string => id;
 
   ngOnInit(): void {
-    this.control = this.formService.form.controls[this.componentIndex];
-    this.updateChekboxes();
-    merge(this.control.statusChanges, this.control.valueChanges)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        this.updateChekboxes();
-      });
+    super.ngOnInit();
+    this.loadCachedValues();
+    this.setValidatorsForParenForm();
+    this.updateCheckboxes();
   }
 
   ngOnChanges(): void {
-    this.updateChekboxes();
+    this.updateCheckboxes();
   }
 
   ngAfterViewInit(): void {
-    this.checkBoxForm.valueChanges
+    this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((changes) => this.onChange(changes));
+      .subscribe((changes) => this.emitToParentForm(changes));
   }
 
-  updateChekboxes(): void {
+  loadCachedValues(): void {
+    const cachedValue = this.control.value.value;
+
+    if (cachedValue) {
+      const values = JSON.parse(cachedValue) as { [key: string]: boolean };
+      Object.entries(values).forEach(([boxName, value]) => {
+        this.control.value.attrs.checkBoxes[boxName].value = value;
+      });
+    }
+  }
+
+  setValidatorsForParenForm(): void {
+    const validator: ValidatorFn = () => (this.form.valid ? null : this.form.errors);
+    this.control.setValidators(validator);
+  }
+
+  emitToParentForm(changes): void {
+    if (this.form.valid) {
+      this.control.get('value').setValue(changes);
+    } else {
+      this.control.get('value').setErrors({ invalidForm: true });
+    }
+    this.formService.emitChanges();
+  }
+
+  updateCheckboxes(): void {
     const { checkBoxes, ...cmpAttrs } = this.control.value.attrs;
     this.initFormGroup(checkBoxes);
     this.setLabels(cmpAttrs);
@@ -108,25 +92,16 @@ export class CheckboxListComponent extends DefaultValueAccessor
     this.cdr.markForCheck();
   }
 
-  writeValue(value: string): void {
-    this.checkBoxForm.patchValue(JSON.parse(value || '{}'), { emitEvent: false });
-  }
-
-  validate(): ValidationErrors | null {
-    return this.checkBoxForm.valid ? null : this.checkBoxForm.errors;
-  }
-
   private initFormGroup(checkboxes: { [key: string]: CheckboxListElement }): void {
     const validators = this.control.value.required ? [this.requiredValidatorFn()] : [];
     const formGroup = Object.entries(checkboxes).reduce((form, [id, checkbox]) => {
       const control = new FormControl({ value: checkbox.value, disabled: false });
       return { ...form, [id]: control };
     }, {});
-    this.checkBoxForm = this.fb.group(formGroup, { validators });
+    this.form = this.fb.group(formGroup, { validators });
   }
 
   private setCheckboxes(checkboxElements: { [key: string]: CheckboxListElement }): void {
-    console.log('setCheckboxes');
     this.checkboxes = Object.entries(checkboxElements).map<CheckboxList>(
       ([id, { label, showOn }]) => ({
         id,
@@ -135,7 +110,6 @@ export class CheckboxListComponent extends DefaultValueAccessor
         hidden: !showOn,
       }),
     );
-    console.log(this.checkboxes);
   }
 
   private setLabels({
