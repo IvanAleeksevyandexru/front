@@ -20,7 +20,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   selector: 'epgu-constructor-checkbox-list',
   templateUrl: './checkbox-list.component.html',
   styleUrls: ['./checkbox-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo поменять на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class CheckboxListComponent extends AbstractComponentListItemComponent
@@ -38,6 +38,7 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.loadCachedValues();
     this.setValidatorsForParenForm();
     this.updateCheckboxes();
   }
@@ -50,6 +51,17 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((changes) => this.emitToParentForm(changes));
+  }
+
+  loadCachedValues(): void {
+    const cachedValue = this.control.value.value;
+
+    if (cachedValue) {
+      const values = JSON.parse(cachedValue) as { [key: string]: boolean };
+      Object.entries(values).forEach(([boxName, value]) => {
+        this.control.value.attrs.checkBoxes[boxName].value = value;
+      });
+    }
   }
 
   setValidatorsForParenForm(): void {

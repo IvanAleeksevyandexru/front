@@ -74,8 +74,6 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
       ? atLeastOne.some((item) => item.value) && atLeastOne.every((item) => item.isValid)
       : true;
 
-    console.log('changeComponentsList');
-
     this.isValid = notAtLeastOneExpression && atLeastOneExpression;
     this.dataToSend = this.customScreenService.getFormattedData(changes);
     this.currentAnswersService.isValid = this.isValid;
