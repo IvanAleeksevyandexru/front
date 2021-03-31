@@ -16,8 +16,11 @@ import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ScreenStore } from '../../../screen/screen.types';
 import {
   CustomComponent,
+  CustomListDictionaries,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
+import { UtilsService as utils } from '../../../core/services/utils/utils.service';
+import set = Reflect.set;
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -166,6 +169,7 @@ describe('DictionaryToolsService', () => {
       }).toThrowError(`Неверный valueType для фильтров карты - ${dFilter.valueType}`);
     });
   });
+
   describe('getDropDownDepts$()', () => {
     describe('when repeatWithNoFilters is false and there is no items', () => {
       const repeatWithNoFilters = false;
@@ -229,6 +233,75 @@ describe('DictionaryToolsService', () => {
           tick();
         }));
       });
+    });
+  });
+
+  describe('dropDowns()', () => {
+    it('should exists', () => {
+      expect('dropDowns' in service).toBe(true);
+    });
+  });
+
+  describe('isResultEmpty()', function () {
+    const setup = (componentType: string, dictionaryItems: Array<object> = []) => {
+      const component = ({
+        id: 'test',
+        type: componentType,
+        attrs: {
+          dictionaryType: 'TEST',
+        }
+      } as any) as CustomComponent;
+      const dictionaryId = utils.getDictKeyByComp(component);
+      const dictionaryData = {
+        loading: false,
+        paginationLoading: false,
+        data: [],
+        origin: component,
+        list: dictionaryItems,
+      };
+
+      const dictionaries = ({
+        [dictionaryId]: dictionaryData,
+      } as any) as CustomListDictionaries;
+
+      return {
+        component,
+        dictionaryId,
+        dictionaryData,
+        dictionaries,
+      };
+    };
+
+    it('should throw exception when component not dropdown and not dictionary', () => {
+      const { component } = setup('Undefined');
+      const isResultEmpty = () => {
+        service.isResultEmpty(component);
+      };
+
+      expect(isResultEmpty).toThrow(Error);
+    });
+
+    it('should return false if there is no dictionary for this component', () => {
+      const { component } = setup('Lookup');
+
+      service.dictionaries$.next([]);
+
+      expect(service.isResultEmpty(component)).toBe(false);
+    });
+
+    it('should return false if dictionary for this component is not empty', () => {
+      const { component, dictionaries } = setup('Dictionary', [{ id: 'data' }]);
+      service.dictionaries$.next(dictionaries);
+
+      expect(service.isResultEmpty(component)).toBe(false);
+    });
+
+    it('should return false if dictionary for this component is empty', () => {
+      const { component, dictionaries } = setup('DropDownDepts');
+
+      service.dictionaries$.next(dictionaries);
+
+      expect(service.isResultEmpty(component)).toBe(true);
     });
   });
 });
