@@ -35,7 +35,6 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
 import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';
 import { CarListModule } from './components/car-list/car-list.module';
-import { AppealFinesModule } from './components/appeal-fines/appeal-fines.module';
 import { MatPeriodModule } from './components/mat-period/mat-period.module';
 import { DateTimePeriodModule } from './components/date-time-period/date-time-period.module';
 import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
@@ -70,7 +69,6 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     FieldListScreenModule,
     TimerScreenModule,
     CarListModule,
-    AppealFinesModule,
     MatPeriodModule,
     CheckboxCubeModule,
     DateTimePeriodModule
@@ -99,7 +97,6 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     FieldListScreenModule,
     TimerScreenModule,
     CarListModule,
-    AppealFinesModule,
     MatPeriodModule,
     CheckboxCubeModule,
     DateTimePeriodModule,
