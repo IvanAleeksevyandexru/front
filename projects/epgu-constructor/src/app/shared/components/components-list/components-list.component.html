@@ -125,24 +125,6 @@
         </div>
       </epgu-constructor-component-item>
 
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.AddressInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <epgu-constructor-constructor-dadata-widget
-          [simpleMode]="true"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [validationShowOn]="validationShowOn"
-          [hideHouseCheckbox]="false"
-          [externalApiUrl]="configService.externalApiUrl + '/'"
-          [control]="componentData.get('value')"
-          [hideLevels]="componentData.value?.attrs?.hideLevels"
-        >
-        </epgu-constructor-constructor-dadata-widget>
-      </epgu-constructor-component-item>
-
       <ng-container
         *ngIf="isResolverRender(componentData)"
       >
