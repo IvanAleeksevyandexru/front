@@ -5,7 +5,7 @@
         <epgu-constructor-output-html
             class="data-group__title"
             [html]="groupItem?.groupName"
-            [clarifications]="data.attrs.clarifications"
+            [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.groupTitle"
           ></epgu-constructor-output-html>
       </div>
@@ -18,13 +18,13 @@
           <epgu-constructor-output-html
             class="data-item__label"
             [html]="field?.label"
-            [clarifications]="data.attrs.clarifications"
+            [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.label"
           ></epgu-constructor-output-html>
           <epgu-constructor-output-html
             class="data-item__value"
             [html]="field?.value"
-            [clarifications]="data.attrs.clarifications"
+            [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.label"
           ></epgu-constructor-output-html>
         </div>
@@ -39,7 +39,7 @@
       <epgu-constructor-output-html
         class="description"
         [html]="error.desc"
-        [clarifications]="data.attrs.clarifications"
+        [clarifications]="data.attrs?.clarifications"
       ></epgu-constructor-output-html>
       <p *ngFor="let field of error.fields" class="description">- {{ field }}</p>
     </div>
