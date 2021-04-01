@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { first, startWith, takeUntil } from 'rxjs/operators';
+import { flatten as _flatten } from 'lodash';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -10,6 +11,7 @@ import {
   FileUploadAttributes,
   FileUploadEmitValue,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { TerraUploadedFile } from '../../../file-upload/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-form',
@@ -76,11 +78,31 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
   }
 
   private isValid(): boolean {
+    return this.isValidMinFileCount() && this.isValidMaxFileSize() && this.isValidMaxFileCount();
+  }
+
+  private isValidMinFileCount(): boolean {
     const { minFileCount = 0 } = this.control.value.attrs as FileUploadAttributes;
-    const uploadedFiles = this.files.reduce((count, { value }) => {
-      const uploaded = value.filter((file) => file.uploaded);
-      return count + uploaded.length;
-    }, 0);
+    const uploadedFiles = this.getUploadedFiles().length;
     return uploadedFiles >= minFileCount;
+  }
+
+  private isValidMaxFileSize(): boolean {
+    const { maxSize } = this.control.value.attrs as FileUploadAttributes;
+    const uploadedFileSize = this.getUploadedFiles().reduce(
+      (count, { fileSize }) => count + fileSize,
+      0,
+    );
+    return maxSize >= uploadedFileSize;
+  }
+
+  private isValidMaxFileCount(): boolean {
+    const { maxFileCount } = this.control.value.attrs as FileUploadAttributes;
+    const uploadedFileCount = this.getUploadedFiles().length;
+    return maxFileCount >= uploadedFileCount;
+  }
+
+  private getUploadedFiles(): TerraUploadedFile[] {
+    return _flatten(this.files.map(({ value }) => value.filter((file) => file.uploaded)));
   }
 }
