@@ -108,3 +108,81 @@
     min-height: calc(100vh - 48px);
   }
 }
+
+/* Миксины для info-screen и question-screen */
+@mixin screen-content-margins {
+  h3 {
+    font-weight: bold;
+    font-size: $font-xl;
+    line-height: $font-xxl;
+    text-align: center;
+    margin: 24px 0 16px 0;
+  }
+  h3 + p, h3 + div {
+    margin-top: 16px;
+  }
+  h5 {
+    margin: 24px 0 8px 0;
+    font-size: $font-md;
+    line-height: $font-xl;
+  }
+  h5 + p, h5 + div {
+    margin-top: 12px;
+  }
+}
+
+@mixin screen-content {
+  a.block-link {
+    margin-top: 8px;
+    display: block;
+  }
+  .background-white {
+    background-color: $color-white;
+    padding: 0 24px;
+    border-radius: 8px;
+    margin-top: 24px;
+    overflow: hidden;
+    > *:first-child {
+      margin-top: 24px;
+    }
+    > *:last-child {
+      margin-bottom: 24px;
+    }
+  }
+  .text-alignment {
+    text-align: center;
+    @include phones-down {
+      text-align: left;
+    }
+  }
+  .block-context-8 {
+    p:not(:first-child) {
+      margin-top: 8px;
+    }
+  }
+  .block-context-16 {
+    p:not(:first-child) {
+      margin-top: 16px;
+    }
+  }
+  .fs-sm {
+    font-size: $font-sm;
+    line-height: $font-lg;
+    margin-top: 4px;
+  }
+  .cost {
+    &::after {
+      content: "₽";
+      margin-left: 4px;
+      display: inline-block;
+    }
+    &-old {
+      margin-left: 16px;
+      text-decoration: line-through;
+      color: $color-text-helper;
+      &::after {
+        text-decoration: none;
+      }
+    }
+  }
+}
