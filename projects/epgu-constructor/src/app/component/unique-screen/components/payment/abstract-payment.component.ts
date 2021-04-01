@@ -25,9 +25,7 @@ import {
   getDiscountPrice,
   getDocInfo,
 } from './components/payment/payment.component.functions';
-// eslint-disable-next-line import/no-cycle
 import { PaymentStatus } from './payment.constants';
-// eslint-disable-next-line import/no-cycle
 import { PaymentService } from './payment.service';
 import {
   BillInfoResponse,
@@ -204,9 +202,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
     this.paymentService
       .loadPaymentInfo(this.data.attrs as PaymentsAttrs)
       .pipe(
-        catchError((err) => {
-          return throwError(err);
-        }),
+        catchError((err) => throwError(err)),
         switchMap((attributeValues: PaymentInfoInterface) =>
           this.getRequestForUinByOrder(attributeValues),
         ),
@@ -246,11 +242,9 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   ): Observable<{ value: string }> {
     this.paymentPurpose = attributeValues.paymentPurpose;
     this.status = PaymentStatus.SUCCESS;
-    return this.paymentService.getUinByOrderId(this.orderId, this.payCode, attributeValues).pipe(
-      catchError((err) => {
-        return throwError(err);
-      }),
-    );
+    return this.paymentService
+      .getUinByOrderId(this.orderId, this.payCode, attributeValues)
+      .pipe(catchError((err) => throwError(err)));
   }
 
   /**
@@ -377,11 +371,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   private getPaymentStatusByUIN(): void {
     this.paymentService
       .getPaymentStatusByUIN(this.orderId, this.payCode)
-      .pipe(
-        catchError((err) => {
-          return throwError(err);
-        }),
-      )
+      .pipe(catchError((err) => throwError(err)))
       .subscribe((response: PaymentInfoForPaidStatusData) => {
         this.getPaymentStatusByUINSuccess(response);
         this.changeDetectionRef.markForCheck();
