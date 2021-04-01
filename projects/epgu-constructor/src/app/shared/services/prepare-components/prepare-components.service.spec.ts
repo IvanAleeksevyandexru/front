@@ -13,13 +13,13 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
+// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import {
   CustomComponentRef,
   CustomComponentRefRelation,
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { displayOnRefMock } from '../ref-relation/ref-relation.mock';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;

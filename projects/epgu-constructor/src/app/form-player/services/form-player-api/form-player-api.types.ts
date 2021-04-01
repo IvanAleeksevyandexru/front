@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-len
 import { ConfirmUserDataStyle } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import {
   DictionaryConditions,

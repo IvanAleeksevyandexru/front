@@ -26,6 +26,7 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components-list.types';
+// eslint-disable-next-line max-len
 import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../../../../shared/services/address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';

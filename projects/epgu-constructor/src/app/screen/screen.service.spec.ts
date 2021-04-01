@@ -14,6 +14,7 @@ import { ConfigService } from '../core/services/config/config.service';
 import { LoggerService } from '../core/services/logger/logger.service';
 import { DateRangeService } from '../shared/services/date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';

@@ -19,6 +19,7 @@ import { ConstructorDropdownComponent } from '../../shared/components/constructo
 import { ConstructorLookupComponent } from '../../shared/components/constructor-lookup/constructor-lookup.component';
 import { ConstructorCheckboxComponent } from '../../shared/components/constructor-checkbox/constructor-checkbox.component';
 import { ConstructorDatePickerComponent } from '../../shared/components/constructor-date-picker/constructor-date-picker.component';
+// eslint-disable-next-line max-len
 import { ConstructorMultilineInputComponent } from '../../shared/components/constructor-multiline-input/constructor-multiline-input.component';
 import { ComponentItemComponent } from './components/component-item/component-item.component';
 import { PassportComponent } from '../../shared/components/add-passport/passport.component';
