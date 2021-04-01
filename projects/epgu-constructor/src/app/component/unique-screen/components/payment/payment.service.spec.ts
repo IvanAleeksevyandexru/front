@@ -14,7 +14,6 @@ import { DeviceDetectorServiceStub } from '../../../../core/services/device-dete
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
-import { paymentInfoMock } from './payment-data.mock';
 import { PaymentsAttrs } from './payment.types';
 
 
