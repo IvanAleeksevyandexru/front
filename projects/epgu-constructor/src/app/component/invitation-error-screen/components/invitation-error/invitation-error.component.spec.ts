@@ -23,7 +23,7 @@ import { LocationServiceStub } from '../../../../core/services/location/location
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { CustomComponent } from '../../../../shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../custom-screen/components-list.types';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;

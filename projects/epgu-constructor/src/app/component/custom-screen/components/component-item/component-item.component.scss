@@ -1,0 +1,20 @@
+@import '../../../../../styles/core/palettes';
+@import '../../../../../styles/core/variables';
+
+.form {
+  &__error {
+    margin-bottom: 4px;
+    color: $color-gosred;
+  }
+
+  &__info {
+    margin-top: 8px;
+  }
+}
+
+.label {
+  margin-bottom: $screen-pad-p;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: bold;
+}

@@ -12,7 +12,7 @@ import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionar
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { BaseModule } from '../../../base.module';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
-import { ComponentsListRelationsService } from '../../../services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';

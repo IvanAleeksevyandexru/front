@@ -1,5 +1,5 @@
 import { ComponentDictionaryFilterDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { CustomComponentRef } from '../components-list/components-list.types';
+import { CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 import { DateRangeRef } from '../../services/date-range/date-range.models';
 
 export default interface IDropDownDeptsAttrs {

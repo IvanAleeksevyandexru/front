@@ -10,7 +10,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationShowOn } from 'epgu-lib';
-import { CustomListDictionary } from '../components-list/components-list.types';
+import { CustomListDictionary } from '../../../component/custom-screen/components-list.types';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 

@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { ComponentsListModule } from '../../../../../../shared/components/components-list/components-list.module';
+import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';

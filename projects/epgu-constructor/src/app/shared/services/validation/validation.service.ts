@@ -8,7 +8,7 @@ import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
-} from '../../components/components-list/components-list.types';
+} from '../../../component/custom-screen/components-list.types';
 import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';

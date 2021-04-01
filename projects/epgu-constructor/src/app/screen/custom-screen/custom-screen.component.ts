@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
-} from '../../shared/components/components-list/components-list.types';
+} from '../../component/custom-screen/components-list.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 import {

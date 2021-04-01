@@ -14,7 +14,7 @@ import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { CustomComponent } from '../../../../shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { invitationType } from './invitation-type';
 import LkInvitationInputAttrs from './lk-invitation-input-attrs';
 import LkInvitationData from './lk-invitation-data';

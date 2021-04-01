@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
-} from '../../components/components-list/components-list.types';
-import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
+} from '../../../component/custom-screen/components-list.types';
+import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
 import { ValidationService } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';

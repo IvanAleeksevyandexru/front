@@ -1,4 +1,4 @@
-import { CustomComponentRefRelation } from '../../components/components-list/components-list.types';
+import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 
 export const displayOffRefMock = {
   relatedRel: 's42',
