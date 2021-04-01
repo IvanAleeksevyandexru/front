@@ -52,10 +52,9 @@ export class ComponentResolverComponent implements AfterViewInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(({ components, type: screenType }) => {
-        const isComponentList = !!this.componentType; // TODO: нужно вынести RepeatableFields в новый тип скрина
         const cmpType =
           this.componentType ?? (components[this.componentIndex].type as ComponentTypes);
-        this.createComponent(cmpType, screenType, isComponentList);
+        this.createComponent(cmpType, screenType);
         this.cdr.detectChanges();
       });
   }
@@ -67,12 +66,8 @@ export class ComponentResolverComponent implements AfterViewInit {
     }
   }
 
-  createComponent(
-    cmpType: ComponentTypes,
-    screenType: ScreenTypes,
-    isComponentList: boolean,
-  ): void {
-    const component = this.getComponentByType(cmpType, screenType, isComponentList);
+  createComponent(cmpType: ComponentTypes, screenType: ScreenTypes): void {
+    const component = this.getComponentByType(cmpType, screenType);
 
     if (!component) {
       this.handleComponentError(cmpType, screenType);
@@ -89,31 +84,14 @@ export class ComponentResolverComponent implements AfterViewInit {
     this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
   }
 
-  getComponentByType(
-    cmpType: ComponentTypes,
-    screenType: ScreenTypes,
-    isComponentList: boolean,
-  ): Type<ScreenComponentTypes> {
-    if (
-      screenType === ScreenTypes.CUSTOM ||
-      this.isRepeatableFieldCase(cmpType, screenType, isComponentList)
-    ) {
+  getComponentByType(cmpType: ComponentTypes, screenType: ScreenTypes): Type<ScreenComponentTypes> {
+    if (screenType === ScreenTypes.CUSTOM || screenType === ScreenTypes.REPEATABLE) {
       return CUSTOM_SCREEN_COMPONENTS[cmpType];
     }
     if (screenType === ScreenTypes.UNIQUE) {
       return UNIQUE_SCREEN_COMPONENTS[cmpType];
     }
     return null;
-  }
-
-  private isRepeatableFieldCase(
-    cmpType: ComponentTypes,
-    screenType: ScreenTypes,
-    isComponentList: boolean,
-  ): boolean {
-    return (
-      screenType === ScreenTypes.UNIQUE && CUSTOM_SCREEN_COMPONENTS[cmpType] && isComponentList
-    );
   }
 
   private handleComponentError(cmpType: ComponentTypes, screenType: ScreenTypes): never {

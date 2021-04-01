@@ -3,7 +3,7 @@ import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { Suggest, SuggestItem } from 'epgu-lib/lib/models/suggest';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { CustomListDictionary } from '../components-list/components-list.types';
+import { CustomListDictionary } from '../../../component/custom-screen/components-list.types';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 
 @Component({

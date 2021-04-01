@@ -1,7 +1,7 @@
 import {
   ComponentAttrsDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { CustomComponent, CustomComponentAttr } from '../../../../shared/components/components-list/components-list.types';
+import { CustomComponent, CustomComponentAttr } from '../../../custom-screen/components-list.types';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 
 export interface AppealFinesComponentAttrs extends ComponentAttrsDto {

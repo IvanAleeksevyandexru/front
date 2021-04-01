@@ -1,6 +1,6 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { CustomComponent } from '../../components/components-list/components-list.types';
+import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ValidationService } from '../../services/validation/validation.service';
 

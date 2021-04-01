@@ -8,7 +8,7 @@ import { ChildI } from '../../select-children.models';
 import {
   CustomComponent,
   CustomComponentOutputData,
-} from '../../../../../../shared/components/components-list/components-list.types';
+} from '../../../../../custom-screen/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-select-children-item',

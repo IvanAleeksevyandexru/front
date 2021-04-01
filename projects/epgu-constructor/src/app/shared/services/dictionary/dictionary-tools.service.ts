@@ -22,12 +22,14 @@ import {
   CustomListGenericData,
   CustomListReferenceData,
   CustomScreenComponentTypes,
-} from '../../components/components-list/components-list.types';
+} from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
-import { ComponentDictionaryFilters } from '../components-list-relations/components-list-relations.interface';
-import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+// eslint-disable-next-line max-len
+import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
+// eslint-disable-next-line max-len
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import {

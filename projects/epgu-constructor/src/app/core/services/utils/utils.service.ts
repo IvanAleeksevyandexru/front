@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent } from '../../../shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 interface TranslitAlphabet {

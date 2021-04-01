@@ -6,10 +6,13 @@ import { InvitationErrorScreenComponent } from './invitation-error-screen/invita
 import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
 import { ScreenTypes } from './screen.types';
 import { Type } from '@angular/core';
+import { RepeatableScreenComponent } from './repeatable-screen/repeatable-screen.component';
 
-export type ScreenComponent = InfoScreenComponent
+export type ScreenComponent =
+  | InfoScreenComponent
   | QuestionsScreenComponent
   | CustomScreenComponent
+  | RepeatableScreenComponent
   | UniqueScreenComponent
   | InvitationErrorScreenComponent
   | EmptyScreenComponent;
@@ -18,6 +21,7 @@ export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: Type<ScreenComp
   INFO: InfoScreenComponent,
   QUESTION: QuestionsScreenComponent,
   CUSTOM: CustomScreenComponent,
+  REPEATABLE: RepeatableScreenComponent,
   UNIQUE: UniqueScreenComponent,
   INVITATION_ERROR: InvitationErrorScreenComponent,
   EMPTY: EmptyScreenComponent,

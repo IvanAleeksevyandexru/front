@@ -23,7 +23,7 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { CustomComponent } from '../../../../shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 

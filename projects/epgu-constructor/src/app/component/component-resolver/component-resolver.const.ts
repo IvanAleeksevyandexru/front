@@ -17,7 +17,7 @@ import { FileUploadScreenComponent } from '../unique-screen/components/file-uplo
 import { UploadAndEditPhotoContainerComponent } from '../unique-screen/components/upload-and-edit-photo/container/upload-and-edit-photo-container.component';
 // eslint-disable-next-line max-len
 import { EmployeeHistoryContainerComponent } from '../unique-screen/components/employee-history/container/employee-history-container.component';
-import { RepeatableFieldsComponent } from '../unique-screen/components/repeatable-fields/repeatable-fields.component';
+import { RepeatableScreenComponent } from '../../screen/repeatable-screen/repeatable-screen.component';
 import { TimeSlotsComponent } from '../unique-screen/components/time-slots/time-slots.component';
 // eslint-disable-next-line max-len
 import { SignatureApplicationContainerComponent } from '../unique-screen/components/signature-application/components/container/signature-application-container.component';
@@ -45,22 +45,22 @@ import { MatPeriodContainerComponent } from '../unique-screen/components/mat-per
 // eslint-disable-next-line max-len
 import { DateTimePeriodContainerComponent } from '../unique-screen/components/date-time-period/components/date-time-period-container/date-time-period-container.component';
 // eslint-disable-next-line max-len
-import { MaskedAndPlainInputComponent } from '../../shared/components/components-list/components/masked-and-plain-input/masked-and-plain-input.component';
-import { FormOutputHtmlComponent } from '../../shared/components/components-list/components/form-output-html/form-output-html.component';
-import { CustomScreenComponentTypes } from '../../shared/components/components-list/components-list.types';
-import { MvdGiacLookupComponent } from '../../shared/components/components-list/components/mvd-giac-lookup/mvd-giac-lookup.component';
-import { DateInputComponent } from '../../shared/components/components-list/components/date-input/date-input.component';
-import { TextAreaComponent } from '../../shared/components/components-list/components/text-area/text-area.component';
-import { DocInputComponent } from '../../shared/components/components-list/components/doc-input/doc-input.component';
+import { MaskedAndPlainInputComponent } from '../custom-screen/components/masked-and-plain-input/masked-and-plain-input.component';
+import { FormOutputHtmlComponent } from '../custom-screen/components/form-output-html/form-output-html.component';
+import { CustomScreenComponentTypes } from '../custom-screen/components-list.types';
+import { MvdGiacLookupComponent } from '../custom-screen/components/mvd-giac-lookup/mvd-giac-lookup.component';
+import { DateInputComponent } from '../custom-screen/components/date-input/date-input.component';
+import { TextAreaComponent } from '../custom-screen/components/text-area/text-area.component';
+import { DocInputComponent } from '../custom-screen/components/doc-input/doc-input.component';
 // eslint-disable-next-line max-len
-import { MultiChoiceDictionaryComponent } from '../../shared/components/components-list/components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
-import { CheckboxListComponent } from '../../shared/components/components-list/components/checkbox-list/checkbox-list.component';
-import { CheckboxInputComponent } from '../../shared/components/components-list/components/checkbox-input/checkbox-input.component';
-import { PassportLookupComponent } from '../../shared/components/components-list/components/passport-lookup/passport-lookup.component';
-import { TimerItemComponent } from '../../shared/components/components-list/components/timer-item/timer-item.component';
-import { FieldListItemComponent } from '../../shared/components/components-list/components/field-list-item/field-list-item.component';
-import { CityInputComponent } from '../../shared/components/components-list/components/city-input/city-input.component';
-import { AddressInputComponent } from '../../shared/components/components-list/components/address-input/address-input.component';
+import { MultiChoiceDictionaryComponent } from '../custom-screen/components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
+import { CheckboxListComponent } from '../custom-screen/components/checkbox-list/checkbox-list.component';
+import { CheckboxInputComponent } from '../custom-screen/components/checkbox-input/checkbox-input.component';
+import { PassportLookupComponent } from '../custom-screen/components/passport-lookup/passport-lookup.component';
+import { TimerItemComponent } from '../custom-screen/components/timer-item/timer-item.component';
+import { FieldListItemComponent } from '../custom-screen/components/field-list-item/field-list-item.component';
+import { CityInputComponent } from '../custom-screen/components/city-input/city-input.component';
+import { AddressInputComponent } from '../custom-screen/components/address-input/address-input.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes | CustomScreenComponentTypes;
 
@@ -71,7 +71,7 @@ type UniqueScreenComponent =
   | FileUploadScreenComponent
   | UploadAndEditPhotoContainerComponent
   | EmployeeHistoryContainerComponent
-  | RepeatableFieldsComponent
+  | RepeatableScreenComponent
   | TimeSlotsComponent
   | CarInfoContainerComponent
   | CarOwnerInfoContainerComponent
@@ -119,7 +119,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
-  RepeatableFields: RepeatableFieldsComponent,
+  RepeatableFields: RepeatableScreenComponent,
   TimeSlot: TimeSlotsComponent,
   TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,

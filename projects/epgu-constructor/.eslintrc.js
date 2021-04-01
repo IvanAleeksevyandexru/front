@@ -94,7 +94,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'class-methods-use-this': 'off',
         "lines-between-class-members": "off",
-        "max-len": ["error", { "code": 180, "ignoreStrings": true }],
+        "max-len": ["error", { "code": 180, ignorePattern: '^import .*' }],
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": ["error"],
         "@typescript-eslint/lines-between-class-members": ["off", "always", { "exceptAfterOverload": false }],
@@ -113,13 +113,14 @@ module.exports = {
       }
     },
     {
-      files: ['*.spec.ts', '*.stub.ts'],
+      files: ['*.spec.ts', '*.stub.ts', '*.types.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/typedef': 'off',
         "@typescript-eslint/explicit-function-return-type": 'off',
         "@typescript-eslint/no-unused-vars": 'off',
         "@typescript-eslint/member-ordering": 'off',
+        "max-len": ["error", { "code": 180, ignorePattern: '^import .*' }],
       }
     }
   ],
