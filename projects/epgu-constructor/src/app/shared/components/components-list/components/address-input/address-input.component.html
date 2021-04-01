@@ -1,0 +1,16 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <epgu-constructor-constructor-dadata-widget
+    [simpleMode]="true"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [hideHouseCheckbox]="false"
+    [externalApiUrl]="configService.externalApiUrl + '/'"
+    [control]="control.get('value')"
+    [hideLevels]="control.value?.attrs?.hideLevels"
+  >
+  </epgu-constructor-constructor-dadata-widget>
+</epgu-constructor-component-item>

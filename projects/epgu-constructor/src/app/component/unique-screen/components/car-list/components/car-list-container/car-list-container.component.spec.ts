@@ -24,6 +24,7 @@ import { CarListComponent } from '../car-list/car-list.component';
 import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import { CarList } from '../../models/car-list.interface';
+import { ModalService } from '../../../../../../modal/modal.service';
 
 
 describe('CarInfoContainerComponent', () => {
@@ -71,7 +72,7 @@ describe('CarInfoContainerComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
-        CurrentAnswersService, UtilsService, NavigationService,
+        CurrentAnswersService, UtilsService, NavigationService, ModalService
       ],
       imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule, ConstructorLookupModule],
     })

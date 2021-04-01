@@ -105,9 +105,12 @@
     }
   }
 
-  ul:not(:first-child):not(li ul),
-  ol:not(:first-child) {
+  ul:not(:first-child):not(li ul) {
     margin-top: 8px;
+  }
+
+  ol:not(:first-child) {
+    margin-top: 12px;
   }
 
   li:not(:first-child) {
@@ -124,6 +127,10 @@
 
   p {
     margin-top: 12px;
+
+    &:not(:first-child) {
+      margin-top: 12px;
+    }
 
     &:last-child {
       margin-bottom: 0;

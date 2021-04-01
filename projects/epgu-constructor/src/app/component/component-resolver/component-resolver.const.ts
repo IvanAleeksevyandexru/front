@@ -59,6 +59,8 @@ import { CheckboxInputComponent } from '../../shared/components/components-list/
 import { PassportLookupComponent } from '../../shared/components/components-list/components/passport-lookup/passport-lookup.component';
 import { TimerItemComponent } from '../../shared/components/components-list/components/timer-item/timer-item.component';
 import { FieldListItemComponent } from '../../shared/components/components-list/components/field-list-item/field-list-item.component';
+import { CityInputComponent } from '../../shared/components/components-list/components/city-input/city-input.component';
+import { AddressInputComponent } from '../../shared/components/components-list/components/address-input/address-input.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes | CustomScreenComponentTypes;
 
@@ -104,7 +106,9 @@ type CustomScreenComponent =
   | CheckboxListComponent
   | CheckboxInputComponent
   | PassportLookupComponent
-  | FormOutputHtmlComponent;
+  | FormOutputHtmlComponent
+  | CityInputComponent
+  | AddressInputComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent | CustomScreenComponent;
 
@@ -117,6 +121,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   EmployeeHistory: EmployeeHistoryContainerComponent,
   RepeatableFields: RepeatableFieldsComponent,
   TimeSlot: TimeSlotsComponent,
+  TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
   CarOwnerInfo: CarOwnerInfoContainerComponent,
@@ -172,4 +177,6 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   CheckBoxList: CheckboxListComponent,
   CheckBox: CheckboxInputComponent,
   PassportLookup: PassportLookupComponent,
+  CityInput: CityInputComponent,
+  AddressInput: AddressInputComponent,
 };

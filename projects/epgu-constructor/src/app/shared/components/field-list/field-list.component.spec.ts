@@ -7,6 +7,7 @@ import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { OutputHtmlModule } from '../output-html/output-html.module';
+import { RankPipe } from '../../pipes/rank/rank.pipe';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -24,7 +25,7 @@ describe('FieldListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FieldListComponent, SafePipe, ImgPrefixerPipe],
+      declarations: [FieldListComponent, SafePipe, ImgPrefixerPipe, RankPipe],
       imports: [MockModule(OutputHtmlModule)],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
     }).compileComponents();
