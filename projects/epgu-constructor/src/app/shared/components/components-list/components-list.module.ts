@@ -44,6 +44,7 @@ import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.component';
 import { AbstractComponentListItemComponent } from './components/abstract-component-list-item/abstract-component-list-item.component';
 import { CityInputComponent } from './components/city-input/city-input.component';
+import { AddressInputComponent } from './components/address-input/address-input.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { CityInputComponent } from './components/city-input/city-input.component
     TimerItemComponent,
     FieldListItemComponent,
     CityInputComponent,
+    AddressInputComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -109,7 +111,8 @@ import { CityInputComponent } from './components/city-input/city-input.component
     CheckboxListComponent,
     CheckboxInputComponent,
     PassportLookupComponent,
-    CityInputComponent
+    CityInputComponent,
+    AddressInputComponent,
   ],
 })
 export class ComponentsListModule {}
