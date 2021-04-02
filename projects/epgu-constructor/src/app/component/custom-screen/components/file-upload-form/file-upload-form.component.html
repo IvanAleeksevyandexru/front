@@ -2,4 +2,5 @@
   [attributes]="control.value?.attrs"
   [applicantAnswers]="screenService.applicantAnswers$ | async"
   [objectId]="screenService.orderIdAsString$ | async"
+  [prefixForMnemonic]="prefixForMnemonic$ | async"
 ></epgu-constructor-file-upload>

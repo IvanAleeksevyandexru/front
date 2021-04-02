@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { first, startWith, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { first, mapTo, startWith, take, takeUntil } from 'rxjs/operators';
 import { flatten as _flatten } from 'lodash';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
@@ -20,7 +20,9 @@ import { TerraUploadedFile } from '../../../../shared/components/file-upload/fil
   providers: [UnsubscribeService],
 })
 export class FileUploadFormComponent extends AbstractComponentListItemComponent implements OnInit {
+  prefixForMnemonic$: Observable<string>;
   files: FileUploadEmitValue[];
+
   constructor(
     public injector: Injector,
     public screenService: ScreenService,
@@ -32,6 +34,11 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
   ngOnInit(): void {
     super.ngOnInit();
 
+    this.prefixForMnemonic$ = this.control.valueChanges.pipe(
+      take(1),
+      mapTo(`${this.control.value.id}.FileUploadComponent`),
+    );
+
     combineLatest([
       this.control.valueChanges.pipe(first(), startWith('')),
       this.eventBusService.on('fileUploadValueChangedEvent'),
@@ -40,7 +47,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
       .subscribe(([, uploads]) => this.updateParentForm(uploads));
   }
 
-  updateParentForm(uploads: FileResponseToBackendUploadsItem): void {
+  private updateParentForm(uploads: FileResponseToBackendUploadsItem): void {
     this.handleNewValueSet(uploads);
     this.control.get('value').setValue({ uploads: this.files });
     if (!this.isValid()) {
