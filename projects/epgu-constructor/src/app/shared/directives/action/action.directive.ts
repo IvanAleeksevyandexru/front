@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import {
   ActionType,
   ComponentActionDto,
@@ -15,9 +15,10 @@ export class ActionDirective {
   @Input() componentId: string;
 
   constructor(
+    private el: ElementRef,
     private readonly actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
-    private modalService: ModalService
+    private modalService: ModalService,
   ) {}
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
@@ -35,8 +36,16 @@ export class ActionDirective {
     }
   }
 
+  isDisabled(): boolean {
+    return Boolean(
+      this.el.nativeElement?.classList.contains('disabled') ||
+        this.el.nativeElement?.querySelector('[disabled]'),
+    );
+  }
+
   canSwitchActionAfterKeyDown(event: KeyboardEvent, target: HTMLButtonElement): boolean {
     return (
+      !this.isDisabled() &&
       event.key === 'Enter' &&
       this.action?.type === ActionType.nextStep &&
       !target.classList.contains('multiline-input') &&
