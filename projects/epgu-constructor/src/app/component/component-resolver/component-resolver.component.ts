@@ -7,6 +7,8 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   Input,
+  OnChanges,
+  SimpleChanges,
   Type,
   ViewChild,
   ViewContainerRef,
@@ -30,7 +32,7 @@ import { ScreenTypes } from '../../screen/screen.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class ComponentResolverComponent implements AfterViewInit {
+export class ComponentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('componentContainer', { read: ViewContainerRef }) componentContainer: ViewContainerRef;
   @Input() componentIndex = 0;
   @Input() componentsGroupIndex = 0;
@@ -43,6 +45,15 @@ export class ComponentResolverComponent implements AfterViewInit {
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.componentRef && (changes.componentsGroupIndex || changes.componentIndex)) {
+      // @ts-ignore
+      this.componentRef.instance.componentIndex = this.componentIndex;
+      // @ts-ignore
+      this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
+    }
+  }
 
   ngAfterViewInit(): void {
     this.screenService.display$

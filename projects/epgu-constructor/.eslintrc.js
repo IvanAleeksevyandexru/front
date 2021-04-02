@@ -113,7 +113,7 @@ module.exports = {
       }
     },
     {
-      files: ['*.spec.ts', '*.stub.ts', '*.types.ts'],
+      files: ['*.spec.ts', '*.stub.ts', '*.types.ts', '*.const.ts', '*.mock.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/typedef': 'off',

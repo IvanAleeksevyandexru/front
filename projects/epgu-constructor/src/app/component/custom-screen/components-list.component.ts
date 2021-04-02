@@ -71,10 +71,10 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     public suggestHandlerService: SuggestHandlerService,
     public formService: ComponentsListFormService,
     public dateRangeService: DateRangeService,
+    public screenService: ScreenService,
     private dictionaryToolsService: DictionaryToolsService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
-    public screenService: ScreenService,
     private httpCancelService: HttpCancelService,
     private changeDetectionRef: ChangeDetectorRef,
   ) {
