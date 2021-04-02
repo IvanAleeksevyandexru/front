@@ -21,6 +21,7 @@ export class UserInfoComponent {
       this.user.ageType = user.ageType;
       this.user.gender = user.gender;
       this.user.name = user.name;
+      this.user.ageText = user.ageText;
       this.iconPath = this.path + this.icons[user.ageType][user.gender];
     }
   }

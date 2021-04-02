@@ -12,7 +12,8 @@ import {
   CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListStatusElements,
-  CustomScreenComponentTypes, CustomStatusElement,
+  CustomScreenComponentTypes,
+  CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -22,8 +23,13 @@ import { ComponentsListRelationsService } from './components-list-relations.serv
 import { Observable } from 'rxjs';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
-import { DictionaryConditions, DictionaryFilters } from '../../../../shared/services/dictionary/dictionary-api.types';
+import {
+  DictionaryConditions,
+  DictionaryFilters,
+  DictionaryValueTypes,
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
+import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -86,7 +92,10 @@ describe('ComponentsListRelationsService', () => {
     required: true,
   };
   const componentsMock: CustomComponent[] = [componentMock];
-  const createComponentMock = (mergedData: unknown = {}, component: CustomComponent = componentMock): CustomComponent => {
+  const createComponentMock = (
+    mergedData: unknown = {},
+    component: CustomComponent = componentMock,
+  ): CustomComponent => {
     return _mergeWith({}, component, mergedData, (objValue, srcValue) => {
       if (_isArray(objValue)) {
         return srcValue;
@@ -94,13 +103,6 @@ describe('ComponentsListRelationsService', () => {
     });
   };
 
-  let mockShownElements: CustomListStatusElements = {
-    rf1: {
-      isShown: true,
-      relation: CustomComponentRefRelation.disabled,
-    },
-  };
-  let mockDictionaries: CustomListDictionaries;
   let screenService: ScreenService;
   let dictionaryToolsService: DictionaryToolsService;
   let refRelationService: RefRelationService;
@@ -133,7 +135,7 @@ describe('ComponentsListRelationsService', () => {
 
   describe('filters$ property', () => {
     it('should be observable', (done) => {
-      service.filters$.subscribe(result => {
+      service.filters$.subscribe((result) => {
         expect(result).toEqual({});
         done();
       });
@@ -142,12 +144,12 @@ describe('ComponentsListRelationsService', () => {
 
     it('should be emitted if set filters property', (done) => {
       const filters: ComponentDictionaryFilters = {
-        a: null
+        a: null,
       };
 
       service.filters = filters;
 
-      service.filters$.subscribe(result => {
+      service.filters$.subscribe((result) => {
         expect(result).toBe(filters);
         done();
       });
@@ -164,8 +166,8 @@ describe('ComponentsListRelationsService', () => {
     const shownElements: CustomListStatusElements = {
       foo: {
         isShown: true,
-        relation: CustomComponentRefRelation.autofillFromDictionary
-      }
+        relation: CustomComponentRefRelation.autofillFromDictionary,
+      },
     };
     const form: FormArray = new FormArray([]);
     const dictionaries: CustomListDictionaries = [];
@@ -177,14 +179,14 @@ describe('ComponentsListRelationsService', () => {
       let result = service.getUpdatedShownElements(
         [],
         createComponentMock({
-          id: 'compId'
+          id: 'compId',
         }),
         shownElements,
         form,
         dictionaries,
         false,
         screenService,
-        dictionaryToolsService
+        dictionaryToolsService,
       );
 
       // ничего не делаем, потому что массив components пустой (функция возвращает shownElements без изменений)
@@ -193,10 +195,9 @@ describe('ComponentsListRelationsService', () => {
       expect(result).toEqual({
         foo: {
           isShown: true,
-          relation: CustomComponentRefRelation.autofillFromDictionary
-        }
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        },
       });
-
 
       result = service.getUpdatedShownElements(
         [
@@ -207,20 +208,20 @@ describe('ComponentsListRelationsService', () => {
                   relatedRel: 'rf1',
                   val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
                   relation: CustomComponentRefRelation.displayOn,
-                }
-              ]
-            }
-          })
+                },
+              ],
+            },
+          }),
         ],
         createComponentMock({
-          id: 'compId'
+          id: 'compId',
         }),
         shownElements,
         form,
         dictionaries,
         false,
         screenService,
-        dictionaryToolsService
+        dictionaryToolsService,
       );
 
       // ничего не делаем, потому что массив components не содержит ни одного компонента, который ссылается на component.
@@ -231,8 +232,8 @@ describe('ComponentsListRelationsService', () => {
       expect(result).toEqual({
         foo: {
           isShown: true,
-          relation: CustomComponentRefRelation.autofillFromDictionary
-        }
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        },
       });
     });
 
@@ -241,8 +242,8 @@ describe('ComponentsListRelationsService', () => {
       jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
         bar: {
           isShown: false,
-          relation: CustomComponentRefRelation.calc
-        }
+          relation: CustomComponentRefRelation.calc,
+        },
       });
 
       const reference: CustomComponentRef = {
@@ -253,35 +254,31 @@ describe('ComponentsListRelationsService', () => {
 
       const dependentComponent = createComponentMock({
         attrs: {
-          ref: [
-            reference
-          ]
-        }
+          ref: [reference],
+        },
       });
 
       const initInitialValues = false;
 
       const result = service.getUpdatedShownElements(
-        [
-          dependentComponent
-        ],
+        [dependentComponent],
         createComponentMock({
-          id: 'rf1'
+          id: 'rf1',
         }),
         shownElements,
         form,
         dictionaries,
         initInitialValues,
         screenService,
-        dictionaryToolsService
+        dictionaryToolsService,
       );
 
       expect(service['getDependentComponentUpdatedShownElements']).toBeCalledTimes(1);
       expect(result).toEqual({
         bar: {
           isShown: false,
-          relation: CustomComponentRefRelation.calc
-        }
+          relation: CustomComponentRefRelation.calc,
+        },
       });
     });
 
@@ -290,8 +287,8 @@ describe('ComponentsListRelationsService', () => {
       jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
         bar: {
           isShown: false,
-          relation: CustomComponentRefRelation.calc
-        }
+          relation: CustomComponentRefRelation.calc,
+        },
       });
 
       const dependentComponent = createComponentMock({
@@ -304,26 +301,24 @@ describe('ComponentsListRelationsService', () => {
               relatedDate: 'rf1',
               period: 'years',
               condition: '>today',
-            }
-          ]
-        }
+            },
+          ],
+        },
       });
 
       const component = createComponentMock({
-        id: 'rf1'
+        id: 'rf1',
       });
 
       service.getUpdatedShownElements(
-        [
-          dependentComponent
-        ],
+        [dependentComponent],
         component,
         shownElements,
         form,
         dictionaries,
         false,
         screenService,
-        dictionaryToolsService
+        dictionaryToolsService,
       );
 
       expect(dateRangeService.updateLimitDate).toBeCalledTimes(1);
@@ -331,7 +326,7 @@ describe('ComponentsListRelationsService', () => {
         form,
         component,
         dependentComponent,
-        null
+        null,
       );
     });
   });
@@ -347,9 +342,9 @@ describe('ComponentsListRelationsService', () => {
                 relatedRel: 'rf1',
                 val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
                 relation: CustomComponentRefRelation.displayOn,
-              }
-            ]
-          }
+              },
+            ],
+          },
         }),
         createComponentMock({
           id: 'comp2',
@@ -359,21 +354,21 @@ describe('ComponentsListRelationsService', () => {
                 relatedRel: 'rf1',
                 val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
                 relation: CustomComponentRefRelation.calc,
-              }
-            ]
-          }
-        })
+              },
+            ],
+          },
+        }),
       ];
 
       expect(service.createStatusElements(components)).toEqual({
         comp1: {
           relation: CustomComponentRefRelation.displayOn,
-          isShown: false
+          isShown: false,
         },
         comp2: {
           relation: CustomComponentRefRelation.displayOn,
-          isShown: true
-        }
+          isShown: true,
+        },
       });
     });
   });
@@ -391,25 +386,21 @@ describe('ComponentsListRelationsService', () => {
 
     beforeEach(() => {
       dependentComponent = createComponentMock({
-        id: 'dependentComponentId'
+        id: 'dependentComponentId',
       });
-      components = [
-        createComponentMock()
-      ];
+      components = [createComponentMock()];
       dependentComponentStatus = {
         isShown: true,
-        relation: CustomComponentRefRelation.autofillFromDictionary
+        relation: CustomComponentRefRelation.autofillFromDictionary,
       };
       shownElements = {
-        dependentComponentId: dependentComponentStatus
+        dependentComponentId: dependentComponentStatus,
       };
       componentVal = { foo: 'bar' };
       dependentControl = new FormControl({
-        id: 'dependentComponentId'
+        id: 'dependentComponentId',
       });
-      form = new FormArray([
-        dependentControl
-      ]);
+      form = new FormArray([dependentControl]);
       initInitialValues = false;
       dictionaries = [];
     });
@@ -435,12 +426,13 @@ describe('ComponentsListRelationsService', () => {
           {
             [dependentComponent.id]: {
               isShown: false,
-              relation: CustomComponentRefRelation.displayOn
-            }
+              relation: CustomComponentRefRelation.displayOn,
+            },
           },
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // потому что isShown === false AND isDisplayOn
@@ -448,8 +440,8 @@ describe('ComponentsListRelationsService', () => {
         expect(updatedShownElements).toEqual({
           [dependentComponent.id]: {
             isShown: false,
-            relation: CustomComponentRefRelation.displayOn
-          }
+            relation: CustomComponentRefRelation.displayOn,
+          },
         });
 
         updatedShownElements = service['getDependentComponentUpdatedShownElements'](
@@ -461,12 +453,13 @@ describe('ComponentsListRelationsService', () => {
           {
             [dependentComponent.id]: {
               isShown: true,
-              relation: CustomComponentRefRelation.displayOn
-            }
+              relation: CustomComponentRefRelation.displayOn,
+            },
           },
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // потому что isShown === true
@@ -474,8 +467,8 @@ describe('ComponentsListRelationsService', () => {
         expect(updatedShownElements).toEqual({
           [dependentComponent.id]: {
             isShown: true,
-            relation: CustomComponentRefRelation.displayOff
-          }
+            relation: CustomComponentRefRelation.displayOff,
+          },
         });
 
         dependentControl.markAsTouched();
@@ -489,12 +482,13 @@ describe('ComponentsListRelationsService', () => {
           {
             [dependentComponent.id]: {
               isShown: false,
-              relation: CustomComponentRefRelation.getValue
-            }
+              relation: CustomComponentRefRelation.getValue,
+            },
           },
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // потому что NOT isDisplayOn
@@ -502,8 +496,8 @@ describe('ComponentsListRelationsService', () => {
         expect(updatedShownElements).toEqual({
           [dependentComponent.id]: {
             isShown: true,
-            relation: CustomComponentRefRelation.displayOff
-          }
+            relation: CustomComponentRefRelation.displayOff,
+          },
         });
       });
     });
@@ -529,12 +523,13 @@ describe('ComponentsListRelationsService', () => {
           {
             [dependentComponent.id]: {
               isShown: false,
-              relation: CustomComponentRefRelation.displayOff
-            }
+              relation: CustomComponentRefRelation.displayOff,
+            },
           },
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // потому что isShown === false AND isDisplayOff
@@ -542,8 +537,8 @@ describe('ComponentsListRelationsService', () => {
         expect(updatedShownElements).toEqual({
           [dependentComponent.id]: {
             isShown: false,
-            relation: CustomComponentRefRelation.displayOff
-          }
+            relation: CustomComponentRefRelation.displayOff,
+          },
         });
 
         updatedShownElements = service['getDependentComponentUpdatedShownElements'](
@@ -555,12 +550,13 @@ describe('ComponentsListRelationsService', () => {
           {
             [dependentComponent.id]: {
               isShown: true,
-              relation: CustomComponentRefRelation.displayOff
-            }
+              relation: CustomComponentRefRelation.displayOff,
+            },
           },
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // потому что isShown === true
@@ -568,8 +564,8 @@ describe('ComponentsListRelationsService', () => {
         expect(updatedShownElements).toEqual({
           [dependentComponent.id]: {
             isShown: false,
-            relation: CustomComponentRefRelation.displayOn
-          }
+            relation: CustomComponentRefRelation.displayOn,
+          },
         });
 
         dependentControl.markAsTouched();
@@ -582,12 +578,13 @@ describe('ComponentsListRelationsService', () => {
           {
             [dependentComponent.id]: {
               isShown: false,
-              relation: CustomComponentRefRelation.getValue
-            }
+              relation: CustomComponentRefRelation.getValue,
+            },
           },
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // потому что NOT isDisplayOff
@@ -595,8 +592,8 @@ describe('ComponentsListRelationsService', () => {
         expect(updatedShownElements).toEqual({
           [dependentComponent.id]: {
             isShown: false,
-            relation: CustomComponentRefRelation.displayOn
-          }
+            relation: CustomComponentRefRelation.displayOn,
+          },
         });
       });
     });
@@ -616,16 +613,16 @@ describe('ComponentsListRelationsService', () => {
                 relatedRel: 'rf2',
                 val: 'some value',
                 relation: CustomComponentRefRelation.getValue,
-                sourceId: 'someSourceId'
-              }
-            ]
-          }
+                sourceId: 'someSourceId',
+              },
+            ],
+          },
         });
 
         components = [
           createComponentMock({
-            id: 'someSourceId'
-          })
+            id: 'someSourceId',
+          }),
         ];
 
         componentVal = 'some value';
@@ -634,13 +631,11 @@ describe('ComponentsListRelationsService', () => {
           id: new FormControl(dependentComponent.id),
           value: new FormGroup({
             firstControl: new FormControl('first value'),
-            secondControl: new FormControl('second value')
-          })
+            secondControl: new FormControl('second value'),
+          }),
         });
 
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
 
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
@@ -651,12 +646,13 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         expect(dependentControl.get('value').value).toEqual({
           firstControl: 'first value',
-          secondControl: 'second value'
+          secondControl: 'second value',
         });
       });
     });
@@ -671,24 +667,22 @@ describe('ComponentsListRelationsService', () => {
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('some value')
+          value: new FormControl('some value'),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
 
         dependentControl.markAsTouched();
         initInitialValues = false;
 
         componentVal = {
-          id: 'foo'
+          id: 'foo',
+          regOkato: '450000',
         };
 
         // почему-то ожидается, что dictionaries - это объект, а не массив.
         // Несмотря на то, что это тип CustomListDictionaries
         // (type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;)
         dictionaries = {} as CustomListDictionaries;
-
 
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
@@ -699,12 +693,13 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // dependentControl не изменился, потому что initInitialValues === FALSE
         expect(dependentControl.touched).toBeTruthy();
-        expect(dependentControl.get('value').value).toBe( 'some value');
+        expect(dependentControl.get('value').value).toBe('some value');
 
         initInitialValues = true;
         service['getDependentComponentUpdatedShownElements'](
@@ -716,7 +711,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // dependentControl изменился, потому что initInitialValues === TRUE
@@ -726,24 +722,24 @@ describe('ComponentsListRelationsService', () => {
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('some value')
+          value: new FormControl('some value'),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
         dependentControl.markAsTouched();
-        dictionaries = {
+        dictionaries = ({
           rf1: {
-            list: [{
-              id: 'foo',
-              originalItem: {
-                attributeValues: {
-                  [reference.val as string]: 'some attribute value'
-                }
-              }
-            }]
-          }
-        } as unknown as CustomListDictionaries;
+            list: [
+              {
+                id: 'foo',
+                originalItem: {
+                  attributeValues: {
+                    [reference.val as string]: 'some attribute value',
+                  },
+                },
+              },
+            ],
+          },
+        } as unknown) as CustomListDictionaries;
 
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
@@ -754,7 +750,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // dependentControl изменился, потому что initInitialValues === TRUE
@@ -779,18 +776,16 @@ describe('ComponentsListRelationsService', () => {
                 relatedRel: 'rf1',
                 val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
                 relation: CustomComponentRefRelation.displayOn,
-              }
-            ]
-          }
+              },
+            ],
+          },
         });
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('')
+          value: new FormControl(''),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
 
         jest.spyOn(service, 'getCalcValueFromRelation').mockReturnValue('some value');
 
@@ -803,7 +798,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         expect(dependentControl.get('value').value).toBe('some value');
@@ -822,11 +818,9 @@ describe('ComponentsListRelationsService', () => {
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('a')
+          value: new FormControl('a'),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
         dependentControl.markAsTouched();
 
         service['getDependentComponentUpdatedShownElements'](
@@ -838,7 +832,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // если в reference нет defaultValue, то контролу устанавливается ""
@@ -846,21 +841,18 @@ describe('ComponentsListRelationsService', () => {
         expect(dependentControl.touched).toBeFalsy();
         expect(dependentControl.enabled).toBeFalsy();
 
-
         reference = {
           relatedRel: 'rf1',
           val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
           relation: CustomComponentRefRelation.disabled,
-          defaultValue: 'some default value'
+          defaultValue: 'some default value',
         };
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('a')
+          value: new FormControl('a'),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
         dependentControl.markAsTouched();
 
         service['getDependentComponentUpdatedShownElements'](
@@ -872,7 +864,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // контролу устанавливается значение reference.defaultValue
@@ -892,11 +885,9 @@ describe('ComponentsListRelationsService', () => {
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('a')
+          value: new FormControl('a'),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
 
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
@@ -907,7 +898,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         expect(dependentControl.enabled).toBeTruthy();
@@ -926,16 +918,15 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
-          value: new FormControl('b')
+          value: new FormControl('b'),
         });
-        form = new FormArray([
-          dependentControl
-        ]);
+        form = new FormArray([dependentControl]);
 
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
         service['getDependentComponentUpdatedShownElements'](
@@ -947,7 +938,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // значение контрола изменилось, т.к. в кэше сервиса (this.prevValues) есть значение для компонента
@@ -961,6 +953,24 @@ describe('ComponentsListRelationsService', () => {
           relatedRel: 'rf1',
           val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
           relation: CustomComponentRefRelation.filterOn,
+          dictionaryFilter: [
+            {
+              attributeName: 'okato',
+              condition: DictionaryConditions.EQUALS,
+              value: 'regOkato',
+              valueType: DictionaryValueTypes.preset,
+            },
+          ],
+        };
+
+        const resultFilter = {
+          simple: {
+            attributeName: 'okato',
+            condition: 'EQUALS',
+            value: {
+              asString: componentVal.regOkato,
+            },
+          },
         };
 
         jest.spyOn(service, 'applyFilter').mockImplementation(() => undefined);
@@ -978,13 +988,14 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // вызывается applyFilter(), потому что isValueEquals() === TRUE AND isDictionaryLike() === TRUE
         expect(service.clearFilter).not.toBeCalled();
         expect(service.applyFilter).toBeCalledTimes(1);
-        expect(service.applyFilter).toBeCalledWith(dependentComponent.id, reference.filter, componentVal);
+        expect(service.applyFilter).toBeCalledWith(dependentComponent.id, resultFilter);
       });
 
       it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
@@ -1009,7 +1020,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // вызывается clearFilter(), потому что isDictionaryLike() === FALSE
@@ -1030,7 +1042,8 @@ describe('ComponentsListRelationsService', () => {
           shownElements,
           dictionaries,
           initInitialValues,
-          dictionaryToolsService
+          dictionaryToolsService,
+          screenService,
         );
 
         // вызывается clearFilter(), потому что isValueEquals() === FALSE
@@ -1065,7 +1078,9 @@ describe('ComponentsListRelationsService', () => {
 
   describe('getDependentComponents()', () => {
     it('should return array of components with dependency', () => {
-      expect(service.getDependentComponents(componentsMock, componentMock)).toEqual([componentMock]);
+      expect(service.getDependentComponents(componentsMock, componentMock)).toEqual([
+        componentMock,
+      ]);
     });
   });
 
@@ -1077,10 +1092,10 @@ describe('ComponentsListRelationsService', () => {
 
       const components = [
         createComponentMock({
-          id: 'comp1'
+          id: 'comp1',
         }),
         createComponentMock({
-          id: 'comp2'
+          id: 'comp2',
         }),
       ];
 
@@ -1089,34 +1104,40 @@ describe('ComponentsListRelationsService', () => {
       let dictionaries = {} as CustomListDictionaries;
 
       // undefined потому что в словаре нет нет значения для компонента comp1
-      expect(service.getDictionaryAttributeValue(
-        dictionaryAttributeName,
-        componentId,
-        components,
-        componentVal,
-        dictionaries,
-      )).toBeUndefined();
+      expect(
+        service.getDictionaryAttributeValue(
+          dictionaryAttributeName,
+          componentId,
+          components,
+          componentVal,
+          dictionaries,
+        ),
+      ).toBeUndefined();
 
-      dictionaries = {
+      dictionaries = ({
         comp1: {
-          list: [{
-            id: 'foo',
-            originalItem: {
-              attributeValues: {
-                someAttributeName: 'some attribute value'
-              }
-            }
-          }]
-        }
-      } as unknown as CustomListDictionaries;
+          list: [
+            {
+              id: 'foo',
+              originalItem: {
+                attributeValues: {
+                  someAttributeName: 'some attribute value',
+                },
+              },
+            },
+          ],
+        },
+      } as unknown) as CustomListDictionaries;
 
-      expect(service.getDictionaryAttributeValue(
-        dictionaryAttributeName,
-        componentId,
-        components,
-        componentVal,
-        dictionaries,
-      )).toBe('some attribute value');
+      expect(
+        service.getDictionaryAttributeValue(
+          dictionaryAttributeName,
+          componentId,
+          components,
+          componentVal,
+          dictionaries,
+        ),
+      ).toBe('some attribute value');
     });
   });
 
@@ -1140,7 +1161,7 @@ describe('ComponentsListRelationsService', () => {
 
   describe('getCalcValueFromRelation()', () => {
     const component = createComponentMock({
-      value: '4'
+      value: '4',
     });
     const components = [component];
     let formMock: FormArray;
@@ -1160,9 +1181,15 @@ describe('ComponentsListRelationsService', () => {
     it('should apply passed filter for dependent component', () => {
       const dependentComponentId = componentMock.id;
       // eslint-disable-next-line max-len
-      const filter: DictionaryFilters['filter'] = { pageNum: 0, simple: { value: { asString: 'value' }, condition: DictionaryConditions.CONTAINS, attributeName: 'value' }};
-      const componentVal = { id: 'value' };
-      service.applyFilter(dependentComponentId, filter, componentVal);
+      const filter: DictionaryFilters['filter'] = {
+        pageNum: 0,
+        simple: {
+          value: { asString: 'value' },
+          condition: DictionaryConditions.CONTAINS,
+          attributeName: 'value',
+        },
+      };
+      service.applyFilter(dependentComponentId, filter);
       expect(service.filters[dependentComponentId]).toEqual(filter);
     });
   });
@@ -1192,12 +1219,78 @@ describe('ComponentsListRelationsService', () => {
     const reference = { relatedRel: 'rf1', val: '', relation: 'reset' };
     it('should reset dependent control', () => {
       const fb = new FormBuilder();
-      const form =  fb.group({ ...componentMock } );
-      const form2 = fb.group({ ...relatedComponent } );
+      const form = fb.group({ ...componentMock });
+      const form2 = fb.group({ ...relatedComponent });
       const mockForm = new FormArray([form, form2]);
       const control = mockForm.controls[1];
       service['handleResetControl'](control, mockForm, reference as any);
       expect(control.value.value).toBeNull();
+    });
+  });
+
+  describe('onAfterFilterOnRel()', () => {
+    const setup = (
+      reference = {
+        relatedRel: componentMock.id,
+        val: '*',
+        relation: 'filterOn',
+        dictionaryFilter: [],
+      },
+    ) => {
+      const dependentComponent = {
+        id: 'acc_org',
+        type: 'Lookup',
+        required: true,
+        label: 'Расчётный счёт',
+        attrs: {
+          ref: reference ? [reference] : [],
+        },
+        value: '',
+        visited: false,
+      };
+
+      const fb = new FormBuilder();
+      const mockForm = new FormArray([
+        fb.group({ ...componentMock }),
+        fb.group({ ...dependentComponent }),
+      ]);
+      const control = mockForm.controls[0];
+      const dependentControl = mockForm.controls[1];
+
+      return { control, dependentComponent, dependentControl, mockForm, reference };
+    };
+
+    it('should do nothing when no ref', () => {
+      const { dependentControl, mockForm } = setup(null);
+      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
+
+      service.onAfterFilterOnRel(componentMock, mockForm, dictionaryToolsService);
+
+      expect(dependentControlSpy).not.toBeCalled();
+    });
+
+    it('should reset dependent control', () => {
+      const { dependentControl, control, mockForm, dependentComponent, reference } = setup();
+      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
+      control.markAsTouched();
+
+      dictionaryToolsService.initDictionary({
+        component: dependentComponent as CustomComponent,
+        data: {
+          error: { code: 0, message: 'emptyDictionary' },
+          fieldErrors: [],
+          items: [],
+          total: 0,
+        },
+      });
+
+      service.onAfterFilterOnRel(
+        dependentComponent as CustomComponent,
+        mockForm,
+        dictionaryToolsService,
+      );
+
+      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
     });
   });
 });

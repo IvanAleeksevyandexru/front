@@ -8,11 +8,11 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { takeUntil, first, map, switchMap } from 'rxjs/operators';
 import { AbstractControl } from '@angular/forms';
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../core/services/config/config.service';
@@ -71,11 +71,12 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     public suggestHandlerService: SuggestHandlerService,
     public formService: ComponentsListFormService,
     public dateRangeService: DateRangeService,
+    public screenService: ScreenService,
     private dictionaryToolsService: DictionaryToolsService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
-    public screenService: ScreenService,
     private httpCancelService: HttpCancelService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.changes = this.formService.changes;
   }
@@ -140,13 +141,36 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
+  private handleAfterFilterOnRel(
+    references: Array<CustomListReferenceData>,
+  ): Observable<Array<CustomListReferenceData>> {
+    return this.dictionaries$.pipe(
+      first(),
+      map(() => {
+        references.forEach((reference) => {
+          this.formService.onAfterFilterOnRel(reference.component);
+        });
+
+        return references;
+      }),
+    );
+  }
+
   private watchForFilters(components: Array<CustomComponent>): void {
     this.dictionaryToolsService
       .watchForFilters(components)
-      .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribeService.ngUnsubscribe$),
+        switchMap((references: Array<CustomListReferenceData>) =>
+          this.handleAfterFilterOnRel(references),
+        ),
+      )
       .subscribe((references: Array<CustomListReferenceData>) => {
         references.forEach((reference: CustomListReferenceData) => {
-          setTimeout(() => this.formService.patch(reference.component), 0);
+          setTimeout(() => {
+            this.formService.patch(reference.component);
+            this.changeDetectionRef.markForCheck();
+          }, 0);
           this.formService.emitChanges();
         });
       });

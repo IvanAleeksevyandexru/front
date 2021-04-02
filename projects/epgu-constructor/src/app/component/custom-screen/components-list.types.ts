@@ -10,7 +10,6 @@ import { ComponentBase } from '../../screen/screen.types';
 import { TextTransform } from '../../shared/types/textTransform';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
-  DictionaryFilters,
   DictionaryItem,
   DictionaryOptions,
   DictionaryResponse,
@@ -111,6 +110,7 @@ export interface CustomComponentAttr {
   subLabel?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  needUnfilteredDictionaryToo?: boolean;
   labelAttr?: string;
   fields?: Array<{
     fieldName?: string;
@@ -201,7 +201,7 @@ export interface CustomComponentRef {
   sourceId?: string;
   defaultValue?: string | boolean;
   valueFromCache?: string;
-  filter?: DictionaryFilters['filter'];
+  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
 }
 
 export interface CustomListFormGroup {

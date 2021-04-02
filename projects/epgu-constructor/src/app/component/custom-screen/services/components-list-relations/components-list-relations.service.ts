@@ -12,7 +12,7 @@ import {
   CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryFilters, DictionarySubFilter } from '../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryFilters } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -69,6 +69,7 @@ export class ComponentsListRelationsService {
               dictionaries,
               initInitialValues,
               dictionaryToolsService,
+              screenService,
             );
           });
 
@@ -129,22 +130,7 @@ export class ComponentsListRelationsService {
   public applyFilter(
     dependentComponentId: CustomComponent['id'],
     filter: DictionaryFilters['filter'],
-    componentVal: { id?: string },
   ): void {
-    const value = this.refRelationService.getValueFromComponentVal(componentVal);
-
-    if (filter.simple) {
-      filter.simple.value.asString = value;
-    } else if (filter.union) {
-      filter.union.subs = filter.union.subs.map(
-        (subFilter: DictionarySubFilter): DictionarySubFilter => {
-          subFilter.simple.value.asString = value;
-
-          return subFilter;
-        },
-      );
-    }
-
     this.filters = { [dependentComponentId]: filter };
   }
 
@@ -221,6 +207,35 @@ export class ComponentsListRelationsService {
     return Function(`'use strict'; return (Math.round(${formula}))`)();
   }
 
+  public onAfterFilterOnRel(
+    dependentComponent: CustomComponent,
+    form: FormArray,
+    dictionaryToolsService: DictionaryToolsService,
+  ): void {
+    if (!Array.isArray(dependentComponent?.attrs?.ref)) {
+      return;
+    }
+    const dependentControl: AbstractControl = form.controls.find(
+      (control: AbstractControl) => control.value.id === dependentComponent.id,
+    );
+
+    dependentComponent?.attrs?.ref
+      .filter((reference) => (reference.relation = CustomComponentRefRelation.filterOn))
+      .forEach((reference) => {
+        const refControl: AbstractControl = form.controls.find(
+          (control: AbstractControl) => control.value.id === reference.relatedRel,
+        );
+
+        this.handleAfterFilterOnRelation(
+          reference,
+          refControl,
+          dependentControl,
+          dependentComponent,
+          dictionaryToolsService,
+        );
+      });
+  }
+
   private updateReferenceLimitDate(
     dependentComponent: CustomComponent,
     component: CustomComponent | CustomListFormGroup,
@@ -251,6 +266,7 @@ export class ComponentsListRelationsService {
     dictionaries: CustomListDictionaries,
     initInitialValues: boolean,
     dictionaryToolsService: DictionaryToolsService,
+    screenService: ScreenService,
   ): CustomListStatusElements {
     const dependentControl: AbstractControl = form.controls.find(
       (control: AbstractControl) => control.value.id === dependentComponent.id,
@@ -321,6 +337,7 @@ export class ComponentsListRelationsService {
           reference,
           componentVal,
           dictionaryToolsService,
+          screenService,
           dependentComponent,
         );
         break;
@@ -445,16 +462,60 @@ export class ComponentsListRelationsService {
     reference: CustomComponentRef,
     componentVal: { [key: string]: string },
     dictionaryToolsService: DictionaryToolsService,
+    screenService: ScreenService,
     dependentComponent: CustomComponent,
   ): void {
     if (
       this.refRelationService.isValueEquals(reference.val, componentVal) &&
       dictionaryToolsService.isDictionaryLike(dependentComponent.type)
     ) {
-      this.applyFilter(dependentComponent.id, reference.filter, componentVal);
+      const filter = dictionaryToolsService.getFilterOptions(
+        componentVal,
+        screenService.getStore(),
+        reference.dictionaryFilter,
+      );
+      this.applyFilter(dependentComponent.id, filter.filter);
     } else {
       this.clearFilter(dependentComponent.id);
     }
+  }
+
+  private handleAfterFilterOnRelation(
+    reference: CustomComponentRef,
+    refControl: AbstractControl,
+    dependentControl: AbstractControl,
+    dependentComponent: CustomComponent,
+    dictionaryToolsService: DictionaryToolsService,
+  ): void {
+    if (refControl.touched) {
+      if (dictionaryToolsService.isResultEmpty(dependentComponent)) {
+        this.patchValueAndDisable(dependentComponent.id, dependentControl, reference.defaultValue);
+      } else if (dependentControl.disabled) {
+        this.patchToPrevValueAndEnable(dependentComponent.id, dependentControl);
+      }
+    }
+  }
+
+  private patchValueAndDisable(
+    dependentComponentId: string,
+    control: AbstractControl,
+    defaultValue?: string | boolean,
+  ): void {
+    const valueControl: AbstractControl = control.get('value');
+    this.prevValues[dependentComponentId] = valueControl.value;
+    valueControl.patchValue(defaultValue || '', { onlySelf: true, emitEvent: false });
+    valueControl.markAsUntouched();
+    control.disable({ onlySelf: true, emitEvent: false });
+  }
+
+  private patchToPrevValueAndEnable(dependentComponentId: string, control: AbstractControl): void {
+    const isFindAndValue: boolean =
+      !isUndefined(this.prevValues[dependentComponentId]) &&
+      !!String(this.prevValues[dependentComponentId]);
+    if (isFindAndValue) {
+      control.get('value').patchValue(this.prevValues[dependentComponentId], { onlySelf: true, emitEvent: false });
+    }
+    control.enable({ onlySelf: true, emitEvent: false });
   }
 
   private handleIsDisabledRelation(
@@ -463,32 +524,10 @@ export class ComponentsListRelationsService {
     dependentControl: AbstractControl,
     dependentComponentId: string,
   ): void {
-    const patchValueAndDisable = (
-      control: AbstractControl,
-      defaultValue?: string | boolean,
-    ): void => {
-      const valueControl: AbstractControl = control.get('value');
-      this.prevValues[dependentComponentId] = valueControl.value;
-      valueControl.patchValue(defaultValue || '', { onlySelf: true, emitEvent: false });
-      valueControl.markAsUntouched();
-      control.disable({ onlySelf: true, emitEvent: false });
-    };
-
-    const patchToPrevValueAndEnable = (control: AbstractControl): void => {
-      const isFindAndValue: boolean =
-        !isUndefined(this.prevValues[dependentComponentId]) &&
-        !!String(this.prevValues[dependentComponentId]);
-      if (isFindAndValue) {
-        control.get('value').patchValue(this.prevValues[dependentComponentId], { onlySelf: true, emitEvent: false });
-      }
-
-      control.enable({ onlySelf: true, emitEvent: false });
-    };
-
     if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
-      patchValueAndDisable(dependentControl, reference.defaultValue);
+      this.patchValueAndDisable(dependentComponentId, dependentControl, reference.defaultValue);
     } else {
-      patchToPrevValueAndEnable(dependentControl);
+      this.patchToPrevValueAndEnable(dependentComponentId, dependentControl);
     }
   }
 

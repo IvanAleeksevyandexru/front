@@ -111,6 +111,17 @@ export class ComponentsListFormService {
     return this._form;
   }
 
+  public onAfterFilterOnRel(component: CustomComponent): void {
+    this.componentsListRelationsService.onAfterFilterOnRel(
+      {
+        ...component,
+        value: this.componentsListToolsService.convertedValue(component),
+      } as CustomComponent,
+      this.form,
+      this.dictionaryToolsService,
+    );
+  }
+
   public patch(component: CustomComponent): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
     const defaultIndex = component.attrs?.defaultIndex;
