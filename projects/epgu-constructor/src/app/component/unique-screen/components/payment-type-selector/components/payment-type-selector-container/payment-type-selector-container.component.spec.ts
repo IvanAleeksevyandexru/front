@@ -45,7 +45,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
           actions: [
             {
               label: 'На портале со скидкой 30%',
-              value: '"На портале со скидкой 30%',
+              value: 'На портале со скидкой 30%',
               type: 'nextStep',
               action: 'getNextScreen',
             },
@@ -112,7 +112,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
               action: 'getNextScreen',
               label: 'На портале со скидкой 30%',
               type: 'nextStep',
-              value: '"На портале со скидкой 30%',
+              value: 'На портале со скидкой 30%',
             },
           ],
           body: 'test',
