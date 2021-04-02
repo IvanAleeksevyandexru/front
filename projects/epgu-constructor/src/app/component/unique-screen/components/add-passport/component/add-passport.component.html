@@ -5,7 +5,7 @@
         [attrs]="$any(attrs)"
         formControlName="passport"
         [suggestions]="(suggestions$ | async)[componentId$ | async]"
-        (selectSuggest)="suggestHandle($event)">
+        (selectSuggest)="suggestHandlerService.handleEvent($event, null)">
       </epgu-constructor-passport>
     </div>
   </section>
