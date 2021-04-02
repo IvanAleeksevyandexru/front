@@ -41,7 +41,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
           subHeader: 'success',
           imgSrc: 'asset',
           body: 'test',
-          clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' } },
+          clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' }},
           actions: [
             {
               label: 'На портале со скидкой 30%',
