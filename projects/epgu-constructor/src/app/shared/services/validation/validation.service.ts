@@ -169,6 +169,22 @@ export class ValidationService {
     };
   }
 
+  public checkRS(rs: string, refs: { [key: string]: string }): boolean {
+    const check = (rs: string, bik: string | null): boolean => {
+      const bikRs = `${bik?.slice(-3)}${rs}`;
+      const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
+      const checkSum = coefficients.reduce(
+        (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
+        0,
+      );
+      return checkSum % 10 === 0;
+    };
+
+    return this.form.value
+      .filter((control) => Object.values(refs).includes(control.id))
+      .some((control) => check(rs, control.value?.id || control.value));
+  }
+
   private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
@@ -205,21 +221,5 @@ export class ValidationService {
           new RegExp(value).test(control.value)) ||
         (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)),
     );
-  }
-
-  private checkRS(rs: string, refs: { [key: string]: string }): boolean {
-    const check = (rs: string, bik: string | null): boolean => {
-      const bikRs = `${bik?.slice(-3)}${rs}`;
-      const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
-      const checkSum = coefficients.reduce(
-        (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
-        0,
-      );
-      return checkSum % 10 === 0;
-    };
-
-    return this.form.value
-      .filter((control) => Object.values(refs).includes(control.id))
-      .some((control) => check(rs, control.value?.id || control.value));
   }
 }
