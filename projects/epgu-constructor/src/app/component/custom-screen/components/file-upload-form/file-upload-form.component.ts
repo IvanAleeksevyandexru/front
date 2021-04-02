@@ -84,28 +84,40 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
   }
 
   private isValid(): boolean {
-    return this.isValidMinFileCount() && this.isValidMaxFileSize() && this.isValidMaxFileCount();
+    return (
+      this.isValidMinFileOrRequired() && this.isValidMaxFileSize() && this.isValidMaxFileCount()
+    );
   }
 
-  private isValidMinFileCount(): boolean {
-    const { minFileCount = 0 } = this.control.value.attrs as FileUploadAttributes;
+  private isValidMinFileOrRequired(): boolean {
+    const { minFileCount } = this.control.value.attrs as FileUploadAttributes;
     const uploadedFileCount = this.getUploadedFiles().length;
-    return uploadedFileCount >= minFileCount;
+    if (minFileCount) {
+      return uploadedFileCount >= minFileCount;
+    }
+    const requiredUploads = this.files.filter((uploader) => uploader.required);
+    return uploadedFileCount >= requiredUploads.length;
   }
 
   private isValidMaxFileSize(): boolean {
     const { maxSize } = this.control.value.attrs as FileUploadAttributes;
-    const uploadedFileSize = this.getUploadedFiles().reduce(
-      (count, { fileSize }) => count + fileSize,
-      0,
-    );
-    return maxSize >= uploadedFileSize;
+    if (maxSize) {
+      const uploadedFileSize = this.getUploadedFiles().reduce(
+        (count, { fileSize }) => count + fileSize,
+        0,
+      );
+      return maxSize >= uploadedFileSize;
+    }
+    return true;
   }
 
   private isValidMaxFileCount(): boolean {
     const { maxFileCount } = this.control.value.attrs as FileUploadAttributes;
-    const uploadedFileCount = this.getUploadedFiles().length;
-    return maxFileCount >= uploadedFileCount;
+    if (maxFileCount) {
+      const uploadedFileCount = this.getUploadedFiles().length;
+      return maxFileCount >= uploadedFileCount;
+    }
+    return true;
   }
 
   private getUploadedFiles(): TerraUploadedFile[] {
