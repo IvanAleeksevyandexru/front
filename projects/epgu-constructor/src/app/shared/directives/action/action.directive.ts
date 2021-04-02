@@ -38,7 +38,7 @@ export class ActionDirective {
 
   isDisabled(): boolean {
     return Boolean(
-      this.el.nativeElement?.classList.contains('[disabled]') ||
+      this.el.nativeElement?.classList.contains('disabled') ||
         this.el.nativeElement?.querySelector('[disabled]'),
     );
   }
