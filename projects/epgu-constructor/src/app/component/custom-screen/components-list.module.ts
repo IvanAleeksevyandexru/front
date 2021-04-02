@@ -27,6 +27,7 @@ import { ComponentItemModule } from './components/component-item/component-item.
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { CheckboxListModule } from './components/checkbox-list/checkbox-list.module';
+import { FileUploadModule } from '../../shared/components/file-upload/file-upload.module';
 import { MaskedAndPlainInputComponent } from './components/masked-and-plain-input/masked-and-plain-input.component';
 import { FormOutputHtmlComponent } from './components/form-output-html/form-output-html.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
@@ -45,6 +46,7 @@ import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.
 import { AbstractComponentListItemComponent } from './components/abstract-component-list-item/abstract-component-list-item.component';
 import { CityInputComponent } from './components/city-input/city-input.component';
 import { AddressInputComponent } from './components/address-input/address-input.component';
+import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { AddressInputComponent } from './components/address-input/address-input.
     TimerItemComponent,
     FieldListItemComponent,
     CityInputComponent,
+    FileUploadFormComponent,
     AddressInputComponent,
   ],
   exports: [ComponentsListComponent],
@@ -87,6 +90,7 @@ import { AddressInputComponent } from './components/address-input/address-input.
     DocInputModule,
     CheckboxListModule,
     DropDownDeptsModule,
+    FileUploadModule,
     ComponentResolverModule,
   ],
   providers: [
@@ -112,6 +116,7 @@ import { AddressInputComponent } from './components/address-input/address-input.
     CheckboxInputComponent,
     PassportLookupComponent,
     CityInputComponent,
+    FileUploadFormComponent,
     AddressInputComponent,
   ],
 })

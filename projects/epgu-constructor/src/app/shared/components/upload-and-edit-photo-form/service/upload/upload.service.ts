@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
-
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerabyteListItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
 import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
-// eslint-disable-next-line max-len
-import { TerraUploadedFile } from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../file-upload/file-upload-item/data';
 
 @Injectable()
 export class UploadService {

@@ -9,7 +9,7 @@ import { EpguLibModule } from 'epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { FileUploadComponent } from './sub-components/file-upload/file-upload.component';
+import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import {
   FileResponseToBackendUploadsItem,
@@ -61,7 +61,6 @@ describe('FileUploadScreenComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        // MockModule(FileUploadModule),
         MockModule(EpguLibModule),
       ],
       declarations: [
@@ -228,7 +227,7 @@ describe('FileUploadScreenComponent', () => {
 
       expect(debugEl.componentInstance.objectId).toBeNull();
 
-      screenService.orderId = 'some order id';
+      screenService.orderId = 'some order id' as any;
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.objectId).toBe('some order id');

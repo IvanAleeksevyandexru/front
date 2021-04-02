@@ -25,7 +25,6 @@ import { FieldListScreenComponent } from '../unique-screen/components/field-list
 import { TimerScreenComponent } from '../unique-screen/components/timer-screen/timer-screen.component';
 import { CarListContainerComponent } from '../unique-screen/components/car-list/components/car-list-container/car-list-container.component';
 import { CarOwnerInfoContainerComponent } from '../unique-screen/components/car-info/containers/car-owner-info-screen/car-owner-info-container.component';
-import { AppealFinesContainerComponent } from '../unique-screen/components/appeal-fines/container/appeal-fines-container.component';
 import { CheckboxCubeContainerComponent } from '../unique-screen/components/checkbox-cube/checkbox-cube-container/checkbox-cube-container.component';
 import { MatPeriodContainerComponent } from '../unique-screen/components/mat-period/mat-period-container/mat-period-container.component';
 import { DateTimePeriodContainerComponent } from '../unique-screen/components/date-time-period/components/date-time-period-container/date-time-period-container.component';
@@ -44,6 +43,7 @@ import { TimerItemComponent } from '../custom-screen/components/timer-item/timer
 import { FieldListItemComponent } from '../custom-screen/components/field-list-item/field-list-item.component';
 import { CityInputComponent } from '../custom-screen/components/city-input/city-input.component';
 import { AddressInputComponent } from '../custom-screen/components/address-input/address-input.component';
+import { FileUploadFormComponent } from '../custom-screen/components/file-upload-form/file-upload-form.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes | CustomScreenComponentTypes;
 
@@ -72,7 +72,6 @@ type UniqueScreenComponent =
   | SelectChildrenScreenContainerComponent
   | FieldListScreenComponent
   | TimerScreenComponent
-  | AppealFinesContainerComponent
   | MatPeriodContainerComponent
   | DateTimePeriodContainerComponent
   | CheckboxCubeContainerComponent;
@@ -91,7 +90,8 @@ type CustomScreenComponent =
   | PassportLookupComponent
   | FormOutputHtmlComponent
   | CityInputComponent
-  | AddressInputComponent;
+  | AddressInputComponent
+  | FileUploadFormComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent | CustomScreenComponent;
 
@@ -130,7 +130,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
   FieldList: FieldListScreenComponent,
   Timer: TimerScreenComponent,
-  AppealFines: AppealFinesContainerComponent,
   MatPeriod: MatPeriodContainerComponent,
   DateTimePeriod: DateTimePeriodContainerComponent,
   CheckboxCube: CheckboxCubeContainerComponent,
@@ -162,4 +161,5 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   PassportLookup: PassportLookupComponent,
   CityInput: CityInputComponent,
   AddressInput: AddressInputComponent,
+  FileUploadComponent: FileUploadFormComponent,
 };

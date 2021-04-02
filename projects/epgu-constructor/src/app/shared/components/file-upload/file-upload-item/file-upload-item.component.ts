@@ -14,17 +14,17 @@ import {
   tap,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { TerraByteApiService } from '../../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { ModalService } from '../../../../modal/modal.service';
+import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
   Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
   UploadedFile,
-} from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
 import {
   ErrorActions,
@@ -39,11 +39,11 @@ import {
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { AttachUploadedFilesModalComponent } from '../../../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
-import { AutocompleteService } from '../../../../../../core/services/autocomplete/autocomplete.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
+import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 
 interface OverLimitsItem {
   count: number;

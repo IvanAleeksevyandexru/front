@@ -1,7 +1,7 @@
-@import '../../../../../../../styles/core/typography';
-@import '../../../../../../../styles/core/palettes';
-@import '../../../../../../../styles/core/breakpoint';
-@import '../../../../../../../styles/components/rubles';
+@import '../../../../../styles/core/typography';
+@import '../../../../../styles/core/palettes';
+@import '../../../../../styles/core/breakpoint';
+@import '../../../../../styles/components/rubles';
 
 :host {
   display: block;
@@ -75,11 +75,11 @@ input[type='file'] {
   }
 
   &.uploaded {
-    background-image: url('../../../../../../../assets/icons/svg/file_accept.svg');
+    background-image: url('../../../../../assets/icons/svg/file_accept.svg');
   }
 
   &.has-error {
-    background-image: url('../../../../../../../assets/icons/svg/file_red.svg');
+    background-image: url('../../../../../assets/icons/svg/file_red.svg');
   }
 }
 
@@ -197,7 +197,7 @@ input[type='file'] {
   &__icon {
     display: inline-block;
     background-color: $color-gosblue;
-    mask: url('../../../../../../../assets/icons/svg/clock.svg');
+    mask: url('../../../../../assets/icons/svg/clock.svg');
     mask-size: 100%;
     margin-right: 8px;
     width: 20px;

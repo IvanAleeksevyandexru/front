@@ -19,6 +19,7 @@ import { NavigationModalService } from './services/navigation-modal/navigation-m
 import { NavigationService } from './services/navigation/navigation.service';
 import { SessionService } from './services/session/session.service';
 import { UtilsService } from './services/utils/utils.service';
+import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -36,6 +37,7 @@ import { UtilsService } from './services/utils/utils.service';
     SessionService,
     InitDataService,
     AutocompleteService,
+    TerraByteApiService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

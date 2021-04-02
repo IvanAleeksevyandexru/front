@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
+import { EpguLibModule } from 'epgu-lib';
 import { FileUploadItemComponent } from './file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileUploadService } from './file-upload.service';
-import { BaseModule } from '../../../../../shared/base.module';
-import { UserInfoLoaderModule } from '../../../../../shared/components/user-info-loader/user-info-loader.module';
-import { UploaderModule } from '../../../../../shared/components/uploader/uploader.module';
-import { FileSizeModule } from '../../../../../shared/pipes/file-size/file-size.module';
+import { BaseModule } from '../../base.module';
+import { UserInfoLoaderModule } from '../user-info-loader/user-info-loader.module';
+import { UploaderModule } from '../uploader/uploader.module';
+import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 import { PrepareService } from './prepare.service';
-import { EpguLibModule } from 'epgu-lib';
 
 const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
 
@@ -18,4 +18,4 @@ const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
   providers: [FileUploadService, PrepareService],
   entryComponents: [...COMPONENTS],
 })
-export class SubComponentsModule {}
+export class FileUploadModule {}

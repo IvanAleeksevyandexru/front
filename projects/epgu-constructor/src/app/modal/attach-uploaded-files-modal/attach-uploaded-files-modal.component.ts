@@ -14,7 +14,7 @@ import {
   ErrorActions,
   FileItem,
   FileItemStatus,
-} from '../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+} from '../../shared/components/file-upload/file-upload-item/data';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';

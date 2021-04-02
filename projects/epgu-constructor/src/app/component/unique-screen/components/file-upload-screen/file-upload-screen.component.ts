@@ -19,7 +19,7 @@ import {
   FileUploadItem,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { TerraUploadedFile } from './sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../../shared/components/file-upload/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',

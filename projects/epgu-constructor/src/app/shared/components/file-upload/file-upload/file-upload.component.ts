@@ -6,15 +6,15 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   FileResponseToBackendUploadsItem,
   FileResponseToBackendWithRelatedUploads,
   FileUploadAttributes,
   FileUploadItem,
   FileUploadItemTypes,
-} from '../../../../../../core/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService, Uploaders } from '../file-upload.service';
 
 @Component({
