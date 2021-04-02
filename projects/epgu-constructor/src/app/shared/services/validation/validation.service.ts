@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormArray,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService } from 'epgu-lib';
@@ -17,24 +23,24 @@ enum ValidationType {
   regExp = 'RegExp',
   regExpException = 'RegExpException',
   date = 'Date',
+  checkRS = 'checkRS',
 }
 type DateValidationCondition = '<' | '<=' | '>' | '>=';
 
 @Injectable()
 export class ValidationService {
+  public form: FormArray;
   private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
-
   private readonly personInnLength = 12;
-
   private readonly legalInnLength = 10;
 
   constructor(
     private dateRangeService: DateRangeService,
     private datesToolsService: DatesToolsService,
-  ) { }
+  ) {}
 
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
@@ -57,7 +63,7 @@ export class ValidationService {
       let customMessage;
 
       if (validations?.length) {
-        const error = this.getError(validations, control);
+        const error = this.getError(validations, control, component);
         if (error) {
           return this.validationErrorMsg(error.errorMsg);
         }
@@ -90,7 +96,7 @@ export class ValidationService {
       let customMessage;
 
       if (asyncValidationType === 'blur' && onBlurValidations?.length) {
-        const error = this.getError(onBlurValidations, control);
+        const error = this.getError(onBlurValidations, control, component);
         if (error) {
           return of(this.validationErrorMsg(error.errorMsg));
         }
@@ -187,6 +193,7 @@ export class ValidationService {
   private getError(
     validations: Array<CustomComponentAttrValidation>,
     control: AbstractControl,
+    component: CustomComponent,
   ): CustomComponentAttrValidation {
     return validations.find(
       ({ value, type }) =>
@@ -195,7 +202,24 @@ export class ValidationService {
           !new RegExp(value).test(control.value)) ||
         (type === ValidationType.regExpException &&
           control.value &&
-          new RegExp(value).test(control.value)),
+          new RegExp(value).test(control.value)) ||
+        (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)),
     );
+  }
+
+  private checkRS(rs: string, refs: { [key: string]: string }): boolean {
+    const check = (rs: string, bik: string | null): boolean => {
+      const bikRs = `${bik?.slice(-3)}${rs}`;
+      const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
+      const checkSum = coefficients.reduce(
+        (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
+        0,
+      );
+      return checkSum % 10 === 0;
+    };
+
+    return this.form.value
+      .filter((control) => Object.values(refs).includes(control.id))
+      .some((control) => check(rs, control.value?.id || control.value));
   }
 }

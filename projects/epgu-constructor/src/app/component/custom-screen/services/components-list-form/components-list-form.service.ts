@@ -85,6 +85,7 @@ export class ComponentsListFormService {
         return this.createGroup(component, components, errors[component.id]);
       }),
     );
+    this.validationService.form = this.form;
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);

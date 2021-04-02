@@ -80,16 +80,17 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  public createStatusElements(
-    components: Array<CustomComponent>,
-  ): CustomListStatusElements {
-    return components.reduce((acc, component: CustomComponent) => ({
-      ...acc,
-      [component.id]: {
-        relation: CustomComponentRefRelation.displayOn,
-        isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
-      }
-    }), {});
+  public createStatusElements(components: Array<CustomComponent>): CustomListStatusElements {
+    return components.reduce(
+      (acc, component: CustomComponent) => ({
+        ...acc,
+        [component.id]: {
+          relation: CustomComponentRefRelation.displayOn,
+          isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+        },
+      }),
+      {},
+    );
   }
 
   /**
@@ -344,6 +345,9 @@ export class ComponentsListRelationsService {
       case CustomComponentRefRelation.reset:
         this.handleResetControl(dependentControl, form, reference);
         break;
+      case CustomComponentRefRelation.validateDependentControl:
+        this.validateDependentControl(dependentControl);
+        break;
     }
 
     if (isDependentDisabled) {
@@ -387,7 +391,7 @@ export class ComponentsListRelationsService {
             dependentControl.value.value !== ''
               ? dependentControl.value.value
               : dictionaryAttributeValue,
-            { onlySelf: true, emitEvent: false }
+            { onlySelf: true, emitEvent: false },
           );
       }
 
@@ -513,7 +517,9 @@ export class ComponentsListRelationsService {
       !isUndefined(this.prevValues[dependentComponentId]) &&
       !!String(this.prevValues[dependentComponentId]);
     if (isFindAndValue) {
-      control.get('value').patchValue(this.prevValues[dependentComponentId], { onlySelf: true, emitEvent: false });
+      control
+        .get('value')
+        .patchValue(this.prevValues[dependentComponentId], { onlySelf: true, emitEvent: false });
     }
     control.enable({ onlySelf: true, emitEvent: false });
   }
@@ -559,9 +565,18 @@ export class ComponentsListRelationsService {
   ): void {
     const { value } = form.controls.find((control) => control.value.id === reference.relatedRel);
     const controlValue = value.value?.id || value.value;
-    if (!this.refRelationService.isValueEquals(controlValue, this.prevValues[value.id])) {
+    if (
+      !this.refRelationService.isValueEquals(
+        controlValue,
+        (reference.val as string) || this.prevValues[value.id],
+      )
+    ) {
       dependentControl.get('value').reset();
     }
     this.prevValues[value.id] = controlValue;
+  }
+
+  private validateDependentControl(dependentControl: AbstractControl): void {
+    dependentControl.get('value').updateValueAndValidity();
   }
 }
