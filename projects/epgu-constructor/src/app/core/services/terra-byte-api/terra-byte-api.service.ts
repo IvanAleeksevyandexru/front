@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, range, from, combineLatest } from 'rxjs';
+import { Observable, range, from, combineLatest, of } from 'rxjs';
 import { ConfigService } from '../config/config.service';
 import * as FileSaver from 'file-saver';
 import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
-import { of } from 'rxjs';
 import {
   Chunk,
   ChunkPacket,

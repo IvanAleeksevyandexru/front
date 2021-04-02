@@ -8,7 +8,6 @@ import { UserInfoLoaderModule } from '../user-info-loader/user-info-loader.modul
 import { UploaderModule } from '../uploader/uploader.module';
 import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 import { PrepareService } from './prepare.service';
-import { TerraByteApiService } from '../../../core/services/terra-byte-api/terra-byte-api.service';
 
 const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
 
@@ -16,7 +15,7 @@ const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, EpguLibModule],
-  providers: [FileUploadService, PrepareService, TerraByteApiService],
+  providers: [FileUploadService, PrepareService],
   entryComponents: [...COMPONENTS],
 })
 export class FileUploadModule {}

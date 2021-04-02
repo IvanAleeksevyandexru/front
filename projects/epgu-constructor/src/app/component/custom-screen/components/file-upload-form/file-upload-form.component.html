@@ -1,5 +1,5 @@
 <epgu-constructor-file-upload
-  [attributes]="control.value?.attrs"
+  [attributes]="$any(control.value.attrs)"
   [applicantAnswers]="screenService.applicantAnswers$ | async"
   [objectId]="screenService.orderIdAsString$ | async"
   [prefixForMnemonic]="prefixForMnemonic$ | async"

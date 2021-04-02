@@ -21,7 +21,7 @@ import { TerraUploadedFile } from '../../../../shared/components/file-upload/fil
 })
 export class FileUploadFormComponent extends AbstractComponentListItemComponent implements OnInit {
   prefixForMnemonic$: Observable<string>;
-  files: FileUploadEmitValue[];
+  files: FileUploadEmitValue[] = [];
 
   constructor(
     public injector: Injector,
@@ -56,7 +56,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
     this.formService.emitChanges();
   }
 
-  // @TODO разобраться с relatedUploads и подумать над required
+  // @TODO разобраться с relatedUploads и required
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
     if ($eventData.relatedUploads) {
       this.files = this.files.map((value: FileUploadEmitValue) => {
@@ -70,16 +70,15 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
         return value;
       });
     } else {
-      const relatedUpload: FileUploadEmitValue = this.files?.find(
-        (value: FileUploadEmitValue) => value?.relatedUploads,
+      const relatedUpload: FileUploadEmitValue = this.files.find(
+        (value: FileUploadEmitValue) => value.relatedUploads,
       );
 
-      this.files = $eventData.files?.map((value: FileUploadEmitValue) => {
-        let resultValue = value;
+      this.files = $eventData.files.map((value: FileUploadEmitValue) => {
         if (relatedUpload && value?.uploadId === relatedUpload.uploadId) {
-          resultValue = { ...value, relatedUploads: relatedUpload.relatedUploads };
+          return { ...value, relatedUploads: relatedUpload.relatedUploads };
         }
-        return resultValue;
+        return value;
       });
     }
   }
@@ -90,8 +89,8 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
 
   private isValidMinFileCount(): boolean {
     const { minFileCount = 0 } = this.control.value.attrs as FileUploadAttributes;
-    const uploadedFiles = this.getUploadedFiles().length;
-    return uploadedFiles >= minFileCount;
+    const uploadedFileCount = this.getUploadedFiles().length;
+    return uploadedFileCount >= minFileCount;
   }
 
   private isValidMaxFileSize(): boolean {
