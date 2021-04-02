@@ -119,7 +119,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
-  RepeatableFields: RepeatableScreenComponent,
+  RepeatableFields: RepeatableScreenComponent, // TODO: убрать с 11го релиза
   TimeSlot: TimeSlotsComponent,
   TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
