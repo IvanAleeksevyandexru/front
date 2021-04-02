@@ -83,7 +83,7 @@ export class FormPlayerApiService {
   public getBooking(): Observable<FormPlayerApiResponse> {
     const { orderId, serviceId } = this.initDataService;
     const body = {
-      orderId,
+      parentOrderId: orderId,
       serviceId
     };
     const path = `${this.configService.apiUrl}/service/booking`;
