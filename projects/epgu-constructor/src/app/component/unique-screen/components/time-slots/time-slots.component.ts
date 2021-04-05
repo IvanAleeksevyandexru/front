@@ -322,7 +322,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private loadTimeSlots(): void {
     this.inProgress = true;
     this.label = this.screenService.component?.label;
-    const value = JSON.parse(JSON.stringify(this.screenService.component?.value));
+    const value = JSON.parse(this.screenService.component?.value);
 
     this.initServiceVariables(value);
     this.timeSlotType = value.timeSlotType;
