@@ -333,8 +333,6 @@ export class TimeSlotsService {
       routeNumber,
     } = this.configService.timeSlots[this.timeSlotsType];
 
-    const parentOrderId = this.config.orderId ? this.config.orderId : this.config.parentOrderId;
-
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: this.getAddress(this.department.attributeValues),
@@ -354,7 +352,7 @@ export class TimeSlotsService {
       calendarName: this.config.calendarName as string || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
-      parentOrderId: parentOrderId as string,
+      parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
@@ -362,8 +360,8 @@ export class TimeSlotsService {
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {
-      requestBody.parentOrderId = '';
-      requestBody.caseNumber = parentOrderId as string;
+      requestBody.parentOrderId = this.config.parentOrderId ? this.config.parentOrderId as string : '';
+      requestBody.caseNumber = this.config.orderId ? this.config.orderId as string : '';
     }
 
     return requestBody;
