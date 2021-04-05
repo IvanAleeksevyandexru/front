@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { InformationCenterPfrContainerComponent } from './container/information-center-pfr-container.component';
-import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { CoreModule } from '../../../../core/core.module';
 import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
 import { BaseModule } from '../../../../shared/base.module';
@@ -12,6 +11,7 @@ import { InformationCenterPfrSimpleComponent } from './component/information-cen
 import { InformationCenterPfrFullComponent } from './component/information-center-pfr-full/information-center-pfr-full.component';
 import { ConstructorLookupModule } from '../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { SopService } from '../../../../shared/services/sop/sop.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-sc
     ConstructorLookupModule,
     DefaultUniqueScreenWrapperModule,
   ],
-  providers: [DictionaryApiService],
+  providers: [SopService],
   exports: [
     InformationCenterPfrContainerComponent,
     InformationCenterPfrSimpleComponent,
