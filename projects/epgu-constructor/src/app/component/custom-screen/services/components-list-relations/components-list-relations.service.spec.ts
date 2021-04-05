@@ -1017,14 +1017,14 @@ describe('ComponentsListRelationsService', () => {
             ref: [
               {
                 relatedRel: dependentComponent.id,
-                val: 'b',
-                relation: CustomComponentRefRelation.disabled,
-              },
-              {
-                relatedRel: dependentComponent.id,
                 val: 'any value',
                 relation: CustomComponentRefRelation.filterOn,
               },
+              {
+                relatedRel: dependentComponent.id,
+                val: 'b',
+                relation: CustomComponentRefRelation.disabled,
+              }
             ],
           },
         });
