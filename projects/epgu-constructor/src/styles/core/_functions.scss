@@ -177,9 +177,12 @@
   .fs-sm {
     font-size: $font-sm;
     line-height: $font-lg;
+  }
+  .red-line + p.fs-sm, .yellow-line + p.fs-sm {
     margin-top: 4px;
   }
   .cost {
+    font-weight: bold;
     &::after {
       content: "₽";
       margin-left: 4px;
@@ -190,6 +193,9 @@
       text-decoration: line-through;
       color: $color-text-helper;
       &::after {
+        content: "₽";
+        margin-left: 4px;
+        display: inline-block;
         text-decoration: none;
       }
     }
