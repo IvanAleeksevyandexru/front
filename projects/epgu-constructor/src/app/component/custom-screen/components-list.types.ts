@@ -147,6 +147,7 @@ export interface CustomComponentAttr {
   isTextHelper?: boolean;
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;
+  refs?: { [key: string]: string };
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -183,6 +184,7 @@ export enum CustomComponentRefRelation {
   getValue = 'getValue',
   autofillFromDictionary = 'autofillFromDictionary',
   reset = 'reset',
+  validateDependentControl = 'validateDependentControl',
 }
 
 export enum CustomComponentValidationConditions {
