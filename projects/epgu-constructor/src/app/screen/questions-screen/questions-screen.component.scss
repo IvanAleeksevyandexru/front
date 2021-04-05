@@ -50,3 +50,14 @@
     @include screen-content-margins;
   }
 }
+// при разном порядке загрузки компонентов перебиваются другими стилями.
+.screen-body.quiz__answers {
+  @include tablets-up {
+    margin-bottom: 32px;
+  }
+}
+.screen-body .quiz__answer {
+  @include tablets-up {
+    margin-top: 0;
+  }
+}

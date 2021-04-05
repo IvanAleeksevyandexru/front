@@ -27,7 +27,7 @@ button {
   outline: none;
   @include shadow-main();
   @include tablets-up {
-    padding: 24px 32px;
+    padding: 23px 31px;
   }
 
   &:hover,
