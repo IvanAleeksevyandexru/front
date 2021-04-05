@@ -16,24 +16,28 @@ import {
   CustomComponent,
   CustomComponentDropDownItem,
   CustomComponentDropDownItemList,
+  CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListDictionary,
   CustomListDropDowns,
   CustomListGenericData,
   CustomListReferenceData,
   CustomScreenComponentTypes,
-} from '../../components/components-list/components-list.types';
+} from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
-import { ComponentDictionaryFilters } from '../components-list-relations/components-list-relations.interface';
-import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
+// eslint-disable-next-line max-len
+import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
+// eslint-disable-next-line max-len
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import {
   CachedAnswersDto,
   ComponentDictionaryFilterDto,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { isUndefined } from '../../constants/utils';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -44,11 +48,15 @@ export class DictionaryToolsService {
   private _dropDowns$ = new BehaviorSubject<CustomListDropDowns>([]);
   private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
 
-  get dropDowns$(): BehaviorSubject<CustomListDropDowns> {
+  public get dropDowns$(): BehaviorSubject<CustomListDropDowns> {
     return this._dropDowns$;
   }
 
-  get dictionaries$(): BehaviorSubject<CustomListDictionaries> {
+  public get dropDowns(): CustomListDropDowns {
+    return this._dropDowns$.getValue();
+  }
+
+  public get dictionaries$(): BehaviorSubject<CustomListDictionaries> {
     return this._dictionaries$;
   }
 
@@ -84,22 +92,34 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
   ): Observable<CustomListReferenceData[]> {
     const data: Array<Observable<CustomListReferenceData>> = [];
-    components.forEach((component: CustomComponent) => {
-      if (this.isDropdownLike(component.type)) {
-        data.push(this.getDropdowns$(component, cachedAnswers));
-      }
-
-      if (this.isDictionaryLike(component.type)) {
-        if (component.type === CustomScreenComponentTypes.DropDownDepts) {
-          data.push(this.getDropDownDepts$(component, screenStore));
-        } else {
-          const { dictionaryType, dictionaryOptions = null } = component.attrs;
-          const options = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
-
-          data.push(this.getDictionaries$(dictionaryType, component, options));
+    components
+      .filter((component: CustomComponent) => {
+        if (!Array.isArray(component.attrs.ref)) {
+          return true;
         }
-      }
-    });
+
+        const hasFilterOnRef = component.attrs.ref.some(
+          (reference) => reference.relation === CustomComponentRefRelation.filterOn,
+        );
+
+        return !hasFilterOnRef || component.attrs.needUnfilteredDictionaryToo;
+      })
+      .forEach((component: CustomComponent) => {
+        if (this.isDropdownLike(component.type)) {
+          data.push(this.getDropdowns$(component, cachedAnswers));
+        }
+
+        if (this.isDictionaryLike(component.type)) {
+          if (component.type === CustomScreenComponentTypes.DropDownDepts) {
+            data.push(this.getDropDownDepts$(component, screenStore));
+          } else {
+            const { dictionaryType, dictionaryOptions = null } = component.attrs;
+            const options = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+
+            data.push(this.getDictionaries$(dictionaryType, component, options));
+          }
+        }
+      });
 
     return forkJoin(data).pipe(
       tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference)),
@@ -219,12 +239,6 @@ export class DictionaryToolsService {
     };
   }
 
-  /**
-   * Подготавливает объект с фильтрами для получения словаря
-   * @param componentValue значение value пришедшение с бэкэнда
-   * @param scenarioDto значение scenarioDto пришедшение с бэкэнда
-   * @param dictionaryFilters фильтры из атрибутов компонента
-   */
   public getFilterOptions(
     componentValue: ComponentValue,
     screenStore: ScreenStore,
@@ -276,6 +290,21 @@ export class DictionaryToolsService {
     return (
       type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac
     );
+  }
+
+  public isResultEmpty(component: CustomComponent): boolean {
+    if (this.isDictionaryLike(component.type)) {
+      const id = utils.getDictKeyByComp(component);
+      return isUndefined(this.dictionaries[id]?.list?.length)
+        ? false
+        : this.dictionaries[id]?.list?.length === 0;
+    } else if (this.isDropdownLike(component.type)) {
+      return isUndefined(this.dropDowns[component.id]?.length)
+        ? false
+        : this.dropDowns[component.id]?.length === 0;
+    }
+
+    throw new Error('Incorrect usage of filterOn ref');
   }
 
   private prepareOptions(
@@ -406,15 +435,38 @@ export class DictionaryToolsService {
     component: CustomComponent,
     filters: ComponentDictionaryFilters,
   ): Array<Observable<CustomListReferenceData>> {
-    if (filters[component.id] !== undefined && this.isDictionaryLike(component.type)) {
-      const { dictionaryType, dictionaryOptions } = component.attrs;
+    const isFilterInited = !isUndefined(filters[component.id]);
+    const hasFilter = filters[component.id] !== null;
+
+    if (isFilterInited && this.isDictionaryLike(component.type)) {
+      const { dictionaryType, dictionaryOptions = null } = component.attrs;
       const options: DictionaryOptions = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
 
-      options.filter = filters[component.id];
-      data.push(this.getDictionaries$(dictionaryType, component, options));
+      if (hasFilter) {
+        options.filter = filters[component.id];
+      }
+      if (hasFilter || component.attrs.needUnfilteredDictionaryToo) {
+        data.push(this.getDictionaries$(dictionaryType, component, options));
+      } else if (!hasFilter && !component.attrs.needUnfilteredDictionaryToo) {
+        data.push(this.emptyDictionary(component));
+      }
     }
 
     return data;
+  }
+
+  private emptyDictionary(
+    component: CustomComponent,
+  ): Observable<CustomListGenericData<DictionaryResponse>> {
+    return of({
+      component,
+      data: {
+        error: { code: 0, message: 'emptyDictionary' },
+        fieldErrors: [],
+        items: [],
+        total: 0,
+      },
+    });
   }
 
   /**

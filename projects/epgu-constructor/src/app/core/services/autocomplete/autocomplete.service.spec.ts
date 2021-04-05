@@ -19,7 +19,7 @@ import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';

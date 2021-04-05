@@ -15,7 +15,7 @@ import {
   FileItemStatus,
   FileItemStatusText,
   OperationType,
-} from '../../../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+} from '../../../file-upload/file-upload-item/data';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { iconsTypes, SuggestAction } from '../../data';

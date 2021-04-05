@@ -11,7 +11,7 @@ import { PassportModule } from '../../../../../shared/components/add-passport/pa
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 // eslint-disable-next-line max-len
-import { ComponentsListToolsService } from '../../../../../shared/services/components-list-tools/components-list-tools.service';
+import { ComponentsListToolsService } from '../../../../custom-screen/services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { AddPassportComponent } from './add-passport.component';
 import { ConfigService } from '../../../../../core/services/config/config.service';
@@ -21,6 +21,7 @@ import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -65,7 +66,8 @@ describe('AddPassportComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
+        SuggestHandlerService,
       ],
     }).compileComponents();
   }));

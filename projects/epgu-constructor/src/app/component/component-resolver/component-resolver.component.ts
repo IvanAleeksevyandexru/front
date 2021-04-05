@@ -7,6 +7,8 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   Input,
+  OnChanges,
+  SimpleChanges,
   Type,
   ViewChild,
   ViewContainerRef,
@@ -30,7 +32,7 @@ import { ScreenTypes } from '../../screen/screen.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class ComponentResolverComponent implements AfterViewInit {
+export class ComponentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('componentContainer', { read: ViewContainerRef }) componentContainer: ViewContainerRef;
   @Input() componentIndex = 0;
   @Input() componentsGroupIndex = 0;
@@ -44,6 +46,15 @@ export class ComponentResolverComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef,
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.componentRef && (changes.componentsGroupIndex || changes.componentIndex)) {
+      // @ts-ignore
+      this.componentRef.instance.componentIndex = this.componentIndex;
+      // @ts-ignore
+      this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
+    }
+  }
+
   ngAfterViewInit(): void {
     this.screenService.display$
       .pipe(
@@ -52,7 +63,7 @@ export class ComponentResolverComponent implements AfterViewInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(({ components, type: screenType }) => {
-        const isComponentList = !!this.componentType; // TODO: нужно вынести RepeatableFields в новый тип скрина
+        const isComponentList = !!this.componentType; // TODO: удалить с 11го релиза
         const cmpType =
           this.componentType ?? (components[this.componentIndex].type as ComponentTypes);
         this.createComponent(cmpType, screenType, isComponentList);
@@ -96,6 +107,7 @@ export class ComponentResolverComponent implements AfterViewInit {
   ): Type<ScreenComponentTypes> {
     if (
       screenType === ScreenTypes.CUSTOM ||
+      screenType === ScreenTypes.REPEATABLE ||
       this.isRepeatableFieldCase(cmpType, screenType, isComponentList)
     ) {
       return CUSTOM_SCREEN_COMPONENTS[cmpType];
@@ -106,6 +118,7 @@ export class ComponentResolverComponent implements AfterViewInit {
     return null;
   }
 
+  // TODO: удалить с 11го релиза
   private isRepeatableFieldCase(
     cmpType: ComponentTypes,
     screenType: ScreenTypes,

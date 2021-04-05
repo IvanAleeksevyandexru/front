@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponentRefRelation } from '../../components/components-list/components-list.types';
+import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 
 @Injectable()

@@ -3,7 +3,6 @@ import { LyImageCropperModule } from '@alyle/ui/image-cropper';
 import { LyTheme2, StyleRenderer, LY_THEME, LY_THEME_NAME } from '@alyle/ui';
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { AngularResizedEventModule } from 'angular-resize-event';
-
 import { PhotoErrorModalComponent } from './components/photo-error-modal/photo-error-modal.component';
 import { PhotoEditorModalComponent } from './components/photo-editor-modal/photo-editor-modal.component';
 import { SliderComponent } from './components/slider/slider.component';
@@ -13,7 +12,6 @@ import { ModalModule } from '../../../modal/modal.module';
 import { WebcamShootModule } from '../webcam-shoot/webcam-shoot.module';
 import { DragAndDropModule } from '../../directives/drag-and-drop/drag-and-drop.module';
 import { CompressionService } from './service/compression/compression.service';
-import { TerraByteApiService } from '../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ValidationService } from './service/validation/validation.service';
 import { UploadService } from './service/upload/upload.service';
 import { BaseModule } from '../../base.module';
@@ -38,7 +36,6 @@ import { BaseModule } from '../../base.module';
   exports: [PhotoFormComponent],
   providers: [
     CompressionService,
-    TerraByteApiService,
     ValidationService,
     UploadService,
     [LyTheme2],

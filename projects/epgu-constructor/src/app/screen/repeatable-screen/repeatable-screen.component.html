@@ -1,0 +1,52 @@
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div class="screen-body">
+    <epgu-constructor-page-name>{{ propData.header }}</epgu-constructor-page-name>
+
+    <div class="common-error" *ngIf="(commonError$ | async)?.hasError">
+      <small>
+        {{ (commonError$ | async)?.message }}
+      </small>
+    </div>
+
+    <div class="cmp-group">
+      <epgu-constructor-screen-pad
+        class="cmp-group__layer"
+        *ngFor="let screenKey of objectKeys(screens); let i = index; trackBy: trackByFunction"
+      >
+        <div
+          class="icon-close"
+          *ngIf="canDeleteFirstScreen ? (objectKeys(screens).length > 1) : (i > 0)"
+          (click)="removeItem(screenKey, i)"
+        ></div>
+        <epgu-constructor-components-list
+          class="cmp-group__item"
+          [componentsGroupIndex]="i"
+          [components]="$any(screens[screenKey])"
+          [errors]="(commonError$ | async)?.errors[i] || {}"
+          (changes)="changeComponentList($event, i)"
+        >
+        </epgu-constructor-components-list>
+      </epgu-constructor-screen-pad>
+    </div>
+
+    <epgu-constructor-clone-button
+      [disabled]="!isScreensAvailable()"
+      >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
+    >
+  </div>
+
+  <div class="screen-footer">
+    <lib-button
+      [showLoader]="screenService.isLoading$ | async"
+      epgu-constructor-action
+      [action]="nextStepAction"
+      class="submit-button"
+      [disabled]="(screenService.isLoading$ | async) || !isValid || (commonError$ | async)?.hasError"
+    >
+      {{ propData.submitLabel || 'Далее' }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>

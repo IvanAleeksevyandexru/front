@@ -1,7 +1,6 @@
-import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from 'epgu-lib';
+
 import { CoreModule } from '../../../../../../core/core.module';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
@@ -46,7 +45,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
           actions: [
             {
               label: 'На портале со скидкой 30%',
-              value: '"На портале со скидкой 30%',
+              value: 'На портале со скидкой 30%',
               type: 'nextStep',
               action: 'getNextScreen',
             },
@@ -81,8 +80,6 @@ describe('PaymentTypeSelectorContainerComponent', () => {
         ActionModule,
       ],
       providers: [
-        HealthService,
-        DatePipe,
         LocationService,
         WINDOW_PROVIDERS,
         HtmlRemoverService,
@@ -104,7 +101,32 @@ describe('PaymentTypeSelectorContainerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should be init data', () => {
+    component.init$.subscribe((value) => {
+      expect(value).toEqual({
+        applicantType: 'success',
+        isErrorTemplate: true,
+        paymentTypeSelector: {
+          actions: [
+            {
+              action: 'getNextScreen',
+              label: 'На портале со скидкой 30%',
+              type: 'nextStep',
+              value: 'На портале со скидкой 30%',
+            },
+          ],
+          body: 'test',
+          clarifications: {
+            registration: {
+              text: '<p>Регистрации подлежат:</p>',
+              title: '',
+            },
+          },
+          header: 'success',
+          imgSrc: 'asset',
+          subHeader: 'success',
+        },
+      });
+    });
   });
 });

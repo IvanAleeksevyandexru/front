@@ -23,6 +23,7 @@ import { ScreenService } from './screen.service';
 import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { UniqueScreenModule } from './unique-screen/unique-screen.module';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
+import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.module';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -32,6 +33,7 @@ import { RefRelationService } from '../shared/services/ref-relation/ref-relation
   imports: [
     BaseModule,
     CustomScreenModule,
+    RepeatableScreenModule,
     EmptyScreenModule,
     QuestionsScreenModule,
     UniqueScreenModule,

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TerraByteApiService } from './terra-byte-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService } from '../config/config.service';
@@ -11,8 +10,8 @@ import {
   TerabyteListItem,
   TerraUploadFileOptions,
 } from './terra-byte-api.types';
-import { TerraUploadedFile } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import * as FileSaver from 'file-saver';
+import { TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
 
 const createMockBlob = (size: number): Blob => {
   const mockObj = { size, type: 'application/file' };
