@@ -162,6 +162,7 @@ export interface ComponentAttrsDto {
   lastName?: string;
   middleName?: string;
   gender?: string;
+  cancelReservation?: string[];
 }
 
 export interface ComponentDateTimeDto {

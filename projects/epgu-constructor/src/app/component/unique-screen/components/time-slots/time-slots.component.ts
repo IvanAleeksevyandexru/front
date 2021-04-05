@@ -118,6 +118,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
 
     if (this.screenService.component) {
+      this.setCancelReservation(
+        this.screenService.component.id,
+        this.screenService.component.attrs?.cancelReservation,
+      );
       this.loadTimeSlots();
     }
   }
@@ -317,6 +321,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   calendarAvailable(): boolean {
     return !this.errorMessage;
+  }
+
+  private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
+    this.timeSlotsService.cancelReservation = [currentTimeSlotId, ...(cancelReservation || [])];
   }
 
   private loadTimeSlots(): void {
