@@ -18,8 +18,8 @@ export class ScreenServiceStub extends ScreenContent {
   // @ts-ignore
   public component$: Observable<ComponentDto>;
 
-  public isLoadingSubject$ = new BehaviorSubject<boolean>(false);
-  public isLoading$: Observable<boolean> = this.isLoadingSubject$.asObservable();
+  public isLoadingSubject = new BehaviorSubject<boolean>(false);
+  public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
 
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
