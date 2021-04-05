@@ -643,6 +643,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   attachUploadedFiles(): void {
     this.modal.openModal(AttachUploadedFilesModalComponent, {
       modalId: `${this.loadData.uploadId}`,
+      acceptTypes: this.acceptTypes || '',
       showCloseButton: false,
       showCrossButton: true,
       filesList: this.files.getValue(),
