@@ -4,9 +4,9 @@
     hideSocialShare: (screenService.component$ | async)?.attrs?.hideSocialShare,
     displayCssClass: screenService.displayCssClass$ | async,
     header: screenService.header$ | async,
-    submitLabel: screenService.submitLabel$ | async,
     isLoading: screenService.isLoading$ | async,
-    terminal: screenService.terminal$ | async
+    terminal: screenService.terminal$ | async,
+    buttons: screenService.buttons$ | async
   } as async"
   [show-nav]="async.showNav"
   [class.screen-container-mt]="!async.showNav"
@@ -23,26 +23,19 @@
     <epgu-constructor-info-screen-body [data]="screenService.component">
     </epgu-constructor-info-screen-body>
 
-    <ng-container *ngIf="actionButtons.length">
-      <ng-container *ngTemplateOutlet="actionsBtns"></ng-container>
+    <ng-container *ngIf="async.buttons.length">
+      <div class="info__buttons">
+        <lib-button
+          *ngFor="let button of async.buttons"
+          class="info__button submit-button"
+          epgu-constructor-action
+          [action]="button"
+          [color]="button.color"
+        >
+          <div>{{ button.label }}</div>
+        </lib-button>
+      </div>
     </ng-container>
-
-    <ng-container *ngIf="screenActionButtons.length">
-      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
-    </ng-container>
-
-    <div class="info__submit" *ngIf="async.submitLabel">
-      <lib-button
-        class="submit-button"
-        data-testid="submit-btn"
-        epgu-constructor-action
-        [action]="nextStepAction"
-        [showLoader]="async.isLoading"
-        [disabled]="async.isLoading"
-      >
-        {{ async.submitLabel }}
-      </lib-button>
-    </div>
   </epgu-constructor-screen-pad>
 
   <div class="screen-footer">
@@ -50,37 +43,8 @@
       *ngIf="!async.hideSocialShare && !async.terminal"
       class="social-share"
       [isNewDesign]="true"
-      [isNewDesignDisabled]="isSocialShareDisabled"
+      [isNewDesignDisabled]="configService.isSocialShareDisabled"
       [url]="locationService.getHref()"
     ></lib-social-share>
   </div>
 </epgu-constructor-screen-container>
-
-<ng-template #screenActionBtns>
-  <div class="info__actions">
-    <lib-button
-      *ngFor="let action of screenActionButtons"
-      class="info__action submit-button"
-      epgu-constructor-action
-      [action]="action"
-      [color]="action.color"
-    >
-      <div>{{ action.label }}</div>
-    </lib-button>
-  </div>
-</ng-template>
-
-<!-- TODO: убрать после переезда на механизм screenActionsBtns -->
-<ng-template #actionsBtns>
-  <div class="info__actions">
-    <lib-button
-      *ngFor="let action of actionButtons"
-      class="info__action submit-button"
-      epgu-constructor-action
-      [action]="action"
-      [color]="action.color"
-    >
-      {{ action.label }}
-    </lib-button>
-  </div>
-</ng-template>
