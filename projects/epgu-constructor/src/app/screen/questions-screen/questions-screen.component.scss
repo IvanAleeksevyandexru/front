@@ -49,4 +49,9 @@
   .question-screen .quiz__text {
     @include screen-content-margins;
   }
+  .quiz__container .screen-footer {
+    @include tablets-down {
+      flex-wrap: wrap;
+    }
+  }
 }
