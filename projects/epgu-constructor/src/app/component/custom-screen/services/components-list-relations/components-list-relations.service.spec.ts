@@ -29,7 +29,6 @@ import {
   DictionaryValueTypes,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
-import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -807,7 +806,42 @@ describe('ComponentsListRelationsService', () => {
     });
 
     describe('if relation === disabled', () => {
-      it('should patchValueAndDisable if isValueEquals() === TRUE', () => {
+      it('should do nothing if isValueEquals() === TRUE AND component is disabled', () => {
+        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
+
+        let reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+          relation: CustomComponentRefRelation.disabled,
+        };
+
+        dependentControl = new FormGroup({
+          id: new FormControl(dependentComponent.id),
+          value: new FormControl('a'),
+        });
+        dependentControl.disable();
+        form = new FormArray([dependentControl]);
+        dependentControl.markAsTouched();
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(dependentControl.get('value').value).toBe('a');
+        expect(dependentControl.touched).toBeTruthy();
+        expect(dependentControl.enabled).toBeFalsy();
+      });
+
+      it('should patchValueAndDisable if isValueEquals() === TRUE and control is enabled', () => {
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
 
         let reference: CustomComponentRef = {
@@ -874,7 +908,7 @@ describe('ComponentsListRelationsService', () => {
         expect(dependentControl.enabled).toBeFalsy();
       });
 
-      it('should patchValueAndDisable if isValueEquals() === TRUE', () => {
+      it('should patchValueAndEnable if isValueEquals() === FALSE AND component does not have any disabled refs with same value', () => {
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
 
         let reference: CustomComponentRef = {
@@ -888,6 +922,19 @@ describe('ComponentsListRelationsService', () => {
           value: new FormControl('a'),
         });
         form = new FormArray([dependentControl]);
+
+        dependentComponent = createComponentMock({
+          id: 'dependentComponentId',
+          attrs: {
+            ref: [
+              {
+                relatedRel: dependentComponent.id,
+                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+                relation: CustomComponentRefRelation.disabled,
+              },
+            ],
+          },
+        });
 
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
@@ -926,6 +973,7 @@ describe('ComponentsListRelationsService', () => {
           id: new FormControl(dependentComponent.id),
           value: new FormControl('b'),
         });
+        dependentControl.disable();
         form = new FormArray([dependentControl]);
 
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
@@ -944,6 +992,81 @@ describe('ComponentsListRelationsService', () => {
 
         // значение контрола изменилось, т.к. в кэше сервиса (this.prevValues) есть значение для компонента
         expect(dependentControl.get('value').value).toBe('a');
+        expect(dependentControl.enabled).toBeTruthy();
+      });
+
+      it('should do nothing if isValueEquals() === FALSE AND component has any disabled refs with same value', () => {
+        // делаем это для того, чтобы в кэше сервиса (this.prevValues) сохранилось значение для компонента
+        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
+
+        let reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+          relation: CustomComponentRefRelation.disabled,
+        };
+
+        dependentControl = new FormGroup({
+          id: new FormControl(dependentComponent.id),
+          value: new FormControl('a'),
+        });
+        form = new FormArray([dependentControl]);
+
+        dependentComponent = createComponentMock({
+          id: 'dependentComponentId',
+          attrs: {
+            ref: [
+              {
+                relatedRel: dependentComponent.id,
+                val: 'any value',
+                relation: CustomComponentRefRelation.filterOn,
+              },
+              {
+                relatedRel: dependentComponent.id,
+                val: 'b',
+                relation: CustomComponentRefRelation.disabled,
+              }
+            ],
+          },
+        });
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        dependentControl = new FormGroup({
+          id: new FormControl(dependentComponent.id),
+          value: new FormControl('b'),
+        });
+        dependentControl.disable();
+        form = new FormArray([dependentControl]);
+
+        // эта функция будет вызываться 2 раза, первый раз должна вернуть FALSE, второй раз она используется в приватной функции
+        // componentHasAnyDisabledRefsWithSameValue() и должна вернуть TRUE, поэтому вместо mockReturnValue сделал mockImplementation
+        jest.spyOn(refRelationService, 'isValueEquals').mockImplementation((a: unknown, b: unknown) => a === b);
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(dependentControl.get('value').value).toBe('b');
+        expect(dependentControl.enabled).toBeFalsy();
       });
     });
 
