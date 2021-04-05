@@ -20,7 +20,7 @@
     }
   }
 
-  &__actions {
+  &__buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -30,7 +30,7 @@
     }
   }
 
-  &__action {
+  &__button {
     margin-top: 24px;
 
     &:not(:first-child) {

@@ -25,7 +25,11 @@ export class AbstractComponentListItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.control = this.formService.form.controls[this.componentIndex];
-    merge(this.control.statusChanges, this.control.valueChanges)
+
+    // @todo. Приходится запускать markForCheck() при изменениях формы, а не только текущего контрола, т.к.
+    // изменение зависимых контролов происходит с emitEvent: false. Нужно придумать лучшее решение
+    // http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/merge_requests/1758
+    merge(this.formService.form.statusChanges, this.formService.form.valueChanges)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.cdr.markForCheck();

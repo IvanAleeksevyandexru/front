@@ -2,7 +2,6 @@ import { Injector } from '@angular/core';
 import { EventBusService } from '../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
-import { NavigationPayload } from '../form-player/form-player.types';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 
@@ -21,6 +20,4 @@ export abstract class ScreenBase{
     this.currentAnswersService = this.injector.get(CurrentAnswersService);
     this.eventBusService = this.injector.get(EventBusService);
   }
-
-  abstract nextStep(data?: NavigationPayload | string): void;
 }
