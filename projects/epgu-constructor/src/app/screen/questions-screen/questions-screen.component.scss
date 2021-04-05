@@ -41,3 +41,12 @@
 .screen-body .quiz__answers {
   margin-top: 16px;
 }
+
+:host::ng-deep {
+  .quiz__text {
+    @include screen-content;
+  }
+  .question-screen .quiz__text {
+    @include screen-content-margins;
+  }
+}
