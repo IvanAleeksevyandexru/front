@@ -1020,6 +1020,11 @@ describe('ComponentsListRelationsService', () => {
                 val: 'b',
                 relation: CustomComponentRefRelation.disabled,
               },
+              {
+                relatedRel: dependentComponent.id,
+                val: 'any value',
+                relation: CustomComponentRefRelation.filterOn,
+              },
             ],
           },
         });
