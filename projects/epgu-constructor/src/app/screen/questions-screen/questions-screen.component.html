@@ -1,5 +1,6 @@
 <epgu-constructor-screen-container
   [show-nav]="screenService.showNav$ | async"
+  class="quiz__container"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="screen-body quiz__content">
