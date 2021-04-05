@@ -425,7 +425,8 @@ export class AutocompleteService {
       value = parsedValue['text'];
     }
 
-    const component = this.findComponent(componentMnemonic);
+    const componentsGroupIndex = 0;
+    const component = this.findComponent(componentMnemonic, componentsGroupIndex);
     if (component) {
       value = this.getDateValueIfDateInput(component, value, true);
     }
