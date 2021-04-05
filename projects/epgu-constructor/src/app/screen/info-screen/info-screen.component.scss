@@ -113,6 +113,23 @@
     .red-line, .yellow-line {
       margin-top: 24px;
     }
+    p + ul:not(:first-child) {
+      margin-top: 24px;
+    }
+  }
+
+  .info-screen--status {
+    .block--with-icon {
+      span {
+        margin-right: 16px;
+      }
+      a {
+        display: inline-block;
+      }
+    }
+    h5 + ol {
+      margin-top: 8px;
+    }
   }
 
   .info-screen--solution-page {
@@ -123,6 +140,14 @@
       li > ul + a {
         margin-top: 12px;
         display: inline-block;
+      }
+    }
+  }
+
+  .info-screen--solution-page-2 {
+    .info__text {
+      h3 {
+        margin-bottom: 24px;
       }
     }
   }
