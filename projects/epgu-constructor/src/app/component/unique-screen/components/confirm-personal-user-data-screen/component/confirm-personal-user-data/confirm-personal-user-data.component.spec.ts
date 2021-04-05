@@ -175,7 +175,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl.componentInstance.nextStepAction).toBeUndefined();
 
     screenService.header = 'some header';
-    screenService.isLoadingSubject$.next(true);
+    screenService.isLoadingSubject.next(true);
     screenService.buttons = [
       {
         label: 'some screen action label'

@@ -273,7 +273,7 @@ describe('CustomScreenComponent', () => {
 
       expect(debugEl.componentInstance.showLoader).toBeFalsy();
 
-      screenService.isLoadingSubject$.next(true);
+      screenService.isLoadingSubject.next(true);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.showLoader).toBeTruthy();
@@ -282,7 +282,7 @@ describe('CustomScreenComponent', () => {
     it('disabled property should be TRUE if screenService.isLoading is TRUE or isValid is FALSE', () => {
       screenService.submitLabel = 'any';
 
-      screenService.isLoadingSubject$.next(true);
+      screenService.isLoadingSubject.next(true);
       component.isValid = false;
 
       fixture.detectChanges();
@@ -291,7 +291,7 @@ describe('CustomScreenComponent', () => {
 
       expect(debugEl.componentInstance.disabled).toBeTruthy();
 
-      screenService.isLoadingSubject$.next(false);
+      screenService.isLoadingSubject.next(false);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.disabled).toBeTruthy();

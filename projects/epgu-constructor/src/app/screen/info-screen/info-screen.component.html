@@ -31,6 +31,8 @@
           epgu-constructor-action
           [action]="button"
           [color]="button.color"
+          [disabled]="screenService.isLoading$ | async"
+          [showLoader]="screenService.isLoading$ | async"
         >
           <div>{{ button.label }}</div>
         </lib-button>
