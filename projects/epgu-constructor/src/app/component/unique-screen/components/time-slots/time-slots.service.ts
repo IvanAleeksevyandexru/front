@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ListItem } from 'epgu-lib';
-import { Observable, of, throwError } from 'rxjs';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '../../../../core/services/config/config.service';
@@ -31,6 +31,7 @@ import {
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { ScreenService } from '../../../../screen/screen.service';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 
@@ -46,6 +47,7 @@ export class TimeSlotsService {
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
   public timeSlotsType: TimeSlotsTypes;
+  public cancelReservation: string[];
 
   public department: DepartmentInterface;
   private solemn: boolean;
@@ -64,20 +66,22 @@ export class TimeSlotsService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     private utilsService: UtilsService,
+    public screenService: ScreenService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = null;
+
     // Если есть забуканный слот и (сменился загс или слот просрочен)
-    const cancelCondition = this.isCancelCondition();
-    if (cancelCondition) {
-      return this.cancelSlot(this.bookId).pipe(
-        switchMap((response) => {
-          if (response.error) {
-            this.errorMessage = response.error?.errorDetail
-              ? response.error.errorDetail.errorMessage
-              : 'check log';
-            this.loggerService.error([response.error]);
+    const timeSlotsForCancel = this.getTimeSlotsForCancel();
+    if (timeSlotsForCancel.length) {
+      return forkJoin(
+        timeSlotsForCancel.map(timeSlot => this.cancelSlot(timeSlot.bookId))
+      ).pipe(
+        switchMap((responses: CancelSlotResponseInterface[]) => {
+          if (responses.some(res => res.error)) {
+            this.errorMessage = this.getErrorCancelMessage(responses);
+            this.loggerService.error([responses.map(res => res.error)]);
             return of(null);
           }
           return this.book(selectedSlot);
@@ -193,8 +197,7 @@ export class TimeSlotsService {
 
     let department = JSON.parse(data.department);
     this.isBookedDepartment =
-      cachedAnswer?.department.value === department.value &&
-      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME;
+      this.getBookedDepartment(cachedAnswer, department);
     if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
@@ -243,6 +246,24 @@ export class TimeSlotsService {
         text: area,
       });
     });
+  }
+
+  private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
+    return this.cancelReservation
+      .map(id => this.screenService.getCompValueFromCachedAnswers(id) ?
+        JSON.parse(this.screenService.getCompValueFromCachedAnswers(id)) : null)
+      .filter(timeslot => !!timeslot && this.isCancelCondition(timeslot));
+  }
+
+  private getErrorCancelMessage(responses: CancelSlotResponseInterface[]): string {
+    return responses.reduce((message, response) => {
+      return response.error?.errorDetail ? `${message}${message ? ', ': ''}${response.error.errorDetail.errorMessage}` : message;
+    }, '') || 'check log';
+  }
+
+  private getBookedDepartment(cachedAnswer: TimeSlotsAnswerInterface, department): boolean {
+    return cachedAnswer?.department.value === department.value &&
+      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME;
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
@@ -477,11 +498,10 @@ export class TimeSlotsService {
     };
   }
 
-  private isCancelCondition(): boolean {
+  private isCancelCondition(timeslotAnswer: TimeSlotsAnswerInterface): boolean {
     return (
       this.timeSlotsType !== TimeSlotsTypes.MVD &&
-      this.bookedSlot &&
-      (!this.isBookedDepartment ||
+      (!this.getBookedDepartment(timeslotAnswer, this.department) ||
         this.waitingTimeExpired ||
         this.timeSlotsType === TimeSlotsTypes.GIBDD)
     );

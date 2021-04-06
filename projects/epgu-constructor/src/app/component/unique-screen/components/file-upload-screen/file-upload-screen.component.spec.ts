@@ -313,7 +313,7 @@ describe('FileUploadScreenComponent', () => {
 
       expect(debugEl.componentInstance.showLoader).toBeFalsy();
 
-      screenService.isLoadingSubject$.next(true);
+      screenService.isLoadingSubject.next(true);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.showLoader).toBeTruthy();

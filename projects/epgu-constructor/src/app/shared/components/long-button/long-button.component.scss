@@ -20,20 +20,17 @@ button {
   line-height: 24px;
   color: $color-button-hit;
   border-radius: $border-xl;
-  border-width: 1px !important;
-  border-style: solid;
-  border-color: $color-white;
+  border: none;
   cursor: pointer;
   outline: none;
   @include shadow-main();
   @include tablets-up {
-    padding: 23px 31px;
+    padding: 24px 32px;
   }
 
   &:hover,
   &:active {
     background: $color-background;
-    border-color: $color-background;
   }
 
   &[disabled] {
@@ -49,5 +46,9 @@ button {
     outline: none;
     border-radius: $border-xl;
     border: 1px dashed $color-divider;
+    &::after {
+      content: '';
+
+    }
   }
 }

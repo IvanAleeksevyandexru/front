@@ -42,14 +42,6 @@
   margin-top: 16px;
 }
 
-:host::ng-deep {
-  .quiz__text {
-    @include screen-content;
-  }
-  .question-screen .quiz__text {
-    @include screen-content-margins;
-  }
-}
 // при разном порядке загрузки компонентов перебиваются другими стилями.
 .screen-body.quiz__answers {
   @include tablets-up {
@@ -59,5 +51,21 @@
 .screen-body .quiz__answer {
   @include tablets-up {
     margin-top: 0;
+  }
+}
+
+:host::ng-deep {
+  .quiz__text {
+    @include screen-content;
+  }
+
+  .question-screen .quiz__text {
+    @include screen-content-margins;
+  }
+
+  .quiz__container .screen-footer {
+    @include tablets-down {
+      flex-wrap: wrap;
+    }
   }
 }
