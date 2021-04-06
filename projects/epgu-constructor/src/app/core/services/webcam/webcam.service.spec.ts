@@ -1,18 +1,49 @@
 import { TestBed } from '@angular/core/testing';
-
-import { UtilsService } from '../utils/utils.service';
+import { WebcamService } from './webcam.service';
 
 describe('WebcamService', () => {
-  let service: UtilsService;
+  let service: WebcamService;
 
-  beforeEach(() => {
+  beforeEach( () => {
     TestBed.configureTestingModule({
-      providers: [UtilsService],
+      providers: [WebcamService],
     });
-    service = TestBed.inject(UtilsService);
+    service = TestBed.inject(WebcamService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('isWebcamAllowed', () => {
+    beforeEach(() => {
+      window.MediaStream = jest.fn().mockImplementation(() => ({
+        getTracks: jest.fn().mockReturnValue([])
+      }));
+    });
+
+    it('should be false', (done) => {
+      const mockMediaDevices = {
+        getUserMedia: jest.fn().mockReturnValueOnce(null),
+      };
+      Object.defineProperty(window.navigator, 'mediaDevices', {
+        writable: true,
+        value: mockMediaDevices,
+      });
+      service.isWebcamAllowed().subscribe((isWebcamAllowed) => {
+        expect(isWebcamAllowed).toBeFalsy();
+        done();
+      });
+    });
+
+    it('should be true', (done) => {
+      const mockMediaDevices = {
+        getUserMedia: jest.fn().mockResolvedValueOnce('fake data' as any),
+      };
+      Object.defineProperty(window.navigator, 'mediaDevices', {
+        writable: true,
+        value: mockMediaDevices,
+      });
+      service.isWebcamAllowed().subscribe((isWebcamAllowed) => {
+        expect(isWebcamAllowed).toBeTruthy();
+        done();
+      });
+    });
   });
 });
