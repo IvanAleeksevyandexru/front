@@ -17,6 +17,7 @@ import {
 import { startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
+import { get } from 'lodash';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
@@ -312,7 +313,7 @@ export class SelectChildrenComponent implements OnInit {
   private childValidatorsFn(formArray: FormArray): ValidatorFn {
     return (control: ChildI): ValidationErrors => {
       const isValid =
-        control.value[this.isNewRef] === false || formArray.status === ItemStatus.valid;
+        get(control.value, this.isNewRef) === false || formArray.status === ItemStatus.valid;
       if (isValid) {
         return null;
       }
