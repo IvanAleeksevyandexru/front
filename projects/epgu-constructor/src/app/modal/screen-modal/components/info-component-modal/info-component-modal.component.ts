@@ -1,11 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ComponentDto,
-  ComponentActionDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenModalService } from '../../screen-modal.service';
 
@@ -16,33 +10,6 @@ import { ScreenModalService } from '../../screen-modal.service';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InfoComponentModalComponent implements OnInit {
-  actionButtons: ComponentActionDto[] = [];
-
-  constructor(
-    private navModalService: NavigationModalService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-    public screenModalService: ScreenModalService,
-    private changeDetectionRef: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
-    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
-      this.setActionButtons(component);
-      this.changeDetectionRef.markForCheck();
-    });
-  }
-
-  setActionButtons(component: ComponentDto): void {
-    this.actionButtons = component?.attrs?.actions || [];
-  }
-
-  prevStep(): void {
-    this.navModalService.prev({});
-  }
-
-  nextStep(): void {
-    this.navModalService.next({});
-  }
+export class InfoComponentModalComponent {
+  constructor(public screenService: ScreenService, public screenModalService: ScreenModalService) {}
 }

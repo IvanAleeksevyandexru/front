@@ -3,11 +3,11 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ScreenModalServiceStub {
-  minContentHeightSub$ = new BehaviorSubject<number>(0);
-  minContentHeight$ = this.minContentHeightSub$.asObservable();
+  minContentHeightSubject = new BehaviorSubject<number>(0);
+  minContentHeight$ = this.minContentHeightSubject.asObservable();
 
-  isInternalScenarioFinishSub$ = new BehaviorSubject<boolean>(true);
-  isInternalScenarioFinish$ = this.isInternalScenarioFinishSub$.asObservable();
+  isInternalScenarioFinishSub = new BehaviorSubject<boolean>(true);
+  isInternalScenarioFinish$ = this.isInternalScenarioFinishSub.asObservable();
 
   navigate(): void {}
 }
