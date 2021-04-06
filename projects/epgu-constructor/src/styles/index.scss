@@ -287,8 +287,10 @@
     max-width: 592px;
     margin-right: auto;
     margin-left: auto;
-    padding-left: 16px;
-    padding-right: 16px;
+    @media (max-width: 623px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
   }
 
   .title {

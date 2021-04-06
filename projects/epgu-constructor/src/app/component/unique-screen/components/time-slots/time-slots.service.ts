@@ -205,6 +205,7 @@ export class TimeSlotsService {
 
     const config: configType = {
       orderId: data.orderId,
+      parentOrderId: data.parentOrderId,
       serviceId: data.serviceId,
       subject: data.subject,
       calendarName: data.calendarName,
@@ -299,6 +300,7 @@ export class TimeSlotsService {
     return {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
       caseNumber: this.config.orderId as string,
+      parentOrderId: this.config.parentOrderId && this.timeSlotsType === TimeSlotsTypes.MVD ? this.config.parentOrderId as string : null,
       serviceId: [this.config.serviceId as string || serviceId],
       eserviceId: this.config.eserviceId as string || eserviceId,
       routeNumber,
@@ -380,8 +382,8 @@ export class TimeSlotsService {
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {
-      requestBody.parentOrderId = '';
-      requestBody.caseNumber = this.config.orderId as string;
+      requestBody.parentOrderId = this.config.parentOrderId ? this.config.parentOrderId as string : '';
+      requestBody.caseNumber = this.config.orderId ? this.config.orderId as string : '';
     }
 
     return requestBody;
