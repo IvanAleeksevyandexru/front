@@ -11,7 +11,6 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
@@ -81,7 +80,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
     const { attrs } = component;
     this.monthsService.years = attrs?.years;
     this.monthsService.isNonStop = attrs?.nonStop;
-    this.monthsService.initSettings();
+    this.monthsService.initSettings().then(() => this.cdr.markForCheck());
     this.initData();
   }
 

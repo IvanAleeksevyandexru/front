@@ -111,7 +111,7 @@ export class EmployeeHistoryFormService {
         );
       });
 
-    combineLatest(form.get('from').valueChanges, form.get('to').valueChanges)
+    combineLatest([form.get('from').valueChanges, form.get('to').valueChanges])
       .pipe(
         switchMap(async ([fromDateValue, toDateValue]) => {
           await this.checkDates(form, fromDateValue, toDateValue);
