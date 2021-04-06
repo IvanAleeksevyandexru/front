@@ -14,22 +14,8 @@
   </div>
 </ng-container>
 
-
 <ng-template #contentBlock>
   <div class="screen-modal__content">
-    <ng-container [ngSwitch]="screenService.screenType$ | async">
-      <epgu-constructor-component-list-modal
-        *ngSwitchCase="screenTypes.CUSTOM">
-      </epgu-constructor-component-list-modal>
-
-      <epgu-constructor-unique-component-modal
-        *ngSwitchCase="screenTypes.UNIQUE">
-      </epgu-constructor-unique-component-modal>
-
-      <epgu-constructor-info-component-modal
-        *ngSwitchCase="screenTypes.INFO">
-      </epgu-constructor-info-component-modal>
-    </ng-container>
+    <epgu-constructor-screen-modal-resolver></epgu-constructor-screen-modal-resolver>
   </div>
-
 </ng-template>

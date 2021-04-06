@@ -5,9 +5,10 @@ import { ComponentListModalComponent } from './components/component-list-modal/c
 import { UniqueComponentModalModule } from './components/unique-component-modal/unique-component-modal.module';
 import { InfoComponentModalModule } from './components/info-component-modal/info-component-modal.module';
 import { BaseModule } from '../../shared/base.module';
+import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
 
 @NgModule({
-  declarations: [ScreenModalComponent, ComponentListModalComponent],
+  declarations: [ScreenModalComponent, ComponentListModalComponent, ScreenModalResolverComponent],
   exports: [ScreenModalComponent],
   imports: [BaseModule, ComponentsListModule, UniqueComponentModalModule, InfoComponentModalModule],
   entryComponents: [ScreenModalComponent],
