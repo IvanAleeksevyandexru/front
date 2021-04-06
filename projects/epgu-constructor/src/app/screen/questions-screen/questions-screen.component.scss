@@ -43,9 +43,12 @@
 }
 
 // при разном порядке загрузки компонентов перебиваются другими стилями.
-.screen-body.quiz__answers {
+.screen-body.quiz__content {
   @include tablets-up {
     margin-bottom: 32px;
+    .quiz__answers {
+      margin-top: 0;
+    }
   }
 }
 .screen-body .quiz__answer {
