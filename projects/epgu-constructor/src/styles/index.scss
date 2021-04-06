@@ -283,7 +283,7 @@
     max-width: 592px;
     margin-right: auto;
     margin-left: auto;
-    @include screen-down-623 {
+    @media (max-width: 623px) {
       padding-left: 16px;
       padding-right: 16px;
     }
