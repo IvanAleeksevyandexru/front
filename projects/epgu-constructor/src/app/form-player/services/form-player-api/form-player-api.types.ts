@@ -313,8 +313,8 @@ export interface ClarificationsDto {
 
 export interface ComponentActionDto {
   label: string;
-  value: string;
   action: DTOActionAction;
+  value?: string;
   type?: ActionType;
   hidden?: boolean;
   disabled?: boolean;

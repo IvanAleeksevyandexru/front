@@ -4,15 +4,12 @@ import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
-import {
-  CustomComponentOutputData,
-  CustomComponentValidationConditions
-} from '../../component/custom-screen/components-list.types';
+import { CustomComponentOutputData, CustomComponentValidationConditions } from '../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ComponentDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto, DTOActionAction } from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
@@ -23,7 +20,6 @@ import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
-
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -61,12 +57,14 @@ describe('CustomScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
 
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     customScreenService = TestBed.inject(CustomScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
+    screenService.buttons = [];
+    fixture.detectChanges();
   });
 
   it('check snapshot', () => {
@@ -257,7 +255,10 @@ describe('CustomScreenComponent', () => {
 
       expect(debugEl).toBeNull();
 
-      screenService.submitLabel = 'any';
+      screenService.buttons = [{
+        label: 'any',
+        action: DTOActionAction.getNextStep,
+      }];
       fixture.detectChanges();
 
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -266,7 +267,10 @@ describe('CustomScreenComponent', () => {
     });
 
     it('showLoader property should be equal screenService.isLoading', () => {
-      screenService.submitLabel = 'any';
+      screenService.buttons = [{
+        label: 'any',
+        action: DTOActionAction.getNextStep,
+      }];
       fixture.detectChanges();
 
       const debugEl = fixture.debugElement.query(By.css(selector));
@@ -280,7 +284,10 @@ describe('CustomScreenComponent', () => {
     });
 
     it('disabled property should be TRUE if screenService.isLoading is TRUE or isValid is FALSE', () => {
-      screenService.submitLabel = 'any';
+      screenService.buttons = [{
+        label: 'any',
+        action: DTOActionAction.getNextStep,
+      }];
 
       screenService.isLoadingSubject.next(true);
       component.isValid = false;
