@@ -65,7 +65,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input() prefixForMnemonic: string;
-  @Input() refData: string = null;
+
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;

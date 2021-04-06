@@ -33,9 +33,6 @@ export class FileUploadComponent implements OnInit {
   @Input()
   set attributes(attrs: FileUploadAttributes) {
     this.attrs = attrs;
-    if (attrs?.ref) {
-      this.refData = this.getRefValuesForApplicantAnswers(attrs);
-    }
     this.value.files = this.fillUploadsDefaultValue();
     this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
   }
@@ -44,7 +41,6 @@ export class FileUploadComponent implements OnInit {
   }
 
   fileUploadItemTypes = FileUploadItemTypes;
-  refData: string = null;
   private attrs: FileUploadAttributes;
   private value: FileResponseToBackendUploadsItem = { files: [], errors: [] };
 
@@ -164,27 +160,6 @@ export class FileUploadComponent implements OnInit {
       }
     });
     return subLabel.length ? subLabel.join(' ') : null;
-  }
-
-  /**
-   * Возвращает данные по ref параметру из applicantAnswers для формирования дополнительного заголовка
-   * @param attrs - аттрибуты блока
-   */
-  private getRefValuesForApplicantAnswers(attrs: FileUploadAttributes): string {
-    const sections = attrs.ref.split('.');
-    const key = sections[0];
-    const blockKey = sections[1];
-    let value = this.applicantAnswers[key]?.value;
-
-    if (value) {
-      value = JSON.parse(value);
-      const refBlock = value[blockKey];
-
-      if (refBlock) {
-        return this.getRefSubLabels(attrs, refBlock);
-      }
-    }
-    return null;
   }
 
   /**

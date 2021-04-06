@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 interface UploadersRestriction {
   [uploader: string]: number;
@@ -20,6 +20,15 @@ export enum CheckFailedReasons {
   uploaderRestriction = 'Uploader value is more/less than max/zero',
 }
 
+interface UploaderCounter {
+  maxAmount: number;
+  maxSize: number;
+  amount: number;
+  size: number;
+}
+
+type UploaderCounterStore = Record<string, UploaderCounter>;
+
 @Injectable()
 export class FileUploadService {
   uploaderChanges = new Subject<true>();
@@ -31,20 +40,30 @@ export class FileUploadService {
   private maxFilesAmount: UploadersRestriction = {};
   private maxFilesSize: UploadersRestriction = {};
 
-  getUploadedFilesAmount(): UploadersRestriction {
-    return this.uploadedFilesAmount;
+  private totalMaxAmount = new BehaviorSubject<number>(0);
+  private totalMaxSize = new BehaviorSubject<number>(0);
+  private uploaders = new BehaviorSubject<UploaderCounterStore>({});
+
+  setTotalMaxAmount(amount: number): void {
+    this.totalMaxAmount.next(amount);
   }
 
-  getUploadedFilesSize(): UploadersRestriction {
-    return this.uploadedFilesSize;
+  setTotalMaxSize(size: number): void {
+    this.totalMaxSize.next(size);
   }
 
-  getMaxFilesAmount(): UploadersRestriction {
-    return this.maxFilesAmount;
+  registerUploader(name: string, maxAmount: number, maxSize: number): void {
+    const uploaders = this.getUploaders();
+    //TODO: Это действительно нужно и для чего?
+    if (uploaders[name]) {
+      return;
+    }
+    uploaders[name] = this.createUploaderCounter(maxAmount, maxSize);
+    this.uploaders.next(uploaders);
   }
 
-  getMaxFilesSize(): UploadersRestriction {
-    return this.maxFilesSize;
+  createUploaderCounter(maxAmount: number, maxSize: number): UploaderCounter {
+    return { maxAmount, maxSize, amount: 0, size: 0 };
   }
 
   getMaxTotalFilesAmount(): number {
@@ -159,5 +178,9 @@ export class FileUploadService {
     }
 
     return { isValid: true };
+  }
+
+  private getUploaders(): UploaderCounterStore {
+    return this.uploaders.getValue();
   }
 }
