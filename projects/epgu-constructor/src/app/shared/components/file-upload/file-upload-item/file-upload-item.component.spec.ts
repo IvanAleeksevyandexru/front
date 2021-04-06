@@ -111,6 +111,7 @@ describe('FileUploadItemComponent', () => {
   let screenService: ScreenService;
   let viewerService: ViewerService;
   let modalSerivce: ModalService;
+  let fileUploadService: FileUploadService;
 
   beforeEach(
     waitForAsync(() => {
@@ -151,6 +152,12 @@ describe('FileUploadItemComponent', () => {
     screenService = TestBed.inject(ScreenService);
     viewerService = TestBed.inject(ViewerService);
     modalSerivce = TestBed.inject(ModalService);
+    fileUploadService = TestBed.inject(FileUploadService);
+    fileUploadService.registerUploader(
+      uploadMock.uploadId,
+      uploadMock.maxFileCount,
+      uploadMock.maxSize,
+    );
     fixture = TestBed.createComponent(FileUploadItemComponent);
     component = fixture.componentInstance;
     component.data = uploadMock;
