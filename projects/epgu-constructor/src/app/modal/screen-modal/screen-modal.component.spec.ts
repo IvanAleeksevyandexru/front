@@ -25,6 +25,7 @@ import { ComponentsListModule } from '../../component/custom-screen/components-l
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { ScreenModalServiceStub } from './screen-modal.service.stub';
+import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
 
 describe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;
@@ -33,7 +34,7 @@ describe('ScreenModalComponent', () => {
 
   beforeEach(async() => {
     await TestBed.configureTestingModule({
-      declarations: [ScreenModalComponent, MockComponent(ComponentListModalComponent)],
+      declarations: [ScreenModalComponent, MockComponent(ComponentListModalComponent), MockComponent(ScreenModalResolverComponent)],
       imports: [
         RouterTestingModule,
         BaseModule,
