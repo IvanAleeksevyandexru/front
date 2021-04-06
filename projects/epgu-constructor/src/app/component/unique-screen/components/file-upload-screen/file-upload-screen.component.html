@@ -4,7 +4,6 @@
     context: {
       isLoading: isLoading$ | async,
       header: header$ | async,
-      applicantAnswers: applicantAnswers$ | async,
       submitLabel: submitLabel$ | async,
       data: data$ | async
     }
@@ -15,7 +14,6 @@
   #contentComponent
   let-isLoading="isLoading"
   let-header="header"
-  let-applicantAnswers="applicantAnswers"
   let-submitLabel="submitLabel"
   let-data="data"
 >
@@ -28,7 +26,6 @@
 
       <epgu-constructor-file-upload
         [objectId]="screenService.orderIdAsString$ | async"
-        [applicantAnswers]="applicantAnswers"
         [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
         [attributes]="$any(data).attrs"
       >

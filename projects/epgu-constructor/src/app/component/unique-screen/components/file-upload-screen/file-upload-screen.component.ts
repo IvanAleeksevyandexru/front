@@ -5,7 +5,6 @@ import { EventBusService } from '../../../../core/services/event-bus/event-bus.s
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   ActionType,
-  ApplicantAnswersDto,
   ComponentActionDto,
   DTOActionAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -42,7 +41,7 @@ export class FileUploadScreenComponent implements OnInit {
       };
     }),
   );
-  applicantAnswers$: Observable<ApplicantAnswersDto> = this.screenService.applicantAnswers$;
+
   submitLabel$: Observable<string> = this.screenService.submitLabel$;
   header$: Observable<string> = combineLatest([
     this.screenService.component$,
@@ -105,31 +104,8 @@ export class FileUploadScreenComponent implements OnInit {
    * @param $eventData - данные из компонента
    */
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
-    if ($eventData.relatedUploads && this.value?.uploads) {
-      this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
-        if ($eventData.uploadId === value.uploadId) {
-          return {
-            ...value,
-            relatedUploads: $eventData.relatedUploads,
-            required: $eventData.required,
-          } as FileUploadEmitValue;
-        }
-        return value;
-      });
-    } else {
-      const relatedUpload: FileUploadEmitValue = this.value.uploads?.find(
-        (value: FileUploadEmitValue) => value.relatedUploads,
-      );
+    this.value.uploads = $eventData.files as FileUploadEmitValue[];
 
-      this.value.uploads = $eventData.files?.map((value: FileUploadEmitValue) => {
-        let resultValue = value;
-        if (relatedUpload && value?.uploadId === relatedUpload.uploadId) {
-          resultValue = { ...value, relatedUploads: relatedUpload.relatedUploads };
-        }
-
-        return resultValue;
-      });
-    }
     /**
      * Блокируем кнопку если:
      * 1. Не в каждом загрузчике есть файл
@@ -153,9 +129,6 @@ export class FileUploadScreenComponent implements OnInit {
       if (upload?.maxFileCount) {
         this.allMaxFiles += upload.maxFileCount;
       }
-      if (upload?.relatedUploads?.uploads) {
-        this.collectMaxFilesNumber(upload.relatedUploads.uploads);
-      }
     });
   }
 
@@ -173,10 +146,7 @@ export class FileUploadScreenComponent implements OnInit {
     }
 
     const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
-      // Если это зависимые подэлементы для загрузки
-      return fileUploaderInfo.relatedUploads
-        ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
-        : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
+      return fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
     }).length;
 
     return totalUploaders === uploadersWithFiles;

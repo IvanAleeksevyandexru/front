@@ -9,7 +9,7 @@ import {
 import { FileUploadItem } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, map } from 'rxjs/operators';
-import { CheckFailedReasons, FileUploadService } from './file-upload.service';
+import { FileUploadService } from './file-upload.service';
 import {
   CompressionOptions,
   CompressionService,
@@ -53,20 +53,11 @@ export class PrepareService {
   }
 
   validateAmount(file: FileItem, config: FileUploadItem, getError: getErrorType): FileItem {
-    const { isValid, reason } = this.fileUploadService.checkFilesAmount(1, config.uploadId);
-    if (!isValid) {
-      switch (reason) {
-        case CheckFailedReasons.total: {
-          file.setError(getError(ErrorActions.addMaxTotalAmount));
-          break;
-        }
-        case CheckFailedReasons.uploaderRestriction: {
-          file.setError(getError(ErrorActions.addMaxAmount));
-          break;
-        }
-        default:
-          break;
-      }
+    const check = this.fileUploadService.checkAmount(1, config.uploadId);
+    if (check !== 0) {
+      file.setError(
+        getError(check === -1 ? ErrorActions.addMaxTotalAmount : ErrorActions.addMaxAmount),
+      );
     }
     return file;
   }
@@ -90,24 +81,11 @@ export class PrepareService {
   }
 
   validateSize(file: FileItem, config: FileUploadItem, getError: getErrorType): FileItem {
-    const { isValid, reason } = this.fileUploadService.checkFilesSize(
-      file.raw.size,
-      config.uploadId,
-    );
-
-    if (!isValid) {
-      switch (reason) {
-        case CheckFailedReasons.total: {
-          file.setError(getError(ErrorActions.addMaxTotalSize));
-          break;
-        }
-        case CheckFailedReasons.uploaderRestriction: {
-          file.setError(getError(ErrorActions.addMaxSize));
-          break;
-        }
-        default:
-          break;
-      }
+    const check = this.fileUploadService.checkSize(file.raw.size, config.uploadId);
+    if (check !== 0) {
+      file.setError(
+        check === -1 ? getError(ErrorActions.addMaxTotalSize) : getError(ErrorActions.addMaxSize),
+      );
     }
     return file;
   }

@@ -25,7 +25,7 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
+import { FileUploadService } from '../file-upload.service';
 import {
   ErrorActions,
   FileItem,
@@ -196,7 +196,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
-  uploadersCounterChanges$ = this.fileUploadService.uploaderChanges.pipe(
+  uploadersCounterChanges$ = this.fileUploadService.changes.pipe(
+    // tap(() =>
+    //   console.log(this.loadData, this.fileUploadService.getUploader(this.loadData?.uploadId)),
+    // ),
     tap(() => this.maxLimitUpdate()),
   );
 
@@ -452,12 +455,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   maxLimitUpdate(): void {
     const limits = { ...this.overLimits.getValue() };
-    const checkSize = this.fileUploadService.checkFilesSize(1, this.data.uploadId);
+    const checkSize = this.fileUploadService.checkSize(1, this.data.uploadId);
 
-    const checkAmount = this.fileUploadService.checkFilesAmount(1, this.data.uploadId);
-    limits.totalSize.isMax = checkSize?.reason === CheckFailedReasons.total;
-    limits.amount.isMax = checkAmount?.reason === CheckFailedReasons.uploaderRestriction;
-    limits.totalAmount.isMax = checkAmount?.reason === CheckFailedReasons.total;
+    const checkAmount = this.fileUploadService.checkAmount(1, this.data.uploadId);
+    limits.totalSize.isMax = checkSize === -1;
+    limits.amount.isMax = checkAmount === 1;
+    limits.totalAmount.isMax = checkAmount === -1;
     this.overLimits.next(limits);
   }
 

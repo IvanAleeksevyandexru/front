@@ -1,24 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-
-interface UploadersRestriction {
-  [uploader: string]: number;
-}
-
-interface CheckValueOptions {
-  totalMax: number;
-  maxUploadersRes: UploadersRestriction;
-  currentUploadersRes: UploadersRestriction;
-}
-
-export enum Uploaders {
-  total = 'total',
-}
-
-export enum CheckFailedReasons {
-  total = 'There is more value than total',
-  uploaderRestriction = 'Uploader value is more/less than max/zero',
-}
+import { distinctUntilChanged, pluck } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
 
 interface UploaderCounter {
   maxAmount: number;
@@ -29,20 +12,26 @@ interface UploaderCounter {
 
 type UploaderCounterStore = Record<string, UploaderCounter>;
 
+enum UploaderCheckType {
+  amount = 'amount',
+  size = 'size',
+}
+
+type CheckResult = -1 | 0 | 1;
+
 @Injectable()
 export class FileUploadService {
-  uploaderChanges = new Subject<true>();
-
-  private totalMaxFilesAmount = 0;
-  private totalMaxFilesSize = 0;
-  private uploadedFilesSize: UploadersRestriction = {};
-  private uploadedFilesAmount: UploadersRestriction = {};
-  private maxFilesAmount: UploadersRestriction = {};
-  private maxFilesSize: UploadersRestriction = {};
+  changes = new Subject<null>();
 
   private totalMaxAmount = new BehaviorSubject<number>(0);
   private totalMaxSize = new BehaviorSubject<number>(0);
+  private currentAllAmount = new BehaviorSubject<number>(0); // каждое изменение размера должно быть отражено тут
+  private currentAllSize = new BehaviorSubject<number>(0); // каждое изменение размера должно быть отражено тут
   private uploaders = new BehaviorSubject<UploaderCounterStore>({});
+
+  uploader$(name: string): Observable<UploaderCounter> {
+    return this.uploaders.pipe(pluck(name), distinctUntilChanged());
+  }
 
   setTotalMaxAmount(amount: number): void {
     this.totalMaxAmount.next(amount);
@@ -53,134 +42,108 @@ export class FileUploadService {
   }
 
   registerUploader(name: string, maxAmount: number, maxSize: number): void {
-    const uploaders = this.getUploaders();
-    //TODO: Это действительно нужно и для чего?
-    if (uploaders[name]) {
+    if (!name || maxAmount < 0 || maxSize < 0) {
       return;
     }
-    uploaders[name] = this.createUploaderCounter(maxAmount, maxSize);
-    this.uploaders.next(uploaders);
+    const uploaders = this.getUploaders();
+    if (!uploaders[name]) {
+      uploaders[name] = this.createUploaderCounter(maxAmount, maxSize);
+      this.uploaders.next(uploaders);
+    }
   }
 
-  createUploaderCounter(maxAmount: number, maxSize: number): UploaderCounter {
-    return { maxAmount, maxSize, amount: 0, size: 0 };
+  updateFilesAmount(value: number = 0, uploader: string): void {
+    if (this.checkAmount(value, uploader) === 0) {
+      this.updateAmount(value, uploader);
+      this.changes.next(null);
+    }
+  }
+
+  updateFilesSize(value: number = 0, uploader: string): void {
+    if (this.checkSize(value, uploader) === 0) {
+      this.updateSize(value, uploader);
+      this.changes.next(null);
+    }
   }
 
   getMaxTotalFilesAmount(): number {
-    return this.totalMaxFilesAmount;
+    return this.totalMaxAmount.getValue();
   }
 
   getMaxTotalFilesSize(): number {
-    return this.totalMaxFilesSize;
+    return this.totalMaxSize.getValue();
   }
 
-  setMaxFilesAmount(value: number, uploader: string): void {
-    if (value < 0 && !uploader) {
-      return;
-    }
-
-    if (uploader === Uploaders.total) {
-      this.totalMaxFilesAmount = value;
-    } else {
-      this.maxFilesAmount[uploader] = value;
-      this.uploadedFilesAmount[uploader] = 0;
-    }
-    this.uploaderChanges.next(true);
+  checkAmount(value: number = 0, uploaderName: string): CheckResult {
+    return this.check(value, uploaderName, UploaderCheckType.amount);
   }
 
-  setMaxFilesSize(value: number, uploader: string): void {
-    if (value < 0 && !uploader) {
-      return;
-    }
-
-    if (uploader === Uploaders.total) {
-      this.totalMaxFilesSize = value;
-    } else {
-      this.maxFilesSize[uploader] = value;
-      this.uploadedFilesSize[uploader] = 0;
-    }
-    this.uploaderChanges.next(true);
+  checkSize(value: number = 0, uploaderName: string): CheckResult {
+    return this.check(value, uploaderName, UploaderCheckType.size);
   }
 
-  updateFilesAmount(valueForUpdating: number = 0, uploader: string): void {
-    if (this.checkFilesAmount(valueForUpdating, uploader).isValid) {
-      this.uploadedFilesAmount[uploader] += valueForUpdating;
-      this.uploaderChanges.next(true);
+  getUploader(name: string): UploaderCounter {
+    const uploaders = this.getUploaders();
+    return uploaders[name];
+  }
+
+  private changeUploader(name: string, uploader: Partial<UploaderCounter>): void {
+    const uploaders = this.getUploaders();
+    if (uploaders[name]) {
+      uploaders[name] = { ...uploaders[name], ...uploader };
+      this.uploaders.next(uploaders);
     }
   }
 
-  checkFilesAmount(
-    valueForUpdating: number = 0,
-    uploader: string,
-  ): { isValid: boolean; reason?: CheckFailedReasons } {
-    const options = {
-      totalMax: this.totalMaxFilesAmount,
-      maxUploadersRes: this.maxFilesAmount,
-      currentUploadersRes: this.uploadedFilesAmount,
-    };
-    return this.checkFiles(valueForUpdating, uploader, options);
+  private updateAmount(value: number, name: string): void {
+    const uploader = this.getUploader(name);
+    uploader.amount += value;
+    this.currentAllAmount.next(this.currentAllAmount.getValue() + value);
+    this.changeUploader(name, uploader);
   }
 
-  updateFilesSize(valueForUpdating: number = 0, uploader: string): void {
-    if (this.checkFilesSize(valueForUpdating, uploader).isValid) {
-      this.uploadedFilesSize[uploader] += valueForUpdating;
-      this.uploaderChanges.next(true);
-    }
-  }
-  decrementFilesSize(valueForUpdating: number = 0, uploader: string): void {
-    if (this.checkFilesSize(valueForUpdating, uploader).isValid) {
-      this.uploadedFilesSize[uploader] -= valueForUpdating;
-      this.uploaderChanges.next(true);
-    }
+  private updateSize(value: number, name: string): void {
+    const uploader = this.getUploader(name);
+    uploader.size += value;
+    this.currentAllSize.next(this.currentAllSize.getValue() + value);
+    this.changeUploader(name, uploader);
   }
 
-  checkFilesSize(
-    valueForUpdating: number = 0,
-    uploader: string,
-  ): { isValid: boolean; reason?: CheckFailedReasons } {
-    const options = {
-      totalMax: this.totalMaxFilesSize,
-      maxUploadersRes: this.maxFilesSize,
-      currentUploadersRes: this.uploadedFilesSize,
-    };
-    return this.checkFiles(valueForUpdating, uploader, options);
-  }
-
-  private checkFiles(
-    valueForUpdating: number = 0,
-    uploader: string,
-    options: CheckValueOptions,
-  ): { isValid: boolean; reason?: CheckFailedReasons } {
-    const { totalMax, maxUploadersRes, currentUploadersRes } = options;
-
-    if (totalMax) {
-      const currentTotal = Object.values(currentUploadersRes).reduce(
-        (total, current) => total + current,
-        0,
-      );
-      const newTotal = currentTotal + valueForUpdating;
-
-      const invalidTotal = newTotal < 0 || newTotal > totalMax;
-
-      if (invalidTotal) {
-        return { isValid: false, reason: CheckFailedReasons.total };
-      }
-    }
-
-    if (maxUploadersRes[uploader]) {
-      const newUploaderResValue = currentUploadersRes[uploader] + valueForUpdating;
-      const invalidUploaderResValue =
-        newUploaderResValue < 0 || newUploaderResValue > maxUploadersRes[uploader];
-
-      if (invalidUploaderResValue) {
-        return { isValid: false, reason: CheckFailedReasons.uploaderRestriction };
-      }
-    }
-
-    return { isValid: true };
+  private createUploaderCounter(maxAmount: number, maxSize: number): UploaderCounter {
+    return { maxAmount, maxSize, amount: 0, size: 0 };
   }
 
   private getUploaders(): UploaderCounterStore {
     return this.uploaders.getValue();
+  }
+
+  // 0 - лимиты не превышены | -1 превышен максимум для всех | 1  - превышен максимум для указанного uploader
+  private check(value: number, uploaderName: string, type: UploaderCheckType): CheckResult {
+    const maxTotal =
+      type === UploaderCheckType.amount
+        ? this.getMaxTotalFilesAmount()
+        : this.getMaxTotalFilesSize();
+
+    if (maxTotal > 0) {
+      const current =
+        type === UploaderCheckType.amount
+          ? this.currentAllAmount.getValue()
+          : this.currentAllSize.getValue();
+
+      const total = current + value;
+      if (total < 0 || total > maxTotal) {
+        return -1;
+      }
+    }
+    const uploader = this.getUploaders()[uploaderName];
+    if (uploader) {
+      const count = uploader[type] + value;
+      const maxKey = type === UploaderCheckType.amount ? 'maxAmount' : 'maxSize';
+      if (count < 0 || count > uploader[maxKey]) {
+        return 1;
+      }
+    }
+
+    return 0;
   }
 }

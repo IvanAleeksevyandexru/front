@@ -31,7 +31,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
 import {
   FileUploadItem,
-  FileUploadItemTypes,
   TerabyteListItem,
   TerraUploadFileOptions,
   UploadedFile,
@@ -55,7 +54,6 @@ const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
   title: 'title',
   uploadId: 'passport',
-  type: FileUploadItemTypes.single,
   label: 'label',
   fileType: ['JPEG', 'JPG', 'PNG'],
   maxSize: 5242880,

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CheckFailedReasons, FileUploadService, Uploaders } from './file-upload.service';
+import { FileUploadService } from './file-upload.service';
 
 describe('FileUploadService', () => {
   let service: FileUploadService;
@@ -22,411 +22,288 @@ describe('FileUploadService', () => {
 
   describe('setMaxFilesAmount', () => {
     it('should not affect totalMaxFilesAmount, maxFilesAmount, uploadedFilesAmount if value < 0 && !uploader', () => {
-      service.setMaxFilesAmount(-1, '');
+      service.registerUploader('', -1, 1);
 
       expect(service.getMaxTotalFilesAmount()).toBe(0);
-      expect(service.getMaxFilesAmount()).toEqual({});
-      expect(service.getUploadedFilesAmount()).toEqual({});
+      expect(service.getUploader('')).toBeUndefined();
     });
 
-    it('should affect totalMaxFilesAmount if uploader === Uploaders.total', () => {
-      service.setMaxFilesAmount(33, Uploaders.total);
-
+    it('should set totalMaxFilesAmount', () => {
+      service.setTotalMaxAmount(33);
       expect(service.getMaxTotalFilesAmount()).toBe(33);
-      expect(service.getMaxFilesAmount()).toEqual({});
-      expect(service.getUploadedFilesAmount()).toEqual({});
     });
 
     it('should affect maxFilesAmount, uploadedFilesAmount if uploader !== Uploaders.total', () => {
-      service.setMaxFilesAmount(33, 'someUploader');
+      service.registerUploader('someUploader', 33, 1);
 
       expect(service.getMaxTotalFilesAmount()).toBe(0);
-      expect(service.getMaxFilesAmount()).toEqual({
-        someUploader: 33
-      });
-      expect(service.getUploadedFilesAmount()).toEqual({
-        someUploader: 0
-      });
+      expect(service.getUploader('someUploader').maxAmount).toEqual(33);
+      expect(service.getUploader('someUploader').amount).toEqual(0);
     });
   });
 
   describe('setMaxFilesSize', () => {
     it('should not affect totalMaxFilesSize, maxFilesSize, uploadedFilesSize if value < 0 && !uploader', () => {
-      service.setMaxFilesSize(-1, '');
+      service.registerUploader('', 1, -1);
 
       expect(service.getMaxTotalFilesSize()).toBe(0);
-      expect(service.getMaxFilesSize()).toEqual({});
-      expect(service.getUploadedFilesSize()).toEqual({});
+      expect(service.getUploader('')).toBeUndefined();
     });
 
     it('should affect totalMaxFilesAmount if uploader === Uploaders.total', () => {
-      service.setMaxFilesSize(33, Uploaders.total);
+      service.setTotalMaxSize(33);
 
       expect(service.getMaxTotalFilesSize()).toBe(33);
-      expect(service.getMaxFilesSize()).toEqual({});
-      expect(service.getUploadedFilesSize()).toEqual({});
+      expect(service.getUploader('')).toBeUndefined();
     });
 
     it('should affect maxFilesAmount, uploadedFilesAmount if uploader !== Uploaders.total', () => {
-      service.setMaxFilesSize(33, 'someUploader');
+      service.registerUploader('someUploader', 1, 33);
 
       expect(service.getMaxTotalFilesSize()).toBe(0);
-      expect(service.getMaxFilesSize()).toEqual({
-        someUploader: 33
-      });
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 0
-      });
+      expect(service.getUploader('someUploader').maxSize).toEqual(33);
+      expect(service.getUploader('someUploader').size).toEqual(0);
     });
   });
 
   describe('updateFilesAmount', () => {
-    it('should update uploadedFilesAmount if checkFilesAmount returns {isValid: true}', () => {
-      service.setMaxFilesAmount(100, 'someUploader');
+    it('should update uploadedFilesAmount if checkAmount returns 0', () => {
+      service.registerUploader('someUploader', 100, 1);
 
-      expect(service.getUploadedFilesAmount()).toEqual({
-        someUploader: 0
-      });
+      expect(service.getUploader('someUploader').amount).toEqual(0);
 
-      jest.spyOn(service, 'checkFilesAmount').mockReturnValueOnce({ isValid: false });
+      jest.spyOn(service, 'checkAmount').mockReturnValueOnce(1);
       service.updateFilesAmount(3, 'someUploader');
-      expect(service.getUploadedFilesAmount()).toEqual({
-        someUploader: 0
-      });
+      expect(service.getUploader('someUploader').amount).toEqual(0);
 
-      jest.spyOn(service, 'checkFilesAmount').mockReturnValue({ isValid: true });
+      jest.spyOn(service, 'checkAmount').mockReturnValue(0);
       service.updateFilesAmount(3, 'someUploader');
-      expect(service.getUploadedFilesAmount()).toEqual({
-        someUploader: 3
-      });
+      expect(service.getUploader('someUploader').amount).toEqual(3);
 
       service.updateFilesAmount(4, 'someUploader');
-      expect(service.getUploadedFilesAmount()).toEqual({
-        someUploader: 7
-      });
+      expect(service.getUploader('someUploader').amount).toEqual(7);
     });
   });
 
   describe('updateFilesSize', () => {
-    it('should update uploadedFilesSize if checkFilesSize returns {isValid: true}', () => {
-      service.setMaxFilesSize(100, 'someUploader');
+    it('should update uploadedFilesSize if checkSize returns 0', () => {
+      service.registerUploader('someUploader', 1, 100);
 
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 0
-      });
+      expect(service.getUploader('someUploader').size).toEqual(0);
 
-      jest.spyOn(service, 'checkFilesSize').mockReturnValueOnce({ isValid: false });
+      jest.spyOn(service, 'checkSize').mockReturnValueOnce(-1);
       service.updateFilesSize(3, 'someUploader');
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 0
-      });
+      expect(service.getUploader('someUploader').size).toEqual(0);
 
-      jest.spyOn(service, 'checkFilesSize').mockReturnValue({ isValid: true });
+      jest.spyOn(service, 'checkSize').mockReturnValue(0);
       service.updateFilesSize(3, 'someUploader');
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 3
-      });
+      expect(service.getUploader('someUploader').size).toEqual(3);
 
       service.updateFilesSize(4, 'someUploader');
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 7
-      });
-    });
-  });
-
-  describe('decrementFilesSize', () => {
-    it('should update uploadedFilesSize if checkFilesSize returns {isValid: true}', () => {
-      service.setMaxFilesSize(100, 'someUploader');
-
-      jest.spyOn(service, 'checkFilesSize').mockReturnValueOnce({ isValid: true });
-      service.updateFilesSize(10, 'someUploader');
-
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 10
-      });
-
-      jest.spyOn(service, 'checkFilesSize').mockReturnValueOnce({ isValid: false });
-      service.decrementFilesSize(3, 'someUploader');
-      // не меняем значение, потому что isValid false
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 10
-      });
-
-      jest.spyOn(service, 'checkFilesSize').mockReturnValue({ isValid: true });
-      service.decrementFilesSize(3, 'someUploader');
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 7
-      });
-
-      service.decrementFilesSize(4, 'someUploader');
-      expect(service.getUploadedFilesSize()).toEqual({
-        someUploader: 3
-      });
+      expect(service.getUploader('someUploader').size).toEqual(7);
     });
   });
 
   describe('checkFilesSize', () => {
+    it('returns -1 if totalMax and newTotal > totalMax', () => {
+      service.setTotalMaxSize(100);
 
-    it('returns { isValid: false, reason: CheckFailedReasons.total } if totalMax and newTotal > totalMax', () => {
-      service.setMaxFilesSize(100, Uploaders.total);
-
-      const result = service.checkFilesSize(200, '');
+      const result = service.checkSize(200, '');
 
       // потому что newTotal (200) > totalMax (100)
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.total
-      });
+      expect(result).toEqual(-1);
     });
 
-    it('returns { isValid: false, reason: CheckFailedReasons.total } if totalMax and newTotal < 0', () => {
-      service.setMaxFilesSize(100, Uploaders.total);
+    it('returns -1 if totalMax and newTotal < 0', () => {
+      service.setTotalMaxSize(100);
 
-      const result = service.checkFilesSize(-10, '');
+      const result = service.checkSize(-10, '');
 
       // потому что newTotal (-10) < 0
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.total
-      });
+      expect(result).toEqual(-1);
     });
 
     // eslint-disable-next-line max-len
-    it('returns { isValid: false, reason: CheckFailedReasons.uploaderRestriction } if maxUploadersRes[uploader] and newUploaderResValue < 0', () => {
-      service.setMaxFilesSize(100, 'someUploader');
+    it('returns 1 if maxUploadersRes[uploader] and newUploaderResValue < 0', () => {
+      service.registerUploader('someUploader', 1, 100);
 
-      const result = service.checkFilesSize(-10, 'someUploader');
+      const result = service.checkSize(-10, 'someUploader');
 
       // потому что newUploaderResValue (-10) < 0
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.uploaderRestriction
-      });
+      expect(result).toEqual(1);
     });
 
     // eslint-disable-next-line max-len
-    it('returns { isValid: false, reason: CheckFailedReasons.uploaderRestriction } if maxUploadersRes[uploader] and newUploaderResValue > maxUploadersRes[uploader]', () => {
-      service.setMaxFilesSize(100, 'someUploader');
+    it('returns 1 if maxUploadersRes[uploader] and newUploaderResValue > maxUploadersRes[uploader]', () => {
+      service.registerUploader('someUploader', 1, 100);
 
-      const result = service.checkFilesSize(200, 'someUploader');
+      const result = service.checkSize(200, 'someUploader');
 
       // потому что newUploaderResValue (200) > maxUploadersRes[uploader] (100)
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.uploaderRestriction
-      });
+      expect(result).toEqual(1);
     });
 
-    it('returns { isValid: true } if NOT totalMax and NOT maxUploadersRes[uploader]', () => {
-      const result = service.checkFilesSize(200, 'someUploader');
+    it('returns 0 if NOT totalMax and NOT maxUploadersRes[uploader]', () => {
+      const result = service.checkSize(200, 'someUploader');
 
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if totalMax and newTotal <= totalMax', () => {
-      service.setMaxFilesSize(200, Uploaders.total);
-
-      let result = service.checkFilesSize(100, '');
+    it('returns 0 if totalMax and newTotal <= totalMax', () => {
+      service.setTotalMaxSize(200);
+      let result = service.checkSize(100, '');
 
       // потому что newTotal (100) <= totalMax (200)
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesSize(200, '');
+      result = service.checkSize(200, '');
 
       // потому что newTotal (200) <= totalMax (200)
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if totalMax and newTotal >= 0', () => {
-      service.setMaxFilesSize(100, Uploaders.total);
+    it('returns 0 if totalMax and newTotal >= 0', () => {
+      service.setTotalMaxSize(100);
 
-      let result = service.checkFilesSize(0, '');
+      let result = service.checkSize(0, '');
 
       // потому что newTotal (0) >= 0
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesSize(10, '');
+      result = service.checkSize(10, '');
 
       // потому что newTotal (10) >= 0
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if maxUploadersRes[uploader] and newUploaderResValue >= 0', () => {
-      service.setMaxFilesSize(100, 'someUploader');
+    it('returns 0 if maxUploadersRes[uploader] and newUploaderResValue >= 0', () => {
+      service.registerUploader('someUploader', 1, 100);
 
-      let result = service.checkFilesSize(0, 'someUploader');
+      let result = service.checkSize(0, 'someUploader');
 
       // потому что newUploaderResValue (0) >= 0
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesSize(10, 'someUploader');
+      result = service.checkSize(10, 'someUploader');
 
       // потому что newUploaderResValue (10) >= 0
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if maxUploadersRes[uploader] and newUploaderResValue <= maxUploadersRes[uploader]', () => {
-      service.setMaxFilesSize(100, 'someUploader');
+    it('returns 0 if maxUploadersRes[uploader] and newUploaderResValue <= maxUploadersRes[uploader]', () => {
+      service.registerUploader('someUploader', 1, 100);
 
-      let result = service.checkFilesSize(50, 'someUploader');
+      let result = service.checkSize(50, 'someUploader');
 
       // потому что newUploaderResValue (50) <= maxUploadersRes[uploader] (100)
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesSize(100, 'someUploader');
+      result = service.checkSize(100, 'someUploader');
 
       // потому что newUploaderResValue (100) <= maxUploadersRes[uploader] (100)
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
     });
   });
 
   describe('checkFilesAmount', () => {
-    it('returns { isValid: false, reason: CheckFailedReasons.total } if totalMax and newTotal > totalMax', () => {
-      service.setMaxFilesAmount(100, Uploaders.total);
+    it('returns -1 if totalMax and newTotal > totalMax', () => {
+      service.setTotalMaxAmount(100);
 
-      const result = service.checkFilesAmount(200, '');
+      const result = service.checkAmount(200, '');
 
       // потому что newTotal (200) > totalMax (100)
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.total
-      });
+      expect(result).toEqual(-1);
     });
 
-    it('returns { isValid: false, reason: CheckFailedReasons.total } if totalMax and newTotal < 0', () => {
-      service.setMaxFilesAmount(100, Uploaders.total);
+    it('returns -1 if totalMax and newTotal < 0', () => {
+      service.setTotalMaxAmount(200);
 
-      const result = service.checkFilesAmount(-10, '');
+      const result = service.checkAmount(-10, '');
 
       // потому что newTotal (-10) < 0
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.total
-      });
+      expect(result).toEqual(-1);
     });
 
     // eslint-disable-next-line max-len
-    it('returns { isValid: false, reason: CheckFailedReasons.uploaderRestriction } if maxUploadersRes[uploader] and newUploaderResValue < 0', () => {
-      service.setMaxFilesAmount(100, 'someUploader');
+    it('returns 1 if maxUploadersRes[uploader] and newUploaderResValue < 0', () => {
+      service.registerUploader('someUploader', 100, 1);
 
-      const result = service.checkFilesAmount(-10, 'someUploader');
+      const result = service.checkAmount(-10, 'someUploader');
 
       // потому что newUploaderResValue (-10) < 0
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.uploaderRestriction
-      });
+      expect(result).toEqual(1);
     });
 
     // eslint-disable-next-line max-len
-    it('returns { isValid: false, reason: CheckFailedReasons.uploaderRestriction } if maxUploadersRes[uploader] and newUploaderResValue > maxUploadersRes[uploader]', () => {
-      service.setMaxFilesAmount(100, 'someUploader');
+    it('returns 1 if maxUploadersRes[uploader] and newUploaderResValue > maxUploadersRes[uploader]', () => {
+      service.registerUploader('someUploader', 100, 1);
 
-      const result = service.checkFilesAmount(200, 'someUploader');
+      const result = service.checkAmount(200, 'someUploader');
 
       // потому что newUploaderResValue (200) > maxUploadersRes[uploader] (100)
-      expect(result).toEqual({
-        isValid: false,
-        reason: CheckFailedReasons.uploaderRestriction
-      });
+      expect(result).toEqual(1);
     });
 
-    it('returns { isValid: true } if NOT totalMax and NOT maxUploadersRes[uploader]', () => {
-      const result = service.checkFilesAmount(200, 'someUploader');
+    it('returns 0 if NOT totalMax and NOT maxUploadersRes[uploader]', () => {
+      const result = service.checkAmount(200, 'someUploader');
 
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if totalMax and newTotal <= totalMax', () => {
-      service.setMaxFilesAmount(200, Uploaders.total);
+    it('returns 0 if totalMax and newTotal <= totalMax', () => {
+      service.setTotalMaxAmount(200);
 
-      let result = service.checkFilesAmount(100, '');
+      let result = service.checkAmount(100, '');
 
       // потому что newTotal (100) <= totalMax (200)
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesAmount(200, '');
+      result = service.checkAmount(200, '');
 
       // потому что newTotal (200) <= totalMax (200)
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if totalMax and newTotal >= 0', () => {
-      service.setMaxFilesAmount(100, Uploaders.total);
+    it('returns 0 if totalMax and newTotal >= 0', () => {
+      service.setTotalMaxAmount(100);
 
-      let result = service.checkFilesAmount(0, '');
+      let result = service.checkAmount(0, '');
 
       // потому что newTotal (0) >= 0
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesAmount(10, '');
+      result = service.checkAmount(10, '');
 
       // потому что newTotal (10) >= 0
-      expect(result).toEqual({
-        isValid: true,
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if maxUploadersRes[uploader] and newUploaderResValue >= 0', () => {
-      service.setMaxFilesAmount(100, 'someUploader');
+    it('returns 0 if maxUploadersRes[uploader] and newUploaderResValue >= 0', () => {
+      service.registerUploader('someUploader', 100, 1);
 
-      let result = service.checkFilesAmount(0, 'someUploader');
+      let result = service.checkAmount(0, 'someUploader');
 
       // потому что newUploaderResValue (0) >= 0
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesAmount(10, 'someUploader');
+      result = service.checkAmount(10, 'someUploader');
 
       // потому что newUploaderResValue (10) >= 0
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
     });
 
-    it('returns { isValid: true } if maxUploadersRes[uploader] and newUploaderResValue <= maxUploadersRes[uploader]', () => {
-      service.setMaxFilesAmount(100, 'someUploader');
+    it('returns 0 if maxUploadersRes[uploader] and newUploaderResValue <= maxUploadersRes[uploader]', () => {
+      service.registerUploader('someUploader', 100, 1);
 
-      let result = service.checkFilesAmount(50, 'someUploader');
+      let result = service.checkAmount(50, 'someUploader');
 
       // потому что newUploaderResValue (50) <= maxUploadersRes[uploader] (100)
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
 
-      result = service.checkFilesAmount(100, 'someUploader');
+      result = service.checkAmount(100, 'someUploader');
 
       // потому что newUploaderResValue (100) <= maxUploadersRes[uploader] (100)
-      expect(result).toEqual({
-        isValid: true
-      });
+      expect(result).toEqual(0);
     });
   });
 });
