@@ -280,11 +280,13 @@
 
   .container {
     width: 100%;
-    max-width: 624px;
+    max-width: 592px;
     margin-right: auto;
     margin-left: auto;
-    padding-left: 16px;
-    padding-right: 16px;
+    @include screen-down-623 {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
   }
 
   .title {
