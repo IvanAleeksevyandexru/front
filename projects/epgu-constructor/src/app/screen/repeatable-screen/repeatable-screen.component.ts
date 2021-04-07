@@ -62,7 +62,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
 
   init$: Observable<DisplayDto> = this.screenService.display$.pipe(
     takeUntil(this.ngUnsubscribe$),
-    filter((data) => data.type === ScreenTypes.REPEATABLE),
+    filter((data) => data.type === ScreenTypes.REPEATABLE || data.type === ScreenTypes.UNIQUE), // TODO: убрать UNIQUE при переезде на REPEATABLE
     tap((data: DisplayDto) => {
       this.propData = data;
       this.initVariable();
