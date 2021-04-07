@@ -1,5 +1,4 @@
-@import '../../../styles/core/variables';
-@import '../../../styles/core/palettes';
+@import '../../../styles/core';
 
 .cmp-group {
   &__layer {
@@ -24,4 +23,28 @@
 .common-error {
   margin-bottom: 4px;
   color: $color-gosred;
+}
+
+.screen {
+  &__buttons {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    @include tablets-down {
+      margin-top: auto;
+    }
+  }
+
+  &__button {
+    margin-bottom: 24px;
+
+    @include tablets-up {
+      margin-left: 32px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
 }

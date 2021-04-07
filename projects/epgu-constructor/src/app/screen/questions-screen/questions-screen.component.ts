@@ -5,8 +5,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { map, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs/internal/Observable';
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
@@ -16,7 +15,6 @@ import {
   ComponentActionDto,
   ComponentAnswerDto,
   DTOActionAction,
-  ScreenActionDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
@@ -34,13 +32,6 @@ import { ScreenBase } from '../screen-base';
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   isLoading: boolean;
   selectedAnswer: string;
-  answers$: Observable<Array<ComponentAnswerDto>> = this.screenService.component$.pipe(
-    map((component) => {
-      const componentAttrs = component?.attrs;
-      return componentAttrs?.answers || [];
-    }),
-  );
-  screenButtons$: Observable<Array<ScreenActionDto>> = this.screenService.buttons$;
 
   constructor(
     public injector: Injector,

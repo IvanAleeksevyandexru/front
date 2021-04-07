@@ -164,6 +164,7 @@ describe('RepeatableScreenComponent', () => {
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(RepeatableScreenComponent);
     component = fixture.componentInstance;
+    screenService.buttons = [];
     fixture.detectChanges();
   });
 

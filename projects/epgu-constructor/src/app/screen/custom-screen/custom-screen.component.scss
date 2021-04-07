@@ -18,7 +18,7 @@
 }
 
 .custom {
-  &__actions {
+  &__buttons {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
@@ -28,7 +28,7 @@
     }
   }
 
-  &__action {
+  &__button {
     margin-bottom: 24px;
 
     @include tablets-up {

@@ -25,7 +25,7 @@
 
 <ng-template #answersButtons>
   <div class="quiz__answers">
-    <ng-container *ngFor="let answer of (answers$ | async)">
+    <ng-container *ngFor="let answer of (screenService.answers$ | async)">
       <epgu-constructor-answer-button
         [data]="answer"
         class="quiz__answer"
@@ -41,10 +41,12 @@
 
 <ng-template #screenButtons>
   <lib-button
-    *ngFor="let action of (screenButtons$ | async)"
+    *ngFor="let action of (screenService.buttons$ | async)"
     epgu-constructor-action
     [action]="action"
     [color]="action.color"
+    [disabled]="screenService.isLoading$ | async"
+    [showLoader]="screenService.isLoading$ | async"
   >
     <div>{{ action.label }}</div>
   </lib-button>
