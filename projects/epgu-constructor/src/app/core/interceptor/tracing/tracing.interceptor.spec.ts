@@ -1,18 +1,17 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ActionDTO } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { WINDOW } from '../../providers/window.provider';
 import { ConfigService } from '../../services/config/config.service';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { DatesToolsService } from '../../services/dates-tools/dates-tools.service';
@@ -26,7 +25,6 @@ import { TracingService } from '../../services/tracing/tracing.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
-
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -45,7 +43,7 @@ describe('TracingHttpInterceptor', () => {
       display: {
         id: 'w1',
         name: 'Приветствие',
-      }
+      },
     },
   } as ActionDTO;
 
@@ -96,7 +94,7 @@ describe('TracingHttpInterceptor', () => {
   describe('doIntercept()', () => {
     it('should not call doIntercept(), if no tracer', fakeAsync(() => {
       const doInterceptSpy = spyOn(interceptor, 'doIntercept');
-      formPlayerApi.sendAction(api, dto).subscribe(response => {
+      formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
       });
       const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
@@ -104,7 +102,7 @@ describe('TracingHttpInterceptor', () => {
         scenarioDto: {
           ...dto.scenarioDto,
           orderId,
-        }
+        },
       };
       requestToSucceed.flush(dataToFlush);
       expect(doInterceptSpy).not.toHaveBeenCalled();
@@ -114,7 +112,7 @@ describe('TracingHttpInterceptor', () => {
       const doInterceptSpy = spyOn(interceptor, 'doIntercept');
       tracingService.init(true);
       const notAllowedApi = 'service/10000000101/scenario/notAllowedApi';
-      formPlayerApi.sendAction(notAllowedApi, dto).subscribe(response => {
+      formPlayerApi.sendAction(notAllowedApi, dto).subscribe((response) => {
         expect(response).toBeTruthy();
       });
       const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${notAllowedApi}`);
@@ -122,7 +120,7 @@ describe('TracingHttpInterceptor', () => {
         scenarioDto: {
           ...dto.scenarioDto,
           orderId,
-        }
+        },
       };
       requestToSucceed.flush(dataToFlush);
       expect(doInterceptSpy).not.toHaveBeenCalled();
@@ -131,7 +129,7 @@ describe('TracingHttpInterceptor', () => {
     it('should call doIntercept(), if nothing above', fakeAsync((done) => {
       const doInterceptSpy = spyOn(interceptor, 'doIntercept');
       tracingService.init(true);
-      formPlayerApi.sendAction(api, dto).subscribe(response => {
+      formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
         expect(doInterceptSpy).toBeCalled();
         done();
@@ -140,4 +138,3 @@ describe('TracingHttpInterceptor', () => {
     }));
   });
 });
-

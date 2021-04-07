@@ -1,10 +1,10 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { BatchRecorder, Tracer } from 'zipkin';
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { ComponentsListRelationsService } from '../../../shared/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
