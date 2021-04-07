@@ -25,26 +25,18 @@
   color: $color-gosred;
 }
 
-.screen {
-  &__buttons {
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+:host::ng-deep  {
+  .screen-body.screen-body {
+    @include tablets-up {
+      margin-bottom: 16px;
+    }
+
     @include tablets-down {
-      margin-top: auto;
+      margin-bottom: 0;
     }
   }
 
-  &__button {
-    margin-bottom: 24px;
-
-    @include tablets-up {
-      margin-left: 32px;
-
-      &:first-child {
-        margin-left: 0;
-      }
-    }
+  .screen-footer > .screen-buttons {
+    margin-top: 0;
   }
 }

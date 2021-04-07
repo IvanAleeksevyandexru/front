@@ -61,7 +61,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
     component = fixture.componentInstance;
     component.header = 'Header';
     component.actionButtons = [];
-    component.screenActionButtons = [];
+    component.screenButtons = [];
     component.isLoading = false;
     component.isShowActionBtn = false;
     component.isValid = true;
@@ -90,7 +90,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
     });
 
     it('should be show screenActionBtns', () => {
-      component.screenActionButtons = [componentActionDtoSample1];
+      component.screenButtons = [componentActionDtoSample1];
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css(selector));
 

@@ -2,12 +2,15 @@
 
 exports[`CustomScreenComponent check snapshot 1`] = `
 <epgu-constructor-custom-screen
+  changeDetectionRef={[Function ViewRef_]}
   currentAnswersService={[Function CurrentAnswersService]}
   customScreenService={[Function CustomScreenService]}
   eventBusService={[Function EventBusService]}
   injector={[Function Injector_]}
   navigationService={[Function NavigationServiceStub]}
+  nextStepAction={[Function Object]}
   ngUnsubscribe$={[Function UnsubscribeService]}
+  screenButtons={[Function Array]}
   screenService={[Function ScreenServiceStub]}
 >
   <epgu-constructor-screen-container
@@ -17,7 +20,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
       class="screen-body"
     >
       <epgu-constructor-page-name>
-         
+
         <epgu-constructor-user-info-loader />
       </epgu-constructor-page-name>
       <epgu-constructor-screen-pad
@@ -29,7 +32,8 @@ exports[`CustomScreenComponent check snapshot 1`] = `
     <div
       class="screen-footer"
     >
-      
+
+
     </div>
   </epgu-constructor-screen-container>
 </epgu-constructor-custom-screen>

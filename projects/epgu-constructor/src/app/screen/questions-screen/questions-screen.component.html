@@ -40,14 +40,10 @@
 </ng-template>
 
 <ng-template #screenButtons>
-  <lib-button
-    *ngFor="let action of (screenService.buttons$ | async)"
-    epgu-constructor-action
-    [action]="action"
-    [color]="action.color"
-    [disabled]="screenService.isLoading$ | async"
-    [showLoader]="screenService.isLoading$ | async"
-  >
-    <div>{{ action.label }}</div>
-  </lib-button>
+  <epgu-constructor-screen-buttons
+    class="screen-buttons"
+    *ngIf="(screenService.buttons$ | async).length"
+    [screenButtons]="screenService.buttons$ | async"
+    [isLoading]="screenService.isLoading$ | async"
+  ></epgu-constructor-screen-buttons>
 </ng-template>

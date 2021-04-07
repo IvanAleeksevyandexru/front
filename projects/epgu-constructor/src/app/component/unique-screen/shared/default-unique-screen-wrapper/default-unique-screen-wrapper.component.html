@@ -10,54 +10,11 @@
   </div>
 
   <div class="screen-footer">
-    <ng-container *ngIf="isShowActionBtn">
-      <ng-container *ngTemplateOutlet="componentActionBtns"></ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="screenActionButtons.length">
-      <ng-container *ngTemplateOutlet="screenActionBtns"></ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="submitLabel">
-      <ng-container *ngTemplateOutlet="displayContinueBtn"></ng-container>
-    </ng-container>
+    <epgu-constructor-screen-buttons
+      class="screen-buttons"
+      [screenButtons]="screenButtons"
+      [isLoading]="isLoading"
+      [isValid]="isValid"
+    ></epgu-constructor-screen-buttons>
   </div>
 </epgu-constructor-screen-container>
-
-<ng-template #componentActionBtns>
-  <lib-button
-    *ngFor="let action of actionButtons"
-    epgu-constructor-action
-    [action]="action"
-    [color]="action.color"
-  >
-    <div>{{ action.label }}</div>
-  </lib-button>
-</ng-template>
-
-<ng-template #screenActionBtns>
-  <lib-button
-    *ngFor="let action of screenActionButtons"
-    epgu-constructor-action
-    [action]="action"
-    [color]="action.color"
-  >
-    <div>{{ action.label }}</div>
-  </lib-button>
-</ng-template>
-
-<ng-template #displayContinueBtn>
-  <lib-button
-    *ngIf="submitLabel"
-    [showLoader]="isLoading"
-    epgu-constructor-action
-    [action]="nextStepAction"
-    data-testid="display-continue-btn"
-    class="submit-button"
-    [disabled]="!isValid || isLoading"
-  >
-    <div class="secondary-font">
-      {{ submitLabel || 'Продолжить' }}
-    </div>
-  </lib-button>
-</ng-template>
