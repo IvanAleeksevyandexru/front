@@ -121,7 +121,6 @@ export interface TimeSlotReq {
   attributes?: { name: string; value: string | boolean; }[];
   routeNumber?: string;
   serviceCode?: string;
-  parentOrderId?: string;
 }
 
 // TODO разнести на brak/mvd etc
