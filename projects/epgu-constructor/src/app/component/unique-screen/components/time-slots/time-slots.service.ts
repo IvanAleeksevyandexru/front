@@ -299,8 +299,7 @@ export class TimeSlotsService {
 
     return {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber: this.config.orderId as string,
-      parentOrderId: this.config.parentOrderId && this.timeSlotsType === TimeSlotsTypes.MVD ? this.config.parentOrderId as string : null,
+      caseNumber: this.timeSlotsType === TimeSlotsTypes.MVD ? this.config.parentOrderId as string : this.config.orderId as string,
       serviceId: [this.config.serviceId as string || serviceId],
       eserviceId: this.config.eserviceId as string || eserviceId,
       routeNumber,
