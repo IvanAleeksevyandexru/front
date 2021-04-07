@@ -9,7 +9,9 @@
     "angular-resize-event",
     "@tanker/file-ponyfill",
     "zipkin",
-    "zipkin-transport-http"
+    "zipkin-transport-http",
+    "node-fetch",
+    "os"
   ],
   "lib": {
     "entryFile": "src/public-api.ts",
