@@ -65,7 +65,6 @@ export class TimeSlotsService {
     private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
-    private utilsService: UtilsService,
     public screenService: ScreenService,
   ) {}
 
@@ -211,7 +210,7 @@ export class TimeSlotsService {
       eserviceId: data.eserviceId,
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
-      bookAttributes: this.utilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+      bookAttributes: UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
