@@ -46,8 +46,6 @@ import { DatesToolsService } from '../core/services/dates-tools/dates-tools.serv
 import { CurrentAnswersService } from '../screen/current-answers.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
-import { TracingService } from '../core/services/tracing/tracing.service';
-import { SessionService } from '../core/services/session/session.service';
 
 
 describe('FormPlayerComponent', () => {
@@ -107,8 +105,6 @@ describe('FormPlayerComponent', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        TracingService,
-        SessionService,
       ]
     }).compileComponents();
 
