@@ -30,6 +30,7 @@ import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 import { ScenarioDto } from './services/form-player-api/form-player-api.types';
+import { TracingService } from '../core/services/tracing/tracing.service';
 
 /**
  * Точка входа для приложения, эквивалент AppComponent.
@@ -65,6 +66,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public formPlayerStartService: FormPlayerStartManager,
     private changeDetectionRef: ChangeDetectorRef,
     private autocompleteService: AutocompleteService,
+    private tracingService: TracingService,
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +74,6 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
-    this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
   }
 
   ngAfterViewInit(): void {
@@ -106,6 +107,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
         this.changeDetectionRef.markForCheck();
       });
+  }
+
+  private initConfigDependentEntities(): void {
+    this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
+    this.tracingService.init(this.configService.isZipkinEnabled || false);
   }
 
   private initNavigation(): void {
@@ -152,6 +158,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(() => {
+        this.initConfigDependentEntities();
         this.formPlayerStartService.startPlayer();
         this.changeDetectionRef.markForCheck();
       });
