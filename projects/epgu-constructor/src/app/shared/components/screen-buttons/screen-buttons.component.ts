@@ -10,6 +10,6 @@ import { ScreenActionDto } from '../../../form-player/services/form-player-api/f
 export class ScreenButtonsComponent {
   @Input() screenButtons: Array<ScreenActionDto>;
   @Input() isLoading = false;
-  @Input() isValid = true;
-  @Input() validateForAll = false;
+  @Input() disabled = false;
+  @Input() disabledForAll = false;
 }

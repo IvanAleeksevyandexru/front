@@ -44,7 +44,7 @@
       *ngIf="(screenService.buttons$ | async).length"
       [screenButtons]="screenService.buttons$ | async"
       [isLoading]="screenService.isLoading$ | async"
-      [isValid]="isValid"
+      [disabled]="!isValid"
     ></epgu-constructor-screen-buttons>
   </div>
 </epgu-constructor-screen-container>
