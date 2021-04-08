@@ -602,6 +602,8 @@ export class ComponentsListRelationsService {
   }
 
   private validateDependentControl(dependentControl: AbstractControl): void {
-    dependentControl.get('value').updateValueAndValidity();
+    const control = dependentControl.get('value');
+    control.markAllAsTouched();
+    control.updateValueAndValidity();
   }
 }

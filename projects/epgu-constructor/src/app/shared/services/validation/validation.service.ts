@@ -29,7 +29,7 @@ type DateValidationCondition = '<' | '<=' | '>' | '>=';
 
 @Injectable()
 export class ValidationService {
-  public form: FormArray;
+  public form?: FormArray;
   private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
@@ -180,9 +180,9 @@ export class ValidationService {
       return checkSum % 10 === 0;
     };
 
-    return this.form.value
-      .filter((control) => Object.values(refs).includes(control.id))
-      .some((control) => check(rs, control.value?.id || control.value));
+    return this.form?.controls
+      .filter((control) => Object.values(refs).includes(control.value?.id))
+      .some(({ value }) => check(rs, value.value?.id || value.value));
   }
 
   private isValid(component: CustomComponent, value: string): boolean {
