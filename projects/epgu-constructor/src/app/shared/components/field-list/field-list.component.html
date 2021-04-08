@@ -23,7 +23,7 @@
           ></epgu-constructor-output-html>
           <epgu-constructor-output-html
             class="data-item__value"
-            [html]="field?.value"
+            [html]="field?.value | rank: field?.rank"
             [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.label"
           ></epgu-constructor-output-html>
