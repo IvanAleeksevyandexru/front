@@ -80,12 +80,16 @@
     "ngx-device-detector": "^2.0.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "ngx-webcam": "0.3.0",
+    "node-fetch": "^2.6.1",
+    "os": "^0.1.1",
     "postcss": "^8.2.4",
     "ru-validation-codes": "2.8.0",
     "rxjs": "6.6.6",
     "tslib": "2.1.0",
     "uuid": "8.3.0",
     "web-animations-js": "^2.3.2",
+    "zipkin": "^0.22.0",
+    "zipkin-transport-http": "^0.22.0",
     "zone.js": "0.10.2"
   },
   "devDependencies": {

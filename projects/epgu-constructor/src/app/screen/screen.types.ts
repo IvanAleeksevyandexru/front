@@ -24,6 +24,7 @@ export interface ScreenStoreDisplayDtoI extends DisplayDto {
 
 export interface ScreenStore extends Partial<ScenarioDto> {
   display?: ScreenStoreDisplayDtoI;
+  serviceCode?: string;
 }
 
 export interface Screen {
