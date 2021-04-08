@@ -3,7 +3,9 @@
   epgu-constructor-action
   [action]="button"
   [color]="button.color"
-  [disabled]="!isValid || isLoading"
+  [disabled]="(!isValid && validateForAll)
+    || (!isValid && !validateForAll && button.type === 'nextStep')
+    || isLoading"
   [showLoader]="isLoading"
   class="screen-button"
 >

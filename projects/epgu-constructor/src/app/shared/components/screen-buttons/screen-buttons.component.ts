@@ -11,5 +11,5 @@ export class ScreenButtonsComponent {
   @Input() screenButtons: Array<ScreenActionDto>;
   @Input() isLoading = false;
   @Input() isValid = true;
-  @Input() checkValidationOnlyForNextScreen = true;
+  @Input() validateForAll = false;
 }
