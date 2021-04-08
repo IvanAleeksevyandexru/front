@@ -20,6 +20,13 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
 import { AnswerButtonComponent } from '../../../../shared/components/answer-button/answer-button.component';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { BaseModule } from '../../../../shared/base.module';
+import { ModalService } from '../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -34,7 +41,13 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MockModule(EpguLibModule), UserInfoLoaderModule],
+      imports: [
+        ReactiveFormsModule,
+        MockModule(EpguLibModule),
+        UserInfoLoaderModule,
+        ScreenButtonsModule,
+        BaseModule,
+      ],
       declarations: [
         DefaultUniqueScreenWrapperComponent,
         MockComponents(
@@ -46,8 +59,11 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
         MockDirective(ActionDirective),
       ],
       providers: [
+        CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
       ],
     })
       .overrideComponent(DefaultUniqueScreenWrapperComponent, {
@@ -60,45 +76,18 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
     fixture = TestBed.createComponent(DefaultUniqueScreenWrapperComponent);
     component = fixture.componentInstance;
     component.header = 'Header';
-    component.actionButtons = [];
     component.screenButtons = [];
     component.isLoading = false;
-    component.isShowActionBtn = false;
     component.isValid = true;
-    component.nextStepAction = componentActionDtoSample1;
     component.showNav = true;
-    component.submitLabel = '';
     fixture.detectChanges();
-  });
-
-  describe('isShowActionBtn property', () => {
-    it('should be FALSE by default', () => {
-      expect(component.isShowActionBtn).toBeFalsy();
-    });
   });
 
   describe('button in the footer', () => {
     const selector = 'lib-button';
 
-    it('should be show componentActionBtns', () => {
-      component.isShowActionBtn = true;
-      component.actionButtons = [componentActionDtoSample1];
-      fixture.detectChanges();
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-
-    it('should be show screenActionBtns', () => {
+    it('should be show screenButtons', () => {
       component.screenButtons = [componentActionDtoSample1];
-      fixture.detectChanges();
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-
-    it('should be show displayContinueBtn', () => {
-      component.submitLabel = 'Next';
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css(selector));
 

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
-import { of } from 'rxjs';
 
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
@@ -9,7 +8,8 @@ import { ConfirmUserData, ConfirmUserDataErrorType } from '../../confirm-persona
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
-  ActionType, ComponentActionDto,
+  ActionType,
+  ComponentActionDto,
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -186,29 +186,19 @@ describe('ConfirmPersonalUserDataComponent', () => {
         label: 'some action label'
       }
     ] as ComponentActionDto[];
+
+    const buttons = [{ label: 'some submit label', action: DTOActionAction.getNextStep }];
+
     screenService.showNav = true;
-    screenService.submitLabel = 'some submit label';
+    screenService.buttons = buttons;
     currentAnswersService.isValid = true;
-
-
     fixture.detectChanges();
 
     expect(debugEl.componentInstance.header).toBe('some header');
     expect(debugEl.componentInstance.isLoading).toBeTruthy();
-    expect(debugEl.componentInstance.screenActionButtons).toEqual([
-      {
-        label: 'some screen action label'
-      }
-    ]);
-    expect(debugEl.componentInstance.actionButtons).toEqual([
-      {
-        label: 'some action label'
-      }
-    ]);
+    expect(debugEl.componentInstance.screenButtons).toEqual(buttons);
     expect(debugEl.componentInstance.showNav).toBeTruthy();
-    expect(debugEl.componentInstance.submitLabel).toBe('some submit label');
     expect(debugEl.componentInstance.isValid).toBeTruthy();
-    expect(debugEl.componentInstance.nextStepAction).toEqual(NEXT_STEP_ACTION);
   });
 
   it('should render epgu-constructor-screen-pad', () => {

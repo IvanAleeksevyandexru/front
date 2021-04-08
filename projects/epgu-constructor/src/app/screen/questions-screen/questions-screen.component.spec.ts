@@ -22,7 +22,6 @@ import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
-import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ImgPrefixerPipe } from '../../shared/pipes/img-prefixer/img-prefixer.pipe';
@@ -31,6 +30,10 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { QuestionsScreenComponent } from './questions-screen.component';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
+import { BaseModule } from '../../shared/base.module';
+import { ActionService } from '../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -68,26 +71,24 @@ describe('QuestionsScreenComponent', () => {
   let component: QuestionsScreenComponent;
   let fixture: ComponentFixture<QuestionsScreenComponent>;
 
-  let navigationService: NavigationServiceStub;
-  let screenService: ScreenServiceStub;
-  let modalService: ModalServiceStub;
-  let configService: ConfigServiceStub;
-
-  const initComponent = () => {
-    fixture = TestBed.createComponent(QuestionsScreenComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  };
+  let navigationService: NavigationService;
+  let screenService: ScreenService;
+  let modalService: ModalService;
+  let configService: ConfigService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
+      imports: [
+        MockModule(EpguLibModule),
+        MockModule(UserInfoLoaderModule),
+        BaseModule,
+        ScreenButtonsModule,
+      ],
       declarations: [
         QuestionsScreenComponent,
         MockComponents(
           ScreenContainerComponent,
           PageNameComponent,
-          OutputHtmlComponent,
           AnswerButtonComponent,
         ),
         MockDirective(ActionDirective),
@@ -100,6 +101,7 @@ describe('QuestionsScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
         EventBusService,
         CurrentAnswersService,
       ],
@@ -111,12 +113,14 @@ describe('QuestionsScreenComponent', () => {
   });
 
   beforeEach(() => {
-    initComponent();
-
-    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
-    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-    modalService = (TestBed.inject(ScreenService) as unknown) as ModalServiceStub;
-    configService = (TestBed.inject(ConfigService) as unknown) as ConfigServiceStub;
+    fixture = TestBed.createComponent(QuestionsScreenComponent);
+    component = fixture.componentInstance;
+    navigationService = TestBed.inject(NavigationService);
+    screenService = TestBed.inject(ScreenService);
+    modalService = TestBed.inject(ModalService);
+    configService = TestBed.inject(ConfigService);
+    screenService.buttons = [];
+    fixture.detectChanges();
   });
 
   describe('nextStep() method', () => {
@@ -204,7 +208,7 @@ describe('QuestionsScreenComponent', () => {
 
       screenService.component = componentDtoSample;
 
-      configService._disableUnderConstructionMode = false;
+      configService['_disableUnderConstructionMode'] = false;
       // should NOT mutate action because configService.disableUnderConstructionMode is FALSE
       component.answerChoose(actionUnderConstruction);
 
@@ -216,7 +220,7 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).not.toBeCalled();
       showModalRedirectToSpy.calls.reset();
 
-      configService._disableUnderConstructionMode = true;
+      configService['_disableUnderConstructionMode'] = true;
       // should mutate action because configService.disableUnderConstructionMode is TRUE
       component.answerChoose(actionUnderConstruction);
 
