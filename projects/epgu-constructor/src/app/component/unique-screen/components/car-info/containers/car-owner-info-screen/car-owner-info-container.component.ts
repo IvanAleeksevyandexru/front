@@ -5,7 +5,7 @@ import {
   ComponentActionDto,
   ComponentDto,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { OwnerCarInfo } from '../../models/car-info.interface';
+import { CarOwnerInfoComponentAttrsDto, OwnerCarInfo } from '../../models/car-info.interface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
@@ -23,6 +23,10 @@ export class CarOwnerInfoContainerComponent {
       this.currentAnswersService.state = '';
       return JSON.parse(component.value);
     }),
+  );
+
+  pdfLink$ = this.screenService.component$.pipe(
+    map(({ attrs }) => (attrs as CarOwnerInfoComponentAttrsDto).pdfLink),
   );
 
   constructor(

@@ -27,7 +27,7 @@ import { CarList } from '../../models/car-list.interface';
 import { ModalService } from '../../../../../../modal/modal.service';
 
 
-describe('CarInfoContainerComponent', () => {
+describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
   let fixture: ComponentFixture<CarListContainerComponent>;
   const mockDisplay: DisplayDto = {
