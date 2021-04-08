@@ -33,19 +33,8 @@ export interface FileResponseToBackendUploadsItem {
   uploadId?: string;
   required?: boolean;
   value?: UploadedFile[];
-  relatedUploads?: {
-    uploads: FileResponseToBackendUploadsItem[];
-  };
   errors?: string[];
   files?: FileResponseToBackendUploadsItem[];
-}
-/**
- * Интерфейс для экспорта одного значения для компонента загрузки для связанных компонентов
- */
-export interface FileResponseToBackendWithRelatedUploads {
-  uploadId: string;
-  required?: boolean;
-  uploads?: FileResponseToBackendUploadsItem[];
 }
 
 /**
@@ -55,9 +44,6 @@ export interface FileUploadAttributes {
   clarifications: Clarifications;
   uploads: FileUploadItem[];
   uploadId?: string;
-  idAttrs?: string[];
-  relatedUploads?: FileUploadAttributes[];
-  ref?: string;
   maxSize?: number;
   maxFileCount?: number;
   minFileCount?: number;
@@ -71,34 +57,16 @@ export interface Clarifications {
 }
 
 /**
- * Интерфейс для связанных файлов на загрузки из JSON
- */
-export interface RelatedUploads extends FileUploadAttributes {
-  ref: string;
-  idAttrs: string[];
-}
-
-/**
- * Интерфейс для типов загружаемых данных
- */
-export enum FileUploadItemTypes {
-  single = 'single',
-  cycle = 'cycle',
-}
-
-/**
  * Интерфейс для файла на загругку из JSON
  */
 export interface FileUploadItem {
   uploadId: string;
-  type: FileUploadItemTypes;
   label: string;
   title?: string;
   fileType: string[];
   maxFileCount?: number;
   maxSize?: number;
   required?: boolean;
-  relatedUploads?: RelatedUploads;
 }
 
 /**
@@ -159,9 +127,6 @@ export interface FileUploadEmitValue {
   uploadId: string;
   value: TerraUploadedFile[];
   required: boolean;
-  relatedUploads?: {
-    uploads: FileUploadEmitValue[];
-  };
 }
 
 /**

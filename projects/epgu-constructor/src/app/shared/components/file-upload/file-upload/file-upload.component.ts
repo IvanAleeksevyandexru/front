@@ -10,12 +10,10 @@ import { EventBusService } from '../../../../core/services/event-bus/event-bus.s
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   FileResponseToBackendUploadsItem,
-  FileResponseToBackendWithRelatedUploads,
   FileUploadAttributes,
   FileUploadItem,
-  FileUploadItemTypes,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { FileUploadService, Uploaders } from '../file-upload.service';
+import { FileUploadService } from '../file-upload.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
@@ -26,16 +24,11 @@ import { FileUploadService, Uploaders } from '../file-upload.service';
 })
 export class FileUploadComponent implements OnInit {
   @Input() objectId: string;
-  @Input() isRelatedUploads = false;
-  @Input() applicantAnswers: object;
   @Input() prefixForMnemonic: string;
   @Input() uploadId: string = null;
   @Input()
   set attributes(attrs: FileUploadAttributes) {
     this.attrs = attrs;
-    if (attrs?.ref) {
-      this.refData = this.getRefValuesForApplicantAnswers(attrs);
-    }
     this.value.files = this.fillUploadsDefaultValue();
     this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
   }
@@ -43,8 +36,6 @@ export class FileUploadComponent implements OnInit {
     return this.attrs;
   }
 
-  fileUploadItemTypes = FileUploadItemTypes;
-  refData: string = null;
   private attrs: FileUploadAttributes;
   private value: FileResponseToBackendUploadsItem = { files: [], errors: [] };
 
@@ -65,14 +56,6 @@ export class FileUploadComponent implements OnInit {
         this.handleNewValueForItem(payload);
         this.cdr.markForCheck();
       });
-
-    this.eventBusService
-      .on('fileUploadRelatedValueChangedEvent')
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileResponseToBackendWithRelatedUploads) => {
-        this.handleNewRelatedValueForItem(payload);
-        this.cdr.markForCheck();
-      });
   }
 
   getFiles(): FileResponseToBackendUploadsItem[] {
@@ -80,19 +63,19 @@ export class FileUploadComponent implements OnInit {
   }
 
   setUploadersRestrictions(): void {
-    this.setUploadersMaxSizeAndAmount(Uploaders.total, this.attrs.maxSize, this.attrs.maxFileCount);
+    this.setTotalMaxSizeAndAmount(this.attrs.maxSize, this.attrs.maxFileCount);
 
     this.attrs.uploads?.forEach(({ uploadId, maxFileCount, maxSize }: FileUploadItem) =>
-      this.setUploadersMaxSizeAndAmount(uploadId, maxSize, maxFileCount),
+      this.fileUploadService.registerUploader(uploadId, maxFileCount, maxSize),
     );
   }
 
-  setUploadersMaxSizeAndAmount(uploader: string, maxSize: number, maxAmount: number): void {
+  setTotalMaxSizeAndAmount(maxSize: number, maxAmount: number): void {
     if (maxSize) {
-      this.fileUploadService.setMaxFilesSize(maxSize, uploader);
+      this.fileUploadService.setTotalMaxSize(maxSize);
     }
     if (maxAmount) {
-      this.fileUploadService.setMaxFilesAmount(maxAmount, uploader);
+      this.fileUploadService.setTotalMaxAmount(maxAmount);
     }
   }
 
@@ -119,72 +102,7 @@ export class FileUploadComponent implements OnInit {
     });
     this.value.errors = $eventData.errors;
 
-    if (!this.isRelatedUploads) {
-      this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
-    } else {
-      this.eventBusService.emit('fileUploadRelatedValueChangedEvent', {
-        uploadId: this.uploadId,
-        required: $eventData.required,
-        uploads: this.value.files,
-      } as FileResponseToBackendWithRelatedUploads);
-    }
-  }
-
-  /**
-   * Обрабатывает новое значение от формы загрузки по связанным документам
-   * @param $eventData - новые значения от формы
-   */
-  handleNewRelatedValueForItem($eventData: FileResponseToBackendWithRelatedUploads): void {
-    this.eventBusService.emit('fileUploadValueChangedEvent', {
-      uploadId: $eventData.uploadId,
-      relatedUploads: {
-        uploads: $eventData.uploads,
-      },
-    } as FileResponseToBackendUploadsItem);
-  }
-
-  /**
-   * Возвращает массив из строк связанных с компонентом ответов польвателя
-   * @param attrs - аттрибуты блока
-   * @param refBlock - блок ответов связанного компонента
-   * @private
-   */
-  private getRefSubLabels(
-    attrs: FileUploadAttributes,
-    refBlock: Array<{ [key: string]: string }>,
-  ): string {
-    const subLabel = [];
-    const isArrData = Array.isArray(refBlock);
-
-    attrs.idAttrs.forEach((id) => {
-      if (isArrData) {
-        refBlock.filter((ref) => ref[id]).forEach((ref) => subLabel.push(ref[id]));
-      } else if (refBlock[id]) {
-        subLabel.push(refBlock[id]);
-      }
-    });
-    return subLabel.length ? subLabel.join(' ') : null;
-  }
-
-  /**
-   * Возвращает данные по ref параметру из applicantAnswers для формирования дополнительного заголовка
-   * @param attrs - аттрибуты блока
-   */
-  private getRefValuesForApplicantAnswers(attrs: FileUploadAttributes): string {
-    const sections = attrs.ref.split('.');
-    const key = sections[0];
-    const blockKey = sections[1];
-    let value = this.applicantAnswers[key]?.value;
-
-    if (value) {
-      value = JSON.parse(value);
-      const refBlock = value[blockKey];
-
-      if (refBlock) {
-        return this.getRefSubLabels(attrs, refBlock);
-      }
-    }
-    return null;
+    this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
   }
 
   /**

@@ -31,7 +31,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
 import {
   FileUploadItem,
-  FileUploadItemTypes,
   TerabyteListItem,
   TerraUploadFileOptions,
   UploadedFile,
@@ -55,7 +54,6 @@ const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
   title: 'title',
   uploadId: 'passport',
-  type: FileUploadItemTypes.single,
   label: 'label',
   fileType: ['JPEG', 'JPG', 'PNG'],
   maxSize: 5242880,
@@ -113,6 +111,7 @@ describe('FileUploadItemComponent', () => {
   let screenService: ScreenService;
   let viewerService: ViewerService;
   let modalSerivce: ModalService;
+  let fileUploadService: FileUploadService;
 
   beforeEach(
     waitForAsync(() => {
@@ -153,6 +152,12 @@ describe('FileUploadItemComponent', () => {
     screenService = TestBed.inject(ScreenService);
     viewerService = TestBed.inject(ViewerService);
     modalSerivce = TestBed.inject(ModalService);
+    fileUploadService = TestBed.inject(FileUploadService);
+    fileUploadService.registerUploader(
+      uploadMock.uploadId,
+      uploadMock.maxFileCount,
+      uploadMock.maxSize,
+    );
     fixture = TestBed.createComponent(FileUploadItemComponent);
     component = fixture.componentInstance;
     component.data = uploadMock;
