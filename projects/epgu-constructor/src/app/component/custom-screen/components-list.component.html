@@ -22,6 +22,8 @@
       >
         <lib-dropdown
           *ngIf="dropDowns$ | async as dropDowns"
+          epgu-constructor-validation-type
+          [component]="componentData.value"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="$any(dropDowns[componentData.value?.id])"
           [disabled]="$any(dropDowns[componentData.value?.id])?.length === 1"
@@ -44,6 +46,8 @@
       >
         <epgu-constructor-drop-down-depts
           *ngIf="dictionaries$ | async as dictionaries"
+          epgu-constructor-validation-type
+          [component]="componentData.value"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [dictionary]="dictionaries[getDictKeyByComp(componentData.value)]"
           [validationShowOn]="validationShowOn"
@@ -84,6 +88,8 @@
         >
           <lib-lookup
             *ngIf="dictionaries$ | async as dictionaries"
+            epgu-constructor-validation-type
+            [component]="componentData.value"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [validationShowOn]="validationShowOn"
             [formControl]="$any(componentData.get('value'))"
