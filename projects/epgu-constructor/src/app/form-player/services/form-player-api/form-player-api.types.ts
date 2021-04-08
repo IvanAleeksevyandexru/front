@@ -311,10 +311,18 @@ export interface ClarificationsDto {
   };
 }
 
+export enum TargetType {
+  none= 'none',
+  blank= 'blank',
+}
+
 export interface ComponentActionDto {
   label: string;
   action: DTOActionAction;
   value?: string;
+  target?: TargetType; // для умного поиска
+  serviceCode?: string; // для умного поиска
+  targetCode?: string; // для умного поиска
   type?: ActionType;
   hidden?: boolean;
   disabled?: boolean;
@@ -358,7 +366,7 @@ export interface DisplayDto {
   id: string;
   name: string;
   header: string;
-  submitLabel: string;
+  submitLabel?: string; // TODO: depricated удалить после переезда на buttons
   components: Array<ComponentDto>;
   type: ScreenTypes;
   terminal: boolean;
@@ -465,6 +473,8 @@ export enum ActionType {
   attachUploadedFiles = 'attachUploadedFiles',
   dropdownListModal = 'dropdownListModal',
   deliriumNextStep = 'deliriumNextStep',
+  getNextQuiz = 'getNextQuiz', // для умного поиска
+  redirect = 'redirect', // для умного поиска
 }
 
 export enum DTOActionAction {
@@ -480,6 +490,8 @@ export enum DTOActionAction {
   editLegalPhone = 'editLegalPhone',
   editLegalEmail = 'editLegalEmail',
   attachUploadedFiles = 'attachUploadedFiles',
+  redirect = 'redirect', // для умного поиска
+  getNextQuiz = 'getNextQuiz', // для умного поиска
 }
 
 export interface CheckOrderApiResponse {

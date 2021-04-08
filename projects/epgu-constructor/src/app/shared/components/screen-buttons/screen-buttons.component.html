@@ -1,0 +1,13 @@
+<lib-button
+  *ngFor="let button of screenButtons"
+  epgu-constructor-action
+  [action]="button"
+  [color]="button.color"
+  [disabled]="(disabled && disabledForAll)
+    || (disabled && !disabledForAll && button.type === 'nextStep')
+    || isLoading"
+  [showLoader]="isLoading"
+  class="screen-button"
+>
+  {{ button.label }}
+</lib-button>

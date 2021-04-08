@@ -100,7 +100,11 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
         this.loadPaymentInfo();
       }),
     );
-    this.submitLabel$ = this.screenService.submitLabel$;
+    this.submitLabel$ = this.screenService.buttons$.pipe(
+      map((buttons) => {
+        return buttons[0]?.label;
+      }),
+    );
     this.datesToolsService = this.injector.get(DatesToolsService);
   }
 

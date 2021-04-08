@@ -17,7 +17,7 @@ import { NavigationModalService } from '../../../../../../core/services/navigati
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto, DTOActionAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -70,7 +70,7 @@ const testFnc = () => {
   beforeEach(() => {
     screenService.component = mockData;
     screenService.header = '';
-    screenService.submitLabel = '';
+    screenService.buttons = [{ label: '', action: DTOActionAction.getNextStep }];
     fixture = TestBed.createComponent(PaymentComponent);
     component = fixture.componentInstance;
   });
