@@ -188,12 +188,12 @@ describe('UtilsService', () => {
 
   describe('hasJsonStructure()', () => {
     it('should return true', () => {
-      expect(service.hasJsonStructure('{"property": true}')).toBe(true);
-      expect(service.hasJsonStructure('[1,2,3]')).toBe(true);
+      expect(UtilsService.hasJsonStructure('{"property": true}')).toBe(true);
+      expect(UtilsService.hasJsonStructure('[1,2,3]')).toBe(true);
     });
 
     it('should return false', () => {
-      expect(service.hasJsonStructure(null)).toBe(false);
+      expect(UtilsService.hasJsonStructure(null)).toBe(false);
     });
   });
 
