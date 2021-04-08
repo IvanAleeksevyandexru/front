@@ -9,6 +9,7 @@
     [validationShowOn]="validationShowOn"
     [name]="control.value?.id"
     [control]="$any(control.get('value'))"
+    [component]="control.value"
     [readOnly]="control.value?.attrs?.readonly"
     [minDate]="control.value?.attrs?.minDate || minDateDefault"
     [maxDate]="control.value?.attrs?.maxDate || maxDateDefault"

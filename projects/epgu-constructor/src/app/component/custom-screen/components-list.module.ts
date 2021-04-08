@@ -1,3 +1,4 @@
+import { ValidationTypeModule } from './../../shared/directives/validation-type/validation-type.module';
 import { NgModule } from '@angular/core';
 import { ValidationService } from '../../shared/services/validation/validation.service';
 import { AddressHelperService } from '../../shared/services/address-helper/address-helper.service';
@@ -92,6 +93,7 @@ import { FileUploadFormComponent } from './components/file-upload-form/file-uplo
     DropDownDeptsModule,
     FileUploadModule,
     ComponentResolverModule,
+    ValidationTypeModule
   ],
   providers: [
     ValidationService,
