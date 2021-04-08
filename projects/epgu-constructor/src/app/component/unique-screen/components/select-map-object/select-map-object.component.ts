@@ -203,8 +203,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initSelectedValue(): void {
-    if (this.data?.value && this.data?.value !== '{}') {
-      const mapObject = JSON.parse(this.data?.value);
+    if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
+      const mapObject = UtilsService.tryToParse(this.data?.value) as DictionaryYMapItem;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
