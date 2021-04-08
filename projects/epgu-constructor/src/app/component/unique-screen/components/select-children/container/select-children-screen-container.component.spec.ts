@@ -42,7 +42,6 @@ describe('SelectChildrenScreenContainerComponent', () => {
     name: 'Подтверждение ПД ребенка',
     type: 'COMPONENT',
     header: 'Проверьте корректность данных ребенка',
-    submitLabel: 'Верно',
     components: [
       {
         id: 'pd21',

@@ -358,7 +358,7 @@ export interface DisplayDto {
   id: string;
   name: string;
   header: string;
-  submitLabel: string;
+  submitLabel?: string; // TODO: depricated удалить после переезда на buttons
   components: Array<ComponentDto>;
   type: ScreenTypes;
   terminal: boolean;

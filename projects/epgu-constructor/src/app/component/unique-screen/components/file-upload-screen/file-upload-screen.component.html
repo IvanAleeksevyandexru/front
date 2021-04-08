@@ -4,8 +4,9 @@
     context: {
       isLoading: isLoading$ | async,
       header: header$ | async,
-      submitLabel: submitLabel$ | async,
-      data: data$ | async
+      data: data$ | async,
+      disabled: disabled$ | async,
+      buttons: screenService.buttons$ | async
     }
   "
 ></ng-container>
@@ -14,7 +15,8 @@
   #contentComponent
   let-isLoading="isLoading"
   let-header="header"
-  let-submitLabel="submitLabel"
+  let-disabled="disabled"
+  let-buttons="buttons"
   let-data="data"
 >
   <epgu-constructor-screen-container
@@ -33,15 +35,13 @@
     </div>
 
     <div class="screen-footer">
-      <lib-button
-        [showLoader]="isLoading"
-        [disabled]="disabled | async"
-        epgu-constructor-action
-        [action]="nextStepAction"
-        class="submit-button"
-      >
-        {{ submitLabel || 'Продолжить' }}
-      </lib-button>
+      <epgu-constructor-screen-buttons
+        class="screen-buttons"
+        *ngIf="buttons.length"
+        [screenButtons]="buttons"
+        [isLoading]="isLoading"
+        [isValid]="!disabled"
+      ></epgu-constructor-screen-buttons>
     </div>
   </epgu-constructor-screen-container>
 </ng-template>

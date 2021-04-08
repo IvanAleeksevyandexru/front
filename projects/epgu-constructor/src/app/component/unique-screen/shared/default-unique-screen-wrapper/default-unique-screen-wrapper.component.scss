@@ -1,17 +1,3 @@
 @import '../../../../../styles/core';
 
-:host::ng-deep  {
-  .screen-body.screen-body {
-    @include tablets-up {
-      margin-bottom: 16px;
-    }
-
-    @include tablets-down {
-      margin-bottom: 0;
-    }
-  }
-
-  .screen-footer > .screen-buttons {
-    margin-top: 0;
-  }
-}
+@include screen-buttons-margin;

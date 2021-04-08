@@ -170,7 +170,6 @@ describe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl.componentInstance.actionButtons).toBeUndefined();
     expect(debugEl.componentInstance.isShowActionBtn).toBeFalsy();
     expect(debugEl.componentInstance.showNav).toBeFalsy();
-    expect(debugEl.componentInstance.submitLabel).toBeUndefined();
     expect(debugEl.componentInstance.isValid).toBeFalsy();
     expect(debugEl.componentInstance.nextStepAction).toBeUndefined();
 

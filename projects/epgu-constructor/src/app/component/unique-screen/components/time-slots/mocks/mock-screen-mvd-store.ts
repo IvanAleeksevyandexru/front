@@ -73,7 +73,6 @@ export const mockScreenMvdStore = {
     name: 'Выбор даты и времени торжественный',
     type: 'UNIQUE',
     header: 'Выберите дату и время',
-    submitLabel: 'Забронировать',
     components: [
       {
         id: 'ts1',

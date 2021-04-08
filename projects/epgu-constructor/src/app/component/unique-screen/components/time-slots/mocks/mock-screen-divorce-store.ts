@@ -124,7 +124,6 @@ export const mockScreenDivorceStore = {
       name: 'Выбор даты и времени для пост. регистрации',
       type: 'UNIQUE',
       header: 'Выберите дату и время',
-      submitLabel: 'Забронировать',
       components: [
         {
           id: 'ts1',
