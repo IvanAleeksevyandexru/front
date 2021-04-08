@@ -58,11 +58,7 @@
     "isAutocompleteServiceDisabled": false,
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
     "suggestionsApiUrl": "/suggests/api/drafts/v1/suggests",
-    "staticDomainContentPath": "https://gu-st.ru/content",
-    "isZipkinEnabled": true,
-    "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
-    "zipkinMaxPayloadSize": 0,
-    "zipkinEnv": "dev01"
+    "staticDomainContentPath": "https://gu-st.ru/content"
   },
   "core": {
     "config": {

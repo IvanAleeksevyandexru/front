@@ -39,7 +39,6 @@ export class AutocompleteService {
     private eventBusService: EventBusService,
     private modalService: ModalService,
     private autocompleteApiService: AutocompleteApiService,
-    private utilsService: UtilsService,
     private datesToolsService: DatesToolsService,
     private currentAnswersService: CurrentAnswersService,
   ) {}
@@ -176,7 +175,7 @@ export class AutocompleteService {
   private loadValuesFromCurrentAnswer(): void {
     if (this.repeatableComponents.length) {
       let currentAnswerParsedValue;
-      if (this.utilsService.hasJsonStructure(this.currentAnswersService.state as string)) {
+      if (UtilsService.hasJsonStructure(this.currentAnswersService.state as string)) {
         currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
       } else {
         currentAnswerParsedValue = this.currentAnswersService.state;
@@ -300,7 +299,7 @@ export class AutocompleteService {
       value = this.getDateValueIfDateInput(component, value);
 
       // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
-      if (this.utilsService.hasJsonStructure(value)) {
+      if (UtilsService.hasJsonStructure(value)) {
         const parsedValue = JSON.parse(value);
         if (Array.isArray(parsedValue)) {
           const parsedlItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
@@ -417,7 +416,7 @@ export class AutocompleteService {
   }
 
   private prepareValue(value: string, componentMnemonic?: string): string {
-    if (this.utilsService.hasJsonStructure(value)) {
+    if (UtilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
       if (this.repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];

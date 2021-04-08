@@ -14,7 +14,7 @@ import {
   ComponentActionDto,
   ComponentAttrsDto,
   ComponentDto,
-  DTOActionAction
+  DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
@@ -31,6 +31,7 @@ import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationComponent } from './signature-application.component';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -78,6 +79,7 @@ describe('SignatureApplicationComponent', () => {
           { provide: ActionService, useClass: ActionServiceStub },
           CurrentAnswersService,
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     }),
   );

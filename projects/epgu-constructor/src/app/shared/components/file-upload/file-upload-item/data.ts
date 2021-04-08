@@ -1,4 +1,5 @@
 import {
+  FileUploadItem,
   TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
@@ -309,3 +310,76 @@ export const plurals = {
   attach: ['прикрепился', 'прикрепилось', 'прикрепилось'],
   before: ['', 'до', 'до'],
 };
+
+export const getAcceptTypes = (
+  types: string[],
+  prefix = '.',
+  postfix = ',',
+  caseType: 'lower' | 'upper' = 'lower',
+): string => {
+  const caseName = caseType === 'lower' ? 'toLowerCase' : 'toUpperCase';
+  return !types.length
+    ? null
+    : types
+        .map((fileType) => `${prefix}${fileType}`)
+        .join(postfix)
+        [caseName]();
+};
+
+export const createError = (action: ErrorActions, data: FileUploadItem): FileItemError => {
+  const errorHandler = {};
+  errorHandler[ErrorActions.addMaxTotalSize] = {
+    text: '',
+    description: '',
+  };
+  errorHandler[ErrorActions.addMaxAmount] = {
+    text: '',
+    description: '',
+  };
+  errorHandler[ErrorActions.addMaxTotalAmount] = {
+    text: '',
+    description: '',
+  };
+  errorHandler[ErrorActions.addMaxSize] = {
+    text: `Файл тяжелее ${getSizeInMB(data.maxSize)} МБ`,
+    description: 'Попробуйте уменьшить размер или загрузите файл полегче',
+  };
+  getAcceptTypes(data.fileType, '', ', ', 'upper');
+  errorHandler[ErrorActions.addInvalidType] = {
+    text: 'Проверьте формат файла',
+    description: `Попробуйте заменить на другой. Доступны для загрузки ${getAcceptTypes(
+      data.fileType,
+      '',
+      ', ',
+      'upper',
+    )}`,
+  };
+  errorHandler[ErrorActions.addInvalidFile] = {
+    text: 'Файл повреждён',
+    description: 'Что-то не так с файлом. Попробуйте заменить на другой',
+  };
+  errorHandler[ErrorActions.addDownloadErr] = {
+    text: 'Ошибка при скачивании',
+    description: 'Не удалось скачать файл. Попробуйте снова',
+  };
+  errorHandler[ErrorActions.addUploadErr] = {
+    text: 'Ошибка при загрузке',
+    description: 'Попробуйте отправить снова или замените документ.',
+  };
+  errorHandler[ErrorActions.addDeletionErr] = {
+    text: 'Ошибка при удалении',
+    description: 'Не получилось удалить файл. Попробуйте снова',
+  };
+
+  return { ...errorHandler[action], type: action };
+};
+
+export interface OverLimitsItem {
+  count: number;
+  isMax: boolean;
+}
+export interface OverLimits {
+  totalSize: OverLimitsItem;
+  totalAmount: OverLimitsItem;
+  amount: OverLimitsItem;
+}

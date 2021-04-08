@@ -19,7 +19,6 @@ export const componentsNoCache: Array<string> = [
 
 @Injectable()
 export class CachedAnswersService {
-  constructor(private utils: UtilsService) {}
 
   getCachedValueById(answers: CachedAnswers, id: string): string | null{
     return answers[id]?.value || null;
@@ -36,7 +35,7 @@ export class CachedAnswersService {
    * @param component - компонент из display.components
    */
   parseCachedValue<T = unknown>(cachedValue: string, component: ComponentDto): T {
-    if (!this.utils.hasJsonStructure(cachedValue)) {
+    if (!UtilsService.hasJsonStructure(cachedValue)) {
       throw Error('Cached value should be JSON string');
     }
 

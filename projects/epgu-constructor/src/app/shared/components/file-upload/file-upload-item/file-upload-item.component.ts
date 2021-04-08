@@ -25,16 +25,18 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { CheckFailedReasons, FileUploadService } from '../file-upload.service';
+import { FileUploadService } from '../file-upload.service';
 import {
+  createError,
   ErrorActions,
   FileItem,
   FileItemError,
   FileItemStatus,
   FileItemStore,
-  getSizeInMB,
+  getAcceptTypes,
   Operation,
   OperationType,
+  OverLimits,
   plurals,
   UPLOAD_OBJECT_TYPE,
 } from './data';
@@ -44,16 +46,6 @@ import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uplo
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
-
-interface OverLimitsItem {
-  count: number;
-  isMax: boolean;
-}
-interface OverLimits {
-  totalSize: OverLimitsItem;
-  totalAmount: OverLimitsItem;
-  amount: OverLimitsItem;
-}
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -65,7 +57,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input() objectId: string;
   @Input() clarification: Clarifications;
   @Input() prefixForMnemonic: string;
-  @Input() refData: string = null;
+
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
@@ -196,9 +188,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
-  uploadersCounterChanges$ = this.fileUploadService.uploaderChanges.pipe(
-    tap(() => this.maxLimitUpdate()),
-  );
+  uploadersCounterChanges$ = this.fileUploadService.changes.pipe(tap(() => this.maxLimitUpdate()));
 
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
@@ -452,12 +442,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   maxLimitUpdate(): void {
     const limits = { ...this.overLimits.getValue() };
-    const checkSize = this.fileUploadService.checkFilesSize(1, this.data.uploadId);
+    const checkSize = this.fileUploadService.checkSize(1, this.data.uploadId);
 
-    const checkAmount = this.fileUploadService.checkFilesAmount(1, this.data.uploadId);
-    limits.totalSize.isMax = checkSize?.reason === CheckFailedReasons.total;
-    limits.amount.isMax = checkAmount?.reason === CheckFailedReasons.uploaderRestriction;
-    limits.totalAmount.isMax = checkAmount?.reason === CheckFailedReasons.total;
+    const checkAmount = this.fileUploadService.checkAmount(1, this.data.uploadId);
+    limits.totalSize.isMax = checkSize === -1;
+    limits.amount.isMax = checkAmount === 1;
+    limits.totalAmount.isMax = checkAmount === -1;
     this.overLimits.next(limits);
   }
 
@@ -576,58 +566,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   getError(action: ErrorActions): FileItemError {
-    const errorHandler = {};
-    // eslint-disable-next-line prettier/prettier
-    errorHandler[ErrorActions.addMaxTotalSize] = {
-      text: ``,
-      description: ``,
-    };
-    errorHandler[ErrorActions.addMaxAmount] = {
-      text: ``,
-      description: ``,
-    };
-    errorHandler[ErrorActions.addMaxTotalAmount] = {
-      text: ``,
-      description: ``,
-    };
-    errorHandler[ErrorActions.addMaxSize] = {
-      text: `Файл тяжелее ${getSizeInMB(this.data.maxSize)} МБ`,
-      description: `Попробуйте уменьшить размер или загрузите файл полегче`,
-    };
-    errorHandler[ErrorActions.addInvalidType] = {
-      text: `Проверьте формат файла`,
-      description: `Попробуйте заменить на другой. Доступны для загрузки ${this.acceptTypes
-        .replace(/\./gi, '')
-        .replace(/,/gi, ', ')
-        .toUpperCase()}`,
-    };
-    errorHandler[ErrorActions.addInvalidFile] = {
-      text: `Файл повреждён`,
-      description: `Что-то не так с файлом. Попробуйте заменить на другой`,
-    };
-    errorHandler[ErrorActions.addDownloadErr] = {
-      text: `Ошибка при скачивании`,
-      description: `Не удалось скачать файл. Попробуйте снова`,
-    };
-    errorHandler[ErrorActions.addUploadErr] = {
-      text: `Ошибка при загрузке`,
-      description: `Попробуйте отправить снова или замените документ.`,
-    };
-    errorHandler[ErrorActions.addDeletionErr] = {
-      text: `Ошибка при удалении`,
-      description: `Не получилось удалить файл. Попробуйте снова`,
-    };
-
-    return { ...errorHandler[action], type: action };
+    return createError(action, this.data);
   }
 
   updateAcceptTypes(): void {
-    this.acceptTypes = !this.data.fileType.length
-      ? null
-      : this.data.fileType
-          .map((fileType) => `.${fileType}`)
-          .join(',')
-          .toLowerCase();
+    this.acceptTypes = getAcceptTypes(this.data.fileType);
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {

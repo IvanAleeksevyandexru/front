@@ -58,29 +58,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
 
   // @TODO разобраться с relatedUploads и required
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
-    if ($eventData.relatedUploads) {
-      this.files = this.files.map((value: FileUploadEmitValue) => {
-        if ($eventData.uploadId === value.uploadId) {
-          return {
-            ...value,
-            relatedUploads: $eventData.relatedUploads,
-            required: $eventData.required,
-          } as FileUploadEmitValue;
-        }
-        return value;
-      });
-    } else {
-      const relatedUpload: FileUploadEmitValue = this.files.find(
-        (value: FileUploadEmitValue) => value.relatedUploads,
-      );
-
-      this.files = $eventData.files.map((value: FileUploadEmitValue) => {
-        if (relatedUpload && value?.uploadId === relatedUpload.uploadId) {
-          return { ...value, relatedUploads: relatedUpload.relatedUploads };
-        }
-        return value;
-      });
-    }
+    this.files = $eventData.files as FileUploadEmitValue[];
   }
 
   private isValid(): boolean {

@@ -22,7 +22,6 @@ import { RefRelationService } from '../ref-relation/ref-relation.service';
 export class PrepareComponentsService {
   constructor(
     private cachedAnswersService: CachedAnswersService,
-    private utils: UtilsService,
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
@@ -132,8 +131,8 @@ export class PrepareComponentsService {
       return JSON.parse(cachedValue).snils;
     }
 
-    const isPresetParsable = this.utils.hasJsonStructure(preset);
-    const isCachedValueParsable = this.utils.hasJsonStructure(cachedValue);
+    const isPresetParsable = UtilsService.hasJsonStructure(preset);
+    const isCachedValueParsable = UtilsService.hasJsonStructure(cachedValue);
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
@@ -221,7 +220,7 @@ export class PrepareComponentsService {
     const { path, id } = this.getPathFromPreset(preset);
     const cache = cachedAnswers[id].value;
 
-    if (this.utils.hasJsonStructure(cache)) {
+    if (UtilsService.hasJsonStructure(cache)) {
       const date: string = UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
       if (this.isShortTimeFormat(date)) {
         return date;
@@ -309,7 +308,7 @@ export class PrepareComponentsService {
           const { path, id } = this.getPathFromPreset(preset);
           const cache = cachedAnswers[id].value;
 
-          if (!this.utils.hasJsonStructure(cache)) {
+          if (!UtilsService.hasJsonStructure(cache)) {
             return attrsWithFilter;
           }
 

@@ -12,7 +12,6 @@ import { RankModule } from './pipes/rank/rank.module';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
 
-
 /**
  * Здесь храниться всё что необходимо во всех слоях.
  */

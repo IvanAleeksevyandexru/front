@@ -60,9 +60,7 @@ describe('FileUploadScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MockModule(EpguLibModule),
-      ],
+      imports: [MockModule(EpguLibModule)],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(ScreenContainerComponent),
@@ -231,27 +229,6 @@ describe('FileUploadScreenComponent', () => {
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.objectId).toBe('some order id');
-    });
-
-    it('applicantAnswers property should be equal to screenService.applicantAnswers$', () => {
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.applicantAnswers).toBeNull();
-
-      screenService.applicantAnswers = {
-        someKey: {
-          visited: true,
-          value: 'some value',
-        },
-      };
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.applicantAnswers).toEqual({
-        someKey: {
-          visited: true,
-          value: 'some value',
-        },
-      });
     });
 
     it('prefixForMnemonic property', () => {
