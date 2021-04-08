@@ -22,7 +22,6 @@ import { RefRelationService } from '../ref-relation/ref-relation.service';
 export class PrepareComponentsService {
   constructor(
     private cachedAnswersService: CachedAnswersService,
-    private utils: UtilsService,
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
