@@ -413,6 +413,8 @@ export interface ScenarioDto {
   serviceId?: string;
   currentUrl?: string;
   newContactId?: string;
+  logicComponents?: LogicComponents[];
+  currentLogicValue: CurrentValueDto;
 }
 
 /**
@@ -497,4 +499,11 @@ export interface ActionDTO<T = {}> {
 export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
+}
+
+export interface LogicComponents {
+  id: string;
+  value: string;
+  linkedValues: unknown[];
+  type: string;
 }

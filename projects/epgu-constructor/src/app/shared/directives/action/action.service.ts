@@ -221,6 +221,7 @@ export class ActionService {
         visited: true,
         value: value || action.value,
       },
+        ...this.screenService.logicAnswers,
     };
   }
 

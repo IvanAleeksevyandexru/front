@@ -6,7 +6,7 @@ import {
   ComponentAnswerDto,
   ComponentDto,
   DisplayDto,
-  DisplaySubjHead,
+  DisplaySubjHead, LogicComponents,
   ScenarioErrorsDto,
   ScreenActionDto,
 } from '../form-player/services/form-player-api/form-player-api.types';
@@ -42,6 +42,8 @@ export class ScreenContent {
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
+  private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
+  private _logicAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
 
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
@@ -305,6 +307,28 @@ export class ScreenContent {
     return this._cachedAnswers.asObservable();
   }
 
+  public get logicComponents(): LogicComponents[] {
+    return this._logicComponents.getValue();
+  }
+  public set logicComponents(val: LogicComponents[]) {
+    this._logicComponents.next(val);
+  }
+
+  public get logicAnswers$(): Observable<ApplicantAnswersDto> {
+    return this._logicAnswers.asObservable();
+  }
+
+  public get logicAnswers(): ApplicantAnswersDto {
+    return this._logicAnswers.getValue();
+  }
+  public set logicAnswers(val: ApplicantAnswersDto) {
+    this._logicAnswers.next(val);
+  }
+
+  public get logicComponents$(): Observable<LogicComponents[]> {
+    return this._logicComponents.asObservable();
+  }
+
   public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {
     const {
       errors = {} as ScenarioErrorsDto,
@@ -313,6 +337,7 @@ export class ScreenContent {
       gender,
       applicantAnswers,
       cachedAnswers,
+      logicComponents = [],
     } = screenStore;
     const {
       header,
@@ -348,6 +373,7 @@ export class ScreenContent {
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;
+    this.logicComponents = logicComponents;
   }
 
   public getComponentData(str: string): ComponentValue {

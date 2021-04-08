@@ -16,20 +16,22 @@ import { AutocompleteModule } from '../core/services/autocomplete/autocomplete.m
 
 registerLocaleData(localeRu);
 
-import 'hammerjs'; // HAMMER TIME
+import 'hammerjs';
+import { LogicScreenModule } from '../component/logic-screen/logic-screen.module'; // HAMMER TIME
 
 /**
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
  */
 @NgModule({
   declarations: [FormPlayerComponent],
-  imports: [
-    ScreenModule,
-    CoreModule,
-    BaseModule,
-    ModalModule,
-    AutocompleteModule
-  ],
+    imports: [
+        ScreenModule,
+        CoreModule,
+        BaseModule,
+        ModalModule,
+        AutocompleteModule,
+        LogicScreenModule
+    ],
   providers: [
     FormPlayerConfigApiService,
     FormPlayerService,
