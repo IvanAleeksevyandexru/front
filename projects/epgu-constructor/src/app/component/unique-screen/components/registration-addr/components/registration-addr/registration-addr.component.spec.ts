@@ -152,7 +152,7 @@ describe('RegistrationAddrComponent', () => {
     });
   });
 
-  describe('subscribeToFormChanges', () => {
+  xdescribe('subscribeToFormChanges', () => {
     it('should be set false in currentAnswersService.isValid', () => {
       component.redAddrForm.patchValue(null);
       expect(component.currentAnswersService.isValid).toBeFalsy();
