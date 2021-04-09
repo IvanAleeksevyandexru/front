@@ -39,18 +39,12 @@
   </div>
 
   <div class="screen-footer">
-    <div class="screen__buttons" *ngIf="(screenService.buttons$ | async).length">
-      <lib-button
-        *ngFor="let button of (screenService.buttons$ | async)"
-        class="screen__button submit-button"
-        epgu-constructor-action
-        [action]="button"
-        [color]="button.color"
-        [showLoader]="screenService.isLoading$ | async"
-        [disabled]="(screenService.isLoading$ | async) || !isValid"
-      >
-        <div>{{ button.label || 'Далее' }}</div>
-      </lib-button>
-    </div>
+    <epgu-constructor-screen-buttons
+      class="screen-buttons"
+      *ngIf="(screenService.buttons$ | async).length"
+      [screenButtons]="screenService.buttons$ | async"
+      [isLoading]="screenService.isLoading$ | async"
+      [disabled]="!isValid"
+    ></epgu-constructor-screen-buttons>
   </div>
 </epgu-constructor-screen-container>

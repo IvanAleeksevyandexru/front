@@ -1,8 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
-import {isDevMode, NgModule} from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormPlayerModule } from 'dist/epgu-constructor';
-import {EpguLibCommonModule, EpguLibModule, LoadService} from 'epgu-lib';
+import { EpguLibCommonModule, EpguLibModule, LoadService } from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfigService } from '../../projects/epgu-constructor/src/app/core/services/config/config.service';
 import { UnsubscribeService } from '../../projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
@@ -17,19 +17,15 @@ import { environment } from '../environments/environment';
 import '@angular/common/locales/global/ru';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ConfigComponent,
-    FpContainerComponent,
-  ],
+  declarations: [AppComponent, ConfigComponent, FpContainerComponent],
   imports: [
+    EpguLibModule,
     EpguLibCommonModule,
     LayoutModule,
     HttpClientModule,
     FormPlayerModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    EpguLibModule,
   ],
   providers: [
     CookieService,
@@ -37,16 +33,16 @@ import '@angular/common/locales/global/ru';
     UnsubscribeService,
     ConfigService,
     DeviceDetectorService,
-    LoadService
+    LoadService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(private loadService: LoadService) {
     const initCoreConfigs = () => {
       if (!isDevMode()) {
         // @ts-ignore
-        window.serverData = environment.core
+        window.serverData = environment.core;
       }
     };
     initCoreConfigs();
@@ -54,4 +50,3 @@ export class AppModule {
     loadService.load('core');
   }
 }
-

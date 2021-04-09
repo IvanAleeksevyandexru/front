@@ -1,4 +1,3 @@
-
 <epgu-constructor-screen-container
     [show-nav]="!isMobile && showNav"
     [class.screen-container-mt]="!(!isMobile && showNav)"
@@ -23,7 +22,7 @@
           (click)="nextAction()"
           class="submit-button"
         >
-          {{ actions[0]?.label || 'Продолжить' }}
+          {{ buttons[0]?.label || 'Продолжить' }}
         </lib-button>
       </div>
     </div>

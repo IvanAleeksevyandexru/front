@@ -61,7 +61,7 @@ export class LogicComponent implements OnInit {
       this.screenService.logicAnswers = {
         ...response,
       };
-      console.log(this.currentAnswersService.state);
+      console.log(this.screenService.logicAnswers);
     }),
   );
 

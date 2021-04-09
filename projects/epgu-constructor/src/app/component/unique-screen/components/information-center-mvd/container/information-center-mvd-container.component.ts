@@ -26,7 +26,6 @@ export class InformationCenterMvdContainerComponent implements OnInit {
     InformationCenterMvdI
   >;
   isLoading$ = this.screenService.isLoading$;
-  submitLabel$ = this.screenService.submitLabel$;
   header$ = this.screenService.header$;
   isLoadingInfoCenter = false;
   sourceList: Array<ListElement> = [];

@@ -211,12 +211,16 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
-      } else if (this.needToAutoFocus) {
+      } else if (this.needToAutoFocus && this.areMapObjectsFound()) {
         this.selectClosestMapObject();
       } else if (this.needToAutoCenterAllPoints) {
         this.centerAllPoints();
       }
     }
+  }
+
+  private areMapObjectsFound(): boolean {
+    return this.selectMapObjectService.filteredDictionaryItems.length > 0;
   }
 
   /**

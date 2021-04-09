@@ -20,6 +20,12 @@ import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
+import { BaseModule } from '../../shared/base.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
+import { ActionService } from '../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
+import { ModalService } from '../../modal/modal.service';
+import { ModalServiceStub } from '../../modal/modal.service.stub';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -32,7 +38,12 @@ describe('CustomScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule), MockModule(UserInfoLoaderModule)],
+      imports: [
+        MockModule(EpguLibModule),
+        MockModule(UserInfoLoaderModule),
+        BaseModule,
+        ScreenButtonsModule,
+      ],
       declarations: [
         CustomScreenComponent,
         MockComponent(PageNameComponent),
@@ -43,6 +54,8 @@ describe('CustomScreenComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
         CurrentAnswersService,
         CustomScreenService,

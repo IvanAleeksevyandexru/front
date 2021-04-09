@@ -1,9 +1,3 @@
-.footer {
-  &__warning-answers {
-    flex: 1;
-  }
+@import '../../../../../styles/core';
 
-  &__answer-btn {
-    margin-top: 24px;
-  }
-}
+@include screen-buttons-margin;

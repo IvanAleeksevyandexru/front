@@ -24,14 +24,14 @@ import { LogicScreenModule } from '../component/logic-screen/logic-screen.module
  */
 @NgModule({
   declarations: [FormPlayerComponent],
-    imports: [
-        ScreenModule,
-        CoreModule,
-        BaseModule,
-        ModalModule,
-        AutocompleteModule,
-        LogicScreenModule
-    ],
+  imports: [
+    ScreenModule,
+    CoreModule,
+    BaseModule,
+    ModalModule,
+    AutocompleteModule,
+    LogicScreenModule,
+  ],
   providers: [
     FormPlayerConfigApiService,
     FormPlayerService,

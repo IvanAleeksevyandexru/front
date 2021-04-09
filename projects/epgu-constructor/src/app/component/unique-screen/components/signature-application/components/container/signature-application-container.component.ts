@@ -32,7 +32,7 @@ export class SignatureApplicationContainerComponent implements OnInit {
   header$: Observable<string> = this.screenService.header$;
   component$: Observable<ComponentDto> = this.screenService.component$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
-  actions$: Observable<ComponentActionDto[]> = this.screenService.actions$;
+  buttons$: Observable<ComponentActionDto[]> = this.screenService.buttons$;
 
   private nextStepAction = NEXT_STEP_ACTION;
 

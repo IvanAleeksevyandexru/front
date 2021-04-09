@@ -42,13 +42,12 @@ export class FileUploadScreenComponent implements OnInit {
     }),
   );
 
-  submitLabel$: Observable<string> = this.screenService.submitLabel$;
   header$: Observable<string> = combineLatest([
     this.screenService.component$,
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
-  disabled = new BehaviorSubject<boolean>(true);
+  disabled$ = new BehaviorSubject<boolean>(true);
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -112,7 +111,7 @@ export class FileUploadScreenComponent implements OnInit {
      * Или
      * 2. Если не все файлы загрузились на терабайт
      */
-    this.disabled.next(
+    this.disabled$.next(
       !(
         this.isEveryUploaderHasFile(this.value.uploads) &&
         this.isAllFilesUploaded(this.value.uploads)

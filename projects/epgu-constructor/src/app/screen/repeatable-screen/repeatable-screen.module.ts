@@ -6,6 +6,7 @@ import { ScreenContainerModule } from '../../shared/components/screen-container/
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { ComponentsListModule } from '../../component/custom-screen/components-list.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [RepeatableScreenComponent],
@@ -16,6 +17,7 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
     ScreenPadModule,
     ComponentsListModule,
     CloneButtonModule,
+    ScreenButtonsModule,
   ],
   exports: [RepeatableScreenComponent],
   entryComponents: [RepeatableScreenComponent]
