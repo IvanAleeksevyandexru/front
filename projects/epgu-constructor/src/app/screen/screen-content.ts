@@ -38,6 +38,7 @@ export class ScreenContent {
   private _componentError = new BehaviorSubject<string>(null);
   private _componentLabel = new BehaviorSubject<string>(null);
   private _buttons = new BehaviorSubject<Array<ScreenActionDto>>(null);
+  private _button = new BehaviorSubject<ScreenActionDto>(null);
   private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
   private _action = new BehaviorSubject<ComponentActionDto>(null);
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
@@ -265,6 +266,16 @@ export class ScreenContent {
     return this._buttons.asObservable();
   }
 
+  public get button(): ScreenActionDto {
+    return this._button.getValue();
+  }
+  public set button(val: ScreenActionDto) {
+    this._button.next(val);
+  }
+  public get button$(): Observable<ScreenActionDto> {
+    return this._button.asObservable();
+  }
+
   public get actions(): Array<ComponentActionDto> {
     return this._actions.getValue();
   }
@@ -357,6 +368,7 @@ export class ScreenContent {
     this.actions = firstComponent?.attrs?.actions || [];
     this.buttons = buttons || [];
     this.action = this.actions[0];
+    this.button = this.buttons[0];
     this.answers = firstComponent?.attrs?.answers || [];
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;

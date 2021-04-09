@@ -108,7 +108,7 @@ describe('SignatureApplicationContainerComponent', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     locationService = TestBed.inject(LocationService);
 
-    jest.spyOn(screenService, 'actions$', 'get').mockReturnValue(of(mockActions));
+    jest.spyOn(screenService, 'buttons$', 'get').mockReturnValue(of(mockActions));
     jest.spyOn(screenService, 'header$', 'get').mockReturnValue(of(mockHeader));
     jest.spyOn(screenService, 'showNav$', 'get').mockReturnValue(of(true));
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));

@@ -9,6 +9,7 @@ import { AnswerButtonModule } from '../../../../shared/components/answer-button/
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [DefaultUniqueScreenWrapperComponent],
@@ -22,6 +23,7 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
     ScreenPadModule,
     ActionModule,
     UserInfoLoaderModule,
+    ScreenButtonsModule
   ],
 })
 export class DefaultUniqueScreenWrapperModule {}

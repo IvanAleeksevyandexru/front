@@ -5,6 +5,7 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [FileUploadScreenComponent],
@@ -15,6 +16,7 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
     BaseComponentsModule,
     ScreenContainerModule,
     UserInfoLoaderModule,
+    ScreenButtonsModule,
   ],
   entryComponents: [FileUploadScreenComponent]
 })

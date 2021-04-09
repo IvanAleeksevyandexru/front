@@ -8,6 +8,7 @@ import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen
 import { CarListComponent } from './components/car-list/car-list.component';
 import { CarListContainerComponent } from './components/car-list-container/car-list-container.component';
 import { ConstructorLookupModule } from '../../../../shared/components/constructor-lookup/constructor-lookup.module';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 
 
 const COMPONENTS = [
@@ -20,7 +21,12 @@ const COMPONENTS = [
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
   imports: [
-    BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule, ConstructorLookupModule
+    BaseModule,
+    BaseComponentsModule,
+    ScreenContainerModule,
+    ScreenPadModule,
+    ConstructorLookupModule,
+    ScreenButtonsModule,
   ],
   entryComponents: [CarListContainerComponent]
 })

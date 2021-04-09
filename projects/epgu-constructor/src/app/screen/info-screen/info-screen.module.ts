@@ -5,6 +5,7 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
 import { BaseModule } from '../../shared/base.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [InfoScreenComponent],
@@ -15,6 +16,7 @@ import { BaseModule } from '../../shared/base.module';
     BaseComponentsModule,
     ScreenContainerModule,
     ScreenPadModule,
+    ScreenButtonsModule,
   ],
   providers: [],
 })
