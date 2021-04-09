@@ -437,6 +437,34 @@ describe('PrepareComponentsService', () => {
     });
   });
 
+  describe('handlePrevScreensDisplayOff()', () => {
+    const relation = {
+      relatedRel: 's2',
+      relation: CustomComponentRefRelation.displayOff,
+      val: 'displayOff',
+    };
+    const prepareRef = (value: string) => {
+      components[0].attrs.ref = [relation];
+      cachedAnswers = {
+        s2: {
+          visited: true,
+          value: value,
+        },
+      };
+    };
+    it('should be return without displayOff',  () => {
+      prepareRef(relation.val);
+      const result = service['handlePrevScreensDisplayOff']([components[0]], cachedAnswers);
+      expect(result).toEqual([]);
+    });
+
+    it('should be return with displayOff',  () => {
+      prepareRef('false');
+      const result = service['handlePrevScreensDisplayOff']([components[0]], cachedAnswers);
+      expect(result).toEqual([components[0]]);
+    });
+  });
+
   describe('handleCustomComponentRef()', () => {
     const relation = {
       relatedRel: 's2',
