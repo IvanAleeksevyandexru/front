@@ -1,3 +1,4 @@
+import { ValidationTypeModule } from './../../directives/validation-type/validation-type.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
@@ -19,7 +20,12 @@ describe('ConstructorDatePickerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorDatePickerComponent],
-      imports: [MockModule(BaseModule), RouterTestingModule, NoopAnimationsModule],
+      imports: [
+        MockModule(BaseModule),
+        MockModule(ValidationTypeModule),
+        RouterTestingModule,
+        NoopAnimationsModule,
+      ],
     }).compileComponents();
   });
 
