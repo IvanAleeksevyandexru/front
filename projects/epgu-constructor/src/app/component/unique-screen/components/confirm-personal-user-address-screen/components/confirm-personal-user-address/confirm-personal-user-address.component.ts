@@ -16,7 +16,6 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import {
-  ConfirmAddressFieldName,
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
@@ -24,9 +23,10 @@ import { HttpCancelService } from '../../../../../../core/interceptor/http-cance
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
+import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 
 type AddressFields = ConfirmAddressFieldsInterface & {
-  isDate: boolean | ConfirmAddressFieldName;
+  isDate: boolean | FieldNames;
 };
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address',
@@ -144,8 +144,8 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     return JSON.stringify(value);
   }
 
-  private isDate(fieldName: ConfirmAddressFieldName): boolean | ConfirmAddressFieldName {
-    const dateType = ['regFrom', 'regTo', 'regDate'];
+  private isDate(fieldName: FieldNames): boolean | FieldNames {
+    const dateType = [FieldNames.regFrom, FieldNames.regTo, FieldNames.regDate];
     return dateType.includes(fieldName) ? fieldName : false;
   }
 

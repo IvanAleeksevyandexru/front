@@ -99,7 +99,7 @@ import { LookupInputComponent } from './components/lookup-input/lookup-input.com
     DropDownDeptsModule,
     FileUploadModule,
     ComponentListResolverModule,
-    ValidationTypeModule
+    ValidationTypeModule,
   ],
   providers: [
     ValidationService,
