@@ -66,20 +66,6 @@
     background-color: $color-blu-digitale;
   }
 
-  ul.ul-disc li::after {
-    height: 8px !important;
-    border-radius: 9px !important;
-    top: 8px;
-  }
-
-  ul.li-red>li::after {
-    background-color: $color-gosred !important;
-  }
-
-  ul.li-black>li::after {
-    background-color: $color-summer-night !important;
-  }
-
   ol li::after {
     counter-increment: number;
     content: counter(number) '.';
@@ -90,8 +76,7 @@
   }
 
   ul li ul,
-  ol li ul,
-  ul.ul-dash {
+  ol li ul {
     margin: 12px 0 0 0;
 
     li {
