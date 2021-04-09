@@ -11,8 +11,10 @@ export class TrimDirective {
   onFocusOut(target: HTMLInputElement): void {
     if (this.isTrim) {
       const key = this.isMultiline ? 'textContent' : 'value';
-      if(this.isNeedUpdateDueToSpaces(target[key])) {
-        const value = this.removeUnacceptableSymbolsFromBeginning(target[key]);
+      if (this.isNeedUpdateDueToSpaces(target[key])) {
+        const value = !this.isMultiline
+          ? this.removeUnacceptableSymbolsFromBeginning(target[key])
+          : target[key];
         target[key] = this.removeExtraSpacesBetweenWords(value).trim();
         target.dispatchEvent(new Event('input')); // triggers input event for updating value in model
       }
