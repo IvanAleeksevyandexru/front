@@ -32,7 +32,8 @@ export class PrepareComponentsService {
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
     let preparedComponents;
-    preparedComponents = this.loadValueFromCachedAnswer(components, cachedAnswers);
+    preparedComponents = this.handlePrevScreensDisplayOff(components, cachedAnswers);
+    preparedComponents = this.loadValueFromCachedAnswer(preparedComponents, cachedAnswers);
     preparedComponents = this.handleRelatedRelComponents(preparedComponents, cachedAnswers);
     return preparedComponents;
   }
@@ -346,6 +347,20 @@ export class PrepareComponentsService {
     }
 
     return attrs;
+  }
+
+  private handlePrevScreensDisplayOff(components: ComponentDto[], cachedAnswers: CachedAnswers): ComponentDto[] {
+    const isPrevScreensRefDisplayOff = ({ attrs }: ComponentDto): boolean => {
+      const refs = attrs?.ref as CustomComponentRef[];
+      if(Array.isArray(refs)) {
+        const displayOff = refs.find((ref) => this.refRelationService.isDisplayOffRelation(ref?.relation));
+        if(displayOff) {
+          const prevScreensDisplayOffRelation = cachedAnswers[displayOff.relatedRel];
+          return this.refRelationService.isValueEquals(displayOff.val, prevScreensDisplayOffRelation?.value);
+        }
+      }
+    };
+    return components.filter((component) => !isPrevScreensRefDisplayOff(component));
   }
 
   private handleRelatedRelComponents(
