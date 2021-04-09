@@ -13,7 +13,8 @@ import {
   AUTH_ERROR_MODAL_PARAMS,
   COMMON_ERROR_MODAL_PARAMS,
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
-  DRAFT_STATEMENT_NOT_FOUND, BOOKING_ONLINE_ERROR,
+  DRAFT_STATEMENT_NOT_FOUND,
+  BOOKING_ONLINE_ERROR,
 } from './errors.interceptor.constants';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
@@ -44,9 +45,14 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     return this.modalService.openModal(ConfirmationModalComponent, params).toPromise();
   }
 
-  private handleResponseError(httpErrorResponse: HttpErrorResponse): Observable<HttpEvent<void | never>> {
-    const { status, url, error } = httpErrorResponse;
-    if (error?.errorModalWindow) {
+  private handleResponseError(
+    httpErrorResponse: HttpErrorResponse,
+  ): Observable<HttpEvent<void | never>> {
+    const { status, url, error, statusText } = httpErrorResponse;
+
+    if (statusText === 'component component') {
+      return throwError(httpErrorResponse);
+    } else if (error?.errorModalWindow) {
       this.showModal(error.errorModalWindow);
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {

@@ -1,0 +1,30 @@
+@import 'src/styles/core';
+
+:host {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  @include tablets-down {
+    margin-top: auto;
+  }
+}
+
+.screen-button {
+  margin: 24px 0 0 24px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  @include screen-button-width;
+  @include tablets-down {
+    margin-left: 0;
+  }
+
+  ::ng-deep {
+    button {
+      @include screen-inner-button-width;
+    }
+  }
+}
