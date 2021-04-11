@@ -18,6 +18,7 @@ import { DeviceDetectorService } from '../../../../core/services/device-detector
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import {
+  ActionType,
   ApplicantAnswersDto,
   ScreenActionDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -402,8 +403,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         okato: this.componentValue?.okato,
       };
 
-      if (this.screenActionButtons.length > 0) {
-        this.actionService.openConfirmationModal(this.screenActionButtons[0], this.data.id, () => {
+      const confirmationModalButtons = this.screenActionButtons.filter(
+        (button) => button.type === ActionType.confirmModalStep,
+      );
+
+      if (confirmationModalButtons.length > 0) {
+        this.actionService.openConfirmationModal(confirmationModalButtons[0], this.data.id, () => {
           this.currentAnswersService.state = answer;
           this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         });
