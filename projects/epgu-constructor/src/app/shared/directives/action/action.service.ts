@@ -209,6 +209,9 @@ export class ActionService {
     let value: string;
     if (action.type === ActionType.skipStep) {
       value = '';
+    }
+    else if (action.value !== undefined) {
+      value = action.value;
     } else {
       value =
         typeof this.currentAnswersService.state === 'object'
