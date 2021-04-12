@@ -14,5 +14,5 @@ export class LabelComponent {
   @Input() isTextHelper: boolean;
   @Input() label: string;
   @Input() clarifications: Clarifications;
-  @Input() isRadioGroup: boolean;
+  @Input() largeFontSize: boolean;
 }

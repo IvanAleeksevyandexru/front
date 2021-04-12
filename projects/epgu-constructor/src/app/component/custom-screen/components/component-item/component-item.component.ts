@@ -16,7 +16,7 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   @Input() disableLabel = false;
   @Input() disableError = false;
   @Input() disableHint = false;
-  @Input() isRadioGroup = false;
+  @Input() largeFontSize = false;
 
   readonly componentType = CustomScreenComponentTypes;
   public isHelperTextVisible = false;
