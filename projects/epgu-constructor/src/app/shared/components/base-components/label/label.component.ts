@@ -14,4 +14,5 @@ export class LabelComponent {
   @Input() isTextHelper: boolean;
   @Input() label: string;
   @Input() clarifications: Clarifications;
+  @Input() largeFontSize: boolean;
 }
