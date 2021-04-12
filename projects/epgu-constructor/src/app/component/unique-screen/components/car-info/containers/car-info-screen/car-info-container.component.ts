@@ -31,6 +31,7 @@ export class CarInfoContainerComponent {
     map((component: ComponentDto) => {
       const carInfo = JSON.parse(component.value);
       this.currentAnswersService.state = carInfo;
+      this.currentAnswersService.isValid = true;
 
       const attrs = <CarInfoComponentAttrsDto>component?.attrs;
       this.carInfoErrors = this.mapCarInfoErrors(attrs?.errors, carInfo);
