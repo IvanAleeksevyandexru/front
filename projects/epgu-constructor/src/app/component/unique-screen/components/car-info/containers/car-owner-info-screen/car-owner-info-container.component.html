@@ -11,6 +11,7 @@
   ></epgu-constructor-car-owner-info>
 
   <epgu-constructor-car-owner-info-link
-    [pdfLink]="pdfLink$ | async"
+    *ngIf="pdfLink$ | async as downloadLink"
+    [pdfLink]="downloadLink"
   ></epgu-constructor-car-owner-info-link>
 </epgu-constructor-default-unique-screen-wrapper>
