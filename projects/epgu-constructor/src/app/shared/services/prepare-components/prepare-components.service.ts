@@ -32,8 +32,7 @@ export class PrepareComponentsService {
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
     let preparedComponents;
-    preparedComponents = this.handlePrevScreensDisplayOff(components, cachedAnswers);
-    preparedComponents = this.loadValueFromCachedAnswer(preparedComponents, cachedAnswers);
+    preparedComponents = this.loadValueFromCachedAnswer(components, cachedAnswers);
     preparedComponents = this.handleRelatedRelComponents(preparedComponents, cachedAnswers);
     return preparedComponents;
   }
@@ -349,36 +348,24 @@ export class PrepareComponentsService {
     return attrs;
   }
 
-  private handlePrevScreensDisplayOff(components: ComponentDto[], cachedAnswers: CachedAnswers): ComponentDto[] {
-    const isPrevScreensRefDisplayOff = ({ attrs }: ComponentDto): boolean => {
-      const refs = attrs?.ref as CustomComponentRef[];
-      if(Array.isArray(refs)) {
-        const displayOff = refs.find((ref) => this.refRelationService.isDisplayOffRelation(ref?.relation));
-        if(displayOff) {
-          const prevScreensDisplayOffRelation = cachedAnswers[displayOff.relatedRel];
-          return this.refRelationService.isValueEquals(displayOff.val, prevScreensDisplayOffRelation?.value);
-        }
-      }
-    };
-    return components.filter((component) => !isPrevScreensRefDisplayOff(component));
-  }
-
   private handleRelatedRelComponents(
     components: Array<ComponentDto>,
     cachedAnswers: CachedAnswers,
   ): Array<ScreenStoreComponentDtoI> {
-    return components.map((component) => {
-      const ref = component.attrs?.ref;
-      if (ref && Array.isArray(ref)) {
-        return this.handleCustomComponentRef(
-          component,
-          ref as CustomComponentRef[],
-          components,
-          cachedAnswers,
-        );
-      }
+    return components
+      .filter((component) => !this.isPrevScreensRefDisplayOff(component, cachedAnswers))
+      .map((component) => {
+        const ref = component.attrs?.ref;
+        if (ref && Array.isArray(ref)) {
+          return this.handleCustomComponentRef(
+            component,
+            ref as CustomComponentRef[],
+            components,
+            cachedAnswers,
+          );
+        }
 
-      return component;
+        return component;
     });
   }
 
@@ -407,6 +394,17 @@ export class PrepareComponentsService {
     });
 
     return component;
+  }
+
+  private isPrevScreensRefDisplayOff({ attrs }: ComponentDto, cachedAnswers: CachedAnswers): boolean {
+    const refs = attrs?.ref as CustomComponentRef[];
+    if(Array.isArray(refs)) {
+      const displayOff = refs.find((ref) => this.refRelationService.isDisplayOffRelation(ref.relation));
+      if(displayOff) {
+        const prevScreensDisplayOffRelation = cachedAnswers[displayOff.relatedRel];
+        return this.refRelationService.isValueEquals(displayOff.val, prevScreensDisplayOffRelation?.value);
+      }
+    }
   }
 
   private handleDisplayOff(
