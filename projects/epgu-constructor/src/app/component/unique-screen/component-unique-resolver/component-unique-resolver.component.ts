@@ -15,28 +15,25 @@ import {
 } from '@angular/core';
 import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { ScreenService } from '../../screen/screen.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenService } from '../../../screen/screen.service';
 import {
   ScreenComponentTypes,
   ComponentTypes,
   UNIQUE_SCREEN_COMPONENTS,
-  CUSTOM_SCREEN_COMPONENTS,
-} from './component-resolver.const';
-import { ScreenTypes } from '../../screen/screen.types';
+} from './component-unique-resolver.const';
+import { ScreenTypes } from '../../../screen/screen.types';
 
 @Component({
-  selector: 'epgu-constructor-component-resolver',
-  templateUrl: './component-resolver.component.html',
-  styleUrls: ['./component-resolver.component.scss'],
+  selector: 'epgu-constructor-component-unique-resolver',
+  templateUrl: './component-unique-resolver.component.html',
+  styleUrls: ['./component-unique-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class ComponentResolverComponent implements AfterViewInit, OnChanges {
+export class ComponentUniqueResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('componentContainer', { read: ViewContainerRef }) componentContainer: ViewContainerRef;
   @Input() componentIndex = 0;
-  @Input() componentsGroupIndex = 0;
-  @Input() componentType: ComponentTypes;
   componentRef: ComponentRef<ScreenComponentTypes>;
 
   constructor(
@@ -50,8 +47,6 @@ export class ComponentResolverComponent implements AfterViewInit, OnChanges {
     if (this.componentRef && (changes.componentsGroupIndex || changes.componentIndex)) {
       // @ts-ignore
       this.componentRef.instance.componentIndex = this.componentIndex;
-      // @ts-ignore
-      this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
     }
   }
 
@@ -63,10 +58,8 @@ export class ComponentResolverComponent implements AfterViewInit, OnChanges {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(({ components, type: screenType }) => {
-        const isComponentList = !!this.componentType; // TODO: удалить с 11го релиза
-        const cmpType =
-          this.componentType ?? (components[this.componentIndex].type as ComponentTypes);
-        this.createComponent(cmpType, screenType, isComponentList);
+        const cmpType = components[this.componentIndex].type as ComponentTypes;
+        this.createComponent(cmpType, screenType);
         this.cdr.detectChanges();
       });
   }
@@ -78,12 +71,8 @@ export class ComponentResolverComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  createComponent(
-    cmpType: ComponentTypes,
-    screenType: ScreenTypes,
-    isComponentList: boolean,
-  ): void {
-    const component = this.getComponentByType(cmpType, screenType, isComponentList);
+  createComponent(cmpType: ComponentTypes, screenType: ScreenTypes): void {
+    const component = this.getComponentByType(cmpType);
 
     if (!component) {
       this.handleComponentError(cmpType, screenType);
@@ -96,37 +85,10 @@ export class ComponentResolverComponent implements AfterViewInit, OnChanges {
 
     // @ts-ignore
     this.componentRef.instance.componentIndex = this.componentIndex;
-    // @ts-ignore
-    this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
   }
 
-  getComponentByType(
-    cmpType: ComponentTypes,
-    screenType: ScreenTypes,
-    isComponentList: boolean,
-  ): Type<ScreenComponentTypes> {
-    if (
-      screenType === ScreenTypes.CUSTOM ||
-      screenType === ScreenTypes.REPEATABLE ||
-      this.isRepeatableFieldCase(cmpType, screenType, isComponentList)
-    ) {
-      return CUSTOM_SCREEN_COMPONENTS[cmpType];
-    }
-    if (screenType === ScreenTypes.UNIQUE) {
-      return UNIQUE_SCREEN_COMPONENTS[cmpType];
-    }
-    return null;
-  }
-
-  // TODO: удалить с 11го релиза
-  private isRepeatableFieldCase(
-    cmpType: ComponentTypes,
-    screenType: ScreenTypes,
-    isComponentList: boolean,
-  ): boolean {
-    return (
-      screenType === ScreenTypes.UNIQUE && CUSTOM_SCREEN_COMPONENTS[cmpType] && isComponentList
-    );
+  getComponentByType(cmpType: ComponentTypes): Type<ScreenComponentTypes> {
+    return UNIQUE_SCREEN_COMPONENTS[cmpType];
   }
 
   private handleComponentError(cmpType: ComponentTypes, screenType: ScreenTypes): never {
