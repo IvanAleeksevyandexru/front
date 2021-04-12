@@ -115,7 +115,6 @@ export abstract class FormPlayerBaseService {
     if (error.status) {
       this.loggerBase.error([error], groupLogName);
     } else {
-      // NOTICE: passing business errors to components layers, do not change this component!
       this.loggerBase.error([businessError.scenarioDto?.errors], groupLogName);
       this.initResponse(businessError);
     }

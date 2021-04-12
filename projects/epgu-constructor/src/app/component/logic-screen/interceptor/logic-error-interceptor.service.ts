@@ -13,7 +13,7 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 
 @Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
+export class LogicErrorInterceptor implements HttpInterceptor {
   constructor(private localStorage: LocalStorageService) {}
 
   intercept(
