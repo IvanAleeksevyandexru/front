@@ -112,6 +112,7 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
         [hidden]="componentData.value?.attrs?.hidden"
+        [largeFontSize]="true"
       >
         <div
           class="form__radio"
@@ -134,11 +135,11 @@
       <ng-container
         *ngIf="isResolverRender(componentData)"
       >
-        <epgu-constructor-component-resolver
+        <epgu-constructor-component-list-resolver
           [componentIndex]="idx"
           [componentsGroupIndex]="componentsGroupIndex"
           [componentType]="componentData.value?.type"
-        ></epgu-constructor-component-resolver>
+        ></epgu-constructor-component-list-resolver>
       </ng-container>
 
     </ng-container>

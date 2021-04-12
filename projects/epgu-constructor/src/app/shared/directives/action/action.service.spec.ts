@@ -70,7 +70,6 @@ const skipAction: ComponentActionDto = {
 
 const nextAction: ComponentActionDto = {
   label: '',
-  value: '',
   action: DTOActionAction.editPhoneNumber,
   type: ActionType.nextStep,
 };

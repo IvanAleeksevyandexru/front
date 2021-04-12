@@ -13,5 +13,5 @@ export class DefaultUniqueScreenWrapperComponent {
   @Input() header: string;
   @Input() screenButtons: Array<ScreenActionDto>;
   @Input() isLoading: boolean;
-  @Input() isValid: boolean;
+  @Input() isValid = true;
 }
