@@ -382,14 +382,14 @@ describe('PrepareComponentsService', () => {
     const relation = {
       relatedRel: 's2',
       relation: CustomComponentRefRelation.displayOff,
-      val: 'true',
+      val: true,
     };
-    const prepareRef = (value: string = 'fake value') => {
+    const prepareRef = () => {
       components[0].attrs.ref = [relation];
       cachedAnswers = {
         s2: {
           visited: true,
-          value: value,
+          value: 'true',
         },
       };
     };
@@ -434,18 +434,6 @@ describe('PrepareComponentsService', () => {
         components,
         cachedAnswers,
       );
-    });
-
-    it('should be return without displayOff',  () => {
-      prepareRef(relation.val);
-      const result = service['handleRelatedRelComponents']([components[0]], cachedAnswers);
-      expect(result).toEqual([]);
-    });
-
-    it('should be return with displayOff',  () => {
-      prepareRef('false');
-      const result = service['handleRelatedRelComponents']([components[0]], cachedAnswers);
-      expect(result).toEqual([components[0]]);
     });
   });
 
