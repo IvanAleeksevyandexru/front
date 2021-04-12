@@ -362,7 +362,6 @@ export class PrepareComponentsService {
           cachedAnswers,
         );
       }
-
       return component;
     });
   }

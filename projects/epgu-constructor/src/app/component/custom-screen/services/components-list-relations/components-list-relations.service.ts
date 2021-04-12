@@ -19,6 +19,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef } from '../../../../shared/services/date-range/date-range.models';
+import { CachedAnswers } from '../../../../screen/screen.types';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -80,13 +81,13 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  public createStatusElements(components: Array<CustomComponent>): CustomListStatusElements {
+  public createStatusElements(components: Array<CustomComponent>, cachedAnswers: CachedAnswers): CustomListStatusElements {
     return components.reduce(
       (acc, component: CustomComponent) => ({
         ...acc,
         [component.id]: {
           relation: CustomComponentRefRelation.displayOn,
-          isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+          isShown: !this.hasRelation(component, cachedAnswers),
         },
       }),
       {},
@@ -141,8 +142,15 @@ export class ComponentsListRelationsService {
     }
   }
 
-  public hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
-    return component.attrs.ref?.some((o) => o.relation === relation);
+  public hasRelation(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
+    const refs = component.attrs?.ref;
+    const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
+
+    if(displayOff && cachedAnswers[displayOff?.relatedRel]) {
+      return this.refRelationService.isValueEquals(displayOff.val, cachedAnswers[displayOff.relatedRel].value);
+    } else {
+      return refs?.some((o) => this.refRelationService.isDisplayOnRelation(o.relation));
+    }
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {

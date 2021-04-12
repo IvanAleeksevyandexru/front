@@ -74,7 +74,7 @@ export class ComponentsListFormService {
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
-    this._shownElements = this.componentsListRelationsService.createStatusElements(components);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(components, this.screenService.cachedAnswers);
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
