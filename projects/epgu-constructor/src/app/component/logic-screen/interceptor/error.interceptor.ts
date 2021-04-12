@@ -27,7 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (isLogicComponentRequest) {
           const logicResponseError = new HttpErrorResponse({
             ...err,
-            statusText: 'component component',
+            statusText: 'logic component',
           });
 
           return throwError(logicResponseError);

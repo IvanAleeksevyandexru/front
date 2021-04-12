@@ -50,7 +50,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
   ): Observable<HttpEvent<void | never>> {
     const { status, url, error, statusText } = httpErrorResponse;
 
-    if (statusText === 'component component') {
+    if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
     } else if (error?.errorModalWindow) {
       this.showModal(error.errorModalWindow);
