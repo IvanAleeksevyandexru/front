@@ -23,6 +23,19 @@ import { Gender } from '../../../../../../shared/types/gender';
 import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { PrepareComponentsService } from '../../../../../../shared/services/prepare-components/prepare-components.service';
+import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
+import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../../core/services/logger/logger.service';
+import { ComponentsListRelationsService } from '../../../../../custom-screen/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
+import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -69,6 +82,19 @@ describe('EmployeeHistoryFormComponent', () => {
         EmployeeHistoryMonthsService,
         EventBusService,
         DatesToolsService,
+        ScreenService,
+        CurrentAnswersService,
+        DeviceDetectorService,
+        PrepareComponentsService,
+        CachedAnswersService,
+        DictionaryToolsService,
+        DictionaryApiService,
+        ConfigService,
+        LoggerService,
+        ComponentsListRelationsService,
+        DateRangeService,
+        RefRelationService,
+        SuggestHandlerService,
       ],
     })
       .overrideComponent(EmployeeHistoryFormComponent, {
@@ -76,9 +102,7 @@ describe('EmployeeHistoryFormComponent', () => {
       })
       .compileComponents();
     datesToolsService = TestBed.inject(DatesToolsService);
-    jest
-      .spyOn(datesToolsService, 'getToday')
-      .mockResolvedValue(new Date(MOCK_TODAY));
+    jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date(MOCK_TODAY));
   });
 
   beforeEach(() => {

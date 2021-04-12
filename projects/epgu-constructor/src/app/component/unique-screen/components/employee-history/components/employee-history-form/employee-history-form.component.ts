@@ -23,6 +23,10 @@ import {
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
 import { Gender } from '../../../../../../shared/types/gender';
+import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 @Component({
   selector: 'epgu-constructor-employee-history-form',
@@ -39,6 +43,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   @Output() updateFormEvent = new EventEmitter<EmployeeHistoryFormData>();
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
@@ -46,6 +51,8 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
     public monthsService: EmployeeHistoryMonthsService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
+    public screenService: ScreenService,
+    public suggestHandlerService: SuggestHandlerService,
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +79,15 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
       .subscribe((isValid) => {
         const data = this.employeeFormService.employeeHistoryForm.getRawValue();
         this.updateFormEvent.emit({ isValid, data });
+      });
+
+    this.screenService.suggestions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((suggestions) => {
+        const [component] = this.init;
+        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
+          suggestions[component.id],
+        );
       });
   }
 
