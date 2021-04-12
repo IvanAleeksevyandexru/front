@@ -1,3 +1,4 @@
+import { ActionType } from './../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -300,6 +301,7 @@ describe('CustomScreenComponent', () => {
       screenService.buttons = [{
         label: 'any',
         action: DTOActionAction.getNextStep,
+        type: ActionType.nextStep
       }];
 
       screenService.isLoadingSubject.next(true);
