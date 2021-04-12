@@ -12,7 +12,7 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
-import { ComponentResolverComponent } from '../../component/component-resolver/component-resolver.component';
+import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -48,7 +48,7 @@ describe('UniqueScreenComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         UniqueScreenComponent,
-        ComponentResolverComponent,
+        ComponentUniqueResolverComponent,
       ],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
