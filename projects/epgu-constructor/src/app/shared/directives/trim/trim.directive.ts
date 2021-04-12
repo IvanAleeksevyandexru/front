@@ -10,12 +10,14 @@ export class TrimDirective {
   @HostListener('focusout', ['$event.target'])
   onFocusOut(target: HTMLInputElement): void {
     if (this.isTrim) {
-      const key = this.isMultiline ? 'textContent' : 'value';
+      const key = this.isMultiline ? 'innerText' : 'value';
       if (this.isNeedUpdateDueToSpaces(target[key])) {
         const value = !this.isMultiline
           ? this.removeUnacceptableSymbolsFromBeginning(target[key])
           : target[key];
+
         target[key] = this.removeExtraSpacesBetweenWords(value).trim();
+
         target.dispatchEvent(new Event('input')); // triggers input event for updating value in model
       }
     }
@@ -27,10 +29,10 @@ export class TrimDirective {
   }
 
   removeExtraSpacesBetweenWords(value: string): string {
-    return value.replace(/\s{2,}/g, ' ');
+    return value.replace(/[^\S\r\n]{2,}/gm, ' ');
   }
 
   private isNeedUpdateDueToSpaces(value: string): boolean {
-    return /\s{2,}/g.test(value) || /^\s|\s$/.test(value);
+    return /[^\S\r\n]{2,}/g.test(value) || /^\s|\s$/.test(value);
   }
 }
