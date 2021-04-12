@@ -1,24 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  OnInit,
-} from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
-} from '../../shared/components/components-list/components-list.types';
+} from '../../component/custom-screen/components-list.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import {
-  ComponentActionDto,
-  ScreenActionDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenBase } from '../screen-base';
 import { CustomScreenService } from './custom-screen.service';
-import { NEXT_STEP_ACTION } from '../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-custom-screen',
@@ -27,31 +15,12 @@ import { NEXT_STEP_ACTION } from '../../shared/constants/actions';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class CustomScreenComponent extends ScreenBase implements OnInit {
-  screenActionButtons: ScreenActionDto[] = [];
+export class CustomScreenComponent extends ScreenBase {
   dataToSend: NavigationPayload;
   isValid: boolean;
-  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
-  constructor(
-    public injector: Injector,
-    private customScreenService: CustomScreenService,
-    private changeDetectionRef: ChangeDetectorRef,
-  ) {
+  constructor(public injector: Injector, private customScreenService: CustomScreenService) {
     super(injector);
-  }
-
-  ngOnInit(): void {
-    this.screenService.buttons$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenActionDto>) => {
-        this.screenActionButtons = buttons || [];
-        this.changeDetectionRef.markForCheck();
-      });
-  }
-
-  nextStep(): void {
-    // TODO: заглушка для абстрактного метода ScreenBase
   }
 
   /**

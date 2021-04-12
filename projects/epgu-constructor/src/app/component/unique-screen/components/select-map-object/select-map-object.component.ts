@@ -18,6 +18,7 @@ import { DeviceDetectorService } from '../../../../core/services/device-detector
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import {
+  ActionType,
   ApplicantAnswersDto,
   ScreenActionDto,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -203,20 +204,24 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initSelectedValue(): void {
-    if (this.data?.value && this.data?.value !== '{}') {
-      const mapObject = JSON.parse(this.data?.value);
+    if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
+      const mapObject = UtilsService.tryToParse(this.data?.value) as DictionaryYMapItem;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
-      } else if (this.needToAutoFocus) {
+      } else if (this.needToAutoFocus && this.areMapObjectsFound()) {
         this.selectClosestMapObject();
       } else if (this.needToAutoCenterAllPoints) {
         this.centerAllPoints();
       }
     }
+  }
+
+  private areMapObjectsFound(): boolean {
+    return this.selectMapObjectService.filteredDictionaryItems.length > 0;
   }
 
   /**
@@ -402,8 +407,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         okato: this.componentValue?.okato,
       };
 
-      if (this.screenActionButtons.length > 0) {
-        this.actionService.openConfirmationModal(this.screenActionButtons[0], this.data.id, () => {
+      const confirmationModalButtons = this.screenActionButtons.filter(
+        (button) => button.type === ActionType.confirmModalStep,
+      );
+
+      if (confirmationModalButtons.length > 0) {
+        this.actionService.openConfirmationModal(confirmationModalButtons[0], this.data.id, () => {
           this.currentAnswersService.state = answer;
           this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         });

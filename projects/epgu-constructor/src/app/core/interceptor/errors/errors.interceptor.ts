@@ -46,7 +46,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
 
   private handleResponseError(httpErrorResponse: HttpErrorResponse): Observable<HttpEvent<void | never>> {
     const { status, url, error } = httpErrorResponse;
-    if (error.errorModalWindow) {
+    if (error?.errorModalWindow) {
       this.showModal(error.errorModalWindow);
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {

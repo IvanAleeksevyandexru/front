@@ -1,0 +1,20 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <epgu-constructor-constructor-date-picker
+    (clearedEvent)="clearDate(control.value?.id, control.value?.attrs)"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [name]="control.value?.id"
+    [control]="$any(control.get('value'))"
+    [component]="control.value"
+    [readOnly]="control.value?.attrs?.readonly"
+    [minDate]="control.value?.attrs?.minDate || minDateDefault"
+    [maxDate]="control.value?.attrs?.maxDate || maxDateDefault"
+    [clearable]="clearable"
+    [align]="align"
+    [brokenDateFixStrategy]="control.value?.attrs?.brokenDateFixStrategy || strategy"
+  ></epgu-constructor-constructor-date-picker>
+</epgu-constructor-component-item>

@@ -28,60 +28,51 @@
     }
   }
 
+  ul,
+  ol {
+    padding: 0;
+    margin: 0 0 0 16px;
+    list-style: none;
+  }
+
   ol {
     counter-reset: number;
   }
 
   li {
     line-height: 24px;
+    padding-left: 20px;
+    position: relative;
 
     &:first-letter {
-      margin-top: 0;
       text-transform: uppercase;
-    }
-  }
-
-  ul,
-  ol {
-    padding: 0;
-    margin: 0 0 0 12px;
-    list-style: none;
-  }
-
-  ol li {
-    padding-left: 24px;
-    position: relative;
-
-    &::after {
-      counter-increment: number;
-      content: counter(number) '.';
-      color: $color-blu-digitale;
-      position: absolute;
-      left: 3px;
-      top: 0;
-    }
-  }
-
-  ul li {
-    padding-left: 24px;
-    position: relative;
-
-    &::after {
-      color: $color-blu-digitale;
-      content: '•';
-      display: inline-block;
-      font-weight: 900;
-      width: 1em;
-      vertical-align: top;
-      font-size: 17px;
-      position: absolute;
-      left: 3px;
-      top: 0;
     }
 
     .block--description {
-      margin-left: -24px;
+      margin-left: -20px;
     }
+  }
+
+  ul li::after {
+    content: ' ';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    display: inline-block;
+    vertical-align: middle;
+    width: 8px;
+    height: 8px;
+    border-radius: 9px;
+    background-color: $color-blu-digitale;
+  }
+
+  ol li::after {
+    counter-increment: number;
+    content: counter(number) '.';
+    color: $color-blu-digitale;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
   ul li ul,
@@ -89,8 +80,6 @@
     margin: 12px 0 0 0;
 
     li {
-      padding-left: 20px;
-
       &:first-letter {
         text-transform: lowercase;
       }
@@ -116,17 +105,32 @@
     }
   }
 
-  ul:not(:first-child),
+  ul:not(:first-child):not(li ul) {
+    margin-top: 8px;
+  }
+
   ol:not(:first-child) {
-    margin: 24px 0 0 12px;
+    margin-top: 12px;
   }
 
   li:not(:first-child) {
     margin-top: 12px;
   }
 
+  ol > li:nth-child(n + 10) {
+    padding-left: 20px + 9px;
+  }
+
+  ol > li:nth-child(n + 100) {
+    padding-left: 20px + 2 * 9px;
+  }
+
   p {
     margin-top: 12px;
+
+    &:not(:first-child) {
+      margin-top: 12px;
+    }
 
     &:last-child {
       margin-bottom: 0;
@@ -136,4 +140,12 @@
       margin-top: 0;
     }
   }
+}
+
+:host-context(.gray-theme)::ng-deep ul:not(li ul) {
+  background-color: $color-white;
+  border-radius: 8px;
+  box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+  margin-left: 0;
+  padding: 24px;
 }

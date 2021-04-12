@@ -44,7 +44,8 @@ export enum RequestStatus {
 @Injectable()
 export class HealthInterceptor implements HttpInterceptor {
   private configParams: ConfigParams = {} as ConfigParams;
-  private lastUtlPart: string = null;
+  private lastUrlPart: string = null;
+  private region: number = null;
 
   constructor(private health: HealthService, private utils: UtilsService) {}
 
@@ -53,7 +54,7 @@ export class HealthInterceptor implements HttpInterceptor {
     let serviceName = '';
 
     if (this.isValid(req)) {
-      this.lastUtlPart = this.utils.getSplittedUrl(req['url']).slice(-1)[0];
+      this.lastUrlPart = this.utils.getSplittedUrl(req['url']).slice(-1)[0];
       serviceName = this.utils.getServiceName(req['url']);
       serviceName = serviceName === 'scenarioGetNextStepService' ? RENDER_FORM_SERVICE_NAME : serviceName;
       this.startMeasureHealth(serviceName);
@@ -63,7 +64,7 @@ export class HealthInterceptor implements HttpInterceptor {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tap((response: HttpResponse<any>) => {
         if (this.isValid(response)) {
-          const result = response.body;
+          const result = response.body || {};
           const validationStatus = this.utils.isValidScenarioDto(result);
           let successRequestPayload = null;
           let dictionaryValidationStatus = false;
@@ -74,35 +75,32 @@ export class HealthInterceptor implements HttpInterceptor {
           );
 
           if (validationStatus) {
-            let isEmpty = null;
-            let region = null;
-            let regdictname = null;
-
-            const { scenarioDto, serviceInfo } = result;
+            const { scenarioDto } = result;
             const orderId = this.utils.isValidOrderId(scenarioDto.orderId)
             ? scenarioDto.orderId
             : result.callBackOrderId;
 
             if (
-              this.utils.isDefined(serviceInfo) &&
-              this.utils.isDefined(serviceInfo.userRegion) &&
-              this.utils.isDefined(serviceInfo.userRegion.codes)
+              this.utils.isDefined(scenarioDto?.serviceInfo) &&
+              this.utils.isDefined(scenarioDto?.serviceInfo?.userRegion) &&
+              this.utils.isDefined(scenarioDto?.serviceInfo?.userRegion?.codes)
             ) {
-              region = serviceInfo.userRegion.codes[0];
-            }
-
-            if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
-              isEmpty = result.total <= 0;
-              regdictname = this.lastUtlPart;
+              this.region = scenarioDto.serviceInfo.userRegion.codes[0];
             }
 
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
               orderId,
-              region,
-              regdictname,
-              isEmpty,
+              region: this.region,
+            };
+          }
+
+          if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
+            this.configParams = {
+              ...this.configParams,
+              isEmpty: result.total > 0 ? false : true,
+              regdictname: this.lastUrlPart,
             };
           }
 
@@ -165,10 +163,16 @@ export class HealthInterceptor implements HttpInterceptor {
             } else {
               this.configParams['errorMessage'] = this.utils.cyrillicToLatin(err.message);
             }
-
-            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.configParams);
+            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields(
+              this.configParams,
+            ) as ConfigParams);
           } else {
-            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.configParams);
+            this.configParams = this.utils.filterIncorrectObjectFields(
+              this.configParams,
+            ) as ConfigParams;
+            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(
+              this.configParams,
+            ) as ConfigParams);
           }
         }
         return throwError(err);
@@ -207,7 +211,7 @@ export class HealthInterceptor implements HttpInterceptor {
     return (
       this.utils.isDefined(error) &&
       this.utils.isDefined(error[key]) &&
-      (Number(error[key]) !== 0 || error[key] !== '0')
+      Number(error[key]) !== 0
     );
   }
 

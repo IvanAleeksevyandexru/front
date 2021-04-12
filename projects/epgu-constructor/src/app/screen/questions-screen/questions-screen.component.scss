@@ -35,14 +35,54 @@
     @include tablets-up {
       margin: 0 0 24px 0;
     }
-    &:focus {
-      outline: none;
-      border-radius: $border-xl;
-      border: 1px dashed $color-divider;
-    }
   }
 }
 
 .screen-body .quiz__answers {
   margin-top: 16px;
+}
+
+// при разном порядке загрузки компонентов перебиваются другими стилями.
+.screen-body.quiz__content {
+  @include tablets-up {
+    margin-bottom: 32px;
+    .quiz__answers {
+      margin-top: 0;
+    }
+  }
+}
+.screen-body .quiz__answer {
+  @include tablets-up {
+    margin-top: 0;
+  }
+}
+
+:host::ng-deep {
+  .quiz__text {
+    @include screen-content;
+  }
+
+  .question-screen .quiz__text {
+    @include screen-content-margins;
+  }
+
+  .quiz__container .screen-footer {
+    @include tablets-down {
+      flex-wrap: wrap;
+    }
+  }
+
+  .screen-body.screen-body {
+    @include tablets-up {
+      margin-bottom: 16px;
+    }
+
+    @include tablets-down {
+      margin-bottom: 0;
+    }
+  }
+
+  .screen-footer > .screen-buttons {
+    margin-top: 0;
+  }
 }

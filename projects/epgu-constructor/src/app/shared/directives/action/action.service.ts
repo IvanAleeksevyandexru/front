@@ -6,7 +6,11 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { Navigation, NavigationOptions, NavigationParams, } from '../../../form-player/form-player.types';
+import {
+  Navigation,
+  NavigationOptions,
+  NavigationParams,
+} from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
   ActionApiResponse,
@@ -21,7 +25,7 @@ import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { CustomScreenComponentTypes } from '../../components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../modal/modal.service';
@@ -49,9 +53,13 @@ export class ActionService {
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
-  ) { }
+  ) {}
 
-  public switchAction(action: ComponentActionDto, componentId: string, targetElement?: HTMLElement): void {
+  public switchAction(
+    action: ComponentActionDto,
+    componentId: string,
+    targetElement?: HTMLElement,
+  ): void {
     switch (action.type) {
       case ActionType.download:
         this.downloadAction(action);
@@ -93,12 +101,16 @@ export class ActionService {
         this.openDropdownListModal(action, componentId);
         break;
       case ActionType.deliriumNextStep:
-        this.handleDeliriumAction(action);
+        this.handleDeliriumAction$(action).subscribe();
         break;
     }
   }
 
-  public openConfirmationModal(action: ComponentActionDto, componentId: string, handler?: Function): void {
+  public openConfirmationModal(
+    action: ComponentActionDto,
+    componentId: string,
+    handler?: Function,
+  ): void {
     const data = this.getActionDTO(action);
     const confirmations = data.scenarioDto?.display?.confirmations;
     if (!confirmations || !confirmations[action.value]) {
@@ -114,9 +126,11 @@ export class ActionService {
         {
           label: confirmation?.submitLabel || 'Отправить',
           closeModal: true,
-          handler: handler ? handler : (): void => {
-            this.navigate(action, componentId, 'nextStep');
-          },
+          handler: handler
+            ? handler
+            : (): void => {
+                this.navigate(action, componentId, 'nextStep');
+              },
         },
       ],
       showCrossButton: true,
@@ -196,9 +210,10 @@ export class ActionService {
     if (action.type === ActionType.skipStep) {
       value = '';
     } else {
-      value = typeof this.currentAnswersService.state === 'object'
-        ? JSON.stringify(this.currentAnswersService.state)
-        : this.currentAnswersService.state;
+      value =
+        typeof this.currentAnswersService.state === 'object'
+          ? JSON.stringify(this.currentAnswersService.state)
+          : this.currentAnswersService.state;
     }
 
     return {
@@ -277,11 +292,14 @@ export class ActionService {
     }
   }
 
-  private openDropdownListModal({ value: clarificationId }: ComponentActionDto, componentId: string): void {
+  private openDropdownListModal(
+    { value: clarificationId }: ComponentActionDto,
+    componentId: string,
+  ): void {
     this.modalService.openModal(DropdownListModalComponent, { componentId, clarificationId });
   }
 
-  private handleDeliriumAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
+  private handleDeliriumAction$<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
     const body = this.getActionDTO(action);
     const preparedBody = JSON.parse(JSON.stringify(body));
     preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);

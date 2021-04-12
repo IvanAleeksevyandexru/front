@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { FormControl } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
-} from '../../components/components-list/components-list.types';
-import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
+} from '../../../component/custom-screen/components-list.types';
+import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
 import { ValidationService } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -192,7 +192,7 @@ describe('ValidationService', () => {
       { type: CustomScreenComponentTypes.OgrnipInput, attrs },
       { type: CustomScreenComponentTypes.SnilsInput, attrs },
       { type: CustomScreenComponentTypes.PersonInnInput, attrs },
-      { type: CustomScreenComponentTypes.LegalInnInput, attrs }
+      { type: CustomScreenComponentTypes.LegalInnInput, attrs },
     ];
     const control = new FormControl('input');
     control.setValue('12');
@@ -232,7 +232,17 @@ describe('ValidationService', () => {
     });
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('checkRS', () => {
+    it('should be return true', () => {
+      service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);
+      const isValid = service.checkRS('40702810900000002851', { bik: 'bik' });
+      expect(isValid).toBeTruthy();
+    });
+
+    it('should be return false', () => {
+      service.form = new FormArray([new FormControl({ id: 'bik', value: '049205603' })]);
+      const isValid = service.checkRS('40817810362001249935', { bik: 'bik' });
+      expect(isValid).toBeFalsy();
+    });
   });
 });

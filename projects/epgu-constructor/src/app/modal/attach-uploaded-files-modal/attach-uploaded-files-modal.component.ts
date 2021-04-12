@@ -14,7 +14,7 @@ import {
   ErrorActions,
   FileItem,
   FileItemStatus,
-} from '../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+} from '../../shared/components/file-upload/file-upload-item/data';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
@@ -41,6 +41,7 @@ import { AutocompleteService } from '../../core/services/autocomplete/autocomple
 export class AttachUploadedFilesModalComponent extends ModalBaseComponent implements OnInit {
   @Input() filesList: FileItem[];
   @Input() modalId: string;
+  @Input() acceptTypes: string;
 
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();
@@ -154,8 +155,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
-    return suggestionsUploadedFiles.reduce((acc: FileItem[], file: UploadedFile) => {
-      if (file.mnemonic.includes(this.modalId)) {
+    return suggestionsUploadedFiles.reduce((acc: FileItem[], file: UploadedFile): FileItem[] => {
+      if (this.isIncludedToList(file)) {
         const resultFile = new FileItem(
           FileItemStatus.uploaded,
           `${this.fileUploadApiUrl}/`,
@@ -170,6 +171,13 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
       return acc;
     }, []);
+  }
+
+  private isIncludedToList(file: UploadedFile): boolean {
+    return (
+      file.mnemonic.includes(this.modalId) &&
+      this.acceptTypes.toLowerCase().includes(file.fileExt.toLocaleLowerCase())
+    );
   }
 
   private getSuggestionsFilesGroupedByDate(suggestionsFiles: FileItem[]): [string, FileItem[]][] {

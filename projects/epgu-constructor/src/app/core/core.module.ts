@@ -19,6 +19,7 @@ import { NavigationModalService } from './services/navigation-modal/navigation-m
 import { NavigationService } from './services/navigation/navigation.service';
 import { SessionService } from './services/session/session.service';
 import { UtilsService } from './services/utils/utils.service';
+import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { TracingService } from './services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 
@@ -38,6 +39,7 @@ import { TracingHttpInterceptor } from './interceptor/tracing/tracing.intercepto
     SessionService,
     InitDataService,
     AutocompleteService,
+    TerraByteApiService,
     TracingService,
     {
       provide: ErrorHandler,

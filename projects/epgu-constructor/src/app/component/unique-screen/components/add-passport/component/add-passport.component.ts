@@ -12,12 +12,9 @@ import { Observable } from 'rxjs/internal/Observable';
 import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { Passport } from '../add-passport.models';
-import {
-  ISuggestionItem,
-  ISuggestionItemList,
-} from '../../../../../core/services/autocomplete/autocomplete.inteface';
+import { ISuggestionItem } from '../../../../../core/services/autocomplete/autocomplete.inteface';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
+import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 @Component({
   selector: 'epgu-constructor-add-passport',
@@ -34,9 +31,9 @@ export class AddPassportComponent implements OnInit {
   form: FormGroup;
 
   constructor(
+    public suggestHandlerService: SuggestHandlerService,
     private ngUnsubscribe$: UnsubscribeService,
     private screenService: ScreenService,
-    private eventBusService: EventBusService,
   ) {}
 
   ngOnInit(): void {
@@ -50,19 +47,6 @@ export class AddPassportComponent implements OnInit {
           isValid: this.form.valid,
         });
       });
-  }
-
-  public suggestHandle(event: ISuggestionItem | ISuggestionItemList): void {
-    // NOTICE: необходимо различать два ивента: клик по ссылке "Есть неактуальные данные?" (передается с доп.атрибутом `isEdit`)
-    // и обычный выбор опции из списка саджестов, соответственно, вызывать модалку для удаления неактуальных саджестов или
-    // запускать механизм подстановки выбранного значения в инпут.
-    if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
-      this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
-    } else {
-      this.eventBusService.emit('suggestionSelectedEvent', {
-        ...event,
-      } as ISuggestionItemList);
-    }
   }
 
   private createForm(): void {

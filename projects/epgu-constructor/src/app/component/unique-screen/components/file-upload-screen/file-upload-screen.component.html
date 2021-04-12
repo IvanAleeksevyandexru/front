@@ -4,9 +4,9 @@
     context: {
       isLoading: isLoading$ | async,
       header: header$ | async,
-      applicantAnswers: applicantAnswers$ | async,
-      submitLabel: submitLabel$ | async,
-      data: data$ | async
+      data: data$ | async,
+      disabled: disabled$ | async,
+      buttons: screenService.buttons$ | async
     }
   "
 ></ng-container>
@@ -15,8 +15,8 @@
   #contentComponent
   let-isLoading="isLoading"
   let-header="header"
-  let-applicantAnswers="applicantAnswers"
-  let-submitLabel="submitLabel"
+  let-disabled="disabled"
+  let-buttons="buttons"
   let-data="data"
 >
   <epgu-constructor-screen-container
@@ -28,7 +28,6 @@
 
       <epgu-constructor-file-upload
         [objectId]="screenService.orderIdAsString$ | async"
-        [applicantAnswers]="applicantAnswers"
         [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
         [attributes]="$any(data).attrs"
       >
@@ -36,15 +35,13 @@
     </div>
 
     <div class="screen-footer">
-      <lib-button
-        [showLoader]="isLoading"
-        [disabled]="disabled | async"
-        epgu-constructor-action
-        [action]="nextStepAction"
-        class="submit-button"
-      >
-        {{ submitLabel || 'Продолжить' }}
-      </lib-button>
+      <epgu-constructor-screen-buttons
+        class="screen-buttons"
+        *ngIf="buttons.length"
+        [screenButtons]="buttons"
+        [isLoading]="isLoading"
+        [disabled]="disabled"
+      ></epgu-constructor-screen-buttons>
     </div>
   </epgu-constructor-screen-container>
 </ng-template>

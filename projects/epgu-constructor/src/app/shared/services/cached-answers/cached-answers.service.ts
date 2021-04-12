@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
-import { CustomScreenComponentTypes } from '../../components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
@@ -19,7 +19,6 @@ export const componentsNoCache: Array<string> = [
 
 @Injectable()
 export class CachedAnswersService {
-  constructor(private utils: UtilsService) {}
 
   getCachedValueById(answers: CachedAnswers, id: string): string | null{
     return answers[id]?.value || null;
@@ -36,7 +35,7 @@ export class CachedAnswersService {
    * @param component - компонент из display.components
    */
   parseCachedValue<T = unknown>(cachedValue: string, component: ComponentDto): T {
-    if (!this.utils.hasJsonStructure(cachedValue)) {
+    if (!UtilsService.hasJsonStructure(cachedValue)) {
       throw Error('Cached value should be JSON string');
     }
 

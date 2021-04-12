@@ -118,6 +118,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
 
     if (this.screenService.component) {
+      this.setCancelReservation(
+        this.screenService.component.id,
+        this.screenService.component.attrs?.cancelReservation,
+      );
       this.loadTimeSlots();
     }
   }
@@ -319,6 +323,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     return !this.errorMessage;
   }
 
+  private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
+    this.timeSlotsService.cancelReservation = [currentTimeSlotId, ...(cancelReservation || [])];
+  }
+
   private loadTimeSlots(): void {
     this.inProgress = true;
     this.label = this.screenService.component?.label;
@@ -344,7 +352,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
         this.checkExistenceSlots();
 
-        if (!this.isExistsSlots && this.emptySlotsModal) {
+        if (!this.isExistsSlots && this.emptySlotsModal && !this.timeSlotsService.hasError()) {
           this.showModal(this.emptySlotsModal);
         }
 

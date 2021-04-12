@@ -10,7 +10,6 @@ export class SelectChildrenItemWrapperComponent {
   @Input() idx: number;
   @Input() isMoreThanOneChild: boolean;
   @Input() isSingleChild?: boolean;
-  @Input() hint?: string;
   @Output() removeChildEvent = new EventEmitter<number>();
 
   public removeChild(): void {

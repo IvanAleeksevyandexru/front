@@ -3,12 +3,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { FormControl, NgControl } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BaseModule } from '../../base.module';
 
 @Component({
   selector: 'epgu-constructor-rank-transform-test-component',
-  template: ' <input type="text" [epgu-constructor-rank-transform]="true" /> ',
+  template: `
+    <input
+      type="text"
+      [epgu-constructor-rank-transform]="true"
+      [formControl]="control"
+    />`,
 })
-class RankTransformTestComponent {}
+class RankTransformTestComponent {
+  control =  new FormControl('');
+}
 
 describe('RankTransformDirective', () => {
   let fixture: ComponentFixture<RankTransformTestComponent>;
@@ -17,8 +27,8 @@ describe('RankTransformDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RankTransformDirective, RankTransformTestComponent],
-      providers: [DecimalPipe],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, BaseModule],
+      providers: [DecimalPipe, NgControl],
     })
       .compileComponents()
       .then(() => {
@@ -39,6 +49,6 @@ describe('RankTransformDirective', () => {
 
     input.triggerEventHandler('change', { target: inputNative });
     fixture.detectChanges();
-    expect(inputNative.value).toBe('123,123');
+    expect(inputNative.value).toBe('123\u00a0123');
   });
 });

@@ -36,6 +36,7 @@ export enum ScreenTypes {
   'QUESTION' = 'QUESTION',
   'INFO' = 'INFO',
   'CUSTOM' = 'CUSTOM',
+  'REPEATABLE' = 'REPEATABLE',
   'UNIQUE' = 'UNIQUE',
   'INVITATION_ERROR' = 'INVITATION_ERROR',
   'EMPTY' = 'EMPTY',

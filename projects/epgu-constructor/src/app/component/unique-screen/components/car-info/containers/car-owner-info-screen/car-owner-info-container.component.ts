@@ -1,10 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import {
-  ComponentActionDto,
-  ComponentDto,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { OwnerCarInfo } from '../../models/car-info.interface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -16,7 +13,6 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarOwnerInfoContainerComponent {
-  actions$: Observable<ComponentActionDto[]> = this.screenService.actions$;
   carOwnerInfo$: Observable<OwnerCarInfo> = this.screenService.component$.pipe(
     filter((component: ComponentDto) => !!component.value),
     map((component: ComponentDto) => {

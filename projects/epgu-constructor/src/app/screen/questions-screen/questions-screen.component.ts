@@ -15,8 +15,6 @@ import {
   ComponentActionDto,
   ComponentAnswerDto,
   DTOActionAction,
-  ScreenActionDto,
-  // eslint-disable-next-line import/named
 } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
@@ -32,21 +30,8 @@ import { ScreenBase } from '../screen-base';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
-  rejectAction: ComponentActionDto;
-  submitLabel: string;
-  nextStepAction: ComponentActionDto = {
-    label: 'Далее',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
   isLoading: boolean;
   selectedAnswer: string;
-  isActionsAsLongBtsShown: boolean;
-  isAnswersAsLongBtsShown: boolean;
-  componentActions: Array<ComponentActionDto>;
-  componentAnswers: Array<ComponentAnswerDto>;
-  screenActionButtons: Array<ScreenActionDto>;
 
   constructor(
     public injector: Injector,
@@ -59,14 +44,10 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToComponent();
-    this.subscribeToActionButtons();
-    this.screenService.submitLabel$
+    this.screenService.isLoading$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((label: string) => {
-        this.submitLabel = label;
-        this.nextStepAction.label = label || 'Далее';
-        this.nextStepAction.value = label || 'Далее';
+      .subscribe((isLoading: boolean) => {
+        this.isLoading = isLoading;
         this.changeDetectionRef.markForCheck();
       });
   }
@@ -92,39 +73,6 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     }
     this.selectedAnswer = answer.value;
     this.nextStep(this.getPayload(answer));
-  }
-
-  showAnswerAsLongBtn(answer: ComponentAnswerDto | ComponentActionDto): boolean {
-    return !(answer.hidden || this.isRejectAction(answer.action));
-  }
-
-  private subscribeToComponent(): void {
-    /* TODO: после переезда на механизм отдельных answers
-    избавиться от хардкода action-кнопок в шаблоне и передавать массив action-кнопок как есть */
-    this.screenService.component$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((component) => {
-      const componentAttrs = component?.attrs;
-      this.componentAnswers = componentAttrs?.answers || [];
-      this.componentActions = componentAttrs?.actions || [];
-      this.rejectAction = this.getRejectAction(componentAttrs?.actions);
-      this.isActionsAsLongBtsShown = Boolean(!this.rejectAction && this.componentActions?.length);
-      this.isAnswersAsLongBtsShown = Boolean(!this.rejectAction && this.componentAnswers?.length);
-      this.changeDetectionRef.markForCheck();
-    });
-    this.screenService.isLoading$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((isLoading: boolean) => {
-        this.isLoading = isLoading;
-        this.changeDetectionRef.markForCheck();
-      });
-  }
-
-  private subscribeToActionButtons(): void {
-    this.screenService.buttons$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenActionDto>) => {
-        this.screenActionButtons = buttons || [];
-        this.changeDetectionRef.markForCheck();
-      });
   }
 
   private getPayload(answer: ComponentActionDto | ComponentAnswerDto): { [key: string]: Answer } {
@@ -165,13 +113,5 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
         this.locationService.href(result);
       }
     });
-  }
-
-  private getRejectAction(actions: Array<ComponentActionDto> = []): ComponentActionDto {
-    return actions.find((action) => this.isRejectAction(action.action));
-  }
-
-  private isRejectAction(action: string): boolean {
-    return action === DTOActionAction.reject;
   }
 }

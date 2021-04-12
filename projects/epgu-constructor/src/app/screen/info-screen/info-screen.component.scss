@@ -19,51 +19,6 @@
       margin-top: auto;
     }
   }
-
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    @include tablets-down {
-      margin-top: auto;
-      flex-wrap: wrap-reverse;
-    }
-  }
-
-  &__action {
-    margin-top: 24px;
-
-    &:not(:first-child) {
-      @include tablets-up {
-        margin-left: 24px;
-      }
-    }
-    &:not(:last-child) {
-      @include tablets-down {
-        margin-top: 16px;
-      }
-    }
-    
-  }
-}
-
-.btn {
-  &__submit {
-    margin-right: 32px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-
-    @include tablets-down {
-      margin-right: 0;
-      margin-top: 16px;
-
-      &:first-child {
-        margin-top: 32px;
-      }
-    }
-  }
 }
 
 .divider {
@@ -78,19 +33,6 @@
   background-color: transparent;
   box-shadow: none;
 
-  &::ng-deep .text > ul {
-    background-color: $color-white;
-    border-radius: 8px;
-    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
-    margin-left: 0;
-    padding: 24px 24px 8px;
-    
-    li {
-      margin-top: 0;
-      margin-bottom: 16px;
-    }
-  }
-
   .divider {
     display: none;
   }
@@ -102,64 +44,66 @@
   }
 }
 
+.info-screen--solution-page {
+  .info__submit {
+    margin-top: 40px;
+    @include tablets-down {
+      padding-top: 32px;
+    }
+  }
+}
+
 :host::ng-deep {
   .info-screen--start,
-  .info-screen--quiz,
+  .info-screen--solution-page,
   .info-screen--solution-page-2,
   .info-screen--deadlock,
   .info-screen--status {
     .info__text {
-      h3 {
-        font-weight: bold;
-        font-size: $font-xl;
-        line-height: $font-xxl;
-        text-align: center;
-        margin: 24px 0 16px 0;
-      }
-      h3 + p, h3 + div {
-        margin-top: 16px;
-      }
-      h5 {
-        margin: 24px 0 8px 0;
-        font-size: $font-md;
-        line-height: $font-xl;
-      }
-      h5 ~ p {
-        margin-top: 8px;
-      }
-      h5 + p {
-        margin-top: 12px;
-      }
+      @include screen-content-margins;
     }
   }
- 
+
+  .info-screen--deadlock {
+    .red-line, .yellow-line {
+      margin-top: 24px;
+    }
+    p + ul:not(:first-child) {
+      margin-top: 24px;
+    }
+  }
+
+  .info-screen--status {
+    .block--with-icon {
+      span {
+        margin-right: 16px;
+      }
+      a {
+        display: inline-block;
+      }
+    }
+    h5 + ol {
+      margin-top: 8px;
+    }
+  }
+
   .info-screen--solution-page {
     .info__text {
-      h3 {
-        font-weight: bold;
-        font-size: $font-xl;
-        line-height: $font-xxl;
-        text-align: center;
-        margin: 24px 0 16px 0;
-      }
-      h3 + p, h3 + div {
-        margin-top: 16px;
-      }
-      h5 {
-        margin: 24px 0 8px 0;
-        font-size: $font-md;
-        line-height: $font-xl;
-      }
       ul + h5 {
         margin-top: 32px;
       }
-      h5 ~ p {
-        margin-top: 24px;
-      }
-      h5 + p {
+      li > ul + a {
         margin-top: 12px;
+        display: inline-block;
       }
     }
   }
 
-}  
+  .info-screen--solution-page-2 {
+    .info__text {
+      h3 {
+        margin-bottom: 24px;
+      }
+    }
+  }
+}

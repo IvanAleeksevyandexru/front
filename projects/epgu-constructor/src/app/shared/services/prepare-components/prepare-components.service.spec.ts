@@ -13,10 +13,13 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
-import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
-import { CustomComponentRef, CustomComponentRefRelation } from '../../components/components-list/components-list.types';
+// eslint-disable-next-line max-len
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
+import {
+  CustomComponentRef,
+  CustomComponentRefRelation,
+} from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { displayOnRefMock } from '../ref-relation/ref-relation.mock';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -38,7 +41,7 @@ describe('PrepareComponentsService', () => {
         LoggerService,
         ComponentsListRelationsService,
         DateRangeService,
-        RefRelationService
+        RefRelationService,
       ],
       imports: [HttpClientTestingModule],
     });
@@ -68,7 +71,10 @@ describe('PrepareComponentsService', () => {
       spyOn<any>(service, 'loadValueFromCachedAnswer').and.returnValue(loadedValueComponents);
       spyOn<any>(service, 'handleRelatedRelComponents').and.callThrough();
       service.prepareComponents(components, cachedAnswers);
-      expect(service['handleRelatedRelComponents']).toBeCalledWith(loadedValueComponents, cachedAnswers);
+      expect(service['handleRelatedRelComponents']).toBeCalledWith(
+        loadedValueComponents,
+        cachedAnswers,
+      );
     });
 
     it('should return components that was returned from handleRelatedRelComponents method', () => {
@@ -220,7 +226,7 @@ describe('PrepareComponentsService', () => {
       pd2: {
         visited: true,
         disabled: false,
-        value: '{date: 15.12.2020}',
+        value: '15.12.2020',
       },
     };
 
@@ -328,9 +334,9 @@ describe('PrepareComponentsService', () => {
     });
 
     it('should set filter in attrs', () => {
-      const cachedAnswers = {
+      const cachedAnswers = ({
         pd1: { value: '{"storedValues":{"middleName": "Middle"} }' },
-      } as any as CachedAnswers;
+      } as any) as CachedAnswers;
 
       const attrs = {
         dictionaryOptions: {
@@ -373,16 +379,18 @@ describe('PrepareComponentsService', () => {
   });
 
   describe('handleRelatedRelComponents()', () => {
-    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: true };
+    const relation = {
+      relatedRel: 's2',
+      relation: CustomComponentRefRelation.displayOff,
+      val: true,
+    };
     const prepareRef = () => {
-      components[0].attrs.ref = [
-        relation
-      ];
+      components[0].attrs.ref = [relation];
       cachedAnswers = {
         s2: {
           visited: true,
-          value: 'true'
-        }
+          value: 'true',
+        },
       };
     };
 
@@ -393,9 +401,11 @@ describe('PrepareComponentsService', () => {
 
     it('should return changed components that passed in to params', () => {
       prepareRef();
-      spyOn<any>(service, 'handleCustomComponentRef').and.returnValue(
-        { id: 'a1', type: 'HtmlString', attrs: { ref: [relation], hidden: true }},
-      );
+      spyOn<any>(service, 'handleCustomComponentRef').and.returnValue({
+        id: 'a1',
+        type: 'HtmlString',
+        attrs: { ref: [relation], hidden: true },
+      });
       const result = service['handleRelatedRelComponents'](components, cachedAnswers);
       components[0].attrs.hidden = true;
       expect(result).toEqual(components);
@@ -418,21 +428,28 @@ describe('PrepareComponentsService', () => {
       prepareRef();
       spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
       service['handleRelatedRelComponents'](components, cachedAnswers);
-      expect(service['handleCustomComponentRef']).toBeCalledWith(components[0], components[0].attrs.ref, components, cachedAnswers);
+      expect(service['handleCustomComponentRef']).toBeCalledWith(
+        components[0],
+        components[0].attrs.ref,
+        components,
+        cachedAnswers,
+      );
     });
   });
 
   describe('handleCustomComponentRef()', () => {
-    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: true };
+    const relation = {
+      relatedRel: 's2',
+      relation: CustomComponentRefRelation.displayOff,
+      val: true,
+    };
     const prepareRef = () => {
-      components[0].attrs.ref = [
-        relation
-      ];
+      components[0].attrs.ref = [relation];
       cachedAnswers = {
         s2: {
           visited: true,
-          value: 'true'
-        }
+          value: 'true',
+        },
       };
     };
 
@@ -442,7 +459,7 @@ describe('PrepareComponentsService', () => {
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
-        cachedAnswers
+        cachedAnswers,
       );
       expect(result).toEqual(components[0]);
     });
@@ -453,7 +470,7 @@ describe('PrepareComponentsService', () => {
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
-        cachedAnswers
+        cachedAnswers,
       );
       components[0].attrs.hidden = true;
       expect(result).toEqual(components[0]);
@@ -466,10 +483,13 @@ describe('PrepareComponentsService', () => {
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
-        cachedAnswers
+        cachedAnswers,
       );
-      expect(service['handleDisplayOff'])
-        .toBeCalledWith(components[0], components[0].attrs.ref[0] as CustomComponentRef[], cachedAnswers.s2.value);
+      expect(service['handleDisplayOff']).toBeCalledWith(
+        components[0],
+        components[0].attrs.ref[0] as CustomComponentRef[],
+        cachedAnswers.s2.value,
+      );
     });
 
     it('shouldn\'t call handleDisplayOff', () => {
@@ -479,7 +499,7 @@ describe('PrepareComponentsService', () => {
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
-        cachedAnswers
+        cachedAnswers,
       );
       expect(service['handleDisplayOff']).not.toBeCalled();
     });
@@ -492,10 +512,13 @@ describe('PrepareComponentsService', () => {
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
-        cachedAnswers
+        cachedAnswers,
       );
-      expect(service['handleDisplayOn'])
-        .toBeCalledWith(components[0], components[0].attrs.ref[0] as CustomComponentRef[], cachedAnswers.s2.value);
+      expect(service['handleDisplayOn']).toBeCalledWith(
+        components[0],
+        components[0].attrs.ref[0] as CustomComponentRef[],
+        cachedAnswers.s2.value,
+      );
     });
 
     it('shouldn\'t call handleDisplayOn', () => {
@@ -505,23 +528,25 @@ describe('PrepareComponentsService', () => {
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
-        cachedAnswers
+        cachedAnswers,
       );
       expect(service['handleDisplayOn']).not.toBeCalled();
     });
   });
 
   describe('handleDisplayOff()', () => {
-    const relation = { relatedRel: 's2', relation: CustomComponentRefRelation.displayOff, val: 'v3' };
+    const relation = {
+      relatedRel: 's2',
+      relation: CustomComponentRefRelation.displayOff,
+      val: 'v3',
+    };
     const prepareRef = () => {
-      components[0].attrs.ref = [
-        relation
-      ];
+      components[0].attrs.ref = [relation];
       cachedAnswers = {
         s2: {
           visited: true,
-          value: 'v3'
-        }
+          value: 'v3',
+        },
       };
     };
 

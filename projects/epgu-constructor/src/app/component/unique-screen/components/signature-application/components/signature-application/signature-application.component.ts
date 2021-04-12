@@ -16,7 +16,7 @@ export class SignatureApplicationComponent {
   @Input() header: string;
   @Input() component: ComponentDto;
   @Input() isLoading: boolean;
-  @Input() actions: ComponentActionDto[];
+  @Input() buttons: ComponentActionDto[];
 
   @Output() next = new EventEmitter<null>();
 

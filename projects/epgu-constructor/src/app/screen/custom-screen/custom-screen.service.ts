@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponentOutputData } from '../../shared/components/components-list/components-list.types';
+import { CustomComponentOutputData } from '../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
 

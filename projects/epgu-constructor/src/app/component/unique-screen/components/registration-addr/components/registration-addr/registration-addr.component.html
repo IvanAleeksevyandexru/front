@@ -1,13 +1,9 @@
 <epgu-constructor-default-unique-screen-wrapper
   [header]="screenService.header$ | async"
   [isLoading]="screenService.isLoading$ | async"
-  [screenActionButtons]="screenService.buttons$ | async"
-  [actionButtons]="screenService.actions$ | async"
-  [isShowActionBtn]="true"
+  [screenButtons]="screenService.buttons$ | async"
   [showNav]="screenService.showNav$ | async"
-  [submitLabel]="screenService.submitLabel$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
-  [nextStepAction]="nextStepAction"
 >
   <epgu-constructor-screen-pad class="screen-pad-body">
     <form [formGroup]="redAddrForm" class="form">
@@ -29,7 +25,8 @@
             [validationShowOn]="field.validationShowOn || validationShowOn"
             [invalid]="redAddrForm.get(field.fieldName).invalid"
             [control]="redAddrForm.get(field.fieldName)"
-            [clearable]="true">
+            [clearable]="true"
+          >
           </epgu-constructor-constructor-dadata-widget>
 
           <epgu-constructor-constructor-date-picker
@@ -61,15 +58,23 @@
             *ngSwitchDefault
           ></epgu-constructor-constructor-plain-input>
         </ng-container>
+
+        <epgu-constructor-helper-text *ngIf="field.hint" class="item__helper-text">{{
+          field.hint
+        }}</epgu-constructor-helper-text>
       </div>
       <div class="error">
         <small>{{ error$ | async }}</small>
       </div>
     </form>
 
-    <div class="item hint-wrapper">
+    <div class="item hint-wrapper" *ngIf="(data$ | async)?.attrs?.hints as hints">
       <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-      <div class="item__hint" *ngFor="let hint of (data$ | async)?.attrs?.hints" (click)="hintClick(hint)">
+      <div
+        class="item__hint"
+        *ngFor="let hint of hints"
+        (click)="hintClick(hint)"
+      >
         {{ hint.label }}
       </div>
     </div>

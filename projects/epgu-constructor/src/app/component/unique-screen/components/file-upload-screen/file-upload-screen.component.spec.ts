@@ -9,18 +9,16 @@ import { EpguLibModule } from 'epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { FileUploadComponent } from './sub-components/file-upload/file-upload.component';
+import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import {
-  FileResponseToBackendUploadsItem,
-  UploadedFile,
-} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { FileResponseToBackendUploadsItem, UploadedFile, } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
-import {
-  ActionType,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { ModalService } from '../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -50,6 +48,13 @@ const fileSample: UploadedFile = {
   hasError: false,
 };
 
+const button = {
+  label: 'Далее',
+  action: DTOActionAction.getNextStep,
+  value: '',
+  type: ActionType.nextStep,
+};
+
 describe('FileUploadScreenComponent', () => {
   let component: FileUploadScreenComponent;
   let fixture: ComponentFixture<FileUploadScreenComponent>;
@@ -60,10 +65,7 @@ describe('FileUploadScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        // MockModule(FileUploadModule),
-        MockModule(EpguLibModule),
-      ],
+      imports: [MockModule(EpguLibModule), ScreenButtonsModule],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(ScreenContainerComponent),
@@ -73,6 +75,8 @@ describe('FileUploadScreenComponent', () => {
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
         CurrentAnswersService,
       ],
@@ -85,7 +89,7 @@ describe('FileUploadScreenComponent', () => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     screenService.component = screenServiceComponentMockData;
     screenService.header = '';
-    screenService.submitLabel = '';
+    screenService.buttons = [button];
 
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     eventBusService = TestBed.inject(EventBusService);
@@ -228,31 +232,10 @@ describe('FileUploadScreenComponent', () => {
 
       expect(debugEl.componentInstance.objectId).toBeNull();
 
-      screenService.orderId = 'some order id';
+      screenService.orderId = 'some order id' as any;
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.objectId).toBe('some order id');
-    });
-
-    it('applicantAnswers property should be equal to screenService.applicantAnswers$', () => {
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.applicantAnswers).toBeNull();
-
-      screenService.applicantAnswers = {
-        someKey: {
-          visited: true,
-          value: 'some value',
-        },
-      };
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.applicantAnswers).toEqual({
-        someKey: {
-          visited: true,
-          value: 'some value',
-        },
-      });
     });
 
     it('prefixForMnemonic property', () => {
@@ -314,7 +297,7 @@ describe('FileUploadScreenComponent', () => {
 
       expect(debugEl.componentInstance.showLoader).toBeFalsy();
 
-      screenService.isLoadingSubject$.next(true);
+      screenService.isLoadingSubject.next(true);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.showLoader).toBeTruthy();
@@ -403,13 +386,7 @@ describe('FileUploadScreenComponent', () => {
 
     it('action property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.injector.get(ActionDirective).action).toEqual({
-        label: 'Далее',
-        action: DTOActionAction.getNextStep,
-        value: '',
-        type: ActionType.nextStep,
-      });
+      expect(debugEl.injector.get(ActionDirective).action).toEqual(button);
     });
   });
 });

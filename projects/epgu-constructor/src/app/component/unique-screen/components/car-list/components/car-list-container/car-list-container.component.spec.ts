@@ -24,10 +24,14 @@ import { CarListComponent } from '../car-list/car-list.component';
 import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import { CarList } from '../../models/car-list.interface';
+import { ModalService } from '../../../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 
 
 describe('CarInfoContainerComponent', () => {
   let component: CarListContainerComponent;
+  let screenService: ScreenService;
   let fixture: ComponentFixture<CarListContainerComponent>;
   const mockDisplay: DisplayDto = {
     components: [],
@@ -37,7 +41,6 @@ describe('CarInfoContainerComponent', () => {
     id: '',
     name: '',
     displayCssClass: '',
-    submitLabel: '',
     terminal: false,
     type: ScreenTypes.UNIQUE,
   };
@@ -71,9 +74,17 @@ describe('CarInfoContainerComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
-        CurrentAnswersService, UtilsService, NavigationService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        CurrentAnswersService, UtilsService, NavigationService, ModalService
       ],
-      imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule, ConstructorLookupModule],
+      imports: [
+        BaseModule,
+        BaseComponentsModule,
+        ScreenContainerModule,
+        ScreenPadModule,
+        ConstructorLookupModule,
+        ScreenButtonsModule,
+      ],
     })
       .compileComponents();
   });
@@ -81,6 +92,8 @@ describe('CarInfoContainerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CarListContainerComponent);
     component = fixture.componentInstance;
+    screenService = TestBed.inject(ScreenService);
+    screenService.buttons = [];
     component.showNav$ = of(true);
     component.isLoading$ = of(true);
     component.display$ = of(mockDisplay);

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { AbstractPaymentComponent } from '../../abstractpayment.component';
+import { AbstractPaymentComponent } from '../../abstract-payment.component';
 
 @Component({
   selector: 'epgu-constructor-bill-info',

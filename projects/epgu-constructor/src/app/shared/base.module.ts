@@ -8,9 +8,9 @@ import { ActionModule } from './directives/action/action.module';
 import { OutputHtmlModule } from './components/output-html/output-html.module';
 import { SafeModule } from './pipes/safe/safe.module';
 import { ImgPrefixerModule } from './pipes/img-prefixer/img-prefixer.module';
+import { RankModule } from './pipes/rank/rank.module';
 
 export const EpguLibModuleInited = EpguLibModule.forRoot();
-
 
 /**
  * Здесь храниться всё что необходимо во всех слоях.
@@ -26,6 +26,7 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     OutputHtmlModule,
     ImgPrefixerModule,
     SafeModule,
+    RankModule,
   ],
   exports: [
     CommonModule,
@@ -37,6 +38,7 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     OutputHtmlModule,
     ImgPrefixerModule,
     SafeModule,
+    RankModule,
   ],
 })
 export class BaseModule {}

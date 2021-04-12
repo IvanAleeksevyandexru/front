@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent } from '../../../shared/components/components-list/components-list.types';
+import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 interface TranslitAlphabet {
@@ -128,6 +128,25 @@ export class UtilsService {
     return doc.body ? doc.body.textContent : '';
   }
 
+  public static hasJsonStructure(string: string): boolean {
+    if (typeof string !== 'string') return false;
+    try {
+      const result = JSON.parse(string);
+      const type = Object.prototype.toString.call(result);
+      return type === '[object Object]' || type === '[object Array]';
+    } catch (err) {
+      return false;
+    }
+  }
+
+  public static tryToParse(JSONstring: string): unknown | '' {
+    if (this.hasJsonStructure(JSONstring)) {
+      return JSON.parse(JSONstring);
+    } else {
+      return '';
+    }
+  }
+
   public getDeclension(num: number, forms: string[]): string {
     const num0 = Math.abs(num) % 100;
     const n1 = num0 % 10;
@@ -162,7 +181,6 @@ export class UtilsService {
    * @param str
    */
   public cyrillicToLatin(word: string): string {
-
     if (!this.isDefined(word)) {
       return undefined;
     }
@@ -195,14 +213,18 @@ export class UtilsService {
 
     let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
 
-    preparedArray = numRegex.test(preparedArray[0]) ? this.sliceArrayFromRight(preparedArray, 3, false) : preparedArray;
-    preparedArray = preparedArray.map(urlPath => numRegex.test(urlPath) ? '' : urlPath);
+    preparedArray = numRegex.test(preparedArray[0])
+      ? this.sliceArrayFromRight(preparedArray, 3, false)
+      : preparedArray;
+    preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));
 
     const serviceName = preparedArray.join('-');
 
-    return `${serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
-      return index === 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/[-_\s]+/g, '')}Service`;
+    return `${serviceName
+      .replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
+        return index === 0 ? word.toLowerCase() : word.toUpperCase();
+      })
+      .replace(/[-_\s]+/g, '')}Service`;
   }
 
   /**
@@ -219,11 +241,12 @@ export class UtilsService {
 
   public isDefined<T>(value: T | undefined | null): value is T {
     return (value as T) !== undefined && (value as T) !== null;
-  };
+  }
 
   public filterIncorrectObjectFields(obj: object): object {
     return Object.entries(obj).reduce(
-      (a, [k,v]) => (!this.isDefined(v) ? a : (a[k] = v, a)), {}
+      (a, [k, v]) => (!this.isDefined(v) ? a : ((a[k] = v), a)),
+      {},
     );
   }
 
@@ -251,20 +274,7 @@ export class UtilsService {
     }, 200);
   }
 
-  public hasJsonStructure(string: string): boolean {
-    if (typeof string !== 'string') return false;
-    try {
-        const result = JSON.parse(string);
-        const type = Object.prototype.toString.call(result);
-        return type === '[object Object]'
-            || type === '[object Array]';
-    } catch (err) {
-        return false;
-    }
-}
-
   private sliceArrayFromRight(arr: string[], from: number, includeFirst: boolean = true): string[] {
     return arr.slice(Math.max(arr.length - from, includeFirst ? 0 : 1));
   }
-
 }

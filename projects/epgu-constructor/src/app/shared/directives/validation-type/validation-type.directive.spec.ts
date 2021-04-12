@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {
   CustomComponent,
   CustomScreenComponentTypes
-} from '../../components/components-list/components-list.types';
+} from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';

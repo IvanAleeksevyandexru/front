@@ -14,11 +14,11 @@ import { ConfigServiceStub } from '../../core/services/config/config.service.stu
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
-import { FileItem, FileItemStatus } from '../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
 import { UtilsService } from '../../core/services/utils/utils.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FileItem, FileItemStatus } from '../../shared/components/file-upload/file-upload-item/data';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;

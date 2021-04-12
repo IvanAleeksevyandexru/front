@@ -19,7 +19,7 @@ import {
   ActionType,
   ComponentActionDto,
   ComponentDto,
-  DTOActionAction
+  DTOActionAction,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
@@ -114,14 +114,14 @@ const openDropdownModalAction: ComponentActionDto = {
   label: '',
   value: 'test',
   action: null,
-  type: ActionType.dropdownListModal
+  type: ActionType.dropdownListModal,
 };
 
 const openConfirmationModalAction: ComponentActionDto = {
   label: 'test',
   value: 'confirmation',
   action: null,
-  type: ActionType.confirmModalStep
+  type: ActionType.confirmModalStep,
 };
 
 const deliriumAction: ComponentActionDto = {
@@ -248,8 +248,8 @@ describe('ActionService', () => {
     const applicantAnswers = {
       12: {
         visited: true,
-        value: ''
-      }
+        value: '',
+      },
     };
 
     expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
@@ -287,20 +287,20 @@ describe('ActionService', () => {
           confirmation: {
             title: 'Some title',
             text: 'Some text',
-            submitLabel: 'Send'
-          }
-        }
-      }
+            submitLabel: 'Send',
+          },
+        },
+      },
     });
     spyOn(modalService, 'openModal').and.callThrough();
     actionService.switchAction(openConfirmationModalAction, null);
     expect(modalService.openModal).toHaveBeenCalled();
   });
 
-  it('should call switchAction handleDeliriumAction', () => {
-    spyOn(actionService, 'handleDeliriumAction').and.callThrough();
+  it('should call switchAction handleDeliriumAction$', () => {
+    spyOn(actionService, 'handleDeliriumAction$').and.callThrough();
     actionService.switchAction(deliriumAction, null);
-    expect(actionService.handleDeliriumAction).toHaveBeenCalled();
+    expect(actionService.handleDeliriumAction$).toHaveBeenCalled();
   });
 
   describe('getComponentStateForNavigate()', () => {
@@ -344,15 +344,15 @@ describe('ActionService', () => {
     });
   });
 
-  describe('handleDeliriumAction()', () => {
+  describe('handleDeliriumAction$()', () => {
     it('sould call htmlRemover.delete()', () => {
       const htmlRemoverDeleteSpy = spyOn(htmlRemover, 'delete');
-      actionService.handleDeliriumAction(deliriumAction);
+      actionService.handleDeliriumAction$(deliriumAction);
       expect(htmlRemoverDeleteSpy).toBeCalled();
     });
     it('sould call actionApiService.sendAction()', () => {
       const actionApiServiceSendActionSpy = spyOn(formPlayerApiService, 'sendAction');
-      actionService.handleDeliriumAction(deliriumAction);
+      actionService.handleDeliriumAction$(deliriumAction);
       expect(actionApiServiceSendActionSpy).toBeCalled();
     });
   });

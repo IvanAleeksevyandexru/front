@@ -98,7 +98,6 @@ export class PaymentService {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/pay/v1/bills`
       : `${this.config.billsApiUrl}bills`;
-    // eslint-disable-next-line max-len
     const path = `${urlPrefix}?billIds=${billId}&ci=false`;
     return this.http.post<BillsInfoResponse>(path, {}, this.requestOptions);
   }

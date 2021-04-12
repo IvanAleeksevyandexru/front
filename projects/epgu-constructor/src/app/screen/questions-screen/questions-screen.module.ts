@@ -5,6 +5,7 @@ import { ScreenContainerModule } from '../../shared/components/screen-container/
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { BaseModule } from '../../shared/base.module';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [QuestionsScreenComponent],
@@ -15,6 +16,7 @@ import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/u
     ScreenContainerModule,
     AnswerButtonModule,
     UserInfoLoaderModule,
+    ScreenButtonsModule,
   ],
 })
 export class QuestionsScreenModule {}

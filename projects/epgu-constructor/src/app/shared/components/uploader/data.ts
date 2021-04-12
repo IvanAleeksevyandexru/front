@@ -1,4 +1,4 @@
-import { FileItem } from '../../../component/unique-screen/components/file-upload-screen/sub-components/file-upload-item/data';
+import { FileItem } from '../file-upload/file-upload-item/data';
 
 export const iconsTypes = {
   doc: 'DOC',

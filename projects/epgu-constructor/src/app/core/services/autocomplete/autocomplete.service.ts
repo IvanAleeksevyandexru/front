@@ -18,18 +18,20 @@ import {
   ISuggestionApiValueField,
   ISuggestionItemList,
 } from './autocomplete.inteface';
-import { CustomScreenComponentTypes } from '../../../shared/components/components-list/components-list.types';
+import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
-import { DeviceDetectorService } from '../device-detector/device-detector.service';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { Answer } from '../../../shared/types/answer';
 
 @Injectable()
 export class AutocompleteService {
   componentsSuggestionsMap: { [key: string]: string } = {};
   suggestionGroupId: string = null;
   repeatableComponents: Array<Array<ComponentDto>> = [];
+  parentComponent: ComponentDto = null;
 
   constructor(
     private screenService: ScreenService,
@@ -37,10 +39,8 @@ export class AutocompleteService {
     private eventBusService: EventBusService,
     private modalService: ModalService,
     private autocompleteApiService: AutocompleteApiService,
-    private utilsService: UtilsService,
     private datesToolsService: DatesToolsService,
     private currentAnswersService: CurrentAnswersService,
-    private deviceDetectorService: DeviceDetectorService,
   ) {}
 
   public init(isDisabled: boolean = false): void {
@@ -52,10 +52,11 @@ export class AutocompleteService {
         distinctUntilKeyChanged('id'),
         takeUntil(this.ngUnsubscribe$),
       )
-      .subscribe((display: DisplayDto) => {
+      .subscribe((display: DisplayDto): void => {
         this.resetComponentsSuggestionsMap();
+        this.parentComponent = display.components[0];
         this.suggestionGroupId = this.getSuggestionGroupId(display);
-        this.repeatableComponents = display.components[0]?.attrs?.repeatableComponents || [];
+        this.repeatableComponents = this.getRepeatableComponents(display);
         const componentsSuggestionsFieldsIds: string[] =
           this.getComponentsSuggestionsFieldsIds(display) || [];
 
@@ -89,7 +90,7 @@ export class AutocompleteService {
           this.findAndUpdateComponentWithValue(mnemonic, value, null, componentsGroupIndex);
         }
 
-        this.screenService.updateScreenContent(this.screenService, this.deviceDetectorService.isWebView);
+        this.screenService.updateScreenStore(this.screenService);
       });
 
     this.eventBusService
@@ -134,7 +135,9 @@ export class AutocompleteService {
       });
   }
 
-  public getParsedSuggestionsUploadedFiles(componentList: ISuggestionItemList[]): UploadedFile[] {
+  public getParsedSuggestionsUploadedFiles(
+    componentList: ISuggestionItemList[] = [],
+  ): UploadedFile[] {
     return componentList.reduce((result, item) => {
       const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
       const componentValues = [
@@ -147,13 +150,36 @@ export class AutocompleteService {
     }, []);
   }
 
+  public getRepeatableComponents(display): Array<Array<ComponentDto>> {
+    if (display.components[0]?.attrs?.repeatableComponents) {
+      return display.components[0]?.attrs.repeatableComponents;
+    } else if (display.components[0]?.attrs?.components) {
+      return [display.components[0]?.attrs.components];
+    } else {
+      return [];
+    }
+  }
+
+  public isChildrenListType(): boolean {
+    return [
+      UniqueScreenComponentTypes.childrenList,
+      UniqueScreenComponentTypes.childrenListAbove14,
+      UniqueScreenComponentTypes.childrenListUnder14,
+    ].includes(this.parentComponent?.type as UniqueScreenComponentTypes);
+  }
+
   /**
    * Записывает данные из currentAnswersService в screenService. Это делается для того, чтобы
    * введенные пользователем данные не потерялись после вызова screenService.updateScreenContent()
    */
   private loadValuesFromCurrentAnswer(): void {
     if (this.repeatableComponents.length) {
-      const currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
+      let currentAnswerParsedValue;
+      if (UtilsService.hasJsonStructure(this.currentAnswersService.state as string)) {
+        currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
+      } else {
+        currentAnswerParsedValue = this.currentAnswersService.state;
+      }
 
       // оставляем первый элемент, чтобы правильно обрабатывалось удаление пользователем repeatable fields
       this.repeatableComponents.splice(1);
@@ -200,9 +226,44 @@ export class AutocompleteService {
     const component = this.findComponent(mnemonic, componentsGroupIndex);
     const componentValue = this.findComponentValue(component, id, value);
     this.setComponentValue(component, componentValue);
+    if (this.isChildrenListType()) {
+      this.screenService.cachedAnswers[this.parentComponent.id] = this.prepareCachedAnswers(
+        component,
+        componentsGroupIndex,
+      );
+    }
   }
 
-  private findComponentValue(component: ComponentDto, id: number, value: string): string {
+  // TODO: ниже - боль, которая вызвана присутствием всего лишь одного UNIQUE-компонента - SelectChildren,
+  // под который нужно пилить свое кастомное решение для проброса в компонент выбранного саджеста.
+  // Если в двух словах, то здесь просто собирается единый контекст из разных ошметков в разных местах.
+  // В перспективе - это нужно упразднить в ходе перевода SelectChildren на RepeatableScreens
+  private prepareCachedAnswers(component: ComponentDto, componentsGroupIndex: number): Answer {
+    const cachedAnswer = this.screenService.cachedAnswers[this.parentComponent.id];
+    if (cachedAnswer) {
+      const { value } = cachedAnswer;
+      let parsedValue = JSON.parse(value);
+      const cachedState = this.currentAnswersService.state[componentsGroupIndex];
+      if (parsedValue[componentsGroupIndex]) {
+        parsedValue[componentsGroupIndex] = {
+          ...cachedState,
+          ...parsedValue[componentsGroupIndex],
+          [component.id]: component.value,
+        };
+      } else {
+        parsedValue[componentsGroupIndex] = { ...cachedState, [component.id]: component.value };
+      }
+      cachedAnswer.value = JSON.stringify(parsedValue);
+      return cachedAnswer;
+    } else {
+      return {
+        value: JSON.stringify([{ [component.id]: component.value }]),
+        visited: true,
+      };
+    }
+  }
+
+  private findComponentValue(component: Partial<ComponentDto>, id: number, value: string): string {
     const result =
       component &&
       this.screenService.suggestions[component.id]?.list.find((item) => {
@@ -238,7 +299,7 @@ export class AutocompleteService {
       value = this.getDateValueIfDateInput(component, value);
 
       // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
-      if (this.utilsService.hasJsonStructure(value)) {
+      if (UtilsService.hasJsonStructure(value)) {
         const parsedValue = JSON.parse(value);
         if (Array.isArray(parsedValue)) {
           const parsedlItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
@@ -355,7 +416,7 @@ export class AutocompleteService {
   }
 
   private prepareValue(value: string, componentMnemonic?: string): string {
-    if (this.utilsService.hasJsonStructure(value)) {
+    if (UtilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
       if (this.repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];
@@ -363,7 +424,8 @@ export class AutocompleteService {
       value = parsedValue['text'];
     }
 
-    const component = this.findComponent(componentMnemonic);
+    const componentsGroupIndex = 0;
+    const component = this.findComponent(componentMnemonic, componentsGroupIndex);
     if (component) {
       value = this.getDateValueIfDateInput(component, value, true);
     }

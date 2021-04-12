@@ -102,15 +102,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
       });
   }
 
-  updateHeaderHeight(): void {
-    const elem = this.headerBlock?.nativeElement;
-    const extraSpace = 2; // допуск для избежаний появления скролла
-    const marginBottom = 16;
-    const headerHeight = (elem?.offsetHeight ?? 0) + marginBottom + extraSpace;
-    this.screenModalService.updateMinContentHeight(headerHeight);
-  }
-
-  nextStep(navigation?: Navigation): void {
+  public nextStep(navigation?: Navigation): void {
     if (navigation?.options?.isInternalScenarioFinish) {
       this.closeModal();
       return;
@@ -119,7 +111,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     this.screenModalService.navigate(navigation, FormPlayerNavigation.NEXT);
   }
 
-  prevStep(navigation?: Navigation): void {
+  public prevStep(navigation?: Navigation): void {
     if (navigation?.options?.isInternalScenarioFinish) {
       this.closeModal();
       return;
@@ -128,14 +120,22 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     this.screenModalService.navigate(navigation, FormPlayerNavigation.PREV);
   }
 
-  switchNavigationToFormPlayer(): void {
-    this.navService.prev({ options: { store: this.screenModalService.initStore } });
-  }
-
-  closeModal(): void {
+  public closeModal(): void {
     if (this.showModal) {
       this.switchNavigationToFormPlayer();
       this.screenModalService.resetStore();
     }
+  }
+
+  private updateHeaderHeight(): void {
+    const elem = this.headerBlock?.nativeElement;
+    const extraSpace = 2; // допуск для избежаний появления скролла
+    const marginBottom = 16;
+    const headerHeight = (elem?.offsetHeight ?? 0) + marginBottom + extraSpace;
+    this.screenModalService.updateMinContentHeight(headerHeight);
+  }
+
+  private switchNavigationToFormPlayer(): void {
+    this.navService.prev({ options: { store: this.screenModalService.initStore } });
   }
 }

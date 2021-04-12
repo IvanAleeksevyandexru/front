@@ -5,7 +5,6 @@ import { EventBusService } from '../../../../core/services/event-bus/event-bus.s
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   ActionType,
-  ApplicantAnswersDto,
   ComponentActionDto,
   DTOActionAction,
 } from '../../../../form-player/services/form-player-api/form-player-api.types';
@@ -19,7 +18,7 @@ import {
   FileUploadItem,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { TerraUploadedFile } from './sub-components/file-upload-item/data';
+import { TerraUploadedFile } from '../../../../shared/components/file-upload/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -42,14 +41,13 @@ export class FileUploadScreenComponent implements OnInit {
       };
     }),
   );
-  applicantAnswers$: Observable<ApplicantAnswersDto> = this.screenService.applicantAnswers$;
-  submitLabel$: Observable<string> = this.screenService.submitLabel$;
+
   header$: Observable<string> = combineLatest([
     this.screenService.component$,
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
-  disabled = new BehaviorSubject<boolean>(true);
+  disabled$ = new BehaviorSubject<boolean>(true);
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -105,38 +103,15 @@ export class FileUploadScreenComponent implements OnInit {
    * @param $eventData - данные из компонента
    */
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
-    if ($eventData.relatedUploads && this.value?.uploads) {
-      this.value.uploads = this.value.uploads.map((value: FileUploadEmitValue) => {
-        if ($eventData.uploadId === value.uploadId) {
-          return {
-            ...value,
-            relatedUploads: $eventData.relatedUploads,
-            required: $eventData.required,
-          } as FileUploadEmitValue;
-        }
-        return value;
-      });
-    } else {
-      const relatedUpload: FileUploadEmitValue = this.value.uploads?.find(
-        (value: FileUploadEmitValue) => value.relatedUploads,
-      );
+    this.value.uploads = $eventData.files as FileUploadEmitValue[];
 
-      this.value.uploads = $eventData.files?.map((value: FileUploadEmitValue) => {
-        let resultValue = value;
-        if (relatedUpload && value?.uploadId === relatedUpload.uploadId) {
-          resultValue = { ...value, relatedUploads: relatedUpload.relatedUploads };
-        }
-
-        return resultValue;
-      });
-    }
     /**
      * Блокируем кнопку если:
      * 1. Не в каждом загрузчике есть файл
      * Или
      * 2. Если не все файлы загрузились на терабайт
      */
-    this.disabled.next(
+    this.disabled$.next(
       !(
         this.isEveryUploaderHasFile(this.value.uploads) &&
         this.isAllFilesUploaded(this.value.uploads)
@@ -152,9 +127,6 @@ export class FileUploadScreenComponent implements OnInit {
     uploads.forEach((upload) => {
       if (upload?.maxFileCount) {
         this.allMaxFiles += upload.maxFileCount;
-      }
-      if (upload?.relatedUploads?.uploads) {
-        this.collectMaxFilesNumber(upload.relatedUploads.uploads);
       }
     });
   }
@@ -173,10 +145,7 @@ export class FileUploadScreenComponent implements OnInit {
     }
 
     const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
-      // Если это зависимые подэлементы для загрузки
-      return fileUploaderInfo.relatedUploads
-        ? this.isEveryUploaderHasFile(fileUploaderInfo.relatedUploads.uploads)
-        : fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
+      return fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
     }).length;
 
     return totalUploaders === uploadersWithFiles;
