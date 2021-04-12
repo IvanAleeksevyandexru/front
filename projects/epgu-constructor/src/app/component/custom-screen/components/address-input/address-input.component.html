@@ -11,6 +11,8 @@
     [externalApiUrl]="configService.externalApiUrl + '/'"
     [control]="control.get('value')"
     [hideLevels]="control.value?.attrs?.hideLevels"
+    [suggestions]="suggestions$ | async"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
   >
   </epgu-constructor-constructor-dadata-widget>
 </epgu-constructor-component-item>

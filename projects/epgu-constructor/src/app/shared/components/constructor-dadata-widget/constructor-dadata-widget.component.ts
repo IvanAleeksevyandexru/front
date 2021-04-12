@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
 import { AbstractControl } from '@angular/forms';
+import {
+  ISuggestionItem,
+  ISuggestionItemList,
+} from '../../../core/services/autocomplete/autocomplete.inteface';
 
 @Component({
   selector: 'epgu-constructor-constructor-dadata-widget',
@@ -17,4 +21,9 @@ export class ConstructorDadataWidgetComponent {
   @Input() invalid: boolean;
   @Input() clearable: boolean;
   @Input() control: AbstractControl;
+  @Input() suggestions?: ISuggestionItem;
+
+  @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
+    ISuggestionItem | ISuggestionItemList
+  >();
 }
