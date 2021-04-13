@@ -27,6 +27,9 @@ import {
   DTOActionAction,
 } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
+import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address',
@@ -40,6 +43,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
+  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   valueParsed: { [key: string]: string | Date } = {};
   textTransformType: TextTransform;
   isRequired: boolean;
@@ -55,6 +59,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     public config: ConfigService,
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
+    public suggestHandlerService: SuggestHandlerService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetection: ChangeDetectorRef,
     private changeDetectionRef: ChangeDetectorRef,
@@ -69,6 +74,14 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       this.updateValue(data);
       this.changeDetectionRef.markForCheck();
     });
+
+    this.screenService.suggestions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((suggestions) => {
+        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
+          suggestions[this.screenService.component.id],
+        );
+      });
   }
 
   updateValue(data: ConfirmAddressInterface): void {

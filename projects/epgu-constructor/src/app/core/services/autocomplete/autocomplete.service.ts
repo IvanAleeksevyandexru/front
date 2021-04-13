@@ -3,6 +3,7 @@ import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import {
   ComponentDto,
+  ComponentFieldDto,
   DisplayDto,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
@@ -25,6 +26,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '../../../shared/types/answer';
+import { allowedAutocompleteComponentsList } from './autocomplete.const';
 
 @Injectable()
 export class AutocompleteService {
@@ -451,15 +453,29 @@ export class AutocompleteService {
           const { suggestionId } = component;
           const { fields } = component.attrs;
           this.componentsSuggestionsMap[suggestionId] = component.id;
-          if (isIncludedToCustomOrUnique(component)) {
-            Object.keys(fields).forEach((fieldName) => {
-              const field = fields[fieldName];
-              const fieldSuggestionId = field?.attrs.suggestionId;
-              if (fieldSuggestionId) {
-                this.componentsSuggestionsMap[fieldSuggestionId] = `${component.id}.${fieldName}`;
-                fieldSuggestionIdsSet.add(fieldSuggestionId);
-              }
-            });
+          if (allowedAutocompleteComponentsList(component)) {
+            if (Array.isArray(fields)) {
+              fields.forEach((field: ComponentFieldDto) => {
+                const fieldSuggestionId = field.suggestionId;
+                this.setFieldsSuggestionIds(
+                  fieldSuggestionId,
+                  component.id,
+                  field.fieldName,
+                  fieldSuggestionIdsSet,
+                );
+              });
+            } else {
+              Object.keys(fields).forEach((fieldName) => {
+                const field: { attrs: { suggestionId: string } } = fields[fieldName];
+                const fieldSuggestionId = field?.attrs.suggestionId;
+                this.setFieldsSuggestionIds(
+                  fieldSuggestionId,
+                  component.id,
+                  fieldName,
+                  fieldSuggestionIdsSet,
+                );
+              });
+            }
           }
           return suggestionId;
         });
@@ -472,11 +488,16 @@ export class AutocompleteService {
       return getSuggestionsIds(display.components);
     }
   }
-}
 
-function isIncludedToCustomOrUnique(component: ComponentDto): boolean {
-  return (
-    component.type === CustomScreenComponentTypes.DocInput ||
-    component.type === UniqueScreenComponentTypes.employeeHistory
-  );
+  private setFieldsSuggestionIds(
+    fieldSuggestionId: string,
+    componentId: ComponentDto['id'],
+    fieldName: string,
+    fieldSuggestionIdsSet: Set<string>,
+  ): void {
+    if (fieldSuggestionId) {
+      this.componentsSuggestionsMap[fieldSuggestionId] = `${componentId}.${fieldName}`;
+      fieldSuggestionIdsSet.add(fieldSuggestionId);
+    }
+  }
 }
