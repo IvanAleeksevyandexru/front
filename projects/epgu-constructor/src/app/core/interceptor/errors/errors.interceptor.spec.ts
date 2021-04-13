@@ -11,7 +11,7 @@ import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
   COMMON_ERROR_MODAL_PARAMS,
-  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, BOOKING_ONLINE_ERROR,
+  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, BOOKING_ONLINE_ERROR, NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
 } from './errors.interceptor.constants';
 import { LocationService } from '../../services/location/location.service';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
@@ -96,6 +96,23 @@ describe('ErrorsInterceptor', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       AUTH_ERROR_MODAL_PARAMS,
+    );
+    tick();
+  }));
+
+  it('should open modal with NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR params', fakeAsync(() => {
+    spyOn(modalService, 'openModal').and.callThrough();
+    formPlayerApi.checkIfOrderExist().subscribe(() => fail('should have failed with the 403 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(403);
+      }
+    );
+    const requestToError = httpMock.expectOne(`${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`);
+    const body = new HttpErrorResponse({ status: 403  });
+    requestToError.flush({ status: 'NO_RIGHTS_FOR_SENDING_APPLICATION' }, body);
+    expect(modalService.openModal).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
     );
     tick();
   }));

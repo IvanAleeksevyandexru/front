@@ -30,29 +30,38 @@ const BOOKING_ONLINE_ERROR_TEXT = `<div class="text_modal_error">
 {addressLink} <br>
 Вы можете посмотреть дополнительную информацию на устройстве или <br> в браузере — нажмите «Скачать PDF» в личном кабинете</span></div>`;
 
+const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Отправить заявление может только руководитель</h4>
+<span>Заявление сохранено как черновик и доступно в личном кабинете руководителя. Вы можете редактировать его, пока оно не отправлено</span>
+</div>`;
+
 export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: COMMON_ERROR_MODAL_PARAMS_TEXT,
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Вернуться к заявлению',
-    closeModal: true,
-  }],
+  buttons: [
+    {
+      label: 'Вернуться к заявлению',
+      closeModal: true,
+    },
+  ],
   isShortModal: true,
 };
-
 
 export const AUTH_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: AUTH_ERROR_MODAL_PARAMS_TEXT,
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Войти',
-    closeModal: true,
-    value: 'login'
-  }],
+  buttons: [
+    {
+      label: 'Войти',
+      closeModal: true,
+      value: 'login',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -61,11 +70,13 @@ export const ORDER_NOT_FOUND_ERROR_MODAL_PARAMS: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Попробовать снова',
-    closeModal: true,
-    value: 'reload'
-  }],
+  buttons: [
+    {
+      label: 'Попробовать снова',
+      closeModal: true,
+      value: 'reload',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -74,11 +85,13 @@ export const DRAFT_STATEMENT_NOT_FOUND: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'В личный кабинет',
-    closeModal: true,
-    value: 'redirectToLk'
-  }],
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -87,10 +100,21 @@ export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'В личный кабинет',
-    closeModal: true,
-    value: 'redirectToLk'
-  }],
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR: ConfirmationModal = {
+  text: NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT,
+  title: '',
+  showCloseButton: true,
+  showCrossButton: true,
+  buttons: [],
   isShortModal: true,
 };
