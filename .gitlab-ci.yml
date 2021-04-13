@@ -1,3 +1,7 @@
+include:
+  - project: appsec/cicd
+    file: /luxsoft/epgu2-form-frontend.yml
+      
 image: node:latest
 
 cache: &global_cache
@@ -14,7 +18,7 @@ stages:
   - build
   - image
   - deploy
-
+  - code_check
 Install:
   stage: install
   except:
@@ -208,6 +212,3 @@ Build:
 #     - master
 #     - stage#
 
-include:
-  - project: appsec/cicd
-    file: /luxsoft/epgu2-form-frontend.yml
