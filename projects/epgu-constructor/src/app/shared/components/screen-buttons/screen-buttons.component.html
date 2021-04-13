@@ -6,9 +6,10 @@
   [disabled]="(disabled && disabledForAll)
     || (disabled && !disabledForAll && button.type === 'nextStep')
     || isLoading"
-  [showLoader]="isLoading"
+  [showLoader]="isLoading && clickedButton === button"
   [attr.data-button-type]="button.type | lowercase"
   class="screen-button"
+  (click)="click(button)"
 >
   {{ button.label }}
 </lib-button>
