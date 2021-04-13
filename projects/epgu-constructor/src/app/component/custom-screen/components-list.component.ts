@@ -13,7 +13,6 @@ import {
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
-import { AbstractControl } from '@angular/forms';
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../core/services/config/config.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
@@ -26,7 +25,6 @@ import {
   CustomComponent,
   CustomComponentOutputData,
   CustomListDictionaries,
-  CustomListDropDowns,
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
@@ -58,7 +56,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
-  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService
     .dictionaries$;
   suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
@@ -114,16 +111,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
-  }
-
-  public isResolverRender(componentData: AbstractControl): boolean {
-    return ![
-      CustomScreenComponentTypes.DropDown,
-      CustomScreenComponentTypes.DropDownDepts,
-      CustomScreenComponentTypes.Dictionary,
-      CustomScreenComponentTypes.Lookup,
-      CustomScreenComponentTypes.RadioInput,
-    ].includes(componentData.value?.type);
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
