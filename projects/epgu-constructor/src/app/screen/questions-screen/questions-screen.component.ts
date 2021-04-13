@@ -53,7 +53,12 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.next({ payload });
+    this.navigationService.next({
+      payload: {
+        ...payload,
+        ...this.screenService.logicAnswers,
+      },
+    });
   }
 
   answerChoose(answer: ComponentActionDto | ComponentAnswerDto): void {

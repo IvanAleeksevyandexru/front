@@ -203,6 +203,7 @@ export class ActionService {
       }
       return {
         ...(this.currentAnswersService.state as object),
+        ...this.screenService.logicAnswers,
       };
     }
 
@@ -224,6 +225,7 @@ export class ActionService {
         visited: true,
         value: value || action.value,
       },
+      ...this.screenService.logicAnswers,
     };
   }
 
