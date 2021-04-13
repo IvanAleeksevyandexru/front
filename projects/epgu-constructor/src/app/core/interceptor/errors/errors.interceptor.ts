@@ -15,7 +15,7 @@ import {
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
   BOOKING_ONLINE_ERROR,
-  INSUFFICIENT_RIGHTS_ERROR,
+  NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
 } from './errors.interceptor.constants';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
@@ -75,11 +75,9 @@ export class ErrorsInterceptorService implements HttpInterceptor {
         }
       });
     } else if (status === 403) {
-      this.showModal(INSUFFICIENT_RIGHTS_ERROR).then((redirectToLk) => {
-        if (redirectToLk) {
-          this.navigationService.redirectToLK();
-        }
-      });
+      if (error.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR);
+      }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
         this.showModal(DRAFT_STATEMENT_NOT_FOUND).then((redirectToLk) => {
