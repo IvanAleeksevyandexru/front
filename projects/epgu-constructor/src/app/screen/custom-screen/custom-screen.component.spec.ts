@@ -1,4 +1,4 @@
-import { ActionType } from './../../form-player/services/form-player-api/form-player-api.types';
+import { ActionType } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -278,23 +278,6 @@ describe('CustomScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('showLoader property should be equal screenService.isLoading', () => {
-      screenService.buttons = [{
-        label: 'any',
-        action: DTOActionAction.getNextStep,
-      }];
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.showLoader).toBeFalsy();
-
-      screenService.isLoadingSubject.next(true);
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.showLoader).toBeTruthy();
     });
 
     it('disabled property should be TRUE if screenService.isLoading is TRUE or isValid is FALSE', () => {
