@@ -1,0 +1,23 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <lib-lookup
+    *ngIf="dictionariesList$ | async as dictionaries"
+    epgu-constructor-validation-type
+    [component]="control.value"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [formControl]="$any(control.get('value'))"
+    [queryMinSymbolsCount]="0"
+    [searchCaseSensitive]="false"
+    [fixedItems]="dictionaries"
+    [virtualScroll]="true"
+    [clearable]="true"
+    [required]="control.value?.required"
+    [suggest]="suggestions$ | async"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+  >
+  </lib-lookup>
+</epgu-constructor-component-item>

@@ -54,31 +54,6 @@
           >
           </lib-dropdown>
         </epgu-constructor-component-item>
-
-        <epgu-constructor-component-item
-          *ngSwitchCase="componentType.Lookup"
-          [control]="componentData.get('value')"
-          [component]="componentData.value"
-          [invalid]="componentData.invalid"
-        >
-          <lib-lookup
-            *ngIf="dictionaries$ | async as dictionaries"
-            epgu-constructor-validation-type
-            [component]="componentData.value"
-            [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-            [validationShowOn]="validationShowOn"
-            [formControl]="$any(componentData.get('value'))"
-            [queryMinSymbolsCount]="0"
-            [searchCaseSensitive]="false"
-            [fixedItems]="dictionaries[getDictKeyByComp(componentData.value)]?.list"
-            [virtualScroll]="true"
-            [clearable]="true"
-            [required]="componentData.value?.required"
-            [suggest]="(suggestions$ | async)[componentData.value?.id]"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
-          >
-          </lib-lookup>
-        </epgu-constructor-component-item>
       </ng-container>
 
       <epgu-constructor-component-item
