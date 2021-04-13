@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ErrorsInterceptorService } from './errors.interceptor';
@@ -11,7 +11,7 @@ import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
   COMMON_ERROR_MODAL_PARAMS,
-  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, BOOKING_ONLINE_ERROR,
+  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, BOOKING_ONLINE_ERROR, TIME_INVITATION_ERROR,
 } from './errors.interceptor.constants';
 import { LocationService } from '../../services/location/location.service';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
@@ -36,6 +36,7 @@ describe('ErrorsInterceptor', () => {
   let config: ConfigService;
   let init: InitDataService;
   let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
 
   let serviceId = 'local';
   let orderId = 12345;
@@ -70,6 +71,7 @@ describe('ErrorsInterceptor', () => {
     init.serviceId = serviceId;
     init.orderId = orderId;
     httpMock = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
   });
 
   it('should not call open modal', fakeAsync(() => {
@@ -243,6 +245,20 @@ describe('ErrorsInterceptor', () => {
       ConfirmationModalComponent,
       ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
     );
+    tick();
+  }));
+
+  it('should open modal with TIME_INVITATION_ERROR', fakeAsync(() => {
+    const url = 'lk/v1/orders/1155289257/invitations/inviteToSign/send';
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpClient.get(url).subscribe(() => fail('should have failed with the 409 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(408);
+      }
+    );
+    const req = httpMock.expectOne(url);
+    req.error(new ErrorEvent('error'), { status: 408 });
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, TIME_INVITATION_ERROR);
     tick();
   }));
 });
