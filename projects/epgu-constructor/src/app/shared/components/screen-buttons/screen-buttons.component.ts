@@ -15,7 +15,7 @@ export class ScreenButtonsComponent {
 
   public clickedButton: ScreenActionDto;
 
-  click(button: ScreenActionDto): void {
+  setClickedButton(button: ScreenActionDto): void {
     this.clickedButton = button;
   }
 }

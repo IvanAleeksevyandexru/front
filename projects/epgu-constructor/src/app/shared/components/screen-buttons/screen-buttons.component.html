@@ -3,13 +3,11 @@
   epgu-constructor-action
   [action]="button"
   [color]="button.color"
-  [disabled]="(disabled && disabledForAll)
-    || (disabled && !disabledForAll && button.type === 'nextStep')
-    || isLoading"
-  [showLoader]="isLoading && clickedButton === button"
+  [disabled]="button | disabledButton:disabled:disabledForAll:isLoading"
+  [showLoader]="button | showLoaderButton:clickedButton:isLoading"
   [attr.data-button-type]="button.type | lowercase"
   class="screen-button"
-  (click)="click(button)"
+  (click)="setClickedButton(button)"
 >
   {{ button.label }}
 </lib-button>
