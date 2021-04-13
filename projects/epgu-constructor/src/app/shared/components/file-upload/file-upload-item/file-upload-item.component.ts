@@ -295,12 +295,18 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     acc: FileResponseToBackendUploadsItem,
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
-    if (value.item) {
+    const ignoreActions = [
+      ErrorActions.addInvalidType,
+      ErrorActions.addInvalidFile,
+      ErrorActions.addUploadErr,
+    ];
+    if (!ignoreActions.includes(value?.error?.type) && value.item) {
       acc.value.push(value.item);
+      if (value.error) {
+        acc.errors.push(value.error.text);
+      }
     }
-    if (value.error) {
-      acc.errors.push(value.error.text);
-    }
+
     return acc;
   }
 

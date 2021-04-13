@@ -31,3 +31,7 @@
   margin-left: 10px;
   line-height: 0;
 }
+
+.label-large-text {
+  @include typ-plain-text;
+}

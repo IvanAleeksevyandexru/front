@@ -8,6 +8,8 @@ export class ConfigServiceStub implements Config {
   _configApiUrl = '/api';
   _configId = 'default-config';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
+  private _sopApiUrl = 'http://sop.test.gosuslugi.ru/cps-data-api/api/v1/data';
+  private _sopApiKey = '90a6c2a6-d748-46f5-8885-ca5109a49fa2';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
   _listPaymentsApiUrl = '';
@@ -27,6 +29,11 @@ export class ConfigServiceStub implements Config {
   _isSocialShareDisabled = false;
   _isAutocompleteServiceDisabled = false;
   _addToCalendarUrl = '';
+  _isZipkinEnabled = false;
+  _zipkinUrl = '';
+  _zipkinMaxPayloadSize: number;
+  _zipkinEnv = '';
+
   _isLoaded$ = of(false);
 
   constructor() {
@@ -94,6 +101,14 @@ export class ConfigServiceStub implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
+  }
+
+  get sopApiUrl(): string {
+    return this._sopApiUrl;
+  }
+
+  get sopApiKey(): string {
+    return this._sopApiKey;
   }
 
   get externalApiUrl(): string {
@@ -168,16 +183,35 @@ export class ConfigServiceStub implements Config {
     return this._isLoaded$;
   }
 
-  initCore(): void { }
-
   get addToCalendarUrl(): string {
     return this._addToCalendarUrl;
   }
+
+  get isZipkinEnabled(): boolean {
+    return this._isZipkinEnabled;
+  }
+
+  get zipkinUrl(): string {
+    return this._zipkinUrl;
+  }
+
+  get zipkinMaxPayloadSize(): number {
+    return this._zipkinMaxPayloadSize;
+  }
+
+
+  get zipkinEnv(): string {
+    return this._zipkinEnv;
+  }
+
+  initCore(): void { }
 
   set config(config: Config) {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
+    this._sopApiUrl = config.sopApiUrl;
+    this._sopApiKey = config.sopApiKey;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._lkUrl = config.lkUrl;
@@ -195,5 +229,9 @@ export class ConfigServiceStub implements Config {
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._addToCalendarUrl = config.addToCalendarUrl;
+    this._isZipkinEnabled = config.isZipkinEnabled || false;
+    this._zipkinUrl = config.zipkinUrl || '';
+    this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
+    this._zipkinEnv = config.zipkinEnv || '';
   }
 }

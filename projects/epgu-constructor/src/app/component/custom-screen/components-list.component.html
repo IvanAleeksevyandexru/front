@@ -22,6 +22,8 @@
       >
         <lib-dropdown
           *ngIf="dropDowns$ | async as dropDowns"
+          epgu-constructor-validation-type
+          [component]="componentData.value"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [items]="$any(dropDowns[componentData.value?.id])"
           [disabled]="$any(dropDowns[componentData.value?.id])?.length === 1"
@@ -44,6 +46,8 @@
       >
         <epgu-constructor-drop-down-depts
           *ngIf="dictionaries$ | async as dictionaries"
+          epgu-constructor-validation-type
+          [component]="componentData.value"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [dictionary]="dictionaries[getDictKeyByComp(componentData.value)]"
           [validationShowOn]="validationShowOn"
@@ -84,6 +88,8 @@
         >
           <lib-lookup
             *ngIf="dictionaries$ | async as dictionaries"
+            epgu-constructor-validation-type
+            [component]="componentData.value"
             [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
             [validationShowOn]="validationShowOn"
             [formControl]="$any(componentData.get('value'))"
@@ -106,6 +112,7 @@
         [component]="componentData.value"
         [invalid]="componentData.invalid"
         [hidden]="componentData.value?.attrs?.hidden"
+        [largeFontSize]="true"
       >
         <div
           class="form__radio"
@@ -128,11 +135,11 @@
       <ng-container
         *ngIf="isResolverRender(componentData)"
       >
-        <epgu-constructor-component-resolver
+        <epgu-constructor-component-list-resolver
           [componentIndex]="idx"
           [componentsGroupIndex]="componentsGroupIndex"
           [componentType]="componentData.value?.type"
-        ></epgu-constructor-component-resolver>
+        ></epgu-constructor-component-list-resolver>
       </ng-container>
 
     </ng-container>

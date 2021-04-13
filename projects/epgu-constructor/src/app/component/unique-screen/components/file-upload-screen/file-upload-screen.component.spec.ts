@@ -11,16 +11,14 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import {
-  FileResponseToBackendUploadsItem,
-  UploadedFile,
-} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { FileResponseToBackendUploadsItem, UploadedFile, } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
-import {
-  ActionType,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { ModalService } from '../../../../modal/modal.service';
+import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -50,6 +48,13 @@ const fileSample: UploadedFile = {
   hasError: false,
 };
 
+const button = {
+  label: 'Далее',
+  action: DTOActionAction.getNextStep,
+  value: '',
+  type: ActionType.nextStep,
+};
+
 describe('FileUploadScreenComponent', () => {
   let component: FileUploadScreenComponent;
   let fixture: ComponentFixture<FileUploadScreenComponent>;
@@ -60,7 +65,7 @@ describe('FileUploadScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule)],
+      imports: [MockModule(EpguLibModule), ScreenButtonsModule],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(ScreenContainerComponent),
@@ -70,6 +75,8 @@ describe('FileUploadScreenComponent', () => {
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
         CurrentAnswersService,
       ],
@@ -82,7 +89,7 @@ describe('FileUploadScreenComponent', () => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     screenService.component = screenServiceComponentMockData;
     screenService.header = '';
-    screenService.submitLabel = '';
+    screenService.buttons = [button];
 
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     eventBusService = TestBed.inject(EventBusService);
@@ -379,13 +386,7 @@ describe('FileUploadScreenComponent', () => {
 
     it('action property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.injector.get(ActionDirective).action).toEqual({
-        label: 'Далее',
-        action: DTOActionAction.getNextStep,
-        value: '',
-        type: ActionType.nextStep,
-      });
+      expect(debugEl.injector.get(ActionDirective).action).toEqual(button);
     });
   });
 });

@@ -36,6 +36,7 @@ import { ClickableLabelModule } from '../../../../../../shared/directives/clicka
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
@@ -97,6 +98,7 @@ describe('SignatureApplicationContainerComponent', () => {
           { provide: ActionService, useClass: ActionServiceStub },
           CurrentAnswersService,
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     }),
   );
@@ -106,7 +108,7 @@ describe('SignatureApplicationContainerComponent', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     locationService = TestBed.inject(LocationService);
 
-    jest.spyOn(screenService, 'actions$', 'get').mockReturnValue(of(mockActions));
+    jest.spyOn(screenService, 'buttons$', 'get').mockReturnValue(of(mockActions));
     jest.spyOn(screenService, 'header$', 'get').mockReturnValue(of(mockHeader));
     jest.spyOn(screenService, 'showNav$', 'get').mockReturnValue(of(true));
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));

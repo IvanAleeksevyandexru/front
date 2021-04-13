@@ -130,17 +130,9 @@
   }
 
   .submit-button {
-    min-width: 100%;
-    @include tablets-up {
-      width: auto;
-      min-width: auto;
-    }
+    @include screen-button-width;
     button {
-      width: 100%;
-      min-width: 100px;
-      @include tablets-up {
-        width: inherit;
-      }
+      @include screen-inner-button-width;
     }
   }
 
@@ -259,7 +251,7 @@
         height: 12px;
         cursor: pointer;
         z-index: 2;
-    
+
         &:before,
         &:after {
           content: '';
@@ -270,11 +262,11 @@
           background: $color-gosblue;
           transform: rotate(45deg);
         }
-    
+
         &:before {
           transform: rotate(45deg);
         }
-    
+
         &:after {
           transform: rotate(-45deg);
         }
@@ -287,6 +279,8 @@
     max-width: 592px;
     margin-right: auto;
     margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
     @media (max-width: 623px) {
       padding-left: 16px;
       padding-right: 16px;

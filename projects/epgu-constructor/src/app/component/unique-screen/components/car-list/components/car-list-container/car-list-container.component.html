@@ -49,15 +49,12 @@
     </div>
 
     <div class="screen-footer">
-      <lib-button
-        *ngIf="!hasError"
-        [showLoader]="isLoading$ | async"
-        epgu-constructor-action
-        [action]="nextStepAction"
-        class="submit-button"
-      >
-        {{ (screenService.submitLabel$ | async) || 'Продолжить' }}
-      </lib-button>
+      <epgu-constructor-screen-buttons
+        class="screen-buttons"
+        *ngIf="(screenService.buttons$ | async).length"
+        [screenButtons]="screenService.buttons$ | async"
+        [isLoading]="screenService.isLoading$ | async"
+      ></epgu-constructor-screen-buttons>
     </div>
   </epgu-constructor-screen-container>
 </ng-template>

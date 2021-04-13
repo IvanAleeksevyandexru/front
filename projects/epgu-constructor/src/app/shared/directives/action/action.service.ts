@@ -203,12 +203,16 @@ export class ActionService {
       }
       return {
         ...(this.currentAnswersService.state as object),
+        ...this.screenService.logicAnswers,
       };
     }
 
     let value: string;
     if (action.type === ActionType.skipStep) {
       value = '';
+    }
+    else if (action.value !== undefined) {
+      value = action.value;
     } else {
       value =
         typeof this.currentAnswersService.state === 'object'
@@ -221,6 +225,7 @@ export class ActionService {
         visited: true,
         value: value || action.value,
       },
+      ...this.screenService.logicAnswers,
     };
   }
 

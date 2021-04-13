@@ -25,6 +25,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 const displayMock = {
   id: 's113',
@@ -136,7 +137,12 @@ describe('RepeatableScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BaseModule, BaseComponentsModule, ScreenPadModule],
+      imports: [
+        BaseModule,
+        BaseComponentsModule,
+        ScreenPadModule,
+        ScreenButtonsModule,
+      ],
       declarations: [
         RepeatableScreenComponent,
         ScreenContainerComponent,

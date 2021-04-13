@@ -15,6 +15,8 @@ export class ConfigService implements Config {
   private _configApiUrl: string;
   private _configId: string;
   private _dictionaryUrl: string;
+  private _sopApiUrl: string;
+  private _sopApiKey: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
   private _lkUrl: string;
@@ -31,8 +33,12 @@ export class ConfigService implements Config {
   private _mockUrl: string;
   private _disableUnderConstructionMode: boolean;
   private _isSocialShareDisabled: boolean;
-  private _addToCalendarUrl: string;
   private _isAutocompleteServiceDisabled: boolean;
+  private _addToCalendarUrl: string;
+  private _isZipkinEnabled: boolean;
+  private _zipkinUrl: string;
+  private _zipkinMaxPayloadSize: number;
+  private _zipkinEnv: string;
 
   constructor(
     private loadService: LoadService,
@@ -79,6 +85,14 @@ export class ConfigService implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
+  }
+
+  get sopApiUrl(): string {
+    return this._sopApiUrl;
+  }
+
+  get sopApiKey(): string {
+    return this._sopApiKey;
   }
 
   get externalApiUrl(): string {
@@ -153,12 +167,30 @@ export class ConfigService implements Config {
     return this._addToCalendarUrl;
   }
 
+  get isZipkinEnabled(): boolean {
+    return this._isZipkinEnabled;
+  }
+
+  get zipkinUrl(): string {
+    return this._zipkinUrl;
+  }
+
+  get zipkinMaxPayloadSize(): number {
+    return this._zipkinMaxPayloadSize;
+  }
+
+  get zipkinEnv(): string {
+    return this._zipkinEnv;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._sopApiUrl = config.sopApiUrl ?? `${this.loadService.config.sopApiUrl}`;
+    this._sopApiKey = config.sopApiKey ?? `${this.loadService.config.sopApiKey}`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
@@ -187,6 +219,10 @@ export class ConfigService implements Config {
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;
+    this._isZipkinEnabled = config.isZipkinEnabled || false;
+    this._zipkinUrl = config.zipkinUrl || '';
+    this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
+    this._zipkinEnv = config.zipkinEnv || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

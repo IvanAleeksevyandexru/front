@@ -102,7 +102,6 @@ export const mockSelectMapObjectStore = {
     name: 'Выбор ЗАГС неторжественный',
     type: ScreenTypes.UNIQUE,
     header: 'Выберите ЗАГС',
-    submitLabel: 'Выбрать',
     components: [
       {
         id: 'ms2',

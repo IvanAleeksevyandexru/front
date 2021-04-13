@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ComponentResolverComponent } from './component-resolver.component';
-import { ScreenServiceStub } from '../../screen/screen.service.stub';
-import { ScreenService } from '../../screen/screen.service';
-import { UNIQUE_SCREEN_COMPONENTS } from './component-resolver.const';
-import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentUniqueResolverComponent } from './component-unique-resolver.component';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { ScreenService } from '../../../screen/screen.service';
+import { UNIQUE_SCREEN_COMPONENTS } from './component-unique-resolver.const';
+import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
-import { ScreenTypes } from '../../screen/screen.types';
+import { ScreenTypes } from '../../../screen/screen.types';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}
@@ -27,14 +27,14 @@ Object.defineProperties(UNIQUE_SCREEN_COMPONENTS, {
 
 jest.useFakeTimers();
 
-describe('ComponentResolverComponent', () => {
-  let component: ComponentResolverComponent;
-  let fixture: ComponentFixture<ComponentResolverComponent>;
+describe('ComponentUniqueResolverComponent', () => {
+  let component: ComponentUniqueResolverComponent;
+  let fixture: ComponentFixture<ComponentUniqueResolverComponent>;
   let screenService: ScreenServiceStub;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ComponentResolverComponent, TestComponent, Test2Component],
+      declarations: [ComponentUniqueResolverComponent, TestComponent, Test2Component],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         UnsubscribeService
@@ -49,7 +49,7 @@ describe('ComponentResolverComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComponentResolverComponent);
+    fixture = TestBed.createComponent(ComponentUniqueResolverComponent);
     component = fixture.componentInstance;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     // @ts-ignore
@@ -77,10 +77,10 @@ describe('ComponentResolverComponent', () => {
 
 
   it('should return screens from UNIQUE_SCREEN_COMPONENTS', () => {
-    expect(component.getComponentByType(UniqueScreenComponentTypes.childrenList, ScreenTypes.UNIQUE)).toBe(
+    expect(component.getComponentByType(UniqueScreenComponentTypes.childrenList)).toBe(
       UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.childrenList],
     );
-    expect(component.getComponentByType(UniqueScreenComponentTypes.billInfo, ScreenTypes.UNIQUE)).toBe(
+    expect(component.getComponentByType(UniqueScreenComponentTypes.billInfo)).toBe(
       UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.billInfo],
     );
   });

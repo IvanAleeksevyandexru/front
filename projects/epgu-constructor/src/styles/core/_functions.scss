@@ -47,6 +47,40 @@
   }
 }
 
+@mixin screen-button-width {
+  min-width: 100%;
+  @include tablets-up {
+    width: auto;
+    min-width: auto;
+  }
+}
+
+@mixin screen-inner-button-width {
+  width: 100%;
+  min-width: 100px;
+  @include tablets-up {
+    width: inherit;
+  }
+}
+
+@mixin screen-buttons-margin {
+  :host::ng-deep  {
+    .screen-body.screen-body {
+      @include tablets-up {
+        margin-bottom: 16px;
+      }
+
+      @include tablets-down {
+        margin-bottom: 0;
+      }
+    }
+
+    .screen-footer > .screen-buttons {
+      margin-top: 0;
+    }
+  }
+}
+
 @mixin first-letter-uppercase {
   &:first-letter {
     text-transform: uppercase;

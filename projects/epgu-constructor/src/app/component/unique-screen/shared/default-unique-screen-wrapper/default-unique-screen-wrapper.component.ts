@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import {
-  ComponentActionDto,
-  ScreenActionDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-default-unique-screen-wrapper',
@@ -14,11 +11,7 @@ import {
 export class DefaultUniqueScreenWrapperComponent {
   @Input() showNav: boolean;
   @Input() header: string;
-  @Input() screenActionButtons: Array<ScreenActionDto>;
-  @Input() isShowActionBtn: boolean;
-  @Input() actionButtons: ComponentActionDto[];
+  @Input() screenButtons: Array<ScreenActionDto>;
   @Input() isLoading: boolean;
-  @Input() isValid: boolean;
-  @Input() nextStepAction: ComponentActionDto;
-  @Input() submitLabel: string;
+  @Input() isValid = true;
 }

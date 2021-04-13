@@ -451,7 +451,7 @@ export class AutocompleteService {
           const { suggestionId } = component;
           const { fields } = component.attrs;
           this.componentsSuggestionsMap[suggestionId] = component.id;
-          if (component.type === CustomScreenComponentTypes.DocInput) {
+          if (isIncludedToCustomOrUnique(component)) {
             Object.keys(fields).forEach((fieldName) => {
               const field = fields[fieldName];
               const fieldSuggestionId = field?.attrs.suggestionId;
@@ -472,4 +472,11 @@ export class AutocompleteService {
       return getSuggestionsIds(display.components);
     }
   }
+}
+
+function isIncludedToCustomOrUnique(component: ComponentDto): boolean {
+  return (
+    component.type === CustomScreenComponentTypes.DocInput ||
+    component.type === UniqueScreenComponentTypes.employeeHistory
+  );
 }

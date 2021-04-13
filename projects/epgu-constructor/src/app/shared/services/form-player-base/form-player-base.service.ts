@@ -1,15 +1,21 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../../../core/services/logger/logger.service';
-import { FormPlayerNavigation, Navigation, NavigationPayload } from '../../../form-player/form-player.types';
+import {
+  FormPlayerNavigation,
+  Navigation,
+  NavigationPayload,
+} from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import {
-  FormPlayerApiErrorResponse, FormPlayerApiErrorStatuses, FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse, ScenarioDto
+  FormPlayerApiErrorResponse,
+  FormPlayerApiErrorStatuses,
+  FormPlayerApiResponse,
+  FormPlayerApiSuccessResponse,
+  ScenarioDto,
 } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { HtmlRemoverService } from '../html-remover/html-remover.service';
-
 
 /**
  * Этот базоый сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -32,9 +38,7 @@ export abstract class FormPlayerBaseService {
   protected _isLoading$ = this.isLoadingSubject.asObservable();
   protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
-  protected constructor(
-    public injector: Injector,
-  ) {
+  protected constructor(public injector: Injector) {
     this.formPlayerApiService = this.injector.get(FormPlayerApiService);
     this.screenServiceBase = this.injector.get(ScreenService);
     this.loggerBase = this.injector.get(LoggerService);
@@ -46,7 +50,7 @@ export abstract class FormPlayerBaseService {
     this.store = null;
   }
 
-  get isLoading$(): Observable<boolean>  {
+  get isLoading$(): Observable<boolean> {
     return this._isLoading$;
   }
 
@@ -73,22 +77,21 @@ export abstract class FormPlayerBaseService {
    * @param response - ответ сервера
    */
   protected hasError(response: FormPlayerApiResponse): boolean {
-    return this.hasRequestErrors(response as FormPlayerApiErrorResponse)
-      || this.hasBusinessErrors(response as FormPlayerApiSuccessResponse);
+    return (
+      this.hasRequestErrors(response as FormPlayerApiErrorResponse) ||
+      this.hasBusinessErrors(response as FormPlayerApiSuccessResponse)
+    );
   }
 
   protected updateRequest(navigation: Navigation): void {
     const navigationPayload = navigation?.payload;
     const passedStore = navigation?.options?.store;
 
-    if(passedStore) {
+    if (passedStore) {
       this._store = passedStore;
     }
 
-    this.loggerBase.log([
-      `updateRequest ${this.logSuffix}`,
-      navigationPayload
-    ]);
+    this.loggerBase.log([`updateRequest ${this.logSuffix}`, navigationPayload]);
     if (this.isEmptyNavigationPayload(navigationPayload)) {
       this.setDefaultCurrentValue();
     } else {
@@ -99,10 +102,7 @@ export abstract class FormPlayerBaseService {
   }
 
   protected sendDataSuccess(response: FormPlayerApiSuccessResponse): void {
-    this.loggerBase.log([
-      'request',
-      this._store
-    ], `----- SET DATA ${this.logSuffix}---------`);
+    this.loggerBase.log(['request', this._store], `----- SET DATA ${this.logSuffix}---------`);
     this.initResponse(response);
   }
 
@@ -113,14 +113,9 @@ export abstract class FormPlayerBaseService {
     const groupLogName = `----- ERROR DATA ${this.logSuffix}---------`;
 
     if (error.status) {
-      this.loggerBase.error([
-        error
-      ], groupLogName);
+      this.loggerBase.error([error], groupLogName);
     } else {
-      // NOTICE: passing business errors to components layers, do not change this logic!
-      this.loggerBase.error([
-        businessError.scenarioDto?.errors
-      ], groupLogName);
+      this.loggerBase.error([businessError.scenarioDto?.errors], groupLogName);
       this.initResponse(businessError);
     }
 
@@ -181,7 +176,7 @@ export abstract class FormPlayerBaseService {
     const componentId = this._store.scenarioDto.display.components[0].id;
     this._store.scenarioDto.currentValue[componentId] = {
       value: '',
-      visited: true
+      visited: true,
     };
   }
 
@@ -201,20 +196,21 @@ export abstract class FormPlayerBaseService {
     this.initScreenStore(scenarioDto);
     this.updatePlayerLoaded(true);
 
-    this.loggerBase.log([
-      'componentId:',
-      scenarioDto.display.components[0].id,
-      'componentType:',
-      scenarioDto.display.components[0].type,
-      'initResponse:',
-      response
-    ], `----- GET DATA ${this.logSuffix}---------`);
+    this.loggerBase.log(
+      [
+        'componentId:',
+        scenarioDto.display.components[0].id,
+        'componentType:',
+        scenarioDto.display.components[0].type,
+        'initResponse:',
+        response,
+      ],
+      `----- GET DATA ${this.logSuffix}---------`,
+    );
   }
 
   private handleInvalidResponse(): void {
-    this.loggerBase.error([
-      'Invalid Response'
-    ], `----- ERROR DATA ${this.logSuffix}---------`);
+    this.loggerBase.error(['Invalid Response'], `----- ERROR DATA ${this.logSuffix}---------`);
   }
 
   abstract navigate(navigation: Navigation, formPlayerNavigation: FormPlayerNavigation): void;

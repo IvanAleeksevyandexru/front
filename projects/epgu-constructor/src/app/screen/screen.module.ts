@@ -50,7 +50,7 @@ import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.mo
     EventBusService,
     DatesToolsService,
     DictionaryToolsService,
-    RefRelationService
+    RefRelationService,
   ],
   exports: [ScreenResolverComponent],
   entryComponents: [

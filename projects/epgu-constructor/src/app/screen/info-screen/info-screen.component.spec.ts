@@ -1,9 +1,8 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
-import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
+import { MockComponents, MockDirective } from 'ng-mocks';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
@@ -12,7 +11,6 @@ import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import {
-  ActionType,
   ComponentActionDto,
   ComponentDto,
   DTOActionAction
@@ -26,6 +24,12 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InfoScreenBodyComponent } from './info-screen-body/info-screen-body.component';
 import { InfoScreenComponent } from './info-screen.component';
+import { BaseModule } from '../../shared/base.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
+import { ActionService } from '../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
+import { ModalService } from '../../modal/modal.service';
+import { ModalServiceStub } from '../../modal/modal.service.stub';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -58,7 +62,11 @@ describe('InfoScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MockModule(EpguLibModule)],
+      imports: [
+        EpguLibModule,
+        BaseModule,
+        ScreenButtonsModule,
+      ],
       declarations: [
         InfoScreenComponent,
         MockComponents(
@@ -75,6 +83,8 @@ describe('InfoScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
         CurrentAnswersService,
       ],
