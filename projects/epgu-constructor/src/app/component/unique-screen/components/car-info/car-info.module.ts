@@ -21,12 +21,14 @@ import { CarOwnersComponent } from './components/car-owners/car-owners.component
 import { LegalComplianceComponent } from './components/legal-compliance/legal-compliance.component';
 import { NotaryInfoComponent } from './components/notary-info/notary-info.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { CarOwnerInfoLinkComponent } from './components/car-owner-info-link/car-owner-info-link.component';
 
 const COMPONENTS = [
   CarInfoComponent,
   CarInfoContainerComponent,
   CarOwnerInfoContainerComponent,
   CarOwnerInfoComponent,
+  CarOwnerInfoLinkComponent,
   CarOwnersComponent,
   LegalComplianceComponent,
   NotaryInfoComponent,

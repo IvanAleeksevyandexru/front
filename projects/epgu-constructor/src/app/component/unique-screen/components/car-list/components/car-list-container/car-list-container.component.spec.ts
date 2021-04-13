@@ -29,7 +29,7 @@ import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 
 
-describe('CarInfoContainerComponent', () => {
+describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
   let screenService: ScreenService;
   let fixture: ComponentFixture<CarListContainerComponent>;
