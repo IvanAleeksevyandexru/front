@@ -292,17 +292,6 @@ describe('FileUploadScreenComponent', () => {
       expect(debugEl).toBeTruthy();
     });
 
-    it('showLoader property should be equal to screenService.isLoading$', () => {
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.showLoader).toBeFalsy();
-
-      screenService.isLoadingSubject.next(true);
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.showLoader).toBeTruthy();
-    });
-
     describe('disabled property', () => {
       it('should be TRUE by default', () => {
         const debugEl = fixture.debugElement.query(By.css(selector));
