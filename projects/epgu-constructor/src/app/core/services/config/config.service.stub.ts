@@ -8,6 +8,8 @@ export class ConfigServiceStub implements Config {
   _configApiUrl = '/api';
   _configId = 'default-config';
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
+  private _sopApiUrl = 'http://sop.test.gosuslugi.ru/cps-data-api/api/v1/data';
+  private _sopApiKey = '90a6c2a6-d748-46f5-8885-ca5109a49fa2';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
   _listPaymentsApiUrl = '';
@@ -99,6 +101,14 @@ export class ConfigServiceStub implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
+  }
+
+  get sopApiUrl(): string {
+    return this._sopApiUrl;
+  }
+
+  get sopApiKey(): string {
+    return this._sopApiKey;
   }
 
   get externalApiUrl(): string {
@@ -200,6 +210,8 @@ export class ConfigServiceStub implements Config {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
+    this._sopApiUrl = config.sopApiUrl;
+    this._sopApiKey = config.sopApiKey;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._lkUrl = config.lkUrl;

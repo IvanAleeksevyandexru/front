@@ -3,6 +3,5 @@ import { ActionType, ComponentActionDto, DTOActionAction } from '../../form-play
 export const NEXT_STEP_ACTION: ComponentActionDto = {
   label: 'Продолжить',
   action: DTOActionAction.getNextStep,
-  value: '',
   type: ActionType.nextStep,
 };

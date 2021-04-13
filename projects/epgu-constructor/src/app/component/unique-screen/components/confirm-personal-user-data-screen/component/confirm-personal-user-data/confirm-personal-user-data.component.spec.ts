@@ -21,7 +21,6 @@ import { FieldListModule } from '../../../../../../shared/components/field-list/
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 
 const componentMock: ConfirmUserData = {
@@ -171,7 +170,6 @@ describe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl.componentInstance.isShowActionBtn).toBeFalsy();
     expect(debugEl.componentInstance.showNav).toBeFalsy();
     expect(debugEl.componentInstance.isValid).toBeFalsy();
-    expect(debugEl.componentInstance.nextStepAction).toBeUndefined();
 
     screenService.header = 'some header';
     screenService.isLoadingSubject.next(true);

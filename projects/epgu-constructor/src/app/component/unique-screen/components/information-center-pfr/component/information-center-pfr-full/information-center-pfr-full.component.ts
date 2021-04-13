@@ -35,8 +35,8 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
   @Input() cityDistrictDictionary: Array<ListElement>;
   @Input() territoryDictionary: Array<ListElement>;
   @Input() cachedValue: string;
-  @Output() selectEvent = new EventEmitter<SelectEvent>();
-  @Output() formChangeEvent = new EventEmitter<FormChangeEvent>();
+  @Output() selectEvent: EventEmitter<SelectEvent> = new EventEmitter<SelectEvent>();
+  @Output() formChangeEvent: EventEmitter<FormChangeEvent> = new EventEmitter<FormChangeEvent>();
   pfrForm: FormGroup;
   pfrAreAType = PfrAreaType;
 
@@ -83,12 +83,11 @@ export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
       this.pfrForm.get(type).reset();
     }
 
-    const { attributeName, condition } = this.items[type];
+    const options = this.items[type];
     this.selectEvent.emit({
       value,
       type,
-      attributeName,
-      condition,
+      options,
     });
   }
 

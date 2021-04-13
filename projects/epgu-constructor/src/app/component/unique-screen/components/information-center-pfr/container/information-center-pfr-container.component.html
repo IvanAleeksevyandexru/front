@@ -8,13 +8,13 @@
 >
   <epgu-constructor-screen-pad>
     <epgu-constructor-information-center-pfr-simple
-      *ngIf="data.attrs.simple.items.length === 1"
+      *ngIf="isSimpleElement(data)"
       [simpleData]="data.attrs.simple"
       (formChangeEvent)="changeForm($event)"
     ></epgu-constructor-information-center-pfr-simple>
 
     <epgu-constructor-information-center-pfr-full
-      *ngIf="data.attrs.simple.items.length !== 1"
+      *ngIf="!isSimpleElement(data)"
       [items]="data.attrs.full"
       [cachedValue]="data.value"
       [districtDictionary]="districtDictionary$ | async"

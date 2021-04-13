@@ -332,6 +332,12 @@ describe('ComponentsListRelationsService', () => {
 
   describe('createStatusElements()', () => {
     it('should return status elements', () => {
+      const cachedAnswers = {
+        rf1: {
+          visited: true,
+          value: 'fake data',
+        },
+      };
       const components = [
         createComponentMock({
           id: 'comp1',
@@ -359,7 +365,7 @@ describe('ComponentsListRelationsService', () => {
         }),
       ];
 
-      expect(service.createStatusElements(components)).toEqual({
+      expect(service.createStatusElements(components, cachedAnswers)).toEqual({
         comp1: {
           relation: CustomComponentRefRelation.displayOn,
           isShown: false,
@@ -1178,13 +1184,18 @@ describe('ComponentsListRelationsService', () => {
   });
 
   describe('hasRelation()', () => {
+    const cachedAnswers = {
+      rf1: {
+        visited: true,
+        value: 'fake data',
+      },
+    };
     it('should return true, if component has identic relation', () => {
-      const relation = CustomComponentRefRelation.displayOn;
-      expect(service.hasRelation(componentMock, relation)).toBe(true);
+      expect(service.hasRelation(componentMock, cachedAnswers)).toBe(true);
     });
     it('should return false, if component has no identic relation', () => {
-      const relation = CustomComponentRefRelation.displayOff;
-      expect(service.hasRelation(componentMock, relation)).toBe(false);
+      const component = { ...componentMock,  attrs: { ref: [] }};
+      expect(service.hasRelation(component, cachedAnswers)).toBe(false);
     });
   });
 
