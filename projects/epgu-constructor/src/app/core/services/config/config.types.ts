@@ -21,6 +21,8 @@ export type TimeSlotsApi = {
  * @property {string}configApiUrl - url до форм плеер конфиг сервиса апи
  * @property {string}configId - id
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
+ * @property {string}sopApiUrl - url до сервиса облачных подсказок, как правило http://sop.test.gosuslugi.ru/cps-data-api/api/v1/data
+ * @property {string}sopApiKey - ключ до сервиса облачных подсказок
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
  * @property {string}uinApiUrl - url до сервиса по получению УИН для платежей, как правило apiHostName/api/lk/v1/paygate/uin
@@ -50,6 +52,8 @@ export interface Config {
   configApiUrl: string;
   configId: string;
   dictionaryUrl: string;
+  sopApiUrl: string;
+  sopApiKey: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
   listPaymentsApiUrl: string;
