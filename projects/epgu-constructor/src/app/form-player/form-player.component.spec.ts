@@ -48,7 +48,7 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 import { TracingService } from '../core/services/tracing/tracing.service';
 import { SessionService } from '../core/services/session/session.service';
-
+import { LogicComponent } from '../component/logic-screen/component/logic.component';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -66,22 +66,22 @@ describe('FormPlayerComponent', () => {
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
+  let logicComponentMock = MockComponent(LogicComponent);
   let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
-    targetId: '-10000100'
+    targetId: '-10000100',
   };
   let contextMock = {};
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        EpguLibModuleInited,
-      ],
+      imports: [EpguLibModuleInited],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,
         ModalContainerComponentMock,
         ScreenModalComponentMock,
+        logicComponentMock,
       ],
       providers: [
         UnsubscribeService,
@@ -109,9 +109,8 @@ describe('FormPlayerComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         TracingService,
         SessionService,
-      ]
+      ],
     }).compileComponents();
-
   });
 
   beforeEach(() => {
@@ -265,7 +264,7 @@ describe('FormPlayerComponent', () => {
       submitLabel: '',
       type: ScreenTypes.UNIQUE,
       terminal: false,
-      components: []
+      components: [],
     };
 
     it('should set screenId to component param', () => {

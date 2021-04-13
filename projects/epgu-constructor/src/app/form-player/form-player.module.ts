@@ -13,10 +13,11 @@ import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 import { AutocompleteModule } from '../core/services/autocomplete/autocomplete.module';
+import { LogicScreenModule } from '../component/logic-screen/logic-screen.module';
 
 registerLocaleData(localeRu);
 
-import 'hammerjs'; // HAMMER TIME
+import 'hammerjs';
 
 /**
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
@@ -29,6 +30,7 @@ import 'hammerjs'; // HAMMER TIME
     BaseModule,
     ModalModule,
     AutocompleteModule,
+    LogicScreenModule,
   ],
   providers: [
     FormPlayerConfigApiService,
