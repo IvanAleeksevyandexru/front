@@ -25,6 +25,7 @@ import { TracingService } from '../../services/tracing/tracing.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -47,7 +48,7 @@ describe('TracingHttpInterceptor', () => {
     },
   } as ActionDTO;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

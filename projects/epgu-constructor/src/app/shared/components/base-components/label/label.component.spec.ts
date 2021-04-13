@@ -14,13 +14,14 @@ import { ActionService } from '../../../directives/action/action.service';
 import { ActionServiceStub } from '../../../directives/action/action.service.stub';
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;
   let fixture: ComponentFixture<LabelComponent>;
   let modalService: ModalService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [LabelComponent, SafePipe, ImgPrefixerPipe, ClickableLabelDirective],
@@ -31,11 +32,13 @@ describe('LabelComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService
       ],
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(LabelComponent);
-      component = fixture.componentInstance;
-      modalService = TestBed.inject(ModalService);
-    });
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LabelComponent);
+    component = fixture.componentInstance;
+    modalService = TestBed.inject(ModalService);
   });
 
   it('should open modal if clarifications are set', () => {

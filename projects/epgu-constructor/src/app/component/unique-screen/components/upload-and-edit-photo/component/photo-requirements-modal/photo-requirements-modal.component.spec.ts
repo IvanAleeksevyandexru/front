@@ -19,6 +19,7 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -38,7 +39,7 @@ describe('PhotoRequirementsModalComponent', () => {
     footer: '<a id="howtotakephoto">Как сделать фото самостоятельно</a>',
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         PhotoRequirementsModalComponent,

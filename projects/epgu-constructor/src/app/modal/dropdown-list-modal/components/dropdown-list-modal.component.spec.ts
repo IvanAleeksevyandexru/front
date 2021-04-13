@@ -11,6 +11,7 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { ActionService } from '../../../shared/directives/action/action.service';
+import { configureTestSuite } from 'ng-bullet';
 
 const dropdownData = {
   title: 'Категории граждан и условия для досрочного назначения пенсии',
@@ -55,8 +56,8 @@ describe('DropdownListModalComponent', () => {
   let screenService: ScreenService;
   let eventBusService: EventBusService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         DropdownListModalComponent,
         DropdownListComponent,

@@ -26,6 +26,7 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
+import { configureTestSuite } from 'ng-bullet';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -42,7 +43,7 @@ describe('BillInfoComponent', () => {
   let fixture: ComponentFixture<BillInfoComponent>;
   let screenService: ScreenService;
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [BillInfoComponent],
@@ -72,10 +73,10 @@ describe('BillInfoComponent', () => {
         ModalService,
       ],
     }).compileComponents();
-    screenService = TestBed.inject(ScreenService);
-  }));
+  });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
     screenService.component = mockData;
     screenService.header = '';
     screenService.submitLabel = '';

@@ -27,6 +27,7 @@ import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -37,7 +38,7 @@ describe('CustomScreenComponent', () => {
   let customScreenService: CustomScreenService;
   let datesToolsService: DatesToolsService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         MockModule(EpguLibModule),
@@ -71,8 +72,6 @@ describe('CustomScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
-
-
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     customScreenService = TestBed.inject(CustomScreenService);

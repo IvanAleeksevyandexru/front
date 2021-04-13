@@ -19,6 +19,7 @@ import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
+import { configureTestSuite } from 'ng-bullet';
 
 declare global {
   namespace NodeJS {
@@ -38,8 +39,7 @@ describe('FormPlayerService', () => {
   let location: Location;
   let orderId: number;
   let navigation: Navigation;
-  beforeEach(() => {
-    global.window.scroll = jest.fn();
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         FormPlayerService,
@@ -55,14 +55,15 @@ describe('FormPlayerService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ]
     });
+  });
+
+  beforeEach(() => {
+    global.window.scroll = jest.fn();
     service = TestBed.inject(FormPlayerService);
     screenService = TestBed.inject(ScreenService);
     location = TestBed.inject(Location);
     logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
-  });
-
-  beforeEach(() => {
     orderId = '1234';
     service['_store'] = JSON.parse(JSON.stringify(response));
   });

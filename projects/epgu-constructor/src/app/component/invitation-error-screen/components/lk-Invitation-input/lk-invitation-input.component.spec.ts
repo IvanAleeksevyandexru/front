@@ -26,6 +26,7 @@ import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 class HTTPClientStub {
   public post(url: string, body: any | null, options: object) {
@@ -57,8 +58,8 @@ describe('LkInvitationInputComponent', () => {
     },
   } as ComponentBase;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [
         LkInvitationInputComponent,
         MockComponents(

@@ -23,6 +23,7 @@ import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dat
 import { billsInfoMock, billsInfoMockPaid, billsInfoMockPaidWithError } from './payment-data.stub';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('AbstractPaymentComponent', () => {
   let component: AbstractPaymentComponent;
@@ -81,7 +82,7 @@ describe('AbstractPaymentComponent', () => {
     ],
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [AbstractPaymentComponent],
       imports: [],
@@ -98,15 +99,14 @@ describe('AbstractPaymentComponent', () => {
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     dictionaryApiService = TestBed.inject(DictionaryApiService);
     paymentService = TestBed.inject(PaymentService);
     locationService = TestBed.inject(LocationService);
     localStorageService = TestBed.inject(LocalStorageService);
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(AbstractPaymentComponent);
     component = fixture.componentInstance;
     screenService.component = mockComponent;

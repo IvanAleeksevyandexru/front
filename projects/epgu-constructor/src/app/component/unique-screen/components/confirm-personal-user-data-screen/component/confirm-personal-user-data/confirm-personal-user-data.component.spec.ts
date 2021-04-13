@@ -22,6 +22,7 @@ import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentMock: ConfirmUserData = {
   attrs: {
@@ -67,30 +68,28 @@ describe('ConfirmPersonalUserDataComponent', () => {
   let screenService: ScreenServiceStub;
   let currentAnswersService: CurrentAnswersService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ConfirmPersonalUserDataComponent],
-        imports: [
-          MockModule(OutputHtmlModule),
-          MockModule(DefaultUniqueScreenWrapperModule),
-          MockModule(BaseComponentsModule),
-          MockModule(BaseModule),
-          MockModule(FieldListModule),
-          MockModule(ScreenPadModule),
-        ],
-        providers: [
-          CurrentAnswersService,
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: ScreenService, useClass: ScreenServiceStub },
-        ],
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [ConfirmPersonalUserDataComponent],
+      imports: [
+        MockModule(OutputHtmlModule),
+        MockModule(DefaultUniqueScreenWrapperModule),
+        MockModule(BaseComponentsModule),
+        MockModule(BaseModule),
+        MockModule(FieldListModule),
+        MockModule(ScreenPadModule),
+      ],
+      providers: [
+        CurrentAnswersService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+      ],
+    })
+      .overrideComponent(ConfirmPersonalUserDataComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
-        .overrideComponent(ConfirmPersonalUserDataComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
-    }),
-  );
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserDataComponent);

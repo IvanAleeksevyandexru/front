@@ -5,6 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
@@ -25,7 +26,7 @@ describe('DictionaryApiService', () => {
     tx: 'someTx'
   };
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -34,12 +35,15 @@ describe('DictionaryApiService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub }
       ]
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(DictionaryApiService);
     http = TestBed.inject(HttpTestingController);
     config = TestBed.inject(ConfigService);
-  }));
+  });
 
-  afterEach(async(() => http.verify()));
+  afterEach(fakeAsync(() => http.verify()));
 
   describe('getDictionary()', () => {
     it('should call http with post method', fakeAsync(() => {

@@ -29,6 +29,7 @@ import {
   DictionaryValueTypes,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -107,7 +108,7 @@ describe('ComponentsListRelationsService', () => {
   let refRelationService: RefRelationService;
   let dateRangeService: DateRangeService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         ComponentsListRelationsService,
@@ -124,7 +125,9 @@ describe('ComponentsListRelationsService', () => {
         FormBuilder,
       ],
     });
+  });
 
+  beforeEach(() => {
     service = TestBed.inject(ComponentsListRelationsService);
     screenService = TestBed.inject(ScreenService);
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);

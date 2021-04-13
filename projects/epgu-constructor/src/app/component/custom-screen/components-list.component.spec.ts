@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockComponents, MockPipe } from 'ng-mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { configureTestSuite } from 'ng-bullet';
+
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
@@ -19,7 +21,6 @@ import { ConstructorDropdownComponent } from '../../shared/components/constructo
 import { ConstructorLookupComponent } from '../../shared/components/constructor-lookup/constructor-lookup.component';
 import { ConstructorCheckboxComponent } from '../../shared/components/constructor-checkbox/constructor-checkbox.component';
 import { ConstructorDatePickerComponent } from '../../shared/components/constructor-date-picker/constructor-date-picker.component';
-// eslint-disable-next-line max-len
 import { ConstructorMultilineInputComponent } from '../../shared/components/constructor-multiline-input/constructor-multiline-input.component';
 import { ComponentItemComponent } from './components/component-item/component-item.component';
 import { PassportComponent } from '../../shared/components/add-passport/passport.component';
@@ -46,14 +47,14 @@ import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 
-// TODO написать тест
+// TODO: написать тест
 describe('ComponentsListComponent', () => {
   let component: ComponentsListComponent;
   let fixture: ComponentFixture<ComponentsListComponent>;
   let formService: ComponentsListFormService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         FormsModule,

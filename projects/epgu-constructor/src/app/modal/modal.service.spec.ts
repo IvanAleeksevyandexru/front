@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ModalContainerComponent } from './shared/modal-container/modal-container.component';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   template: ''
@@ -14,7 +15,7 @@ class BlankComponent { }
 describe('ModalService', () => {
   let service: ModalService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [BlankComponent, ModalContainerComponent],
       providers: [DeviceDetectorService, ModalService],
@@ -26,12 +27,10 @@ describe('ModalService', () => {
         },
       })
       .compileComponents();
-
-    service = TestBed.inject(ModalService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    service = TestBed.inject(ModalService);
   });
 
   it('isModalOpen()', () => {

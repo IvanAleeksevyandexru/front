@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { TestBed } from '@angular/core/testing';
 import { EpguLibModule } from 'epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
@@ -23,6 +22,7 @@ import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
@@ -30,8 +30,8 @@ describe('TimeSlotsComponent', () => {
   let compValue;
   let cachedAnswer;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       imports: [EpguLibModule],
       providers: [
         CurrentAnswersService,

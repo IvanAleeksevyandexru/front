@@ -8,6 +8,7 @@ import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
   let component: PaymentTypeSelectorButtonComponent;
@@ -21,8 +22,8 @@ describe('PaymentTypeSelectorButtonComponent', () => {
     action: 'getNextScreen',
   } as ComponentActionDto;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorButtonComponent],
       imports: [MockModule(AnswerButtonModule), MockModule(ActionModule), MockModule(BaseModule)],
     })

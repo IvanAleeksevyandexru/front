@@ -11,6 +11,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -103,7 +104,7 @@ describe('ValidationService', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -114,6 +115,9 @@ describe('ValidationService', () => {
         DatesToolsService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(ValidationService);
   });
 

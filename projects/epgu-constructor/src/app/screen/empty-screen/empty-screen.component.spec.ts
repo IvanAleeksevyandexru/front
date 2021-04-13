@@ -20,6 +20,7 @@ import {
   ApplicantAnswersDto,
   ComponentDto,
 } from '../../form-player/services/form-player-api/form-player-api.types';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
@@ -30,7 +31,7 @@ describe('EmptyScreenComponent', () => {
   let navigationService: NavigationServiceStub;
   let loggerService: LoggerServiceStub;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [EmptyScreenComponent, RedirectComponent],
       providers: [

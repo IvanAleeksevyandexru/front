@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TableDirective } from './table.directive';
 import { SafePipe } from '../../pipes/safe/safe.pipe';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   template: '<div epgu-constructor-table [innerHTML]="html | safe: \'html\'"></div>',
@@ -21,7 +22,7 @@ describe('TableDirective', () => {
     outerHtmlEl = fixture.debugElement.nativeElement;
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
       TestBed.configureTestingModule({
         declarations: [TableDirective, TableMockComponent, SafePipe],
       }).overrideComponent(TableMockComponent,{

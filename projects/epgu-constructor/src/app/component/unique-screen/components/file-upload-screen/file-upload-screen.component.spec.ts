@@ -19,6 +19,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -63,7 +64,7 @@ describe('FileUploadScreenComponent', () => {
   let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [MockModule(EpguLibModule), ScreenButtonsModule],
       declarations: [

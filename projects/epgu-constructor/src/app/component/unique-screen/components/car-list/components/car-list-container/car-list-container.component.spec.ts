@@ -27,6 +27,7 @@ import { CarList } from '../../models/car-list.interface';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('CarListContainerComponent', () => {
@@ -62,8 +63,8 @@ describe('CarListContainerComponent', () => {
   };
 
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         CarListContainerComponent,
         CarListComponent

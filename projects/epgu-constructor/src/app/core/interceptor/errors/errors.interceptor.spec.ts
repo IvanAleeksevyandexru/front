@@ -26,6 +26,7 @@ import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { FormPlayerNavigation } from '../../../form-player/form-player.types';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -40,8 +41,8 @@ describe('ErrorsInterceptor', () => {
   let serviceId = 'local';
   let orderId = 12345;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,

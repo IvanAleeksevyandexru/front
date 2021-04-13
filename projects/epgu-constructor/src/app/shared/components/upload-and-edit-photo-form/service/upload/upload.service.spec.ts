@@ -9,6 +9,7 @@ import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('UploadService', () => {
   let service: UploadService;
@@ -44,7 +45,7 @@ describe('UploadService', () => {
     alternativeMimeTypes: [],
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -55,6 +56,9 @@ describe('UploadService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(UploadService);
     terraByteApiService = TestBed.inject(TerraByteApiService);
     compressionService = TestBed.inject(CompressionService);
