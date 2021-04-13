@@ -18,11 +18,12 @@ import { SessionService } from '../session/session.service';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { UtilsService } from '../utils/utils.service';
 import { TracingService } from './tracing.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('TracingService', () => {
   let service: TracingService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         TracingService,
@@ -46,6 +47,9 @@ describe('TracingService', () => {
         UnsubscribeService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(TracingService);
   });
 

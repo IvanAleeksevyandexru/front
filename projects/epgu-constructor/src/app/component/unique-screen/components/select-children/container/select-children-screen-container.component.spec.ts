@@ -30,6 +30,7 @@ import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
@@ -77,7 +78,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
     firstScreen: false,
     impasse: false,
   };
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         SelectChildrenScreenContainerComponent,

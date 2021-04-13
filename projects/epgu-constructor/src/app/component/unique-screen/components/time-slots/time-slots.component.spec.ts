@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule, ListItem } from 'epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
@@ -32,9 +32,10 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { SmevSlotsResponseInterface, TimeSlotsAnswerInterface } from './time-slots.types';
+import { SmevSlotsResponseInterface } from './time-slots.types';
 import { slotsError } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 const moment = moment_;
 moment.locale('ru');
@@ -47,9 +48,9 @@ describe('TimeSlotsComponent', () => {
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
   let store: ScreenStore;
 
-  beforeEach(async () => {
+  configureTestSuite(( ) => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [EpguLibModule, HttpClientTestingModule],
       declarations: [
         TimeSlotsComponent,
@@ -75,12 +76,12 @@ describe('TimeSlotsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
+  });
+
+  beforeEach(() => {
     timeSlotsService = TestBed.inject(TimeSlotsService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-  });
-
-  beforeEach(async () => {
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
     fixture = TestBed.createComponent(TimeSlotsComponent);

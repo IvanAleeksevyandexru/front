@@ -26,6 +26,7 @@ import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
+import { configureTestSuite } from 'ng-bullet';
 
 const displayMock = {
   id: 's113',
@@ -135,7 +136,7 @@ describe('RepeatableScreenComponent', () => {
   let eventBusService: EventBusService;
   let screenService: ScreenService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         BaseModule,

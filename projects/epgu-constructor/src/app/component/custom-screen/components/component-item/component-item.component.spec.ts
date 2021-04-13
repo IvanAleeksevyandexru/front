@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentItemComponent } from './component-item.component';
-import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
@@ -19,6 +19,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HintComponent } from '../../../../shared/components/base-components/hint/hint.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -37,8 +38,8 @@ describe('ComponentItemComponent', () => {
     },
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ComponentItemComponent, LabelComponent, HelperTextComponent, HintComponent],
       imports: [
         CoreModule,

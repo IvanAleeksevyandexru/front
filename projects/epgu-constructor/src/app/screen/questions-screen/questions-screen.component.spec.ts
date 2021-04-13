@@ -34,6 +34,7 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
 import { BaseModule } from '../../shared/base.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -76,7 +77,7 @@ describe('QuestionsScreenComponent', () => {
   let modalService: ModalService;
   let configService: ConfigService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         MockModule(EpguLibModule),

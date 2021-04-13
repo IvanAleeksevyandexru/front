@@ -10,6 +10,7 @@ import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub
 import { MobilViewEvents } from '../../../shared/constants/redirect-event';
 import { LocationService } from '../location/location.service';
 import { WINDOW_PROVIDERS } from '../../providers/window.provider';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;
@@ -18,7 +19,7 @@ describe('NavigationService', () => {
   let smuEventsService: SmuEventsService;
   let locationService: LocationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         NavigationService,
@@ -29,6 +30,9 @@ describe('NavigationService', () => {
         { provide: SmuEventsService, useClass: SmuEventsServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     delete window.location;
     window.location = { href: '' } as Location;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);

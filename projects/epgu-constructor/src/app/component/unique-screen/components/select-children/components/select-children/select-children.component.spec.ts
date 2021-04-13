@@ -30,13 +30,14 @@ import { componentMock } from './mocks/select-children.mock';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
   let fixture: ComponentFixture<SelectChildrenComponent>;
   let eventBusService: EventBusService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         SelectChildrenComponent,

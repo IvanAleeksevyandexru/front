@@ -14,6 +14,7 @@ import { CustomListDropDowns } from '../../components-list.types';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -23,7 +24,7 @@ describe('MvdGiacLookupComponent', () => {
 
   let formService: ComponentsListFormServiceStub;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         MvdGiacLookupComponent,

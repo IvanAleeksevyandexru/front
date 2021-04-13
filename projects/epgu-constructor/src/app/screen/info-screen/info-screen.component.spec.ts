@@ -30,6 +30,7 @@ import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -60,7 +61,7 @@ describe('InfoScreenComponent', () => {
   let locationService: LocationService;
   let configService: ConfigService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         EpguLibModule,

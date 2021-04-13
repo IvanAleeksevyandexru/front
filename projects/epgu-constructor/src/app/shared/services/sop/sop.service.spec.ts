@@ -23,6 +23,7 @@ import { ComponentsListRelationsService } from '../../../component/custom-screen
 import { DateRangeService } from '../date-range/date-range.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
 
 const generateRequestBody = (options: SopOptions): SopRequestOptions => {
   let filter = {};
@@ -113,7 +114,7 @@ describe('SopService', () => {
     ],
   };
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -129,10 +130,13 @@ describe('SopService', () => {
         RefRelationService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(SopService);
     http = TestBed.inject(HttpTestingController);
     config = TestBed.inject(ConfigService);
-  }));
+  });
 
   afterEach(async(() => http.verify()));
 

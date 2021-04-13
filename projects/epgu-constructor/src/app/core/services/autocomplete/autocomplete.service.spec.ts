@@ -25,6 +25,7 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -124,7 +125,7 @@ describe('AutocompleteService', () => {
   ];
   let deviceDetectorService: DeviceDetectorService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         HttpClient,
@@ -149,6 +150,9 @@ describe('AutocompleteService', () => {
         RefRelationService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(AutocompleteService);
     screenService = TestBed.inject(ScreenService);
     eventBusService = TestBed.inject(EventBusService);
@@ -157,10 +161,6 @@ describe('AutocompleteService', () => {
     datesToolsService = TestBed.inject(DatesToolsService);
     autocompleteApiService = TestBed.inject(AutocompleteApiService);
     screenService.display = mockData.display;
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   describe('init()', () => {

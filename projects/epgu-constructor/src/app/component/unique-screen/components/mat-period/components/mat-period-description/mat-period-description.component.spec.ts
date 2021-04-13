@@ -4,13 +4,14 @@ import { MockModule } from 'ng-mocks';
 import { MatPeriodDescriptionComponent } from './mat-period-description.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AddZeroPennyPipe } from '../../pipe/add-zero-penny.pipe';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('MatPeriodDescriptionComponent', () => {
   let component: MatPeriodDescriptionComponent;
   let fixture: ComponentFixture<MatPeriodDescriptionComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [MatPeriodDescriptionComponent, AddZeroPennyPipe],
       imports: [MockModule(BaseModule)],
     }).compileComponents();

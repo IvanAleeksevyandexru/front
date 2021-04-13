@@ -21,6 +21,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -65,7 +66,7 @@ describe('SelectChildrenItemComponent', () => {
     },
   ];
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
       imports: [RouterTestingModule, ConstructorDropdownModule, ComponentsListModule, BaseComponentsModule],
@@ -94,10 +95,6 @@ describe('SelectChildrenItemComponent', () => {
     component.components = componentMock;
     component.control = new FormControl();
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should call selectChildren()', () => {

@@ -15,6 +15,7 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -31,8 +32,8 @@ describe('ComponentListModalComponent', () => {
     type: ScreenTypes.CUSTOM
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [
         ComponentListModalComponent
       ],
@@ -52,12 +53,11 @@ describe('ComponentListModalComponent', () => {
       ]
     })
       .compileComponents();
-
-    screenService = TestBed.inject(ScreenService);
-    navModalService = TestBed.inject(NavigationModalService);
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    navModalService = TestBed.inject(NavigationModalService);
     fixture = TestBed.createComponent(ComponentListModalComponent);
     component = fixture.componentInstance;
     screenService.display = screenDataMock as any;

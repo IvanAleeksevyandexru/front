@@ -4,6 +4,7 @@ import { MockModule } from 'ng-mocks';
 import { InformationCenterPfrSimpleComponent } from './information-center-pfr-simple.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterPfrSimpleComponent', () => {
   let component: InformationCenterPfrSimpleComponent;
@@ -13,7 +14,7 @@ describe('InformationCenterPfrSimpleComponent', () => {
     label: 'label',
     html: '<p>html</p>',
   };
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [InformationCenterPfrSimpleComponent],
       imports: [MockModule(BaseModule), MockModule(BaseComponentsModule)],

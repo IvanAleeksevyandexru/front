@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UtilsService } from './utils.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('UtilsService', () => {
   let service: UtilsService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         UtilsService
       ]
     });
-    service = TestBed.inject(UtilsService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    service = TestBed.inject(UtilsService);
   });
 
   describe('getObjectProperty()', () => {

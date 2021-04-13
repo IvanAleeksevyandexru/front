@@ -14,13 +14,14 @@ import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { BaseModule } from '../../base.module';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
   let fixture: ComponentFixture<ConstructorLookupComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
       imports: [CoreModule, BaseModule, RouterTestingModule, ValidationTypeModule],
       providers: [
