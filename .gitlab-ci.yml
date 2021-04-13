@@ -207,3 +207,7 @@ Build:
 #     - merge_requests
 #     - master
 #     - stage#
+
+include:
+  - project: appsec/cicd
+    file: /luxsoft/epgu2-form-frontend.yml
