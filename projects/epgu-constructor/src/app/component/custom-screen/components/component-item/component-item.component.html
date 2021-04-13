@@ -6,7 +6,7 @@
   *ngIf="!disableLabel"
 ></epgu-constructor-label>
 <div class="form__error" *ngIf="hasErrors">
-  <small *ngIf="hasUiError">
+  <small *ngIf="hasUiError && isShowErrors">
     {{ control.getError('msg') }}
   </small>
   <small *ngIf="hasServerError">

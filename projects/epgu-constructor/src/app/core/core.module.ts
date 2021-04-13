@@ -22,6 +22,7 @@ import { UtilsService } from './services/utils/utils.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { TracingService } from './services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
+import { FocusManagerService } from './focus-manager/focus-manager.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -41,6 +42,7 @@ import { TracingHttpInterceptor } from './interceptor/tracing/tracing.intercepto
     AutocompleteService,
     TerraByteApiService,
     TracingService,
+    FocusManagerService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
