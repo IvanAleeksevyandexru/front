@@ -16,6 +16,7 @@ import { FieldListItemComponent } from '../components/field-list-item/field-list
 import { CityInputComponent } from '../components/city-input/city-input.component';
 import { AddressInputComponent } from '../components/address-input/address-input.component';
 import { FileUploadFormComponent } from '../components/file-upload-form/file-upload-form.component';
+import { DictionaryComponent } from '../components/dictionary/dictionary.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -63,4 +64,5 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   CityInput: CityInputComponent,
   AddressInput: AddressInputComponent,
   FileUploadComponent: FileUploadFormComponent,
+  Dictionary: DictionaryComponent,
 };

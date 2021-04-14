@@ -1,0 +1,17 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <lib-dropdown
+    *ngIf="dictionaryToolsService.dictionaries$ | async as dictionaries"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [items]="dictionaries[getDictKeyByComp(control.value)]?.list"
+    [validationShowOn]="validationShowOn"
+    [disabled]="dictionaries[getDictKeyByComp(control.value)]?.list?.length === 1"
+    [formControl]="$any(control.get('value'))"
+    [clearable]="true"
+    class="cs__select cs-select"
+  >
+  </lib-dropdown>
+</epgu-constructor-component-item>

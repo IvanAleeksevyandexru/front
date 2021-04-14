@@ -120,7 +120,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     return ![
       CustomScreenComponentTypes.DropDown,
       CustomScreenComponentTypes.DropDownDepts,
-      CustomScreenComponentTypes.Dictionary,
       CustomScreenComponentTypes.Lookup,
       CustomScreenComponentTypes.RadioInput,
     ].includes(componentData.value?.type);
