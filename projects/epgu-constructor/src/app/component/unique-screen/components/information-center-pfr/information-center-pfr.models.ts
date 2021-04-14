@@ -1,7 +1,6 @@
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { DictionaryItem } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { SopOptions } from '../../../../shared/services/sop/sop.types';
+import { DictionaryConditions, DictionaryItem } from '../../../../shared/services/dictionary/dictionary-api.types';
 
 export enum PfrAreaType {
   region = 'region',
@@ -10,8 +9,10 @@ export enum PfrAreaType {
   cityDistrict = 'cityDistrict',
 }
 
-export interface PftAreaTypeParams extends SopOptions {
+export interface PftAreaTypeParams {
   label: string;
+  attributeName: string;
+  condition: DictionaryConditions;
 }
 
 export interface Simple {
@@ -23,6 +24,7 @@ export interface Simple {
 export interface InformationCenterPfrAttrs {
   full: Full;
   simple: Simple;
+  dictionaryType: string;
 }
 
 export interface InformationCenterPfr {
@@ -36,7 +38,8 @@ export interface InformationCenterPfr {
 export interface SelectEvent {
   value?: ListElement;
   type: PfrAreaType;
-  options: SopOptions;
+  attributeName: string;
+  condition: DictionaryConditions;
 }
 
 export interface FormChangeEvent {

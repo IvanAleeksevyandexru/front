@@ -8,11 +8,12 @@ import { ValidationService } from '../../../../../shared/services/validation/val
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('DurationService', () => {
   let service: DurationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         DurationService,
@@ -23,6 +24,9 @@ describe('DurationService', () => {
       ],
       imports: [HttpClientTestingModule],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(DurationService);
   });
 

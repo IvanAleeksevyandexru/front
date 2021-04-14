@@ -11,14 +11,15 @@ import { ChipModule } from '../../chip/chip.module';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('MultipleChoiceDictionaryComponent', () => {
   let component: MultipleChoiceDictionaryComponent;
   let fixture: ComponentFixture<MultipleChoiceDictionaryComponent>;
   let modalService: ModalService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [MultipleChoiceDictionaryComponent],
       imports: [MockModule(BaseModule), MockModule(ChipModule)],
       providers: [{ provide: ModalService, useClass: ModalServiceStub }],

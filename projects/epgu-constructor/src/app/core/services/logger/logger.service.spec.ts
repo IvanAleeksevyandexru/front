@@ -1,18 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { KEY_SHOW_LOG, LoggerService } from './logger.service';
 import * as AngularCoreModule from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('LoggerService', () => {
   let service: LoggerService;
   let message;
   const groupName = 'some group';
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         LoggerService,
       ]
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(LoggerService);
   });
 

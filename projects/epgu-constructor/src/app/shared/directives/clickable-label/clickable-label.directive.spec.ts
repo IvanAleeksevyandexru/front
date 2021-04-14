@@ -15,6 +15,7 @@ import { SafePipe } from '../../pipes/safe/safe.pipe';
 import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   selector: 'epgu-constructor-label-test-component',
@@ -38,7 +39,7 @@ describe('ClickableLabelDirective', () => {
   let actionService: ActionService;
   let screenService: ScreenService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
       TestBed.configureTestingModule({
         declarations: [ClickableLabelDirective, LabelTestComponent, SafePipe, ImgPrefixerPipe],
         providers: [
@@ -50,16 +51,17 @@ describe('ClickableLabelDirective', () => {
         ],
         schemas: [NO_ERRORS_SCHEMA],
       })
-        .compileComponents()
-        .then(() => {
-          fixture = TestBed.createComponent(LabelTestComponent);
-          component = fixture.componentInstance;
-          modalService = TestBed.inject(ModalService);
-          actionService = TestBed.inject(ActionService);
-          screenService = TestBed.inject(ScreenService);
-        });
+        .compileComponents();
     },
   );
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LabelTestComponent);
+    component = fixture.componentInstance;
+    modalService = TestBed.inject(ModalService);
+    actionService = TestBed.inject(ActionService);
+    screenService = TestBed.inject(ScreenService);
+  });
 
   it('should open modal if clarifications are set', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';

@@ -9,6 +9,7 @@ import { SafeModule } from '../../../../../../shared/pipes/safe/safe.module';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;
@@ -61,13 +62,15 @@ describe('PhotoDescriptionComponent', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoDescriptionComponent],
       imports: [RouterTestingModule, MockModule(SafeModule)],
       providers: [{ provide: ModalService, useClass: ModalServiceStub }],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PhotoDescriptionComponent);
     modalService = TestBed.inject(ModalService);
     component = fixture.componentInstance;

@@ -11,6 +11,7 @@ import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { ScreenModalService } from './screen-modal.service';
+import { configureTestSuite } from 'ng-bullet';
 
 
 const response = new FormPlayerServiceStub()._store;
@@ -24,7 +25,7 @@ describe('ScreenModalService', () => {
   let orderId: number;
   let navigation: Navigation;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         ScreenModalService,
@@ -36,14 +37,14 @@ describe('ScreenModalService', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(ScreenModalService);
     screenService = TestBed.inject(ScreenService);
     logger = TestBed.inject(LoggerService);
     formPlayerService = TestBed.inject(FormPlayerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
-  });
-
-  beforeEach(() => {
     orderId = 1234;
     service['_store'] = JSON.parse(JSON.stringify(response));
   });

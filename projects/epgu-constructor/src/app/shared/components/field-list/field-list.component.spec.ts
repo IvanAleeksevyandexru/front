@@ -8,6 +8,7 @@ import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { OutputHtmlModule } from '../output-html/output-html.module';
 import { RankPipe } from '../../pipes/rank/rank.pipe';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -23,8 +24,8 @@ describe('FieldListComponent', () => {
     id: '',
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [FieldListComponent, SafePipe, ImgPrefixerPipe, RankPipe],
       imports: [MockModule(OutputHtmlModule)],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],

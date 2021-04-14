@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { LogicComponent } from './logic.component';
@@ -11,6 +11,7 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;
@@ -18,8 +19,8 @@ describe('LogicComponent', () => {
   let screenService: ScreenService;
   let logicService: LogicService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [LogicComponent],
       imports: [BaseModule],
       providers: [
@@ -35,6 +36,11 @@ describe('LogicComponent', () => {
         },
       })
       .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LogicComponent);
+    component = fixture.componentInstance;
     logicService = TestBed.inject(LogicService);
     screenService = TestBed.inject(ScreenService);
     screenService.logicComponents = [
@@ -51,11 +57,6 @@ describe('LogicComponent', () => {
         }),
       },
     ];
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LogicComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 

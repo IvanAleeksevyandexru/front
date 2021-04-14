@@ -10,13 +10,14 @@ import { DatesToolsService } from '../../../../../core/services/dates-tools/date
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { Gender } from '../../../../../shared/types/gender';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;
   let monthsService: EmployeeHistoryMonthsService;
   let ds: EmployeeHistoryDataSourceService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -30,14 +31,13 @@ describe('EmployeeHistoryFormService', () => {
         DatesToolsService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(EmployeeHistoryFormService);
     monthsService = TestBed.inject(EmployeeHistoryMonthsService);
     ds = TestBed.inject(EmployeeHistoryDataSourceService);
     ds.getDataSourceByGender(Gender.female);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   describe('newGeneration', () => {

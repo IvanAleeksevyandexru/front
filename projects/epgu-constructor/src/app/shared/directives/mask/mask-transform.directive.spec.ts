@@ -9,6 +9,7 @@ import { CoreModule } from '../../../core/core.module';
 import { BaseModule } from '../../base.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   selector: 'epgu-constructor-mask-transform-test-component',
@@ -30,7 +31,7 @@ describe('MaskTransformDirective', () => {
   let component: MaskTransformTestComponent;
   let fixture: ComponentFixture<MaskTransformTestComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
       imports: [CoreModule, RouterTestingModule, BaseModule],
@@ -40,11 +41,12 @@ describe('MaskTransformDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MaskTransformTestComponent);
-        component = fixture.componentInstance;
-      });
+      .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MaskTransformTestComponent);
+    component = fixture.componentInstance;
   });
 
   describe('when it is mask for NumberMaskInput', () => {

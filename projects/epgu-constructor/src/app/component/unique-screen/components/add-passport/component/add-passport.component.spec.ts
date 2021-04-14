@@ -10,7 +10,6 @@ import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
-// eslint-disable-next-line max-len
 import { ComponentsListToolsService } from '../../../../custom-screen/services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { AddPassportComponent } from './add-passport.component';
@@ -22,6 +21,7 @@ import { ActionService } from '../../../../../shared/directives/action/action.se
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -51,7 +51,7 @@ describe('AddPassportComponent', () => {
     ],
   };
 
-  beforeEach(fakeAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent, ScreenPadComponent],
       imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
@@ -70,7 +70,7 @@ describe('AddPassportComponent', () => {
         SuggestHandlerService,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddPassportComponent);

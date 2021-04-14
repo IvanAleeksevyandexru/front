@@ -26,18 +26,34 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentService } from '../../payment.service';
 import { PaymentComponent } from './payment.component';
+import { configureTestSuite } from 'ng-bullet';
 
 let mockData: ComponentDto;
 
-/**
- * Функция теста оплаты
- */
-const testFnc = () => {
+describe('PaymentComponent', () => {
   let component: PaymentComponent;
   let fixture: ComponentFixture<PaymentComponent>;
   let screenService: ScreenService;
 
-  beforeEach(async(() => {
+  /**
+   * Функция теста оплаты
+   */
+  const testFnc = () => {
+    beforeEach(() => {
+      screenService = TestBed.inject(ScreenService);
+      screenService.component = mockData;
+      screenService.header = '';
+      screenService.buttons = [{ label: '', action: DTOActionAction.getNextStep }];
+      fixture = TestBed.createComponent(PaymentComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should create payment brak/razbrack', () => {
+      expect(component).toBeTruthy();
+    });
+  };
+
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [PaymentComponent],
@@ -64,49 +80,37 @@ const testFnc = () => {
         ModalService,
       ],
     }).compileComponents();
-    screenService = TestBed.inject(ScreenService);
-  }));
-
-  beforeEach(() => {
-    screenService.component = mockData;
-    screenService.header = '';
-    screenService.buttons = [{ label: '', action: DTOActionAction.getNextStep }];
-    fixture = TestBed.createComponent(PaymentComponent);
-    component = fixture.componentInstance;
   });
 
-  it('should create payment brak/razbrack', () => {
-    expect(component).toBeTruthy();
-  });
-};
-
-// Старый способ оплаты брак/разбрак
-mockData = {
-  attrs: {
-    nsi: 'fns_zgs_getpay_79272',
-    dictItemCode: '01',
-    ref: {
-      fiasCode: 'ms1.value'
+  // Старый способ оплаты брак/разбрак
+  mockData = {
+    attrs: {
+      nsi: 'fns_zgs_getpay_79272',
+      dictItemCode: '01',
+      ref: {
+        fiasCode: 'ms1.value'
+      },
     },
-  },
-  id: 'pay1ms1',
-  label: 'Оплата госпошлины',
-  required: true,
-  type: 'PaymentScr',
-  value: ''
-};
+    id: 'pay1ms1',
+    label: 'Оплата госпошлины',
+    required: true,
+    type: 'PaymentScr',
+    value: ''
+  };
 
-describe('PaymentComponent old type Brak/Razbrak', testFnc);
+  describe('PaymentComponent old type Brak/Razbrak', testFnc);
 
 // Новый способ оплаты
-mockData = {
-  attrs: {},
-  id: 'pay1ms1',
-  label: 'Оплата госпошлины',
-  required: true,
-  type: 'PaymentScr',
-  // eslint-disable-next-line max-len
-  value: '{"billNumber":1232134,"billId":345453,"amount":750,"billName":"Оплата транспортного средства","billDate":"2020-12-24T17:06:42.266Z","payCode":1}'
-};
+  mockData = {
+    attrs: {},
+    id: 'pay1ms1',
+    label: 'Оплата госпошлины',
+    required: true,
+    type: 'PaymentScr',
+    // eslint-disable-next-line max-len
+    value: '{"billNumber":1232134,"billId":345453,"amount":750,"billName":"Оплата транспортного средства","billDate":"2020-12-24T17:06:42.266Z","payCode":1}'
+  };
 
-describe('PaymentComponent new type for All', testFnc);
+  describe('PaymentComponent new type for All', testFnc);
+
+});

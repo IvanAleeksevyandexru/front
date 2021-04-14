@@ -36,6 +36,7 @@ import { ComponentsListRelationsService } from '../../../../../custom-screen/ser
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -57,7 +58,7 @@ describe('EmployeeHistoryFormComponent', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeHistoryFormComponent,
@@ -101,14 +102,14 @@ describe('EmployeeHistoryFormComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-    datesToolsService = TestBed.inject(DatesToolsService);
-    jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date(MOCK_TODAY));
   });
 
   beforeEach(() => {
     const dateMock = new MonthYear(1, 2021);
     jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
 
+    datesToolsService = TestBed.inject(DatesToolsService);
+    jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date(MOCK_TODAY));
     employeeHistoryFormService = TestBed.inject(EmployeeHistoryFormService);
     employeeHistoryDataSourceService = TestBed.inject(EmployeeHistoryDataSourceService);
     employeeHistoryMonthsService = TestBed.inject(EmployeeHistoryMonthsService);

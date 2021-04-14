@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ValidationService', () => {
   let service: ValidationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [ValidationService],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(ValidationService);
   });
 

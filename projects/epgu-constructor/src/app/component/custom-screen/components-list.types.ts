@@ -213,6 +213,7 @@ export interface CustomListFormGroup {
   required: boolean;
   type: CustomScreenComponentTypes;
   value: CustomScreenComponentValueTypes;
+  valueFromCache?: unknown;
 }
 
 export interface CustomDisplay extends DisplayDto {

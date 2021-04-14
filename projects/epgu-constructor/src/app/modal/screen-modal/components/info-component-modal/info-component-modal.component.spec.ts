@@ -13,6 +13,7 @@ import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-scr
 import { By } from '@angular/platform-browser';
 import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -22,8 +23,8 @@ describe('InfoComponentModalComponent', () => {
   let screenModalService: ScreenModalService;
   let screenService: ScreenService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [
         InfoComponentModalComponent,
         MockComponent(ButtonComponent),

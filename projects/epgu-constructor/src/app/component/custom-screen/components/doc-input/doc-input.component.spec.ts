@@ -22,6 +22,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
 
 //TODO написать тесты
 describe('DocInputComponent', () => {
@@ -40,8 +41,8 @@ describe('DocInputComponent', () => {
     }
   };
 
-  beforeEach(async() => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [MockComponent(DocInputComponent)],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

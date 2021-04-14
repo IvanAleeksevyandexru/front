@@ -12,4 +12,10 @@ export class ScreenButtonsComponent {
   @Input() isLoading = false;
   @Input() disabled = false;
   @Input() disabledForAll = false;
+
+  public clickedButton: ScreenActionDto;
+
+  setClickedButton(button: ScreenActionDto): void {
+    this.clickedButton = button;
+  }
 }

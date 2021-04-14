@@ -12,6 +12,7 @@ import { ScreenPadComponent } from '../../../../shared/components/screen-pad/scr
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
 
 const mockData: TimerComponentBase = {
   id: null,
@@ -34,7 +35,7 @@ describe('TimerScreenComponent', () => {
   let fixture: ComponentFixture<TimerScreenComponent>;
   let currentAnswersService: CurrentAnswersService;
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         TimerScreenComponent,
@@ -52,7 +53,7 @@ describe('TimerScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TimerScreenComponent);

@@ -9,6 +9,7 @@ import { DebugElement } from '@angular/core';
 
 import { ConstructorMonthPickerComponent } from './constructor-month-picker.component';
 import { BaseModule } from '../../base.module';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConstructorMonthPickerComponent', () => {
   let component: ConstructorMonthPickerComponent;
@@ -16,7 +17,7 @@ describe('ConstructorMonthPickerComponent', () => {
   let debugEl: DebugElement;
   const selector = 'lib-month-picker';
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorMonthPickerComponent],
       imports: [MockModule(BaseModule), RouterTestingModule, BrowserAnimationsModule],

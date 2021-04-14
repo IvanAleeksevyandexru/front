@@ -9,6 +9,7 @@ import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
 import { ScreenTypes } from '../../../screen/screen.types';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}
@@ -32,8 +33,8 @@ describe('ComponentUniqueResolverComponent', () => {
   let fixture: ComponentFixture<ComponentUniqueResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [ComponentUniqueResolverComponent, TestComponent, Test2Component],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

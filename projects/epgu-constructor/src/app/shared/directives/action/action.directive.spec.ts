@@ -33,6 +33,7 @@ import { ActionDirective } from './action.directive';
 import { ActionService } from './action.service';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -139,7 +140,7 @@ describe('ActionDirective', () => {
   let localStorageService: LocalStorageService;
   let actionService: ActionService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ActionDirective, ActionTestComponent],
       providers: [
@@ -161,20 +162,21 @@ describe('ActionDirective', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ActionTestComponent);
-        component = fixture.componentInstance;
-        formPlayerApiService = TestBed.inject(FormPlayerApiService);
-        screenService = TestBed.inject(ScreenService);
-        navigationService = TestBed.inject(NavigationService);
-        navigationModalService = TestBed.inject(NavigationModalService);
-        utilsService = TestBed.inject(UtilsService);
-        localStorageService = TestBed.inject(LocalStorageService);
-        actionService = TestBed.inject(ActionService);
-        jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
-        jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
-      });
+      .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ActionTestComponent);
+    component = fixture.componentInstance;
+    formPlayerApiService = TestBed.inject(FormPlayerApiService);
+    screenService = TestBed.inject(ScreenService);
+    navigationService = TestBed.inject(NavigationService);
+    navigationModalService = TestBed.inject(NavigationModalService);
+    utilsService = TestBed.inject(UtilsService);
+    localStorageService = TestBed.inject(LocalStorageService);
+    actionService = TestBed.inject(ActionService);
+    jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
+    jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
   });
 
   it('test directive - download action', () => {

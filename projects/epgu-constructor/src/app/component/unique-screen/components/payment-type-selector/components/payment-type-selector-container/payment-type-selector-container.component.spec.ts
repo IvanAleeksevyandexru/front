@@ -26,6 +26,7 @@ import { PaymentTypeSelectorContainerComponent } from './payment-type-selector-c
 import { PaymentTypeSelectorComponent } from '../payment-type-selector/payment-type-selector.component';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;
@@ -61,8 +62,8 @@ describe('PaymentTypeSelectorContainerComponent', () => {
     visited: true,
   } as ComponentDto;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         PaymentTypeSelectorContainerComponent,
         PaymentTypeSelectorComponent,

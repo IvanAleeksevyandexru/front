@@ -48,6 +48,7 @@ import { CityInputComponent } from './components/city-input/city-input.component
 import { AddressInputComponent } from './components/address-input/address-input.component';
 import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
 import { ComponentListResolverModule } from './component-list-resolver/component-list-resolver.module';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ComponentListResolverModule } from './component-list-resolver/component
     CityInputComponent,
     FileUploadFormComponent,
     AddressInputComponent,
+    DropdownComponent
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -120,6 +122,7 @@ import { ComponentListResolverModule } from './component-list-resolver/component
     CityInputComponent,
     FileUploadFormComponent,
     AddressInputComponent,
+    DropdownComponent
   ],
 })
 export class ComponentsListModule {}

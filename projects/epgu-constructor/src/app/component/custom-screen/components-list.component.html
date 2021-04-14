@@ -13,31 +13,6 @@
           | showComponent: componentData.value?.attrs?.hidden
       "
     >
-
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.DropDown"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <lib-dropdown
-          *ngIf="dropDowns$ | async as dropDowns"
-          epgu-constructor-validation-type
-          [component]="componentData.value"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [items]="$any(dropDowns[componentData.value?.id])"
-          [disabled]="$any(dropDowns[componentData.value?.id])?.length === 1"
-          [validationShowOn]="validationShowOn"
-          [formControl]="$any(componentData.get('value'))"
-          [clearable]="true"
-          [localSearch]="componentData.value.attrs.localSearch"
-          class="cs__select cs-select"
-          [suggest]="(suggestions$ | async)[componentData.value?.id]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
-        >
-        </lib-dropdown>
-      </epgu-constructor-component-item>
-
       <epgu-constructor-component-item
         *ngSwitchCase="componentType.DropDownDepts"
         [control]="componentData.get('value')"
@@ -132,16 +107,12 @@
         </div>
       </epgu-constructor-component-item>
 
-      <ng-container
-        *ngIf="isResolverRender(componentData)"
-      >
-        <epgu-constructor-component-list-resolver
-          [componentIndex]="idx"
-          [componentsGroupIndex]="componentsGroupIndex"
-          [componentType]="componentData.value?.type"
-        ></epgu-constructor-component-list-resolver>
-      </ng-container>
-
+      <epgu-constructor-component-list-resolver
+        *ngSwitchDefault
+        [componentIndex]="idx"
+        [componentsGroupIndex]="componentsGroupIndex"
+        [componentType]="componentData.value?.type"
+      ></epgu-constructor-component-list-resolver>
     </ng-container>
   </div>
 </form>

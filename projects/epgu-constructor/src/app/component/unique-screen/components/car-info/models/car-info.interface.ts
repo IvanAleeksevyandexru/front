@@ -78,7 +78,9 @@ export interface Restriction {
 export interface CarInfoComponentAttrsDto extends ComponentAttrsDto {
   errors: CarInfoErrorsDto;
 }
-
+export interface CarOwnerInfoComponentAttrsDto extends ComponentAttrsDto {
+  pdfLink: string;
+}
 export interface CarInfoErrorsDto {
   EXTERNAL_SERVER_ERROR?: string,
   NOT_FOUND_ERROR?: string
