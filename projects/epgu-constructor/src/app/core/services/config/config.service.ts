@@ -15,8 +15,6 @@ export class ConfigService implements Config {
   private _configApiUrl: string;
   private _configId: string;
   private _dictionaryUrl: string;
-  private _sopApiUrl: string;
-  private _sopApiKey: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
   private _lkUrl: string;
@@ -85,14 +83,6 @@ export class ConfigService implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
-  }
-
-  get sopApiUrl(): string {
-    return this._sopApiUrl;
-  }
-
-  get sopApiKey(): string {
-    return this._sopApiKey;
   }
 
   get externalApiUrl(): string {
@@ -189,8 +179,6 @@ export class ConfigService implements Config {
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
-    this._sopApiUrl = config.sopApiUrl ?? `${this.loadService.config.sopApiUrl}`;
-    this._sopApiKey = config.sopApiKey ?? `${this.loadService.config.sopApiKey}`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
