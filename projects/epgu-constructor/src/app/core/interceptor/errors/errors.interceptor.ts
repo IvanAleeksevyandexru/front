@@ -16,6 +16,7 @@ import {
   DRAFT_STATEMENT_NOT_FOUND,
   BOOKING_ONLINE_ERROR,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
+  TIME_INVITATION_ERROR,
 } from './errors.interceptor.constants';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
@@ -63,6 +64,8 @@ export class ErrorsInterceptorService implements HttpInterceptor {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
+    } else if (status === 408 && url.includes('invitations/inviteToSign/send')) {
+      this.showModal(TIME_INVITATION_ERROR);
     } else if (url.includes('service/booking')) {
       const payload = error.payload;
       const addressLink = `<a href="${payload?.url}">${payload?.text}</a>`;
