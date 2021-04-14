@@ -4,7 +4,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { FocusState } from 'epgu-lib';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
-import { FocusManagerService } from '../../../../core/focus-manager/focus-manager.service';
+import { FocusManagerService } from '../../../../core/services/focus-manager/focus-manager.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
