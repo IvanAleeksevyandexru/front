@@ -5,6 +5,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import {
   CachedValue,
   FormChangeEvent,
@@ -13,11 +14,15 @@ import {
   SelectEvent,
   Simple,
 } from '../information-center-pfr.models';
+import {
+  DictionaryConditions,
+  DictionaryFilters,
+  DictionaryItem,
+} from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
-import { SopService } from '../../../../../shared/services/sop/sop.service';
-import { SopItem } from '../../../../../shared/services/sop/sop.types';
 
 @Component({
   selector: 'epgu-constructor-information-center-pfr',
@@ -27,19 +32,53 @@ import { SopItem } from '../../../../../shared/services/sop/sop.types';
 })
 export class InformationCenterPfrContainerComponent {
   public data$ = (this.screenService.component$ as Observable<InformationCenterPfr>).pipe(
-    tap((component) => this.initDictionary(component)),
-    map<InformationCenterPfr, InformationCenterPfr>((component) => this.initComponent(component)),
+    tap((component) => {
+      this.dictionaryType = component.attrs.dictionaryType;
+      if (!this.isSimpleElement(component) && !component.value) {
+        const { condition, attributeName } = component.attrs.full.region;
+        this.fetchDictionary({
+          type: PfrAreaType.region,
+          attributeName,
+          condition,
+        });
+      }
+
+      if (!this.isSimpleElement(component) && component.value) {
+        this.setCashedValue(component);
+      }
+    }),
+    map<InformationCenterPfr, InformationCenterPfr>((component) => {
+      if (!this.isSimpleElement(component)) return component;
+
+      const { simple } = component.attrs;
+      const data: Simple = {
+        ...simple,
+        items: this.dictionaryToolsService.adaptDictionaryToListItem(
+          simple.items as Array<DictionaryItem>,
+        ),
+      };
+
+      return {
+        ...component,
+        attrs: {
+          ...component.attrs,
+          simple: data,
+        },
+      };
+    }),
   );
   public regionDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public districtDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public cityDistrictDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public territoryDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
   public nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
+  private dictionaryType: string;
 
   constructor(
     public readonly screenService: ScreenService,
     private readonly ngUnsubscribe$: UnsubscribeService,
-    private readonly sopService: SopService,
+    private readonly dictionaryApiService: DictionaryApiService,
+    private readonly dictionaryToolsService: DictionaryToolsService,
     private cdr: ChangeDetectorRef,
     public currentAnswersService: CurrentAnswersService,
   ) {}
@@ -50,53 +89,21 @@ export class InformationCenterPfrContainerComponent {
     this.cdr.detectChanges();
   }
 
-  public fetchDictionary({ value, type, options }: SelectEvent): void {
+  public fetchDictionary({ value, type, attributeName, condition }: SelectEvent): void {
     if (value === null) {
       this.updateDictionary(type, []);
       return;
     }
 
-    this.sopService
-      .getDictionary(options, value, this.screenService.getStore())
+    const options = this.getInfoCenterOptionsRequest(attributeName, condition, value?.id as string);
+
+    this.dictionaryApiService
+      .getDictionary(this.dictionaryType, options)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        this.updateDictionary(type, data.items);
+        const items = this.dictionaryToolsService.adaptDictionaryToListItem(data.items);
+        this.updateDictionary(type, items);
       });
-  }
-
-  public isSimpleElement(component: InformationCenterPfr): boolean {
-    return component.attrs.simple.items.length === 1;
-  }
-
-  private initDictionary(component: InformationCenterPfr): void {
-    if (this.isSimpleElement(component)) return;
-
-    if (component.value) {
-      this.setCashedValue(component);
-    } else {
-      this.fetchDictionary({
-        type: PfrAreaType.region,
-        options: component.attrs.full.region,
-      });
-    }
-  }
-
-  private initComponent(component: InformationCenterPfr): InformationCenterPfr {
-    if (!this.isSimpleElement(component)) return component;
-
-    const { simple } = component.attrs;
-    const data: Simple = {
-      ...simple,
-      items: this.sopService.adaptResponseToListItem(simple.items as Array<SopItem>),
-    };
-
-    return {
-      ...component,
-      attrs: {
-        ...component.attrs,
-        simple: data,
-      },
-    };
   }
 
   private updateDictionary(type: PfrAreaType, items: Array<ListElement>): void {
@@ -154,6 +161,23 @@ export class InformationCenterPfrContainerComponent {
     }
   }
 
+  private getInfoCenterOptionsRequest(
+    attributeName: string,
+    condition: DictionaryConditions,
+    id: string = '',
+  ): DictionaryFilters {
+    return {
+      filter: {
+        simple: {
+          attributeName,
+          condition,
+          value: { asString: id },
+        },
+        tx: 'e838ab71-49dd-11eb-9135-fa163e1007b9',
+      },
+    };
+  }
+
   private setCashedValue(component: InformationCenterPfr): void {
     const value = JSON.parse(component.value) as CachedValue;
 
@@ -163,28 +187,42 @@ export class InformationCenterPfrContainerComponent {
 
     const data: SelectEvent[] = [];
     Object.keys(value).forEach((type, index, array) => {
-      if (index === 0) {
-        data.push({
-          type: type as PfrAreaType,
-          options: full[type],
-        });
-      } else if (index !== 0 && value[type]) {
+      if (index !== 0 && value[type]) {
         data.push({
           type: type as PfrAreaType,
           value: value[array[index - 1]] || value[array[index - 2]],
-          options: full[type],
+          condition: full[type].condition,
+          attributeName: full[type].attributeName,
+        });
+      } else if (index === 0) {
+        data.push({
+          type: type as PfrAreaType,
+          condition: full[type].condition,
+          attributeName: full[type].attributeName,
         });
       }
     });
 
     forkJoin(
-      data.map((item) =>
-        this.sopService.getDictionary(item.options, item.value, this.screenService.getStore()),
-      ),
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      data.map(({ attributeName, condition, value }) => {
+        const options = this.getInfoCenterOptionsRequest(
+          attributeName,
+          condition,
+          value?.id as string,
+        );
+
+        return this.dictionaryApiService.getDictionary(this.dictionaryType, options);
+      }),
     ).subscribe((response) => {
       response.forEach(({ items }, index) => {
-        this.updateDictionaryFromCache(data[index].type, items);
+        const dictionary = this.dictionaryToolsService.adaptDictionaryToListItem(items);
+        this.updateDictionaryFromCache(data[index].type, dictionary);
       });
     });
+  }
+
+  private isSimpleElement(component: InformationCenterPfr): boolean {
+    return component.attrs.simple.items.length === 1;
   }
 }

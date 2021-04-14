@@ -1,8 +1,6 @@
 {
   "default-config": {
     "dictionaryUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
-    "sopApiUrl": "http://sop.test.gosuslugi.ru/cps-data-api/api/v1/data",
-    "sopApiKey": "90a6c2a6-d748-46f5-8885-ca5109a49fa2",
     "externalApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1",
     "timeSlotApiUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api/lk/v1/equeue/agg",
     "listPaymentsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/lk/v1/orders/listpaymentsinfo",
