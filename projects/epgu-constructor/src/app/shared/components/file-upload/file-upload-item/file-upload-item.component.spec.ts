@@ -49,6 +49,7 @@ import {
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -113,38 +114,36 @@ describe('FileUploadItemComponent', () => {
   let modalSerivce: ModalService;
   let fileUploadService: FileUploadService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [FileUploadItemComponent],
-        imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
-        providers: [
-          EventBusService,
-          FileUploadService,
-          UnsubscribeService,
-          AutocompleteService,
-          CurrentAnswersService,
-          CompressionService,
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-          { provide: UtilsService, useClass: UtilsServiceStub },
-          { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
-          { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-          { provide: PrepareService, useClass: PrepareServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: LoggerService, useClass: LoggerServiceStub },
-          { provide: ViewerService, useClass: ViewerServiceStub },
-        ],
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [FileUploadItemComponent],
+      imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
+      providers: [
+        EventBusService,
+        FileUploadService,
+        UnsubscribeService,
+        AutocompleteService,
+        CurrentAnswersService,
+        CompressionService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
+        { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
+        { provide: PrepareService, useClass: PrepareServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ViewerService, useClass: ViewerServiceStub },
+      ],
+    })
+      .overrideComponent(FileUploadItemComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
-        .overrideComponent(FileUploadItemComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
-    }),
-  );
+      .compileComponents();
+  });
 
   beforeEach(() => {
     prepateService = TestBed.inject(PrepareService);

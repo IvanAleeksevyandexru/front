@@ -15,7 +15,7 @@ import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ConfirmEmailComponent } from './confirm-email.component';
-
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('ConfirmEmailComponent', () => {
@@ -36,8 +36,8 @@ describe('ConfirmEmailComponent', () => {
       resendCodeUrl: 'url',
     },
   };
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
       imports: [BaseModule, CoreModule, RouterTestingModule, HttpClientTestingModule],
       providers: [
@@ -49,13 +49,13 @@ describe('ConfirmEmailComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
+  });
+
+  beforeEach(() => {
     navigationModalService = TestBed.inject(NavigationModalService);
     screenService = TestBed.inject(ScreenService);
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
     jest.useFakeTimers();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmEmailComponent);
     component = fixture.componentInstance;
 

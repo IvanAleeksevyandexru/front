@@ -14,6 +14,7 @@ import { ScreenPadModule } from '../../../../../shared/components/screen-pad/scr
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FormValue, MatPeriod } from '../mat-period.models';
 import { CachedAnswersDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('MatPeriodContainerComponent', () => {
   let component: MatPeriodContainerComponent;
@@ -81,8 +82,8 @@ describe('MatPeriodContainerComponent', () => {
       visited: true,
     },
   };
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         MatPeriodContainerComponent,
         MockComponent(MatPeriodFormComponent),
@@ -103,10 +104,6 @@ describe('MatPeriodContainerComponent', () => {
     screenService.component = mockData as any;
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('cachedValue$', () => {

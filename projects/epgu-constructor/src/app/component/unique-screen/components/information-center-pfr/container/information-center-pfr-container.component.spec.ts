@@ -25,6 +25,7 @@ import { SopServiceStub } from '../../../../../shared/services/sop/sop.service.s
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { configureTestSuite } from 'ng-bullet';
 
 const getComponentJson = (
   componentJson: Partial<InformationCenterPfr> = {},
@@ -143,7 +144,7 @@ describe('InformationCenterPfrContainerComponent', () => {
     },
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         InformationCenterPfrContainerComponent,

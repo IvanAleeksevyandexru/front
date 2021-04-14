@@ -13,20 +13,20 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
-// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import {
   CustomComponentRef,
   CustomComponentRefRelation,
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
   let components: ComponentDto[];
   let cachedAnswers: CachedAnswers;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         CachedAnswersService,
@@ -45,10 +45,10 @@ describe('PrepareComponentsService', () => {
       ],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(PrepareComponentsService);
   });
 
   beforeEach(() => {
+    service = TestBed.inject(PrepareComponentsService);
     components = [
       { id: 'a1', type: 'HtmlString', attrs: {}},
       { id: 'a2', type: 'HtmlString', attrs: {}},

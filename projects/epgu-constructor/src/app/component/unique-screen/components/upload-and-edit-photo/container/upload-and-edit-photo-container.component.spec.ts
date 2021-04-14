@@ -19,6 +19,7 @@ import { BaseComponentsModule } from '../../../../../shared/components/base-comp
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('UploadAndEditPhotoContainerComponent', () => {
   let component: UploadAndEditPhotoContainerComponent;
@@ -70,7 +71,7 @@ describe('UploadAndEditPhotoContainerComponent', () => {
   };
   let screenService: ScreenService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         UploadAndEditPhotoContainerComponent,
@@ -95,7 +96,9 @@ describe('UploadAndEditPhotoContainerComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(UploadAndEditPhotoContainerComponent);
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockData;

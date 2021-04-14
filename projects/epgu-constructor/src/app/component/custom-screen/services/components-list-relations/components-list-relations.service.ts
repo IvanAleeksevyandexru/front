@@ -355,7 +355,7 @@ export class ComponentsListRelationsService {
         this.handleResetControl(dependentControl, form, reference);
         break;
       case CustomComponentRefRelation.validateDependentControl:
-        this.validateDependentControl(dependentControl);
+        this.validateDependentControl(dependentControl, form, reference);
         break;
     }
 
@@ -609,9 +609,12 @@ export class ComponentsListRelationsService {
     this.prevValues[value.id] = controlValue;
   }
 
-  private validateDependentControl(dependentControl: AbstractControl): void {
+  private validateDependentControl(dependentControl: AbstractControl, form: FormArray, reference: CustomComponentRef): void {
     const control = dependentControl.get('value');
-    control.markAllAsTouched();
-    control.updateValueAndValidity();
+    const refControl = form.controls.find((control) => control.value.id === reference.relatedRel);
+    if (control.value || refControl.touched) {
+      control.markAllAsTouched();
+      control.updateValueAndValidity();
+    }
   }
 }

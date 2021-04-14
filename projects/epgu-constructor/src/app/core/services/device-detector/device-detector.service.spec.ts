@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { CookieService, LoadService, SmuEventsService } from 'epgu-lib';
 import { LoadServiceStub } from '../config/load-service-stub';
 import { DeviceDetectorService } from './device-detector.service';
-import { SmuEventsServiceStub } from './smu-events.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('DeviceDetectorService', () => {
@@ -12,7 +12,7 @@ describe('DeviceDetectorService', () => {
   let userAgent: jest.SpyInstance;
   let cookieService: CookieService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         DeviceDetectorService,
@@ -21,6 +21,9 @@ describe('DeviceDetectorService', () => {
         SmuEventsService
       ],
     });
+  });
+
+  beforeEach(() => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     loadService = TestBed.inject(LoadService);
     smuEventsService = TestBed.inject(SmuEventsService);

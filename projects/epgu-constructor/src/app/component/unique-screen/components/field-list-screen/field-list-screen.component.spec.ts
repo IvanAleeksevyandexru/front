@@ -8,6 +8,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FieldListScreenComponent } from './field-list-screen.component';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';
+import { configureTestSuite } from 'ng-bullet';
 
 const mockData = {
   attrs: {
@@ -25,7 +26,7 @@ describe('FieldListScreenComponent', () => {
   let fixture: ComponentFixture<FieldListScreenComponent>;
   let screenService: ScreenService;
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         FieldListScreenComponent,
@@ -41,7 +42,7 @@ describe('FieldListScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FieldListScreenComponent);

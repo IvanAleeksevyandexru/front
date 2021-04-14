@@ -10,12 +10,13 @@ import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { UtilsService } from '../utils/utils.service';
 import { GlobalErrorHandler } from './global-error.service';
 import { HealthServiceStub } from './health.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;
   let healthService: HealthService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         GlobalErrorHandler,
@@ -27,6 +28,9 @@ describe('GlobalErrorHandler', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     healthService = TestBed.inject(HealthService);
     globalError = TestBed.inject(GlobalErrorHandler);
   });

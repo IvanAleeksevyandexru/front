@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RadioTaxComponent } from './radio-tax.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('RadioTaxComponent', () => {
   let component: RadioTaxComponent;
   let fixture: ComponentFixture<RadioTaxComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [RadioTaxComponent],
     }).compileComponents();
   });

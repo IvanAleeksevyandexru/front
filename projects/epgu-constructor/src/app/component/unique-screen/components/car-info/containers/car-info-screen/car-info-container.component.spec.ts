@@ -35,19 +35,22 @@ import { CarOwnersComponent } from '../../components/car-owners/car-owners.compo
 import { LegalComplianceComponent } from '../../components/legal-compliance/legal-compliance.component';
 import { NotaryInfoComponent } from '../../components/notary-info/notary-info.component';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { CarOwnerInfoLinkComponent } from '../../components/car-owner-info-link/car-owner-info-link.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('CarInfoContainerComponent', () => {
   let component: CarInfoContainerComponent;
   let fixture: ComponentFixture<CarInfoContainerComponent>;
   const mockData = {} as any;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         CarInfoComponent,
         CarInfoContainerComponent,
         CarOwnerInfoContainerComponent,
         CarOwnerInfoComponent,
+        CarOwnerInfoLinkComponent,
         CarOwnersComponent,
         LegalComplianceComponent,
         NotaryInfoComponent,
@@ -84,10 +87,6 @@ describe('CarInfoContainerComponent', () => {
     component = fixture.componentInstance;
     component.carInfo$ = of(mockData);
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('mapCarInfoErrors()', () => {

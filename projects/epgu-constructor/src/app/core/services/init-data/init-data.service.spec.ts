@@ -3,6 +3,7 @@ import { LoggerService } from '../logger/logger.service';
 import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { InitDataService } from './init-data.service';
 import { FormPlayerContext, ServiceEntity } from '../../../form-player/form-player.types';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('InitDataService', () => {
@@ -11,18 +12,18 @@ describe('InitDataService', () => {
   let serviceEntity: ServiceEntity;
   let context: FormPlayerContext;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         InitDataService,
         { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     });
-    service = TestBed.inject(InitDataService);
-    loggerService = TestBed.inject(LoggerService);
   });
 
   beforeEach(() => {
+    service = TestBed.inject(InitDataService);
+    loggerService = TestBed.inject(LoggerService);
     serviceEntity = {
       serviceId: '10000100',
       targetId: '-10000100'

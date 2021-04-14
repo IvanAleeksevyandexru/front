@@ -18,6 +18,7 @@ import { FormPlayerApiService } from '../../../../form-player/services/form-play
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
+import { configureTestSuite } from 'ng-bullet';
 
 
 
@@ -57,8 +58,8 @@ describe('UploadAndEditPhotoComponent', () => {
     value: '',
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       imports: [ UploadAndEditPhotoModule, RouterTestingModule, CoreModule ],
       providers: [
         TerraByteApiService,

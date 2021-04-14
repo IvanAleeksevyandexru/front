@@ -8,6 +8,7 @@ import {
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 import { FileUploadService } from '../file-upload.service';
 import { FileUploadComponent } from './file-upload.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -26,12 +27,12 @@ describe('FileUploadComponent', () => {
     ],
   };
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [FileUploadComponent, FileUploadItemComponentMock],
       providers: [FileUploadService, EventBusService],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploadComponent);

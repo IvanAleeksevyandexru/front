@@ -11,7 +11,6 @@ import { DeviceDetectorServiceStub } from '../../../../../../core/services/devic
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../../../modal/modal.module';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -30,6 +29,7 @@ import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -52,8 +52,8 @@ describe('PaymentTypeSelectorComponent', () => {
     ],
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorComponent, PaymentTypeSelectorButtonComponent],
       imports: [
         ModalModule,

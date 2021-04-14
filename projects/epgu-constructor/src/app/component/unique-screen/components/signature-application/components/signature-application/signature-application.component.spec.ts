@@ -32,6 +32,7 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -53,36 +54,34 @@ describe('SignatureApplicationComponent', () => {
     { label: 'ActionButton', value: 'ActionButton', action: DTOActionAction.getNextStep },
   ];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, ClickableLabelModule],
-        declarations: [
-          SignatureApplicationComponent,
-          ScreenContainerComponent,
-          PageNameComponent,
-          NavigationComponent,
-          ButtonComponent,
-          LoaderComponent,
-          OutputHtmlComponent,
-          SafePipe,
-          ImgPrefixerPipe,
-        ],
-        providers: [
-          NavigationService,
-          UtilsService,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: LocationService, useClass: LocationServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          CurrentAnswersService,
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    }),
-  );
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, ClickableLabelModule],
+      declarations: [
+        SignatureApplicationComponent,
+        ScreenContainerComponent,
+        PageNameComponent,
+        NavigationComponent,
+        ButtonComponent,
+        LoaderComponent,
+        OutputHtmlComponent,
+        SafePipe,
+        ImgPrefixerPipe,
+      ],
+      providers: [
+        NavigationService,
+        UtilsService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignatureApplicationComponent);

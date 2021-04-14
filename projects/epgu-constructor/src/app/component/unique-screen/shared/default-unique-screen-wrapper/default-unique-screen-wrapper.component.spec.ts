@@ -27,6 +27,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { BaseModule } from '../../../../shared/base.module';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -39,7 +40,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
   let component: DefaultUniqueScreenWrapperComponent;
   let fixture: ComponentFixture<DefaultUniqueScreenWrapperComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

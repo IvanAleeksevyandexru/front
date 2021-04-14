@@ -10,6 +10,7 @@ import { DeviceDetectorService } from '../../../core/services/device-detector/de
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { LocationService } from '../../../core/services/location/location.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -17,21 +18,19 @@ describe('NavigationComponent', () => {
   let screenService: ScreenService;
   let navService: NavigationService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [NavigationComponent],
-        providers: [
-          NavigationService,
-          LocationService,
-          WINDOW_PROVIDERS,
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        ],
-      }).compileComponents();
-    }),
-  );
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [NavigationComponent],
+      providers: [
+        NavigationService,
+        LocationService,
+        WINDOW_PROVIDERS,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavigationComponent);

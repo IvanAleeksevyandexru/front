@@ -3,6 +3,7 @@ import { DATE_ISO_STRING_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DATE_STRING_DOT_FO
 import { DatesToolsService } from './dates-tools.service';
 import * as moment_ from 'moment';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 const moment = moment_;
 moment.locale('ru');
@@ -12,11 +13,14 @@ jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
   const MOCK_TODAY = '2020-01-01T00:00:00.000Z';
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [DatesToolsService],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(DatesToolsService);
     jest.spyOn(service, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
   });

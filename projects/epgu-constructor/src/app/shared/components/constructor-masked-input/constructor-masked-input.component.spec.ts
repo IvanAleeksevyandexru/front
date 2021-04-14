@@ -6,6 +6,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { MaskModule } from '../../directives/mask/mask.module';
 import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 import { NgControl } from '@angular/forms';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConstructorMaskedInputComponent', () => {
   let component: ConstructorMaskedInputComponent;
@@ -13,8 +14,8 @@ describe('ConstructorMaskedInputComponent', () => {
   let debugEl: DebugElement;
   const selector = 'lib-standard-masked-input';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       imports: [MaskModule, MaskHandleModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ConstructorMaskedInputComponent],
@@ -28,10 +29,6 @@ describe('ConstructorMaskedInputComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     debugEl = fixture.debugElement.query(By.css(selector));
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should be trigger blur', () => {

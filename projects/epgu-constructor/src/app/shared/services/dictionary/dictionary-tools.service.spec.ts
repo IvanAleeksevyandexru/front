@@ -21,6 +21,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import set = Reflect.set;
+import { configureTestSuite } from 'ng-bullet';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -93,7 +94,7 @@ describe('DictionaryToolsService', () => {
   };
   const screenStore: ScreenStore = {};
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -106,6 +107,9 @@ describe('DictionaryToolsService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(DictionaryToolsService);
     MapStore = cloneDeep(mockSelectMapObjectStore);
     compValue = JSON.parse(MapStore.display.components[0].value);

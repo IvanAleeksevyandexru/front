@@ -19,6 +19,7 @@ import { UtilsService } from '../../core/services/utils/utils.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileItem, FileItemStatus } from '../../shared/components/file-upload/file-upload-item/data';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -64,8 +65,8 @@ describe('AttachUploadedFilesModalComponent', () => {
     ]
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         AttachUploadedFilesModalComponent,
       ],
