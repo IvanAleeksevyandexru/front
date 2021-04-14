@@ -51,7 +51,7 @@
     <div class="screen-footer">
       <epgu-constructor-screen-buttons
         class="screen-buttons"
-        *ngIf="(screenService.buttons$ | async).length"
+        *ngIf="showButtons$ | async"
         [screenButtons]="screenService.buttons$ | async"
         [isLoading]="screenService.isLoading$ | async"
       ></epgu-constructor-screen-buttons>
