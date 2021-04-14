@@ -12,7 +12,6 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { IRegistrationAddrComponent } from '../../registration-addr-screen.types';
 import { RegistrationAddrComponent } from './registration-addr.component';
-// eslint-disable-next-line max-len
 import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
@@ -23,6 +22,7 @@ import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/
 import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
@@ -69,7 +69,7 @@ describe('RegistrationAddrComponent', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [RegistrationAddrComponent],
       imports: [
@@ -94,12 +94,12 @@ describe('RegistrationAddrComponent', () => {
         FormBuilder,
       ],
     }).compileComponents();
-    configService = TestBed.inject(ConfigService);
-    screenService = TestBed.inject(ScreenService);
-    datesToolsService = TestBed.inject(DatesToolsService);
   });
 
   beforeEach(() => {
+    configService = TestBed.inject(ConfigService);
+    screenService = TestBed.inject(ScreenService);
+    datesToolsService = TestBed.inject(DatesToolsService);
     fixture = TestBed.createComponent(RegistrationAddrComponent);
     screenService.component = mockData;
     component = fixture.componentInstance;

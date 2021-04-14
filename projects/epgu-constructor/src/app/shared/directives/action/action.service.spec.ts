@@ -31,6 +31,7 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
+import { configureTestSuite } from 'ng-bullet';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -154,7 +155,7 @@ describe('ActionService', () => {
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -175,7 +176,9 @@ describe('ActionService', () => {
         EventBusService,
       ],
     });
+  });
 
+  beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     actionService = TestBed.inject(ActionService);
     utilsService = TestBed.inject(UtilsService);

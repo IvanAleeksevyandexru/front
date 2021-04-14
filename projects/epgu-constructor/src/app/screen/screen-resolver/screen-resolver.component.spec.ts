@@ -7,6 +7,7 @@ import { ScreenTypes } from '../screen.types';
 import { SCREEN_COMPONENTS } from '../screen.const';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   template: '<div>test</div>',
@@ -34,8 +35,8 @@ describe('ScreenResolverComponent', () => {
   let fixture: ComponentFixture<ScreenResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [ScreenResolverComponent, TestComponent, Test2Component],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
     })

@@ -19,6 +19,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -63,7 +64,7 @@ describe('FileUploadScreenComponent', () => {
   let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [MockModule(EpguLibModule), ScreenButtonsModule],
       declarations: [
@@ -290,17 +291,6 @@ describe('FileUploadScreenComponent', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('showLoader property should be equal to screenService.isLoading$', () => {
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.showLoader).toBeFalsy();
-
-      screenService.isLoadingSubject.next(true);
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.showLoader).toBeTruthy();
     });
 
     describe('disabled property', () => {

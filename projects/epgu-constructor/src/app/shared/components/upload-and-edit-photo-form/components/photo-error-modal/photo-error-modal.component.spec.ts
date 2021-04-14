@@ -5,17 +5,20 @@ import { MockComponent } from 'ng-mocks';
 
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoErrorModalComponent', () => {
   let component: PhotoErrorModalComponent;
   let fixture: ComponentFixture<PhotoErrorModalComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoErrorModalComponent, MockComponent(ButtonComponent)],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PhotoErrorModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

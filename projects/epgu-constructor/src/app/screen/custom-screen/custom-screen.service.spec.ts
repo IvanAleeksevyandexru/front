@@ -14,7 +14,6 @@ describe('CustomScreenService', () => {
     service = TestBed.inject(CustomScreenService);
   });
 
-  // @todo. Do we need to test private method?
   describe('getPrepareResponseData method', () => {
     it('without data', () => {
       //@ts-ignore
@@ -22,9 +21,5 @@ describe('CustomScreenService', () => {
       //@ts-ignore
       expect(result).toEqual({});
     });
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 });

@@ -5,6 +5,7 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { LogicErrorInterceptor } from './logic-error-interceptor.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('LogicErrorInterceptor', () => {
   let localStorageService: LocalStorageService;
@@ -20,7 +21,7 @@ describe('LogicErrorInterceptor', () => {
     ),
   };
 
-  beforeEach(() =>
+  configureTestSuite(() =>
     TestBed.configureTestingModule({
       providers: [
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },

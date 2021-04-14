@@ -17,6 +17,7 @@ import { UnusedPaymentsComponent } from '../component/unused-payments.component'
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
@@ -41,24 +42,22 @@ describe('UnusedPaymentsContainerComponent', () => {
     { uin: '123', payDate: 123123, amount: 123, link: 'sdf' },
   ];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          UnusedPaymentsContainerComponent,
-          MockComponent(UnusedPaymentsComponent),
-          MockComponent(RadioTaxComponent),
-        ],
-        imports: [MockModule(DefaultUniqueScreenWrapperModule)],
-        providers: [
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          CurrentAnswersService,
-          CachedAnswersService,
-          UtilsService,
-        ],
-      }).compileComponents();
-    }),
-  );
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        UnusedPaymentsContainerComponent,
+        MockComponent(UnusedPaymentsComponent),
+        MockComponent(RadioTaxComponent),
+      ],
+      imports: [MockModule(DefaultUniqueScreenWrapperModule)],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        CurrentAnswersService,
+        CachedAnswersService,
+        UtilsService,
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);

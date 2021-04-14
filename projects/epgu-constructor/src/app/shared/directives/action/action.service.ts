@@ -210,8 +210,7 @@ export class ActionService {
     let value: string;
     if (action.type === ActionType.skipStep) {
       value = '';
-    }
-    else if (action.value !== undefined) {
+    } else if (action.value !== undefined) {
       value = action.value;
     } else {
       value =
@@ -306,8 +305,9 @@ export class ActionService {
 
   private handleDeliriumAction$<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
     const body = this.getActionDTO(action);
+    const path = `service/${this.screenService.serviceCode}/scenario/${action.type}`;
     const preparedBody = JSON.parse(JSON.stringify(body));
     preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);
-    return this.actionApiService.sendAction<T>(action.type, preparedBody);
+    return this.actionApiService.sendAction<T>(path, preparedBody);
   }
 }

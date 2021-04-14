@@ -13,6 +13,7 @@ import { of } from 'rxjs';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -30,7 +31,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     valueFromCache: false
   };
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [FormsModule, HttpClientTestingModule],
@@ -44,7 +45,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserAddressComponent);

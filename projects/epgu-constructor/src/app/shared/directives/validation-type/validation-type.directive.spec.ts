@@ -18,6 +18,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ValidationTypeModule } from './validation-type.module';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentMockData: CustomComponent = {
   attrs: {
@@ -64,7 +65,7 @@ describe('ValidationTypeDirective', () => {
   let fixture: ComponentFixture<MockComponent>;
   let service: ValidationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
       imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
@@ -78,6 +79,9 @@ describe('ValidationTypeDirective', () => {
         UnsubscribeService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(ValidationService);
     fixture = TestBed.createComponent(MockComponent);
     component = fixture.componentInstance;

@@ -5,22 +5,22 @@ import { DatesToolsService } from '../../../../../core/services/dates-tools/date
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('EmployeeHistoryMonthsService', () => {
   let service: EmployeeHistoryMonthsService;
   let datesToolsService: DatesToolsService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [EmployeeHistoryMonthsService, DatesToolsService],
     });
-    service = TestBed.inject(EmployeeHistoryMonthsService);
-    datesToolsService = TestBed.inject(DatesToolsService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    service = TestBed.inject(EmployeeHistoryMonthsService);
+    datesToolsService = TestBed.inject(DatesToolsService);
   });
 
   describe('initSettings', () => {

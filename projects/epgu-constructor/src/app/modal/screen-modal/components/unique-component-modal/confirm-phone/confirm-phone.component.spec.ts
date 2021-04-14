@@ -18,6 +18,7 @@ import { ConstructorPlainInputModule } from '../../../../../shared/components/co
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -42,8 +43,8 @@ describe('ConfirmPhoneComponent', () => {
     pd1: { value: '', visited: false },
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ConfirmPhoneComponent, CounterDirective],
       imports: [ConstructorPlainInputModule, CoreModule, BaseModule, RouterTestingModule],
       providers: [
@@ -57,14 +58,13 @@ describe('ConfirmPhoneComponent', () => {
         DatesToolsService,
       ],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     navigationModalService = TestBed.inject(NavigationModalService);
     screenService = TestBed.inject(ScreenService);
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPhoneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

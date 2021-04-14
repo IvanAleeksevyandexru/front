@@ -5,6 +5,7 @@ import { LogicService } from './logic.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ComponentValue } from '../logic.types';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('LogicService', () => {
   let service: LogicService;
@@ -34,7 +35,7 @@ describe('LogicService', () => {
     },
   ];
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -42,6 +43,9 @@ describe('LogicService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(LogicService);
     httpTestingController = TestBed.inject(HttpTestingController);
     localStorage = TestBed.inject(LocalStorageService);

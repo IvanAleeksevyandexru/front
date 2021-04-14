@@ -9,12 +9,13 @@ import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { InformationCenterCardComponent } from '../information-center-card/information-center-card.component';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterFormComponent', () => {
   let component: InformationCenterFormComponent;
   let fixture: ComponentFixture<InformationCenterFormComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [InformationCenterFormComponent, MockComponent(InformationCenterCardComponent)],
       imports: [

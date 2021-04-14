@@ -13,6 +13,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -44,7 +45,7 @@ describe('UniqueScreenComponent', () => {
     component = fixture.componentInstance;
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         UniqueScreenComponent,

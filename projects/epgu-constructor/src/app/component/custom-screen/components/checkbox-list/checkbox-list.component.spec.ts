@@ -6,6 +6,7 @@ import { ConstructorCheckboxModule } from '../../../../shared/components/constru
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 xdescribe('CheckboxListComponent', () => {
   let component: CheckboxListComponent;
@@ -46,7 +47,7 @@ xdescribe('CheckboxListComponent', () => {
     required: false
   };
 
-  beforeEach(async() => {
+  configureTestSuite(async() => {
     await TestBed.configureTestingModule({
       declarations: [
         CheckboxListComponent,

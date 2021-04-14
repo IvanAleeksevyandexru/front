@@ -1,4 +1,4 @@
-import { ActionType } from './../../form-player/services/form-player-api/form-player-api.types';
+import { ActionType } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -27,6 +27,7 @@ import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -37,7 +38,7 @@ describe('CustomScreenComponent', () => {
   let customScreenService: CustomScreenService;
   let datesToolsService: DatesToolsService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         MockModule(EpguLibModule),
@@ -71,8 +72,6 @@ describe('CustomScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
-
-
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     customScreenService = TestBed.inject(CustomScreenService);
@@ -278,23 +277,6 @@ describe('CustomScreenComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('showLoader property should be equal screenService.isLoading', () => {
-      screenService.buttons = [{
-        label: 'any',
-        action: DTOActionAction.getNextStep,
-      }];
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.showLoader).toBeFalsy();
-
-      screenService.isLoadingSubject.next(true);
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.showLoader).toBeTruthy();
     });
 
     it('disabled property should be TRUE if screenService.isLoading is TRUE or isValid is FALSE', () => {

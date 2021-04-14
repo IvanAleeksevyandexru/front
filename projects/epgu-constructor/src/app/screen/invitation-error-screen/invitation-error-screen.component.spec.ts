@@ -15,8 +15,8 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { ScreenBase } from '../screen-base';
-/* eslint-disable max-len */
 import { LkInvitationInputComponent } from '../../component/invitation-error-screen/components/lk-Invitation-input/lk-invitation-input.component';
+import { configureTestSuite } from 'ng-bullet';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -49,7 +49,7 @@ describe('InvitationErrorScreenComponent', () => {
     fixture.detectChanges();
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         InvitationErrorScreenComponent,

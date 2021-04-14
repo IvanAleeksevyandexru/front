@@ -23,6 +23,7 @@ import {
 
 import { ActionDTO } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;
@@ -50,8 +51,8 @@ describe('HealthInterceptor', () => {
   const dictionaryName = 'STRANI_IST';
   const dictionaryAction = 'v1DictionarySTRANIISTService';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,

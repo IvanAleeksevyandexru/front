@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InformationCenterCardComponent } from './information-center-card.component';
 import { MvdInfoCenterI } from '../../interface/information-center-mvd.interface';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterCardComponent', () => {
   let component: InformationCenterCardComponent;
@@ -15,8 +16,8 @@ describe('InformationCenterCardComponent', () => {
     },
     title: '',
   };
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [InformationCenterCardComponent]
     })
       .compileComponents();
