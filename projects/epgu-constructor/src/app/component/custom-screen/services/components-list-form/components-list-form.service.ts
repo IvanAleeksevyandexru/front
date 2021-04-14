@@ -27,7 +27,10 @@ import {
   UpdateOn,
 } from '../../components-list.types';
 // eslint-disable-next-line max-len
-import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../../../../shared/services/address-helper/address-helper.service';
+import {
+  AddressHelperService,
+  DadataSuggestionsAddressForLookup,
+} from '../../../../shared/services/address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
@@ -168,7 +171,9 @@ export class ComponentsListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  public addressHelperServiceProvider(attrs: CustomComponentAttr): LookupProvider | LookupPartialProvider {
+  public addressHelperServiceProvider(
+    attrs: CustomComponentAttr,
+  ): LookupProvider | LookupPartialProvider {
     return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
   }
 
@@ -317,7 +322,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation(component) },
+      { updateOn: this.updateOnValidation() },
     );
 
     if (component.attrs?.hidden) {
@@ -346,12 +351,9 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (
-      next.attrs.dictionaryType === 'MARKI_TS' &&
-      !isEqualObj<CustomListFormGroup>(prev, next)
-    ) {
+    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
       const indexVehicle: number = this.form.controls.findIndex(
-        (control: AbstractControl) => control.value?.id === next.id
+        (control: AbstractControl) => control.value?.id === next.id,
       );
 
       const options = {
@@ -367,7 +369,7 @@ export class ComponentsListFormService {
       };
 
       const model: AbstractControl = this.form.controls.find(
-        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS'
+        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
       );
 
       model.get('value').patchValue('');
@@ -397,7 +399,7 @@ export class ComponentsListFormService {
     );
   }
 
-  private updateOnValidation(component: CustomComponent): UpdateOn {
-    return component.attrs?.updateOnValidation || 'change';
+  private updateOnValidation(): UpdateOn {
+    return 'change';
   }
 }
