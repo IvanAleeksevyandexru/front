@@ -116,6 +116,7 @@
     </ng-template>
 
     <epgu-constructor-legal-compliance
+      *ngIf="carInfoErrors?.vehicle?.type !== statuses.EXTERNAL_SERVER_ERROR"
       [searchingTransportFlag]="carInfo?.vehicleInfo?.searchingTransportFlag"
       [restrictionsFlag]="carInfo?.vehicleInfo?.restrictionsFlag"
       [restrictions]="carInfo?.vehicleInfo?.restrictions"
