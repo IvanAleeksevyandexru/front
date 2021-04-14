@@ -140,6 +140,17 @@
       margin-top: 0;
     }
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    > a, > a:hover {
+      text-decoration: underline;
+      color: inherit;
+    }
+  }
 }
 
 :host-context(.gray-theme)::ng-deep ul:not(li ul) {
