@@ -240,4 +240,15 @@ describe('RepeatableScreenComponent', () => {
       expect(setNewScreenSpy).toBeCalledWith(components);
     });
   });
+
+  it('should call setNewScreen twice if minOccures = 2', () => {
+    const displayMockWithMinOccures = { ...displayMock };
+    displayMock.components[0].attrs.minOccures = 2;
+    screenService.display = displayMockWithMinOccures;
+
+    const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
+    component.init$.subscribe(() => {
+      expect(setNewScreenSpy).toBeCalledTimes(2);
+    });
+  })
 });
