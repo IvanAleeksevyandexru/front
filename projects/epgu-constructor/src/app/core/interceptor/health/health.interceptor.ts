@@ -110,7 +110,7 @@ export class HealthInterceptor implements HttpInterceptor {
           if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
             this.configParams = {
               ...this.configParams,
-              empty: result.total > 0 ? false : true,
+              empty: result.total === 0,
               Dict: this.lastUrlPart,
               Region: this.region,
               regdictname: this.utils.isDefined(this.region) ? 'OKATO' : 'GOSBAR',
@@ -238,8 +238,7 @@ export class HealthInterceptor implements HttpInterceptor {
   }
 
   private isValidAttributeName(attributeName: string): boolean {
-    const attribute = attributeName.toLocaleLowerCase();
-    return attribute === 'code' || attribute === 'region' || attribute === 'okato' || attribute === 'oktmo';
+    return ['code', 'region', 'okato', 'oktmo'].includes(attributeName.toLocaleLowerCase());
   }
 
   private getOkatoOrRegionCode(filter: DictionaryFilters['filter'] | DictionarySubFilter): string | null {
