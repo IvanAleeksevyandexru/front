@@ -30,7 +30,7 @@ export interface ConfigParams {
   id: string;
   name?: string;
   orderId?: number;
-  error?: string;
+  ServerError?: string;
   errorMessage?: string;
   dictionaryUrl?: string;
   status?: string;
@@ -120,7 +120,7 @@ export class HealthInterceptor implements HttpInterceptor {
           if (isInvalidOldDictionary || isInvalidNewDictionary) {
             this.configParams = {
               ...this.configParams,
-              error: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
+              ServerError: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
               errorMessage: isInvalidOldDictionary
                 ? this.utils.isDefined(result.error.message)
                   ? result.error.message
@@ -137,7 +137,7 @@ export class HealthInterceptor implements HttpInterceptor {
               id,
               name,
               orderId,
-              error,
+              ServerError,
               errorMessage,
               Region,
               empty,
@@ -150,7 +150,7 @@ export class HealthInterceptor implements HttpInterceptor {
               empty,
               regdictname,
               orderId,
-              error,
+              ServerError,
               errorMessage,
             };
             successRequestPayload = this.utils.filterIncorrectObjectFields(
@@ -165,7 +165,7 @@ export class HealthInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (this.isValid(err)) {
           if (err.status !== 404) {
-            this.configParams['error'] = err.status;
+            this.configParams['ServerError'] = err.status;
 
             if (err.status === 506) {
               const { id, url, message } = err.error.value;
