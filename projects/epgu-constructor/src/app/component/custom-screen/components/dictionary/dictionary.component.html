@@ -4,11 +4,11 @@
   [invalid]="control.invalid"
 >
   <lib-dropdown
-    *ngIf="dictionaryToolsService.dictionaries$ | async as dictionaries"
+    *ngIf="list$ | async as list"
     [invalid]="control.get('value').invalid && control.get('value').touched"
-    [items]="dictionaries[getDictKeyByComp(control.value)]?.list"
+    [items]="list"
     [validationShowOn]="validationShowOn"
-    [disabled]="dictionaries[getDictKeyByComp(control.value)]?.list?.length === 1"
+    [disabled]="list?.length === 1"
     [formControl]="$any(control.get('value'))"
     [clearable]="true"
     class="cs__select cs-select"
