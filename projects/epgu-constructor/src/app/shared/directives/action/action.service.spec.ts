@@ -132,6 +132,13 @@ const deliriumAction: ComponentActionDto = {
   deliriumAction: 'edit',
 };
 
+const redirectAction: ComponentActionDto = {
+  label: 'redirect',
+  value: '#',
+  action: DTOActionAction.redirect,
+  type: ActionType.redirect
+};
+
 const sendActionMock = of({
   errorList: [],
   responseData: { value: 'value', type: 'type' },
@@ -303,6 +310,12 @@ describe('ActionService', () => {
     spyOn(actionService, 'handleDeliriumAction$').and.callThrough();
     actionService.switchAction(deliriumAction, null);
     expect(actionService.handleDeliriumAction$).toHaveBeenCalled();
+  });
+
+  it('should call switchAction redirectExternal', () => {
+    spyOn(navigationService, 'redirectExternal').and.callThrough();
+    actionService.switchAction(redirectAction, null);
+    expect(navigationService.redirectExternal).toHaveBeenCalled();
   });
 
   describe('getComponentStateForNavigate()', () => {
