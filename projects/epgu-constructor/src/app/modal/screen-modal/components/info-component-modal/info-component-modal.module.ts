@@ -7,5 +7,6 @@ import { BaseModule } from '../../../../shared/base.module';
   declarations: [InfoComponentModalComponent],
   exports: [InfoComponentModalComponent],
   imports: [BaseModule, InfoScreenBodyModule],
+  entryComponents: [InfoComponentModalComponent]
 })
 export class InfoComponentModalModule {}
