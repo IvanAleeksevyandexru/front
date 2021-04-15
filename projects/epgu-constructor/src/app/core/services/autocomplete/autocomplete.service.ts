@@ -26,7 +26,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '../../../shared/types/answer';
-import { allowedAutocompleteComponentsList } from './autocomplete.const';
+import { allowedAutocompleteComponentsList, getSuggestionGroupId } from './autocomplete.const';
 
 @Injectable()
 export class AutocompleteService {
@@ -57,7 +57,7 @@ export class AutocompleteService {
       .subscribe((display: DisplayDto): void => {
         this.resetComponentsSuggestionsMap();
         this.parentComponent = display.components[0];
-        this.suggestionGroupId = this.getSuggestionGroupId(display);
+        this.suggestionGroupId = getSuggestionGroupId(display);
         this.repeatableComponents = this.getRepeatableComponents(display);
         const componentsSuggestionsFieldsIds: string[] =
           this.getComponentsSuggestionsFieldsIds(display) || [];
@@ -420,10 +420,16 @@ export class AutocompleteService {
   private prepareValue(value: string, componentMnemonic?: string): string {
     if (UtilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
+      // Кейс парсинга значения Repeatable компонентов
       if (this.repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];
       }
       value = parsedValue['text'];
+
+      // Кейс парсинга значения для SnilsInput
+      if ('snils' in parsedValue) {
+        value = parsedValue['snils'];
+      }
     }
 
     const componentsGroupIndex = 0;
@@ -438,10 +444,6 @@ export class AutocompleteService {
   private resetComponentsSuggestionsMap(): void {
     this.componentsSuggestionsMap = {};
     this.suggestionGroupId = null;
-  }
-
-  private getSuggestionGroupId(display: DisplayDto): string {
-    return display.suggestion?.groupId;
   }
 
   private getComponentsSuggestionsFieldsIds(display: DisplayDto): string[] {
