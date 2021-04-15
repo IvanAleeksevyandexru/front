@@ -32,6 +32,7 @@ import { ModalService } from '../../../modal/modal.service';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -151,6 +152,7 @@ describe('ActionService', () => {
   let modalService: ModalService;
   let currentAnswersService: CurrentAnswersService;
   let htmlRemover: HtmlRemoverService;
+  let formPlayerService: FormPlayerService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -160,6 +162,7 @@ describe('ActionService', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
@@ -181,6 +184,7 @@ describe('ActionService', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     actionService = TestBed.inject(ActionService);
+    formPlayerService = TestBed.inject(FormPlayerService);
     utilsService = TestBed.inject(UtilsService);
     navigationService = TestBed.inject(NavigationService);
     navigationModalService = TestBed.inject(NavigationModalService);
@@ -299,10 +303,10 @@ describe('ActionService', () => {
     expect(modalService.openModal).toHaveBeenCalled();
   });
 
-  it('should call switchAction handleDeliriumAction$', () => {
-    spyOn(actionService, 'handleDeliriumAction$').and.callThrough();
+  it('should call switchAction handleDeliriumAction', () => {
+    spyOn(actionService, 'handleDeliriumAction').and.callThrough();
     actionService.switchAction(deliriumAction, null);
-    expect(actionService.handleDeliriumAction$).toHaveBeenCalled();
+    expect(actionService['handleDeliriumAction']).toHaveBeenCalled();
   });
 
   describe('getComponentStateForNavigate()', () => {
@@ -346,16 +350,16 @@ describe('ActionService', () => {
     });
   });
 
-  describe('handleDeliriumAction$()', () => {
+  describe('handleDeliriumAction()', () => {
     it('sould call htmlRemover.delete()', () => {
       const htmlRemoverDeleteSpy = spyOn(htmlRemover, 'delete');
-      actionService.handleDeliriumAction$(deliriumAction);
+      actionService['handleDeliriumAction'](deliriumAction, 'componentId');
       expect(htmlRemoverDeleteSpy).toBeCalled();
     });
-    it('sould call actionApiService.sendAction()', () => {
-      const actionApiServiceSendActionSpy = spyOn(formPlayerApiService, 'sendAction');
-      actionService.handleDeliriumAction$(deliriumAction);
-      expect(actionApiServiceSendActionSpy).toBeCalled();
+    it('sould call formPlayerService.navigate()', () => {
+      const formPlayerServiceNavigateSpy = spyOn(formPlayerService, 'navigate');
+      actionService['handleDeliriumAction'](deliriumAction, 'componentId');
+      expect(formPlayerServiceNavigateSpy).toBeCalled();
     });
   });
 });

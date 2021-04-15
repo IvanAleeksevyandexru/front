@@ -1,5 +1,8 @@
 import { Answer } from '../shared/types/answer';
-import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import {
+  ComponentActionDto,
+  FormPlayerApiSuccessResponse,
+} from './services/form-player-api/form-player-api.types';
 
 export interface QueryParams {
   [key: string]: string;
@@ -59,6 +62,7 @@ export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
   'SKIP' = 'skipStep',
+  'DELIRIUM_NEXT_STEP' = 'deliriumNextStep',
 }
 
 /**

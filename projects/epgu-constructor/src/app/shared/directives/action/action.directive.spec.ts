@@ -34,6 +34,8 @@ import { ActionService } from './action.service';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -146,6 +148,7 @@ describe('ActionDirective', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
@@ -161,8 +164,7 @@ describe('ActionDirective', () => {
         EventBusService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
