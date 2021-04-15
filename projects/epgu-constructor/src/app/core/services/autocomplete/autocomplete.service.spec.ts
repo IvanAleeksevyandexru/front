@@ -26,6 +26,7 @@ import { DeviceDetectorServiceStub } from '../device-detector/device-detector.se
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
+import { getSuggestionGroupId } from './autocomplete.const';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -407,12 +408,12 @@ describe('AutocompleteService', () => {
 
   describe('getSuggestionGroupId()', () => {
     it('should return suggestionGroupId, if any', () => {
-      expect(service.getSuggestionGroupId(mockData.display)).toEqual('groupId');
+      expect(getSuggestionGroupId(mockData.display)).toEqual('groupId');
     });
     it('should return undefined, if suggestionGroupId not presented', () => {
       const display = _cloneDeep(mockData.display);
       delete display.suggestion.groupId;
-      expect(service.getSuggestionGroupId(display)).toBeUndefined();
+      expect(getSuggestionGroupId(display)).toBeUndefined();
     });
   });
 
@@ -431,4 +432,3 @@ describe('AutocompleteService', () => {
     });
   });
 });
-
