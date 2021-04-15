@@ -136,7 +136,7 @@ describe('HealthInterceptor', () => {
         id: dto.scenarioDto.display.id,
         name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId,
-        error: dataToFlush.error.code,
+        ServerError: dataToFlush.error.code,
         errorMessage: dataToFlush.error.message,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
@@ -166,7 +166,7 @@ describe('HealthInterceptor', () => {
         id: dto.scenarioDto.display.id,
         name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId,
-        error: dataToFlush.error.errorCode,
+        ServerError: dataToFlush.error.errorCode,
         errorMessage: dataToFlush.error.errorMessage,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
@@ -198,7 +198,7 @@ describe('HealthInterceptor', () => {
       };
       requestToError.flush(errorBody, body);
       const params = {
-        error: 506,
+        ServerError: 506,
         id: dictionaryName,
         dictionaryUrl: errorBody.value.url,
         errorMessage: errorBody.value.message,
