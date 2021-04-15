@@ -250,5 +250,5 @@ describe('RepeatableScreenComponent', () => {
     component.init$.subscribe(() => {
       expect(setNewScreenSpy).toBeCalledTimes(2);
     });
-  })
+  });
 });

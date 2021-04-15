@@ -161,7 +161,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   }
 
   private initScreens(): void {
-    for (let i = 0; i < this.minOccures; i++) {
+    for (let i = 0; i < this.minOccures; i += 1) {
       this.createScreen();
     }
   }
