@@ -29,7 +29,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     id: '',
     label: '',
     type: '',
-    value: ''
+    value: '{}',
   };
   const actionMock: ComponentActionDto = {
     label: '',
@@ -62,6 +62,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
+    screenService.component = mockData;
     component.data$ = of(mockData);
     fixture.detectChanges();
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
@@ -76,14 +77,14 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       component.updateValue('test@gmail.com');
 
       expect(currentAnswersService.isValid).toEqual(true);
-      expect(currentAnswersService.state).toEqual('test@gmail.com');
+      expect(currentAnswersService.state).toEqual({ email: 'test@gmail.com' });
     });
 
     it('shouldn\'t update value', () => {
       component.updateValue(null);
 
       expect(currentAnswersService.isValid).toEqual(false);
-      expect(currentAnswersService.state).toEqual(undefined);
+      expect(currentAnswersService.state).toEqual({ email: null });
     });
   });
 
