@@ -249,22 +249,37 @@ export class HealthInterceptor implements HttpInterceptor {
           Array.isArray(filter['union']['subs'])
         ) {
           const { subs } = filter['union'];
-          const isValidSubs = subs.every((sub: DictionarySubFilter) => this.utils.isDefined(sub.simple));
+          const isValidSubs = subs.every((sub: DictionarySubFilter) => this.utils.isDefined(sub?.simple));
           
           if (isValidSubs) {
             const region: DictionarySubFilter = subs.filter((sub: DictionarySubFilter) => {
               const attribute = sub.simple.attributeName.toLocaleLowerCase();
               return attribute === 'region' || attribute === 'okato';
             });
-            const regionElement: DictionarySimpleFilter = region[0].simple;
 
-            return regionElement.value.asString;
+            if (
+              this.utils.isDefined(region[0]) &&
+              this.utils.isDefined(region[0]['simple']) &&
+              this.utils.isDefined(region[0]['simple']['value']) &&
+              this.utils.isDefined(region[0]['simple']['value']['asString'])
+              ) {
+              const regionElement: DictionarySimpleFilter = region[0]['simple'];
+
+              return regionElement.value.asString;
+            }
+
+            return null;
           } else {
             return null;
           }
-      } else if (this.utils.isDefined(filter['simple'])) {
-        const { attributeName, value } = filter['simple'];
-        return this.isValidAttributeName(attributeName) ? value.asString : null;
+      } else if (
+          this.utils.isDefined(filter['simple']) &&
+          this.utils.isDefined(filter['simple']['attributeName']) &&
+          this.utils.isDefined(filter['simple']['value']) &&
+          this.utils.isDefined(filter['simple']['value']['asString'])
+        ) {
+          const { attributeName, value } = filter['simple'];
+          return this.isValidAttributeName(attributeName) ? value.asString : null;
       } else {
         return null;
       }
