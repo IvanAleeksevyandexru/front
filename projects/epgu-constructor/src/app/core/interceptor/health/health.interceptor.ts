@@ -13,7 +13,9 @@ import { tap, catchError } from 'rxjs/operators';
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../services/utils/utils.service';
 
-const EXCEPTIONS = ['lib-assets'];
+import { DictionaryFilters, DictionarySubFilter, DictionarySimpleFilter } from  '../../../shared/services/dictionary/dictionary-api.types';
+
+export const EXCEPTIONS = ['lib-assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
 export const ERROR_UPDATE_DRAFT_SERVICE_NAME = 'errorUpdateDraft';
 
@@ -26,16 +28,17 @@ interface DictionaryError {
 
 export interface ConfigParams {
   id: string;
-  name: string;
+  name?: string;
   orderId?: number;
-  error?: string;
+  ServerError?: string;
   errorMessage?: string;
   dictionaryUrl?: string;
   status?: string;
   method?: string;
-  isEmpty?: boolean;
-  region?: number;
+  empty?: boolean;
+  Region?: string;
   regdictname?: string;
+  Dict?: string;
 }
 
 export enum RequestStatus {
@@ -47,7 +50,7 @@ export enum RequestStatus {
 export class HealthInterceptor implements HttpInterceptor {
   private configParams: ConfigParams = {} as ConfigParams;
   private lastUrlPart: string = null;
-  private region: number = null;
+  private region: string = null;
 
   constructor(private health: HealthService, private utils: UtilsService) {}
 
@@ -59,6 +62,7 @@ export class HealthInterceptor implements HttpInterceptor {
       this.lastUrlPart = this.utils.getSplittedUrl(req['url']).slice(-1)[0];
       serviceName = this.utils.getServiceName(req['url']);
       serviceName = serviceName === 'scenarioGetNextStepService' ? RENDER_FORM_SERVICE_NAME : serviceName;
+      this.region = this.getOkatoOrRegionCode(req?.body?.filter);
       this.startMeasureHealth(serviceName);
     }
 
@@ -82,31 +86,22 @@ export class HealthInterceptor implements HttpInterceptor {
             ? scenarioDto.orderId
             : result.callBackOrderId;
 
-            if (
-              this.utils.isDefined(scenarioDto?.serviceInfo) &&
-              this.utils.isDefined(scenarioDto?.serviceInfo?.userRegion) &&
-              this.utils.isDefined(scenarioDto?.serviceInfo?.userRegion?.codes)
-            ) {
-              this.region = scenarioDto.serviceInfo.userRegion.codes[0];
-            }
-
             this.configParams = {
               id: scenarioDto.display.id,
               name: this.utils.cyrillicToLatin(scenarioDto.display.name),
               orderId,
-              region: this.region,
             };
 
             if (this.utils.isDefined(health) && this.utils.isDefined(health?.dictionaries) && health.dictionaries.length > 0) {
               health.dictionaries.forEach((dictionary) => {
-                const event = `${dictionary.id}Service`;
+                const event = dictionary.id;
                 this.startMeasureHealth(event);
                 this.endMeasureHealth(event, RequestStatus.Succeed, {
-                  id: dictionary.id,
-                  name: dictionary.name,
+                  id: event,
                   status: dictionary.status,
                   method: dictionary.method,
                   orderId,
+                  regdictname: 'OKATO'
                 });
               });
             }
@@ -115,15 +110,17 @@ export class HealthInterceptor implements HttpInterceptor {
           if (this.utils.isDefined(result.fieldErrors) && this.utils.isDefined(result.total)) {
             this.configParams = {
               ...this.configParams,
-              isEmpty: result.total > 0 ? false : true,
-              regdictname: this.lastUrlPart,
+              empty: result.total === 0,
+              Dict: this.lastUrlPart,
+              Region: this.region,
+              regdictname: this.utils.isDefined(this.region) ? 'OKATO' : 'GOSBAR',
             };
           }
 
           if (isInvalidOldDictionary || isInvalidNewDictionary) {
             this.configParams = {
               ...this.configParams,
-              error: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
+              ServerError: isInvalidOldDictionary ? result.error.code : result.error.errorCode,
               errorMessage: isInvalidOldDictionary
                 ? this.utils.isDefined(result.error.message)
                   ? result.error.message
@@ -140,20 +137,20 @@ export class HealthInterceptor implements HttpInterceptor {
               id,
               name,
               orderId,
-              error,
+              ServerError,
               errorMessage,
-              region,
-              isEmpty,
+              Region,
+              empty,
               regdictname,
             } = this.configParams;
             successRequestPayload = {
               id,
               name,
-              region,
-              isEmpty,
+              Region,
+              empty,
               regdictname,
               orderId,
-              error,
+              ServerError,
               errorMessage,
             };
             successRequestPayload = this.utils.filterIncorrectObjectFields(
@@ -168,7 +165,7 @@ export class HealthInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (this.isValid(err)) {
           if (err.status !== 404) {
-            this.configParams['error'] = err.status;
+            this.configParams['ServerError'] = err.status;
 
             if (err.status === 506) {
               const { id, url, message } = err.error.value;
@@ -238,5 +235,41 @@ export class HealthInterceptor implements HttpInterceptor {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private isValid(payload: HttpRequest<any> | HttpEvent<any> | HttpErrorResponse): boolean {
     return this.utils.isValidHttpUrl(payload['url']) && !this.exceptionsValidator(payload['url']);
+  }
+
+  private isValidAttributeName(attributeName: string): boolean {
+    return ['code', 'region', 'okato', 'oktmo'].includes(attributeName.toLocaleLowerCase());
+  }
+
+  private getOkatoOrRegionCode(filter: DictionaryFilters['filter'] | DictionarySubFilter): string | null {
+    if (this.utils.isDefined(filter)) {
+      if (
+          this.utils.isDefined(filter['union']) &&
+          this.utils.isDefined(filter['union']['subs']) &&
+          Array.isArray(filter['union']['subs'])
+        ) {
+          const { subs } = filter['union'];
+          const isValidSubs = subs.every((sub: DictionarySubFilter) => this.utils.isDefined(sub.simple));
+          
+          if (isValidSubs) {
+            const region: DictionarySubFilter = subs.filter((sub: DictionarySubFilter) => {
+              const attribute = sub.simple.attributeName.toLocaleLowerCase();
+              return attribute === 'region' || attribute === 'okato';
+            });
+            const regionElement: DictionarySimpleFilter = region[0].simple;
+
+            return regionElement.value.asString;
+          } else {
+            return null;
+          }
+      } else if (this.utils.isDefined(filter['simple'])) {
+        const { attributeName, value } = filter['simple'];
+        return this.isValidAttributeName(attributeName) ? value.asString : null;
+      } else {
+        return null;
+      }
+    }
+
+    return null;
   }
 }

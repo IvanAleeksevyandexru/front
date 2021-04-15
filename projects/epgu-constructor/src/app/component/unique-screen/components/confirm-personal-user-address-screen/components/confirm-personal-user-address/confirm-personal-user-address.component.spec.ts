@@ -14,6 +14,8 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -21,30 +23,31 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   const mockData: ConfirmAddressInterface = {
     attrs: {
       actions: [],
-      fields: []
+      fields: [],
     },
     id: '',
     value: '{}',
     label: '',
     type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
     required: false,
-    valueFromCache: false
+    valueFromCache: false,
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       imports: [FormsModule, HttpClientTestingModule],
-      declarations: [ ConfirmPersonalUserAddressComponent ],
+      declarations: [ConfirmPersonalUserAddressComponent],
       providers: [
         UnsubscribeService,
         CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         DatesToolsService,
-      ]
-    })
-    .compileComponents();
+        SuggestHandlerService,
+        EventBusService,
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

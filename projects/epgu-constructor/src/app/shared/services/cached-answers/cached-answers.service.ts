@@ -13,6 +13,7 @@ export const componentsNoCache: Array<string> = [
   UniqueScreenComponentTypes.confirmPersonalUserEmail,
   UniqueScreenComponentTypes.paymentScr,
   UniqueScreenComponentTypes.timeSlot,
+  UniqueScreenComponentTypes.timeSlotWithComputableDepartment,
   UniqueScreenComponentTypes.unusedPayments,
   UniqueScreenComponentTypes.carList,
 ];

@@ -49,6 +49,7 @@ import { AddressInputComponent } from './components/address-input/address-input.
 import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
 import { ComponentListResolverModule } from './component-list-resolver/component-list-resolver.module';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { DictionaryComponent } from './components/dictionary/dictionary.component';
 import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
 
 @NgModule({
@@ -70,6 +71,7 @@ import { LookupInputComponent } from './components/lookup-input/lookup-input.com
     FileUploadFormComponent,
     AddressInputComponent,
     DropdownComponent,
+    DictionaryComponent,
     LookupInputComponent,
   ],
   exports: [ComponentsListComponent],
@@ -125,6 +127,7 @@ import { LookupInputComponent } from './components/lookup-input/lookup-input.com
     FileUploadFormComponent,
     AddressInputComponent,
     DropdownComponent,
+    DictionaryComponent,
     LookupInputComponent,
   ],
 })
