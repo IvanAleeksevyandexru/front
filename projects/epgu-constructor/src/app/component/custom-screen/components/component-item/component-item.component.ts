@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import { FocusState } from 'epgu-lib';
@@ -34,10 +41,12 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   constructor(
     private focusManager: FocusManagerService,
     private unsubscribe$: UnsubscribeService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   checkShowErrors(state: FocusState): void {
     this.isShowErrors = !(state?.current?.name === this.component.id && !this.hasUiError);
+    this.cdr.markForCheck();
   }
 
   ngOnInit(): void {
