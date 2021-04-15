@@ -257,7 +257,12 @@ export class HealthInterceptor implements HttpInterceptor {
               return attribute === 'region' || attribute === 'okato';
             });
 
-            if (this.utils.isDefined(region[0]) && this.utils.isDefined(region[0]['simple'])) {
+            if (
+              this.utils.isDefined(region[0]) &&
+              this.utils.isDefined(region[0]['simple']) &&
+              this.utils.isDefined(region[0]['simple']['value']) &&
+              this.utils.isDefined(region[0]['simple']['value']['asString'])
+              ) {
               const regionElement: DictionarySimpleFilter = region[0]['simple'];
 
               return regionElement.value.asString;
@@ -270,7 +275,8 @@ export class HealthInterceptor implements HttpInterceptor {
       } else if (
           this.utils.isDefined(filter['simple']) &&
           this.utils.isDefined(filter['simple']['attributeName']) &&
-          this.utils.isDefined(filter['simple']['value'])
+          this.utils.isDefined(filter['simple']['value']) &&
+          this.utils.isDefined(filter['simple']['value']['asString'])
         ) {
           const { attributeName, value } = filter['simple'];
           return this.isValidAttributeName(attributeName) ? value.asString : null;
