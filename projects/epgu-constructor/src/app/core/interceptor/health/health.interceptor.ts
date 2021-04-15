@@ -253,8 +253,12 @@ export class HealthInterceptor implements HttpInterceptor {
           
           if (isValidSubs) {
             const region: DictionarySubFilter = subs.filter((sub: DictionarySubFilter) => {
+              if (!this.utils.isDefined(sub.simple.attributeName)) {
+                return false;
+              }
+              
               const attribute = sub.simple.attributeName.toLocaleLowerCase();
-              return attribute === 'region' || attribute === 'okato';
+              return ['region', 'okato', 'okato_in'].includes(attribute);
             });
 
             if (
