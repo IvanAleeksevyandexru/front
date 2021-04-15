@@ -99,6 +99,12 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
+export type CustomComponentAttrField = Array<{
+  fieldName?: string;
+  label?: string;
+  type?: string;
+}>;
+
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
@@ -112,11 +118,7 @@ export interface CustomComponentAttr {
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   needUnfilteredDictionaryToo?: boolean;
   labelAttr?: string;
-  fields?: Array<{
-    fieldName?: string;
-    label?: string;
-    type?: string;
-  }>;
+  fields?: CustomComponentAttrField;
   ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
@@ -129,7 +131,6 @@ export interface CustomComponentAttr {
   filter?: ComponentFilterDto;
   defaultIndex?: number;
   relationField?: ComponentRelationFieldDto;
-  attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
   dictionaryOptions?: DictionaryOptions;
   grid?: string;
   minDate?: string;

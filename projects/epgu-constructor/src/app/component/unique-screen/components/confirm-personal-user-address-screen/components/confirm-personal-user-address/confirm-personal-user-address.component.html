@@ -26,6 +26,8 @@
             [externalApiUrl]="config.externalApiUrl + '/'"
             [initValue]="$any(valueParsed[field.fieldName])"
             [(ngModel)]="valueParsed[field.fieldName]"
+            [suggest]="classifiedSuggestionItems[field.fieldName]"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
           >
           </lib-dadata-widget>
         </epgu-constructor-address-item>
@@ -61,6 +63,8 @@
             [(ngModel)]="valueParsed[field.fieldName]"
             [name]="field.fieldName"
             class="content content__input"
+            [suggest]="classifiedSuggestionItems[field.fieldName]"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
           >
           </lib-plain-input>
         </epgu-constructor-address-item>

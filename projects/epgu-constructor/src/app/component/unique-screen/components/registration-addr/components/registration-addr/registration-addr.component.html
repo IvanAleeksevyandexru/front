@@ -26,6 +26,8 @@
             [invalid]="redAddrForm.get(field.fieldName).invalid"
             [control]="redAddrForm.get(field.fieldName)"
             [clearable]="true"
+            [suggestions]="classifiedSuggestionItems['regAddr']"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
           >
           </epgu-constructor-constructor-dadata-widget>
 
@@ -55,6 +57,8 @@
             [validationShowOn]="validationShowOn"
             [invalid]="redAddrForm.controls[field.fieldName].invalid"
             [control]="$any(redAddrForm.get(field.fieldName))"
+            [suggestions]="classifiedSuggestionItems[field.fieldName]"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
             *ngSwitchDefault
           ></epgu-constructor-constructor-plain-input>
         </ng-container>
@@ -70,11 +74,7 @@
 
     <div class="item hint-wrapper" *ngIf="(data$ | async)?.attrs?.hints as hints">
       <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-      <div
-        class="item__hint"
-        *ngFor="let hint of hints"
-        (click)="hintClick(hint)"
-      >
+      <div class="item__hint" *ngFor="let hint of hints" (click)="hintClick(hint)">
         {{ hint.label }}
       </div>
     </div>

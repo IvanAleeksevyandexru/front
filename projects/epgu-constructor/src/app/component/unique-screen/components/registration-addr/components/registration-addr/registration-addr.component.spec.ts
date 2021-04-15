@@ -23,6 +23,8 @@ import { UserInfoLoaderModule } from '../../../../../../shared/components/user-i
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
@@ -92,6 +94,8 @@ describe('RegistrationAddrComponent', () => {
         DateValidator,
         { provide: LoggerService, useClass: LoggerServiceStub },
         FormBuilder,
+        SuggestHandlerService,
+        EventBusService,
       ],
     }).compileComponents();
   });

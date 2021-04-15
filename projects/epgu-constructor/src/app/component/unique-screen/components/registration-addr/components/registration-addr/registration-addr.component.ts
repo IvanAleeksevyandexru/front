@@ -18,6 +18,9 @@ import {
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { ComponentActionDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
+import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
+import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 @Component({
   selector: 'epgu-constructor-registration-addr',
@@ -31,18 +34,19 @@ export class RegistrationAddrComponent implements OnInit {
     IRegistrationAddrComponent
   >;
   error$: Observable<string> = this.screenService.componentError$;
+  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
 
   required: boolean;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   redAddrForm: FormGroup;
-
   nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
     public config: ConfigService,
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
+    public suggestHandlerService: SuggestHandlerService,
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
@@ -60,6 +64,14 @@ export class RegistrationAddrComponent implements OnInit {
         this.subscribeToCmpErrors(data);
 
         this.changeDetectionRef.markForCheck();
+      });
+
+    this.screenService.suggestions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((suggestions) => {
+        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
+          suggestions[this.screenService.component.id],
+        );
       });
   }
 
