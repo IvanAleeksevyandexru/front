@@ -37,25 +37,6 @@
 
       <ng-container>
         <epgu-constructor-component-item
-          *ngSwitchCase="componentType.Dictionary"
-          [control]="componentData.get('value')"
-          [component]="componentData.value"
-          [invalid]="componentData.invalid"
-        >
-          <lib-dropdown
-            *ngIf="dictionaries$ | async as dictionaries"
-            [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-            [items]="dictionaries[getDictKeyByComp(componentData.value)]?.list"
-            [validationShowOn]="validationShowOn"
-            [disabled]="dictionaries[getDictKeyByComp(componentData.value)]?.list?.length === 1"
-            [formControl]="$any(componentData.get('value'))"
-            [clearable]="true"
-            class="cs__select cs-select"
-          >
-          </lib-dropdown>
-        </epgu-constructor-component-item>
-
-        <epgu-constructor-component-item
           *ngSwitchCase="componentType.Lookup"
           [control]="componentData.get('value')"
           [component]="componentData.value"
