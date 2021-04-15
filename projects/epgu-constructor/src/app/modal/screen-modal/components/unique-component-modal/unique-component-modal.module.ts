@@ -10,5 +10,6 @@ import { BaseModule } from '../../../../shared/base.module';
   declarations: [UniqueComponentModalComponent, ConfirmPhoneComponent, ConfirmEmailComponent],
   exports: [UniqueComponentModalComponent, ConfirmPhoneComponent],
   imports: [BaseModule, ConstructorPlainInputModule, CounterModule],
+  entryComponents: [UniqueComponentModalComponent]
 })
 export class UniqueComponentModalModule {}
