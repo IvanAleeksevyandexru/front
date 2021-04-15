@@ -1,4 +1,3 @@
-
 // Новый способ оплаты
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -27,6 +26,8 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 
 const mockData: ComponentDto = {
@@ -36,7 +37,8 @@ const mockData: ComponentDto = {
   required: true,
   type: 'BillInfo',
   // eslint-disable-next-line max-len
-  value: '{"billNumber":1232134,"billId":345453,"amount":750,"billName":"Оплата транспортного средства","billDate":"2020-12-24T17:06:42.266Z","payCode":1}'
+  value:
+    '{"billNumber":1232134,"billId":345453,"amount":750,"billName":"Оплата транспортного средства","billDate":"2020-12-24T17:06:42.266Z","payCode":1}',
 };
 
 describe('BillInfoComponent', () => {
@@ -48,10 +50,7 @@ describe('BillInfoComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [BillInfoComponent],
-      imports: [
-        HttpClientTestingModule,
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule, HttpClientTestingModule],
       providers: [
         MockProvider(PaymentService),
         MockProvider(CurrentAnswersService),
@@ -59,6 +58,7 @@ describe('BillInfoComponent', () => {
         MockProvider(LocationService),
         MockProvider(LocalStorageService),
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         EventBusService,
         DatesToolsService,
         ActionService,
@@ -72,7 +72,7 @@ describe('BillInfoComponent', () => {
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
-        WINDOW_PROVIDERS
+        WINDOW_PROVIDERS,
       ],
     }).compileComponents();
   });

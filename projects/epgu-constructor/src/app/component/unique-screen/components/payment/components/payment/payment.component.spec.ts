@@ -17,7 +17,10 @@ import { NavigationModalService } from '../../../../../../core/services/navigati
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
-import { ComponentDto, DTOActionAction } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import {
+  ComponentDto,
+  DTOActionAction,
+} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -27,6 +30,8 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { PaymentService } from '../../payment.service';
 import { PaymentComponent } from './payment.component';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 
 let mockData: ComponentDto;
@@ -64,6 +69,7 @@ describe('PaymentComponent', () => {
         MockProvider(CurrentAnswersService),
         MockProvider(LocationService),
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
@@ -79,7 +85,7 @@ describe('PaymentComponent', () => {
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
-        WINDOW_PROVIDERS
+        WINDOW_PROVIDERS,
       ],
     }).compileComponents();
   });
@@ -90,19 +96,19 @@ describe('PaymentComponent', () => {
       nsi: 'fns_zgs_getpay_79272',
       dictItemCode: '01',
       ref: {
-        fiasCode: 'ms1.value'
+        fiasCode: 'ms1.value',
       },
     },
     id: 'pay1ms1',
     label: 'Оплата госпошлины',
     required: true,
     type: 'PaymentScr',
-    value: ''
+    value: '',
   };
 
   describe('PaymentComponent old type Brak/Razbrak', testFnc);
 
-// Новый способ оплаты
+  // Новый способ оплаты
   mockData = {
     attrs: {},
     id: 'pay1ms1',
@@ -110,9 +116,9 @@ describe('PaymentComponent', () => {
     required: true,
     type: 'PaymentScr',
     // eslint-disable-next-line max-len
-    value: '{"billNumber":1232134,"billId":345453,"amount":750,"billName":"Оплата транспортного средства","billDate":"2020-12-24T17:06:42.266Z","payCode":1}'
+    value:
+      '{"billNumber":1232134,"billId":345453,"amount":750,"billName":"Оплата транспортного средства","billDate":"2020-12-24T17:06:42.266Z","payCode":1}',
   };
 
   describe('PaymentComponent new type for All', testFnc);
-
 });
