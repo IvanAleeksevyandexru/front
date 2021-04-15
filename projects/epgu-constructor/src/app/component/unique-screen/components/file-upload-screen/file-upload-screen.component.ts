@@ -70,6 +70,7 @@ export class FileUploadScreenComponent implements OnInit {
       .on('fileUploadValueChangedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
+        console.log(payload);
         this.handleNewValueSet(payload);
         this.currentAnswersService.state = this.value;
         this.cdr.markForCheck();
@@ -103,6 +104,7 @@ export class FileUploadScreenComponent implements OnInit {
    * @param $eventData - данные из компонента
    */
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
+    console.log($eventData);
     this.value.uploads = $eventData.files as FileUploadEmitValue[];
 
     /**
