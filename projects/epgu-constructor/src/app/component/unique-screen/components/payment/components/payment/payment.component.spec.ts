@@ -27,6 +27,7 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { PaymentService } from '../../payment.service';
 import { PaymentComponent } from './payment.component';
 import { configureTestSuite } from 'ng-bullet';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 
 let mockData: ComponentDto;
 
@@ -78,6 +79,7 @@ describe('PaymentComponent', () => {
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
+        WINDOW_PROVIDERS
       ],
     }).compileComponents();
   });
