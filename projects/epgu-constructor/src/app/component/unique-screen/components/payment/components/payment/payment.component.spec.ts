@@ -32,6 +32,7 @@ import { PaymentComponent } from './payment.component';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 
 let mockData: ComponentDto;
 
@@ -84,6 +85,7 @@ describe('PaymentComponent', () => {
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
+        WINDOW_PROVIDERS,
       ],
     }).compileComponents();
   });

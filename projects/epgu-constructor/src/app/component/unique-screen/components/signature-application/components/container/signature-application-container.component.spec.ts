@@ -38,6 +38,7 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
@@ -89,6 +90,7 @@ describe('SignatureApplicationContainerComponent', () => {
       providers: [
         NavigationService,
         UtilsService,
+        WINDOW_PROVIDERS,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

@@ -106,6 +106,9 @@ export class ActionService {
       case ActionType.deliriumNextStep:
         this.handleDeliriumAction(action, componentId);
         break;
+      case ActionType.redirect:
+        this.navService.redirectExternal(action.value);
+        break;
     }
   }
 

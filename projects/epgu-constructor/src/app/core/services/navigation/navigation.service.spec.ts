@@ -98,4 +98,13 @@ describe('NavigationService', () => {
     navigationService.redirectToHome();
     expect(smuEventsService.notify).toHaveBeenCalledWith(MobilViewEvents.exit);
   });
+  it('test redirectExternal', () => {
+    const url = '#';
+
+    spyOn(window, 'open').and.callFake((url: string, target: string) => {
+      // do nothing
+    });
+    navigationService.redirectExternal(url);
+    expect(window.open).toHaveBeenCalledWith(url, '_blank');
+  });
 });
