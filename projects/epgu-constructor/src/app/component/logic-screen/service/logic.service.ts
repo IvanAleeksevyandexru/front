@@ -26,7 +26,7 @@ export class LogicService {
     const headers = new HttpHeaders(value.headers);
     const method = value.method.toLocaleLowerCase();
     const hasBody = ['POST', 'PUT'].includes(value.method);
-    this.localStorageService.set(value.url, value.body);
+    this.localStorageService.setRaw(value.url, value.body);
 
     if (hasBody) {
       return this.http[method](value.url, value.body, {
