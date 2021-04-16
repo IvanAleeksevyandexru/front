@@ -4,8 +4,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ComponentValue } from '../logic.types';
-import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 
 @Injectable()
 export class LogicService {

@@ -12,8 +12,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../services/utils/utils.service';
-
-import { DictionaryFilters, DictionarySubFilter, DictionarySimpleFilter } from  '../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryFilters, DictionarySimpleFilter, DictionarySubFilter } from 'epgu-constructor-types/dist/base/dictionary';
 
 export const EXCEPTIONS = ['lib-assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
@@ -250,13 +249,13 @@ export class HealthInterceptor implements HttpInterceptor {
         ) {
           const { subs } = filter['union'];
           const isValidSubs = subs.every((sub: DictionarySubFilter) => this.utils.isDefined(sub?.simple));
-          
+
           if (isValidSubs) {
             const region: DictionarySubFilter = subs.filter((sub: DictionarySubFilter) => {
               if (!this.utils.isDefined(sub.simple.attributeName)) {
                 return false;
               }
-              
+
               const attribute = sub.simple.attributeName.toLocaleLowerCase();
               return ['region', 'okato', 'okato_in'].includes(attribute);
             });

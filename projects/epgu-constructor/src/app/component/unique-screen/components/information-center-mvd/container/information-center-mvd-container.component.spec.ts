@@ -11,7 +11,6 @@ import { DictionaryApiService } from '../../../../../shared/services/dictionary/
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { DTOActionAction } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { InformationCenterMvdI } from '../interface/information-center-mvd.interface';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { InformationCenterCardComponent } from '../components/information-center-card/information-center-card.component';
@@ -25,6 +24,7 @@ import { DateRangeService } from '../../../../../shared/services/date-range/date
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
+import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;

@@ -12,7 +12,6 @@ import {
   CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryFilters } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -20,6 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
+import { DictionaryFilters } from 'epgu-constructor-types/dist/base/dictionary';
 
 @Injectable()
 export class ComponentsListRelationsService {

@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { PhotoRequirementsModalComponent } from '../photo-requirements-modal/photo-requirements-modal.component';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../modal/modal.service';

@@ -10,12 +10,6 @@ import { LocationService } from '../../../../../../core/services/location/locati
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import {
-  ComponentActionDto,
-  ComponentAttrsDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -33,6 +27,9 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

@@ -12,8 +12,8 @@ import {
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { LocationService } from '../location/location.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { WINDOW } from '../../providers/window.provider';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 /**
  * Этот сервис должен быть запровайден только на уровне компанент, не стоит его провайдить через модули.

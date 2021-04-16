@@ -3,10 +3,6 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import {
-  ComponentDto,
-  DisplayDto
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -14,6 +10,8 @@ import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

@@ -10,7 +10,6 @@ import { DeviceDetectorServiceStub } from '../../../../../../core/services/devic
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../../../modal/modal.module';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -29,6 +28,7 @@ import { AutocompleteApiService } from '../../../../../../core/services/autocomp
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;

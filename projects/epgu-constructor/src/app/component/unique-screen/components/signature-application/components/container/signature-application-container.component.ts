@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
-import {
-  ComponentActionDto,
-  ComponentDto,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';

@@ -13,13 +13,14 @@ import { FileUploadComponent } from '../../../../shared/components/file-upload/f
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { FileResponseToBackendUploadsItem, UploadedFile, } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
-import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {

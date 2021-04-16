@@ -1,10 +1,8 @@
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import {
-  ComponentDto,
-  DisplayDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ISuggestionItem } from './autocomplete.inteface';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 export const prepareClassifiedSuggestionItems = (
   suggestions: ISuggestionItem,

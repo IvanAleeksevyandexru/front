@@ -4,12 +4,9 @@ import { WINDOW } from '../../../core/providers/window.provider';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
-import {
-  CheckOrderApiResponse,
-  FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
-  QuizRequestDto, ScenarioDto,
-} from '../form-player-api/form-player-api.types';
+import { CheckOrderApiResponse, FormPlayerApiResponse, FormPlayerApiSuccessResponse, QuizRequestDto } from 'epgu-constructor-types';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi

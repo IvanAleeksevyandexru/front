@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';

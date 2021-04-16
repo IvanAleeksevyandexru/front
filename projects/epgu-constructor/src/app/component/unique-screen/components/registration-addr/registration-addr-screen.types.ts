@@ -1,8 +1,8 @@
 import { DadataResult, RelativeDate } from 'epgu-lib';
-import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DurationTimeTypes } from '../../../../shared/constants/dates';
-import { TextTransform } from '../../../../shared/types/textTransform';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
   attrs: RegistrationAddrComponentAttrs;

@@ -14,13 +14,6 @@ import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stu
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
-import {
-  ActionApiResponse,
-  ActionType,
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -33,6 +26,9 @@ import { FormPlayerServiceStub } from '../../../form-player/services/form-player
 import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionApiResponse } from 'epgu-constructor-types';
 
 const mockComponent: ComponentDto = {
   attrs: {},

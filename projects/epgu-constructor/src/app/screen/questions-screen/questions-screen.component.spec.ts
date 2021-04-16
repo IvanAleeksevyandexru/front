@@ -11,13 +11,6 @@ import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import {
-  ActionType,
-  ClarificationsDto,
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
@@ -35,6 +28,9 @@ import { BaseModule } from '../../shared/base.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -61,7 +57,7 @@ const navigationPayloadSample: NavigationPayload = {
   },
 };
 
-const clarificationsSample: ClarificationsDto = {
+const clarificationsSample: Clarifications = {
   foo: {
     title: 'clarificationTitle',
     text: 'clarificationText',

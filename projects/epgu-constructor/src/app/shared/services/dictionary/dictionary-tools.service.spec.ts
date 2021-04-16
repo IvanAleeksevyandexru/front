@@ -6,11 +6,9 @@ import { mockSelectMapObjectStore } from '../../../component/unique-screen/compo
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
-import { DictionaryConditions } from './dictionary-api.types';
 import { DictionaryToolsService } from './dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ScreenStore } from '../../../screen/screen.types';
@@ -22,6 +20,8 @@ import {
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import set = Reflect.set;
 import { configureTestSuite } from 'ng-bullet';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
 
 const getDictionary = (count = 0) => {
   const items = [];

@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
 import { cloneDeep as _cloneDeep } from 'lodash';
-import {
-  ComponentDto,
-  ComponentFieldDto,
-  DisplayDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../modal/modal.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -25,8 +20,11 @@ import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { Answer } from '../../../shared/types/answer';
 import { allowedAutocompleteComponentsList, getSuggestionGroupId } from './autocomplete.const';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { Answer } from 'epgu-constructor-types/dist/base/answer';
+import { ComponentFieldDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 @Injectable()
 export class AutocompleteService {

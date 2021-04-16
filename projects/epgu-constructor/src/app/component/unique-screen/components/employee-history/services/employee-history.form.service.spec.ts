@@ -8,9 +8,9 @@ import { EmployeeHistoryMonthsService } from './employee-history.months.service'
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EmployeeHistoryModel } from '../employee-history.types';
-import { Gender } from '../../../../../shared/types/gender';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
 
 describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;

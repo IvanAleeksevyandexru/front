@@ -1,7 +1,7 @@
 // Новый способ оплаты
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
@@ -16,7 +16,6 @@ import { NavigationModalService } from '../../../../../../core/services/navigati
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -29,6 +28,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 const mockData: ComponentDto = {
   attrs: {},
