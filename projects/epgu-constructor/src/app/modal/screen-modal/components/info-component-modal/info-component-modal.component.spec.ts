@@ -14,6 +14,8 @@ import { By } from '@angular/platform-browser';
 import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -35,6 +37,7 @@ describe('InfoComponentModalComponent', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).overrideComponent(InfoComponentModalComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default }
