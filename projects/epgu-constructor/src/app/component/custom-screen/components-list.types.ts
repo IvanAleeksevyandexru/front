@@ -205,6 +205,7 @@ export interface CustomComponentRef {
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  isResetable?: boolean;
 }
 
 export interface CustomListFormGroup {
