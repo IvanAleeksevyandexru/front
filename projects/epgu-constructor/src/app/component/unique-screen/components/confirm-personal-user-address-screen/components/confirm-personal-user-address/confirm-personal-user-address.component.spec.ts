@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -36,7 +36,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule, HttpClientTestingModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       declarations: [ConfirmPersonalUserAddressComponent],
       providers: [
         UnsubscribeService,
@@ -46,6 +46,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         DatesToolsService,
         SuggestHandlerService,
         EventBusService,
+        FormBuilder,
       ],
     }).compileComponents();
   });
