@@ -58,7 +58,7 @@ export class ComponentsListRelationsService {
           .forEach((reference) => {
             const value = reference.valueFromCache
               ? screenService.cachedAnswers[reference.valueFromCache].value
-              : component.value || component.valueFromCache;
+              : component.value ?? component.valueFromCache;
 
             shownElements = this.getDependentComponentUpdatedShownElements(
               dependentComponent,
@@ -628,7 +628,7 @@ export class ComponentsListRelationsService {
   ): void {
     const control = dependentControl.get('value');
     const refControl = form.controls.find((control) => control.value.id === reference.relatedRel);
-    if (control.value || refControl.touched) {
+    if (control.value || (refControl.touched && refControl.value.value && control.value)) {
       control.markAllAsTouched();
       control.updateValueAndValidity();
     }
