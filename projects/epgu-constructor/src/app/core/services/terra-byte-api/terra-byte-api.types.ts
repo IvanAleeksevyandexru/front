@@ -34,6 +34,7 @@ export interface FileResponseToBackendUploadsItem {
   required?: boolean;
   value?: UploadedFile[];
   errors?: string[];
+  pdfFileName?: string;
   files?: FileResponseToBackendUploadsItem[];
 }
 
@@ -56,6 +57,11 @@ export interface Clarifications {
   };
 }
 
+export interface MaxCountByType {
+  type: string[];
+  maxFileCount: number;
+}
+
 /**
  * Интерфейс для файла на загругку из JSON
  */
@@ -63,10 +69,12 @@ export interface FileUploadItem {
   uploadId: string;
   label: string;
   title?: string;
-  fileType: string[];
+  fileType?: string[];
   maxFileCount?: number;
   maxSize?: number;
   required?: boolean;
+  pdfFileName?: string;
+  maxCountByTypes?: MaxCountByType[];
 }
 
 /**
@@ -126,6 +134,7 @@ export interface TerabyteListItem {
 export interface FileUploadEmitValue {
   uploadId: string;
   value: TerraUploadedFile[];
+  pdfFileName?: string;
   required: boolean;
 }
 
