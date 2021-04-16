@@ -14,20 +14,20 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoComponentModalComponent implements OnInit {
-  delayBeforeAutoClick = 1500;
+  private delayBeforeAutoClick = 1500;
 
   constructor(
+    private ngUnsubscribe$: UnsubscribeService,
+    private actionService: ActionService,
     public screenService: ScreenService,
     public screenModalService: ScreenModalService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public actionService: ActionService,
   ) {}
 
   ngOnInit(): void {
     this.screenService.component$
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        filter((component: ComponentDto) => !!component?.attrs?.isNeedAutoClick),
+        filter((component: ComponentDto) => component?.attrs?.isNeedAutoClick),
         delay(this.delayBeforeAutoClick),
         tap((component: ComponentDto) => {
           this.actionService.switchAction(this.screenService.button, component.id);
