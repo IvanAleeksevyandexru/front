@@ -31,6 +31,7 @@ export class ConfigServiceStub implements Config {
   _zipkinUrl = '';
   _zipkinMaxPayloadSize: number;
   _zipkinEnv = '';
+  _oplataUrl = 'oplataUrl';
 
   _isLoaded$ = of(false);
 
@@ -192,6 +193,10 @@ export class ConfigServiceStub implements Config {
 
   get zipkinEnv(): string {
     return this._zipkinEnv;
+  }
+
+  get oplataUrl(): string {
+    return this._oplataUrl;
   }
 
   initCore(): void { }

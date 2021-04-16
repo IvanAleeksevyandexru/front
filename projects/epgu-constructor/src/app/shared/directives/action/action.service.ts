@@ -109,6 +109,9 @@ export class ActionService {
       case ActionType.redirect:
         this.navService.redirectExternal(action.value);
         break;
+      case ActionType.redirectToPayByUin:
+        this.redirectToPayByUin();
+        break;
     }
   }
 
@@ -315,5 +318,11 @@ export class ActionService {
     const preparedBody = JSON.parse(JSON.stringify(body));
     preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);
     return this.formPlayerService.navigate(navigation, FormPlayerNavigation.DELIRIUM_NEXT_STEP);
+  }
+
+  private redirectToPayByUin(): void {
+    this.navService.redirectTo(
+      `${this.configService.oplataUrl}/pay/uin/${this.screenService.serviceInfo.billNumber}`,
+    );
   }
 }

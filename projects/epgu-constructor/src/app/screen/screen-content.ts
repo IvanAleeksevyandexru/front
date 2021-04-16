@@ -11,7 +11,7 @@ import {
   ScreenActionDto,
 } from '../form-player/services/form-player-api/form-player-api.types';
 import { Gender } from '../shared/types/gender';
-import { ScreenStore, ScreenTypes } from './screen.types';
+import { ScreenStore, ScreenTypes, ServiceInfo } from './screen.types';
 import { concatMap, map } from 'rxjs/operators';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
 
@@ -46,6 +46,7 @@ export class ScreenContent {
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
   private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
   private _logicAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  private _serviceInfo = new BehaviorSubject<null | ServiceInfo>(null);
 
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
@@ -351,6 +352,17 @@ export class ScreenContent {
     return this._logicComponents.asObservable();
   }
 
+  public get serviceInfo(): ServiceInfo {
+    return this._serviceInfo.getValue();
+  }
+  public set serviceInfo(val: ServiceInfo) {
+    this._serviceInfo.next(val);
+  }
+
+  public get serviceInfo$(): Observable<ServiceInfo> {
+    return this._serviceInfo.asObservable();
+  }
+
   public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {
     const {
       errors = {} as ScenarioErrorsDto,
@@ -361,6 +373,7 @@ export class ScreenContent {
       cachedAnswers,
       serviceCode,
       logicComponents = [],
+      serviceInfo = {},
     } = screenStore;
     const {
       header,
@@ -399,6 +412,7 @@ export class ScreenContent {
     this.cachedAnswers = cachedAnswers;
     this.serviceCode = serviceCode;
     this.logicComponents = logicComponents;
+    this.serviceInfo = serviceInfo;
   }
 
   public getComponentData(str: string): ComponentValue {

@@ -482,6 +482,7 @@ export enum ActionType {
   deliriumNextStep = 'deliriumNextStep',
   getNextQuiz = 'getNextQuiz', // для умного поиска
   redirect = 'redirect', // для умного поиска
+  redirectToPayByUin = 'redirectToPayByUin',
 }
 
 export enum DTOActionAction {
@@ -499,6 +500,7 @@ export enum DTOActionAction {
   attachUploadedFiles = 'attachUploadedFiles',
   redirect = 'redirect', // для умного поиска
   getNextQuiz = 'getNextQuiz', // для умного поиска
+  redirectToPayByUin = 'redirectToPayByUin',
 }
 
 export interface CheckOrderApiResponse {
