@@ -162,6 +162,7 @@ export interface ComponentAttrsDto {
   middleName?: string;
   gender?: string;
   cancelReservation?: string[];
+  isNeedAutoClick?: boolean;
 }
 
 export interface ComponentDateTimeDto {
@@ -485,6 +486,7 @@ export enum DTOActionAction {
   skipStep = 'skipStep',
   reject = 'reject',
   editPhoneNumber = 'service/actions/editPhoneNumber',
+  confirmSmsCode = 'service/actions/confirmSmsCode',
   editEmail = 'service/actions/editUserEmail',
   goBackToMainScenario = 'goBackToMainScenario',
   resendEmailConfirmation = 'service/actions/resendEmailConfirmation',
