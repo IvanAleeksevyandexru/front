@@ -8,7 +8,10 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { Answer } from '../../../shared/types/answer';
 import { Gender } from '../../../shared/types/gender';
 import { TextTransform } from '../../../shared/types/textTransform';
-import { TimerComponentDtoAction, TimerLabelSection } from '../../../shared/components/timer/timer.interface';
+import {
+  TimerComponentDtoAction,
+  TimerLabelSection,
+} from '../../../shared/components/timer/timer.interface';
 import { CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
 
@@ -162,6 +165,7 @@ export interface ComponentAttrsDto {
   middleName?: string;
   gender?: string;
   cancelReservation?: string[];
+  minOccures?: number;
 }
 
 export interface ComponentDateTimeDto {
@@ -301,6 +305,7 @@ export interface ComponentRefDto {
 export interface ComponentFieldDto {
   fieldName?: string;
   label?: string;
+  suggestionId?: string;
 }
 
 export interface ClarificationsDto {
@@ -312,8 +317,8 @@ export interface ClarificationsDto {
 }
 
 export enum TargetType {
-  none= 'none',
-  blank= 'blank',
+  none = 'none',
+  blank = 'blank',
 }
 
 export interface ComponentActionDto {

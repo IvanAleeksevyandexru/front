@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -14,6 +14,8 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -21,30 +23,32 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   const mockData: ConfirmAddressInterface = {
     attrs: {
       actions: [],
-      fields: []
+      fields: [],
     },
     id: '',
     value: '{}',
     label: '',
     type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
     required: false,
-    valueFromCache: false
+    valueFromCache: false,
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      imports: [FormsModule, HttpClientTestingModule],
-      declarations: [ ConfirmPersonalUserAddressComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
+      declarations: [ConfirmPersonalUserAddressComponent],
       providers: [
         UnsubscribeService,
         CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         DatesToolsService,
-      ]
-    })
-    .compileComponents();
+        SuggestHandlerService,
+        EventBusService,
+        FormBuilder,
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

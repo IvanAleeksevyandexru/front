@@ -17,6 +17,8 @@ import { CityInputComponent } from '../components/city-input/city-input.componen
 import { AddressInputComponent } from '../components/address-input/address-input.component';
 import { FileUploadFormComponent } from '../components/file-upload-form/file-upload-form.component';
 import { DropdownComponent } from '../components/dropdown/dropdown.component';
+import { DictionaryComponent } from '../components/dictionary/dictionary.component';
+import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -35,7 +37,8 @@ type CustomScreenComponent =
   | FormOutputHtmlComponent
   | CityInputComponent
   | AddressInputComponent
-  | FileUploadFormComponent;
+  | FileUploadFormComponent
+  | LookupInputComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
@@ -64,5 +67,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   CityInput: CityInputComponent,
   AddressInput: AddressInputComponent,
   FileUploadComponent: FileUploadFormComponent,
-  DropDown: DropdownComponent
+  DropDown: DropdownComponent,
+  Dictionary: DictionaryComponent,
+  Lookup: LookupInputComponent,
 };

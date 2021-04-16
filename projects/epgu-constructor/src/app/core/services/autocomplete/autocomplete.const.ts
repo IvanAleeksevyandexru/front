@@ -1,3 +1,9 @@
+import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import {
+  ComponentDto,
+  DisplayDto,
+} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ISuggestionItem } from './autocomplete.inteface';
 
 export const prepareClassifiedSuggestionItems = (
@@ -28,3 +34,14 @@ export const prepareClassifiedSuggestionItems = (
   }
   return result;
 };
+
+export const allowedAutocompleteComponentsList = (component: ComponentDto): boolean => {
+  return (
+    component.type === CustomScreenComponentTypes.DocInput ||
+    component.type === UniqueScreenComponentTypes.registrationAddr ||
+    component.type === UniqueScreenComponentTypes.confirmPersonalUserRegAddr ||
+    component.type === UniqueScreenComponentTypes.employeeHistory
+  );
+};
+
+export const getSuggestionGroupId = (display: DisplayDto): string => display.suggestion?.groupId;

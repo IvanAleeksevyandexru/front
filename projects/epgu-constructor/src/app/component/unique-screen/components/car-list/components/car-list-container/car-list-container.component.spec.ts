@@ -28,6 +28,7 @@ import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 
 
 describe('CarListContainerComponent', () => {
@@ -76,7 +77,7 @@ describe('CarListContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        CurrentAnswersService, UtilsService, NavigationService, ModalService
+        CurrentAnswersService, UtilsService, NavigationService, ModalService, WINDOW_PROVIDERS
       ],
       imports: [
         BaseModule,

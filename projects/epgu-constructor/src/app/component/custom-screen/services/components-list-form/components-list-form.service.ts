@@ -27,7 +27,10 @@ import {
   UpdateOn,
 } from '../../components-list.types';
 // eslint-disable-next-line max-len
-import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../../../../shared/services/address-helper/address-helper.service';
+import {
+  AddressHelperService,
+  DadataSuggestionsAddressForLookup,
+} from '../../../../shared/services/address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
@@ -74,7 +77,10 @@ export class ComponentsListFormService {
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
-    this._shownElements = this.componentsListRelationsService.createStatusElements(components, this.screenService.cachedAnswers);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(
+      components,
+      this.screenService.cachedAnswers,
+    );
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -168,7 +174,9 @@ export class ComponentsListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  public addressHelperServiceProvider(attrs: CustomComponentAttr): LookupProvider | LookupPartialProvider {
+  public addressHelperServiceProvider(
+    attrs: CustomComponentAttr,
+  ): LookupProvider | LookupPartialProvider {
     return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
   }
 
@@ -236,7 +244,7 @@ export class ComponentsListFormService {
     return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
   }
 
-  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr): void {
+  private setRelationResult(component: CustomComponent, result?: Partial<CustomComponent>): void {
     if (!result) {
       if (this.cachedAttrsComponents[component.id]) {
         this.resetRelation(component);
@@ -250,7 +258,7 @@ export class ComponentsListFormService {
     const stringResult = JSON.stringify(result);
     if (this.cachedAttrsComponents[component.id].last !== stringResult) {
       component.attrs = this.cachedAttrsComponents[component.id].base;
-      this.relationPatch(component, result.attrs); // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
+      this.relationPatch(component, result.attrs);
       this.cachedAttrsComponents[component.id].last = stringResult;
     }
   }
@@ -346,12 +354,9 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (
-      next.attrs.dictionaryType === 'MARKI_TS' &&
-      !isEqualObj<CustomListFormGroup>(prev, next)
-    ) {
+    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
       const indexVehicle: number = this.form.controls.findIndex(
-        (control: AbstractControl) => control.value?.id === next.id
+        (control: AbstractControl) => control.value?.id === next.id,
       );
 
       const options = {
@@ -367,7 +372,7 @@ export class ComponentsListFormService {
       };
 
       const model: AbstractControl = this.form.controls.find(
-        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS'
+        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
       );
 
       model.get('value').patchValue('');

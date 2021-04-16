@@ -35,5 +35,7 @@ export class NavigationServiceStub {
 
   redirectToHome(): void {}
 
-  redirectTo(): void {}
+  redirectTo(): void { }
+
+  redirectExternal(): void { }
 }

@@ -7,6 +7,7 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import {
+  FormPlayerNavigation,
   Navigation,
   NavigationOptions,
   NavigationParams,
@@ -31,6 +32,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -53,6 +55,7 @@ export class ActionService {
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
+    private formPlayerService: FormPlayerService,
   ) {}
 
   public switchAction(
@@ -101,7 +104,10 @@ export class ActionService {
         this.openDropdownListModal(action, componentId);
         break;
       case ActionType.deliriumNextStep:
-        this.handleDeliriumAction$(action).subscribe();
+        this.handleDeliriumAction(action, componentId);
+        break;
+      case ActionType.redirect:
+        this.navService.redirectExternal(action.value);
         break;
     }
   }
@@ -303,11 +309,11 @@ export class ActionService {
     this.modalService.openModal(DropdownListModalComponent, { componentId, clarificationId });
   }
 
-  private handleDeliriumAction$<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
+  private handleDeliriumAction(action: ComponentActionDto, componentId: string): void {
     const body = this.getActionDTO(action);
-    const path = `service/${this.screenService.serviceCode}/scenario/${action.type}`;
+    const navigation = this.prepareNavigationData(action, componentId);
     const preparedBody = JSON.parse(JSON.stringify(body));
     preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);
-    return this.actionApiService.sendAction<T>(path, preparedBody);
+    return this.formPlayerService.navigate(navigation, FormPlayerNavigation.DELIRIUM_NEXT_STEP);
   }
 }

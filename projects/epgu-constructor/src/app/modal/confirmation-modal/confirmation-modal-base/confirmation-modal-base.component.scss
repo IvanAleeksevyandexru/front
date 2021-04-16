@@ -137,5 +137,11 @@ $minModalHeight: 293px;
         color: $color-text-helper;
       }
     }
+
+    &__body, &__content {
+      @include tablets-down {
+        height: 100%;
+      }
+    }
   }
 }
