@@ -23,7 +23,7 @@
 <ng-template #formTmpl let-data>
   <div [formGroup]="form">
     <ng-container *ngFor="let field of fields$ | async;"
-                  [ngSwitch]="field?.fieldName"
+                  [ngSwitch]="field.fieldName"
     >
       <epgu-constructor-address-item
         *ngSwitchCase="'regAddr'"
@@ -34,7 +34,7 @@
       >
         <lib-dadata-widget
           [simpleMode]="true"
-          [hideLevels]="data?.attrs?.hideLevels || []"
+          [hideLevels]="data.attrs?.hideLevels || []"
           [hideHouseCheckbox]="false"
           [externalApiUrl]="config.externalApiUrl + '/'"
           [initValue]="form.controls[field.fieldName].value"
@@ -46,7 +46,7 @@
       </epgu-constructor-address-item>
 
       <epgu-constructor-address-item
-        *ngSwitchCase="isDate(field.fieldName)"
+        *ngSwitchCase="field.isDate"
         class="item"
         [label]="field.label"
         [hint]="field?.hint"
@@ -55,8 +55,8 @@
           class="item--date"
           [name]="field.fieldName"
           align="left"
-          [minDate]="data?.attrs?.minDate || '-50y'"
-          [maxDate]="data?.attrs?.maxDate || 'today'"
+          [minDate]="data.attrs?.minDate || '-50y'"
+          [maxDate]="data.attrs?.maxDate || 'today'"
           [formControlName]="field.fieldName"
           [clearable]="true"
         >
@@ -72,7 +72,7 @@
         <lib-plain-input
           epgu-constructor-trim
           epgu-constructor-text-transform
-          [textTransformType]="data?.attrs?.fstuc"
+          [textTransformType]="data.attrs?.fstuc"
           [formControlName]="field.fieldName"
           [name]="field.fieldName"
           class="content content__input"

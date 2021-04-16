@@ -25,19 +25,27 @@ import { ISuggestionItem } from '../../../../../../core/services/autocomplete/au
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
 
+type AddressFields = ConfirmAddressFieldsInterface & {
+  isDate: boolean | ConfirmAddressFieldName;
+};
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address',
   templateUrl: './confirm-personal-user-address.component.html',
   styleUrls: ['./confirm-personal-user-address.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit, OnDestroy {
   data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
-  fields$: Observable<ConfirmAddressFieldsInterface[]> = this.data$.pipe(
-    map(({ attrs }) => attrs.fields),
+  fields$: Observable<AddressFields[]> = this.data$.pipe(
+    map(({ attrs }) => {
+      return attrs.fields.map((field) => ({
+        ...field,
+        isDate: this.isDate(field.fieldName),
+      }));
+    }),
   );
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   form: FormGroup;
@@ -59,7 +67,6 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isRequired = data.required;
       this.createForm(data);
-      this.cdr.markForCheck();
     });
 
     this.screenService.suggestions$
@@ -80,11 +87,6 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     this.httpCancelService.cancelPendingRequests();
   }
 
-  isDate(fieldName: ConfirmAddressFieldName): boolean | ConfirmAddressFieldName {
-    const dateType = ['regFrom', 'regTo', 'regDate'];
-    return dateType.includes(fieldName) ? fieldName : false;
-  }
-
   createForm(data: ConfirmAddressInterface): void {
     const { attrs, value } = data;
     const form = attrs.fields.reduce((acc, { fieldName }) => {
@@ -97,23 +99,23 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   }
 
   private setPresetValues(data: ConfirmAddressInterface): void {
-    const { attrs, value, valueFromCache } = data;
+    const { value, attrs, valueFromCache } = data;
     const presetValue = JSON.parse(value);
-    if (presetValue?.regDate) {
-      if (this.isPresetable(attrs.fields, 'regDate') || valueFromCache) {
+    if (presetValue.regDate) {
+      if (this.isPreset(attrs.fields, 'regDate') || valueFromCache) {
         this.form.get('regDate').patchValue(this.getDate(presetValue.regDate));
       }
     }
-    if (presetValue?.regAddr) {
-      if (this.isPresetable(attrs.fields, 'regAddr') || valueFromCache) {
+    if (presetValue.regAddr) {
+      if (this.isPreset(attrs.fields, 'regAddr') || valueFromCache) {
         this.form.get('regAddr').patchValue(this.getAddress(presetValue.regAddr));
       }
     }
   }
 
-  private isPresetable(fields: ConfirmAddressFieldsInterface[], searchFieldName: string): boolean {
+  private isPreset(fields: ConfirmAddressFieldsInterface[], searchName: string): boolean {
     return fields.some(
-      ({ fieldName, nonPresetable = false }) => fieldName === searchFieldName && !nonPresetable,
+      ({ fieldName, nonPresetable = false }) => fieldName === searchName && !nonPresetable,
     );
   }
 
@@ -124,7 +126,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   }
 
   private emmitData(): void {
-    this.currentAnswersService.state = this.isValid() ? this.getPreparedDataToSend() : null;
+    this.currentAnswersService.state = this.getPreparedDataToSend();
     this.currentAnswersService.isValid = this.isValid();
   }
 
@@ -140,6 +142,11 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       value.regDate = this.datesToolsService.format(value.regDate, DATE_STRING_DOT_FORMAT);
     }
     return JSON.stringify(value);
+  }
+
+  private isDate(fieldName: ConfirmAddressFieldName): boolean | ConfirmAddressFieldName {
+    const dateType = ['regFrom', 'regTo', 'regDate'];
+    return dateType.includes(fieldName) ? fieldName : false;
   }
 
   private getDate(regDate: string): Date {
