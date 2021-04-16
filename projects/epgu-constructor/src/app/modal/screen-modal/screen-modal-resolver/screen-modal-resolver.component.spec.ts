@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { of } from 'rxjs';
-
 import { ScreenModalResolverComponent } from './screen-modal-resolver.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -17,6 +16,19 @@ import { ScreenModalServiceStub } from '../screen-modal.service.stub';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { NavigationService } from '../../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
+import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
+import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { HtmlRemoverService } from '../../../shared/services/html-remover/html-remover.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { ModalService } from '../../modal.service';
 
 jest.useFakeTimers();
 
@@ -34,6 +46,15 @@ describe('ScreenModalResolverComponent', () => {
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        ModalService,
+        HtmlRemoverService,
+        CurrentAnswersService,
+        AutocompleteApiService,
+        EventBusService,
       ],
     })
       .overrideComponent(ScreenModalResolverComponent, {
@@ -82,7 +103,7 @@ describe('ScreenModalResolverComponent', () => {
     });
 
     it('should be not destroy component if component undefined', () => {
-      jest.runAllTimers();
+      jest.runOnlyPendingTimers();
       const spy = jest.spyOn(component.componentRef, 'destroy');
       component.ngAfterViewInit();
       expect(spy).toHaveBeenCalledTimes(0);
