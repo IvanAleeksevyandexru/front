@@ -7,15 +7,15 @@ import {
   NavigationPayload,
 } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { HtmlRemoverService } from '../html-remover/html-remover.service';
 import {
   FormPlayerApiErrorResponse,
   FormPlayerApiErrorStatuses,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
-  ScenarioDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
-import { ScreenService } from '../../../screen/screen.service';
-import { HtmlRemoverService } from '../html-remover/html-remover.service';
+  FormPlayerApiSuccessResponse
+} from 'epgu-constructor-types';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 /**
  * Этот базоый сервис служит для взаимодействия formPlayerComponent и formPlayerApi

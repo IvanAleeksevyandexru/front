@@ -3,7 +3,6 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerNavigation, ServiceInfo } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { Gender } from '../../../shared/types/gender';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ConfigService } from '../../../core/services/config/config.service';
@@ -11,6 +10,7 @@ import { ConfigServiceStub } from '../../../core/services/config/config.service.
 import { LocationService } from '../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { configureTestSuite } from 'ng-bullet';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
 
 
 describe('FormPlayerApiService', () => {

@@ -1,16 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { LocationService } from '../../core/services/location/location.service';
-import {
-  ApplicantAnswersDto,
-  ComponentDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { LoggerService } from '../../core/services/logger/logger.service';
 
 /**

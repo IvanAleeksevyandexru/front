@@ -9,9 +9,9 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
-import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;

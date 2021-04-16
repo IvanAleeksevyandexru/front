@@ -7,12 +7,10 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import {
-  DisplayDto,
-  ScenarioErrorsDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenTypes } from '../screen.types';

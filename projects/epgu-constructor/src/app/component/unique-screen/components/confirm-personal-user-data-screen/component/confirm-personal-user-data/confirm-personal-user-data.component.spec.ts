@@ -7,11 +7,6 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ConfirmUserData, ConfirmUserDataErrorType } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { OutputHtmlModule } from '../../../../../../shared/components/output-html/output-html.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
@@ -23,6 +18,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { configureTestSuite } from 'ng-bullet';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 const componentMock: ConfirmUserData = {
   attrs: {

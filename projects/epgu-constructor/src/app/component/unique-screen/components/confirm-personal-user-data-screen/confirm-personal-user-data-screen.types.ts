@@ -1,5 +1,6 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import { DTOActionAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ConfirmUserDataStyle } from 'epgu-constructor-types/dist/base/confirm-user-data';
+import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 export interface ConfirmUserData extends ComponentBase {
   attrs: ConfirmUserDataAttrs;
@@ -37,16 +38,6 @@ export interface ConfirmUserDataState {
   states: ConfirmUserDataFieldsState[];
   storedValues: { [key: string]: string | boolean | object };
   errors?: ConfirmUserDataError[];
-}
-
-export interface ConfirmUserDataStyle {
-  group: string;
-  groupTitle: string;
-  value: string;
-  label: string;
-  field: string;
-  list: string;
-  divider: string;
 }
 
 export enum ConfirmUserDataErrorType {

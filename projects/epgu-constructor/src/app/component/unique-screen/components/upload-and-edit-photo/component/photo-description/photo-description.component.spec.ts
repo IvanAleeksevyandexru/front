@@ -4,12 +4,12 @@ import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 
 import { PhotoDescriptionComponent } from './photo-description.component';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { SafeModule } from '../../../../../../shared/pipes/safe/safe.module';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;

@@ -16,7 +16,6 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
@@ -47,6 +46,7 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;

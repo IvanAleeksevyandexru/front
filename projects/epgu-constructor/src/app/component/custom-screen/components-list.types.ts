@@ -1,20 +1,20 @@
 import { ListItem } from 'epgu-lib';
-import {
-  ClarificationsDto,
-  ComponentDictionaryFilterDto,
-  ComponentFilterDto,
-  ComponentRelationFieldDto,
-  DisplayDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../screen/screen.types';
-import { TextTransform } from '../../shared/types/textTransform';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
   DictionaryItem,
-  DictionaryOptions,
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
+import {
+  ComponentDictionaryFilterDto,
+  ComponentFilterDto,
+  ComponentRelationFieldDto
+} from 'epgu-constructor-types/dist/base/component-attrs';
+import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -144,7 +144,7 @@ export interface CustomComponentAttr {
   labelHint?: string;
   hint?: string;
   customUnrecLabel?: string;
-  clarifications?: ClarificationsDto;
+  clarifications?: Clarifications;
   isTextHelper?: boolean;
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;

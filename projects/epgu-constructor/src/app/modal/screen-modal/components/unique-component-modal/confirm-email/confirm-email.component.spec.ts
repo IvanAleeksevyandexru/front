@@ -9,13 +9,13 @@ import { LocationService } from '../../../../../core/services/location/location.
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ConfirmEmailComponent } from './confirm-email.component';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 
 describe('ConfirmEmailComponent', () => {

@@ -1,6 +1,6 @@
 import { RelativeDate } from 'epgu-lib';
-import { TextTransform } from '../../../../../shared/types/textTransform';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 
 /**

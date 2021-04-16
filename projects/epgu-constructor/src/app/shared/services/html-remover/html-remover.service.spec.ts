@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { DisplayDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { HtmlRemoverService } from './html-remover.service';
 import { configureTestSuite } from 'ng-bullet';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 
 describe('HtmlRemoverService', () => {
