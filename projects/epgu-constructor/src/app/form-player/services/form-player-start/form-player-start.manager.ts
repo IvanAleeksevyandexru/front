@@ -3,11 +3,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import {
-  CheckOrderApiResponse,
-  FormPlayerApiSuccessResponse,
-  QuizRequestDto, ScenarioDto
-} from '../form-player-api/form-player-api.types';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { FormPlayerNavigation } from '../../form-player.types';
@@ -15,6 +10,8 @@ import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { LocationService } from '../../../core/services/location/location.service';
+import { CheckOrderApiResponse, FormPlayerApiSuccessResponse, QuizRequestDto } from 'epgu-constructor-types';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 /**
  * Менеджер для обработки различных кейсов запуска плеера.

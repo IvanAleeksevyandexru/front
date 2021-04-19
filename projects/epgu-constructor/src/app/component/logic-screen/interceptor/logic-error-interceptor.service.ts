@@ -22,7 +22,7 @@ export class LogicErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<HttpErrorResponse>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        const isLogicComponentRequest = request.body === this.localStorage.get(request.url);
+        const isLogicComponentRequest = request.body === this.localStorage.getRaw(request.url);
 
         if (isLogicComponentRequest) {
           const logicResponseError = new HttpErrorResponse({

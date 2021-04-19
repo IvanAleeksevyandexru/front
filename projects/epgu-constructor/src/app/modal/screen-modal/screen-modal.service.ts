@@ -2,13 +2,10 @@ import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import {
-  DTOActionAction,
-  FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {

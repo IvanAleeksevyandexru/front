@@ -1,9 +1,10 @@
-import { ActionType, DTOActionAction, ScreenActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { DisabledButtonPipe } from './disabled-button.pipe';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
 
 describe('DisabledButtonPipe', () => {
   let pipe: DisabledButtonPipe;
-  let button: ScreenActionDto;
+  let button: ScreenButton;
   let disabled: boolean;
   let disabledForAll: boolean;
   let isLoading: boolean;

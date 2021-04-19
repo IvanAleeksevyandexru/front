@@ -3,7 +3,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { ActionDTO } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
@@ -26,6 +25,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { UtilsService } from '../../services/utils/utils.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
 import { configureTestSuite } from 'ng-bullet';
+import { ActionRequestPayload } from 'epgu-constructor-types';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -46,7 +46,7 @@ describe('TracingHttpInterceptor', () => {
         name: 'Приветствие',
       },
     },
-  } as ActionDTO;
+  } as ActionRequestPayload;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({

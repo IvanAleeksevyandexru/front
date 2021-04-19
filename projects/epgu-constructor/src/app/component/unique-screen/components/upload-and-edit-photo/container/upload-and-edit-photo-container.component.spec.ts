@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UploadAndEditPhotoContainerComponent } from './upload-and-edit-photo-container.component';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { PhotoFormComponent } from '../../../../../shared/components/upload-and-edit-photo-form/components/photo-form/photo-form.component';
@@ -20,6 +19,7 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('UploadAndEditPhotoContainerComponent', () => {
   let component: UploadAndEditPhotoContainerComponent;

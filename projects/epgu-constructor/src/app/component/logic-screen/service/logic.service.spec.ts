@@ -78,7 +78,7 @@ describe('LogicService', () => {
     });
 
     it('should be set value to localStorage', () => {
-      const spy = jest.spyOn(localStorage, 'set');
+      const spy = jest.spyOn(localStorage, 'setRaw');
       service.fetch(componentsPOST)[0].subscribe();
       const req = httpTestingController.expectOne('url');
       expect(spy).toHaveBeenCalledWith(req.request.url, req.request.body);

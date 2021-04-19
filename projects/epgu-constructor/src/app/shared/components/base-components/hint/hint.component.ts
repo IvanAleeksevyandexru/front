@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Clarifications } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 
 @Component({
   selector: 'epgu-constructor-hint',

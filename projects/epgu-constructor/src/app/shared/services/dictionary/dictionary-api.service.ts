@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import {
   DadataNormalizeResponse,
   DadataSuggestionsResponse,
-  DictionaryOptions,
   DictionaryResponse
 } from './dictionary-api.types';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
+import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
 
 @Injectable()
 export class DictionaryApiService {

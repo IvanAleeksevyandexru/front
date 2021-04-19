@@ -4,7 +4,6 @@ import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ConfigService } from '../../../core/services/config/config.service';
@@ -20,6 +19,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;

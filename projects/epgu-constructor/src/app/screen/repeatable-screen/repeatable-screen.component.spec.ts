@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ChangeDetectorRef } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { DisplayDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -27,6 +26,7 @@ import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 const displayMock = {
   id: 's113',

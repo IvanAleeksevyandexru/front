@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 
 import { ScreenButtonsComponent } from './screen-buttons.component';
 import { BaseModule } from '../../base.module';
-import { ActionType, DTOActionAction } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DisabledButtonPipe } from './pipes/disabled-button.pipe';
 import { ShowLoaderButtonPipe } from './pipes/show-loader-button.pipe';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -13,6 +12,7 @@ import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 
 describe('ScreenButtonsComponent', () => {

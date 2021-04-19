@@ -1,11 +1,11 @@
 import { TextTransformDirective } from './text-transform.directive';
 
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TextTransform } from '../../types/textTransform';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 @Component({
   selector: 'epgu-constructor-text-transform-test-component',
