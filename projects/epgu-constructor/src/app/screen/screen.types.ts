@@ -24,6 +24,7 @@ export interface ScreenStoreDisplayDtoI extends DisplayDto {
 export interface ScreenStore extends Partial<ScenarioDto> {
   display?: ScreenStoreDisplayDtoI;
   serviceCode?: string;
+  serviceInfo?: ServiceInfo;
 }
 
 export interface Screen {
@@ -39,4 +40,8 @@ export enum ScreenTypes {
   'UNIQUE' = 'UNIQUE',
   'INVITATION_ERROR' = 'INVITATION_ERROR',
   'EMPTY' = 'EMPTY',
+}
+
+export interface ServiceInfo {
+  billNumber?: string;
 }

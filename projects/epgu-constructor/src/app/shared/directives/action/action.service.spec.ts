@@ -136,6 +136,13 @@ const redirectAction: ComponentActionDto = {
   type: ActionType.redirect
 };
 
+const redirectToPayByUinAction: ComponentActionDto = {
+  label: 'Начать',
+  value: '',
+  type: ActionType.redirectToPayByUin,
+  action: DTOActionAction.redirectToPayByUin,
+};
+
 const sendActionMock = of({
   errorList: [],
   responseData: { value: 'value', type: 'type' },
@@ -369,6 +376,20 @@ describe('ActionService', () => {
       const formPlayerServiceNavigateSpy = spyOn(formPlayerService, 'navigate');
       actionService['handleDeliriumAction'](deliriumAction, 'componentId');
       expect(formPlayerServiceNavigateSpy).toBeCalled();
+    });
+  });
+
+  describe('handleDeliriumAction$()', () => {
+    beforeEach(() => {
+      screenService.serviceInfo = {
+        billNumber: '100'
+      };
+    });
+
+    it('should call htmlRemover.delete()', () => {
+      const spy = spyOn(navigationService, 'redirectTo');
+      actionService.switchAction(redirectToPayByUinAction, '');
+      expect(spy).toHaveBeenCalledWith('oplataUrl/pay/uin/100');
     });
   });
 });

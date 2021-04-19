@@ -72,7 +72,7 @@
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.8.1",
     "date-fns": "^2.16.1",
-    "epgu-constructor-types": "1.3.5",
+    "epgu-constructor-types": "1.3.6",
     "epgu-lib": "0.0.1226",
     "file-saver": "^2.0.5",
     "hammerjs": "^2.0.8",

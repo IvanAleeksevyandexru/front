@@ -37,6 +37,7 @@ export class ConfigService implements Config {
   private _zipkinUrl: string;
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
+  private _oplataUrl: string;
 
   constructor(
     private loadService: LoadService,
@@ -173,6 +174,10 @@ export class ConfigService implements Config {
     return this._zipkinEnv;
   }
 
+  get oplataUrl(): string {
+    return this._oplataUrl;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
@@ -195,6 +200,7 @@ export class ConfigService implements Config {
     this._staticDomainContentPath = config.staticDomainContentPath;
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
+    this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
   }
 
   set config(config: Config) {
