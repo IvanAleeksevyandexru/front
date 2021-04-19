@@ -30,7 +30,7 @@ export class InfoComponentModalComponent implements OnInit {
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         filter((component: ComponentDto) =>
-          this.utils.isDefined(component?.attrs?.displayShowTimeSeconds),
+          this.utils.isDefined(component.attrs?.displayShowTimeSeconds),
         ),
         tap((component: ComponentDto) => {
           setTimeout(
