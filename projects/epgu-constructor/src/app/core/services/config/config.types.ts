@@ -43,6 +43,7 @@ export type TimeSlotsApi = {
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
+ * @property {string}oplataUrl - url до оплаты
  */
 export interface Config {
   apiUrl: string;
@@ -73,6 +74,7 @@ export interface Config {
   zipkinUrl?: string;
   zipkinMaxPayloadSize?: number;
   zipkinEnv?: string;
+  oplataUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

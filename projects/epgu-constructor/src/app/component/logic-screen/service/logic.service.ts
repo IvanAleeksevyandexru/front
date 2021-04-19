@@ -32,7 +32,7 @@ export class LogicService {
   private callHttpMethod(value: ComponentValue): Observable<HttpResponse<object>> {
     const method = value.method.toLocaleLowerCase();
     const hasBody = ['POST', 'PUT'].includes(value.method);
-    this.localStorageService.set(value.url, value.body);
+    this.localStorageService.setRaw(value.url, value.body);
     const options = {
       headers: new HttpHeaders(value.headers),
       withCredentials: true,
