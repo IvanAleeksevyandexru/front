@@ -14,7 +14,6 @@ import { HealthServiceStub } from '../../services/global-error/health.service.st
 import { LocationService } from '../../services/location/location.service';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import {
-  ConfigParams,
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   HealthInterceptor,
   RENDER_FORM_SERVICE_NAME,
@@ -48,7 +47,7 @@ describe('HealthInterceptor', () => {
   } as ActionRequestPayload;
   const getNextStepAction = 'renderForm';
   const dictionaryName = 'STRANI_IST';
-  const dictionaryAction = 'v1DictionarySTRANIISTService';
+  const dictionaryAction = 'dictionarySTRANIIST';
 
   configureTestSuite( () => {
     TestBed.configureTestingModule({
@@ -79,7 +78,7 @@ describe('HealthInterceptor', () => {
     config = TestBed.inject(ConfigService);
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
-    init.orderId = orderId;
+    init.orderId = Number(orderId);
     utils = TestBed.inject(UtilsService);
     healthService = TestBed.inject(HealthService);
     dictionaryService = TestBed.inject(DictionaryApiService);
@@ -102,9 +101,9 @@ describe('HealthInterceptor', () => {
       };
       requestToSucceed.flush(dataToFlush);
       const params = {
-        id: dto.scenarioDto.display.id,
-        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        orderId,
+        Id: dto.scenarioDto.display.id,
+        Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
+        OrderId: orderId,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
@@ -121,22 +120,18 @@ describe('HealthInterceptor', () => {
       });
       const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
       const dataToFlush = {
-        scenarioDto: {
-          ...dto.scenarioDto,
-          orderId,
-        },
         error: {
           code: 101,
           message: 'Server is not available',
-        }
+        },
+        fieldErrors: [],
+        total: 2,
       };
       requestToDictionary.flush(dataToFlush);
       const params = {
-        id: dto.scenarioDto.display.id,
-        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        orderId,
-        ServerError: dataToFlush.error.code,
-        errorMessage: dataToFlush.error.message,
+        Dict: 'STRANI_IST',
+        Empty: false,
+        RegDictName: 'GOSBAR',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
@@ -151,22 +146,18 @@ describe('HealthInterceptor', () => {
       });
       const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
       const dataToFlush = {
-        scenarioDto: {
-          ...dto.scenarioDto,
-          orderId,
-        },
         error: {
           errorCode: 101,
           errorMessage: 'Server is not available',
-        }
+        },
+        fieldErrors: [],
+        total: 2,
       };
       requestToDictionary.flush(dataToFlush);
       const params = {
-        id: dto.scenarioDto.display.id,
-        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        orderId,
-        ServerError: dataToFlush.error.errorCode,
-        errorMessage: dataToFlush.error.errorMessage,
+        Dict: 'STRANI_IST',
+        Empty: false,
+        RegDictName: 'GOSBAR',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
@@ -198,9 +189,9 @@ describe('HealthInterceptor', () => {
       requestToError.flush(errorBody, body);
       const params = {
         ServerError: 506,
-        id: dictionaryName,
-        dictionaryUrl: errorBody.value.url,
-        errorMessage: errorBody.value.message,
+        Id: dictionaryName,
+        DictionaryUrl: errorBody.value.url,
+        ErrorMessage: errorBody.value.message,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 1, params);
@@ -256,12 +247,12 @@ describe('HealthInterceptor', () => {
   describe('endMeasureHealth()', () => {
     let serviceName: string;
     let requestStatus: RequestStatus;
-    let configParams: ConfigParams;
+    let configParams;
 
     beforeEach(() => {
       serviceName = RENDER_FORM_SERVICE_NAME;
       requestStatus = RequestStatus.Succeed;
-      configParams = {} as ConfigParams;
+      configParams = {};
     });
 
     it('should call measureEnd of health service with serviceName param', fakeAsync(() => {
