@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, TimeoutError } from 'rxjs';
+import { catchError, map, timeout } from 'rxjs/operators';
 
 import { ComponentValue } from '../logic.types';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
@@ -16,31 +16,34 @@ export class LogicService {
   ): Observable<ApplicantAnswersDto>[] {
     return components.map(({ value, id }) => {
       return this.callHttpMethod(value).pipe(
+        timeout(value.timeout ? parseFloat(value.timeout) : Infinity),
         map((response) => this.createLogicAnswers(id, response)),
-        catchError((error: HttpErrorResponse) => of(this.createLogicAnswers(id, error))),
+        catchError((error: TimeoutError | HttpErrorResponse) => {
+          if (error instanceof TimeoutError) {
+            return of(this.createLogicAnswers(id, this.createErrorFromTimeout(value.url)));
+          }
+
+          return of(this.createLogicAnswers(id, error));
+        }),
       );
     });
   }
 
   private callHttpMethod(value: ComponentValue): Observable<HttpResponse<object>> {
-    const headers = new HttpHeaders(value.headers);
     const method = value.method.toLocaleLowerCase();
     const hasBody = ['POST', 'PUT'].includes(value.method);
     this.localStorageService.set(value.url, value.body);
-
-    if (hasBody) {
-      return this.http[method](value.url, value.body, {
-        headers,
-        withCredentials: true,
-        observe: 'response',
-      });
-    }
-
-    return this.http[method](value.url, {
-      headers,
+    const options = {
+      headers: new HttpHeaders(value.headers),
       withCredentials: true,
       observe: 'response',
-    });
+    };
+
+    if (hasBody) {
+      return this.http[method](value.url, value.body, options);
+    }
+
+    return this.http[method](value.url, options);
   }
 
   private createLogicAnswers(
@@ -60,5 +63,14 @@ export class LogicService {
         }),
       },
     };
+  }
+
+  private createErrorFromTimeout(url: string): HttpErrorResponse {
+    return new HttpErrorResponse({
+      error: '408 Request Timeout',
+      headers: new HttpHeaders(),
+      status: 408,
+      url,
+    });
   }
 }

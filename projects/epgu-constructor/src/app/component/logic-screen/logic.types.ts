@@ -4,4 +4,5 @@ export interface ComponentValue {
   body?: string;
   headers: { [key: string]: string };
   method: string;
+  timeout?: string;
 }
