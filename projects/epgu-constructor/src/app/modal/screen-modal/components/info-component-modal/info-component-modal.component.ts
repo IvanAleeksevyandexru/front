@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { debounce, filter, takeUntil, tap } from 'rxjs/operators';
+import { timer } from 'rxjs';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenModalService } from '../../screen-modal.service';
@@ -32,11 +33,9 @@ export class InfoComponentModalComponent implements OnInit {
         filter((component: ComponentDto) =>
           this.utils.isDefined(component.attrs?.displayShowTimeSeconds),
         ),
+        debounce((component) => timer(component.attrs.displayShowTimeSeconds * this.oneSecond)),
         tap((component: ComponentDto) => {
-          setTimeout(
-            () => this.actionService.switchAction(this.screenService.button, component.id),
-            component.attrs.displayShowTimeSeconds * this.oneSecond,
-          );
+          this.actionService.switchAction(this.screenService.button, component.id);
         }),
       )
       .subscribe();

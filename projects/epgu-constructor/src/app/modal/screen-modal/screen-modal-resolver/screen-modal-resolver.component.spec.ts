@@ -20,7 +20,6 @@ import { FormPlayerApiService } from '../../../form-player/services/form-player-
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
@@ -29,6 +28,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../modal.service';
+import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 jest.useFakeTimers();
 
@@ -36,6 +36,8 @@ describe('ScreenModalResolverComponent', () => {
   let component: ScreenModalResolverComponent;
   let fixture: ComponentFixture<ScreenModalResolverComponent>;
   let screenService: ScreenService;
+
+
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ScreenModalResolverComponent],
@@ -69,6 +71,9 @@ describe('ScreenModalResolverComponent', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     screenService.screenType = ScreenTypes.UNIQUE;
+    jest
+      .spyOn(screenService, 'component$', 'get')
+      .mockReturnValue(of({ attrs: {}} as ComponentDto));
     fixture = TestBed.createComponent(ScreenModalResolverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
