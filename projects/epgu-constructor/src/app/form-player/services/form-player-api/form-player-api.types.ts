@@ -163,6 +163,7 @@ export interface ComponentAttrsDto {
   gender?: string;
   cancelReservation?: string[];
   displayShowTimeSeconds?: number;
+  phoneNumber?: number;
 }
 
 export interface ComponentDateTimeDto {
