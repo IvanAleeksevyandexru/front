@@ -48,7 +48,7 @@ describe('ScreenModalResolverComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        UtilsService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         ModalService,
         HtmlRemoverService,
