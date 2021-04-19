@@ -29,7 +29,7 @@ import { ConfigService } from '../../core/services/config/config.service';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
-import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
+import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -67,7 +67,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private configService: ConfigService,
     private viewerService: ViewerService,
     private autocompleteApiService: AutocompleteApiService,
-    private autocompleteService: AutocompleteService,
+    private autocompletePrepareService: AutocompletePrepareService,
   ) {
     super(injector);
   }
@@ -76,7 +76,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
       this.suggestions = suggestions;
       this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
-      const suggestionsUploadedFiles = this.autocompleteService.getParsedSuggestionsUploadedFiles(
+      const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
         this.suggestionsFilesList,
       );
       this.suggestionsFiles = this.getSuggestionFiles(suggestionsUploadedFiles);

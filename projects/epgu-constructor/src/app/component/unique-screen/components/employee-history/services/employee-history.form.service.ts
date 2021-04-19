@@ -11,7 +11,6 @@ import {
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
-
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
@@ -22,6 +21,7 @@ import { EmployeeHistoryMonthsService } from './employee-history.months.service'
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { EmployeeHostoryErrors } from '../employee-history.enums';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { ScreenService } from '../../../../../screen/screen.service';
 
 @Injectable()
 export class EmployeeHistoryFormService {
@@ -37,6 +37,7 @@ export class EmployeeHistoryFormService {
     private monthsService: EmployeeHistoryMonthsService,
     private ds: EmployeeHistoryDataSourceService,
     private datesToolsService: DatesToolsService,
+    private screenService: ScreenService,
   ) {
     this.defaultType = 'student';
   }

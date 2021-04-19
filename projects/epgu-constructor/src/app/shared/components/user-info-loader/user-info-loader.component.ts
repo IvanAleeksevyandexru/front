@@ -8,6 +8,7 @@ import { UserInfoComponentTypes } from './user-info-loader.types';
 import { UserInfoType } from '../user-info/user-info.type';
 import { ComponentValue } from '../../../screen/screen-content';
 import { LoggerService } from '../../../core/services/logger/logger.service';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-user-info-loader',
@@ -35,7 +36,7 @@ export class UserInfoLoaderComponent implements OnInit {
     map((components) => {
       return components.map(([component, value]: [ComponentDto, ComponentValue]) => {
         switch (component.type) {
-          case this.componentTypes.PersonInfo:
+          case (this.componentTypes.PersonInfo as unknown) as UniqueScreenComponentTypes:
             return [component, value as UserInfoType];
           default:
             return [component, value];
