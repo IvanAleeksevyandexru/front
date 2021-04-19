@@ -16,7 +16,7 @@ import {
 
 const defaultStyle: ConfirmUserDataStyle = {
   group: 'mb-16',
-  groupTitle: 'mb-16',
+  groupTitle: 'mb-12',
   value: '',
   label: 'mb-4',
   field: 'mb-16',
