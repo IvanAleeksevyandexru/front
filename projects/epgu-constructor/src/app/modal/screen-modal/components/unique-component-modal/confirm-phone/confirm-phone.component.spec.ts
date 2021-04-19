@@ -19,6 +19,7 @@ import { CounterDirective } from '../../../../../shared/directives/counter/count
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
 import { configureTestSuite } from 'ng-bullet';
+import { of } from 'rxjs';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -64,6 +65,7 @@ describe('ConfirmPhoneComponent', () => {
     navigationModalService = TestBed.inject(NavigationModalService);
     screenService = TestBed.inject(ScreenService);
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData));
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
     fixture = TestBed.createComponent(ConfirmPhoneComponent);
     component = fixture.componentInstance;
