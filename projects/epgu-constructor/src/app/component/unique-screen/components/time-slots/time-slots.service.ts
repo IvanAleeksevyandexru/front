@@ -407,7 +407,7 @@ export class TimeSlotsService {
 
   private initSlotsMap(slots: TimeSlot[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTimeISO);
+      const slotDate = new Date(slot.visitTimeStr);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }
