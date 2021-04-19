@@ -162,7 +162,7 @@ export interface ComponentAttrsDto {
   middleName?: string;
   gender?: string;
   cancelReservation?: string[];
-  isNeedAutoClick?: boolean;
+  displayShowTimeSeconds?: number;
 }
 
 export interface ComponentDateTimeDto {

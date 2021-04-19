@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { delay, filter, takeUntil, tap } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenModalService } from '../../screen-modal.service';
 import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionService } from '../../../../shared/directives/action/action.service';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-info-component-modal',
@@ -14,23 +15,28 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoComponentModalComponent implements OnInit {
-  private delayBeforeAutoClick = 1500;
+  private oneSecond = 1000;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
     private actionService: ActionService,
     public screenService: ScreenService,
     public screenModalService: ScreenModalService,
+    private utils: UtilsService,
   ) {}
 
   ngOnInit(): void {
     this.screenService.component$
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        filter((component: ComponentDto) => component?.attrs?.isNeedAutoClick),
-        delay(this.delayBeforeAutoClick),
+        filter((component: ComponentDto) =>
+          this.utils.isDefined(component?.attrs?.displayShowTimeSeconds),
+        ),
         tap((component: ComponentDto) => {
-          this.actionService.switchAction(this.screenService.button, component.id);
+          setTimeout(
+            () => this.actionService.switchAction(this.screenService.button, component.id),
+            component.attrs.displayShowTimeSeconds * this.oneSecond,
+          );
         }),
       )
       .subscribe();
