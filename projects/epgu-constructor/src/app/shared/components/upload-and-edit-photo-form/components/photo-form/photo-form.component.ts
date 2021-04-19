@@ -15,11 +15,11 @@ import { fromEvent, merge, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
+import { ComponentUploadedFileDto } from 'epgu-constructor-types/dist/base/component-attrs';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
-import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';

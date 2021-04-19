@@ -1,5 +1,6 @@
-import { ActionType, DisplayDto, DTOActionAction } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../screen/screen.types';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
   id: 'finishscreen_double_order_error',

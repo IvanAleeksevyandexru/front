@@ -12,7 +12,6 @@ import { HtmlRemoverService } from '../../../shared/services/html-remover/html-r
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
@@ -20,6 +19,7 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerApiErrorStatuses } from 'epgu-constructor-types';
 
 declare global {
   namespace NodeJS {

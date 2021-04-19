@@ -1,8 +1,8 @@
 import {
-  DictionaryConditions,
   DictionaryResponseError,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
 
 export interface IGeoCoords {
   address: string;

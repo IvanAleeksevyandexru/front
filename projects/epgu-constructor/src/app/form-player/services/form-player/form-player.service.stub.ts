@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerApiSuccessResponse, ScenarioDto } from '../form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
-import { Gender } from '../../../shared/types/gender';
 import { Observable, of } from 'rxjs';
+import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
 
 @Injectable()
 export class FormPlayerServiceStub {

@@ -1,5 +1,6 @@
-import { Answer } from '../shared/types/answer';
-import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import { Answer } from 'epgu-constructor-types/dist/base/answer';
+import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 export interface QueryParams {
   [key: string]: string;
@@ -59,6 +60,7 @@ export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
   'SKIP' = 'skipStep',
+  'DELIRIUM_NEXT_STEP' = 'deliriumNextStep',
 }
 
 /**

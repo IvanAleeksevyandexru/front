@@ -20,10 +20,9 @@ import {
   RENDER_FORM_SERVICE_NAME,
   RequestStatus
 } from './health.interceptor';
-
-import { ActionDTO } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { configureTestSuite } from 'ng-bullet';
+import { ActionRequestPayload } from 'epgu-constructor-types';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;
@@ -46,7 +45,7 @@ describe('HealthInterceptor', () => {
         name: 'Приветствие',
       }
     },
-  } as ActionDTO;
+  } as ActionRequestPayload;
   const getNextStepAction = 'renderForm';
   const dictionaryName = 'STRANI_IST';
   const dictionaryAction = 'v1DictionarySTRANIISTService';

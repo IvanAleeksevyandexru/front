@@ -11,10 +11,8 @@ import {
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { filter } from 'rxjs/operators';
-import {
-  ComponentBaloonContentDto,
-  ComponentDictionaryFilterDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentBaloonContentDto, ComponentDictionaryFilterDto } from 'epgu-constructor-types/dist/base/component-attrs';
+
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;

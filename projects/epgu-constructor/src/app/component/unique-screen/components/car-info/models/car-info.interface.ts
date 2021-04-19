@@ -1,5 +1,6 @@
-import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',

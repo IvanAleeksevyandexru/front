@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from 'lodash';
+import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { DTOActionAction } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import {

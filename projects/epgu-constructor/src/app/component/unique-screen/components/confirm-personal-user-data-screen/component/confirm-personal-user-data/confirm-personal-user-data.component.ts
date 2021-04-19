@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
 import {
   ConfirmUserData,
   ConfirmUserDataErrorType,
 } from '../../confirm-personal-user-data-screen.types';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { ActionType } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 

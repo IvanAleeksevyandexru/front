@@ -1,12 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MockComponent, MockModule } from 'ng-mocks';
-
-import {
-  CachedAnswersDto,
-  ComponentAttrsDto,
-  ComponentDto,
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { RadioTaxComponent } from '../../../../../shared/components/radio-tax/radio-tax.component';
@@ -18,6 +12,9 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;

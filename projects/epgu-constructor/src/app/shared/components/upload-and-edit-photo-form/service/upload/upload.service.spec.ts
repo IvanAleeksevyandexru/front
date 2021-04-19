@@ -8,8 +8,8 @@ import { CompressionService } from '../compression/compression.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentUploadedFileDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 describe('UploadService', () => {
   let service: UploadService;

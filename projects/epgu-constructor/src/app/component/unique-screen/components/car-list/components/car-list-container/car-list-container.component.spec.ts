@@ -4,7 +4,6 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { of } from 'rxjs';
-import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -28,6 +27,8 @@ import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 
 describe('CarListContainerComponent', () => {
@@ -76,7 +77,7 @@ describe('CarListContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        CurrentAnswersService, UtilsService, NavigationService, ModalService
+        CurrentAnswersService, UtilsService, NavigationService, ModalService, WINDOW_PROVIDERS
       ],
       imports: [
         BaseModule,

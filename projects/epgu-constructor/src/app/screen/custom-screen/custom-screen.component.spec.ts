@@ -1,4 +1,3 @@
-import { ActionType } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -10,7 +9,6 @@ import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.s
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ComponentDto, DTOActionAction } from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
@@ -28,6 +26,8 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;

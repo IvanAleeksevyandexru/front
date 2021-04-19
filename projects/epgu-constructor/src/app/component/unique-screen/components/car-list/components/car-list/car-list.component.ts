@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ListItem } from 'epgu-lib';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 import { VehicleOwnerInfo } from '../../models/car-list.interface';
-import { ClarificationsDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-car-list',
@@ -12,7 +12,7 @@ import { ClarificationsDto } from '../../../../../../form-player/services/form-p
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarListComponent {
-  @Input() clarifications: ClarificationsDto;
+  @Input() clarifications: Clarifications;
   @Input() staticDomainAssetsPath: string;
   @Input() searchCaseSensitive: boolean;
   @Input() provider: { search: (searchString: string) => Observable<Partial<ListItem>[]> };

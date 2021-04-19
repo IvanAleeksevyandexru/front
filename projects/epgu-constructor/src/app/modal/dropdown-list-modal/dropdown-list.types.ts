@@ -1,6 +1,6 @@
-import { ClarificationsDto } from '../../form-player/services/form-player-api/form-player-api.types';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 
-export interface DropdownListContent extends ClarificationsDto{
+export interface DropdownListContent extends Clarifications {
   [key: string]: {
     title: string;
     items: DropdownListItem[];

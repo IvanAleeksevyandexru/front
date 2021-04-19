@@ -1,4 +1,4 @@
-import { ActionType, ComponentActionDto, DTOActionAction } from '../../form-player/services/form-player-api/form-player-api.types';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 export const NEXT_STEP_ACTION: ComponentActionDto = {
   label: 'Продолжить',

@@ -1,7 +1,7 @@
 <epgu-constructor-default-unique-screen-wrapper
   [header]="screenService.header$ | async"
   [isLoading]="screenService.isLoading$ | async"
-  [screenButtons]="screenService.buttons$ | async"
+  [screenButtons]="(screenService.component$ | async).attrs.actions"
   [showNav]="screenService.showNav$ | async"
 >
   <epgu-constructor-car-owner-info

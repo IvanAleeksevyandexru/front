@@ -4,7 +4,6 @@ import { LoggerServiceStub } from '../../core/services/logger/logger.service.stu
 import { Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
-import { FormPlayerApiErrorStatuses } from '../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { ScreenService } from '../../screen/screen.service';
@@ -12,6 +11,7 @@ import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { ScreenModalService } from './screen-modal.service';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerApiErrorStatuses } from 'epgu-constructor-types';
 
 
 const response = new FormPlayerServiceStub()._store;

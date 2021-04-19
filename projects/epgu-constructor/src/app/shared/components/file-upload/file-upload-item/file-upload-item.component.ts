@@ -14,13 +14,13 @@ import {
   tap,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
-  Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
   UploadedFile,
@@ -61,17 +61,22 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
-
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
-    this.updateAcceptTypes();
   }
 
   plurals = plurals;
 
   maxTotalSize: number;
   maxTotalAmount: number;
-  acceptTypes?: string;
+
+  maxAmount?: number = 0;
+
+  get acceptTypes(): string {
+    return this.store?.lastSelected
+      ? getAcceptTypes(this.store?.lastSelected.type)
+      : getAcceptTypes(this.data.fileType);
+  }
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;
@@ -97,7 +102,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     ), // Формируем FileItem
     concatMap(
       (file: FileItem) =>
-        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes), // Валидируем файл
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store), // Валидируем файл
     ),
     filter((file: FileItem) => this.limitFilter(file)), // Фильруем по лимитам
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
@@ -188,7 +193,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
-  uploadersCounterChanges$ = this.fileUploadService.changes.pipe(tap(() => this.maxLimitUpdate()));
+  uploadersCounterChanges$ = this.fileUploadService.changes.pipe(
+    tap(() => {
+      this.maxAmount = this.fileUploadService.getUploader(this.data.uploadId).maxAmount;
+    }),
+    tap(() => this.maxLimitUpdate()),
+  );
 
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
@@ -363,7 +373,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return of(fileItem).pipe(
       tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.preparation)),
       concatMap((file: FileItem) =>
-        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes),
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store),
       ),
       tap((file: FileItem) => this.store.update(file)),
       tap((file: FileItem) => (file.status !== FileItemStatus.error ? this.addUpload(file) : null)),
@@ -411,6 +421,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((file) =>
         status === FileItemStatus.uploaded
           ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
+              tap(() =>
+                this.prepareService.checkAndSetMaxCountByTypes(
+                  this.data,
+                  fileItem,
+                  this.store,
+                  false,
+                ),
+              ),
               tap(() => this.decrementLimits(fileItem)),
               tap(() => this.resetLimits()),
               map(() => undefined),
@@ -542,6 +560,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
       ),
       tap((file: FileItem) => this.store.add(file)),
+      tap((file: FileItem) =>
+        this.prepareService.checkAndSetMaxCountByTypes(this.data, file, this.store),
+      ),
       tap((file: FileItem) => this.incrementLimits(file)),
       tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
     );
@@ -572,11 +593,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   getError(action: ErrorActions): FileItemError {
-    return createError(action, this.data);
-  }
-
-  updateAcceptTypes(): void {
-    this.acceptTypes = getAcceptTypes(this.data.fileType);
+    return createError(action, this.data, this.store);
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {

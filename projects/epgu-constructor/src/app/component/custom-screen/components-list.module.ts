@@ -50,6 +50,7 @@ import { FileUploadFormComponent } from './components/file-upload-form/file-uplo
 import { ComponentListResolverModule } from './component-list-resolver/component-list-resolver.module';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { DictionaryComponent } from './components/dictionary/dictionary.component';
+import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { DictionaryComponent } from './components/dictionary/dictionary.componen
     AddressInputComponent,
     DropdownComponent,
     DictionaryComponent,
+    LookupInputComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -126,6 +128,7 @@ import { DictionaryComponent } from './components/dictionary/dictionary.componen
     AddressInputComponent,
     DropdownComponent,
     DictionaryComponent,
+    LookupInputComponent,
   ],
 })
 export class ComponentsListModule {}

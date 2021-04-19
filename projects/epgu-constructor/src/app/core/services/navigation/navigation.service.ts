@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
 import { SmuEventsService } from 'epgu-lib';
 import { Observable, Subject } from 'rxjs';
+
+import { Inject, Injectable } from '@angular/core';
+
 import { Navigation } from '../../../form-player/form-player.types';
 import {
   MobilViewEvents,
@@ -10,7 +12,8 @@ import {
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { LocationService } from '../location/location.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { WINDOW } from '../../providers/window.provider';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 /**
  * Этот сервис должен быть запровайден только на уровне компанент, не стоит его провайдить через модули.
@@ -41,6 +44,7 @@ export class NavigationService {
     private deviceDetector: DeviceDetectorService,
     private configService: ConfigService,
     private locationService: LocationService,
+    @Inject(WINDOW) private window: Window
   ) {
     this.isWebView = this.deviceDetector.isWebView;
   }
@@ -87,6 +91,10 @@ export class NavigationService {
 
   redirectTo(url: string): void {
     this.locationService.href(url);
+  }
+
+  redirectExternal(url: string): void {
+    this.window.open(url, '_blank');
   }
 
   private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT): void {

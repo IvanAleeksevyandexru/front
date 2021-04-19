@@ -8,10 +8,7 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
-  DictionaryConditions,
-  DictionaryOptions,
   DictionaryResponse,
-  DictionaryUnionKind,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
@@ -32,6 +29,7 @@ import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types/dist/base/dictionary';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 

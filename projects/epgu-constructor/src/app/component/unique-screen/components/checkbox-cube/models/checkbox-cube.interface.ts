@@ -1,4 +1,4 @@
-import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export interface CheckboxCubeComponentAttrsDto extends ComponentAttrsDto {
   cubeElements: {[id: string]: CubeElement};
