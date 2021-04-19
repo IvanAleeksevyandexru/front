@@ -13,13 +13,6 @@ import {
   NavigationParams,
 } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import {
-  ActionApiResponse,
-  ActionDTO,
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore, ScreenTypes } from '../../../screen/screen.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
@@ -33,6 +26,8 @@ import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionApiResponse, ActionRequestPayload } from 'epgu-constructor-types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -261,8 +256,8 @@ export class ActionService {
     });
   }
 
-  private getActionDTO(action: ComponentActionDto): ActionDTO {
-    const bodyResult: ActionDTO = {
+  private getActionDTO(action: ComponentActionDto): ActionRequestPayload {
+    const bodyResult: ActionRequestPayload = {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };

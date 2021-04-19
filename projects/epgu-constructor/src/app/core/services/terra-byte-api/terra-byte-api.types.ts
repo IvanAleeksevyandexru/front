@@ -1,4 +1,5 @@
 import { TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 
 export interface Chunk {
   chunk: number;
@@ -48,13 +49,6 @@ export interface FileUploadAttributes {
   maxSize?: number;
   maxFileCount?: number;
   minFileCount?: number;
-}
-
-export interface Clarifications {
-  [key: string]: {
-    text?: string;
-    title?: string;
-  };
 }
 
 export interface MaxCountByType {

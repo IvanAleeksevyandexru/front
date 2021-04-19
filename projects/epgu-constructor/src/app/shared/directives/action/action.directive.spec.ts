@@ -17,13 +17,6 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
-import {
-  ActionApiResponse,
-  ActionType,
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -36,6 +29,9 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionApiResponse } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-action-test',

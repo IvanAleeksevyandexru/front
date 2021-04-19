@@ -11,10 +11,11 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { TextTransform } from '../../../../../../shared/types/textTransform';
 import {
   EmployeeHistoryDataSource,
   EmployeeHistoryFormData,
@@ -22,7 +23,6 @@ import {
 } from '../../employee-history.types';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
-import { Gender } from '../../../../../../shared/types/gender';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -16,7 +17,6 @@ import {
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { ComponentActionDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';

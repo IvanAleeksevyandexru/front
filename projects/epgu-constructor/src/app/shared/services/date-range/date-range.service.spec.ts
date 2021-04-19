@@ -6,12 +6,12 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { configureTestSuite } from 'ng-bullet';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;

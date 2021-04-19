@@ -4,10 +4,10 @@ import { ConfigServiceStub } from '../../../core/services/config/config.service.
 import { InfoScreenBodyComponent } from './info-screen-body.component';
 import { MockComponent } from 'ng-mocks';
 import { OutputHtmlComponent } from '../../../shared/components/output-html/output-html.component';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 const mockDataWithAttrs: ComponentDto = {
   id: 'id1',

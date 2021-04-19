@@ -6,11 +6,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentAnswerDto } from 'epgu-constructor-types/dist/base/qustion-component-answer';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ComponentActionDto,
-  ComponentAnswerDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 
 @Component({

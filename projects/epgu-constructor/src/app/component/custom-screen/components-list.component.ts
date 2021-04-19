@@ -13,12 +13,12 @@ import {
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
+import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../core/services/config/config.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../core/services/utils/utils.service';
-import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../screen/screen.service';
 import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import {

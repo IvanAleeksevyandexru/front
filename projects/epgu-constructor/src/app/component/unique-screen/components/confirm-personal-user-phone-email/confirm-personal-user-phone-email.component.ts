@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import {
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';

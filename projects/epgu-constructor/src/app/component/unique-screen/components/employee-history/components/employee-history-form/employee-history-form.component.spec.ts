@@ -19,8 +19,6 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
 import { MemoModule } from '../../../../../../shared/pipes/memo/memo.module';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { Gender } from '../../../../../../shared/types/gender';
-import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -37,6 +35,8 @@ import { DateRangeService } from '../../../../../../shared/services/date-range/d
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;

@@ -5,10 +5,6 @@ import { By } from '@angular/platform-browser';
 import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
 
-import {
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { DefaultUniqueScreenWrapperComponent } from './default-unique-screen-wrapper.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -28,6 +24,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',

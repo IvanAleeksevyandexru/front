@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { Passport } from '../add-passport.models';
-import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 
 @Component({

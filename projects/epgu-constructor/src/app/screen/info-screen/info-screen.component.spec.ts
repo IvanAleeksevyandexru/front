@@ -10,11 +10,6 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import {
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
@@ -31,6 +26,8 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 const componentSample: ComponentDto = {
   attrs: {},

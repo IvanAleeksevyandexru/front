@@ -1,10 +1,11 @@
 import { ShowLoaderButtonPipe } from './show-loader-button.pipe';
-import { DTOActionAction, ScreenActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
+import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 describe('ShowLoaderButtonPipe', () => {
   let pipe: ShowLoaderButtonPipe;
-  let button: ScreenActionDto;
-  let clickedButton: ScreenActionDto;
+  let button: ScreenButton;
+  let clickedButton: ScreenButton;
   let isLoading: boolean;
 
   beforeEach(() => {
