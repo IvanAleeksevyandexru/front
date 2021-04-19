@@ -10,7 +10,7 @@
 
   <!-- TO DO: получать phoneNumber из одного источника -->
   <ng-container  *ngIf="(screenService.component$ | async)?.attrs?.phoneNumber as phoneNumber">
-    <span class="confirm-phone__number">{{phoneNumber}}</span>
+    <span class="confirm-phone__number">{{phoneNumber | formatPhone }}</span>
   </ng-container>
 
   <div class="confirm-phone__warning" *ngIf="(screenService.component$ | async)?.attrs?.validateMessage">
