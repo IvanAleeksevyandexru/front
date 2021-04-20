@@ -36,6 +36,7 @@ describe('AutocompleteService', () => {
   let screenService: ScreenService;
   let eventBusService: EventBusService;
   let modalService: ModalService;
+  let deviceDetectorService: DeviceDetectorService;
   let autocompleteApiService: AutocompleteApiService;
   let mockData: ScenarioDto = {
     applicantAnswers: {},
@@ -187,7 +188,10 @@ describe('AutocompleteService', () => {
     });
 
     it('should call loadValuesFromCurrentAnswer() on "suggestionSelectedEvent"', () => {
-      const serviceLoadValuesFromCurrentAnswerSpy = spyOn(service, 'loadValuesFromCurrentAnswer');
+      const serviceLoadValuesFromCurrentAnswerSpy = spyOn(
+        prepareService,
+        'loadValuesFromCurrentAnswer',
+      );
       eventBusService.on('suggestionSelectedEvent').subscribe(() => {
         expect(serviceLoadValuesFromCurrentAnswerSpy).toBeCalled();
       });
