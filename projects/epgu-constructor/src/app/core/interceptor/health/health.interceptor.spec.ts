@@ -92,6 +92,32 @@ describe('HealthInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
+  describe('getNextStep()', () => {
+    it('should start and end measure with renderForm event', fakeAsync(() => {
+      spyOn(healthService, 'measureStart').and.callThrough();
+      spyOn(healthService, 'measureEnd').and.callThrough();
+      formPlayerApi.sendAction(api, dto).subscribe(response => {
+        expect(response).toBeTruthy();
+      });
+      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
+      const dataToFlush = {
+        scenarioDto: {
+          ...dto.scenarioDto,
+          orderId,
+        }
+      };
+      requestToSucceed.flush(dataToFlush);
+      const params = {
+        Id: dto.scenarioDto.display.id,
+        Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
+        OrderId: orderId,
+      };
+      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
+      tick();
+    }));
+  });
+
   describe('error handler', () => {
     it('should set dictionaryUrl param', fakeAsync(() => {
       spyOn(healthService, 'measureStart').and.callThrough();
@@ -117,62 +143,12 @@ describe('HealthInterceptor', () => {
       const params = {
         ServerError: 506,
         Id: dictionaryName,
+        Name: 'Privetstvie',
         DictionaryUrl: errorBody.value.url,
-        ErrorMessage: errorBody.value.message,
+        OrderId: orderId,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 1, params);
-      tick();
-    }));
-
-    it('should set succeed status', fakeAsync(() => {
-      spyOn(healthService, 'measureStart').and.callThrough();
-      spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(() => fail('should have failed with the 404 error'),
-        (error: HttpErrorResponse) => {
-          expect(error.status).toEqual(404);
-        }
-      );
-      const requestToError = httpMock.expectOne(`${config.apiUrl}/${api}`);
-      const body = new HttpErrorResponse({
-        status: 404,
-        statusText: 'Not Found',
-      });
-      requestToError.flush('Not found', body);
-      const params = {
-        DictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary/STRANI_IST',
-        ErrorMessage: 'Server is not available',
-        Id: 'STRANI_IST',
-        ServerError: 404,
-      };
-      expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
-      expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
-      tick();
-    }));
-  });
-
-  describe('getNextStep()', () => {
-    it('should start and end measure with renderForm event', fakeAsync(() => {
-      spyOn(healthService, 'measureStart').and.callThrough();
-      spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
-      const dataToFlush = {
-        scenarioDto: {
-          ...dto.scenarioDto,
-          orderId,
-        }
-      };
-      requestToSucceed.flush(dataToFlush);
-      const params = {
-        Id: dto.scenarioDto.display.id,
-        Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        OrderId: orderId,
-      };
-      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
       tick();
     }));
   });
