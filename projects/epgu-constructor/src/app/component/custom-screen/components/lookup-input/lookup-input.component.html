@@ -7,6 +7,7 @@
     *ngIf="dictionariesList$ | async as dictionaries"
     epgu-constructor-validation-type
     [component]="control.value"
+    [id]="control.value.id"
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [validationShowOn]="validationShowOn"
     [formControl]="$any(control.get('value'))"
