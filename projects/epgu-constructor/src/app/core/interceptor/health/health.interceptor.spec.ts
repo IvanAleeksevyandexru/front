@@ -92,67 +92,6 @@ describe('HealthInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  describe('getNextStep()', () => {
-    it('should start and end measure with renderForm event', fakeAsync(() => {
-      spyOn(healthService, 'measureStart').and.callThrough();
-      spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
-      const dataToFlush = {
-        scenarioDto: {
-          ...dto.scenarioDto,
-          orderId,
-        }
-      };
-      requestToSucceed.flush(dataToFlush);
-      const params = {
-        Id: dto.scenarioDto.display.id,
-        Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        OrderId: orderId,
-      };
-      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
-      tick();
-    }));
-  });
-
-  describe('client dictionary with error', () => {
-    it('should set error and errorMessage params for the first type of dictionaries', fakeAsync(() => {
-      spyOn(healthService, 'measureStart').and.callThrough();
-      spyOn(healthService, 'measureEnd').and.callThrough();
-      dictionaryService.getDictionary('pgu_mvd_org').subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-      const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/pgu_mvd_org`);
-      const dataToFlush = {
-        error: {
-          code: 101,
-          message: 'Server is not available',
-        },
-        fieldErrors: [],
-        total: 2,
-      };
-      requestToDictionary.flush(dataToFlush);
-      const params = {
-        Id: 'w1',
-        Name: 'Privetstvie',
-        Dict: 'pgu_mvd_org',
-        Empty: false,
-        RegDictName: 'GOSBAR',
-        ServerError: 101,
-        OrderId: '12345',
-        ErrorMessage: 'Server is not available',
-        MnemonicScreen: 'DocInput',
-        TypeEvent: 'getNextStep',
-      };
-      expect(healthService.measureStart).toHaveBeenCalledWith('dictionaryPgumvdorg');
-      expect(healthService.measureEnd).toHaveBeenCalledWith('dictionaryPgumvdorg', 1, params);
-      tick();
-    }));
-  });
-
   describe('error handler', () => {
     it('should set dictionaryUrl param', fakeAsync(() => {
       spyOn(healthService, 'measureStart').and.callThrough();
@@ -176,19 +115,13 @@ describe('HealthInterceptor', () => {
       };
       requestToError.flush(errorBody, body);
       const params = {
-        Name: 'Privetstvie',
-        OrderId: '12345',
         ServerError: 506,
         Id: dictionaryName,
         DictionaryUrl: errorBody.value.url,
         ErrorMessage: errorBody.value.message,
-        MnemonicScreen: 'DocInput',
-        TypeEvent: 'getNextStep',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 1, params);
-      expect(healthService.measureStart).toHaveBeenCalledWith('errorUpdateDraft');
-      expect(healthService.measureEnd).toHaveBeenCalledWith('errorUpdateDraft', 1, params);
       tick();
     }));
 
@@ -210,16 +143,36 @@ describe('HealthInterceptor', () => {
         DictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary/STRANI_IST',
         ErrorMessage: 'Server is not available',
         Id: 'STRANI_IST',
-        MnemonicScreen: 'DocInput',
-        Name: 'Privetstvie',
-        OrderId: '12345',
-        ServerError: 506,
-        TypeEvent: 'getNextStep',
+        ServerError: 404,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
-      expect(healthService.measureStart).toHaveBeenCalledWith('errorUpdateDraft');
-      expect(healthService.measureEnd).toHaveBeenCalledWith('errorUpdateDraft', 0, params);
+      tick();
+    }));
+  });
+
+  describe('getNextStep()', () => {
+    it('should start and end measure with renderForm event', fakeAsync(() => {
+      spyOn(healthService, 'measureStart').and.callThrough();
+      spyOn(healthService, 'measureEnd').and.callThrough();
+      formPlayerApi.sendAction(api, dto).subscribe(response => {
+        expect(response).toBeTruthy();
+      });
+      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
+      const dataToFlush = {
+        scenarioDto: {
+          ...dto.scenarioDto,
+          orderId,
+        }
+      };
+      requestToSucceed.flush(dataToFlush);
+      const params = {
+        Id: dto.scenarioDto.display.id,
+        Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
+        OrderId: orderId,
+      };
+      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
       tick();
     }));
   });

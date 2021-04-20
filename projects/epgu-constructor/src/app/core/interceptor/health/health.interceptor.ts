@@ -179,7 +179,10 @@ export class HealthInterceptor implements HttpInterceptor {
 
             this.endMeasureHealth(this.serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields(this.commonParams));
           } else {
-            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(this.commonParams));
+            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
+              ...this.commonParams,
+              ServerError: 404,
+            }));
           }
 
           return throwError(exception);
