@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ValidationShowOn } from 'epgu-lib';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ConstantsService, ValidationShowOn } from 'epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
@@ -16,7 +16,7 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class LookupInputComponent extends AbstractComponentListItemComponent {
+export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return suggestions[this.control.value?.id];
@@ -26,6 +26,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent {
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
     map((dictionaries) => dictionaries[UtilsService.getDictKeyByComp(this.control.value)]?.list),
   );
+  queryTimeout: number;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
@@ -35,5 +36,13 @@ export class LookupInputComponent extends AbstractComponentListItemComponent {
     public injector: Injector,
   ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    // eslint-disable-next-line no-restricted-globals
+    this.queryTimeout = !isNaN(Number(this.control.value.attrs.queryTimeout))
+      ? this.control.value.attrs.queryTimeout
+      : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
   }
 }
