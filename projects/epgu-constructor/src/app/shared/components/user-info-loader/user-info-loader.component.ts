@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
@@ -15,7 +15,7 @@ import { LoggerService } from '../../../core/services/logger/logger.service';
   styleUrls: ['./user-info-loader.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserInfoLoaderComponent implements OnInit {
+export class UserInfoLoaderComponent {
   @Input() isDisplay = true;
 
   components$: Observable<[ComponentDto, ComponentValue][]> = of([1, 1]).pipe(
@@ -45,6 +45,4 @@ export class UserInfoLoaderComponent implements OnInit {
   );
   componentTypes = UserInfoComponentTypes;
   constructor(public screenService: ScreenService, private loggerService: LoggerService) {}
-
-  ngOnInit(): void {}
 }

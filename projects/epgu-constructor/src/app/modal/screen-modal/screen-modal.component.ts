@@ -104,7 +104,7 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
 
   public nextStep(navigation?: Navigation): void {
     if (navigation?.options?.isInternalScenarioFinish) {
-      this.closeModal();
+      this.closeModalOnNext();
       return;
     }
 
@@ -123,6 +123,15 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   public closeModal(): void {
     if (this.showModal) {
       this.switchNavigationToFormPlayer();
+      this.screenModalService.resetStore();
+    }
+  }
+
+  public closeModalOnNext(): void {
+    if (this.showModal) {
+      this.navService.next({
+        options: { store: this.screenModalService.store, isInternalScenarioFinish: true },
+      });
       this.screenModalService.resetStore();
     }
   }
