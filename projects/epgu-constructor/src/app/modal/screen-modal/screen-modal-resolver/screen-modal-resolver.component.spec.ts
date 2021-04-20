@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { of } from 'rxjs';
 import { ScreenModalResolverComponent } from './screen-modal-resolver.component';
 import { ScreenService } from '../../../screen/screen.service';
@@ -28,7 +28,10 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../modal.service';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+
 
 jest.useFakeTimers();
 
@@ -57,6 +60,7 @@ describe('ScreenModalResolverComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         EventBusService,
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
       ],
     })
       .overrideComponent(ScreenModalResolverComponent, {

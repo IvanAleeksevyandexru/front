@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { debounce, filter, takeUntil, tap } from 'rxjs/operators';
 import { timer } from 'rxjs';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenModalService } from '../../screen-modal.service';
-import { ComponentDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 
