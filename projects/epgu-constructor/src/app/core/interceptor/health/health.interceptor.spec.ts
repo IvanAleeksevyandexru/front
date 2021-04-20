@@ -42,6 +42,13 @@ describe('HealthInterceptor', () => {
       display: {
         id: 'w1',
         name: 'Приветствие',
+        components: [
+          {
+            id: 'zp1',
+            type: 'DocInput',
+            label: 'Загранпаспорт',
+          }
+        ]
       }
     },
   } as ActionRequestPayload;
@@ -115,10 +122,10 @@ describe('HealthInterceptor', () => {
     it('should set error and errorMessage params for the first type of dictionaries', fakeAsync(() => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
-      dictionaryService.getDictionary(dictionaryName).subscribe(response => {
+      dictionaryService.getDictionary('pgu_mvd_org').subscribe(response => {
         expect(response).toBeTruthy();
       });
-      const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
+      const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/pgu_mvd_org`);
       const dataToFlush = {
         error: {
           code: 101,
@@ -129,38 +136,19 @@ describe('HealthInterceptor', () => {
       };
       requestToDictionary.flush(dataToFlush);
       const params = {
-        Dict: 'STRANI_IST',
+        Id: 'w1',
+        Name: 'Privetstvie',
+        Dict: 'pgu_mvd_org',
         Empty: false,
         RegDictName: 'GOSBAR',
+        ServerError: 101,
+        OrderId: '12345',
+        ErrorMessage: 'Server is not available',
+        MnemonicScreen: 'DocInput',
+        TypeEvent: 'getNextStep',
       };
-      expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
-      tick();
-    }));
-
-    it('should set error and errorMessage params for the second type of dictionaries', fakeAsync(() => {
-      spyOn(healthService, 'measureStart').and.callThrough();
-      spyOn(healthService, 'measureEnd').and.callThrough();
-      dictionaryService.getDictionary(dictionaryName).subscribe(response => {
-        expect(response).toBeTruthy();
-      });
-      const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
-      const dataToFlush = {
-        error: {
-          errorCode: 101,
-          errorMessage: 'Server is not available',
-        },
-        fieldErrors: [],
-        total: 2,
-      };
-      requestToDictionary.flush(dataToFlush);
-      const params = {
-        Dict: 'STRANI_IST',
-        Empty: false,
-        RegDictName: 'GOSBAR',
-      };
-      expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('dictionaryPgumvdorg');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('dictionaryPgumvdorg', 1, params);
       tick();
     }));
   });
@@ -188,13 +176,19 @@ describe('HealthInterceptor', () => {
       };
       requestToError.flush(errorBody, body);
       const params = {
+        Name: 'Privetstvie',
+        OrderId: '12345',
         ServerError: 506,
         Id: dictionaryName,
         DictionaryUrl: errorBody.value.url,
         ErrorMessage: errorBody.value.message,
+        MnemonicScreen: 'DocInput',
+        TypeEvent: 'getNextStep',
       };
-      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 1, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 1, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('errorUpdateDraft');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('errorUpdateDraft', 1, params);
       tick();
     }));
 
@@ -212,8 +206,20 @@ describe('HealthInterceptor', () => {
         statusText: 'Not Found',
       });
       requestToError.flush('Not found', body);
-      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, {});
+      const params = {
+        DictionaryUrl: 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary/STRANI_IST',
+        ErrorMessage: 'Server is not available',
+        Id: 'STRANI_IST',
+        MnemonicScreen: 'DocInput',
+        Name: 'Privetstvie',
+        OrderId: '12345',
+        ServerError: 506,
+        TypeEvent: 'getNextStep',
+      };
+      expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('errorUpdateDraft');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('errorUpdateDraft', 0, params);
       tick();
     }));
   });
