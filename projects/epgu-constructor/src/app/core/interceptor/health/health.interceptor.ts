@@ -15,10 +15,14 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { DictionaryFilters, DictionarySubFilter } from 'epgu-constructor-types/dist/base/dictionary';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
-export const EXCEPTIONS = ['lib-assets'];
+export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
 export const DICTIONARY_CODES = ['code', 'region', 'okato', 'oktmo', 'okato_in'];
 export const ERROR_UPDATE_DRAFT_SERVICE_NAME = 'errorUpdateDraft';
+export const PREV_STEP_SERVICE_NAME = 'scenarioGetPrevStep';
+
+export const NEXT_EVENT_TYPE = 'getNextStep';
+export const PREV_EVENT_TYPE = 'getPrevStep';
 
 export interface DictionaryPayload {
   Region: string;
@@ -53,6 +57,8 @@ export interface CommonPayload {
   ServerError?: string | number | undefined;
   ErrorMessage?: string | number | undefined;
   DictionaryUrl?: string | undefined;
+  TypeEvent?: string;
+  MnemonicScreen?: string;
 }
 
 export interface UnspecifiedDTO {
@@ -122,6 +128,14 @@ export class HealthInterceptor implements HttpInterceptor {
               OrderId: orderId,
             };
 
+            if (this.serviceName === RENDER_FORM_SERVICE_NAME || this.serviceName === PREV_STEP_SERVICE_NAME) {
+              this.commonParams = {
+                ...this.commonParams,
+                TypeEvent: this.serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
+                MnemonicScreen: scenarioDto.display.components[0]?.type,
+              };
+            }
+
             this.measureBackendDictionaries(health, this.commonParams.OrderId);
             this.measureStaticRequests(this.commonParams);
           }
@@ -136,6 +150,15 @@ export class HealthInterceptor implements HttpInterceptor {
             };
 
             this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError);
+          }
+
+          if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
+            const { Id, Name, OrderId } = this.commonParams;
+            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
+              Id,
+              Name,
+              OrderId,
+            }));
           }
         }
       }),
@@ -210,7 +233,7 @@ export class HealthInterceptor implements HttpInterceptor {
       this.serviceName,
       dictionaryError ? RequestStatus.Failed : RequestStatus.Succeed,
       this.utils.filterIncorrectObjectFields(
-        { ...commonParams, ...dictionaryParams },
+        { ...this.commonParams, ...dictionaryParams },
       ),
     );
   }
