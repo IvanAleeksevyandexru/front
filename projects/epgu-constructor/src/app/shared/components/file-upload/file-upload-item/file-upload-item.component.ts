@@ -73,6 +73,13 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   maxAmount?: number = 0;
 
   get acceptTypes(): string {
+    if (this.data?.maxCountByTypes && !this.store?.lastSelected) {
+      return getAcceptTypes(
+        this.data?.maxCountByTypes
+          .reduce<string[]>((acc, countType) => acc.concat(countType.type), [])
+          .filter((item, index, arr) => arr.indexOf(item) === index),
+      );
+    }
     return this.store?.lastSelected
       ? getAcceptTypes(this.store?.lastSelected.type)
       : getAcceptTypes(this.data.fileType);
