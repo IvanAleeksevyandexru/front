@@ -31,6 +31,7 @@ import {
   intervalToDuration as _intervalToDuration,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
+import { replaceArguments } from '../../../shared/constants/utils';
 import {
   DATE_ISO_STRING_FORMAT,
   DurationTimeTypes,
@@ -50,7 +51,19 @@ interface Duration {
 @Injectable()
 export class DatesToolsService {
 
-  constructor(private http?: HttpClient) {}
+  constructor(private http?: HttpClient) { }
+
+  /**
+   * Возвращает true, если первая дата меньше второй,
+   * иначе false
+   * @param {Date | Number} dateLeft первая проверяемая дата
+   * @param {Date | Number} dateRight вторая проверяемая дата
+   */
+  // Существуют кейзы, когда с реактивной формы приходят пустые строки в качестве первого аргумента, см. [EPGUCORE-53879]
+  @replaceArguments(null, (arg) => arg === '')
+  public isBefore(dateLeft: Date | number, dateRight: Date | number): boolean {
+    return _isBefore(dateLeft, dateRight);
+  }
 
   /**
    * Возвращает true, если переданная дата является сегодняшней датой,
@@ -111,16 +124,6 @@ export class DatesToolsService {
    */
   public isSameDate(dateLeft: Date | number, dateRight: Date | number): boolean {
     return _isSameDay(dateLeft, dateRight);
-  }
-
-  /**
-   * Возвращает true, если первая дата меньше второй,
-   * иначе false
-   * @param {Date | Number} dateLeft первая проверяемая дата
-   * @param {Date | Number} dateRight вторая проверяемая дата
-   */
-  public isBefore(dateLeft: Date | number, dateRight: Date | number): boolean {
-    return _isBefore(dateLeft, dateRight);
   }
 
   /**

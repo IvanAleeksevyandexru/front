@@ -54,7 +54,7 @@
           <div *ngFor="let slot of timeSlots" class="time-slot-item"
                [ngClass]="{'selected': isSlotSelected(slot)}"
                (click)="chooseTimeSlot(slot)">
-            {{slot.slotTime | date:'shortTime':slot.timezone}}
+            {{slot.slotTime | date:'shortTime'}}
           </div>
         </div>
 
