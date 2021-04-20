@@ -177,10 +177,18 @@ export class HealthInterceptor implements HttpInterceptor {
               this.commonParams.ErrorMessage = this.utils.cyrillicToLatin(exception.message);
             }
 
-            this.endMeasureHealth(this.serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields(this.commonParams));
+            this.endMeasureHealth(this.serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields({
+              Id: this.commonParams.Id,
+              Name: this.commonParams.Name,
+              OrderId: this.commonParams.OrderId,
+              ServerError: this.commonParams.ServerError,
+              DictionaryUrl: this.commonParams.DictionaryUrl
+            }));
           } else {
             this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-              ...this.commonParams,
+              Id: this.commonParams.Id,
+              Name: this.commonParams.Name,
+              OrderId: this.commonParams.OrderId,
               ServerError: 404,
             }));
           }
