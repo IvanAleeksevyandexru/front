@@ -20,7 +20,6 @@ import {
   RequestStatus
 } from './health.interceptor';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { configureTestSuite } from 'ng-bullet';
 import { ActionRequestPayload } from 'epgu-constructor-types';
 
 describe('HealthInterceptor', () => {
@@ -55,9 +54,9 @@ describe('HealthInterceptor', () => {
   const getNextStepAction = 'renderForm';
   const dictionaryName = 'STRANI_IST';
   const dictionaryAction = 'dictionarySTRANIIST';
-
-  configureTestSuite( () => {
-    TestBed.configureTestingModule({
+  
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
@@ -76,9 +75,7 @@ describe('HealthInterceptor', () => {
       ],
     });
   });
-
-  afterEach(waitForAsync(() => httpMock.verify()));
-
+  
   beforeEach(() => {
     interceptor = TestBed.inject(HealthInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
@@ -92,12 +89,15 @@ describe('HealthInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
+  afterEach(waitForAsync(() => httpMock.verify()));
+
   describe('getNextStep()', () => {
-    it('should start and end measure with renderForm event', fakeAsync(() => {
+    it('should start and end measure with renderForm event', fakeAsync((done) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
       formPlayerApi.sendAction(api, dto).subscribe(response => {
         expect(response).toBeTruthy();
+        done();
       });
       const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
       const dataToFlush = {
@@ -112,19 +112,80 @@ describe('HealthInterceptor', () => {
         Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         OrderId: orderId,
       };
-      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('errorUpdateDraft');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('errorUpdateDraft', 0, params);
       tick();
     }));
   });
 
+  describe('client dictionary with error', () => {
+    it('should set error and errorMessage params for the first type of dictionaries', fakeAsync((done) => {
+      spyOn(healthService, 'measureStart').and.callThrough();
+      spyOn(healthService, 'measureEnd').and.callThrough();
+      dictionaryService.getDictionary(dictionaryName).subscribe(response => {
+        expect(response).toBeTruthy();
+        done();
+      });
+      const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
+      const dataToFlush = {
+        error: {
+          code: 101,
+          message: 'Server is not available',
+        },
+        fieldErrors: [],
+        total: 0,
+      };
+      requestToDictionary.flush(dataToFlush);
+      const params = {
+        ServerError: 101,
+        ErrorMessage: 'Server is not available',
+        Dict: 'STRANI_IST',
+        Empty: true,
+        RegDictName: 'GOSBAR',
+      };
+      expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
+    }));
+
+    it('should set error and errorMessage params for the second type of dictionaries', fakeAsync((done) => {
+      spyOn(healthService, 'measureStart').and.callThrough();
+      spyOn(healthService, 'measureEnd').and.callThrough();
+      dictionaryService.getDictionary(dictionaryName).subscribe(response => {
+        expect(response).toBeTruthy();
+        done();
+      });
+      const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
+      const dataToFlush = {
+        error: {
+          errorCode: 101,
+          errorMessage: 'Server is not available',
+        },
+        fieldErrors: [],
+        total: 0,
+      };
+      requestToDictionary.flush(dataToFlush);
+      const params = {
+        Dict: 'STRANI_IST',
+        Empty: true,
+        RegDictName: 'GOSBAR',
+        ServerError: 101,
+        ErrorMessage: 'Server is not available',
+      };
+      expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
+    }));
+  });
+
   describe('error handler', () => {
-    it('should set dictionaryUrl param', fakeAsync(() => {
+    it('should set dictionaryUrl param', fakeAsync((done) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
       formPlayerApi.sendAction(api, dto).subscribe(() => fail('should have failed with the 506 error'),
         (error: HttpErrorResponse) => {
           expect(error.status).toEqual(506);
+          done();
         }
       );
       const requestToError = httpMock.expectOne(`${config.apiUrl}/${api}`);
@@ -143,12 +204,36 @@ describe('HealthInterceptor', () => {
       const params = {
         ServerError: 506,
         Id: dictionaryName,
-        Name: 'Privetstvie',
         DictionaryUrl: errorBody.value.url,
-        OrderId: orderId,
+        ErrorMessage: errorBody.value.message,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 1, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith('errorUpdateDraft');
+      expect(healthService.measureEnd).toHaveBeenCalledWith('errorUpdateDraft', 1, params);
+      tick();
+    }));
+
+    it('should set succeed status', fakeAsync((done) => {
+      spyOn(healthService, 'measureStart').and.callThrough();
+      spyOn(healthService, 'measureEnd').and.callThrough();
+      formPlayerApi.sendAction(api, dto).subscribe(() => fail('should have failed with the 404 error'),
+        (error: HttpErrorResponse) => {
+          expect(error.status).toEqual(404);
+          done();
+        }
+      );
+      const requestToError = httpMock.expectOne(`${config.apiUrl}/${api}`);
+      const body = new HttpErrorResponse({
+        status: 404,
+        statusText: 'Not Found',
+      });
+      requestToError.flush('Not found', body);
+      const params = {
+        ServerError: 404,
+      };
+      expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
       tick();
     }));
   });

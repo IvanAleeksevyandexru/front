@@ -182,7 +182,8 @@ export class HealthInterceptor implements HttpInterceptor {
               Name: this.commonParams.Name,
               OrderId: this.commonParams.OrderId,
               ServerError: this.commonParams.ServerError,
-              DictionaryUrl: this.commonParams.DictionaryUrl
+              DictionaryUrl: this.commonParams.DictionaryUrl,
+              ErrorMessage: this.commonParams.ErrorMessage,
             }));
           } else {
             this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
