@@ -14,13 +14,13 @@ import { ConfigService } from '../core/services/config/config.service';
 import { LoggerService } from '../core/services/logger/logger.service';
 import { DateRangeService } from '../shared/services/date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: 653920,
@@ -86,7 +86,7 @@ describe('ScreenService', () => {
   let currentAnswersService: CurrentAnswersService;
   let deviceDetectorService: DeviceDetectorService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -108,6 +108,9 @@ describe('ScreenService', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
 
     cachedAnswersService = TestBed.inject(CachedAnswersService);

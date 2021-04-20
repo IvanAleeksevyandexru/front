@@ -31,7 +31,7 @@ import {
 } from '../../components-list.types';
 import { Observable } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -117,7 +117,7 @@ describe('ComponentsListFormService', () => {
     }
   }
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
       imports: [ReactiveFormsModule, HttpClientTestingModule],
@@ -140,6 +140,9 @@ describe('ComponentsListFormService', () => {
         DictionaryToolsService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(ComponentsListFormService);
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     addressHelperService = TestBed.inject(AddressHelperService);

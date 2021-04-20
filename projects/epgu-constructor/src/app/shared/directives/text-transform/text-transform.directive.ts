@@ -1,5 +1,5 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { TextTransform } from '../../types/textTransform';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 @Directive({
   selector: '[epgu-constructor-text-transform]'

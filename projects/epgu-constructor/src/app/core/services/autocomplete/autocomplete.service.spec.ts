@@ -1,14 +1,12 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
-import { Gender } from '../../../shared/types/gender';
 import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
@@ -25,6 +23,10 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
+import { configureTestSuite } from 'ng-bullet';
+import { getSuggestionGroupId } from './autocomplete.const';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -124,7 +126,7 @@ describe('AutocompleteService', () => {
   ];
   let deviceDetectorService: DeviceDetectorService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         HttpClient,
@@ -149,6 +151,9 @@ describe('AutocompleteService', () => {
         RefRelationService,
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(AutocompleteService);
     screenService = TestBed.inject(ScreenService);
     eventBusService = TestBed.inject(EventBusService);
@@ -157,10 +162,6 @@ describe('AutocompleteService', () => {
     datesToolsService = TestBed.inject(DatesToolsService);
     autocompleteApiService = TestBed.inject(AutocompleteApiService);
     screenService.display = mockData.display;
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   describe('init()', () => {
@@ -407,12 +408,12 @@ describe('AutocompleteService', () => {
 
   describe('getSuggestionGroupId()', () => {
     it('should return suggestionGroupId, if any', () => {
-      expect(service.getSuggestionGroupId(mockData.display)).toEqual('groupId');
+      expect(getSuggestionGroupId(mockData.display)).toEqual('groupId');
     });
     it('should return undefined, if suggestionGroupId not presented', () => {
       const display = _cloneDeep(mockData.display);
       delete display.suggestion.groupId;
-      expect(service.getSuggestionGroupId(display)).toBeUndefined();
+      expect(getSuggestionGroupId(display)).toBeUndefined();
     });
   });
 
@@ -431,4 +432,3 @@ describe('AutocompleteService', () => {
     });
   });
 });
-

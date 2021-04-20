@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -16,6 +16,7 @@ import { AddPassportComponent } from '../component/add-passport.component';
 import { AddPassportContainerComponent } from './add-passport-component-container.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('AddPassportContainerComponent', () => {
   let component: AddPassportContainerComponent;
@@ -30,7 +31,7 @@ describe('AddPassportContainerComponent', () => {
     visited: false,
   };
 
-  beforeEach(fakeAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         AddPassportContainerComponent,
@@ -47,7 +48,7 @@ describe('AddPassportContainerComponent', () => {
         SuggestHandlerService,
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddPassportContainerComponent);

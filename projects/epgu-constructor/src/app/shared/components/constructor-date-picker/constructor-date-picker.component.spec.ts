@@ -10,6 +10,7 @@ import { DebugElement } from '@angular/core';
 
 import { ConstructorDatePickerComponent } from './constructor-date-picker.component';
 import { BaseModule } from '../../base.module';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConstructorDatePickerComponent', () => {
   let component: ConstructorDatePickerComponent;
@@ -17,8 +18,8 @@ describe('ConstructorDatePickerComponent', () => {
   let debugEl: DebugElement;
   const selector = 'lib-date-picker';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorDatePickerComponent],
       imports: [
         MockModule(BaseModule),
@@ -45,10 +46,6 @@ describe('ConstructorDatePickerComponent', () => {
     component.name = 'name';
     fixture.detectChanges();
     debugEl = fixture.debugElement.query(By.css(selector));
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should be trigger dateSelected', () => {

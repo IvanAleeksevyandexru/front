@@ -24,6 +24,7 @@ import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
@@ -33,8 +34,8 @@ describe('InvitationErrorComponent', () => {
   const mockData = { label: '', attrs: { url: '' }, id: '', type: '' } as ComponentBase;
   const mockAnswers = { d1: { visited: true, value: '010-732-732 01' }};
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [
         InvitationErrorComponent,
         MockComponents(

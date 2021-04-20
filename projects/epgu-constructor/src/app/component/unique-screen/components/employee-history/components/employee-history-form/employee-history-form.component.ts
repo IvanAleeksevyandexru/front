@@ -11,10 +11,11 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
-import { TextTransform } from '../../../../../../shared/types/textTransform';
 import {
   EmployeeHistoryDataSource,
   EmployeeHistoryFormData,
@@ -22,7 +23,10 @@ import {
 } from '../../employee-history.types';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
-import { Gender } from '../../../../../../shared/types/gender';
+import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 
 @Component({
   selector: 'epgu-constructor-employee-history-form',
@@ -39,6 +43,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   @Output() updateFormEvent = new EventEmitter<EmployeeHistoryFormData>();
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
@@ -46,6 +51,8 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
     public monthsService: EmployeeHistoryMonthsService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
+    public screenService: ScreenService,
+    public suggestHandlerService: SuggestHandlerService,
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +79,15 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
       .subscribe((isValid) => {
         const data = this.employeeFormService.employeeHistoryForm.getRawValue();
         this.updateFormEvent.emit({ isValid, data });
+      });
+
+    this.screenService.suggestions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((suggestions) => {
+        const [component] = this.init;
+        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
+          suggestions[component.id],
+        );
       });
   }
 

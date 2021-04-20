@@ -12,13 +12,14 @@ import { HtmlRemoverService } from '../../../shared/services/html-remover/html-r
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { FormPlayerApiErrorStatuses } from '../form-player-api/form-player-api.types';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
+import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerApiErrorStatuses } from 'epgu-constructor-types';
 
 declare global {
   namespace NodeJS {
@@ -38,8 +39,7 @@ describe('FormPlayerService', () => {
   let location: Location;
   let orderId: number;
   let navigation: Navigation;
-  beforeEach(() => {
-    global.window.scroll = jest.fn();
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         FormPlayerService,
@@ -55,14 +55,15 @@ describe('FormPlayerService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ]
     });
+  });
+
+  beforeEach(() => {
+    global.window.scroll = jest.fn();
     service = TestBed.inject(FormPlayerService);
     screenService = TestBed.inject(ScreenService);
     location = TestBed.inject(Location);
     logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
-  });
-
-  beforeEach(() => {
     orderId = '1234';
     service['_store'] = JSON.parse(JSON.stringify(response));
   });

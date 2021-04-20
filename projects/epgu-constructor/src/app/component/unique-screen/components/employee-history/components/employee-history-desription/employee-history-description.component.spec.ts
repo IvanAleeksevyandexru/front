@@ -3,12 +3,13 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { EmployeeHistoryDescriptionComponent } from './employee-history-description.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('EmployeeHistoryDescriptionComponent', () => {
   let component: EmployeeHistoryDescriptionComponent;
   let fixture: ComponentFixture<EmployeeHistoryDescriptionComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryDescriptionComponent],
     })

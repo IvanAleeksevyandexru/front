@@ -8,10 +8,8 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
-import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../../shared/constants/utils';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DictionaryConditions } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
@@ -26,7 +24,6 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components-list.types';
-// eslint-disable-next-line max-len
 import {
   AddressHelperService,
   DadataSuggestionsAddressForLookup,
@@ -35,6 +32,8 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
+import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -77,7 +76,10 @@ export class ComponentsListFormService {
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
-    this._shownElements = this.componentsListRelationsService.createStatusElements(components);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(
+      components,
+      this.screenService.cachedAnswers,
+    );
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -241,7 +243,7 @@ export class ComponentsListFormService {
     return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
   }
 
-  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr): void {
+  private setRelationResult(component: CustomComponent, result?: Partial<CustomComponent>): void {
     if (!result) {
       if (this.cachedAttrsComponents[component.id]) {
         this.resetRelation(component);
@@ -255,7 +257,7 @@ export class ComponentsListFormService {
     const stringResult = JSON.stringify(result);
     if (this.cachedAttrsComponents[component.id].last !== stringResult) {
       component.attrs = this.cachedAttrsComponents[component.id].base;
-      this.relationPatch(component, result.attrs); // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
+      this.relationPatch(component, result.attrs);
       this.cachedAttrsComponents[component.id].last = stringResult;
     }
   }

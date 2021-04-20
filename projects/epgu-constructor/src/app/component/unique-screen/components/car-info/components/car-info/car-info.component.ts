@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
+import { CarInfo, CarInfoErrors, ServiceResult } from '../../models/car-info.interface';
 
 @Component({
   selector: 'epgu-constructor-car-info',
@@ -10,4 +10,5 @@ import { CarInfo, CarInfoErrors } from '../../models/car-info.interface';
 export class CarInfoComponent {
   @Input() carInfo: CarInfo;
   @Input() carInfoErrors: CarInfoErrors;
+  statuses = ServiceResult;
 }

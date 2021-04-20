@@ -10,6 +10,7 @@ import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub
 import { MobilViewEvents } from '../../../shared/constants/redirect-event';
 import { LocationService } from '../location/location.service';
 import { WINDOW_PROVIDERS } from '../../providers/window.provider';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;
@@ -18,7 +19,7 @@ describe('NavigationService', () => {
   let smuEventsService: SmuEventsService;
   let locationService: LocationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         NavigationService,
@@ -29,6 +30,9 @@ describe('NavigationService', () => {
         { provide: SmuEventsService, useClass: SmuEventsServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     delete window.location;
     window.location = { href: '' } as Location;
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
@@ -93,5 +97,14 @@ describe('NavigationService', () => {
     spyOn(smuEventsService, 'notify').and.callThrough();
     navigationService.redirectToHome();
     expect(smuEventsService.notify).toHaveBeenCalledWith(MobilViewEvents.exit);
+  });
+  it('test redirectExternal', () => {
+    const url = '#';
+
+    spyOn(window, 'open').and.callFake((url: string, target: string) => {
+      // do nothing
+    });
+    navigationService.redirectExternal(url);
+    expect(window.open).toHaveBeenCalledWith(url, '_blank');
   });
 });

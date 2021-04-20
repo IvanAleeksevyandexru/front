@@ -3,7 +3,7 @@ import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.s
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../shared/base.module';
 import { UniqueScreenComponent } from './unique-screen.component';
-import { ComponentResolverModule } from '../../component/component-resolver/component-resolver.module';
+import { ComponentUniqueResolverModule } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.module';
 import { AbstractPaymentComponent } from '../../component/unique-screen/components/payment/abstract-payment.component';
 import { UniqueScreenComponentsModule } from '../../component/unique-screen/unique-screen-components.module';
 
@@ -12,7 +12,7 @@ import { UniqueScreenComponentsModule } from '../../component/unique-screen/uniq
   exports: [UniqueScreenComponent],
   imports: [
     BaseModule,
-    ComponentResolverModule,
+    ComponentUniqueResolverModule,
     UniqueScreenComponentsModule
   ],
   providers: [

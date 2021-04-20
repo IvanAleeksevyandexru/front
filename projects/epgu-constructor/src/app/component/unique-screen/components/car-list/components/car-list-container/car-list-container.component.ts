@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
 import { FormControl } from '@angular/forms';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import {
   ActionType,
   ComponentActionDto,
-  ComponentDto,
-  DisplayDto,
   DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+} from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import {
@@ -44,6 +44,11 @@ export class CarListContainerComponent implements OnDestroy {
       const attrs = <CarListComponentAttrsDto>component.attrs;
       this.handleErrors(value, attrs);
     }),
+  );
+
+  showButtons$ = combineLatest([this.screenService.buttons$, this.screenService.component$]).pipe(
+    filter((e) => e.every(Boolean)),
+    map(([buttons]) => buttons.length && !this.errorTemplate),
   );
 
   control: FormControl;

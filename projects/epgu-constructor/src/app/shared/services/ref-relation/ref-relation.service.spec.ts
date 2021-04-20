@@ -8,16 +8,20 @@ import {
   displayOnRefMock, filterOnRefMock,
   getValueRefMock
 } from './ref-relation.mock';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         RefRelationService
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(RefRelationService);
   });
 

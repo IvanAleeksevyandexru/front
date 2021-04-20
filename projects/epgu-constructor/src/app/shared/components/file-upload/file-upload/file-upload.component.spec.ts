@@ -2,12 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import {
-  Clarifications,
   FileUploadAttributes,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 import { FileUploadService } from '../file-upload.service';
 import { FileUploadComponent } from './file-upload.component';
+import { configureTestSuite } from 'ng-bullet';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -26,12 +27,12 @@ describe('FileUploadComponent', () => {
     ],
   };
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [FileUploadComponent, FileUploadItemComponentMock],
       providers: [FileUploadService, EventBusService],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploadComponent);

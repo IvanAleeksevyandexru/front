@@ -15,12 +15,13 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;
   let fixture: ComponentFixture<SelectChildrenItemWrapperComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemWrapperComponent],
       imports: [RouterTestingModule, BaseModule, BaseComponentsModule],

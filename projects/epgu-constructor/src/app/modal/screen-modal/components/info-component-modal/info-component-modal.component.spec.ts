@@ -11,8 +11,10 @@ import { ButtonComponent } from 'epgu-lib';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
 import { By } from '@angular/platform-browser';
-import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -22,8 +24,8 @@ describe('InfoComponentModalComponent', () => {
   let screenModalService: ScreenModalService;
   let screenService: ScreenService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [
         InfoComponentModalComponent,
         MockComponent(ButtonComponent),

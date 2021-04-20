@@ -7,11 +7,6 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ConfirmUserData, ConfirmUserDataErrorType } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { OutputHtmlModule } from '../../../../../../shared/components/output-html/output-html.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
@@ -21,8 +16,9 @@ import { FieldListModule } from '../../../../../../shared/components/field-list/
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
+import { configureTestSuite } from 'ng-bullet';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 const componentMock: ConfirmUserData = {
   attrs: {
@@ -68,30 +64,28 @@ describe('ConfirmPersonalUserDataComponent', () => {
   let screenService: ScreenServiceStub;
   let currentAnswersService: CurrentAnswersService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ConfirmPersonalUserDataComponent],
-        imports: [
-          MockModule(OutputHtmlModule),
-          MockModule(DefaultUniqueScreenWrapperModule),
-          MockModule(BaseComponentsModule),
-          MockModule(BaseModule),
-          MockModule(FieldListModule),
-          MockModule(ScreenPadModule),
-        ],
-        providers: [
-          CurrentAnswersService,
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: ScreenService, useClass: ScreenServiceStub },
-        ],
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [ConfirmPersonalUserDataComponent],
+      imports: [
+        MockModule(OutputHtmlModule),
+        MockModule(DefaultUniqueScreenWrapperModule),
+        MockModule(BaseComponentsModule),
+        MockModule(BaseModule),
+        MockModule(FieldListModule),
+        MockModule(ScreenPadModule),
+      ],
+      providers: [
+        CurrentAnswersService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+      ],
+    })
+      .overrideComponent(ConfirmPersonalUserDataComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
-        .overrideComponent(ConfirmPersonalUserDataComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
-    }),
-  );
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserDataComponent);
@@ -171,7 +165,6 @@ describe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl.componentInstance.isShowActionBtn).toBeFalsy();
     expect(debugEl.componentInstance.showNav).toBeFalsy();
     expect(debugEl.componentInstance.isValid).toBeFalsy();
-    expect(debugEl.componentInstance.nextStepAction).toBeUndefined();
 
     screenService.header = 'some header';
     screenService.isLoadingSubject.next(true);

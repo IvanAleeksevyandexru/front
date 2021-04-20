@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { DisplayDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { HtmlRemoverService } from './html-remover.service';
+import { configureTestSuite } from 'ng-bullet';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 
 describe('HtmlRemoverService', () => {
@@ -53,19 +54,18 @@ describe('HtmlRemoverService', () => {
     firstScreen: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [HtmlRemoverService],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(HtmlRemoverService);
   });
 
   it('should return object without html tags in props', () => {
     const result = JSON.stringify(service.delete(mockDisplay));
     expect(service.hasHtmlRegExp.test(result)).toBeFalsy();
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 });

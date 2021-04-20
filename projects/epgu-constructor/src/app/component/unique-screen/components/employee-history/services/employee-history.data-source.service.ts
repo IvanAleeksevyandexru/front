@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { EmployeeHistoryDataSource } from '../employee-history.types';
-import { Gender } from '../../../../../shared/types/gender';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
 
 @Injectable()
 export class EmployeeHistoryDataSourceService {

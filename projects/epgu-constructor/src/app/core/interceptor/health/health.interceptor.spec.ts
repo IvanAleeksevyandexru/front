@@ -20,9 +20,9 @@ import {
   RENDER_FORM_SERVICE_NAME,
   RequestStatus
 } from './health.interceptor';
-
-import { ActionDTO } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { configureTestSuite } from 'ng-bullet';
+import { ActionRequestPayload } from 'epgu-constructor-types';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;
@@ -45,13 +45,13 @@ describe('HealthInterceptor', () => {
         name: 'Приветствие',
       }
     },
-  } as ActionDTO;
+  } as ActionRequestPayload;
   const getNextStepAction = 'renderForm';
   const dictionaryName = 'STRANI_IST';
   const dictionaryAction = 'v1DictionarySTRANIISTService';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
@@ -135,7 +135,7 @@ describe('HealthInterceptor', () => {
         id: dto.scenarioDto.display.id,
         name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId,
-        error: dataToFlush.error.code,
+        ServerError: dataToFlush.error.code,
         errorMessage: dataToFlush.error.message,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
@@ -165,7 +165,7 @@ describe('HealthInterceptor', () => {
         id: dto.scenarioDto.display.id,
         name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId,
-        error: dataToFlush.error.errorCode,
+        ServerError: dataToFlush.error.errorCode,
         errorMessage: dataToFlush.error.errorMessage,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
@@ -197,7 +197,7 @@ describe('HealthInterceptor', () => {
       };
       requestToError.flush(errorBody, body);
       const params = {
-        error: 506,
+        ServerError: 506,
         id: dictionaryName,
         dictionaryUrl: errorBody.value.url,
         errorMessage: errorBody.value.message,

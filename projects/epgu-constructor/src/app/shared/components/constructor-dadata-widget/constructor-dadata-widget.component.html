@@ -8,5 +8,7 @@
   [invalid]="invalid"
   [formControl]="$any(control)"
   [clearable]="clearable"
+  [suggest]="suggestions"
+  (selectSuggest)="selectSuggest.emit($event)"
 >
 </lib-dadata-widget>

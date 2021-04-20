@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Clarifications } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 
 @Component({
   selector: 'epgu-constructor-label',
@@ -14,4 +14,5 @@ export class LabelComponent {
   @Input() isTextHelper: boolean;
   @Input() label: string;
   @Input() clarifications: Clarifications;
+  @Input() largeFontSize: boolean;
 }

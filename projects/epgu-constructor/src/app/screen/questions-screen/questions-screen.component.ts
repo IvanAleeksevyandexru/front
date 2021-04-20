@@ -6,20 +6,20 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentAnswerDto } from 'epgu-constructor-types/dist/base/qustion-component-answer';
+import { Answer } from 'epgu-constructor-types/dist/base/answer';
 import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import {
-  ActionType,
-  ComponentActionDto,
-  ComponentAnswerDto,
-  DTOActionAction,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../modal/modal.service';
-import { Answer } from '../../shared/types/answer';
 import { ScreenBase } from '../screen-base';
 
 @Component({
@@ -53,7 +53,12 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.next({ payload });
+    this.navigationService.next({
+      payload: {
+        ...payload,
+        ...this.screenService.logicAnswers,
+      },
+    });
   }
 
   answerChoose(answer: ComponentActionDto | ComponentAnswerDto): void {

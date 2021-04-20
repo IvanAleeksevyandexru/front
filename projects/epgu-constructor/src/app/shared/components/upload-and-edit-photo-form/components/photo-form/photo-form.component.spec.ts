@@ -21,6 +21,7 @@ import { PhotoFormViewComponent } from '../photo-form-view/photo-form-view.compo
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { CompressionService } from '../../service/compression/compression.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoFormComponent', () => {
   let component: PhotoFormComponent;
@@ -30,7 +31,7 @@ describe('PhotoFormComponent', () => {
   let uploadService: UploadService;
   let modalService: ModalService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoFormComponent, MockComponent(PhotoFormViewComponent)],
       imports: [RouterTestingModule, HttpClientTestingModule],

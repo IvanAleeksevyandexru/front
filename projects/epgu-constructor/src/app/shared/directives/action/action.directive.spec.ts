@@ -17,13 +17,6 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
-import {
-  ActionApiResponse,
-  ActionType,
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -33,6 +26,12 @@ import { ActionDirective } from './action.directive';
 import { ActionService } from './action.service';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionApiResponse } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -139,12 +138,13 @@ describe('ActionDirective', () => {
   let localStorageService: LocalStorageService;
   let actionService: ActionService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ActionDirective, ActionTestComponent],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
@@ -160,21 +160,21 @@ describe('ActionDirective', () => {
         EventBusService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ActionTestComponent);
-        component = fixture.componentInstance;
-        formPlayerApiService = TestBed.inject(FormPlayerApiService);
-        screenService = TestBed.inject(ScreenService);
-        navigationService = TestBed.inject(NavigationService);
-        navigationModalService = TestBed.inject(NavigationModalService);
-        utilsService = TestBed.inject(UtilsService);
-        localStorageService = TestBed.inject(LocalStorageService);
-        actionService = TestBed.inject(ActionService);
-        jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
-        jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
-      });
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ActionTestComponent);
+    component = fixture.componentInstance;
+    formPlayerApiService = TestBed.inject(FormPlayerApiService);
+    screenService = TestBed.inject(ScreenService);
+    navigationService = TestBed.inject(NavigationService);
+    navigationModalService = TestBed.inject(NavigationModalService);
+    utilsService = TestBed.inject(UtilsService);
+    localStorageService = TestBed.inject(LocalStorageService);
+    actionService = TestBed.inject(ActionService);
+    jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
+    jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
   });
 
   it('test directive - download action', () => {

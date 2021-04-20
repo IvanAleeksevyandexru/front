@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ComponentResolverComponent } from './component-resolver.component';
-import { ScreenServiceStub } from '../../screen/screen.service.stub';
-import { ScreenService } from '../../screen/screen.service';
-import { UNIQUE_SCREEN_COMPONENTS } from './component-resolver.const';
-import { UniqueScreenComponentTypes } from '../unique-screen/unique-screen-components.types';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentListResolverComponent } from './component-list-resolver.component';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { ScreenService } from '../../../screen/screen.service';
+import { CUSTOM_SCREEN_COMPONENTS } from './component-list-resolver.const';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
-import { ScreenTypes } from '../../screen/screen.types';
+import { ScreenTypes } from '../../../screen/screen.types';
+import { CustomScreenComponentTypes } from '../components-list.types';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}
@@ -16,7 +17,7 @@ class TestComponent {}
 @Component({ template: '<div>test</div>' })
 class Test2Component {}
 
-Object.defineProperties(UNIQUE_SCREEN_COMPONENTS, {
+Object.defineProperties(CUSTOM_SCREEN_COMPONENTS, {
   TEST: {
     value: TestComponent,
   },
@@ -27,14 +28,14 @@ Object.defineProperties(UNIQUE_SCREEN_COMPONENTS, {
 
 jest.useFakeTimers();
 
-describe('ComponentResolverComponent', () => {
-  let component: ComponentResolverComponent;
-  let fixture: ComponentFixture<ComponentResolverComponent>;
+describe('ComponentListResolverComponent', () => {
+  let component: ComponentListResolverComponent;
+  let fixture: ComponentFixture<ComponentListResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ComponentResolverComponent, TestComponent, Test2Component],
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
+      declarations: [ComponentListResolverComponent, TestComponent, Test2Component],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         UnsubscribeService
@@ -49,7 +50,7 @@ describe('ComponentResolverComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComponentResolverComponent);
+    fixture = TestBed.createComponent(ComponentListResolverComponent);
     component = fixture.componentInstance;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     // @ts-ignore
@@ -77,11 +78,11 @@ describe('ComponentResolverComponent', () => {
 
 
   it('should return screens from UNIQUE_SCREEN_COMPONENTS', () => {
-    expect(component.getComponentByType(UniqueScreenComponentTypes.childrenList, ScreenTypes.UNIQUE)).toBe(
-      UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.childrenList],
+    expect(component.getComponentByType(CustomScreenComponentTypes.AddressInput)).toBe(
+      CUSTOM_SCREEN_COMPONENTS[CustomScreenComponentTypes.AddressInput],
     );
-    expect(component.getComponentByType(UniqueScreenComponentTypes.billInfo, ScreenTypes.UNIQUE)).toBe(
-      UNIQUE_SCREEN_COMPONENTS[UniqueScreenComponentTypes.billInfo],
+    expect(component.getComponentByType(CustomScreenComponentTypes.CheckingAccount)).toBe(
+      CUSTOM_SCREEN_COMPONENTS[CustomScreenComponentTypes.CheckingAccount],
     );
   });
 

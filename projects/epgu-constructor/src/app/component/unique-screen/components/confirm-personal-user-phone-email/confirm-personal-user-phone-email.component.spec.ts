@@ -9,13 +9,11 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
-import {
-  ActionType,
-  ComponentActionDto, DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
+import { configureTestSuite } from 'ng-bullet';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 
 describe('ConfirmPersonalUserPhoneEmailComponent', () => {
@@ -38,7 +36,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   };
 
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [
@@ -54,7 +52,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserPhoneEmailComponent);

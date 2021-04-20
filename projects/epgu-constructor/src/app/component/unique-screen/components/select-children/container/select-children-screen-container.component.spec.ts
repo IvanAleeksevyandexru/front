@@ -22,7 +22,6 @@ import { SelectChildrenItemComponent } from '../components/select-children-item/
 import { SelectChildrenComponent } from '../components/select-children/select-children.component';
 import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { CachedAnswersDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { ModalService } from '../../../../../modal/modal.service';
@@ -30,6 +29,8 @@ import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
+import { configureTestSuite } from 'ng-bullet';
+import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
@@ -77,7 +78,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
     firstScreen: false,
     impasse: false,
   };
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         SelectChildrenScreenContainerComponent,

@@ -7,12 +7,10 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import {
-  DisplayDto,
-  ScenarioErrorsDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenTypes } from '../screen.types';
@@ -40,6 +38,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   componentId: number;
   isValid: boolean;
   canDeleteFirstScreen: boolean;
+  minOccures: number;
   componentValidation: Array<boolean> = [];
 
   /**
@@ -57,7 +56,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     tap((data: DisplayDto) => {
       this.propData = data;
       this.initVariable();
-      this.duplicateScreen();
+      this.initScreens();
     }),
   );
   state$ = new BehaviorSubject<Array<{ [key: string]: { value: string } }>>([]);
@@ -99,7 +98,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.duplicateScreen(true));
+      .subscribe(() => this.createScreen(true));
   }
 
   trackByFunction = (_index: number, item: string): string => item;
@@ -159,8 +158,17 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     );
   }
 
-  private duplicateScreen(isDuplicate?: boolean): void {
-    const isScreensAvailable = this.isScreensAvailable();
+  private initScreens(): void {
+    for (let i = 0; i < this.minOccures; i += 1) {
+      this.createScreen();
+    }
+  }
+
+  private createScreen(isDuplicate?: boolean): void {
+    if (!this.isScreensAvailable()) {
+      return;
+    }
+
     const { attrs } = this.propData.components[0];
 
     const getScreenComponents = (components: unknown[], isFirst: boolean): CustomComponent[] =>
@@ -168,13 +176,14 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
         isFirst ? onlyFirstScreen : !onlyFirstScreen,
       );
 
-    if (isScreensAvailable && isDuplicate) {
+    if (isDuplicate) {
       this.setNewScreen(getScreenComponents(attrs.components, false));
-    } else if (isScreensAvailable) {
-      attrs.repeatableComponents.forEach((component, i) => {
-        this.setNewScreen(getScreenComponents(component, i < 1) as CustomComponent[]);
-      });
+      return;
     }
+
+    attrs.repeatableComponents.forEach((component, i) => {
+      this.setNewScreen(getScreenComponents(component, i < 1) as CustomComponent[]);
+    });
   }
 
   private setNewScreen(components: CustomComponent[]): void {
@@ -191,7 +200,8 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.screens = {};
     this.componentId = 0;
     this.saveState([]);
-    const { canDeleteFirstScreen = true } = this.propData.components[0].attrs;
+    const { canDeleteFirstScreen = true, minOccures = 1 } = this.propData.components[0].attrs;
     this.canDeleteFirstScreen = canDeleteFirstScreen;
+    this.minOccures = minOccures;
   }
 }

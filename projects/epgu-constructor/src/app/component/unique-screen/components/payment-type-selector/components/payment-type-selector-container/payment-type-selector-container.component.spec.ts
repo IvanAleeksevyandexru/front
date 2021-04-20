@@ -10,7 +10,6 @@ import { DeviceDetectorServiceStub } from '../../../../../../core/services/devic
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ComponentDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalModule } from '../../../../../../modal/modal.module';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -26,6 +25,10 @@ import { PaymentTypeSelectorContainerComponent } from './payment-type-selector-c
 import { PaymentTypeSelectorComponent } from '../payment-type-selector/payment-type-selector.component';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
+import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;
@@ -61,8 +64,8 @@ describe('PaymentTypeSelectorContainerComponent', () => {
     visited: true,
   } as ComponentDto;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [
         PaymentTypeSelectorContainerComponent,
         PaymentTypeSelectorComponent,
@@ -85,6 +88,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
         HtmlRemoverService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,

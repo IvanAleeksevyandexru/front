@@ -65,8 +65,13 @@ export class FileUploadComponent implements OnInit {
   setUploadersRestrictions(): void {
     this.setTotalMaxSizeAndAmount(this.attrs.maxSize, this.attrs.maxFileCount);
 
-    this.attrs.uploads?.forEach(({ uploadId, maxFileCount, maxSize }: FileUploadItem) =>
-      this.fileUploadService.registerUploader(uploadId, maxFileCount, maxSize),
+    this.attrs.uploads?.forEach(
+      ({ uploadId, maxFileCount, maxSize, maxCountByTypes }: FileUploadItem) =>
+        this.fileUploadService.registerUploader(
+          uploadId,
+          maxCountByTypes?.length > 0 || !maxFileCount ? 0 : maxFileCount,
+          maxSize,
+        ),
     );
   }
 
@@ -112,9 +117,11 @@ export class FileUploadComponent implements OnInit {
   private fillUploadsDefaultValue(): FileResponseToBackendUploadsItem[] {
     const value: FileResponseToBackendUploadsItem[] = [];
     this.attrs?.uploads?.forEach((upload: FileUploadItem) => {
+      const pdfFileName = upload?.pdfFileName ? { pdfFileName: upload?.pdfFileName } : {};
       const newValue: FileResponseToBackendUploadsItem = {
         uploadId: upload.uploadId,
         value: [],
+        ...pdfFileName,
       };
       value.push(newValue);
     });

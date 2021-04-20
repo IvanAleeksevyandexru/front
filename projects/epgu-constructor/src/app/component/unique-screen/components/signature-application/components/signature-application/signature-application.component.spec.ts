@@ -10,12 +10,6 @@ import { LocationService } from '../../../../../../core/services/location/locati
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import {
-  ComponentActionDto,
-  ComponentAttrsDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -32,6 +26,10 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -53,36 +51,34 @@ describe('SignatureApplicationComponent', () => {
     { label: 'ActionButton', value: 'ActionButton', action: DTOActionAction.getNextStep },
   ];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, ClickableLabelModule],
-        declarations: [
-          SignatureApplicationComponent,
-          ScreenContainerComponent,
-          PageNameComponent,
-          NavigationComponent,
-          ButtonComponent,
-          LoaderComponent,
-          OutputHtmlComponent,
-          SafePipe,
-          ImgPrefixerPipe,
-        ],
-        providers: [
-          NavigationService,
-          UtilsService,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: LocationService, useClass: LocationServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          CurrentAnswersService,
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    }),
-  );
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, ClickableLabelModule],
+      declarations: [
+        SignatureApplicationComponent,
+        ScreenContainerComponent,
+        PageNameComponent,
+        NavigationComponent,
+        ButtonComponent,
+        LoaderComponent,
+        OutputHtmlComponent,
+        SafePipe,
+        ImgPrefixerPipe,
+      ],
+      providers: [
+        NavigationService,
+        UtilsService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignatureApplicationComponent);

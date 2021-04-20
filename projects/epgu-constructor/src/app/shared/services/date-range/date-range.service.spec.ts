@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { DateRangeService } from './date-range.service';
 import {
   CustomComponent,
@@ -6,11 +6,12 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { configureTestSuite } from 'ng-bullet';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;
@@ -40,7 +41,7 @@ describe('DateRangeService', () => {
 
   const MOCK_TODAY = '2021-01-01T00:00:00.000Z';
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         DateRangeService,
@@ -50,15 +51,14 @@ describe('DateRangeService', () => {
       ],
       imports: [HttpClientTestingModule],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(DateRangeService);
     screenService = TestBed.inject(ScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
     jest.spyOn(datesToolsService, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   it('should be return min date', async () => {

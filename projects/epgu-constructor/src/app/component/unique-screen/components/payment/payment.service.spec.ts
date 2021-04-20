@@ -15,6 +15,7 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
 import { PaymentsAttrs } from './payment.types';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('PaymentService', () => {
@@ -31,7 +32,7 @@ describe('PaymentService', () => {
     ref: { fiasCode: 'ms1.value' },
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -43,6 +44,9 @@ describe('PaymentService', () => {
         { provide: LocationService, useClass: LocationServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(PaymentService);
     http = TestBed.inject(HttpTestingController);
     locationService = TestBed.inject(LocationService);

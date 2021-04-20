@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LocalStorageService } from './local-storage.service';
+import { configureTestSuite } from 'ng-bullet';
 
 const TEST_KEY = 'TEST_KEY';
 
@@ -9,10 +10,13 @@ describe('LocalStorageService', () => {
     someKey: 'someValue'
   };
 
-    beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [LocalStorageService],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(LocalStorageService);
   });
 

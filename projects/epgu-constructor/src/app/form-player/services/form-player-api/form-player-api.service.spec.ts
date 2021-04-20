@@ -3,13 +3,14 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerNavigation, ServiceInfo } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { Gender } from '../../../shared/types/gender';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { LocationService } from '../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { configureTestSuite } from 'ng-bullet';
+import { Gender } from 'epgu-constructor-types/dist/base/gender';
 
 
 describe('FormPlayerApiService', () => {
@@ -76,7 +77,7 @@ describe('FormPlayerApiService', () => {
     url: ''
   };
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -87,6 +88,9 @@ describe('FormPlayerApiService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(FormPlayerApiService);
     initDataService = TestBed.inject(InitDataService);
     initDataService.targetId = targetId;
@@ -94,7 +98,7 @@ describe('FormPlayerApiService', () => {
     initDataService.serviceId = serviceId;
     initDataService.serviceInfo = serviceInfo;
     http = TestBed.inject(HttpTestingController);
-  }));
+  });
 
   afterEach(waitForAsync(() => http.verify()));
 

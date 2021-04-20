@@ -3,12 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SliderComponent } from './slider.component';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('SliderComponent', () => {
   let component: SliderComponent;
   let fixture: ComponentFixture<SliderComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
       declarations: [SliderComponent],

@@ -4,7 +4,6 @@ import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ConfigService } from '../../../core/services/config/config.service';
@@ -13,20 +12,21 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
-// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import {
   CustomComponentRef,
   CustomComponentRefRelation,
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
   let components: ComponentDto[];
   let cachedAnswers: CachedAnswers;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         CachedAnswersService,
@@ -45,10 +45,10 @@ describe('PrepareComponentsService', () => {
       ],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(PrepareComponentsService);
   });
 
   beforeEach(() => {
+    service = TestBed.inject(PrepareComponentsService);
     components = [
       { id: 'a1', type: 'HtmlString', attrs: {}},
       { id: 'a2', type: 'HtmlString', attrs: {}},

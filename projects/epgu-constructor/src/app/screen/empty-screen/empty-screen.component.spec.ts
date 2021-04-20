@@ -16,10 +16,9 @@ import { LocationServiceStub } from '../../core/services/location/location.servi
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
 import { of } from 'rxjs';
-import {
-  ApplicantAnswersDto,
-  ComponentDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
+import { configureTestSuite } from 'ng-bullet';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
@@ -30,7 +29,7 @@ describe('EmptyScreenComponent', () => {
   let navigationService: NavigationServiceStub;
   let loggerService: LoggerServiceStub;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [EmptyScreenComponent, RedirectComponent],
       providers: [

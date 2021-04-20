@@ -1,20 +1,20 @@
 import { ListItem } from 'epgu-lib';
-import {
-  ClarificationsDto,
-  ComponentDictionaryFilterDto,
-  ComponentFilterDto,
-  ComponentRelationFieldDto,
-  DisplayDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../screen/screen.types';
-import { TextTransform } from '../../shared/types/textTransform';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
   DictionaryItem,
-  DictionaryOptions,
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
+import {
+  ComponentDictionaryFilterDto,
+  ComponentFilterDto,
+  ComponentRelationFieldDto
+} from 'epgu-constructor-types/dist/base/component-attrs';
+import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -99,6 +99,12 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
+export type CustomComponentAttrField = Array<{
+  fieldName?: string;
+  label?: string;
+  type?: string;
+}>;
+
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
@@ -112,11 +118,7 @@ export interface CustomComponentAttr {
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   needUnfilteredDictionaryToo?: boolean;
   labelAttr?: string;
-  fields?: Array<{
-    fieldName?: string;
-    label?: string;
-    type?: string;
-  }>;
+  fields?: CustomComponentAttrField;
   ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
@@ -129,7 +131,6 @@ export interface CustomComponentAttr {
   filter?: ComponentFilterDto;
   defaultIndex?: number;
   relationField?: ComponentRelationFieldDto;
-  attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
   dictionaryOptions?: DictionaryOptions;
   grid?: string;
   minDate?: string;
@@ -143,7 +144,7 @@ export interface CustomComponentAttr {
   labelHint?: string;
   hint?: string;
   customUnrecLabel?: string;
-  clarifications?: ClarificationsDto;
+  clarifications?: Clarifications;
   isTextHelper?: boolean;
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;
@@ -204,6 +205,7 @@ export interface CustomComponentRef {
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  isResetable?: boolean;
 }
 
 export interface CustomListFormGroup {
@@ -213,6 +215,7 @@ export interface CustomListFormGroup {
   required: boolean;
   type: CustomScreenComponentTypes;
   value: CustomScreenComponentValueTypes;
+  valueFromCache?: unknown;
 }
 
 export interface CustomDisplay extends DisplayDto {

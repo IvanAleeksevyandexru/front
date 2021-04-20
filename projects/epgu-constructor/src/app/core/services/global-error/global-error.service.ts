@@ -16,7 +16,7 @@ interface ErrorParams {
   id: string;
   name: string;
   orderId: number;
-  stack: string;
+  BrowserError: string;
 }
 
 @Injectable({
@@ -43,7 +43,7 @@ export class GlobalErrorHandler implements ErrorHandler {
           : this.utils.isValidOrderId(store.orderId)
             ? store.orderId
             : store.callBackOrderId,
-        stack: error.message ? error.stack : null,
+        BrowserError: error.message ? error.stack : null,
       };
 
       errorParams = this.utils.filterIncorrectObjectFields(errorParams) as ErrorParams;

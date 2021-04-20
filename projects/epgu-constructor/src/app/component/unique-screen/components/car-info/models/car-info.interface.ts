@@ -1,5 +1,6 @@
-import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',
@@ -78,7 +79,9 @@ export interface Restriction {
 export interface CarInfoComponentAttrsDto extends ComponentAttrsDto {
   errors: CarInfoErrorsDto;
 }
-
+export interface CarOwnerInfoComponentAttrsDto extends ComponentAttrsDto {
+  pdfLink: string;
+}
 export interface CarInfoErrorsDto {
   EXTERNAL_SERVER_ERROR?: string,
   NOT_FOUND_ERROR?: string

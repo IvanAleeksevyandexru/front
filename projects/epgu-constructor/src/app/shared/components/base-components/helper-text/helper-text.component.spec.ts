@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { HelperTextComponent } from './helper-text.component';
+import { configureTestSuite } from 'ng-bullet';
 
 const helperTextMock = 'Awesome useful helper text.';
 
@@ -15,7 +16,7 @@ describe('HelperTextComponent', () => {
   let component: WrapperTestComponent;
   let fixture: ComponentFixture<WrapperTestComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ WrapperTestComponent, HelperTextComponent ]
     })
@@ -35,9 +36,5 @@ describe('HelperTextComponent', () => {
     const helperText = fixture.debugElement
       .query(By.css('.helper-text')).nativeElement.textContent;
     expect(helperText).toEqual(helperTextMock);
-  });
-
-  it('should created', () => {
-    expect(component).toBeTruthy;
   });
 });

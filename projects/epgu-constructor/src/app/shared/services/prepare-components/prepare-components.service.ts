@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  ComponentAttrsDto,
-  ComponentDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import {
@@ -14,9 +10,11 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
-import { DictionaryFilters } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { DictionaryFilters } from 'epgu-constructor-types/dist/base/dictionary';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -362,7 +360,6 @@ export class PrepareComponentsService {
           cachedAnswers,
         );
       }
-
       return component;
     });
   }

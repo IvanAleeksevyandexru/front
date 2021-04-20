@@ -12,13 +12,6 @@ import { LocationService } from '../../../../../../core/services/location/locati
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import {
-  ApplicantAnswersDto,
-  ComponentActionDto,
-  ComponentAttrsDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -37,6 +30,12 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
@@ -70,38 +69,37 @@ describe('SignatureApplicationContainerComponent', () => {
     { label: 'ActionButton', value: 'ActionButton', action: DTOActionAction.getNextStep },
   ];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, ClickableLabelModule],
-        declarations: [
-          SignatureApplicationComponent,
-          SignatureApplicationContainerComponent,
-          ScreenContainerComponent,
-          PageNameComponent,
-          NavigationComponent,
-          ButtonComponent,
-          LoaderComponent,
-          OutputHtmlComponent,
-          SafePipe,
-          ImgPrefixerPipe,
-        ],
-        providers: [
-          NavigationService,
-          UtilsService,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: LocationService, useClass: LocationServiceStub },
-          { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          CurrentAnswersService,
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    }),
-  );
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, ClickableLabelModule],
+      declarations: [
+        SignatureApplicationComponent,
+        SignatureApplicationContainerComponent,
+        ScreenContainerComponent,
+        PageNameComponent,
+        NavigationComponent,
+        ButtonComponent,
+        LoaderComponent,
+        OutputHtmlComponent,
+        SafePipe,
+        ImgPrefixerPipe,
+      ],
+      providers: [
+        NavigationService,
+        UtilsService,
+        WINDOW_PROVIDERS,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);

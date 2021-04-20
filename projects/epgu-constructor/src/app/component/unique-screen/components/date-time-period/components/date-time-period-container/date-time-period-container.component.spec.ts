@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DateTimePeriodContainerComponent } from './date-time-period-container.component';
+import { configureTestSuite } from 'ng-bullet';
 
 xdescribe('DateTimePeriodContainerComponent', () => {
   let component: DateTimePeriodContainerComponent;
   let fixture: ComponentFixture<DateTimePeriodContainerComponent>;
 
-  beforeEach(async () => {
+  configureTestSuite(async () => {
     await TestBed.configureTestingModule({
       declarations: [ DateTimePeriodContainerComponent ]
     })

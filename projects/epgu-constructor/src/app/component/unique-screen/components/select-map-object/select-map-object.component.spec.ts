@@ -16,7 +16,6 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ScenarioDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
@@ -25,7 +24,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { ConstructorLookupModule } from '../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
-// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -47,6 +45,8 @@ import { PrepareComponentsService } from '../../../../shared/services/prepare-co
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { configureTestSuite } from 'ng-bullet';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -57,7 +57,7 @@ describe('SelectMapObjectComponent', () => {
   let comp;
   let compValue;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SelectMapObjectComponent],
       imports: [BaseModule, ConstructorLookupModule, NavigationModule],
@@ -87,19 +87,19 @@ describe('SelectMapObjectComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
       ],
-    })
-      .compileComponents()
-      .then(() => {
-        screenService = TestBed.inject(ScreenService);
-        dictionaryApiService = TestBed.inject(DictionaryApiService);
-        fixture = TestBed.createComponent(SelectMapObjectComponent);
-        component = fixture.componentInstance;
-        MapStore = cloneDeep(mockSelectMapObjectStore);
-        comp = MapStore.display.components[0];
-        compValue = JSON.parse(comp.value);
-        screenService.initScreenStore(MapStore);
-        fixture.detectChanges();
-      });
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    dictionaryApiService = TestBed.inject(DictionaryApiService);
+    fixture = TestBed.createComponent(SelectMapObjectComponent);
+    component = fixture.componentInstance;
+    MapStore = cloneDeep(mockSelectMapObjectStore);
+    comp = MapStore.display.components[0];
+    compValue = JSON.parse(comp.value);
+    screenService.initScreenStore(MapStore);
+    fixture.detectChanges();
   });
 
   it('should create', () => {

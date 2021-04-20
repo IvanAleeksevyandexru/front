@@ -1,4 +1,4 @@
-import { ValidationTypeModule } from './../../shared/directives/validation-type/validation-type.module';
+import { ValidationTypeModule } from '../../shared/directives/validation-type/validation-type.module';
 import { NgModule } from '@angular/core';
 import { ValidationService } from '../../shared/services/validation/validation.service';
 import { AddressHelperService } from '../../shared/services/address-helper/address-helper.service';
@@ -38,7 +38,6 @@ import { MultiChoiceDictionaryComponent } from './components/form-multiple-choic
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 import { PassportLookupComponent } from './components/passport-lookup/passport-lookup.component';
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
-import { ComponentResolverModule } from '../component-resolver/component-resolver.module';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { TimerItemComponent } from './components/timer-item/timer-item.component';
 import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
@@ -48,6 +47,10 @@ import { AbstractComponentListItemComponent } from './components/abstract-compon
 import { CityInputComponent } from './components/city-input/city-input.component';
 import { AddressInputComponent } from './components/address-input/address-input.component';
 import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
+import { ComponentListResolverModule } from './component-list-resolver/component-list-resolver.module';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { DictionaryComponent } from './components/dictionary/dictionary.component';
+import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +70,9 @@ import { FileUploadFormComponent } from './components/file-upload-form/file-uplo
     CityInputComponent,
     FileUploadFormComponent,
     AddressInputComponent,
+    DropdownComponent,
+    DictionaryComponent,
+    LookupInputComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -92,7 +98,7 @@ import { FileUploadFormComponent } from './components/file-upload-form/file-uplo
     CheckboxListModule,
     DropDownDeptsModule,
     FileUploadModule,
-    ComponentResolverModule,
+    ComponentListResolverModule,
     ValidationTypeModule
   ],
   providers: [
@@ -120,6 +126,9 @@ import { FileUploadFormComponent } from './components/file-upload-form/file-uplo
     CityInputComponent,
     FileUploadFormComponent,
     AddressInputComponent,
+    DropdownComponent,
+    DictionaryComponent,
+    LookupInputComponent,
   ],
 })
 export class ComponentsListModule {}

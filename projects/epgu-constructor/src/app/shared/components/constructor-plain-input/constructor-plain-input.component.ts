@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { TextTransform } from '../../types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-constructor-plain-input',
