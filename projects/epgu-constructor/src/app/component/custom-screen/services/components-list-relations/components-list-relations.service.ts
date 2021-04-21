@@ -453,8 +453,8 @@ export class ComponentsListRelationsService {
         isShown,
       };
       if (reference.isResetable && !isShown) {
-        const control = dependentControl.get('value');
         this.handleResetControl(dependentControl, form, reference);
+        const control = dependentControl.get('value');
         control.markAllAsTouched();
         control.updateValueAndValidity();
       }

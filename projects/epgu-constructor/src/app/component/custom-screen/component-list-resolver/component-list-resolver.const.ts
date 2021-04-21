@@ -68,6 +68,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   AddressInput: AddressInputComponent,
   FileUploadComponent: FileUploadFormComponent,
   DropDown: DropdownComponent,
+  ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   Dictionary: DictionaryComponent,
   Lookup: LookupInputComponent,
 };
