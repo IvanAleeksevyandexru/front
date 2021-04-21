@@ -16,7 +16,8 @@
     [fixedItems]="dictionaries"
     [virtualScroll]="true"
     [clearable]="true"
-    [required]="control.value?.required"
+    [required]="control.value.required"
+    [queryTimeout]="queryTimeout"
     [suggest]="suggestions$ | async"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
   >
