@@ -9,6 +9,7 @@ import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-
 
 @Injectable()
 export class LogicService {
+  readonly maxTimeout = 600000;
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) {}
 
   public fetch(
@@ -16,7 +17,7 @@ export class LogicService {
   ): Observable<ApplicantAnswersDto>[] {
     return components.map(({ value, id }) => {
       return this.callHttpMethod(value).pipe(
-        timeout(value.timeout ? parseFloat(value.timeout) : Infinity),
+        timeout(value.timeout ? parseFloat(value.timeout) : this.maxTimeout),
         map((response) => this.createLogicAnswers(id, response)),
         catchError((error: TimeoutError | HttpErrorResponse) => {
           if (error instanceof TimeoutError) {
