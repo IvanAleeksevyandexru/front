@@ -37,9 +37,20 @@ export const allowedAutocompleteComponentsList = (component: ComponentDto): bool
   return (
     component.type === CustomScreenComponentTypes.DocInput ||
     component.type === UniqueScreenComponentTypes.registrationAddr ||
-    component.type === UniqueScreenComponentTypes.confirmPersonalUserRegAddr ||
-    component.type === UniqueScreenComponentTypes.employeeHistory
+    component.type === UniqueScreenComponentTypes.confirmPersonalUserRegAddr
   );
 };
 
+export const autofillComponentsList: [UniqueScreenComponentTypes | CustomScreenComponentTypes] = [
+  UniqueScreenComponentTypes.employeeHistory,
+];
+
 export const getSuggestionGroupId = (display: DisplayDto): string => display.suggestion?.groupId;
+
+export const isChildrenListType = (component): boolean => {
+  return [
+    UniqueScreenComponentTypes.childrenList,
+    UniqueScreenComponentTypes.childrenListAbove14,
+    UniqueScreenComponentTypes.childrenListUnder14,
+  ].includes(component.type as UniqueScreenComponentTypes);
+};
