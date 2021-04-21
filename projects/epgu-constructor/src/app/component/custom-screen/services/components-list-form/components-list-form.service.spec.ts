@@ -1,5 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentsListFormService } from './components-list-form.service';
@@ -84,7 +90,7 @@ describe('ComponentsListFormService', () => {
           updateOn: 'blur',
         },
       ],
-      updateOnValidation: 'blur'
+      updateOnValidation: 'blur',
     },
     value: 'value',
     required: true,
@@ -97,10 +103,7 @@ describe('ComponentsListFormService', () => {
   @Component({
     template: `
       <div [formGroup]="form">
-        <input
-          formControlName="value"
-          id="test"
-        />
+        <input formControlName="value" id="test" />
       </div>
     `,
   })
@@ -117,10 +120,7 @@ describe('ComponentsListFormService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule
-      ],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
         ComponentsListFormService,
         ValidationService,
@@ -172,7 +172,8 @@ describe('ComponentsListFormService', () => {
   describe('patch()', () => {
     it('should call dictionaryToolsService.dropDowns$.getValue(), if component type isDropdownLike, has defaultIndex and no value', () => {
       const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
-      const component = JSON.parse(JSON.stringify(componentMockData));const extraComponent = JSON.parse(JSON.stringify(componentMockData));
+      const component = JSON.parse(JSON.stringify(componentMockData));
+      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       component.type = CustomScreenComponentTypes.DropDown;
       component.attrs.defaultIndex = 0;
       component.value = '';
@@ -198,7 +199,6 @@ describe('ComponentsListFormService', () => {
       service.emitChanges();
       expect(getPreparedStateForSendingSpy).toHaveBeenCalled();
       expect(emitSpy).toHaveBeenCalled();
-
     });
   });
 
@@ -215,7 +215,7 @@ describe('ComponentsListFormService', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       service.create([componentMockData, extraComponent], {});
       const result = {
-        rf1: { value: 'value', isValid: false, disabled: false, condition: null }
+        rf1: { value: 'value', isValid: false, disabled: false, condition: null },
       };
       service.shownElements['rf1'].isShown = true;
       expect(service['getPreparedStateForSending']()).toEqual(result);
@@ -260,7 +260,9 @@ describe('ComponentsListFormService', () => {
     it('should call changeValidators()', () => {
       const changeValidatorsSpy = jest.spyOn(service, 'changeValidators');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const { id, label, required, type, value, attrs } = JSON.parse(JSON.stringify(componentMockData));
+      const { id, label, required, type, value, attrs } = JSON.parse(
+        JSON.stringify(componentMockData),
+      );
       const next: CustomListFormGroup = {
         attrs,
         id,
@@ -271,13 +273,15 @@ describe('ComponentsListFormService', () => {
       };
       next.attrs.relationField = {
         ref: 'rf1',
-        conditions: [{
-          type: 'RegExp',
-          value: '.*',
-          result: {
-            attrs: { ...attrs }
-          }
-        }]
+        conditions: [
+          {
+            type: 'RegExp',
+            value: '.*',
+            result: {
+              attrs: { ...attrs },
+            },
+          },
+        ],
       };
       service.create([componentMockData, extraComponent], {});
       service['relationPatch'](componentMockData, {});
@@ -289,7 +293,9 @@ describe('ComponentsListFormService', () => {
     it('should call relationPatch()', () => {
       const relationPatchSpy = jest.spyOn(service, 'relationPatch');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const { id, label, required, type, value, attrs } = JSON.parse(JSON.stringify(componentMockData));
+      const { id, label, required, type, value, attrs } = JSON.parse(
+        JSON.stringify(componentMockData),
+      );
       const next: CustomListFormGroup = {
         attrs,
         id,
@@ -300,13 +306,15 @@ describe('ComponentsListFormService', () => {
       };
       next.attrs.relationField = {
         ref: 'rf1',
-        conditions: [{
-          type: 'RegExp',
-          value: '.*',
-          result: {
-            attrs: { ...attrs }
-          }
-        }]
+        conditions: [
+          {
+            type: 'RegExp',
+            value: '.*',
+            result: {
+              attrs: { ...attrs },
+            },
+          },
+        ],
       };
       service.create([componentMockData, extraComponent], {});
       service['relationMapChanges'](next);
@@ -319,7 +327,9 @@ describe('ComponentsListFormService', () => {
     it('should call resetRelation, if result is not passed', () => {
       const resetRelationSpy = jest.spyOn(service, 'resetRelation');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const { id, label, required, type, value, attrs } = JSON.parse(JSON.stringify(componentMockData));
+      const { id, label, required, type, value, attrs } = JSON.parse(
+        JSON.stringify(componentMockData),
+      );
       const next: CustomListFormGroup = {
         attrs,
         id,
@@ -330,13 +340,15 @@ describe('ComponentsListFormService', () => {
       };
       next.attrs.relationField = {
         ref: 'rf1',
-        conditions: [{
-          type: 'RegExp',
-          value: '.*',
-          result: {
-            attrs: { ...attrs }
-          }
-        }]
+        conditions: [
+          {
+            type: 'RegExp',
+            value: '.*',
+            result: {
+              attrs: { ...attrs },
+            },
+          },
+        ],
       };
       service.create([componentMockData, extraComponent], {});
       service['relationMapChanges'](next);
@@ -346,7 +358,9 @@ describe('ComponentsListFormService', () => {
     it('should call relationPatch, if result is passed', () => {
       const relationPatchSpy = jest.spyOn(service, 'relationPatch');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const { id, label, required, type, value, attrs } = JSON.parse(JSON.stringify(componentMockData));
+      const { id, label, required, type, value, attrs } = JSON.parse(
+        JSON.stringify(componentMockData),
+      );
       const next: CustomListFormGroup = {
         attrs,
         id,
@@ -357,13 +371,15 @@ describe('ComponentsListFormService', () => {
       };
       next.attrs.relationField = {
         ref: 'rf1',
-        conditions: [{
-          type: 'RegExp',
-          value: '.*',
-          result: {
-            attrs: { ...attrs }
-          }
-        }]
+        conditions: [
+          {
+            type: 'RegExp',
+            value: '.*',
+            result: {
+              attrs: { ...attrs },
+            },
+          },
+        ],
       };
       service.create([componentMockData, extraComponent], {});
       service['relationMapChanges'](next);
@@ -376,7 +392,9 @@ describe('ComponentsListFormService', () => {
     it('should call setRelationResult(), if component value and relationField are not empty', () => {
       const setRelationResultSpy = jest.spyOn(service, 'setRelationResult');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const { id, label, required, type, value, attrs } = JSON.parse(JSON.stringify(componentMockData));
+      const { id, label, required, type, value, attrs } = JSON.parse(
+        JSON.stringify(componentMockData),
+      );
       const next: CustomListFormGroup = {
         attrs,
         id,
@@ -387,13 +405,15 @@ describe('ComponentsListFormService', () => {
       };
       next.attrs.relationField = {
         ref: 'rf1',
-        conditions: [{
-          type: 'RegExp',
-          value: '.*',
-          result: {
-            attrs: { ...attrs }
-          }
-        }]
+        conditions: [
+          {
+            type: 'RegExp',
+            value: '.*',
+            result: {
+              attrs: { ...attrs },
+            },
+          },
+        ],
       };
       service.create([componentMockData, extraComponent], {});
       service['relationMapChanges'](next);
@@ -402,7 +422,9 @@ describe('ComponentsListFormService', () => {
     it('should not call setRelationResult(), if component value or relationField are empty', () => {
       const setRelationResultSpy = jest.spyOn(service, 'setRelationResult');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const { id, label, required, type, value, attrs } = JSON.parse(JSON.stringify(componentMockData));
+      const { id, label, required, type, value, attrs } = JSON.parse(
+        JSON.stringify(componentMockData),
+      );
       const next: CustomListFormGroup = {
         attrs,
         id,
@@ -420,7 +442,9 @@ describe('ComponentsListFormService', () => {
   describe('createGroup()', () => {
     it('should return FormGroup', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      expect(service['createGroup'](componentMockData, [componentMockData, extraComponent], null)).toBeInstanceOf(FormGroup);
+      expect(
+        service['createGroup'](componentMockData, [componentMockData, extraComponent], null),
+      ).toBeInstanceOf(FormGroup);
     });
     it('should return disabled form, if component attrs hidden', () => {
       const mockComponent = JSON.parse(JSON.stringify(componentMockData));
@@ -474,7 +498,7 @@ describe('ComponentsListFormService', () => {
       expect(service['updateOnValidation'](component)).toBe('change');
     });
     it('should return UpdateOn attribute of component', () => {
-      expect(service['updateOnValidation'](componentMockData)).toBe('blur');
+      expect(service['updateOnValidation'](componentMockData)).toBe('change');
     });
   });
 });

@@ -1,23 +1,32 @@
-@import '../../../../../styles/core/index';
+@import '../../../../../../../styles/core/index';
 
-.error {
-  margin-bottom: 16px;
-
-  .title {
-    @include typ-h6;
-    font-weight: $fw-bold;
-    margin-bottom: 4px;
-  }
-
-  .description {
-    @include typ-plain-small;
-    color: $color-text-helper;
-    margin: 0;
-  }
+:host {
+  display: block;
 }
 
 .item {
-  margin-top: 4px;
+  margin-top: 16px;
+  &--date {
+    display: block;
+    width: 50%;
+
+    @include phones-down {
+      width: 100%;
+    }
+  }
+  .item {
+    margin-top: 4px;
+  }
+}
+
+.address-item-hint {
+  margin-top: 8px;
+}
+
+.error {
+  @include typ-plain-small();
+  color: $color-gosred;
+  margin: 4px 0 12px 0;
 }
 
 .footer {

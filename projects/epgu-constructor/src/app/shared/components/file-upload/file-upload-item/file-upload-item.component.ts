@@ -45,7 +45,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
-import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -73,6 +73,13 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   maxAmount?: number = 0;
 
   get acceptTypes(): string {
+    if (this.data?.maxCountByTypes && !this.store?.lastSelected) {
+      return getAcceptTypes(
+        this.data?.maxCountByTypes
+          .reduce<string[]>((acc, countType) => acc.concat(countType.type), [])
+          .filter((item, index, arr) => arr.indexOf(item) === index),
+      );
+    }
     return this.store?.lastSelected
       ? getAcceptTypes(this.store?.lastSelected.type)
       : getAcceptTypes(this.data.fileType);
@@ -218,7 +225,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private prepareService: PrepareService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private autocompleteService: AutocompleteService,
+    private autocompletePrepareService: AutocompletePrepareService,
   ) {}
 
   ngOnInit(): void {
@@ -407,7 +414,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     if (!suggestions) return false;
 
     const { list } = suggestions;
-    const filteredUploadedFiles = this.autocompleteService
+    const filteredUploadedFiles = this.autocompletePrepareService
       .getParsedSuggestionsUploadedFiles(list)
       .filter((file: UploadedFile) => file.mnemonic.includes(this.loadData?.uploadId));
     return !!filteredUploadedFiles.length;
@@ -530,7 +537,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.suggestions$.pipe(take(1)).subscribe((suggestions) => {
           suggestionsFiles = suggestions[this.componentId]?.list;
         });
-        const suggestionsUploadedFiles = this.autocompleteService.getParsedSuggestionsUploadedFiles(
+        const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
           suggestionsFiles,
         );
 

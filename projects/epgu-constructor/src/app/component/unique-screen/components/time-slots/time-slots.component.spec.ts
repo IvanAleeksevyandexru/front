@@ -46,6 +46,7 @@ describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
+  let datesToolsService: DatesToolsService;
   let store: ScreenStore;
 
   configureTestSuite(( ) => {
@@ -81,6 +82,7 @@ describe('TimeSlotsComponent', () => {
   beforeEach(() => {
     timeSlotsService = TestBed.inject(TimeSlotsService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
+    datesToolsService = TestBed.inject(DatesToolsService);
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
@@ -98,6 +100,9 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
+    jest
+      .spyOn(datesToolsService, 'getToday')
+      .mockReturnValue(Promise.resolve(new Date('2021-01-01T00:00:00.000Z')));
   });
 
   it('should create', () => {
@@ -259,7 +264,7 @@ describe('TimeSlotsComponent', () => {
     });
   });
 
-  it('renderSingleMonthGrid works as before', () => {
+  it('renderSingleMonthGrid works as before', async () => {
     component.activeYearNumber = new Date(Date.now()).getUTCFullYear();
     component.activeMonthNumber = new Date(Date.now()).getUTCMonth();
 
@@ -297,7 +302,7 @@ describe('TimeSlotsComponent', () => {
     };
 
     const actual = [];
-    component['renderSingleMonthGrid'](actual);
+    await component['renderSingleMonthGrid'](actual);
 
     const expected = [];
     renderSingleMonthGrid(expected);
@@ -391,7 +396,7 @@ describe('TimeSlotsComponent', () => {
     });
   });
 
-  it('should call modal for no slots case', () => {
+  it('should call modal for no slots case', async () => {
     const modalParams = { text: 'temp' };
     store.display.components[0].attrs.emptySlotsModal = modalParams;
     screenService.initScreenStore(store);
@@ -399,7 +404,7 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockEmptySlots as SmevSlotsResponseInterface));
-    fixture.detectChanges();
+    await fixture.detectChanges();
     expect(modalSpy).toBeCalledWith(modalParams);
   });
 

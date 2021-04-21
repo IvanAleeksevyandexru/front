@@ -28,6 +28,7 @@ import { CarOwnerInfoContainerComponent } from '../components/car-info/container
 import { CheckboxCubeContainerComponent } from '../components/checkbox-cube/checkbox-cube-container/checkbox-cube-container.component';
 import { MatPeriodContainerComponent } from '../components/mat-period/mat-period-container/mat-period-container.component';
 import { DateTimePeriodContainerComponent } from '../components/date-time-period/components/date-time-period-container/date-time-period-container.component';
+import { ConfirmPersonalUserAddressReadonlyComponent } from '../components/confirm-personal-user-address-readonly-screen/components/confirm-personal-user-address-readonly/confirm-personal-user-address-readonly.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -58,7 +59,8 @@ type UniqueScreenComponent =
   | TimerScreenComponent
   | MatPeriodContainerComponent
   | DateTimePeriodContainerComponent
-  | CheckboxCubeContainerComponent;
+  | CheckboxCubeContainerComponent
+  | ConfirmPersonalUserAddressReadonlyComponent;
 
 
 export type ScreenComponentTypes = UniqueScreenComponent;
@@ -81,6 +83,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
   InformationCenterPfr: InformationCenterPfrContainerComponent,
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
+  ConfirmPersonalUserRegReadOnlyAddr: ConfirmPersonalUserAddressReadonlyComponent,
   ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
   ConfirmAnotherUserData: ConfirmPersonalUserDataComponent,
   ConfirmChildData: ConfirmPersonalUserDataComponent,

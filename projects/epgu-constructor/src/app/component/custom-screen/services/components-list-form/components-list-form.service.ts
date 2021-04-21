@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -324,7 +324,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation(component) },
+      { updateOn: this.updateOnValidation() },
     );
 
     if (component.attrs?.hidden) {
@@ -393,15 +393,10 @@ export class ComponentsListFormService {
   }
 
   private watchFormArray$(): Observable<Array<CustomListFormGroup>> {
-    return this.form.valueChanges.pipe(
-      distinctUntilChanged((prev, next) =>
-        isEqualObj<boolean | number | string | object>(prev, next),
-      ),
-      takeUntil(this.ngUnsubscribe$),
-    );
+    return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 
-  private updateOnValidation(component: CustomComponent): UpdateOn {
-    return component.attrs?.updateOnValidation || 'change';
+  private updateOnValidation(): UpdateOn {
+    return 'change';
   }
 }

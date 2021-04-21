@@ -15,6 +15,11 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
+import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -33,9 +38,12 @@ describe('InfoComponentModalComponent', () => {
         MockDirective(ActionDirective),
       ],
       providers: [
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        UtilsService,
       ],
     }).overrideComponent(InfoComponentModalComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default }

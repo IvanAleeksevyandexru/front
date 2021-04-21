@@ -33,7 +33,7 @@ export class ComponentsListToolsService {
   }
 
   public isAddress(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.AddressInput;
+    return type === CustomScreenComponentTypes.AddressInput || type === CustomScreenComponentTypes.ConfirmPersonalUserRegAddrChange;
   }
 
   public isJsonType(type: CustomScreenComponentTypes): boolean {

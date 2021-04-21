@@ -122,8 +122,8 @@ describe('ScreenModalComponent', () => {
   });
 
   describe('nextStep', () => {
-    it('sould call closeModal(), if scenario finished', () => {
-      const closeModalSpy = jest.spyOn(component, 'closeModal');
+    it('sould call closeModalOnNext(), if scenario finished', () => {
+      const closeModalSpy = jest.spyOn(component, 'closeModalOnNext');
       const navigation = {
         options: { isInternalScenarioFinish: true }
       };
