@@ -1,22 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { isEmpty as _isEmpty } from 'lodash';
-import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { takeUntil } from 'rxjs/operators';
+import {
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import {
-  ConfirmUserDataError,
-  ConfirmUserDataErrorType,
-} from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-
-type PersonalUserPhoneEmailWithErrors = ComponentBase & {
-  errors: ConfirmUserDataError[];
-};
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-phone-email',
@@ -25,11 +20,11 @@ type PersonalUserPhoneEmailWithErrors = ComponentBase & {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
-  data$: Observable<PersonalUserPhoneEmailWithErrors> = this.screenService.component$.pipe(
-    map((data) => this.prepareDataWithErrors(data)),
-  );
+  data$: Observable<ComponentBase> = this.screenService.component$;
   isPhoneScreenType: boolean;
   isEditContactAction: boolean;
+
+  nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
   constructor(
     public currentAnswersService: CurrentAnswersService,
@@ -43,7 +38,7 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isEditContactAction = this.getIsEditContactAction();
       this.isPhoneScreenType = this.getIsPhoneScreenType();
-      this.updateValue(data.value);
+      this.updateValue(data?.value);
 
       setTimeout(() => {
         this.changeDetectionRef.markForCheck();
@@ -52,10 +47,12 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
   }
 
   updateValue(value: string): void {
-    this.currentAnswersService.state = this.getPersonalTypeValue(value);
-    const errors = this.getErrors();
-    const hasErrors = errors.some((error) => error?.type === ConfirmUserDataErrorType.error);
-    this.currentAnswersService.isValid = !_isEmpty(value) && !hasErrors;
+    if (value) {
+      this.currentAnswersService.isValid = true;
+      this.currentAnswersService.state = value;
+    } else {
+      this.currentAnswersService.isValid = false;
+    }
   }
 
   private getIsEditContactAction(): boolean {
@@ -74,23 +71,5 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
       UniqueScreenComponentTypes.confirmPersonalUserPhone,
       UniqueScreenComponentTypes.confirmLegalPhone,
     ].includes(this.screenService.component?.type as UniqueScreenComponentTypes);
-  }
-
-  private getPersonalTypeValue(value): string {
-    return this.getIsPhoneScreenType() ? value : { email: value };
-  }
-
-  private getErrors(): ConfirmUserDataError[] {
-    const { value } = this.screenService.component;
-    return !this.getIsPhoneScreenType() ? JSON.parse(value)?.errors || [] : [];
-  }
-
-  private prepareDataWithErrors(data: ComponentBase): PersonalUserPhoneEmailWithErrors {
-    const { value } = data;
-    return {
-      ...data,
-      value: !this.getIsPhoneScreenType() ? JSON.parse(value).email : value,
-      errors: this.getErrors(),
-    };
   }
 }
