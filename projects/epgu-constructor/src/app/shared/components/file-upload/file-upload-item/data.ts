@@ -330,7 +330,7 @@ export const getAcceptTypes = (
   caseType: 'lower' | 'upper' = 'lower',
 ): string => {
   const caseName = caseType === 'lower' ? 'toLowerCase' : 'toUpperCase';
-  return !types.length
+  return !types?.length
     ? null
     : types
         .map((fileType) => `${prefix}${fileType}`)

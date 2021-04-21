@@ -83,8 +83,21 @@ export class PrepareService {
       ) {
         store.lastSelected = findedType;
       }
-    } else if (!store.lastSelected) {
-      store.lastSelected = config?.maxCountByTypes[0];
+    }
+    if (types.length === 0) {
+      store.lastSelected = config?.maxCountByTypes.reduce(
+        (acc, v) => {
+          acc.maxFileCount += v.maxFileCount;
+          acc.type = acc.type
+            .concat(v.type)
+            .filter((item, index, arr) => arr.indexOf(item) === index);
+          return acc;
+        },
+        {
+          type: [],
+          maxFileCount: 0,
+        },
+      );
     }
     this.changeMaxAmount(config, store.lastSelected);
   }
