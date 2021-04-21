@@ -210,6 +210,7 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes: UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+      departmentRegion: data.departmentRegion,
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
@@ -356,25 +357,29 @@ export class TimeSlotsService {
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject: this.config.subject as string || subject,
+      subject: (this.config.subject as string) || subject,
       params: [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
         },
+        {
+          name: 'userSelectedRegionFromForm',
+          value: this.config.departmentRegion as string,
+        },
       ],
-      eserviceId: this.config.eserviceId as string || eserviceId,
-      serviceCode: this.config.serviceCode as string || serviceCode,
+      eserviceId: (this.config.eserviceId as string) || eserviceId,
+      serviceCode: (this.config.serviceCode as string) || serviceCode,
       bookId: this.bookId,
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
-      calendarName: this.config.calendarName as string || calendarName,
+      calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
-      serviceId: [this.config.serviceId as string || serviceId],
+      serviceId: [(this.config.serviceId as string) || serviceId],
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {

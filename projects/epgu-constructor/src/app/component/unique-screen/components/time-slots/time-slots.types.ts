@@ -12,6 +12,7 @@ export interface SmevSlotsMapInterface {
 }
 
 export interface TimeSlotValueInterface {
+  departmentRegion: string;
   department: string;
   timeSlotType: string;
   solemn?: string;
