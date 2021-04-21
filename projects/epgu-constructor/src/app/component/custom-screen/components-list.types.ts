@@ -46,6 +46,7 @@ export enum CustomScreenComponentTypes {
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
   FileUploadComponent = 'FileUploadComponent',
+  ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
