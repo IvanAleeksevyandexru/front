@@ -121,10 +121,17 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   }
 
   public closeModal(): void {
-    if (this.showModal) {
-      this.switchNavigationToFormPlayer();
-      this.screenModalService.resetStore();
+    if (!this.showModal) {
+      return;
     }
+
+    if (this.screenModalService.isInternalScenarioFinishValue) {
+      this.closeModalOnNext();
+      return;
+    }
+
+    this.switchNavigationToFormPlayer();
+    this.screenModalService.resetStore();
   }
 
   public closeModalOnNext(): void {
