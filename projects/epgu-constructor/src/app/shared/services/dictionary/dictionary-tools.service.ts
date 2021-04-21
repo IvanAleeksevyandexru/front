@@ -1,4 +1,3 @@
-import { IdictionaryFilter } from '../../../component/unique-screen/components/select-map-object/select-map-object.interface';
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import {
   DictionaryItem,
@@ -7,6 +6,7 @@ import {
 import { ListElement, ListItem } from 'epgu-lib/lib/models/dropdown.model';
 import {
   CustomComponent,
+  CustomComponentAttr,
   CustomComponentDropDownItem,
   CustomComponentDropDownItemList,
   CustomComponentRefRelation,
@@ -38,6 +38,9 @@ import {
   DictionaryValue,
   DictionaryValueTypes,
 } from 'epgu-constructor-types/dist/base/dictionary';
+import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { FormArray } from '@angular/forms';
+import { KeyValueMap } from '../../../core/core.types';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -67,6 +70,7 @@ export class DictionaryToolsService {
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private componentsListRelationsService: ComponentsListRelationsService,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   public watchForFilters(
@@ -94,15 +98,16 @@ export class DictionaryToolsService {
     const data: Array<Observable<CustomListReferenceData>> = [];
     components
       .filter((component: CustomComponent) => {
+        if (component.attrs.searchProvider) {
+          return false;
+        }
+
         if (!Array.isArray(component.attrs.ref)) {
           return true;
         }
 
-        const hasFilterOnRef = component.attrs.ref.some(
-          (reference) => reference.relation === CustomComponentRefRelation.filterOn,
-        );
-
-        return !hasFilterOnRef || component.attrs.needUnfilteredDictionaryToo;
+        const isLoadingNeeded = this.isLoadingNeeded(component.attrs);
+        return isLoadingNeeded;
       })
       .forEach((component: CustomComponent) => {
         if (this.isDropdownLike(component.type)) {
@@ -118,7 +123,7 @@ export class DictionaryToolsService {
             const defaultOptions: DictionaryOptions = { pageNum: 0 };
             const options: DictionaryOptions = {
               ...defaultOptions,
-              ...(dictionaryOptions ? dictionaryOptions: {}),
+              ...(dictionaryOptions || {}),
               ...(dictionaryFilter ? this.prepareOptions(component, screenStore, dictionaryFilter): {}),
             };
 
@@ -137,35 +142,37 @@ export class DictionaryToolsService {
     component: CustomComponent,
     options: DictionaryOptions,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    return this.dictionaryApiService.getDictionary(dictionaryType, options).pipe(
-      map((dictionary: DictionaryResponse) => ({
-        component,
-        data: { ...dictionary },
-      })),
-      map((dictionary) => {
-        // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
-        if (component.attrs.filter) {
-          const items = dictionary.data.items.filter((item) => {
-            if (component.attrs.filter.isExcludeType) {
-              return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
-            } else {
-              return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
-            }
-          });
-          const data: DictionaryResponse = {
-            ...dictionary.data,
-            items,
-          };
+    return this.dictionaryApiService
+      .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
+      .pipe(
+        map((dictionary: DictionaryResponse) => ({
+          component,
+          data: { ...dictionary },
+        })),
+        map((dictionary) => {
+          // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
+          if (component.attrs.filter) {
+            const items = dictionary.data.items.filter((item) => {
+              if (component.attrs.filter.isExcludeType) {
+                return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+              } else {
+                return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+              }
+            });
+            const data: DictionaryResponse = {
+              ...dictionary.data,
+              items,
+            };
 
-          return {
-            component,
-            data,
-          };
-        }
+            return {
+              component,
+              data,
+            };
+          }
 
-        return dictionary;
-      }),
-    );
+          return dictionary;
+        }),
+      );
   }
 
   public getDropDownDepts$(
@@ -209,16 +216,19 @@ export class DictionaryToolsService {
     dictionaries[id].paginationLoading = false;
     dictionaries[id].data = reference.data;
     dictionaries[id].origin = reference.component;
-    dictionaries[id].list = this.adaptDictionaryToListItem(reference.data.items);
+    dictionaries[id].list = this.adaptDictionaryToListItem(
+      reference.data.items,
+      reference.component.attrs.mappingParams,
+    );
     dictionaries[id].repeatedWithNoFilters = reference?.meta?.repeatedWithNoFilters;
 
     this.dictionaries$.next(dictionaries);
   }
 
   public prepareSimpleFilter(
-    componentValue: ComponentValue,
+    componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dFilter: IdictionaryFilter,
+    dFilter: ComponentDictionaryFilterDto,
   ): { simple: DictionarySimpleFilter } {
     return {
       simple: {
@@ -230,11 +240,11 @@ export class DictionaryToolsService {
   }
 
   public prepareUnionFilter(
-    componentValue: ComponentValue,
+    componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dictionaryFilters?: Array<IdictionaryFilter>,
+    dictionaryFilters?: Array<ComponentDictionaryFilterDto>,
   ): { union: DictionaryUnionFilter } {
-    const filters = dictionaryFilters.map((dFilter: IdictionaryFilter) =>
+    const filters = dictionaryFilters.map((dFilter: ComponentDictionaryFilterDto) =>
       this.prepareSimpleFilter(componentValue, screenStore, dFilter),
     );
     return {
@@ -246,9 +256,9 @@ export class DictionaryToolsService {
   }
 
   public getFilterOptions(
-    componentValue: ComponentValue,
+    componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dictionaryFilters?: Array<IdictionaryFilter>,
+    dictionaryFilters?: Array<ComponentDictionaryFilterDto>,
   ): DictionaryFilters {
     const filter =
       dictionaryFilters?.length === 1
@@ -262,11 +272,14 @@ export class DictionaryToolsService {
    * Мапим словарь в ListItem для компонента EPGU отвечающий за список
    * @param items массив элементов словаря
    */
-  public adaptDictionaryToListItem(items: Array<DictionaryItem>): Array<ListElement> {
+  public adaptDictionaryToListItem(
+    items: Array<DictionaryItem | KeyValueMap>,
+    mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+  ): Array<ListElement> {
     return items.map((item) => ({
       originalItem: item,
-      id: item.value,
-      text: item.title,
+      id: item[mappingParams.idPath] || item.value,
+      text: item[mappingParams.textPath] || item.title,
     }));
   }
 
@@ -482,9 +495,9 @@ export class DictionaryToolsService {
    * @param dFilter фильтр из атрибутов компонента
    */
   private getValueForFilter(
-    componentValue: ComponentValue,
+    componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dFilter: IdictionaryFilter,
+    dFilter: ComponentDictionaryFilterDto | string,
   ): DictionaryValue {
     //TODO разобраться с типами
     // @ts-ignore
@@ -499,11 +512,40 @@ export class DictionaryToolsService {
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
         asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
       }),
+      [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
+        asString: (dFilter as ComponentDictionaryFilterDto).value,
+      }),
+      [DictionaryValueTypes.formValue]: (): DictionaryValue => ({
+        asString: this.getValueFromForm(
+          componentValue as FormArray,
+          dFilter as ComponentDictionaryFilterDto,
+        ),
+      }),
     };
-    const calcFunc = filterTypes[dFilter.valueType];
+    const calcFunc = filterTypes[(dFilter as ComponentDictionaryFilterDto).valueType];
     if (!calcFunc) {
-      throw `Неверный valueType для фильтров карты - ${dFilter.valueType}`;
+      throw `Неверный valueType для фильтров - ${(dFilter as ComponentDictionaryFilterDto).valueType}`;
     }
     return calcFunc(dFilter);
+  }
+
+  private getValueFromForm(form: FormArray, dFilter: ComponentDictionaryFilterDto): string {
+    let value = form.value.find(({ id }) => id === dFilter.value).value;
+    if (dFilter.dateFormat) {
+      value = this.datesToolsService.format(value, dFilter.dateFormat);
+    }
+    return value;
+  }
+
+  /**
+   * Проверяет необходимость начальной загрузки справочника
+   * @param compAttrs атрибуты компонента
+   * @returns
+   */
+  private isLoadingNeeded(compAttrs: CustomComponentAttr): boolean {
+    const hasFilterOnRef = compAttrs.ref.some(
+      (reference) => reference.relation === CustomComponentRefRelation.filterOn,
+    );
+    return !hasFilterOnRef || compAttrs.needUnfilteredDictionaryToo;
   }
 }
