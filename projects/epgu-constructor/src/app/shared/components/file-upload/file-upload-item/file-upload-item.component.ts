@@ -521,6 +521,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.processingFiles.next(fileList);
   }
 
+  getMnemonicWithoutOrder(mnemonic: string): string {
+    const result = mnemonic.match(/\.[0-9]$/);
+    return result ? mnemonic.replace(result[0], '') : mnemonic;
+  }
+
   getListStream(objectId: string): Observable<UploadedFile> {
     return of(objectId).pipe(
       tap(() => this.listUploadingStatus.next(true)),
@@ -529,7 +534,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((files: UploadedFile[]) => from(files)),
       filter(
         (file) =>
-          file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+          this.getSubMnemonicPath() === this.getMnemonicWithoutOrder(file?.mnemonic) &&
           file?.objectId.toString() === this.objectId.toString(),
       ),
       map((file) => {
