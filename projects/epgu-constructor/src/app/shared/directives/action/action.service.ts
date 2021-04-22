@@ -26,7 +26,11 @@ import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ActionApiResponse, ActionRequestPayload } from 'epgu-constructor-types';
 
 const navActionToNavMethodMap = {
@@ -268,10 +272,6 @@ export class ActionService {
       };
     }
 
-    if (action.deliriumAction) {
-      bodyResult.deliriumAction = action.deliriumAction;
-    }
-
     return bodyResult;
   }
 
@@ -308,10 +308,8 @@ export class ActionService {
   }
 
   private handleDeliriumAction(action: ComponentActionDto, componentId: string): void {
-    const body = this.getActionDTO(action);
     const navigation = this.prepareNavigationData(action, componentId);
-    const preparedBody = JSON.parse(JSON.stringify(body));
-    preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);
+    navigation.options.deliriumAction = action.deliriumAction;
     return this.formPlayerService.navigate(navigation, FormPlayerNavigation.DELIRIUM_NEXT_STEP);
   }
 
