@@ -7,10 +7,6 @@ import { EventBusService } from '../../../../../core/services/event-bus/event-bu
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ApplicantAnswersDto,
-  ComponentDto
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
@@ -19,6 +15,8 @@ import { CounterDirective } from '../../../../../shared/directives/counter/count
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { of } from 'rxjs';
 
 describe('ConfirmPhoneComponent', () => {

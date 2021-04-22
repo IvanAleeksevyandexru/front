@@ -13,15 +13,14 @@ import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model'
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { isEqual as _isEqual } from 'lodash';
+import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
+import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import {
-  ActionType,
-  ApplicantAnswersDto,
-  ScreenActionDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
@@ -30,7 +29,6 @@ import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
-  DictionaryOptions,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
@@ -73,7 +71,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public isMobile: boolean;
   public isSearchTitleVisible = true;
   public isNoDepartmentErrorVisible = false;
-  public screenActionButtons: ScreenActionDto[] = [];
+  public screenActionButtons: ScreenButton[] = [];
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -119,7 +117,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenActionDto>) => {
+      .subscribe((buttons: Array<ScreenButton>) => {
         this.screenActionButtons = buttons || [];
         this.cdr.markForCheck();
       });

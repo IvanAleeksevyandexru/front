@@ -19,8 +19,8 @@ import { HtmlRemoverService } from '../../../../shared/services/html-remover/htm
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { configureTestSuite } from 'ng-bullet';
-
-
+import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 
 class MockScreenService {
   header = '';
@@ -37,20 +37,20 @@ describe('UploadAndEditPhotoComponent', () => {
   let mockData: ComponentBase = {
     attrs: {
       uploadedFile: {
-        mnemonic:'',
+        mnemonic: '',
         name: '',
         objectType: 2,
       },
       clarifications: {
-        howtotakephoto:'',
+        howtotakephoto: '',
         requirements: {
           setting: {
             warning: '',
             body: [],
             footer: '',
-          }
+          },
         },
-      }
+      },
     },
     id: '',
     label: '',
@@ -60,7 +60,7 @@ describe('UploadAndEditPhotoComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [ UploadAndEditPhotoModule, RouterTestingModule, CoreModule ],
+      imports: [UploadAndEditPhotoModule, RouterTestingModule, CoreModule],
       providers: [
         TerraByteApiService,
         HealthService,
@@ -69,6 +69,7 @@ describe('UploadAndEditPhotoComponent', () => {
         LocationService,
         WINDOW_PROVIDERS,
         { provide: ScreenService, useClass: MockScreenService },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         EventBusService,
         UnsubscribeService,
         FormPlayerApiService,
@@ -76,8 +77,7 @@ describe('UploadAndEditPhotoComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

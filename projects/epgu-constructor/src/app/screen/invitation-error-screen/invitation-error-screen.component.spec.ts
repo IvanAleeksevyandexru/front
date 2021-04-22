@@ -6,10 +6,6 @@ import { InvitationErrorScreenComponentTypes } from '../../component/invitation-
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import {
-  ApplicantAnswersDto,
-  ComponentDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -17,6 +13,8 @@ import { InvitationErrorScreenComponent } from './invitation-error-screen.compon
 import { ScreenBase } from '../screen-base';
 import { LkInvitationInputComponent } from '../../component/invitation-error-screen/components/lk-Invitation-input/lk-invitation-input.component';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

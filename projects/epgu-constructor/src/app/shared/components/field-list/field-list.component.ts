@@ -6,17 +6,17 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { ConfirmUserDataStyle } from 'epgu-constructor-types/dist/base/confirm-user-data';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import {
   ConfirmUserDataError,
   ConfirmUserDataFieldsState,
   ConfirmUserDataState,
-  ConfirmUserDataStyle,
 } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 const defaultStyle: ConfirmUserDataStyle = {
   group: 'mb-16',
-  groupTitle: 'mb-16',
+  groupTitle: 'mb-12',
   value: '',
   label: 'mb-4',
   field: 'mb-16',

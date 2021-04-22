@@ -12,7 +12,6 @@ import {
   CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryFilters } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -20,6 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
+import { DictionaryFilters } from 'epgu-constructor-types/dist/base/dictionary';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -308,6 +308,7 @@ export class ComponentsListRelationsService {
           reference,
           componentVal,
           dependentControl,
+          form,
         );
         break;
       case CustomComponentRefRelation.getValue:
@@ -423,11 +424,12 @@ export class ComponentsListRelationsService {
     dependentControl: AbstractControl,
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
+    const isShown = !this.refRelationService.isValueEquals(reference.val, componentVal);
 
     if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOff,
-        isShown: !this.refRelationService.isValueEquals(reference.val, componentVal),
+        isShown,
       };
       dependentControl.markAsUntouched();
     }
@@ -440,14 +442,22 @@ export class ComponentsListRelationsService {
     reference: CustomComponentRef,
     componentVal: { [key: string]: string },
     dependentControl: AbstractControl,
+    form: FormArray,
   ): void {
     const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
+    const isShown = this.refRelationService.isValueEquals(reference.val, componentVal);
 
     if (element.isShown === true || !isDisplayOff) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOn,
-        isShown: this.refRelationService.isValueEquals(reference.val, componentVal),
+        isShown,
       };
+      if (reference.isResetable && !isShown) {
+        this.handleResetControl(dependentControl, form, reference);
+        const control = dependentControl.get('value');
+        control.markAllAsTouched();
+        control.updateValueAndValidity();
+      }
       dependentControl.markAsUntouched();
     }
   }

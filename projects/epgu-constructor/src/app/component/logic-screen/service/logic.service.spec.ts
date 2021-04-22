@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 import { LogicService } from './logic.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ComponentValue } from '../logic.types';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('LogicService', () => {
   let service: LogicService;
@@ -31,6 +31,19 @@ describe('LogicService', () => {
         headers: { headers: 'headers' },
         method: 'GET',
         path: 'path',
+      },
+    },
+  ];
+  const componentsWithTimeOut: { id: string; value: ComponentValue }[] = [
+    {
+      id: 'rest1',
+      value: {
+        url: 'url',
+        headers: { headers: 'headers' },
+        method: 'POST',
+        body: 'body',
+        path: 'path',
+        timeout: '10',
       },
     },
   ];
@@ -78,7 +91,7 @@ describe('LogicService', () => {
     });
 
     it('should be set value to localStorage', () => {
-      const spy = jest.spyOn(localStorage, 'set');
+      const spy = jest.spyOn(localStorage, 'setRaw');
       service.fetch(componentsPOST)[0].subscribe();
       const req = httpTestingController.expectOne('url');
       expect(spy).toHaveBeenCalledWith(req.request.url, req.request.body);
@@ -86,26 +99,36 @@ describe('LogicService', () => {
   });
 
   describe('createLogicAnswers', () => {
+    jest.useFakeTimers();
     it('should be create logic answers if success response', () => {
       service.fetch(componentsPOST)[0].subscribe((response) => {
         expect(response).toEqual({
-          visited: true,
-          value: '{"headers":[],"code":"200","body":{"body":"body"}}',
+          rest1: {
+            visited: true,
+            value: '{"headers":[],"code":"200","body":{"body":"body"}}',
+          },
         });
       });
       const req = httpTestingController.expectOne('url');
       req.flush({ body: 'body' });
+      jest.runAllTimers();
     });
 
     it('should be create logic answers if error response', () => {
       service.fetch(componentsPOST)[0].subscribe((response) => {
         expect(response).toEqual({
-          visited: true,
-          value: '{"headers":[],"code":"0","body":{"body":"body"}}',
+          rest1: {
+            visited: true,
+            value: '{"headers":[],"code":"500","body":"body"}',
+          },
         });
       });
       const req = httpTestingController.expectOne('url');
-      req.error(new ErrorEvent('error'));
+      req.flush('body', {
+        status: 500,
+        statusText: '',
+      });
+      jest.runAllTimers();
     });
 
     it('should be remove value from localStorage', () => {
@@ -114,6 +137,19 @@ describe('LogicService', () => {
       const req = httpTestingController.expectOne('url');
       req.flush({ body: 'body' });
       expect(spy).toHaveBeenCalledWith(req.request.url);
+    });
+
+    it('should be create logic answers if timeout error', () => {
+      service.fetch(componentsWithTimeOut)[0].subscribe((response) => {
+        expect(response).toEqual({
+          rest1: {
+            visited: true,
+            value: '{"headers":[],"code":"408","body":"408 Request Timeout"}',
+          },
+        });
+      });
+      httpTestingController.expectOne('url');
+      jest.runAllTimers();
     });
   });
 });

@@ -21,6 +21,7 @@ export enum UniqueScreenComponentTypes {
   cityDepartment = 'CityDepartment',
   informationCenterPfr = 'InformationCenterPfr',
   fieldList = 'FieldList',
+  confirmPersonalUserRegReadOnlyAddr = 'ConfirmPersonalUserRegReadOnlyAddr',
   confirmPersonalUserRegAddr = 'ConfirmPersonalUserRegAddr',
   confirmPersonalUserData = 'ConfirmPersonalUserData',
   confirmAnotherUserData = 'ConfirmAnotherUserData',

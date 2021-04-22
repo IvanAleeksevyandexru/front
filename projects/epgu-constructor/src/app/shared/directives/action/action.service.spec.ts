@@ -14,13 +14,6 @@ import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stu
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
-import {
-  ActionApiResponse,
-  ActionType,
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -32,6 +25,14 @@ import { ModalService } from '../../../modal/modal.service';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionApiResponse } from 'epgu-constructor-types';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -132,6 +133,20 @@ const deliriumAction: ComponentActionDto = {
   deliriumAction: 'edit',
 };
 
+const redirectAction: ComponentActionDto = {
+  label: 'redirect',
+  value: '#',
+  action: DTOActionAction.redirect,
+  type: ActionType.redirect,
+};
+
+const redirectToPayByUinAction: ComponentActionDto = {
+  label: 'Начать',
+  value: '',
+  type: ActionType.redirectToPayByUin,
+  action: DTOActionAction.redirectToPayByUin,
+};
+
 const sendActionMock = of({
   errorList: [],
   responseData: { value: 'value', type: 'type' },
@@ -151,6 +166,7 @@ describe('ActionService', () => {
   let modalService: ModalService;
   let currentAnswersService: CurrentAnswersService;
   let htmlRemover: HtmlRemoverService;
+  let formPlayerService: FormPlayerService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -160,6 +176,7 @@ describe('ActionService', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
@@ -181,6 +198,7 @@ describe('ActionService', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     actionService = TestBed.inject(ActionService);
+    formPlayerService = TestBed.inject(FormPlayerService);
     utilsService = TestBed.inject(UtilsService);
     navigationService = TestBed.inject(NavigationService);
     navigationModalService = TestBed.inject(NavigationModalService);
@@ -299,10 +317,16 @@ describe('ActionService', () => {
     expect(modalService.openModal).toHaveBeenCalled();
   });
 
-  it('should call switchAction handleDeliriumAction$', () => {
-    spyOn(actionService, 'handleDeliriumAction$').and.callThrough();
+  it('should call switchAction handleDeliriumAction', () => {
+    spyOn(actionService, 'handleDeliriumAction').and.callThrough();
     actionService.switchAction(deliriumAction, null);
-    expect(actionService.handleDeliriumAction$).toHaveBeenCalled();
+    expect(actionService['handleDeliriumAction']).toHaveBeenCalled();
+  });
+
+  it('should call switchAction redirectExternal', () => {
+    spyOn(navigationService, 'redirectExternal').and.callThrough();
+    actionService.switchAction(redirectAction, null);
+    expect(navigationService.redirectExternal).toHaveBeenCalled();
   });
 
   describe('getComponentStateForNavigate()', () => {
@@ -346,16 +370,25 @@ describe('ActionService', () => {
     });
   });
 
-  describe('handleDeliriumAction$()', () => {
-    it('sould call htmlRemover.delete()', () => {
-      const htmlRemoverDeleteSpy = spyOn(htmlRemover, 'delete');
-      actionService.handleDeliriumAction$(deliriumAction);
-      expect(htmlRemoverDeleteSpy).toBeCalled();
+  describe('handleDeliriumAction()', () => {
+    it('sould call formPlayerService.navigate()', () => {
+      const formPlayerServiceNavigateSpy = spyOn(formPlayerService, 'navigate');
+      actionService['handleDeliriumAction'](deliriumAction, 'componentId');
+      expect(formPlayerServiceNavigateSpy).toBeCalled();
     });
-    it('sould call actionApiService.sendAction()', () => {
-      const actionApiServiceSendActionSpy = spyOn(formPlayerApiService, 'sendAction');
-      actionService.handleDeliriumAction$(deliriumAction);
-      expect(actionApiServiceSendActionSpy).toBeCalled();
+  });
+
+  describe('redirectToPayByUin()', () => {
+    beforeEach(() => {
+      screenService.serviceInfo = {
+        billNumber: '100',
+      };
+    });
+
+    it('should call htmlRemover.delete()', () => {
+      const spy = spyOn(navigationService, 'redirectTo');
+      actionService.switchAction(redirectToPayByUinAction, '');
+      expect(spy).toHaveBeenCalledWith('oplataUrl/pay/uin/100');
     });
   });
 });

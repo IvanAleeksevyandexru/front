@@ -13,8 +13,8 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FormValue, MatPeriod } from '../mat-period.models';
-import { CachedAnswersDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { configureTestSuite } from 'ng-bullet';
+import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
 
 describe('MatPeriodContainerComponent', () => {
   let component: MatPeriodContainerComponent;

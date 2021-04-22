@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 interface TranslitAlphabet {
   [propName: string]: string;

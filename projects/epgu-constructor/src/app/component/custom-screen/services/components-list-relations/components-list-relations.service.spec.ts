@@ -23,13 +23,9 @@ import { ComponentsListRelationsService } from './components-list-relations.serv
 import { Observable } from 'rxjs';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
-import {
-  DictionaryConditions,
-  DictionaryFilters,
-  DictionaryValueTypes,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
+import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes } from 'epgu-constructor-types/dist/base/dictionary';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;

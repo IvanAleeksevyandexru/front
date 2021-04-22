@@ -3,15 +3,13 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
-import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../../shared/constants/utils';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DictionaryConditions } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
@@ -26,12 +24,16 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components-list.types';
-// eslint-disable-next-line max-len
-import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../../../../shared/services/address-helper/address-helper.service';
+import {
+  AddressHelperService,
+  DadataSuggestionsAddressForLookup,
+} from '../../../../shared/services/address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
+import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -74,7 +76,10 @@ export class ComponentsListFormService {
 
   public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
     this.errors = errors;
-    this._shownElements = this.componentsListRelationsService.createStatusElements(components, this.screenService.cachedAnswers);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(
+      components,
+      this.screenService.cachedAnswers,
+    );
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -168,7 +173,9 @@ export class ComponentsListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  public addressHelperServiceProvider(attrs: CustomComponentAttr): LookupProvider | LookupPartialProvider {
+  public addressHelperServiceProvider(
+    attrs: CustomComponentAttr,
+  ): LookupProvider | LookupPartialProvider {
     return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
   }
 
@@ -236,7 +243,7 @@ export class ComponentsListFormService {
     return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
   }
 
-  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr): void {
+  private setRelationResult(component: CustomComponent, result?: Partial<CustomComponent>): void {
     if (!result) {
       if (this.cachedAttrsComponents[component.id]) {
         this.resetRelation(component);
@@ -250,7 +257,7 @@ export class ComponentsListFormService {
     const stringResult = JSON.stringify(result);
     if (this.cachedAttrsComponents[component.id].last !== stringResult) {
       component.attrs = this.cachedAttrsComponents[component.id].base;
-      this.relationPatch(component, result.attrs); // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
+      this.relationPatch(component, result.attrs);
       this.cachedAttrsComponents[component.id].last = stringResult;
     }
   }
@@ -346,12 +353,9 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (
-      next.attrs.dictionaryType === 'MARKI_TS' &&
-      !isEqualObj<CustomListFormGroup>(prev, next)
-    ) {
+    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
       const indexVehicle: number = this.form.controls.findIndex(
-        (control: AbstractControl) => control.value?.id === next.id
+        (control: AbstractControl) => control.value?.id === next.id,
       );
 
       const options = {
@@ -367,7 +371,7 @@ export class ComponentsListFormService {
       };
 
       const model: AbstractControl = this.form.controls.find(
-        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS'
+        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
       );
 
       model.get('value').patchValue('');
@@ -389,12 +393,7 @@ export class ComponentsListFormService {
   }
 
   private watchFormArray$(): Observable<Array<CustomListFormGroup>> {
-    return this.form.valueChanges.pipe(
-      distinctUntilChanged((prev, next) =>
-        isEqualObj<boolean | number | string | object>(prev, next),
-      ),
-      takeUntil(this.ngUnsubscribe$),
-    );
+    return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 
   private updateOnValidation(component: CustomComponent): UpdateOn {

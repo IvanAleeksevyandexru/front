@@ -1,24 +1,6 @@
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { PaymentInfoInterface } from '../../../component/unique-screen/components/payment/payment.types';
 
-/**
- * @property {string}[treeFiltering='ONELEVEL'] -
- * @property {number}[pageNum=1] -
- * @property {string}[pageSize='200'] -
- * @property {string}[parentRefItemValue=''] -
- * @property {Array<string>}[selectAttributes='*'] -
- * @property {string}tx -
- */
-export interface DictionaryOptions {
-  filter?: DictionaryFilters['filter'] | DictionarySubFilter;
-  treeFiltering?: string;
-  pageNum?: number;
-  pageSize?: string | number;
-  parentRefItemValue?: string;
-  selectAttributes?: Array<string>;
-  tx?: string;
-}
-
 export interface DictionaryResponse {
   error: DictionaryResponseError;
   fieldErrors: Array<string>;
@@ -62,57 +44,6 @@ export interface DictionaryYMapItem extends DictionaryItem {
   // fullListItems;
   agreement: boolean;
   expanded: boolean;
-}
-
-export interface  DictionaryValue {
-  asString: string;
-}
-
-export enum DictionaryConditions {
-  EQUALS = 'EQUALS',
-  CONTAINS = 'CONTAINS'
-}
-
-export enum DictionaryUnionKind {
-  AND = 'AND',
-  OR = 'OR'
-}
-
-export enum DictionaryValueTypes {
-  value = 'value',
-  preset = 'preset',
-  root = 'root',
-  ref = 'ref'
-}
-
-export interface DictionarySimpleFilter {
-  attributeName: string;
-  condition: DictionaryConditions;
-  value: DictionaryValue;
-  valueType?: DictionaryValueTypes;
-}
-
-export interface DictionarySubFilter {
-  simple: DictionarySimpleFilter;
-}
-
-export interface DictionaryUnionFilter {
-    unionKind: DictionaryUnionKind;
-    subs: Array<DictionarySubFilter>;
-}
-
-export interface DictionaryFilters {
-  filter: {
-    union?: DictionaryUnionFilter,
-    simple?: DictionarySimpleFilter,
-    pageNum?: number;
-    pageSize?: string;
-    parentRefItemValue?: string;
-    selectAttributes?: Array<string>;
-    treeFiltering?: 'ONELEVEL';
-    tx?: string;
-    withCredentials?: boolean;
-  }
 }
 
 export interface DadataSuggestionsAddress {

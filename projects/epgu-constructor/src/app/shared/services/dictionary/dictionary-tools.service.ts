@@ -1,15 +1,8 @@
 import { IdictionaryFilter } from '../../../component/unique-screen/components/select-map-object/select-map-object.interface';
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import {
-  DictionaryFilters,
   DictionaryItem,
-  DictionaryOptions,
   DictionaryResponse,
-  DictionarySimpleFilter,
-  DictionaryUnionFilter,
-  DictionaryUnionKind,
-  DictionaryValue,
-  DictionaryValueTypes,
 } from './dictionary-api.types';
 import { ListElement, ListItem } from 'epgu-lib/lib/models/dropdown.model';
 import {
@@ -33,11 +26,16 @@ import { ComponentDictionaryFilters } from '../../../component/custom-screen/ser
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
-import {
-  CachedAnswersDto,
-  ComponentDictionaryFilterDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { isUndefined } from '../../constants/utils';
+import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
+import {
+  DictionaryFilters,
+  DictionaryOptions,
+  DictionarySimpleFilter,
+  DictionaryUnionFilter,
+  DictionaryUnionKind, DictionaryValue, DictionaryValueTypes
+} from 'epgu-constructor-types/dist/base/dictionary';
+import { ComponentDictionaryFilterDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -113,8 +111,14 @@ export class DictionaryToolsService {
           if (component.type === CustomScreenComponentTypes.DropDownDepts) {
             data.push(this.getDropDownDepts$(component, screenStore));
           } else {
-            const { dictionaryType, dictionaryOptions = null } = component.attrs;
-            const options = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+            const { dictionaryType, dictionaryOptions = null, dictionaryFilter = null } = component.attrs;
+
+            const defaultOptions: DictionaryOptions = { pageNum: 0 };
+            const options: DictionaryOptions = {
+              ...defaultOptions,
+              ...(dictionaryOptions ? dictionaryOptions: {}),
+              ...(dictionaryFilter ? this.prepareOptions(component, screenStore, dictionaryFilter): {}),
+            };
 
             data.push(this.getDictionaries$(dictionaryType, component, options));
           }

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 
 @Component({

@@ -1,8 +1,6 @@
 import { ServiceResult } from '../../car-info/models/car-info.interface';
-import {
-  ComponentActionDto,
-  ComponentAttrsDto
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 
 
 export interface CarListComponentAttrsDto extends ComponentAttrsDto {

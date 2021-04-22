@@ -42,7 +42,7 @@ export class FileUploadService {
   }
 
   registerUploader(name: string, maxAmount: number, maxSize: number): void {
-    if (!name || maxAmount < 0 || maxSize < 0) {
+    if (!name || maxSize < 0) {
       return;
     }
     const uploaders = this.getUploaders();
@@ -64,6 +64,20 @@ export class FileUploadService {
       this.updateSize(value, uploader);
       this.changes.next(null);
     }
+  }
+
+  changeMaxAmount(maxAmount: number, name: string): void {
+    const uploader = this.getUploader(name);
+    if (uploader?.maxAmount != maxAmount) {
+      uploader.maxAmount = maxAmount;
+      this.changeUploader(name, uploader);
+      this.changes.next(null);
+    }
+  }
+
+  getAmount(name: string): number {
+    const uploader = this.getUploader(name);
+    return uploader?.amount ?? 0;
   }
 
   getMaxTotalFilesAmount(): number {

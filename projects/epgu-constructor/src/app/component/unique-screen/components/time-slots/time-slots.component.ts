@@ -8,11 +8,11 @@ import {
 import { ListItem } from 'epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
@@ -222,12 +222,12 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.checkExistenceSlots();
   }
 
-  public monthChanged(ev: ListItem): void {
+  public async monthChanged(ev: ListItem): Promise<void> {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
-    this.renderSingleMonthGrid(this.weeks);
+    await this.renderSingleMonthGrid(this.weeks);
     this.checkExistenceSlots();
   }
 
@@ -336,7 +336,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.timeSlotType = value.timeSlotType;
 
     this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
-      (isBookedDepartment) => {
+      async (isBookedDepartment) => {
         if (this.timeSlotsService.hasError()) {
           this.inProgress = false;
           this.errorMessage = this.timeSlotsService.getErrorMessage();
@@ -345,7 +345,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           }
           this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
         } else {
-          this.serviceInitHandle(!!isBookedDepartment);
+          await this.serviceInitHandle(!!isBookedDepartment);
         }
 
         this.inProgress = false;
@@ -356,7 +356,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           this.showModal(this.emptySlotsModal);
         }
 
-        this.changeDetectionRef.markForCheck();
+        this.changeDetectionRef.detectChanges();
       },
       () => {
         this.errorMessage = this.timeSlotsService.getErrorMessage();
@@ -370,10 +370,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   // TODO
   // eslint-disable-next-line @typescript-eslint/typedef
-  private renderSingleMonthGrid(output): void {
+  private async renderSingleMonthGrid(output): Promise<void> {
     output.splice(0, output.length); // in-place clear
 
-    let firstDayOfMonth = new Date(Date.now());
+    let firstDayOfMonth = await this.datesHelperService.getToday();
     firstDayOfMonth = this.datesHelperService.setCalendarDate(
       firstDayOfMonth,
       this.activeYearNumber,
@@ -585,7 +585,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Обработка инициализации текущего сервиса
    * @param isBookedDepartment Флаг показывающий что выбран департамент, на который уже есть бронь
    */
-  private serviceInitHandle(isBookedDepartment: boolean): void {
+  private async serviceInitHandle(isBookedDepartment: boolean): Promise<void> {
     this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
     this.activeMonthNumber = this.timeSlotsService.getCurrentMonth();
@@ -595,7 +595,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
     if (this.currentMonth) {
-      this.monthChanged(this.currentMonth);
+      await this.monthChanged(this.currentMonth);
     }
 
     if (this.bookedSlot && isBookedDepartment) {

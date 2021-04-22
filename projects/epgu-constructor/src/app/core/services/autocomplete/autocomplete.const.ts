@@ -1,4 +1,8 @@
+import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ISuggestionItem } from './autocomplete.inteface';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 export const prepareClassifiedSuggestionItems = (
   suggestions: ISuggestionItem,
@@ -28,3 +32,14 @@ export const prepareClassifiedSuggestionItems = (
   }
   return result;
 };
+
+export const allowedAutocompleteComponentsList = (component: ComponentDto): boolean => {
+  return (
+    component.type === CustomScreenComponentTypes.DocInput ||
+    component.type === UniqueScreenComponentTypes.registrationAddr ||
+    component.type === UniqueScreenComponentTypes.confirmPersonalUserRegAddr ||
+    component.type === UniqueScreenComponentTypes.employeeHistory
+  );
+};
+
+export const getSuggestionGroupId = (display: DisplayDto): string => display.suggestion?.groupId;

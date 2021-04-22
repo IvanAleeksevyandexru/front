@@ -1,7 +1,7 @@
 import { RelativeDate } from 'epgu-lib';
-import { TextTransform } from '../../../../../shared/types/textTransform';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
-
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { FieldNames } from '../../registration-addr/registration-addr-screen.types';
 
 /**
  * @property {Array<object>}attrs
@@ -40,14 +40,12 @@ export interface ConfirmAddressActionsInterface {
   value: string;
 }
 
-export type ConfirmAddressFieldName = 'regAddr' | 'regFrom' | 'regTo' | 'regDate';
-
 /**
  * @property {string}fieldName - field id
  * @property {string}label - field name
  */
 export interface ConfirmAddressFieldsInterface {
-  fieldName: ConfirmAddressFieldName;
+  fieldName: FieldNames;
   label: 'адрес';
   attrs?: { labelHint?: string };
   hint?: string;

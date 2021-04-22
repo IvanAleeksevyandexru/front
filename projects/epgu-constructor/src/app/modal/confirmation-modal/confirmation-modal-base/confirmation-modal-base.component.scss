@@ -45,6 +45,12 @@ $minModalHeight: 293px;
       }
     }
 
+    &__body, &__content {
+      @include tablets-down {
+        height: 100%;
+      }
+    }
+
     .perfect-scrollbar {
       .conf-modal__content {
         overflow: initial;

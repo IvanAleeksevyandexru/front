@@ -37,6 +37,8 @@ import { CarListModule } from './components/car-list/car-list.module';
 import { MatPeriodModule } from './components/mat-period/mat-period.module';
 import { DateTimePeriodModule } from './components/date-time-period/date-time-period.module';
 import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/confirm-personal-user-address-readonly-screen/confirm-personal-user-address-readonly-screen.module';
 
 @NgModule({
   imports: [
@@ -58,6 +60,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     InformationCenterPfrModule,
     ConfirmPersonalUserPhoneEmailModule,
     ConfirmPersonalUserAddressScreenModule,
+    ConfirmPersonalUserAddressReadonlyScreenModule,
     ConfirmPersonalUserDataScreenModule,
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,
@@ -87,6 +90,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
     InformationCenterPfrModule,
     ConfirmPersonalUserPhoneEmailModule,
     ConfirmPersonalUserAddressScreenModule,
+    ConfirmPersonalUserAddressReadonlyScreenModule,
     ConfirmPersonalUserDataScreenModule,
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,

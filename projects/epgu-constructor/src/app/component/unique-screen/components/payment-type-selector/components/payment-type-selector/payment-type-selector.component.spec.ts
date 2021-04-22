@@ -30,6 +30,8 @@ import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-but
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -52,7 +54,7 @@ describe('PaymentTypeSelectorComponent', () => {
     ],
   };
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorComponent, PaymentTypeSelectorButtonComponent],
       imports: [
@@ -75,6 +77,7 @@ describe('PaymentTypeSelectorComponent', () => {
         HtmlRemoverService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,

@@ -9,14 +9,12 @@ import {
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ApplicantAnswersDto,
-  ComponentDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 

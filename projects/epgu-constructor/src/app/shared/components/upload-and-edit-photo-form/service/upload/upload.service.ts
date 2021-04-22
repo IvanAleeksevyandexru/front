@@ -5,9 +5,9 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerabyteListItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
-import { ComponentUploadedFileDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { TerraUploadedFile } from '../../../file-upload/file-upload-item/data';
+import { ComponentUploadedFileDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 @Injectable()
 export class UploadService {

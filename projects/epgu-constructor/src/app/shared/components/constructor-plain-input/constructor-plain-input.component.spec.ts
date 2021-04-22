@@ -16,8 +16,8 @@ import { TextTransformModule } from '../../directives/text-transform/text-transf
 import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
-import { TextTransform } from '../../types/textTransform';
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
+import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;

@@ -4,11 +4,16 @@ import {
   FileItem,
   FileItemError,
   FileItemStatus,
+  FileItemStore,
+  getAcceptTypes,
   getSizeInMB,
 } from './file-upload-item/data';
-import { FileUploadItem } from '../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileUploadItem,
+  MaxCountByType,
+} from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { FileUploadService } from './file-upload.service';
 import {
   CompressionOptions,
@@ -30,10 +35,11 @@ export class PrepareService {
     file: FileItem,
     config: FileUploadItem,
     getError: getErrorType,
-    acceptTypes?: string,
+    store: FileItemStore,
   ): Observable<FileItem> {
     return of(file).pipe(
-      map((file: FileItem) => this.validateType(file, getError, acceptTypes)), // Проверка типа
+      tap((file: FileItem) => this.checkAndSetMaxCountByTypes(config, file, store)),
+      map((file: FileItem) => this.validateType(config, file, getError, store)), // Проверка типа
       map((file: FileItem) =>
         file.status !== FileItemStatus.error ? this.validateAmount(file, config, getError) : file,
       ), // Проверка кол-ва
@@ -46,8 +52,67 @@ export class PrepareService {
     );
   }
 
-  validateType(file: FileItem, getError: getErrorType, acceptTypes?: string): FileItem {
-    return file.isTypeValid(acceptTypes)
+  changeMaxAmount(config: FileUploadItem, lastSelected: MaxCountByType): void {
+    this.fileUploadService.changeMaxAmount(
+      (lastSelected as MaxCountByType)?.maxFileCount ?? 0,
+      config.uploadId,
+    );
+  }
+
+  checkAndSetMaxCountByTypes(
+    config: FileUploadItem,
+    file: FileItem,
+    store: FileItemStore,
+    isAdd = true,
+  ): void {
+    if (!(config?.maxCountByTypes?.length > 0)) {
+      return;
+    }
+    const types = store.getUniqueTypes(!isAdd ? file : null);
+    if (isAdd && !types.includes(file.getType())) {
+      types.push(file.getType());
+    }
+
+    const findedType = config?.maxCountByTypes.find(({ type }) =>
+      types.every((fileType) => type.includes(fileType)),
+    );
+    if (findedType) {
+      if (
+        !store.lastSelected ||
+        findedType.maxFileCount >= this.fileUploadService.getAmount(config.uploadId)
+      ) {
+        store.lastSelected = findedType;
+      }
+    }
+    if (types.length === 0) {
+      store.lastSelected = config?.maxCountByTypes.reduce(
+        (acc, v) => {
+          acc.maxFileCount += v.maxFileCount;
+          acc.type = acc.type
+            .concat(v.type)
+            .filter((item, index, arr) => arr.indexOf(item) === index);
+          return acc;
+        },
+        {
+          type: [],
+          maxFileCount: 0,
+        },
+      );
+    }
+    this.changeMaxAmount(config, store.lastSelected);
+  }
+
+  validateType(
+    config: FileUploadItem,
+    file: FileItem,
+    getError: getErrorType,
+    store: FileItemStore,
+  ): FileItem {
+    return file.isTypeValid(
+      store?.lastSelected
+        ? getAcceptTypes(store?.lastSelected.type)
+        : getAcceptTypes(config.fileType),
+    )
       ? file
       : file.setError(getError(ErrorActions.addInvalidType));
   }

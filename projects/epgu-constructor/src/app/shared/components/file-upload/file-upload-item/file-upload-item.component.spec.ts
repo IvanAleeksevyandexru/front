@@ -42,14 +42,12 @@ import { LoggerServiceStub } from '../../../../core/services/logger/logger.servi
 import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from './data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
-import {
-  ComponentAttrsDto,
-  ComponentDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {

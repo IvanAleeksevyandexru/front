@@ -1,5 +1,5 @@
-import { ComponentAttrsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { Checkbox } from '../../../unique-screen/components/checkbox-cube/models/checkbox-cube.interface';
+import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export interface CheckboxListComponentAttrsDto extends ComponentAttrsDto {
   labelShow?: string;
