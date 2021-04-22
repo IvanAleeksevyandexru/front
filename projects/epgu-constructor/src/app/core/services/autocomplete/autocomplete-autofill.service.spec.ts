@@ -1,5 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -15,9 +16,27 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 import { LoggerService } from '../logger/logger.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
+import { ISuggestionItemList } from './autocomplete.inteface';
 
 describe('AutocompleteAutofillService', () => {
   let service: AutocompleteAutofillService;
+  let screenService: ScreenService;
+  let component: ComponentDto = {
+    id: 'pd8_1',
+    type: 'EmployeeHistory',
+    label: 'Трудовой стаж',
+    attrs: {},
+    value: '',
+    required: true,
+    suggestionId: 'employee_history',
+  };
+  let suggestionItemList: ISuggestionItemList = {
+    mnemonic: 'prev_region',
+    value: '{"value": "value"}',
+    originalItem: '{"value": "value"}',
+    id: 123,
+    componentsGroupIndex: 0,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,9 +61,20 @@ describe('AutocompleteAutofillService', () => {
       ],
     });
     service = TestBed.inject(AutocompleteAutofillService);
+    screenService = TestBed.inject(ScreenService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('autofillIfNeeded', () => {
+    it('should call prepareEmployeeHistoryComponentValue() if EmployeeHistory component passed', () => {
+      const spy = jest.spyOn(service, 'autofillIfNeeded');
+      screenService.suggestions = {
+        pd8_1: {
+          mnemonic: 'employee_history',
+          list: [suggestionItemList],
+        },
+      };
+      service.autofillIfNeeded(component);
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });
