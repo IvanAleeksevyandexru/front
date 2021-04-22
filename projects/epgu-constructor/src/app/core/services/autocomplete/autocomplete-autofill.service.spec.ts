@@ -62,11 +62,23 @@ describe('AutocompleteAutofillService', () => {
     });
     service = TestBed.inject(AutocompleteAutofillService);
     screenService = TestBed.inject(ScreenService);
+    screenService.component = component;
   });
 
   describe('autofillIfNeeded', () => {
-    it('should call prepareEmployeeHistoryComponentValue() if EmployeeHistory component passed', () => {
+    it('should call prepareEmployeeHistoryComponentValue(), if EmployeeHistory component passed', () => {
       const spy = jest.spyOn(service, 'autofillIfNeeded');
+      screenService.suggestions = {
+        pd8_1: {
+          mnemonic: 'employee_history',
+          list: [suggestionItemList],
+        },
+      };
+      service.autofillIfNeeded(component);
+      expect(spy).toHaveBeenCalled();
+    });
+    it('should call updateScreenStore(), if EmployeeHistory component passed', () => {
+      const spy = jest.spyOn(screenService, 'updateScreenStore');
       screenService.suggestions = {
         pd8_1: {
           mnemonic: 'employee_history',
