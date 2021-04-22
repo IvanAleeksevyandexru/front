@@ -111,8 +111,14 @@ export class DictionaryToolsService {
           if (component.type === CustomScreenComponentTypes.DropDownDepts) {
             data.push(this.getDropDownDepts$(component, screenStore));
           } else {
-            const { dictionaryType, dictionaryOptions = null } = component.attrs;
-            const options = dictionaryOptions ? dictionaryOptions : { pageNum: 0 };
+            const { dictionaryType, dictionaryOptions = null, dictionaryFilter = null } = component.attrs;
+
+            const defaultOptions: DictionaryOptions = { pageNum: 0 };
+            const options: DictionaryOptions = {
+              ...defaultOptions,
+              ...(dictionaryOptions ? dictionaryOptions: {}),
+              ...(dictionaryFilter ? this.prepareOptions(component, screenStore, dictionaryFilter): {}),
+            };
 
             data.push(this.getDictionaries$(dictionaryType, component, options));
           }
