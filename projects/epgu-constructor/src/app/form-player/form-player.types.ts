@@ -80,6 +80,7 @@ export interface NavigationOptions {
   url?: string;
   store?: FormPlayerApiSuccessResponse;
   params?: NavigationParams;
+  deliriumAction?: string;
 }
 
 export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;

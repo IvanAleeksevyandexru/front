@@ -1,19 +1,9 @@
 @import '../../../../../styles/core/index';
 
 .error {
-  margin-bottom: 16px;
-
-  .title {
-    @include typ-h6;
-    font-weight: $fw-bold;
-    margin-bottom: 4px;
-  }
-
-  .description {
-    @include typ-plain-small;
-    color: $color-text-helper;
-    margin: 0;
-  }
+  @include typ-plain-small();
+  color: $color-gosred;
+  margin: 4px 0 12px 0;
 }
 
 .item {
