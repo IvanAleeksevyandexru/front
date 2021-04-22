@@ -27,7 +27,11 @@ import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ActionApiResponse } from 'epgu-constructor-types';
 
 const mockComponent: ComponentDto = {
@@ -133,7 +137,7 @@ const redirectAction: ComponentActionDto = {
   label: 'redirect',
   value: '#',
   action: DTOActionAction.redirect,
-  type: ActionType.redirect
+  type: ActionType.redirect,
 };
 
 const redirectToPayByUinAction: ComponentActionDto = {
@@ -367,11 +371,6 @@ describe('ActionService', () => {
   });
 
   describe('handleDeliriumAction()', () => {
-    it('sould call htmlRemover.delete()', () => {
-      const htmlRemoverDeleteSpy = spyOn(htmlRemover, 'delete');
-      actionService['handleDeliriumAction'](deliriumAction, 'componentId');
-      expect(htmlRemoverDeleteSpy).toBeCalled();
-    });
     it('sould call formPlayerService.navigate()', () => {
       const formPlayerServiceNavigateSpy = spyOn(formPlayerService, 'navigate');
       actionService['handleDeliriumAction'](deliriumAction, 'componentId');
@@ -379,10 +378,10 @@ describe('ActionService', () => {
     });
   });
 
-  describe('handleDeliriumAction$()', () => {
+  describe('redirectToPayByUin()', () => {
     beforeEach(() => {
       screenService.serviceInfo = {
-        billNumber: '100'
+        billNumber: '100',
       };
     });
 

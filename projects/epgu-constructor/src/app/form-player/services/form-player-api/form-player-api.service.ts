@@ -11,7 +11,7 @@ import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
-  QuizRequestDto
+  QuizRequestDto,
 } from 'epgu-constructor-types';
 
 @Injectable()
@@ -67,6 +67,10 @@ export class FormPlayerApiService {
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = this.locationService.getHref();
 
+    if (options.deliriumAction) {
+      data.deliriumAction = options.deliriumAction;
+    }
+
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;
     }
@@ -84,7 +88,7 @@ export class FormPlayerApiService {
     const { orderId, serviceId } = this.initDataService;
     const body = {
       parentOrderId: orderId,
-      serviceId
+      serviceId,
     };
     const path = `${this.configService.apiUrl}/service/booking`;
     return this.post<FormPlayerApiResponse>(path, body);
