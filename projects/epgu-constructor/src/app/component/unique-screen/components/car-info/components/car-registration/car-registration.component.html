@@ -1,0 +1,35 @@
+<div>
+  <h5 class="info-list-title">Регистрация ТС</h5>
+
+  <div class="car-info-group">
+    <epgu-constructor-info-list-item
+      class="info-list-group-item"
+      label="Номер реестровой записи"
+      [value]="vehicleInfo.uniqueRowNumber | defaultValue"
+    ></epgu-constructor-info-list-item>
+    <epgu-constructor-info-list-item
+      class="info-list-group-item"
+      label="Статус в ГИБДД"
+      [value]="vehicleInfo.status | defaultValue"
+    ></epgu-constructor-info-list-item>
+    <epgu-constructor-info-list-item
+      class="info-list-group-item"
+      label="Наименование подразделения"
+      [value]="
+        vehicleInfo.regActions[vehicleInfo.regActions.length - 1].regDepartment | defaultValue
+      "
+    ></epgu-constructor-info-list-item>
+    <epgu-constructor-info-list-item
+      class="info-list-group-item"
+      label="Последняя операция"
+      [value]="vehicleInfo.lastRegActionName | defaultValue"
+    ></epgu-constructor-info-list-item>
+    <epgu-constructor-info-list-item
+      class="info-list-group-item"
+      label="В лизинге"
+      [value]="vehicleInfo.regActions[vehicleInfo.regActions.length - 1].leasingFlag | yesNo"
+    ></epgu-constructor-info-list-item>
+  </div>
+
+  <div class="divider info-list-divider"></div>
+</div>

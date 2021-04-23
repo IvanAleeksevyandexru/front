@@ -1,6 +1,10 @@
-<a class="expansion-link expansion-show-details-link" *ngIf="!isExpanded" (click)="isExpanded = true">Показать детали</a>
+<a
+  class="expansion-link expansion-show-details-link"
+  *ngIf="!isExpanded"
+  (click)="isExpanded = true"
+  >{{ openDescription }}</a
+>
 <ng-container *ngIf="isExpanded">
   <ng-content></ng-content>
 </ng-container>
 <a class="expansion-link" *ngIf="isExpanded" (click)="isExpanded = false">Свернуть</a>
-
