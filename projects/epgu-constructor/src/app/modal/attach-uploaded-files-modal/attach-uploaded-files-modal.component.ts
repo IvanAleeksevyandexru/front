@@ -128,6 +128,16 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     const target = event.target as HTMLImageElement;
     target.src = `${this.basePath}${this.iconsTypes.error}.svg`;
     file.setError({ type: ErrorActions.addInvalidFile, text: 'Что-то пошло не так' });
+    // TODO: убрать костыль ниже, когда придумают, что делать с битыми файлами
+    // Контекст боли тут: https://jira.egovdev.ru/browse/EPGUCORE-54485
+    this.suggestionsFilesGroupByDate.some((group) => {
+      const fileIndex = group[1].findIndex((gFile) => gFile.id === file.id);
+      if (fileIndex > -1) {
+        group[1].splice(fileIndex, 1);
+        return true;
+      }
+      return false;
+    });
   }
 
   private handleFileDeleted(file: FileItem): void {
