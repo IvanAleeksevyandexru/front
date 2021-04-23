@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn, } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService } from 'epgu-lib';
@@ -15,9 +9,10 @@ import {
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+import { INCORRENT_DATE_FIELD, InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -39,6 +34,7 @@ export class ValidationService {
 
   constructor(
     private dateRangeService: DateRangeService,
+    private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
   ) {}
 
@@ -142,13 +138,15 @@ export class ValidationService {
       if (validations.length === 0) return;
 
       const minDate =
+        this.dateRestrictionsService.dateRangeStore.get(component.id)?.min ||
         this.dateRangeService.rangeMap.get(component.id)?.min ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
       const maxDate =
+        this.dateRestrictionsService.dateRangeStore.get(component.id)?.max ||
         this.dateRangeService.rangeMap.get(component.id)?.max ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 
-      const error = validations.find((validation) => {
+      const error = control.value && validations.find((validation) => {
         switch ((validation.condition as unknown) as DateValidationCondition) {
           case '<':
             return this.datesToolsService.isBefore(control.value, minDate);
@@ -164,7 +162,7 @@ export class ValidationService {
       });
 
       if (error) {
-        return this.validationErrorMsg(error.errorMsg);
+        return this.validationErrorMsg(error.errorMsg ? error.errorMsg: INCORRENT_DATE_FIELD);
       }
     };
   }
