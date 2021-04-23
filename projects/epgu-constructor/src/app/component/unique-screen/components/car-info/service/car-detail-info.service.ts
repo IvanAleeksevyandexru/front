@@ -22,20 +22,7 @@ export class CarDetailInfoService {
       const hasErrors = data.every(
         (info) => !!info && info.externalServiceCallResult === ServiceResult.EXTERNAL_SERVER_ERROR,
       );
-
-      const [vehicleInfo, notaryInfo] = data;
-      if (vehicleInfo && notaryInfo) {
-        this.currentAnswerService.state = {
-          vehicleInfo: {
-            ...vehicleInfo,
-            externalServiceCallResult: vehicleInfo.externalServiceCallResult,
-          },
-          notaryInfo: {
-            ...notaryInfo,
-            externalServiceCallResult: notaryInfo.externalServiceCallResult,
-          },
-        };
-      }
+      this.setState(data);
 
       return hasErrors;
     }),
@@ -47,7 +34,6 @@ export class CarDetailInfoService {
   public hasData$ = combineLatest([this.hasCommonError$, this.hasCommonLoading$]).pipe(
     map((data) => data.every((data) => !data)),
   );
-
   public hasVin = !!this.screenService.component.arguments.vin;
 
   constructor(
@@ -106,5 +92,21 @@ export class CarDetailInfoService {
     return this.http
       .post<T>(`${this.configService.apiUrl}${url}`, this.screenService.getStore())
       .pipe(catchError(() => of(null)));
+  }
+
+  private setState(data: [CarDetailInfo<VehicleOwnerInfo>, CarDetailInfo<NotaryInfo>]): void {
+    const [vehicleInfo, notaryInfo] = data;
+    if (vehicleInfo && notaryInfo) {
+      this.currentAnswerService.state = {
+        vehicleInfo: {
+          ...vehicleInfo.data,
+          externalServiceCallResult: vehicleInfo.externalServiceCallResult,
+        },
+        notaryInfo: {
+          ...notaryInfo.data,
+          externalServiceCallResult: notaryInfo.externalServiceCallResult,
+        },
+      };
+    }
   }
 }

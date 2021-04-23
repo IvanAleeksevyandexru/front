@@ -39,6 +39,10 @@
         ></epgu-constructor-search-pts>
       </ng-container>
 
+      <ng-container *ngIf="vehicleInfo.externalServiceCallResult === serviceResult.NOT_FOUND_ERROR">
+        <epgu-constructor-legal-compliance></epgu-constructor-legal-compliance>
+      </ng-container>
+
       <ng-template #vehicleInfoError>
         <ng-container
           *ngTemplateOutlet="
