@@ -1363,12 +1363,12 @@ describe('ComponentsListRelationsService', () => {
 
   describe('onAfterFilterOnRel()', () => {
     const setup = (
-      reference = {
+      references = [{
         relatedRel: componentMock.id,
         val: '*',
         relation: 'filterOn',
         dictionaryFilter: [],
-      },
+      }],
     ) => {
       const dependentComponent = {
         id: 'acc_org',
@@ -1376,7 +1376,7 @@ describe('ComponentsListRelationsService', () => {
         required: true,
         label: 'Расчётный счёт',
         attrs: {
-          ref: reference ? [reference] : [],
+          ref: references ? [...references] : [],
         },
         value: '',
         visited: false,
@@ -1390,7 +1390,7 @@ describe('ComponentsListRelationsService', () => {
       const control = mockForm.controls[0];
       const dependentControl = mockForm.controls[1];
 
-      return { control, dependentComponent, dependentControl, mockForm, reference };
+      return { control, dependentComponent, dependentControl, mockForm, references };
     };
 
     it('should do nothing when no ref', () => {
@@ -1403,7 +1403,7 @@ describe('ComponentsListRelationsService', () => {
     });
 
     it('should reset dependent control', () => {
-      const { dependentControl, control, mockForm, dependentComponent, reference } = setup();
+      const { dependentControl, control, mockForm, dependentComponent } = setup();
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
 
@@ -1424,6 +1424,50 @@ describe('ComponentsListRelationsService', () => {
       );
 
       expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
+    });
+
+    it('should NOT affect another relations', () => {
+      const refs = [
+        {
+          relatedRel: componentMock.id,
+          val: '',
+          relation: 'displayOff'
+        },
+        {
+          relatedRel: componentMock.id,
+          val: '*',
+          relation: 'filterOn',
+          dictionaryFilter: [{
+            attributeName: 'section',
+            condition: 'EQUALS',
+            value: 'id',
+            valueType: 'preset'
+          }]
+        }
+      ];
+      const refsExpected = JSON.parse(JSON.stringify(refs));
+      const { dependentControl, control, mockForm, dependentComponent } = setup(refs);
+      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
+      control.markAsTouched();
+
+      dictionaryToolsService.initDictionary({
+        component: dependentComponent as CustomComponent,
+        data: {
+          error: { code: 0, message: 'emptyDictionary' },
+          fieldErrors: [],
+          items: [],
+          total: 0,
+        },
+      });
+
+      service.onAfterFilterOnRel(
+        dependentComponent as CustomComponent,
+        mockForm,
+        dictionaryToolsService,
+      );
+
+      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
+      expect(dependentComponent.attrs.ref).toEqual(refsExpected);
     });
   });
 });

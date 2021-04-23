@@ -235,7 +235,7 @@ export class ComponentsListRelationsService {
     );
 
     dependentComponent?.attrs?.ref
-      .filter((reference) => (reference.relation = CustomComponentRefRelation.filterOn))
+      .filter((reference) => (reference.relation === CustomComponentRefRelation.filterOn))
       .forEach((reference) => {
         const refControl: AbstractControl = form.controls.find(
           (control: AbstractControl) => control.value.id === reference.relatedRel,
