@@ -3,7 +3,10 @@ import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from 'epgu-lib';
 import { Suggest, SuggestItem } from 'epgu-lib/lib/models/suggest';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { CustomListDictionary } from '../../../component/custom-screen/components-list.types';
+import {
+  CustomComponent,
+  CustomListDictionary,
+} from '../../../component/custom-screen/components-list.types';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 
 @Component({
@@ -23,6 +26,7 @@ export class DropDownDeptsComponent {
   @Input() virtualScroll: boolean;
   @Input() suggest: ISuggestionItem;
   @Input() attrs: IDropDownDeptsAttrs;
+  @Input() component?: CustomComponent;
 
   @Output() selectSuggest = new EventEmitter<Suggest | SuggestItem>();
 

@@ -21,7 +21,6 @@
       >
         <epgu-constructor-drop-down-depts
           *ngIf="dictionaries$ | async as dictionaries"
-          epgu-constructor-validation-type
           [component]="componentData.value"
           [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
           [dictionary]="dictionaries[getDictKeyByComp(componentData.value)]"
