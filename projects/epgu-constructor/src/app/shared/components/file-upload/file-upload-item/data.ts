@@ -318,10 +318,12 @@ export const getSizeInMB = (bytes): number =>
   Math.round((bytes / BYTES_IN_KB / BYTES_IN_KB + Number.EPSILON) * 100) / 100;
 
 export const plurals = {
-  files: ['файл', 'файлов', 'файлов'],
+  files: ['файл', 'файла', 'файлов'],
   attach: ['прикрепился', 'прикрепилось', 'прикрепилось'],
   before: ['', 'до', 'до'],
 };
+
+export const beforeFilesPlural = ['файл', 'файлов', 'файлов'];
 
 export const getAcceptTypes = (
   types: string[],

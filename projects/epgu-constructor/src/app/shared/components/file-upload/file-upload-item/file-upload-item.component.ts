@@ -27,6 +27,7 @@ import {
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService } from '../file-upload.service';
 import {
+  beforeFilesPlural,
   createError,
   ErrorActions,
   FileItem,
@@ -66,6 +67,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   plurals = plurals;
+  beforeFilesPlural = beforeFilesPlural;
 
   maxTotalSize: number;
   maxTotalAmount: number;
