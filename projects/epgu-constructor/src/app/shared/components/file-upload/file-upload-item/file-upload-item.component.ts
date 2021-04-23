@@ -522,7 +522,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   getMnemonicWithoutOrder(mnemonic: string): string {
-    const result = mnemonic.match(/\.[0-9]$/);
+    const result = mnemonic.match(/\.[0-9]*$/);
     return result ? mnemonic.replace(result[0], '') : mnemonic;
   }
 
