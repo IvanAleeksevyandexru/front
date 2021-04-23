@@ -14,6 +14,8 @@ import { CustomListDictionary } from '../../../component/custom-screen/component
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 import { configureTestSuite } from 'ng-bullet';
+import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
+import { MockModule } from 'ng-mocks';
 
 const getDictionary = (count = 0, repeatedWithNoFilters = false): CustomListDictionary => {
   const list = [];
@@ -44,7 +46,7 @@ describe('DropDownDeptsComponent', () => {
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      imports: [CoreModule, BaseModule, RouterTestingModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, MockModule(ValidationTypeModule)],
       declarations: [DropDownDeptsComponent],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
