@@ -12,7 +12,9 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 describe('CarDetailInfoService', () => {
   let service: CarDetailInfoService;
   let screenService: ScreenService;
+  let configService: ConfigService;
   let httpTestingController: HttpTestingController;
+  let currentAnswerService: CurrentAnswersService;
   const mockComponent = {
     id: 'carinfo2',
     type: 'CarDetailInfo',
@@ -33,6 +35,16 @@ describe('CarDetailInfoService', () => {
     value: '',
     required: true,
   };
+  const successData = {
+    data: { value: 'test' },
+    externalServiceCallResult: 'SUCCESS',
+  };
+  const errorData = {
+    data: { value: 'test' },
+    externalServiceCallResult: 'EXTERNAL_SERVER_ERROR',
+  };
+  let fetchDataSuccess: Function;
+  let fetchDataError: Function;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -47,33 +59,146 @@ describe('CarDetailInfoService', () => {
   });
 
   beforeEach(() => {
+    configService = TestBed.inject(ConfigService);
     httpTestingController = TestBed.inject(HttpTestingController);
     screenService = TestBed.inject(ScreenService);
+    currentAnswerService = TestBed.inject(CurrentAnswersService);
     screenService.component = mockComponent;
     service = TestBed.inject(CarDetailInfoService);
+    fetchDataSuccess = () => {
+      service.fetchData();
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .flush(successData);
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .flush(successData);
+    };
+    fetchDataError = () => {
+      service.fetchData();
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .flush(errorData);
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .flush(errorData);
+    };
   });
 
   afterEach(() => {
     httpTestingController.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('hasData$', () => {
+    jest.useFakeTimers();
+
+    it('should be return true', () => {
+      service.hasData$.subscribe((value) => {
+        expect(value).toBeTruthy();
+      });
+      jest.runAllTimers();
+    });
+
+    it('should be return false', () => {
+      fetchDataSuccess();
+      service.hasData$.subscribe((value) => {
+        expect(value).toBeTruthy();
+      });
+      jest.runAllTimers();
+    });
+  });
+
+  it('fetchNotaryInfo', () => {
+    service.fetchNotaryInfo().subscribe();
+    httpTestingController
+      .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+      .flush(successData);
+
+    expect(service.notaryInfo$.getValue()).toEqual(successData);
+    expect(service.isLoadingNotaryInfo$.getValue()).toBeFalsy();
+  });
+
+  it('fetchVehicleInfo', () => {
+    service.fetchNotaryInfo().subscribe();
+    httpTestingController
+      .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+      .flush(successData);
+
+    expect(service.notaryInfo$.getValue()).toEqual(successData);
+    expect(service.isLoadingNotaryInfo$.getValue()).toBeFalsy();
+  });
+
+  describe('hasCommonError$', () => {
+    jest.useFakeTimers();
+
+    it('should be return true', () => {
+      fetchDataError();
+      service.hasCommonError$.subscribe((value) => {
+        expect(value).toBeTruthy();
+      });
+      jest.runAllTimers();
+    });
+
+    it('should be return false', () => {
+      fetchDataSuccess();
+      service.hasCommonError$.subscribe((value) => {
+        expect(value).toBeFalsy();
+      });
+      jest.runAllTimers();
+    });
+  });
+
+  describe('setState', () => {
+    jest.useFakeTimers();
+    it('should be set data to currentAnswerService', () => {
+      fetchDataSuccess();
+      service.hasCommonError$.subscribe();
+      expect(currentAnswerService.state).toEqual({
+        notaryInfo: {
+          externalServiceCallResult: 'SUCCESS',
+          value: 'test',
+        },
+        vehicleInfo: {
+          externalServiceCallResult: 'SUCCESS',
+          value: 'test',
+        },
+      });
+      jest.runAllTimers();
+    });
   });
 
   describe('fetchData', () => {
     it('should be fetch parallelRequest', () => {
       service.fetchData();
-      service.vehicleInfo$.getValue()
-      expect(service).toBeTruthy();
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .flush(successData);
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .flush(successData);
+
+      const vehicleInfo = service.vehicleInfo$.getValue();
+      expect(vehicleInfo).toEqual(successData);
+
+      const notaryInfo = service.notaryInfo$.getValue();
+      expect(notaryInfo).toEqual(successData);
     });
 
     it('should be fetch sequentialRequest', () => {
-      expect(service).toBeTruthy();
+      service.hasVin = false;
+      service.fetchData();
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .flush(successData);
+      const vehicleInfo = service.vehicleInfo$.getValue();
+      expect(vehicleInfo).toEqual(successData);
+
+      httpTestingController
+        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .flush(successData);
+
+      const notaryInfo = service.notaryInfo$.getValue();
+      expect(notaryInfo).toEqual(successData);
     });
   });
-
-  describe('fetchNotaryInfo', () => {});
-
-  describe('fetchVehicleInfo', () => {});
 });
