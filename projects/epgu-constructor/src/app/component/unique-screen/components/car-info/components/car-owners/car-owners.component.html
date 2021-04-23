@@ -2,12 +2,12 @@
   <h5 class="info-list-title">Владельцы</h5>
 
   <div class="car-info-group">
-
     <div class="info-list-group-item" *ngFor="let ownerPeriod of ownerPeriods">
       <div class="info-list-subtitle">{{ ownerPeriod.ownerType }}</div>
-      <div class="info-list-value">{{ownerPeriod.dateStart | carDate : ownerPeriod.dateEnd | defaultValue}}</div>
+      <div class="info-list-value">
+        {{ ownerPeriod.dateStart | carDate: ownerPeriod.dateEnd | defaultValue }}
+      </div>
     </div>
-
   </div>
 
   <div class="divider info-list-divider"></div>
