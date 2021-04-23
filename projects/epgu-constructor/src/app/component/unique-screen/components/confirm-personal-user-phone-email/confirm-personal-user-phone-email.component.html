@@ -5,28 +5,34 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad class="screen-pad-body">
-    <div class="label-helper">{{ (data$ | async).label }}</div>
+  <epgu-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
+    <ng-container *ngIf="data.errors">
+      <div class="error" *ngFor="let error of data.errors">
+        <p class="title"><span [class]="error.icon"></span>{{ error.title }}</p>
+        <epgu-constructor-output-html
+          class="description"
+          [html]="error.desc"
+          [clarifications]="data.attrs?.clarifications"
+        ></epgu-constructor-output-html>
+      </div>
+    </ng-container>
 
-    <div class="error" *ngIf="screenService.componentError">
-      {{ screenService.componentError }}
-    </div>
+    <div class="label-helper">{{ data.label }}</div>
     <div class="item">
-      {{
-        isPhoneScreenType
-        ? ((data$ | async).value | formatPhone)
-        : (data$ | async).value
-      }}
+      {{ isPhoneScreenType ? (data.value | formatPhone) : data.value }}
     </div>
-    <div class="footer" *ngIf="isEditContactAction">
-      <div class="divider"></div>
-      <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
-        <img
-          class="btn-edit__icon"
-          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
-        />
-        <span class="btn-edit__text">{{ (screenService.action$ | async).label }}</span>
-      </button>
-    </div>
+
+    <ng-container *ngIf="isEditContactAction">
+      <div class="footer" *ngIf="screenService.action$ | async as action">
+        <div class="divider"></div>
+        <button class="btn-edit" epgu-constructor-action [action]="action">
+          <img
+            class="btn-edit__icon"
+            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
+          />
+          <span class="btn-edit__text">{{ action.label }}</span>
+        </button>
+      </div>
+    </ng-container>
   </epgu-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
