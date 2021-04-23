@@ -22,6 +22,12 @@ import { LegalComplianceComponent } from './components/legal-compliance/legal-co
 import { NotaryInfoComponent } from './components/notary-info/notary-info.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CarOwnerInfoLinkComponent } from './components/car-owner-info-link/car-owner-info-link.component';
+import { CarDetailInfoContainerComponent } from './containers/car-detail-info/car-detail-info-container.component';
+import { SearchPtsComponent } from './components/search-pts/search-pts.component';
+import { InfoListItemComponent } from './components/info-list-item/info-list-item.component';
+import { CarRegistrationComponent } from './components/car-registration/car-registration.component';
+import { CarTechnicalDataComponent } from './components/car-technical-data/car-technical-data.component';
+import { CarErrorComponent } from './components/car-error/car-error.component';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -40,13 +46,29 @@ const COMPONENTS = [
   CarDatePipe,
   DefaultValuePipe,
   EcologyClassPipe,
+  CarDetailInfoContainerComponent,
+  SearchPtsComponent,
+  InfoListItemComponent,
+  CarRegistrationComponent,
+  CarTechnicalDataComponent,
+  CarErrorComponent,
 ];
 
 @NgModule({
   declarations: [...COMPONENTS],
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
-  imports: [BaseModule, BaseComponentsModule, ScreenContainerModule, ScreenPadModule, DefaultUniqueScreenWrapperModule],
-  entryComponents: [CarInfoContainerComponent, CarOwnerInfoContainerComponent]
+  imports: [
+    BaseModule,
+    BaseComponentsModule,
+    ScreenContainerModule,
+    ScreenPadModule,
+    DefaultUniqueScreenWrapperModule,
+  ],
+  entryComponents: [
+    CarInfoContainerComponent,
+    CarOwnerInfoContainerComponent,
+    CarDetailInfoContainerComponent,
+  ],
 })
 export class CarInfoModule {}
