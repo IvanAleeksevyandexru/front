@@ -44,8 +44,7 @@ export class ComponentsListRelationsService {
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService
-  ) {
-  }
+  ) {}
 
   public getUpdatedShownElements(
     components: Array<CustomComponent>,
@@ -97,8 +96,7 @@ export class ComponentsListRelationsService {
     applicantAnswers: ApplicantAnswersDto,
     initInitialValues: boolean
   ): void {
-
-    if(component.attrs.dateRestrictions && !initInitialValues) {
+    if (component.attrs.dateRestrictions && !initInitialValues) {
       this.setLimitDates(component, components, form, applicantAnswers);
       return;
     }
@@ -106,9 +104,7 @@ export class ComponentsListRelationsService {
     if (initInitialValues) {
       this.updateLimitDates(component, components, form, applicantAnswers);
     }
-
   }
-
 
   public createStatusElements(
     components: Array<CustomComponent>,
@@ -287,10 +283,8 @@ export class ComponentsListRelationsService {
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): Promise<void> {
-
     const relatedComponents = components.filter(relatedComponent => relatedComponent.attrs.dateRestrictions &&
       (relatedComponent.attrs.dateRestrictions.some(restriction => this.dateRestrictionsService.haveDateRef(restriction))));
-
 
     for (let index = 0; index < relatedComponents.length; index += 1) {
       const restriction = relatedComponents[index].attrs.dateRestrictions.find(restriction =>
@@ -305,7 +299,6 @@ export class ComponentsListRelationsService {
       }
 
     }
-
   }
 
   private async setLimitDates(

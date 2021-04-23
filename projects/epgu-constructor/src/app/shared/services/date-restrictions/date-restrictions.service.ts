@@ -16,8 +16,6 @@ import { Range } from '../date-range/date-range.models';
 export class DateRestrictionsService {
   today: Date;
   dateRangeStore = new Map<string, Range>();
-
-
   private maxDateConditions = ['<', '<='];
   private minDateConditions = ['>', '>='];
 
@@ -44,7 +42,6 @@ export class DateRestrictionsService {
     const minDate = await
       this.getDateByComparison(this.today, minRestrictions, (prevDate, currentDate) => isBefore(prevDate, currentDate));
 
-
     const maxRestrictions = restrictions
       .filter(restriction => this.haveDateConditions(restriction, this.maxDateConditions));
     const maxDate = await
@@ -70,7 +67,7 @@ export class DateRestrictionsService {
       .reduce((date: Date, restriction) => {
         const restrictionDate = this.getDate(restriction, today);
         return !date || comparisonFunction(date, restrictionDate) ? restrictionDate : date;
-      },  null);
+      }, null);
   }
 
   private haveDateConditions(restriction: DateRestriction, conditions: string[]): boolean {
@@ -79,7 +76,7 @@ export class DateRestrictionsService {
 
   private getDate(restriction: DateRestriction, today?: Date): Date {
     const date = DatesHelperService.relativeOrFixedToFixed(
-      restriction.value == 'today' && today ? today: restriction.value
+      restriction.value == 'today' && today ? today : restriction.value
     );
     switch (restriction.condition) {
       case '<':
