@@ -23,7 +23,6 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
-  MaxCountByType,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService } from '../file-upload.service';
@@ -39,7 +38,6 @@ import {
   OperationType,
   OverLimits,
   plurals,
-  updateLimits,
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
@@ -65,7 +63,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.loadData = data;
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
-    this.maxAmount = this.fileUploadService.getUploader(data.uploadId).maxAmount;
   }
 
   plurals = plurals;
@@ -110,7 +107,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
-    tap(() => this.updateLimits()),
     concatMap(
       (file: FileItem) =>
         this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store), // Валидируем файл
@@ -205,7 +201,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
 
   uploadersCounterChanges$ = this.fileUploadService.changes.pipe(
-    tap(() => this.updateLimits()),
+    tap(() => {
+      this.maxAmount = this.fileUploadService.getUploader(this.data.uploadId).maxAmount;
+    }),
     tap(() => this.maxLimitUpdate()),
   );
 
@@ -229,22 +227,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private ngUnsubscribe$: UnsubscribeService,
     private autocompleteService: AutocompleteService,
   ) {}
-
-  updateLimits(): void {
-    if (!(this.loadData?.maxCountByTypes?.length > 0)) {
-      return;
-    }
-    updateLimits(
-      this.loadData,
-      this.store,
-      this.fileUploadService.getAmount(this.loadData.uploadId),
-    );
-    this.fileUploadService.changeMaxAmount(
-      (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
-      this.loadData.uploadId,
-    );
-    this.maxAmount = this.fileUploadService.getUploader(this.loadData.uploadId).maxAmount;
-  }
 
   ngOnInit(): void {
     this.maxFileNumber = -1;
