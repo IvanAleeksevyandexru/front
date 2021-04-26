@@ -108,7 +108,7 @@
         Всего в заявлении можно загрузить
         {{ plurals.before | pluralize: maxTotalAmount }}
         {{ maxTotalAmount }}
-        {{ plurals.files | pluralize: maxTotalAmount }}.
+        {{ beforeFilesPlural | pluralize: maxTotalAmount }}.
         <ng-container *ngIf="maxTotalAmount > 1"
           >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
         >
@@ -124,7 +124,7 @@
         Здесь можно загрузить
         {{ plurals.before | pluralize: maxAmount }}
         {{ maxAmount }}
-        {{ plurals.files | pluralize: maxAmount }}.
+        {{ beforeFilesPlural | pluralize: maxAmount }}.
         <ng-container *ngIf="maxAmount > 1"
           >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
         >
@@ -147,7 +147,7 @@
       <div class="message__description">
         Всего в заявлении можно загрузить
         {{ plurals.before | pluralize: maxTotalAmount }}
-        {{ maxTotalAmount }}&nbsp; {{ plurals.files | pluralize: maxTotalAmount }}.
+        {{ maxTotalAmount }}&nbsp; {{ beforeFilesPlural | pluralize: maxTotalAmount }}.
         <ng-container *ngIf="maxTotalAmount > 1"
           >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
         >
@@ -157,7 +157,7 @@
       <div class="message__text">Выбрано максимальное количество файлов</div>
       <div class="message__description">
         Здесь можно загрузить {{ plurals.before | pluralize: maxAmount }} {{ maxAmount }}
-        {{ plurals.files | pluralize: maxAmount }}.
+        {{ beforeFilesPlural | pluralize: maxAmount }}.
         <ng-container *ngIf="maxAmount > 1"
           >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
         >

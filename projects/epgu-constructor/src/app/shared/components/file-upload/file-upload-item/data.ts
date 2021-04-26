@@ -323,6 +323,8 @@ export const plurals = {
   before: ['', 'до', 'до'],
 };
 
+export const beforeFilesPlural = ['файл', 'файлов', 'файлов'];
+
 export const getAcceptTypes = (
   types: string[],
   prefix = '.',

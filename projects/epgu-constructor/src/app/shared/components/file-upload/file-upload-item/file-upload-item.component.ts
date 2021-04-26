@@ -27,6 +27,7 @@ import {
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService } from '../file-upload.service';
 import {
+  beforeFilesPlural,
   createError,
   ErrorActions,
   FileItem,
@@ -66,6 +67,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   plurals = plurals;
+  beforeFilesPlural = beforeFilesPlural;
 
   maxTotalSize: number;
   maxTotalAmount: number;
@@ -522,7 +524,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   getMnemonicWithoutOrder(mnemonic: string): string {
-    const result = mnemonic.match(/\.[0-9]$/);
+    const result = mnemonic.match(/\.[0-9]*$/);
     return result ? mnemonic.replace(result[0], '') : mnemonic;
   }
 
