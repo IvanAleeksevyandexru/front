@@ -7683,10 +7683,10 @@ env-variable@0.0.x:
   resolved "http://npm.gosuslugi.local/env-variable/-/env-variable-0.0.6.tgz#74ab20b3786c545b62b4a4813ab8cf22726c9808"
   integrity sha512-bHz59NlBbtS0NhftmR8+ExBEekE7br0e01jw+kk0NDro7TtZzBYZ5ScGPs3OmwnpyfHTHOtr1Y6uedCdrIldtg==
 
-epgu-constructor-types@1.3.8:
-  version "1.3.8"
-  resolved "http://npm.gosuslugi.local/epgu-constructor-types/-/epgu-constructor-types-1.3.8.tgz#387b2ae48b0cd2aa1af4fa634177ec5a257def5a"
-  integrity sha512-Qk99/UPg9+1iyISj26ubKzerKik1xi1xqNHQoadrPs+UUw3j3zyJxpy6V0YF42suOarBqpqYmxYvFnKLANnIGg==
+epgu-constructor-types@1.3.11:
+  version "1.3.11"
+  resolved "http://npm.gosuslugi.local/epgu-constructor-types/-/epgu-constructor-types-1.3.11.tgz#f66719ff3503ba984cfe32f7ad3f68084b803921"
+  integrity sha512-SRn1lG2fA1a8UaAqhE6zFBA+hurAyDxNGq/MkyGq5Q6+gW+qQcZA/KS8Crpa4CFoVPyvlTiNU5DbzY0gjWtfKg==
 
 epgu-lib@0.0.1226:
   version "0.0.1226"

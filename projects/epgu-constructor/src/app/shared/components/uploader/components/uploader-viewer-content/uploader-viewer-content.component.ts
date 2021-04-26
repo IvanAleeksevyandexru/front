@@ -122,11 +122,6 @@ export class UploaderViewerContentComponent {
     } else {
       this.deleteAction();
     }
-    // if (this.type === FilesCollection.suggest) {
-    //   this.isConfirm = true;
-    // } else {
-    //   this.deleteAction();
-    // }
   }
 
   prevAction(): void {
