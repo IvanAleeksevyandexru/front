@@ -31,6 +31,14 @@ export interface DictionaryPayload {
   RegDictName: RegionSource;
 }
 
+export interface SlotInfo {
+  OrganizationId: string;
+  ServiceCode: string;
+  SlotsCount: number;
+  Region: string;
+  Department: string;
+} 
+
 export interface DictionaryError {
   code?: number | string;
   errorCode?: number | string;
@@ -93,8 +101,11 @@ export class HealthInterceptor implements HttpInterceptor {
   private commonParams: CommonPayload = {} as CommonPayload;
   private lastUrlPart: string | undefined;
   private regionCode: string | undefined;
+  private cachedRegionId: string;
   private serviceName = '';
   private isDictionaryHasError = false;
+
+  private slotInfo: SlotInfo = {} as SlotInfo;
 
   constructor(private health: HealthService, private utils: UtilsService) {}
 
@@ -110,6 +121,19 @@ export class HealthInterceptor implements HttpInterceptor {
       this.serviceName = this.serviceName === 'scenarioGetNextStep' ? RENDER_FORM_SERVICE_NAME : this.serviceName;
       this.regionCode = this.getRegionCode(req?.body?.filter);
       this.startMeasureHealth(this.serviceName);
+
+      if (this.utils.isDefined(this.regionCode)) {
+        this.cachedRegionId = this.regionCode;
+      }
+
+      if (this.serviceName === 'aggBook') {
+        const requestBody = req?.body || {};
+
+        this.slotInfo['OrganizationId'] = requestBody['organizationId'];
+        this.slotInfo['ServiceCode'] = requestBody['serviceCode'];
+        this.slotInfo['Department'] = this.utils.isDefined(requestBody['orgName']) ? encodeURIComponent(requestBody['orgName']) : undefined;
+        this.slotInfo['Region'] = this.cachedRegionId;
+      }
     }
 
     return next.handle(req).pipe(
@@ -151,14 +175,26 @@ export class HealthInterceptor implements HttpInterceptor {
 
             this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError);
           }
-
+          
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
+            let payload = {};
             const { Id, Name, OrderId } = this.commonParams;
-            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-              Id,
-              Name,
-              OrderId,
-            }));
+
+            payload = { Id, Name, OrderId };
+
+            if (
+              this.serviceName === 'aggSlots' &&
+              this.utils.isDefined(responseBody['slots']) &&
+              Array.isArray(responseBody['slots'])
+            ) {
+              this.slotInfo['SlotsCount'] = responseBody['slots'].length;
+            }
+
+            if (this.serviceName === 'aggBook') {
+              payload = { ...payload, ...this.slotInfo };
+            }
+
+            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(payload));
           }
         }
       }),
