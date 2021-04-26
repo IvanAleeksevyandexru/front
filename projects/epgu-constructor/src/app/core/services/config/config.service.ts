@@ -38,6 +38,7 @@ export class ConfigService implements Config {
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
   private _oplataUrl: string;
+  private _lookupQueryTimeoutMs: number;
 
   constructor(
     private loadService: LoadService,
@@ -178,6 +179,10 @@ export class ConfigService implements Config {
     return this._oplataUrl;
   }
 
+  get lookupQueryTimeoutMs(): number {
+    return this._lookupQueryTimeoutMs;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
@@ -217,6 +222,7 @@ export class ConfigService implements Config {
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
+    this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

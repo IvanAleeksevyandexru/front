@@ -67,9 +67,9 @@ export class NavigationService {
 
   redirectToProfileEdit(): void {
     if (this.isWebView) {
-      this.locationService.href('/profile/user');
+      this.locationService.href('/settings/edit');
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/profile/personal`);
+      this.locationService.href(`${this.configService.lkUrl}/settings/edit`);
     }
   }
 

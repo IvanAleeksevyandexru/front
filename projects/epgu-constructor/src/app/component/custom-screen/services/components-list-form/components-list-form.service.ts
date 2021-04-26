@@ -324,7 +324,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation(component) },
+      { updateOn: this.updateOnValidation() },
     );
 
     if (component.attrs?.hidden) {
@@ -396,7 +396,7 @@ export class ComponentsListFormService {
     return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 
-  private updateOnValidation(component: CustomComponent): UpdateOn {
-    return component.attrs?.updateOnValidation || 'change';
+  private updateOnValidation(): UpdateOn {
+    return 'change';
   }
 }

@@ -75,6 +75,7 @@ export interface Config {
   zipkinMaxPayloadSize?: number;
   zipkinEnv?: string;
   oplataUrl?: string;
+  lookupQueryTimeoutMs?: number;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

@@ -79,8 +79,6 @@
       [control]="$any(generation.get('position'))"
       [invalid]="generation.get('position').invalid"
       [validationShowOn]="validationShowOn"
-      [suggestions]="classifiedSuggestionItems['position']"
-      (selectSuggest)="suggestHandlerService.handleEvent($event, i)"
     ></epgu-constructor-constructor-plain-input>
     <epgu-constructor-helper-text
       *ngIf="availableControlsOfType(generation.get('type').value)?.positionHint as positionHint"
@@ -104,8 +102,6 @@
       [control]="$any(generation.get('place'))"
       [invalid]="generation.get('place').invalid"
       [validationShowOn]="validationShowOn"
-      [suggestions]="classifiedSuggestionItems['place']"
-      (selectSuggest)="suggestHandlerService.handleEvent($event, i)"
     ></epgu-constructor-constructor-plain-input>
     <epgu-constructor-helper-text
       *ngIf="availableControlsOfType(generation.get('type').value)?.placeHint as placeHint"
@@ -129,8 +125,6 @@
       [control]="$any(generation.get('address'))"
       [invalid]="generation.get('address').invalid"
       [validationShowOn]="validationShowOn"
-      [suggestions]="classifiedSuggestionItems['address']"
-      (selectSuggest)="suggestHandlerService.handleEvent($event, i)"
     ></epgu-constructor-constructor-plain-input>
   </div>
 </section>

@@ -29,13 +29,15 @@ import { UtilsService as utils } from '../../../core/services/utils/utils.servic
 import { isUndefined } from '../../constants/utils';
 import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
 import {
+  ComponentDictionaryFilterDto,
   DictionaryFilters,
   DictionaryOptions,
   DictionarySimpleFilter,
   DictionaryUnionFilter,
-  DictionaryUnionKind, DictionaryValue, DictionaryValueTypes
+  DictionaryUnionKind,
+  DictionaryValue,
+  DictionaryValueTypes,
 } from 'epgu-constructor-types/dist/base/dictionary';
-import { ComponentDictionaryFilterDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -484,6 +486,8 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dFilter: IdictionaryFilter,
   ): DictionaryValue {
+    //TODO разобраться с типами
+    // @ts-ignore
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
       [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
       [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({

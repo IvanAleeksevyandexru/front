@@ -18,8 +18,12 @@ import { AutocompleteService } from '../../core/services/autocomplete/autocomple
 import { UtilsService } from '../../core/services/utils/utils.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FileItem, FileItemStatus } from '../../shared/components/file-upload/file-upload-item/data';
+import {
+  FileItem,
+  FileItemStatus,
+} from '../../shared/components/file-upload/file-upload-item/data';
 import { configureTestSuite } from 'ng-bullet';
+import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -27,55 +31,45 @@ describe('AttachUploadedFilesModalComponent', () => {
   let screenService: ScreenService;
   let eventBusService: EventBusService;
   let viewerService: ViewerService;
-  let mockFile = new FileItem(
-    FileItemStatus.uploaded,
-    '',
-    null,
-    {
-      fileUid:1882562370,
-      metaId:1874333481,
-      objectId: '763706287',
-      objectTypeId:2,
-      mnemonic:'fu3.FileUploadComponent.passport.0',
-      fileName:'man-h1.jpg',
-      fileExt:'jpg',
-      fileSize:154326,
-      mimeType:'image/jpeg',
-      hasSign: false,
-      hasError: false,
-      created:'2021-03-03',
-      updated:'2021-03-03',
-      realPath:'16/0/0/18/82/56/23/s0R60pG98E8X',
-      deleted:false,
-      bucket:'epgu202103',
-      nodeId:'f_dc',
-      userId:1000298933,
-      alternativeMimeTypes:[],
-      uploaded: true
-  }
-  );
+  let mockFile = new FileItem(FileItemStatus.uploaded, '', null, {
+    fileUid: 1882562370,
+    metaId: 1874333481,
+    objectId: '763706287',
+    objectTypeId: 2,
+    mnemonic: 'fu3.FileUploadComponent.passport.0',
+    fileName: 'man-h1.jpg',
+    fileExt: 'jpg',
+    fileSize: 154326,
+    mimeType: 'image/jpeg',
+    hasSign: false,
+    hasError: false,
+    created: '2021-03-03',
+    updated: '2021-03-03',
+    realPath: '16/0/0/18/82/56/23/s0R60pG98E8X',
+    deleted: false,
+    bucket: 'epgu202103',
+    nodeId: 'f_dc',
+    userId: 1000298933,
+    alternativeMimeTypes: [],
+    uploaded: true,
+  });
   let mockSuggestions: ISuggestionItem = {
     mnemonic: 'prev_files',
     list: [
       {
         mnemonic: 'mnemonic',
-        // eslint-disable-next-line max-len
-        value: '{"id":"fu3","type":"FileUploadComponent","uploads":[{"uploadId":"passport","value":[{"fileUid":1882562370,"metaId":1874333481,"objectId":763706287,"objectTypeId":2,"mnemonic":"fu3.FileUploadComponent.passport.0","fileName":"man-h1.jpg","fileExt":"jpg","fileSize":154326,"mimeType":"image/jpeg","hasSign":false,"created":"2021-03-03","updated":"2021-03-03","realPath":"16/0/0/18/82/56/23/s0R60pG98E8X","deleted":false,"bucket":"epgu202103","nodeId":"f_dc","userId":1000298933,"alternativeMimeTypes":[],"uploaded":true}}]}]}',
-      }
-    ]
+        value:
+          // eslint-disable-next-line max-len
+          '{"id":"fu3","type":"FileUploadComponent","uploads":[{"uploadId":"passport","value":[{"fileUid":1882562370,"metaId":1874333481,"objectId":763706287,"objectTypeId":2,"mnemonic":"fu3.FileUploadComponent.passport.0","fileName":"man-h1.jpg","fileExt":"jpg","fileSize":154326,"mimeType":"image/jpeg","hasSign":false,"created":"2021-03-03","updated":"2021-03-03","realPath":"16/0/0/18/82/56/23/s0R60pG98E8X","deleted":false,"bucket":"epgu202103","nodeId":"f_dc","userId":1000298933,"alternativeMimeTypes":[],"uploaded":true}}]}]}',
+      },
+    ],
   };
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AttachUploadedFilesModalComponent,
-      ],
-      imports:[
-        BaseModule,
-        ConfirmationModalModule,
-        HttpClientTestingModule,
-      ],
-      providers:[
+      declarations: [AttachUploadedFilesModalComponent],
+      imports: [BaseModule, ConfirmationModalModule, HttpClientTestingModule],
+      providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
@@ -85,9 +79,10 @@ describe('AttachUploadedFilesModalComponent', () => {
         ViewerService,
         AutocompleteService,
         AutocompleteApiService,
+        AutocompletePrepareService,
         UtilsService,
         CurrentAnswersService,
-      ]
+      ],
     }).compileComponents();
   });
 

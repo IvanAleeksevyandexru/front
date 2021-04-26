@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormatPhonePipe } from 'epgu-lib';
-import { of } from 'rxjs';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -14,7 +13,6 @@ import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubs
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
-
 
 describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   let component: ConfirmPersonalUserPhoneEmailComponent;
@@ -59,7 +57,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
-    component.data$ = of(mockData);
+    screenService.component = mockData;
     fixture.detectChanges();
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
   });
@@ -70,14 +68,14 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
 
   describe('updateValue()', () => {
     it('should update value', () => {
-      component.updateValue('test@gmail.com');
+      component.updateValue('test@gmail.com', []);
 
       expect(currentAnswersService.isValid).toEqual(true);
       expect(currentAnswersService.state).toEqual('test@gmail.com');
     });
 
     it('shouldn\'t update value', () => {
-      component.updateValue(null);
+      component.updateValue(null, []);
 
       expect(currentAnswersService.isValid).toEqual(false);
       expect(currentAnswersService.state).toEqual(undefined);

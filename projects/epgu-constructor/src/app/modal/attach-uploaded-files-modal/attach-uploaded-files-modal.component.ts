@@ -29,7 +29,7 @@ import { ConfigService } from '../../core/services/config/config.service';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
-import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
+import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -67,7 +67,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private configService: ConfigService,
     private viewerService: ViewerService,
     private autocompleteApiService: AutocompleteApiService,
-    private autocompleteService: AutocompleteService,
+    private autocompletePrepareService: AutocompletePrepareService,
   ) {
     super(injector);
   }
@@ -76,7 +76,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
       this.suggestions = suggestions;
       this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
-      const suggestionsUploadedFiles = this.autocompleteService.getParsedSuggestionsUploadedFiles(
+      const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
         this.suggestionsFilesList,
       );
       this.suggestionsFiles = this.getSuggestionFiles(suggestionsUploadedFiles);
@@ -128,6 +128,16 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     const target = event.target as HTMLImageElement;
     target.src = `${this.basePath}${this.iconsTypes.error}.svg`;
     file.setError({ type: ErrorActions.addInvalidFile, text: 'Что-то пошло не так' });
+    // TODO: убрать костыль ниже, когда придумают, что делать с битыми файлами
+    // Контекст боли тут: https://jira.egovdev.ru/browse/EPGUCORE-54485
+    this.suggestionsFilesGroupByDate.some((group) => {
+      const fileIndex = group[1].findIndex((gFile) => gFile.id === file.id);
+      if (fileIndex > -1) {
+        group[1].splice(fileIndex, 1);
+        return true;
+      }
+      return false;
+    });
   }
 
   private handleFileDeleted(file: FileItem): void {

@@ -75,10 +75,10 @@ describe('NavigationService', () => {
   it('test redirectToProfileEdit', () => {
     navigationService.isWebView = true;
     navigationService.redirectToProfileEdit();
-    expect(locationService.getHref()).toBe('/profile/user');
+    expect(locationService.getHref()).toBe('/settings/edit');
     navigationService.isWebView = false;
     navigationService.redirectToProfileEdit();
-    expect(locationService.getHref()).toBe(`${configService.lkUrl}/profile/personal`);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/settings/edit`);
   });
   it('test redirectToLK', () => {
     navigationService.isWebView = false;

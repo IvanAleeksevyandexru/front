@@ -49,6 +49,8 @@ import { DeviceDetectorServiceStub } from '../core/services/device-detector/devi
 import { TracingService } from '../core/services/tracing/tracing.service';
 import { SessionService } from '../core/services/session/session.service';
 import { LogicComponent } from '../component/logic-screen/component/logic.component';
+import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
+import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -88,6 +90,8 @@ describe('FormPlayerComponent', () => {
         LocationService,
         AutocompleteService,
         AutocompleteApiService,
+        AutocompleteAutofillService,
+        AutocompletePrepareService,
         EventBusService,
         ModalService,
         UtilsService,
