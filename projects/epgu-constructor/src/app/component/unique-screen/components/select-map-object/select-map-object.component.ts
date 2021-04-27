@@ -530,7 +530,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     );
   }
 
-  private applyRegionFilters(items, mvdFilters): void {
+  private applyRegionFilters(
+    items: Array<DictionaryYMapItem>,
+    mvdFilters,
+  ): Array<DictionaryYMapItem> {
     return items.filter((department) => {
       let isFiltered = false;
       mvdFilters.forEach((mvdFilter) => {
