@@ -64,6 +64,14 @@
     .data-item__label .text {
       margin-bottom: 4px;
     }
+
+    .data-group + .error {
+      margin-top: 16px;
+    }
+
+    .error:last-of-type {
+      margin-bottom: 0;
+    }
   }
 }
 
