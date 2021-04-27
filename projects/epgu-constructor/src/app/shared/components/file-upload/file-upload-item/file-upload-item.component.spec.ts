@@ -48,6 +48,7 @@ import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -121,6 +122,7 @@ describe('FileUploadItemComponent', () => {
         FileUploadService,
         UnsubscribeService,
         AutocompleteService,
+        AutocompletePrepareService,
         CurrentAnswersService,
         CompressionService,
         { provide: ModalService, useClass: ModalServiceStub },

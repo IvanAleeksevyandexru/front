@@ -40,12 +40,7 @@ export class ValidationService {
 
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
-    const validations =
-      componentValidations &&
-      componentValidations.filter(
-        (validationRule) =>
-          validationRule.updateOn === 'change' || typeof validationRule.updateOn === 'undefined',
-      );
+    const validations = componentValidations;
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {

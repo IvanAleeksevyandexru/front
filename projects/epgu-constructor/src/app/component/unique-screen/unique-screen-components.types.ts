@@ -43,4 +43,5 @@ export enum UniqueScreenComponentTypes {
   dateTimePeriod = 'DateTimePeriod',
   confirmUserCorpEmail = 'ConfirmUserCorpEmail',
   confirmUserCorpPhone = 'ConfirmUserCorpPhone',
+  carDetailInfo = 'CarDetailInfo',
 }

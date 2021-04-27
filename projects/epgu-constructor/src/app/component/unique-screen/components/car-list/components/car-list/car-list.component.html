@@ -4,17 +4,14 @@
   [clarifications]="clarifications"
 ></epgu-constructor-output-html>
 
-<epgu-constructor-constructor-lookup
+<lib-dropdown
   *ngIf="carFixedItems"
-  [showNotFound]="true"
-  [searchCaseSensitive]="searchCaseSensitive"
-  [fixedItems]="$any(carFixedItems)"
-  [itemsProvider]="provider"
   [disabled]="carFixedItems.length === 1"
-  [formatter]="formatter"
-  [showExpandCollapse]="true"
-  [showMagnifyingGlass]="true"
-  [control]="control"
+  [items]="carFixedItems"
   (changed)="lookupChanged()"
+  [clearable]="true"
+  [localSearch]="true"
+  [formControl]="control"
+  placeholder=""
 >
-</epgu-constructor-constructor-lookup>
+</lib-dropdown>

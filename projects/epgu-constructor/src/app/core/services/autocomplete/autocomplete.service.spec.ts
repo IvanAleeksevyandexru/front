@@ -14,7 +14,7 @@ import { EventBusService } from '../event-bus/event-bus.service';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { UtilsService } from '../utils/utils.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
-import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
+import { ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
@@ -28,13 +28,16 @@ import { getSuggestionGroupId } from './autocomplete.const';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 import { Gender } from 'epgu-constructor-types/dist/base/gender';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { AutocompletePrepareService } from './autocomplete-prepare.service';
+import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
+  let prepareService: AutocompletePrepareService;
   let screenService: ScreenService;
   let eventBusService: EventBusService;
   let modalService: ModalService;
-  let datesToolsService: DatesToolsService;
+  let deviceDetectorService: DeviceDetectorService;
   let autocompleteApiService: AutocompleteApiService;
   let mockData: ScenarioDto = {
     applicantAnswers: {},
@@ -106,26 +109,6 @@ describe('AutocompleteService', () => {
     id: 123,
     componentsGroupIndex: 0,
   };
-  let mockSuggestionApi: ISuggestionApi[] = [
-    {
-      mnemonic: 'prev_region',
-      multiple: false,
-      values: [
-        {
-          createdOn: new Date().toISOString(),
-          id: 123,
-          fields: [
-            {
-              keyField: false,
-              mnemonic: 'prev_region',
-              value: 'value',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-  let deviceDetectorService: DeviceDetectorService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -136,6 +119,8 @@ describe('AutocompleteService', () => {
         UnsubscribeService,
         AutocompleteService,
         AutocompleteApiService,
+        AutocompleteAutofillService,
+        AutocompletePrepareService,
         HttpHandler,
         CurrentAnswersService,
         PrepareComponentsService,
@@ -157,11 +142,11 @@ describe('AutocompleteService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(AutocompleteService);
+    prepareService = TestBed.inject(AutocompletePrepareService);
     screenService = TestBed.inject(ScreenService);
     eventBusService = TestBed.inject(EventBusService);
     modalService = TestBed.inject(ModalService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
-    datesToolsService = TestBed.inject(DatesToolsService);
     autocompleteApiService = TestBed.inject(AutocompleteApiService);
     screenService.display = mockData.display;
   });
@@ -174,7 +159,9 @@ describe('AutocompleteService', () => {
 
     it('should collect componentsSuggestionsFieldsIds after inited, if any', () => {
       service.init();
-      expect(service.getComponentsSuggestionsFieldsIds(mockData.display).length).toBeGreaterThan(0);
+      expect(service['getComponentsSuggestionsFieldsIds'](mockData.display).length).toBeGreaterThan(
+        0,
+      );
     });
 
     it('should collect repeatableComponents after inited, if any', () => {
@@ -203,7 +190,10 @@ describe('AutocompleteService', () => {
     });
 
     it('should call loadValuesFromCurrentAnswer() on "suggestionSelectedEvent"', () => {
-      const serviceLoadValuesFromCurrentAnswerSpy = spyOn(service, 'loadValuesFromCurrentAnswer');
+      const serviceLoadValuesFromCurrentAnswerSpy = spyOn(
+        prepareService,
+        'loadValuesFromCurrentAnswer',
+      );
       eventBusService.on('suggestionSelectedEvent').subscribe(() => {
         expect(serviceLoadValuesFromCurrentAnswerSpy).toBeCalled();
       });
@@ -212,7 +202,7 @@ describe('AutocompleteService', () => {
 
     it('should call findAndUpdateComponentWithValue() on "suggestionSelectedEvent"', () => {
       const serviceFindAndUpdateComponentWithValueSpy = spyOn(
-        service,
+        prepareService,
         'findAndUpdateComponentWithValue',
       );
       eventBusService.on('suggestionSelectedEvent').subscribe(() => {
@@ -281,128 +271,9 @@ describe('AutocompleteService', () => {
     });
   });
 
-  describe('findAndUpdateComponentWithValue()', () => {
-    it('should setComponentValue() be called', () => {
-      const serviceSetComponentValue = spyOn(service, 'setComponentValue');
-      service.findAndUpdateComponentWithValue('prev_region', 'value');
-      expect(serviceSetComponentValue).toBeCalled();
-    });
-  });
-
-  describe('findComponentValue()', () => {
-    it('should return string value of passed component via suggestions', () => {
-      const component = mockData.display.components[0];
-      const componentValue = 'value';
-      screenService.suggestions['pd8'] = {
-        mnemonic: 'prev_region',
-        list: [
-          {
-            mnemonic: 'prev_region',
-            value: 'value',
-            originalItem: 'value',
-          },
-        ],
-      };
-      expect(service.findComponentValue(component, null, componentValue)).toEqual(componentValue);
-    });
-  });
-
-  describe('findComponent()', () => {
-    it('should return finded component', () => {
-      const component = mockData.display.components[0].attrs.components[0];
-      const componentMnemonic = 'prev_region';
-      service.init();
-      expect(service.findComponent(componentMnemonic, 0)).toEqual(component);
-    });
-  });
-
-  describe('setComponentValue()', () => {
-    it('should set component with passed value', () => {
-      const component = mockData.display.components[0];
-      const value = 'value';
-      service.setComponentValue(component, value);
-      expect(component.value).toEqual(value);
-    });
-  });
-
-  describe('getDateValueIfDateInput()', () => {
-    describe('should return date string', () => {
-      const component = _cloneDeep(mockData.display.components[0]);
-      component.type = 'DateInput';
-      const value = '2020-01-01T00:00:00.000Z';
-      it('formatted', () => {
-        expect(service.getDateValueIfDateInput(component, value, true)).toEqual('01.01.2020');
-      });
-      it('not formatted', () => {
-        expect(service.getDateValueIfDateInput(component, value, false)).toEqual(
-          datesToolsService.toDate(value),
-        );
-      });
-    });
-  });
-
-  describe('formatAndPassDataToSuggestions()', () => {
-    it('should set formatted data for suggestions', () => {
-      const result = {
-        pd8_1: {
-          mnemonic: 'prev_region',
-          list: [
-            { value: 'value', mnemonic: 'prev_region', hints: [], id: 123, originalItem: 'value' },
-          ],
-        },
-      };
-      service.init();
-      service.formatAndPassDataToSuggestions(mockSuggestionApi);
-      expect(screenService.suggestions).toEqual(result);
-    });
-  });
-
-  describe('getFormattedList()', () => {
-    it('should return specific list item object', () => {
-      const fields = [{ keyField: false, mnemonic: 'prev_region', value: 'value' }];
-      const componentMnemonic = mockSuggestionItemList.mnemonic;
-      const result = {
-        value: 'value',
-        mnemonic: 'prev_region',
-        originalItem: 'value',
-        id: null,
-        hints: [],
-      };
-      expect(service.getFormattedList(fields, null, componentMnemonic)).toEqual(result);
-    });
-  });
-
-  describe('getFormattedHints()', () => {
-    it('should return array of specific hints object, if more than one field', () => {
-      const fields = [
-        { keyField: false, mnemonic: 'prev_region', value: 'value' },
-        { keyField: false, mnemonic: 'mnemonic', value: 'value' },
-      ];
-      const componentMnemonic = 'mnemonic';
-      const result = [{ value: 'value', mnemonic: 'prev_region' }];
-      service.init();
-      expect(service.getFormattedHints(fields, componentMnemonic)).toEqual(result);
-    });
-  });
-
-  describe('prepareValue()', () => {
-    describe('should return prepared string value by componentMnemonic', () => {
-      it('if value has json structure', () => {
-        const value = '[{"pd_8": { "text": "value" }}]';
-        service.init();
-        expect(service.prepareValue(value, 'prev_region')).toBe('value');
-      });
-      it('if value is not json structure', () => {
-        const value = mockSuggestionItemList.value;
-        service.init();
-        expect(service.prepareValue(value, 'prev_region')).toBe('value');
-      });
-    });
-  });
-
   describe('resetComponentsSuggestionsMap()', () => {
     it('should reset componentsSuggestionsMap and suggestionGroupId', () => {
-      service.resetComponentsSuggestionsMap();
+      service['resetComponentsSuggestionsMap']();
       expect(service.componentsSuggestionsMap).toEqual({});
       expect(service.suggestionGroupId).toBeNull();
     });
@@ -422,7 +293,9 @@ describe('AutocompleteService', () => {
   describe('getComponentsSuggestionsFieldsIds()', () => {
     it('should return suggestions repeatable components ids, if RepeatableFields presented', () => {
       service.init();
-      expect(service.getComponentsSuggestionsFieldsIds(mockData.display)).toEqual(['prev_region']);
+      expect(service['getComponentsSuggestionsFieldsIds'](mockData.display)).toEqual([
+        'prev_region',
+      ]);
     });
     it('should return suggestions components ids, if RepeatableFields not presented', () => {
       const display = _cloneDeep(mockData.display);
@@ -430,7 +303,7 @@ describe('AutocompleteService', () => {
       service.init();
       service.repeatableComponents.length = 0;
       service.componentsSuggestionsMap['prev_region'] = 'pd8';
-      expect(service.getComponentsSuggestionsFieldsIds(display)).toEqual(['prev_region']);
+      expect(service['getComponentsSuggestionsFieldsIds'](display)).toEqual(['prev_region']);
     });
   });
 });

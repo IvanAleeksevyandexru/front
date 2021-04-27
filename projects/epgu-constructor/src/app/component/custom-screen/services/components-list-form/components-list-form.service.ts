@@ -130,30 +130,22 @@ export class ComponentsListFormService {
 
   public patch(component: CustomComponent): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const defaultIndex = component.attrs?.defaultIndex;
-    // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
-    if (defaultIndex !== undefined && !component.value) {
-      if (this.dictionaryToolsService.isDropdownLike(component.type)) {
-        const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
-        const key: string = component.id;
-        const value: ListItem = dicts[key] && dicts[key][defaultIndex];
-        control.get('value').patchValue(value);
-      } else {
-        const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-        const key: string = utils.getDictKeyByComp(component);
-        const value: ListItem = dicts[key]?.list[defaultIndex];
-        control.get('value').patchValue(value);
-      }
-    } else if (component.type === CustomScreenComponentTypes.DropDownDepts) {
-      const lockedValue = component.attrs?.lockedValue;
-      const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-      const key: string = utils.getDictKeyByComp(component);
-      const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
+    const { defaultIndex = undefined, lookupDefaultValue = undefined } = component.attrs;
+    const noValue = !component.value;
+    const hasDefaultIndex = defaultIndex !== undefined;
+    const hasDefaultValue = lookupDefaultValue !== undefined;
+    const isDropdownLike = this.dictionaryToolsService.isDropdownLike(component.type);
+    const isDictionaryLike = this.dictionaryToolsService.isDictionaryLike(component.type);
+    const isDropDownDepts = component.type === CustomScreenComponentTypes.DropDownDepts;
 
-      if (lockedValue && !repeatedWithNoFilters) {
-        const value: ListItem = dicts[key]?.list[defaultIndex];
-        control.get('value').patchValue(value);
-      }
+    if (hasDefaultIndex && noValue && isDropdownLike) {
+      this.patchDropDownLikeWithDefaultIndex(component, control, defaultIndex);
+    } else if (hasDefaultIndex && isDropDownDepts) { // DropDownDepts has value as address
+      this.patchDropDownDeptsValue(component, control, defaultIndex);
+    } else if (hasDefaultIndex && noValue && !isDropdownLike) {
+      this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
+    } else if (hasDefaultValue && noValue && isDictionaryLike) {
+      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue);
     } else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
@@ -324,7 +316,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation(component) },
+      { updateOn: this.updateOnValidation() },
     );
 
     if (component.attrs?.hidden) {
@@ -396,7 +388,45 @@ export class ComponentsListFormService {
     return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 
-  private updateOnValidation(component: CustomComponent): UpdateOn {
-    return component.attrs?.updateOnValidation || 'change';
+  private updateOnValidation(): UpdateOn {
+    return 'change';
+  }
+
+  private patchDropDownLikeWithDefaultIndex(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+    const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
+    const key: string = component.id;
+    const value: ListItem = dicts[key] && dicts[key][defaultIndex];
+
+    control.get('value').patchValue(value);
+  }
+
+  private patchDictionaryLikeWithDefaultIndex(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+    const key: string = utils.getDictKeyByComp(component);
+    const value: ListItem = dicts[key]?.list[defaultIndex];
+
+    control.get('value').patchValue(value);
+  }
+
+  private patchDropDownDeptsValue(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+    const lockedValue = component.attrs?.lockedValue;
+    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+    const key: string = utils.getDictKeyByComp(component);
+    const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
+
+    if (lockedValue && !repeatedWithNoFilters) {
+      const value: ListItem = dicts[key]?.list[defaultIndex];
+      control.get('value').patchValue(value);
+    }
+  }
+
+  private patchDictionaryLikeWithDefaultValue(component: CustomComponent, control: AbstractControl, defaultValue: string | number): void {
+    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+    const key: string = utils.getDictKeyByComp(component);
+    const value: ListItem = dicts[key]?.list.find(({ id }) => id === defaultValue);
+
+    if (value) {
+      control.get('value').patchValue(value);
+    }
   }
 }

@@ -323,6 +323,8 @@ export const plurals = {
   before: ['', 'до', 'до'],
 };
 
+export const beforeFilesPlural = ['файл', 'файлов', 'файлов'];
+
 export const getAcceptTypes = (
   types: string[],
   prefix = '.',
@@ -399,3 +401,43 @@ export interface OverLimits {
   totalAmount: OverLimitsItem;
   amount: OverLimitsItem;
 }
+
+export const updateLimits = (
+  config: FileUploadItem,
+  store: FileItemStore,
+  amount: number,
+  file?: FileItem,
+  isAdd = true,
+): void => {
+  if (!(config?.maxCountByTypes?.length > 0)) {
+    return;
+  }
+  const types = store.getUniqueTypes(!isAdd && file ? file : null);
+  if (isAdd && file && !types.includes(file.getType())) {
+    types.push(file.getType());
+  }
+
+  const findedType = config?.maxCountByTypes.find(({ type }) =>
+    types.every((fileType) => type.includes(fileType)),
+  );
+  if (findedType) {
+    if (!store.lastSelected || findedType.maxFileCount >= amount) {
+      store.lastSelected = findedType;
+    }
+  }
+  if (types.length === 0) {
+    store.lastSelected = config?.maxCountByTypes.reduce(
+      (acc, v) => {
+        acc.maxFileCount += v.maxFileCount;
+        acc.type = acc.type
+          .concat(v.type)
+          .filter((item, index, arr) => arr.indexOf(item) === index);
+        return acc;
+      },
+      {
+        type: [],
+        maxFileCount: 0,
+      },
+    );
+  }
+};

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ValidationShowOn } from 'epgu-lib';
+import { ConstantsService, ValidationShowOn } from 'epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
@@ -9,6 +9,7 @@ import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomp
 import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -26,12 +27,19 @@ export class LookupInputComponent extends AbstractComponentListItemComponent {
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
     map((dictionaries) => dictionaries[UtilsService.getDictKeyByComp(this.control.value)]?.list),
   );
+
+  // eslint-disable-next-line no-restricted-globals
+  queryTimeout = !isNaN(Number(this.config.lookupQueryTimeoutMs))
+    ? this.config.lookupQueryTimeoutMs
+    : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
+
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(
     private dictionaryToolsService: DictionaryToolsService,
     public suggestHandlerService: SuggestHandlerService,
     private screenService: ScreenService,
+    private config: ConfigService,
     public injector: Injector,
   ) {
     super(injector);

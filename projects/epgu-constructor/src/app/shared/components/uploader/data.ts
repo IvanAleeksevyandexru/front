@@ -22,8 +22,14 @@ export const iconsTypes = {
   tiff: 'TIF',
   txt: 'TXT',
   xls: 'XLS',
+  xlsx: 'XLS',
   xml: 'XML',
   zip: 'ZIP',
+  avi: 'AVI',
+  mkv: 'MKV',
+  mp4: 'MP4',
+  pcx: 'PCX',
+  pps: 'PPS',
   error: 'Error',
 };
 

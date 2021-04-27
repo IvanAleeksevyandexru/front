@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
 import { FormControl } from '@angular/forms';
@@ -21,7 +21,6 @@ import {
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
-import { UtilsService as utils } from '../../../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-car-list-container',
@@ -63,19 +62,9 @@ export class CarListContainerComponent implements OnDestroy {
     type: ActionType.nextStep,
   };
 
-  lookupSearchCaseSensitive = false;
-  lookupProvider: { search: (searchString: string) => Observable<Partial<ListItem>[]> } = {
-    search: (searchString): Observable<Partial<ListItem>[]> => {
-      if (searchString) {
-        return of(this.filterBySearchString(searchString));
-      }
-      return of(this.carFixedItems);
-    },
-  };
-
   constructor(
     public screenService: ScreenService,
-    private currentAnswersService: CurrentAnswersService,
+    public currentAnswersService: CurrentAnswersService,
     public config: ConfigService,
     private httpCancelService: HttpCancelService,
   ) {}
@@ -86,7 +75,10 @@ export class CarListContainerComponent implements OnDestroy {
 
   setState(carOriginalItem: VehicleOwnerInfo): void {
     if (carOriginalItem) {
+      this.currentAnswersService.isValid = true;
       this.currentAnswersService.state = carOriginalItem;
+    } else {
+      this.currentAnswersService.isValid = false;
     }
   }
 
@@ -103,10 +95,6 @@ export class CarListContainerComponent implements OnDestroy {
     }
   }
 
-  lookupFormatter = (item: ListItem): string => {
-    return this.getHtmlItemTemplate(item.originalItem.originalItem);
-  };
-
   getHtmlItemTemplate(originalItem: VehicleOwnerInfo): string {
     return `${this.getModelMarkName(originalItem)}, <span style="white-space: nowrap">${
       originalItem?.govRegNumber
@@ -117,19 +105,11 @@ export class CarListContainerComponent implements OnDestroy {
     return value?.vehicles?.map((vehicleInfo) => {
       return {
         id: vehicleInfo.govRegNumber,
-        text: '',
+        text: this.getHtmlItemTemplate(vehicleInfo),
         formatted: '',
         originalItem: vehicleInfo,
         compare: (): boolean => false,
       };
-    });
-  }
-
-  filterBySearchString(searchString): Partial<ListItem>[] {
-    return this.carFixedItems.filter((carItemList) => {
-      const pattern = new RegExp(`(${searchString})`, this.lookupSearchCaseSensitive ? 'g' : 'gi');
-      const template = this.getHtmlItemTemplate(carItemList.originalItem);
-      return pattern.test(utils.htmlToText(template));
     });
   }
 

@@ -23,10 +23,12 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
+  MaxCountByType,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService } from '../file-upload.service';
 import {
+  beforeFilesPlural,
   createError,
   ErrorActions,
   FileItem,
@@ -38,6 +40,7 @@ import {
   OperationType,
   OverLimits,
   plurals,
+  updateLimits,
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
@@ -45,7 +48,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
-import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -63,9 +66,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.loadData = data;
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
+    this.maxAmount = this.fileUploadService.getUploader(data.uploadId).maxAmount;
   }
 
   plurals = plurals;
+  beforeFilesPlural = beforeFilesPlural;
 
   maxTotalSize: number;
   maxTotalAmount: number;
@@ -107,6 +112,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
+    tap(() => this.updateLimits()),
     concatMap(
       (file: FileItem) =>
         this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store), // Валидируем файл
@@ -201,9 +207,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
 
   uploadersCounterChanges$ = this.fileUploadService.changes.pipe(
-    tap(() => {
-      this.maxAmount = this.fileUploadService.getUploader(this.data.uploadId).maxAmount;
-    }),
+    tap(() => this.updateLimits()),
     tap(() => this.maxLimitUpdate()),
   );
 
@@ -225,8 +229,24 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private prepareService: PrepareService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private autocompleteService: AutocompleteService,
+    private autocompletePrepareService: AutocompletePrepareService,
   ) {}
+
+  updateLimits(): void {
+    if (!(this.loadData?.maxCountByTypes?.length > 0)) {
+      return;
+    }
+    updateLimits(
+      this.loadData,
+      this.store,
+      this.fileUploadService.getAmount(this.loadData.uploadId),
+    );
+    this.fileUploadService.changeMaxAmount(
+      (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
+      this.loadData.uploadId,
+    );
+    this.maxAmount = this.fileUploadService.getUploader(this.loadData.uploadId).maxAmount;
+  }
 
   ngOnInit(): void {
     this.maxFileNumber = -1;
@@ -414,7 +434,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     if (!suggestions) return false;
 
     const { list } = suggestions;
-    const filteredUploadedFiles = this.autocompleteService
+    const filteredUploadedFiles = this.autocompletePrepareService
       .getParsedSuggestionsUploadedFiles(list)
       .filter((file: UploadedFile) => file.mnemonic.includes(this.loadData?.uploadId));
     return !!filteredUploadedFiles.length;
@@ -521,6 +541,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.processingFiles.next(fileList);
   }
 
+  getMnemonicWithoutOrder(mnemonic: string): string {
+    const result = mnemonic.match(/\.[0-9]*$/);
+    return result ? mnemonic.replace(result[0], '') : mnemonic;
+  }
+
   getListStream(objectId: string): Observable<UploadedFile> {
     return of(objectId).pipe(
       tap(() => this.listUploadingStatus.next(true)),
@@ -529,7 +554,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((files: UploadedFile[]) => from(files)),
       filter(
         (file) =>
-          file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+          this.getSubMnemonicPath() === this.getMnemonicWithoutOrder(file?.mnemonic) &&
           file?.objectId.toString() === this.objectId.toString(),
       ),
       map((file) => {
@@ -537,7 +562,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.suggestions$.pipe(take(1)).subscribe((suggestions) => {
           suggestionsFiles = suggestions[this.componentId]?.list;
         });
-        const suggestionsUploadedFiles = this.autocompleteService.getParsedSuggestionsUploadedFiles(
+        const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
           suggestionsFiles,
         );
 

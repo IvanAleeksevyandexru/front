@@ -6,15 +6,11 @@ import {
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
-import {
-  ComponentDictionaryFilterDto,
-  ComponentFilterDto,
-  ComponentRelationFieldDto
-} from 'epgu-constructor-types/dist/base/component-attrs';
-import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import { ComponentDictionaryFilterDto, DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
 import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { ComponentFilterDto, ComponentRelationFieldDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -131,6 +127,7 @@ export interface CustomComponentAttr {
   defaultValue?: boolean;
   filter?: ComponentFilterDto;
   defaultIndex?: number;
+  lookupDefaultValue?: string | number;
   relationField?: ComponentRelationFieldDto;
   dictionaryOptions?: DictionaryOptions;
   grid?: string;

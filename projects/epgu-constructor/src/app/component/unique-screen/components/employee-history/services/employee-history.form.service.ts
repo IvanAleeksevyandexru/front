@@ -11,7 +11,6 @@ import {
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
-
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,

@@ -1,4 +1,3 @@
-
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
 import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
 
@@ -27,7 +26,7 @@ export interface CarInfoDisplayedError {
   text: string;
 }
 
-interface NotaryInfo {
+export interface NotaryInfo {
   isPledged: boolean;
 }
 
@@ -55,6 +54,7 @@ export interface VehicleInfo {
   lastRegActionName: string;
   restrictions: Restriction[];
   ownerPeriods: OwnerPeriod[];
+  regActions?: RegActions[];
 }
 
 export interface OwnerPeriod {
@@ -104,5 +104,12 @@ export interface Document {
   seriesAndNumber: string;
   issueDate: string;
   documentType: string;
+}
+
+export interface RegActions {
+  confidentSign: boolean;
+  leasingFlag: boolean;
+  regActionName: string;
+  regDate: string;
 }
 

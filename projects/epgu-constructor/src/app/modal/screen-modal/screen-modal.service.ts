@@ -15,6 +15,9 @@ export class ScreenModalService extends FormPlayerBaseService {
   public get isInternalScenarioFinish$(): Observable<boolean> {
     return this.isInternalScenarioFinishSub.asObservable();
   }
+  public get isInternalScenarioFinishValue(): boolean {
+    return this.isInternalScenarioFinishSub.value;
+  }
 
   private _initStore: FormPlayerApiSuccessResponse;
   private minContentHeight = 0;
@@ -81,7 +84,7 @@ export class ScreenModalService extends FormPlayerBaseService {
 
   isInternalScenarioFinish(): void {
     const isGoBackAction = ({ action }): boolean => action === DTOActionAction.goBackToMainScenario;
-    const actions = this._store.scenarioDto?.display?.components[0]?.attrs?.actions || [];
+    const actions = this._store.scenarioDto?.display?.buttons || [];
     const isInternalScenarioFinish = actions.some(isGoBackAction);
     this.isInternalScenarioFinishSub.next(isInternalScenarioFinish);
   }

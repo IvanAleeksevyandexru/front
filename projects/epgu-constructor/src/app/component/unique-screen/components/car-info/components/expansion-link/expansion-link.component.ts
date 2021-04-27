@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'epgu-constructor-expansion-link',
@@ -6,8 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   styleUrls: ['./expansion-link.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExpansionLinkComponent implements OnInit {
+export class ExpansionLinkComponent {
   @Input() isExpanded = false;
-
-  ngOnInit(): void {}
+  @Input() openDescription = 'Показать детали';
 }

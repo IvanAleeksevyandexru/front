@@ -234,10 +234,10 @@ describe('ActionDirective', () => {
   it('test directive - redirectToLK Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.redirectToLK')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'redirectToLK').and.callThrough();
+    spyOn(navigationService, 'redirectToLKByOrgType').and.callThrough();
     button.click();
 
-    expect(navigationService.redirectToLK).toHaveBeenCalled();
+    expect(navigationService.redirectToLKByOrgType).toHaveBeenCalled();
   });
 
   it('test directive - profileEdit Action', () => {

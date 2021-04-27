@@ -1,6 +1,6 @@
 import { CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 import { DateRangeRef } from '../../services/date-range/date-range.models';
-import { ComponentDictionaryFilterDto } from 'epgu-constructor-types/dist/base/custom-component-ref';
+import { ComponentDictionaryFilterDto } from 'epgu-constructor-types/dist/base/dictionary';
 
 export default interface IDropDownDeptsAttrs {
   dictionaryType?: string;
