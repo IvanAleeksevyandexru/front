@@ -534,12 +534,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return items.filter((department) => {
       let isFiltered = false;
       mvdFilters.forEach((mvdFilter) => {
-        if (mvdFilter.fiasList.includes('*')) {
-          isFiltered = mvdFilter.value.includes(department[mvdFilter.field]);
-        }
         if (
           mvdFilter.fiasList.some((fias) =>
-            [this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
+            ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
           )
         ) {
           isFiltered = mvdFilter.value.includes(department[mvdFilter.field]);
