@@ -26,6 +26,7 @@ import {
 import { Observable } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -138,6 +139,7 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         DictionaryToolsService,
+        DateRestrictionsService
       ],
     });
   });

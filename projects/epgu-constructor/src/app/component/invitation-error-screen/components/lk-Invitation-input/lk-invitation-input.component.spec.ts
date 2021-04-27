@@ -27,6 +27,7 @@ import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 class HTTPClientStub {
   public post(url: string, body: any | null, options: object) {
@@ -84,6 +85,7 @@ describe('LkInvitationInputComponent', () => {
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

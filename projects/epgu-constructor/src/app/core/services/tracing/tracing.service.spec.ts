@@ -19,6 +19,7 @@ import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { UtilsService } from '../utils/utils.service';
 import { TracingService } from './tracing.service';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('TracingService', () => {
   let service: TracingService;
@@ -45,6 +46,7 @@ describe('TracingService', () => {
         DateRangeService,
         RefRelationService,
         UnsubscribeService,
+        DateRestrictionsService
       ],
     });
   });

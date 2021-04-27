@@ -16,6 +16,7 @@ import { ValidationService } from '../../services/validation/validation.service'
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
 import { By } from '@angular/platform-browser';
 import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorMultilineInputComponent', () => {
   let component: ConstructorMultilineInputComponent;
@@ -38,6 +39,7 @@ describe('ConstructorMultilineInputComponent', () => {
         ValidationService,
         DateRangeService,
         DatesToolsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

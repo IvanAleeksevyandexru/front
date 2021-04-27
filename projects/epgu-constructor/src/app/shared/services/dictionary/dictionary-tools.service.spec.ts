@@ -23,6 +23,7 @@ import set = Reflect.set;
 import { configureTestSuite } from 'ng-bullet';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
+import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -135,6 +136,7 @@ describe('DictionaryToolsService', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
+        DateRestrictionsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });

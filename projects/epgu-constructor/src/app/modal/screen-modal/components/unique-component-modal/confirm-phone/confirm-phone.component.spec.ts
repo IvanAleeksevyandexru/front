@@ -18,6 +18,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { of } from 'rxjs';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -55,6 +56,7 @@ describe('ConfirmPhoneComponent', () => {
         EventBusService,
         DateRangeService,
         DatesToolsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

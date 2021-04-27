@@ -26,6 +26,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionRequestPayload } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -77,6 +78,7 @@ describe('TracingHttpInterceptor', () => {
         RefRelationService,
         SessionService,
         UnsubscribeService,
+        DateRestrictionsService
       ],
     });
   });

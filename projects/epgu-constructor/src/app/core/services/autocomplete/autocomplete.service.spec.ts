@@ -27,6 +27,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { getSuggestionGroupId } from './autocomplete.const';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 import { Gender } from 'epgu-constructor-types/dist/base/gender';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -149,6 +150,7 @@ describe('AutocompleteService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService
       ],
     });
   });
