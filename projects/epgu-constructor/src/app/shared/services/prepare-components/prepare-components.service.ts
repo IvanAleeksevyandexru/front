@@ -255,7 +255,7 @@ export class PrepareComponentsService {
   ): ComponentDto {
     const { attrs } = component;
 
-    if (component.type === CustomScreenComponentTypes.DocInput) {
+    if (component.type === CustomScreenComponentTypes.DocInput || component.type === UniqueScreenComponentTypes.registrationAddr) {
       const fields = attrs.fields as DocInputField[];
       const haveDateRef = ({ attrs }: DocInputField): boolean =>
         Boolean(attrs?.minDateRef || attrs?.maxDateRef);
