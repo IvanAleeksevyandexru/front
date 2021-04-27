@@ -19,9 +19,10 @@ import {
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
-import { MockModule } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
+import { FilesCollection } from '../../data';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -61,7 +62,7 @@ describe('UploaderManagerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderManagerComponent, UploaderManagerItemComponent],
+      declarations: [UploaderManagerComponent, MockComponent(UploaderManagerItemComponent)],
       providers: [
         { provide: ViewerService, useClass: ViewerServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
@@ -77,12 +78,13 @@ describe('UploaderManagerComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploaderManagerComponent);
     viewerService = TestBed.inject(ViewerService);
+    jest.spyOn(viewerService, 'open').mockImplementation(() => of());
+
+    fixture = TestBed.createComponent(UploaderManagerComponent);
+
     component = fixture.componentInstance;
     component.list = [mockItem];
-
-    jest.spyOn(viewerService, 'open').mockImplementation(() => of());
 
     fixture.detectChanges();
   });
@@ -94,7 +96,7 @@ describe('UploaderManagerComponent', () => {
   });
 
   it('should open modal', () => {
-    spyOn(viewerService, 'open');
+    jest.spyOn(viewerService, 'open');
     component.view(mockItem);
     fixture.detectChanges();
 
