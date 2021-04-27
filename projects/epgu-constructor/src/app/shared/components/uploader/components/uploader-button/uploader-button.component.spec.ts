@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploaderButtonComponent } from './uploader-button.component';
+import { configureTestSuite } from 'ng-bullet';
 
 const mockCapture = 'user';
 const mockMultiple = false;
@@ -10,11 +11,11 @@ describe('UploaderButtonComponent', () => {
   let component: UploaderButtonComponent;
   let fixture: ComponentFixture<UploaderButtonComponent>;
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderButtonComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderButtonComponent);
@@ -34,19 +35,23 @@ describe('UploaderButtonComponent', () => {
 
   it('should select', () => {
     const input: HTMLInputElement = component.input.nativeElement;
-    spyOn(component, 'select').and.callThrough();
+    jest.spyOn(component, 'select');
     input.dispatchEvent(new Event('change'));
     fixture.detectChanges();
-    expect(component.select).toBeCalled();
+    expect(component.select).toHaveBeenCalled();
+  });
+  it('should reset', () => {
+    spyOn(component, 'reset');
+    fixture.debugElement.nativeElement.click();
+    fixture.detectChanges();
+    expect(component.reset).toHaveBeenCalled();
   });
 
   it('should click', () => {
-    spyOn(component, 'reset').and.callThrough();
-    spyOn(component.input.nativeElement, 'click').and.callThrough();
+    spyOn(component.input.nativeElement, 'click');
     fixture.debugElement.nativeElement.click();
 
     fixture.detectChanges();
-    expect(component.reset).toBeCalled();
-    expect(component.input.nativeElement.click).toBeCalled();
+    expect(component.input.nativeElement.click).toHaveBeenCalled();
   });
 });

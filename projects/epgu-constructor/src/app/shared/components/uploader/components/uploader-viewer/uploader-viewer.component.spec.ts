@@ -18,6 +18,8 @@ import {
 import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
+import { MockComponent, MockModule } from 'ng-mocks';
+import { configureTestSuite } from 'ng-bullet';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -55,21 +57,21 @@ describe('UploaderViewerComponent', () => {
   let component: UploaderViewerComponent;
   let fixture: ComponentFixture<UploaderViewerComponent>;
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderViewerComponent, UploaderViewerContentComponent],
+      declarations: [UploaderViewerComponent, MockComponent(UploaderViewerContentComponent)],
       providers: [
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
-      imports: [BaseModule, ZoomModule],
+      imports: [MockModule(BaseModule), MockModule(ZoomModule)],
     })
       .overrideComponent(UploaderViewerComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderViewerComponent);
@@ -95,7 +97,7 @@ describe('UploaderViewerComponent', () => {
   });
 
   it('should close event', () => {
-    spyOn(component, 'closeModal').and.callThrough();
+    spyOn(component, 'closeModal');
     fixture.debugElement.query(By.css('.modal__close'))?.nativeElement?.click();
     fixture.detectChanges();
     expect(component.closeModal).toHaveBeenCalled();

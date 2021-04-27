@@ -21,7 +21,9 @@ import {
   OperationType,
 } from '../../../file-upload/file-upload-item/data';
 import { By } from '@angular/platform-browser';
-import { SmuEventsService } from 'epgu-lib';
+import { FileSizePipe, SmuEventsService } from 'epgu-lib';
+import { MockModule } from 'ng-mocks';
+import { configureTestSuite } from 'ng-bullet';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -76,10 +78,10 @@ describe('UploaderManagerItemComponent', () => {
   let smuService: SmuEventsService;
   let deviceDetectorService: DeviceDetectorService;
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderManagerItemComponent],
-      imports: [BaseModule],
+      declarations: [UploaderManagerItemComponent, FileSizePipe],
+      imports: [MockModule(BaseModule)],
       providers: [
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -91,8 +93,7 @@ describe('UploaderManagerItemComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-  }));
-
+  });
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderManagerItemComponent);
 
@@ -158,7 +159,7 @@ describe('UploaderManagerItemComponent', () => {
     ).toBe('test.pdf');
   });
 
-  it('should be size text', () => {
+  it('should be size text and description', () => {
     component.file = mockFileItem('test.pdf');
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.size'))?.nativeElement?.innerHTML?.trim()).toBe(
@@ -169,7 +170,7 @@ describe('UploaderManagerItemComponent', () => {
   it('should be view action for image', () => {
     component.file = mockFileItem('test.png', FileItemStatus.uploaded);
     fixture.detectChanges();
-    spyOn(component, 'preview').and.callThrough();
+    jest.spyOn(component, 'preview');
     component.viewAction();
     expect(component.preview).toHaveBeenCalled();
   });
@@ -177,7 +178,7 @@ describe('UploaderManagerItemComponent', () => {
   it('should be view action for pdf and webview  = true', () => {
     component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
     deviceDetectorService.isWebView = true;
-    spyOn(smuService, 'notify').and.callThrough();
+    spyOn(smuService, 'notify');
     component.viewAction();
     expect(smuService.notify).toHaveBeenCalled();
   });
@@ -186,7 +187,7 @@ describe('UploaderManagerItemComponent', () => {
     component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
     deviceDetectorService.isWebView = false;
     const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
-    spyOn(link, 'click').and.callThrough();
+    spyOn(link, 'click');
     component.viewAction();
     fixture.detectChanges();
     expect(link.click).toHaveBeenCalled();
@@ -198,13 +199,13 @@ describe('UploaderManagerItemComponent', () => {
     const button = fixture.debugElement.query(By.css('.uploader-manager-item__button.view_button'))
       ?.nativeElement;
     expect(button?.innerHTML?.trim()).toBe('Посмотреть');
-    spyOn(component, 'viewAction').and.callThrough();
+    spyOn(component, 'viewAction');
     button?.click();
     fixture.detectChanges();
     expect(component.viewAction).toHaveBeenCalled();
   });
 
-  it('should be error text', () => {
+  it('should be error text and description', () => {
     component.file = mockFileItem(
       'test.png',
       FileItemStatus.uploaded,
@@ -243,7 +244,7 @@ describe('UploaderManagerItemComponent', () => {
     expect(fixture.debugElement.query(By.css('.remove_button'))).not.toBeNull();
   });
 
-  it('should be attach action', () => {
+  it('should be detach action', () => {
     const file = mockFileItem('test.png', FileItemStatus.uploaded);
     file.setAttached(true);
     component.file = file;
@@ -251,7 +252,7 @@ describe('UploaderManagerItemComponent', () => {
     const detachButton: HTMLButtonElement = fixture.debugElement.query(By.css('.detach_button'))
       ?.nativeElement;
     expect(detachButton).not.toBeUndefined();
-    spyOn(component, 'detach').and.callThrough();
+    spyOn(component, 'detach');
     detachButton.click();
     fixture.detectChanges();
     expect(component.detach).toHaveBeenCalled();
@@ -264,7 +265,7 @@ describe('UploaderManagerItemComponent', () => {
       By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
     )?.nativeElement;
     expect(cancelButton?.innerHTML?.trim()).toBe('Отменить');
-    jest.spyOn(component, 'cancelAction');
+    spyOn(component, 'cancelAction');
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.upload);
@@ -277,7 +278,7 @@ describe('UploaderManagerItemComponent', () => {
       By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
     )?.nativeElement;
     expect(cancelButton?.innerHTML?.trim()).toBe('Отменить');
-    jest.spyOn(component, 'cancelAction');
+    spyOn(component, 'cancelAction');
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.download);
@@ -290,7 +291,7 @@ describe('UploaderManagerItemComponent', () => {
       By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
     )?.nativeElement;
     expect(cancelButton?.innerHTML?.trim()).toBe('Отменить');
-    jest.spyOn(component, 'cancelAction');
+    spyOn(component, 'cancelAction');
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.delete);

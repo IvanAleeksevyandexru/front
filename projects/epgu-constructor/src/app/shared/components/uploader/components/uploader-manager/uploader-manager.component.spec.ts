@@ -20,6 +20,8 @@ import {
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
 import { of } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import { MockModule } from 'ng-mocks';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -56,7 +58,8 @@ describe('UploaderManagerComponent', () => {
   let component: UploaderManagerComponent;
   let fixture: ComponentFixture<UploaderManagerComponent>;
   let viewerService: ViewerService;
-  beforeEach(async(() => {
+
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderManagerComponent, UploaderManagerItemComponent],
       providers: [
@@ -65,13 +68,13 @@ describe('UploaderManagerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
-      imports: [BaseModule],
+      imports: [MockModule(BaseModule)],
     })
       .overrideComponent(UploaderManagerComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderManagerComponent);
@@ -91,7 +94,7 @@ describe('UploaderManagerComponent', () => {
   });
 
   it('should open modal', () => {
-    spyOn(viewerService, 'open').and.callThrough();
+    jest.spyOn(viewerService, 'open');
     component.view(mockItem);
     fixture.detectChanges();
 

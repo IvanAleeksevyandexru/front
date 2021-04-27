@@ -20,7 +20,10 @@ import {
 } from '../../../file-upload/file-upload-item/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
-
+import { MockModule } from 'ng-mocks';
+import { FileSizePipe } from 'epgu-lib';
+import { LOCALE_ID } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
     fileName: '123.pdf',
@@ -68,11 +71,12 @@ describe('UploaderViewerContentComponent', () => {
   let component: UploaderViewerContentComponent;
   let fixture: ComponentFixture<UploaderViewerContentComponent>;
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderViewerContentComponent],
-      imports: [BaseModule, ZoomModule],
+      declarations: [UploaderViewerContentComponent, FileSizePipe],
+      imports: [MockModule(BaseModule), MockModule(ZoomModule)],
       providers: [
+        { provide: LOCALE_ID, useValue: 'ru-RU' },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
@@ -82,7 +86,7 @@ describe('UploaderViewerContentComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderViewerContentComponent);
@@ -113,19 +117,19 @@ describe('UploaderViewerContentComponent', () => {
 
   describe('viewer', () => {
     it('should be prev', () => {
-      spyOn(component, 'prevAction').and.callThrough();
+      spyOn(component, 'prevAction');
       fixture.debugElement.query(By.css('.prev'))?.nativeElement?.click();
       expect(component.prevAction).toHaveBeenCalled();
     });
     it('should be next', () => {
-      spyOn(component, 'nextAction').and.callThrough();
+      spyOn(component, 'nextAction');
       fixture.debugElement.query(By.css('.next'))?.nativeElement?.click();
       expect(component.nextAction).toHaveBeenCalled();
     });
     it('should be open window', () => {
       component.imageURL = null;
       fixture.detectChanges();
-      spyOn(component, 'open').and.callThrough();
+      spyOn(component, 'open');
       fixture.debugElement.query(By.css('.file-viewer__file'))?.nativeElement?.click();
       expect(component.open).toHaveBeenCalled();
     });
@@ -160,7 +164,7 @@ describe('UploaderViewerContentComponent', () => {
         By.css('.viewer__confirmation-button_cancel'),
       )?.nativeElement;
       expect(cancelButton?.innerHTML?.trim()).toBe('Оставить');
-      spyOn(component, 'cancelAction').and.callThrough();
+      spyOn(component, 'cancelAction');
       cancelButton?.click();
       fixture.detectChanges();
       expect(component.cancelAction).toHaveBeenCalled();
@@ -173,7 +177,7 @@ describe('UploaderViewerContentComponent', () => {
         By.css('.viewer__confirmation-button_confirm'),
       )?.nativeElement;
       expect(cancelButton?.innerHTML?.trim()).toBe('Удалить');
-      spyOn(component, 'deleteAction').and.callThrough();
+      spyOn(component, 'deleteAction');
       cancelButton?.click();
       fixture.detectChanges();
       expect(component.deleteAction).toHaveBeenCalled();
@@ -187,7 +191,7 @@ describe('UploaderViewerContentComponent', () => {
       let zoomButton: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.zoom-in'),
       )?.nativeElement;
-      spyOn(component, 'zoomIn').and.callThrough();
+      spyOn(component, 'zoomIn');
       zoomButton?.click();
       fixture.detectChanges();
       expect(component.zoomIn).toHaveBeenCalled();
@@ -204,7 +208,7 @@ describe('UploaderViewerContentComponent', () => {
       let zoomButton: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.zoom-out'),
       )?.nativeElement;
-      spyOn(component, 'zoomOut').and.callThrough();
+      spyOn(component, 'zoomOut');
       zoomButton?.click();
       fixture.detectChanges();
       expect(component.zoomOut).toHaveBeenCalled();
@@ -218,7 +222,7 @@ describe('UploaderViewerContentComponent', () => {
       let button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.suggest-action'),
       )?.nativeElement;
-      spyOn(component, 'confirmAction').and.callThrough();
+      spyOn(component, 'confirmAction');
       button?.click();
       fixture.detectChanges();
       expect(component.confirmAction).toHaveBeenCalled();
@@ -236,7 +240,7 @@ describe('UploaderViewerContentComponent', () => {
       let button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.attach'),
       )?.nativeElement;
-      spyOn(component, 'suggestAction').and.callThrough();
+      spyOn(component, 'suggestAction');
       button?.click();
       fixture.detectChanges();
       expect(component.suggestAction).toHaveBeenCalledWith(true);
@@ -251,7 +255,7 @@ describe('UploaderViewerContentComponent', () => {
       let button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.detach'),
       )?.nativeElement;
-      spyOn(component, 'suggestAction').and.callThrough();
+      spyOn(component, 'suggestAction');
       button?.click();
       fixture.detectChanges();
       expect(component.suggestAction).toHaveBeenCalledWith(false);
