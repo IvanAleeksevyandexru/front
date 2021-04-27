@@ -19,10 +19,9 @@ import {
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { FilesCollection } from '../../data';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
