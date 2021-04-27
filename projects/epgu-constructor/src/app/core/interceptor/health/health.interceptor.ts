@@ -156,7 +156,7 @@ export class HealthInterceptor implements HttpInterceptor {
               this.commonParams = {
                 ...this.commonParams,
                 TypeEvent: this.serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
-                MnemonicScreen: scenarioDto.display?.components[0]?.type,
+                MnemonicScreen: scenarioDto.display?.type,
               };
             }
 

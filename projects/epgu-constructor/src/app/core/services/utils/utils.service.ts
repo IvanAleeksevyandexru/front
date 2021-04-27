@@ -212,9 +212,10 @@ export class UtilsService {
 
     let preparedArray = this.sliceArrayFromRight(splittedUrl, 2);
 
-    preparedArray = numRegex.test(preparedArray[0])
-      ? this.sliceArrayFromRight(preparedArray, 2, false)
-      : preparedArray;
+    if (numRegex.test(preparedArray[0])) {
+      preparedArray = this.sliceArrayFromRight(preparedArray, 2, false);
+    }
+    
     preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));
 
     const serviceName = preparedArray.join('-');

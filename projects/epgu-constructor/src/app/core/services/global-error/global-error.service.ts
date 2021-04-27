@@ -33,15 +33,17 @@ export class GlobalErrorHandler implements ErrorHandler {
   handleError(error: Error): void {
     if (!(error instanceof HttpErrorResponse)) {
       const store = this.screenService.getStore();
-      
+      let orderId = undefined;
 
+      if (this.hasOrderId(store)) {
+        orderId = this.utils.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
+      }
+      
       let errorParams = {
         ClientError: error.message ? error.message : error.toString(),
         Id: store?.display?.id,
         Name: this.utils.cyrillicToLatin(store?.display?.name),
-        OrderId: this.hasOrderId(store) ?
-          this.utils.isDefined(store.orderId) ? store.orderId : store.callBackOrderId :
-          undefined,
+        OrderId: orderId,
         BrowserError: error.message ? error.stack : null,
       };
 
