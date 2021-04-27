@@ -219,12 +219,12 @@ export class UtilsService {
     preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));
 
     const serviceName = preparedArray.join('-');
+    const camelCasedServiceName = serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    });
+    const cleanCamelCasedServiceName = camelCasedServiceName.replace(/[-_\s]+/g, '');
 
-    return `${serviceName
-      .replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
-        return index === 0 ? word.toLowerCase() : word.toUpperCase();
-      })
-      .replace(/[-_\s]+/g, '')}`;
+    return cleanCamelCasedServiceName;
   }
 
   /**
