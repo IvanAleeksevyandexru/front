@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseModule } from '../../../../base.module';
 import { ZoomModule } from '../../../zoom/zoom.module';
 import { UploaderViewerContentComponent } from './uploader-viewer-content.component';

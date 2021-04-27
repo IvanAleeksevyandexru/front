@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploaderManagerItemComponent } from './uploader-manager-item.component';
 import { BaseModule } from '../../../../base.module';
@@ -94,6 +94,7 @@ describe('UploaderManagerItemComponent', () => {
       })
       .compileComponents();
   });
+
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderManagerItemComponent);
 
@@ -170,7 +171,7 @@ describe('UploaderManagerItemComponent', () => {
   it('should be view action for image', () => {
     component.file = mockFileItem('test.png', FileItemStatus.uploaded);
     fixture.detectChanges();
-    jest.spyOn(component, 'preview');
+    spyOn(component, 'preview');
     component.viewAction();
     expect(component.preview).toHaveBeenCalled();
   });

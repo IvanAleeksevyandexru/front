@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploaderManagerComponent } from './uploader-manager.component';
 import { ViewerService } from '../../services/viewer/viewer.service';
@@ -94,7 +94,7 @@ describe('UploaderManagerComponent', () => {
   });
 
   it('should open modal', () => {
-    jest.spyOn(viewerService, 'open');
+    spyOn(viewerService, 'open');
     component.view(mockItem);
     fixture.detectChanges();
 

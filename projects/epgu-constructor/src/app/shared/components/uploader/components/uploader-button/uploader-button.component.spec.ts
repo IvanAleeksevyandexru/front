@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploaderButtonComponent } from './uploader-button.component';
 import { configureTestSuite } from 'ng-bullet';
@@ -35,7 +35,7 @@ describe('UploaderButtonComponent', () => {
 
   it('should select', () => {
     const input: HTMLInputElement = component.input.nativeElement;
-    jest.spyOn(component, 'select');
+    spyOn(component, 'select');
     input.dispatchEvent(new Event('change'));
     fixture.detectChanges();
     expect(component.select).toHaveBeenCalled();
