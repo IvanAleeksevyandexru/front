@@ -88,7 +88,7 @@ export class ActionService {
         this.quizToOrder(action);
         break;
       case ActionType.redirectToLK:
-        this.navService.redirectToLK();
+        this.navService.redirectToLKByOrgType();
         break;
       case ActionType.profileEdit:
         this.redirectToEdit(action);
