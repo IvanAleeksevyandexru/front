@@ -10,9 +10,7 @@ import { FormArray } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DateRestrictionsService {
   today: Date;
   dateRangeStore = new Map<string, Range>();

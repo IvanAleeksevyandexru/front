@@ -286,7 +286,7 @@ export class ComponentsListRelationsService {
     const relatedComponents = components.filter(relatedComponent => relatedComponent.attrs.dateRestrictions &&
       (relatedComponent.attrs.dateRestrictions.some(restriction => this.dateRestrictionsService.haveDateRef(restriction))));
 
-    for (let index = 0; index < relatedComponents.length; index += 1) {
+    for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
       const restriction = relatedComponents[index].attrs.dateRestrictions.find(restriction =>
         this.dateRestrictionsService.haveDateRef(restriction) && restriction.value === component.id
       );
