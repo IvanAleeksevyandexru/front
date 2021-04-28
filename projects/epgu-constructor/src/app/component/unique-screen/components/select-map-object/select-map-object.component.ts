@@ -47,6 +47,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { IMvdFilter } from 'epgu-constructor-types/dist/base/component-attrs';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -349,7 +350,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
         // Параллелим получение геоточек на 4 запроса
-        const items = [...dictionary.items];
+        let items;
+        if (this.data.attrs.mvdFilters) {
+          items = this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters);
+        } else {
+          items = [...dictionary.items];
+        }
         const chunkSize = items.length / 4;
         return merge(
           this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
@@ -523,5 +529,24 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       coords.dictionaryError.code === 0 &&
       !!this.data.attrs.secondaryDictionaryFilter
     );
+  }
+
+  private applyRegionFilters(
+    items: Array<DictionaryYMapItem>,
+    mvdFilters: Array<IMvdFilter>,
+  ): Array<DictionaryYMapItem> {
+    return items.filter((department) => {
+      let isFiltered = false;
+      mvdFilters.forEach((mvdFilter) => {
+        if (
+          mvdFilter.fiasList.some((fias) =>
+            ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
+          )
+        ) {
+          isFiltered = mvdFilter.value.includes(department[mvdFilter.field]);
+        }
+      });
+      return isFiltered;
+    });
   }
 }
