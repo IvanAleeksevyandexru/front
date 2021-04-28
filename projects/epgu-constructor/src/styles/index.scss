@@ -235,14 +235,15 @@
       margin-top: 4px;
       position: relative;
 
-      > *:first-child {
-        margin-top: 0px;
+      > *:first-child:not(.block--description__link-close) {
+        margin-top: 0;
       }
 
       &__link-close {
         margin-top: 16px;
         display: block;
       }
+
       &--close {
         position: absolute;
         top: 16px;
