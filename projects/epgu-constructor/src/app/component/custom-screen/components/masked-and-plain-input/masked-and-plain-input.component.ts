@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from 'epgu-lib';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
@@ -16,12 +16,9 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 })
 export class MaskedAndPlainInputComponent extends AbstractComponentListItemComponent {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
-    map((suggestions) => {
-      return suggestions[this.control.value?.id];
-    }),
+    map((suggestions) => suggestions[this.control.value?.id]),
   );
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
 
   constructor(
     public suggestHandlerService: SuggestHandlerService,
