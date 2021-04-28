@@ -17,6 +17,7 @@ import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
 import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
 import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { IMvdFilter } from 'epgu-constructor-types/dist/base/component-attrs';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -47,7 +48,6 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { IMvdFilter } from 'epgu-constructor-types/dist/base/component-attrs';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -350,12 +350,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
         // Параллелим получение геоточек на 4 запроса
-        let items;
-        if (this.data.attrs.mvdFilters) {
-          items = this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters);
-        } else {
-          items = [...dictionary.items];
-        }
+        const items = this.data.attrs.mvdFilters
+          ? this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters)
+          : [...dictionary.items];
+
         const chunkSize = items.length / 4;
         return merge(
           this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
@@ -535,18 +533,17 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     items: Array<DictionaryYMapItem>,
     mvdFilters: Array<IMvdFilter>,
   ): Array<DictionaryYMapItem> {
+    const filteredMvdFilters = mvdFilters.filter((mvdFilter) =>
+      mvdFilter.fiasList.some((fias) =>
+        ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
+      ),
+    );
+    const lastFilteredMvdFilter = filteredMvdFilters.pop();
+
     return items.filter((department) => {
-      let isFiltered = false;
-      mvdFilters.forEach((mvdFilter) => {
-        if (
-          mvdFilter.fiasList.some((fias) =>
-            ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
-          )
-        ) {
-          isFiltered = mvdFilter.value.includes(department[mvdFilter.field]);
-        }
-      });
-      return isFiltered;
+      return lastFilteredMvdFilter
+        ? lastFilteredMvdFilter.value.includes(department[lastFilteredMvdFilter.field])
+        : false;
     });
   }
 }
