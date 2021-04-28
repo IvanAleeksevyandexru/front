@@ -298,8 +298,8 @@ export class HealthInterceptor implements HttpInterceptor {
       const { dictionaries } = health;
       dictionaries.forEach((dictionary: BackendDictionary) => {
         const serviceName = dictionary.id;
-        this.startMeasureHealth('dictionary');
-        this.endMeasureHealth('dictionary', RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
+        this.startMeasureHealth(serviceName);
+        this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
           Id: serviceName,
           Status: dictionary.status,
           Method: dictionary.method,
