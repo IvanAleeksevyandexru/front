@@ -102,7 +102,6 @@ export class HealthInterceptor implements HttpInterceptor {
   private lastUrlPart: string | undefined;
   private regionCode: string | undefined;
   private cachedRegionId: string;
-  private serviceName = '';
   private isDictionaryHasError = false;
 
   private slotInfo: SlotInfo = {} as SlotInfo;
@@ -112,27 +111,33 @@ export class HealthInterceptor implements HttpInterceptor {
   intercept<T extends DictionaryFilters & UnspecifiedDTO>(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
 
     // Allways reset generated service name and dictionary validation status
-    this.serviceName = '';
+    let serviceName = '';
     this.isDictionaryHasError = false;
 
     if (this.isValidHttpEntity(req)) {
-      this.lastUrlPart = this.utils.getSplittedUrl(req.url).slice(-1)[0];
-      this.serviceName = this.utils.getServiceName(req.url);
-      this.serviceName = this.serviceName === 'scenarioGetNextStep' ? RENDER_FORM_SERVICE_NAME : this.serviceName;
+      const splittedUrl = this.utils.getSplittedUrl(req.url).map(el => el.toLowerCase());
+      this.lastUrlPart = splittedUrl.slice(-1)[0];
+
+      serviceName = this.utils.getServiceName(req.url);
+      serviceName = serviceName === 'scenarioGetNextStep' ? RENDER_FORM_SERVICE_NAME : serviceName;
+
       this.regionCode = this.getRegionCode(req?.body?.filter);
-      this.startMeasureHealth(this.serviceName);
+      this.startMeasureHealth(serviceName);
 
       if (this.utils.isDefined(this.regionCode)) {
         this.cachedRegionId = this.regionCode;
       }
 
-      if (this.serviceName === 'aggBook') {
+      if (serviceName === 'aggBook') {
         const requestBody = req?.body || {};
 
         this.slotInfo['OrganizationId'] = requestBody['organizationId'];
         this.slotInfo['ServiceCode'] = requestBody['serviceCode'];
-        this.slotInfo['Department'] = this.utils.isDefined(requestBody['orgName']) ? encodeURIComponent(requestBody['orgName']) : undefined;
         this.slotInfo['Region'] = this.cachedRegionId;
+
+        if (this.utils.isDefined(requestBody['orgName'])) {
+          this.slotInfo['Department'] = encodeURIComponent(this.utils.cyrillicToLatin(requestBody['orgName']));
+        }
       }
     }
 
@@ -152,28 +157,29 @@ export class HealthInterceptor implements HttpInterceptor {
               OrderId: orderId,
             };
 
-            if (this.serviceName === RENDER_FORM_SERVICE_NAME || this.serviceName === PREV_STEP_SERVICE_NAME) {
+            if (serviceName === RENDER_FORM_SERVICE_NAME || serviceName === PREV_STEP_SERVICE_NAME) {
               this.commonParams = {
                 ...this.commonParams,
-                TypeEvent: this.serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
+                TypeEvent: serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
                 MnemonicScreen: scenarioDto.display?.type,
               };
             }
 
             this.measureBackendDictionaries(health, this.commonParams.OrderId);
-            this.measureStaticRequests(this.commonParams);
+            this.measureStaticRequests(this.commonParams, serviceName);
           }
 
           if (this.isThatDictionary(responseBody)) {
+
             const { total } = responseBody;
             const dictionaryPayload: DictionaryPayload = {
               Empty: total === 0,
-              Dict: this.lastUrlPart,
+              Dict: this.utils.isDefined(this.lastUrlPart) ? this.lastUrlPart.toUpperCase() : undefined,
               Region: this.regionCode,
               RegDictName: this.utils.isDefined(this.regionCode) ? RegionSource.Okato : RegionSource.Gosbar,
             };
 
-            this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError);
+            this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError, serviceName);
           }
           
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
@@ -183,18 +189,18 @@ export class HealthInterceptor implements HttpInterceptor {
             payload = { Id, Name, OrderId };
 
             if (
-              this.serviceName === 'aggSlots' &&
+              serviceName === 'aggSlots' &&
               this.utils.isDefined(responseBody['slots']) &&
               Array.isArray(responseBody['slots'])
             ) {
               this.slotInfo['SlotsCount'] = responseBody['slots'].length;
             }
 
-            if (this.serviceName === 'aggBook') {
+            if (serviceName === 'aggBook') {
               payload = { ...payload, ...this.slotInfo };
             }
 
-            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(payload));
+            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(payload));
           }
         }
       }),
@@ -213,7 +219,7 @@ export class HealthInterceptor implements HttpInterceptor {
               this.commonParams.ErrorMessage = this.utils.cyrillicToLatin(exception.message);
             }
 
-            this.endMeasureHealth(this.serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields({
+            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields({
               Id: this.commonParams.Id,
               Name: this.commonParams.Name,
               OrderId: this.commonParams.OrderId,
@@ -222,7 +228,7 @@ export class HealthInterceptor implements HttpInterceptor {
               ErrorMessage: this.commonParams.ErrorMessage,
             }));
           } else {
-            this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
+            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
               Id: this.commonParams.Id,
               Name: this.commonParams.Name,
               OrderId: this.commonParams.OrderId,
@@ -252,8 +258,8 @@ export class HealthInterceptor implements HttpInterceptor {
     }
   }
 
-  private measureStaticRequests(commonParams: CommonPayload): void {
-    this.endMeasureHealth(this.serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(
+  private measureStaticRequests(commonParams: CommonPayload, serviceName: string): void {
+    this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(
       commonParams,
     ));
   }
@@ -262,7 +268,8 @@ export class HealthInterceptor implements HttpInterceptor {
     responseBody: UnspecifiedDTO,
     dictionaryParams: DictionaryPayload,
     commonParams: CommonPayload,
-    dictionaryError: boolean
+    dictionaryError: boolean,
+    serviceName: string,
   ): void {
     if (dictionaryError) {
       const keyCode = this.getErrorByKey(responseBody?.error, 'code') ?
@@ -278,7 +285,7 @@ export class HealthInterceptor implements HttpInterceptor {
     }
 
     this.endMeasureHealth(
-      this.serviceName,
+      serviceName,
       dictionaryError ? RequestStatus.Failed : RequestStatus.Succeed,
       this.utils.filterIncorrectObjectFields(
         { ...this.commonParams, ...dictionaryParams },
@@ -291,8 +298,8 @@ export class HealthInterceptor implements HttpInterceptor {
       const { dictionaries } = health;
       dictionaries.forEach((dictionary: BackendDictionary) => {
         const serviceName = dictionary.id;
-        this.startMeasureHealth(dictionary.id);
-        this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
+        this.startMeasureHealth('dictionary');
+        this.endMeasureHealth('dictionary', RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
           Id: serviceName,
           Status: dictionary.status,
           Method: dictionary.method,
