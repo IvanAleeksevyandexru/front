@@ -14,12 +14,14 @@ import { combineLatest } from 'rxjs';
 import { Gender } from 'epgu-constructor-types/dist/base/gender';
 import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeHistoryDataSource,
   EmployeeHistoryFormData,
   EmployeeHistoryModel,
+  EmployeeType,
 } from '../../employee-history.types';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
@@ -44,6 +46,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
+  clarifications: Record<EmployeeType, Clarifications>;
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
@@ -94,6 +97,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     const [component] = this.init;
     const { attrs } = component;
+    this.clarifications = attrs?.clarifications as Record<EmployeeType, Clarifications>;
     this.monthsService.years = attrs?.years;
     this.monthsService.isNonStop = attrs?.nonStop;
     this.monthsService.initSettings().then(() => this.cdr.markForCheck());

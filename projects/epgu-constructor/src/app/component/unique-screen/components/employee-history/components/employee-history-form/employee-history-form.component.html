@@ -80,11 +80,11 @@
       [invalid]="generation.get('position').invalid"
       [validationShowOn]="validationShowOn"
     ></epgu-constructor-constructor-plain-input>
-    <epgu-constructor-helper-text
-      *ngIf="availableControlsOfType(generation.get('type').value)?.positionHint as positionHint"
-    >
-      {{ positionHint }}
-    </epgu-constructor-helper-text>
+    <epgu-constructor-employee-history-clarification
+      [type]="generation.get('type').value"
+      [clarifications]="clarifications"
+      clarificationId="position"
+    ></epgu-constructor-employee-history-clarification>
   </div>
   <div
     class="employee-history__input"
@@ -103,11 +103,11 @@
       [invalid]="generation.get('place').invalid"
       [validationShowOn]="validationShowOn"
     ></epgu-constructor-constructor-plain-input>
-    <epgu-constructor-helper-text
-      *ngIf="availableControlsOfType(generation.get('type').value)?.placeHint as placeHint"
-    >
-      {{ placeHint }}
-    </epgu-constructor-helper-text>
+    <epgu-constructor-employee-history-clarification
+      [type]="generation.get('type').value"
+      [clarifications]="clarifications"
+      clarificationId="place"
+    ></epgu-constructor-employee-history-clarification>
   </div>
   <div
     class="employee-history__input"
@@ -126,6 +126,11 @@
       [invalid]="generation.get('address').invalid"
       [validationShowOn]="validationShowOn"
     ></epgu-constructor-constructor-plain-input>
+    <epgu-constructor-employee-history-clarification
+      [type]="generation.get('type').value"
+      [clarifications]="clarifications"
+      clarificationId="address"
+    ></epgu-constructor-employee-history-clarification>
   </div>
 </section>
 
