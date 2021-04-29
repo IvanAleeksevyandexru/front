@@ -105,8 +105,7 @@ export class PrepareService {
           catchError(() => {
             return of(file.setError(getError(ErrorActions.addInvalidFile)));
           }),
-
-          map((raw: File) => (file instanceof Blob ? file.setRaw(raw) : file)),
+          map((raw: Blob | FileItem) => (raw instanceof Blob ? file.setRaw(raw as File) : file)),
         )
       : of(file);
   }
