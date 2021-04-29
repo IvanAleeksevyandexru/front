@@ -228,6 +228,15 @@ describe('UploaderViewerContentComponent', () => {
       expect(component.confirmAction).toHaveBeenCalled();
     });
 
+    it('should be not remove action for readonly', () => {
+      component.readonly = true;
+      fixture.detectChanges();
+
+      expect(
+        fixture.debugElement.query(By.css('.viewer__toolbar-action.suggest-action')),
+      ).toBeNull();
+    });
+
     it('should be counter', () => {
       expect(
         fixture.debugElement.query(By.css('.viewer__toolbar-counter'))?.nativeElement?.innerHTML,
@@ -248,6 +257,14 @@ describe('UploaderViewerContentComponent', () => {
       fixture.detectChanges();
       expect(button.disabled).toBeTruthy();
     });
+
+    it('should be not attach action for readonly', () => {
+      component.type = FilesCollection.suggest;
+      component.readonly = true;
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.viewer__toolbar-action.attach'))).toBeNull();
+    });
+
     it('should be detach action', () => {
       component.type = FilesCollection.suggest;
       component.item.setAttached(true);
@@ -262,6 +279,14 @@ describe('UploaderViewerContentComponent', () => {
       component.isError = true;
       fixture.detectChanges();
       expect(button.disabled).toBeTruthy();
+    });
+
+    it('should be not detach action for readonly', () => {
+      component.type = FilesCollection.suggest;
+      component.readonly = true;
+      component.item.setAttached(true);
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.viewer__toolbar-action.detach'))).toBeNull();
     });
   });
 });

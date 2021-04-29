@@ -84,6 +84,7 @@ describe('UploaderManagerComponent', () => {
 
     component = fixture.componentInstance;
     component.list = [mockItem];
+    component.readonly = false;
 
     fixture.detectChanges();
   });

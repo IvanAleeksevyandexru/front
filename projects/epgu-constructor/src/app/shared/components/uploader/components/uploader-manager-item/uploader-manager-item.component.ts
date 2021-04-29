@@ -38,6 +38,7 @@ export class UploaderManagerItemComponent {
   @Output() suggest = new EventEmitter<SuggestAction>();
 
   @ViewChild('elementLink', { read: ElementRef, static: true }) elementLink: ElementRef;
+  @Input() readonly: boolean;
   @Input() set file(file: FileItem) {
     this.fileItem = file;
 

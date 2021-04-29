@@ -103,6 +103,7 @@ describe('UploaderManagerItemComponent', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
 
     component = fixture.componentInstance;
+    component.readonly = false;
     jest.spyOn(terabyteService, 'getDownloadApiPath').mockReturnValue('text.txt');
   });
 
@@ -239,10 +240,32 @@ describe('UploaderManagerItemComponent', () => {
     expect(repeatButton?.innerHTML?.trim()).toBe('Повторить');
   });
 
+  it('should be not repeat button for error and readonly', () => {
+    component.file = mockFileItem(
+      'test.png',
+      FileItemStatus.uploaded,
+      createError(ErrorActions.addUploadErr, 'testText', 'testDescription'),
+    );
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(
+      fixture.debugElement.query(
+        By.css('.uploader-manager-item__error-description > .uploader-manager-item__button'),
+      ),
+    ).toBeNull();
+  });
+
   it('should be remove action', () => {
     component.file = mockFileItem('test.png', FileItemStatus.uploaded);
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.remove_button'))).not.toBeNull();
+  });
+
+  it('should be not remove action for readonly', () => {
+    component.file = mockFileItem('test.png', FileItemStatus.uploaded);
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.remove_button'))).toBeNull();
   });
 
   it('should be detach action', () => {
@@ -259,6 +282,15 @@ describe('UploaderManagerItemComponent', () => {
     expect(component.detach).toHaveBeenCalled();
   });
 
+  it('should be not detach action for readonly', () => {
+    const file = mockFileItem('test.png', FileItemStatus.uploaded);
+    file.setAttached(true);
+    component.file = file;
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.detach_button'))).toBeNull();
+  });
+
   it('should be cancel action for uploading', () => {
     component.file = mockFileItem('test.png', FileItemStatus.uploading);
     fixture.detectChanges();
@@ -270,6 +302,17 @@ describe('UploaderManagerItemComponent', () => {
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.upload);
+  });
+
+  it('should be not cancel action for uploading and readonly', () => {
+    component.file = mockFileItem('test.png', FileItemStatus.uploading);
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(
+      fixture.debugElement.query(
+        By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
+      ),
+    ).toBeNull();
   });
 
   it('should be cancel action for downloading', () => {
@@ -285,6 +328,17 @@ describe('UploaderManagerItemComponent', () => {
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.download);
   });
 
+  it('should be not cancel action for downloading and readonly', () => {
+    component.file = mockFileItem('test.png', FileItemStatus.downloading);
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(
+      fixture.debugElement.query(
+        By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
+      ),
+    ).toBeNull();
+  });
+
   it('should be cancel action for deletion', () => {
     component.file = mockFileItem('test.png', FileItemStatus.delition);
     fixture.detectChanges();
@@ -296,5 +350,16 @@ describe('UploaderManagerItemComponent', () => {
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.delete);
+  });
+
+  it('should be not cancel action for deletion and readonly', () => {
+    component.file = mockFileItem('test.png', FileItemStatus.delition);
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(
+      fixture.debugElement.query(
+        By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
+      ),
+    ).toBeNull();
   });
 });

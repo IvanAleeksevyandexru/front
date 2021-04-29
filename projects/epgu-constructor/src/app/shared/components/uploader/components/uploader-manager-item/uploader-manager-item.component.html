@@ -59,7 +59,7 @@
       <div class="uploader-manager-item__action">
         <button
           *ngIf="
-            !fileItem?.attached && (status === fileStatus.error || status === fileStatus.uploaded)
+            !readonly && !fileItem?.attached && (status === fileStatus.error || status === fileStatus.uploaded)
           "
           (click)="delete.emit(fileItem)"
           class="uploader-manager-item__button remove_button {{
@@ -67,27 +67,27 @@
           }}"
         ></button>
         <button
-          *ngIf="fileItem?.attached"
+          *ngIf="!readonly && fileItem?.attached"
           (click)="detach()"
           class="uploader-manager-item__button detach_button"
         ></button>
         <button
           class="uploader-manager-item__button"
-          *ngIf="status === fileStatus.uploading"
+          *ngIf="!readonly && status === fileStatus.uploading"
           (click)="cancelAction(operationType.upload)"
         >
           Отменить
         </button>
         <button
           class="uploader-manager-item__button"
-          *ngIf="status === fileStatus.downloading"
+          *ngIf="!readonly && status === fileStatus.downloading"
           (click)="cancelAction(operationType.download)"
         >
           Отменить
         </button>
         <button
           class="uploader-manager-item__button"
-          *ngIf="status === fileStatus.delition"
+          *ngIf="!readonly && status === fileStatus.delition"
           (click)="cancelAction(operationType.delete)"
         >
           Отменить
@@ -123,7 +123,7 @@
     {{ fileItem.error.description }}
     <button
       class="uploader-manager-item__button"
-      *ngIf="errorType === errorTypeAction.addUploadErr"
+      *ngIf="!readonly && errorType === errorTypeAction.addUploadErr"
       (click)="repeat.emit(fileItem)"
     >
       Повторить

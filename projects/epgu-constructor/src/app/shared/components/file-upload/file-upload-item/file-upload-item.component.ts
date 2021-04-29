@@ -67,7 +67,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
     this.maxAmount = this.fileUploadService.getUploader(data.uploadId).maxAmount;
+    this.readonly = this.data?.readonly === true;
   }
+  readonly: boolean;
 
   plurals = plurals;
   beforeFilesPlural = beforeFilesPlural;
