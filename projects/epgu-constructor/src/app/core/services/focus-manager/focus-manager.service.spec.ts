@@ -15,6 +15,7 @@ import { ValidationService } from '../../../shared/services/validation/validatio
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { EventBusService } from '../event-bus/event-bus.service';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('FocusManagerService', () => {
   let service: FocusManagerService;
@@ -28,6 +29,7 @@ describe('FocusManagerService', () => {
         DateRangeService,
         DatesToolsService,
         EventBusService,
+        DateRestrictionsService
       ],
       imports: [
         EpguLibModule,

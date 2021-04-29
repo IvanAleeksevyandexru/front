@@ -37,6 +37,7 @@ import { SuggestHandlerService } from '../../../../../../shared/services/suggest
 import { configureTestSuite } from 'ng-bullet';
 import { Gender } from 'epgu-constructor-types/dist/base/gender';
 import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -96,6 +97,7 @@ describe('EmployeeHistoryFormComponent', () => {
         DateRangeService,
         RefRelationService,
         SuggestHandlerService,
+        DateRestrictionsService
       ],
     })
       .overrideComponent(EmployeeHistoryFormComponent, {

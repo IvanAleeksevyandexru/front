@@ -113,6 +113,11 @@ export class UtilsService {
     return result === undefined || result === obj ? defaultValue : result;
   }
 
+  static extractDateRef(refDate: string): string[] {
+    const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
+    return [ref, refDate.replace(ref, '')];
+  }
+
   /**
    * Функция возвращает ключ для получения словаря
    * @param component экземпляр компонента

@@ -18,6 +18,7 @@ import { ValidationTypeModule } from '../../directives/validation-type/validatio
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
 import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -43,6 +44,7 @@ describe('ConstructorPlainInputComponent', () => {
         DateRangeService,
         DatesToolsService,
         UnsubscribeService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

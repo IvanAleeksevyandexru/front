@@ -17,6 +17,7 @@ import { LoggerService } from '../logger/logger.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AutocompleteAutofillService', () => {
   let service: AutocompleteAutofillService;
@@ -58,6 +59,7 @@ describe('AutocompleteAutofillService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService
       ],
     });
     service = TestBed.inject(AutocompleteAutofillService);
