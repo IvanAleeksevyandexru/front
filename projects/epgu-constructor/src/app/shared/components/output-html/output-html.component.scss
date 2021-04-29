@@ -151,6 +151,12 @@
       color: inherit;
     }
   }
+
+  .hint-text, p.hint-text {
+    font-size: $font-sm;
+    line-height: $font-lg;
+    margin-top: 4px;
+  }
 }
 
 :host-context(.gray-theme)::ng-deep ul:not(li ul) {
