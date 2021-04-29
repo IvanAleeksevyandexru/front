@@ -32,8 +32,8 @@ describe('AutocompleteAutofillService', () => {
   };
   let suggestionItemList: ISuggestionItemList = {
     mnemonic: 'prev_region',
-    value: '{"value": "value"}',
-    originalItem: '{"value": "value"}',
+    value: '[{"value": "value"}]',
+    originalItem: '[{"value": "value"}]',
     id: 123,
     componentsGroupIndex: 0,
   };
