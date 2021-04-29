@@ -171,7 +171,7 @@ describe('UploaderManagerItemComponent', () => {
   it('should be view action for image', () => {
     component.file = mockFileItem('test.png', FileItemStatus.uploaded);
     fixture.detectChanges();
-    spyOn(component, 'preview');
+    jest.spyOn(component, 'preview');
     component.viewAction();
     expect(component.preview).toHaveBeenCalled();
   });
@@ -179,7 +179,7 @@ describe('UploaderManagerItemComponent', () => {
   it('should be view action for pdf and webview  = true', () => {
     component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
     deviceDetectorService.isWebView = true;
-    spyOn(smuService, 'notify');
+    jest.spyOn(smuService, 'notify');
     component.viewAction();
     expect(smuService.notify).toHaveBeenCalled();
   });
@@ -188,7 +188,7 @@ describe('UploaderManagerItemComponent', () => {
     component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
     deviceDetectorService.isWebView = false;
     const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
-    spyOn(link, 'click');
+    jest.spyOn(link, 'click');
     component.viewAction();
     fixture.detectChanges();
     expect(link.click).toHaveBeenCalled();
@@ -200,7 +200,7 @@ describe('UploaderManagerItemComponent', () => {
     const button = fixture.debugElement.query(By.css('.uploader-manager-item__button.view_button'))
       ?.nativeElement;
     expect(button?.innerHTML?.trim()).toBe('Посмотреть');
-    spyOn(component, 'viewAction');
+    jest.spyOn(component, 'viewAction');
     button?.click();
     fixture.detectChanges();
     expect(component.viewAction).toHaveBeenCalled();
@@ -253,7 +253,7 @@ describe('UploaderManagerItemComponent', () => {
     const detachButton: HTMLButtonElement = fixture.debugElement.query(By.css('.detach_button'))
       ?.nativeElement;
     expect(detachButton).not.toBeUndefined();
-    spyOn(component, 'detach');
+    jest.spyOn(component, 'detach');
     detachButton.click();
     fixture.detectChanges();
     expect(component.detach).toHaveBeenCalled();
@@ -266,7 +266,7 @@ describe('UploaderManagerItemComponent', () => {
       By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
     )?.nativeElement;
     expect(cancelButton?.innerHTML?.trim()).toBe('Отменить');
-    spyOn(component, 'cancelAction');
+    jest.spyOn(component, 'cancelAction');
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.upload);
@@ -279,7 +279,7 @@ describe('UploaderManagerItemComponent', () => {
       By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
     )?.nativeElement;
     expect(cancelButton?.innerHTML?.trim()).toBe('Отменить');
-    spyOn(component, 'cancelAction');
+    jest.spyOn(component, 'cancelAction');
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.download);
@@ -292,7 +292,7 @@ describe('UploaderManagerItemComponent', () => {
       By.css('.uploader-manager-item__action > .uploader-manager-item__button'),
     )?.nativeElement;
     expect(cancelButton?.innerHTML?.trim()).toBe('Отменить');
-    spyOn(component, 'cancelAction');
+    jest.spyOn(component, 'cancelAction');
     cancelButton.click();
     fixture.detectChanges();
     expect(component.cancelAction).toHaveBeenCalledWith(OperationType.delete);

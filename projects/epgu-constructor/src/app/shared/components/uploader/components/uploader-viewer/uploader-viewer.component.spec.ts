@@ -97,7 +97,7 @@ describe('UploaderViewerComponent', () => {
   });
 
   it('should close event', () => {
-    spyOn(component, 'closeModal');
+    jest.spyOn(component, 'closeModal');
     fixture.debugElement.query(By.css('.modal__close'))?.nativeElement?.click();
     fixture.detectChanges();
     expect(component.closeModal).toHaveBeenCalled();

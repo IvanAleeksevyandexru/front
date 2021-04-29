@@ -117,19 +117,19 @@ describe('UploaderViewerContentComponent', () => {
 
   describe('viewer', () => {
     it('should be prev', () => {
-      spyOn(component, 'prevAction');
+      jest.spyOn(component, 'prevAction');
       fixture.debugElement.query(By.css('.prev'))?.nativeElement?.click();
       expect(component.prevAction).toHaveBeenCalled();
     });
     it('should be next', () => {
-      spyOn(component, 'nextAction');
+      jest.spyOn(component, 'nextAction');
       fixture.debugElement.query(By.css('.next'))?.nativeElement?.click();
       expect(component.nextAction).toHaveBeenCalled();
     });
     it('should be open window', () => {
       component.imageURL = null;
       fixture.detectChanges();
-      spyOn(component, 'open');
+      jest.spyOn(component, 'open');
       fixture.debugElement.query(By.css('.file-viewer__file'))?.nativeElement?.click();
       expect(component.open).toHaveBeenCalled();
     });
@@ -164,7 +164,7 @@ describe('UploaderViewerContentComponent', () => {
         By.css('.viewer__confirmation-button_cancel'),
       )?.nativeElement;
       expect(cancelButton?.innerHTML?.trim()).toBe('Оставить');
-      spyOn(component, 'cancelAction');
+      jest.spyOn(component, 'cancelAction');
       cancelButton?.click();
       fixture.detectChanges();
       expect(component.cancelAction).toHaveBeenCalled();
@@ -177,7 +177,7 @@ describe('UploaderViewerContentComponent', () => {
         By.css('.viewer__confirmation-button_confirm'),
       )?.nativeElement;
       expect(cancelButton?.innerHTML?.trim()).toBe('Удалить');
-      spyOn(component, 'deleteAction');
+      jest.spyOn(component, 'deleteAction');
       cancelButton?.click();
       fixture.detectChanges();
       expect(component.deleteAction).toHaveBeenCalled();
@@ -191,7 +191,7 @@ describe('UploaderViewerContentComponent', () => {
       let zoomButton: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.zoom-in'),
       )?.nativeElement;
-      spyOn(component, 'zoomIn');
+      jest.spyOn(component, 'zoomIn');
       zoomButton?.click();
       fixture.detectChanges();
       expect(component.zoomIn).toHaveBeenCalled();
@@ -208,7 +208,7 @@ describe('UploaderViewerContentComponent', () => {
       let zoomButton: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.zoom-out'),
       )?.nativeElement;
-      spyOn(component, 'zoomOut');
+      jest.spyOn(component, 'zoomOut');
       zoomButton?.click();
       fixture.detectChanges();
       expect(component.zoomOut).toHaveBeenCalled();
@@ -222,7 +222,7 @@ describe('UploaderViewerContentComponent', () => {
       let button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.suggest-action'),
       )?.nativeElement;
-      spyOn(component, 'confirmAction');
+      jest.spyOn(component, 'confirmAction');
       button?.click();
       fixture.detectChanges();
       expect(component.confirmAction).toHaveBeenCalled();
@@ -240,7 +240,7 @@ describe('UploaderViewerContentComponent', () => {
       let button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.attach'),
       )?.nativeElement;
-      spyOn(component, 'suggestAction');
+      jest.spyOn(component, 'suggestAction');
       button?.click();
       fixture.detectChanges();
       expect(component.suggestAction).toHaveBeenCalledWith(true);
@@ -255,7 +255,7 @@ describe('UploaderViewerContentComponent', () => {
       let button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.detach'),
       )?.nativeElement;
-      spyOn(component, 'suggestAction');
+      jest.spyOn(component, 'suggestAction');
       button?.click();
       fixture.detectChanges();
       expect(component.suggestAction).toHaveBeenCalledWith(false);
