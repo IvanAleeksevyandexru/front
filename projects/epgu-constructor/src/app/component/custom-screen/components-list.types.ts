@@ -127,6 +127,7 @@ export interface CustomComponentAttr {
   defaultValue?: boolean;
   filter?: ComponentFilterDto;
   defaultIndex?: number;
+  lookupDefaultValue?: string | number;
   relationField?: ComponentRelationFieldDto;
   dictionaryOptions?: DictionaryOptions;
   grid?: string;

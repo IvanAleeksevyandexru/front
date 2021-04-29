@@ -29,6 +29,8 @@ export class ConstructorDatePickerComponent {
   @Output() blurEvent = new EventEmitter<void>();
 
   public onDateSelected(date: Date): void {
+    this.control.setValue(this.control.value);
+    this.control.updateValueAndValidity();
     this.dateSelectedEvent.emit(date);
   }
 
@@ -37,6 +39,8 @@ export class ConstructorDatePickerComponent {
   }
 
   public onBlur(): void {
+    this.control.setValue(this.control.value);
+    this.control.updateValueAndValidity();
     this.blurEvent.emit();
   }
 

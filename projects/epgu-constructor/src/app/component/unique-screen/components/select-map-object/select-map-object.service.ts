@@ -260,10 +260,12 @@ export class SelectMapObjectService implements OnDestroy {
     const res = [];
     attrs.forEach((attr) => {
       let itemValue = item.attributeValues[attr.name];
-      res.push({
-        value: itemValue,
-        label: attr.label,
-      });
+      if (itemValue) {
+        res.push({
+          value: itemValue,
+          label: attr.label,
+        });
+      }
     });
     return res;
   }

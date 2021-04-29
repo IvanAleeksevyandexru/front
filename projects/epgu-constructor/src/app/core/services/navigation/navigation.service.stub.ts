@@ -31,6 +31,8 @@ export class NavigationServiceStub {
 
   redirectToLK(): void {}
 
+  redirectToLKByOrgType(): void {}
+
   redirectToProfileEdit(): void {}
 
   redirectToHome(): void {}

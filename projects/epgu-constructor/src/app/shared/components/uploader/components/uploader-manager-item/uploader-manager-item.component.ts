@@ -58,7 +58,7 @@ export class UploaderManagerItemComponent {
     if (this.isImage) {
       this.imageUrl = file.urlToFile();
     }
-    this.selectedIconType = iconsTypes[this.extension] ?? 'TXT';
+    this.selectedIconType = iconsTypes[this.extension] ?? 'UNW';
   }
   selectedIconType: string;
 
