@@ -84,6 +84,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes
   BillInfo: BillInfoComponent,
   PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
   InformationCenterPfr: InformationCenterPfrContainerComponent,
+  InformationCenterPfrSop: InformationCenterPfrContainerComponent,
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
   ConfirmPersonalUserRegReadOnlyAddr: ConfirmPersonalUserAddressReadonlyComponent,
   ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
