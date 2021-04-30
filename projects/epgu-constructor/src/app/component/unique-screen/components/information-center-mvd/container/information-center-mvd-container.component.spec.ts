@@ -25,6 +25,7 @@ import { DatesToolsService } from '../../../../../core/services/dates-tools/date
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -82,7 +83,8 @@ describe('InformationCenterMvdContainerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
-        RefRelationService
+        RefRelationService,
+        DateRestrictionsService
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {

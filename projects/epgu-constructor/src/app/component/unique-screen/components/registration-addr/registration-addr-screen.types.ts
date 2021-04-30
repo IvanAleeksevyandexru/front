@@ -39,9 +39,11 @@ export interface RegistrationAddrFields {
   type: 'input'|'date';
   regexp: string | RegExp;
   hideLevels?: Array<string>;
-  minDate?: Date | RelativeDate | string;
-  maxDate?: Date | RelativeDate | string;
-  attrs?: {labelHint?: string};
+  attrs?: {
+    labelHint?: string,
+    minDate?: Date | RelativeDate | string;
+    maxDate?: Date | RelativeDate | string;
+  };
   validationShowOn?: string;
   disabled?: boolean;
   hint?: string;

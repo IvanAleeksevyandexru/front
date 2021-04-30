@@ -47,6 +47,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -75,6 +76,7 @@ describe('SelectMapObjectComponent', () => {
         PrepareComponentsService,
         CachedAnswersService,
         ScreenService,
+        DateRestrictionsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

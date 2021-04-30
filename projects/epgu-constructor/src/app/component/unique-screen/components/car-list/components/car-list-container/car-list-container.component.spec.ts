@@ -107,29 +107,6 @@ describe('CarListContainerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('search()', () => {
-    it('should return filtered items by reg number', () => {
-      const search$ = component.lookupProvider.search;
-      search$.call('M 005 CX').subscribe(res =>
-        expect(res).toEqual([mockCarList[1]])
-      );
-    });
-
-    it('should return filtered items by mark', () => {
-      const search$ = component.lookupProvider.search;
-      search$.call('Киа Рио').subscribe(res =>
-        expect(res).toEqual([mockCarList[0]])
-      );
-    });
-
-    it('should return []', () => {
-      const search$ = component.lookupProvider.search;
-      search$.call('S 222 ST').subscribe(res =>
-        expect(res).toEqual([mockCarList[0]])
-      );
-    });
-  });
-
   describe('handleErrors()', () => {
     it('should define hasError and not found errorTemplate after call', () => {
       const carList = { vehicleServiceCallResult: ServiceResult.NOT_FOUND_ERROR } as CarList;
@@ -188,12 +165,4 @@ describe('CarListContainerComponent', () => {
       expect(component.getModelMarkName({} as any)).toEqual('');
     });
   });
-
-  describe('filterBySearchString()', () => {
-    it('should return filtered car fixed items', () => {
-      component.carFixedItems = component.getCarFixedItems(mockCarList as any);
-      expect(component.filterBySearchString('Киа')).toEqual([component.carFixedItems[0]]);
-    });
-  });
-
 });

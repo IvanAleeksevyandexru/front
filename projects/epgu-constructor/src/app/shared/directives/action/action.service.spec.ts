@@ -277,9 +277,9 @@ describe('ActionService', () => {
   });
 
   it('should call switchAction redirectToLK', () => {
-    spyOn(navigationService, 'redirectToLK').and.callThrough();
+    spyOn(navigationService, 'redirectToLKByOrgType').and.callThrough();
     actionService.switchAction(redirectToLKAction, null);
-    expect(navigationService.redirectToLK).toHaveBeenCalled();
+    expect(navigationService.redirectToLKByOrgType).toHaveBeenCalled();
   });
 
   it('should call switchAction profileEdit', () => {

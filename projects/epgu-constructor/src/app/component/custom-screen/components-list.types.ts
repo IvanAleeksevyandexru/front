@@ -127,6 +127,7 @@ export interface CustomComponentAttr {
   defaultValue?: boolean;
   filter?: ComponentFilterDto;
   defaultIndex?: number;
+  lookupDefaultValue?: string | number;
   relationField?: ComponentRelationFieldDto;
   dictionaryOptions?: DictionaryOptions;
   grid?: string;
@@ -146,6 +147,13 @@ export interface CustomComponentAttr {
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;
   refs?: { [key: string]: string };
+  dateRestrictions?: DateRestriction[];
+}
+
+export interface DateRestriction {
+  condition: string;
+  type: 'ref' | 'const';
+  value: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';

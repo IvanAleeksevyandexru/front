@@ -46,6 +46,7 @@ import { DeviceDetectorServiceStub } from '../../core/services/device-detector/d
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
+import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -101,6 +102,7 @@ describe('ComponentsListComponent', () => {
         UnsubscribeService,
         RefRelationService,
         SuggestHandlerService,
+        DateRestrictionsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],

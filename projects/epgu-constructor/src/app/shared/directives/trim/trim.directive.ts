@@ -29,10 +29,10 @@ export class TrimDirective {
   }
 
   removeExtraSpacesBetweenWords(value: string): string {
-    return value.replace(/[^\S\r\n]{2,}/gm, ' ');
+    return value.replace(/[^\S\r\n]{2,}|\s/gm, ' ');
   }
 
   private isNeedUpdateDueToSpaces(value: string): boolean {
-    return /[^\S\r\n]{2,}/g.test(value) || /^\s|\s$/.test(value);
+    return /[^\S\r\n]{2,}/g.test(value) || /^\s|\s$|\s/.test(value);
   }
 }

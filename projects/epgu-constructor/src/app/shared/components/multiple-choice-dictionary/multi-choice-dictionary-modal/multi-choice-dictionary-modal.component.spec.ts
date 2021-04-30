@@ -17,6 +17,7 @@ import { DateRangeService } from '../../../services/date-range/date-range.servic
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -71,7 +72,8 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
-        RefRelationService
+        RefRelationService,
+        DateRestrictionsService
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {

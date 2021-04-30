@@ -22,6 +22,7 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -68,6 +69,7 @@ describe('AddPassportComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         SuggestHandlerService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

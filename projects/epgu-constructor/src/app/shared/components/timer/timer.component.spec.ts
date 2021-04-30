@@ -20,6 +20,7 @@ import { DateRangeService } from '../../services/date-range/date-range.service';
 import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 import { TimerComponentBase } from './timer.interface';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 const someDate = '2020-01-01T00:00:00.000Z';
 const millisecondsOfSomeDate = new Date(someDate).getTime();
@@ -49,6 +50,7 @@ describe('TimerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();

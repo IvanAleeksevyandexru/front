@@ -68,19 +68,19 @@ describe('CarDetailInfoService', () => {
     fetchDataSuccess = () => {
       service.fetchData();
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/notaryInfo`)
         .flush(successData);
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/vehicleFullInfo`)
         .flush(successData);
     };
     fetchDataError = () => {
       service.fetchData();
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/notaryInfo`)
         .flush(errorData);
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/vehicleFullInfo`)
         .flush(errorData);
     };
   });
@@ -111,7 +111,7 @@ describe('CarDetailInfoService', () => {
   it('fetchNotaryInfo', () => {
     service.fetchNotaryInfo().subscribe();
     httpTestingController
-      .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+      .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/notaryInfo`)
       .flush(successData);
 
     expect(service.notaryInfo$.getValue()).toEqual(successData);
@@ -121,7 +121,7 @@ describe('CarDetailInfoService', () => {
   it('fetchVehicleInfo', () => {
     service.fetchNotaryInfo().subscribe();
     httpTestingController
-      .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+      .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/notaryInfo`)
       .flush(successData);
 
     expect(service.notaryInfo$.getValue()).toEqual(successData);
@@ -171,10 +171,10 @@ describe('CarDetailInfoService', () => {
     it('should be fetch parallelRequest', () => {
       service.fetchData();
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/notaryInfo`)
         .flush(successData);
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/vehicleFullInfo`)
         .flush(successData);
 
       const vehicleInfo = service.vehicleInfo$.getValue();
@@ -188,13 +188,13 @@ describe('CarDetailInfoService', () => {
       service.hasVin = false;
       service.fetchData();
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/vehicleFullInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/vehicleFullInfo`)
         .flush(successData);
       const vehicleInfo = service.vehicleInfo$.getValue();
       expect(vehicleInfo).toEqual(successData);
 
       httpTestingController
-        .expectOne(`${configService.apiUrl}/data/gibdd/notaryInfo`)
+        .expectOne(`${configService.apiUrl}/form-backend/data/gibdd/notaryInfo`)
         .flush(successData);
 
       const notaryInfo = service.notaryInfo$.getValue();

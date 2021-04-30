@@ -37,8 +37,8 @@
                 ? field?.fieldName
                 : !field?.fieldName
             "
-            [minDate]="field.minDate ? field.minDate : '-50y'"
-            [maxDate]="field.maxDate ? field.maxDate : '+50y'"
+            [minDate]="field.attrs?.minDate || '-50y'"
+            [maxDate]="field.attrs?.maxDate || '+50y'"
             class="item__data"
             align="left"
             [validationShowOn]="validationShowOn"
