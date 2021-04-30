@@ -344,11 +344,12 @@ export const createError = (
   action: ErrorActions,
   data: FileUploadItem,
   store: FileItemStore,
+  totalSize: number = 0,
 ): FileItemError => {
   const errorHandler = {};
   errorHandler[ErrorActions.addMaxTotalSize] = {
-    text: '',
-    description: '',
+    text: `Файл тяжелее ${getSizeInMB(totalSize)} МБ`,
+    description: 'Попробуйте уменьшить размер или загрузите файл полегче',
   };
   errorHandler[ErrorActions.addMaxAmount] = {
     text: '',
