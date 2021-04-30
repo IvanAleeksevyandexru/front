@@ -20,7 +20,7 @@ export class AutocompleteAutofillService {
   private prepareEmployeeHistoryComponentValue(component: ComponentDto): string {
     return JSON.stringify(
       this.screenService.suggestions[component.id].list.reduce((acc, value) => {
-        return [...acc, JSON.parse(value.originalItem)];
+        return [...acc, ...JSON.parse(value.originalItem)];
       }, []),
     );
   }
