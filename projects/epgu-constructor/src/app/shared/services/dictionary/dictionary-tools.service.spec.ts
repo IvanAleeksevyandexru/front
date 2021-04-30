@@ -21,7 +21,7 @@ import {
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
-import { DictionaryConditions, DictionaryValueTypes } from 'epgu-constructor-types/dist/base/dictionary';
+import { AttributeTypes, DictionaryConditions, DictionaryValueTypes } from 'epgu-constructor-types/dist/base/dictionary';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { FormArray } from '@angular/forms';
 
@@ -523,6 +523,43 @@ describe('DictionaryToolsService', () => {
 
       expect(getDictionariesSpy).toBeCalledTimes(1);
       expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, dictionaryOptions);
+    });
+  });
+
+  describe('prepareSimpleFilter', () => {
+    it('should pass asString by default', () => {
+      const filter = service.prepareSimpleFilter({ value: 42 }, {}, {
+        attributeName: 'TEST',
+        condition: 'EQUALS' as DictionaryConditions,
+        value: 'value',
+        valueType: 'preset'
+      });
+
+      expect(filter).toEqual({
+        simple: {
+          attributeName: 'TEST',
+          condition: 'EQUALS',
+          value: { asString: 42 },
+        },
+      });
+    });
+
+    it('should pass asDecimal if attributeType is set', () => {
+      const filter = service.prepareSimpleFilter({ value: 42 }, {}, {
+        attributeName: 'TEST',
+        attributeType: 'asDecimal' as AttributeTypes,
+        condition: 'EQUALS' as DictionaryConditions,
+        value: 'value',
+        valueType: 'preset'
+      });
+
+      expect(filter).toEqual({
+        simple: {
+          attributeName: 'TEST',
+          condition: 'EQUALS',
+          value: { asDecimal: 42 },
+        },
+      });
     });
   });
 });
