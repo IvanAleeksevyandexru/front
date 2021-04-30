@@ -139,6 +139,12 @@
     &:first-child {
       margin-top: 0;
     }
+
+    &.hint-text {
+      font-size: $font-sm;
+      line-height: $font-lg;
+      margin-top: 4px;
+    }
   }
 
   h1,
@@ -150,12 +156,6 @@
       text-decoration: underline;
       color: inherit;
     }
-  }
-
-  .hint-text, p.hint-text {
-    font-size: $font-sm;
-    line-height: $font-lg;
-    margin-top: 4px;
   }
 }
 
