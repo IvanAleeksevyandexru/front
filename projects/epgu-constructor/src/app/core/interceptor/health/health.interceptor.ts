@@ -20,23 +20,27 @@ export const RENDER_FORM_SERVICE_NAME = 'renderForm';
 export const DICTIONARY_CODES = ['code', 'region', 'okato', 'oktmo', 'okato_in'];
 export const ERROR_UPDATE_DRAFT_SERVICE_NAME = 'errorUpdateDraft';
 export const PREV_STEP_SERVICE_NAME = 'scenarioGetPrevStep';
+export const NEXT_PREV_STEP_SERVICE_NAME = 'scenarioGetNextStep';
 
 export const NEXT_EVENT_TYPE = 'getNextStep';
 export const PREV_EVENT_TYPE = 'getPrevStep';
 
+export const GET_SLOTS = 'aggSlots';
+export const BOOK_SLOTS = 'aggBook';
+
 export interface DictionaryPayload {
-  Region: string;
-  Dict: string
-  Empty: boolean;
-  RegDictName: RegionSource;
+  region: string;
+  dict: string
+  empty: boolean;
+  regdictname: RegionSource;
 }
 
 export interface SlotInfo {
-  OrganizationId: string;
-  ServiceCode: string;
-  SlotsCount: number;
-  Region: string;
-  Department: string;
+  organizationId: string;
+  serviceCode: string;
+  slotsCount: number;
+  region: string;
+  department: string;
 } 
 
 export interface DictionaryError {
@@ -59,14 +63,14 @@ export interface BackendHealthList {
 }
 
 export interface CommonPayload {
-  Id: string;
-  Name: string;
-  OrderId: string | number | undefined;
-  ServerError?: string | number | undefined;
-  ErrorMessage?: string | number | undefined;
-  DictionaryUrl?: string | undefined;
-  TypeEvent?: string;
-  MnemonicScreen?: string;
+  id: string;
+  name: string;
+  orderId: string | number | undefined;
+  serverError?: string | number | undefined;
+  errorMessage?: string | number | undefined;
+  dictionaryUrl?: string | undefined;
+  typeEvent?: string;
+  mnemonicScreen?: string;
 }
 
 export interface UnspecifiedDTO {
@@ -119,7 +123,7 @@ export class HealthInterceptor implements HttpInterceptor {
       this.lastUrlPart = splittedUrl.slice(-1)[0];
 
       serviceName = this.utils.getServiceName(req.url);
-      serviceName = serviceName === 'scenarioGetNextStep' ? RENDER_FORM_SERVICE_NAME : serviceName;
+      serviceName = serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
 
       this.regionCode = this.getRegionCode(req?.body?.filter);
       this.startMeasureHealth(serviceName);
@@ -128,15 +132,15 @@ export class HealthInterceptor implements HttpInterceptor {
         this.cachedRegionId = this.regionCode;
       }
 
-      if (serviceName === 'aggBook') {
+      if (serviceName === BOOK_SLOTS) {
         const requestBody = req?.body || {};
 
-        this.slotInfo['OrganizationId'] = requestBody['organizationId'];
-        this.slotInfo['ServiceCode'] = requestBody['serviceCode'];
-        this.slotInfo['Region'] = this.cachedRegionId;
+        this.slotInfo['organizationId'] = requestBody['organizationId'];
+        this.slotInfo['serviceCode'] = requestBody['serviceCode'];
+        this.slotInfo['region'] = this.cachedRegionId;
 
         if (this.utils.isDefined(requestBody['orgName'])) {
-          this.slotInfo['Department'] = encodeURIComponent(this.utils.cyrillicToLatin(requestBody['orgName']));
+          this.slotInfo['department'] = encodeURIComponent(this.utils.cyrillicToLatin(requestBody['orgName']));
         }
       }
     }
@@ -152,20 +156,20 @@ export class HealthInterceptor implements HttpInterceptor {
             const orderId = this.utils.isDefined(scenarioDto.orderId) ? scenarioDto.orderId : callBackOrderId;
 
             this.commonParams = {
-              Id: scenarioDto.display.id,
-              Name: this.utils.cyrillicToLatin(scenarioDto.display.name),
-              OrderId: orderId,
+              id: scenarioDto.display.id,
+              name: this.utils.cyrillicToLatin(scenarioDto.display.name),
+              orderId: orderId,
             };
 
             if (serviceName === RENDER_FORM_SERVICE_NAME || serviceName === PREV_STEP_SERVICE_NAME) {
               this.commonParams = {
                 ...this.commonParams,
-                TypeEvent: serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
-                MnemonicScreen: scenarioDto.display?.type,
+                typeEvent: serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
+                mnemonicScreen: scenarioDto.display?.type,
               };
             }
 
-            this.measureBackendDictionaries(health, this.commonParams.OrderId);
+            this.measureBackendDictionaries(health, this.commonParams.orderId);
             this.measureStaticRequests(this.commonParams, serviceName);
           }
 
@@ -173,10 +177,10 @@ export class HealthInterceptor implements HttpInterceptor {
 
             const { total } = responseBody;
             const dictionaryPayload: DictionaryPayload = {
-              Empty: total === 0,
-              Dict: this.utils.isDefined(this.lastUrlPart) ? this.lastUrlPart.toUpperCase() : undefined,
-              Region: this.regionCode,
-              RegDictName: this.utils.isDefined(this.regionCode) ? RegionSource.Okato : RegionSource.Gosbar,
+              empty: total === 0,
+              dict: this.utils.isDefined(this.lastUrlPart) ? this.lastUrlPart.toUpperCase() : undefined,
+              region: this.regionCode,
+              regdictname: this.utils.isDefined(this.regionCode) ? RegionSource.Okato : RegionSource.Gosbar,
             };
 
             this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError, serviceName);
@@ -184,19 +188,19 @@ export class HealthInterceptor implements HttpInterceptor {
           
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
             let payload = {};
-            const { Id, Name, OrderId } = this.commonParams;
+            const { id, name, orderId } = this.commonParams;
 
-            payload = { Id, Name, OrderId };
+            payload = { id, name, orderId };
 
             if (
-              serviceName === 'aggSlots' &&
+              serviceName === GET_SLOTS &&
               this.utils.isDefined(responseBody['slots']) &&
               Array.isArray(responseBody['slots'])
             ) {
-              this.slotInfo['SlotsCount'] = responseBody['slots'].length;
+              this.slotInfo['slotsCount'] = responseBody['slots'].length;
             }
 
-            if (serviceName === 'aggBook') {
+            if (serviceName === BOOK_SLOTS) {
               payload = { ...payload, ...this.slotInfo };
             }
 
@@ -207,32 +211,32 @@ export class HealthInterceptor implements HttpInterceptor {
       catchError((exception) => {
         if (this.isValidHttpEntity(exception)) {
           if (exception.status !== 404) {
-            this.commonParams.ServerError = exception.status;
+            this.commonParams.serverError = exception.status;
 
             if (exception.status === 506) {
               const { id, url, message } = exception.error.value;
 
-              this.commonParams.Id = id;
-              this.commonParams.DictionaryUrl = url;
-              this.commonParams.ErrorMessage = this.utils.cyrillicToLatin(message);
+              this.commonParams.id = id;
+              this.commonParams.dictionaryUrl = url;
+              this.commonParams.errorMessage = this.utils.cyrillicToLatin(message);
             } else {
-              this.commonParams.ErrorMessage = this.utils.cyrillicToLatin(exception.message);
+              this.commonParams.errorMessage = this.utils.cyrillicToLatin(exception.message);
             }
 
             this.endMeasureHealth(serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields({
-              Id: this.commonParams.Id,
-              Name: this.commonParams.Name,
-              OrderId: this.commonParams.OrderId,
-              ServerError: this.commonParams.ServerError,
-              DictionaryUrl: this.commonParams.DictionaryUrl,
-              ErrorMessage: this.commonParams.ErrorMessage,
+              id: this.commonParams.id,
+              name: this.commonParams.name,
+              orderId: this.commonParams.orderId,
+              serverError: this.commonParams.serverError,
+              dictionaryUrl: this.commonParams.dictionaryUrl,
+              errorMessage: this.commonParams.errorMessage,
             }));
           } else {
             this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-              Id: this.commonParams.Id,
-              Name: this.commonParams.Name,
-              OrderId: this.commonParams.OrderId,
-              ServerError: 404,
+              id: this.commonParams.id,
+              name: this.commonParams.name,
+              orderId: this.commonParams.orderId,
+              serverError: 404,
             }));
           }
 
@@ -279,8 +283,8 @@ export class HealthInterceptor implements HttpInterceptor {
 
       this.commonParams = {
         ...commonParams,
-        ServerError: keyCode,
-        ErrorMessage: errorMessage,
+        serverError: keyCode,
+        errorMessage: errorMessage,
       };
     }
 
@@ -300,11 +304,11 @@ export class HealthInterceptor implements HttpInterceptor {
         const serviceName = dictionary.id;
         this.startMeasureHealth(serviceName);
         this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-          Id: serviceName,
-          Status: dictionary.status,
-          Method: dictionary.method,
-          OrderId: orderId,
-          RegDictName: 'OKATO'
+          id: serviceName,
+          status: dictionary.status,
+          method: dictionary.method,
+          orderId: orderId,
+          regdictname: RegionSource.Okato,
         }));
       });
     }
