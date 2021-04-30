@@ -12,11 +12,11 @@ interface Error {
 }
 
 interface ErrorParams {
-  ClientError: string;
-  Id: string;
-  Name: string;
-  OrderId: number;
-  BrowserError: string;
+  clientError: string;
+  id: string;
+  name: string;
+  orderId: number;
+  browserError: string;
 }
 
 @Injectable({
@@ -40,11 +40,11 @@ export class GlobalErrorHandler implements ErrorHandler {
       }
       
       let errorParams = {
-        ClientError: error.message ? error.message : error.toString(),
-        Id: store?.display?.id,
-        Name: this.utils.cyrillicToLatin(store?.display?.name),
-        OrderId: orderId,
-        BrowserError: error.message ? error.stack : null,
+        clientError: error.message ? error.message : error.toString(),
+        id: store?.display?.id,
+        name: this.utils.cyrillicToLatin(store?.display?.name),
+        orderId: orderId,
+        browserError: error.message ? error.stack : null,
       };
 
       errorParams = this.utils.filterIncorrectObjectFields(errorParams) as ErrorParams;

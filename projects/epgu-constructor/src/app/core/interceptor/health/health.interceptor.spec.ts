@@ -108,9 +108,9 @@ describe('HealthInterceptor', () => {
       };
       requestToSucceed.flush(dataToFlush);
       const params = {
-        Id: dto.scenarioDto.display.id,
-        Name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
-        OrderId: orderId,
+        id: dto.scenarioDto.display.id,
+        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
+        orderId: orderId,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
@@ -139,11 +139,11 @@ describe('HealthInterceptor', () => {
       };
       requestToDictionary.flush(dataToFlush);
       const params = {
-        ServerError: 101,
-        ErrorMessage: 'Server is not available',
-        Dict: 'STRANI_IST',
-        Empty: true,
-        RegDictName: 'GOSBAR',
+        serverError: 101,
+        errorMessage: 'Server is not available',
+        dict: 'STRANI_IST',
+        empty: true,
+        regdictname: 'GOSBAR',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
@@ -167,11 +167,11 @@ describe('HealthInterceptor', () => {
       };
       requestToDictionary.flush(dataToFlush);
       const params = {
-        Dict: 'STRANI_IST',
-        Empty: true,
-        RegDictName: 'GOSBAR',
-        ServerError: 101,
-        ErrorMessage: 'Server is not available',
+        dict: 'STRANI_IST',
+        empty: true,
+        regdictname: 'GOSBAR',
+        serverError: 101,
+        errorMessage: 'Server is not available',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
@@ -202,10 +202,10 @@ describe('HealthInterceptor', () => {
       };
       requestToError.flush(errorBody, body);
       const params = {
-        ServerError: 506,
-        Id: dictionaryName,
-        DictionaryUrl: errorBody.value.url,
-        ErrorMessage: errorBody.value.message,
+        serverError: 506,
+        id: dictionaryName,
+        dictionaryUrl: errorBody.value.url,
+        errorMessage: errorBody.value.message,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 1, params);
@@ -230,7 +230,7 @@ describe('HealthInterceptor', () => {
       });
       requestToError.flush('Not found', body);
       const params = {
-        ServerError: 404,
+        serverError: 404,
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(getNextStepAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(getNextStepAction, 0, params);
