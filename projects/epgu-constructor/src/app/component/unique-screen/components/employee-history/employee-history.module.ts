@@ -15,12 +15,16 @@ import { EmployeeHistoryFormComponent } from './components/employee-history-form
 import { MemoModule } from '../../../../shared/pipes/memo/memo.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+// eslint-disable-next-line max-len
+import { EmployeeHistoryClarificationComponent } from './components/employee-history-clarification/employee-history-clarification.component';
+import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 
 @NgModule({
   declarations: [
     EmployeeHistoryContainerComponent,
     EmployeeHistoryDescriptionComponent,
     EmployeeHistoryFormComponent,
+    EmployeeHistoryClarificationComponent,
   ],
   imports: [
     BaseModule,
@@ -31,6 +35,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-sc
     CloneButtonModule,
     MemoModule,
     DefaultUniqueScreenWrapperModule,
+    ClickableLabelModule,
   ],
   exports: [
     EmployeeHistoryContainerComponent,

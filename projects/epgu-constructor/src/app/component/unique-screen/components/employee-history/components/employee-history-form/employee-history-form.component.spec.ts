@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RadioComponent } from 'epgu-lib';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MonthYear } from 'epgu-lib';
 
@@ -38,6 +38,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { Gender } from 'epgu-constructor-types/dist/base/gender';
 import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -63,7 +64,7 @@ describe('EmployeeHistoryFormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeHistoryFormComponent,
-        MockComponent(EmployeeHistoryDescriptionComponent),
+        MockComponents(EmployeeHistoryDescriptionComponent, EmployeeHistoryClarificationComponent),
         RadioComponent,
       ],
       imports: [
@@ -133,7 +134,6 @@ describe('EmployeeHistoryFormComponent', () => {
         type: 'student',
         position: '',
         place: 'Место учебы без сокращений и аббревиатур',
-        placeHint: 'Как в дипломе или аттестате',
         address: 'Юридический адрес полностью, включая регион и город',
       };
       const result = component.availableControlsOfType('student');
