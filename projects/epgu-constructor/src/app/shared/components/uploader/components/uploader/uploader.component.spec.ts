@@ -28,7 +28,7 @@ describe('UploaderComponent', () => {
     const event = (new Event('drop') as unknown) as any;
 
     event.dataTransfer = { files: [createFileMock('test.txt')] };
-    spyOn(component, 'drop').and.callThrough();
+    jest.spyOn(component, 'drop');
     container.dispatchEvent(event);
     fixture.detectChanges();
     expect(component.drop).toHaveBeenCalled();
@@ -36,7 +36,7 @@ describe('UploaderComponent', () => {
   });
 
   it('should be dragleave event', () => {
-    spyOn(component, 'dragleave').and.callThrough();
+    jest.spyOn(component, 'dragleave');
     container.dispatchEvent(new Event('dragleave'));
     fixture.detectChanges();
     expect(component.dragleave).toHaveBeenCalled();
@@ -44,7 +44,7 @@ describe('UploaderComponent', () => {
   });
 
   it('should be dragover event', () => {
-    spyOn(component, 'dragover').and.callThrough();
+    jest.spyOn(component, 'dragover');
     container.dispatchEvent(new Event('dragover'));
     fixture.detectChanges();
     expect(component.dragover).toHaveBeenCalled();
@@ -52,7 +52,7 @@ describe('UploaderComponent', () => {
   });
 
   it('should be dragenter event', () => {
-    spyOn(component, 'dragenter').and.callThrough();
+    jest.spyOn(component, 'dragenter');
     container.dispatchEvent(new Event('dragenter'));
     fixture.detectChanges();
     expect(component.dragenter).toHaveBeenCalled();

@@ -56,7 +56,7 @@
         {{ statusText[status] }}
       </div>
 
-      <div class="uploader-manager-item__action">
+      <div *ngIf="!readonly" class="uploader-manager-item__action">
         <button
           *ngIf="
             !fileItem?.attached && (status === fileStatus.error || status === fileStatus.uploaded)
@@ -123,7 +123,7 @@
     {{ fileItem.error.description }}
     <button
       class="uploader-manager-item__button"
-      *ngIf="errorType === errorTypeAction.addUploadErr"
+      *ngIf="!readonly && errorType === errorTypeAction.addUploadErr"
       (click)="repeat.emit(fileItem)"
     >
       Повторить

@@ -255,6 +255,17 @@ describe('FileUploadItemComponent', () => {
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__container'))).toBeNull();
   });
 
+  it('should readonly uploader', () => {
+    const files = createFileList([createFileMock('test.png')]);
+    component.updateSelectedFilesInfoAndSend(files);
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('epgu-constructor-uploader'))).toBeNull();
+    expect(
+      fixture.debugElement.query(By.css('.uploader-manager-item__button.remove_button')),
+    ).toBeNull();
+  });
+
   it('should open link', () => {
     const files = createFileList([createFileMock('test.pdf', { type: 'application/pdf' })]);
     component.updateSelectedFilesInfoAndSend(files);
@@ -264,7 +275,7 @@ describe('FileUploadItemComponent', () => {
     )?.nativeElement;
 
     const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
-    spyOn(link, 'click').and.callThrough();
+    jest.spyOn(link, 'click');
     name.click();
 
     fixture.detectChanges();
@@ -278,7 +289,7 @@ describe('FileUploadItemComponent', () => {
     const manager = fixture.debugElement.query(By.css('epgu-constructor-uploader-manager'))
       .componentInstance;
 
-    spyOn(manager, 'view').and.callThrough();
+    jest.spyOn(manager, 'view');
 
     const name: HTMLDivElement = fixture.debugElement.query(
       By.css('.uploader-manager-item__title > .name'),
@@ -291,7 +302,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should open attached viewer', () => {
     jest.spyOn(component, 'isPrevUploadedFilesButtonShown').mockImplementation(() => true);
-    spyOn(modalSerivce, 'openModal').and.callThrough();
+    jest.spyOn(modalSerivce, 'openModal');
     fixture.detectChanges();
     const button: HTMLDivElement = fixture.debugElement.queryAll(
       By.css('.fileupload__link-button'),

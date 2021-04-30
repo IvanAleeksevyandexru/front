@@ -91,7 +91,7 @@
       <span>Скачать</span>
     </button>
     <button
-      *ngIf="type !== filesType.suggest"
+      *ngIf="!readonly && type !== filesType.suggest"
       class="viewer__toolbar-action suggest-action hide-text"
       (click)="confirmAction()"
     >
@@ -102,7 +102,7 @@
     <button
       [disabled]="isError"
       class="viewer__toolbar-action attach"
-      *ngIf="type === filesType.suggest && !item.attached"
+      *ngIf="!readonly && type === filesType.suggest && !item.attached"
       (click)="suggestAction(true)"
     >
       <img [src]="basePath + 'plus-white.svg'" alt="Прикрепить" />
@@ -111,7 +111,7 @@
     <button
       [disabled]="isError"
       class="viewer__toolbar-action detach"
-      *ngIf="type === filesType.suggest && item.attached"
+      *ngIf="!readonly && type === filesType.suggest && item.attached"
       (click)="suggestAction(false)"
     >
       <img [src]="basePath + 'arrow-back-white.svg'" alt="Открепить" />

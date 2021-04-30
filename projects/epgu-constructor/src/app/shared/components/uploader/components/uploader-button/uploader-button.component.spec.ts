@@ -35,20 +35,20 @@ describe('UploaderButtonComponent', () => {
 
   it('should select', () => {
     const input: HTMLInputElement = component.input.nativeElement;
-    spyOn(component, 'select');
+    jest.spyOn(component, 'select');
     input.dispatchEvent(new Event('change'));
     fixture.detectChanges();
     expect(component.select).toHaveBeenCalled();
   });
   it('should reset', () => {
-    spyOn(component, 'reset');
+    jest.spyOn(component, 'reset');
     fixture.debugElement.nativeElement.click();
     fixture.detectChanges();
     expect(component.reset).toHaveBeenCalled();
   });
 
   it('should click', () => {
-    spyOn(component.input.nativeElement, 'click');
+    jest.spyOn(component.input.nativeElement, 'click');
     fixture.debugElement.nativeElement.click();
 
     fixture.detectChanges();
