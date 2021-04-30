@@ -111,7 +111,7 @@ describe('UtilsService', () => {
 
   describe('getServiceName()', () => {
     it('should return service name', () => {
-      expect(service.getServiceName('https://www.gosuslugi.ru/600101/1/form-item')).toBe('FormItemService');
+      expect(service.getServiceName('https://www.gosuslugi.ru/600101/1/form-item')).toBe('formItem');
     });
 
     it('shouldn\'t return service name if path is incorrect ', () => {
@@ -127,21 +127,6 @@ describe('UtilsService', () => {
 
     it('should return false', () => {
       expect(service.isValidHttpUrl(undefined)).not.toBe(false);
-    });
-  });
-
-  describe('isValidScenarioDto()', () => {
-    it('should return true', () => {
-      expect(service.isValidScenarioDto({ scenarioDto: { display: true } as any } )).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(service.isValidScenarioDto({ scenarioDto: { display: false } as any } )).toBe(false);
-    });
-
-    it('should return falsy values if there is no value', () => {
-      expect(service.isValidScenarioDto(null)).toBe(null);
-      expect(service.isValidScenarioDto(undefined)).toBe(undefined);
     });
   });
 
@@ -172,17 +157,6 @@ describe('UtilsService', () => {
     it('should return {} if object is {} or []', () => {
       expect(service.filterIncorrectObjectFields([])).toEqual({});
       expect(service.filterIncorrectObjectFields({})).toEqual({});
-    });
-  });
-
-  describe('isValidOrderId()', () => {
-    it('should return true', () => {
-        expect(service.isValidOrderId(10)).toBe(true);
-        expect(service.isValidOrderId('10')).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(service.isValidOrderId(undefined)).toBe(false);
     });
   });
 

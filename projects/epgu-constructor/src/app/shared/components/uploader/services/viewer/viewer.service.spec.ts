@@ -21,6 +21,8 @@ import { DeviceDetectorServiceStub } from '../../../../../core/services/device-d
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from 'ng-bullet';
+import { MockComponent, MockModule } from 'ng-mocks';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -57,10 +59,10 @@ describe('ViewerService', () => {
   let modalService: ModalService;
   let viewerService: ViewerService;
   const collection = [mockFileItem(), mockFileItem()];
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [UploaderViewerComponent, UploaderViewerContentComponent],
-      imports: [ZoomModule, BaseModule],
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [UploaderViewerComponent, MockComponent(UploaderViewerContentComponent)],
+      imports: [MockModule(ZoomModule), MockModule(BaseModule)],
       providers: [
         ViewerService,
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -100,9 +102,12 @@ describe('ViewerService', () => {
       .open(FilesCollection.uploader, 'test', of([mockFileItem()]))
       .subscribe();
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('.viewer__info-name'))?.nativeElement?.innerHTML).toBe(
-      '123.pdf',
-    );
+    expect(
+      fixture.debugElement
+        .query(By.css('.modal__title'))
+        ?.nativeElement?.innerHTML?.trim()
+        ?.indexOf('Просмотр фото'),
+    ).not.toBe(-1);
     viewer.unsubscribe();
   });
 

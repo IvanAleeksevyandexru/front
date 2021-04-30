@@ -20,6 +20,7 @@ import {
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -42,6 +43,7 @@ describe('PrepareComponentsService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService
       ],
       imports: [HttpClientTestingModule],
     });

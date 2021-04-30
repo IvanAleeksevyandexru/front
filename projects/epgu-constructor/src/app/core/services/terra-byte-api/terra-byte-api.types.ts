@@ -69,6 +69,7 @@ export interface FileUploadItem {
   required?: boolean;
   pdfFileName?: string;
   maxCountByTypes?: MaxCountByType[];
+  readonly?: boolean;
 }
 
 /**

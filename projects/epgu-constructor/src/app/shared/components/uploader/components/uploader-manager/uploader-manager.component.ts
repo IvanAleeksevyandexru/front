@@ -25,6 +25,7 @@ export class UploaderManagerComponent {
   @Output() download = new EventEmitter<FileItem>();
   @Output() repeat = new EventEmitter<FileItem>();
   @Output() suggest = new EventEmitter<SuggestAction>();
+  @Input() readonly: boolean;
 
   @Input() set list(items: FileItem[]) {
     this.listItems = items;
@@ -54,6 +55,7 @@ export class UploaderManagerComponent {
         this.suggest,
         this.delete,
         this.download,
+        this.readonly,
       )
       .pipe(take(1))
       .subscribe(() => {});

@@ -269,8 +269,10 @@ export class AutocompletePrepareService {
       if (UtilsService.hasJsonStructure(value)) {
         const parsedValue = JSON.parse(value);
         if (Array.isArray(parsedValue)) {
-          const parsedlItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
-          value = JSON.stringify(parsedlItem[component.id]);
+          const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
+          value = JSON.stringify(parsedItem[component.id]);
+        } else if ('snils' in parsedValue) {
+          value = parsedValue['snils'];
         }
       }
 

@@ -21,6 +21,7 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: 653920,
@@ -105,6 +106,7 @@ describe('ScreenService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });

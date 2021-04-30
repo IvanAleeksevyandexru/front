@@ -29,6 +29,7 @@ import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { ModalService } from '../../../modal/modal.service';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -156,6 +157,7 @@ describe('AutocompletePrepareService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService
       ],
     });
   });

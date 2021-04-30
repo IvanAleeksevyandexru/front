@@ -7,6 +7,7 @@ import {
   FileItemStore,
   getAcceptTypes,
   getSizeInMB,
+  updateLimits,
 } from './file-upload-item/data';
 import {
   FileUploadItem,
@@ -52,13 +53,6 @@ export class PrepareService {
     );
   }
 
-  changeMaxAmount(config: FileUploadItem, lastSelected: MaxCountByType): void {
-    this.fileUploadService.changeMaxAmount(
-      (lastSelected as MaxCountByType)?.maxFileCount ?? 0,
-      config.uploadId,
-    );
-  }
-
   checkAndSetMaxCountByTypes(
     config: FileUploadItem,
     file: FileItem,
@@ -68,38 +62,11 @@ export class PrepareService {
     if (!(config?.maxCountByTypes?.length > 0)) {
       return;
     }
-    const types = store.getUniqueTypes(!isAdd ? file : null);
-    if (isAdd && !types.includes(file.getType())) {
-      types.push(file.getType());
-    }
-
-    const findedType = config?.maxCountByTypes.find(({ type }) =>
-      types.every((fileType) => type.includes(fileType)),
+    updateLimits(config, store, this.fileUploadService.getAmount(config.uploadId), file, isAdd);
+    this.fileUploadService.changeMaxAmount(
+      (store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
+      config.uploadId,
     );
-    if (findedType) {
-      if (
-        !store.lastSelected ||
-        findedType.maxFileCount >= this.fileUploadService.getAmount(config.uploadId)
-      ) {
-        store.lastSelected = findedType;
-      }
-    }
-    if (types.length === 0) {
-      store.lastSelected = config?.maxCountByTypes.reduce(
-        (acc, v) => {
-          acc.maxFileCount += v.maxFileCount;
-          acc.type = acc.type
-            .concat(v.type)
-            .filter((item, index, arr) => arr.indexOf(item) === index);
-          return acc;
-        },
-        {
-          type: [],
-          maxFileCount: 0,
-        },
-      );
-    }
-    this.changeMaxAmount(config, store.lastSelected);
   }
 
   validateType(
@@ -138,9 +105,7 @@ export class PrepareService {
           catchError(() => {
             return of(file.setError(getError(ErrorActions.addInvalidFile)));
           }),
-          map((raw: File) => {
-            return file.setRaw(raw);
-          }),
+          map((raw: Blob | FileItem) => (raw instanceof Blob ? file.setRaw(raw as File) : file)),
         )
       : of(file);
   }

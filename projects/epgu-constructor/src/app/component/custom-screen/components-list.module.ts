@@ -51,6 +51,7 @@ import { ComponentListResolverModule } from './component-list-resolver/component
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { DictionaryComponent } from './components/dictionary/dictionary.component';
 import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
+import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { LookupInputComponent } from './components/lookup-input/lookup-input.com
     DictionaryApiService,
     DateRangeService,
     SuggestHandlerService,
+    DateRestrictionsService
   ],
   entryComponents: [
     MaskedAndPlainInputComponent,

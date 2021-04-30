@@ -17,18 +17,22 @@ import { UtilsService as utils } from '../../../../core/services/utils/utils.ser
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
-import { DateRangeRef } from '../../../../shared/services/date-range/date-range.models';
+import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
 import { DictionaryFilters } from 'epgu-constructor-types/dist/base/dictionary';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 
 @Injectable()
 export class ComponentsListRelationsService {
   public get filters(): ComponentDictionaryFilters {
     return this._filters$.getValue();
   }
+
   public set filters(val: ComponentDictionaryFilters) {
     this._filters$.next(val);
   }
+
   public get filters$(): Observable<ComponentDictionaryFilters> {
     return this._filters$.asObservable();
   }
@@ -39,6 +43,7 @@ export class ComponentsListRelationsService {
   constructor(
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
+    private dateRestrictionsService: DateRestrictionsService
   ) {}
 
   public getUpdatedShownElements(
@@ -78,7 +83,27 @@ export class ComponentsListRelationsService {
       },
     );
 
+    this.updateLimitDatesByDateRestrictions(components, component, form, screenService.applicantAnswers, initInitialValues);
+
     return shownElements;
+  }
+
+
+  updateLimitDatesByDateRestrictions(
+    components: Array<CustomComponent>,
+    component: CustomComponent | CustomListFormGroup,
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto,
+    initInitialValues: boolean
+  ): void {
+    if (component.attrs.dateRestrictions && !initInitialValues) {
+      this.setLimitDates(component, components, form, applicantAnswers);
+      return;
+    }
+
+    if (initInitialValues) {
+      this.updateLimitDates(component, components, form, applicantAnswers);
+    }
   }
 
   public createStatusElements(
@@ -249,6 +274,59 @@ export class ComponentsListRelationsService {
           dictionaryToolsService,
         );
       });
+  }
+
+
+  private async updateLimitDates(
+    component: CustomComponent | CustomListFormGroup,
+    components: Array<CustomComponent>,
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto,
+  ): Promise<void> {
+    const relatedComponents = components.filter(relatedComponent => relatedComponent.attrs.dateRestrictions &&
+      (relatedComponent.attrs.dateRestrictions.some(restriction => this.dateRestrictionsService.haveDateRef(restriction))));
+
+    for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
+      const restriction = relatedComponents[index].attrs.dateRestrictions.find(restriction =>
+        this.dateRestrictionsService.haveDateRef(restriction) && restriction.value === component.id
+      );
+
+      if (restriction) {
+        const dateRange = await this.dateRestrictionsService.getDateRange(
+          relatedComponents[index].id,
+          relatedComponents[index].attrs.dateRestrictions, components, form, applicantAnswers);
+        this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
+      }
+
+    }
+  }
+
+  private async setLimitDates(
+    component: CustomComponent | CustomListFormGroup,
+    components: Array<CustomComponent>,
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto): Promise<void> {
+    const dateRange =
+      await this.dateRestrictionsService.getDateRange(component.id, component.attrs.dateRestrictions, components, form, applicantAnswers);
+    this.updateFormWithDateRange(form, component, dateRange);
+  }
+
+  private updateFormWithDateRange(
+    form: FormArray,
+    component: CustomComponent | CustomListFormGroup,
+    dateRange: Range): void {
+    const control = form.controls.find((control) => control.value.id === component.id);
+
+    control.get('attrs').patchValue({
+      ...component.attrs,
+      minDate: dateRange.min || component.attrs.minDate,
+      maxDate: dateRange.max || component.attrs.maxDate,
+    });
+
+    const isDateInRange = control.value.value >= dateRange.min?.getTime() && control.value.value <= dateRange.max?.getTime();
+    if (!isDateInRange) {
+      control.get('value').patchValue(control.value.value);
+    }
   }
 
   private updateReferenceLimitDate(

@@ -22,11 +22,7 @@
     >
       <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName"
     /></a>
-    <div
-      *ngIf="isError"
-      [ngClass]="{ 'file-viewer__file_link': isPDF }"
-      class="file-viewer__file"
-    >
+    <div *ngIf="isError" [ngClass]="{ 'file-viewer__file_link': isPDF }" class="file-viewer__file">
       <img [src]="baseFileTypeIconPath + iconsType.error + '.svg'" alt="Ошибка" />
       <div class="file-viewer__error-title">Что-то пошло не так</div>
       <div class="file-viewer__error-description">
@@ -67,7 +63,7 @@
   <div class="viewer__toolbar">
     <ng-container *ngIf="zoom | async as status">
       <button
-        class="viewer__toolbar-action zoom hide-text"
+        class="viewer__toolbar-action zoom zoom-in hide-text"
         [disabled]="status.zoom == status.max || !imageURL || isError"
         [hidden]="status.zoom >= status.max && status.max != 1"
         (click)="zoomIn()"
@@ -76,27 +72,27 @@
         <span>Приблизить</span>
       </button>
       <button
-        class="viewer__toolbar-action zoom hide-text"
+        class="viewer__toolbar-action zoom zoom-out hide-text"
         [hidden]="status.zoom < status.max || status.max == 1"
         [disabled]="isError"
         (click)="zoomOut()"
       >
-        <img [src]="basePath + 'zoom-out-white.svg'" alt="Приблизить" />
+        <img [src]="basePath + 'zoom-out-white.svg'" alt="Отдалить" />
         <span>Отдалить</span>
       </button>
     </ng-container>
 
     <button
       [disabled]="isError"
-      class="viewer__toolbar-action hide-text"
+      class="viewer__toolbar-action download-action hide-text"
       (click)="downloadAction()"
     >
       <img [src]="basePath + 'download.svg'" alt="Скачать" />
       <span>Скачать</span>
     </button>
     <button
-      *ngIf="type !== filesType.suggest"
-      class="viewer__toolbar-action hide-text"
+      *ngIf="!readonly && type !== filesType.suggest"
+      class="viewer__toolbar-action suggest-action hide-text"
       (click)="confirmAction()"
     >
       <img [src]="basePath + 'remove-file.svg'" alt="Удалить" />
@@ -106,7 +102,7 @@
     <button
       [disabled]="isError"
       class="viewer__toolbar-action attach"
-      *ngIf="type === filesType.suggest && !item.attached"
+      *ngIf="!readonly && type === filesType.suggest && !item.attached"
       (click)="suggestAction(true)"
     >
       <img [src]="basePath + 'plus-white.svg'" alt="Прикрепить" />
@@ -115,7 +111,7 @@
     <button
       [disabled]="isError"
       class="viewer__toolbar-action detach"
-      *ngIf="type === filesType.suggest && item.attached"
+      *ngIf="!readonly && type === filesType.suggest && item.attached"
       (click)="suggestAction(false)"
     >
       <img [src]="basePath + 'arrow-back-white.svg'" alt="Открепить" />

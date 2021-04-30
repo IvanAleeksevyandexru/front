@@ -12,6 +12,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -113,6 +114,7 @@ describe('ValidationService', () => {
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
+        DateRestrictionsService
       ],
     });
   });

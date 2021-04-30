@@ -25,6 +25,7 @@ import { LoggerServiceStub } from '../../../../core/services/logger/logger.servi
 import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
@@ -59,6 +60,7 @@ describe('InvitationErrorComponent', () => {
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
+        DateRestrictionsService
       ]
     })
       .compileComponents();

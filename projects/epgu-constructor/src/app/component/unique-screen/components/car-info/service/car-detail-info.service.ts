@@ -56,7 +56,7 @@ export class CarDetailInfoService {
   public fetchNotaryInfo(): Observable<CarDetailInfo<NotaryInfo>> {
     this.notaryInfo$.next(null);
     this.isLoadingNotaryInfo$.next(true);
-    return this.fetchInfo<CarDetailInfo<NotaryInfo>>('/data/gibdd/notaryInfo').pipe(
+    return this.fetchInfo<CarDetailInfo<NotaryInfo>>('/form-backend/data/gibdd/notaryInfo').pipe(
       tap((response) => {
         this.isLoadingNotaryInfo$.next(false);
         this.notaryInfo$.next(response);
@@ -67,7 +67,7 @@ export class CarDetailInfoService {
   public fetchVehicleInfo(): Observable<CarDetailInfo<VehicleOwnerInfo>> {
     this.vehicleInfo$.next(null);
     this.isLoadingOwnerCarInfo$.next(true);
-    return this.fetchInfo<CarDetailInfo<VehicleOwnerInfo>>('/data/gibdd/vehicleFullInfo').pipe(
+    return this.fetchInfo<CarDetailInfo<VehicleOwnerInfo>>('/form-backend/data/gibdd/vehicleFullInfo').pipe(
       tap((response) => {
         this.isLoadingOwnerCarInfo$.next(false);
         this.vehicleInfo$.next(response);

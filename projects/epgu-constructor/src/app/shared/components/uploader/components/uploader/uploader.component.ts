@@ -6,7 +6,6 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
-  Input,
   OnDestroy,
   Output,
   QueryList,
@@ -23,7 +22,6 @@ import { UploaderButtonComponent } from '../uploader-button/uploader-button.comp
 })
 export class UploaderComponent implements AfterContentInit, OnDestroy {
   @Output() upload = new EventEmitter<FileList>();
-  @Input() isMobile: boolean;
   @ContentChildren(UploaderButtonComponent, { descendants: true }) buttons!: QueryList<
     UploaderButtonComponent
   >;
