@@ -56,10 +56,10 @@
         {{ statusText[status] }}
       </div>
 
-      <div class="uploader-manager-item__action">
+      <div *ngIf="!readonly" class="uploader-manager-item__action">
         <button
           *ngIf="
-            !readonly && !fileItem?.attached && (status === fileStatus.error || status === fileStatus.uploaded)
+            !fileItem?.attached && (status === fileStatus.error || status === fileStatus.uploaded)
           "
           (click)="delete.emit(fileItem)"
           class="uploader-manager-item__button remove_button {{
@@ -67,27 +67,27 @@
           }}"
         ></button>
         <button
-          *ngIf="!readonly && fileItem?.attached"
+          *ngIf="fileItem?.attached"
           (click)="detach()"
           class="uploader-manager-item__button detach_button"
         ></button>
         <button
           class="uploader-manager-item__button"
-          *ngIf="!readonly && status === fileStatus.uploading"
+          *ngIf="status === fileStatus.uploading"
           (click)="cancelAction(operationType.upload)"
         >
           Отменить
         </button>
         <button
           class="uploader-manager-item__button"
-          *ngIf="!readonly && status === fileStatus.downloading"
+          *ngIf="status === fileStatus.downloading"
           (click)="cancelAction(operationType.download)"
         >
           Отменить
         </button>
         <button
           class="uploader-manager-item__button"
-          *ngIf="!readonly && status === fileStatus.delition"
+          *ngIf="status === fileStatus.delition"
           (click)="cancelAction(operationType.delete)"
         >
           Отменить
