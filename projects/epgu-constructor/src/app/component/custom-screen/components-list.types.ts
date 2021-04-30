@@ -148,6 +148,12 @@ export interface CustomComponentAttr {
   repeatWithNoFilters?: boolean;
   refs?: { [key: string]: string };
   dateRestrictions?: DateRestriction[];
+  mappingParams?: { idPath: string; textPath: string };
+  dictionaryUrlType?: DictionaryUrlTypes;
+  searchProvider?: {
+    dictionaryOptions: DictionaryOptions;
+    dictionaryFilter: ComponentDictionaryFilterDto[];
+  };
 }
 
 export interface DateRestriction {
@@ -176,6 +182,11 @@ export interface CustomComponentOutputData {
     disabled?: boolean;
     condition?: string;
   };
+}
+
+export enum DictionaryUrlTypes {
+  dictionary = 'dictionary',
+  nsiSuggest = 'nsiSuggest',
 }
 
 /**

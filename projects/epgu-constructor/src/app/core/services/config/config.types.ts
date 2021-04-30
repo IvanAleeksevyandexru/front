@@ -76,6 +76,7 @@ export interface Config {
   zipkinEnv?: string;
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;
+  nsiSuggestDictionaryUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

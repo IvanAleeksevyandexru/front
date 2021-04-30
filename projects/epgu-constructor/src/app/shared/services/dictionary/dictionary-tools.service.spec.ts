@@ -21,8 +21,9 @@ import {
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
-import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryConditions, DictionaryValueTypes } from 'epgu-constructor-types/dist/base/dictionary';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { FormArray } from '@angular/forms';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -30,6 +31,7 @@ const getDictionary = (count = 0) => {
   for (let i = 0; i < count; i += 1) {
     items.push({
       value: `R780000${i}`,
+      title: `TITLE_FOR_R780000${i}`,
     });
   }
 
@@ -39,6 +41,32 @@ const getDictionary = (count = 0) => {
     total: items.length,
     items,
   };
+};
+
+const form = {
+  value: [
+    {
+      type: 'DateInput',
+      id: 'act3',
+      label: 'Дата актовой записи',
+      required: true,
+      value: new Date('2021-04-08T00:00:00.000Z'),
+    },
+    {
+      type: 'StringInput',
+      id: 'act2',
+      label: 'Номер актовой записи',
+      required: true,
+      value: 'test',
+    },
+    {
+      type: 'Lookup',
+      id: 'act4',
+      label: 'Орган ЗАГС, составивший актовую запись',
+      required: true,
+      value: '',
+    },
+  ],
 };
 
 describe('DictionaryToolsService', () => {
@@ -153,7 +181,7 @@ describe('DictionaryToolsService', () => {
         attributeName: 'SHOW_ON_MAP',
         condition: DictionaryConditions.EQUALS,
         value: '{"asString":"true"}',
-        valueType: 'value',
+        valueType: DictionaryValueTypes.value,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({ asString: 'true' });
@@ -164,7 +192,7 @@ describe('DictionaryToolsService', () => {
         attributeName: 'CODE',
         condition: DictionaryConditions.CONTAINS,
         value: 'regCode',
-        valueType: 'preset',
+        valueType: DictionaryValueTypes.preset,
       };
       const compValue = JSON.parse(MapStore.display.components[0].value);
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
@@ -176,21 +204,55 @@ describe('DictionaryToolsService', () => {
         attributeName: 'CODE',
         condition: DictionaryConditions.CONTAINS,
         value: 'orderId',
-        valueType: 'root',
+        valueType: DictionaryValueTypes.root,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({ asString: 763712529 });
     });
 
-    it('should calc valueType root', () => {
+    it('should calc valueType ref', () => {
       const dFilter = {
         attributeName: 'CODE',
         condition: DictionaryConditions.CONTAINS,
         value: 'pd4.value.regAddr.kladrCode',
-        valueType: 'ref',
+        valueType: DictionaryValueTypes.ref,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({ asString: '77000000000358800' });
+    });
+
+    it('should calc valueType rawFilter', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'searchString',
+        valueType: DictionaryValueTypes.rawFilter,
+      };
+      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ asString: 'searchString' });
+    });
+
+    it('should calc valueType formValue with date', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'act3',
+        valueType: DictionaryValueTypes.formValue,
+        dateFormat: 'yyyy-MM-dd',
+      };
+      const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ asString: '2021-04-08' });
+    });
+
+    it('should calc valueType formValue with string', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'act2',
+        valueType: DictionaryValueTypes.formValue,
+      };
+      const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ asString: 'test' });
     });
 
     it('should calc valueType INVALID_VALUE_TYPE', () => {
@@ -202,7 +264,7 @@ describe('DictionaryToolsService', () => {
       };
       expect(() => {
         service['getValueForFilter'](compValue, MapStore, dFilter);
-      }).toThrowError(`Неверный valueType для фильтров карты - ${dFilter.valueType}`);
+      }).toThrowError(`Неверный valueType для фильтров - ${dFilter.valueType}`);
     });
   });
 
@@ -275,6 +337,48 @@ describe('DictionaryToolsService', () => {
   describe('dropDowns()', () => {
     it('should exists', () => {
       expect('dropDowns' in service).toBe(true);
+    });
+  });
+
+  describe('adaptDictionaryToListItem()', () => {
+    it('should return ListElement with default mapping', () => {
+      const items = getDictionary(2).items;
+      const actualListItems = service.adaptDictionaryToListItem(items);
+      const expectedListItems = [
+        {
+          id: 'R7800000',
+          originalItem: { title: 'TITLE_FOR_R7800000', value: 'R7800000' },
+          text: 'TITLE_FOR_R7800000',
+        },
+        {
+          id: 'R7800001',
+          originalItem: { title: 'TITLE_FOR_R7800001', value: 'R7800001' },
+          text: 'TITLE_FOR_R7800001',
+        },
+      ];
+      expect(expectedListItems).toEqual(actualListItems);
+    });
+
+    it('should return ListElement with custom mapping', () => {
+      const items = [
+        { asd: 'TITLE_FOR_R7800000', zxc: 'R7800000' },
+        { asd: 'TITLE_FOR_R7800001', zxc: 'R7800001' },
+      ];
+      const mappingParams = { idPath: 'zxc', textPath: 'asd' };
+      const actualListItems = service.adaptDictionaryToListItem(items, mappingParams);
+      const expectedListItems = [
+        {
+          id: 'R7800000',
+          originalItem: { asd: 'TITLE_FOR_R7800000', zxc: 'R7800000' },
+          text: 'TITLE_FOR_R7800000',
+        },
+        {
+          id: 'R7800001',
+          originalItem: { asd: 'TITLE_FOR_R7800001', zxc: 'R7800001' },
+          text: 'TITLE_FOR_R7800001',
+        },
+      ];
+      expect(expectedListItems).toEqual(actualListItems);
     });
   });
 

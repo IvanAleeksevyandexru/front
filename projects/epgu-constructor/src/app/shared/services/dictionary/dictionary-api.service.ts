@@ -9,9 +9,15 @@ import { ConfigService } from '../../../core/services/config/config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
 import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryUrlTypes } from '../../../component/custom-screen/components-list.types';
 
 @Injectable()
 export class DictionaryApiService {
+
+  private dictionaryUrlMap = {
+    [DictionaryUrlTypes.dictionary]: (): string => this.config.dictionaryUrl,
+    [DictionaryUrlTypes.nsiSuggest]: (): string => this.config.nsiSuggestDictionaryUrl,
+  };
 
   private dictionaryCache: Record<string, DictionaryResponse> = {};
   private processStatus: BehaviorSubject<Record<string, true>> = new BehaviorSubject<
@@ -25,8 +31,12 @@ export class DictionaryApiService {
    * @param dictionaryName - название справочника
    * @param options - опции для получения данных
    */
-  public getDictionary(dictionaryName: string, options: DictionaryOptions = {}): Observable<DictionaryResponse> {
-    const path = `${this.config.dictionaryUrl}/${dictionaryName}`;
+  public getDictionary(
+    dictionaryName: string,
+    options: DictionaryOptions = {},
+    dictionaryUrlType: DictionaryUrlTypes = DictionaryUrlTypes.dictionary
+  ): Observable<DictionaryResponse> {
+    const path = `${this.dictionaryUrlMap[dictionaryUrlType]()}/${dictionaryName}`;    
     const cacheId = dictionaryName + JSON.stringify(options);
 
     // TODO: Вынести кеш логику в кеш сервис

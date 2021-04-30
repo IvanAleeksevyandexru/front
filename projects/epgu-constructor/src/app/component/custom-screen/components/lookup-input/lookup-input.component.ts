@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ConstantsService, ValidationShowOn } from 'epgu-lib';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ConstantsService, ListElement, ValidationShowOn } from 'epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
@@ -17,7 +17,9 @@ import { ConfigService } from '../../../../core/services/config/config.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class LookupInputComponent extends AbstractComponentListItemComponent {
+export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
+  public provider;
+
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return suggestions[this.control.value?.id];
@@ -43,5 +45,38 @@ export class LookupInputComponent extends AbstractComponentListItemComponent {
     public injector: Injector,
   ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    if (this.control.value.attrs.searchProvider) {
+      this.provider = { search: this.providerSearch() };
+    }
+  }
+
+  private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
+      const filters = [...this.control.value.attrs.searchProvider.dictionaryFilter];
+      filters[0].value = searchString;
+
+      const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
+        this.formService.form,
+        this.screenService.getStore(),
+        filters,
+      );
+      return this.dictionaryToolsService
+        .getDictionaries$(this.control.value.attrs.dictionaryType, this.control.value, {
+          ...this.control.value.attrs.searchProvider.dictionaryOptions,
+          ...dictionaryOptions,
+        })
+        .pipe(
+          map((reference) => {
+            return this.dictionaryToolsService.adaptDictionaryToListItem(
+              reference.data.items,
+              reference.component.attrs.mappingParams,
+            );
+          }),
+        );
+    };
   }
 }

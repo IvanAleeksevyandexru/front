@@ -58,7 +58,10 @@ export class RefRelationService {
     return value === componentValue;
   }
 
-  public getValueFromComponentVal(componentVal: { id?: string } | string | number): string {
+  public getValueFromComponentVal(componentVal: { id?: string } | string | number | Date): string | Date {
+    if (componentVal instanceof Date) {
+      return componentVal;
+    }
     return ['string', 'boolean'].includes(typeof componentVal)
       ? (componentVal as string)
       : (componentVal as { id?: string })?.id;

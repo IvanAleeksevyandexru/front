@@ -2,7 +2,6 @@ import {
   DictionaryResponseError,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
 
 export interface IGeoCoords {
   address: string;
@@ -34,11 +33,4 @@ export interface IFeatureCollection {
       res: IDictionaryYMapProperties;
     };
   }>;
-}
-
-export interface IdictionaryFilter {
-  attributeName: string;
-  condition: DictionaryConditions;
-  value: string;
-  valueType: string;
 }

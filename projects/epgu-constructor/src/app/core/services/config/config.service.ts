@@ -39,6 +39,7 @@ export class ConfigService implements Config {
   private _zipkinEnv: string;
   private _oplataUrl: string;
   private _lookupQueryTimeoutMs: number;
+  private _nsiSuggestDictionaryUrl: string;
 
   constructor(
     private loadService: LoadService,
@@ -183,12 +184,17 @@ export class ConfigService implements Config {
     return this._lookupQueryTimeoutMs;
   }
 
+  get nsiSuggestDictionaryUrl(): string {
+    return this._nsiSuggestDictionaryUrl;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._nsiSuggestDictionaryUrl = config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;

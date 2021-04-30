@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MockComponents, MockPipe } from 'ng-mocks';
@@ -47,6 +48,7 @@ import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
+import { mockComponentsListComponentStore } from './mocks/mock-components-list';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -119,6 +121,7 @@ describe('ComponentsListComponent', () => {
     fixture = TestBed.createComponent(ComponentsListComponent);
     component = fixture.componentInstance;
     formService = TestBed.inject(ComponentsListFormService);
+    component.components = cloneDeep(mockComponentsListComponentStore.display.components);
     fixture.detectChanges();
   });
 

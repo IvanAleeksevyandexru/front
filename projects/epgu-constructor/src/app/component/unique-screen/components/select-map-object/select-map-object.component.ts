@@ -13,7 +13,10 @@ import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model'
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { isEqual as _isEqual } from 'lodash';
-import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import {
+  ComponentDictionaryFilterDto,
+  DictionaryOptions,
+} from 'epgu-constructor-types/dist/base/dictionary';
 import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
 import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
@@ -38,11 +41,7 @@ import {
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
-import {
-  IdictionaryFilter,
-  IFillCoordsResponse,
-  IGeoCoordsResponse,
-} from './select-map-object.interface';
+import { IFillCoordsResponse, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
@@ -338,7 +337,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>): Observable<IFillCoordsResponse> {
+  private fillCoords(
+    dictionaryFilters: Array<ComponentDictionaryFilterDto>,
+  ): Observable<IFillCoordsResponse> {
     let options;
     try {
       options = this.getOptions(dictionaryFilters);
@@ -379,7 +380,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Подготовка тела POST запроса dictionary
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryOptions {
+  private getOptions(dictionaryFilters: Array<ComponentDictionaryFilterDto>): DictionaryOptions {
     return {
       ...this.dictionaryToolsService.getFilterOptions(
         this.componentPresetValue,
