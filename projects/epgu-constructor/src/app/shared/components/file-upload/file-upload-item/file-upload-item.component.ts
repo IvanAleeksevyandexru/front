@@ -335,10 +335,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
     const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
-    if (
-      ((value?.error && ignoreActions.includes(value?.error?.type)) || !value?.error) &&
-      value.item
-    ) {
+    const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
+
+    if ((availableErrorCondition || !value?.error) && value.item) {
       acc.value.push(value.item);
       if (value.error) {
         acc.errors.push(value.error.text);
