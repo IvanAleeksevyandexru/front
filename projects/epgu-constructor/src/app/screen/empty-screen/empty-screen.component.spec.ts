@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { of } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import { MockProvider } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+
 import { EmptyScreenComponent } from './empty-screen.component';
 import { ScreenService } from '../screen.service';
-import { MockComponent } from 'ng-mocks';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { RedirectComponent } from '../../component/empty-screen/components/redirect.component';
-import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -15,19 +18,19 @@ import { LocationService } from '../../core/services/location/location.service';
 import { LocationServiceStub } from '../../core/services/location/location.service.stub';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
-import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
 import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
   let fixture: ComponentFixture<EmptyScreenComponent>;
 
-  let screenService: ScreenServiceStub;
-  let locationService: LocationServiceStub;
-  let navigationService: NavigationServiceStub;
-  let loggerService: LoggerServiceStub;
+  let screenService: ScreenService;
+  let locationService: LocationService;
+  let navigationService: NavigationService;
+  let loggerService: LoggerService;
+  let fileDownloaderService: FileDownloaderService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -38,20 +41,23 @@ describe('EmptyScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        MockProvider(FileDownloaderService),
       ],
     }).overrideComponent(EmptyScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.OnPush },
+      set: { changeDetection: ChangeDetectionStrategy.Default },
     });
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    locationService = TestBed.inject(LocationService);
+    navigationService = TestBed.inject(NavigationService);
+    loggerService = TestBed.inject(LoggerService);
+    fileDownloaderService = TestBed.inject(FileDownloaderService);
+
     fixture = TestBed.createComponent(EmptyScreenComponent);
     component = fixture.componentInstance;
-
-    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-    locationService = (TestBed.inject(LocationService) as unknown) as LocationServiceStub;
-    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
-    loggerService = (TestBed.inject(LoggerService) as unknown) as LoggerServiceStub;
+    fixture.detectChanges();
   });
 
   describe('emptyComponentName property', () => {
@@ -181,5 +187,37 @@ describe('EmptyScreenComponent', () => {
     fixture.detectChanges();
 
     expect(func).toHaveBeenCalled();
+  });
+
+  describe('download', () => {
+    it('should be call fileDownloaderService.download', () => {
+      const mockComponent = {
+        attrs: {
+          downloadLink: 'test',
+        },
+        id: 'id1',
+        type: 'type1',
+      };
+      screenService.component = mockComponent;
+      fixture.detectChanges();
+      const spy = jest.spyOn(fileDownloaderService, 'download');
+      component.redirectLink$.subscribe();
+
+      expect(spy).toBeCalledWith('test');
+    });
+
+    it('should be not call fileDownloaderService.download', () => {
+      const mockComponent = {
+        attrs: {},
+        id: 'id1',
+        type: 'type1',
+      };
+      screenService.component = mockComponent;
+      fixture.detectChanges();
+      const spy = jest.spyOn(fileDownloaderService, 'download');
+      component.redirectLink$.subscribe();
+
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });
