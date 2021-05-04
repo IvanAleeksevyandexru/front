@@ -18,7 +18,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 const componentMock: ConfirmUserData = {
   attrs: {

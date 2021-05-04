@@ -12,7 +12,7 @@ import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 
 describe('ScreenButtonsComponent', () => {

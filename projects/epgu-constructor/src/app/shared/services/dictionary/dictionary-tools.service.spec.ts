@@ -20,8 +20,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
-import { AttributeTypes, DictionaryConditions, DictionaryValueTypes } from 'epgu-constructor-types/dist/base/dictionary';
+import { ScenarioDto, DictionaryConditions, DictionaryValueTypes, AttributeTypes } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { FormArray } from '@angular/forms';
 

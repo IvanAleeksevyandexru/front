@@ -21,7 +21,7 @@ import { ActionServiceStub } from '../../../../../shared/directives/action/actio
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AddPassportComponent', () => {

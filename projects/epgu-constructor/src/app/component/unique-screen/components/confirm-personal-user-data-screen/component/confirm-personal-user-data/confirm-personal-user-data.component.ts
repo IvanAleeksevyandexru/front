@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionType } from 'epgu-constructor-types';
 import {
   ConfirmUserData,
   ConfirmUserDataErrorType,

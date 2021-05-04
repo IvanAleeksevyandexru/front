@@ -1,5 +1,5 @@
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { ComponentDto } from 'epgu-constructor-types';
+import { TextTransform } from 'epgu-constructor-types';
 
 export const componentMock: ComponentDto = {
   id: 'ai15',

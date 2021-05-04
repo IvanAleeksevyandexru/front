@@ -13,9 +13,9 @@ import {
   FormPlayerApiErrorResponse,
   FormPlayerApiErrorStatuses,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse
+  FormPlayerApiSuccessResponse,
+  ScenarioDto,
 } from 'epgu-constructor-types';
-import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
 
 /**
  * Этот базоый сервис служит для взаимодействия formPlayerComponent и formPlayerApi

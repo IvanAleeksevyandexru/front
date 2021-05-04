@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';

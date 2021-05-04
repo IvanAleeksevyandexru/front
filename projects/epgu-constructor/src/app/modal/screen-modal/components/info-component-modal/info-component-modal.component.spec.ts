@@ -13,8 +13,7 @@ import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-scr
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ActionType, DTOActionAction, ComponentDto } from 'epgu-constructor-types';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;

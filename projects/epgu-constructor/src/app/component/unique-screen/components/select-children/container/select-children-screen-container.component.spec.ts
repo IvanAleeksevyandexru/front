@@ -30,7 +30,7 @@ import { ActionService } from '../../../../../shared/directives/action/action.se
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { configureTestSuite } from 'ng-bullet';
-import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
+import { CachedAnswersDto } from 'epgu-constructor-types';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;

@@ -1,4 +1,4 @@
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { Clarifications } from 'epgu-constructor-types';
 
 export interface DropdownListContent extends Clarifications {
   [key: string]: {

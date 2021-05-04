@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { DisplayDto } from 'epgu-constructor-types';
 
 @Injectable()
 export class HtmlRemoverService {

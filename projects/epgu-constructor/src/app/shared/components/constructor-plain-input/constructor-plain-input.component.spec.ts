@@ -17,7 +17,7 @@ import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { TextTransform } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorPlainInputComponent', () => {

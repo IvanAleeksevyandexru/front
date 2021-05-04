@@ -12,8 +12,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../services/utils/utils.service';
-import { DictionaryFilters, DictionarySubFilter } from 'epgu-constructor-types/dist/base/dictionary';
-import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from 'epgu-constructor-types';
 
 export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
@@ -41,7 +40,7 @@ export interface SlotInfo {
   slotsCount: number;
   region: string;
   department: string;
-} 
+}
 
 export interface DictionaryError {
   code?: number | string;
@@ -185,7 +184,7 @@ export class HealthInterceptor implements HttpInterceptor {
 
             this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError, serviceName);
           }
-          
+
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
             let payload = {};
             const { id, name, orderId } = this.commonParams;
@@ -388,7 +387,7 @@ export class HealthInterceptor implements HttpInterceptor {
             const filterWithRegion = subFilter[0];
 
             if (this.isValidSubFilter(filterWithRegion)) {
-              return filterWithRegion.simple.value.asString;
+              return filterWithRegion.simple.value.asString as string;
             }
 
             return undefined;
@@ -400,7 +399,7 @@ export class HealthInterceptor implements HttpInterceptor {
         case FilterType.SimpleKind: {
           const { attributeName, value } = filter.simple;
 
-          return DICTIONARY_CODES.includes(attributeName.toLowerCase()) ? value.asString : undefined;
+          return DICTIONARY_CODES.includes(attributeName.toLowerCase()) ? value.asString as string : undefined;
         }
 
         case FilterType.UnspecifiedKind: {

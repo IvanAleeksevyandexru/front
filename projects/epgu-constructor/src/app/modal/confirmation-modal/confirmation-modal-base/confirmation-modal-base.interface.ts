@@ -1,4 +1,4 @@
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentActionDto } from 'epgu-constructor-types';
 
 export interface ConfirmationModalBaseButton {
   label: string;

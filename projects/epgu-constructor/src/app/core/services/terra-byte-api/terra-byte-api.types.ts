@@ -1,5 +1,5 @@
 import { TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { Clarifications } from 'epgu-constructor-types';
 
 export interface Chunk {
   chunk: number;

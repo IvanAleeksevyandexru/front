@@ -2,10 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import {
-  DictionaryConditions,
-  DictionaryFilters,
-} from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryConditions, DictionaryFilters } from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {

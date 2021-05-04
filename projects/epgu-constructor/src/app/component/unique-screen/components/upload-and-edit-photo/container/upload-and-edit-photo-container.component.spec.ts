@@ -19,7 +19,7 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentDto } from 'epgu-constructor-types';
 
 describe('UploadAndEditPhotoContainerComponent', () => {
   let component: UploadAndEditPhotoContainerComponent;

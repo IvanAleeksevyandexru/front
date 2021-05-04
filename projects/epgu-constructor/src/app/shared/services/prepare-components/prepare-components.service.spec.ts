@@ -19,7 +19,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentDto } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 describe('PrepareComponentsService', () => {

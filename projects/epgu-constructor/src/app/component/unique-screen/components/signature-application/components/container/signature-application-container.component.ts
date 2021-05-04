@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto, ComponentActionDto } from 'epgu-constructor-types';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';

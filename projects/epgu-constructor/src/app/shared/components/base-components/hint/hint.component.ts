@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { Clarifications } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-hint',

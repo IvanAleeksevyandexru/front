@@ -1,6 +1,6 @@
 import { RelativeDate } from 'epgu-lib';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { TextTransform } from 'epgu-constructor-types';
 import { FieldNames } from '../../registration-addr/registration-addr-screen.types';
 
 /**

@@ -7,8 +7,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
-import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
+import { DisplayDto, ScenarioErrorsDto } from 'epgu-constructor-types';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../current-answers.service';

@@ -1,8 +1,5 @@
 import { NavigationPayload } from '../form-player/form-player.types';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { Answer } from 'epgu-constructor-types/dist/base/answer';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
-import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import { ComponentDto, Answer, DisplayDto, ScenarioDto } from 'epgu-constructor-types';
 
 
 /**

@@ -29,9 +29,13 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ActionApiResponse } from 'epgu-constructor-types';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  ActionApiResponse,
+  ComponentDto,
+} from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-action-test',

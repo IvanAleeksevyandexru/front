@@ -27,9 +27,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
-import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto, ComponentAttrsDto,ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

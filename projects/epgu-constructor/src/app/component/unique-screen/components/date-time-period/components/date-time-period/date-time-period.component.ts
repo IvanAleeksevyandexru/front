@@ -11,7 +11,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addDays, addYears, format, isSameDay, parseISO } from 'date-fns';
 import { pairwise, startWith, tap } from 'rxjs/operators';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 import {
   getDateTimeObject,
   getTimeChunks,

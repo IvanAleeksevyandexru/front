@@ -11,7 +11,7 @@ import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;

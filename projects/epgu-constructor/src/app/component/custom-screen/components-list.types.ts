@@ -6,11 +6,15 @@ import {
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
-import { ComponentDictionaryFilterDto, DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
-import { ComponentFilterDto, ComponentRelationFieldDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import {
+  ComponentDictionaryFilterDto,
+  DictionaryOptions,
+  Clarifications,
+  DisplayDto,
+  TextTransform,
+  ComponentFilterDto,
+  ComponentRelationFieldDto
+} from 'epgu-constructor-types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',

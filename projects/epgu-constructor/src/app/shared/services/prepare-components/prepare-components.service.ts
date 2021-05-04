@@ -12,9 +12,7 @@ import { UniqueScreenComponentTypes } from '../../../component/unique-screen/uni
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
-import { DictionaryFilters } from 'epgu-constructor-types/dist/base/dictionary';
+import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from 'epgu-constructor-types';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -332,12 +330,12 @@ export class PrepareComponentsService {
     if (filter?.simple?.value?.asString) {
       const valueRef = filter.simple.value;
 
-      valueRef.asString = valueRef.asString.replace(`\${${key}}`, value);
+      valueRef.asString = (valueRef.asString as string).replace(`\${${key}}`, value);
     } else if (filter?.union?.subs) {
       const subs = filter.union.subs;
 
       filter.union.subs = subs.map((subFilter) => {
-        subFilter.simple.value.asString.replace(`\${${key}}`, value);
+        (subFilter.simple.value.asString as string).replace(`\${${key}}`, value);
 
         return subFilter;
       });

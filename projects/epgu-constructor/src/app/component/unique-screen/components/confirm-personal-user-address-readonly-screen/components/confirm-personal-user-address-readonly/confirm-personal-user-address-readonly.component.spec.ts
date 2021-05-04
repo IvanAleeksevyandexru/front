@@ -22,7 +22,7 @@ import { LabelComponent } from '../../../../../../shared/components/base-compone
 import { HelperTextComponent } from '../../../../../../shared/components/base-components/helper-text/helper-text.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
-import { ActionType, ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionType, ComponentActionDto } from 'epgu-constructor-types';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   let component: ConfirmPersonalUserAddressReadonlyComponent;

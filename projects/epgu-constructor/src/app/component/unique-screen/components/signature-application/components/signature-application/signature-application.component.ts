@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto, ComponentActionDto } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
