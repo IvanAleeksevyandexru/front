@@ -111,7 +111,7 @@ describe('UtilsService', () => {
 
   describe('getServiceName()', () => {
     it('should return service name', () => {
-      expect(service.getServiceName('https://www.gosuslugi.ru/600101/1/form-item')).toBe('formItem');
+      expect(service.getServiceName('https://www.gosuslugi.ru/600101/1/form-item')).toBe('FormItemService');
     });
 
     it('shouldn\'t return service name if path is incorrect ', () => {

@@ -19,8 +19,8 @@ export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
 export const DICTIONARY_CODES = ['code', 'region', 'okato', 'oktmo', 'okato_in'];
 export const ERROR_UPDATE_DRAFT_SERVICE_NAME = 'errorUpdateDraft';
-export const PREV_STEP_SERVICE_NAME = 'scenarioGetPrevStep';
-export const NEXT_PREV_STEP_SERVICE_NAME = 'scenarioGetNextStep';
+export const PREV_STEP_SERVICE_NAME = 'scenarioGetPrevStepService';
+export const NEXT_PREV_STEP_SERVICE_NAME = 'scenarioGetNextStepService';
 
 export const NEXT_EVENT_TYPE = 'getNextStep';
 export const PREV_EVENT_TYPE = 'getPrevStep';

@@ -215,10 +215,10 @@ export class UtilsService {
     const numRegex = /^\d+$/;
     const splittedUrl = this.getSplittedUrl(url);
 
-    let preparedArray = this.sliceArrayFromRight(splittedUrl, 2);
+    let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
 
     if (numRegex.test(preparedArray[0])) {
-      preparedArray = this.sliceArrayFromRight(preparedArray, 2, false);
+      preparedArray = this.sliceArrayFromRight(preparedArray, 3, false);
     }
     
     preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));
@@ -229,7 +229,7 @@ export class UtilsService {
     });
     const cleanCamelCasedServiceName = camelCasedServiceName.replace(/[-_\s]+/g, '');
 
-    return cleanCamelCasedServiceName;
+    return `${cleanCamelCasedServiceName}Service`;
   }
 
   /**

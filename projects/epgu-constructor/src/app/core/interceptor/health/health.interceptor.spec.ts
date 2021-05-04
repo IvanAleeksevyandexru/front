@@ -53,8 +53,8 @@ describe('HealthInterceptor', () => {
   } as ActionRequestPayload;
   const getNextStepAction = 'renderForm';
   const dictionaryName = 'STRANI_IST';
-  const dictionaryAction = 'dictionarySTRANIIST';
-  
+  const dictionaryAction = 'v1DictionarySTRANIISTService';
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -75,7 +75,7 @@ describe('HealthInterceptor', () => {
       ],
     });
   });
-  
+
   beforeEach(() => {
     interceptor = TestBed.inject(HealthInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
