@@ -334,18 +334,15 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     acc: FileResponseToBackendUploadsItem,
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
-    const ignoreActions = [
-      ErrorActions.addInvalidType,
-      ErrorActions.addInvalidFile,
-      ErrorActions.addUploadErr,
-    ];
-    if (!ignoreActions.includes(value?.error?.type) && value.item) {
+    const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
+    const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
+
+    if ((availableErrorCondition || !value?.error) && value.item) {
       acc.value.push(value.item);
       if (value.error) {
         acc.errors.push(value.error.text);
       }
     }
-
     return acc;
   }
 
@@ -412,16 +409,22 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   addDownload(file: FileItem): void {
     this.createOperation(OperationType.download, file);
   }
+
   downloading(operation: Operation): Observable<void> {
     const fileItem = operation.item;
     const { status } = fileItem;
+
     return of(fileItem).pipe(
       tap((file) => this.store.changeStatus(file, FileItemStatus.downloading)),
       concatMap((file) => this.terabyteService.downloadFile(file.createUploadedParams())),
       tap((result) => {
         this.terabyteService.pushFileToBrowserForDownload(result, fileItem.item);
       }),
-      finalize(() => {
+      catchError((e) => {
+        this.store.update(fileItem.setError(this.getError(ErrorActions.addDownloadErr)));
+        return throwError(e);
+      }),
+      tap(() => {
         this.store.changeStatus(fileItem, status);
       }),
       map(() => undefined),
@@ -627,7 +630,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   getError(action: ErrorActions): FileItemError {
-    return createError(action, this.data, this.store);
+    return createError(
+      action,
+      this.data,
+      this.store,
+      this.fileUploadService.getMaxTotalFilesSize(),
+    );
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {
