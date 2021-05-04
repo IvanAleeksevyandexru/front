@@ -1,5 +1,6 @@
 @import 'src/styles/core/palettes';
 @import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
 
 :host {
   display: block;
@@ -7,6 +8,9 @@
 }
 
 .answer-btn {
+  &::ng-deep > button {
+    flex-wrap: wrap;
+  }
   &__icon {
     flex-shrink: 0;
     margin-left: 10px;
@@ -17,6 +21,13 @@
       display: flex;
     }
     margin-left: auto;
+  }
+  &__description {
+    flex-basis: 100%;
+    color: $color-text-helper;
+    @include typ-plain-small;
+    margin-top: 8px;
+
   }
 }
 
