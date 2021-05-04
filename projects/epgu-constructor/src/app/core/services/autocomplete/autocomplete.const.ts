@@ -6,6 +6,7 @@ import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
 
 export const prepareClassifiedSuggestionItems = (
   suggestions: ISuggestionItem,
+  isDadataAddress?: boolean,
 ): { [key: string]: ISuggestionItem } => {
   let result: { [key: string]: ISuggestionItem } = {};
   if (suggestions) {
@@ -15,7 +16,9 @@ export const prepareClassifiedSuggestionItems = (
       const parsedOriginalItem = JSON.parse(originalItem);
       Object.keys(parsedOriginalItem).forEach((fieldName) => {
         const itemList = {
-          value: parsedOriginalItem[fieldName],
+          value: isDadataAddress
+            ? parsedOriginalItem[fieldName]['fullAddress']
+            : parsedOriginalItem[fieldName],
           mnemonic: `${mnemonic}.${fieldName}`,
           id,
         };

@@ -6,12 +6,7 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-constructor-screen-pad class="screen-pad-body">
-    <ng-container
-      *ngTemplateOutlet="
-        formTmpl;
-        context: { $implicit: data$ | async }
-      "
-    >
+    <ng-container *ngTemplateOutlet="formTmpl; context: { $implicit: data$ | async }">
     </ng-container>
 
     <div class="error" *ngIf="screenService.componentError$ | async as error">
@@ -22,9 +17,7 @@
 
 <ng-template #formTmpl let-data>
   <div [formGroup]="form">
-    <ng-container *ngFor="let field of fields$ | async;"
-                  [ngSwitch]="field.fieldName"
-    >
+    <ng-container *ngFor="let field of fields$ | async" [ngSwitch]="field.fieldName">
       <epgu-constructor-address-item
         *ngSwitchCase="'regAddr'"
         class="item"
@@ -76,8 +69,6 @@
           [formControlName]="field.fieldName"
           [name]="field.fieldName"
           class="content content__input"
-          [suggest]="classifiedSuggestionItems[field.fieldName]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
         >
         </lib-plain-input>
       </epgu-constructor-address-item>
