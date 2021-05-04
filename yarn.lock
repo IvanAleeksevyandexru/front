@@ -7688,10 +7688,10 @@ epgu-constructor-types@1.3.28:
   resolved "http://npm.gosuslugi.local/epgu-constructor-types/-/epgu-constructor-types-1.3.28.tgz#ed44df6f53c503cfd7069e5646cdc06c719856ab"
   integrity sha512-UnIz+uJa1QjFzC1PS2FBVm+dcS3xFPMV2zpjOGgNIJb+/q7cprJh/9Xogigqvf/aMSD2Q2N5dcUVAneZri3rAg==
 
-epgu-lib@0.0.1226:
-  version "0.0.1226"
-  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.1226.tgz#b98fd6d655e4d0de88cc9b97e5f4675999b1cda1"
-  integrity sha512-MJhCEALPwFSFbVnRkS65eWZtkK+U9cYrvdplz4WmG5I2QLcwRZ/p59B4vAxN/MQ7hFIJcmRjhZuqNdPSSdgpmQ==
+epgu-lib@^0.0.1285:
+  version "0.0.1285"
+  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.1285.tgz#2bbf0abb73ece9aa8f0d03d87fa02e2cd1dadd3d"
+  integrity sha512-SU+ceyEaGeTqHfCY8VNqAw89PBC+Ai8ypPO7xJ2fEWE86yalNKBOLXXUWWEooTAHViXRz7zqaRbMy7mWO/1L6A==
   dependencies:
     "@angular/animations" "11.0.0"
     "@angular/cdk" "11.0.0"

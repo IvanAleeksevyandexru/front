@@ -15,6 +15,9 @@ export class ConstructorDadataWidgetComponent {
   @Input() simpleMode: boolean;
   @Input() hideLevels?: string[];
   @Input() hideHouseCheckbox: boolean;
+  @Input() hideApartmentCheckbox: boolean;
+  @Input() selectHouseCheckbox: boolean;
+  @Input() selectApartmentCheckbox: boolean;
   @Input() externalApiUrl?: string;
   @Input() id: string;
   @Input() validationShowOn: ValidationShowOn | string | boolean;
