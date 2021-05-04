@@ -6,7 +6,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ComponentAnswerDto } from 'epgu-constructor-types/dist/base/qustion-component-answer';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -19,7 +18,7 @@ import { ScreenService } from '../../../screen/screen.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnswerButtonComponent implements OnInit {
-  @Input() data: Partial<ComponentActionDto | ComponentAnswerDto>;
+  @Input() data: Partial<ComponentAnswerDto>;
   @Input() selectedValue: string;
 
   isLoading: boolean;
