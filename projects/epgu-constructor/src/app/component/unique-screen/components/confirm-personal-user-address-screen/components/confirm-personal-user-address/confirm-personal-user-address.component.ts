@@ -74,6 +74,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       .subscribe((suggestions) => {
         this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
           suggestions[this.screenService.component.id],
+          true,
         );
       });
   }

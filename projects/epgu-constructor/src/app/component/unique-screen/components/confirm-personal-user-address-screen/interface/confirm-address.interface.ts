@@ -46,7 +46,7 @@ export interface ConfirmAddressActionsInterface {
  */
 export interface ConfirmAddressFieldsInterface {
   fieldName: FieldNames;
-  label: 'адрес';
+  label: string;
   attrs?: { labelHint?: string };
   hint?: string;
   nonPresetable?: boolean;

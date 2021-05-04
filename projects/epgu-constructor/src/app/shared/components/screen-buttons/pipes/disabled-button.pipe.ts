@@ -7,7 +7,7 @@ import { ScreenButton, ActionType } from 'epgu-constructor-types';
 export class DisabledButtonPipe implements PipeTransform {
   transform(button: ScreenButton, disabled: boolean, disabledForAll: boolean, isLoading: boolean): boolean {
     return (disabled && disabledForAll)
-      || (disabled && !disabledForAll && button.type === ActionType.nextStep)
+      || (disabled && !disabledForAll && (button.type === ActionType.deliriumNextStep || button.type === ActionType.nextStep))
       || isLoading;
   }
 }

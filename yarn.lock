@@ -8680,10 +8680,10 @@ envinfo@^7.7.4:
   resolved "http://npm.gosuslugi.local/envinfo/-/envinfo-7.8.1.tgz#06377e3e5f4d379fea7ac592d5ad8927e0c4d475"
   integrity sha512-/o+BXHmB7ocbHEAs6F2EnG0ogybVVUdkRunTT2glZU9XAaGmhqskrvKwqXuDfNjEO0LZKWdejEEpnq8aM0tOaw==
 
-epgu-lib@0.0.1226:
-  version "0.0.1226"
-  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.1226.tgz#b98fd6d655e4d0de88cc9b97e5f4675999b1cda1"
-  integrity sha512-MJhCEALPwFSFbVnRkS65eWZtkK+U9cYrvdplz4WmG5I2QLcwRZ/p59B4vAxN/MQ7hFIJcmRjhZuqNdPSSdgpmQ==
+epgu-lib@0.0.1285:
+  version "0.0.1285"
+  resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.1285.tgz#2bbf0abb73ece9aa8f0d03d87fa02e2cd1dadd3d"
+  integrity sha512-SU+ceyEaGeTqHfCY8VNqAw89PBC+Ai8ypPO7xJ2fEWE86yalNKBOLXXUWWEooTAHViXRz7zqaRbMy7mWO/1L6A==
   dependencies:
     "@angular/animations" "11.0.0"
     "@angular/cdk" "11.0.0"
