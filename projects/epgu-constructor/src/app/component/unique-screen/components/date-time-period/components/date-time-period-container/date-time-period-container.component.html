@@ -6,7 +6,7 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-constructor-date-time-period
-    *ngIf="initialState"
+    *ngIf="initialState$ | async as initialState"
     [attrs]="(screenService.component$ | async).attrs"
     [step]="(screenService.component$ | async).attrs.step"
     [initialState]="initialState"
