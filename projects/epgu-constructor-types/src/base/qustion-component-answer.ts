@@ -8,4 +8,5 @@ export interface ComponentAnswerDto {
   link?: string;
   hint?: string;
   underConstruction?: boolean;
+  description?: string; // описание для вопроса
 }

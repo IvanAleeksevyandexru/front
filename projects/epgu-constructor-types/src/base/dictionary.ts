@@ -51,7 +51,7 @@ export enum AttributeTypes {
   asDecimal = 'asDecimal',
 }
 
-export type DictionaryValue = { [key in AttributeTypes]?: string | number };
+export type DictionaryValue = { [key in AttributeTypes]?: string };
 
 export enum DictionaryUnionKind {
   AND = 'AND',
