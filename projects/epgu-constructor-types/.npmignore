@@ -1,0 +1,13 @@
+src
+node_modules
+tsconfig.json
+.gitlab-ci.yml
+.prettierrc
+.gitignore
+.eslintrc.js
+.eslintignore
+.editorconfig
+.versionrc
+commitlint.config.js
+lint-staged.config.js
+yarn.lock

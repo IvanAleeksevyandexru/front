@@ -12,7 +12,7 @@ import { ActionDirective } from '../../../../shared/directives/action/action.dir
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   let component: ConfirmPersonalUserPhoneEmailComponent;

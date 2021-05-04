@@ -1,4 +1,4 @@
-import { DictionaryFilters } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryFilters } from 'epgu-constructor-types';
 
 export interface ComponentDictionaryFilters {
   [key: string]: DictionaryFilters['filter'] | null;

@@ -1,6 +1,5 @@
 import { ScreenTypes } from '../../screen/screen.types';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { DisplayDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
   id: 'finishscreen_expire_order_error',

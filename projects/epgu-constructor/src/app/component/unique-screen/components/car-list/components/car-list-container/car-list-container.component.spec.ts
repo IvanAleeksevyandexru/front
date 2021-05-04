@@ -28,7 +28,7 @@ import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { DisplayDto } from 'epgu-constructor-types';
 
 
 describe('CarListContainerComponent', () => {

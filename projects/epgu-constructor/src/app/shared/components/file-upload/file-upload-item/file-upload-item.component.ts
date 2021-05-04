@@ -14,7 +14,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { Clarifications } from 'epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';

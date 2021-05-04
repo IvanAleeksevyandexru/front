@@ -1,10 +1,10 @@
+import { UnsubscribeService } from 'epgu-constructor';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UnsubscribeService } from '../../../projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
+
 import { AppService } from '../app.service';
 import { AppConfig } from '../app.type';
-import { ServiceInfo } from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
 
 @Component({
   selector: 'config',

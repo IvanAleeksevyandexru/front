@@ -12,9 +12,7 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
-import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
+import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from 'epgu-constructor-types';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;

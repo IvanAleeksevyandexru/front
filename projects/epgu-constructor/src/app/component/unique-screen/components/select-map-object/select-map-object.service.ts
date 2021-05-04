@@ -11,8 +11,7 @@ import {
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { filter } from 'rxjs/operators';
-import { ComponentBaloonContentDto } from 'epgu-constructor-types/dist/base/component-attrs';
-import { ComponentDictionaryFilterDto } from 'epgu-constructor-types/dist/base/dictionary';
+import { ComponentBaloonContentDto, ComponentDictionaryFilterDto } from 'epgu-constructor-types';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;

@@ -26,8 +26,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 const componentSample: ComponentDto = {
   attrs: {},

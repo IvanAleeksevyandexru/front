@@ -27,11 +27,12 @@ import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/c
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import {
+  ActionApiResponse,
+  ActionRequestPayload,
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ActionApiResponse, ActionRequestPayload } from 'epgu-constructor-types';
+} from 'epgu-constructor-types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',

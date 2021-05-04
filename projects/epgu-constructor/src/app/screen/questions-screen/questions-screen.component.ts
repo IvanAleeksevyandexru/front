@@ -10,9 +10,9 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ComponentAnswerDto } from 'epgu-constructor-types/dist/base/qustion-component-answer';
-import { Answer } from 'epgu-constructor-types/dist/base/answer';
+  ComponentAnswerDto,
+  Answer,
+} from 'epgu-constructor-types';
 import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';

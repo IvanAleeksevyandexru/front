@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentDto } from 'epgu-constructor-types';
 import { CarOwnerInfoComponentAttrsDto, OwnerCarInfo } from '../../models/car-info.interface';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';

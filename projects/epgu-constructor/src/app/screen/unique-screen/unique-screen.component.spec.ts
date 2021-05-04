@@ -10,8 +10,7 @@ import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { ComponentDto, DisplayDto } from 'epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

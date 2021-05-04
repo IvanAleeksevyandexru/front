@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import {
+  ComponentDto,
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types/dist/base/component-action-dto';
+} from 'epgu-constructor-types';
 import {
   CarInfo,
   CarInfoComponentAttrsDto,

@@ -56,3 +56,5 @@ Thumbs.db
 # stryker temp files
 .stryker-tmp
 /reports/*
+
+lerna-debug.log

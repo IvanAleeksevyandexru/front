@@ -26,13 +26,13 @@ import { FormPlayerServiceStub } from '../../../form-player/services/form-player
 import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import {
+  ComponentDto,
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ActionApiResponse } from 'epgu-constructor-types';
+  ActionApiResponse,
+} from 'epgu-constructor-types';
 
 const mockComponent: ComponentDto = {
   attrs: {},

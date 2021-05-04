@@ -15,7 +15,7 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ConfirmEmailComponent } from './confirm-email.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentDto } from 'epgu-constructor-types';
 
 
 describe('ConfirmEmailComponent', () => {

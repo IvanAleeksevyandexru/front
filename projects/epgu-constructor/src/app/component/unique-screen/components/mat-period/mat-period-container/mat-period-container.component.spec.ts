@@ -14,7 +14,7 @@ import { ScreenPadModule } from '../../../../../shared/components/screen-pad/scr
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FormValue, MatPeriod } from '../mat-period.models';
 import { configureTestSuite } from 'ng-bullet';
-import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
+import { CachedAnswersDto } from 'epgu-constructor-types';
 
 describe('MatPeriodContainerComponent', () => {
   let component: MatPeriodContainerComponent;

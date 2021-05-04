@@ -27,7 +27,7 @@ import { ComponentsListRelationsService } from '../../../component/custom-screen
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { isUndefined } from '../../constants/utils';
-import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
+import { CachedAnswersDto } from 'epgu-constructor-types';
 import {
   ComponentDictionaryFilterDto,
   DictionaryFilters,
@@ -37,7 +37,7 @@ import {
   DictionaryUnionKind,
   DictionaryValue,
   DictionaryValueTypes,
-} from 'epgu-constructor-types/dist/base/dictionary';
+} from 'epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
 import { KeyValueMap } from '../../../core/core.types';

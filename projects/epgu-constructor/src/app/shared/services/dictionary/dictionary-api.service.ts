@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '../../../core/services/config/config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
-import { DictionaryOptions } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryOptions } from 'epgu-constructor-types';
 import { DictionaryUrlTypes } from '../../../component/custom-screen/components-list.types';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class DictionaryApiService {
     options: DictionaryOptions = {},
     dictionaryUrlType: DictionaryUrlTypes = DictionaryUrlTypes.dictionary
   ): Observable<DictionaryResponse> {
-    const path = `${this.dictionaryUrlMap[dictionaryUrlType]()}/${dictionaryName}`;    
+    const path = `${this.dictionaryUrlMap[dictionaryUrlType]()}/${dictionaryName}`;
     const cacheId = dictionaryName + JSON.stringify(options);
 
     // TODO: Вынести кеш логику в кеш сервис

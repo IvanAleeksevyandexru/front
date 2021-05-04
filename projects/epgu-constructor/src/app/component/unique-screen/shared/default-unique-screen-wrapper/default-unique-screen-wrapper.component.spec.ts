@@ -24,7 +24,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',

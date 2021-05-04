@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from 'lodash';
-import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { DTOActionAction } from 'epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';

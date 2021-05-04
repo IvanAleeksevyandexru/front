@@ -13,7 +13,7 @@ import { WINDOW_PROVIDERS } from '../../providers/window.provider';
 import { configureTestSuite } from 'ng-bullet';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { OrgType } from 'epgu-constructor-types/dist/base/org-type';
+import { OrgType } from 'epgu-constructor-types';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;

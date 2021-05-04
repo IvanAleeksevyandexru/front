@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Answer } from 'epgu-constructor-types/dist/base/answer';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { Answer, ComponentDto } from 'epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';

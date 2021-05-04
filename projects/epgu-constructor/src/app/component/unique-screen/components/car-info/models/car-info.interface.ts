@@ -1,5 +1,5 @@
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',

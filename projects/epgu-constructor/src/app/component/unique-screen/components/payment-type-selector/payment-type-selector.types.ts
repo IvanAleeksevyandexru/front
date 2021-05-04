@@ -1,5 +1,4 @@
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { ComponentActionDto, Clarifications } from 'epgu-constructor-types';
 
 export interface PaymentTypeSelectorInterface {
   actions: Array<ComponentActionDto>;

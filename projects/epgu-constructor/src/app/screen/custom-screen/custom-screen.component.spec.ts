@@ -26,8 +26,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;

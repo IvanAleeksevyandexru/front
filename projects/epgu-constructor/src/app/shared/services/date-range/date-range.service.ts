@@ -4,7 +4,7 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { DateRangeAttrs, DateRange, Range, DateRangeRef } from './date-range.models';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 
 @Injectable()
 export class DateRangeService {

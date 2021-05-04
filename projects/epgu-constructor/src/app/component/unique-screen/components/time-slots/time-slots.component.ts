@@ -8,7 +8,7 @@ import {
 import { ListItem } from 'epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { DisplayDto } from 'epgu-constructor-types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';

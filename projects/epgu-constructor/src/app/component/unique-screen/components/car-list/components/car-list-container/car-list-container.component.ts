@@ -3,13 +3,13 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { ListItem } from 'epgu-lib';
 import { FormControl } from '@angular/forms';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
 import {
+  DisplayDto,
+  ComponentDto,
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types/dist/base/component-action-dto';
+} from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import {

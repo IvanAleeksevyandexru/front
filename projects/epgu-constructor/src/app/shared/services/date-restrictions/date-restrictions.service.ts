@@ -5,7 +5,7 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { DatesHelperService } from 'epgu-lib';
 import { isAfter, isBefore } from 'date-fns';
 import { CustomComponent, DateRestriction } from '../../../component/custom-screen/components-list.types';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 import { FormArray } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';

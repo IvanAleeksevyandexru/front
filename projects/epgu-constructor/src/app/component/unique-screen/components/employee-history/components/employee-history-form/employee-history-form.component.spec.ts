@@ -35,8 +35,7 @@ import { DateRangeService } from '../../../../../../shared/services/date-range/d
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
-import { Gender } from 'epgu-constructor-types/dist/base/gender';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { Gender, TextTransform } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 

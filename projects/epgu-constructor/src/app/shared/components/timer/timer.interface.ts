@@ -1,5 +1,5 @@
 import { ComponentBase } from '../../../screen/screen.types';
-import { TimerRulesDto } from 'epgu-constructor-types/dist/base/component-attrs';
+import { TimerRulesDto } from 'epgu-constructor-types';
 
 /**
  * Интерфейс таймера

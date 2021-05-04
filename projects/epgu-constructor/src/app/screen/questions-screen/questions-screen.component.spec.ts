@@ -28,9 +28,7 @@ import { BaseModule } from '../../shared/base.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { ComponentDto, ActionType, ComponentActionDto, DTOActionAction, Clarifications } from 'epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

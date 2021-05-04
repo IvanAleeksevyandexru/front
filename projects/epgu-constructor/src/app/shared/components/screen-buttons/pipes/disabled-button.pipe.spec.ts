@@ -1,6 +1,5 @@
 import { DisabledButtonPipe } from './disabled-button.pipe';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
+import { ActionType, DTOActionAction, ScreenButton } from 'epgu-constructor-types';
 
 describe('DisabledButtonPipe', () => {
   let pipe: DisabledButtonPipe;
