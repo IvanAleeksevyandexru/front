@@ -384,6 +384,7 @@ export class ScreenContent {
       cssClass,
       buttons,
       firstScreen,
+      hideBackButton = false,
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
     this.screenType = type;
@@ -393,7 +394,7 @@ export class ScreenContent {
     this.submitLabel = submitLabel;
     this.gender = gender;
     this.terminal = terminal;
-    this.showNav = !terminal && !(isWebView && firstScreen);
+    this.showNav = (!terminal && !(isWebView && firstScreen)) || hideBackButton;
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
