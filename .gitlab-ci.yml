@@ -8,6 +8,7 @@ cache: &global_cache
 
 stages:
   - install
+  - postinstall
   - code-quality
   - library-build
   - library-publish
@@ -29,6 +30,21 @@ Install:
     - master
     - stage
 
+Pre-build:
+  stage: postinstall
+    except:
+      variables:
+        - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    <<: *global_cache
+    policy: pull
+    script:
+      - yarn lib:type:build
+    only:
+      - merge_requests
+      - master
+      - stage
+
 Lint:
   stage: code-quality
   except:
@@ -38,7 +54,7 @@ Lint:
     <<: *global_cache
     policy: pull
   script:
-    - yarn lib:type:build && yarn lint
+    - yarn lint
   only:
     - merge_requests
     - master
