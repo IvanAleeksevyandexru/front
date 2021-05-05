@@ -26,7 +26,7 @@ import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { DisplayDto } from 'epgu-constructor-types';
 
 const displayMock = {
   id: 's113',

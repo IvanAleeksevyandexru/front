@@ -16,11 +16,11 @@ import { isEqual as _isEqual } from 'lodash';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
-} from 'epgu-constructor-types/dist/base/dictionary';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
-import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
-import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { IMvdFilter } from 'epgu-constructor-types/dist/base/component-attrs';
+  ApplicantAnswersDto,
+  ScreenButton,
+  ActionType,
+  IMvdFilter,
+} from 'epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';

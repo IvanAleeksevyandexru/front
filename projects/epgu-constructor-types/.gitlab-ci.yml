@@ -1,0 +1,154 @@
+image: node:latest
+
+cache: &global_cache
+  key: cache-${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - dist/
+
+stages:
+  - install
+  - code-quality
+  - library-build
+  - library-publish
+
+Install:
+  stage: install
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  before_script:
+    - rm -rf dist
+  script:
+    - yarn install
+  only:
+    - merge_requests
+    - master
+
+Lint:
+  stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
+    - yarn lint
+  only:
+    - merge_requests
+    - master
+    - stage
+
+
+Library-build:
+  stage: library-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn build
+  only:
+    - merge_requests
+    - master
+
+Library-publish:
+ stage: library-publish
+ except:
+   variables:
+     - $GITLAB_USER_LOGIN == $CI_USER
+ before_script:
+   - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
+   - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
+ script:
+   - echo $GITLAB_USER_LOGIN
+   - echo $CI_USER
+   - echo $CI_USER_EMAIL
+   - echo $CI_COMMIT_BRANCH
+   - echo $CI_COMMIT_REF_NAME
+   - echo $CI_COMMIT_SHA
+   - git config --global user.email $CI_USER_EMAIL
+   - git config --global user.name $CI_USER
+   - git config receive.advertisePushOptions true
+   - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
+   - npm run release -- --release-as patch
+   - CURRENT_TAG=$(git describe --abbrev=0 --tags)
+   - echo $CURRENT_TAG
+   - git push http://${CI_USER}:${CI_ACCESS_TOKEN}@git.gosuslugi.local/luxoft/epgu2-form-frontend-types.git --follow-tags ${CI_COMMIT_REF_NAME}:${CI_COMMIT_BRANCH}
+   - npm publish --tag latest
+ after_script:
+   - CURRENT_TAG=$(git describe --abbrev=0 --tags)
+   - git tag -d $CURRENT_TAG
+   - git reset --hard HEAD~1
+ only:
+   - master
+
+
+# Build-image:
+#   stage: image
+#   except:
+#     variables:
+#       - $GITLAB_USER_LOGIN == $CI_USER
+#   cache:
+#     <<: *global_cache
+#     policy: pull
+#   services:
+#     - name: docker:dind
+#       command: ['--insecure-registry', 'registry.gosuslugi.local']
+#   image: docker:latest
+#   variables:
+#     GIT_STRATEGY: none
+#   before_script:
+#     - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY
+#   script:
+#     - docker build --tag $REGISTRY/$IMAGE:$CI_COMMIT_SHA --tag $REGISTRY/$IMAGE:$CI_COMMIT_REF_SLUG .
+#     - docker push $REGISTRY/$IMAGE:$CI_COMMIT_SHA
+#     - docker push $REGISTRY/$IMAGE:$CI_COMMIT_REF_SLUG
+#   only:
+#     - merge_requests
+#     - master
+#     - stage
+#
+# Deploy to review env:
+#   stage: deploy
+#   except:
+#     variables:
+#       - $GITLAB_USER_LOGIN == $CI_USER
+#   cache: {}
+#   variables:
+#     GIT_STRATEGY: none
+#   before_script:
+#     - export PATH=$PATH:/devops/k8s/bin
+#   script:
+#     - echo http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
+#     - deploy
+#   environment:
+#     name: review/$CI_COMMIT_REF_NAME
+#     url: http://review-$CI_COMMIT_REF_SLUG.pgu2-dev.test.gosuslugi.ru
+#     on_stop: 'Drop review env'
+#   only:
+#     - merge_requests
+#     - master
+#     - stage
+#
+# Drop review env:
+#   stage: deploy
+#   except:
+#     variables:
+#       - $GITLAB_USER_LOGIN == $CI_USER
+#   cache: {}
+#   variables:
+#     GIT_STRATEGY: none
+#   before_script:
+#     - export PATH=$PATH:/devops/k8s/bin
+#   script:
+#     - echo "Delete environment $CI_COMMIT_REF_SLUG"
+#     - stop
+#   when: manual
+#   environment:
+#     name: review/$CI_COMMIT_REF_NAME
+#     action: stop
+#   only:
+#     - merge_requests
+#     - master
+#     - stage#

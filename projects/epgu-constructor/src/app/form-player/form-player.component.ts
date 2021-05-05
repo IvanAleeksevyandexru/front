@@ -13,7 +13,7 @@ import {
 import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import { ScenarioDto } from 'epgu-constructor-types';
 import { ConfigService } from '../core/services/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';

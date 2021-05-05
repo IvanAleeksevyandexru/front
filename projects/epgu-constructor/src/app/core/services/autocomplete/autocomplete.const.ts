@@ -1,11 +1,11 @@
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ISuggestionItem } from './autocomplete.inteface';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
+import { ComponentDto, DisplayDto } from 'epgu-constructor-types';
 
 export const prepareClassifiedSuggestionItems = (
   suggestions: ISuggestionItem,
+  isDadataAddress?: boolean,
 ): { [key: string]: ISuggestionItem } => {
   let result: { [key: string]: ISuggestionItem } = {};
   if (suggestions) {
@@ -15,7 +15,9 @@ export const prepareClassifiedSuggestionItems = (
       const parsedOriginalItem = JSON.parse(originalItem);
       Object.keys(parsedOriginalItem).forEach((fieldName) => {
         const itemList = {
-          value: parsedOriginalItem[fieldName],
+          value: isDadataAddress
+            ? parsedOriginalItem[fieldName]['fullAddress']
+            : parsedOriginalItem[fieldName],
           mnemonic: `${mnemonic}.${fieldName}`,
           id,
         };

@@ -15,8 +15,7 @@ import { CounterDirective } from '../../../../../shared/directives/counter/count
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ApplicantAnswersDto, ComponentDto } from 'epgu-constructor-types';
 import { of } from 'rxjs';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 

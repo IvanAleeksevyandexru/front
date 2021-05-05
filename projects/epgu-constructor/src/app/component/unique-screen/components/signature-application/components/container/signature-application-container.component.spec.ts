@@ -32,10 +32,14 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
-import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import {
+  ComponentDto,
+  ComponentAttrsDto,
+  ApplicantAnswersDto,
+  ComponentActionDto,
+  DTOActionAction
+} from 'epgu-constructor-types';
+
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;

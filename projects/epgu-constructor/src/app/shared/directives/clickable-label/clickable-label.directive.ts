@@ -5,8 +5,7 @@ import { ActionService } from '../action/action.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { getHiddenBlock } from '../../constants/utils';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { Clarifications, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 @Directive({
   selector: '[epgu-constructor-clickable-label]',

@@ -18,8 +18,7 @@ import { LocationService } from '../../core/services/location/location.service';
 import { LocationServiceStub } from '../../core/services/location/location.service.stub';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ApplicantAnswersDto, ComponentDto } from 'epgu-constructor-types';
 import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 
 describe('EmptyScreenComponent', () => {

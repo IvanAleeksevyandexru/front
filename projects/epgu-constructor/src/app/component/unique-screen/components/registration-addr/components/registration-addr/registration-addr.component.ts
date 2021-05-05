@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentActionDto } from 'epgu-constructor-types';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';

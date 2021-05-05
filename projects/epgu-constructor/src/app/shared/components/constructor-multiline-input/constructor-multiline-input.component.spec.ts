@@ -15,7 +15,7 @@ import { ValidationTypeModule } from '../../directives/validation-type/validatio
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
 import { By } from '@angular/platform-browser';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
+import { TextTransform } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorMultilineInputComponent', () => {

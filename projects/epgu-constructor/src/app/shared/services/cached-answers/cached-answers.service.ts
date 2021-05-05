@@ -3,7 +3,7 @@ import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
+import { ComponentDto } from 'epgu-constructor-types';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [

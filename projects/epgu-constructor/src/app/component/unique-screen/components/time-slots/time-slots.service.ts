@@ -29,7 +29,7 @@ import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 

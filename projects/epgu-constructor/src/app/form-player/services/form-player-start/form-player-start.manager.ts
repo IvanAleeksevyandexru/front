@@ -10,8 +10,12 @@ import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { LocationService } from '../../../core/services/location/location.service';
-import { CheckOrderApiResponse, FormPlayerApiSuccessResponse, QuizRequestDto } from 'epgu-constructor-types';
-import { ScenarioDto } from 'epgu-constructor-types/dist/base/scenario';
+import {
+  CheckOrderApiResponse,
+  FormPlayerApiSuccessResponse,
+  QuizRequestDto,
+  ScenarioDto,
+} from 'epgu-constructor-types';
 
 /**
  * Менеджер для обработки различных кейсов запуска плеера.

@@ -25,7 +25,7 @@ import { ComponentDictionaryFilters } from './components-list-relations.interfac
 import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
-import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('ComponentsListRelationsService', () => {

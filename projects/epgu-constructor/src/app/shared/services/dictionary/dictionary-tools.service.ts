@@ -1,8 +1,5 @@
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
-import {
-  DictionaryItem,
-  DictionaryResponse,
-} from './dictionary-api.types';
+import { DictionaryItem, DictionaryResponse, } from './dictionary-api.types';
 import { ListElement, ListItem } from 'epgu-lib/lib/models/dropdown.model';
 import {
   CustomComponent,
@@ -27,8 +24,8 @@ import { ComponentsListRelationsService } from '../../../component/custom-screen
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { isUndefined } from '../../constants/utils';
-import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
 import {
+  CachedAnswersDto,
   ComponentDictionaryFilterDto,
   DictionaryFilters,
   DictionaryOptions,
@@ -37,7 +34,8 @@ import {
   DictionaryUnionKind,
   DictionaryValue,
   DictionaryValueTypes,
-} from 'epgu-constructor-types/dist/base/dictionary';
+  AttributeTypes,
+} from 'epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
 import { KeyValueMap } from '../../../core/core.types';
@@ -499,24 +497,25 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dFilter: ComponentDictionaryFilterDto | string,
   ): DictionaryValue {
+    const attributeType: AttributeTypes = (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
     //TODO разобраться с типами
     // @ts-ignore
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
       [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
       [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({
-        asString: componentValue[dFilter.value] as string,
+        [attributeType]: componentValue[dFilter.value] as string,
       }),
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
-        asString: screenStore[dFilter.value],
+        [attributeType]: screenStore[dFilter.value],
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
-        asString: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
+        [attributeType]: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
       }),
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
-        asString: (dFilter as ComponentDictionaryFilterDto).value,
+        [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
       }),
       [DictionaryValueTypes.formValue]: (): DictionaryValue => ({
-        asString: this.getValueFromForm(
+        [attributeType]: this.getValueFromForm(
           componentValue as FormArray,
           dFilter as ComponentDictionaryFilterDto,
         ),

@@ -11,10 +11,7 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { Gender } from 'epgu-constructor-types/dist/base/gender';
-import { TextTransform } from 'epgu-constructor-types/dist/base/text-transform';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { Clarifications } from 'epgu-constructor-types/dist/base/clarifications';
+import { Gender, TextTransform, ComponentDto, Clarifications } from 'epgu-constructor-types';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import {

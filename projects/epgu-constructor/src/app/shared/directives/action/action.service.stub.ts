@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentActionDto } from 'epgu-constructor-types';
 
 @Injectable()
 export class ActionServiceStub {

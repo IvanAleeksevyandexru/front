@@ -13,8 +13,7 @@ import { InvitationErrorScreenComponent } from './invitation-error-screen.compon
 import { ScreenBase } from '../screen-base';
 import { LkInvitationInputComponent } from '../../component/invitation-error-screen/components/lk-Invitation-input/lk-invitation-input.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ComponentDto, ApplicantAnswersDto } from 'epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

@@ -10,7 +10,7 @@ import { DatesToolsService } from '../../../../../core/services/dates-tools/date
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { Gender } from 'epgu-constructor-types/dist/base/gender';
+import { Gender } from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';

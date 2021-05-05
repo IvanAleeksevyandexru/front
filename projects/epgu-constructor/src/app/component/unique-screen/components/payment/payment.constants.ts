@@ -4,7 +4,7 @@ import {
   PaymentsAttrs,
   SubPaymentDictionaryOptionInterface
 } from './payment.types';
-import { DictionaryConditions, DictionaryUnionKind } from 'epgu-constructor-types/dist/base/dictionary';
+import { DictionaryConditions, DictionaryUnionKind } from 'epgu-constructor-types';
 
 /**
  * Тип справочников для услуг

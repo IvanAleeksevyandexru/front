@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
-import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ScreenButton, ActionType } from 'epgu-constructor-types';
 
 @Pipe({
   name: 'disabledButton',
@@ -8,7 +7,7 @@ import { ActionType } from 'epgu-constructor-types/dist/base/component-action-dt
 export class DisabledButtonPipe implements PipeTransform {
   transform(button: ScreenButton, disabled: boolean, disabledForAll: boolean, isLoading: boolean): boolean {
     return (disabled && disabledForAll)
-      || (disabled && !disabledForAll && button.type === ActionType.nextStep)
+      || (disabled && !disabledForAll && (button.type === ActionType.deliriumNextStep || button.type === ActionType.nextStep))
       || isLoading;
   }
 }

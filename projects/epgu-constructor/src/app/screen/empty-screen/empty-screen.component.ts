@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { delayWhen, map } from 'rxjs/operators';
 import { combineLatest, Observable, of } from 'rxjs';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
+import { ComponentDto, ApplicantAnswersDto } from 'epgu-constructor-types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';

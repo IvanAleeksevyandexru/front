@@ -32,8 +32,7 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
-import { DictionaryConditions } from 'epgu-constructor-types/dist/base/dictionary';
+import { ScenarioErrorsDto, DictionaryConditions } from 'epgu-constructor-types';
 
 @Injectable()
 export class ComponentsListFormService {

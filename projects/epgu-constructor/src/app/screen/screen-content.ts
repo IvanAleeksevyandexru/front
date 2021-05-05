@@ -2,17 +2,19 @@ import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
 import { ScreenStore, ScreenTypes, ServiceInfo } from './screen.types';
 import { concatMap, map } from 'rxjs/operators';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
-import { DisplayDto } from 'epgu-constructor-types/dist/base/screen';
-import { DisplaySubjHead } from 'epgu-constructor-types/dist/base/component-attrs';
-import { Gender } from 'epgu-constructor-types/dist/base/gender';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ScenarioErrorsDto } from 'epgu-constructor-types/dist/base/scenario';
-import { ScreenButton } from 'epgu-constructor-types/dist/base/screen-buttons';
-import { ComponentAnswerDto } from 'epgu-constructor-types/dist/base/qustion-component-answer';
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
-import { ApplicantAnswersDto } from 'epgu-constructor-types/dist/base/applicant-answers';
-import { CachedAnswersDto } from 'epgu-constructor-types/dist/base/cached-answers';
-import { LogicComponents } from 'epgu-constructor-types/dist/base/logic-component';
+import {
+  DisplayDto,
+  DisplaySubjHead,
+  Gender,
+  ComponentDto,
+  ScenarioErrorsDto,
+  ScreenButton,
+  ComponentAnswerDto,
+  ComponentActionDto,
+  ApplicantAnswersDto,
+  CachedAnswersDto,
+  LogicComponents
+} from 'epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;
 export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
@@ -384,6 +386,7 @@ export class ScreenContent {
       cssClass,
       buttons,
       firstScreen,
+      hideBackButton,
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
     this.screenType = type;
@@ -393,7 +396,7 @@ export class ScreenContent {
     this.submitLabel = submitLabel;
     this.gender = gender;
     this.terminal = terminal;
-    this.showNav = !terminal && !(isWebView && firstScreen);
+    this.showNav = (!terminal && !(isWebView && firstScreen)) && (terminal ? false : !hideBackButton);
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;

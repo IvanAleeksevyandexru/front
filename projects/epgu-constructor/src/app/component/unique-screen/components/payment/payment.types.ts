@@ -6,7 +6,7 @@ import {
   DictionarySimpleFilter,
   DictionarySubFilter,
   DictionaryUnionKind
-} from 'epgu-constructor-types/dist/base/dictionary';
+} from 'epgu-constructor-types';
 
 export interface PaymentInfoInterface {
   codeOrg: string;

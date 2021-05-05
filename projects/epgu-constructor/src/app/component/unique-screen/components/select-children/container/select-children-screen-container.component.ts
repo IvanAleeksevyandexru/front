@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ComponentActionDto } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { ComponentActionDto } from 'epgu-constructor-types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenStoreComponentDtoI } from '../../../../../screen/screen.types';

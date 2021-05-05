@@ -1,12 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ServiceEntity, ServiceInfo, FormPlayerContext } from 'epgu-constructor';
+
 import { AppService } from '../app.service';
-import {
-  ServiceEntity,
-  ServiceInfo,
-} from '../../../projects/epgu-constructor/src/app/form-player/form-player.types';
-import { FormPlayerContext } from '../../../dist/epgu-constructor/app/form-player/form-player.types';
 
 @Component({
   selector: 'fp-container',
