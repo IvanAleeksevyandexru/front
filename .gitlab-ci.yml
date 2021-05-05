@@ -38,7 +38,7 @@ Lint:
     <<: *global_cache
     policy: pull
   script:
-    - yarn lint
+    - yarn lib:type:build && yarn lint
   only:
     - merge_requests
     - master
