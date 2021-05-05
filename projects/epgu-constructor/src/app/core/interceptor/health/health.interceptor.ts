@@ -41,7 +41,7 @@ export interface SlotInfo {
   slotsCount: number;
   region: string;
   department: string;
-} 
+}
 
 export interface DictionaryError {
   code?: number | string;
@@ -185,7 +185,7 @@ export class HealthInterceptor implements HttpInterceptor {
 
             this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError, serviceName);
           }
-          
+
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
             let payload = {};
             const { id, name, orderId } = this.commonParams;

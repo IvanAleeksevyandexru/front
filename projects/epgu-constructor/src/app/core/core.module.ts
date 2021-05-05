@@ -23,6 +23,7 @@ import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.se
 import { TracingService } from './services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 import { FocusManagerService } from './services/focus-manager/focus-manager.service';
+import { HttpHeadersInterceptor } from './interceptor/http-headers.interceptor';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -65,6 +66,11 @@ import { FocusManagerService } from './services/focus-manager/focus-manager.serv
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TracingHttpInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpHeadersInterceptor,
       multi: true,
     },
     {
