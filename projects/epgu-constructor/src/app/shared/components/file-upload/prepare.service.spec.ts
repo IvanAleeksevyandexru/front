@@ -5,12 +5,10 @@ import { CompressionService } from '../upload-and-edit-photo-form/service/compre
 import { FileUploadService } from './file-upload.service';
 import {
   FileUploadItem,
-  MaxCountByType,
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../core/services/terra-byte-api/terra-byte-api.types';
-import { ComponentDto } from 'epgu-constructor-types/dist/base/component-dto';
-import { ComponentAttrsDto } from 'epgu-constructor-types/dist/base/component-attrs';
+
 import {
   ErrorActions,
   FileItem,
