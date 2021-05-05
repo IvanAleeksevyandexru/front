@@ -60,6 +60,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   constructor(
     public injector: Injector,
+    public config: ConfigService,
     private screenService: ScreenService,
     private datesToolsService: DatesToolsService,
     private eventBusService: EventBusService,
@@ -108,6 +109,10 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.suggest.subscribe((payload) => {
       this.eventBusService.emit(`fileSuggestEvent_${this.modalId}`, payload);
     });
+  }
+
+  public allFilesHasInvalidFormat(files: FileItem[]): boolean {
+    return files.every((item) => item.status === FileItemStatus.error);
   }
 
   public previewFile(file: FileItem): void {
