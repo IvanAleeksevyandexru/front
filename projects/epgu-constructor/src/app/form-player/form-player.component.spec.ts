@@ -51,6 +51,7 @@ import { SessionService } from '../core/services/session/session.service';
 import { LogicComponent } from '../component/logic-screen/component/logic.component';
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
+import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -113,6 +114,7 @@ describe('FormPlayerComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         TracingService,
         SessionService,
+        TerraByteApiService,
       ],
     }).compileComponents();
   });

@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { distinctUntilKeyChanged, filter, takeUntil } from 'rxjs/operators';
+import {
+  catchError,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  mergeMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../modal/modal.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -11,6 +18,10 @@ import { allowedAutocompleteComponentsList, getSuggestionGroupId } from './autoc
 import { ComponentDto, DisplayDto, ComponentFieldDto } from 'epgu-constructor-types';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { EMPTY, from } from 'rxjs';
+import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
+import { TerraFileOptions } from '../terra-byte-api/terra-byte-api.types';
 
 @Injectable()
 export class AutocompleteService {
@@ -27,6 +38,7 @@ export class AutocompleteService {
     private autocompleteApiService: AutocompleteApiService,
     private autocompleteAutofillService: AutocompleteAutofillService,
     private autocompletePrepareService: AutocompletePrepareService,
+    private terraByteApiService: TerraByteApiService,
   ) {}
 
   public init(isDisabled: boolean = false): void {
@@ -52,6 +64,60 @@ export class AutocompleteService {
         if (componentsSuggestionsFieldsIds.length) {
           this.fieldsSuggestionsApiCall(componentsSuggestionsFieldsIds);
           return;
+        }
+      });
+
+    // TODO: убить франкеншейта ниже, когда будет реализована надстройка саджестов-файлов для терабайта
+    // Контекст проблемы в комментариях https://jira.egovdev.ru/browse/EPGUCORE-54485:
+    // Здесь в рамках правки бага потребуется переделать текущую имплементацию
+    // в пользу предзагрузки всех саджест-файлов при входе в компонент загрузчика файлов,
+    // чтобы еще до открытия модалки был сразу весь контекст по доступности/недоступности саджест-файлов.
+    this.screenService.suggestions$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((suggestions) => {
+        if (this.screenService.component?.type === UniqueScreenComponentTypes.fileUploadComponent) {
+          const componentId = this.screenService.component.id;
+          const suggestionsFilesList = (suggestions && suggestions[componentId]?.list) || [];
+          const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
+            suggestionsFilesList,
+          );
+
+          from(suggestionsUploadedFiles)
+            .pipe(
+              map((suggestFile) => {
+                const terraFileOptions: TerraFileOptions = {
+                  ...suggestFile,
+                  objectType: suggestFile.objectTypeId,
+                };
+                return terraFileOptions;
+              }),
+              mergeMap((terraFileOptions: TerraFileOptions) => {
+                return this.terraByteApiService.getFileInfo(terraFileOptions).pipe(
+                  catchError((err) => {
+                    const urlParams = new URLSearchParams(err.url.split('?')[1]);
+                    const mnemonic = urlParams.get('mnemonic');
+                    const orderId = err.url.split('/').slice(-2, -1)[0];
+                    suggestionsFilesList.some((listItem) => {
+                      const originalItem = JSON.parse(listItem.originalItem);
+                      const { uploads } = originalItem;
+                      uploads.some((upload, uploadIdx) => {
+                        return upload.value.some((file, fileIdx) => {
+                          if (file.mnemonic === mnemonic && file.objectId.toString() === orderId) {
+                            uploads[uploadIdx].value.splice(fileIdx, 1);
+                            return true;
+                          }
+                        });
+                      });
+                      listItem.originalItem = JSON.stringify(originalItem);
+                    });
+
+                    return EMPTY;
+                  }),
+                );
+              }),
+              takeUntil(this.ngUnsubscribe$),
+            )
+            .subscribe();
         }
       });
 

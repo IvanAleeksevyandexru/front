@@ -29,6 +29,7 @@ import { ScenarioDto, Gender } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
+import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -134,7 +135,8 @@ describe('AutocompleteService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        TerraByteApiService,
       ],
     });
   });
