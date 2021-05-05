@@ -142,18 +142,16 @@ Library-build:
 #     - master
 #    - stage
 
-#Build:
-#  stage: build
-#  except:
-#    variables:
-#      - $GITLAB_USER_LOGIN == $CI_USER
-#  script:
-#    - yarn build --prod
-##    - /devops/notify/notify.sh fronted_new_master_available
-#  only:
-#    - master
-#    - stage
-#    - merge_requests
+Build:
+  stage: build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn build --prod
+#    - /devops/notify/notify.sh fronted_new_master_available
+  only:
+    - merge_requests
 
 # Build-image:
 #   stage: image
