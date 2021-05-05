@@ -35,6 +35,7 @@
     "zipkin": "0.22.0",
     "zipkin-transport-http": "0.22.0",
     "node-fetch": "2.6.1",
-    "os": "0.1.1"
+    "os": "0.1.1",
+    "epgu-constructor-types": "14.5.2"
   }
 }

@@ -8,6 +8,7 @@ cache: &global_cache
 
 stages:
   - install
+  - postinstall
   - code-quality
   - library-build
   - library-publish
@@ -24,6 +25,21 @@ Install:
     - rm -rf dist
   script:
     - yarn install
+  only:
+    - merge_requests
+    - master
+    - stage
+
+Pre-build:
+  stage: postinstall
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
+    - yarn lib:type:build
   only:
     - merge_requests
     - master
