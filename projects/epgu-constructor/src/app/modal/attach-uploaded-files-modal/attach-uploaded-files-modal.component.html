@@ -34,8 +34,8 @@
                   *ngIf="file.isImage"
                   class="img"
                   src="{{ fileUploadApiUrl }}/{{ file.item.objectId }}/{{
-                  file.item.objectTypeId
-                }}/download?mnemonic={{ file.item.mnemonic }}"
+                    file.item.objectTypeId
+                  }}/download?mnemonic={{ file.item.mnemonic }}"
                   (error)="handleImgError($event, file)"
                   [alt]="file.item.fileName"
                 />
