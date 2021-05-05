@@ -32,18 +32,18 @@ Install:
 
 Pre-build:
   stage: postinstall
-    except:
-      variables:
-        - $GITLAB_USER_LOGIN == $CI_USER
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
     policy: pull
-    script:
-      - yarn lib:type:build
-    only:
-      - merge_requests
-      - master
-      - stage
+  script:
+    - yarn lib:type:build
+  only:
+    - merge_requests
+    - master
+    - stage
 
 Lint:
   stage: code-quality
