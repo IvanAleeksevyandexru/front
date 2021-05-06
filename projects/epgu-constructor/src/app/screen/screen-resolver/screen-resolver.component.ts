@@ -5,11 +5,12 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
+  OnDestroy,
   Type,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { subscribeOn, takeUntil, tap } from 'rxjs/operators';
+import { filter, subscribeOn, takeUntil, tap } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenTypes } from '../screen.types';
@@ -23,7 +24,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
   providers: [UnsubscribeService],
 })
-export class ScreenResolverComponent implements AfterViewInit {
+export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
   @ViewChild('screenContainer', { read: ViewContainerRef }) screenContainer: ViewContainerRef;
   componentRef: ComponentRef<ScreenComponent>;
 
@@ -36,6 +37,7 @@ export class ScreenResolverComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.screenService.screenType$
       .pipe(
+        filter(() => !this.screenService.isTheSameScreen),
         tap(() => this.destroyComponent()),
         subscribeOn(asyncScheduler), // fix dirty checked errors
         takeUntil(this.ngUnsubscribe$),
@@ -45,14 +47,18 @@ export class ScreenResolverComponent implements AfterViewInit {
       });
   }
 
-  destroyComponent(): void {
+  ngOnDestroy(): void {
+    this.destroyComponent();
+  }
+
+  private destroyComponent(): void {
     if (this.componentRef) {
       this.componentRef.destroy();
       this.componentRef = null;
     }
   }
 
-  getScreenComponentByType(screenType: ScreenTypes): Type<ScreenComponent> {
+  private getScreenComponentByType(screenType: ScreenTypes): Type<ScreenComponent> {
     return SCREEN_COMPONENTS[screenType];
   }
 
