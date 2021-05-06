@@ -17,10 +17,14 @@ import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   HealthInterceptor,
   RENDER_FORM_SERVICE_NAME,
-  RequestStatus
+  RequestStatus,
 } from './health.interceptor';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { ActionRequestPayload } from 'epgu-constructor-types';
+import { ModalService } from '../../../modal/modal.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;
@@ -46,9 +50,9 @@ describe('HealthInterceptor', () => {
             id: 'zp1',
             type: 'DocInput',
             label: 'Загранпаспорт',
-          }
-        ]
-      }
+          },
+        ],
+      },
     },
   } as ActionRequestPayload;
   const getNextStepAction = 'renderForm';
@@ -67,6 +71,8 @@ describe('HealthInterceptor', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: HealthInterceptor,
@@ -95,7 +101,7 @@ describe('HealthInterceptor', () => {
     it('should start and end measure with renderForm event', fakeAsync((done) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(response => {
+      formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
         done();
       });
@@ -104,7 +110,7 @@ describe('HealthInterceptor', () => {
         scenarioDto: {
           ...dto.scenarioDto,
           orderId,
-        }
+        },
       };
       requestToSucceed.flush(dataToFlush);
       const params = {
@@ -121,10 +127,12 @@ describe('HealthInterceptor', () => {
   });
 
   describe('client dictionary with error', () => {
-    it('should set error and errorMessage params for the first type of dictionaries', fakeAsync((done) => {
+    it('should set error and errorMessage params for the first type of dictionaries', fakeAsync((
+      done,
+    ) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
-      dictionaryService.getDictionary(dictionaryName).subscribe(response => {
+      dictionaryService.getDictionary(dictionaryName).subscribe((response) => {
         expect(response).toBeTruthy();
         done();
       });
@@ -149,10 +157,12 @@ describe('HealthInterceptor', () => {
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
     }));
 
-    it('should set error and errorMessage params for the second type of dictionaries', fakeAsync((done) => {
+    it('should set error and errorMessage params for the second type of dictionaries', fakeAsync((
+      done,
+    ) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
-      dictionaryService.getDictionary(dictionaryName).subscribe(response => {
+      dictionaryService.getDictionary(dictionaryName).subscribe((response) => {
         expect(response).toBeTruthy();
         done();
       });
@@ -182,11 +192,12 @@ describe('HealthInterceptor', () => {
     it('should set dictionaryUrl param', fakeAsync((done) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(() => fail('should have failed with the 506 error'),
+      formPlayerApi.sendAction(api, dto).subscribe(
+        () => fail('should have failed with the 506 error'),
         (error: HttpErrorResponse) => {
           expect(error.status).toEqual(506);
           done();
-        }
+        },
       );
       const requestToError = httpMock.expectOne(`${config.apiUrl}/${api}`);
       const body = new HttpErrorResponse({
@@ -198,7 +209,7 @@ describe('HealthInterceptor', () => {
           id: dictionaryName,
           url: `${config.dictionaryUrl}/${dictionaryName}`,
           message: 'Server is not available',
-        }
+        },
       };
       requestToError.flush(errorBody, body);
       const params = {
@@ -217,11 +228,12 @@ describe('HealthInterceptor', () => {
     it('should set succeed status', fakeAsync((done) => {
       spyOn(healthService, 'measureStart').and.callThrough();
       spyOn(healthService, 'measureEnd').and.callThrough();
-      formPlayerApi.sendAction(api, dto).subscribe(() => fail('should have failed with the 404 error'),
+      formPlayerApi.sendAction(api, dto).subscribe(
+        () => fail('should have failed with the 404 error'),
         (error: HttpErrorResponse) => {
           expect(error.status).toEqual(404);
           done();
-        }
+        },
       );
       const requestToError = httpMock.expectOne(`${config.apiUrl}/${api}`);
       const body = new HttpErrorResponse({
@@ -278,19 +290,31 @@ describe('HealthInterceptor', () => {
     it('should call measureEnd of health service with serviceName param', fakeAsync(() => {
       spyOn(healthService, 'measureEnd').and.callThrough();
       interceptor['endMeasureHealth'](serviceName, requestStatus, configParams);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(serviceName, requestStatus, configParams);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(
+        serviceName,
+        requestStatus,
+        configParams,
+      );
     }));
 
     it('should call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       spyOn(healthService, 'measureEnd').and.callThrough();
       interceptor['endMeasureHealth'](serviceName, requestStatus, configParams);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(ERROR_UPDATE_DRAFT_SERVICE_NAME, requestStatus, configParams);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(
+        ERROR_UPDATE_DRAFT_SERVICE_NAME,
+        requestStatus,
+        configParams,
+      );
     }));
 
     it('shouldn\'t call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       spyOn(healthService, 'measureEnd').and.callThrough();
       interceptor['endMeasureHealth']('some service name', requestStatus, configParams);
-      expect(healthService.measureEnd).not.toHaveBeenCalledWith(ERROR_UPDATE_DRAFT_SERVICE_NAME, requestStatus, configParams);
+      expect(healthService.measureEnd).not.toHaveBeenCalledWith(
+        ERROR_UPDATE_DRAFT_SERVICE_NAME,
+        requestStatus,
+        configParams,
+      );
     }));
   });
 });

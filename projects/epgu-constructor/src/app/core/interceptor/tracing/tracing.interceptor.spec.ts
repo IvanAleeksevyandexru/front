@@ -27,6 +27,10 @@ import { TracingHttpInterceptor } from './tracing.interceptor';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionRequestPayload } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { ModalService } from '../../../modal/modal.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -59,6 +63,8 @@ describe('TracingHttpInterceptor', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TracingHttpInterceptor,
@@ -78,7 +84,7 @@ describe('TracingHttpInterceptor', () => {
         RefRelationService,
         SessionService,
         UnsubscribeService,
-        DateRestrictionsService
+        DateRestrictionsService,
       ],
     });
   });
