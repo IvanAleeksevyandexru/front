@@ -60,6 +60,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   constructor(
     public injector: Injector,
+    public config: ConfigService,
     private screenService: ScreenService,
     private datesToolsService: DatesToolsService,
     private eventBusService: EventBusService,
