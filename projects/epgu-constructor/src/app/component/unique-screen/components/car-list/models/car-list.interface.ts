@@ -67,6 +67,7 @@ export interface VehicleOwnerInfo {
   tdtpo?: string;
   customsRestrictions?: boolean;
   engineType: string;
+  gazEnvironmentFlag?: boolean;
 }
 
 interface OwnerPeriod {
