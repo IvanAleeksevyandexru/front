@@ -111,10 +111,6 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     });
   }
 
-  public allFilesHasInvalidFormat(files: FileItem[]): boolean {
-    return files.every((item) => item.status === FileItemStatus.error);
-  }
-
   public previewFile(file: FileItem): void {
     this.viewerService
       .open(
