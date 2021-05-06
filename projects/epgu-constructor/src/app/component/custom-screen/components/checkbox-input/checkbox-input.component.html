@@ -1,9 +1,4 @@
-<ng-container
-  *ngTemplateOutlet="
-    checkboxInput;
-    context: { $implicit: control.value  }
-  "
->
+<ng-container *ngTemplateOutlet="checkboxInput; context: { $implicit: control.value }">
 </ng-container>
 
 <ng-template #checkboxInput let-component>
