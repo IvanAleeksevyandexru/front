@@ -155,7 +155,6 @@ export class HealthInterceptor implements HttpInterceptor {
         if (this.isValidHttpEntity(response)) {
           const responseBody = response?.body || {} as UnspecifiedDTO;
 
-          // this.dto = responseBody;
           this.isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
           if (this.isValidScenarioDto(responseBody)) {
