@@ -71,6 +71,7 @@ export class RegistrationAddrComponent implements OnInit {
       .subscribe((suggestions) => {
         this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
           suggestions[this.screenService.component.id],
+          true,
         );
       });
   }
