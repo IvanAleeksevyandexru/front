@@ -447,6 +447,17 @@ export class DictionaryToolsService {
     }, applicantAnswers);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getNestedRootValue(obj: any, path: string, defaultValue: any = undefined): any {
+    const travel = (regexp: RegExp): typeof obj =>
+      String.prototype.split
+        .call(path, regexp)
+        .filter(Boolean)
+        .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
+    const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
+    return result === undefined || result === obj ? defaultValue : result;
+  }
+
   private getDictionariesByFilter(
     data: Array<Observable<CustomListReferenceData>>,
     component: CustomComponent,
@@ -500,13 +511,14 @@ export class DictionaryToolsService {
     const attributeType: AttributeTypes = (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
     //TODO разобраться с типами
     // @ts-ignore
+    console.log(screenStore[dFilter.value], screenStore, dFilter);
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
       [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
       [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({
         [attributeType]: componentValue[dFilter.value] as string,
       }),
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
-        [attributeType]: screenStore[dFilter.value],
+        [attributeType]: this.getNestedRootValue(screenStore, dFilter.value, undefined),
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
         [attributeType]: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
