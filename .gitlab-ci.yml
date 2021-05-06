@@ -5,6 +5,9 @@ cache: &global_cache
   paths:
     - node_modules/
     - dist/
+    - projects/epgu-constructor/node_modules
+    - projects/epgu-constructor-types/node_modules
+    - projects/epgu-constructor-types/dist
 
 stages:
   - install
@@ -37,7 +40,6 @@ Pre-build:
       - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
-    policy: pull
   script:
     - yarn lib:type:build
   only:
