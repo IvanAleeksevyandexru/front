@@ -13,7 +13,7 @@
     "lib:type:build": "cd ./projects/epgu-constructor-types && yarn build",
     "lib:build": "ng build epgu-constructor --prod",
     "lib:build:ivy": "ng build epgu-constructor",
-    "lib:watch": "lerna run watch --stream",
+    "lib:watch": "lerna run watch --parallel",
     "lib:test": "ng test epgu-constructor",
     "lib:lint": "lerna run lint --stream",
     "lib:lint:fix": "lerna run lint:fix --stream",

@@ -421,6 +421,7 @@ export const updateLimits = (
   const findedType = config?.maxCountByTypes.find(({ type }) =>
     types.every((fileType) => type.includes(fileType)),
   );
+
   if (findedType) {
     if (!store.lastSelected || findedType.maxFileCount >= amount) {
       store.lastSelected = findedType;

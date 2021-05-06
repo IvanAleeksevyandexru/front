@@ -4,7 +4,21 @@
     [showCrossButton]="true"
     text="previewFiles"
   >
-    <div>
+    <div class="text_modal_error" *ngIf="suggestionsFilesList.length && !suggestionsFiles.length">
+      <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/image-error.svg">
+      <h4>Нет подходящих файлов</h4>
+      <span>
+        Не удалось найти файлы нужного формата.<br />
+        Загрузите новые
+      </span>
+    </div>
+    <div class="text_modal_error" *ngIf="!suggestionsFilesList.length">
+      <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/stop.svg">
+      <h4>Найти файлы не удалось</h4>
+      <span>Загрузите новые</span>
+    </div>
+
+    <div *ngIf="suggestionsFilesList.length && suggestionsFiles.length">
       <div *ngFor="let group of suggestionsFilesGroupByDate">
         <div *ngIf="group[1].length">
           <h4 class="mb-12 mt-8">{{ group[0] }}</h4>
@@ -45,3 +59,4 @@
     </div>
   </epgu-constructor-confirmation-modal-base>
 </ng-container>
+
