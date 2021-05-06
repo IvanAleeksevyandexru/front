@@ -18,7 +18,12 @@ import { ScreenService } from '../../../../screen/screen.service';
 export class AddressInputComponent extends AbstractComponentListItemComponent {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
-      return suggestions[this.control.value?.id];
+      const addressSuggestions = suggestions[this.control.value?.id];
+      addressSuggestions.list.forEach((item) => {
+        // eslint-disable-next-line no-param-reassign
+        item.value = JSON.parse(item.originalItem).fullAddress;
+      });
+      return addressSuggestions;
     }),
   );
 

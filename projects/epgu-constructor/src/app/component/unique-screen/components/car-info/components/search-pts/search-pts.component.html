@@ -4,11 +4,11 @@
   <div class="info-list-group-item">
     <epgu-constructor-info-list-item
       label="В розыске"
-      [value]="searchPTS.searchingSpecFlag | yesNo"
+      [value]="searchPTS?.searchingSpecFlag | yesNo"
     ></epgu-constructor-info-list-item>
 
     <epgu-constructor-expansion-link
-      *ngIf="searchPTS.searchingSpecFlag"
+      *ngIf="searchPTS?.searchingSpecFlag"
       openDescription="Подробнее"
     >
       <div class="mt-16 mb-16">

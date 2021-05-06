@@ -18,22 +18,31 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.DocInput,
   ];
 
-  constructor() { }
+  constructor() {}
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
 
     if (typeof component.value === 'string' && component.value.length) {
       return this.parseValue(component.value, isDateAndValue, component.type);
+    } else if (component.value) {
+      return component.value;
     } else if (!isUndefined(component.attrs.defaultValue)) {
-      return this.parseValue((component.attrs.defaultValue as unknown) as string, isDateAndValue, component.type);
+      return this.parseValue(
+        (component.attrs.defaultValue as unknown) as string,
+        isDateAndValue,
+        component.type,
+      );
     } else {
-      return component.value || '';
+      return '';
     }
   }
 
   public isAddress(type: CustomScreenComponentTypes): boolean {
-    return type === CustomScreenComponentTypes.AddressInput || type === CustomScreenComponentTypes.ConfirmPersonalUserRegAddrChange;
+    return (
+      type === CustomScreenComponentTypes.AddressInput ||
+      type === CustomScreenComponentTypes.ConfirmPersonalUserRegAddrChange
+    );
   }
 
   public isJsonType(type: CustomScreenComponentTypes): boolean {
@@ -48,7 +57,11 @@ export class ComponentsListToolsService {
     return type === CustomScreenComponentTypes.DateInput;
   }
 
-  private parseValue(value: string, isDateAndValue: boolean, componentType: CustomScreenComponentTypes): CustomScreenComponentValueTypes {
+  private parseValue(
+    value: string,
+    isDateAndValue: boolean,
+    componentType: CustomScreenComponentTypes,
+  ): CustomScreenComponentValueTypes {
     if (isDateAndValue) {
       return new Date(value);
     } else if (this.isAddress(componentType)) {
@@ -70,5 +83,5 @@ export class ComponentsListToolsService {
     } else {
       return value;
     }
-  };
+  }
 }
