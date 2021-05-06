@@ -5,7 +5,7 @@
     text="previewFiles"
   >
     <div class="text_modal_error" *ngIf="suggestionsFilesList.length && !suggestionsFiles.length">
-      <img style="display:block; margin: 0 auto 24px" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/image-error.svg">
+      <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/image-error.svg">
       <h4>Нет подходящих файлов</h4>
       <span>
         Не удалось найти файлы нужного формата.<br />
@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="text_modal_error" *ngIf="!suggestionsFilesList.length">
-      <img style="display:block; margin: 0 auto 24px" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/stop.svg">
+      <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/stop.svg">
       <h4>Найти файлы не удалось</h4>
       <span>Загрузите новые</span>
     </div>

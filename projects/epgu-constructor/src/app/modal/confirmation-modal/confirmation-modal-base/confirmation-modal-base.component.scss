@@ -142,6 +142,11 @@ $minModalHeight: 293px;
       span {
         color: $color-text-helper;
       }
+
+      &__img {
+        display: block;
+        margin: 0 auto 24px;
+      }
     }
   }
 }
