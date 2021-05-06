@@ -511,7 +511,6 @@ export class DictionaryToolsService {
     const attributeType: AttributeTypes = (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
     //TODO разобраться с типами
     // @ts-ignore
-    console.log(screenStore[dFilter.value], screenStore, dFilter);
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
       [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
       [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({
