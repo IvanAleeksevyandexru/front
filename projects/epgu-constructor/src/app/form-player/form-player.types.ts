@@ -15,7 +15,7 @@ export interface QueryParams {
 export interface FormPlayerContext {
   configId?: string;
   initState?: string;
-  gepsId?: string;
+  gepsId?: number;
   queryParams?: QueryParams;
 }
 

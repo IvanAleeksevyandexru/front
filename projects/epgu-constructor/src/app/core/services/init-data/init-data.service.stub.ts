@@ -11,7 +11,7 @@ export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
   private _initState: string;
   private _configId: string;
   private _queryParams: QueryParams;
-  private _gepsId: string;
+  private _gepsId: number;
 
   get serviceId(): string {
     return this._serviceId;
@@ -77,11 +77,11 @@ export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
     this._queryParams = queryParams;
   }
 
-  get gepsId(): string {
+  get gepsId(): number {
     return this._gepsId;
   }
 
-  set gepsId(gepsId: string) {
+  set gepsId(gepsId: number) {
     this._gepsId = gepsId;
   }
 

@@ -15,7 +15,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _canStartNew: boolean;
   private _initState: string;
   private _configId: string;
-  private _gepsId: string;
+  private _gepsId: number;
   private _queryParams: QueryParams;
 
   constructor(private loggerService: LoggerService) { }
@@ -98,11 +98,11 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this._configId = configId;
   }
 
-  get gepsId(): string {
+  get gepsId(): number {
     return this._gepsId;
   }
 
-  set gepsId(gepsId: string) {
+  set gepsId(gepsId: number) {
     this._gepsId = gepsId;
   }
 

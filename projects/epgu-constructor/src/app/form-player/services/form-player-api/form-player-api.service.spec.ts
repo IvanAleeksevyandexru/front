@@ -20,7 +20,7 @@ describe('FormPlayerApiService', () => {
   let serviceId = 'local';
   let targetId = 'local';
   let orderId = 12345;
-  let gepsId = '412345';
+  let gepsId = 412345;
   let serviceInfo: ServiceInfo = {
     stateOrg: {
       id: 'id',
