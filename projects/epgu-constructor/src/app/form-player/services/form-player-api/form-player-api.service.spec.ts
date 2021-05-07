@@ -19,7 +19,8 @@ describe('FormPlayerApiService', () => {
   let apiUrl = '/api';
   let serviceId = 'local';
   let targetId = 'local';
-  let orderId = '12345';
+  let orderId = 12345;
+  let gepsId = '412345';
   let serviceInfo: ServiceInfo = {
     stateOrg: {
       id: 'id',
@@ -92,6 +93,7 @@ describe('FormPlayerApiService', () => {
     initDataService.orderId = orderId;
     initDataService.serviceId = serviceId;
     initDataService.serviceInfo = serviceInfo;
+    initDataService.gepsId = gepsId;
     http = TestBed.inject(HttpTestingController);
   });
 
@@ -192,6 +194,11 @@ describe('FormPlayerApiService', () => {
     it('should call with body with serviceInfo', fakeAsync(() => {
       const body = req.request.body;
       expect(body.serviceInfo).toEqual(serviceInfo);
+    }));
+
+    it('should call with body with gepsId', fakeAsync(() => {
+      const body = req.request.body;
+      expect(body.gepsId).toEqual(gepsId);
     }));
 
     it('should call http post with withCredentials equal true', fakeAsync(() => {

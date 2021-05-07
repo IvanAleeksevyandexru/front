@@ -10,10 +10,12 @@ export interface QueryParams {
  *   то можно смоделировать переход на нужный экран, использовать только в целях разработки,
  *   более подробно о запусках плеера смотри в FormPlayerStartService.
  * @property queryParams - квери параметры которые необходимо пробросить в форм плеер
+ * @property gepsId - идентификатора сообщения от ГЭПС
  */
 export interface FormPlayerContext {
   configId?: string;
   initState?: string;
+  gepsId?: string;
   queryParams?: QueryParams;
 }
 
