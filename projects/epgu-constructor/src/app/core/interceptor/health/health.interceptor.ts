@@ -13,6 +13,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { HealthService } from 'epgu-lib';
 import { UtilsService } from '../../services/utils/utils.service';
 import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from 'epgu-constructor-types';
+import { ConfigService } from '../../services/config/config.service';
 
 export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
@@ -24,8 +25,8 @@ export const NEXT_PREV_STEP_SERVICE_NAME = 'scenarioGetNextStepService';
 export const NEXT_EVENT_TYPE = 'getNextStep';
 export const PREV_EVENT_TYPE = 'getPrevStep';
 
-export const GET_SLOTS = 'aggSlots';
-export const BOOK_SLOTS = 'aggBook';
+export const GET_SLOTS = 'equeueAggSlotsService';
+export const GET_SLOTS_MODIFIED = 'getSlots';
 
 export interface DictionaryPayload {
   region: string;
@@ -109,7 +110,11 @@ export class HealthInterceptor implements HttpInterceptor {
 
   private slotInfo: SlotInfo = {} as SlotInfo;
 
-  constructor(private health: HealthService, private utils: UtilsService) {}
+  constructor(
+    private health: HealthService,
+    private utils: UtilsService,
+    private configService: ConfigService,
+  ) {}
 
   intercept<T extends DictionaryFilters & UnspecifiedDTO>(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
 
@@ -123,6 +128,7 @@ export class HealthInterceptor implements HttpInterceptor {
 
       serviceName = this.utils.getServiceName(req.url);
       serviceName = serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
+      serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
 
       this.regionCode = this.getRegionCode(req?.body?.filter);
       this.startMeasureHealth(serviceName);
@@ -131,16 +137,16 @@ export class HealthInterceptor implements HttpInterceptor {
         this.cachedRegionId = this.regionCode;
       }
 
-      if (serviceName === BOOK_SLOTS) {
+      if (serviceName === GET_SLOTS_MODIFIED) {
         const requestBody = req?.body || {};
 
-        this.slotInfo['organizationId'] = requestBody['organizationId'];
-        this.slotInfo['serviceCode'] = requestBody['serviceCode'];
-        this.slotInfo['region'] = this.cachedRegionId;
-
-        if (this.utils.isDefined(requestBody['orgName'])) {
-          this.slotInfo['department'] = encodeURIComponent(this.utils.cyrillicToLatin(requestBody['orgName']));
+        if (this.utils.isDefined(requestBody['organizationId']) && Array.isArray(requestBody['organizationId'])) {
+          this.slotInfo['organizationId'] = requestBody['organizationId'][0];
+        } else {
+          this.slotInfo['organizationId'] = requestBody['organizationId'];
         }
+
+        this.slotInfo['region'] = this.cachedRegionId;
       }
     }
 
@@ -148,15 +154,34 @@ export class HealthInterceptor implements HttpInterceptor {
       tap((response: HttpResponse<T>) => {
         if (this.isValidHttpEntity(response)) {
           const responseBody = response?.body || {} as UnspecifiedDTO;
+
           this.isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
           if (this.isValidScenarioDto(responseBody)) {
             const { scenarioDto, health, callBackOrderId } = responseBody;
+            const { display } = scenarioDto;
+            const { components } = display;
+
             const orderId = this.utils.isDefined(scenarioDto.orderId) ? scenarioDto.orderId : callBackOrderId;
+            const timeSlotValue = components.filter(component => component.type === 'TimeSlot')[0]?.value;
+
+            if (this.utils.isDefined(timeSlotValue) && typeof timeSlotValue === 'string') {
+              try {
+                const slot = JSON.parse(timeSlotValue);
+                const department = JSON.parse(slot.department);
+  
+                const orgName = department.attributeValues.FULLNAME || department.title;
+                const timeSlotType = slot.timeSlotType;
+                const { serviceCode } = this.configService.timeSlots[timeSlotType];
+  
+                this.slotInfo['orgName'] = encodeURIComponent(this.utils.cyrillicToLatin(orgName));
+                this.slotInfo['serviceCode'] = serviceCode;
+              } catch(e) {}
+            }
 
             this.commonParams = {
-              id: scenarioDto.display.id,
-              name: this.utils.cyrillicToLatin(scenarioDto.display.name),
+              id: display.id,
+              name: this.utils.cyrillicToLatin(display.name),
               orderId: orderId,
             };
 
@@ -164,7 +189,7 @@ export class HealthInterceptor implements HttpInterceptor {
               this.commonParams = {
                 ...this.commonParams,
                 typeEvent: serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
-                mnemonicScreen: scenarioDto.display?.type,
+                mnemonicScreen: display?.type,
               };
             }
 
@@ -192,14 +217,14 @@ export class HealthInterceptor implements HttpInterceptor {
             payload = { id, name, orderId };
 
             if (
-              serviceName === GET_SLOTS &&
+              serviceName === GET_SLOTS_MODIFIED &&
               this.utils.isDefined(responseBody['slots']) &&
               Array.isArray(responseBody['slots'])
             ) {
               this.slotInfo['slotsCount'] = responseBody['slots'].length;
             }
 
-            if (serviceName === BOOK_SLOTS) {
+            if (serviceName === GET_SLOTS_MODIFIED) {
               payload = { ...payload, ...this.slotInfo };
             }
 
