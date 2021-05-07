@@ -27,6 +27,8 @@ import { TracingHttpInterceptor } from './tracing.interceptor';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionRequestPayload } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -78,7 +80,8 @@ describe('TracingHttpInterceptor', () => {
         RefRelationService,
         SessionService,
         UnsubscribeService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
   });
