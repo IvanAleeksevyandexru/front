@@ -57,7 +57,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   ngAfterViewInit(): void {
     this.screenService.display$
       .pipe(
-        filter(() => !this.screenService.isTheSameScreen),
+        filter(() => !this.screenService.isTheSameScreenWithErrors),
         tap(() => this.destroyComponent()),
         subscribeOn(asyncScheduler), // fix dirty checked errors
         takeUntil(this.ngUnsubscribe$),
@@ -71,7 +71,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   }
 
   private destroyComponent(): void {
-    if (this.componentRef && !this.screenService.isTheSameScreen) {
+    if (this.componentRef && !this.screenService.isTheSameScreenWithErrors) {
       this.componentRef.destroy();
       this.componentRef = null;
     }

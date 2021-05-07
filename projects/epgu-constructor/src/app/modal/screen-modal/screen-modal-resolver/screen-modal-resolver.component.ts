@@ -39,7 +39,7 @@ export class ScreenModalResolverComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const screenType$ = this.screenService.screenType$
       .pipe(
-        filter(() => !this.screenService.isTheSameScreen),
+        filter(() => !this.screenService.isTheSameScreenWithErrors),
         tap(() => this.destroyComponent()),
         subscribeOn(asyncScheduler), // fix dirty checked errors
       )

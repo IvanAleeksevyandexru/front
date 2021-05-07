@@ -53,7 +53,7 @@ export class ComponentUniqueResolverComponent implements AfterViewInit, OnChange
   ngAfterViewInit(): void {
     this.screenService.display$
       .pipe(
-        filter(() => !this.screenService.isTheSameScreen),
+        filter(() => !this.screenService.isTheSameScreenWithErrors),
         tap(() => this.destroyComponent()),
         subscribeOn(asyncScheduler), // fix dirty checked errors
         takeUntil(this.ngUnsubscribe$),

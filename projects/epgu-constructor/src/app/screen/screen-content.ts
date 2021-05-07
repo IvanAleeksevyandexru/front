@@ -48,7 +48,7 @@ export class ScreenContent {
   private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
   private _logicAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _serviceInfo = new BehaviorSubject<null | ServiceInfo>(null);
-  private _isTheSameScreen = new BehaviorSubject<boolean>(null);
+  private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
 
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
@@ -88,14 +88,14 @@ export class ScreenContent {
     return this._display.asObservable();
   }
 
-  public get isTheSameScreen(): boolean {
-    return this._isTheSameScreen.getValue();
+  public get isTheSameScreenWithErrors(): boolean {
+    return this._isTheSameScreenWithErrors.getValue();
   }
-  public set isTheSameScreen(val: boolean) {
-    this._isTheSameScreen.next(val);
+  public set isTheSameScreenWithErrors(val: boolean) {
+    this._isTheSameScreenWithErrors.next(val);
   }
-  public get isTheSameScreen$(): Observable<boolean> {
-    return this._isTheSameScreen.asObservable();
+  public get isTheSameScreenWithErrors$(): Observable<boolean> {
+    return this._isTheSameScreenWithErrors.asObservable();
   }
 
   public get suggestions(): { [key: string]: ISuggestionItem } {
@@ -400,7 +400,7 @@ export class ScreenContent {
       hideBackButton,
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
-    this.isTheSameScreen = this.display?.id === display?.id;
+    this.isTheSameScreenWithErrors = this.display?.id === display?.id && errors && Object.keys(errors).length !== 0;
     this.screenType = type;
     this.display = display;
     this.header = header;
