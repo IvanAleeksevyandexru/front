@@ -31,6 +31,7 @@ export enum CustomScreenComponentTypes {
   CheckBox = 'CheckBox',
   PhoneNumberChangeInput = 'PhoneNumberChangeInput',
   NewEmailInput = 'NewEmailInput',
+  NewLegalEmailInput = 'NewLegalEmailInput',
   OgrnInput = 'OgrnInput',
   OgrnipInput = 'OgrnipInput',
   LegalInnInput = 'LegalInnInput',
@@ -175,6 +176,7 @@ export interface CustomComponentAttrValidation {
   condition: string;
   dataType: string;
   errorMsg: string;
+  errorDesc?: string;
   updateOn?: UpdateOn;
 }
 

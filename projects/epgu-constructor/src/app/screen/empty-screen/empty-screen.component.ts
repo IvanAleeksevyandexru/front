@@ -27,6 +27,7 @@ export class EmptyScreenComponent {
   navigationMap: Record<string, Function> = {
     home: this.navigationService.redirectToHome.bind(this.navigationService),
     redirectToLK: this.navigationService.redirectToLK.bind(this.navigationService),
+    nextStep: this.navigationService.next.bind(this.navigationService),
   };
 
   /**

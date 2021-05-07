@@ -82,6 +82,7 @@ describe('TracingHttpInterceptor', () => {
         UnsubscribeService,
         DateRestrictionsService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        DateRestrictionsService,
       ],
     });
   });

@@ -32,6 +32,7 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { FormPlayerNavigation } from '../../../form-player/form-player.types';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -134,16 +135,24 @@ describe('ErrorsInterceptor', () => {
   }));
 
   it('should open modal with BOOKING_ONLINE_ERROR params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
-    formPlayerApi.getBooking().subscribe(
-      () => fail('should have failed with the 404 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(404);
+    const data = {
+      scenarioDto: {
+        display: {
+          components: [
+            {
+              value:
+                '{"ADDRESS": "TEST_ADDRESS", "organizationID": "BOOKING_UNAVAILABLE_EMPTY_ORG_ID"}',
+            },
+          ],
+        },
       },
-    );
-    const requestToError = httpMock.expectOne(`${config.apiUrl}/service/booking`);
-    const body = new HttpErrorResponse({ status: 404, statusText: 'Not found' });
-    requestToError.flush('Unauthorized', body);
+    } as FormPlayerApiSuccessResponse;
+    spyOn(modalService, 'openModal').and.callThrough();
+    formPlayerApi.getBooking().subscribe();
+    const req = httpMock.expectOne(`${config.apiUrl}/service/booking`);
+    expect(req.request.method).toBe('POST');
+
+    req.flush(data);
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       BOOKING_ONLINE_ERROR,

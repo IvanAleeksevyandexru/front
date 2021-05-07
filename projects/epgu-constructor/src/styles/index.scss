@@ -6,6 +6,7 @@
 // stylelint-disable
 
 .epgu-form-player {
+  counter-reset: section;
   @import 'core/class';
   @include flex-container();
   color: $color-summer-night;
@@ -308,5 +309,11 @@
       width: 100%;
       flex-direction: column;
     }
+  }
+
+  .counter::after {
+    margin-left: 4px;
+    counter-increment: section;
+    content: counter(section);
   }
 }
