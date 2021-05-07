@@ -56,7 +56,7 @@ export class ValidationService {
       if (validations?.length) {
         const error = this.getError(validations, control, component);
         if (error) {
-          return this.validationErrorMsg(error.errorMsg);
+          return this.validationErrorMsg(error.errorMsg, error?.errorDesc);
         }
         customMessage = validations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -69,7 +69,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? null
-        : this.validationErrorMsg(customMessage?.errorMsg);
+        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc);
     };
   }
 
@@ -89,7 +89,7 @@ export class ValidationService {
       if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
-          return of(this.validationErrorMsg(error.errorMsg));
+          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc));
         }
         customMessage = onBlurValidations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -102,7 +102,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? of(null)
-        : of(this.validationErrorMsg(customMessage?.errorMsg));
+        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc));
     };
   }
 
@@ -195,8 +195,8 @@ export class ValidationService {
     }
   }
 
-  private validationErrorMsg(error: string = InvalidControlMsg.formatField): ValidationErrors {
-    return { msg: error };
+  private validationErrorMsg(error: string = InvalidControlMsg.formatField, desc?: string): ValidationErrors {
+    return { msg: error, desc };
   }
 
   private getError(
