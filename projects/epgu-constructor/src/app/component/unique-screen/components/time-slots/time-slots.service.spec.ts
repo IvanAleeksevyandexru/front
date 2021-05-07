@@ -19,7 +19,6 @@ import { LoggerServiceStub } from 'projects/epgu-constructor/src/app/core/servic
 import { EventBusService } from 'projects/epgu-constructor/src/app/core/services/event-bus/event-bus.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { TimeSlotsService } from './time-slots.service';
-import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
@@ -64,7 +63,7 @@ describe('TimeSlotsComponent', () => {
     timeSlotsService.changed(compValue, cachedAnswer);
   });
 
-  it('MVD should take organizationId from calculated organizationId component\'s value ', () => {
+  it('MVD should take organizationId from calculated organizationId component\'s value', () => {
     const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
     expect(organizationId).toBe('123');
   });
@@ -76,5 +75,4 @@ describe('TimeSlotsComponent', () => {
     const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
     expect(organizationId).toBe('9277');
   });
-
 });
