@@ -49,6 +49,34 @@ describe('CarDetailsInfoComponent', () => {
     value: '',
     required: true,
   };
+  const mockButtons = [
+    {
+      label: 'На главную',
+      value: 'На главную',
+      type: 'home',
+      action: 'getNextScreen',
+    },
+    {
+      label: 'Скачать pdf-файл',
+      type: 'nextStep',
+      action: 'getNextScreen',
+    },
+  ];
+
+  const element = {
+    dataset: {
+      retry: true,
+    },
+  };
+  const errorData = {
+    data: {} as any,
+    externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+  };
+
+  const successData = {
+    data: {} as any,
+    externalServiceCallResult: ServiceResult.SUCCESS,
+  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -82,6 +110,7 @@ describe('CarDetailsInfoComponent', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockComponent;
+    screenService.buttons = mockButtons as any;
     carService = TestBed.inject(CarDetailInfoService);
     jest.spyOn(carService, 'fetchData');
     fixture = TestBed.createComponent(CarDetailInfoContainerComponent);
@@ -90,21 +119,6 @@ describe('CarDetailsInfoComponent', () => {
   });
 
   describe('onClick', () => {
-    const element = {
-      dataset: {
-        retry: true,
-      },
-    };
-    const errorData = {
-      data: {} as any,
-      externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
-    };
-
-    const successData = {
-      data: {} as any,
-      externalServiceCallResult: ServiceResult.SUCCESS,
-    };
-
     it('should be call fetchData', () => {
       const spy = jest.spyOn(component.carInfoService, 'fetchData');
       component.carInfoService.vehicleInfo$.next(errorData);
@@ -130,6 +144,26 @@ describe('CarDetailsInfoComponent', () => {
       component.onClick(element as any);
 
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('buttons$', () => {
+    jest.useFakeTimers();
+
+    it('should be return only buttons without nextStep type', () => {
+      component.carInfoService.vehicleInfo$.next(errorData);
+      component.buttons$.subscribe((buttons) => {
+        expect(buttons).toEqual([mockButtons[0]]);
+      });
+      jest.runAllTimers();
+    });
+
+    it('should be return all buttons', () => {
+      component.carInfoService.vehicleInfo$.next(successData);
+      component.buttons$.subscribe((buttons) => {
+        expect(buttons).toEqual(mockButtons);
+      });
+      jest.runAllTimers();
     });
   });
 });
