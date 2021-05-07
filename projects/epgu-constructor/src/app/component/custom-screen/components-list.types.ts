@@ -175,6 +175,7 @@ export interface CustomComponentAttrValidation {
   condition: string;
   dataType: string;
   errorMsg: string;
+  errorDesc?: string;
   updateOn?: UpdateOn;
 }
 
