@@ -11,10 +11,6 @@ import { LocationService } from '../../../core/services/location/location.servic
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { configureTestSuite } from 'ng-bullet';
 import { Gender } from 'epgu-constructor-types';
-import { ModalService } from '../../../modal/modal.service';
-import { ModalServiceStub } from '../../../modal/modal.service.stub';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
@@ -85,8 +81,6 @@ describe('FormPlayerApiService', () => {
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
       ],
     });
   });

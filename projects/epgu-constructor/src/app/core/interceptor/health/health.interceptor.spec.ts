@@ -21,10 +21,6 @@ import {
 } from './health.interceptor';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { ActionRequestPayload } from 'epgu-constructor-types';
-import { ModalService } from '../../../modal/modal.service';
-import { ModalServiceStub } from '../../../modal/modal.service.stub';
-import { NavigationService } from '../../services/navigation/navigation.service';
-import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;
@@ -71,8 +67,6 @@ describe('HealthInterceptor', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: HealthInterceptor,

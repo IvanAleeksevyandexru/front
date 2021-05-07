@@ -5,10 +5,11 @@ import {
   HttpHandler,
   HttpEvent,
   HttpErrorResponse,
+  HttpResponse,
 } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   COMMON_ERROR_MODAL_PARAMS,
@@ -26,6 +27,8 @@ import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmatio
 import { LocationService } from '../../services/location/location.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { ConfigService } from '../../services/config/config.service';
+import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import { instanceOfFormPlayerApiSuccessResponse } from './data';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
@@ -40,11 +43,41 @@ export class ErrorsInterceptorService implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<void | never>> {
-    return next.handle(req).pipe(catchError((err) => this.handleResponseError(err)));
+    return next.handle(req).pipe(
+      catchError((err) => this.handleResponseError(err)),
+      tap((res) => {
+        if (res instanceof HttpResponse && instanceOfFormPlayerApiSuccessResponse(res.body)) {
+          this.handleResponse(res);
+        }
+      }),
+    );
   }
 
   private showModal(params: ConfirmationModal): Promise<unknown> {
     return this.modalService.openModal(ConfirmationModalComponent, params).toPromise();
+  }
+
+  private handleResponse(httpResponse: HttpResponse<FormPlayerApiSuccessResponse>): void {
+    const { status, url, body } = httpResponse;
+    const value = String(body.scenarioDto.display?.components[0]?.value);
+    if (
+      status === 200 &&
+      url.includes('service/booking') &&
+      value.includes('BOOKING_UNAVAILABLE_EMPTY_ORG_ID')
+    ) {
+      try {
+        const address: string = JSON.parse(value)?.ADDRESS;
+        const addressLink = `<a target='_blank' href='https://yandex.ru/maps/?text=${address}'>${address}</a>`;
+        const regExp = /\{addressLink\}?/g;
+        BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
+
+        this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
+          if (redirectToLk) {
+            this.navigationService.redirectToLK();
+          }
+        });
+      } catch (e) {}
+    }
   }
 
   private handleResponseError(

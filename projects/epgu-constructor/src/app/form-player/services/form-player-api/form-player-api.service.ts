@@ -13,11 +13,6 @@ import {
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
 } from 'epgu-constructor-types';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
-import { BOOKING_ONLINE_ERROR } from '../../../core/interceptor/errors/errors.interceptor.constants';
-import { ModalService } from '../../../modal/modal.service';
-import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -26,8 +21,6 @@ export class FormPlayerApiService {
     private initDataService: InitDataService,
     private configService: ConfigService,
     private locationService: LocationService,
-    private modalService: ModalService,
-    private navigationService: NavigationService,
   ) {}
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
@@ -98,9 +91,7 @@ export class FormPlayerApiService {
       serviceId,
     };
     const path = `${this.configService.apiUrl}/service/booking`;
-    return this.post<FormPlayerApiResponse>(path, body).pipe(
-      tap((body) => this.checkOrgIdForModal(body as FormPlayerApiSuccessResponse)),
-    );
+    return this.post<FormPlayerApiResponse>(path, body);
   }
 
   public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
@@ -131,27 +122,6 @@ export class FormPlayerApiService {
       path += `/${pathDir}/scenario/${formPlayerNavigation}`;
     }
     return path;
-  }
-
-  private checkOrgIdForModal(body: FormPlayerApiSuccessResponse): void {
-    const value = String(body.scenarioDto?.display?.components[0]?.value);
-    if (value.includes('BOOKING_UNAVAILABLE_EMPTY_ORG_ID')) {
-      try {
-        const address: string = JSON.parse(value)?.ADDRESS;
-        const addressLink = `<a target='_blank' href='https://yandex.ru/maps/?text=${address}' >${address}</a>`;
-        const regExp = /\{addressLink\}?/g;
-        BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
-
-        this.modalService
-          .openModal(ConfirmationModalComponent, BOOKING_ONLINE_ERROR)
-          .toPromise()
-          .then((redirectToLk) => {
-            if (redirectToLk) {
-              this.navigationService.redirectToLK();
-            }
-          });
-      } catch (e) {}
-    }
   }
 
   private post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {
