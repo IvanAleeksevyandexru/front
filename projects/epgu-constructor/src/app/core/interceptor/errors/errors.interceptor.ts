@@ -99,17 +99,6 @@ export class ErrorsInterceptorService implements HttpInterceptor {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     } else if (status === 408 && url.includes('invitations/inviteToSign/send')) {
       this.showModal(TIME_INVITATION_ERROR);
-    } else if (url.includes('service/booking')) {
-      const payload = error.payload;
-      const addressLink = `<a href="${payload?.url}">${payload?.text}</a>`;
-      const regExp = /\{addressLink\}?/g;
-      BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
-
-      this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
-        if (redirectToLk) {
-          this.navigationService.redirectToLK();
-        }
-      });
     } else if (status === 403) {
       if (error.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
         this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR);
