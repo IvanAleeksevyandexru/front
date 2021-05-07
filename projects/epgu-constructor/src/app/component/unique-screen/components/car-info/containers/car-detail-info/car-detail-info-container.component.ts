@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { ActionType } from 'epgu-constructor-types';
 
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CarDetailInfoComponentAttrsDto, ServiceResult } from '../../models/car-info.interface';
@@ -16,6 +18,18 @@ export class CarDetailInfoContainerComponent {
   public serviceResult = ServiceResult;
   public errors$ = this.screenService.component$.pipe(
     map((component) => component.attrs as CarDetailInfoComponentAttrsDto),
+  );
+  public buttons$ = combineLatest([
+    this.screenService.buttons$,
+    this.carInfoService.vehicleInfo$,
+  ]).pipe(
+    map(([buttons, vehicleInfo]) => {
+      return buttons.filter((button) => {
+        const isNextStep = button.type === ActionType.nextStep;
+
+        return isNextStep ? vehicleInfo?.externalServiceCallResult === ServiceResult.SUCCESS : true;
+      });
+    }),
   );
 
   constructor(public carInfoService: CarDetailInfoService, public screenService: ScreenService) {
