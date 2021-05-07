@@ -44,6 +44,7 @@ export type ScreenComponentTypes = CustomScreenComponent;
 
 export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes, Type<CustomScreenComponent>>> = {
   NewEmailInput: MaskedAndPlainInputComponent,
+  NewLegalEmailInput: MaskedAndPlainInputComponent,
   PhoneNumberChangeInput: MaskedAndPlainInputComponent,
   StringInput: MaskedAndPlainInputComponent,
   OgrnInput: MaskedAndPlainInputComponent,

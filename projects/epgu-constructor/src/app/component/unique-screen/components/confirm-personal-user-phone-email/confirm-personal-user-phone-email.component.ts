@@ -66,9 +66,11 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     const isEditPhone = [DTOActionAction.editPhoneNumber, DTOActionAction.editLegalPhone].includes(
       this.screenService.action?.action,
     );
-    const isEditEmail = [DTOActionAction.editEmail, DTOActionAction.editLegalEmail].includes(
-      this.screenService.action?.action,
-    );
+    const isEditEmail = [
+      DTOActionAction.editEmail,
+      DTOActionAction.editLegalEmail,
+      DTOActionAction.serviceEditLegalEmail,
+    ].includes(this.screenService.action?.action);
     return isEditPhone || isEditEmail;
   }
 
