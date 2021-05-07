@@ -25,6 +25,8 @@ export class ComponentsListToolsService {
 
     if (typeof component.value === 'string' && component.value.length) {
       return this.parseValue(component.value, isDateAndValue, component.type);
+    } else if (typeof component.presetValue === 'string' && component.presetValue.length) {
+      return this.parseValue(component.presetValue, isDateAndValue, component.type);
     } else if (component.value) {
       return component.value;
     } else if (!isUndefined(component.attrs.defaultValue)) {
