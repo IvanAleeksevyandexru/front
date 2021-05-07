@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } f
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
+import { TextTransform } from 'epgu-constructor-types';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -16,6 +17,7 @@ import { prepareClassifiedSuggestionItems } from '../../../../core/services/auto
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { TextTransformService } from '../../../../shared/services/text-transform/text-transform.service';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -48,6 +50,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     private validationService: ValidationService,
     private fb: FormBuilder,
     private datesToolsService: DatesToolsService,
+    private textTransform: TextTransformService,
   ) {
     super(injector);
   }
@@ -117,7 +120,27 @@ export class DocInputComponent extends AbstractComponentListItemComponent
         map((formFields: DocInputFormFields) => this.formatFormFields(formFields)),
       )
       .subscribe((formFields) => {
-        this.emitToParentForm(formFields);
+        // see https://stackoverflow.com/questions/58375385/angular-directive-transform-value-of-form-control
+        const patchedFormFields = Object.entries(formFields).reduce<DocInputFields>(
+          (acc: DocInputFields, [key, value]) => {
+            if (this.fields[key]?.attrs?.fstuc) {
+              const textTransformType: TextTransform = this.fields[key].attrs.fstuc;
+              const newValue = value
+                ? this.textTransform.transform(value.toString(), textTransformType)
+                : value;
+              const control =
+                this.form.get(key) || this.form.get([this.docInputFieldsTypes.seriesNumDate, key]);
+
+              if (control) {
+                control.setValue(newValue, { emitEvent: false });
+              }
+              return { ...acc, [key]: newValue };
+            }
+            return { ...acc, [key]: value };
+          },
+          {} as DocInputFields,
+        );
+        this.emitToParentForm(patchedFormFields);
         this.cdr.markForCheck();
       });
   }
