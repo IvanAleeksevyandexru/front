@@ -1,10 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormPlayerModule } from 'dist/epgu-constructor';
 import { EpguLibCommonModule, EpguLibModule, LoadService } from 'epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
-import { ConfigService, UnsubscribeService } from 'epgu-constructor';
+import { ConfigService, UnsubscribeService, FormPlayerModule } from 'epgu-constructor';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AppService } from './app.service';
