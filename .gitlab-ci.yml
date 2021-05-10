@@ -6,6 +6,7 @@ cache: &global_cache
     - node_modules/
     - dist/
     - projects/epgu-constructor/node_modules
+    - projects/epgu-constructor/dist
     - projects/epgu-constructor-types/node_modules
     - projects/epgu-constructor-types/dist
 
