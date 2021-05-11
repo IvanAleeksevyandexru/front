@@ -18,6 +18,8 @@ import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 
 describe('AutocompleteAutofillService', () => {
   let service: AutocompleteAutofillService;
@@ -59,7 +61,8 @@ describe('AutocompleteAutofillService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
     service = TestBed.inject(AutocompleteAutofillService);

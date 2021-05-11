@@ -13,6 +13,8 @@ import { CachedAnswersService } from '../../../../../shared/services/cached-answ
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from 'epgu-constructor-types';
+import { LocalStorageService } from '../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../core/services/local-storage/local-storage.service.stub';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
@@ -50,6 +52,7 @@ describe('UnusedPaymentsContainerComponent', () => {
         CurrentAnswersService,
         CachedAnswersService,
         UtilsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();
   });

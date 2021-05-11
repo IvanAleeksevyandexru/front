@@ -7,6 +7,7 @@ import {
   filter,
   finalize,
   map,
+  mapTo,
   mergeMap,
   reduce,
   take,
@@ -119,7 +120,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       (file: FileItem) =>
         this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store), // Валидируем файл
     ),
-    filter((file: FileItem) => this.limitFilter(file)), // Фильруем по лимитам
+    filter((file: FileItem) => this.amountFilter(file)), // Фильруем по лимитам
+    tap((file: FileItem) => this.updateSizeLimits(file)),
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
     filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
     tap((file: FileItem) => this.incrementLimits(file)), // Обновляем лимиты
@@ -192,6 +194,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         takeUntil(
           storage[operation.item.id].cancel.pipe(
             filter((status) => status === true),
+            tap(() =>
+              operation.item.status === FileItemStatus.uploading
+                ? this.decrementLimitByFileItem(operation.item)
+                : null,
+            ),
             tap(() => this.store.changeStatus(operation.item, fileStatus)),
             tap(() =>
               operation.type === OperationType.upload || operation.type === OperationType.prepare
@@ -233,6 +240,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private ngUnsubscribe$: UnsubscribeService,
     private autocompletePrepareService: AutocompletePrepareService,
   ) {}
+
+  decrementLimitByFileItem(file: FileItem): void {
+    this.prepareService.checkAndSetMaxCountByTypes(this.data, file, this.store, false);
+    this.decrementLimits(file);
+    this.resetLimits();
+  }
 
   updateLimits(): void {
     if (!(this.loadData?.maxCountByTypes?.length > 0)) {
@@ -316,18 +329,34 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.overLimits.next(limits);
   }
 
-  limitFilter(file: FileItem): boolean {
+  amountFilter(file: FileItem): boolean {
     const maxTotalAmount = file?.error?.type === ErrorActions.addMaxTotalAmount;
-    const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
     const maxAmount = file?.error?.type === ErrorActions.addMaxAmount;
     const limits = { ...this.overLimits.getValue() };
     limits.totalAmount.count = maxTotalAmount
       ? limits.totalAmount.count + 1
       : limits.totalAmount.count;
-    limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
     limits.amount.count = maxAmount ? limits.amount.count + 1 : limits.amount.count;
     this.overLimits.next(limits);
-    return !maxAmount && !maxTotalSize && !maxTotalAmount;
+    return !maxAmount && !maxTotalAmount;
+  }
+
+  updateSizeLimits(file: FileItem): void {
+    const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
+    const limits = { ...this.overLimits.getValue() };
+    limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
+    this.overLimits.next(limits);
+  }
+  decrementOverLimitForDelition(file: FileItem): void {
+    const limits = { ...this.overLimits.getValue() };
+    if (limits.totalSize.count > 0) {
+      if (file?.error?.type === ErrorActions.addMaxTotalSize) {
+        limits.totalSize = { ...limits.totalSize, count: limits.totalSize.count - 1 };
+        this.overLimits.next(limits);
+      }
+    } else if (limits.totalAmount.count > 0 || limits.amount.count > 0) {
+      this.resetLimits();
+    }
   }
 
   reduceChanges(
@@ -454,15 +483,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         status === FileItemStatus.uploaded
           ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
               tap(() =>
-                this.prepareService.checkAndSetMaxCountByTypes(
-                  this.data,
-                  fileItem,
-                  this.store,
-                  false,
-                ),
+                this.prepareService.checkAndSetMaxCountByTypes(this.data, file, this.store, false),
               ),
-              tap(() => this.decrementLimits(fileItem)),
-              tap(() => this.resetLimits()),
+              tap(() => this.decrementLimits(file)),
+
               map(() => undefined),
             )
           : of(undefined),
@@ -471,6 +495,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.store.update(fileItem.setError(this.getError(ErrorActions.addDeletionErr)));
         return throwError(e);
       }),
+      tap(() => this.decrementOverLimitForDelition(fileItem)),
       tap(() => this.store.remove(fileItem)),
     );
   }
@@ -529,7 +554,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         item.setItem(newUploaded).setStatus(FileItemStatus.uploaded);
         this.store.update(item);
       }),
-      map(() => undefined),
+      mapTo(undefined),
     );
   }
 
