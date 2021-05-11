@@ -78,7 +78,7 @@ describe('TracingHttpInterceptor', () => {
         RefRelationService,
         SessionService,
         UnsubscribeService,
-        DateRestrictionsService
+        DateRestrictionsService,
       ],
     });
   });

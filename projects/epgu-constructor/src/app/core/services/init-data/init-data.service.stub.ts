@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormPlayerContext, QueryParams, ServiceEntity } from '../../../form-player/form-player.types';
 
 @Injectable()
-export class InitDataServiceStub implements ServiceEntity {
+export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
   private _serviceId: string;
   private _orderId: number;
   private _targetId: string;
@@ -11,6 +11,7 @@ export class InitDataServiceStub implements ServiceEntity {
   private _initState: string;
   private _configId: string;
   private _queryParams: QueryParams;
+  private _gepsId: number;
 
   get serviceId(): string {
     return this._serviceId;
@@ -76,6 +77,14 @@ export class InitDataServiceStub implements ServiceEntity {
     this._queryParams = queryParams;
   }
 
+  get gepsId(): number {
+    return this._gepsId;
+  }
+
+  set gepsId(gepsId: number) {
+    this._gepsId = gepsId;
+  }
+
   init(service: ServiceEntity, context?: FormPlayerContext): void {
     this.serviceId = service.serviceId;
     this.targetId = service.targetId;
@@ -84,6 +93,7 @@ export class InitDataServiceStub implements ServiceEntity {
     this.canStartNew = service.canStartNew;
     this.initState = context?.initState;
     this.configId = context?.configId;
+    this.gepsId = context?.gepsId;
     this.queryParams = context?.queryParams;
   }
 }

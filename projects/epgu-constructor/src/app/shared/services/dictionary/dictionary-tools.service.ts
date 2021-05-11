@@ -506,7 +506,7 @@ export class DictionaryToolsService {
         [attributeType]: componentValue[dFilter.value] as string,
       }),
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
-        [attributeType]: screenStore[dFilter.value],
+        [attributeType]: utils.getObjectProperty(screenStore, dFilter.value, undefined),
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
         [attributeType]: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),

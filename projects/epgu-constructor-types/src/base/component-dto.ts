@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { ComponentAttrsDto } from './component-attrs';
+import { ArgumentsDto } from './arguments';
 
 /**
  * @property {Array<object>}attrs - объект с дополнительной информацией
@@ -23,5 +24,5 @@ export interface ComponentDto {
   presetValue?: string;
   valueFromCache?: boolean;
   suggestionId?: string;
-  arguments?: { vin?: string };
+  arguments?: ArgumentsDto;
 }
