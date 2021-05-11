@@ -21,6 +21,8 @@ import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -43,7 +45,8 @@ describe('PrepareComponentsService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       imports: [HttpClientTestingModule],
     });

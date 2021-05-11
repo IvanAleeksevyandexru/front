@@ -24,6 +24,8 @@ import {
   removeItemFromArrByIndex,
   StateStatus,
 } from './repeatable-screen.constant';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-screen',
@@ -39,6 +41,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   canDeleteFirstScreen: boolean;
   minOccures: number;
   componentValidation: Array<boolean> = [];
+  parentComponentId: string;
 
   /**
    * Словарь для хранения массива компонентов
@@ -58,7 +61,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       this.initScreens();
     }),
   );
-  state$ = new BehaviorSubject<Array<{ [key: string]: { value: string } }>>([]);
+  state$ = new BehaviorSubject<Record<string, string>[]>([]);
 
   commonError$ = combineLatest([
     this.screenService.componentErrors$,
@@ -89,7 +92,9 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private eventBusService: EventBusService,
+    private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
+    private cachedAnswersService: CachedAnswersService,
   ) {}
 
   ngOnInit(): void {
@@ -98,6 +103,10 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
+
+    this.navigationService.nextStep$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
+    });
   }
 
   trackByFunction = (_index: number, item: string): string => item;
@@ -132,13 +141,14 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.saveState(state);
   }
 
-  getState(): Array<{ [key: string]: { value: string } }> {
+  getState(): Record<string, string>[] {
     return JSON.parse(this.currentAnswersService.state as string);
   }
 
-  saveState(state: Array<{ [key: string]: { value: string } }>): void {
+  saveState(state: Record<string, string>[]): void {
     this.state$.next(state);
     this.currentAnswersService.state = JSON.stringify(state);
+    this.cachedAnswersService.setValueToLocalStorage(this.parentComponentId, state);
   }
 
   getStateStatus$(): Observable<StateStatus> {
@@ -198,6 +208,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   private initVariable(): void {
     this.screens = {};
     this.componentId = 0;
+    this.parentComponentId = this.propData.components[0].id;
     this.saveState([]);
     const { canDeleteFirstScreen = true, minOccures = 1 } = this.propData.components[0].attrs;
     this.canDeleteFirstScreen = canDeleteFirstScreen;

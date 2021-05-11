@@ -28,6 +28,8 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 import { ModalService } from '../../../modal/modal.service';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -157,6 +159,7 @@ describe('AutocompletePrepareService', () => {
         RefRelationService,
         DateRestrictionsService,
         TerraByteApiService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
   });
