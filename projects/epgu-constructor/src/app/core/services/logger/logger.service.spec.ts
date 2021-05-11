@@ -29,6 +29,27 @@ describe('LoggerService', () => {
   });
 
   describe('log()', () => {
+    it('should do nothing if isDevMode is false AND localStorage SHOW_LOG property is not empty', () => {
+      const isDevModeFn = spyOn<any>(AngularCoreModule, 'isDevMode');
+
+      isDevModeFn.and.returnValue(false);
+      service.log(message, groupName);
+      // не вызывается, т.к. isDevMode false и в localStorage нет SHOW_LOG
+      expect(console.log).not.toBeCalled();
+
+      isDevModeFn.and.returnValue(true);
+      service.log(message, groupName);
+      // вызывается, т.к. isDevMode true
+      expect(console.log).toBeCalled();
+
+      (console.log as jasmine.Spy).calls.reset();
+      isDevModeFn.and.returnValue(false);
+      localStorage.setItem('SHOW_LOG', '1');
+      service.log(message, groupName);
+      // вызывается, т.к. SHOW_LOG не пустой
+      expect(console.log).toBeCalled();
+    });
+
     it('should call isShowLog', () => {
       spyOn<any>(service, 'isShowLog').and.callThrough();
       service.log(message, groupName);

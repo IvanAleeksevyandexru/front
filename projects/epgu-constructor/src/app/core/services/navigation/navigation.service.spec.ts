@@ -78,6 +78,12 @@ describe('NavigationService', () => {
     });
     navigationService.patchOnCli(null);
   });
+  it('redirectTo()', () => {
+    const hrefFn = jest.spyOn(locationService, 'href');
+    navigationService.redirectTo('/abc');
+    expect(hrefFn).toBeCalledTimes(1);
+    expect(hrefFn).toBeCalledWith('/abc');
+  });
   it('test redirectToProfileEdit', () => {
     navigationService.isWebView = true;
     navigationService.redirectToProfileEdit();

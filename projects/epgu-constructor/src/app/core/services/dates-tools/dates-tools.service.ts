@@ -188,6 +188,9 @@ export class DatesToolsService {
    * иначе Invalid Date
    * @param {Date | Number} date конвертируемая дата в виде строки
    * @param {string} format строка маска для распарсивания строки с датой (по умолчанию ISOString вида yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx )
+   * @todo параметр format используется и для парсинга первого параметра, если он передан в виде строки, и
+   * для форматирования результата. Тогда зачем нужна возможность передавать первым параметром строку, если она вернется в
+   * том же формате?
    */
   public format(date: Date | number | string, format: string = DATE_ISO_STRING_FORMAT): string {
     if (!date) {
