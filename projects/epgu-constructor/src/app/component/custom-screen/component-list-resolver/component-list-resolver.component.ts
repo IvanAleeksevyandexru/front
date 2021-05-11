@@ -13,7 +13,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { takeUntil, tap, subscribeOn, filter } from 'rxjs/operators';
+import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -71,7 +71,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   }
 
   private destroyComponent(): void {
-    if (this.componentRef && !this.screenService.isTheSameScreenWithErrors) {
+    if (this.componentRef) {
       this.componentRef.destroy();
       this.componentRef = null;
     }
