@@ -27,6 +27,9 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
 import { DisplayDto } from 'epgu-constructor-types';
+import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
+import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 
 const displayMock = {
   id: 's113',
@@ -161,6 +164,8 @@ describe('RepeatableScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         UnsubscribeService,
         EventBusService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        CachedAnswersService
       ],
     }).compileComponents();
   });

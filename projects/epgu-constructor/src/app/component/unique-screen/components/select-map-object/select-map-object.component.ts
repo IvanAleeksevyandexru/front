@@ -14,12 +14,13 @@ import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { isEqual as _isEqual } from 'lodash';
 import {
+  ActionType,
+  ApplicantAnswersDto,
   ComponentDictionaryFilterDto,
   DictionaryOptions,
-  ApplicantAnswersDto,
-  ScreenButton,
-  ActionType,
   IMvdFilter,
+  ScreenButton,
+  DictionaryFilterPriority,
 } from 'epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
@@ -260,6 +261,19 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private initMap(): void {
     this.setMapOpstions();
+
+    if (this.isOnlySecondaryFilterRequestNeeded()) {
+      this.fillCoords(this.data.attrs.secondaryDictionaryFilter)
+        .pipe(
+          takeUntil(this.ngUnsubscribe$),
+          catchError((error) => this.handleError(error)),
+          filter((coords: IGeoCoordsResponse) => !!coords),
+          tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
+        )
+        .subscribe();
+      return;
+    }
+
     this.fillCoords(this.data.attrs.dictionaryFilter)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
@@ -269,19 +283,30 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           }
           return of(coords);
         }),
-        catchError((error) => {
-          this.modalErrorService.showError(error);
-          return of(null);
-        }),
+        catchError((error) => this.handleError(error)),
         filter((coords: IGeoCoordsResponse) => !!coords),
-        tap((coords: IGeoCoordsResponse) => {
-          this.handleFilledCoordinate(coords);
-          this.mapIsLoaded = true;
-          this.initSelectedValue();
-          this.cdr.detectChanges();
-        }),
+        tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
       )
       .subscribe();
+  }
+
+  private isOnlySecondaryFilterRequestNeeded(): boolean {
+    return (
+      this.data.arguments?.dictionaryFilterPriority ===
+      DictionaryFilterPriority.secondaryDictionaryFilter
+    );
+  }
+
+  private handleError(error): Observable<null> {
+    this.modalErrorService.showError(error);
+    return of(null);
+  }
+
+  private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
+    this.handleFilledCoordinate(coords);
+    this.mapIsLoaded = true;
+    this.initSelectedValue();
+    this.cdr.detectChanges();
   }
 
   private setMapOpstions(): void {

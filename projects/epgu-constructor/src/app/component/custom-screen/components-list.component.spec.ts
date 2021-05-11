@@ -49,6 +49,8 @@ import { RefRelationService } from '../../shared/services/ref-relation/ref-relat
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
+import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -106,6 +108,7 @@ describe('ComponentsListComponent', () => {
         SuggestHandlerService,
         DateRestrictionsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

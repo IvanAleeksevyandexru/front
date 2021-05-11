@@ -9,6 +9,8 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 
 describe('DateTimePeriodContainerComponent', () => {
   let component: DateTimePeriodContainerComponent;
@@ -23,6 +25,7 @@ describe('DateTimePeriodContainerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();
   });

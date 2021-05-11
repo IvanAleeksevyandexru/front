@@ -7,13 +7,13 @@
 </ng-container>
 
 <ng-template #templateContent let-type="type">
-  <ng-container [ngSwitch]="type">
+  <ng-container>
     <epgu-constructor-confirm-phone
       *ngIf="[uniqueComponentName.phoneNumberConfirmCodeInput, uniqueComponentName.confirmCodeInput].includes(type)"
     >
     </epgu-constructor-confirm-phone>
     <epgu-constructor-confirm-email
-      *ngSwitchCase="uniqueComponentName.ConfirmNewEmail"
+      *ngIf="[uniqueComponentName.ConfirmNewEmail, uniqueComponentName.ConfirmLegalNewEmail].includes(type)"
     >
     </epgu-constructor-confirm-email>
   </ng-container>
