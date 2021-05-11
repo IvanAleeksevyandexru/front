@@ -62,6 +62,7 @@ export enum DTOActionAction {
   editPassportData = 'editPassportData',
   editLegalPhone = 'editLegalPhone',
   editLegalEmail = 'editLegalEmail',
+  editChildData = 'editChildData',
   serviceEditLegalEmail = 'service/actions/editLegalEmail',
   attachUploadedFiles = 'attachUploadedFiles',
   redirect = 'redirect', // для умного поиска

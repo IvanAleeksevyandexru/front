@@ -391,4 +391,32 @@ describe('ActionService', () => {
       expect(spy).toHaveBeenCalledWith('oplataUrl/pay/uin/100');
     });
   });
+
+  describe('redirectToEdit()', () => {
+    const action = (action) => ({ ...profileEditAction, action });
+
+    it('editChildData', () => {
+      jest.spyOn(navigationService, 'redirectTo');
+      actionService.switchAction(action(DTOActionAction.editChildData), null);
+      expect(navigationService.redirectTo).toHaveBeenCalled();
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family');
+    });
+
+    it('editLegalPhone or editLegalEmail', () => {
+      jest.spyOn(navigationService, 'redirectTo');
+      actionService.switchAction(action(DTOActionAction.editLegalPhone), null);
+      expect(navigationService.redirectTo).toHaveBeenCalled();
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/notification-setup');
+
+      actionService.switchAction(action(DTOActionAction.editLegalEmail), null);
+      expect(navigationService.redirectTo).toHaveBeenCalled();
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/notification-setup');
+    });
+
+    it('by default', () => {
+      jest.spyOn(navigationService, 'redirectToProfileEdit');
+      actionService.switchAction(action(null), null);
+      expect(navigationService.redirectToProfileEdit).toHaveBeenCalled();
+    });
+  });
 });
