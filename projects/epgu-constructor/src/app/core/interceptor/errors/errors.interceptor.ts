@@ -49,6 +49,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
         if (
           res instanceof HttpResponse &&
           res?.body &&
+          typeof res.body === 'object' &&
           instanceOfFormPlayerApiSuccessResponse(res.body)
         ) {
           this.handleResponse(res);
