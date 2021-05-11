@@ -64,13 +64,16 @@ type UniqueScreenComponent =
   | ConfirmPersonalUserAddressReadonlyComponent
   | CarDetailInfoContainerComponent;
 
-
 export type ScreenComponentTypes = UniqueScreenComponent;
 
-export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<UniqueScreenComponentTypes, Type<UniqueScreenComponent>>> = {
+export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
+  UniqueScreenComponentTypes,
+  Type<UniqueScreenComponent>
+>> = {
   CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
+  CsvOnlyUploaderComponent: FileUploadScreenComponent,
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
