@@ -78,7 +78,6 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
       this.suggestions = suggestions;
       this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
-
       this.suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
         this.suggestionsFilesList,
       );
