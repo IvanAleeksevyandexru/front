@@ -13,7 +13,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { takeUntil, tap, subscribeOn, filter } from 'rxjs/operators';
+import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
