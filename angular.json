@@ -83,7 +83,7 @@
             "vendor": true
           },
           "options": {
-            "host": "vbeta.test.gosuslugi.ru",
+            "host": "local.test.gosuslugi.ru",
             "browserTarget": "epgu-form-frontend:build",
             "port": 4200,
             "proxyConfig": "src/proxy.conf.json"
