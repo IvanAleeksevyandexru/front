@@ -53,6 +53,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   suggestions$ = this.screenService.suggestions$;
   suggestionsFiles: FileItem[] = [];
   suggestionsFilesList: ISuggestionItemList[] = [];
+  suggestionsUploadedFiles: UploadedFile[] = [];
   suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
@@ -77,10 +78,11 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
       this.suggestions = suggestions;
       this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
-      const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
+
+      this.suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
         this.suggestionsFilesList,
       );
-      this.suggestionsFiles = this.getSuggestionFiles(suggestionsUploadedFiles);
+      this.suggestionsFiles = this.getSuggestionFiles(this.suggestionsUploadedFiles);
       this.suggestionsFilesGroupByDate = this.getSuggestionsFilesGroupedByDate(
         this.suggestionsFiles,
       );
