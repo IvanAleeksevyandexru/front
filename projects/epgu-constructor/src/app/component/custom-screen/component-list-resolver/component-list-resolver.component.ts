@@ -71,7 +71,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   }
 
   private destroyComponent(): void {
-    if (this.componentRef && !this.screenService.isTheSameScreenWithErrors) {
+    if (this.componentRef) {
       this.componentRef.destroy();
       this.componentRef = null;
     }
