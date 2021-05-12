@@ -16,6 +16,7 @@ import { AppConfig } from '../app.type';
 export class ConfigComponent implements OnInit {
   configForm: FormGroup;
   fieldsName = [];
+  numberFields = ['gepsId', 'orderId'];
 
   constructor(
     private appService: AppService,
