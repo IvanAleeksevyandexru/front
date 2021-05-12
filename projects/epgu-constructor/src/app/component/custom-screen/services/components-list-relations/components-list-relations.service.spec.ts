@@ -724,7 +724,7 @@ describe('ComponentsListRelationsService', () => {
         // dependentControl изменился, потому что initInitialValues === TRUE
         // value === '', потому что в dictinaries нет нужного словаря
         expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.get('value').value).toBe('');
+        expect(dependentControl.get('value').value).toBe(null);
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
