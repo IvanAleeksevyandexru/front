@@ -18,10 +18,15 @@ export class AutocompleteAutofillService {
   }
 
   private prepareEmployeeHistoryComponentValue(component: ComponentDto): string {
-    return JSON.stringify(
-      this.screenService.suggestions[component.id].list.reduce((acc, value) => {
-        return [...acc, ...JSON.parse(value.originalItem)];
-      }, []),
-    );
+    const suggestions = this.screenService.suggestions[component.id];
+    if (suggestions) {
+      return JSON.stringify(
+        suggestions.list.reduce((acc, value) => {
+          return [...acc, ...JSON.parse(value.originalItem)];
+        }, []),
+      );
+    }
+
+    return '[]';
   }
 }
