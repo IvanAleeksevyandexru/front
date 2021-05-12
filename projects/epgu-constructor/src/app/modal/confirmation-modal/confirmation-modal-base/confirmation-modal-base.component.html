@@ -1,4 +1,4 @@
-<div class="conf-modal">
+<div class="conf-modal" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
   <div *ngIf="showCrossButton" class="modal__close" (click)="closeModal()"></div>
   <div class="conf-modal__header">
     <h3 *ngIf="title" class="modal__title" [innerHTML]="title | safe: 'html'"></h3>

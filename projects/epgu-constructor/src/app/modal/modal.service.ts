@@ -30,6 +30,7 @@ export class ModalService {
 
     componentRef.instance['detachView'] = (data): void => {
       this.appRef.detachView(componentRef.hostView);
+      componentRef.destroy();
       modalResult.next(data);
     };
 

@@ -4,6 +4,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { BaseModule } from '../../../shared/base.module';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+import { A11yModule } from '@angular/cdk/a11y';
 
 describe('ConfirmationModalBaseComponent', () => {
   let component: ConfirmationModalBaseComponent;
@@ -12,7 +13,7 @@ describe('ConfirmationModalBaseComponent', () => {
   beforeEach(async() => {
     await TestBed.configureTestingModule({
       declarations: [ ConfirmationModalBaseComponent ],
-      imports: [ BaseModule ],
+      imports: [ BaseModule, A11yModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         EventBusService,
