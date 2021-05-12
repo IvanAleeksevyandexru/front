@@ -87,10 +87,8 @@ export class FileUploadScreenComponent implements OnInit {
   ) {}
 
   toCSVUploader(upload: FileUploadItem): FileUploadItem {
-    const processingUpload = { ...upload };
-    processingUpload.fileType = ['CSV'];
+    const processingUpload = { ...upload, fileType: ['CSV'], maxFileCount: 1 };
     delete processingUpload.maxCountByTypes;
-    processingUpload.maxFileCount = 1;
     return processingUpload;
   }
 
