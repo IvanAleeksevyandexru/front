@@ -9,32 +9,46 @@
 
 .answer-btn {
   &::ng-deep > button {
-    flex-wrap: wrap;
+    display: block;
+  }
+  &__container {
+    display: flex;
+  }
+  &__title {
+    flex-grow: 1;
   }
   &__icon {
+    position: relative;
     flex-shrink: 0;
-    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    margin-left: 24px;
+    @include tablets-down {
+      margin-left: 16px;
+    }
+    .icon-loading {
+      position: absolute;
+      top: -8px;
+      right: -6px;
+    }
   }
-
-  &__hint {
+  &__hint { // TODO запрещён к использованию, нужно выпилить
+    position: relative;
+    left: 8px;
+    margin-left: 16px;
     lib-question-help-tip {
       display: flex;
     }
-    margin-left: auto;
   }
   &__description {
-    flex-basis: 100%;
+    margin-top: 8px;
     color: $color-text-helper;
     @include typ-plain-small;
-    margin-top: 8px;
-
-  }
-}
-
-.icon-loading {
-  position: absolute;
-  right: 17px;
-  @include phones-down {
-    right: 13px;
+    @include tablets-down {
+      margin-top: 16;
+    }
   }
 }
