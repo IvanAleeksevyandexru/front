@@ -100,7 +100,7 @@ describe('FileUploadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('shold be change file upload value by event ', () => {
+  it('should be change file upload value by event ', () => {
     jest.spyOn(controlValue, 'setValue');
     jest.spyOn(controlValue, 'setErrors');
     jest.spyOn(formService, 'emitChanges');
