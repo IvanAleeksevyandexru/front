@@ -38,6 +38,8 @@ import { configureTestSuite } from 'ng-bullet';
 import { Gender, TextTransform } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -97,7 +99,8 @@ describe('EmployeeHistoryFormComponent', () => {
         DateRangeService,
         RefRelationService,
         SuggestHandlerService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     })
       .overrideComponent(EmployeeHistoryFormComponent, {
