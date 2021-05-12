@@ -6,9 +6,6 @@ module.exports = {
       2, // level: error
       'always',
       (parsed) => {
-        if (parsed.type === 'chore' && parsed.scope === 'release') {
-          return [true];
-        }
         if (/\[EPGUCORE-\d{5,}\]+$/.test(parsed.subject)) {
           return [true];
         }

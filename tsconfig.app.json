@@ -11,7 +11,7 @@
         "node_modules/epgu-lib/assets/vendor/ifccommon-lib.js"
       ],
       "epgu-constructor": [
-        "projects/epgu-constructor/dist"
+        "dist/epgu-constructor"
       ]
     }
   },

@@ -4,8 +4,7 @@
   "scripts": {
     "watch": "cd ../../ && ng build epgu-constructor --watch",
     "lint": "cd ../../ && ng lint epgu-constructor",
-    "lint:fix": "cd ../../ && ng lint epgu-constructor --fix",
-    "build": "ng build epgu-constructor --prod"
+    "lint:fix": "cd ../../ && ng lint epgu-constructor --fix"
   },
   "peerDependencies": {
     "@angular/common": "11.0.0",
