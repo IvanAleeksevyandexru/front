@@ -34,8 +34,8 @@ describe('InitDataService', () => {
   describe('init()', () => {
     it('should call checkProps method', () => {
       spyOn<any>(service, 'checkProps').and.callThrough();
-      service.init(serviceEntity);
-      expect(service['checkProps']).toBeCalledWith(serviceEntity);
+      service.init(serviceEntity, context);
+      expect(service['checkProps']).toBeCalledWith(serviceEntity, context);
     });
 
     it('should call set serviceId', () => {
