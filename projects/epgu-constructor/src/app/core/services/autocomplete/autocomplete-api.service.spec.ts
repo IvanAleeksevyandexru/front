@@ -109,9 +109,9 @@ describe('AutocompleteApiService', () => {
       expect(req.request.method).toBe('DELETE');
     }));
 
-    it('should call with body { ids: [fieldId] }', fakeAsync(() => {
+    it('should call with body [fieldId]', fakeAsync(() => {
       const body = req.request.body;
-      expect(body).toEqual({ ids: [fieldId] });
+      expect(body).toEqual([fieldId]);
     }));
 
     it('should call http delete with withCredentials equals true', fakeAsync(() => {
