@@ -6,7 +6,6 @@ cache: &global_cache
     - node_modules/
     - dist/
     - projects/epgu-constructor/node_modules
-    - projects/epgu-constructor/dist
     - projects/epgu-constructor-types/node_modules
     - projects/epgu-constructor-types/dist
 
@@ -15,7 +14,6 @@ stages:
   - postinstall
   - code-quality
   - library-build
-  - lerna-publish
   - library-publish
   - build
   - image
@@ -110,32 +108,6 @@ Library-build:
     - merge_requests
     - master
     - stage
-
-#Lerna-publish:
-#  stage: lerna-publish
-#  except:
-#    variables:
-#      - $GITLAB_USER_LOGIN == $CI_USER
-#  before_script:
-#    - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
-#    - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
-#  script:
-#    - echo $GITLAB_USER_LOGIN
-#    - echo $CI_USER
-#    - echo $CI_USER_EMAIL
-#    - echo $CI_COMMIT_BRANCH
-#    - echo $CI_COMMIT_REF_NAME
-#    - echo $CI_COMMIT_SHA
-#    - git config --global user.email $CI_USER_EMAIL
-#    - git config --global user.name $CI_USER
-#    - git config receive.advertisePushOptions true
-#    - git checkout -B "$CI_COMMIT_REF_NAME" "$CI_COMMIT_SHA"
-#    - npx lerna publish --contents dist --yes
-#  after_script:
-#    - git reset --hard HEAD~1
-#  only:
-#    - master
-#    - stage
 
 # Library-publish:
 #   stage: library-publish

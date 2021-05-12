@@ -3,12 +3,6 @@
   "packages": [
     "projects/*"
   ],
-  "version": "independent",
-  "useWorkspaces": true,
-  "command": {
-    "publish": {
-      "conventionalCommits": true,
-      "message": "chore(release): publish"
-    }
-  }
+  "version": "1.0.0",
+  "useWorkspaces": true
 }
