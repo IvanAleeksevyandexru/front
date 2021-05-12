@@ -529,15 +529,14 @@ export class DictionaryToolsService {
     return calcFunc(dFilter);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private formatValue(value: string | unknown, params: FilterDtoConfig): string | unknown {
-    let result: string | unknown;
+  private formatValue(value: unknown, params: FilterDtoConfig): unknown {
+    let result: unknown;
 
-    if (value != null && params != null && params?.str != null && Array.isArray(params.str)) {
+    if (value !== undefined && params !== undefined && params?.str !== undefined && Array.isArray(params.str)) {
       const { str } = params;
       result = String(value).split('').splice(str[0], str[1]).join('');
       
-      if (params?.additionalString != null) {
+      if (params?.additionalString !== undefined) {
         result = result + params.additionalString;
       }
 
