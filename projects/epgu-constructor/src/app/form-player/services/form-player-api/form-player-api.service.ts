@@ -40,7 +40,7 @@ export class FormPlayerApiService {
   }
 
   public getServiceData(orderId?: number): Observable<FormPlayerApiResponse> {
-    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { serviceId, targetId, serviceInfo, gepsId } = this.initDataService;
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
 
@@ -50,6 +50,10 @@ export class FormPlayerApiService {
 
     if (serviceInfo) {
       body['serviceInfo'] = serviceInfo;
+    }
+
+    if (gepsId) {
+      body['gepsId'] = gepsId;
     }
 
     return this.post<FormPlayerApiResponse>(path, body);

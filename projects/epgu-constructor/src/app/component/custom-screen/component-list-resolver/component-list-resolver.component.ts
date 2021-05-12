@@ -69,14 +69,14 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
       });
   }
 
-  destroyComponent(): void {
+  private destroyComponent(): void {
     if (this.componentRef) {
       this.componentRef.destroy();
       this.componentRef = null;
     }
   }
 
-  createComponent(cmpType: ComponentTypes, screenType: ScreenTypes): void {
+  private createComponent(cmpType: ComponentTypes, screenType: ScreenTypes): void {
     const component = this.getComponentByType(cmpType);
 
     if (!component) {
@@ -94,7 +94,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
     this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
   }
 
-  getComponentByType(cmpType: ComponentTypes): Type<ScreenComponentTypes> {
+  private getComponentByType(cmpType: ComponentTypes): Type<ScreenComponentTypes> {
     return CUSTOM_SCREEN_COMPONENTS[cmpType];
   }
 

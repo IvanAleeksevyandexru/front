@@ -23,21 +23,19 @@ import { HelperTextComponent } from '../../../../../../shared/components/base-co
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { ActionType, ComponentActionDto } from 'epgu-constructor-types';
+import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
-  let component: ConfirmPersonalUserAddressReadonlyComponent;
-  let screenService: ScreenService;
-  let fixture: ComponentFixture<ConfirmPersonalUserAddressReadonlyComponent>;
   const mockData: ConfirmAddressInterface = {
     attrs: {
       actions: [],
       fields: [
         {
-          fieldName: 'regAddr',
+          fieldName: 'regAddr' as FieldNames,
           label: 'Адрес'
         },
         {
-          fieldName: 'regDate',
+          fieldName: 'regDate' as FieldNames,
           label: 'Дата регистрации',
           hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ'
         }
@@ -47,7 +45,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
     value: '{}',
     label: '',
     type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
-    required: false,
+    required: true,
     valueFromCache: false,
   };
   const actionMock: ComponentActionDto = {
@@ -87,16 +85,95 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       .compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmPersonalUserAddressReadonlyComponent);
-    component = fixture.componentInstance;
-    screenService = TestBed.inject(ScreenService);
-    component.data$ = of(mockData);
-    fixture.detectChanges();
+  function setup(data: ConfirmAddressInterface = mockData) {
+    const fixture: ComponentFixture<ConfirmPersonalUserAddressReadonlyComponent> = TestBed.createComponent(ConfirmPersonalUserAddressReadonlyComponent);
+    const component: ConfirmPersonalUserAddressReadonlyComponent = fixture.componentInstance;
+    const screenService: ScreenService = TestBed.inject(ScreenService);
+    const currentAnswersService: CurrentAnswersService = TestBed.inject(CurrentAnswersService);
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
-  });
+    jest.spyOn(screenService, 'componentErrors', 'get').mockReturnValue({});
+    component.data$ = of(data);
+    fixture.detectChanges();
+
+    return { fixture, component, screenService, currentAnswersService };
+  }
 
   it('should create', () => {
+    const { component } = setup();
     expect(component).toBeTruthy();
+  });
+
+  describe('onInit', () => {
+    it('should update values and currentAnswersService state on receive value changes from form', () => {
+      const { component, currentAnswersService } = setup();
+
+      jest.spyOn(component.form.valueChanges, 'pipe').mockReturnValue(of({ regAddr: 'Some addr' }));
+
+      component.ngOnInit();
+
+      expect(component.valueParsed).toEqual({ regAddr: 'Some addr', regDate: '' });
+      expect(currentAnswersService.state).toEqual(JSON.stringify({ regAddr: 'Some addr', regDate: '' }));
+    });
+
+    it('should update values and currentAnswersService state on receive value changes with date', () => {
+      const { component, currentAnswersService } = setup();
+
+      const datesToolsService: DatesToolsService = TestBed.inject(DatesToolsService);
+      jest.spyOn(datesToolsService, 'format').mockImplementation((value: string) => value);
+      jest.spyOn(component.form.valueChanges, 'pipe').mockReturnValue(of({ regAddr: 'Some addr', regDate: '2021-05-11' }));
+
+      component.ngOnInit();
+
+      expect(component.valueParsed).toEqual({ regAddr: 'Some addr', regDate: '2021-05-11' });
+      expect(currentAnswersService.state).toEqual(JSON.stringify({ regAddr: 'Some addr', regDate: '2021-05-11' }));
+    });
+  });
+
+  describe('on data changed', () => {
+    it('init with empty value', () => {
+      const { fixture, component, currentAnswersService } = setup({
+        ...mockData,
+        value: null
+      });
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(currentAnswersService.isValid).toBeFalsy();
+    });
+
+    it('init with some value', () => {
+      const { component, currentAnswersService } = setup({
+        ...mockData,
+        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' })
+      });
+
+      component.ngOnInit();
+
+      expect(currentAnswersService.isValid).toBeTruthy();
+      expect(component.valueParsed.regAddr).toEqual( 'Some addr' );
+      expect(typeof component.valueParsed.regDate).toEqual( 'object' );
+      expect(JSON.parse(currentAnswersService.state as string)).toEqual({ regAddr: 'Some addr', regDate: '11.05.2021' });
+    });
+
+    it('should not init field with value when it does not exists at fields', () => {
+      const { component, currentAnswersService } = setup({
+        ...mockData,
+        attrs: {
+          ...mockData.attrs,
+          fields: [{
+            fieldName: 'regAddr' as FieldNames,
+            label: 'Адрес'
+          }]
+        },
+        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' })
+      });
+
+      component.ngOnInit();
+
+      expect(currentAnswersService.isValid).toBeTruthy();
+      expect(component.valueParsed).toEqual({ regAddr: 'Some addr' });
+      expect(JSON.parse(currentAnswersService.state as string)).toEqual({ regAddr: 'Some addr' });
+    });
   });
 });

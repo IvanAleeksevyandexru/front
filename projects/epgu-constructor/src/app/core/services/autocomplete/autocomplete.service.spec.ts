@@ -30,6 +30,8 @@ import { DateRestrictionsService } from '../../../shared/services/date-restricti
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -137,6 +139,7 @@ describe('AutocompleteService', () => {
         RefRelationService,
         DateRestrictionsService,
         TerraByteApiService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
   });

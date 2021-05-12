@@ -10,7 +10,7 @@ import {
   ComponentRef,
   OnDestroy,
 } from '@angular/core';
-import { subscribeOn, tap } from 'rxjs/operators';
+import { filter, subscribeOn, tap } from 'rxjs/operators';
 import { asyncScheduler, Subscription } from 'rxjs';
 
 import { ScreenService } from '../../../screen/screen.service';
@@ -39,6 +39,7 @@ export class ScreenModalResolverComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const screenType$ = this.screenService.screenType$
       .pipe(
+        filter(() => !this.screenService.isTheSameScreenWithErrors),
         tap(() => this.destroyComponent()),
         subscribeOn(asyncScheduler), // fix dirty checked errors
       )

@@ -20,7 +20,7 @@ export class PrepareComponentsService {
     private cachedAnswersService: CachedAnswersService,
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
-    private refRelationService: RefRelationService,
+    private refRelationService: RefRelationService
   ) {}
 
   public prepareComponents(
@@ -172,9 +172,14 @@ export class PrepareComponentsService {
   private getCache(type: string, id: string, cachedAnswers: CachedAnswers): string | null {
     const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(type); // TODO костыль от backend(-a);
 
-    return shouldBeTakenFromTheCache
-      ? this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
-      : null;
+    if (shouldBeTakenFromTheCache) {
+      if (type === 'RepeatableFields') {
+        return this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
+          this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
+      }
+      return this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
+    }
+    return null;
   }
 
   private getComponentWithCaches(

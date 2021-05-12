@@ -182,7 +182,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
   }
 
   private isPresetable(field?: ConfirmAddressFieldsInterface): boolean {
-    return !field?.nonPresetable;
+    return field && !field?.nonPresetable;
   }
 
   private getDate(regDate: string): Date {

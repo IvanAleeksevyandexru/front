@@ -58,6 +58,7 @@ export enum DTOActionAction {
   editUserActualResidence = 'service/actions/editUserAddress/actualResidence',
   goBackToMainScenario = 'goBackToMainScenario',
   resendEmailConfirmation = 'service/actions/resendEmailConfirmation',
+  resendLegalEmailConfirmation = 'service/actions/resendLegalEmailConfirmation',
   editPassportData = 'editPassportData',
   editLegalPhone = 'editLegalPhone',
   editLegalEmail = 'editLegalEmail',

@@ -4,6 +4,7 @@ import { UniqueScreenComponentTypes } from '../../../component/unique-screen/uni
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { ComponentDto } from 'epgu-constructor-types';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [
@@ -22,8 +23,46 @@ export const componentsNoCache: Array<string> = [
 @Injectable()
 export class CachedAnswersService {
 
+  private localStorageKey = 'cachedAnswers';
+
+  constructor(private localStorageService: LocalStorageService) {
+  }
+
   getCachedValueById(answers: CachedAnswers, id: string): string | null{
     return answers[id]?.value || null;
+  }
+
+  getCachedValueFromLocalStorage(id: string): string | null {
+    const state = this.localStorageService.get<Record<string, unknown> | null>(
+      this.localStorageKey,
+    );
+
+    if (state && state[id]) {
+      return JSON.stringify(state[id]);
+    }
+    return null;
+  }
+
+  setValueToLocalStorage<T>(id: string, value: T): void {
+    const allComponentsState = this.localStorageService.get<Record<string, unknown> | null>(
+      this.localStorageKey,
+    );
+
+    this.localStorageService.set<Record<string, unknown>>(this.localStorageKey, {
+      ...allComponentsState,
+      [id]: value,
+    });
+  }
+
+  removeValueFromLocalStorage(id: string): void {
+    const allComponentsState = this.localStorageService.get<Record<string, unknown> | null>(
+      this.localStorageKey,
+    );
+
+    if (allComponentsState) {
+      delete allComponentsState[id];
+      this.localStorageService.set<Record<string, unknown>>(this.localStorageKey, allComponentsState);
+    }
   }
 
   // TODO нужно утащить на backend (HARDCODE from backend)

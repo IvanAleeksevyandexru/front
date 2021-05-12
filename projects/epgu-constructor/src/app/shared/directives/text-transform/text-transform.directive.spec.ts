@@ -6,6 +6,7 @@ import { CurrencyPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
 import { TextTransform } from 'epgu-constructor-types';
+import { TextTransformService } from '../../services/text-transform/text-transform.service';
 
 @Component({
   selector: 'epgu-constructor-text-transform-test-component',
@@ -31,7 +32,7 @@ describe('TextTransformDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [TextTransformDirective, TextTransformTestComponent],
-      providers: [CurrencyPipe],
+      providers: [CurrencyPipe, TextTransformService],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents();

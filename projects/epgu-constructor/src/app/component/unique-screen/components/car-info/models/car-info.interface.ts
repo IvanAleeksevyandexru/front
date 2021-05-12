@@ -113,3 +113,7 @@ export interface RegActions {
   regDate: string;
 }
 
+export interface CarDetailInfoComponentAttrsDto extends ComponentAttrsDto {
+  notaryErrors: CarInfoErrorsDto;
+  vehicleErrors: CarInfoErrorsDto;
+}
