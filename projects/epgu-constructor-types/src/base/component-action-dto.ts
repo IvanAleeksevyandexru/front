@@ -22,6 +22,7 @@ export interface ComponentActionDto {
   serviceCode?: string; // для умного поиска
   targetCode?: string; // для умного поиска
   multipleAnswers?: ActionAnswerDto[]; // для умного поиска
+  modalHtml?: string;
 }
 
 export enum ActionType {
