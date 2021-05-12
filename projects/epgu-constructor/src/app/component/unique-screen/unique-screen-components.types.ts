@@ -1,5 +1,6 @@
 export enum UniqueScreenComponentTypes {
   fileUploadComponent = 'FileUploadComponent',
+  CsvOnlyUploaderComponent = 'CsvOnlyUploaderComponent',
   timeSlot = 'TimeSlot',
   timeSlotWithComputableDepartment = 'TimeSlotWithComputableDepartment',
   mapService = 'MapService',
@@ -15,7 +16,7 @@ export enum UniqueScreenComponentTypes {
   phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput',
   confirmCodeInput = 'ConfirmCodeInput',
   ConfirmNewEmail = 'ConfirmNewEmail',
-  ConfirmLegalNewEmail  = 'ConfirmLegalNewEmail',
+  ConfirmLegalNewEmail = 'ConfirmLegalNewEmail',
   unusedPayments = 'UnusedPayments',
   photoUploadComponent = 'PhotoUploadComponent',
   paymentTypeSelector = 'PaymentTypeSelector',

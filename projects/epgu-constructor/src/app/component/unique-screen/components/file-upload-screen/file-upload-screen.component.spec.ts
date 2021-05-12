@@ -11,7 +11,10 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { FileResponseToBackendUploadsItem, UploadedFile, } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileResponseToBackendUploadsItem,
+  UploadedFile,
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
@@ -35,7 +38,7 @@ const screenServiceComponentMockData: ComponentDto = {
   },
   id: '',
   label: '',
-  type: '',
+  type: 'FileUploadComponent',
   value: '',
 } as ComponentDto;
 
@@ -154,9 +157,10 @@ describe('FileUploadScreenComponent', () => {
             },
           ],
         },
-      };
+      } as any;
 
       eventBusService.emit('fileUploadValueChangedEvent', eventData);
+
       expect(currentAnswersService.state).toEqual({
         id: '',
         type: 'FileUploadComponent',
