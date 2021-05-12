@@ -9,4 +9,5 @@ export interface ComponentAnswerDto {
   hint?: string;
   underConstruction?: boolean;
   description?: string; // описание для вопроса
+  modalHtml?: string;
 }

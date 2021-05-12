@@ -93,7 +93,9 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
-        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+        text:
+          answer?.modalHtml ||
+          `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
         <h4 style="text-align: center">Переход на старый портал</h4>
         <p class="helper-text" style="text-align: center; margin-top: 8px;">Раздел пока доступен только в старой версии портала</p></div>`,
         showCloseButton: false,
