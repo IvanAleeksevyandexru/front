@@ -31,9 +31,7 @@ export class AutocompleteApiService {
     fieldId: number,
   ): Observable<ISuggestionApi[]> {
     const path = `${this.configService.suggestionsApiUrl}`;
-    return this.httpDelete<ISuggestionApi[]>(path, {
-      ids: [fieldId],
-    });
+    return this.httpDelete<ISuggestionApi[]>(path, [fieldId]);
   }
 
   public updateSuggestionField(
