@@ -1,27 +1,39 @@
 import { TestBed } from '@angular/core/testing';
 import { SessionService } from './session.service';
-import { configureTestSuite } from 'ng-bullet';
+import { CookieService } from 'ngx-cookie-service';
 
 describe('ServiceDataService', () => {
   let service: SessionService;
+  let cookieService: CookieService;
 
-  configureTestSuite(() => {
+  const init = () => {
     TestBed.configureTestingModule({
-      providers: [SessionService]
+      providers: [SessionService, CookieService]
     });
-  });
+  };
+
+  beforeEach(init);
 
   beforeEach(() => {
-    service = TestBed.inject(SessionService);
+    cookieService = TestBed.inject(CookieService);
 
     Object.defineProperty(window.document, 'cookie', {
       writable: true,
       value: 'u=123456',
     });
+
+    service = TestBed.inject(SessionService);
   });
 
-  it('should extract extract from cookie', () => {
-    const { userId } = service['getSessionFromCookie']();
-    expect(userId).toEqual('123456');
+  it('userId getter should return id from u cookie or empty string', () => {
+    expect(service.userId).toBe('123456');
+
+    window.document.cookie = '';
+    // сбрасываем экземпляр сервиса
+    TestBed.resetTestingModule();
+    init();
+    service = TestBed.inject(SessionService);
+
+    expect(service.userId).toBe('');
   });
 });

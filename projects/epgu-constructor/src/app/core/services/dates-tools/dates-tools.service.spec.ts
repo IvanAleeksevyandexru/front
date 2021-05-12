@@ -1,8 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { DATE_ISO_STRING_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import {
+  DATE_ISO_STRING_FORMAT,
+  DATE_TIME_STRING_DOT_FORMAT,
+  DATE_STRING_DOT_FORMAT,
+  DATE_STRING_SLASH_FORMAT, DurationTimeTypes
+} from '../../../shared/constants/dates';
 import { DatesToolsService } from './dates-tools.service';
 import * as moment_ from 'moment';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 
 const moment = moment_;
@@ -12,6 +17,7 @@ jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
 
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
+  let httpTestingController: HttpTestingController;
   const MOCK_TODAY = '2020-01-01T00:00:00.000Z';
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -22,7 +28,12 @@ describe('DatesToolsService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(DatesToolsService);
+    httpTestingController = TestBed.inject(HttpTestingController);
     jest.spyOn(service, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   describe('isToday() method', () => {
@@ -37,10 +48,18 @@ describe('DatesToolsService', () => {
   });
 
   describe('getToday() method', () => {
-    it('should return today date', async () => {
-      const today = service.format(new Date(), DATE_TIME_STRING_DOT_FORMAT);
-      const serviceToday = service.format(await service.getToday(), DATE_TIME_STRING_DOT_FORMAT);
-      expect(serviceToday).toEqual(today);
+    it('should return today date', (done) => {
+      (service.getToday as jest.Mock).mockRestore();
+
+      service.getToday().then((response) => {
+        expect(response.getTime()).toBe(new Date(MOCK_TODAY).getTime());
+        done();
+      });
+
+      const req = httpTestingController.expectOne('api/service/actions/currentDateTime');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(MOCK_TODAY);
     });
   });
 
@@ -66,6 +85,13 @@ describe('DatesToolsService', () => {
       const string = {} as string;
       const resultDate = service.toDate(string);
       expect(resultDate.toString()).toEqual('Invalid Date');
+    });
+  });
+
+  describe('isDate() method', () => {
+    it('should return true if passed parameter is date', () => {
+      expect(service.isDate(MOCK_TODAY)).toBeFalsy();
+      expect(service.isDate(new Date())).toBeTruthy();
     });
   });
 
@@ -177,7 +203,13 @@ describe('DatesToolsService', () => {
   });
 
   describe('format() method', () => {
-    it('should return formatted date string, according to passed format mask', () => {
+    it('should return empty string if date parameter is empty', () => {
+      expect(service.format('')).toEqual('');
+    });
+    it('should return formatted date string if date parameter is string', () => {
+      expect(service.format('02.01.2000', DATE_STRING_DOT_FORMAT)).toEqual('02.01.2000');
+    });
+    it('should return formatted date string if date parameter is Date object', () => {
       const date = new Date(1);
       const format = DATE_STRING_DOT_FORMAT;
       expect(service.format(date, format)).toEqual('01.01.1970');
@@ -209,6 +241,13 @@ describe('DatesToolsService', () => {
       const resultDate = service.add(date, 30, 'years');
       expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
     });
+
+    it('should throw error if unit parameter is invalid', () => {
+      const date = new Date(1);
+      expect(() => {
+        service.add(date, 30, 'yearsssss' as DurationTimeTypes);
+      }).toThrow('yearsssss in not supported yet or incorrect');
+    });
   });
 
   describe('sub() method', () => {
@@ -231,6 +270,28 @@ describe('DatesToolsService', () => {
       const controlDate = new Date(1);
       const resultDate = service.setCalendarDate(date, 1970, 0, 1);
       expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
+    });
+  });
+
+  describe('startOf', () => {
+    const date = new Date();
+
+    it('should return startOfDay() result', () => {
+      jest.spyOn(service, 'startOfDay').mockReturnValue(date);
+      const result = service.startOf(new Date(2014, 8, 2, 11, 55, 0), 'day');
+      expect(result.getTime()).toBe(date.getTime());
+    });
+
+    it('should return startOfMonth() result', () => {
+      jest.spyOn(service, 'startOfMonth').mockReturnValue(date);
+      const result = service.startOf(new Date(2014, 8, 2, 11, 55, 0), 'month');
+      expect(result.getTime()).toBe(date.getTime());
+    });
+
+    it('should return startOfYear() result', () => {
+      jest.spyOn(service, 'startOfYear').mockReturnValue(date);
+      const result = service.startOf(new Date(2014, 8, 2, 11, 55, 0), 'year');
+      expect(result.getTime()).toBe(date.getTime());
     });
   });
 
@@ -277,6 +338,13 @@ describe('DatesToolsService', () => {
   describe('getDaysInMonth() method', () => {
     it('should amount of days in passed date', () => {
       expect(service.getDaysInMonth(new Date(2000, 1))).toEqual(29);
+    });
+  });
+
+  describe('getDate() method', () => {
+    it('should return day of the month', () => {
+      expect(service.getDate(new Date(2000, 2, 13))).toEqual(13);
+      expect(service.getDate(new Date(2000, 3, 8))).toEqual(8);
     });
   });
 

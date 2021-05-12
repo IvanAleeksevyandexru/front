@@ -149,6 +149,12 @@ describe('InitDataService', () => {
       expect(service.orderId).toBe(orderId);
     });
 
+    it('gepsId', () => {
+      const gepsId = '12345';
+      service['_gepsId'] = gepsId;
+      expect(service.gepsId).toBe(gepsId);
+    });
+
     it('invited', () => {
       const invited = true;
       service['_invited'] = invited;
