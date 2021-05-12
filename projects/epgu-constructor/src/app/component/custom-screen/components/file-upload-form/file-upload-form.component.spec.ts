@@ -28,9 +28,16 @@ describe('FileUploadComponent', () => {
   let mockId = 'test';
   let control: AbstractControl;
   let controlValue: AbstractControl;
+  const payloadMock = {
+    uploadId: '1',
+    value: [],
+    errors: [],
+    files: [],
+  };
   let mockAttributes: FileUploadAttributes = {
     clarifications: ([] as unknown) as Clarifications,
     maxFileCount: 1,
+    maxSize: 1,
     uploads: [
       {
         uploadId: '1',
@@ -100,24 +107,61 @@ describe('FileUploadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be change file upload value by event ', () => {
-    jest.spyOn(controlValue, 'setValue');
-    jest.spyOn(controlValue, 'setErrors');
+  it('should be emit change for formService ', () => {
     jest.spyOn(formService, 'emitChanges');
-    const payload = {
-      uploadId: '1',
-      value: [],
-      errors: [],
-      files: [{ uploadId: '1', value: [{ uploaded: true }, { uploaded: true }] }],
-    };
+
+    eventService.emit('fileUploadValueChangedEvent', payloadMock);
+    expect(formService.emitChanges).toHaveBeenCalled();
+  });
+
+  it('should be update property files ', () => {
+    const payload = { ...payloadMock, files: [{ uploadId: '1' }] };
+    eventService.emit('fileUploadValueChangedEvent', payload);
+
+    expect(component.files).toEqual(payload.files);
+  });
+
+  it('should be control setValue ', () => {
+    jest.spyOn(controlValue, 'setValue');
+    const payload = { ...payloadMock, files: [{ uploadId: '1' }] };
     eventService.emit('fileUploadValueChangedEvent', payload);
     const check = {
       uploads: payload.files,
     };
     expect(controlValue.setValue).toHaveBeenCalledWith(check);
+  });
+
+  it('should be control setErrors for maxAmount ', () => {
+    jest.spyOn(controlValue, 'setErrors');
+    const payload = {
+      ...payloadMock,
+      files: [{ uploadId: '1', value: [{ uploaded: true }, { uploaded: true }] }],
+    };
+
+    eventService.emit('fileUploadValueChangedEvent', payload);
     expect(controlValue.setErrors).toHaveBeenCalledWith({ required: true });
-    expect(component.files).toEqual(payload.files);
-    expect(formService.emitChanges).toHaveBeenCalled();
+  });
+
+  it('should be control setErrors for maxSize ', () => {
+    jest.spyOn(controlValue, 'setErrors');
+    const payload = {
+      ...payloadMock,
+      files: [{ uploadId: '1', value: [{ uploaded: true, fileSize: 2 }] }],
+    };
+
+    eventService.emit('fileUploadValueChangedEvent', payload);
+    expect(controlValue.setErrors).toHaveBeenCalledWith({ required: true });
+  });
+
+  it('should be control setErrors for maxSize ', () => {
+    jest.spyOn(controlValue, 'setErrors');
+    const payload = {
+      ...payloadMock,
+      files: [{ uploadId: '1', value: [{ uploaded: true, fileSize: 2 }] }],
+    };
+
+    eventService.emit('fileUploadValueChangedEvent', payload);
+    expect(controlValue.setErrors).toHaveBeenCalledWith({ required: true });
   });
 
   it('should be prefixForMnemonic', (done) => {
