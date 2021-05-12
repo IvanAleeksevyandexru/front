@@ -3,13 +3,18 @@
   [isLoading]="screenService.isLoading$ | async"
   class="answer-btn"
 >
-  <span class="answer-btn__title">{{ data?.label }}</span>
-  <span class="answer-btn__hint" *ngIf="data?.hint">
-    <lib-question-help-tip [questionTip]="data?.hint"></lib-question-help-tip>
-  </span>
-  <div class="answer-btn__icon icon-loading" *ngIf="isShown(data?.value)">
-    <lib-throbber-hexagon [size]="'medium'"></lib-throbber-hexagon>
+  <div class="answer-btn__container">
+    <span class="answer-btn__title">{{ data?.label }}</span>
+    <!-- TODO hint запрещён к использованию, выпилить нужно, если больше в услугах не используется -->
+    <span class="answer-btn__hint" *ngIf="data?.hint">
+      <lib-question-help-tip [questionTip]="data?.hint"></lib-question-help-tip>
+    </span>
+    <span class="answer-btn__icon">
+      <span class="icon-loading" *ngIf="isShown(data?.value)">
+        <lib-throbber-hexagon [size]="'medium'"></lib-throbber-hexagon>
+      </span>
+      <span class="icon-arrow" *ngIf="!isShown(data?.value)"></span>
+    </span>
   </div>
-  <span class="answer-btn__icon icon-arrow" *ngIf="!isShown(data?.value)"></span>
   <div *ngIf="data?.description" class="answer-btn__description">{{ data.description }}</div>
 </epgu-constructor-long-button>
