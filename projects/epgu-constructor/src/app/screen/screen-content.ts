@@ -336,7 +336,7 @@ export class ScreenContent {
   }
   public set cachedAnswers(val: CachedAnswersDto) {
     const applicantAnswers = this.applicantAnswers;
-    this._cachedAnswers.next({ ...applicantAnswers, ...val });
+    this._cachedAnswers.next({ ...val, ...applicantAnswers });
   }
 
   public get cachedAnswers$(): Observable<CachedAnswersDto> {
