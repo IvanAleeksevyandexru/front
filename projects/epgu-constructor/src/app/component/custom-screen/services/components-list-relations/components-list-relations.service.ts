@@ -476,12 +476,12 @@ export class ComponentsListRelationsService {
       );
 
       if (dictionaryAttributeValue === undefined) {
-        dependentControl.get('value').patchValue('', { onlySelf: true, emitEvent: false });
+        dependentControl.get('value').patchValue(null, { onlySelf: true, emitEvent: false });
       } else {
         dependentControl
           .get('value')
           .patchValue(
-            dependentControl.value.value !== ''
+            dependentControl.value.value !== null
               ? dependentControl.value.value
               : dictionaryAttributeValue,
             { onlySelf: true, emitEvent: false },
@@ -489,6 +489,7 @@ export class ComponentsListRelationsService {
       }
 
       dependentControl.markAsUntouched();
+      dependentControl.updateValueAndValidity();
     }
   }
 
