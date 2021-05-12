@@ -132,8 +132,6 @@ describe('FileUploadScreenComponent', () => {
     });
 
     // eslint-disable-next-line max-len
-
-    // eslint-disable-next-line max-len
     it('should be updated on EventBus fileUploadValueChangedEvent if eventData.relatedUploads AND currentAnswersService.state.uploads', () => {
       currentAnswersService.state = {
         id: '',
