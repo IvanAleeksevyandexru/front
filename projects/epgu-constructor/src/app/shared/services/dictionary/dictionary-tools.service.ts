@@ -35,6 +35,7 @@ import {
   DictionaryValue,
   DictionaryValueTypes,
   AttributeTypes,
+  FilterDtoConfig,
 } from 'epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
@@ -506,10 +507,10 @@ export class DictionaryToolsService {
         [attributeType]: componentValue[dFilter.value] as string,
       }),
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
-        [attributeType]: utils.getObjectProperty(screenStore, dFilter.value, undefined),
+        [attributeType]: this.formatValue(utils.getObjectProperty(screenStore, dFilter.value, undefined), dFilter.formatValue),
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
+        [attributeType]: this.formatValue(this.getValueViaRef(screenStore.applicantAnswers, dFilter.value), dFilter.formatValue),
       }),
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
         [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
@@ -526,6 +527,23 @@ export class DictionaryToolsService {
       throw `Неверный valueType для фильтров - ${(dFilter as ComponentDictionaryFilterDto).valueType}`;
     }
     return calcFunc(dFilter);
+  }
+
+  private formatValue(value: unknown, params: FilterDtoConfig): unknown {
+    let result: unknown;
+
+    if (value !== undefined && params !== undefined && params?.str !== undefined && Array.isArray(params.str)) {
+      const { str } = params;
+      result = String(value).split('').splice(str[0], str[1]).join('');
+      
+      if (params?.additionalString !== undefined) {
+        result = result + params.additionalString;
+      }
+
+      return result;
+    }
+
+    return value;
   }
 
   private getValueFromForm(form: FormArray, dFilter: ComponentDictionaryFilterDto): string {

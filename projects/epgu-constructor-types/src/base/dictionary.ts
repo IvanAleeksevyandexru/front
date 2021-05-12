@@ -73,6 +73,11 @@ export enum DictionaryConditions {
   GREATER_THAN_OR_EQUALS = 'GREATER_THAN_OR_EQUALS',
 }
 
+export interface FilterDtoConfig {
+  str: number[];
+  additionalString?: string;
+}
+
 export interface ComponentDictionaryFilterDto {
   attributeName: string;
   attributeType?: AttributeTypes; // asString as default
@@ -80,4 +85,5 @@ export interface ComponentDictionaryFilterDto {
   value: string;
   valueType: string;
   dateFormat?: string;
+  formatValue?: FilterDtoConfig;
 }
