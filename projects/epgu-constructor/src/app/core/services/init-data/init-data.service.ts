@@ -21,7 +21,7 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   constructor(private loggerService: LoggerService) { }
 
   init(service: ServiceEntity, context?: FormPlayerContext): void {
-    this.checkProps(service);
+    this.checkProps(service, context);
     this.serviceId = service.serviceId;
     this.targetId = service.targetId;
     this.serviceInfo = service.serviceInfo;
@@ -114,8 +114,8 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this._queryParams = queryParams;
   }
 
-  private checkProps(service: ServiceEntity): void {
-    this.loggerService.log([service], '----- Init props ---------');
+  private checkProps(service: ServiceEntity, context?: FormPlayerContext): void {
+    this.loggerService.log(['Service:', service, 'Context:', context], '----- Init props ---------');
 
     if (!service) {
       throw Error('Need to set Service for epgu form player');

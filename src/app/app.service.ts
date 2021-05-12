@@ -16,6 +16,7 @@ const initValues: AppConfig = {
   canStartNew: null,
   initState: null,
   queryParams: '',
+  gepsId: null,
 }
 
 @Injectable()

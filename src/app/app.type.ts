@@ -10,4 +10,5 @@ export interface AppConfig {
   initState?: string;
   configId?: string;
   queryParams?: string;
+  gepsId?: number;
 }

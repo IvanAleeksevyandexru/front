@@ -44,6 +44,8 @@ export class FpContainerComponent {
       const context: FormPlayerContext = {
         configId: config.configId,
         initState: config.initState,
+        // eslint-disable-next-line radix
+        gepsId: typeof config.gepsId === 'string' ? parseInt(config.gepsId) : config.gepsId,
         queryParams: config.queryParams ? JSON.parse(config.queryParams) : [],
       };
 
@@ -53,6 +55,14 @@ export class FpContainerComponent {
 
       if (typeof config.queryParams === 'string' && config.queryParams === '') {
         delete context.queryParams;
+      }
+
+      console.log('config.gepsId');
+      console.log(typeof config.gepsId);
+      console.log(config.gepsId);
+
+      if (typeof config.gepsId === 'string' && !config.gepsId) {
+        delete context.gepsId;
       }
 
       return context;
