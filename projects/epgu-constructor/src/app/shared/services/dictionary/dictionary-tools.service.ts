@@ -35,6 +35,7 @@ import {
   DictionaryValue,
   DictionaryValueTypes,
   AttributeTypes,
+  FilterDtoConfig,
 } from 'epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
@@ -509,7 +510,7 @@ export class DictionaryToolsService {
         [attributeType]: utils.getObjectProperty(screenStore, dFilter.value, undefined),
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
+        [attributeType]: this.formatValue(this.getValueViaRef(screenStore.applicantAnswers, dFilter.value), dFilter.formatValue),
       }),
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
         [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
@@ -526,6 +527,24 @@ export class DictionaryToolsService {
       throw `Неверный valueType для фильтров - ${(dFilter as ComponentDictionaryFilterDto).valueType}`;
     }
     return calcFunc(dFilter);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private formatValue(value: string | unknown, params: FilterDtoConfig): string | unknown {
+    let result: string | unknown;
+
+    if (value != null && params != null && params?.str != null && Array.isArray(params.str)) {
+      const { str } = params;
+      result = String(value).split('').splice(str[0], str[1]).join('');
+      
+      if (params?.additionalString != null) {
+        result = result + params.additionalString;
+      }
+
+      return result;
+    }
+
+    return value;
   }
 
   private getValueFromForm(form: FormArray, dFilter: ComponentDictionaryFilterDto): string {
