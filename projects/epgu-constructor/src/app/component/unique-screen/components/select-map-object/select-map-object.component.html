@@ -2,13 +2,13 @@
   <div class="widget__form widget-form">
     <epgu-constructor-navigation class="nav" *ngIf="screenService.showNav$ | async"></epgu-constructor-navigation>
     <span
-      *ngIf="isSearchTitleVisible && !isNoDepartmentErrorVisible && false"
+      *ngIf="isSearchTitleVisible && !isNoDepartmentErrorVisible"
       class="widget-form__title"
       [innerHTML]="data.label | safe: 'html'"
     ></span>
     <div class="widget-form__input">
       <epgu-constructor-constructor-lookup
-        *ngIf="selectMapObjectService.dictionary && !isNoDepartmentErrorVisible && false"
+        *ngIf="selectMapObjectService.dictionary && !isNoDepartmentErrorVisible"
         [showNotFound]="true"
         [searchCaseSensitive]="false"
         [itemsProvider]="provider"
@@ -136,12 +136,12 @@
 </ng-template>
 
 <ng-template #errorRegion>
-  <div *ngIf="isNoDepartmentErrorVisible || true" class="error-region">
+  <div *ngIf="isNoDepartmentErrorVisible" class="error-region">
     <ng-container *ngIf="!data.attrs.noDepartmentsErrorMsg">
       <h6 class="red-line">Нет доступных подразделений</h6>
       <span
         class="text-color--text-helper hint-text"
-      >Для подачи документов выберите подразделение <a href="#">в другом регионе</a>
+      >Для подачи документов выберите подразделение в другом регионе
       </span>
     </ng-container>
     <epgu-constructor-output-html
