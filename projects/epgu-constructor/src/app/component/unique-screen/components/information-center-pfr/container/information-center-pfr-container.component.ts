@@ -7,7 +7,7 @@ import {
   ComponentActionDto,
   DictionaryConditions,
   DictionaryFilters,
-} from 'epgu-constructor-types';
+} from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';

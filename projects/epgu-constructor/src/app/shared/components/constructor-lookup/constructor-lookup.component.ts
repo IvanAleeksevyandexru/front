@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { ListItem, LookupComponent, ValidationShowOn } from 'epgu-lib';
+import { ListItem, LookupComponent, ValidationShowOn } from '@epgu/epgu-lib';
 import {
   ListElement,
   LookupPartialProvider,

@@ -13,8 +13,8 @@ import {
   ComponentActionDto,
   ApplicantAnswersDto,
   CachedAnswersDto,
-  LogicComponents
-} from 'epgu-constructor-types';
+  LogicComponents,
+} from '@epgu/epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;
 export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
@@ -55,9 +55,7 @@ export class ScreenContent {
       concatMap(({ infoComponents, components }) =>
         infoComponents
           ? (of(infoComponents).pipe(
-            map(
-              (infoList) => this.filteredComponents(infoList, components)
-              ),
+              map((infoList) => this.filteredComponents(infoList, components)),
             ) as Observable<[ComponentDto, ComponentValue][]>)
           : of([] as [ComponentDto, ComponentValue][]),
       ),
@@ -66,12 +64,10 @@ export class ScreenContent {
 
   public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.component$.pipe(
-      concatMap(({ attrs: { infoComponents }}) =>
+      concatMap(({ attrs: { infoComponents } }) =>
         infoComponents
           ? (combineLatest([of(infoComponents), this.display$]).pipe(
-              map(
-                ([infoList, display]) => this.filteredComponents(infoList, display.components)
-              ),
+              map(([infoList, display]) => this.filteredComponents(infoList, display.components)),
             ) as Observable<[ComponentDto, ComponentValue][]>)
           : (of([]) as Observable<[ComponentDto, ComponentValue][]>),
       ),
@@ -208,7 +204,7 @@ export class ScreenContent {
     return this._orderId.asObservable();
   }
   public get orderIdAsString$(): Observable<string> {
-    return this._orderId.asObservable().pipe(map(id => id.toString()));
+    return this._orderId.asObservable().pipe(map((id) => id.toString()));
   }
 
   public get component(): ComponentDto {
@@ -400,7 +396,8 @@ export class ScreenContent {
       hideBackButton,
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
-    this.isTheSameScreenWithErrors = this.display?.id === display?.id && errors && Object.keys(errors).length !== 0;
+    this.isTheSameScreenWithErrors =
+      this.display?.id === display?.id && errors && Object.keys(errors).length !== 0;
     this.screenType = type;
     this.display = display;
     this.header = header;
@@ -408,7 +405,7 @@ export class ScreenContent {
     this.submitLabel = submitLabel;
     this.gender = gender;
     this.terminal = terminal;
-    this.showNav = (!terminal && !(isWebView && firstScreen)) && (terminal ? false : !hideBackButton);
+    this.showNav = !terminal && !(isWebView && firstScreen) && (terminal ? false : !hideBackButton);
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
@@ -440,13 +437,11 @@ export class ScreenContent {
   private filteredComponents(infoList, components): [ComponentDto, ComponentValue][] {
     return infoList
       .map((componentId) => {
-        const findedComponent = components.find(
-          (component) => component.id === componentId
-        );
+        const findedComponent = components.find((component) => component.id === componentId);
         return findedComponent
           ? [findedComponent, this.getComponentData(findedComponent.value)]
           : null;
       })
       .filter((component) => !!component);
-}
+  }
 }

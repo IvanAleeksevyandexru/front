@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ValidationShowOn, BrokenDateFixStrategy } from 'epgu-lib';
+import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/epgu-lib';
 import { map, takeUntil } from 'rxjs/operators';
-import { TextTransform } from 'epgu-constructor-types';
+import { TextTransform } from '@epgu/epgu-constructor-types';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';

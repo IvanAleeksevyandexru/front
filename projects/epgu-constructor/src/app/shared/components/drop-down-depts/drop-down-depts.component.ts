@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 import { Suggest, SuggestItem } from 'epgu-lib/lib/models/suggest';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import {

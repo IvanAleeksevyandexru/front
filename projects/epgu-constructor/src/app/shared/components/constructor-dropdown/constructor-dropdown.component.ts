@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 @Component({

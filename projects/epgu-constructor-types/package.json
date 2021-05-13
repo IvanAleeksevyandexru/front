@@ -1,5 +1,5 @@
 {
-  "name": "epgu-constructor-types",
+  "name": "@epgu/epgu-constructor-types",
   "version": "14.5.2",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
