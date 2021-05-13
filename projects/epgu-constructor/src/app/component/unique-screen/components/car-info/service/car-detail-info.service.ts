@@ -61,6 +61,14 @@ export class CarDetailInfoService {
         this.isLoadingNotaryInfo$.next(false);
         this.notaryInfo$.next(response);
       }),
+      catchError(() => {
+        const date = {
+          externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+        };
+        this.isLoadingNotaryInfo$.next(false);
+        this.notaryInfo$.next(date);
+        return of(date);
+      }),
     );
   }
 
@@ -71,6 +79,14 @@ export class CarDetailInfoService {
       tap((response) => {
         this.isLoadingOwnerCarInfo$.next(false);
         this.vehicleInfo$.next(response);
+      }),
+      catchError(() => {
+        const date = {
+          externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+        };
+        this.isLoadingOwnerCarInfo$.next(false);
+        this.vehicleInfo$.next(date);
+        return of(date);
       }),
     );
   }
@@ -89,9 +105,7 @@ export class CarDetailInfoService {
   }
 
   private fetchInfo<T>(url: string): Observable<T> {
-    return this.http
-      .post<T>(`${this.configService.apiUrl}${url}`, this.screenService.getStore())
-      .pipe(catchError(() => of(null)));
+    return this.http.post<T>(`${this.configService.apiUrl}${url}`, this.screenService.getStore());
   }
 
   private setState(data: [CarDetailInfo<VehicleOwnerInfo>, CarDetailInfo<NotaryInfo>]): void {

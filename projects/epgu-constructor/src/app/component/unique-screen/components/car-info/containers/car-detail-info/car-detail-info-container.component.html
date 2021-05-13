@@ -90,7 +90,10 @@
 
 <ng-template #commonError>
   <ng-container
-    *ngTemplateOutlet="templateError; context: { type: serviceResult.EXTERNAL_SERVER_ERROR }"
+    *ngTemplateOutlet="
+      templateError;
+      context: { type: serviceResult.EXTERNAL_SERVER_ERROR, errorType: 'errors' }
+    "
   ></ng-container>
 </ng-template>
 
