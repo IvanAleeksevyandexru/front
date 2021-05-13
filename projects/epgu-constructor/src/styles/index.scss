@@ -317,3 +317,9 @@
     content: counter(section);
   }
 }
+
+.hint-text, p.hint-text {
+  font-size: $font-sm;
+  line-height: $font-lg;
+  margin-top: 4px;
+}
