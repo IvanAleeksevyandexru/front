@@ -62,12 +62,12 @@ export class CarDetailInfoService {
         this.notaryInfo$.next(response);
       }),
       catchError(() => {
-        const date = {
+        const data = {
           externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
         };
         this.isLoadingNotaryInfo$.next(false);
-        this.notaryInfo$.next(date);
-        return of(date);
+        this.notaryInfo$.next(data);
+        return of(data);
       }),
     );
   }
@@ -81,12 +81,12 @@ export class CarDetailInfoService {
         this.vehicleInfo$.next(response);
       }),
       catchError(() => {
-        const date = {
+        const data = {
           externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
         };
         this.isLoadingOwnerCarInfo$.next(false);
-        this.vehicleInfo$.next(date);
-        return of(date);
+        this.vehicleInfo$.next(data);
+        return of(data);
       }),
     );
   }
