@@ -260,55 +260,6 @@ describe('TimeSlotsComponent', () => {
     });
   });
 
-  it('renderSingleMonthGrid works as before', async () => {
-    component.activeYearNumber = new Date(Date.now()).getUTCFullYear();
-    component.activeMonthNumber = new Date(Date.now()).getUTCMonth();
-
-    const renderSingleMonthGrid = (output): void => {
-      output.splice(0, output.length); // in-place clear
-      let firstDayOfMonth = datesToolsService.setCalendarDate(
-        new Date(),
-        component.activeYearNumber,
-        component.activeMonthNumber,
-      );
-      firstDayOfMonth = datesToolsService.startOfMonth(firstDayOfMonth);
-      firstDayOfMonth = datesToolsService.startOfDay(firstDayOfMonth);
-      const firstDayOfWeekInMonth = datesToolsService.getISODay(firstDayOfMonth);
-      const daysInMonth = datesToolsService.getDaysInMonth(firstDayOfMonth);
-      let week = 0;
-      output.push([]);
-      if (firstDayOfWeekInMonth > 1) {
-        for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-          const date = datesToolsService.add(firstDayOfMonth, i - firstDayOfWeekInMonth, 'days');
-          output[0].push({ number: date.getTime(), date });
-        }
-      }
-      for (let i = 0; i < daysInMonth; i += 1) {
-        if (output[week].length && output[week].length % 7 === 0) {
-          week += 1;
-          output.push([]);
-        }
-        const date = datesToolsService.add(firstDayOfMonth, i, 'days');
-        output[week].push({ number: date.getTime(), date });
-      }
-      let days = 0;
-      while (output[week].length < 7) {
-        let date = datesToolsService.add(firstDayOfMonth, 1, 'months');
-        date = datesToolsService.add(date, days, 'days');
-        days += 1;
-        output[week].push({ number: date.getTime(), date });
-      }
-    };
-
-    const actual = [];
-    await component['renderSingleMonthGrid'](actual);
-
-    const expected = [];
-    renderSingleMonthGrid(expected);
-
-    expect(actual).toEqual(expected);
-  });
-
   describe('when dateType is today', () => {
     beforeEach(() => {
       Date.now = jest.fn().mockReturnValue(new Date('2021-02-15T00:00:00.000Z'));
