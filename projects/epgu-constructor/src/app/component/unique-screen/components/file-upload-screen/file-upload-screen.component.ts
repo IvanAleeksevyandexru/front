@@ -33,7 +33,7 @@ export class FileUploadScreenComponent implements OnInit {
       const attrs: FileUploadAttributes = data.attrs as FileUploadAttributes;
       this.allMaxFiles = 0;
 
-      if (data.type === UniqueScreenComponentTypes.CsvOnlyUploaderComponent && attrs?.uploads) {
+      if (data.type === UniqueScreenComponentTypes.OrderFileProcessingComponent && attrs?.uploads) {
         attrs.maxFileCount = attrs.uploads?.length ?? 0;
         attrs.uploads = attrs.uploads.map((upload) => this.toCSVUploader(upload));
         if (this.screenService.componentError) {
