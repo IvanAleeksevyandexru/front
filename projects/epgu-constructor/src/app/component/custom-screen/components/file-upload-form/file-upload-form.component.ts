@@ -16,6 +16,7 @@ import { TerraUploadedFile } from '../../../../shared/components/file-upload/fil
 @Component({
   selector: 'epgu-constructor-file-upload-form',
   templateUrl: './file-upload-form.component.html',
+  styleUrls: ['./file-upload-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
