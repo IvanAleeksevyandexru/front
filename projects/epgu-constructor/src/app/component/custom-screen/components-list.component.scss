@@ -15,20 +15,29 @@
     margin-left: $screen-pad-small-gap / 2;
     margin-right: $screen-pad-small-gap / 2;
     max-width: calc(100% - #{$screen-pad-small-gap});
-    & > * {
+    & > epgu-constructor-component-item > * {
       margin-bottom: $screen-pad-p;
       justify-content: flex-end;
+    }
+    & > epgu-constructor-component-list-resolver {
+      & > :not(epgu-constructor-form-output-html) {
+        margin-bottom: $screen-pad-p;
+      }
+      & > epgu-constructor-form-output-html {
+        margin-bottom: $screen-pad-small-gap;
+      }
+    }
+    &:last-child {
+      & > epgu-constructor-component-item > * {
+        margin-bottom: 0;
+      }
+      & > epgu-constructor-component-list-resolver > * {
+        margin-bottom: 0;
+      }
     }
     &--checkbox > * {
       margin-bottom: $screen-pad-small-gap;
     }
-
-    &:last-child > * {
-      margin-bottom: 0;
-    }
-  }
-  &::ng-deep .form__half {
-    max-width: 50%;
   }
   &__radio {
     margin-top: $screen-pad-top;
