@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   catchError,
   concatMap,
@@ -121,7 +122,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store), // Валидируем файл
     ),
     filter((file: FileItem) => this.amountFilter(file)), // Фильруем по лимитам
-    tap((file: FileItem) => this.updateSizeLimits(file)),
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
     filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
     tap((file: FileItem) => this.incrementLimits(file)), // Обновляем лимиты
@@ -330,6 +330,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   amountFilter(file: FileItem): boolean {
+    const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
     const maxTotalAmount = file?.error?.type === ErrorActions.addMaxTotalAmount;
     const maxAmount = file?.error?.type === ErrorActions.addMaxAmount;
     const limits = { ...this.overLimits.getValue() };
@@ -337,26 +338,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       ? limits.totalAmount.count + 1
       : limits.totalAmount.count;
     limits.amount.count = maxAmount ? limits.amount.count + 1 : limits.amount.count;
-    this.overLimits.next(limits);
-    return !maxAmount && !maxTotalAmount;
-  }
-
-  updateSizeLimits(file: FileItem): void {
-    const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
-    const limits = { ...this.overLimits.getValue() };
     limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
     this.overLimits.next(limits);
-  }
-  decrementOverLimitForDelition(file: FileItem): void {
-    const limits = { ...this.overLimits.getValue() };
-    if (limits.totalSize.count > 0) {
-      if (file?.error?.type === ErrorActions.addMaxTotalSize) {
-        limits.totalSize = { ...limits.totalSize, count: limits.totalSize.count - 1 };
-        this.overLimits.next(limits);
-      }
-    } else if (limits.totalAmount.count > 0 || limits.amount.count > 0) {
-      this.resetLimits();
-    }
+    return !maxAmount && !maxTotalAmount && !maxTotalSize;
   }
 
   reduceChanges(
@@ -482,12 +466,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((file) =>
         status === FileItemStatus.uploaded
           ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
-              tap(() =>
-                this.prepareService.checkAndSetMaxCountByTypes(this.data, file, this.store, false),
-              ),
-              tap(() => this.decrementLimits(file)),
-
-              map(() => undefined),
+              tap(() => this.decrementLimitByFileItem(fileItem)),
+              mapTo(undefined),
             )
           : of(undefined),
       ),
@@ -495,7 +475,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.store.update(fileItem.setError(this.getError(ErrorActions.addDeletionErr)));
         return throwError(e);
       }),
-      tap(() => this.decrementOverLimitForDelition(fileItem)),
       tap(() => this.store.remove(fileItem)),
     );
   }
