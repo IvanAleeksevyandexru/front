@@ -27,7 +27,6 @@ import { LoggerService } from 'projects/epgu-constructor/src/app/core/services/l
 import { LoggerServiceStub } from 'projects/epgu-constructor/src/app/core/services/logger/logger.service.stub';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { TimeSlotsService } from './time-slots.service';
-import * as moment_ from 'moment';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
@@ -36,9 +35,6 @@ import { SmevSlotsResponseInterface } from './time-slots.types';
 import { slotsError } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
-
-const moment = moment_;
-moment.locale('ru');
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
@@ -49,7 +45,7 @@ describe('TimeSlotsComponent', () => {
   let datesToolsService: DatesToolsService;
   let store: ScreenStore;
 
-  configureTestSuite(( ) => {
+  configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
       imports: [EpguLibModule, HttpClientTestingModule],
@@ -264,101 +260,6 @@ describe('TimeSlotsComponent', () => {
     });
   });
 
-  it('renderSingleMonthGrid works as before', async () => {
-    component.activeYearNumber = new Date(Date.now()).getUTCFullYear();
-    component.activeMonthNumber = new Date(Date.now()).getUTCMonth();
-
-    const renderSingleMonthGrid = (output): void => {
-      output.splice(0, output.length); // in-place clear
-      const firstDayOfMonth = moment()
-        .year(component.activeYearNumber)
-        .month(component.activeMonthNumber)
-        .startOf('month')
-        .startOf('day');
-      const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
-      const daysInMonth = firstDayOfMonth.daysInMonth();
-      let week = 0;
-      output.push([]);
-      if (firstDayOfWeekInMonth > 1) {
-        for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-          const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-          output[0].push({ number: date.date(), date: date.toDate() });
-        }
-      }
-      for (let i = 0; i < daysInMonth; i += 1) {
-        if (output[week].length && output[week].length % 7 === 0) {
-          week += 1;
-          output.push([]);
-        }
-        const date = moment(firstDayOfMonth).add(i, 'day');
-        output[week].push({ number: date.date(), date: date.toDate() });
-      }
-      let days = 0;
-      while (output[week].length < 7) {
-        const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
-        days += 1;
-        output[week].push({ number: date.date(), date: date.toDate() });
-      }
-    };
-
-    const actual = [];
-    await component['renderSingleMonthGrid'](actual);
-
-    const expected = [];
-    renderSingleMonthGrid(expected);
-
-    expect(actual).toEqual(expected);
-  });
-
-  it('checkDateRestrictions works as before', () => {
-    const checkDateRestrictions = (
-      date: Date,
-      startType: moment_.unitOfTime.StartOf = 'day',
-    ): boolean => {
-      let isInvalid = false;
-      const today = moment().startOf(startType);
-      const restrictions = screenService.component.attrs.restrictions;
-      const checks = {
-        minDate: (amount, type): boolean =>
-          moment(date).isBefore(today.clone().add(amount, type).startOf(startType)),
-        maxDate: (amount, type): boolean =>
-          moment(date).isAfter(today.clone().add(amount, type).startOf(startType)),
-      };
-      Object.keys(restrictions).some((key) => {
-        const [amount, type] = restrictions[key];
-        isInvalid = checks[key](amount, type);
-        return isInvalid;
-      });
-      return isInvalid;
-    };
-
-    screenService.component.attrs.restrictions = { minDate: [30, 'd'], maxDate: [1, 'y'] };
-    const date = new Date(Date.now());
-
-    for (let i = -30; i < 30; ++i) {
-      date.setDate(date.getDate() + 1);
-      ['day', 'month'].forEach((unit) => {
-        expect(component['checkDateRestrictions'](date, unit as any)).toEqual(
-          checkDateRestrictions(date, unit as any),
-        );
-      });
-    }
-
-    [
-      '2020-01-01T10:00:00.000Z',
-      '2020-02-01T10:00:00.000Z',
-      '2021-01-01T10:00:00.000Z',
-      '2020-12-31T10:00:00.000Z',
-    ].forEach((dateStr) => {
-      const date = new Date(dateStr);
-      ['day', 'month'].forEach((unit) => {
-        expect(component['checkDateRestrictions'](date, unit as any)).toBe(
-          checkDateRestrictions(date, unit as any),
-        );
-      });
-    });
-  });
-
   describe('when dateType is today', () => {
     beforeEach(() => {
       Date.now = jest.fn().mockReturnValue(new Date('2021-02-15T00:00:00.000Z'));
@@ -416,7 +317,9 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('should call error modal if slots request returned error', () => {
-    jest.spyOn(smev3TimeSlotsRestService, 'getTimeSlots').mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
+    jest
+      .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
+      .mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
     const modalSpy = jest.spyOn(component, 'showError');
     fixture.detectChanges();
     expect(modalSpy).toBeCalled();
