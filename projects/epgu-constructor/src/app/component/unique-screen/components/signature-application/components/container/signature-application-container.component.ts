@@ -98,7 +98,7 @@ export class SignatureApplicationContainerComponent {
 
   private isSigned(): boolean {
     return (
-      !!this.screenService.applicantAnswers[this.screenService.component.id]?.value ||
+      (this.screenService.componentValue as SignatureApplicationData)?.alreadySigned ||
       this.locationService.getHref().includes('result=0')
     );
   }
