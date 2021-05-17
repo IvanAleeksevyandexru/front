@@ -27,7 +27,12 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ComponentAttrsDto,ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
+import {
+  ComponentDto,
+  ComponentAttrsDto,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -45,10 +50,11 @@ describe('SignatureApplicationComponent', () => {
 
   const mockHeader = 'header';
 
-  const mockActions: ComponentActionDto[] = [
-    { label: 'ActionButton', value: 'ActionButton', action: DTOActionAction.getNextStep },
-  ];
-
+  const mockActions: ComponentActionDto = {
+    label: 'ActionButton',
+    value: 'ActionButton',
+    action: DTOActionAction.getNextStep,
+  };
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ClickableLabelModule],
@@ -82,7 +88,7 @@ describe('SignatureApplicationComponent', () => {
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
     component.isLoading = false;
-    component.buttons = mockActions;
+    component.button = mockActions;
     component.component = mockComponent;
     component.header = mockHeader;
     component.showNav = true;
@@ -106,7 +112,7 @@ describe('SignatureApplicationComponent', () => {
   it('check label button', () => {
     const divButton: HTMLButtonElement = fixture.debugElement.query(By.css('.submit-button button'))
       ?.nativeElement;
-    expect(divButton.innerHTML.indexOf(mockActions[0].label)).not.toBe(-1);
+    expect(divButton.innerHTML.indexOf(mockActions.label)).not.toBe(-1);
   });
 
   it('check image src', () => {

@@ -3,4 +3,5 @@ export interface SignatureApplicationData {
   userId: number;
   operationID: string;
   fileAccessCodes: string[];
+  alreadySigned: boolean;
 }
