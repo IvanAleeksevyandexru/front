@@ -174,7 +174,7 @@ export class ComponentsListRelationsService {
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
     const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
 
-    if (displayOff && displayOff?.relatedRel && cachedAnswers[displayOff?.relatedRel]) {
+    if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
       return this.refRelationService.isValueEquals(
         displayOff.val,
         utils.getObjectProperty(
@@ -182,7 +182,7 @@ export class ComponentsListRelationsService {
           displayOff.path
         ) || cachedAnswers[displayOff.relatedRel].value,
       );
-    } else if (displayOn && displayOn?.relatedRel && cachedAnswers[displayOn?.relatedRel]) {
+    } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
       return !this.refRelationService.isValueEquals(
         displayOn.val,
         utils.getObjectProperty(
