@@ -28,6 +28,7 @@ import { NavigationService } from '../../../../core/services/navigation/navigati
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { InvitationType } from './invitation-type';
 
 class HTTPClientStub {
   public post(url: string, body: any | null, options: object) {
@@ -122,7 +123,7 @@ describe('LkInvitationInputComponent', () => {
         const http = TestBed.inject(HttpClient);
         const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({}));
 
-        component['sendEmail']();
+        component.sendEmail();
         fixture.detectChanges();
         expect(component['emailSent']).toBe(true);
         expect(httpPostSpy).toBeCalledWith(
@@ -155,7 +156,7 @@ describe('LkInvitationInputComponent', () => {
         const { firstName, lastName, middleName } = mockData.attrs;
         const fio = `${lastName} ${firstName} ${middleName}`;
 
-        component['sendEmail']();
+        component.sendEmail();
         fixture.detectChanges();
         expect(component['emailSent']).toBe(true);
         expect(httpPostSpy).toBeCalledWith(
@@ -186,11 +187,41 @@ describe('LkInvitationInputComponent', () => {
         const { firstName, lastName } = mockData.attrs;
         const fio = `${lastName} ${firstName}`;
 
-        component['sendEmail']();
+        component.sendEmail();
         fixture.detectChanges();
         expect(component['emailSent']).toBe(true);
         expect(httpPostSpy).toBeCalledWith(
           '/register/LK_INVITATION',
+          {
+            additionalParams: { fio, gnr: mockData.attrs.gender },
+            invitedUserEmail: '',
+          },
+          { withCredentials: true },
+        );
+      });
+    });
+
+    describe('when templateId provided', () => {
+      beforeEach(() => {
+        mockData.attrs.fio = 'Лавров Александр Александрович';
+        mockData.attrs.templateId = 'INVITATION_REGISTRY_ANY' as InvitationType;
+      });
+
+      afterEach(() => {
+        delete mockData.attrs.templateId;
+        delete mockData.attrs.fio;
+      });
+
+      it('should set flag emailSent to true', () => {
+        const http = TestBed.inject(HttpClient);
+        const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({}));
+        const { fio } = mockData.attrs;
+
+        component.sendEmail();
+        fixture.detectChanges();
+        expect(component['emailSent']).toBe(true);
+        expect(httpPostSpy).toBeCalledWith(
+          '/register/INVITATION_REGISTRY_ANY',
           {
             additionalParams: { fio, gnr: mockData.attrs.gender },
             invitedUserEmail: '',

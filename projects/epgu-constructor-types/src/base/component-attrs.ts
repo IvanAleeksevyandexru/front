@@ -114,6 +114,7 @@ export interface ComponentAttrsDto {
   phoneNumber?: number;
   mvdFilters?: Array<IMvdFilter>; // TODO: EPGUCORE-54425, Виктория Харитонова сказала что фильтрацию сделают на бэке. После этого нужно поле удалить это поле.
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
+  templateId?: string; // @see LkInvitationInputAttrs
 }
 
 export interface IMvdFilter {

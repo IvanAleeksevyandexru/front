@@ -15,7 +15,7 @@ import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
-import { invitationType } from './invitation-type';
+import { InvitationType } from './invitation-type';
 import LkInvitationInputAttrs from './lk-invitation-input-attrs';
 import LkInvitationData from './lk-invitation-data';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
@@ -61,7 +61,8 @@ export class LkInvitationInputComponent implements OnInit {
     const urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1`
       : `${this.config.invitationUrl}`;
-    const path = `${urlPrefix}/register/${invitationType.LK_INVITATION}`;
+    const { templateId = InvitationType.LK_INVITATION } = this.data.attrs as LkInvitationInputAttrs;
+    const path = `${urlPrefix}/register/${templateId}`;
 
     this.http
       .post(path, this.getInvitationData(), this.requestOptions)
