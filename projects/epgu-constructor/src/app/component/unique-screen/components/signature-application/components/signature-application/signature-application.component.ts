@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentDto, ComponentActionDto } from 'epgu-constructor-types';
+import { ComponentDto, ScreenButton } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-signature-application',
@@ -13,7 +13,7 @@ export class SignatureApplicationComponent {
   @Input() header: string;
   @Input() component: ComponentDto;
   @Input() isLoading: boolean;
-  @Input() buttons: ComponentActionDto[];
+  @Input() button: ScreenButton;
 
   @Output() next = new EventEmitter<null>();
 

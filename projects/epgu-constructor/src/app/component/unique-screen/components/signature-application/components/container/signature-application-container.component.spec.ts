@@ -37,9 +37,8 @@ import {
   ComponentAttrsDto,
   ApplicantAnswersDto,
   ComponentActionDto,
-  DTOActionAction
+  DTOActionAction,
 } from 'epgu-constructor-types';
-
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
@@ -52,6 +51,7 @@ describe('SignatureApplicationContainerComponent', () => {
     operationID: '',
     url: '',
     userId: 0,
+    alreadySigned: false,
   };
 
   const mockComponent: ComponentDto = {
@@ -69,10 +69,11 @@ describe('SignatureApplicationContainerComponent', () => {
   };
   const mockHeader = 'header';
 
-  const mockActions: ComponentActionDto[] = [
-    { label: 'ActionButton', value: 'ActionButton', action: DTOActionAction.getNextStep },
-  ];
-
+  const mockActions: ComponentActionDto = {
+    label: 'ActionButton',
+    value: 'ActionButton',
+    action: DTOActionAction.getNextStep,
+  };
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ClickableLabelModule],
@@ -110,7 +111,7 @@ describe('SignatureApplicationContainerComponent', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     locationService = TestBed.inject(LocationService);
 
-    jest.spyOn(screenService, 'buttons$', 'get').mockReturnValue(of(mockActions));
+    jest.spyOn(screenService, 'button$', 'get').mockReturnValue(of(mockActions));
     jest.spyOn(screenService, 'header$', 'get').mockReturnValue(of(mockHeader));
     jest.spyOn(screenService, 'showNav$', 'get').mockReturnValue(of(true));
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));

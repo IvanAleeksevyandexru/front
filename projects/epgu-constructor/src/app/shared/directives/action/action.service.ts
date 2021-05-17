@@ -200,25 +200,9 @@ export class ActionService {
     action: ComponentActionDto,
     componentId: string,
   ): ComponentStateForNavigate {
-    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
-    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
-      if (this.isTimerComponent(componentId)) {
-        return {
-          [componentId]: {
-            visited: true,
-            value: action.value,
-          },
-        };
-      }
-      return {
-        ...(this.currentAnswersService.state as object),
-        ...this.screenService.logicAnswers,
-      };
-    }
-
     let value: string;
     if (action.type === ActionType.skipStep) {
-      value = '';
+      return this.prepareDefaultComponentState(componentId, '', action);
     } else if (action.value !== undefined) {
       value = action.value;
     } else {
@@ -228,6 +212,26 @@ export class ActionService {
           : this.currentAnswersService.state;
     }
 
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
+    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
+      if (this.isTimerComponent(componentId)) {
+        return this.prepareDefaultComponentState(componentId, value, action);
+      } else {
+        return {
+          ...(this.currentAnswersService.state as object),
+          ...this.screenService.logicAnswers,
+        };
+      }
+    } else {
+      return this.prepareDefaultComponentState(componentId, value, action);
+    }
+  }
+
+  private prepareDefaultComponentState(
+    componentId: string,
+    value: string,
+    action: ComponentActionDto,
+  ): ComponentStateForNavigate {
     return {
       [componentId]: {
         visited: true,

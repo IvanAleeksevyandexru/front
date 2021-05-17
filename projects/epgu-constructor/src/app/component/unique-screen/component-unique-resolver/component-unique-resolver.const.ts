@@ -73,7 +73,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
-  CsvOnlyUploaderComponent: FileUploadScreenComponent,
+  OrderFileProcessingComponent: FileUploadScreenComponent,
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,

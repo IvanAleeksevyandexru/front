@@ -1,6 +1,6 @@
 export enum UniqueScreenComponentTypes {
   fileUploadComponent = 'FileUploadComponent',
-  CsvOnlyUploaderComponent = 'CsvOnlyUploaderComponent',
+  OrderFileProcessingComponent = 'OrderFileProcessingComponent',
   timeSlot = 'TimeSlot',
   timeSlotWithComputableDepartment = 'TimeSlotWithComputableDepartment',
   mapService = 'MapService',

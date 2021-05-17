@@ -375,8 +375,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       switchMap((dictionary: DictionaryResponseForYMap) => {
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
+        const needToFilterMvd =
+          this.data.attrs.mvdFilters && this.componentValue.isMvdFiltersActivatedOnFront === 'true';
         // Параллелим получение геоточек на 4 запроса
-        const items = this.data.attrs.mvdFilters
+        const items = needToFilterMvd
           ? this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters)
           : [...dictionary.items];
 
