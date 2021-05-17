@@ -46,8 +46,11 @@
         (upload)="updateSelectedFilesInfoAndSend($event)"
       >
         <div class="uploader-info">
-          <span *ngIf="!isMobile">Перетащите файлы или выберите на компьютере</span>
-          <span *ngIf="isMobile">Выберите файл или сделайте фото</span>
+          <span *ngIf="isMobile && !hasImageTypes">Выберите файл</span>
+          <span *ngIf="(!isMobile && !hasImageTypes) || (!isMobile && hasImageTypes)"
+            >Перетащите файлы или выберите на компьютере</span
+          >
+          <span *ngIf="isMobile && hasImageTypes">Выберите файл или сделайте фото</span>
         </div>
         <div class="uploader-buttons">
           <button
@@ -59,7 +62,7 @@
             Ранее загруженные
           </button>
           <epgu-constructor-uploader-button capture="environment" accept="image/*">
-            <button *ngIf="this.isMobile" class="fileupload__link-button">
+            <button *ngIf="this.isMobile && hasImageTypes" class="fileupload__link-button">
               <img
                 src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
                 class="fileupload__button-icon"
