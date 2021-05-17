@@ -6,41 +6,31 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
-  margin-left: -$screen-pad-small-gap / 2;
-  margin-right: -$screen-pad-small-gap / 2;
+  margin-left: -$screen-pad-16 / 2;
+  margin-right: -$screen-pad-16 / 2;
   &__item {
     @include flex-container();
     justify-content: flex-start;
     flex: 1 1 100%;
-    margin-left: $screen-pad-small-gap / 2;
-    margin-right: $screen-pad-small-gap / 2;
-    max-width: calc(100% - #{$screen-pad-small-gap});
-    & > epgu-constructor-component-item > * {
-      margin-bottom: $screen-pad-p;
-      justify-content: flex-end;
-    }
-    & > epgu-constructor-component-list-resolver {
-      & > :not(epgu-constructor-form-output-html) {
-        margin-bottom: $screen-pad-p;
-      }
-      & > epgu-constructor-form-output-html {
-        margin-bottom: $screen-pad-small-gap;
-      }
-    }
-    &:last-child {
-      & > epgu-constructor-component-item > * {
-        margin-bottom: 0;
-      }
-      & > epgu-constructor-component-list-resolver > * {
-        margin-bottom: 0;
+    margin-left: $screen-pad-16 / 2;
+    margin-right: $screen-pad-16 / 2;
+    max-width: calc(100% - #{$screen-pad-16});
+    &::ng-deep > .component-list-resolver {
+      & > * > .custom__screen-html {
+        margin-bottom: 12px;
       }
     }
     &--checkbox > * {
-      margin-bottom: $screen-pad-small-gap;
+      margin-bottom: $screen-pad-16;
+    }
+    &:last-child {
+      &::ng-deep > .component-list-resolver > * > * {
+        margin-bottom: 0;
+      }
     }
   }
   &__radio {
-    margin-top: $screen-pad-top;
+    margin-top: $screen-pad-12;
     &--block {
       display: inline-block;
       lib-radio {
@@ -64,7 +54,7 @@
     &--inline {
       display: inline-flex;
       lib-radio:not(:first-child) {
-        margin-left: $screen-pad-gap;
+        margin-left: $screen-pad-32;
       }
     }
   }
