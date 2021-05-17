@@ -172,16 +172,30 @@ export class ComponentsListRelationsService {
   public hasRelation(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
     const refs = component.attrs?.ref;
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
+    const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
 
     if (displayOff && cachedAnswers[displayOff?.relatedRel]) {
       return this.refRelationService.isValueEquals(
         displayOff.val,
-        cachedAnswers[displayOff.relatedRel].value,
+        utils.getObjectProperty(
+          this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
+          displayOff.path
+        ) || cachedAnswers[displayOff.relatedRel].value,
+      );
+    } else if (displayOn && cachedAnswers[displayOn?.relatedRel]) {
+      return !this.refRelationService.isValueEquals(
+        displayOn.val,
+        utils.getObjectProperty(
+          this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
+          displayOn.path
+        ) || cachedAnswers[displayOn.relatedRel].value,
       );
     } else {
-      return refs?.some((o) => this.refRelationService.isDisplayOnRelation(o.relation));
+      return false;
     }
   }
+
+
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
     return arr.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
@@ -275,6 +289,10 @@ export class ComponentsListRelationsService {
       });
   }
 
+  private getRefValue(value: string | unknown): unknown {
+    const isParsable = utils.hasJsonStructure(value as string);
+    return isParsable ? JSON.parse(value as string) : value;
+  }
 
   private async updateLimitDates(
     component: CustomComponent | CustomListFormGroup,

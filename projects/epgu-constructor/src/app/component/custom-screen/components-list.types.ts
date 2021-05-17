@@ -228,6 +228,7 @@ export interface CustomComponentRef {
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   isResetable?: boolean;
+  path?: string;
 }
 
 export interface CustomListFormGroup {
