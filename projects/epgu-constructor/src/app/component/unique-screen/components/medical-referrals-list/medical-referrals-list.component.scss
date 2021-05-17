@@ -1,0 +1,33 @@
+@import '../../../../../styles/core';
+
+.referrals-number {
+  @include typ-plain-text;
+}
+
+.referrals-end-date {
+  color: $color-text-helper;
+  @include typ-plain-small();
+}
+
+.referrals-specialist {
+  @include typ-h5();
+}
+
+.referrals-address {
+  @include typ-plain-text;
+  color: $color-text-helper;
+}
+
+.referrals-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.referrals-action {
+  @include typ-plain-text;
+}
+
+.empty_referrals_info {
+  @include typ-plain-text;
+}

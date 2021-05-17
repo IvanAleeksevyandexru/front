@@ -1,0 +1,30 @@
+<ng-container *ngIf="medicalReferralsList && medicalReferralsList.length > 0; else emptyMedicalReferralsList">
+  <epgu-constructor-screen-pad class="mb-24" *ngFor="let medicalReferral of medicalReferralsList">
+    <div class="referrals-header mb-24">
+      <p class="referrals-number">Направление №{{ medicalReferral.referralNumber }} от
+        {{ medicalReferral.referralStartDate
+          | memo : datesToolsService.parse:null:dashFormat
+          | memo: datesToolsService.format:null:dotFormat }}</p>
+      <span class="referrals-end-date">
+      {{ medicalReferral.referralEndDate
+        | memo : datesToolsService.parse:null:dashFormat
+        | memo: datesToolsService.format:null:beforeDateFormat }}
+    </span>
+    </div>
+
+    <div class="mb-16">
+      <h5 class="referrals-specialist mb-4">Врач-оториноларинголог</h5>
+      <span class="referrals-address">ГБУЗ «ГП №22 ДЗМ» филиал №3. Хорошевское шоссе, 156, к1, с7</span>
+    </div>
+
+    <div>
+      <a class="referrals-action" (click)="chooseReferrals(medicalReferral)">Записаться</a>
+    </div>
+  </epgu-constructor-screen-pad>
+</ng-container>
+
+<ng-template #emptyMedicalReferralsList>
+  <epgu-constructor-screen-pad>
+    <p class="empty_referrals_info">Направления не найдены</p>
+  </epgu-constructor-screen-pad>
+</ng-template>

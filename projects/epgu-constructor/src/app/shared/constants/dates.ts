@@ -9,6 +9,7 @@ const DATE_TIME_STRING_FULL = 'd MMMM yyyy года в HH:mm, eeee';
 const DATE_TIME_STRING_SHORT = 'd MMMM yyyy';
 const DATE_STRING_YEAR_MONTH = 'yyyy-MM';
 const DATE_STRING_DASH_FORMAT = 'yyyy-MM-dd';
+const BEFORE_DATE_FORMAT = 'до dd MMMM';
 
 const months = [
   'Январь',
@@ -58,4 +59,5 @@ export {
   weekDaysAbbr,
   DurationTimeTypes,
   StartOfTypes,
+  BEFORE_DATE_FORMAT
 };
