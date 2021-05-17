@@ -3,11 +3,15 @@ import {
   DATE_ISO_STRING_FORMAT,
   DATE_TIME_STRING_DOT_FORMAT,
   DATE_STRING_DOT_FORMAT,
-  DurationTimeTypes,
+  DATE_STRING_SLASH_FORMAT, DurationTimeTypes
 } from '../../../shared/constants/dates';
 import { DatesToolsService } from './dates-tools.service';
+import * as moment_ from 'moment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+
+const moment = moment_;
+moment.locale('ru');
 
 jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
 
@@ -257,12 +261,8 @@ describe('DatesToolsService', () => {
 
   describe('setDate() method', () => {
     it('should return setted date', () => {
-      expect(
-        service.format(
-          service.setCalendarDate(new Date(2014, 8, 1), null, null, 30),
-          DATE_TIME_STRING_DOT_FORMAT,
-        ),
-      ).toEqual('30.09.2014, 00:00:00');
+      expect(service.format(service.setCalendarDate(new Date(2014, 8, 1), null, null, 30), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('30.09.2014, 00:00:00');
     });
 
     it('should return setted date for january', () => {
@@ -297,45 +297,29 @@ describe('DatesToolsService', () => {
 
   describe('endOfMonth() method', () => {
     it('should return date end of month', () => {
-      expect(
-        service.format(
-          service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)),
-          DATE_TIME_STRING_DOT_FORMAT,
-        ),
-      ).toEqual('30.09.2014, 23:59:59');
+      expect(service.format(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('30.09.2014, 23:59:59');
     });
   });
 
   describe('startOfYear() method', () => {
     it('should return start date of year', () => {
-      expect(
-        service.format(
-          service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)),
-          DATE_TIME_STRING_DOT_FORMAT,
-        ),
-      ).toEqual('01.01.2014, 00:00:00');
+      expect(service.format(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('01.01.2014, 00:00:00');
     });
   });
 
   describe('startOfMonth() method', () => {
     it('should return start date of month', () => {
-      expect(
-        service.format(
-          service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)),
-          DATE_TIME_STRING_DOT_FORMAT,
-        ),
-      ).toEqual('01.09.2014, 00:00:00');
+      expect(service.format(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('01.09.2014, 00:00:00');
     });
   });
 
   describe('startOfDay() method', () => {
     it('should return start date of day', () => {
-      expect(
-        service.format(
-          service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)),
-          DATE_TIME_STRING_DOT_FORMAT,
-        ),
-      ).toEqual('02.09.2014, 00:00:00');
+      expect(service.format(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
+        .toEqual('02.09.2014, 00:00:00');
     });
   });
 
@@ -393,5 +377,29 @@ describe('DatesToolsService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('utcOffset works like in moment', () => {
+    const getExpected = (slotTime, timezone) => {
+      const time = moment(slotTime).utcOffset(timezone);
+      return time.format('D MMMM YYYY года в HH:mm, dddd');
+    };
+
+    const getActual = (slotTime, timezone) => {
+      let time = service.utcOffset(slotTime, timezone);
+
+      return service.format(time, 'd MMMM yyyy года в HH:mm, eeee');
+    };
+
+    [
+      { slotTime: new Date('2020-05-15'), timezone: '+08:00' },
+      { slotTime: new Date('2020-01-31'), timezone: '+05:00' },
+      { slotTime: new Date('2021-01-31'), timezone: '-08:00' },
+      { slotTime: new Date('2021-02-28'), timezone: '+00:00' },
+      { slotTime: new Date('2021-05-15'), timezone: '-02:00' },
+      { slotTime: new Date('2021-11-11'), timezone: '+06:00' },
+    ].forEach(({ slotTime, timezone }) => {
+      expect(getActual(slotTime, timezone)).toEqual(getExpected(slotTime, timezone));
+    });
   });
 });

@@ -19,7 +19,7 @@
       "sourceRoot": "src",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/epgu-form-frontend",
             "index": "src/index.html",
@@ -42,13 +42,7 @@
               }
             ],
             "styles": ["src/styles.scss"],
-            "scripts": [],
-            "customWebpackConfig": {
-              "replaceDuplicatePlugins": true,
-              "mergeStrategies": {
-                "externals": "prepend"
-              }
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -70,7 +64,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
