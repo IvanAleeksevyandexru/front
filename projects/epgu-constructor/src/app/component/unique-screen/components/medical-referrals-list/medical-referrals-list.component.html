@@ -1,14 +1,14 @@
-<ng-container *ngIf="medicalReferralsList && medicalReferralsList.length > 0; else emptyMedicalReferralsList">
+<ng-container *ngIf="medicalReferralsList?.length; else emptyMedicalReferralsList">
   <epgu-constructor-screen-pad class="mb-24" *ngFor="let medicalReferral of medicalReferralsList">
     <div class="referrals-header mb-24">
       <p class="referrals-number">Направление №{{ medicalReferral.referralNumber }} от
         {{ medicalReferral.referralStartDate
-          | memo : datesToolsService.parse:null:dashFormat
-          | memo: datesToolsService.format:null:dotFormat }}</p>
+          | memo:datesToolsService.parse:null:dashFormat
+          | memo:datesToolsService.format:null:dotFormat }}</p>
       <span class="referrals-end-date">
       {{ medicalReferral.referralEndDate
-        | memo : datesToolsService.parse:null:dashFormat
-        | memo: datesToolsService.format:null:beforeDateFormat }}
+        | memo:datesToolsService.parse:null:dashFormat
+        | memo:datesToolsService.format:null:beforeDateFormat }}
     </span>
     </div>
 
@@ -24,7 +24,8 @@
 
     <div>
       <a class="referrals-action"
-         (click)="chooseReferrals(medicalReferral)">
+         (click)="chooseReferral(medicalReferral)"
+      >
         Записаться
       </a>
     </div>

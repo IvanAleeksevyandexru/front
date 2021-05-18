@@ -16,7 +16,7 @@ import {
 export class MedicalReferralsListComponent {
   @Input() medicalReferralsList: Referral[];
 
-  @Output() referralsWasChosen = new EventEmitter<Referral>();
+  @Output() referralWasChosen = new EventEmitter<Referral>();
 
   readonly dashFormat = DATE_STRING_DASH_FORMAT;
   readonly dotFormat = DATE_STRING_DOT_FORMAT;
@@ -24,7 +24,7 @@ export class MedicalReferralsListComponent {
 
   constructor(public datesToolsService: DatesToolsService) {}
 
-  public chooseReferrals(medicalReferral: Referral): void {
-    this.referralsWasChosen.emit(medicalReferral);
+  public chooseReferral(medicalReferral: Referral): void {
+    this.referralWasChosen.emit(medicalReferral);
   }
 }

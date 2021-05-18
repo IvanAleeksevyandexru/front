@@ -74,7 +74,7 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
     MatPeriodModule,
     CheckboxCubeModule,
     DateTimePeriodModule,
-    MedicalReferralsListModule
+    MedicalReferralsListModule,
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -103,7 +103,7 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
     MatPeriodModule,
     CheckboxCubeModule,
     DateTimePeriodModule,
-    MedicalReferralsListModule
+    MedicalReferralsListModule,
   ],
   providers: [
     WebcamService,
@@ -112,6 +112,5 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
     EventBusService,
     DatesToolsService,
   ],
-  declarations: [],
 })
 export class UniqueScreenComponentsModule {}

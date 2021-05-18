@@ -59,5 +59,5 @@ export {
   weekDaysAbbr,
   DurationTimeTypes,
   StartOfTypes,
-  BEFORE_DATE_FORMAT
+  BEFORE_DATE_FORMAT,
 };

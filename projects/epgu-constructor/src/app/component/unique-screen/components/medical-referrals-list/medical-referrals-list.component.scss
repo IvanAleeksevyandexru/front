@@ -1,9 +1,5 @@
 @import '../../../../../styles/core';
 
-.referrals-number {
-  @include typ-plain-text;
-}
-
 .referrals-end-date {
   color: $color-text-helper;
   @include typ-plain-small();
@@ -32,10 +28,7 @@
   }
 }
 
-.referrals-action {
+.referrals-action, .empty-referrals-info, .referrals-number {
   @include typ-plain-text;
 }
 
-.empty-referrals-info {
-  @include typ-plain-text;
-}
