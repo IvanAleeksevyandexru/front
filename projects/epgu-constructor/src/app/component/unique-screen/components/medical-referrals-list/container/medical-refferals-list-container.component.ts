@@ -15,7 +15,6 @@ import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/interceptor/error
 @Component({
   selector: 'epgu-constructor-medical-referrals-list-container',
   templateUrl: './medical-referrals-list-container.component.html',
-  styleUrls: ['./medical-referrals-list-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MedicalReferralsListContainerComponent {

@@ -17,19 +17,22 @@
 
       <epgu-constructor-output-html
         class="referrals-address"
-        [html]=" medicalReferral.toMoName"
+        [html]="medicalReferral.toMoName"
       ></epgu-constructor-output-html>
 
     </div>
 
     <div>
-      <a class="referrals-action" (click)="chooseReferrals(medicalReferral)">Записаться</a>
+      <a class="referrals-action"
+         (click)="chooseReferrals(medicalReferral)">
+        Записаться
+      </a>
     </div>
   </epgu-constructor-screen-pad>
 </ng-container>
 
 <ng-template #emptyMedicalReferralsList>
   <epgu-constructor-screen-pad>
-    <p class="empty_referrals_info">Направления не найдены</p>
+    <p class="empty-referrals-info">Направления не найдены</p>
   </epgu-constructor-screen-pad>
 </ng-template>

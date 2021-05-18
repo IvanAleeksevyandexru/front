@@ -31,10 +31,11 @@
     align-items: flex-start;
   }
 }
+
 .referrals-action {
   @include typ-plain-text;
 }
 
-.empty_referrals_info {
+.empty-referrals-info {
   @include typ-plain-text;
 }
