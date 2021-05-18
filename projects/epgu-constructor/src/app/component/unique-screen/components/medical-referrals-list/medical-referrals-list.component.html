@@ -14,7 +14,12 @@
 
     <div class="mb-16">
       <h5 class="referrals-specialist mb-4">{{ medicalReferral.toSpecsName }}</h5>
-      <span class="referrals-address">{{ medicalReferral.toMoName }}</span>
+
+      <epgu-constructor-output-html
+        class="referrals-address"
+        [html]=" medicalReferral.toMoName"
+      ></epgu-constructor-output-html>
+
     </div>
 
     <div>

@@ -50,7 +50,7 @@ export class MedicalReferralsListContainerComponent {
       })
       .subscribe((reload) => {
         if (reload) {
-          this.currentAnswersService.state = '0';
+          this.currentAnswersService.state = 'retry';
           this.actionService.switchAction(this.nextAction, this.screenService.component.id);
         }
       });
@@ -73,6 +73,7 @@ export class MedicalReferralsListContainerComponent {
         {
           label: 'Закрыть',
           closeModal: true,
+          color: 'white',
         },
         {
           label: 'Попробовать ещё раз',

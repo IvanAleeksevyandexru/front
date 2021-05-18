@@ -117,5 +117,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
   CarDetailInfo: CarDetailInfoContainerComponent,
-  MedicalReferralsList: MedicalReferralsListContainerComponent,
+  MedicalReferrals: MedicalReferralsListContainerComponent,
 };

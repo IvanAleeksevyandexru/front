@@ -10,10 +10,12 @@
 }
 
 .referrals-specialist {
+  text-transform: capitalize;
   @include typ-h5();
 }
 
 .referrals-address {
+  text-transform: capitalize;
   @include typ-plain-text;
   color: $color-text-helper;
 }
@@ -23,6 +25,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  @include phones-down {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 .referrals-action {
   @include typ-plain-text;
