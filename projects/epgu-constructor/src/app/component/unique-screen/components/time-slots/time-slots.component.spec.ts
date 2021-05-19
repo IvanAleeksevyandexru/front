@@ -36,6 +36,7 @@ import { SmevSlotsResponseInterface } from './time-slots.types';
 import { slotsError } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { mockWeeks } from './mocks/mock-weeks';
 
 const moment = moment_;
 moment.locale('ru');
@@ -265,47 +266,9 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('renderSingleMonthGrid works as before', async () => {
-    component.activeYearNumber = new Date(Date.now()).getUTCFullYear();
-    component.activeMonthNumber = new Date(Date.now()).getUTCMonth();
-
-    const renderSingleMonthGrid = (output): void => {
-      output.splice(0, output.length); // in-place clear
-      const firstDayOfMonth = moment()
-        .year(component.activeYearNumber)
-        .month(component.activeMonthNumber)
-        .startOf('month')
-        .startOf('day');
-      const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
-      const daysInMonth = firstDayOfMonth.daysInMonth();
-      let week = 0;
-      output.push([]);
-      if (firstDayOfWeekInMonth > 1) {
-        for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-          const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-          output[0].push({ number: date.date(), date: date.toDate() });
-        }
-      }
-      for (let i = 0; i < daysInMonth; i += 1) {
-        if (output[week].length && output[week].length % 7 === 0) {
-          week += 1;
-          output.push([]);
-        }
-        const date = moment(firstDayOfMonth).add(i, 'day');
-        output[week].push({ number: date.date(), date: date.toDate() });
-      }
-      let days = 0;
-      while (output[week].length < 7) {
-        const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
-        days += 1;
-        output[week].push({ number: date.date(), date: date.toDate() });
-      }
-    };
-
     const actual = [];
     await component['renderSingleMonthGrid'](actual);
-
-    const expected = [];
-    renderSingleMonthGrid(expected);
+    const expected = mockWeeks;
 
     expect(actual).toEqual(expected);
   });
@@ -365,16 +328,24 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.dateType = 'today';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
-
-      fixture.detectChanges();
     });
 
-    it('should allow book date in 30+3 days after today', () => {
+    it('should allow book date in 30+3 days after today', async () => {
+      await fixture.detectChanges();
+      await fixture.whenStable();
       const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
       expect(allDays.length).toEqual(35);
 
       const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
       expect(lockedDays.length).toEqual(19);
+    });
+
+    it('should draw days equal to daysToShow extended to weeks length', async () => {
+      screenService.component.attrs.daysToShow = 15;
+      await fixture.detectChanges();
+      await fixture.whenStable();
+      const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
+      expect(allDays.length).toEqual(21);
     });
   });
 

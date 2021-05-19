@@ -147,3 +147,10 @@ export interface BookTimeSlotReq {
   caseNumber?: string;
 }
 
+export interface IDay {
+  date: Date,
+  number: number,
+  classes?: {
+    [key: string]: boolean,
+  }
+}

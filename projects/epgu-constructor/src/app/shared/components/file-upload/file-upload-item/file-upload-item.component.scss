@@ -20,7 +20,6 @@
   font-weight: bold;
 }
 
-
 .fileupload__wrapper {
   box-sizing: border-box;
   background-color: $color-white;
@@ -191,6 +190,7 @@ input[type='file'] {
 .message__description {
   @include typ-plain-small;
   color: $color-text-helper;
+  margin-bottom: 24px;
 }
 
 .fileupload {
