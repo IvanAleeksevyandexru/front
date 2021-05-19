@@ -132,7 +132,10 @@ export class PrepareComponentsService {
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
-      const parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+      let parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+      if (parentId) {
+        parsedCachedValue = parsedCachedValue[parentIndex][parentId];
+      }
 
       if (Array.isArray(parsedCachedValue)) {
         return JSON.stringify(parsedCachedValue);

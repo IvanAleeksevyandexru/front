@@ -17,14 +17,25 @@
   & img {
     max-width: 200px;
     margin-bottom: 24px;
+    @include tablets-down {
+      max-width: 66%;
+    }
 
     &.width--auto {
       max-width: 100%;
       width: auto;
     }
-
-    @include tablets-down {
-      max-width: 66%;
+    &.modal__doc-img {
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+      &:not(:first-child) {
+        margin-top: 24px;
+      }
+      @include tablets-down {
+        max-width: 100%;
+      }
     }
   }
 

@@ -93,6 +93,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       ? getAcceptTypes(this.store?.lastSelected.type)
       : getAcceptTypes(this.data.fileType);
   }
+  get hasImageTypes(): boolean {
+    const types = this.acceptTypes;
+    return (
+      types.indexOf('.jpeg') !== -1 ||
+      types.indexOf('.jpg') !== -1 ||
+      types.indexOf('.gif') !== -1 ||
+      types.indexOf('.png') !== -1 ||
+      types.indexOf('.bmp') !== -1
+    );
+  }
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;

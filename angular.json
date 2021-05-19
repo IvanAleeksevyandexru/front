@@ -32,7 +32,7 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor/dist/src/assets",
+                "input": "dist/epgu-constructor/src/assets",
                 "output": "assets"
               },
               {
