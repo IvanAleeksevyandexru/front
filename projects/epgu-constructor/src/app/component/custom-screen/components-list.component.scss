@@ -17,6 +17,7 @@
     max-width: calc(100% - #{$screen-pad-small-gap});
     & > * {
       margin-bottom: $screen-pad-p;
+      justify-content: flex-end;
     }
     &--checkbox > * {
       margin-bottom: $screen-pad-small-gap;
