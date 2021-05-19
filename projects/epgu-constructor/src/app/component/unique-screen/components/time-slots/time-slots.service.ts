@@ -56,6 +56,7 @@ export class TimeSlotsService {
   private availableMonths: string[];
   private areas: string[];
   private config: configType = {};
+  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -151,6 +152,7 @@ export class TimeSlotsService {
     timeSlotsType: TimeSlotsTypes,
   ): Observable<boolean> {
     this.timeSlotsType = timeSlotsType;
+    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs;
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
@@ -309,6 +311,9 @@ export class TimeSlotsService {
     slotsType: TimeSlotsTypes,
     serviceId: string,
   ): Array<{ name: string; value: string }> {
+    if (this.timeSlotRequestAttrs) {
+      return this.timeSlotRequestAttrs;
+    }
     const settings = {
       [TimeSlotsTypes.BRAK]: [
         { name: 'SolemnRegistration', value: this.solemn },

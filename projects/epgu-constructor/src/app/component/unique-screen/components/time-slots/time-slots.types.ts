@@ -27,6 +27,7 @@ export interface TimeSlotValueInterface {
   organizationId?: string;
   bookAttributes?: string;
   parentOrderId?: string;
+  timeSlotRequestAttrs?: Array<{ name: string; value: string }>;
 }
 
 export interface DepartmentInterface {
@@ -96,9 +97,9 @@ export interface CancelSlotResponseInterface {
   error: ErrorInterface;
   esiaId: string;
   status: {
-    statusCode: number,
+    statusCode: number;
     statusMessage: string;
-  }
+  };
 }
 
 export interface SmevSlotsResponseInterface {
@@ -119,7 +120,7 @@ export interface TimeSlotReq {
   caseNumber?: string;
   serviceId?: string[];
   eserviceId?: string;
-  attributes?: { name: string; value: string | boolean; }[];
+  attributes?: { name: string; value: string | boolean }[];
   routeNumber?: string;
   serviceCode?: string;
 }
@@ -132,7 +133,7 @@ export interface BookTimeSlotReq {
   routeNumber?: string;
   serviceCode?: string;
   subject?: string;
-  params?: { name: string; value: string; }[];
+  params?: { name: string; value: string }[];
   eserviceId?: string; // TODO eserviceId?????
   bookId?: string;
   organizationId?: string[] | string;
@@ -141,9 +142,9 @@ export interface BookTimeSlotReq {
   selectedHallTitle?: string;
   parentOrderId?: string;
   preliminaryReservationPeriod?: string;
-  attributes?: { name?: string; value?: string; }[];
+  attributes?: { name?: string; value?: string }[];
   slotId?: string[];
-  serviceId?:string[];
+  serviceId?: string[];
   caseNumber?: string;
 }
 
