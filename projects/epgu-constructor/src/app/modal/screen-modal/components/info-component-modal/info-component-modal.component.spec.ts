@@ -7,13 +7,13 @@ import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { ButtonComponent } from 'epgu-lib';
+import { ButtonComponent } from '@epgu/epgu-lib';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, DTOActionAction, ComponentDto } from 'epgu-constructor-types';
+import { ActionType, DTOActionAction, ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -36,24 +36,28 @@ describe('InfoComponentModalComponent', () => {
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
-    }).overrideComponent(InfoComponentModalComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(InfoComponentModalComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoComponentModalComponent);
     component = fixture.componentInstance;
 
-    navigationModalService = TestBed.inject(NavigationModalService,);
+    navigationModalService = TestBed.inject(NavigationModalService);
     screenModalService = TestBed.inject(ScreenModalService);
     screenService = TestBed.inject(ScreenService);
-    screenService.buttons = [{
-      label: 'Вернуться к заявлению',
-      type: ActionType.nextStepModal,
-      value: 'Вернуться к заявлению',
-      action: DTOActionAction.getNextStep
-    }];
+    screenService.buttons = [
+      {
+        label: 'Вернуться к заявлению',
+        type: ActionType.nextStepModal,
+        value: 'Вернуться к заявлению',
+        action: DTOActionAction.getNextStep,
+      },
+    ];
     fixture.detectChanges();
   });
 

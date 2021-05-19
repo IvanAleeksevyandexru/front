@@ -29,7 +29,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
-import { ComponentDto, DTOActionAction } from 'epgu-constructor-types';
+import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 let mockData: ComponentDto;
 

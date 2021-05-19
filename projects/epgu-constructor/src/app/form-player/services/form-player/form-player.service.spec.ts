@@ -19,7 +19,7 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { configureTestSuite } from 'ng-bullet';
-import { FormPlayerApiErrorStatuses } from 'epgu-constructor-types';
+import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
 declare global {
   namespace NodeJS {
@@ -53,7 +53,7 @@ describe('FormPlayerService', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-      ]
+      ],
     });
   });
 
@@ -68,7 +68,7 @@ describe('FormPlayerService', () => {
     service['_store'] = JSON.parse(JSON.stringify(response));
   });
 
-  describe('checkIfOrderExist()',() => {
+  describe('checkIfOrderExist()', () => {
     it('should call checkIfOrderExist of formPlayerApiService when call ', () => {
       spyOn(formPlayerApiService, 'checkIfOrderExist').and.callThrough();
       service.checkIfOrderExist();
@@ -76,7 +76,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('getOrderStatus()',() => {
+  describe('getOrderStatus()', () => {
     it('should call getOrderStatus of formPlayerApiService when call ', () => {
       const orderId = '1234';
       spyOn(formPlayerApiService, 'getOrderStatus').and.callThrough();
@@ -85,7 +85,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('initData()',() => {
+  describe('initData()', () => {
     it('should call updateLoading with true param', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.initData();
@@ -99,7 +99,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('getOrderData()',() => {
+  describe('getOrderData()', () => {
     it('should call getServiceData of formPlayerApiService when call getOrderData', () => {
       spyOn(formPlayerApiService, 'getServiceData').and.callThrough();
       service.getOrderData(orderId);
@@ -117,7 +117,7 @@ describe('FormPlayerService', () => {
       const errorResponse = {
         message: 'oops... i did it again',
         description: 'a-e-e-e-e-e...',
-        status: 500
+        status: 500,
       };
       spyOn(formPlayerApiService, 'getServiceData').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
@@ -133,8 +133,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('navigate()',() => {
-
+  describe('navigate()', () => {
     it('should call updateLoading with false true', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.navigate({}, FormPlayerNavigation.NEXT);
@@ -168,7 +167,7 @@ describe('FormPlayerService', () => {
       const errorResponse = {
         message: 'oops... i did it again',
         description: 'a-e-e-e-e-e...',
-        status: 500
+        status: 500,
       };
       spyOn(formPlayerApiService, 'navigate').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
@@ -185,8 +184,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('getBooking()',() => {
-
+  describe('getBooking()', () => {
     it('should call updateLoading with false true', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.getBooking();
@@ -210,7 +208,7 @@ describe('FormPlayerService', () => {
       const errorResponse = {
         message: 'oops... i did it again',
         description: 'a-e-e-e-e-e...',
-        status: 500
+        status: 500,
       };
       spyOn(formPlayerApiService, 'getBooking').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
@@ -226,8 +224,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('patchStore()',() => {
-
+  describe('patchStore()', () => {
     it('should call updateLoading with false true', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.patchStore({});
@@ -236,24 +233,28 @@ describe('FormPlayerService', () => {
 
     it('should call processResponse with new state', () => {
       const state = JSON.parse(JSON.stringify(response));
-      const newScenarioDtoDiff = { display: {
-          components: [{
-            attrs: {},
-            id: '1112',
-            label: 'some label 3',
-            type: 'some type',
-            value: 'some value',
-            required: false,
-            visited: false
-          }],
+      const newScenarioDtoDiff = {
+        display: {
+          components: [
+            {
+              attrs: {},
+              id: '1112',
+              label: 'some label 3',
+              type: 'some type',
+              value: 'some value',
+              required: false,
+              visited: false,
+            },
+          ],
           header: 'some header',
           label: 'some label',
           id: '2222',
           name: 'some name 2',
           submitLabel: 'some submit label',
           terminal: false,
-          type: ScreenTypes.COMPONENT
-      }};
+          type: ScreenTypes.COMPONENT,
+        },
+      };
       state.scenarioDto = { ...state.scenarioDto, ...newScenarioDtoDiff };
       spyOn<any>(service, 'processResponse').and.callThrough();
       service.patchStore(newScenarioDtoDiff);
@@ -261,7 +262,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('initPlayerFromQuiz()',() => {
+  describe('initPlayerFromQuiz()', () => {
     it('should call updateLoading with false true', () => {
       const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
       spyOn<any>(service, 'updateLoading').and.callThrough();
@@ -281,7 +282,7 @@ describe('FormPlayerService', () => {
       const errorResponse = {
         message: 'oops... i did it again',
         description: 'a-e-e-e-e-e...',
-        status: 500
+        status: 500,
       };
       spyOn(formPlayerApiService, 'quizToOrder').and.returnValue(throwError(errorResponse));
       spyOn<any>(service, 'sendDataError').and.callThrough();
@@ -298,7 +299,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('processResponse()',() => {
+  describe('processResponse()', () => {
     it('should call hasError with response param', () => {
       spyOn<any>(service, 'hasError').and.callThrough();
       service.processResponse(response);
@@ -327,7 +328,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('resetViewByChangeScreen()',() => {
+  describe('resetViewByChangeScreen()', () => {
     it('should call scroll method of window  with (0, 0) params', () => {
       const window = TestBed.inject(WINDOW);
       spyOn<any>(window, 'scroll').and.callThrough();
@@ -336,7 +337,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('hasError()',() => {
+  describe('hasError()', () => {
     it('should return true if hasRequestErrors', () => {
       spyOn<any>(service, 'hasRequestErrors').and.returnValue(true);
       const hasError = service['hasError'](response);
@@ -357,12 +358,12 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('hasRequestErrors()',() => {
+  describe('hasRequestErrors()', () => {
     it('should return true if response have badRequest status', () => {
       const errorResponse = {
         description: 'oooh some error here',
         message: 'oooh some error here',
-        status: FormPlayerApiErrorStatuses.badRequest
+        status: FormPlayerApiErrorStatuses.badRequest,
       };
       const hasRequestErrors = service['hasRequestErrors'](errorResponse);
       expect(hasRequestErrors).toBeTruthy();
@@ -374,7 +375,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('hasBusinessErrors()',() => {
+  describe('hasBusinessErrors()', () => {
     it('should return true if response have business errors', () => {
       const errorResponse = JSON.parse(JSON.stringify(response));
       errorResponse.scenarioDto.errors = { error: 'error message here' };
@@ -388,7 +389,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('updateRequest()',() => {
+  describe('updateRequest()', () => {
     let navigation;
 
     beforeEach(() => {
@@ -396,15 +397,15 @@ describe('FormPlayerService', () => {
         payload: {
           k1: {
             value: 'some value',
-              visited: true
-          }
-        }
+            visited: true,
+          },
+        },
       };
     });
 
     it('should call log of loggerService', () => {
       spyOn<any>(logger, 'log').and.callThrough();
-      service['updateRequest'](navigation );
+      service['updateRequest'](navigation);
       expect(logger.log).toBeCalled();
     });
 
@@ -431,8 +432,8 @@ describe('FormPlayerService', () => {
       const newStore = JSON.parse(JSON.stringify(response));
       navigation = {
         options: {
-          store: newStore
-        }
+          store: newStore,
+        },
       };
       spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
       service['updateRequest'](navigation);
@@ -440,21 +441,21 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('setDefaultCurrentValue()',() => {
+  describe('setDefaultCurrentValue()', () => {
     it('should set default currentValue by first component', () => {
       navigation = {};
       const defaultCurrentValue = {
         [response.scenarioDto.display.components[0].id]: {
           value: '',
-          visited: true
-        }
+          visited: true,
+        },
       };
       service['setDefaultCurrentValue']();
       expect(service['_store'].scenarioDto.currentValue).toEqual(defaultCurrentValue);
     });
   });
 
-  describe('isEmptyNavigationPayload()',() => {
+  describe('isEmptyNavigationPayload()', () => {
     it('should return true if hasn\'t payload with keys', () => {
       navigation = { payload: {}};
       const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
@@ -474,7 +475,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('sendDataSuccess()',() => {
+  describe('sendDataSuccess()', () => {
     it('should call log of loggerService', () => {
       spyOn<any>(logger, 'log').and.callThrough();
       service['sendDataSuccess'](response);
@@ -488,7 +489,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('sendDataError()',() => {
+  describe('sendDataError()', () => {
     let errorResponse;
 
     beforeEach(() => {
@@ -512,7 +513,7 @@ describe('FormPlayerService', () => {
       const errorResponse = {
         message: 'oops... i did it again',
         description: 'a-e-e-e-e-e...',
-        status: 500
+        status: 500,
       };
       spyOn<any>(service, 'initResponse').and.callThrough();
       // @ts-ignore
@@ -527,7 +528,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('initResponse()',() => {
+  describe('initResponse()', () => {
     it('should call handleInvalidResponse when empty response', () => {
       spyOn<any>(service, 'handleInvalidResponse').and.callThrough();
       service['initResponse'](null);
@@ -560,7 +561,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('handleInvalidResponse()',() => {
+  describe('handleInvalidResponse()', () => {
     it('should call error of loggerService', () => {
       spyOn<any>(logger, 'error').and.callThrough();
       service['handleInvalidResponse']();
@@ -568,14 +569,14 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('get store()',() => {
+  describe('get store()', () => {
     it('should return store', () => {
       const store = service.store;
       expect(store).toBe(service['_store']);
     });
   });
 
-  describe('initScreenStore()',() => {
+  describe('initScreenStore()', () => {
     it('should call initScreenStore of screenService with scenarioDto', () => {
       spyOn<any>(screenService, 'initScreenStore').and.callThrough();
       service['initScreenStore'](response.scenarioDto);
@@ -583,7 +584,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('updateLoading()',() => {
+  describe('updateLoading()', () => {
     it('should set isLoading by new value', () => {
       service['updateLoading'](true);
       expect(service['isLoading']).toBe(true);
@@ -602,7 +603,7 @@ describe('FormPlayerService', () => {
     });
   });
 
-  describe('updatePlayerLoaded()',() => {
+  describe('updatePlayerLoaded()', () => {
     it('should set playerLoaded by new value', () => {
       service['updatePlayerLoaded'](true);
       expect(service['playerLoaded']).toBe(true);

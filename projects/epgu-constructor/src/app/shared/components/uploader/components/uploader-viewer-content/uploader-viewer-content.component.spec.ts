@@ -21,7 +21,7 @@ import {
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
-import { FileSizePipe } from 'epgu-lib';
+import { FileSizePipe } from '@epgu/epgu-lib';
 import { LOCALE_ID } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {

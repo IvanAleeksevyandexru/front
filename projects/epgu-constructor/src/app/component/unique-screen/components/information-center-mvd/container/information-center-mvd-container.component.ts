@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement } from '@epgu/epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DictionaryConditions, DictionaryFilters } from '@epgu/epgu-constructor-types';

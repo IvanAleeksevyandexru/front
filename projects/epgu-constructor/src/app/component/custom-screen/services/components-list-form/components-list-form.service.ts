@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ListItem } from '@epgu/epgu-lib';
-import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
@@ -217,7 +217,7 @@ export class ComponentsListFormService {
   }
 
   private relationPatch(component: CustomComponent, patch: object): void {
-    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch } };
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
     const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
 

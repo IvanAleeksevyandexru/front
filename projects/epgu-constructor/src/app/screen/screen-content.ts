@@ -64,7 +64,7 @@ export class ScreenContent {
 
   public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.component$.pipe(
-      concatMap(({ attrs: { infoComponents } }) =>
+      concatMap(({ attrs: { infoComponents }}) =>
         infoComponents
           ? (combineLatest([of(infoComponents), this.display$]).pipe(
               map(([infoList, display]) => this.filteredComponents(infoList, display.components)),

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ConfigService } from '../../core/services/config/config.service';
@@ -28,7 +28,13 @@ import { BaseModule } from '../../shared/base.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ActionType, ComponentActionDto, DTOActionAction, Clarifications } from 'epgu-constructor-types';
+import {
+  ComponentDto,
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  Clarifications,
+} from '@epgu/epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -81,11 +87,7 @@ describe('QuestionsScreenComponent', () => {
       ],
       declarations: [
         QuestionsScreenComponent,
-        MockComponents(
-          ScreenContainerComponent,
-          PageNameComponent,
-          AnswerButtonComponent,
-        ),
+        MockComponents(ScreenContainerComponent, PageNameComponent, AnswerButtonComponent),
         MockDirective(ActionDirective),
         MockPipe(ImgPrefixerPipe, (value) => `ImgPrefixerFakePipe:${value}`),
       ],

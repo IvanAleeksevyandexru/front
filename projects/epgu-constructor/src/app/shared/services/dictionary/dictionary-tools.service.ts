@@ -1,6 +1,6 @@
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import { DictionaryItem, DictionaryResponse } from './dictionary-api.types';
-import { ListElement, ListItem } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement, ListItem } from '@epgu/epgu-lib';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -207,7 +207,7 @@ export class DictionaryToolsService {
           );
         }
 
-        return of({ ...value, meta: { repeatedWithNoFilters: false } });
+        return of({ ...value, meta: { repeatedWithNoFilters: false }});
       }),
     );
   }

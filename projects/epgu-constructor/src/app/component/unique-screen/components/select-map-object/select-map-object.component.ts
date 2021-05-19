@@ -8,8 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { YaMapService } from '@epgu/epgu-lib';
-import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { YaMapService, ListElement, LookupProvider } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { isEqual as _isEqual } from 'lodash';

@@ -24,6 +24,7 @@
       "ngx-webcam": "ngx-webcam",
       "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
       "@epgu/epgu-lib": "@epgu/epgu-lib",
+      "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
       "ics": "ics",
       "@alyle/ui": "@alyle/ui",
       "@alyle/ui/image-cropper": "i4$1",

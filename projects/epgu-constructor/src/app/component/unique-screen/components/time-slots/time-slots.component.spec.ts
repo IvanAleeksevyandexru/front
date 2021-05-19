@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
@@ -49,7 +49,7 @@ describe('TimeSlotsComponent', () => {
   let datesToolsService: DatesToolsService;
   let store: ScreenStore;
 
-  configureTestSuite(( ) => {
+  configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
       imports: [EpguLibModule, HttpClientTestingModule],
@@ -416,7 +416,9 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('should call error modal if slots request returned error', () => {
-    jest.spyOn(smev3TimeSlotsRestService, 'getTimeSlots').mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
+    jest
+      .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
+      .mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
     const modalSpy = jest.spyOn(component, 'showError');
     fixture.detectChanges();
     expect(modalSpy).toBeCalled();
