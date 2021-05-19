@@ -39,6 +39,7 @@ export interface DictionarySimpleFilter {
   condition: DictionaryConditions;
   value: DictionaryValue;
   valueType?: DictionaryValueTypes;
+  trueForNull?: boolean;
 }
 
 export interface DictionaryUnionFilter {
@@ -86,4 +87,5 @@ export interface ComponentDictionaryFilterDto {
   valueType: string;
   dateFormat?: string;
   formatValue?: FilterDtoConfig;
+  trueForNull?: boolean;
 }
