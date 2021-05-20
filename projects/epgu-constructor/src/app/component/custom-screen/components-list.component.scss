@@ -22,9 +22,13 @@
     &--checkbox > * {
       margin-bottom: $screen-pad-small-gap;
     }
-
     &:last-child > * {
       margin-bottom: 0;
+    }
+    &[class*="grid"] {
+      &:last-child > * {
+        margin-bottom: $screen-pad-p !important;
+      }
     }
   }
   &::ng-deep .form__half {
