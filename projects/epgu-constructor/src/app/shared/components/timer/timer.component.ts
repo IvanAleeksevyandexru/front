@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { timer } from 'rxjs';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
-import { TimerComponentDtoAction, TimerLabelSection } from '@epgu/epgu-constructor-types';
+import { TimerComponentDtoAction, TimerLabelSection } from 'epgu-constructor-types';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { createTimer, isWarning } from './timer.helper';

@@ -4,7 +4,7 @@ import { EventBusService } from '../../../../core/services/event-bus/event-bus.s
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 
 import { configureTestSuite } from 'ng-bullet';
-import { Clarifications } from '@epgu/epgu-constructor-types';
+import { Clarifications } from 'epgu-constructor-types';
 import { FileUploadFormComponent } from './file-upload-form.component';
 import { ChangeDetectionStrategy, Injector } from '@angular/core';
 import { FileUploadItemComponent } from '../../../../shared/components/file-upload/file-upload-item/file-upload-item.component';

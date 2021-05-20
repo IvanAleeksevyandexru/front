@@ -21,7 +21,7 @@ import { AutocompleteApiService } from './autocomplete-api.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteService } from './autocomplete.service';
-import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from '@epgu/epgu-constructor-types';
+import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from 'epgu-constructor-types';
 import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';

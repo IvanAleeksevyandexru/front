@@ -4,11 +4,7 @@ import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
-import {
-  FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
-  DTOActionAction,
-} from '@epgu/epgu-constructor-types';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, DTOActionAction } from 'epgu-constructor-types';
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {
@@ -56,19 +52,17 @@ export class ScreenModalService extends FormPlayerBaseService {
     }
     this.updateLoading(true);
     this.updateRequest(navigation);
-    this.formPlayerApiService
-      .navigate(this._store, navigation.options, formPlayerNavigation)
-      .subscribe(
-        /* jscpd:ignore-start */
-        (response) => {
-          this.processResponse(response);
-        },
-        (error) => {
-          this.sendDataError(error);
-        },
-        () => this.updateLoading(false),
-        /* jscpd:ignore-end */
-      );
+    this.formPlayerApiService.navigate(this._store, navigation.options, formPlayerNavigation).subscribe(
+      /* jscpd:ignore-start */
+      (response) => {
+        this.processResponse(response);
+      },
+      (error) => {
+        this.sendDataError(error);
+      },
+      () => this.updateLoading(false)
+      /* jscpd:ignore-end */
+    );
   }
 
   processResponse(response: FormPlayerApiResponse): void {
@@ -82,7 +76,7 @@ export class ScreenModalService extends FormPlayerBaseService {
   }
 
   processInitStore(response: FormPlayerApiSuccessResponse): void {
-    if (!this._initStore) {
+    if(!this._initStore) {
       this._initStore = response;
     }
   }
@@ -105,14 +99,14 @@ export class ScreenModalService extends FormPlayerBaseService {
     const paddingTop = style.getPropertyValue('padding-top');
     const paddingBottom = style.getPropertyValue('padding-bottom');
     const parsePadding = (value): number => {
-      return parseInt(value.replace(/[^0-9\.]+/g, ''));
+      return parseInt(value.replace(/[^0-9\.]+/g,''));
     };
 
     return parsePadding(paddingTop) + parsePadding(paddingBottom);
   }
 
   updateMinContentHeight(headerHeight: number): void {
-    if (window.innerWidth <= 768) {
+    if(window.innerWidth <= 768) {
       this.minContentHeight = window.innerHeight - headerHeight - this.getVerticalPaddings();
     } else {
       this.minContentHeight = 0;

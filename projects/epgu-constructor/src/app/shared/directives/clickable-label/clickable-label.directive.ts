@@ -5,7 +5,7 @@ import { ActionService } from '../action/action.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { getHiddenBlock } from '../../constants/utils';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { Clarifications, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { Clarifications, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 @Directive({
   selector: '[epgu-constructor-clickable-label]',
@@ -32,14 +32,9 @@ export class ClickableLabelDirective {
 
     if (targetElementActionType) {
       event.preventDefault();
-      this._runActionInAngularZone(
-        targetElementActionType,
-        targetElementActionValue,
-        targetElementActionAction,
-        targetElement,
-      );
+      this._runActionInAngularZone(targetElementActionType, targetElementActionValue, targetElementActionAction, targetElement);
     } else if (targetElement.id) {
-      if (needPrevent) {
+      if(needPrevent) {
         event.preventDefault();
       }
       this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);

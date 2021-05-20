@@ -1,42 +1,38 @@
 import { Injectable } from '@angular/core';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { Observable, of } from 'rxjs';
-import { FormPlayerApiSuccessResponse, Gender } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiSuccessResponse, Gender } from 'epgu-constructor-types';
 
 @Injectable()
 export class FormPlayerServiceStub {
-  _store: FormPlayerApiSuccessResponse = {
-    scenarioDto: {
+  _store: FormPlayerApiSuccessResponse = { scenarioDto: {
       applicantAnswers: {},
       cachedAnswers: {},
       currentScenarioId: 1,
       currentValue: {},
       finishedAndCurrentScreens: [],
       display: {
-        components: [
-          {
-            attrs: {},
-            id: '123',
-            label: 'some label',
-            type: 'some type',
-            value: 'some value',
-            required: false,
-            visited: false,
-          },
-        ],
+        components: [{
+          attrs: {},
+          id: '123',
+          label: 'some label',
+          type: 'some type',
+          value: 'some value',
+          required: false,
+          visited: false
+        }],
         header: 'some header',
         label: 'some label',
         id: '123',
         name: 'some name',
         submitLabel: 'some submit label',
         terminal: false,
-        type: ScreenTypes.UNIQUE,
+        type: ScreenTypes.UNIQUE
       },
       errors: {},
       gender: Gender.male,
       orderId: 1,
-    },
-  };
+    }};
   componentId: string;
   componentType: string;
   isLoading = false;
@@ -44,7 +40,7 @@ export class FormPlayerServiceStub {
   _isLoading$ = of(false);
   _playerLoaded$ = of(false);
 
-  get isLoading$(): Observable<boolean> {
+  get isLoading$(): Observable<boolean>  {
     return this._isLoading$;
   }
 

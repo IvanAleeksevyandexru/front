@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 import { CustomComponent, CustomComponentAttrValidation } from '../../components-list.types';
-import { TextTransform } from '@epgu/epgu-constructor-types';
+import { TextTransform } from 'epgu-constructor-types';
 
 interface DocInputControl extends Partial<AbstractControl> {
   value: DocInputComponentData;
@@ -71,3 +71,4 @@ export {
   DocInputFields,
   DocInputFieldsTypes,
 };
+

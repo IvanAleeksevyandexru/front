@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from 'epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ComponentActionDto, ComponentAnswerDto } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, ComponentAnswerDto } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-long-button',

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MonthYear } from '@epgu/epgu-lib';
+import { MonthYear } from 'epgu-lib';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { EmployeeHistoryFormService } from './employee-history.form.service';
@@ -10,7 +10,7 @@ import { DatesToolsService } from '../../../../../core/services/dates-tools/date
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { Gender } from '@epgu/epgu-constructor-types';
+import { Gender } from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';

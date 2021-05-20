@@ -1,7 +1,7 @@
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 
 export interface CheckboxCubeComponentAttrsDto extends ComponentAttrsDto {
-  cubeElements: { [id: string]: CubeElement };
+  cubeElements: {[id: string]: CubeElement};
 }
 
 export interface CubeElement {

@@ -3,13 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { FormPlayerStartManager } from './form-player-start.manager';
 import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
-import {
-  LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY,
-  QUIZ_SCENARIO_KEY,
-} from '../../../shared/constants/form-player';
+import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from 'epgu-lib';
 import { LoadServiceStub } from '../../../core/services/config/load-service-stub';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
@@ -28,6 +24,7 @@ import { configureTestSuite } from 'ng-bullet';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
+
 describe('FormPlayerStartManager', () => {
   let service: FormPlayerStartManager;
   let formPlayerService: FormPlayerService;
@@ -40,7 +37,7 @@ describe('FormPlayerStartManager', () => {
 
   let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
-    targetId: '-10000100',
+    targetId: '-10000100'
   };
 
   configureTestSuite(() => {
@@ -56,7 +53,7 @@ describe('FormPlayerStartManager', () => {
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
-      ],
+      ]
     });
   });
 
@@ -119,12 +116,7 @@ describe('FormPlayerStartManager', () => {
     });
 
     it('should call handleOrder case', () => {
-      initDataService.init({
-        ...serviceDataMock,
-        orderId: '2145',
-        canStartNew: true,
-        invited: false,
-      });
+      initDataService.init({ ...serviceDataMock, orderId: '2145', canStartNew: true, invited: false });
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service.startPlayer();
       expect(service['handleOrder']).toBeCalled();
@@ -182,7 +174,7 @@ describe('FormPlayerStartManager', () => {
     const checkIfOrderExistResult = {
       orderId: '123456',
       isInviteScenario: false,
-      canStartNew: true,
+      canStartNew: true
     };
 
     it('should call invited of initDataService', () => {
@@ -198,7 +190,7 @@ describe('FormPlayerStartManager', () => {
     const checkIfOrderExistResult = {
       orderId: '123456',
       isInviteScenario: false,
-      canStartNew: true,
+      canStartNew: true
     };
 
     it('should call invited of initDataService', () => {
@@ -213,7 +205,7 @@ describe('FormPlayerStartManager', () => {
     const checkIfOrderExistResult = {
       orderId: '123456',
       isInviteScenario: false,
-      canStartNew: true,
+      canStartNew: true
     };
 
     it('should call invited of initDataService', () => {
@@ -240,7 +232,7 @@ describe('FormPlayerStartManager', () => {
       expect(service['handleOrder']).toBeCalledWith(
         checkIfOrderExistResult.orderId,
         checkIfOrderExistResult.isInviteScenario,
-        checkIfOrderExistResult.canStartNew,
+        checkIfOrderExistResult.canStartNew
       );
     });
   });
@@ -277,55 +269,35 @@ describe('FormPlayerStartManager', () => {
     const canStartNew = true;
 
     it('should return true if not invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
-      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
-        invited,
-        canStartNew,
-      );
+      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](orderId, invited, canStartNew);
       expect(shouldShowContinueOrderModal).toBe(true);
     });
 
     it('should return false if not invited, canStartNew, not empty orderId, isNeedToShowLastScreen', () => {
       location.go('/some-page', 'getLastScreen=true');
       localStorage.setItem(LAST_SCENARIO_KEY, JSON.stringify(responseDto));
-      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
-        invited,
-        canStartNew,
-      );
+      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](orderId, invited, canStartNew);
       expect(shouldShowContinueOrderModal).toBe(false);
       localStorage.removeItem(LAST_SCENARIO_KEY);
     });
 
     it('should return false if not invited, canStartNew, empty orderId, not isNeedToShowLastScreen', () => {
-      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        null,
-        invited,
-        canStartNew,
-      );
+      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](null, invited, canStartNew);
       expect(shouldShowContinueOrderModal).toBe(false);
     });
 
     it('should return false if invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
-      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
-        true,
-        canStartNew,
-      );
+      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](orderId, true, canStartNew);
       expect(shouldShowContinueOrderModal).toBe(false);
     });
 
     it('should return false if not invited, not canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
-      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
-        invited,
-        false,
-      );
+      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](orderId, invited, false);
       expect(shouldShowContinueOrderModal).toBe(false);
     });
   });
 
-  describe('hasLoadFromStorageCase()', () => {
+  describe('hasLoadFromStorageCase()',() => {
     it('should return true', () => {
       location.go('/some-page', 'getLastScreen=true');
       localStorage.setItem(LAST_SCENARIO_KEY, '{}');

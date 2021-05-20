@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
-import { TextTransform } from '@epgu/epgu-constructor-types';
+import { TextTransform } from 'epgu-constructor-types';
 import { TextTransformService } from '../../services/text-transform/text-transform.service';
 
 @Component({
@@ -34,7 +34,8 @@ describe('TextTransformDirective', () => {
       declarations: [TextTransformDirective, TextTransformTestComponent],
       providers: [CurrencyPipe, TextTransformService],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {

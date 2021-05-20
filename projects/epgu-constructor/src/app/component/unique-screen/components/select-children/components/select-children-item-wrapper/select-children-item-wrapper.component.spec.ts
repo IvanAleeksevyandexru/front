@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
@@ -31,7 +31,7 @@ describe('SelectChildrenItemWrapperComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService,
+        CurrentAnswersService
       ],
     }).compileComponents();
   });

@@ -6,7 +6,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ConfirmUserDataStyle, ComponentDto } from '@epgu/epgu-constructor-types';
+import { ConfirmUserDataStyle, ComponentDto } from 'epgu-constructor-types';
 import {
   ConfirmUserDataError,
   ConfirmUserDataFieldsState,
