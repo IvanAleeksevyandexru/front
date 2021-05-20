@@ -21,12 +21,12 @@
   }
   @include tablets-up {
     &:not(:first-child) {
-      margin-left: 24px;
+      margin-left: 32px;
     }
     // Кнопка nextstep всегда последняя на tab/desk
     &[data-button-type="nextstep"]:not(:last-child) {
       order: 10;
-      margin-left: 24px;
+      margin-left: 32px;
       // Если nextstep была первой, следующая за ней без левого отступа
       & + *:nth-child(2) {
         margin-left: 0;

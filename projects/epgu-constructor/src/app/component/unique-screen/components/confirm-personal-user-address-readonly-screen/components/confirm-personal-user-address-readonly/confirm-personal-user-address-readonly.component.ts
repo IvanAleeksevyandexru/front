@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TextTransform, DTOActionAction } from 'epgu-constructor-types';
+import { TextTransform, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';

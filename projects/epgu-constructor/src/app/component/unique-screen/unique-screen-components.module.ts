@@ -39,6 +39,7 @@ import { DateTimePeriodModule } from './components/date-time-period/date-time-pe
 import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/confirm-personal-user-address-readonly-screen/confirm-personal-user-address-readonly-screen.module';
+import { MedicalReferralsListModule } from './components/medical-referrals-list/medical-referrals-list.module';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/con
     CarListModule,
     MatPeriodModule,
     CheckboxCubeModule,
-    DateTimePeriodModule
+    DateTimePeriodModule,
+    MedicalReferralsListModule,
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -101,6 +103,7 @@ import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/con
     MatPeriodModule,
     CheckboxCubeModule,
     DateTimePeriodModule,
+    MedicalReferralsListModule,
   ],
   providers: [
     WebcamService,

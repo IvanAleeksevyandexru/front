@@ -2,7 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ActionService } from './action.service';
 import { ModalService } from '../../../modal/modal.service';
-import { ActionType, ComponentActionDto } from 'epgu-constructor-types';
+import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 
 @Directive({
   selector: '[epgu-constructor-action]',

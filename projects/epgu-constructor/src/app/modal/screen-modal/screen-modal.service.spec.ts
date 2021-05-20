@@ -11,8 +11,7 @@ import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { ScreenModalService } from './screen-modal.service';
 import { configureTestSuite } from 'ng-bullet';
-import { FormPlayerApiErrorStatuses } from 'epgu-constructor-types';
-
+import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
 const response = new FormPlayerServiceStub()._store;
 
@@ -35,7 +34,7 @@ describe('ScreenModalService', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-      ]
+      ],
     });
   });
 
@@ -49,7 +48,7 @@ describe('ScreenModalService', () => {
     service['_store'] = JSON.parse(JSON.stringify(response));
   });
 
-  describe('resetStore()',() => {
+  describe('resetStore()', () => {
     it('should call updateLoading of screenService with false', () => {
       spyOn<any>(service, 'updatePlayerLoaded').and.callThrough();
       service.resetStore();
@@ -69,14 +68,14 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('get initStore()',() => {
+  describe('get initStore()', () => {
     it('should return initStore', () => {
       const initStore = service.initStore;
       expect(initStore).toBe(service['_initStore']);
     });
   });
 
-  describe('processResponse()',() => {
+  describe('processResponse()', () => {
     it('should call hasError with response param', () => {
       spyOn<any>(service, 'hasError').and.callThrough();
       service.processResponse(response);
@@ -98,7 +97,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('hasError()',() => {
+  describe('hasError()', () => {
     it('should return true if hasRequestErrors', () => {
       spyOn<any>(service, 'hasRequestErrors').and.returnValue(true);
       const hasError = service['hasError'](response);
@@ -119,12 +118,12 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('hasRequestErrors()',() => {
+  describe('hasRequestErrors()', () => {
     it('should return true if response have badRequest status', () => {
       const errorResponse = {
         description: 'oooh some error here',
         message: 'oooh some error here',
-        status: FormPlayerApiErrorStatuses.badRequest
+        status: FormPlayerApiErrorStatuses.badRequest,
       };
       const hasRequestErrors = service['hasRequestErrors'](errorResponse);
       expect(hasRequestErrors).toBeTruthy();
@@ -136,7 +135,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('hasBusinessErrors()',() => {
+  describe('hasBusinessErrors()', () => {
     it('should return true if response have business errors', () => {
       const errorResponse = JSON.parse(JSON.stringify(response));
       errorResponse.scenarioDto.errors = { error: 'error message here' };
@@ -150,7 +149,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('updateRequest()',() => {
+  describe('updateRequest()', () => {
     let navigation;
 
     beforeEach(() => {
@@ -158,15 +157,15 @@ describe('ScreenModalService', () => {
         payload: {
           k1: {
             value: 'some value',
-            visited: true
-          }
-        }
+            visited: true,
+          },
+        },
       };
     });
 
     it('should call log of loggerService', () => {
       spyOn<any>(logger, 'log').and.callThrough();
-      service['updateRequest'](navigation );
+      service['updateRequest'](navigation);
       expect(logger.log).toBeCalled();
     });
 
@@ -193,8 +192,8 @@ describe('ScreenModalService', () => {
       const newStore = JSON.parse(JSON.stringify(response));
       navigation = {
         options: {
-          store: newStore
-        }
+          store: newStore,
+        },
       };
       spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
       service['updateRequest'](navigation);
@@ -202,21 +201,21 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('setDefaultCurrentValue()',() => {
+  describe('setDefaultCurrentValue()', () => {
     it('should set default currentValue by first component', () => {
       navigation = {};
       const defaultCurrentValue = {
         [response.scenarioDto.display.components[0].id]: {
           value: '',
-          visited: true
-        }
+          visited: true,
+        },
       };
       service['setDefaultCurrentValue']();
       expect(service['_store'].scenarioDto.currentValue).toEqual(defaultCurrentValue);
     });
   });
 
-  describe('isEmptyNavigationPayload()',() => {
+  describe('isEmptyNavigationPayload()', () => {
     it('should return true if hasn\'t payload with keys', () => {
       navigation = { payload: {}};
       const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
@@ -236,7 +235,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('sendDataSuccess()',() => {
+  describe('sendDataSuccess()', () => {
     it('should call log of loggerService', () => {
       spyOn<any>(logger, 'log').and.callThrough();
       service['sendDataSuccess'](response);
@@ -250,7 +249,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('sendDataError()',() => {
+  describe('sendDataError()', () => {
     let errorResponse;
 
     beforeEach(() => {
@@ -274,7 +273,7 @@ describe('ScreenModalService', () => {
       const errorResponse = {
         message: 'oops... i did it again',
         description: 'a-e-e-e-e-e...',
-        status: 500
+        status: 500,
       };
       spyOn<any>(service, 'initResponse').and.callThrough();
       // @ts-ignore
@@ -289,7 +288,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('initResponse()',() => {
+  describe('initResponse()', () => {
     it('should call handleInvalidResponse when empty response', () => {
       spyOn<any>(service, 'handleInvalidResponse').and.callThrough();
       service['initResponse'](null);
@@ -322,7 +321,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('handleInvalidResponse()',() => {
+  describe('handleInvalidResponse()', () => {
     it('should call error of loggerService', () => {
       spyOn<any>(logger, 'error').and.callThrough();
       service['handleInvalidResponse']();
@@ -330,14 +329,14 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('get store()',() => {
+  describe('get store()', () => {
     it('should return store', () => {
       const store = service.store;
       expect(store).toBe(service['_store']);
     });
   });
 
-  describe('initScreenStore()',() => {
+  describe('initScreenStore()', () => {
     it('should call initScreenStore of screenService with scenarioDto', () => {
       spyOn<any>(screenService, 'initScreenStore').and.callThrough();
       service['initScreenStore'](response.scenarioDto);
@@ -345,7 +344,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('updateLoading()',() => {
+  describe('updateLoading()', () => {
     it('should set isLoading by new value', () => {
       service['updateLoading'](true);
       expect(service['isLoading']).toBe(true);
@@ -364,7 +363,7 @@ describe('ScreenModalService', () => {
     });
   });
 
-  describe('updatePlayerLoaded()',() => {
+  describe('updatePlayerLoaded()', () => {
     it('should set playerLoaded by new value', () => {
       service['updatePlayerLoaded'](true);
       expect(service['playerLoaded']).toBe(true);

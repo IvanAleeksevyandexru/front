@@ -32,12 +32,12 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor/dist/src/assets",
+                "input": "dist/epgu-constructor/src/assets",
                 "output": "assets"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/epgu-lib/assets/",
+                "input": "./node_modules/@epgu/epgu-lib/assets/",
                 "output": "./lib-assets"
               }
             ],

@@ -1,9 +1,4 @@
-<ng-container
-  *ngTemplateOutlet="
-    formOutputHtml;
-    context: { $implicit: control.value }
-  "
->
+<ng-container *ngTemplateOutlet="formOutputHtml; context: { $implicit: control.value }">
 </ng-container>
 
 <ng-template #formOutputHtml let-component>

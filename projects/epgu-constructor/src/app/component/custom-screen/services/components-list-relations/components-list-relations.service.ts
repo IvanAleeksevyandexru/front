@@ -19,7 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { DictionaryFilters, ApplicantAnswersDto } from 'epgu-constructor-types';
+import { DictionaryFilters, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class ComponentsListRelationsService {
   constructor(
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
-    private dateRestrictionsService: DateRestrictionsService
+    private dateRestrictionsService: DateRestrictionsService,
   ) {}
 
   public getUpdatedShownElements(
@@ -94,7 +94,6 @@ export class ComponentsListRelationsService {
 
     return shownElements;
   }
-
 
   updateLimitDatesByDateRestrictions(
     components: Array<CustomComponent>,
@@ -188,7 +187,7 @@ export class ComponentsListRelationsService {
         displayOff.val,
         utils.getObjectProperty(
           this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
-          displayOff.path
+          displayOff.path,
         ) || cachedAnswers[displayOff.relatedRel].value,
       );
     } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
@@ -196,15 +195,13 @@ export class ComponentsListRelationsService {
         displayOn.val,
         utils.getObjectProperty(
           this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
-          displayOn.path
+          displayOn.path,
         ) || cachedAnswers[displayOn.relatedRel].value,
       );
     } else {
       return false;
     }
   }
-
-
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
     return arr.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
@@ -282,7 +279,7 @@ export class ComponentsListRelationsService {
     );
 
     dependentComponent?.attrs?.ref
-      .filter((reference) => (reference.relation === CustomComponentRefRelation.filterOn))
+      .filter((reference) => reference.relation === CustomComponentRefRelation.filterOn)
       .forEach((reference) => {
         const refControl: AbstractControl = form.controls.find(
           (control: AbstractControl) => control.value.id === reference.relatedRel,
@@ -310,21 +307,32 @@ export class ComponentsListRelationsService {
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number
   ): Promise<void> {
-    const relatedComponents = components.filter(relatedComponent => relatedComponent.attrs.dateRestrictions &&
-      (relatedComponent.attrs.dateRestrictions.some(restriction => this.dateRestrictionsService.haveDateRef(restriction))));
+    const relatedComponents = components.filter(
+      (relatedComponent) =>
+        relatedComponent.attrs.dateRestrictions &&
+        relatedComponent.attrs.dateRestrictions.some((restriction) =>
+          this.dateRestrictionsService.haveDateRef(restriction),
+        ),
+    );
 
     for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
-      const restriction = relatedComponents[index].attrs.dateRestrictions.find(restriction =>
-        this.dateRestrictionsService.haveDateRef(restriction) && restriction.value === component.id
+      const restriction = relatedComponents[index].attrs.dateRestrictions.find(
+        (restriction) =>
+          this.dateRestrictionsService.haveDateRef(restriction) &&
+          restriction.value === component.id,
       );
 
       if (restriction) {
         const dateRange = await this.dateRestrictionsService.getDateRange(
           relatedComponents[index].id,
-          relatedComponents[index].attrs.dateRestrictions, components, form, applicantAnswers, componentsGroupIndex);
+          relatedComponents[index].attrs.dateRestrictions,
+          components,
+          form,
+          applicantAnswers,
+          componentsGroupIndex,
+        );
         this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
       }
-
     }
   }
 
@@ -349,7 +357,8 @@ export class ComponentsListRelationsService {
   private updateFormWithDateRange(
     form: FormArray,
     component: CustomComponent | CustomListFormGroup,
-    dateRange: Range): void {
+    dateRange: Range,
+  ): void {
     const control = form.controls.find((control) => control.value.id === component.id);
 
     control.get('attrs').patchValue({
@@ -358,7 +367,9 @@ export class ComponentsListRelationsService {
       maxDate: dateRange.max || component.attrs.maxDate,
     });
 
-    const isDateInRange = control.value.value >= dateRange.min?.getTime() && control.value.value <= dateRange.max?.getTime();
+    const isDateInRange =
+      control.value.value >= dateRange.min?.getTime() &&
+      control.value.value <= dateRange.max?.getTime();
     if (!isDateInRange) {
       control.get('value').patchValue(control.value.value);
     }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
 
 import { DefaultUniqueScreenWrapperComponent } from './default-unique-screen-wrapper.component';
@@ -24,7 +24,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
+import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',

@@ -31,17 +31,17 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
-  margin-left: -$screen-pad-small-gap / 2;
-  margin-right: -$screen-pad-small-gap / 2;
+  margin-left: -$screen-pad-16 / 2;
+  margin-right: -$screen-pad-16 / 2;
   padding-bottom: 8px;
 
   &__item {
     @include flex-container();
     justify-content: flex-start;
     flex: 1 1 100%;
-    margin-left: $screen-pad-small-gap / 2;
-    margin-right: $screen-pad-small-gap / 2;
-    max-width: calc(100% - #{$screen-pad-small-gap});
-    margin-bottom: $screen-pad-p;
+    margin-left: $screen-pad-16 / 2;
+    margin-right: $screen-pad-16 / 2;
+    max-width: calc(100% - #{$screen-pad-16});
+    margin-bottom: $screen-pad-24;
   }
 }

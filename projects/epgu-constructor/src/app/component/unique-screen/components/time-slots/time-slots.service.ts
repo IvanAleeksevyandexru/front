@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ListItem } from 'epgu-lib';
+import { ListItem } from '@epgu/epgu-lib';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,9 +7,7 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import {
-  DictionaryResponse,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsTypes } from './time-slots.constants';
@@ -29,12 +27,16 @@ import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types';
+import {
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionaryUnionKind,
+} from '@epgu/epgu-constructor-types';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 
 type configType = {
-  [key: string]: string | attributesMapType,
+  [key: string]: string | attributesMapType;
 };
 
 @Injectable()
@@ -56,6 +58,7 @@ export class TimeSlotsService {
   private availableMonths: string[];
   private areas: string[];
   private config: configType = {};
+  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -72,13 +75,11 @@ export class TimeSlotsService {
     // Если есть забуканный слот и (сменился загс или слот просрочен)
     const timeSlotsForCancel = this.getTimeSlotsForCancel();
     if (timeSlotsForCancel.length) {
-      return forkJoin(
-        timeSlotsForCancel.map(timeSlot => this.cancelSlot(timeSlot.bookId))
-      ).pipe(
+      return forkJoin(timeSlotsForCancel.map((timeSlot) => this.cancelSlot(timeSlot.bookId))).pipe(
         switchMap((responses: CancelSlotResponseInterface[]) => {
-          if (responses.some(res => res.error)) {
+          if (responses.some((res) => res.error)) {
             this.errorMessage = this.getErrorCancelMessage(responses);
-            this.loggerService.error([responses.map(res => res.error)]);
+            this.loggerService.error([responses.map((res) => res.error)]);
             return of(null);
           }
           return this.book(selectedSlot);
@@ -124,9 +125,7 @@ export class TimeSlotsService {
   }
 
   getAvailableSlots(selectedDay: Date, areadId?: string | number): Observable<SlotInterface[]> {
-    return of(
-      this.getSlotsByDate(selectedDay, areadId),
-    );
+    return of(this.getSlotsByDate(selectedDay, areadId));
   }
 
   getBookedSlot(): SlotInterface {
@@ -151,6 +150,7 @@ export class TimeSlotsService {
     timeSlotsType: TimeSlotsTypes,
   ): Observable<boolean> {
     this.timeSlotsType = timeSlotsType;
+    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs;
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
@@ -193,8 +193,7 @@ export class TimeSlotsService {
     let changed = false;
 
     let department = JSON.parse(data.department);
-    this.isBookedDepartment =
-      this.getBookedDepartment(cachedAnswer, department);
+    this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
     if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
@@ -209,7 +208,8 @@ export class TimeSlotsService {
       eserviceId: data.eserviceId,
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
-      bookAttributes: UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+      bookAttributes:
+        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
     };
 
@@ -249,20 +249,29 @@ export class TimeSlotsService {
 
   private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
     return this.cancelReservation
-      .map(id => this.screenService.getCompValueFromCachedAnswers(id) ?
-        JSON.parse(this.screenService.getCompValueFromCachedAnswers(id)) : null)
-      .filter(timeslot => !!timeslot && this.isCancelCondition(timeslot));
+      .map((id) =>
+        this.screenService.getCompValueFromCachedAnswers(id)
+          ? JSON.parse(this.screenService.getCompValueFromCachedAnswers(id))
+          : null,
+      )
+      .filter((timeslot) => !!timeslot && this.isCancelCondition(timeslot));
   }
 
   private getErrorCancelMessage(responses: CancelSlotResponseInterface[]): string {
-    return responses.reduce((message, response) => {
-      return response.error?.errorDetail ? `${message}${message ? ', ': ''}${response.error.errorDetail.errorMessage}` : message;
-    }, '') || 'check log';
+    return (
+      responses.reduce((message, response) => {
+        return response.error?.errorDetail
+          ? `${message}${message ? ', ' : ''}${response.error.errorDetail.errorMessage}`
+          : message;
+      }, '') || 'check log'
+    );
   }
 
   private getBookedDepartment(cachedAnswer: TimeSlotsAnswerInterface, department): boolean {
-    return cachedAnswer?.department.value === department.value &&
-      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME;
+    return (
+      cachedAnswer?.department.value === department.value &&
+      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME
+    );
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
@@ -270,7 +279,7 @@ export class TimeSlotsService {
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
-        eserviceId: this.config.eserviceId as string || eserviceId,
+        eserviceId: (this.config.eserviceId as string) || eserviceId,
         bookId: bookId,
       })
       .pipe(
@@ -297,9 +306,12 @@ export class TimeSlotsService {
 
     return {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber: this.timeSlotsType === TimeSlotsTypes.MVD ? this.config.parentOrderId as string : this.config.orderId as string,
-      serviceId: [this.config.serviceId as string || serviceId],
-      eserviceId: this.config.eserviceId as string || eserviceId,
+      caseNumber:
+        this.timeSlotsType === TimeSlotsTypes.MVD
+          ? (this.config.parentOrderId as string)
+          : (this.config.orderId as string),
+      serviceId: [(this.config.serviceId as string) || serviceId],
+      eserviceId: (this.config.eserviceId as string) || eserviceId,
       routeNumber,
       attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
     };
@@ -309,6 +321,9 @@ export class TimeSlotsService {
     slotsType: TimeSlotsTypes,
     serviceId: string,
   ): Array<{ name: string; value: string }> {
+    if (this.timeSlotRequestAttrs) {
+      return this.timeSlotRequestAttrs;
+    }
     const settings = {
       [TimeSlotsTypes.BRAK]: [
         { name: 'SolemnRegistration', value: this.solemn },
@@ -318,7 +333,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.MVD]: [],
       [TimeSlotsTypes.GIBDD]: [
         { name: 'organizationId', value: this.department.attributeValues.code },
-        { name: 'serviceId', value: this.config.serviceId as string || serviceId },
+        { name: 'serviceId', value: (this.config.serviceId as string) || serviceId },
       ],
     };
 
@@ -333,7 +348,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.GIBDD]: this.department.attributeValues.code,
     };
 
-    return this.config.organizationId as string || settings[slotsType];
+    return (this.config.organizationId as string) || settings[slotsType];
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
@@ -383,8 +398,10 @@ export class TimeSlotsService {
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {
-      requestBody.parentOrderId = this.config.parentOrderId ? this.config.parentOrderId as string : '';
-      requestBody.caseNumber = this.config.orderId ? this.config.orderId as string : '';
+      requestBody.parentOrderId = this.config.parentOrderId
+        ? (this.config.parentOrderId as string)
+        : '';
+      requestBody.caseNumber = this.config.orderId ? (this.config.orderId as string) : '';
     }
 
     return requestBody;
@@ -401,7 +418,7 @@ export class TimeSlotsService {
       [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
     };
 
-    return this.config.bookAttributes as attributesMapType || settings[slotsType];
+    return (this.config.bookAttributes as attributesMapType) || settings[slotsType];
   }
 
   private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {

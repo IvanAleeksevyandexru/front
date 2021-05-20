@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScreenButton } from 'epgu-constructor-types';
+import { ScreenButton } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-default-unique-screen-wrapper',

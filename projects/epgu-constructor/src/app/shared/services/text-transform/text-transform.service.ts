@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TextTransform } from 'epgu-constructor-types';
+import { TextTransform } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class TextTransformService {

@@ -5,11 +5,11 @@
 $color-highlighted: rgba(153, 177, 230, .5);
 
 .card-toggle-pad{
-  padding: $screen-pad-p;
+  padding: $screen-pad-24;
   border-radius: $border-xl;
   @include shadow-second();
   @include tablets-up {
-    padding: $screen-pad-p;
+    padding: $screen-pad-24;
     @include shadow-main();
   }
 }
