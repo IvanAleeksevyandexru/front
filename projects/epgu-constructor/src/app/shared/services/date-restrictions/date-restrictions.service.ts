@@ -13,7 +13,8 @@ import { Range } from '../date-range/date-range.models';
 @Injectable()
 export class DateRestrictionsService {
   today: Date;
-  dateRangeStore = new Map<string, Range>();
+
+  private dateRangeStore = new Map<string, Range>();
   private maxDateConditions = ['<', '<='];
   private minDateConditions = ['>', '>='];
 
@@ -27,7 +28,9 @@ export class DateRestrictionsService {
     dateRestrictions: DateRestriction[],
     components: Array<CustomComponent>,
     form: FormArray,
-    applicantAnswers: ApplicantAnswersDto): Promise<Range> {
+    applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number
+  ): Promise<Range> {
     if (!this.today) {
       this.today = await this.datesToolsService.getToday();
     }
@@ -45,15 +48,31 @@ export class DateRestrictionsService {
     const maxDate = await
       this.getDateByComparison(this.today, maxRestrictions, (prevDate, currentDate) => isAfter(prevDate, currentDate));
 
-    const dateRange = { min: minDate || null, max: maxDate || null };
+    const dateRange: Range = { min: minDate || null, max: maxDate || null };
 
-    this.dateRangeStore.set(componentId, dateRange);
+    this.setDateRangeToStore(componentId, dateRange, componentsGroupIndex);
 
     return dateRange;
   }
 
+  getDateRangeFromStore(componentId: string, componentsGroupIndex?: number): Range | undefined {
+    return this.dateRangeStore.get(this.getDateRangeStoreKey(componentId, componentsGroupIndex));
+  }
+
   haveDateRef(restriction: DateRestriction): boolean {
     return restriction.type === 'ref';
+  }
+
+  private setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number): void {
+    this.dateRangeStore.set(this.getDateRangeStoreKey(componentId, componentsGroupIndex), dateRange);
+  }
+
+  private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number): string {
+    let key = componentId + String();
+    if (componentsGroupIndex !== undefined) {
+      key += String(componentsGroupIndex);
+    }
+    return key;
   }
 
   private async getDateByComparison(

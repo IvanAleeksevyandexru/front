@@ -54,6 +54,7 @@ export class ComponentsListRelationsService {
     initInitialValues = false,
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
+    componentsGroupIndex?: number
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
@@ -82,7 +83,14 @@ export class ComponentsListRelationsService {
       },
     );
 
-    this.updateLimitDatesByDateRestrictions(components, component, form, screenService.applicantAnswers, initInitialValues);
+    this.updateLimitDatesByDateRestrictions(
+      components,
+      component,
+      form,
+      screenService.applicantAnswers,
+      initInitialValues,
+      componentsGroupIndex
+    );
 
     return shownElements;
   }
@@ -93,15 +101,16 @@ export class ComponentsListRelationsService {
     component: CustomComponent | CustomListFormGroup,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-    initInitialValues: boolean
+    initInitialValues: boolean,
+    componentsGroupIndex?: number
   ): void {
     if (component.attrs.dateRestrictions && !initInitialValues) {
-      this.setLimitDates(component, components, form, applicantAnswers);
+      this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
       return;
     }
 
     if (initInitialValues) {
-      this.updateLimitDates(component, components, form, applicantAnswers);
+      this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
     }
   }
 
@@ -299,6 +308,7 @@ export class ComponentsListRelationsService {
     components: Array<CustomComponent>,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number
   ): Promise<void> {
     const relatedComponents = components.filter(relatedComponent => relatedComponent.attrs.dateRestrictions &&
       (relatedComponent.attrs.dateRestrictions.some(restriction => this.dateRestrictionsService.haveDateRef(restriction))));
@@ -311,7 +321,7 @@ export class ComponentsListRelationsService {
       if (restriction) {
         const dateRange = await this.dateRestrictionsService.getDateRange(
           relatedComponents[index].id,
-          relatedComponents[index].attrs.dateRestrictions, components, form, applicantAnswers);
+          relatedComponents[index].attrs.dateRestrictions, components, form, applicantAnswers, componentsGroupIndex);
         this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
       }
 
@@ -322,9 +332,17 @@ export class ComponentsListRelationsService {
     component: CustomComponent | CustomListFormGroup,
     components: Array<CustomComponent>,
     form: FormArray,
-    applicantAnswers: ApplicantAnswersDto): Promise<void> {
-    const dateRange =
-      await this.dateRestrictionsService.getDateRange(component.id, component.attrs.dateRestrictions, components, form, applicantAnswers);
+    applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number): Promise<void> {
+    const dateRange = await this.dateRestrictionsService.getDateRange(
+      component.id,
+      component.attrs.dateRestrictions,
+      components,
+      form,
+      applicantAnswers,
+      componentsGroupIndex
+    );
+
     this.updateFormWithDateRange(form, component, dateRange);
   }
 

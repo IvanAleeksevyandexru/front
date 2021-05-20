@@ -73,7 +73,7 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
+  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto, componentsGroupIndex?: number): FormArray {
     this.errors = errors;
     this._shownElements = this.componentsListRelationsService.createStatusElements(
       components,
@@ -86,7 +86,7 @@ export class ComponentsListFormService {
     this._form = new FormArray(
       components.map((component: CustomComponent, index) => {
         this.indexesByIds[component.id] = index;
-        return this.createGroup(component, components, errors[component.id]);
+        return this.createGroup(component, components, errors[component.id], componentsGroupIndex);
       }),
     );
     this.validationService.form = this.form;
@@ -105,6 +105,7 @@ export class ComponentsListFormService {
         false,
         this.screenService,
         this.dictionaryToolsService,
+        componentsGroupIndex
       );
     });
 
@@ -288,6 +289,7 @@ export class ComponentsListFormService {
     component: CustomComponent,
     components: Array<CustomComponent>,
     errorMsg: string,
+    componentsGroupIndex?: number
   ): FormGroup {
     const validators = [
       this.validationService.customValidator(component),
@@ -295,7 +297,7 @@ export class ComponentsListFormService {
     ];
 
     if (component.type === CustomScreenComponentTypes.DateInput) {
-      validators.push(this.validationService.dateValidator(component));
+      validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
     const { type, attrs, id, label, required } = component;
@@ -334,6 +336,7 @@ export class ComponentsListFormService {
           true,
           this.screenService,
           this.dictionaryToolsService,
+          componentsGroupIndex
         );
         // TODO: в перспективе избавиться от этой хардкодной логики
         this.checkAndFetchCarModel(next, prev);
