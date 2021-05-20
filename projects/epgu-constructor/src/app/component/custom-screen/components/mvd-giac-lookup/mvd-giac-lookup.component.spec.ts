@@ -1,7 +1,7 @@
 import { MvdGiacLookupComponent } from './mvd-giac-lookup.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule, ValidationShowOn } from 'epgu-lib';
+import { EpguLibModule, ValidationShowOn } from '@epgu/epgu-lib';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -27,10 +27,7 @@ describe('MvdGiacLookupComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MvdGiacLookupComponent,
-        MockComponent(ComponentItemComponent)
-      ],
+      declarations: [MvdGiacLookupComponent, MockComponent(ComponentItemComponent)],
       imports: [MockModule(EpguLibModule)],
       providers: [
         DictionaryToolsService,
@@ -39,9 +36,11 @@ describe('MvdGiacLookupComponent', () => {
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    }).overrideComponent(MvdGiacLookupComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(MvdGiacLookupComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   let valueControl: FormControl;
@@ -49,14 +48,16 @@ describe('MvdGiacLookupComponent', () => {
 
   beforeEach(() => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
 
     valueControl = new FormControl('some value');
     control = new FormGroup({
       id: new FormControl('someId'),
-      value: valueControl
+      value: valueControl,
     });
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
 
     fixture = TestBed.createComponent(MvdGiacLookupComponent);
     component = fixture.componentInstance;
@@ -79,12 +80,12 @@ describe('MvdGiacLookupComponent', () => {
     expect(debugEl.componentInstance.control).toBe(valueControl);
     expect(debugEl.componentInstance.component).toEqual({
       id: 'someId',
-      value: 'some value'
+      value: 'some value',
     });
     expect(debugEl.componentInstance.invalid).toBeFalsy();
 
     component.control.setErrors({
-      someErrorKey: true
+      someErrorKey: true,
     });
     fixture.detectChanges();
 
@@ -112,7 +113,7 @@ describe('MvdGiacLookupComponent', () => {
       expect(debugEl.componentInstance.invalid).toBeFalsy();
 
       valueControl.setErrors({
-        someErrorKey: true
+        someErrorKey: true,
       });
       fixture.detectChanges();
 
@@ -129,19 +130,19 @@ describe('MvdGiacLookupComponent', () => {
 
       expect(debugEl.componentInstance.fixedItems).toBeUndefined();
 
-      dictionaryToolsService.dropDowns$.next({
+      dictionaryToolsService.dropDowns$.next(({
         someId: [
           {
-            text: 'some text'
-          }
-        ]
-      } as unknown as CustomListDropDowns);
+            text: 'some text',
+          },
+        ],
+      } as unknown) as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.fixedItems).toEqual([
         {
-          text: 'some text'
-        }
+          text: 'some text',
+        },
       ]);
     });
 
@@ -150,13 +151,13 @@ describe('MvdGiacLookupComponent', () => {
 
       expect(debugEl.componentInstance.disabled).toBeFalsy();
 
-      dictionaryToolsService.dropDowns$.next({
+      dictionaryToolsService.dropDowns$.next(({
         someId: [
           {
-            text: 'some text'
-          }
-        ]
-      } as unknown as CustomListDropDowns);
+            text: 'some text',
+          },
+        ],
+      } as unknown) as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.disabled).toBeTruthy();

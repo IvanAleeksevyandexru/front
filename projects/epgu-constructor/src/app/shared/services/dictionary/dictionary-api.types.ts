@@ -1,4 +1,4 @@
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement } from '@epgu/epgu-lib';
 import { PaymentInfoInterface } from '../../../component/unique-screen/components/payment/payment.types';
 
 export interface DictionaryResponse {
@@ -27,7 +27,7 @@ export interface DictionaryResponseError {
  * @property {string}value - example: RUS
  */
 export interface DictionaryItem extends ListElement {
-  attributeValues: PaymentInfoInterface & {[key: string]: string };
+  attributeValues: PaymentInfoInterface & { [key: string]: string };
   attributes: Array<string | boolean>;
   children: Array<unknown>;
   isLeaf: boolean;

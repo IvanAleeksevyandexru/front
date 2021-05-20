@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from 'epgu-lib';
+import { HealthService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
@@ -69,7 +69,12 @@ describe('SelectChildrenItemComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
-      imports: [RouterTestingModule, ConstructorDropdownModule, ComponentsListModule, BaseComponentsModule],
+      imports: [
+        RouterTestingModule,
+        ConstructorDropdownModule,
+        ComponentsListModule,
+        BaseComponentsModule,
+      ],
       providers: [
         HealthService,
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -80,7 +85,7 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         DictionaryToolsService,
-        RefRelationService
+        RefRelationService,
       ],
     }).compileComponents();
   });

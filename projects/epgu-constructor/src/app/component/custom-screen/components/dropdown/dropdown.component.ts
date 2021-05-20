@@ -1,4 +1,4 @@
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 

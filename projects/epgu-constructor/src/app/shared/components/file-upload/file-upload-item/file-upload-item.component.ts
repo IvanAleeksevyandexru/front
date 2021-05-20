@@ -16,7 +16,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
@@ -92,6 +92,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return this.store?.lastSelected
       ? getAcceptTypes(this.store?.lastSelected.type)
       : getAcceptTypes(this.data.fileType);
+  }
+  get hasImageTypes(): boolean {
+    const types = this.acceptTypes;
+    return (
+      types.indexOf('.jpeg') !== -1 ||
+      types.indexOf('.jpg') !== -1 ||
+      types.indexOf('.gif') !== -1 ||
+      types.indexOf('.png') !== -1 ||
+      types.indexOf('.bmp') !== -1
+    );
   }
 
   isMobile: boolean = this.deviceDetectorService.isMobile;

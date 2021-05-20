@@ -30,6 +30,9 @@ import { MatPeriodContainerComponent } from '../components/mat-period/mat-period
 import { DateTimePeriodContainerComponent } from '../components/date-time-period/components/date-time-period-container/date-time-period-container.component';
 import { ConfirmPersonalUserAddressReadonlyComponent } from '../components/confirm-personal-user-address-readonly-screen/components/confirm-personal-user-address-readonly/confirm-personal-user-address-readonly.component';
 import { CarDetailInfoContainerComponent } from '../components/car-info/containers/car-detail-info/car-detail-info-container.component';
+import {
+  MedicalReferralsListContainerComponent
+} from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -62,7 +65,9 @@ type UniqueScreenComponent =
   | DateTimePeriodContainerComponent
   | CheckboxCubeContainerComponent
   | ConfirmPersonalUserAddressReadonlyComponent
-  | CarDetailInfoContainerComponent;
+  | CarDetailInfoContainerComponent
+  | MedicalReferralsListContainerComponent
+  ;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -112,4 +117,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
   CarDetailInfo: CarDetailInfoContainerComponent,
+  MedicalReferrals: MedicalReferralsListContainerComponent,
 };

@@ -7,12 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { ListItem, LookupComponent, ValidationShowOn } from 'epgu-lib';
 import {
+  ListItem,
+  LookupComponent,
+  ValidationShowOn,
   ListElement,
   LookupPartialProvider,
   LookupProvider,
-} from 'epgu-lib/lib/models/dropdown.model';
+} from '@epgu/epgu-lib';
 
 @Component({
   selector: 'epgu-constructor-constructor-lookup',
