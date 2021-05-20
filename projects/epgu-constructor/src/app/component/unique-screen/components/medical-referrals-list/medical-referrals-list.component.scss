@@ -1,0 +1,34 @@
+@import '../../../../../styles/core';
+
+.referrals-end-date {
+  color: $color-text-helper;
+  @include typ-plain-small();
+}
+
+.referrals-specialist {
+  text-transform: capitalize;
+  @include typ-h5();
+}
+
+.referrals-address {
+  text-transform: capitalize;
+  @include typ-plain-text;
+  color: $color-text-helper;
+}
+
+.referrals-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  @include phones-down {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.referrals-action, .empty-referrals-info, .referrals-number {
+  @include typ-plain-text;
+}
+

@@ -67,8 +67,8 @@
           field.hint
         }}</epgu-constructor-helper-text>
       </div>
-      <div class="error">
-        <small>{{ error$ | async }}</small>
+      <div class="error" *ngIf="error$ | async as errorText">
+        <small>{{ errorText }}</small>
       </div>
     </form>
 

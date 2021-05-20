@@ -8795,11 +8795,6 @@ envinfo@^7.7.4:
   resolved "http://npm.gosuslugi.local/envinfo/-/envinfo-7.8.1.tgz#06377e3e5f4d379fea7ac592d5ad8927e0c4d475"
   integrity sha512-/o+BXHmB7ocbHEAs6F2EnG0ogybVVUdkRunTT2glZU9XAaGmhqskrvKwqXuDfNjEO0LZKWdejEEpnq8aM0tOaw==
 
-epgu-constructor-types@15.6.0:
-  version "15.6.0"
-  resolved "http://npm.gosuslugi.local/epgu-constructor-types/-/epgu-constructor-types-15.6.0.tgz#dfd5ed3c280d10c99d41cb3b3a321bd385db9290"
-  integrity sha512-LYIgOA9HYNuEIrLyh9g0Ka+8FKj1xNkDG3j8bLKh9es94QgJ6sPnlac+p75MBXyQRc73EpncW/g+FSfgUWX3SQ==
-
 epgu-lib@0.0.1285:
   version "0.0.1285"
   resolved "http://npm.gosuslugi.local/epgu-lib/-/epgu-lib-0.0.1285.tgz#2bbf0abb73ece9aa8f0d03d87fa02e2cd1dadd3d"
