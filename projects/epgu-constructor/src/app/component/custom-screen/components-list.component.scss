@@ -28,6 +28,11 @@
         margin-bottom: 0;
       }
     }
+    &[class*="grid"] {
+      &:last-child > * {
+        margin-bottom: $screen-pad-p !important;
+      }
+    }
   }
   &__radio {
     margin-top: $screen-pad-12;
