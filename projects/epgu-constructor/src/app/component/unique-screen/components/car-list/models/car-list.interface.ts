@@ -1,13 +1,13 @@
 import { ServiceResult } from '../../car-info/models/car-info.interface';
-import { ComponentActionDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, ComponentAttrsDto } from 'epgu-constructor-types';
 
 export interface CarListComponentAttrsDto extends ComponentAttrsDto {
   errors: CarInfoErrorsDto;
 }
 
 export interface CarInfoErrorsDto {
-  EXTERNAL_SERVER_ERROR?: ErrorTemplate;
-  NOT_FOUND_ERROR?: ErrorTemplate;
+  EXTERNAL_SERVER_ERROR?: ErrorTemplate,
+  NOT_FOUND_ERROR?: ErrorTemplate
 }
 
 export interface ErrorTemplate {

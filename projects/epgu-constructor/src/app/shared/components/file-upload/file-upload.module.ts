@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { FileUploadItemComponent } from './file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileUploadService } from './file-upload.service';

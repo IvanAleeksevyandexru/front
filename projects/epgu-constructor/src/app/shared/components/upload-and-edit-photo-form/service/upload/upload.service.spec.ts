@@ -9,7 +9,7 @@ import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
+import { ComponentUploadedFileDto } from 'epgu-constructor-types';
 
 describe('UploadService', () => {
   let service: UploadService;

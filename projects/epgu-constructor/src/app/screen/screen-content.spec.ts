@@ -8,7 +8,8 @@ import {
   ComponentDto,
   ApplicantAnswersDto,
   Gender,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
+
 
 const screenStoreSample: ScreenStore = {
   orderId: 653920,

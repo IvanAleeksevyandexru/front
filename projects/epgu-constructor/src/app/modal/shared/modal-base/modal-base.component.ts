@@ -6,7 +6,7 @@ import {
   Injector,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { HelperService } from '@epgu/epgu-lib';
+import { HelperService } from 'epgu-lib';
 
 @Component({
   template: '',

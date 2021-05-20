@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
@@ -76,4 +76,5 @@ describe('TimeSlotsComponent', () => {
     const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
     expect(organizationId).toBe('9277');
   });
+
 });

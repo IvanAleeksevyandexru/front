@@ -1,5 +1,5 @@
 import { ScreenTypes } from '../../screen/screen.types';
-import { DisplayDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { DisplayDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
   id: 'finishscreen_double_order_error',
@@ -11,13 +11,12 @@ export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
     {
       id: 'finishcomponent_double_order_error',
       type: 'HtmlString',
-      label:
-        // eslint-disable-next-line max-len
-        '<div class="text--center"><img src=\'{staticDomainAssetsPath}/assets/icons/svg/warn.svg\' /></div><h4 class="text--center">Подать заявление пока нельзя</h4><p class=\'text-color--text-helper text--center mt-16\'>У вас уже есть поданное заявление по этой услуге. Чтобы <br>получить новое — дождитесь результатов обработки текущего.</p>',
+      // eslint-disable-next-line max-len
+      label: '<div class=\"text--center\"><img src=\'{staticDomainAssetsPath}/assets/icons/svg/warn.svg\' /></div><h4 class=\"text--center\">Подать заявление пока нельзя</h4><p class=\'text-color--text-helper text--center mt-16\'>У вас уже есть поданное заявление по этой услуге. Чтобы <br>получить новое — дождитесь результатов обработки текущего.</p>',
       attrs: {},
       value: '',
-      required: true,
-    },
+      required: true
+    }
   ],
   infoComponents: [],
   terminal: true,
@@ -26,10 +25,10 @@ export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
       label: 'В личный кабинет',
       value: 'Перейти в личный кабинет',
       type: ActionType.redirectToLK,
-      action: DTOActionAction.getNextStep,
-    },
+      action: DTOActionAction.getNextStep
+    }
   ],
-  firstScreen: false,
+  firstScreen: false
 };
 
 export default DOUBLE_ORDER_ERROR_DISPLAY;

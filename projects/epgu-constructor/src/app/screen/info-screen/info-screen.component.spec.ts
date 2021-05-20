@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { MockComponents, MockDirective } from 'ng-mocks';
 import { WINDOW_PROVIDERS } from '../../core/providers/window.provider';
 import { ConfigService } from '../../core/services/config/config.service';
@@ -26,7 +26,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -59,7 +59,11 @@ describe('InfoScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModule, BaseModule, ScreenButtonsModule],
+      imports: [
+        EpguLibModule,
+        BaseModule,
+        ScreenButtonsModule,
+      ],
       declarations: [
         InfoScreenComponent,
         MockComponents(
@@ -81,11 +85,9 @@ describe('InfoScreenComponent', () => {
         EventBusService,
         CurrentAnswersService,
       ],
-    })
-      .overrideComponent(InfoScreenComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
-      .compileComponents();
+    }).overrideComponent(InfoScreenComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default }
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -174,8 +176,8 @@ describe('InfoScreenComponent', () => {
       screenService.component = {
         ...componentSample,
         attrs: {
-          hideSocialShare: false,
-        },
+          hideSocialShare: false
+        }
       };
       screenService.terminal = false;
       fixture.detectChanges();
@@ -185,8 +187,8 @@ describe('InfoScreenComponent', () => {
       screenService.component = {
         ...componentSample,
         attrs: {
-          hideSocialShare: false,
-        },
+          hideSocialShare: false
+        }
       };
       screenService.terminal = true;
       fixture.detectChanges();
@@ -196,8 +198,8 @@ describe('InfoScreenComponent', () => {
       screenService.component = {
         ...componentSample,
         attrs: {
-          hideSocialShare: true,
-        },
+          hideSocialShare: true
+        }
       };
       screenService.terminal = false;
       fixture.detectChanges();
@@ -229,4 +231,5 @@ describe('InfoScreenComponent', () => {
       expect(debugEl.componentInstance.isNewDesign).toBeTruthy();
     });
   });
+
 });

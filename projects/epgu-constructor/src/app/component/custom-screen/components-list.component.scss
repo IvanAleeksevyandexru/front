@@ -23,14 +23,14 @@
     &--checkbox > * {
       margin-bottom: $screen-pad-16;
     }
-    &[class*="grid"] {
-      &:last-child > * {
-        margin-bottom: $screen-pad-24 !important;
-      }
-    }
     &:last-child {
       &::ng-deep > .component-list-resolver > * > * {
         margin-bottom: 0;
+      }
+    }
+    &[class*="grid"] {
+      &:last-child > * {
+        margin-bottom: $screen-pad-24 !important;
       }
     }
   }

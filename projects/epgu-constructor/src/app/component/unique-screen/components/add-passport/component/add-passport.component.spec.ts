@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from 'epgu-lib';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -21,7 +21,7 @@ import { ActionServiceStub } from '../../../../../shared/directives/action/actio
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AddPassportComponent', () => {
@@ -69,7 +69,7 @@ describe('AddPassportComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         SuggestHandlerService,
-        DateRestrictionsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

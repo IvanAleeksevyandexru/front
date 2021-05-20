@@ -14,9 +14,10 @@ fs-1.0-SNAPSHOT.jar
 
 # dependencies
 /node_modules
-/packages/@epgu/epgu-constructor/node_modules
-/packages/@epgu/epgu-constructor-types/node_modules
+/packages/epgu-constructor/node_modules
+/packages/epgu-constructor-types/node_modules
 package-lock.json
+yarn.lock
 
 # profiling files
 chrome-profiler-events*.json

@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { SmuEventsService } from 'epgu-lib';
 import {
   CancelAction,
   ErrorActions,

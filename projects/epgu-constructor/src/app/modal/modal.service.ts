@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { HelperService } from '@epgu/epgu-lib';
+import { HelperService } from 'epgu-lib';
 
 @Injectable()
 export class ModalService {

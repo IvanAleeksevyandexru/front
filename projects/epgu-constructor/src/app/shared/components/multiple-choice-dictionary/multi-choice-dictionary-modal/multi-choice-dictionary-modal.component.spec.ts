@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule } from 'ng-mocks';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { FormBuilder } from '@angular/forms';
 
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
@@ -73,7 +73,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService,
+        DateRestrictionsService
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {

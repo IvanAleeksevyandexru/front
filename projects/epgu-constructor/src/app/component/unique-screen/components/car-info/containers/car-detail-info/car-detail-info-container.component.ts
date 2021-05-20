@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { ActionType } from '@epgu/epgu-constructor-types';
+import { ActionType } from 'epgu-constructor-types';
 
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CarDetailInfoComponentAttrsDto, ServiceResult } from '../../models/car-info.interface';

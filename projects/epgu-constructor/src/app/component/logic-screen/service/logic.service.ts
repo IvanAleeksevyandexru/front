@@ -5,7 +5,7 @@ import { catchError, map, timeout } from 'rxjs/operators';
 
 import { ComponentValue } from '../logic.types';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 
 @Injectable()
 export class LogicService {

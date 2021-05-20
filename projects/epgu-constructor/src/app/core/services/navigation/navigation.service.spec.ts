@@ -5,7 +5,7 @@ import { ConfigServiceStub } from '../config/config.service.stub';
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { SmuEventsService } from 'epgu-lib';
 import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub';
 import { MobilViewEvents } from '../../../shared/constants/redirect-event';
 import { LocationService } from '../location/location.service';
@@ -13,7 +13,7 @@ import { WINDOW_PROVIDERS } from '../../providers/window.provider';
 import { configureTestSuite } from 'ng-bullet';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { OrgType } from '@epgu/epgu-constructor-types';
+import { OrgType } from 'epgu-constructor-types';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;

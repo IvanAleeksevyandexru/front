@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
-import {
-  CustomComponentOutputData,
-  CustomComponentValidationConditions,
-} from '../../component/custom-screen/components-list.types';
+import { CustomComponentOutputData, CustomComponentValidationConditions } from '../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -29,7 +26,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -67,7 +64,7 @@ describe('CustomScreenComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
+      set: { changeDetection: ChangeDetectionStrategy.Default }
     });
   });
 
@@ -270,12 +267,10 @@ describe('CustomScreenComponent', () => {
 
       expect(debugEl).toBeNull();
 
-      screenService.buttons = [
-        {
-          label: 'any',
-          action: DTOActionAction.getNextStep,
-        },
-      ];
+      screenService.buttons = [{
+        label: 'any',
+        action: DTOActionAction.getNextStep,
+      }];
       fixture.detectChanges();
 
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -284,13 +279,11 @@ describe('CustomScreenComponent', () => {
     });
 
     it('disabled property should be TRUE if screenService.isLoading is TRUE or isValid is FALSE', () => {
-      screenService.buttons = [
-        {
-          label: 'any',
-          action: DTOActionAction.getNextStep,
-          type: ActionType.nextStep,
-        },
-      ];
+      screenService.buttons = [{
+        label: 'any',
+        action: DTOActionAction.getNextStep,
+        type: ActionType.nextStep
+      }];
 
       screenService.isLoadingSubject.next(true);
       component.isValid = false;

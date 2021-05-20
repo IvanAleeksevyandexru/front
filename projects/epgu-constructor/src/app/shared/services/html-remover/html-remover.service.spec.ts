@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { ScreenTypes } from '../../../screen/screen.types';
 import { HtmlRemoverService } from './html-remover.service';
 import { configureTestSuite } from 'ng-bullet';
-import { DisplayDto } from '@epgu/epgu-constructor-types';
+import { DisplayDto } from 'epgu-constructor-types';
+
 
 describe('HtmlRemoverService', () => {
   let service: HtmlRemoverService;
@@ -16,7 +17,8 @@ describe('HtmlRemoverService', () => {
       {
         id: 'w1',
         type: 'InfoScr',
-        label: `<p>Планируете зарубежную поездку? Закажите заграничный паспорт себе и своим детям без ожидания в очередях</p>
+        label:
+          `<p>Планируете зарубежную поездку? Закажите заграничный паспорт себе и своим детям без ожидания в очередях</p>
           <p>Чтобы сделать правильный выбор, <a id=\'findout\'>узнайте</a>,
           чем загранпаспорт нового образца отличается от старого образца</p>
           <p>Для получения услуги вам нужно ответить на несколько вопросов, чтобы мы показали необходимые действия</p>`,
@@ -24,7 +26,8 @@ describe('HtmlRemoverService', () => {
           clarifications: {
             findout: {
               title: 'Чем отличается паспорт нового образца от старого',
-              text: `<p><h5>Загранпаспорт нового образца</h5>
+              text:
+                `<p><h5>Загранпаспорт нового образца</h5>
                 Загранпаспорт нового образца еще называют содержащим электронный носитель информации либо биометрическим.<br><br>
                 <b>Особенности</b><ul class=\'mt-12\'>
                 <li>Срок действия — 10 лет</li>
