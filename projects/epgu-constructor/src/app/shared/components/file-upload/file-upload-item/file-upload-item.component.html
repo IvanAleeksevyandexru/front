@@ -46,7 +46,7 @@
         (upload)="updateSelectedFilesInfoAndSend($event)"
       >
         <div class="uploader-info">
-          <span *ngIf="!isMobile">Перетащите файлы или выберите на компьютере</span>
+          <span *ngIf="!isMobile">Перетащите {{ plurals.choosingFiles | pluralize:maxAmount }} или выберите на компьютере</span>
           <span *ngIf="isMobile">Выберите файл или сделайте фото</span>
         </div>
         <div class="uploader-buttons">
@@ -75,7 +75,7 @@
                 class="fileupload__button-icon"
                 alt="Файл"
               />
-              Выбрать ещё
+              Выбрать {{ plurals.uploadingFiles | pluralize:maxAmount }}
             </button>
           </epgu-constructor-uploader-button>
         </div>
