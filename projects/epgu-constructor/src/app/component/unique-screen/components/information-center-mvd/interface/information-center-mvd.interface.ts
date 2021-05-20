@@ -1,5 +1,5 @@
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
-import { ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, ComponentDictionaryFilterDto } from '@epgu/epgu-constructor-types';
 
 export interface InformationCenterMvdI {
   id: string;
