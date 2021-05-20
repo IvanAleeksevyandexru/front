@@ -1,11 +1,8 @@
-import { SmuEventsService } from 'epgu-lib';
+import { SmuEventsService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { MOBILE_VIEW_COOKIE_NAME } from '../../shared/constants/cookie';
 
-export function initApp(
-  smuEventsService: SmuEventsService,
-  cookieService: CookieService,
-) {
+export function initApp(smuEventsService: SmuEventsService, cookieService: CookieService) {
   return (): Promise<void> => {
     return new Promise((resolve) => {
       /**

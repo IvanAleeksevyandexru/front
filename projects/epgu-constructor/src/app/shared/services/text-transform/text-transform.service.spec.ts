@@ -6,7 +6,7 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
-import { TextTransform } from 'epgu-constructor-types';
+import { TextTransform } from '@epgu/epgu-constructor-types';
 
 describe('TextTransformService', () => {
   let service: TextTransformService;
@@ -18,7 +18,7 @@ describe('TextTransformService', () => {
         TextTransformService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
-        DateRestrictionsService
+        DateRestrictionsService,
       ],
     });
   });

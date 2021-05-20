@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormatPhonePipe } from 'epgu-lib';
+import { FormatPhonePipe } from '@epgu/epgu-lib';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -12,7 +12,7 @@ import { ActionDirective } from '../../../../shared/directives/action/action.dir
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
+import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   let component: ConfirmPersonalUserPhoneEmailComponent;
@@ -24,7 +24,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     id: '',
     label: '',
     type: '',
-    value: ''
+    value: '',
   };
   const actionMock: ComponentActionDto = {
     label: '',
@@ -33,23 +33,17 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     type: ActionType.nextStepModal,
   };
 
-
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [
-        ConfirmPersonalUserPhoneEmailComponent,
-        FormatPhonePipe,
-        ActionDirective,
-      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      declarations: [ConfirmPersonalUserPhoneEmailComponent, FormatPhonePipe, ActionDirective],
       providers: [
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         UnsubscribeService,
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -90,13 +84,17 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     });
 
     it('should set isEditContactAction for editPhoneNumber action', () => {
-      jest.spyOn(screenService, 'action', 'get').mockReturnValue({ action: DTOActionAction.editPhoneNumber } as any);
+      jest
+        .spyOn(screenService, 'action', 'get')
+        .mockReturnValue({ action: DTOActionAction.editPhoneNumber } as any);
       component.ngOnInit();
       expect(component.isEditContactAction).toEqual(true);
     });
 
     it('should set isEditContactAction for editLegalEmail action', () => {
-      jest.spyOn(screenService, 'action', 'get').mockReturnValue({ action: DTOActionAction.editLegalEmail } as any);
+      jest
+        .spyOn(screenService, 'action', 'get')
+        .mockReturnValue({ action: DTOActionAction.editLegalEmail } as any);
       component.ngOnInit();
       expect(component.isEditContactAction).toEqual(true);
     });
@@ -108,19 +106,25 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     });
 
     it('should set isPhoneScreenType for confirmPersonalUserPhone', () => {
-      jest.spyOn(screenService, 'component', 'get').mockReturnValue({ type: UniqueScreenComponentTypes.confirmPersonalUserPhone } as any);
+      jest
+        .spyOn(screenService, 'component', 'get')
+        .mockReturnValue({ type: UniqueScreenComponentTypes.confirmPersonalUserPhone } as any);
       component.ngOnInit();
       expect(component.isPhoneScreenType).toEqual(true);
     });
 
     it('should set isPhoneScreenType for confirmLegalPhone', () => {
-      jest.spyOn(screenService, 'component', 'get').mockReturnValue({ type: UniqueScreenComponentTypes.confirmLegalPhone } as any);
+      jest
+        .spyOn(screenService, 'component', 'get')
+        .mockReturnValue({ type: UniqueScreenComponentTypes.confirmLegalPhone } as any);
       component.ngOnInit();
       expect(component.isPhoneScreenType).toEqual(true);
     });
 
     it('should set isPhoneScreenType as false', () => {
-      jest.spyOn(screenService, 'component', 'get').mockReturnValue({ type: UniqueScreenComponentTypes.confirmPersonalUserEmail } as any);
+      jest
+        .spyOn(screenService, 'component', 'get')
+        .mockReturnValue({ type: UniqueScreenComponentTypes.confirmPersonalUserEmail } as any);
       component.ngOnInit();
       expect(component.isPhoneScreenType).toEqual(false);
     });

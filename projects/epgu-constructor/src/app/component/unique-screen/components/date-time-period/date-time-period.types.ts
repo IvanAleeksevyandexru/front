@@ -1,4 +1,4 @@
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement } from '@epgu/epgu-lib';
 
 export interface DateTimePeriodState {
   startDateTime: string | null;
