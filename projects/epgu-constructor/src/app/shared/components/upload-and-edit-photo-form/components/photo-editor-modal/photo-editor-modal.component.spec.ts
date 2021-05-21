@@ -3,7 +3,7 @@ import { LyImageCropperModule } from '@alyle/ui/image-cropper';
 import { MinimaDark, MinimaLight } from '@alyle/ui/themes/minima';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { ButtonComponent } from '@epgu/epgu-lib';
+import { ButtonComponent } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 

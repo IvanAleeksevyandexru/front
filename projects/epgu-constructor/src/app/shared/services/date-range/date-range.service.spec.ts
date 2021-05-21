@@ -11,7 +11,7 @@ import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;
@@ -57,40 +57,25 @@ describe('DateRangeService', () => {
     service = TestBed.inject(DateRangeService);
     screenService = TestBed.inject(ScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
-    jest
-      .spyOn(datesToolsService, 'getToday')
-      .mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
+    jest.spyOn(datesToolsService, 'getToday').mockReturnValue(Promise.resolve(new Date(MOCK_TODAY)));
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
   });
 
   it('should be return min date', async () => {
     const expectedResult = datesToolsService.toDate('2020-10-27T21:00:00.000Z');
-    const minDate = await service.getMinDate(
-      componentMock.attrs.ref,
-      componentMock.id,
-      new Date(),
-      screenService.applicantAnswers,
-    );
+    const minDate = await service.getMinDate(componentMock.attrs.ref, componentMock.id, new Date(), screenService.applicantAnswers);
     expect(minDate).toEqual(expectedResult);
   });
 
   it('should be return max date', async () => {
     const expectedResult = datesToolsService.toDate('2022-10-27T21:00:00.000Z');
-    const maxDate = await service.getMaxDate(
-      componentMock.attrs.ref,
-      componentMock.id,
-      new Date(),
-      screenService.applicantAnswers,
-    );
+    const maxDate = await service.getMaxDate(componentMock.attrs.ref, componentMock.id, new Date(), screenService.applicantAnswers);
     expect(maxDate).toEqual(expectedResult);
   });
 
   describe('clearDate()', () => {
     it('should be clear date', async () => {
-      service.rangeMap.set(componentMock.id, {
-        min: await datesToolsService.getToday(),
-        max: await datesToolsService.getToday(),
-      });
+      service.rangeMap.set(componentMock.id, { min: await datesToolsService.getToday(), max: await datesToolsService.getToday() });
       service.clearDate(componentMock.id, componentMock.attrs);
       const range = service.rangeMap.get(componentMock.id);
 

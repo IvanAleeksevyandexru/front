@@ -2,14 +2,14 @@ import {
   IFilterRegItems,
   PaymentDictionaryOptionsInterface,
   PaymentsAttrs,
-  SubPaymentDictionaryOptionInterface,
+  SubPaymentDictionaryOptionInterface
 } from './payment.types';
-import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
+import { DictionaryConditions, DictionaryUnionKind } from 'epgu-constructor-types';
 
 /**
  * Тип справочников для услуг
  */
-export enum paymentNSIType {
+export enum paymentNSIType{
   REGISTER_MARRIAGE = 'fns_zgs_getpay_79272', //Регистрация брака
 }
 
@@ -29,16 +29,16 @@ const requestPageSize = 258; //Сколько сведений на одной �
  */
 const getPaymentRequestOptionsFilter = (
   subs: SubPaymentDictionaryOptionInterface[],
-  unionKind = DictionaryUnionKind.AND,
+  unionKind = DictionaryUnionKind.AND
 ): PaymentDictionaryOptionsInterface => {
   return {
     pageSize: requestPageSize,
     filter: {
       union: {
         unionKind,
-        subs: subs,
-      },
-    },
+        subs: subs
+      }
+    }
   };
 };
 
@@ -49,19 +49,17 @@ const getPaymentRequestOptionsFilter = (
  * @constructor
  */
 // eslint-disable-next-line max-len
-export const getPaymentRequestOptions = (
-  filterReg: IFilterRegItems,
-  attrs: PaymentsAttrs,
-): PaymentDictionaryOptionsInterface => {
+export const getPaymentRequestOptions = (filterReg: IFilterRegItems, attrs: PaymentsAttrs): PaymentDictionaryOptionsInterface => {
   return {
     ...getPaymentRequestOptionsFilter([
       getPaymentSimpleRequestOption('FiasCode', filterReg.value.substring(0, 3)),
       getPaymentSimpleRequestOption('filter_reg', filterReg.value),
       getPaymentSimpleRequestOption('dictem_code', attrs.dictItemCode),
     ]),
-    tx: '41588125-d55f-11ea-8b86-fa163ee4b849',
+    tx: '41588125-d55f-11ea-8b86-fa163ee4b849'
   };
 };
+
 
 /**
  * Возвращает одну опции атрибута запроса фильтра по платежам
@@ -72,15 +70,15 @@ export const getPaymentRequestOptions = (
 export const getPaymentSimpleRequestOption = (
   attributeName: string,
   value: string,
-  condition = DictionaryConditions.EQUALS,
+  condition = DictionaryConditions.EQUALS
 ): SubPaymentDictionaryOptionInterface => {
   return {
     simple: {
       attributeName,
       condition,
       value: {
-        asString: value,
-      },
-    },
+        asString: value
+      }
+    }
   };
 };

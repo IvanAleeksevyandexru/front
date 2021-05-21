@@ -11,7 +11,7 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;

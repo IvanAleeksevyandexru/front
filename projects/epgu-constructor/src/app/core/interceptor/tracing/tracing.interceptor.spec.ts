@@ -25,7 +25,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { UtilsService } from '../../services/utils/utils.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
+import { ActionRequestPayload } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';

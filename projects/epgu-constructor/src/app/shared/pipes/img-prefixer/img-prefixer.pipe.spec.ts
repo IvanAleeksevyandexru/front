@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from 'epgu-lib';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { LoadServiceStub } from '../../../core/services/config/load-service-stub';
 import { LoggerService } from '../../../core/services/logger/logger.service';

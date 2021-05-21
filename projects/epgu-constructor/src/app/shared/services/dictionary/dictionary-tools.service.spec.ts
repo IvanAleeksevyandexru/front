@@ -20,12 +20,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
-import {
-  ScenarioDto,
-  DictionaryConditions,
-  DictionaryValueTypes,
-  AttributeTypes,
-} from '@epgu/epgu-constructor-types';
+import { ScenarioDto, DictionaryConditions, DictionaryValueTypes, AttributeTypes } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { FormArray } from '@angular/forms';
 
@@ -127,18 +122,14 @@ describe('DictionaryToolsService', () => {
   };
   const screenStore: ScreenStore = {};
 
-  const setup = (
-    componentType: string,
-    dictionaryItems: Array<object> = [],
-    attrs: Partial<CustomComponentAttr> = {},
-  ) => {
+  const setup = (componentType: string, dictionaryItems: Array<object> = [], attrs: Partial<CustomComponentAttr> = {}) => {
     const component = ({
       id: 'test',
       type: componentType,
       attrs: {
         dictionaryType: 'TEST',
         ...attrs,
-      },
+      }
     } as any) as CustomComponent;
     const dictionaryId = utils.getDictKeyByComp(component);
     const dictionaryData = {
@@ -449,22 +440,17 @@ describe('DictionaryToolsService', () => {
       service.loadReferenceData$([component], {}, {});
 
       expect(getDictionariesSpy).toBeCalledTimes(1);
-      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, {
-        pageNum: 0,
-        ...component.attrs.dictionaryOptions,
-      });
+      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, { pageNum: 0, ...component.attrs.dictionaryOptions });
     });
 
     it('should use dictionaryFilter if it exists', () => {
       const { component } = setup('Lookup', [], {
-        dictionaryFilter: [
-          {
-            attributeName: 'ID',
-            value: 'dogovor_number.value',
-            valueType: 'ref',
-            condition: 'EQUALS',
-          },
-        ],
+        dictionaryFilter: [{
+          attributeName: 'ID',
+          value: 'dogovor_number.value',
+          valueType: 'ref',
+          condition: 'EQUALS'
+        }],
       });
       const dictionaryOptions = {
         filter: {
@@ -486,30 +472,20 @@ describe('DictionaryToolsService', () => {
 
       const getDictionariesSpy = jest.spyOn(service, 'getDictionaries$').mockReturnValue(of(data));
 
-      service.loadReferenceData$(
-        [component],
-        {},
-        { applicantAnswers: { dogovor_number: { value: 'val' }}},
-      );
+      service.loadReferenceData$([component], {}, { applicantAnswers: { dogovor_number: { value: 'val' }}});
 
       expect(getDictionariesSpy).toBeCalledTimes(1);
-      expect(getDictionariesSpy).toBeCalledWith(
-        component.attrs.dictionaryType,
-        component,
-        dictionaryOptions,
-      );
+      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, dictionaryOptions);
     });
 
     it('should combine dictionaryFilter and params from dictionaryOptions', () => {
       const { component } = setup('Lookup', [], {
-        dictionaryFilter: [
-          {
-            attributeName: 'ID',
-            value: 'dogovor_number.value',
-            valueType: 'ref',
-            condition: 'EQUALS',
-          },
-        ],
+        dictionaryFilter: [{
+          attributeName: 'ID',
+          value: 'dogovor_number.value',
+          valueType: 'ref',
+          condition: 'EQUALS'
+        }],
         dictionaryOptions: {
           parentRefItemValue: '00000000000',
           filter: {
@@ -542,33 +518,21 @@ describe('DictionaryToolsService', () => {
 
       const getDictionariesSpy = jest.spyOn(service, 'getDictionaries$').mockReturnValue(of(data));
 
-      service.loadReferenceData$(
-        [component],
-        {},
-        { applicantAnswers: { dogovor_number: { value: 'val' }}},
-      );
+      service.loadReferenceData$([component], {}, { applicantAnswers: { dogovor_number: { value: 'val' }}});
 
       expect(getDictionariesSpy).toBeCalledTimes(1);
-      expect(getDictionariesSpy).toBeCalledWith(
-        component.attrs.dictionaryType,
-        component,
-        dictionaryOptions,
-      );
+      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, dictionaryOptions);
     });
   });
 
   describe('prepareSimpleFilter', () => {
     it('should pass asString by default', () => {
-      const filter = service.prepareSimpleFilter(
-        { value: 42 },
-        {},
-        {
-          attributeName: 'TEST',
-          condition: 'EQUALS' as DictionaryConditions,
-          value: 'value',
-          valueType: 'preset',
-        },
-      );
+      const filter = service.prepareSimpleFilter({ value: 42 }, {}, {
+        attributeName: 'TEST',
+        condition: 'EQUALS' as DictionaryConditions,
+        value: 'value',
+        valueType: 'preset'
+      });
 
       expect(filter).toEqual({
         simple: {
@@ -580,17 +544,13 @@ describe('DictionaryToolsService', () => {
     });
 
     it('should pass asDecimal if attributeType is set', () => {
-      const filter = service.prepareSimpleFilter(
-        { value: 42 },
-        {},
-        {
-          attributeName: 'TEST',
-          attributeType: 'asDecimal' as AttributeTypes,
-          condition: 'EQUALS' as DictionaryConditions,
-          value: 'value',
-          valueType: 'preset',
-        },
-      );
+      const filter = service.prepareSimpleFilter({ value: 42 }, {}, {
+        attributeName: 'TEST',
+        attributeType: 'asDecimal' as AttributeTypes,
+        condition: 'EQUALS' as DictionaryConditions,
+        value: 'value',
+        valueType: 'preset'
+      });
 
       expect(filter).toEqual({
         simple: {

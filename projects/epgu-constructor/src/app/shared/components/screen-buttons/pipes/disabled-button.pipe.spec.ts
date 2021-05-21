@@ -1,5 +1,5 @@
 import { DisabledButtonPipe } from './disabled-button.pipe';
-import { ActionType, DTOActionAction, ScreenButton } from '@epgu/epgu-constructor-types';
+import { ActionType, DTOActionAction, ScreenButton } from 'epgu-constructor-types';
 
 describe('DisabledButtonPipe', () => {
   let pipe: DisabledButtonPipe;
@@ -13,7 +13,7 @@ describe('DisabledButtonPipe', () => {
     button = {
       action: DTOActionAction.getNextStep,
       type: ActionType.nextStep,
-      label: 'Далее',
+      label: 'Далее'
     };
     isLoading = false;
     disabled = true;
@@ -29,7 +29,7 @@ describe('DisabledButtonPipe', () => {
     button = {
       action: DTOActionAction.reject,
       type: ActionType.nextStep,
-      label: 'Отклонить',
+      label: 'Отклонить'
     };
     disabledForAll = false;
 
@@ -39,7 +39,7 @@ describe('DisabledButtonPipe', () => {
     button = {
       action: DTOActionAction.reject,
       type: ActionType.deliriumNextStep,
-      label: 'Отклонить',
+      label: 'Отклонить'
     };
     result = pipe.transform(button, disabled, disabledForAll, isLoading);
     expect(result).toBeTruthy();
@@ -49,7 +49,7 @@ describe('DisabledButtonPipe', () => {
     button = {
       action: DTOActionAction.reject,
       type: ActionType.home,
-      label: 'Отклонить',
+      label: 'Отклонить'
     };
     disabledForAll = false;
     const result = pipe.transform(button, disabled, disabledForAll, isLoading);

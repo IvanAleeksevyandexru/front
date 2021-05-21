@@ -4,13 +4,9 @@ import { WINDOW } from '../../../core/providers/window.provider';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
-import {
-  CheckOrderApiResponse,
-  FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
-  QuizRequestDto,
-} from '@epgu/epgu-constructor-types';
-import { ScenarioDto } from '@epgu/epgu-constructor-types';
+import { CheckOrderApiResponse, FormPlayerApiResponse, FormPlayerApiSuccessResponse, QuizRequestDto } from 'epgu-constructor-types';
+import { ScenarioDto } from 'epgu-constructor-types';
+
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -46,15 +42,17 @@ export class FormPlayerService extends FormPlayerBaseService {
 
   initPlayerFromQuiz(quiz: QuizRequestDto): void {
     this.updateLoading(true);
-    this.formPlayerApiService.quizToOrder(quiz).subscribe(
-      (response) => {
-        this.processResponse(response);
-      },
-      (error) => {
-        this.sendDataError(error);
-      },
-      () => this.updateLoading(false),
-    );
+    this.formPlayerApiService
+      .quizToOrder(quiz)
+      .subscribe(
+        (response) => {
+          this.processResponse(response);
+        },
+        (error) => {
+          this.sendDataError(error);
+        },
+        () => this.updateLoading(false),
+      );
   }
 
   /**
@@ -69,11 +67,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     );
   }
 
-  navigate(
-    navigation: Navigation = {},
-    formPlayerNavigation: FormPlayerNavigation,
-    store?: FormPlayerApiSuccessResponse,
-  ): void {
+  navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation, store?: FormPlayerApiSuccessResponse): void {
     this.updateLoading(true);
     this.updateRequest(navigation);
     this.formPlayerApiService
@@ -91,15 +85,17 @@ export class FormPlayerService extends FormPlayerBaseService {
 
   getBooking(): void {
     this.updateLoading(true);
-    this.formPlayerApiService.getBooking().subscribe(
-      (response) => {
-        this.processResponse(response);
-      },
-      (error) => {
-        this.sendDataError(error);
-      },
-      () => this.updateLoading(false),
-    );
+    this.formPlayerApiService
+      .getBooking()
+      .subscribe(
+        (response) => {
+          this.processResponse(response);
+        },
+        (error) => {
+          this.sendDataError(error);
+        },
+        () => this.updateLoading(false),
+      );
   }
 
   patchStore(newScenarioDtoDiff: Partial<ScenarioDto>): void {

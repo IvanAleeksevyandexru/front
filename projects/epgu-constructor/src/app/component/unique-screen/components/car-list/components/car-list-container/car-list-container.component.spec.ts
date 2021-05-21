@@ -28,7 +28,8 @@ import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
 import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
-import { DisplayDto } from '@epgu/epgu-constructor-types';
+import { DisplayDto } from 'epgu-constructor-types';
+
 
 describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
@@ -58,13 +59,17 @@ describe('CarListContainerComponent', () => {
         markName: 'Мазда',
         modelName: 'CX5',
         govRegNumber: 'M 005 CX',
-      },
+      }
     ],
   };
 
-  configureTestSuite(() => {
+
+  configureTestSuite( () => {
     TestBed.configureTestingModule({
-      declarations: [CarListContainerComponent, CarListComponent],
+      declarations: [
+        CarListContainerComponent,
+        CarListComponent
+      ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
@@ -72,11 +77,7 @@ describe('CarListContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        CurrentAnswersService,
-        UtilsService,
-        NavigationService,
-        ModalService,
-        WINDOW_PROVIDERS,
+        CurrentAnswersService, UtilsService, NavigationService, ModalService, WINDOW_PROVIDERS
       ],
       imports: [
         BaseModule,
@@ -86,7 +87,8 @@ describe('CarListContainerComponent', () => {
         ConstructorLookupModule,
         ScreenButtonsModule,
       ],
-    }).compileComponents();
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -110,8 +112,8 @@ describe('CarListContainerComponent', () => {
       const carList = { vehicleServiceCallResult: ServiceResult.NOT_FOUND_ERROR } as CarList;
       const attrs = {
         errors: {
-          NOT_FOUND_ERROR: {} as any,
-        },
+          NOT_FOUND_ERROR: {} as any
+        }
       };
       component.handleErrors(carList, attrs);
 
@@ -123,8 +125,8 @@ describe('CarListContainerComponent', () => {
       const carList = { vehicleServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR } as CarList;
       const attrs = {
         errors: {
-          EXTERNAL_SERVER_ERROR: {} as any,
-        },
+          EXTERNAL_SERVER_ERROR: {} as any
+        }
       };
       component.handleErrors(carList, attrs);
 
@@ -143,16 +145,14 @@ describe('CarListContainerComponent', () => {
   describe('getHtmlItemTemplate()', () => {
     it('should return html iem template', () => {
       expect(component.getHtmlItemTemplate(mockCarList.vehicles[0] as any)).toEqual(
-        'Киа Рио, <span style="white-space: nowrap">А 777 АА</span>',
+        'Киа Рио, <span style="white-space: nowrap">А 777 АА</span>'
       );
     });
   });
 
   describe('getCarFixedItems()', () => {
     it('should return fixed items', () => {
-      expect(component.getCarFixedItems(mockCarList as any)[0].originalItem).toEqual(
-        mockCarList.vehicles[0],
-      );
+      expect(component.getCarFixedItems(mockCarList as any)[0].originalItem).toEqual(mockCarList.vehicles[0]);
     });
   });
 

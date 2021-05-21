@@ -1,7 +1,3 @@
-include:
-  - project: appsec/cicd
-    file: /luxsoft/epgu2-form-frontend.yml
-
 image: node:latest
 
 cache: &global_cache

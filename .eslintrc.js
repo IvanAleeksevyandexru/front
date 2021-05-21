@@ -1,12 +1,12 @@
 module.exports = {
   extends: ['plugin:@angular-eslint/recommended'],
   rules: {
-    // ORIGINAL tslint.json -> 'directive-selector': [true, 'attribute', 'app', 'camelCase'],
+    // ORIGINAL tslint.json -> "directive-selector": [true, "attribute", "app", "camelCase"],
     // '@angular-eslint/directive-selector': [
     //   'error',
     //   { type: 'attribute', prefix: 'app', style: 'camelCase' },
     // ],
-    // ORIGINAL tslint.json -> 'component-selector': [true, 'element', 'app', 'kebab-case'],
+    // ORIGINAL tslint.json -> "component-selector": [true, "element", "app", "kebab-case"],
     // '@angular-eslint/component-selector': [
     //   'error',
     //   { type: 'element', prefix: 'app', style: 'kebab-case' },
@@ -33,9 +33,9 @@ module.exports = {
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',
         'class-methods-use-this': 'off',
-        'lines-between-class-members': 'off',
-        'max-len': ['error', { 'code': 180, 'ignoreStrings': true, ignorePattern: '^import .*' }],
-        '@typescript-eslint/lines-between-class-members': ['off', 'always', { 'exceptAfterOverload': false }],
+        "lines-between-class-members": "off",
+        "max-len": ["error", { "code": 180, "ignoreStrings": true, ignorePattern: '^import .*' }],
+        "@typescript-eslint/lines-between-class-members": ["off", "always", { "exceptAfterOverload": false }],
         '@typescript-eslint/unbound-method': [
           'error',
           {

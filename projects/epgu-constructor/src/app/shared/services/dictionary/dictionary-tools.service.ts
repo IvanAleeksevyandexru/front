@@ -1,6 +1,6 @@
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
-import { DictionaryItem, DictionaryResponse } from './dictionary-api.types';
-import { ListElement, ListItem } from '@epgu/epgu-lib';
+import { DictionaryItem, DictionaryResponse, } from './dictionary-api.types';
+import { ListElement, ListItem } from 'epgu-lib/lib/models/dropdown.model';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -36,7 +36,7 @@ import {
   DictionaryValueTypes,
   AttributeTypes,
   FilterDtoConfig,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
 import { KeyValueMap } from '../../../core/core.types';
@@ -117,19 +117,13 @@ export class DictionaryToolsService {
           if (component.type === CustomScreenComponentTypes.DropDownDepts) {
             data.push(this.getDropDownDepts$(component, screenStore));
           } else {
-            const {
-              dictionaryType,
-              dictionaryOptions = null,
-              dictionaryFilter = null,
-            } = component.attrs;
+            const { dictionaryType, dictionaryOptions = null, dictionaryFilter = null } = component.attrs;
 
             const defaultOptions: DictionaryOptions = { pageNum: 0 };
             const options: DictionaryOptions = {
               ...defaultOptions,
               ...(dictionaryOptions || {}),
-              ...(dictionaryFilter
-                ? this.prepareOptions(component, screenStore, dictionaryFilter)
-                : {}),
+              ...(dictionaryFilter ? this.prepareOptions(component, screenStore, dictionaryFilter): {}),
             };
 
             data.push(this.getDictionaries$(dictionaryType, component, options));
@@ -505,8 +499,7 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dFilter: ComponentDictionaryFilterDto | string,
   ): DictionaryValue {
-    const attributeType: AttributeTypes =
-      (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
+    const attributeType: AttributeTypes = (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
     //TODO разобраться с типами
     // @ts-ignore
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
@@ -515,16 +508,10 @@ export class DictionaryToolsService {
         [attributeType]: componentValue[dFilter.value] as string,
       }),
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.formatValue(
-          utils.getObjectProperty(screenStore, dFilter.value, undefined),
-          dFilter.formatValue,
-        ),
+        [attributeType]: this.formatValue(utils.getObjectProperty(screenStore, dFilter.value, undefined), dFilter.formatValue),
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.formatValue(
-          this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
-          dFilter.formatValue,
-        ),
+        [attributeType]: this.formatValue(this.getValueViaRef(screenStore.applicantAnswers, dFilter.value), dFilter.formatValue),
       }),
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
         [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
@@ -538,9 +525,7 @@ export class DictionaryToolsService {
     };
     const calcFunc = filterTypes[(dFilter as ComponentDictionaryFilterDto).valueType];
     if (!calcFunc) {
-      throw `Неверный valueType для фильтров - ${
-        (dFilter as ComponentDictionaryFilterDto).valueType
-      }`;
+      throw `Неверный valueType для фильтров - ${(dFilter as ComponentDictionaryFilterDto).valueType}`;
     }
     return calcFunc(dFilter);
   }
@@ -548,15 +533,10 @@ export class DictionaryToolsService {
   private formatValue(value: unknown, params: FilterDtoConfig): unknown {
     let result: unknown;
 
-    if (
-      value !== undefined &&
-      params !== undefined &&
-      params?.str !== undefined &&
-      Array.isArray(params.str)
-    ) {
+    if (value !== undefined && params !== undefined && params?.str !== undefined && Array.isArray(params.str)) {
       const { str } = params;
       result = String(value).split('').splice(str[0], str[1]).join('');
-
+      
       if (params?.additionalString !== undefined) {
         result = result + params.additionalString;
       }

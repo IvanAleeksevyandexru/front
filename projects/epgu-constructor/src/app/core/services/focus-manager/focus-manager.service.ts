@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FocusManager, FocusState } from '@epgu/epgu-lib';
+import { FocusManager, FocusState } from 'epgu-lib';
 import { Observable } from 'rxjs/internal/Observable';
 import { filter } from 'rxjs/operators';
 

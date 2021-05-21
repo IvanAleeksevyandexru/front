@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 import { CustomListDropDowns } from '../../components-list.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';

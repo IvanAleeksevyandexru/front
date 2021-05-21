@@ -17,7 +17,7 @@
     max-width: calc(100% - #{$screen-pad-16});
     &::ng-deep > .component-list-resolver {
       & > * > .custom__screen-html {
-        margin-bottom: 12px;
+        margin-bottom: $screen-pad-12;
       }
     }
     &--checkbox > * {
