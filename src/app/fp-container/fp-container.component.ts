@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ServiceEntity, ServiceInfo, FormPlayerContext } from 'epgu-constructor';
@@ -21,6 +22,8 @@ export class FpContainerComponent {
         orderId: config.orderId,
         invited: config.invited,
         canStartNew: config.canStartNew,
+        // eslint-disable-next-line radix
+        gepsId: typeof config.gepsId === 'string' ? parseInt(config.gepsId) : config.gepsId,
       };
 
       if (typeof config.invited === 'string' && config.invited === '') {
@@ -35,6 +38,10 @@ export class FpContainerComponent {
         delete service.serviceInfo;
       }
 
+      if (typeof config.gepsId === 'string' && !config.gepsId) {
+        delete service.gepsId;
+      }
+
       return service;
     }),
   );
@@ -44,8 +51,6 @@ export class FpContainerComponent {
       const context: FormPlayerContext = {
         configId: config.configId,
         initState: config.initState,
-        // eslint-disable-next-line radix
-        gepsId: typeof config.gepsId === 'string' ? parseInt(config.gepsId) : config.gepsId,
         queryParams: config.queryParams ? JSON.parse(config.queryParams) : [],
       };
 
@@ -55,14 +60,6 @@ export class FpContainerComponent {
 
       if (typeof config.queryParams === 'string' && config.queryParams === '') {
         delete context.queryParams;
-      }
-
-      console.log('config.gepsId');
-      console.log(typeof config.gepsId);
-      console.log(config.gepsId);
-
-      if (typeof config.gepsId === 'string' && !config.gepsId) {
-        delete context.gepsId;
       }
 
       return context;
