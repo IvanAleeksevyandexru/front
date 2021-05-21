@@ -16,7 +16,10 @@
     mask-position: center;
   }
   &--back {
+    mask: url('../assets/icons/svg/arrow-small.svg');
     mask-position: right;
+    mask-repeat: no-repeat;
+    width: 16px;
   }
   &--left {
     transform: rotate(180deg);
