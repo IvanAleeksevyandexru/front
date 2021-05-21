@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ScreenButton } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ConfirmationModal } from '../confirmation-modal.interface';
@@ -14,6 +15,7 @@ export class ConfirmationModalBaseComponent {
   @Input() title?: ConfirmationModal['title'];
   @Input() text: ConfirmationModal['text'];
   @Input() buttons: ConfirmationModalBaseButton[] = [];
+  @Input() actionButtons: ScreenButton[] = [];
   @Input() showCrossButton?: boolean;
   @Input() preview?: boolean;
   @Input() isShortModal?: boolean;

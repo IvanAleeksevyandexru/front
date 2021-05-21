@@ -41,4 +41,10 @@
       >{{ button.label }}</lib-button
     >
   </div>
+
+  <div *ngIf="actionButtons.length" class="conf-modal__controls">
+    <epgu-constructor-screen-buttons
+      [screenButtons]="actionButtons"
+    ></epgu-constructor-screen-buttons>
+  </div>
 </ng-template>
