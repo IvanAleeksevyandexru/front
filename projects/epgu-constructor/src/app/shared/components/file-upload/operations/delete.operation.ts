@@ -29,4 +29,6 @@ export class DeleteOperation extends ProcessOperation {
       mapTo(null),
     );
   }
+  // eslint-disable-next-line no-empty-function
+  onCancel(): void {}
 }

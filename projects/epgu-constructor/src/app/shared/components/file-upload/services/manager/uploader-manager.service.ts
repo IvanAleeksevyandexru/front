@@ -27,7 +27,8 @@ export class UploaderManagerService {
     private logger: LoggerService,
     private prepare: PrepareService,
   ) {}
-
+  // eslint-disable-next-line no-empty-function
+  reset(): void {}
   getUploader(prefixForMnemonic: string, objectId: string, config: FileUploadItem): Uploader {
     const id = `${objectId}${prefixForMnemonic}${config.uploadId}`;
     if (!this.uploaderList[id]) {

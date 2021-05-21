@@ -29,4 +29,6 @@ export class DownloadOperation extends ProcessOperation {
       map(() => undefined),
     );
   }
+  // eslint-disable-next-line no-empty-function
+  onCancel(): void {}
 }
