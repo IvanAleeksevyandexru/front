@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
+import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';

@@ -19,7 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { DictionaryFilters, ApplicantAnswersDto } from 'epgu-constructor-types';
+import { DictionaryFilters, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Injectable()

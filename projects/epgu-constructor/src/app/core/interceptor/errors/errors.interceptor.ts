@@ -27,7 +27,7 @@ import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmatio
 import { LocationService } from '../../services/location/location.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { ConfigService } from '../../services/config/config.service';
-import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
 import { instanceOfFormPlayerApiSuccessResponse } from './data';
 
 @Injectable()

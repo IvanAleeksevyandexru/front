@@ -5,7 +5,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -22,7 +22,7 @@ import { ActionServiceStub } from '../../../../shared/directives/action/action.s
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
+import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {

@@ -1,12 +1,11 @@
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
-import { ComponentAttrsDto } from 'epgu-constructor-types';
+import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',
   NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
   EXTERNAL_SERVER_ERROR = 'EXTERNAL_SERVER_ERROR',
 }
-
 
 export interface CarInfo {
   vehicleInfo: VehicleInfo;
@@ -83,8 +82,8 @@ export interface CarOwnerInfoComponentAttrsDto extends ComponentAttrsDto {
   pdfLink: string;
 }
 export interface CarInfoErrorsDto {
-  EXTERNAL_SERVER_ERROR?: string,
-  NOT_FOUND_ERROR?: string
+  EXTERNAL_SERVER_ERROR?: string;
+  NOT_FOUND_ERROR?: string;
 }
 
 export interface OwnerCarInfo {

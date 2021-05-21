@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { LoadService } from 'epgu-lib';
+import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
 import { LoadServiceStub } from '../core/services/config/load-service-stub';
 import { FormPlayerComponent } from './form-player.component';
