@@ -15,7 +15,7 @@ import { fromEvent, merge, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
+import { ComponentUploadedFileDto } from 'epgu-constructor-types';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';

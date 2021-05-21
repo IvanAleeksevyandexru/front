@@ -32,7 +32,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
   ActionApiResponse,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 
 const mockComponent: ComponentDto = {
   attrs: {},

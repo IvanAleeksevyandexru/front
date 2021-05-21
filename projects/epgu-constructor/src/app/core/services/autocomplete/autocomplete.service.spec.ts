@@ -25,7 +25,7 @@ import { RefRelationService } from '../../../shared/services/ref-relation/ref-re
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
 import { getSuggestionGroupId } from './autocomplete.const';
-import { ScenarioDto, Gender } from '@epgu/epgu-constructor-types';
+import { ScenarioDto, Gender } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';

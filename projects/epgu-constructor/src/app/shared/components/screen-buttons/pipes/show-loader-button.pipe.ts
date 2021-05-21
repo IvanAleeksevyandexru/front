@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ScreenButton } from '@epgu/epgu-constructor-types';
+import { ScreenButton } from 'epgu-constructor-types';
 
 @Pipe({
   name: 'showLoaderButton',

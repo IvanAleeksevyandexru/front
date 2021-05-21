@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { CookieService, LoadService, SmuEventsService } from '@epgu/epgu-lib';
+import { CookieService, LoadService, SmuEventsService } from 'epgu-lib';
 import { LoadServiceStub } from '../config/load-service-stub';
 import { DeviceDetectorService } from './device-detector.service';
 import { configureTestSuite } from 'ng-bullet';
+
 
 describe('DeviceDetectorService', () => {
   let deviceDetectorService: DeviceDetectorService;
@@ -17,7 +18,7 @@ describe('DeviceDetectorService', () => {
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
         CookieService,
-        SmuEventsService,
+        SmuEventsService
       ],
     });
   });

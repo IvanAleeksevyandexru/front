@@ -1,23 +1,23 @@
 import { Meta } from '@storybook/angular/types-6-0';
 import {
   ButtonComponent,
-  DatePickerComponent,
-  DropdownComponent,
-  EpguLibCommonModule,
-  EpguLibModule,
-  ListElement,
-} from '@epgu/epgu-lib';
-import { moduleMetadata } from '@storybook/angular';
+  DatePickerComponent, DropdownComponent, EpguLibCommonModule,
+  EpguLibModule, ListElement
+} from 'epgu-lib';
+import {moduleMetadata} from '@storybook/angular';
 
 export default {
   title: 'Example/EPGU Lib',
   decorators: [
     moduleMetadata({
-      imports: [EpguLibCommonModule, EpguLibModule],
+      imports: [
+        EpguLibCommonModule,
+        EpguLibModule
+      ],
       schemas: [],
       declarations: [],
       providers: [],
-    }),
+    })
   ],
 } as Meta;
 
@@ -25,29 +25,28 @@ export const DatePicker = (args: DatePickerComponent) => ({
   // @todo. если использовать component вместо template будет "Type DatePickerComponent is part of
   // the declarations of 2 modules: EpguLibModule and DynamicModule!". Похоже что-то не так с EpguLibModule
   // component: DatePickerComponent,
-  template:
-    '<lib-date-picker [ngModel]="value" [minDate]="minDate" [maxDate]="maxDate"></lib-date-picker>',
+  template: '<lib-date-picker [ngModel]="value" [minDate]="minDate" [maxDate]="maxDate"></lib-date-picker>',
   props: args,
 });
 DatePicker.args = {
   minDate: '-3d',
   maxDate: '+3d',
   clearable: true,
-  value: new Date(),
+  value: new Date()
 };
 
 const listItems: ListElement[] = [
   {
     id: 'id1',
-    text: 'option 1',
+    text: 'option 1'
   },
   {
     id: 'id2',
-    text: 'option 2',
+    text: 'option 2'
   },
   {
     id: 'id3',
-    text: 'option 3',
+    text: 'option 3'
   },
 ];
 export const Dropdown = (args: DropdownComponent) => ({
@@ -63,7 +62,7 @@ export const Dropdown = (args: DropdownComponent) => ({
     >
     </lib-dropdown>
   `,
-  props: args,
+  props: args
 });
 Dropdown.args = {
   invalid: false,
@@ -72,14 +71,14 @@ Dropdown.args = {
   clearable: true,
   localSearch: false,
   multi: false,
-  value: 'id2',
+  value: 'id2'
 };
 Dropdown.argTypes = {
   value: {
     control: {
       type: 'select',
-      options: listItems.map((item) => item.id),
-    },
+      options: listItems.map(item => item.id),
+    }
   },
 };
 
@@ -102,7 +101,7 @@ export const Button = (args: ButtonComponent) => ({
         {{value}}
     </lib-button>
   `,
-  props: args,
+  props: args
 });
 Button.args = {
   type: 'button',
@@ -123,32 +122,33 @@ Button.argTypes = {
     control: {
       type: 'select',
       options: ['white', 'transparent', ''],
-    },
+    }
   },
   fontSize: { control: 'number' },
   type: {
     control: {
       type: 'select',
       options: ['button', 'anchor', 'search'],
-    },
+    }
   },
   size: {
     control: {
       type: 'select',
       options: ['md', 'lg', ''],
-    },
+    }
   },
   width: {
     control: {
       type: 'select',
       options: ['wide', ''],
-    },
+    }
   },
   height: {
     control: {
       type: 'select',
       options: ['dynamic', ''],
-    },
+    }
   },
-  onClick: { action: 'clicked' },
+  onClick: { action: 'clicked' }
 };
+

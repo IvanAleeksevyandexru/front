@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentDto, ScreenButton } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ScreenButton } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-signature-application',

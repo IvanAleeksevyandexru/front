@@ -6,7 +6,7 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 import {
   CarInfo,
   CarInfoComponentAttrsDto,

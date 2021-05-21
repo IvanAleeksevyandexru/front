@@ -1,5 +1,5 @@
 import { ComponentBase } from '../../../screen/screen.types';
-import { TimerRulesDto } from '@epgu/epgu-constructor-types';
+import { TimerRulesDto } from 'epgu-constructor-types';
 
 /**
  * Интерфейс таймера
@@ -17,14 +17,14 @@ export interface TimerInterface {
  */
 export interface TimerComponentBase extends ComponentBase {
   attrs: {
-    startTime: string;
-    currentTime?: string;
-    expirationTime: string;
-    timerRules: TimerRulesDto;
+    startTime: string,
+    currentTime?: string,
+    expirationTime: string,
+    timerRules: TimerRulesDto,
     refs: {
       timeStartRef: string;
       timeFinishRef: string;
       visitTimeRef: string;
-    };
+    }
   };
 }

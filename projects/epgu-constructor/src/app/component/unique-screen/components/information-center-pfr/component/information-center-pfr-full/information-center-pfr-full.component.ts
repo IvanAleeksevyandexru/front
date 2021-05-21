@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import {

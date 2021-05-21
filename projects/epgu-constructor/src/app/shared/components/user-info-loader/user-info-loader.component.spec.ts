@@ -11,7 +11,7 @@ import { LoggerServiceStub } from '../../../core/services/logger/logger.service.
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { DisplayDto, ComponentDto } from '@epgu/epgu-constructor-types';
+import { DisplayDto, ComponentDto } from 'epgu-constructor-types';
 import { AgeType, Gender, UserInfoType } from '../user-info/user-info.type';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
