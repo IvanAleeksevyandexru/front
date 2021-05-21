@@ -1,4 +1,9 @@
-import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModal, StatusIcon } from '@epgu/epgu-constructor-types';
+
+export const STATUS_ICON_MAP = {
+  [StatusIcon.WARNING]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">',
+  [StatusIcon.ERROR]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/image-error.svg">',
+};
 
 const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">

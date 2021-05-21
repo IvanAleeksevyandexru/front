@@ -9,12 +9,11 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenButton } from '@epgu/epgu-constructor-types';
+import { ScreenButton, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ModalService } from '../modal.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
-import { ConfirmationModal } from './confirmation-modal.interface';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',

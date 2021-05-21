@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { ComponentActionDto, ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, ComponentDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { Referral } from '../medical-referrals-list.types';
@@ -9,7 +9,6 @@ import { ActionService } from '../../../../../shared/directives/action/action.se
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../modal/modal.service';
-import { ConfirmationModal } from '../../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/interceptor/errors/errors.interceptor.constants';
 
 @Component({
