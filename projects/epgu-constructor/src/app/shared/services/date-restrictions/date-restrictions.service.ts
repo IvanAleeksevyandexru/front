@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { DatesHelperService } from '@epgu/epgu-lib';
+import { DatesHelperService } from 'epgu-lib';
 import { isAfter, isBefore } from 'date-fns';
 import {
   CustomComponent,
   DateRestriction,
 } from '../../../component/custom-screen/components-list.types';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 import { FormArray } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';
@@ -16,7 +16,8 @@ import { Range } from '../date-range/date-range.models';
 @Injectable()
 export class DateRestrictionsService {
   today: Date;
-  dateRangeStore = new Map<string, Range>();
+
+  private dateRangeStore = new Map<string, Range>();
   private maxDateConditions = ['<', '<='];
   private minDateConditions = ['>', '>='];
 
@@ -28,6 +29,7 @@ export class DateRestrictionsService {
     components: Array<CustomComponent>,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number,
   ): Promise<Range> {
     if (!this.today) {
       this.today = await this.datesToolsService.getToday();
@@ -54,15 +56,38 @@ export class DateRestrictionsService {
       (prevDate, currentDate) => isAfter(prevDate, currentDate),
     );
 
-    const dateRange = { min: minDate || null, max: maxDate || null };
+    const dateRange: Range = { min: minDate || null, max: maxDate || null };
 
-    this.dateRangeStore.set(componentId, dateRange);
+    this.setDateRangeToStore(componentId, dateRange, componentsGroupIndex);
 
     return dateRange;
   }
 
+  getDateRangeFromStore(componentId: string, componentsGroupIndex?: number): Range | undefined {
+    return this.dateRangeStore.get(this.getDateRangeStoreKey(componentId, componentsGroupIndex));
+  }
+
   haveDateRef(restriction: DateRestriction): boolean {
     return restriction.type === 'ref';
+  }
+
+  private setDateRangeToStore(
+    componentId: string,
+    dateRange: Range,
+    componentsGroupIndex?: number,
+  ): void {
+    this.dateRangeStore.set(
+      this.getDateRangeStoreKey(componentId, componentsGroupIndex),
+      dateRange,
+    );
+  }
+
+  private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number): string {
+    let key = componentId + String();
+    if (componentsGroupIndex !== undefined) {
+      key += String(componentsGroupIndex);
+    }
+    return key;
   }
 
   private async getDateByComparison(

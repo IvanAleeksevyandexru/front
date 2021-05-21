@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from 'epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../logger/logger.service';
 import { Config, MockApi, TimeSlotsApi } from './config.types';
@@ -41,7 +41,10 @@ export class ConfigService implements Config {
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
 
-  constructor(private loadService: LoadService, private loggerService: LoggerService) {}
+  constructor(
+    private loadService: LoadService,
+    private loggerService: LoggerService,
+  ) { }
 
   checkConfig(config: Config): void {
     if (!config) {
@@ -191,8 +194,7 @@ export class ConfigService implements Config {
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
-    this._nsiSuggestDictionaryUrl =
-      config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
+    this._nsiSuggestDictionaryUrl = config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;

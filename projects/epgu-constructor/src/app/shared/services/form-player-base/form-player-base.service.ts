@@ -15,7 +15,7 @@ import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 
 /**
  * Этот базоый сервис служит для взаимодействия formPlayerComponent и formPlayerApi

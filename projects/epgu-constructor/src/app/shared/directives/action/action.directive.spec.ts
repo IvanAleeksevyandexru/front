@@ -35,7 +35,7 @@ import {
   DTOActionAction,
   ActionApiResponse,
   ComponentDto,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-action-test',

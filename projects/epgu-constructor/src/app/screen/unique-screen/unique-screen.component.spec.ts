@@ -10,13 +10,13 @@ import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto, DisplayDto } from 'epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
   id: 'id1',
   type: 'type1',
-  valueFromCache: false,
+  valueFromCache: false
 };
 
 const displayDtoSample: DisplayDto = {
@@ -44,7 +44,10 @@ describe('UniqueScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [UniqueScreenComponent, ComponentUniqueResolverComponent],
+      declarations: [
+        UniqueScreenComponent,
+        ComponentUniqueResolverComponent,
+      ],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },

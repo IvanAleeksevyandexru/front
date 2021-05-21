@@ -19,7 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { DictionaryFilters, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { DictionaryFilters, ApplicantAnswersDto } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Injectable()
@@ -54,6 +54,7 @@ export class ComponentsListRelationsService {
     initInitialValues = false,
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
+    componentsGroupIndex?: number
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
@@ -88,6 +89,7 @@ export class ComponentsListRelationsService {
       form,
       screenService.applicantAnswers,
       initInitialValues,
+      componentsGroupIndex
     );
 
     return shownElements;
@@ -99,14 +101,15 @@ export class ComponentsListRelationsService {
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     initInitialValues: boolean,
+    componentsGroupIndex?: number
   ): void {
     if (component.attrs.dateRestrictions && !initInitialValues) {
-      this.setLimitDates(component, components, form, applicantAnswers);
+      this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
       return;
     }
 
     if (initInitialValues) {
-      this.updateLimitDates(component, components, form, applicantAnswers);
+      this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
     }
   }
 
@@ -302,6 +305,7 @@ export class ComponentsListRelationsService {
     components: Array<CustomComponent>,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number
   ): Promise<void> {
     const relatedComponents = components.filter(
       (relatedComponent) =>
@@ -325,6 +329,7 @@ export class ComponentsListRelationsService {
           components,
           form,
           applicantAnswers,
+          componentsGroupIndex,
         );
         this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
       }
@@ -336,14 +341,16 @@ export class ComponentsListRelationsService {
     components: Array<CustomComponent>,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-  ): Promise<void> {
+    componentsGroupIndex?: number): Promise<void> {
     const dateRange = await this.dateRestrictionsService.getDateRange(
       component.id,
       component.attrs.dateRestrictions,
       components,
       form,
       applicantAnswers,
+      componentsGroupIndex
     );
+
     this.updateFormWithDateRange(form, component, dateRange);
   }
 
