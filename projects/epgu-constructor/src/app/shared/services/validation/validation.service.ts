@@ -134,7 +134,7 @@ export class ValidationService {
     };
   }
 
-  public dateValidator(component: CustomComponent): ValidatorFn {
+  public dateValidator(component: CustomComponent, componentsGroupIndex?: number): ValidatorFn {
     const validations =
       component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
       [];
@@ -143,11 +143,11 @@ export class ValidationService {
       if (validations.length === 0) return;
 
       const minDate =
-        this.dateRestrictionsService.dateRangeStore.get(component.id)?.min ||
+        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
         this.dateRangeService.rangeMap.get(component.id)?.min ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
       const maxDate =
-        this.dateRestrictionsService.dateRangeStore.get(component.id)?.max ||
+        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
         this.dateRangeService.rangeMap.get(component.id)?.max ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 

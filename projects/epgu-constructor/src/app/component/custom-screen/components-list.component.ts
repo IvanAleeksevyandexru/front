@@ -96,7 +96,11 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       JSON.stringify(changes.errors?.previousValue);
 
     if (components || isErrorsChanged) {
-      const formArray = this.formService.create(this.components, this.errors);
+      const formArray = this.formService.create(
+        this.components,
+        this.errors,
+        this.componentsGroupIndex,
+      );
       this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);
