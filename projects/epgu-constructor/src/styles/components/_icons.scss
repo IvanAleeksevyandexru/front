@@ -1,27 +1,29 @@
 @import "./../core/palettes";
 
-.icon-arrow,
-.icon-arrow-white {
-  display: inline-block;
-  width: 14px;
-  height: 20px;
-}
 .icon-arrow {
-  transform: rotate(-45deg);
-  border: solid $color-button-hit;
-  border-width: 0 2px 2px 0;
   display: inline-block;
-  padding: 3px;
-  height: 7px;
-  width: 7px;
-
-  &.disabled {
-    border-color: $color-button-hover;
+  width: 24px;
+  height: 24px;
+  background-color: $color-gosblue;
+  mask: url('../assets/icons/svg/arrow.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  @include tablets-down {
+    mask: url('../assets/icons/svg/arrow-small.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
   }
-}
-
-.icon-arrow-white {
-  background-image: url('../assets/icons/svg/arrow-forward.svg');
+  &--back {
+    mask-position: right;
+  }
+  &--left {
+    transform: rotate(180deg);
+  }
+  &.disabled {
+    background-color: $color-telegray-scuro;
+  }
 }
 
 .icon-close {
