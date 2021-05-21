@@ -51,6 +51,7 @@ import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uplo
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
+import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -106,8 +107,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;
-
-  listUploadingStatus = new BehaviorSubject<boolean>(false);
 
   overLimits = new BehaviorSubject<OverLimits>({
     totalSize: { count: 0, isMax: false },
@@ -249,6 +248,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private autocompletePrepareService: AutocompletePrepareService,
+    private uploaderManager: UploaderManagerService,
   ) {}
 
   decrementLimitByFileItem(file: FileItem): void {
@@ -567,7 +567,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   getListStream(objectId: string): Observable<UploadedFile> {
     return of(objectId).pipe(
-      tap(() => this.listUploadingStatus.next(true)),
       concatMap((id) => this.terabyteService.getListByObjectId(id) as Observable<UploadedFile[]>),
       catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
       concatMap((files: UploadedFile[]) => from(files)),
@@ -596,7 +595,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
         return file;
       }),
-      finalize(() => this.listUploadingStatus.next(false)),
     );
   }
 

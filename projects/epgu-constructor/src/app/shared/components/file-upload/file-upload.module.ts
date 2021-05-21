@@ -8,6 +8,7 @@ import { UserInfoLoaderModule } from '../user-info-loader/user-info-loader.modul
 import { UploaderModule } from '../uploader/uploader.module';
 import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 import { PrepareService } from './prepare.service';
+import { UploaderManagerService } from './services/manager/uploader-manager.service';
 
 const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
 
@@ -15,7 +16,7 @@ const COMPONENTS = [FileUploadComponent, FileUploadItemComponent];
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, EpguLibModule],
-  providers: [FileUploadService, PrepareService],
+  providers: [FileUploadService, PrepareService, UploaderManagerService],
   entryComponents: [...COMPONENTS],
 })
 export class FileUploadModule {}

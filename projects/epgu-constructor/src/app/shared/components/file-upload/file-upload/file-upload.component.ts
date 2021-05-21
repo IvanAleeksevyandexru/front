@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { takeUntil } from 'rxjs/operators';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -14,6 +15,7 @@ import {
   FileUploadItem,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService } from '../file-upload.service';
+import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload',
@@ -44,6 +46,7 @@ export class FileUploadComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
+    private uploaderManager: UploaderManagerService,
   ) {}
 
   ngOnInit(): void {
@@ -65,13 +68,8 @@ export class FileUploadComponent implements OnInit {
   setUploadersRestrictions(): void {
     this.setTotalMaxSizeAndAmount(this.attrs.maxSize, this.attrs.maxFileCount);
 
-    this.attrs.uploads?.forEach(
-      ({ uploadId, maxFileCount, maxSize, maxCountByTypes }: FileUploadItem) =>
-        this.fileUploadService.registerUploader(
-          uploadId,
-          maxCountByTypes?.length > 0 || !maxFileCount ? 0 : maxFileCount,
-          maxSize,
-        ),
+    this.attrs.uploads?.forEach((config) =>
+      this.uploaderManager.register(this.prefixForMnemonic, this.objectId, config),
     );
   }
 

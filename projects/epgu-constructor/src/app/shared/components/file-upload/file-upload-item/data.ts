@@ -8,6 +8,10 @@ import {
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { BehaviorSubject } from 'rxjs';
 import { v4 } from 'uuid';
+import { UploadOperation } from '../operations/upload.operation';
+import { DownloadOperation } from '../operations/download.operation';
+import { PrepareOperation } from '../operations/prepare.operation';
+import { DeleteOperation } from '../operations/delete.operation';
 
 export enum ErrorActions {
   clear = 'clear',
@@ -209,6 +213,13 @@ export enum OperationType {
   download = 'download',
   prepare = 'prepare',
 }
+export const operationsByTypes = {
+  upload: UploadOperation,
+  download: DownloadOperation,
+  prepare: PrepareOperation,
+  delete: DeleteOperation,
+};
+
 export interface CancelAction {
   type: OperationType;
   item: FileItem;
