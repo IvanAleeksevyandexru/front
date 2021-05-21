@@ -34,10 +34,6 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  @include tablets-up {
-    margin-left: -$footer-item-mx;
-    margin-right: -$footer-item-mx;
-  }
   @include tablets-down {
     flex-wrap: wrap-reverse;
   }

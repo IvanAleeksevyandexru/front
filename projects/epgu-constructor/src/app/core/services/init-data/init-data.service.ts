@@ -28,9 +28,9 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this.orderId = service.orderId;
     this.invited = service.invited;
     this.canStartNew = service.canStartNew;
+    this.gepsId = service.gepsId;
     this.initState = context?.initState;
     this.configId = context?.configId;
-    this.gepsId = context?.gepsId;
     this.queryParams = context?.queryParams;
   }
 
@@ -103,7 +103,8 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   }
 
   set gepsId(gepsId: number) {
-    this._gepsId = gepsId;
+    // Каст фикс типа для проброса парамтеров от портала
+    this._gepsId = typeof gepsId === 'string' ? parseInt(gepsId, 10): gepsId;
   }
 
   get queryParams(): QueryParams {

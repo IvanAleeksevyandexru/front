@@ -10,10 +10,10 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { LoadService } from 'epgu-lib';
+import { LoadService } from '@epgu/epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { ScenarioDto } from 'epgu-constructor-types';
+import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../core/services/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';

@@ -283,3 +283,378 @@ export const slotsError = {
     fieldErrors: [],
   },
 };
+
+export const mockSlotsDoctor = {
+  slots: [
+    {
+      slotId: '1c86cadc-3999-44cb-b80f-608476db6155',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621918800000,
+      visitTimeStr: '2021-05-25T08:00:00.000',
+      visitTimeISO: '2021-05-25T08:00:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'd0ea72a4-3a9b-4e54-885d-76d6d56f0967',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621919520000,
+      visitTimeStr: '2021-05-25T08:12:00.000',
+      visitTimeISO: '2021-05-25T08:12:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'a4118d70-f349-467e-a358-45f577ce4084',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621920240000,
+      visitTimeStr: '2021-05-25T08:24:00.000',
+      visitTimeISO: '2021-05-25T08:24:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '03122e09-f01a-42c0-b093-c05478fc3c87',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621920960000,
+      visitTimeStr: '2021-05-25T08:36:00.000',
+      visitTimeISO: '2021-05-25T08:36:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'a0f8840e-7504-43d7-834d-7b4835d169e5',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621921680000,
+      visitTimeStr: '2021-05-25T08:48:00.000',
+      visitTimeISO: '2021-05-25T08:48:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '7f824f85-4bfb-45bc-a277-5ef82a9e7332',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621922400000,
+      visitTimeStr: '2021-05-25T09:00:00.000',
+      visitTimeISO: '2021-05-25T09:00:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '03881402-da61-474a-bf71-aa1183c587b0',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621923120000,
+      visitTimeStr: '2021-05-25T09:12:00.000',
+      visitTimeISO: '2021-05-25T09:12:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '1a12d68b-330b-4890-839a-4d4a30f473b3',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621923840000,
+      visitTimeStr: '2021-05-25T09:24:00.000',
+      visitTimeISO: '2021-05-25T09:24:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '3ab3a8a9-293b-4e5a-9fe1-2f9655286392',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621924560000,
+      visitTimeStr: '2021-05-25T09:36:00.000',
+      visitTimeISO: '2021-05-25T09:36:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+
+
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280000,
+      visitTimeStr: '2021-05-25T09:48:00.000',
+      visitTimeISO: '2021-05-25T09:48:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+
+
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280001,
+      visitTimeStr: '2021-05-25T09:49:00.000',
+      visitTimeISO: '2021-05-25T09:49:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280002,
+      visitTimeStr: '2021-05-25T09:50:00.000',
+      visitTimeISO: '2021-05-25T09:50:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280003,
+      visitTimeStr: '2021-05-25T09:51:00.000',
+      visitTimeISO: '2021-05-25T09:51:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+
+
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280004,
+      visitTimeStr: '2021-05-25T09:52:00.000',
+      visitTimeISO: '2021-05-25T09:52:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280005,
+      visitTimeStr: '2021-05-25T09:53:00.000',
+      visitTimeISO: '2021-05-25T09:53:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280006,
+      visitTimeStr: '2021-05-25T09:54:00.000',
+      visitTimeISO: '2021-05-25T09:54:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+
+    {
+      slotId: 'b19b9bed-f592-45b6-9845-b65ae2716fab',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621925280007,
+      visitTimeStr: '2021-05-25T09:55:00.000',
+      visitTimeISO: '2021-05-25T09:55:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'fc7bed6e-4754-41ec-8b6c-beed50394c03',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621926000000,
+      visitTimeStr: '2021-05-25T10:00:00.000',
+      visitTimeISO: '2021-05-25T10:00:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '1964bec7-748e-4f33-86ba-9530ea178a28',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621926720000,
+      visitTimeStr: '2021-05-25T10:12:00.000',
+      visitTimeISO: '2021-05-25T10:12:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '08b3f8ed-ec53-4c11-97a9-6568b3a4de4a',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621927440000,
+      visitTimeStr: '2021-05-25T10:24:00.000',
+      visitTimeISO: '2021-05-25T10:24:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'd15e9794-34c0-4584-bba0-83a900641b3a',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621928160000,
+      visitTimeStr: '2021-05-25T10:36:00.000',
+      visitTimeISO: '2021-05-25T10:36:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '17808933-9207-4bf3-bf19-a54000d940ef',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621928880000,
+      visitTimeStr: '2021-05-25T10:48:00.000',
+      visitTimeISO: '2021-05-25T10:48:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'e8decf7a-c9e3-44ca-8762-3b76cc8e97fc',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621933200000,
+      visitTimeStr: '2021-05-25T12:00:00.000',
+      visitTimeISO: '2021-05-25T12:00:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '0cc29ee0-a8e4-460d-a976-10e229bf9cb7',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621933920000,
+      visitTimeStr: '2021-05-25T12:12:00.000',
+      visitTimeISO: '2021-05-25T12:12:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'ef22d0f1-43a1-4c1a-902d-60cb1cc0526e',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621934640000,
+      visitTimeStr: '2021-05-25T12:24:00.000',
+      visitTimeISO: '2021-05-25T12:24:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '112302fe-e698-43cf-bbc4-39547fe4d346',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621935360000,
+      visitTimeStr: '2021-05-25T12:36:00.000',
+      visitTimeISO: '2021-05-25T12:36:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'f74d7d85-0460-49bb-aae2-2cd94c4acb46',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621936080000,
+      visitTimeStr: '2021-05-25T12:48:00.000',
+      visitTimeISO: '2021-05-25T12:48:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: 'be441a99-bcc0-4a0a-88ae-3ee51c514a94',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621936800000,
+      visitTimeStr: '2021-05-25T13:00:00.000',
+      visitTimeISO: '2021-05-25T13:00:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '1715a85d-29e8-4e9b-bd1e-2c659967f533',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621937520000,
+      visitTimeStr: '2021-05-25T13:12:00.000',
+      visitTimeISO: '2021-05-25T13:12:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    },
+    {
+      slotId: '491f340e-39ac-484d-b10e-e6439e4feb03',
+      serviceId: null,
+      organizationId: '1.2.643.5.1.13.13.12.2.78.8632.0.190157',
+      areaId: '0',
+      visitTime: 1621938240000,
+      visitTimeStr: '2021-05-25T13:24:00.000',
+      visitTimeISO: '2021-05-25T13:24:00+03:00',
+      queueNumber: null,
+      duration: null,
+      attributes: []
+    }
+  ],
+  error: null
+};

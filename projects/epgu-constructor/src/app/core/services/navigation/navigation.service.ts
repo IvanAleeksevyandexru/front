@@ -1,9 +1,13 @@
-import { SmuEventsService } from 'epgu-lib';
+import { SmuEventsService } from '@epgu/epgu-lib';
 import { Observable, Subject } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { ScenarioDto, OrgType } from 'epgu-constructor-types';
+import { ScenarioDto, OrgType } from '@epgu/epgu-constructor-types';
 import { Navigation } from '../../../form-player/form-player.types';
-import { MobilViewEvents, OPTIONS_FEED_EXIT, OPTIONS_FEED_MV } from '../../../shared/constants/redirect-event';
+import {
+  MobilViewEvents,
+  OPTIONS_FEED_EXIT,
+  OPTIONS_FEED_MV,
+} from '../../../shared/constants/redirect-event';
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { LocationService } from '../location/location.service';

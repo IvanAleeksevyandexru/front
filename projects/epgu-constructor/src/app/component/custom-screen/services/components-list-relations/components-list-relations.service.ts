@@ -19,7 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { DictionaryFilters, ApplicantAnswersDto } from 'epgu-constructor-types';
+import { DictionaryFilters, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class ComponentsListRelationsService {
   constructor(
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
-    private dateRestrictionsService: DateRestrictionsService
+    private dateRestrictionsService: DateRestrictionsService,
   ) {}
 
   public getUpdatedShownElements(
@@ -54,6 +54,7 @@ export class ComponentsListRelationsService {
     initInitialValues = false,
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
+    componentsGroupIndex?: number
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
@@ -82,26 +83,33 @@ export class ComponentsListRelationsService {
       },
     );
 
-    this.updateLimitDatesByDateRestrictions(components, component, form, screenService.applicantAnswers, initInitialValues);
+    this.updateLimitDatesByDateRestrictions(
+      components,
+      component,
+      form,
+      screenService.applicantAnswers,
+      initInitialValues,
+      componentsGroupIndex
+    );
 
     return shownElements;
   }
-
 
   updateLimitDatesByDateRestrictions(
     components: Array<CustomComponent>,
     component: CustomComponent | CustomListFormGroup,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-    initInitialValues: boolean
+    initInitialValues: boolean,
+    componentsGroupIndex?: number
   ): void {
     if (component.attrs.dateRestrictions && !initInitialValues) {
-      this.setLimitDates(component, components, form, applicantAnswers);
+      this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
       return;
     }
 
     if (initInitialValues) {
-      this.updateLimitDates(component, components, form, applicantAnswers);
+      this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
     }
   }
 
@@ -172,14 +180,26 @@ export class ComponentsListRelationsService {
   public hasRelation(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
     const refs = component.attrs?.ref;
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
+    const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
 
-    if (displayOff && cachedAnswers[displayOff?.relatedRel]) {
+    if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
       return this.refRelationService.isValueEquals(
         displayOff.val,
-        cachedAnswers[displayOff.relatedRel].value,
+        utils.getObjectProperty(
+          this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
+          displayOff.path,
+        ) || cachedAnswers[displayOff.relatedRel].value,
+      );
+    } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
+      return !this.refRelationService.isValueEquals(
+        displayOn.val,
+        utils.getObjectProperty(
+          this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
+          displayOn.path,
+        ) || cachedAnswers[displayOn.relatedRel].value,
       );
     } else {
-      return refs?.some((o) => this.refRelationService.isDisplayOnRelation(o.relation));
+      return false;
     }
   }
 
@@ -259,7 +279,7 @@ export class ComponentsListRelationsService {
     );
 
     dependentComponent?.attrs?.ref
-      .filter((reference) => (reference.relation === CustomComponentRefRelation.filterOn))
+      .filter((reference) => reference.relation === CustomComponentRefRelation.filterOn)
       .forEach((reference) => {
         const refControl: AbstractControl = form.controls.find(
           (control: AbstractControl) => control.value.id === reference.relatedRel,
@@ -275,28 +295,44 @@ export class ComponentsListRelationsService {
       });
   }
 
+  private getRefValue(value: string | unknown): unknown {
+    const isParsable = utils.hasJsonStructure(value as string);
+    return isParsable ? JSON.parse(value as string) : value;
+  }
 
   private async updateLimitDates(
     component: CustomComponent | CustomListFormGroup,
     components: Array<CustomComponent>,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number
   ): Promise<void> {
-    const relatedComponents = components.filter(relatedComponent => relatedComponent.attrs.dateRestrictions &&
-      (relatedComponent.attrs.dateRestrictions.some(restriction => this.dateRestrictionsService.haveDateRef(restriction))));
+    const relatedComponents = components.filter(
+      (relatedComponent) =>
+        relatedComponent.attrs.dateRestrictions &&
+        relatedComponent.attrs.dateRestrictions.some((restriction) =>
+          this.dateRestrictionsService.haveDateRef(restriction),
+        ),
+    );
 
     for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
-      const restriction = relatedComponents[index].attrs.dateRestrictions.find(restriction =>
-        this.dateRestrictionsService.haveDateRef(restriction) && restriction.value === component.id
+      const restriction = relatedComponents[index].attrs.dateRestrictions.find(
+        (restriction) =>
+          this.dateRestrictionsService.haveDateRef(restriction) &&
+          restriction.value === component.id,
       );
 
       if (restriction) {
         const dateRange = await this.dateRestrictionsService.getDateRange(
           relatedComponents[index].id,
-          relatedComponents[index].attrs.dateRestrictions, components, form, applicantAnswers);
+          relatedComponents[index].attrs.dateRestrictions,
+          components,
+          form,
+          applicantAnswers,
+          componentsGroupIndex,
+        );
         this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
       }
-
     }
   }
 
@@ -304,16 +340,25 @@ export class ComponentsListRelationsService {
     component: CustomComponent | CustomListFormGroup,
     components: Array<CustomComponent>,
     form: FormArray,
-    applicantAnswers: ApplicantAnswersDto): Promise<void> {
-    const dateRange =
-      await this.dateRestrictionsService.getDateRange(component.id, component.attrs.dateRestrictions, components, form, applicantAnswers);
+    applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number): Promise<void> {
+    const dateRange = await this.dateRestrictionsService.getDateRange(
+      component.id,
+      component.attrs.dateRestrictions,
+      components,
+      form,
+      applicantAnswers,
+      componentsGroupIndex
+    );
+
     this.updateFormWithDateRange(form, component, dateRange);
   }
 
   private updateFormWithDateRange(
     form: FormArray,
     component: CustomComponent | CustomListFormGroup,
-    dateRange: Range): void {
+    dateRange: Range,
+  ): void {
     const control = form.controls.find((control) => control.value.id === component.id);
 
     control.get('attrs').patchValue({
@@ -322,7 +367,9 @@ export class ComponentsListRelationsService {
       maxDate: dateRange.max || component.attrs.maxDate,
     });
 
-    const isDateInRange = control.value.value >= dateRange.min?.getTime() && control.value.value <= dateRange.max?.getTime();
+    const isDateInRange =
+      control.value.value >= dateRange.min?.getTime() &&
+      control.value.value <= dateRange.max?.getTime();
     if (!isDateInRange) {
       control.get('value').patchValue(control.value.value);
     }

@@ -28,7 +28,7 @@ import { AutocompleteApiService } from '../../../../../../core/services/autocomp
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
-import { ComponentDto } from 'epgu-constructor-types';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;

@@ -4,7 +4,10 @@ import { MockModule } from 'ng-mocks';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ConfirmUserData, ConfirmUserDataErrorType } from '../../confirm-personal-user-data-screen.types';
+import {
+  ConfirmUserData,
+  ConfirmUserDataErrorType,
+} from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -18,7 +21,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
+import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 const componentMock: ConfirmUserData = {
   attrs: {
@@ -90,7 +93,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserDataComponent);
     component = fixture.componentInstance;
-    screenService = TestBed.inject(ScreenService) as unknown as ScreenServiceStub;
+    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService.component = componentMock;
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock as any);
@@ -125,10 +128,10 @@ describe('ConfirmPersonalUserDataComponent', () => {
         value: JSON.stringify({
           errors: [
             {
-              type: 'someType'
-            }
-          ]
-        })
+              type: 'someType',
+            },
+          ],
+        }),
       };
       fixture.detectChanges();
 
@@ -140,10 +143,10 @@ describe('ConfirmPersonalUserDataComponent', () => {
         value: JSON.stringify({
           errors: [
             {
-              type: ConfirmUserDataErrorType.error
-            }
-          ]
-        })
+              type: ConfirmUserDataErrorType.error,
+            },
+          ],
+        }),
       };
       fixture.detectChanges();
 
@@ -170,13 +173,13 @@ describe('ConfirmPersonalUserDataComponent', () => {
     screenService.isLoadingSubject.next(true);
     screenService.buttons = [
       {
-        label: 'some screen action label'
-      }
+        label: 'some screen action label',
+      },
     ] as ComponentActionDto[];
     screenService.actions = [
       {
-        label: 'some action label'
-      }
+        label: 'some action label',
+      },
     ] as ComponentActionDto[];
 
     const buttons = [{ label: 'some submit label', action: DTOActionAction.getNextStep }];
@@ -226,7 +229,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
 
     const actionSample = {
       label: 'some screen action label',
-      type: ActionType.profileEdit
+      type: ActionType.profileEdit,
     } as ComponentActionDto;
 
     screenService.action = actionSample;

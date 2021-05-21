@@ -26,7 +26,7 @@ import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
-import { DisplayDto } from 'epgu-constructor-types';
+import { DisplayDto } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
@@ -110,7 +110,7 @@ const displayMock = {
                 },
               ],
               customUnrecLabel: 'При наличии',
-              onlyFirstScreen: true
+              onlyFirstScreen: true,
             },
             value: '',
             required: false,
@@ -141,12 +141,7 @@ describe('RepeatableScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BaseModule,
-        BaseComponentsModule,
-        ScreenPadModule,
-        ScreenButtonsModule,
-      ],
+      imports: [BaseModule, BaseComponentsModule, ScreenPadModule, ScreenButtonsModule],
       declarations: [
         RepeatableScreenComponent,
         ScreenContainerComponent,
@@ -165,7 +160,7 @@ describe('RepeatableScreenComponent', () => {
         UnsubscribeService,
         EventBusService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        CachedAnswersService
+        CachedAnswersService,
       ],
     }).compileComponents();
   });
@@ -228,16 +223,15 @@ describe('RepeatableScreenComponent', () => {
   it('when cloneButtonClickEvent,should create components with filtered onlyFirstScreen', () => {
     const components = [
       displayMock.components[0].attrs.components[0],
-      displayMock.components[0].attrs.components[1]
+      displayMock.components[0].attrs.components[1],
     ];
     const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
     eventBusService.emit('cloneButtonClickEvent', 'any');
     expect(setNewScreenSpy).toBeCalledTimes(1);
     expect(setNewScreenSpy).toBeCalledWith(components);
-
   });
 
-  it('should been called setNewScreen method with screens components',  () => {
+  it('should been called setNewScreen method with screens components', () => {
     const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
     const { components } = displayMock.components[0].attrs;
     component.init$.subscribe(() => {

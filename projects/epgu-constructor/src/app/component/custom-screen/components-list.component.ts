@@ -10,10 +10,10 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
 } from '@angular/core';
-import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
+import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
-import { ScenarioErrorsDto } from 'epgu-constructor-types';
+import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../core/services/config/config.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
@@ -96,7 +96,11 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       JSON.stringify(changes.errors?.previousValue);
 
     if (components || isErrorsChanged) {
-      const formArray = this.formService.create(this.components, this.errors);
+      const formArray = this.formService.create(
+        this.components,
+        this.errors,
+        this.componentsGroupIndex,
+      );
       this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);

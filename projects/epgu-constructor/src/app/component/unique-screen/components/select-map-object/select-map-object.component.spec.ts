@@ -46,7 +46,7 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ScenarioDto } from 'epgu-constructor-types';
+import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('SelectMapObjectComponent', () => {

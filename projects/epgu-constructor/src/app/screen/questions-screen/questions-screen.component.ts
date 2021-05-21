@@ -12,7 +12,7 @@ import {
   DTOActionAction,
   ComponentAnswerDto,
   Answer,
-} from 'epgu-constructor-types';
+} from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';

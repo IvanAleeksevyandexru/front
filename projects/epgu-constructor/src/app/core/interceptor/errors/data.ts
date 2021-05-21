@@ -1,4 +1,4 @@
-import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
 
 export function instanceOfFormPlayerApiSuccessResponse(
   obj: object,

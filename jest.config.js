@@ -14,8 +14,8 @@ module.exports = {
     '<rootDir>/src/',
   ],
   moduleNameMapper: {
-    '@ifc/plugin': '<rootDir>/node_modules/epgu-lib/assets/vendor/ifcplugin-lib.js',
-    '@ifc/common': '<rootDir>/node_modules/epgu-lib/assets/vendor/ifccommon-lib.js'
+    '@ifc/plugin': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js',
+    '@ifc/common': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js'
   },
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
@@ -42,7 +42,7 @@ module.exports = {
     }
   },
   testEnvironmentOptions: {
-    beforeParse (window) {
+    beforeParse(window) {
       window.scroll = () => { };
     }
   },

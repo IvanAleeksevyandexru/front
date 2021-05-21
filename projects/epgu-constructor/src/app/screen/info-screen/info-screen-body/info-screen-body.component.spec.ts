@@ -7,7 +7,7 @@ import { OutputHtmlComponent } from '../../../shared/components/output-html/outp
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from 'epgu-constructor-types';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 const mockDataWithAttrs: ComponentDto = {
   id: 'id1',
@@ -42,9 +42,11 @@ describe('InfoScreenBodyComponent', () => {
     TestBed.configureTestingModule({
       declarations: [InfoScreenBodyComponent, MockComponent(OutputHtmlComponent)],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
-    }).overrideComponent(InfoScreenBodyComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(InfoScreenBodyComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
