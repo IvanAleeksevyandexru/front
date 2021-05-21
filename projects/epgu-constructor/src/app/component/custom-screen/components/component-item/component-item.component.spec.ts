@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentItemComponent } from './component-item.component';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from 'epgu-lib';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';

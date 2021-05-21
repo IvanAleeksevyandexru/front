@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from 'epgu-lib';
 import { CoreModule } from '../../../core/core.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';

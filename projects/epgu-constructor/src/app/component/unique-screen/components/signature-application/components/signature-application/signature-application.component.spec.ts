@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
+import { ButtonComponent, LoaderComponent } from 'epgu-lib';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
@@ -32,7 +32,7 @@ import {
   ComponentAttrsDto,
   ComponentActionDto,
   DTOActionAction,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

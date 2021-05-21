@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MonthYear } from '@epgu/epgu-lib';
+import { MonthYear } from 'epgu-lib';
 
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';

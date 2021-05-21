@@ -1,5 +1,5 @@
-import { Answer } from '@epgu/epgu-constructor-types';
+import { Answer } from 'epgu-constructor-types';
 
 export interface ComponentStateForNavigate {
-  [key: string]: Answer;
+  [key: string]: Answer
 }

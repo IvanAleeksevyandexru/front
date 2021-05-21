@@ -21,7 +21,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from 'epgu-lib';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';

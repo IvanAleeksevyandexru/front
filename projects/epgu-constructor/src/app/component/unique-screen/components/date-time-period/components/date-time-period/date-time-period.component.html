@@ -1,7 +1,10 @@
 <epgu-constructor-screen-pad [formGroup]="group">
   <h5 class="date-time-period-title">Начало периода</h5>
   <epgu-constructor-input-error
-    *ngIf="(this.group.controls.startDate.invalid && this.group.controls.startDate.touched) || (this.group.controls.startTime.invalid && this.group.controls.startTime.touched)"
+    *ngIf="
+      (this.group.controls.startDate.invalid && this.group.controls.startDate.touched) ||
+      (this.group.controls.startTime.invalid && this.group.controls.startTime.touched)
+    "
   >
     Не все поля заполнены
   </epgu-constructor-input-error>
@@ -16,6 +19,7 @@
         [id]="'startDate'"
         [minDate]="'today'"
         [control]="group.controls.startDate"
+        [maxDate]="attrs.beginDate?.maxDate"
         [clearable]="true"
         [invalid]="group.controls.startDate.invalid && group.controls.startDate.touched"
       ></epgu-constructor-constructor-date-picker>
@@ -36,7 +40,6 @@
     </div>
   </div>
 
-
   <h5 class="date-time-period-subtitle">Окончание периода</h5>
 
   <div class="date-time-period-btns">
@@ -52,7 +55,10 @@
   </div>
 
   <epgu-constructor-input-error
-    *ngIf="(this.group.controls.endDate.invalid && this.group.controls.endDate.touched) || (this.group.controls.endTime.invalid && this.group.controls.endTime.touched)"
+    *ngIf="
+      (this.group.controls.endDate.invalid && this.group.controls.endDate.touched) ||
+      (this.group.controls.endTime.invalid && this.group.controls.endTime.touched)
+    "
   >
     Не все поля заполнены
   </epgu-constructor-input-error>
@@ -66,6 +72,7 @@
       <epgu-constructor-constructor-date-picker
         [id]="'endDate'"
         [minDate]="group.controls.startDate.value"
+        [maxDate]="attrs.endDate?.maxDate"
         [control]="group.controls.endDate"
         [clearable]="true"
         [invalid]="group.controls.endDate.invalid && group.controls.endDate.touched"

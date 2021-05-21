@@ -1,4 +1,4 @@
-import { MonthYear } from '@epgu/epgu-lib';
+import { MonthYear } from 'epgu-lib/lib/models/date-time.model';
 
 export interface EmployeeHistoryDataSource {
   label: string;

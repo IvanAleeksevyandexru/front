@@ -9,7 +9,7 @@ import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto } from 'epgu-constructor-types';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;

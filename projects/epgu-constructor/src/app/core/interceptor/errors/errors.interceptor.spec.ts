@@ -32,7 +32,7 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { FormPlayerNavigation } from '../../../form-player/form-player.types';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
 import { ErrorHandleService } from './error-handle.service';
 
 const responseDto = new FormPlayerServiceStub()._store;

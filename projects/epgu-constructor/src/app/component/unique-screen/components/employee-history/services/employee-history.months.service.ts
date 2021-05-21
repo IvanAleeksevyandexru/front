@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MonthYear } from '@epgu/epgu-lib';
+import { MonthYear } from 'epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 
 import {

@@ -5,10 +5,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ListItem } from '@epgu/epgu-lib';
+import { ListItem } from 'epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { DisplayDto, ConfirmationModal } from 'epgu-constructor-types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';

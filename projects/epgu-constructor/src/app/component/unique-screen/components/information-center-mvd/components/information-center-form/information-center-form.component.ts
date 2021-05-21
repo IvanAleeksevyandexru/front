@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { FormControl } from '@angular/forms';
 
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';

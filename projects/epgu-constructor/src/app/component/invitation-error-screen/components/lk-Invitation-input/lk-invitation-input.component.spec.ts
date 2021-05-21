@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { MockComponents, MockModule } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
@@ -86,7 +86,7 @@ describe('LkInvitationInputComponent', () => {
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });
