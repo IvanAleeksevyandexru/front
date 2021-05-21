@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
-import { ConfirmationModal, ErrorModal, FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
+import { ConfirmationModal, ErrorModal, FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR, COMMON_ERROR_MODAL_PARAMS, DRAFT_STATEMENT_NOT_FOUND,

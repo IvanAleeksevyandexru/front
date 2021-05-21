@@ -1,4 +1,4 @@
-import { ConfirmationModal, StatusIcon } from '@epgu/epgu-constructor-types';
+import { ConfirmationModal, StatusIcon } from 'epgu-constructor-types';
 
 export const STATUS_ICON_MAP = {
   [StatusIcon.WARNING]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">',
