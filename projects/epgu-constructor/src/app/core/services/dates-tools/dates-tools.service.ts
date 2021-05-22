@@ -29,6 +29,9 @@ import {
   min as _min,
   max as _max,
   intervalToDuration as _intervalToDuration,
+  differenceInCalendarDays as _differenceInCalendarDays,
+  startOfISOWeek as _startOfISOWeek,
+  endOfISOWeek as _endOfISOWeek,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { replaceArguments } from '../../../shared/constants/utils';
@@ -75,12 +78,18 @@ export class DatesToolsService {
   }
 
   /**
-   * Возвращает сегодняшнюю дату
+   * 
+   * @param resetTime если true, то сбрасывает время до 00:00:00
+   * @returns Возвращает сегодняшнюю дату
    */
-  public async getToday(): Promise<Date> {
+  public async getToday(resetTime = false): Promise<Date> {
     const path = 'api/service/actions/currentDateTime';
     const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
-    return new Date(timeString);
+    const date = new Date(timeString);
+    if (resetTime) {
+      date.setHours(0, 0, 0, 0);
+    }
+    return date;
   }
 
   /**
@@ -413,6 +422,34 @@ export class DatesToolsService {
     }
 
     return copiedDate;
+  }
+
+  /**
+   *
+   * @param date1 первая дата
+   * @param date2 вторая дата
+   * @returns возращает разницу в днях. date2 минус date1
+   */
+  public differenceInCalendarDays(date1: Date | number, date2: Date | number): number {
+    return _differenceInCalendarDays(date2, date1);
+  }
+
+  /**
+   *
+   * @param date дата
+   * @returns возращает начало недели
+   */
+  public startOfISOWeek(date: Date | number): Date {
+    return _startOfISOWeek(date);
+  }
+
+  /**
+   *
+   * @param date дата
+   * @returns возращает конец недели
+   */
+  public endOfISOWeek(date: Date | number): Date {
+    return _endOfISOWeek(date);
   }
 
   /**

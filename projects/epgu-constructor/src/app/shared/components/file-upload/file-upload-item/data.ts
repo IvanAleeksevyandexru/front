@@ -332,6 +332,8 @@ export const plurals = {
   files: ['файл', 'файла', 'файлов'],
   attach: ['прикрепился', 'прикрепилось', 'прикрепилось'],
   before: ['', 'до', 'до'],
+  uploadingFiles: ['файл', 'ещё', 'ещё'],
+  choosingFiles: ['файл', 'файлы', 'файлы'],
 };
 
 export const beforeFilesPlural = ['файл', 'файлов', 'файлов'];

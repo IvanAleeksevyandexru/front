@@ -10,12 +10,10 @@ export interface QueryParams {
  *   то можно смоделировать переход на нужный экран, использовать только в целях разработки,
  *   более подробно о запусках плеера смотри в FormPlayerStartService.
  * @property queryParams - квери параметры которые необходимо пробросить в форм плеер
- * @property gepsId - идентификатора сообщения от ГЭПС
  */
 export interface FormPlayerContext {
   configId?: string;
   initState?: string;
-  gepsId?: number;
   queryParams?: QueryParams;
 }
 
@@ -43,6 +41,7 @@ export interface ServiceInfo {
  * @property invited - флаг для запуска инвайт сценариев
  * @property canStartNew - флаг для возможности отображения модального окна "продолжить черновик",
  *   по дефолту значение true. Если поставить false, то модального окна не будет.
+ * @property gepsId - идентификатора сообщения от ГЭПС
  */
 export interface ServiceEntity {
   serviceId: string;
@@ -51,6 +50,7 @@ export interface ServiceEntity {
   orderId?: number;
   invited?: boolean;
   canStartNew?: boolean;
+  gepsId?: number;
 }
 
 /**
