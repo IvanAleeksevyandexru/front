@@ -11,7 +11,7 @@ import {
   FileUploadAttributes,
   FileUploadEmitValue,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { TerraUploadedFile } from '../../../../shared/components/file-upload/file-upload-item/data';
+import { TerraUploadedFile } from '../../../../shared/components/file-upload/data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-form',

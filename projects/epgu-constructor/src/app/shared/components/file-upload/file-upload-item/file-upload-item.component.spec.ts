@@ -39,7 +39,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
-import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from './data';
+import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from '../data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';

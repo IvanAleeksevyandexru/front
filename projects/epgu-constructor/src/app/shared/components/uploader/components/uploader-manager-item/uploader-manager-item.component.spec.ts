@@ -19,7 +19,7 @@ import {
   FileItemError,
   FileItemStatus,
   OperationType,
-} from '../../../file-upload/file-upload-item/data';
+} from '../../../file-upload/data';
 import { By } from '@angular/platform-browser';
 import { FileSizePipe, SmuEventsService } from 'epgu-lib';
 import { MockModule } from 'ng-mocks';

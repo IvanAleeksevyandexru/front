@@ -15,7 +15,7 @@ import {
   FileUploadItem,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { TerraUploadedFile } from '../../../../shared/components/file-upload/file-upload-item/data';
+import { TerraUploadedFile } from '../../../../shared/components/file-upload/data';
 import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 

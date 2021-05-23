@@ -9,13 +9,7 @@ import {
   UploadedFile,
 } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 
-import {
-  ErrorActions,
-  FileItem,
-  FileItemError,
-  FileItemStatus,
-  FileItemStore,
-} from './file-upload-item/data';
+import { ErrorActions, FileItem, FileItemError, FileItemStatus, FileItemStore } from './data';
 import { FileUploadServiceStub } from './file-upload.service.stub';
 import { CompressionServiceStub } from '../upload-and-edit-photo-form/service/compression/compression.service.stub';
 

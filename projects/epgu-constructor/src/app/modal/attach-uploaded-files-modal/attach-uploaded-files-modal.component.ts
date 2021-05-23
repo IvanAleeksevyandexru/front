@@ -10,11 +10,7 @@ import {
 import { take, takeUntil } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ErrorActions,
-  FileItem,
-  FileItemStatus,
-} from '../../shared/components/file-upload/file-upload-item/data';
+import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';

@@ -13,11 +13,7 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import {
-  FileItem,
-  FileItemError,
-  FileItemStatus,
-} from '../../../file-upload/file-upload-item/data';
+import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';

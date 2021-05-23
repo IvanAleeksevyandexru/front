@@ -1,4 +1,4 @@
-import { TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
+import { TerraUploadedFile } from '../../../shared/components/file-upload/data';
 import { Clarifications } from 'epgu-constructor-types';
 
 export interface Chunk {

@@ -5,13 +5,12 @@ import {
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
-} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+} from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { BehaviorSubject } from 'rxjs';
 import { v4 } from 'uuid';
-import { UploadOperation } from '../operations/upload.operation';
-import { DownloadOperation } from '../operations/download.operation';
-import { PrepareOperation } from '../operations/prepare.operation';
-import { DeleteOperation } from '../operations/delete.operation';
+import { UploaderStoreService } from './services/store/uploader-store.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { Clarifications } from 'epgu-constructor-types';
 
 export enum ErrorActions {
   clear = 'clear',
@@ -41,6 +40,14 @@ export enum FileItemStatusText {
   preparation = 'обработка...',
   downloading = 'скачивается...',
   delition = 'удаляется...',
+}
+
+export interface UploadContext {
+  files: UploadedFile[];
+  objectId: string;
+  prefixForMnemonic: string;
+  data: FileUploadItem;
+  clarifications: Clarifications;
 }
 
 export class FileItemStore {
@@ -213,22 +220,17 @@ export enum OperationType {
   download = 'download',
   prepare = 'prepare',
 }
-export const operationsByTypes = {
-  upload: UploadOperation,
-  download: DownloadOperation,
-  prepare: PrepareOperation,
-  delete: DeleteOperation,
-};
 
 export interface CancelAction {
   type: OperationType;
   item: FileItem;
 }
-
+export type OperationHandler = (operation: Operation) => Observable<void>;
 export interface Operation {
   type: OperationType;
   cancel: BehaviorSubject<boolean>; // Если сюда отправить true операция будет отменена
   item: FileItem;
+  handler: OperationHandler;
 }
 
 /**
@@ -356,7 +358,7 @@ export const getAcceptTypes = (
 export const createError = (
   action: ErrorActions,
   data: FileUploadItem,
-  store: FileItemStore,
+  store: FileItemStore | UploaderStoreService,
   totalSize: number = 0,
 ): FileItemError => {
   const errorHandler = {};
@@ -418,7 +420,7 @@ export interface OverLimits {
 
 export const updateLimits = (
   config: FileUploadItem,
-  store: FileItemStore,
+  store: FileItemStore | UploaderStoreService,
   amount: number,
   file?: FileItem,
   isAdd = true,

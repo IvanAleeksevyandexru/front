@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
+  CompressionOptions,
+  CompressionService,
+} from '../../../upload-and-edit-photo-form/service/compression/compression.service';
+
+import {
   ErrorActions,
   FileItem,
   FileItemError,
@@ -8,35 +13,32 @@ import {
   getAcceptTypes,
   getSizeInMB,
   updateLimits,
-} from './data';
+} from '../../data';
 import {
   FileUploadItem,
   MaxCountByType,
-} from '../../../core/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, map, tap } from 'rxjs/operators';
-import { FileUploadService } from './file-upload.service';
-import {
-  CompressionOptions,
-  CompressionService,
-} from '../upload-and-edit-photo-form/service/compression/compression.service';
+import { UploaderStoreService } from '../store/uploader-store.service';
+import { UploaderLimitsService } from '../limits/uploader-limits.service';
 
 type getErrorType = (action: ErrorActions) => FileItemError;
 
 @Injectable()
-export class PrepareService {
+export class UploaderValidationService {
   maxImgSizeInBytes = 525288;
 
   constructor(
     private compressionService: CompressionService,
-    private fileUploadService: FileUploadService,
+    private fileUploadService: UploaderLimitsService,
   ) {}
 
   prepare(
     file: FileItem,
     config: FileUploadItem,
     getError: getErrorType,
-    store: FileItemStore,
+    store: FileItemStore | UploaderStoreService,
   ): Observable<FileItem> {
     return of(file).pipe(
       tap((file: FileItem) => this.checkAndSetMaxCountByTypes(config, file, store)),
@@ -56,7 +58,7 @@ export class PrepareService {
   checkAndSetMaxCountByTypes(
     config: FileUploadItem,
     file: FileItem,
-    store: FileItemStore,
+    store: FileItemStore | UploaderStoreService,
     isAdd = true,
   ): void {
     if (!(config?.maxCountByTypes?.length > 0)) {
@@ -73,7 +75,7 @@ export class PrepareService {
     config: FileUploadItem,
     file: FileItem,
     getError: getErrorType,
-    store: FileItemStore,
+    store: FileItemStore | UploaderStoreService,
   ): FileItem {
     return file.isTypeValid(
       store?.lastSelected

@@ -12,7 +12,7 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from './terra-byte-api.types';
-import { BYTES_IN_KB, TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
+import { BYTES_IN_KB, TerraUploadedFile } from '../../../shared/components/file-upload/data';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт

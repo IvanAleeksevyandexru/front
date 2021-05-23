@@ -17,7 +17,7 @@ enum UploaderCheckType {
 
 type CheckResult = -1 | 0 | 1;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UploaderLimitsService {
   changes = new Subject<null>();
 

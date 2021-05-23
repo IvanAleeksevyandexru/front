@@ -1,59 +1,142 @@
 import { Injectable } from '@angular/core';
-import { FileUploadItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { concatMap, distinctUntilChanged, shareReplay, tap } from 'rxjs/operators';
+import { filter, shareReplay, tap } from 'rxjs/operators';
 
-import { FileUploadService } from '../../file-upload.service';
-
-import { LoggerService } from '../../../../../core/services/logger/logger.service';
-import { Uploader } from '../../models/Uploader.model';
-import { PrepareService } from '../../prepare.service';
+import { BehaviorSubject } from 'rxjs';
+import {
+  FileUploadItem,
+  UploadedFile,
+} from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { createError, ErrorActions, FileItemError, getAcceptTypes } from '../../data';
+import { UploaderStoreService } from '../store/uploader-store.service';
+import { UploaderLimitsService } from '../limits/uploader-limits.service';
 
 @Injectable()
 export class UploaderManagerService {
-  getList$ = this.screen.orderId$.pipe(
-    distinctUntilChanged(),
-    tap(() => this.reset()),
-    concatMap((orderId: number) => this.api.getListByObjectId(String(orderId))),
+  data$$ = new BehaviorSubject<FileUploadItem>(null);
+  data$ = this.data$$.pipe(
+    filter((data) => !!data),
+    tap((data) => this.init(data)),
     shareReplay(1),
   );
-  uploaderList: Record<string, Uploader> = {};
+  get data(): FileUploadItem {
+    return this.data$$.getValue();
+  }
+  set data(data) {
+    this.data$$.next(data);
+  }
 
-  constructor(
-    private api: TerraByteApiService,
-    private screen: ScreenService,
-    private limits: FileUploadService,
-    private logger: LoggerService,
-    private prepare: PrepareService,
-  ) {}
-  // eslint-disable-next-line no-empty-function
-  reset(): void {}
-  getUploader(prefixForMnemonic: string, objectId: string, config: FileUploadItem): Uploader {
-    const id = `${objectId}${prefixForMnemonic}${config.uploadId}`;
-    if (!this.uploaderList[id]) {
-      this.register(prefixForMnemonic, objectId, config);
+  readonly$$ = new BehaviorSubject<boolean>(false);
+  get readonly(): boolean {
+    return this.readonly$$.getValue();
+  }
+  set readonly(readonly: boolean) {
+    this.readonly$$.next(readonly);
+  }
+
+  maxTotalSize$$ = new BehaviorSubject<number>(0);
+  get maxTotalSize(): number {
+    return this.maxTotalSize$$.getValue();
+  }
+  set maxTotalSize(maxTotalSize: number) {
+    this.maxTotalSize$$.next(maxTotalSize);
+  }
+
+  maxTotalAmount$$ = new BehaviorSubject<number>(0);
+  get maxTotalAmount(): number {
+    return this.maxTotalAmount$$.getValue();
+  }
+  set maxTotalAmount(maxTotalAmount: number) {
+    this.maxTotalAmount$$.next(maxTotalAmount);
+  }
+
+  maxAmount$$ = new BehaviorSubject<number>(0);
+  get maxAmount(): number {
+    return this.maxAmount$$.getValue();
+  }
+  set maxAmount(maxAmount: number) {
+    this.maxAmount$$.next(maxAmount);
+  }
+
+  maxSize$$ = new BehaviorSubject<number>(0);
+  get maxSize(): number {
+    return this.maxAmount$$.getValue();
+  }
+  set maxSize(maxSize: number) {
+    this.maxSize$$.next(maxSize);
+  }
+
+  prefixForMnemonic$$ = new BehaviorSubject<string>('');
+  get prefixForMnemonic(): string {
+    return this.prefixForMnemonic$$.getValue();
+  }
+  set prefixForMnemonic(prefixForMnemonic: string) {
+    this.prefixForMnemonic$$.next(prefixForMnemonic);
+  }
+
+  objectId$$ = new BehaviorSubject<string>('');
+  get objectId(): string {
+    return this.objectId$$.getValue();
+  }
+  set objectId(objectId: string) {
+    this.objectId$$.next(objectId);
+  }
+
+  maxFileNumber = -1;
+
+  constructor(private store: UploaderStoreService, private limits: UploaderLimitsService) {}
+
+  /**
+   * Возращает промежуточный путь для формирования мнемомники, конретно для этой формы
+   */
+  getSubMnemonicPath(): string {
+    return [this.prefixForMnemonic, this.data.uploadId].join('.');
+  }
+
+  /**
+   * Возвращает мнемонику для файла, формируя уникальный префикс
+   */
+  getMnemonic(): string {
+    this.maxFileNumber += 1;
+    return [this.getSubMnemonicPath(), this.maxFileNumber].join('.');
+  }
+
+  getError(action: ErrorActions): FileItemError {
+    return createError(action, this.data, this.store, this.limits.getMaxTotalFilesSize());
+  }
+
+  init(data: FileUploadItem): void {
+    this.maxTotalSize = this.limits.getMaxTotalFilesSize();
+    this.maxTotalAmount = this.limits.getMaxTotalFilesAmount();
+    this.maxAmount = this.limits.getUploader(data.uploadId).maxAmount;
+    this.maxSize = this.limits.getUploader(data.uploadId).maxSize;
+    this.readonly = data?.readonly === true;
+  }
+
+  get acceptTypes(): string {
+    if (this.data?.maxCountByTypes && !this.store?.lastSelected) {
+      return getAcceptTypes(
+        this.data?.maxCountByTypes
+          .reduce<string[]>((acc, countType) => acc.concat(countType.type), [])
+          .filter((item, index, arr) => arr.indexOf(item) === index),
+      );
     }
-    return this.uploaderList[id];
+    return this.store?.lastSelected
+      ? getAcceptTypes(this.store?.lastSelected.type)
+      : getAcceptTypes(this.data.fileType);
   }
 
-  register(prefixForMnemonic: string, objectId: string, config: FileUploadItem): void {
-    this.limits.registerUploader(
-      config.uploadId,
-      config?.maxCountByTypes?.length > 0 || !config?.maxFileCount ? 0 : config.maxFileCount,
-      config?.maxSize,
-    );
-    this.uploaderList[`${objectId}${prefixForMnemonic}${config.uploadId}`] = new Uploader(
-      prefixForMnemonic,
-      objectId,
-      config,
-      this.api,
-      this.prepare,
-      this.limits,
+  get hasImageTypes(): boolean {
+    const types = this.acceptTypes;
+    return (
+      types.indexOf('.jpeg') !== -1 ||
+      types.indexOf('.jpg') !== -1 ||
+      types.indexOf('.gif') !== -1 ||
+      types.indexOf('.png') !== -1 ||
+      types.indexOf('.bmp') !== -1
     );
   }
-
-  acceptTypes(): string {
-    return '';
+  updateMaxFileNumber(file: UploadedFile): void {
+    const index = Number(file.mnemonic.split('.').pop());
+    this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;
   }
 }

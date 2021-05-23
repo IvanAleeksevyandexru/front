@@ -9,7 +9,7 @@ import { ModalService } from '../../../../../modal/modal.service';
 import { BaseModule } from '../../../../base.module';
 import { FilesCollection, SuggestAction } from '../../data';
 import { BehaviorSubject, of } from 'rxjs';
-import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
+import { FileItem, FileItemStatus } from '../../../file-upload/data';
 import {
   TerraUploadFileOptions,
   UploadedFile,
