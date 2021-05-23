@@ -29,8 +29,6 @@ import {
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 
-import { UploaderManagerService } from '../services/manager/uploader-manager.service';
-
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
@@ -116,7 +114,6 @@ export class FileUploadComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
-    private uploaderManager: UploaderManagerService,
     private api: TerraByteApiService,
     private screenService: ScreenService,
     private autocompletePrepareService: AutocompletePrepareService,

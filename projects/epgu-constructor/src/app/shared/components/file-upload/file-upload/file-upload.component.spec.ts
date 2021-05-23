@@ -10,7 +10,6 @@ import { Clarifications } from 'epgu-constructor-types';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
 import { MemoModule } from '../../../pipes/memo/memo.module';
 import { FileUploadContainerComponent } from '../file-upload-container/file-upload-container.component';
-import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
@@ -51,7 +50,6 @@ describe('FileUploadComponent', () => {
       providers: [
         UploaderLimitsService,
         EventBusService,
-        UploaderManagerService,
         UploaderStoreService,
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
