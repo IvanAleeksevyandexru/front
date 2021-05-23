@@ -120,9 +120,10 @@ export class UploaderManagerService {
           .filter((item, index, arr) => arr.indexOf(item) === index),
       );
     }
-    return this.store?.lastSelected
+    const result = this.store?.lastSelected
       ? getAcceptTypes(this.store?.lastSelected.type)
       : getAcceptTypes(this.data.fileType);
+    return result;
   }
 
   get hasImageTypes(): boolean {

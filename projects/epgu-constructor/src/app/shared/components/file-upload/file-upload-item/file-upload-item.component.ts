@@ -44,6 +44,7 @@ import { UploaderStatService } from '../services/stat/uploader-stat.service';
 export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input() clarification: Clarifications;
   @Input() set initFiles(files: UploadedFile[]) {
+    this.uploader.maxFileNumber = -1;
     this.initFilesList.next(files);
   }
   get data(): FileUploadItem {
@@ -105,7 +106,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   suggestions$ = this.screenService.suggestions$;
 
   uploadersCounterChanges$ = this.limits.changes.pipe(
-    tap(() => this.stat.updateLimits()),
+    // tap(() => this.stat.updateLimits()),
     tap(() => this.stat.maxLimitUpdate()),
   );
 
@@ -134,7 +135,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.uploader.maxFileNumber = -1;
     this.subscriptions.add(this.files$.subscribe());
 
     this.eventBusService

@@ -7,11 +7,10 @@ import { UploaderModule } from '../../uploader/uploader.module';
 import { FileSizeModule } from '../../../pipes/file-size/file-size.module';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
-import { PrepareService } from '../prepare.service';
-import { PrepareServiceStub } from '../prepare.service.stub';
+
+import { UploaderValidationServiceStub } from '../services/validation/uploader-validation.service.stub';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { FileUploadService } from '../file-upload.service';
 
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
@@ -48,6 +47,12 @@ import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ComponentAttrsDto } from 'epgu-constructor-types';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
+import { UploaderValidationService } from '../services/validation/uploader-validation.service';
+import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
+import { UploaderStoreService } from '../services/store/uploader-store.service';
+import { UploaderManagerService } from '../services/manager/uploader-manager.service';
+import { UploaderStatService } from '../services/stat/uploader-stat.service';
+import { UploaderProcessService } from '../services/process/uploader-process.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -105,12 +110,15 @@ const mockFileItem: () => FileItem = () =>
 describe('FileUploadItemComponent', () => {
   let component: FileUploadItemComponent;
   let fixture: ComponentFixture<FileUploadItemComponent>;
-  let prepateService: PrepareService;
+  let prepateService: UploaderValidationService;
   let terabyteService: TerraByteApiService;
   let screenService: ScreenService;
   let viewerService: ViewerService;
   let modalSerivce: ModalService;
-  let fileUploadService: FileUploadService;
+  let fileUploadService: UploaderLimitsService;
+  let store: UploaderStoreService;
+  let uploader: UploaderManagerService;
+  let stat: UploaderStatService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -118,7 +126,7 @@ describe('FileUploadItemComponent', () => {
       imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
       providers: [
         EventBusService,
-        FileUploadService,
+        UploaderLimitsService,
         UnsubscribeService,
         AutocompleteService,
         AutocompletePrepareService,
@@ -129,13 +137,17 @@ describe('FileUploadItemComponent', () => {
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-        { provide: PrepareService, useClass: PrepareServiceStub },
+        { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ViewerService, useClass: ViewerServiceStub },
+        UploaderStoreService,
+        UploaderManagerService,
+        UploaderStatService,
+        UploaderProcessService,
       ],
     })
       .overrideComponent(FileUploadItemComponent, {
@@ -145,12 +157,15 @@ describe('FileUploadItemComponent', () => {
   });
 
   beforeEach(() => {
-    prepateService = TestBed.inject(PrepareService);
+    prepateService = TestBed.inject(UploaderValidationService);
+    uploader = TestBed.inject(UploaderManagerService);
+    stat = TestBed.inject(UploaderStatService);
+    store = TestBed.inject(UploaderStoreService);
     terabyteService = TestBed.inject(TerraByteApiService);
     screenService = TestBed.inject(ScreenService);
     viewerService = TestBed.inject(ViewerService);
     modalSerivce = TestBed.inject(ModalService);
-    fileUploadService = TestBed.inject(FileUploadService);
+    fileUploadService = TestBed.inject(UploaderLimitsService);
     fileUploadService.registerUploader(
       uploadMock.uploadId,
       uploadMock.maxFileCount,
@@ -158,8 +173,9 @@ describe('FileUploadItemComponent', () => {
     );
     fixture = TestBed.createComponent(FileUploadItemComponent);
     component = fixture.componentInstance;
-    component.data = uploadMock;
-    component.objectId = objectIdMock;
+    uploader.data = uploadMock;
+    uploader.prefixForMnemonic = 'test';
+    uploader.objectId = objectIdMock;
 
     jest.spyOn(viewerService, 'open').mockImplementation(() => of());
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
@@ -203,7 +219,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should load file success', () => {
     const files = createFileList([createFileMock('test.png')]);
-    component.updateSelectedFilesInfoAndSend(files);
+    component.selectFiles(files);
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).toBeNull();
@@ -216,7 +232,7 @@ describe('FileUploadItemComponent', () => {
         of(file.setError({ type: ErrorActions.addUploadErr, text: '' })),
       );
     const files = createFileList([createFileMock('test.pdf')]);
-    component.updateSelectedFilesInfoAndSend(files);
+    component.selectFiles(files);
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).not.toBeNull();
@@ -244,7 +260,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should delete file', () => {
     const files = createFileList([createFileMock('test.png')]);
-    component.updateSelectedFilesInfoAndSend(files);
+    component.selectFiles(files);
     fixture.detectChanges();
     const deleteButton: HTMLButtonElement = fixture.debugElement.query(
       By.css('.uploader-manager-item__button.remove_button'),
@@ -256,8 +272,8 @@ describe('FileUploadItemComponent', () => {
 
   it('should readonly uploader', () => {
     const files = createFileList([createFileMock('test.png')]);
-    component.updateSelectedFilesInfoAndSend(files);
-    component.readonly = true;
+    component.selectFiles(files);
+    uploader.readonly = true;
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('epgu-constructor-uploader'))).toBeNull();
     expect(
@@ -267,7 +283,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should open link', () => {
     const files = createFileList([createFileMock('test.pdf', { type: 'application/pdf' })]);
-    component.updateSelectedFilesInfoAndSend(files);
+    component.selectFiles(files);
     fixture.detectChanges();
     const name: HTMLDivElement = fixture.debugElement.query(
       By.css('.uploader-manager-item__title > .name'),
@@ -283,7 +299,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should open viewer', () => {
     const files = createFileList([createFileMock('test.png', { type: 'image/png' })]);
-    component.updateSelectedFilesInfoAndSend(files);
+    component.selectFiles(files);
     fixture.detectChanges();
     const manager = fixture.debugElement.query(By.css('epgu-constructor-uploader-manager'))
       .componentInstance;

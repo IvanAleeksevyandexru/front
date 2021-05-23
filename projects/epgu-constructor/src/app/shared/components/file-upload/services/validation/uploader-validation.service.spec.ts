@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { PrepareService } from './prepare.service';
-import { CompressionService } from '../upload-and-edit-photo-form/service/compression/compression.service';
-import { FileUploadService } from './file-upload.service';
+import { UploaderValidationService } from './uploader-validation.service';
+import { CompressionService } from '../../../upload-and-edit-photo-form/service/compression/compression.service';
+import { UploaderLimitsService } from '../limits/uploader-limits.service';
 import {
   FileUploadItem,
   TerraUploadFileOptions,
   UploadedFile,
-} from '../../../core/services/terra-byte-api/terra-byte-api.types';
+} from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 
-import { ErrorActions, FileItem, FileItemError, FileItemStatus, FileItemStore } from './data';
-import { FileUploadServiceStub } from './file-upload.service.stub';
-import { CompressionServiceStub } from '../upload-and-edit-photo-form/service/compression/compression.service.stub';
+import { ErrorActions, FileItem, FileItemError, FileItemStatus, FileItemStore } from '../../data';
+import { UploaderLimitsServiceStub } from '../limits/uploader-limits.service.stub';
+import { CompressionServiceStub } from '../../../upload-and-edit-photo-form/service/compression/compression.service.stub';
 
 const uploadMock: FileUploadItem = {
   title: 'title',
@@ -55,24 +55,24 @@ const createError = (type: ErrorActions, text?: string, description?: string) =>
 const mockFileItem: () => FileItem = () =>
   new FileItem(FileItemStatus.uploaded, '', null, createUploadedFileMock());
 
-describe('PrepareService', () => {
-  let prepareService: PrepareService;
-  let uploadService: FileUploadService;
+describe('UploaderValidationService', () => {
+  let prepareService: UploaderValidationService;
+  let uploadService: UploaderLimitsService;
   let compressService: CompressionService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        PrepareService,
-        { provide: FileUploadService, useClass: FileUploadServiceStub },
+        UploaderValidationService,
+        { provide: UploaderLimitsService, useClass: UploaderLimitsServiceStub },
         { provide: CompressionService, useClass: CompressionServiceStub },
       ],
     });
   });
 
   beforeEach(() => {
-    prepareService = TestBed.inject(PrepareService);
-    uploadService = TestBed.inject(FileUploadService);
+    prepareService = TestBed.inject(UploaderValidationService);
+    uploadService = TestBed.inject(UploaderLimitsService);
     compressService = TestBed.inject(CompressionService);
   });
 

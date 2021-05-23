@@ -428,6 +428,7 @@ export const updateLimits = (
   if (!(config?.maxCountByTypes?.length > 0)) {
     return;
   }
+
   const types = store.getUniqueTypes(!isAdd && file ? file : null);
   if (isAdd && file && !types.includes(file.getType())) {
     types.push(file.getType());
