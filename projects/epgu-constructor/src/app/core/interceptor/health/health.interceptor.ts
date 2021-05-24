@@ -193,7 +193,6 @@ export class HealthInterceptor implements HttpInterceptor {
               };
             }
 
-            this.measureBackendDictionaries(health, this.commonParams.orderId);
             this.measureStaticRequests(this.commonParams, serviceName);
           }
 
@@ -319,23 +318,6 @@ export class HealthInterceptor implements HttpInterceptor {
         { ...this.commonParams, ...dictionaryParams },
       ),
     );
-  }
-
-  private measureBackendDictionaries(health: BackendHealthList, orderId: string | number | undefined): void {
-    if (this.utils.isDefined(health) && this.utils.isDefined(health?.dictionaries) && health.dictionaries.length > 0) {
-      const { dictionaries } = health;
-      dictionaries.forEach((dictionary: BackendDictionary) => {
-        const serviceName = dictionary.id;
-        this.startMeasureHealth(serviceName);
-        this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-          id: serviceName,
-          status: dictionary.status,
-          method: dictionary.method,
-          orderId: orderId,
-          regdictname: RegionSource.Okato,
-        }));
-      });
-    }
   }
 
   private checkUrlForExceptions(url: string): boolean {
