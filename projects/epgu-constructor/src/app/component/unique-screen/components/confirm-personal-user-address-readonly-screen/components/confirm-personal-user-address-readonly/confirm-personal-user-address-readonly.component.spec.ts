@@ -24,6 +24,8 @@ import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { ActionType, ComponentActionDto } from 'epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
+import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
+import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {
@@ -72,7 +74,9 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         MockComponent(HelperTextComponent),
         MockComponent(DefaultUniqueScreenWrapperComponent),
         MockComponent(DadataWidgetComponent),
-        MockComponent(PlainInputComponent)
+        MockComponent(PlainInputComponent),
+        SafePipe,
+        ImgPrefixerPipe,
       ],
       providers: [
         UnsubscribeService,
