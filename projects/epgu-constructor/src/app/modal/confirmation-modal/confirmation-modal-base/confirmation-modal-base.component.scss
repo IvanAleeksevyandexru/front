@@ -111,6 +111,9 @@ $minModalHeight: 293px;
       & > *:not(:last-child) {
         margin-right: 16px;
       }
+      @include phones-down {
+        margin-bottom: 32px;
+      }
       @include tablets-down {
         flex-direction: column-reverse;
         justify-content: flex-end;
@@ -126,6 +129,9 @@ $minModalHeight: 293px;
     }
 
     &__button {
+      &:first-child {
+        margin-bottom: 0;
+      }
       @include phones-down {
         margin-bottom: 32px;
       }
