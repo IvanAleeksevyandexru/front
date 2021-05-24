@@ -41,20 +41,7 @@ export class MedicalReferralsListContainerComponent {
     this.actionService.switchAction(this.nextAction, this.screenService.component.id);
   }
 
-  private showError(errorMessage: string): void {
-    this.modalService
-      .openModal(ConfirmationModalComponent, {
-        ...this.getModalParams(errorMessage),
-      })
-      .subscribe((reload) => {
-        if (reload) {
-          this.currentAnswersService.state = 'retry';
-          this.actionService.switchAction(this.nextAction, this.screenService.component.id);
-        }
-      });
-  }
-
-  private getModalParams(errorMessage: string): ConfirmationModal {
+  getModalParams(errorMessage: string): ConfirmationModal {
     return {
       ...COMMON_ERROR_MODAL_PARAMS,
       text: `<div class="text_modal_error">
@@ -81,6 +68,19 @@ export class MedicalReferralsListContainerComponent {
         },
       ],
     };
+  }
+
+  private showError(errorMessage: string): void {
+    this.modalService
+      .openModal(ConfirmationModalComponent, {
+        ...this.getModalParams(errorMessage),
+      })
+      .subscribe((reload) => {
+        if (reload) {
+          this.currentAnswersService.state = 'retry';
+          this.actionService.switchAction(this.nextAction, this.screenService.component.id);
+        }
+      });
   }
 
   private mapComponentValue(component: ComponentDto): Referral[] {
