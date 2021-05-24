@@ -32,7 +32,7 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types';
+} from '@epgu/epgu-constructor-types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',

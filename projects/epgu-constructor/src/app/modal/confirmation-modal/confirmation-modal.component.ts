@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenButton, ConfirmationModal } from 'epgu-constructor-types';
+import { ScreenButton, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ModalService } from '../modal.service';

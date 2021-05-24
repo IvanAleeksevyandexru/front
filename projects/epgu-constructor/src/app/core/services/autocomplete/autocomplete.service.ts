@@ -15,7 +15,7 @@ import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItem, ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { allowedAutocompleteComponentsList, getSuggestionGroupId } from './autocomplete.const';
-import { ComponentDto, DisplayDto, ComponentFieldDto } from 'epgu-constructor-types';
+import { ComponentDto, DisplayDto, ComponentFieldDto } from '@epgu/epgu-constructor-types';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';

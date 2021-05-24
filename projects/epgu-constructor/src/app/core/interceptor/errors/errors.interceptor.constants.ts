@@ -1,8 +1,10 @@
-import { ConfirmationModal, StatusIcon } from 'epgu-constructor-types';
+import { ConfirmationModal, StatusIcon } from '@epgu/epgu-constructor-types';
 
 export const STATUS_ICON_MAP = {
-  [StatusIcon.WARNING]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">',
-  [StatusIcon.ERROR]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/image-error.svg">',
+  [StatusIcon.WARNING]:
+    '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">',
+  [StatusIcon.ERROR]:
+    '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/image-error.svg">',
 };
 
 const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
@@ -51,24 +53,27 @@ export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Вернуться к заявлению',
-    closeModal: true,
-  }],
+  buttons: [
+    {
+      label: 'Вернуться к заявлению',
+      closeModal: true,
+    },
+  ],
   isShortModal: true,
 };
-
 
 export const AUTH_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: AUTH_ERROR_MODAL_PARAMS_TEXT,
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Войти',
-    closeModal: true,
-    value: 'login'
-  }],
+  buttons: [
+    {
+      label: 'Войти',
+      closeModal: true,
+      value: 'login',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -77,11 +82,13 @@ export const ORDER_NOT_FOUND_ERROR_MODAL_PARAMS: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Попробовать снова',
-    closeModal: true,
-    value: 'reload'
-  }],
+  buttons: [
+    {
+      label: 'Попробовать снова',
+      closeModal: true,
+      value: 'reload',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -90,11 +97,13 @@ export const DRAFT_STATEMENT_NOT_FOUND: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'В личный кабинет',
-    closeModal: true,
-    value: 'redirectToLk'
-  }],
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -103,11 +112,13 @@ export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'В личный кабинет',
-    closeModal: true,
-    value: 'redirectToLk'
-  }],
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+  ],
   isShortModal: true,
 };
 
@@ -125,9 +136,11 @@ export const TIME_INVITATION_ERROR: ConfirmationModal = {
   title: '',
   showCloseButton: false,
   showCrossButton: true,
-  buttons: [{
-    label: 'Вернуться к заявлению',
-    closeModal: true,
-  }],
+  buttons: [
+    {
+      label: 'Вернуться к заявлению',
+      closeModal: true,
+    },
+  ],
   isShortModal: true,
 };

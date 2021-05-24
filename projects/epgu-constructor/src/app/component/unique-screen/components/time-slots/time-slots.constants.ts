@@ -1,4 +1,4 @@
-import { ConfirmationModal } from 'epgu-constructor-types';
+import { ConfirmationModal } from '@epgu/epgu-constructor-types';
 
 export class TimeSlotsConstants {
   errorModal: ConfirmationModal = {
@@ -16,10 +16,10 @@ export enum TimeSlotsTypes {
   BRAK = 'BRAK',
   RAZBRAK = 'RAZBRAK',
   GIBDD = 'GIBDD',
-  MVD = 'MVD'
+  MVD = 'MVD',
 }
 
 export enum DateTypeTypes {
   TODAY = 'today',
-  REF_DATE = 'refDate'
+  REF_DATE = 'refDate',
 }

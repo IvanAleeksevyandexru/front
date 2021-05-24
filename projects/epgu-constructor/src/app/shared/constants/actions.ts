@@ -1,4 +1,4 @@
-import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
+import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 export const NEXT_STEP_ACTION: ComponentActionDto = {
   label: 'Продолжить',

@@ -7,11 +7,11 @@ import {
   EventEmitter,
   ChangeDetectorRef,
 } from '@angular/core';
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement } from '@epgu/epgu-lib';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addDays, addYears, format, isSameDay, parseISO } from 'date-fns';
 import { pairwise, startWith, tap } from 'rxjs/operators';
-import { ComponentAttrsDto } from 'epgu-constructor-types';
+import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import {
   getDateTimeObject,
   getTimeChunks,

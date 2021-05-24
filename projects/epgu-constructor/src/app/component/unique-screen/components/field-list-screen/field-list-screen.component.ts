@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ComponentActionDto } from 'epgu-constructor-types';
+import { ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
