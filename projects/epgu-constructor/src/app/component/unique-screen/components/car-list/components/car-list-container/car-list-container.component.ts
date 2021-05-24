@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { ListItem } from 'epgu-lib';
+import { ListItem } from '@epgu/epgu-lib';
 import { FormControl } from '@angular/forms';
 import {
   DisplayDto,
@@ -9,7 +9,7 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types';
+} from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import {

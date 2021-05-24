@@ -1,4 +1,4 @@
-import { ListItem } from 'epgu-lib';
+import { ListItem } from '@epgu/epgu-lib';
 import { ComponentBase } from '../../screen/screen.types';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
@@ -13,8 +13,8 @@ import {
   DisplayDto,
   TextTransform,
   ComponentFilterDto,
-  ComponentRelationFieldDto
-} from 'epgu-constructor-types';
+  ComponentRelationFieldDto,
+} from '@epgu/epgu-constructor-types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -228,6 +228,7 @@ export interface CustomComponentRef {
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   isResetable?: boolean;
+  path?: string;
 }
 
 export interface CustomListFormGroup {

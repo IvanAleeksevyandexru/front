@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PhotoErrorModalComponent } from './photo-error-modal.component';
-import { ButtonComponent } from 'epgu-lib';
+import { ButtonComponent } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
 
 import { ConfigService } from '../../../../../core/services/config/config.service';

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
-import { FocusState } from 'epgu-lib';
+import { FocusState } from '@epgu/epgu-lib';
 import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
 import { FocusManagerService } from '../../../../core/services/focus-manager/focus-manager.service';

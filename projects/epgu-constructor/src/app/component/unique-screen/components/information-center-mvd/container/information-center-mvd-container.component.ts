@@ -1,16 +1,24 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement } from '@epgu/epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { DictionaryConditions, DictionaryFilters } from 'epgu-constructor-types';
+import {
+  ComponentDictionaryFilterDto,
+  DictionaryConditions,
+  DictionaryFilters,
+} from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
+import { ScreenStore } from '../../../../../screen/screen.types';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   DictionaryToRequestI,
   InformationCenterMvdI,
 } from '../interface/information-center-mvd.interface';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
+import {
+  DictionaryToolsService,
+  ComponentValue,
+} from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryItem } from '../../../../../shared/services/dictionary/dictionary-api.types';
 
 @Component({
@@ -28,6 +36,8 @@ export class InformationCenterMvdContainerComponent implements OnInit {
   sourceList: Array<ListElement> = [];
   infoCenterList: Array<DictionaryItem> = [];
   dictionaryToRequest: DictionaryToRequestI;
+  screenStore: ScreenStore;
+  componentValue: ComponentValue;
 
   constructor(
     public readonly screenService: ScreenService,
@@ -38,14 +48,23 @@ export class InformationCenterMvdContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+      this.componentValue = JSON.parse(data.value || '{}');
+      this.screenStore = this.screenService.getStore();
       this.dictionaryToRequest = data.attrs.dictionaryToRequest;
-      this.loadSourceDictionary(data.attrs.sourceDictionary.type);
+      this.loadSourceDictionary(
+        data.attrs.sourceDictionary.type,
+        data.attrs.sourceDictionary.dictionaryFilter,
+      );
     });
   }
 
   handleSelect(event: ListElement): void {
     if (event && event.id) {
-      this.loadInfoCenterDictionary(this.dictionaryToRequest.type, event.id);
+      this.loadInfoCenterDictionary(
+        this.dictionaryToRequest.type,
+        event.id,
+        this.dictionaryToRequest.dictionaryFilter,
+      );
     } else {
       this.clearInfoCenterList();
     }
@@ -55,11 +74,24 @@ export class InformationCenterMvdContainerComponent implements OnInit {
     this.infoCenterList = [];
   }
 
-  private loadInfoCenterDictionary(dictionaryName: string, id: number | string): void {
+  private loadInfoCenterDictionary(
+    dictionaryName: string,
+    id: number | string,
+    dictionaryFilter?: Array<ComponentDictionaryFilterDto> | undefined,
+  ): void {
     this.clearInfoCenterList();
     this.isLoadingInfoCenter = true;
     this.dictionaryApiService
-      .getMvdDictionary(dictionaryName, this.getInfoCenterOptionsRequest(id.toString()))
+      .getMvdDictionary(
+        dictionaryName,
+        dictionaryFilter !== undefined
+          ? this.dictionaryToolsService.getFilterOptions(
+              this.componentValue,
+              this.screenStore,
+              dictionaryFilter,
+            )
+          : this.getInfoCenterOptionsRequest(id.toString()),
+      )
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((response) => {
         this.isLoadingInfoCenter = false;
@@ -67,9 +99,21 @@ export class InformationCenterMvdContainerComponent implements OnInit {
       });
   }
 
-  private loadSourceDictionary(dictionaryName: string): void {
+  private loadSourceDictionary(
+    dictionaryName: string,
+    dictionaryFilter?: Array<ComponentDictionaryFilterDto> | undefined,
+  ): void {
     this.dictionaryApiService
-      .getMvdDictionary(dictionaryName)
+      .getMvdDictionary(
+        dictionaryName,
+        dictionaryFilter !== undefined
+          ? this.dictionaryToolsService.getFilterOptions(
+              this.componentValue,
+              this.screenStore,
+              dictionaryFilter,
+            )
+          : {},
+      )
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         this.sourceList = this.dictionaryToolsService.adaptDictionaryToListItem(data.items);

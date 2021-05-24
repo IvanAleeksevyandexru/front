@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ComponentActionDto } from 'epgu-constructor-types';
+import { ComponentActionDto } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-payment-type-selector-button',

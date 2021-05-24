@@ -76,11 +76,16 @@
           color: $color-gosred;
         }
       }
-      &.outer {
-        visibility: hidden;
+      &.is-past, &.outer-section {
         .calendar-day-text {
           color: $color-bg-disabled;
         }
+      }
+      &.outer-month {
+        visibility: hidden;
+      }
+      &.visible {
+        visibility: visible;
       }
       &.selected {
         background: $color-gosblue;
@@ -101,12 +106,13 @@
 }
 
 .time-slots-items {
+  margin: 0 -4px -4px -4px;
   display: flex;
   flex-flow: wrap;
 
   .time-slot-item {
-    $margin: 5px;
-    background: rgba(29, 93, 235, 0.06);
+    $margin: 4px;
+    background: $color-alice-blue;
     border-radius: 8px;
     color: $color-gosblue;
     padding: 10px 16px;
@@ -119,7 +125,7 @@
       width: calc((100% / 4) - #{2 * $margin});
     }
     @include tablets-up {
-      width: calc((100% / 5) - #{2 * $margin});
+      width: calc((100% / 6) - #{2 * $margin});
     }
 
     &:hover {
@@ -133,7 +139,13 @@
   }
 }
 
-.dropdown-list {
+.months-range {
+  @include typ-plain-text;
+  color: $color-gosblue;
+  padding-bottom: 16px;
+}
+
+.dropdown-list, .months-range {
   text-align: center;
 }
 

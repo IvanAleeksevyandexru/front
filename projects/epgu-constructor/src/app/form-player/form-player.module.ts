@@ -1,7 +1,7 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
-import { SmuEventsService } from 'epgu-lib';
+import { SmuEventsService } from '@epgu/epgu-lib';
 import { ConfigService } from '../core/services/config/config.service';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';

@@ -90,6 +90,7 @@ module.exports = {
         sourceType: 'module',
       },
       rules: {
+        'no-underscore-dangle': 'off',
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',
         'class-methods-use-this': 'off',

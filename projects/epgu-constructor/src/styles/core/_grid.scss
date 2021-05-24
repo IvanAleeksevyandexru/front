@@ -1,7 +1,7 @@
 @import 'breakpoint';
 
 @mixin break-grid($size) {
-  $num: calc(100% - #{$size} + #{$screen-pad-small-gap} / 2) !important;
+  $num: calc(100% - #{$size} + #{$screen-pad-16} / 2) !important;
   &.break {
     margin-right: $num;
   }
@@ -17,119 +17,119 @@
 .grid-col {
   &-1 {
     @include break-grid(8.33%);
-    max-width: calc(8.33% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(8.33% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(8.33% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(8.33% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(8.33% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(8.33% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(8.33% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(8.33% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
   }
   &-2 {
     @include break-grid(16.66%);
-    max-width: calc(16.66% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(16.66% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(16.66% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(16.66% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(16.66% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(16.66% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(16.66% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(16.66% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
   }
   &-3 {
     @include break-grid(25%);
-    max-width: calc(25% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(25% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(25% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(25% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(25% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(25% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(25% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(25% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
   }
   &-4 {
     @include break-grid(33.33%);
-    max-width: calc(33.33% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(33.33% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(33.33% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(33.33% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(33.33% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(33.33% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(33.33% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(33.33% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
   }
   &-6 {
     @include break-grid(50%);
-    max-width: calc(50% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(50% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(50% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(50% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(50% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(50% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(50% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(50% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
   }
   &-8 {
     @include break-grid(66.66%);
-    max-width: calc(66.66% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(66.66% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(66.66% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(66.66% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(66.66% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(66.66% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(66.66% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(66.66% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
   }
   &-10 {
     @include break-grid(83.33%);
-    max-width: calc(83.33% - #{$screen-pad-small-gap}) !important;
+    max-width: calc(83.33% - #{$screen-pad-16}) !important;
     &-sm {
       @include phones-down {
-        max-width: calc(83.33% - #{$screen-pad-small-gap}) !important;
+        max-width: calc(83.33% - #{$screen-pad-16}) !important;
       }
     }
     &-offset {
-      margin-right: calc(83.33% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(83.33% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(83.33% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(83.33% + #{$screen-pad-16} / 2) !important;
         }
       }
     }
@@ -143,10 +143,10 @@
       }
     }
     &-offset {
-      margin-right: calc(100% + #{$screen-pad-small-gap} / 2) !important;
+      margin-right: calc(100% + #{$screen-pad-16} / 2) !important;
       &-sm {
         @include phones-down {
-          margin-right: calc(100% + #{$screen-pad-small-gap} / 2) !important;
+          margin-right: calc(100% + #{$screen-pad-16} / 2) !important;
         }
       }
     }

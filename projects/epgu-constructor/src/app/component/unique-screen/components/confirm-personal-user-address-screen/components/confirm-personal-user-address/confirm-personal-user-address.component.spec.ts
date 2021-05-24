@@ -19,7 +19,7 @@ import { EventBusService } from '../../../../../../core/services/event-bus/event
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { AddressItemComponent } from '../address-item/address-item.component';
-import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from 'epgu-lib';
+import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { TextTransformDirective } from '../../../../../../shared/directives/text-transform/text-transform.directive';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
 import { HelperTextComponent } from '../../../../../../shared/components/base-components/helper-text/helper-text.component';
@@ -35,14 +35,14 @@ const mockData = {
       },
       {
         fieldName: FieldNames.regDate,
-        label: 'Дата регистрации'
-      }
+        label: 'Дата регистрации',
+      },
     ],
   },
   id: '',
   value: '{}',
   type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
-  required: true
+  required: true,
 };
 
 describe('ConfirmPersonalUserAddressComponent', () => {
@@ -50,7 +50,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   let fixture: ComponentFixture<ConfirmPersonalUserAddressComponent>;
   let screenService: ScreenService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         MockModule(ScreenPadModule),
@@ -83,10 +83,10 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         FormBuilder,
       ],
     })
-    .overrideComponent(ConfirmPersonalUserAddressComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    })
-    .compileComponents();
+      .overrideComponent(ConfirmPersonalUserAddressComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -97,7 +97,9 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   });
 
   it('should render epgu-constructor-default-unique-screen-wrapper', () => {
-    const debugEl = fixture.debugElement.query(By.css('epgu-constructor-default-unique-screen-wrapper'));
+    const debugEl = fixture.debugElement.query(
+      By.css('epgu-constructor-default-unique-screen-wrapper'),
+    );
     fixture.detectChanges();
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.header).toBeNull();
@@ -119,7 +121,9 @@ describe('ConfirmPersonalUserAddressComponent', () => {
     it('currentAnswersService.state', () => {
       fixture.detectChanges();
       component.form.get('regAddr').setValue('bar');
-      expect(component.currentAnswersService.state).toBe(JSON.stringify({ regAddr: 'bar', regDate: null }));
+      expect(component.currentAnswersService.state).toBe(
+        JSON.stringify({ regAddr: 'bar', regDate: null }),
+      );
     });
   });
 
@@ -139,18 +143,20 @@ describe('ConfirmPersonalUserAddressComponent', () => {
             {
               fieldName: FieldNames.regAddr,
               label: 'Адрес',
-              nonPresetable: true
+              nonPresetable: true,
             },
             {
               fieldName: FieldNames.regDate,
-              label: 'Дата регистрации'
-            }
-          ]
+              label: 'Дата регистрации',
+            },
+          ],
         },
-        value
+        value,
       } as any;
       fixture.detectChanges();
-      expect(component.currentAnswersService.state).toBe(JSON.stringify({ regAddr: null, regDate: '01.04.2021' }));
+      expect(component.currentAnswersService.state).toBe(
+        JSON.stringify({ regAddr: null, regDate: '01.04.2021' }),
+      );
     });
   });
 });

@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
-import { SmuEventsService } from 'epgu-lib';
+import { SmuEventsService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { initApp } from './initializers/app.initializer';
 import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';

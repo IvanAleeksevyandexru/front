@@ -12,8 +12,7 @@ import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
-import { ActionType, DTOActionAction } from 'epgu-constructor-types';
-
+import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
@@ -28,9 +27,11 @@ describe('ScreenButtonsComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         CurrentAnswersService,
       ],
-    }).overrideComponent(ScreenButtonsComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+    })
+      .overrideComponent(ScreenButtonsComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -40,13 +41,13 @@ describe('ScreenButtonsComponent', () => {
       {
         action: DTOActionAction.redirect,
         type: ActionType.home,
-        label: 'На главную'
+        label: 'На главную',
       },
       {
         action: DTOActionAction.getNextStep,
         type: ActionType.nextStep,
-        label: 'Далее'
-      }
+        label: 'Далее',
+      },
     ];
     fixture.detectChanges();
   });
@@ -61,8 +62,8 @@ describe('ScreenButtonsComponent', () => {
       {
         action: DTOActionAction.getNextStep,
         type: ActionType.nextStep,
-        label: 'Далее'
-      }
+        label: 'Далее',
+      },
     ];
     fixture.detectChanges();
     let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
