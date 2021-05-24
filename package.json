@@ -11,6 +11,7 @@
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
     "build": "ng build --configuration production",
     "lib:type:build": "cd ./projects/epgu-constructor-types && yarn build",
+    "lib:children-clubs": "ng build children-clubs --prod",
     "lib:build": "ng build epgu-constructor --prod",
     "lib:build:ivy": "ng build epgu-constructor",
     "lib:watch": "lerna run watch --parallel",
