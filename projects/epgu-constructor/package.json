@@ -26,6 +26,7 @@
     "lodash": ""
   },
   "dependencies": {
+    "@epgu/epgu-constructor-types": "16.1.1",
     "@tanker/file-ponyfill": "2.6.3",
     "tslib": "2.1.0",
     "ics": "2.24.0",
@@ -34,7 +35,6 @@
     "zipkin": "0.22.0",
     "zipkin-transport-http": "0.22.0",
     "node-fetch": "2.6.1",
-    "os": "0.1.1",
-    "@epgu/epgu-constructor-types": "16.1.1"
+    "os": "0.1.1"
   }
 }
