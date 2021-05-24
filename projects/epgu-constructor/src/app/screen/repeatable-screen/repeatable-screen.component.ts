@@ -189,19 +189,27 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     if (isDuplicate) {
       // костыль, нужен, чтобы не терялись поля, не являющиеся примитивом
       // полностью пересоздаем весь набор скринов для сохранения ссылочной структуры
-      this.screensBuf = {...this.screens};
+      this.screensBuf = { ...this.screens };
       this.screens = {};
       let iterator = 0;
-      for (let key in this.screensBuf) {
-        this.screensBuf[key].forEach(screen => {
-          screen.value = this.getState()[iterator][screen.id];
-        });
-        this.setNewScreen(getScreenComponents(this.screensBuf[key], iterator < 0) as CustomComponent[]);
-        iterator++;
-      }
+
+      Object.keys(this.screensBuf).forEach((key) => {
+        if (this.screensBuf[key]) {
+          this.screensBuf[key].forEach((screen) => {
+            screen.value = this.getState()[iterator][screen.id]; // eslint-disable-line no-param-reassign
+          });
+          this.setNewScreen(getScreenComponents(this.screensBuf[key], iterator < 0));
+          iterator += 1;
+        }
+      });
+
       // важно, чтобы новый скрин не был перезаписан
-      let components = getScreenComponents(attrs.components, false).map(component => ({...component}));
-      components.forEach(component => component.value = '');
+      const components = getScreenComponents(attrs.components, false).map((component) => ({
+        ...component,
+      }));
+      components.forEach((component) => {
+        component.value = ''; // eslint-disable-line no-param-reassign
+      });
       this.setNewScreen(components);
       return;
     }
