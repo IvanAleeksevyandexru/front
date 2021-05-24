@@ -7,9 +7,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { ComponentDto, ApplicantAnswersDto } from 'epgu-constructor-types';
+import { ComponentDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';

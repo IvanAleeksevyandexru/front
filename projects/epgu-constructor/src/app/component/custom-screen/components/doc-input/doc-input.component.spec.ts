@@ -14,7 +14,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
@@ -35,10 +35,10 @@ describe('DocInputComponent', () => {
           series: { attrs: { validation: [] }},
           number: { attrs: { validation: [] }},
           emitter: { attrs: { validation: [] }},
-          date: { attrs: { validation: [] }}
-        }
-      }
-    }
+          date: { attrs: { validation: [] }},
+        },
+      },
+    },
   };
 
   configureTestSuite(() => {
@@ -58,14 +58,9 @@ describe('DocInputComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         DictionaryToolsService,
-        RefRelationService
+        RefRelationService,
       ],
-      imports: [
-        RouterTestingModule,
-        BaseModule,
-        MockModule(EpguLibModule),
-        ComponentsListModule
-      ],
+      imports: [RouterTestingModule, BaseModule, MockModule(EpguLibModule), ComponentsListModule],
     }).compileComponents();
   });
 

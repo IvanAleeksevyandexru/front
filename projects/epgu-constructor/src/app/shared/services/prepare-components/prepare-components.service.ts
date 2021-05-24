@@ -12,7 +12,7 @@ import { UniqueScreenComponentTypes } from '../../../component/unique-screen/uni
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from 'epgu-constructor-types';
+import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -20,7 +20,7 @@ export class PrepareComponentsService {
     private cachedAnswersService: CachedAnswersService,
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
-    private refRelationService: RefRelationService
+    private refRelationService: RefRelationService,
   ) {}
 
   public prepareComponents(
@@ -177,8 +177,10 @@ export class PrepareComponentsService {
 
     if (shouldBeTakenFromTheCache) {
       if (type === 'RepeatableFields') {
-        return this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
-          this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
+        return (
+          this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
+          this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
+        );
       }
       return this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
     }
@@ -261,7 +263,10 @@ export class PrepareComponentsService {
   ): ComponentDto {
     const { attrs } = component;
 
-    if (component.type === CustomScreenComponentTypes.DocInput || component.type === UniqueScreenComponentTypes.registrationAddr) {
+    if (
+      component.type === CustomScreenComponentTypes.DocInput ||
+      component.type === UniqueScreenComponentTypes.registrationAddr
+    ) {
       const fields = attrs.fields as DocInputField[];
       const haveDateRef = ({ attrs }: DocInputField): boolean =>
         Boolean(attrs?.minDateRef || attrs?.maxDateRef);

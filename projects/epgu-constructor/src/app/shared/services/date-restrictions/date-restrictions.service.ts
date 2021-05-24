@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { DatesHelperService } from 'epgu-lib';
+import { DatesHelperService } from '@epgu/epgu-lib';
 import { isAfter, isBefore } from 'date-fns';
 import {
   CustomComponent,
   DateRestriction,
 } from '../../../component/custom-screen/components-list.types';
-import { ApplicantAnswersDto } from 'epgu-constructor-types';
+import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { FormArray } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';
@@ -29,7 +29,7 @@ export class DateRestrictionsService {
     components: Array<CustomComponent>,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-    componentsGroupIndex?: number,
+    componentsGroupIndex?: number
   ): Promise<Range> {
     if (!this.today) {
       this.today = await this.datesToolsService.getToday();
@@ -71,15 +71,8 @@ export class DateRestrictionsService {
     return restriction.type === 'ref';
   }
 
-  private setDateRangeToStore(
-    componentId: string,
-    dateRange: Range,
-    componentsGroupIndex?: number,
-  ): void {
-    this.dateRangeStore.set(
-      this.getDateRangeStoreKey(componentId, componentsGroupIndex),
-      dateRange,
-    );
+  private setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number): void {
+    this.dateRangeStore.set(this.getDateRangeStoreKey(componentId, componentsGroupIndex), dateRange);
   }
 
   private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number): string {

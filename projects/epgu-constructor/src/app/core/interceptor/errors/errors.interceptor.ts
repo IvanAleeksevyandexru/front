@@ -14,9 +14,7 @@ import { ErrorHandleService } from './error-handle.service';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
-  constructor(
-    private errorHandleService: ErrorHandleService,
-  ) {}
+  constructor(private errorHandleService: ErrorHandleService) {}
 
   public intercept(
     req: HttpRequest<unknown>,

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { DisplayDto } from 'epgu-constructor-types';
+import { DisplayDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class HtmlRemoverService {
-  public hasHtmlRegExp = /(<([^>]+)>)/ig;
+  public hasHtmlRegExp = /(<([^>]+)>)/gi;
 
   constructor() {}
 

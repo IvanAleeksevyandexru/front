@@ -10,7 +10,7 @@ import { ConfigServiceStub } from '../../../core/services/config/config.service.
 import { LocationService } from '../../../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { configureTestSuite } from 'ng-bullet';
-import { Gender } from 'epgu-constructor-types';
+import { Gender } from '@epgu/epgu-constructor-types';
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;

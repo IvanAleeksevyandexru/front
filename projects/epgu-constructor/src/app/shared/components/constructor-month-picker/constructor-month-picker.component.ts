@@ -8,7 +8,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { Align, MonthYear, ValidationShowOn } from 'epgu-lib';
+import { Align, MonthYear, ValidationShowOn } from '@epgu/epgu-lib';
 
 @Component({
   selector: 'epgu-constructor-constructor-month-picker',

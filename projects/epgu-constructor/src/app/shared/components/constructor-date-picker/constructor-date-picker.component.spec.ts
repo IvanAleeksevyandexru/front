@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockModule } from 'ng-mocks';
-import { MonthYear } from 'epgu-lib';
+import { MonthYear } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 

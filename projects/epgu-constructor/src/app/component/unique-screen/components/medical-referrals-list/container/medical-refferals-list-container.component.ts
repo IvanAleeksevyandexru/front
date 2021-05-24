@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { ComponentActionDto, ComponentDto, ConfirmationModal } from 'epgu-constructor-types';
+import { ComponentActionDto, ComponentDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { Referral } from '../medical-referrals-list.types';

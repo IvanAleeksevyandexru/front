@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScreenButton, ConfirmationModal } from 'epgu-constructor-types';
+import { ScreenButton, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';

@@ -1,5 +1,5 @@
 {
-  "name": "epgu-constructor",
+  "name": "@epgu/epgu-constructor",
   "version": "1.0.0",
   "scripts": {
     "watch": "cd ../../ && ng build epgu-constructor --watch",
@@ -18,7 +18,7 @@
     "rxjs": "6.6.6",
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
-    "epgu-lib": "0.0.1285",
+    "@epgu/epgu-lib": "0.1.2",
     "date-fns": "2.16.1",
     "uuid": "8.3.0",
     "@types/hammerjs": "2.0.38",
@@ -36,6 +36,6 @@
     "zipkin-transport-http": "0.22.0",
     "node-fetch": "2.6.1",
     "os": "0.1.1",
-    "epgu-constructor-types": "16.1.1"
+    "@epgu/epgu-constructor-types": "16.1.1"
   }
 }

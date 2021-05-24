@@ -1,4 +1,8 @@
-import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types';
+import {
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionaryUnionKind,
+} from '@epgu/epgu-constructor-types';
 
 /**
  * Возвращает опции атрибута запроса доступности оплаты в ГИБДД

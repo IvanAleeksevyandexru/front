@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { LAST_SCENARIO_KEY, NEXT_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../../shared/constants/form-player';
+import {
+  LAST_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY,
+  QUIZ_SCENARIO_KEY,
+} from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
@@ -15,14 +19,14 @@ import {
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
   ScenarioDto,
-} from 'epgu-constructor-types';
+} from '@epgu/epgu-constructor-types';
 
 /**
  * Менеджер для обработки различных кейсов запуска плеера.
  */
 @Injectable()
 export class FormPlayerStartManager {
-  constructor (
+  constructor(
     private initDataService: InitDataService,
     private loggerService: LoggerService,
     private locationService: LocationService,
@@ -30,7 +34,7 @@ export class FormPlayerStartManager {
     private formPlayerService: FormPlayerService,
     public continueOrderModalService: ContinueOrderModalService,
     private ngUnsubscribe$: UnsubscribeService,
-    ) {}
+  ) {}
 
   public startPlayer(): void {
     const { orderId, initState } = this.initDataService;
@@ -95,7 +99,7 @@ export class FormPlayerStartManager {
     const quiz: QuizRequestDto = {
       scenarioDto: this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY),
       serviceId: this.initDataService.serviceId,
-      targetId: this.initDataService.targetId
+      targetId: this.initDataService.targetId,
     };
     this.formPlayerService.initPlayerFromQuiz(quiz);
     this.localStorageService.delete(QUIZ_SCENARIO_KEY);

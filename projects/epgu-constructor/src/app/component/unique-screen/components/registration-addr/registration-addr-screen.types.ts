@@ -1,7 +1,7 @@
-import { DadataResult, RelativeDate } from 'epgu-lib';
+import { DadataResult, RelativeDate } from '@epgu/epgu-lib';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DurationTimeTypes } from '../../../../shared/constants/dates';
-import { ComponentActionDto, TextTransform } from 'epgu-constructor-types';
+import { ComponentActionDto, TextTransform } from '@epgu/epgu-constructor-types';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
   attrs: RegistrationAddrComponentAttrs;
@@ -14,7 +14,6 @@ export interface RegistrationAddrComponentAttrs {
   fstuc?: TextTransform;
   hideLevels?: Array<string>;
 }
-
 
 /**
  * @property {string}label - some title
@@ -35,11 +34,11 @@ export interface RegistrationAddrHints {
 export interface RegistrationAddrFields {
   fieldName: FieldNames;
   label: string;
-  type: 'input'|'date';
+  type: 'input' | 'date';
   regexp: string | RegExp;
   hideLevels?: Array<string>;
   attrs?: {
-    labelHint?: string,
+    labelHint?: string;
     minDate?: Date | RelativeDate | string;
     maxDate?: Date | RelativeDate | string;
   };

@@ -1,7 +1,7 @@
-import { TextTransform } from 'epgu-constructor-types';
+import { TextTransform } from '@epgu/epgu-constructor-types';
 
 export interface PassportAttr {
-  participant:{ role: string; mode: string };
+  participant: { role: string; mode: string };
   fields: PassportFields[];
   fstuc?: TextTransform; // TODO проверить на наличие
 }
