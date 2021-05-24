@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { ListElement } from '@epgu/epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { FormField, FormValue, PaymentType } from '../../mat-period.models';

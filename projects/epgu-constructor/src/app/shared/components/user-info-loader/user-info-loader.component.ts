@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
-import { ComponentDto } from 'epgu-constructor-types';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 

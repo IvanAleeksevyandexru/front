@@ -1,5 +1,5 @@
 import { ShowLoaderButtonPipe } from './show-loader-button.pipe';
-import { ScreenButton, DTOActionAction } from 'epgu-constructor-types';
+import { ScreenButton, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('ShowLoaderButtonPipe', () => {
   let pipe: ShowLoaderButtonPipe;
@@ -11,7 +11,7 @@ describe('ShowLoaderButtonPipe', () => {
     pipe = new ShowLoaderButtonPipe();
     button = {
       action: DTOActionAction.getNextStep,
-      label: 'Далее'
+      label: 'Далее',
     };
     isLoading = true;
   });
@@ -25,7 +25,7 @@ describe('ShowLoaderButtonPipe', () => {
   it('should return false for not clickedButton when isLoading', () => {
     clickedButton = {
       action: DTOActionAction.reject,
-      label: 'Отклонить'
+      label: 'Отклонить',
     };
     const result = pipe.transform(button, clickedButton, isLoading);
     expect(result).toBeFalsy();
@@ -41,7 +41,7 @@ describe('ShowLoaderButtonPipe', () => {
   it('should return false for not clickedButton when not isLoading', () => {
     clickedButton = {
       action: DTOActionAction.reject,
-      label: 'Отклонить'
+      label: 'Отклонить',
     };
     isLoading = false;
     const result = pipe.transform(button, clickedButton, isLoading);

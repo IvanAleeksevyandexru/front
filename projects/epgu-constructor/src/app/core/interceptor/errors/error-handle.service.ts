@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
-import { ConfirmationModal, ErrorModal, FormPlayerApiSuccessResponse } from 'epgu-constructor-types';
+import {
+  ConfirmationModal,
+  ErrorModal,
+  FormPlayerApiSuccessResponse,
+} from '@epgu/epgu-constructor-types';
 import {
   AUTH_ERROR_MODAL_PARAMS,
-  BOOKING_ONLINE_ERROR, COMMON_ERROR_MODAL_PARAMS, DRAFT_STATEMENT_NOT_FOUND,
-  NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR, ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, STATUS_ICON_MAP,
-  TIME_INVITATION_ERROR
+  BOOKING_ONLINE_ERROR,
+  COMMON_ERROR_MODAL_PARAMS,
+  DRAFT_STATEMENT_NOT_FOUND,
+  NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
+  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
+  STATUS_ICON_MAP,
+  TIME_INVITATION_ERROR,
 } from './errors.interceptor.constants';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -99,16 +107,17 @@ export class ErrorHandleService {
 
   private showErrorModal(params: ErrorModal): Promise<unknown> {
     const confirmationModalParams = this.getConfirmationModalParamsFromErrorModalParams(params);
-    return this.modalService.openModal(ConfirmationModalComponent, confirmationModalParams).toPromise();
+    return this.modalService
+      .openModal(ConfirmationModalComponent, confirmationModalParams)
+      .toPromise();
   }
 
   private getConfirmationModalParamsFromErrorModalParams(params: ErrorModal): ConfirmationModal {
     const confirmationModalParams = { ...params };
-    const statusIcon = params.content.statusIcon ? STATUS_ICON_MAP[params.content.statusIcon]: '';
-    const header = params.content.header ? `<h4>${params.content.header}</h4>`  : '';
-    const helperText = params.content.helperText ? `<span>${params.content.helperText}</span>`  : '';
+    const statusIcon = params.content.statusIcon ? STATUS_ICON_MAP[params.content.statusIcon] : '';
+    const header = params.content.header ? `<h4>${params.content.header}</h4>` : '';
+    const helperText = params.content.helperText ? `<span>${params.content.helperText}</span>` : '';
     confirmationModalParams.text = `<div class="text_modal_error">${statusIcon}${header}${helperText}</div>`;
     return confirmationModalParams;
   }
-
 }

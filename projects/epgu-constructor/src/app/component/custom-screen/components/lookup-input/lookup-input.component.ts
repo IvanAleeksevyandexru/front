@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { ConstantsService, ListElement, ValidationShowOn } from 'epgu-lib';
+import { ConstantsService, ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';

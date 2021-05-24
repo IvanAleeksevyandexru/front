@@ -4,10 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
 } from '@angular/core';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Gender, ComponentDto, ComponentActionDto } from 'epgu-constructor-types';
+import { Gender, ComponentDto, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { months } from '../../../../../shared/constants/dates';
 import {

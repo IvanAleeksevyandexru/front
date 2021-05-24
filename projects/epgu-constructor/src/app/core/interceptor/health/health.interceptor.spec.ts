@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS, HttpInterceptor } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { HealthService } from 'epgu-lib';
+import { HealthService } from '@epgu/epgu-lib';
 import { ConfigService } from '../../services/config/config.service';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -20,7 +20,7 @@ import {
   RequestStatus,
 } from './health.interceptor';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { ActionRequestPayload } from 'epgu-constructor-types';
+import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
 
 describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;

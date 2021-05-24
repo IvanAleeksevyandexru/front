@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { ComponentDto, ConfirmationModal } from 'epgu-constructor-types';
+import { ComponentDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { PhotoRequirementsModalComponent } from '../photo-requirements-modal/photo-requirements-modal.component';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';

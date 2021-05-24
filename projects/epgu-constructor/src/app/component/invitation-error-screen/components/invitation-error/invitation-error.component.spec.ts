@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponents, MockModule } from 'ng-mocks';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 import { UnsubscribeService } from 'projects/epgu-constructor/src/app/core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
@@ -46,8 +46,8 @@ describe('InvitationErrorComponent', () => {
           OutputHtmlComponent,
           LabelComponent,
           ConstructorPlainInputComponent,
-          HelperTextComponent
-        )
+          HelperTextComponent,
+        ),
       ],
       imports: [MockModule(EpguLibModule)],
       providers: [
@@ -60,10 +60,9 @@ describe('InvitationErrorComponent', () => {
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService
-      ]
-    })
-      .compileComponents();
+        DateRestrictionsService,
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
