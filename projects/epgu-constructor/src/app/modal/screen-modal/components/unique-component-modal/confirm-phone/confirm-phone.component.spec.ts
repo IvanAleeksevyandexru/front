@@ -7,10 +7,6 @@ import { EventBusService } from '../../../../../core/services/event-bus/event-bu
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ApplicantAnswersDto,
-  ComponentDto
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
@@ -18,6 +14,10 @@ import { ConstructorPlainInputModule } from '../../../../../shared/components/co
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ConfirmPhoneComponent } from './confirm-phone.component';
+import { configureTestSuite } from 'ng-bullet';
+import { ApplicantAnswersDto, ComponentDto } from 'epgu-constructor-types';
+import { of } from 'rxjs';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -42,8 +42,8 @@ describe('ConfirmPhoneComponent', () => {
     pd1: { value: '', visited: false },
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ConfirmPhoneComponent, CounterDirective],
       imports: [ConstructorPlainInputModule, CoreModule, BaseModule, RouterTestingModule],
       providers: [
@@ -55,16 +55,17 @@ describe('ConfirmPhoneComponent', () => {
         EventBusService,
         DateRangeService,
         DatesToolsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
-
-    navigationModalService = TestBed.inject(NavigationModalService);
-    screenService = TestBed.inject(ScreenService);
-    jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
-    jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
   });
 
   beforeEach(() => {
+    navigationModalService = TestBed.inject(NavigationModalService);
+    screenService = TestBed.inject(ScreenService);
+    jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData));
+    jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
     fixture = TestBed.createComponent(ConfirmPhoneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

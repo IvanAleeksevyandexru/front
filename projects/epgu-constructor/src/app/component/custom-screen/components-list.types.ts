@@ -1,20 +1,20 @@
 import { ListItem } from 'epgu-lib';
-import {
-  ClarificationsDto,
-  ComponentDictionaryFilterDto,
-  ComponentFilterDto,
-  ComponentRelationFieldDto,
-  DisplayDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../screen/screen.types';
-import { TextTransform } from '../../shared/types/textTransform';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
   DictionaryItem,
-  DictionaryOptions,
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
+import {
+  ComponentDictionaryFilterDto,
+  DictionaryOptions,
+  Clarifications,
+  DisplayDto,
+  TextTransform,
+  ComponentFilterDto,
+  ComponentRelationFieldDto
+} from 'epgu-constructor-types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -31,6 +31,7 @@ export enum CustomScreenComponentTypes {
   CheckBox = 'CheckBox',
   PhoneNumberChangeInput = 'PhoneNumberChangeInput',
   NewEmailInput = 'NewEmailInput',
+  NewLegalEmailInput = 'NewLegalEmailInput',
   OgrnInput = 'OgrnInput',
   OgrnipInput = 'OgrnipInput',
   LegalInnInput = 'LegalInnInput',
@@ -46,6 +47,7 @@ export enum CustomScreenComponentTypes {
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
   FileUploadComponent = 'FileUploadComponent',
+  ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
@@ -99,6 +101,12 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
+export type CustomComponentAttrField = Array<{
+  fieldName?: string;
+  label?: string;
+  type?: string;
+}>;
+
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
@@ -112,11 +120,7 @@ export interface CustomComponentAttr {
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   needUnfilteredDictionaryToo?: boolean;
   labelAttr?: string;
-  fields?: Array<{
-    fieldName?: string;
-    label?: string;
-    type?: string;
-  }>;
+  fields?: CustomComponentAttrField;
   ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
@@ -128,8 +132,8 @@ export interface CustomComponentAttr {
   defaultValue?: boolean;
   filter?: ComponentFilterDto;
   defaultIndex?: number;
+  lookupDefaultValue?: string | number;
   relationField?: ComponentRelationFieldDto;
-  attrs?: CustomComponentAttr; // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
   dictionaryOptions?: DictionaryOptions;
   grid?: string;
   minDate?: string;
@@ -143,11 +147,24 @@ export interface CustomComponentAttr {
   labelHint?: string;
   hint?: string;
   customUnrecLabel?: string;
-  clarifications?: ClarificationsDto;
+  clarifications?: Clarifications;
   isTextHelper?: boolean;
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;
   refs?: { [key: string]: string };
+  dateRestrictions?: DateRestriction[];
+  mappingParams?: { idPath: string; textPath: string };
+  dictionaryUrlType?: DictionaryUrlTypes;
+  searchProvider?: {
+    dictionaryOptions: DictionaryOptions;
+    dictionaryFilter: ComponentDictionaryFilterDto[];
+  };
+}
+
+export interface DateRestriction {
+  condition: string;
+  type: 'ref' | 'const';
+  value: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -159,6 +176,7 @@ export interface CustomComponentAttrValidation {
   condition: string;
   dataType: string;
   errorMsg: string;
+  errorDesc?: string;
   updateOn?: UpdateOn;
 }
 
@@ -170,6 +188,11 @@ export interface CustomComponentOutputData {
     disabled?: boolean;
     condition?: string;
   };
+}
+
+export enum DictionaryUrlTypes {
+  dictionary = 'dictionary',
+  nsiSuggest = 'nsiSuggest',
 }
 
 /**
@@ -204,6 +227,8 @@ export interface CustomComponentRef {
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  isResetable?: boolean;
+  path?: string;
 }
 
 export interface CustomListFormGroup {
@@ -213,6 +238,7 @@ export interface CustomListFormGroup {
   required: boolean;
   type: CustomScreenComponentTypes;
   value: CustomScreenComponentValueTypes;
+  valueFromCache?: unknown;
 }
 
 export interface CustomDisplay extends DisplayDto {

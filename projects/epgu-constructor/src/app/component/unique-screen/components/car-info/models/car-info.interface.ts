@@ -1,5 +1,5 @@
-import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 
 export enum ServiceResult {
   SUCCESS = 'SUCCESS',
@@ -26,7 +26,7 @@ export interface CarInfoDisplayedError {
   text: string;
 }
 
-interface NotaryInfo {
+export interface NotaryInfo {
   isPledged: boolean;
 }
 
@@ -54,6 +54,7 @@ export interface VehicleInfo {
   lastRegActionName: string;
   restrictions: Restriction[];
   ownerPeriods: OwnerPeriod[];
+  regActions?: RegActions[];
 }
 
 export interface OwnerPeriod {
@@ -78,7 +79,9 @@ export interface Restriction {
 export interface CarInfoComponentAttrsDto extends ComponentAttrsDto {
   errors: CarInfoErrorsDto;
 }
-
+export interface CarOwnerInfoComponentAttrsDto extends ComponentAttrsDto {
+  pdfLink: string;
+}
 export interface CarInfoErrorsDto {
   EXTERNAL_SERVER_ERROR?: string,
   NOT_FOUND_ERROR?: string
@@ -103,3 +106,14 @@ export interface Document {
   documentType: string;
 }
 
+export interface RegActions {
+  confidentSign: boolean;
+  leasingFlag: boolean;
+  regActionName: string;
+  regDate: string;
+}
+
+export interface CarDetailInfoComponentAttrsDto extends ComponentAttrsDto {
+  notaryErrors: CarInfoErrorsDto;
+  vehicleErrors: CarInfoErrorsDto;
+}

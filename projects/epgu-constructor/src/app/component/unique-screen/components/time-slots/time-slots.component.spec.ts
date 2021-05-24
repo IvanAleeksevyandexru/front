@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule, ListItem } from 'epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
@@ -32,9 +32,11 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { SmevSlotsResponseInterface, TimeSlotsAnswerInterface } from './time-slots.types';
+import { SmevSlotsResponseInterface } from './time-slots.types';
 import { slotsError } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
+import { mockWeeks } from './mocks/mock-weeks';
 
 const moment = moment_;
 moment.locale('ru');
@@ -45,11 +47,12 @@ describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
+  let datesToolsService: DatesToolsService;
   let store: ScreenStore;
 
-  beforeEach(async () => {
+  configureTestSuite(( ) => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [EpguLibModule, HttpClientTestingModule],
       declarations: [
         TimeSlotsComponent,
@@ -75,12 +78,13 @@ describe('TimeSlotsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
-    timeSlotsService = TestBed.inject(TimeSlotsService);
-    smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
-    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
+    timeSlotsService = TestBed.inject(TimeSlotsService);
+    smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
+    datesToolsService = TestBed.inject(DatesToolsService);
+    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
     fixture = TestBed.createComponent(TimeSlotsComponent);
@@ -97,6 +101,9 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
+    jest
+      .spyOn(datesToolsService, 'getToday')
+      .mockReturnValue(Promise.resolve(new Date('2021-01-01T00:00:00.000Z')));
   });
 
   it('should create', () => {
@@ -258,48 +265,10 @@ describe('TimeSlotsComponent', () => {
     });
   });
 
-  it('renderSingleMonthGrid works as before', () => {
-    component.activeYearNumber = new Date(Date.now()).getUTCFullYear();
-    component.activeMonthNumber = new Date(Date.now()).getUTCMonth();
-
-    const renderSingleMonthGrid = (output): void => {
-      output.splice(0, output.length); // in-place clear
-      const firstDayOfMonth = moment()
-        .year(component.activeYearNumber)
-        .month(component.activeMonthNumber)
-        .startOf('month')
-        .startOf('day');
-      const firstDayOfWeekInMonth = firstDayOfMonth.isoWeekday();
-      const daysInMonth = firstDayOfMonth.daysInMonth();
-      let week = 0;
-      output.push([]);
-      if (firstDayOfWeekInMonth > 1) {
-        for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-          const date = moment(firstDayOfMonth).add(i - firstDayOfWeekInMonth, 'day');
-          output[0].push({ number: date.date(), date: date.toDate() });
-        }
-      }
-      for (let i = 0; i < daysInMonth; i += 1) {
-        if (output[week].length && output[week].length % 7 === 0) {
-          week += 1;
-          output.push([]);
-        }
-        const date = moment(firstDayOfMonth).add(i, 'day');
-        output[week].push({ number: date.date(), date: date.toDate() });
-      }
-      let days = 0;
-      while (output[week].length < 7) {
-        const date = moment(firstDayOfMonth).add(1, 'month').add(days, 'day');
-        days += 1;
-        output[week].push({ number: date.date(), date: date.toDate() });
-      }
-    };
-
+  it('renderSingleMonthGrid works as before', async () => {
     const actual = [];
-    component['renderSingleMonthGrid'](actual);
-
-    const expected = [];
-    renderSingleMonthGrid(expected);
+    await component['renderSingleMonthGrid'](actual);
+    const expected = mockWeeks;
 
     expect(actual).toEqual(expected);
   });
@@ -359,16 +328,24 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.dateType = 'today';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
-
-      fixture.detectChanges();
     });
 
-    it('should allow book date in 30+3 days after today', () => {
+    it('should allow book date in 30+3 days after today', async () => {
+      await fixture.detectChanges();
+      await fixture.whenStable();
       const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
       expect(allDays.length).toEqual(35);
 
       const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
       expect(lockedDays.length).toEqual(19);
+    });
+
+    it('should draw days equal to daysToShow extended to weeks length', async () => {
+      screenService.component.attrs.daysToShow = 15;
+      await fixture.detectChanges();
+      await fixture.whenStable();
+      const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
+      expect(allDays.length).toEqual(21);
     });
   });
 
@@ -390,7 +367,7 @@ describe('TimeSlotsComponent', () => {
     });
   });
 
-  it('should call modal for no slots case', () => {
+  it('should call modal for no slots case', async () => {
     const modalParams = { text: 'temp' };
     store.display.components[0].attrs.emptySlotsModal = modalParams;
     screenService.initScreenStore(store);
@@ -398,7 +375,7 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockEmptySlots as SmevSlotsResponseInterface));
-    fixture.detectChanges();
+    await fixture.detectChanges();
     expect(modalSpy).toBeCalledWith(modalParams);
   });
 

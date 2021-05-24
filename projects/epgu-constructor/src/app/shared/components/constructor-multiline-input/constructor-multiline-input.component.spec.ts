@@ -13,9 +13,10 @@ import { TextTransformModule } from '../../directives/text-transform/text-transf
 import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
-import { TextTransform } from '../../types/textTransform';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
 import { By } from '@angular/platform-browser';
+import { TextTransform } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorMultilineInputComponent', () => {
   let component: ConstructorMultilineInputComponent;
@@ -38,6 +39,7 @@ describe('ConstructorMultilineInputComponent', () => {
         ValidationService,
         DateRangeService,
         DatesToolsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

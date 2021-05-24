@@ -15,18 +15,20 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _canStartNew: boolean;
   private _initState: string;
   private _configId: string;
+  private _gepsId: number;
   private _queryParams: QueryParams;
 
   constructor(private loggerService: LoggerService) { }
 
   init(service: ServiceEntity, context?: FormPlayerContext): void {
-    this.checkProps(service);
+    this.checkProps(service, context);
     this.serviceId = service.serviceId;
     this.targetId = service.targetId;
     this.serviceInfo = service.serviceInfo;
     this.orderId = service.orderId;
     this.invited = service.invited;
     this.canStartNew = service.canStartNew;
+    this.gepsId = service.gepsId;
     this.initState = context?.initState;
     this.configId = context?.configId;
     this.queryParams = context?.queryParams;
@@ -96,6 +98,15 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this._configId = configId;
   }
 
+  get gepsId(): number {
+    return this._gepsId;
+  }
+
+  set gepsId(gepsId: number) {
+    // Каст фикс типа для проброса парамтеров от портала
+    this._gepsId = typeof gepsId === 'string' ? parseInt(gepsId, 10): gepsId;
+  }
+
   get queryParams(): QueryParams {
     return this._queryParams;
   }
@@ -104,8 +115,8 @@ export class InitDataService implements ServiceEntity, FormPlayerContext {
     this._queryParams = queryParams;
   }
 
-  private checkProps(service: ServiceEntity): void {
-    this.loggerService.log([service], '----- Init props ---------');
+  private checkProps(service: ServiceEntity, context?: FormPlayerContext): void {
+    this.loggerService.log(['Service:', service, 'Context:', context], '----- Init props ---------');
 
     if (!service) {
       throw Error('Need to set Service for epgu form player');

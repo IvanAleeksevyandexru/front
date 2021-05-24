@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { FormControl, NgControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BaseModule } from '../../base.module';
+import { configureTestSuite } from 'ng-bullet';
 
 @Component({
   selector: 'epgu-constructor-rank-transform-test-component',
@@ -24,17 +25,18 @@ describe('RankTransformDirective', () => {
   let fixture: ComponentFixture<RankTransformTestComponent>;
   let comp: RankTransformTestComponent;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [RankTransformDirective, RankTransformTestComponent],
       imports: [RouterTestingModule, BaseModule],
       providers: [DecimalPipe, NgControl],
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(RankTransformTestComponent);
-        comp = fixture.componentInstance;
-      });
+      .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RankTransformTestComponent);
+    comp = fixture.componentInstance;
   });
 
   it('test rank transform directive', () => {

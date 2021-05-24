@@ -42,13 +42,12 @@ import { LoggerServiceStub } from '../../../../core/services/logger/logger.servi
 import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from './data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
-import {
-  ComponentAttrsDto,
-  ComponentDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto, ComponentAttrsDto } from 'epgu-constructor-types';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -113,38 +112,37 @@ describe('FileUploadItemComponent', () => {
   let modalSerivce: ModalService;
   let fileUploadService: FileUploadService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [FileUploadItemComponent],
-        imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
-        providers: [
-          EventBusService,
-          FileUploadService,
-          UnsubscribeService,
-          AutocompleteService,
-          CurrentAnswersService,
-          CompressionService,
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-          { provide: UtilsService, useClass: UtilsServiceStub },
-          { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
-          { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-          { provide: PrepareService, useClass: PrepareServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: LoggerService, useClass: LoggerServiceStub },
-          { provide: ViewerService, useClass: ViewerServiceStub },
-        ],
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      declarations: [FileUploadItemComponent],
+      imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
+      providers: [
+        EventBusService,
+        FileUploadService,
+        UnsubscribeService,
+        AutocompleteService,
+        AutocompletePrepareService,
+        CurrentAnswersService,
+        CompressionService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
+        { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
+        { provide: PrepareService, useClass: PrepareServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ViewerService, useClass: ViewerServiceStub },
+      ],
+    })
+      .overrideComponent(FileUploadItemComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
-        .overrideComponent(FileUploadItemComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
-    }),
-  );
+      .compileComponents();
+  });
 
   beforeEach(() => {
     prepateService = TestBed.inject(PrepareService);
@@ -256,6 +254,17 @@ describe('FileUploadItemComponent', () => {
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__container'))).toBeNull();
   });
 
+  it('should readonly uploader', () => {
+    const files = createFileList([createFileMock('test.png')]);
+    component.updateSelectedFilesInfoAndSend(files);
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('epgu-constructor-uploader'))).toBeNull();
+    expect(
+      fixture.debugElement.query(By.css('.uploader-manager-item__button.remove_button')),
+    ).toBeNull();
+  });
+
   it('should open link', () => {
     const files = createFileList([createFileMock('test.pdf', { type: 'application/pdf' })]);
     component.updateSelectedFilesInfoAndSend(files);
@@ -265,7 +274,7 @@ describe('FileUploadItemComponent', () => {
     )?.nativeElement;
 
     const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
-    spyOn(link, 'click').and.callThrough();
+    jest.spyOn(link, 'click');
     name.click();
 
     fixture.detectChanges();
@@ -279,7 +288,7 @@ describe('FileUploadItemComponent', () => {
     const manager = fixture.debugElement.query(By.css('epgu-constructor-uploader-manager'))
       .componentInstance;
 
-    spyOn(manager, 'view').and.callThrough();
+    jest.spyOn(manager, 'view');
 
     const name: HTMLDivElement = fixture.debugElement.query(
       By.css('.uploader-manager-item__title > .name'),
@@ -292,7 +301,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should open attached viewer', () => {
     jest.spyOn(component, 'isPrevUploadedFilesButtonShown').mockImplementation(() => true);
-    spyOn(modalSerivce, 'openModal').and.callThrough();
+    jest.spyOn(modalSerivce, 'openModal');
     fixture.detectChanges();
     const button: HTMLDivElement = fixture.debugElement.queryAll(
       By.css('.fileupload__link-button'),

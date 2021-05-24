@@ -3,12 +3,18 @@
   [tips]="component?.attrs?.labelHint"
   [label]="component?.label"
   [clarifications]="component?.attrs?.clarifications"
+  [largeFontSize]="largeFontSize"
   *ngIf="!disableLabel"
 ></epgu-constructor-label>
 <div class="form__error" *ngIf="hasErrors">
-  <small *ngIf="hasUiError">
-    {{ control.getError('msg') }}
-  </small>
+  <div *ngIf="hasUiError && isShowErrors">
+    <small>{{ control.getError('msg') }}</small>
+    <epgu-constructor-output-html
+      class="helper-text"
+      [html]="control.getError('desc')"
+      [clarifications]="component?.attrs?.clarifications"
+    ></epgu-constructor-output-html>
+  </div>
   <small *ngIf="hasServerError">
     {{ control.getError('serverError') }}
   </small>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ComponentActionDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentActionDto } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-payment-type-selector-button',

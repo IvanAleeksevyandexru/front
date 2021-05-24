@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
+import { ComponentDto } from 'epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ModalBaseComponent } from '../../shared/modal-base/modal-base.component';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { DropdownListContent, DropdownListItem } from '../dropdown-list.types';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 
 @Component({

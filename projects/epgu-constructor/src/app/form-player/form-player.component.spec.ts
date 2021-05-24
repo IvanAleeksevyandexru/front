@@ -48,7 +48,10 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 import { TracingService } from '../core/services/tracing/tracing.service';
 import { SessionService } from '../core/services/session/session.service';
-
+import { LogicComponent } from '../component/logic-screen/component/logic.component';
+import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
+import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
+import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -66,28 +69,30 @@ describe('FormPlayerComponent', () => {
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
+  let logicComponentMock = MockComponent(LogicComponent);
   let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
-    targetId: '-10000100'
+    targetId: '-10000100',
   };
   let contextMock = {};
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        EpguLibModuleInited,
-      ],
+      imports: [EpguLibModuleInited],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,
         ModalContainerComponentMock,
         ScreenModalComponentMock,
+        logicComponentMock,
       ],
       providers: [
         UnsubscribeService,
         LocationService,
         AutocompleteService,
         AutocompleteApiService,
+        AutocompleteAutofillService,
+        AutocompletePrepareService,
         EventBusService,
         ModalService,
         UtilsService,
@@ -109,9 +114,9 @@ describe('FormPlayerComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         TracingService,
         SessionService,
-      ]
+        TerraByteApiService,
+      ],
     }).compileComponents();
-
   });
 
   beforeEach(() => {
@@ -265,7 +270,7 @@ describe('FormPlayerComponent', () => {
       submitLabel: '',
       type: ScreenTypes.UNIQUE,
       terminal: false,
-      components: []
+      components: [],
     };
 
     it('should set screenId to component param', () => {

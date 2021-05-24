@@ -1,3 +1,5 @@
+import { InvitationType } from './invitation-type';
+
 export default interface LkInvitationInputAttrs {
   label: string;
   sendEmailLabel?: string;
@@ -13,4 +15,5 @@ export default interface LkInvitationInputAttrs {
     label: string;
   };
   redirectLabel: string;
+  templateId?: InvitationType; // default === LK_INVITATION
 }

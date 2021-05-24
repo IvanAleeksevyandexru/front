@@ -23,6 +23,7 @@ export class UploaderViewerComponent extends ModalBaseComponent {
     this.selectedItem = item;
     this.changeDetector.markForCheck();
   }
+  @Input() readonly: boolean;
 
   @Output() delete = new EventEmitter<FileItem>();
   @Output() download = new EventEmitter<FileItem>();

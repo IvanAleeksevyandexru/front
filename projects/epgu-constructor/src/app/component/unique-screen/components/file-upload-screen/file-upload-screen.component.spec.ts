@@ -11,14 +11,18 @@ import { ScreenContainerComponent } from '../../../../shared/components/screen-c
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { FileResponseToBackendUploadsItem, UploadedFile, } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileResponseToBackendUploadsItem,
+  UploadedFile,
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
-import { ActionType, ComponentDto, DTOActionAction, } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -34,7 +38,7 @@ const screenServiceComponentMockData: ComponentDto = {
   },
   id: '',
   label: '',
-  type: '',
+  type: 'FileUploadComponent',
   value: '',
 } as ComponentDto;
 
@@ -63,7 +67,7 @@ describe('FileUploadScreenComponent', () => {
   let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [MockModule(EpguLibModule), ScreenButtonsModule],
       declarations: [
@@ -153,9 +157,10 @@ describe('FileUploadScreenComponent', () => {
             },
           ],
         },
-      };
+      } as any;
 
       eventBusService.emit('fileUploadValueChangedEvent', eventData);
+
       expect(currentAnswersService.state).toEqual({
         id: '',
         type: 'FileUploadComponent',
@@ -290,17 +295,6 @@ describe('FileUploadScreenComponent', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
-    });
-
-    it('showLoader property should be equal to screenService.isLoading$', () => {
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.showLoader).toBeFalsy();
-
-      screenService.isLoadingSubject.next(true);
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.showLoader).toBeTruthy();
     });
 
     describe('disabled property', () => {

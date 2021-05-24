@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FileUploadService } from './file-upload.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('FileUploadService', () => {
   let service: FileUploadService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [FileUploadService],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(FileUploadService);
   });
 

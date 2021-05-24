@@ -7,10 +7,15 @@
     [simpleMode]="true"
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [validationShowOn]="validationShowOn"
-    [hideHouseCheckbox]="false"
+    [hideHouseCheckbox]="control.value?.attrs?.hideHouseCheckbox"
+    [hideApartmentCheckbox]="control.value?.attrs?.hideApartmentCheckbox"
+    [selectHouseCheckbox]="control.value?.attrs?.selectHouseCheckbox"
+    [selectApartmentCheckbox]="control.value?.attrs?.selectApartmentCheckbox"
     [externalApiUrl]="configService.externalApiUrl + '/'"
     [control]="control.get('value')"
     [hideLevels]="control.value?.attrs?.hideLevels"
+    [suggestions]="suggestions$ | async"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
   >
   </epgu-constructor-constructor-dadata-widget>
 </epgu-constructor-component-item>

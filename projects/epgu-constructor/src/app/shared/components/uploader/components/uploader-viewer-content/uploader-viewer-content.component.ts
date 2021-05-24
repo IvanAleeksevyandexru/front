@@ -33,6 +33,7 @@ export class UploaderViewerContentComponent {
   @Output() next = new EventEmitter<FilesCollection>();
   @Output() prev = new EventEmitter<FilesCollection>();
   @Output() moveZoom = new EventEmitter<boolean>();
+  @Input() readonly: boolean;
   @Input() set selectedItem(info: ViewerInfo) {
     this.init(info);
   }
@@ -122,11 +123,6 @@ export class UploaderViewerContentComponent {
     } else {
       this.deleteAction();
     }
-    // if (this.type === FilesCollection.suggest) {
-    //   this.isConfirm = true;
-    // } else {
-    //   this.deleteAction();
-    // }
   }
 
   prevAction(): void {

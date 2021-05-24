@@ -6,20 +6,20 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  ComponentAnswerDto,
+  Answer,
+  ConfirmationModal,
+} from 'epgu-constructor-types';
 import { ConfigService } from '../../core/services/config/config.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import {
-  ActionType,
-  ComponentActionDto,
-  ComponentAnswerDto,
-  DTOActionAction,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../modal/modal.service';
-import { Answer } from '../../shared/types/answer';
 import { ScreenBase } from '../screen-base';
 
 @Component({
@@ -53,7 +53,12 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   nextStep(payload?: NavigationPayload): void {
-    this.navigationService.next({ payload });
+    this.navigationService.next({
+      payload: {
+        ...payload,
+        ...this.screenService.logicAnswers,
+      },
+    });
   }
 
   answerChoose(answer: ComponentActionDto | ComponentAnswerDto): void {
@@ -88,7 +93,9 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     const modalResult$ = this.modalService.openModal<boolean, ConfirmationModal>(
       ConfirmationModalComponent,
       {
-        text: `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+        text:
+          answer?.modalHtml ||
+          `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
         <h4 style="text-align: center">Переход на старый портал</h4>
         <p class="helper-text" style="text-align: center; margin-top: 8px;">Раздел пока доступен только в старой версии портала</p></div>`,
         showCloseButton: false,

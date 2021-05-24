@@ -20,6 +20,7 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 import { Location } from '@angular/common';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { LocationService } from '../../../core/services/location/location.service';
+import { configureTestSuite } from 'ng-bullet';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -39,7 +40,7 @@ describe('FormPlayerStartManager', () => {
     targetId: '-10000100'
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         FormPlayerStartManager,
@@ -54,7 +55,6 @@ describe('FormPlayerStartManager', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
       ]
     });
-    service = TestBed.inject(FormPlayerStartManager);
   });
 
   beforeEach(() => {

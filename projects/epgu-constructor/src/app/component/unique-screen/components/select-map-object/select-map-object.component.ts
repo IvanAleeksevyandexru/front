@@ -13,15 +13,19 @@ import { ListElement, LookupProvider } from 'epgu-lib/lib/models/dropdown.model'
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { isEqual as _isEqual } from 'lodash';
+import {
+  ActionType,
+  ApplicantAnswersDto,
+  ComponentDictionaryFilterDto,
+  DictionaryOptions,
+  IMvdFilter,
+  ScreenButton,
+  DictionaryFilterPriority,
+} from 'epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import {
-  ActionType,
-  ApplicantAnswersDto,
-  ScreenActionDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
@@ -30,7 +34,6 @@ import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
-  DictionaryOptions,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
@@ -39,11 +42,7 @@ import {
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
-import {
-  IdictionaryFilter,
-  IFillCoordsResponse,
-  IGeoCoordsResponse,
-} from './select-map-object.interface';
+import { IFillCoordsResponse, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
@@ -73,7 +72,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public isMobile: boolean;
   public isSearchTitleVisible = true;
   public isNoDepartmentErrorVisible = false;
-  public screenActionButtons: ScreenActionDto[] = [];
+  public screenActionButtons: ScreenButton[] = [];
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -119,7 +118,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenActionDto>) => {
+      .subscribe((buttons: Array<ScreenButton>) => {
         this.screenActionButtons = buttons || [];
         this.cdr.markForCheck();
       });
@@ -262,6 +261,19 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private initMap(): void {
     this.setMapOpstions();
+
+    if (this.isOnlySecondaryFilterRequestNeeded()) {
+      this.fillCoords(this.data.attrs.secondaryDictionaryFilter)
+        .pipe(
+          takeUntil(this.ngUnsubscribe$),
+          catchError((error) => this.handleError(error)),
+          filter((coords: IGeoCoordsResponse) => !!coords),
+          tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
+        )
+        .subscribe();
+      return;
+    }
+
     this.fillCoords(this.data.attrs.dictionaryFilter)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
@@ -271,19 +283,30 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           }
           return of(coords);
         }),
-        catchError((error) => {
-          this.modalErrorService.showError(error);
-          return of(null);
-        }),
+        catchError((error) => this.handleError(error)),
         filter((coords: IGeoCoordsResponse) => !!coords),
-        tap((coords: IGeoCoordsResponse) => {
-          this.handleFilledCoordinate(coords);
-          this.mapIsLoaded = true;
-          this.initSelectedValue();
-          this.cdr.detectChanges();
-        }),
+        tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
       )
       .subscribe();
+  }
+
+  private isOnlySecondaryFilterRequestNeeded(): boolean {
+    return (
+      this.data.arguments?.dictionaryFilterPriority ===
+      DictionaryFilterPriority.secondaryDictionaryFilter
+    );
+  }
+
+  private handleError(error): Observable<null> {
+    this.modalErrorService.showError(error);
+    return of(null);
+  }
+
+  private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
+    this.handleFilledCoordinate(coords);
+    this.mapIsLoaded = true;
+    this.initSelectedValue();
+    this.cdr.detectChanges();
   }
 
   private setMapOpstions(): void {
@@ -339,7 +362,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private fillCoords(dictionaryFilters: Array<IdictionaryFilter>): Observable<IFillCoordsResponse> {
+  private fillCoords(
+    dictionaryFilters: Array<ComponentDictionaryFilterDto>,
+  ): Observable<IFillCoordsResponse> {
     let options;
     try {
       options = this.getOptions(dictionaryFilters);
@@ -350,8 +375,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       switchMap((dictionary: DictionaryResponseForYMap) => {
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
+        const needToFilterMvd =
+          this.data.attrs.mvdFilters && this.componentValue.isMvdFiltersActivatedOnFront === 'true';
         // Параллелим получение геоточек на 4 запроса
-        const items = [...dictionary.items];
+        const items = needToFilterMvd
+          ? this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters)
+          : [...dictionary.items];
+
         const chunkSize = items.length / 4;
         return merge(
           this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
@@ -377,7 +407,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Подготовка тела POST запроса dictionary
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private getOptions(dictionaryFilters: Array<IdictionaryFilter>): DictionaryOptions {
+  private getOptions(dictionaryFilters: Array<ComponentDictionaryFilterDto>): DictionaryOptions {
     return {
       ...this.dictionaryToolsService.getFilterOptions(
         this.componentPresetValue,
@@ -525,5 +555,23 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       coords.dictionaryError.code === 0 &&
       !!this.data.attrs.secondaryDictionaryFilter
     );
+  }
+
+  private applyRegionFilters(
+    items: Array<DictionaryYMapItem>,
+    mvdFilters: Array<IMvdFilter>,
+  ): Array<DictionaryYMapItem> {
+    const filteredMvdFilters = mvdFilters.filter((mvdFilter) =>
+      mvdFilter.fiasList.some((fias) =>
+        ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
+      ),
+    );
+    const lastFilteredMvdFilter = filteredMvdFilters.pop();
+
+    return items.filter((department) => {
+      return lastFilteredMvdFilter
+        ? lastFilteredMvdFilter.value.includes(department[lastFilteredMvdFilter.field])
+        : false;
+    });
   }
 }

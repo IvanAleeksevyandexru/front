@@ -6,68 +6,72 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-constructor-screen-pad class="screen-pad-body">
-    <form #dataForm="ngForm">
-      <ng-container
-        *ngFor="let field of (data$ | async)?.attrs?.fields; let i = index"
-        [ngSwitch]="field?.fieldName"
-      >
-        <epgu-constructor-address-item
-          *ngSwitchCase="'regAddr'"
-          class="item"
-          [label]="field.label"
-          [tips]="field?.attrs?.labelHint"
-          [hint]="field?.hint"
-        >
-          <lib-dadata-widget
-            [simpleMode]="true"
-            [hideLevels]="(data$ | async)?.attrs?.hideLevels || []"
-            [hideHouseCheckbox]="false"
-            [name]="field.fieldName"
-            [externalApiUrl]="config.externalApiUrl + '/'"
-            [initValue]="$any(valueParsed[field.fieldName])"
-            [(ngModel)]="valueParsed[field.fieldName]"
-          >
-          </lib-dadata-widget>
-        </epgu-constructor-address-item>
+    <ng-container *ngTemplateOutlet="formTmpl; context: { $implicit: data$ | async }">
+    </ng-container>
 
-        <epgu-constructor-address-item
-          *ngSwitchCase="isDate(field.fieldName)"
-          class="item"
-          [label]="field.label"
-          [hint]="field?.hint"
-        >
-          <lib-date-picker
-            class="item--date"
-            [name]="field.fieldName"
-            align="left"
-            [minDate]="(data$ | async)?.attrs?.minDate || '-50y'"
-            [maxDate]="(data$ | async)?.attrs?.maxDate || 'today'"
-            [(ngModel)]="valueParsed[field.fieldName]"
-            [clearable]="true"
-          >
-          </lib-date-picker>
-        </epgu-constructor-address-item>
-
-        <epgu-constructor-address-item
-          *ngSwitchDefault
-          class="item"
-          [label]="field.label"
-          [hint]="field?.hint"
-        >
-          <lib-plain-input
-            epgu-constructor-trim
-            epgu-constructor-text-transform
-            [textTransformType]="textTransformType"
-            [(ngModel)]="valueParsed[field.fieldName]"
-            [name]="field.fieldName"
-            class="content content__input"
-          >
-          </lib-plain-input>
-        </epgu-constructor-address-item>
-      </ng-container>
-      <div class="error" *ngIf="screenService.componentError$ | async">
-        <small>{{ screenService.componentError$ | async }}</small>
-      </div>
-    </form>
+    <div class="error" *ngIf="screenService.componentError$ | async as error">
+      <small>{{ error }}</small>
+    </div>
   </epgu-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
+
+<ng-template #formTmpl let-data>
+  <div [formGroup]="form">
+    <ng-container *ngFor="let field of fields$ | async" [ngSwitch]="field.fieldName">
+      <epgu-constructor-address-item
+        *ngSwitchCase="'regAddr'"
+        class="item"
+        [label]="field.label"
+        [tips]="field?.attrs?.labelHint"
+        [hint]="field?.hint"
+      >
+        <lib-dadata-widget
+          [simpleMode]="true"
+          [hideLevels]="data.attrs?.hideLevels || []"
+          [hideHouseCheckbox]="false"
+          [externalApiUrl]="config.externalApiUrl + '/'"
+          [initValue]="form.controls[field.fieldName].value"
+          [formControlName]="field.fieldName"
+          [suggest]="classifiedSuggestionItems[field.fieldName]"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
+        >
+        </lib-dadata-widget>
+      </epgu-constructor-address-item>
+
+      <epgu-constructor-address-item
+        *ngSwitchCase="field.isDate"
+        class="item"
+        [label]="field.label"
+        [hint]="field?.hint"
+      >
+        <lib-date-picker
+          class="item--date"
+          [name]="field.fieldName"
+          align="left"
+          [minDate]="data.attrs?.minDate || '-50y'"
+          [maxDate]="data.attrs?.maxDate || 'today'"
+          [formControlName]="field.fieldName"
+          [clearable]="true"
+        >
+        </lib-date-picker>
+      </epgu-constructor-address-item>
+
+      <epgu-constructor-address-item
+        *ngSwitchDefault
+        class="item"
+        [label]="field.label"
+        [hint]="field?.hint"
+      >
+        <lib-plain-input
+          epgu-constructor-trim
+          epgu-constructor-text-transform
+          [textTransformType]="data.attrs?.fstuc"
+          [formControlName]="field.fieldName"
+          [name]="field.fieldName"
+          class="content content__input"
+        >
+        </lib-plain-input>
+      </epgu-constructor-address-item>
+    </ng-container>
+  </div>
+</ng-template>

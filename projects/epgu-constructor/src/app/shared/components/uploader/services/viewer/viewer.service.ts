@@ -20,6 +20,7 @@ export class ViewerService {
     suggest?: EventEmitter<SuggestAction>,
     remove?: EventEmitter<FileItem>,
     download?: EventEmitter<FileItem>,
+    readonly = false,
   ): Observable<void> {
     const selectedIndex = new BehaviorSubject<number>(null);
 
@@ -27,6 +28,7 @@ export class ViewerService {
       ? of(null)
       : of({
           type,
+          readonly,
         }).pipe(
           tap(() => this.isOpen.next(true)),
           map((params) => this.modal.createModal(UploaderViewerComponent, params)),

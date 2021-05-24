@@ -1,24 +1,23 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import {
   FileResponseToBackendUploadsItem,
+  FileUploadAttributes,
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { TerraUploadedFile } from '../../../../shared/components/file-upload/file-upload-item/data';
+import { ModalService } from '../../../../modal/modal.service';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
@@ -31,13 +30,34 @@ export class FileUploadScreenComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
     tap((data: ComponentBase) => {
+      const attrs: FileUploadAttributes = data.attrs as FileUploadAttributes;
       this.allMaxFiles = 0;
-      // @ts-ignore
-      const { attrs: { uploads } = {} } = data;
-      this.collectMaxFilesNumber(uploads);
+
+      if (data.type === UniqueScreenComponentTypes.OrderFileProcessingComponent && attrs?.uploads) {
+        attrs.maxFileCount = attrs.uploads?.length ?? 0;
+        attrs.uploads = attrs.uploads.map((upload) => this.toCSVUploader(upload));
+        if (this.screenService.componentError) {
+          this.modalService.openModal(ConfirmationModalComponent, {
+            text: this.screenService.componentError,
+            title: 'Ошибка',
+            showCloseButton: false,
+            showCrossButton: true,
+            buttons: [
+              {
+                label: 'Закрыть',
+                closeModal: true,
+              },
+            ],
+            isShortModal: true,
+          });
+        }
+      }
+
+      this.collectMaxFilesNumber(attrs?.uploads ?? []);
+
       this.value = {
         id: data.id,
-        type: UniqueScreenComponentTypes.fileUploadComponent,
+        type: data.type,
       };
     }),
   );
@@ -62,8 +82,15 @@ export class FileUploadScreenComponent implements OnInit {
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
+    private modalService: ModalService,
     private cdr: ChangeDetectorRef,
   ) {}
+
+  toCSVUploader(upload: FileUploadItem): FileUploadItem {
+    const processingUpload = { ...upload, fileType: ['CSV'], maxFileCount: 1 };
+    delete processingUpload.maxCountByTypes;
+    return processingUpload;
+  }
 
   ngOnInit(): void {
     this.eventBusService

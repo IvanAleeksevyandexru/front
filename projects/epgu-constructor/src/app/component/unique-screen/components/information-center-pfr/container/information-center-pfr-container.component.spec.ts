@@ -23,6 +23,8 @@ import { ComponentsListRelationsService } from '../../../../custom-screen/servic
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('InformationCenterPfrContainerComponent', () => {
   let component: InformationCenterPfrContainerComponent;
@@ -102,7 +104,7 @@ describe('InformationCenterPfrContainerComponent', () => {
     },
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         InformationCenterPfrContainerComponent,
@@ -125,7 +127,8 @@ describe('InformationCenterPfrContainerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
-        RefRelationService
+        RefRelationService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

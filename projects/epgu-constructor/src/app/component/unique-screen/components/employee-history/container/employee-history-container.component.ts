@@ -7,14 +7,9 @@ import {
 import { ValidationShowOn } from 'epgu-lib';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
-import {
-  ComponentActionDto,
-  ComponentDto,
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { Gender, ComponentDto, ComponentActionDto } from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { months } from '../../../../../shared/constants/dates';
-import { Gender } from '../../../../../shared/types/gender';
 import {
   EmployeeHistoryDataSource,
   EmployeeHistoryFormData,

@@ -7,18 +7,12 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import {
+  FormPlayerNavigation,
   Navigation,
   NavigationOptions,
   NavigationParams,
 } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import {
-  ActionApiResponse,
-  ActionDTO,
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore, ScreenTypes } from '../../../screen/screen.types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
@@ -31,6 +25,14 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import {
+  ActionApiResponse,
+  ActionRequestPayload,
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -53,6 +55,7 @@ export class ActionService {
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
+    private formPlayerService: FormPlayerService,
   ) {}
 
   public switchAction(
@@ -86,7 +89,7 @@ export class ActionService {
         this.quizToOrder(action);
         break;
       case ActionType.redirectToLK:
-        this.navService.redirectToLK();
+        this.navService.redirectToLKByOrgType();
         break;
       case ActionType.profileEdit:
         this.redirectToEdit(action);
@@ -101,7 +104,13 @@ export class ActionService {
         this.openDropdownListModal(action, componentId);
         break;
       case ActionType.deliriumNextStep:
-        this.handleDeliriumAction$(action).subscribe();
+        this.handleDeliriumAction(action, componentId);
+        break;
+      case ActionType.redirect:
+        this.navService.redirectExternal(action.value);
+        break;
+      case ActionType.redirectToPayByUin:
+        this.redirectToPayByUin();
         break;
     }
   }
@@ -191,24 +200,11 @@ export class ActionService {
     action: ComponentActionDto,
     componentId: string,
   ): ComponentStateForNavigate {
-    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
-    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
-      if (this.isTimerComponent(componentId)) {
-        return {
-          [componentId]: {
-            visited: true,
-            value: action.value,
-          },
-        };
-      }
-      return {
-        ...(this.currentAnswersService.state as object),
-      };
-    }
-
     let value: string;
     if (action.type === ActionType.skipStep) {
-      value = '';
+      return this.prepareDefaultComponentState(componentId, '', action);
+    } else if (action.value !== undefined) {
+      value = action.value;
     } else {
       value =
         typeof this.currentAnswersService.state === 'object'
@@ -216,11 +212,32 @@ export class ActionService {
           : this.currentAnswersService.state;
     }
 
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
+    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
+      if (this.isTimerComponent(componentId)) {
+        return this.prepareDefaultComponentState(componentId, value, action);
+      } else {
+        return {
+          ...(this.currentAnswersService.state as object),
+          ...this.screenService.logicAnswers,
+        };
+      }
+    } else {
+      return this.prepareDefaultComponentState(componentId, value, action);
+    }
+  }
+
+  private prepareDefaultComponentState(
+    componentId: string,
+    value: string,
+    action: ComponentActionDto,
+  ): ComponentStateForNavigate {
     return {
       [componentId]: {
         visited: true,
         value: value || action.value,
       },
+      ...this.screenService.logicAnswers,
     };
   }
 
@@ -248,8 +265,8 @@ export class ActionService {
     });
   }
 
-  private getActionDTO(action: ComponentActionDto): ActionDTO {
-    const bodyResult: ActionDTO = {
+  private getActionDTO(action: ComponentActionDto): ActionRequestPayload {
+    const bodyResult: ActionRequestPayload = {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
@@ -258,10 +275,6 @@ export class ActionService {
         ...bodyResult.scenarioDto,
         currentUrl: this.configService.addToCalendarUrl,
       };
-    }
-
-    if (action.deliriumAction) {
-      bodyResult.deliriumAction = action.deliriumAction;
     }
 
     return bodyResult;
@@ -285,6 +298,8 @@ export class ActionService {
 
   private redirectToEdit({ action }: ComponentActionDto): void {
     switch (action) {
+      case DTOActionAction.editChildData:
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family`);
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       default:
@@ -299,10 +314,15 @@ export class ActionService {
     this.modalService.openModal(DropdownListModalComponent, { componentId, clarificationId });
   }
 
-  private handleDeliriumAction$<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
-    const body = this.getActionDTO(action);
-    const preparedBody = JSON.parse(JSON.stringify(body));
-    preparedBody.scenarioDto.display = this.htmlRemover.delete(preparedBody.scenarioDto.display);
-    return this.actionApiService.sendAction<T>(action.type, preparedBody);
+  private handleDeliriumAction(action: ComponentActionDto, componentId: string): void {
+    const navigation = this.prepareNavigationData(action, componentId);
+    navigation.options.deliriumAction = action.deliriumAction;
+    return this.formPlayerService.navigate(navigation, FormPlayerNavigation.DELIRIUM_NEXT_STEP);
+  }
+
+  private redirectToPayByUin(): void {
+    this.navService.redirectTo(
+      `${this.configService.oplataUrl}/pay/uin/${this.screenService.serviceInfo.billNumber}`,
+    );
   }
 }

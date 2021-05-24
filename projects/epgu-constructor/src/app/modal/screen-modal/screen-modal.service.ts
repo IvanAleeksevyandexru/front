@@ -2,13 +2,9 @@ import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import {
-  DTOActionAction,
-  FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, DTOActionAction } from 'epgu-constructor-types';
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {
@@ -17,6 +13,9 @@ export class ScreenModalService extends FormPlayerBaseService {
   }
   public get isInternalScenarioFinish$(): Observable<boolean> {
     return this.isInternalScenarioFinishSub.asObservable();
+  }
+  public get isInternalScenarioFinishValue(): boolean {
+    return this.isInternalScenarioFinishSub.value;
   }
 
   private _initStore: FormPlayerApiSuccessResponse;
@@ -84,7 +83,7 @@ export class ScreenModalService extends FormPlayerBaseService {
 
   isInternalScenarioFinish(): void {
     const isGoBackAction = ({ action }): boolean => action === DTOActionAction.goBackToMainScenario;
-    const actions = this._store.scenarioDto?.display?.components[0]?.attrs?.actions || [];
+    const actions = this._store.scenarioDto?.display?.buttons || [];
     const isInternalScenarioFinish = actions.some(isGoBackAction);
     this.isInternalScenarioFinishSub.next(isInternalScenarioFinish);
   }

@@ -4,6 +4,7 @@ import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('AutocompleteApiService', () => {
@@ -18,7 +19,7 @@ describe('AutocompleteApiService', () => {
   let groupId = 'PASSPORT_DATA';
   let responseMock = [42];
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -27,11 +28,14 @@ describe('AutocompleteApiService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(AutocompleteApiService);
     http = TestBed.inject(HttpTestingController);
     config = TestBed.inject(ConfigService);
     apiUrl = config.suggestionsApiUrl;
-  }));
+  });
 
   afterEach(waitForAsync(() => http.verify()));
 
@@ -105,9 +109,9 @@ describe('AutocompleteApiService', () => {
       expect(req.request.method).toBe('DELETE');
     }));
 
-    it('should call with body { ids: [fieldId] }', fakeAsync(() => {
+    it('should call with body [fieldId]', fakeAsync(() => {
       const body = req.request.body;
-      expect(body).toEqual({ ids: [fieldId] });
+      expect(body).toEqual([fieldId]);
     }));
 
     it('should call http delete with withCredentials equals true', fakeAsync(() => {

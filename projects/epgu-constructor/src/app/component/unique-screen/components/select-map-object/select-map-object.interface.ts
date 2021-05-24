@@ -1,5 +1,4 @@
 import {
-  DictionaryConditions,
   DictionaryResponseError,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
@@ -34,11 +33,4 @@ export interface IFeatureCollection {
       res: IDictionaryYMapProperties;
     };
   }>;
-}
-
-export interface IdictionaryFilter {
-  attributeName: string;
-  condition: DictionaryConditions;
-  value: string;
-  valueType: string;
 }

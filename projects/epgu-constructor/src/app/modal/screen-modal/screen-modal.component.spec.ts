@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { ScreenModalComponent } from './screen-modal.component';
 import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
@@ -26,14 +26,15 @@ import { RefRelationService } from '../../shared/services/ref-relation/ref-relat
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { ScreenModalServiceStub } from './screen-modal.service.stub';
 import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;
   let fixture: ComponentFixture<ScreenModalComponent>;
   let screenService: ScreenService;
 
-  beforeEach(async() => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ScreenModalComponent, MockComponent(ComponentListModalComponent), MockComponent(ScreenModalResolverComponent)],
       imports: [
         RouterTestingModule,
@@ -121,8 +122,8 @@ describe('ScreenModalComponent', () => {
   });
 
   describe('nextStep', () => {
-    it('sould call closeModal(), if scenario finished', () => {
-      const closeModalSpy = jest.spyOn(component, 'closeModal');
+    it('sould call closeModalOnNext(), if scenario finished', () => {
+      const closeModalSpy = jest.spyOn(component, 'closeModalOnNext');
       const navigation = {
         options: { isInternalScenarioFinish: true }
       };

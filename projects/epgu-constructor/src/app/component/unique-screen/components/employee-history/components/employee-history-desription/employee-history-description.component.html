@@ -1,4 +1,4 @@
-<section *ngIf="!!periods.length" class="employee-history__progress">
+<section *ngIf="!!periods.length && !isCompleted" class="employee-history__progress">
   <div class="employee-history__progress__notification">
     <div class="employee-history__progress__icon"></div>
     <div class="employee-history__progress__msg">Не заполнены периоды</div>

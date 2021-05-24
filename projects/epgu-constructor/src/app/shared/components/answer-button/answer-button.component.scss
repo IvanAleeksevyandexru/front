@@ -1,5 +1,6 @@
 @import 'src/styles/core/palettes';
 @import 'src/styles/core/functions';
+@import 'src/styles/core/typography';
 
 :host {
   display: block;
@@ -7,23 +8,42 @@
 }
 
 .answer-btn {
-  &__icon {
-    flex-shrink: 0;
-    margin-left: 10px;
+  &::ng-deep > button {
+    display: block;
   }
-
-  &__hint {
+  &__container {
+    display: flex;
+  }
+  &__title {
+    flex-grow: 1;
+  }
+  &__icon {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    margin-left: 24px;
+    @include tablets-down {
+      margin-left: 16px;
+    }
+  }
+  &__hint { // TODO запрещён к использованию, нужно выпилить
+    position: relative;
+    left: 8px;
+    margin-left: 16px;
     lib-question-help-tip {
       display: flex;
     }
-    margin-left: auto;
   }
-}
-
-.icon-loading {
-  position: absolute;
-  right: 17px;
-  @include phones-down {
-    right: 13px;
+  &__description {
+    margin-top: 8px;
+    color: $color-text-helper;
+    @include typ-plain-small;
+    @include tablets-down {
+      margin-top: 16;
+    }
   }
 }

@@ -1,44 +1,122 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
+import { By } from '@angular/platform-browser';
 
 import { ScreenButtonsComponent } from './screen-buttons.component';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { HealthService } from 'epgu-lib';
-import { RouterTestingModule } from '@angular/router/testing';
-import { NavigationModule } from '../navigation/navigation.module';
-import { CoreModule } from '../../../core/core.module';
-import { LocationService } from '../../../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { BaseModule } from '../../base.module';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { DisabledButtonPipe } from './pipes/disabled-button.pipe';
+import { ShowLoaderButtonPipe } from './pipes/show-loader-button.pipe';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ActionService } from '../../directives/action/action.service';
+import { ActionServiceStub } from '../../directives/action/action.service.stub';
+import { ModalService } from '../../../modal/modal.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { ActionType, DTOActionAction } from 'epgu-constructor-types';
 
-describe('ScreenContainerComponent', () => {
+
+describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
   let fixture: ComponentFixture<ScreenButtonsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [CoreModule, BaseModule, RouterTestingModule, NavigationModule],
-        declarations: [ScreenButtonsComponent],
-        providers: [
-          LocationService,
-          WINDOW_PROVIDERS,
-          HealthService,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          UnsubscribeService,
-        ],
-      }).compileComponents();
-    }),
-  );
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      imports: [BaseModule],
+      declarations: [ScreenButtonsComponent, DisabledButtonPipe, ShowLoaderButtonPipe],
+      providers: [
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        CurrentAnswersService,
+      ],
+    }).overrideComponent(ScreenButtonsComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default },
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ScreenButtonsComponent);
     component = fixture.componentInstance;
+    component.screenButtons = [
+      {
+        action: DTOActionAction.redirect,
+        type: ActionType.home,
+        label: 'На главную'
+      },
+      {
+        action: DTOActionAction.getNextStep,
+        type: ActionType.nextStep,
+        label: 'Далее'
+      }
+    ];
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should render two buttons', () => {
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+    expect(debugElements.length).toBe(2);
+  });
+
+  it('should render one button', () => {
+    component.screenButtons = [
+      {
+        action: DTOActionAction.getNextStep,
+        type: ActionType.nextStep,
+        label: 'Далее'
+      }
+    ];
+    fixture.detectChanges();
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+    expect(debugElements.length).toBe(1);
+  });
+
+  it('should have button labels', () => {
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+    expect(debugElements[0].nativeElement.textContent.trim()).toBe('На главную');
+    expect(debugElements[1].nativeElement.textContent.trim()).toBe('Далее');
+  });
+
+  it('should call setClickedButton when click on button and set clickedButton', () => {
+    const setClickedButtonSpy = jest.spyOn(component, 'setClickedButton');
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+    debugElements[0].nativeElement.click();
+    expect(setClickedButtonSpy).toBeCalledWith(component.screenButtons[0]);
+    expect(component.clickedButton).toBe(component.screenButtons[0]);
+  });
+
+  it('should disable all buttons when isLoading', () => {
+    component.isLoading = true;
+    fixture.detectChanges();
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+    expect(debugElements[0].nativeElement.disabled).toBeTruthy();
+    expect(debugElements[1].nativeElement.disabled).toBeTruthy();
+  });
+
+  it('should add loaded class for clickedButton', () => {
+    component.isLoading = true;
+    component.clickedButton = component.screenButtons[1];
+    fixture.detectChanges();
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+    expect(debugElements[0].classes['loader']).toBeFalsy();
+    expect(debugElements[1].classes['loader']).toBeTruthy();
+  });
+
+  it('should disable all buttons when disabled and disabledForAll', () => {
+    component.isLoading = false;
+    component.disabled = true;
+    component.disabledForAll = true;
+    fixture.detectChanges();
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+    expect(debugElements[0].nativeElement.disabled).toBeTruthy();
+    expect(debugElements[1].nativeElement.disabled).toBeTruthy();
+  });
+
+  it('should disable only for next screen buttons when disabled and not disabledForAll', () => {
+    component.isLoading = false;
+    component.disabled = true;
+    component.disabledForAll = false;
+    fixture.detectChanges();
+    let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+    expect(debugElements[0].nativeElement.disabled).toBeFalsy();
+    expect(debugElements[1].nativeElement.disabled).toBeTruthy();
   });
 });

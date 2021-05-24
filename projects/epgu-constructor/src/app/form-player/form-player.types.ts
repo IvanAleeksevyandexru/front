@@ -1,5 +1,4 @@
-import { Answer } from '../shared/types/answer';
-import { ComponentActionDto, FormPlayerApiSuccessResponse } from './services/form-player-api/form-player-api.types';
+import { Answer, FormPlayerApiSuccessResponse, ComponentActionDto } from 'epgu-constructor-types';
 
 export interface QueryParams {
   [key: string]: string;
@@ -42,6 +41,7 @@ export interface ServiceInfo {
  * @property invited - флаг для запуска инвайт сценариев
  * @property canStartNew - флаг для возможности отображения модального окна "продолжить черновик",
  *   по дефолту значение true. Если поставить false, то модального окна не будет.
+ * @property gepsId - идентификатора сообщения от ГЭПС
  */
 export interface ServiceEntity {
   serviceId: string;
@@ -50,6 +50,7 @@ export interface ServiceEntity {
   orderId?: number;
   invited?: boolean;
   canStartNew?: boolean;
+  gepsId?: number;
 }
 
 /**
@@ -59,6 +60,7 @@ export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
   'SKIP' = 'skipStep',
+  'DELIRIUM_NEXT_STEP' = 'deliriumNextStep',
 }
 
 /**
@@ -78,6 +80,7 @@ export interface NavigationOptions {
   url?: string;
   store?: FormPlayerApiSuccessResponse;
   params?: NavigationParams;
+  deliriumAction?: string;
 }
 
 export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;

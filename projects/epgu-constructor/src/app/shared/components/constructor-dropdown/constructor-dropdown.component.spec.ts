@@ -10,13 +10,14 @@ import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stu
 import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 import { BaseModule } from '../../base.module';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;
   let fixture: ComponentFixture<ConstructorDropdownComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorDropdownComponent],
       imports: [CoreModule, BaseModule, RouterTestingModule],
       providers: [

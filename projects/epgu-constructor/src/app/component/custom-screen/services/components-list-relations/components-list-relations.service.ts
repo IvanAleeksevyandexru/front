@@ -12,22 +12,26 @@ import {
   CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryFilters } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
-import { DateRangeRef } from '../../../../shared/services/date-range/date-range.models';
+import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
+import { CachedAnswers } from '../../../../screen/screen.types';
+import { DictionaryFilters, ApplicantAnswersDto } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Injectable()
 export class ComponentsListRelationsService {
   public get filters(): ComponentDictionaryFilters {
     return this._filters$.getValue();
   }
+
   public set filters(val: ComponentDictionaryFilters) {
     this._filters$.next(val);
   }
+
   public get filters$(): Observable<ComponentDictionaryFilters> {
     return this._filters$.asObservable();
   }
@@ -38,6 +42,7 @@ export class ComponentsListRelationsService {
   constructor(
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
+    private dateRestrictionsService: DateRestrictionsService,
   ) {}
 
   public getUpdatedShownElements(
@@ -49,6 +54,7 @@ export class ComponentsListRelationsService {
     initInitialValues = false,
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
+    componentsGroupIndex?: number
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
@@ -57,7 +63,7 @@ export class ComponentsListRelationsService {
           .forEach((reference) => {
             const value = reference.valueFromCache
               ? screenService.cachedAnswers[reference.valueFromCache].value
-              : component.value;
+              : component.value ?? component.valueFromCache;
 
             shownElements = this.getDependentComponentUpdatedShownElements(
               dependentComponent,
@@ -77,16 +83,46 @@ export class ComponentsListRelationsService {
       },
     );
 
+    this.updateLimitDatesByDateRestrictions(
+      components,
+      component,
+      form,
+      screenService.applicantAnswers,
+      initInitialValues,
+      componentsGroupIndex
+    );
+
     return shownElements;
   }
 
-  public createStatusElements(components: Array<CustomComponent>): CustomListStatusElements {
+  updateLimitDatesByDateRestrictions(
+    components: Array<CustomComponent>,
+    component: CustomComponent | CustomListFormGroup,
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto,
+    initInitialValues: boolean,
+    componentsGroupIndex?: number
+  ): void {
+    if (component.attrs.dateRestrictions && !initInitialValues) {
+      this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
+      return;
+    }
+
+    if (initInitialValues) {
+      this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
+    }
+  }
+
+  public createStatusElements(
+    components: Array<CustomComponent>,
+    cachedAnswers: CachedAnswers,
+  ): CustomListStatusElements {
     return components.reduce(
       (acc, component: CustomComponent) => ({
         ...acc,
         [component.id]: {
           relation: CustomComponentRefRelation.displayOn,
-          isShown: !this.hasRelation(component, CustomComponentRefRelation.displayOn),
+          isShown: !this.hasRelation(component, cachedAnswers),
         },
       }),
       {},
@@ -141,8 +177,30 @@ export class ComponentsListRelationsService {
     }
   }
 
-  public hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
-    return component.attrs.ref?.some((o) => o.relation === relation);
+  public hasRelation(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
+    const refs = component.attrs?.ref;
+    const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
+    const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
+
+    if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
+      return this.refRelationService.isValueEquals(
+        displayOff.val,
+        utils.getObjectProperty(
+          this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
+          displayOff.path,
+        ) || cachedAnswers[displayOff.relatedRel].value,
+      );
+    } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
+      return !this.refRelationService.isValueEquals(
+        displayOn.val,
+        utils.getObjectProperty(
+          this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
+          displayOn.path,
+        ) || cachedAnswers[displayOn.relatedRel].value,
+      );
+    } else {
+      return false;
+    }
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
@@ -221,7 +279,7 @@ export class ComponentsListRelationsService {
     );
 
     dependentComponent?.attrs?.ref
-      .filter((reference) => (reference.relation = CustomComponentRefRelation.filterOn))
+      .filter((reference) => reference.relation === CustomComponentRefRelation.filterOn)
       .forEach((reference) => {
         const refControl: AbstractControl = form.controls.find(
           (control: AbstractControl) => control.value.id === reference.relatedRel,
@@ -235,6 +293,86 @@ export class ComponentsListRelationsService {
           dictionaryToolsService,
         );
       });
+  }
+
+  private getRefValue(value: string | unknown): unknown {
+    const isParsable = utils.hasJsonStructure(value as string);
+    return isParsable ? JSON.parse(value as string) : value;
+  }
+
+  private async updateLimitDates(
+    component: CustomComponent | CustomListFormGroup,
+    components: Array<CustomComponent>,
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number
+  ): Promise<void> {
+    const relatedComponents = components.filter(
+      (relatedComponent) =>
+        relatedComponent.attrs.dateRestrictions &&
+        relatedComponent.attrs.dateRestrictions.some((restriction) =>
+          this.dateRestrictionsService.haveDateRef(restriction),
+        ),
+    );
+
+    for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
+      const restriction = relatedComponents[index].attrs.dateRestrictions.find(
+        (restriction) =>
+          this.dateRestrictionsService.haveDateRef(restriction) &&
+          restriction.value === component.id,
+      );
+
+      if (restriction) {
+        const dateRange = await this.dateRestrictionsService.getDateRange(
+          relatedComponents[index].id,
+          relatedComponents[index].attrs.dateRestrictions,
+          components,
+          form,
+          applicantAnswers,
+          componentsGroupIndex,
+        );
+        this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
+      }
+    }
+  }
+
+  private async setLimitDates(
+    component: CustomComponent | CustomListFormGroup,
+    components: Array<CustomComponent>,
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto,
+    componentsGroupIndex?: number): Promise<void> {
+    const dateRange = await this.dateRestrictionsService.getDateRange(
+      component.id,
+      component.attrs.dateRestrictions,
+      components,
+      form,
+      applicantAnswers,
+      componentsGroupIndex
+    );
+
+    this.updateFormWithDateRange(form, component, dateRange);
+  }
+
+  private updateFormWithDateRange(
+    form: FormArray,
+    component: CustomComponent | CustomListFormGroup,
+    dateRange: Range,
+  ): void {
+    const control = form.controls.find((control) => control.value.id === component.id);
+
+    control.get('attrs').patchValue({
+      ...component.attrs,
+      minDate: dateRange.min || component.attrs.minDate,
+      maxDate: dateRange.max || component.attrs.maxDate,
+    });
+
+    const isDateInRange =
+      control.value.value >= dateRange.min?.getTime() &&
+      control.value.value <= dateRange.max?.getTime();
+    if (!isDateInRange) {
+      control.get('value').patchValue(control.value.value);
+    }
   }
 
   private updateReferenceLimitDate(
@@ -294,6 +432,7 @@ export class ComponentsListRelationsService {
           reference,
           componentVal,
           dependentControl,
+          form,
         );
         break;
       case CustomComponentRefRelation.getValue:
@@ -331,7 +470,7 @@ export class ComponentsListRelationsService {
           componentVal,
           dependentControl,
           dependentComponent,
-          form
+          form,
         );
         break;
       case CustomComponentRefRelation.filterOn:
@@ -347,7 +486,7 @@ export class ComponentsListRelationsService {
         this.handleResetControl(dependentControl, form, reference);
         break;
       case CustomComponentRefRelation.validateDependentControl:
-        this.validateDependentControl(dependentControl);
+        this.validateDependentControl(dependentControl, form, reference);
         break;
     }
 
@@ -384,12 +523,12 @@ export class ComponentsListRelationsService {
       );
 
       if (dictionaryAttributeValue === undefined) {
-        dependentControl.get('value').patchValue('', { onlySelf: true, emitEvent: false });
+        dependentControl.get('value').patchValue(null, { onlySelf: true, emitEvent: false });
       } else {
         dependentControl
           .get('value')
           .patchValue(
-            dependentControl.value.value !== ''
+            dependentControl.value.value !== null
               ? dependentControl.value.value
               : dictionaryAttributeValue,
             { onlySelf: true, emitEvent: false },
@@ -397,6 +536,7 @@ export class ComponentsListRelationsService {
       }
 
       dependentControl.markAsUntouched();
+      dependentControl.updateValueAndValidity();
     }
   }
 
@@ -409,11 +549,12 @@ export class ComponentsListRelationsService {
     dependentControl: AbstractControl,
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
+    const isShown = !this.refRelationService.isValueEquals(reference.val, componentVal);
 
     if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOff,
-        isShown: !this.refRelationService.isValueEquals(reference.val, componentVal),
+        isShown,
       };
       dependentControl.markAsUntouched();
     }
@@ -426,14 +567,22 @@ export class ComponentsListRelationsService {
     reference: CustomComponentRef,
     componentVal: { [key: string]: string },
     dependentControl: AbstractControl,
+    form: FormArray,
   ): void {
     const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
+    const isShown = this.refRelationService.isValueEquals(reference.val, componentVal);
 
     if (element.isShown === true || !isDisplayOff) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOn,
-        isShown: this.refRelationService.isValueEquals(reference.val, componentVal),
+        isShown,
       };
+      if (reference.isResetable && !isShown) {
+        this.handleResetControl(dependentControl, form, reference);
+        const control = dependentControl.get('value');
+        control.markAllAsTouched();
+        control.updateValueAndValidity();
+      }
       dependentControl.markAsUntouched();
     }
   }
@@ -534,7 +683,7 @@ export class ComponentsListRelationsService {
     componentVal: { [key: string]: string },
     dependentControl: AbstractControl,
     dependentComponent: CustomComponent,
-    form: FormArray
+    form: FormArray,
   ): void {
     const dependentComponentId = dependentComponent.id;
 
@@ -552,13 +701,19 @@ export class ComponentsListRelationsService {
    * @param component
    * @param form
    */
-  private componentHasAnyDisabledRefsWithSameValue(component: CustomComponent, form: FormArray): boolean {
-    return component.attrs.ref.some(itemReference => {
+  private componentHasAnyDisabledRefsWithSameValue(
+    component: CustomComponent,
+    form: FormArray,
+  ): boolean {
+    return component.attrs.ref.some((itemReference) => {
       if (itemReference.relation !== CustomComponentRefRelation.disabled) {
         return false;
       }
       const itemControl = form.controls.find((ctrl) => ctrl.value.id === itemReference.relatedRel);
-      return this.refRelationService.isValueEquals(itemReference.val, itemControl.get('value').value);
+      return this.refRelationService.isValueEquals(
+        itemReference.val,
+        itemControl.get('value').value,
+      );
     });
   }
 
@@ -601,9 +756,16 @@ export class ComponentsListRelationsService {
     this.prevValues[value.id] = controlValue;
   }
 
-  private validateDependentControl(dependentControl: AbstractControl): void {
+  private validateDependentControl(
+    dependentControl: AbstractControl,
+    form: FormArray,
+    reference: CustomComponentRef,
+  ): void {
     const control = dependentControl.get('value');
-    control.markAllAsTouched();
-    control.updateValueAndValidity();
+    const refControl = form.controls.find((control) => control.value.id === reference.relatedRel);
+    if (control.value || (refControl.touched && refControl.value.value && control.value)) {
+      control.markAllAsTouched();
+      control.updateValueAndValidity();
+    }
   }
 }

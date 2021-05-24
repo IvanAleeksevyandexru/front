@@ -19,6 +19,8 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
 import { LabelPipe } from '../../pipe/label.pipe';
+import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -78,8 +80,8 @@ describe('MatPeriodFormComponent', () => {
     paymentDate: '23',
   };
   let validationService: ValidationService;
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [MatPeriodFormComponent, FilterPipe, LabelPipe],
       imports: [
         MockModule(ConstructorDropdownModule),
@@ -97,6 +99,7 @@ describe('MatPeriodFormComponent', () => {
         DatesToolsService,
         ValidationService,
         DateRangeService,
+        DateRestrictionsService,
         { provide: ScreenService, use: ScreenServiceStub },
       ],
     }).compileComponents();

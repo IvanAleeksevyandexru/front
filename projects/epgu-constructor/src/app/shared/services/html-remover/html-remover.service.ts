@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DisplayDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { DisplayDto } from 'epgu-constructor-types';
 
 @Injectable()
 export class HtmlRemoverService {

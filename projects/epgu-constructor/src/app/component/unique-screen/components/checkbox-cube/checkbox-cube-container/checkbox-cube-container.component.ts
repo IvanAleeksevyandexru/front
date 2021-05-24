@@ -7,10 +7,10 @@ import {
 import { takeUntil, tap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { ComponentDto } from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
-import { ComponentDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import {
   Checkbox,
   CheckboxCubeComponentAttrsDto,

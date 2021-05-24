@@ -13,20 +13,18 @@ import {
 import { BrokenDateFixStrategy, ValidationShowOn } from 'epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
-import { AbstractControl } from '@angular/forms';
+import { ScenarioErrorsDto } from 'epgu-constructor-types';
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ConfigService } from '../../core/services/config/config.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../core/services/utils/utils.service';
-import { ScenarioErrorsDto } from '../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../screen/screen.service';
 import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import {
   CustomComponent,
   CustomComponentOutputData,
   CustomListDictionaries,
-  CustomListDropDowns,
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
@@ -58,7 +56,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
-  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
   dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService
     .dictionaries$;
   suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
@@ -99,7 +96,11 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       JSON.stringify(changes.errors?.previousValue);
 
     if (components || isErrorsChanged) {
-      const formArray = this.formService.create(this.components, this.errors);
+      const formArray = this.formService.create(
+        this.components,
+        this.errors,
+        this.componentsGroupIndex,
+      );
       this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);
@@ -114,16 +115,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getDictKeyByComp(component: CustomComponent): string {
     return utils.getDictKeyByComp(component);
-  }
-
-  public isResolverRender(componentData: AbstractControl): boolean {
-    return ![
-      CustomScreenComponentTypes.DropDown,
-      CustomScreenComponentTypes.DropDownDepts,
-      CustomScreenComponentTypes.Dictionary,
-      CustomScreenComponentTypes.Lookup,
-      CustomScreenComponentTypes.RadioInput,
-    ].includes(componentData.value?.type);
   }
 
   private loadRepository(components: Array<CustomComponent>): void {

@@ -4,8 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 Add `127.0.0.1  local.test.gosuslugi.ru` to /etc/hosts file
-Build library `yarn lib:build` or run with watch option `yarn lib:watch`
-Run `yarn start` for a dev server. Navigate to `http://local.test.gosuslugi.ru:4200/`. The app will automatically reload if you change any of the source files.
+First build library types `yarn lib:type:build`
+Then build library `yarn lib:build` or run with watch option `yarn lib:watch`
+Finally run `yarn start` for a dev server. Navigate to `http://local.test.gosuslugi.ru:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Config server
 Run `yarn start:config`

@@ -37,6 +37,9 @@ export class ConfigService implements Config {
   private _zipkinUrl: string;
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
+  private _oplataUrl: string;
+  private _lookupQueryTimeoutMs: number;
+  private _nsiSuggestDictionaryUrl: string;
 
   constructor(
     private loadService: LoadService,
@@ -173,12 +176,25 @@ export class ConfigService implements Config {
     return this._zipkinEnv;
   }
 
+  get oplataUrl(): string {
+    return this._oplataUrl;
+  }
+
+  get lookupQueryTimeoutMs(): number {
+    return this._lookupQueryTimeoutMs;
+  }
+
+  get nsiSuggestDictionaryUrl(): string {
+    return this._nsiSuggestDictionaryUrl;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._nsiSuggestDictionaryUrl = config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
@@ -195,6 +211,7 @@ export class ConfigService implements Config {
     this._staticDomainContentPath = config.staticDomainContentPath;
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
+    this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
   }
 
   set config(config: Config) {
@@ -211,6 +228,7 @@ export class ConfigService implements Config {
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
+    this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

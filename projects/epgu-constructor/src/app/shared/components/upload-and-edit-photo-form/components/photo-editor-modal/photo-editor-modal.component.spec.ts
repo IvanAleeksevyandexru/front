@@ -12,6 +12,7 @@ import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { isBoolean } from '../../../../constants/utils';
+import { configureTestSuite } from 'ng-bullet';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -31,7 +32,7 @@ describe('PhotoEditorModalComponent', () => {
   let component: PhotoEditorModalComponent;
   let fixture: ComponentFixture<PhotoEditorModalComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         PhotoEditorModalComponent,
@@ -53,7 +54,9 @@ describe('PhotoEditorModalComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PhotoEditorModalComponent);
     component = fixture.componentInstance;
     component.detachView = () => null;

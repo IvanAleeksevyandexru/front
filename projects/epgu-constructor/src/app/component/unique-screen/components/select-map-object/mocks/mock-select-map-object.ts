@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import { ScreenTypes } from '../../../../../screen/screen.types';
-import { DictionaryConditions } from '../../../../../shared/services/dictionary/dictionary-api.types';
-import { Gender } from '../../../../../shared/types/gender';
+import { DictionaryConditions, Gender } from 'epgu-constructor-types';
 
 export const mockSelectMapObjectStore = {
   serviceCode: '10000000105',

@@ -17,14 +17,25 @@
   & img {
     max-width: 200px;
     margin-bottom: 24px;
+    @include tablets-down {
+      max-width: 66%;
+    }
 
     &.width--auto {
       max-width: 100%;
       width: auto;
     }
-
-    @include tablets-down {
-      max-width: 66%;
+    &.modal__doc-img {
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+      &:not(:first-child) {
+        margin-top: 24px;
+      }
+      @include tablets-down {
+        max-width: 100%;
+      }
     }
   }
 
@@ -138,6 +149,17 @@
 
     &:first-child {
       margin-top: 0;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    > a, > a:hover {
+      text-decoration: underline;
+      color: inherit;
     }
   }
 }

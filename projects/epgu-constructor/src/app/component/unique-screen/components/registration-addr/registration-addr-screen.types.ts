@@ -1,8 +1,7 @@
 import { DadataResult, RelativeDate } from 'epgu-lib';
-import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DurationTimeTypes } from '../../../../shared/constants/dates';
-import { TextTransform } from '../../../../shared/types/textTransform';
+import { ComponentActionDto, TextTransform } from 'epgu-constructor-types';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
   attrs: RegistrationAddrComponentAttrs;
@@ -39,9 +38,11 @@ export interface RegistrationAddrFields {
   type: 'input'|'date';
   regexp: string | RegExp;
   hideLevels?: Array<string>;
-  minDate?: Date | RelativeDate | string;
-  maxDate?: Date | RelativeDate | string;
-  attrs?: {labelHint?: string};
+  attrs?: {
+    labelHint?: string,
+    minDate?: Date | RelativeDate | string;
+    maxDate?: Date | RelativeDate | string;
+  };
   validationShowOn?: string;
   disabled?: boolean;
   hint?: string;

@@ -1,18 +1,15 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { combineLatest, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
 import { LocationService } from '../../../../../../core/services/location/location.service';
-import {
-  ComponentActionDto,
-  ComponentDto,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenStore } from '../../../../../../screen/screen.types';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
@@ -24,15 +21,22 @@ import { SignatureApplicationData } from '../../models/application.interface';
   styleUrls: ['./signature-application-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignatureApplicationContainerComponent implements OnInit {
+export class SignatureApplicationContainerComponent {
   data: SignatureApplicationData = this.screenService.componentValue as SignatureApplicationData;
-  error: string = this.screenService.componentError;
   isMobile = this.deviceDetector.isMobile;
-  showNav$: Observable<boolean> = this.screenService.showNav$;
-  header$: Observable<string> = this.screenService.header$;
-  component$: Observable<ComponentDto> = this.screenService.component$;
-  isLoading$: Observable<boolean> = this.screenService.isLoading$;
-  buttons$: Observable<ComponentActionDto[]> = this.screenService.buttons$;
+  component$ = combineLatest([
+    this.screenService.component$,
+    this.screenService.componentError$,
+  ]).pipe(
+    tap(([, error]) => {
+      if (error) {
+        this.showError(error).subscribe(() => this.init());
+      } else {
+        this.init();
+      }
+    }),
+    map(([component]) => component),
+  );
 
   private nextStepAction = NEXT_STEP_ACTION;
 
@@ -53,14 +57,6 @@ export class SignatureApplicationContainerComponent implements OnInit {
     if (id === 'linkToLK') {
       $event.preventDefault();
       this.redirectToLK();
-    }
-  }
-
-  ngOnInit(): void {
-    if (this.error) {
-      this.showError(this.error).subscribe(() => this.init());
-    } else {
-      this.init();
     }
   }
 
@@ -102,17 +98,12 @@ export class SignatureApplicationContainerComponent implements OnInit {
 
   private isSigned(): boolean {
     return (
-      !!this.screenService.applicantAnswers[this.screenService.component.id]?.value ||
+      (this.screenService.componentValue as SignatureApplicationData)?.alreadySigned ||
       this.locationService.getHref().includes('result=0')
     );
   }
 
   private redirectToSignatureWindow(): void {
-    // очищаем ошибку в стейте чтобы при возврате с сервиса подписания можно было отправить nextStep
-    const newState = {
-      errors: {},
-    };
-    this.screenService.updateScreenStore(newState as ScreenStore);
     this.setDataToLocalStorage();
 
     const { url } = this.data;
@@ -120,7 +111,12 @@ export class SignatureApplicationContainerComponent implements OnInit {
   }
 
   private setDataToLocalStorage(): void {
-    const data = { scenarioDto: this.screenService.getStore() };
+    const data = {
+      scenarioDto: {
+        ...this.screenService.getStore(),
+        errors: {},
+      },
+    };
     this.localStorageService.set(LAST_SCENARIO_KEY, data);
   }
 }

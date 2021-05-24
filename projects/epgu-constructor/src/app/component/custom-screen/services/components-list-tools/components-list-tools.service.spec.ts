@@ -6,6 +6,7 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ComponentsListToolsService', () => {
   let service: ComponentsListToolsService;
@@ -21,7 +22,7 @@ describe('ComponentsListToolsService', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         ComponentsListToolsService,

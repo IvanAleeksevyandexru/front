@@ -4,12 +4,13 @@ import { PhotoFormViewComponent } from './photo-form-view.component';
 import { SafeModule } from '../../../../pipes/safe/safe.module';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoFormViewComponent', () => {
   let component: PhotoFormViewComponent;
   let fixture: ComponentFixture<PhotoFormViewComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoFormViewComponent],
       imports: [SafeModule],
@@ -19,15 +20,13 @@ describe('PhotoFormViewComponent', () => {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PhotoFormViewComponent);
     component = fixture.componentInstance;
     component.croppedImageUrl = '';
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('hiddenFileInputEvent', () => {

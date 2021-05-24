@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { of } from 'rxjs';
-
 import { ScreenModalResolverComponent } from './screen-modal-resolver.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -16,6 +15,7 @@ import { ScreenModalService } from '../screen-modal.service';
 import { ScreenModalServiceStub } from '../screen-modal.service.stub';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 jest.useFakeTimers();
 
@@ -23,8 +23,8 @@ describe('ScreenModalResolverComponent', () => {
   let component: ScreenModalResolverComponent;
   let fixture: ComponentFixture<ScreenModalResolverComponent>;
   let screenService: ScreenService;
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
       declarations: [ScreenModalResolverComponent],
       imports: [UniqueComponentModalModule, InfoComponentModalModule],
       providers: [
@@ -42,18 +42,14 @@ describe('ScreenModalResolverComponent', () => {
         },
       })
       .compileComponents();
-    screenService = TestBed.inject(ScreenService);
-    screenService.screenType = ScreenTypes.UNIQUE;
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
+    screenService.screenType = ScreenTypes.UNIQUE;
     fixture = TestBed.createComponent(ScreenModalResolverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('createComponent', () => {

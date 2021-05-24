@@ -1,17 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HelperService } from 'epgu-lib';
 
 import { ModalBaseComponent } from './modal-base.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ModalBaseComponent', () => {
   let component: ModalBaseComponent;
   let fixture: ComponentFixture<ModalBaseComponent>;
 
-  beforeEach(async(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ModalBaseComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ModalBaseComponent);

@@ -10,11 +10,6 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { LocationService } from '../../core/services/location/location.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import {
-  ComponentActionDto,
-  ComponentDto,
-  DTOActionAction
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
@@ -30,6 +25,8 @@ import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -60,7 +57,7 @@ describe('InfoScreenComponent', () => {
   let locationService: LocationService;
   let configService: ConfigService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
         EpguLibModule,

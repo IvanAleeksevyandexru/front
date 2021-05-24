@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
+import { UtilsService } from '../../../core/services/utils/utils.service';
 
 @Injectable()
 export class RefRelationService {
@@ -51,6 +53,13 @@ export class RefRelationService {
       return !!componentValue;
     }
 
+    if (Array.isArray(componentValue)) {
+      if (Array.isArray(value)) {
+        return value.some((values) => componentValue.some((item: ListElement) => item?.id === values));
+      }
+      return componentValue.some((item: ListElement) => item?.id === value);
+    }
+
     if (Array.isArray(value)) {
       return value.some((values) => values === componentValue);
     }
@@ -58,7 +67,15 @@ export class RefRelationService {
     return value === componentValue;
   }
 
-  public getValueFromComponentVal(componentVal: { id?: string } | string | number): string {
+  public getValueFromComponentVal(componentVal: { id?: string } | string | number | Date): string | Date {
+    if (componentVal instanceof Date) {
+      return componentVal;
+    }
+
+    if (UtilsService.hasJsonStructure(componentVal as string)) {
+      return JSON.parse(componentVal as string);
+    }
+
     return ['string', 'boolean'].includes(typeof componentVal)
       ? (componentVal as string)
       : (componentVal as { id?: string })?.id;

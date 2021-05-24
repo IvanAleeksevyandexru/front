@@ -7,12 +7,12 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ComponentActionDto } from 'epgu-constructor-types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenStoreComponentDtoI } from '../../../../../screen/screen.types';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { CachedValue } from '../select-children.models';
-import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 
 @Component({

@@ -1,5 +1,6 @@
 {
   "default-config": {
+    "nsiSuggestDictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi-suggest/v1",
     "dictionaryUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
     "externalApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/nsi/v1",
     "timeSlotApiUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/mock/api/lk/v1/equeue/agg",
@@ -59,7 +60,7 @@
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
     "suggestionsApiUrl": "/suggests/api/drafts/v1/suggests",
     "staticDomainContentPath": "https://gu-st.ru/content",
-    "isZipkinEnabled": true,
+    "isZipkinEnabled": false,
     "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
     "zipkinMaxPayloadSize": 0,
     "zipkinEnv": "dev01"

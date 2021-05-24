@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { ApplicantAnswersDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { DateRangeAttrs, DateRange, Range, DateRangeRef } from './date-range.models';
+import { ApplicantAnswersDto } from 'epgu-constructor-types';
 
 @Injectable()
 export class DateRangeService {

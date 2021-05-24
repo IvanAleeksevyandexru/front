@@ -18,11 +18,15 @@ import { SessionService } from '../session/session.service';
 import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { UtilsService } from '../utils/utils.service';
 import { TracingService } from './tracing.service';
+import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 
 describe('TracingService', () => {
   let service: TracingService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         TracingService,
@@ -44,8 +48,13 @@ describe('TracingService', () => {
         DateRangeService,
         RefRelationService,
         UnsubscribeService,
+        DateRestrictionsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(TracingService);
   });
 

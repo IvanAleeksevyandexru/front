@@ -6,6 +6,7 @@
 // stylelint-disable
 
 .epgu-form-player {
+  counter-reset: section;
   @import 'core/class';
   @include flex-container();
   color: $color-summer-night;
@@ -21,6 +22,7 @@
   }
 
   *,
+
   *:before,
   *:after {
     box-sizing: border-box;
@@ -235,14 +237,15 @@
       margin-top: 4px;
       position: relative;
 
-      > *:first-child {
-        margin-top: 0px;
+      > *:first-child:not(.block--description__link-close) {
+        margin-top: 0;
       }
 
       &__link-close {
         margin-top: 16px;
         display: block;
       }
+
       &--close {
         position: absolute;
         top: 16px;
@@ -308,4 +311,17 @@
       flex-direction: column;
     }
   }
+
+  .counter::after {
+    margin-left: 4px;
+    counter-increment: section;
+    content: counter(section);
+  }
+}
+
+.hint-text, p.hint-text {
+  font-size: $font-sm;
+  line-height: $font-lg;
+  margin-top: 4px;
+  color: $color-text-helper;
 }

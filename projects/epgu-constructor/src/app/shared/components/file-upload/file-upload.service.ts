@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { distinctUntilChanged, pluck } from 'rxjs/operators';
-import { Observable } from 'rxjs/internal/Observable';
 
 interface UploaderCounter {
   maxAmount: number;
@@ -29,10 +27,6 @@ export class FileUploadService {
   private currentAllSize = new BehaviorSubject<number>(0);
   private uploaders = new BehaviorSubject<UploaderCounterStore>({});
 
-  uploader$(name: string): Observable<UploaderCounter> {
-    return this.uploaders.pipe(pluck(name), distinctUntilChanged());
-  }
-
   setTotalMaxAmount(amount: number): void {
     this.totalMaxAmount.next(amount);
   }
@@ -42,14 +36,25 @@ export class FileUploadService {
   }
 
   registerUploader(name: string, maxAmount: number, maxSize: number): void {
-    if (!name || maxAmount < 0 || maxSize < 0) {
+    if (!name || maxSize < 0) {
       return;
     }
+    this.resetUploader(name);
     const uploaders = this.getUploaders();
-    if (!uploaders[name]) {
-      uploaders[name] = this.createUploaderCounter(maxAmount, maxSize);
-      this.uploaders.next(uploaders);
-    }
+
+    uploaders[name] = this.createUploaderCounter(maxAmount, maxSize);
+    this.uploaders.next(uploaders);
+  }
+
+  resetUploader(name: string): void {
+    const uploader = this.getUploader(name);
+    if (!uploader) return;
+
+    this.currentAllSize.next(this.currentAllSize.getValue() - uploader.size);
+    this.currentAllAmount.next(this.currentAllAmount.getValue() - uploader.amount);
+    const uploaders = this.getUploaders();
+    delete uploaders[name];
+    this.uploaders.next(uploaders);
   }
 
   updateFilesAmount(value: number = 0, uploader: string): void {
@@ -64,6 +69,20 @@ export class FileUploadService {
       this.updateSize(value, uploader);
       this.changes.next(null);
     }
+  }
+
+  changeMaxAmount(maxAmount: number, name: string): void {
+    const uploader = this.getUploader(name);
+    if (uploader?.maxAmount != maxAmount) {
+      uploader.maxAmount = maxAmount;
+      this.changeUploader(name, uploader);
+      this.changes.next(null);
+    }
+  }
+
+  getAmount(name: string): number {
+    const uploader = this.getUploader(name);
+    return uploader?.amount ?? 0;
   }
 
   getMaxTotalFilesAmount(): number {

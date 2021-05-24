@@ -10,12 +10,6 @@ import { LocationService } from '../../../../../../core/services/location/locati
 import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import {
-  ComponentActionDto,
-  ComponentAttrsDto,
-  ComponentDto,
-  DTOActionAction,
-} from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -32,6 +26,13 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from 'ng-bullet';
+import {
+  ComponentDto,
+  ComponentAttrsDto,
+  ComponentActionDto,
+  DTOActionAction,
+} from 'epgu-constructor-types';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -49,46 +50,45 @@ describe('SignatureApplicationComponent', () => {
 
   const mockHeader = 'header';
 
-  const mockActions: ComponentActionDto[] = [
-    { label: 'ActionButton', value: 'ActionButton', action: DTOActionAction.getNextStep },
-  ];
-
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule, ClickableLabelModule],
-        declarations: [
-          SignatureApplicationComponent,
-          ScreenContainerComponent,
-          PageNameComponent,
-          NavigationComponent,
-          ButtonComponent,
-          LoaderComponent,
-          OutputHtmlComponent,
-          SafePipe,
-          ImgPrefixerPipe,
-        ],
-        providers: [
-          NavigationService,
-          UtilsService,
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: LocationService, useClass: LocationServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          CurrentAnswersService,
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    }),
-  );
+  const mockActions: ComponentActionDto = {
+    label: 'ActionButton',
+    value: 'ActionButton',
+    action: DTOActionAction.getNextStep,
+  };
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule, ClickableLabelModule],
+      declarations: [
+        SignatureApplicationComponent,
+        ScreenContainerComponent,
+        PageNameComponent,
+        NavigationComponent,
+        ButtonComponent,
+        LoaderComponent,
+        OutputHtmlComponent,
+        SafePipe,
+        ImgPrefixerPipe,
+      ],
+      providers: [
+        NavigationService,
+        UtilsService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignatureApplicationComponent);
     component = fixture.componentInstance;
     component.isLoading = false;
-    component.buttons = mockActions;
+    component.button = mockActions;
     component.component = mockComponent;
     component.header = mockHeader;
     component.showNav = true;
@@ -112,7 +112,7 @@ describe('SignatureApplicationComponent', () => {
   it('check label button', () => {
     const divButton: HTMLButtonElement = fixture.debugElement.query(By.css('.submit-button button'))
       ?.nativeElement;
-    expect(divButton.innerHTML.indexOf(mockActions[0].label)).not.toBe(-1);
+    expect(divButton.innerHTML.indexOf(mockActions.label)).not.toBe(-1);
   });
 
   it('check image src', () => {

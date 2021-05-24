@@ -3,6 +3,11 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
+import {
+  ComponentActionDto,
+  DictionaryConditions,
+  DictionaryFilters,
+} from 'epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
@@ -14,13 +19,8 @@ import {
   SelectEvent,
   Simple,
 } from '../information-center-pfr.models';
-import {
-  DictionaryConditions,
-  DictionaryFilters,
-  DictionaryItem,
-} from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryItem } from '../../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { ComponentActionDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 

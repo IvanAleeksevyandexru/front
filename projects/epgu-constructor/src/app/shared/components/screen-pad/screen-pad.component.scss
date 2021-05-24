@@ -3,12 +3,12 @@
 :host {
   @include flex-container();
   background: $color-white;
-  padding: $screen-pad-p;
+  padding: $screen-pad-24;
   border-radius: $border-xl;
   @include shadow-second();
 
   @include tablets-up {
-    padding: $screen-pad-p;
+    padding: $screen-pad-24;
     @include shadow-main();
   }
 }

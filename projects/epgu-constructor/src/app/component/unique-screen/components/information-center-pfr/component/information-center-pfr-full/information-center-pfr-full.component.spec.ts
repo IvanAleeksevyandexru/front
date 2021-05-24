@@ -10,6 +10,7 @@ import { Full } from '../../information-center-pfr.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterPfrFullComponent', () => {
   let component: InformationCenterPfrFullComponent;
@@ -37,7 +38,7 @@ describe('InformationCenterPfrFullComponent', () => {
     },
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [InformationCenterPfrFullComponent],
       imports: [

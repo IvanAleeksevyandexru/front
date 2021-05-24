@@ -13,6 +13,7 @@ import {
 import { LoadService } from 'epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { ScenarioDto } from 'epgu-constructor-types';
 import { ConfigService } from '../core/services/config/config.service';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
@@ -29,7 +30,6 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
-import { ScenarioDto } from './services/form-player-api/form-player-api.types';
 import { TracingService } from '../core/services/tracing/tracing.service';
 
 /**

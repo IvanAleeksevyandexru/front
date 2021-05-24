@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ClarificationsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
+import { Clarifications } from 'epgu-constructor-types';
 import { Checkbox } from '../models/checkbox-cube.interface';
 
 @Component({
@@ -10,7 +10,7 @@ import { Checkbox } from '../models/checkbox-cube.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxCubeComponent {
-  @Input() clarifications: ClarificationsDto;
+  @Input() clarifications: Clarifications;
   @Input() label: string;
   @Input() formGroup: FormGroup;
   @Input() checkboxes: Checkbox[];

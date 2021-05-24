@@ -38,6 +38,7 @@ export class UploaderManagerItemComponent {
   @Output() suggest = new EventEmitter<SuggestAction>();
 
   @ViewChild('elementLink', { read: ElementRef, static: true }) elementLink: ElementRef;
+  @Input() readonly: boolean;
   @Input() set file(file: FileItem) {
     this.fileItem = file;
 
@@ -58,7 +59,7 @@ export class UploaderManagerItemComponent {
     if (this.isImage) {
       this.imageUrl = file.urlToFile();
     }
-    this.selectedIconType = iconsTypes[this.extension] ?? 'TXT';
+    this.selectedIconType = iconsTypes[this.extension] ?? 'UNW';
   }
   selectedIconType: string;
 

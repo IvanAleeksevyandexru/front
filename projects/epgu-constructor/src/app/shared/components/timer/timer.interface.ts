@@ -1,8 +1,5 @@
 import { ComponentBase } from '../../../screen/screen.types';
-import {
-  ComponentActionDto,
-  TimerRulesDto
-} from '../../../form-player/services/form-player-api/form-player-api.types';
+import { TimerRulesDto } from 'epgu-constructor-types';
 
 /**
  * Интерфейс таймера
@@ -13,22 +10,6 @@ export interface TimerInterface {
   time: number;
   start: number;
   finish: number;
-}
-
-/**
- * Секция сведения о заголовка исходя из вмерени
- */
-export interface TimerLabelSection {
-  label: string;
-  fromTime: number;
-}
-
-/**
- * Интерфейс для кнопки таймера с последующим переходом
- */
-export interface TimerComponentDtoAction extends ComponentActionDto {
-  fromTime?: number;
-  toTime?: number;
 }
 
 /**

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 interface TranslitAlphabet {
   [propName: string]: string;
@@ -114,6 +113,11 @@ export class UtilsService {
     return result === undefined || result === obj ? defaultValue : result;
   }
 
+  static extractDateRef(refDate: string): string[] {
+    const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
+    return [ref, refDate.replace(ref, '')];
+  }
+
   /**
    * Функция возвращает ключ для получения словаря
    * @param component экземпляр компонента
@@ -202,9 +206,9 @@ export class UtilsService {
   /**
    * Returns modified service name in camelCase format
    * Example:
-   * https://www.gosuslugi.ru/600101/1/form-item -> form-item -> formItemService
-   * https://www.gosuslugi.ru/600101/1/form_item -> form_item -> formItemService
-   * https://www.gosuslugi.ru/600101/1/form -> form -> formService
+   * https://www.gosuslugi.ru/600101/1/form-item -> form-item -> formItem
+   * https://www.gosuslugi.ru/600101/1/form_item -> form_item -> formItem
+   * https://www.gosuslugi.ru/600101/1/form -> form -> form
    * @param url
    */
   public getServiceName(url: string): string {
@@ -213,18 +217,19 @@ export class UtilsService {
 
     let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
 
-    preparedArray = numRegex.test(preparedArray[0])
-      ? this.sliceArrayFromRight(preparedArray, 3, false)
-      : preparedArray;
+    if (numRegex.test(preparedArray[0])) {
+      preparedArray = this.sliceArrayFromRight(preparedArray, 3, false);
+    }
+    
     preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));
 
     const serviceName = preparedArray.join('-');
+    const camelCasedServiceName = serviceName.replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    });
+    const cleanCamelCasedServiceName = camelCasedServiceName.replace(/[-_\s]+/g, '');
 
-    return `${serviceName
-      .replace(/(?:^_-\w|[A-Z]|\b\w)/g, (word, index) => {
-        return index === 0 ? word.toLowerCase() : word.toUpperCase();
-      })
-      .replace(/[-_\s]+/g, '')}Service`;
+    return `${cleanCamelCasedServiceName}Service`;
   }
 
   /**
@@ -233,10 +238,6 @@ export class UtilsService {
    */
   public isValidHttpUrl(url: string | undefined): boolean {
     return url && typeof url === 'string';
-  }
-
-  public isValidScenarioDto(dto: { scenarioDto: ScenarioDto }): boolean {
-    return dto && dto.scenarioDto && !!dto.scenarioDto.display;
   }
 
   public isDefined<T>(value: T | undefined | null): value is T {
@@ -248,10 +249,6 @@ export class UtilsService {
       (a, [k, v]) => (!this.isDefined(v) ? a : ((a[k] = v), a)),
       {},
     );
-  }
-
-  public isValidOrderId(orderId: number | undefined | string): boolean {
-    return !!orderId;
   }
 
   /**

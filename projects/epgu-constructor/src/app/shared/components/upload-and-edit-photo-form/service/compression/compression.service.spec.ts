@@ -5,6 +5,7 @@ import { CompressionService } from './compression.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('CompressionService', () => {
   const LOAD_SUCCESS_SRC =
@@ -29,7 +30,7 @@ describe('CompressionService', () => {
   let service: CompressionService;
   let terraByteApiService: TerraByteApiService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -38,13 +39,12 @@ describe('CompressionService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(CompressionService);
     terraByteApiService = TestBed.inject(TerraByteApiService);
     jest.spyOn(service, 'isAutoOrientationInBrowser' as any).mockResolvedValue(true);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   describe('isValidImageType', () => {

@@ -12,10 +12,11 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { EmployeeHistoryDataSourceService } from '../services/employee-history.data-source.service';
 import { BaseModule } from '../../../../../shared/base.module';
-import { Gender } from '../../../../../shared/types/gender';
 import { EmployeeHistoryFormData } from '../employee-history.types';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { configureTestSuite } from 'ng-bullet';
+import { Gender } from 'epgu-constructor-types';
 
 describe('EmployeeHistoryContainerComponent', () => {
   let component: EmployeeHistoryContainerComponent;
@@ -34,7 +35,7 @@ describe('EmployeeHistoryContainerComponent', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeHistoryContainerComponent,

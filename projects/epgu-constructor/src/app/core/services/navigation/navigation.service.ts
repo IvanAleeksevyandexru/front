@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
 import { SmuEventsService } from 'epgu-lib';
 import { Observable, Subject } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { ScenarioDto, OrgType } from 'epgu-constructor-types';
 import { Navigation } from '../../../form-player/form-player.types';
-import {
-  MobilViewEvents,
-  OPTIONS_FEED_EXIT,
-  OPTIONS_FEED_MV
-} from '../../../shared/constants/redirect-event';
+import { MobilViewEvents, OPTIONS_FEED_EXIT, OPTIONS_FEED_MV } from '../../../shared/constants/redirect-event';
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { LocationService } from '../location/location.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { WINDOW } from '../../providers/window.provider';
+import { ScreenService } from '../../../screen/screen.service';
 
 /**
  * Этот сервис должен быть запровайден только на уровне компанент, не стоит его провайдить через модули.
@@ -41,6 +39,8 @@ export class NavigationService {
     private deviceDetector: DeviceDetectorService,
     private configService: ConfigService,
     private locationService: LocationService,
+    private screenService: ScreenService,
+    @Inject(WINDOW) private window: Window,
   ) {
     this.isWebView = this.deviceDetector.isWebView;
   }
@@ -63,18 +63,24 @@ export class NavigationService {
 
   redirectToProfileEdit(): void {
     if (this.isWebView) {
-      this.locationService.href('/profile/user');
+      this.locationService.href('/settings/edit');
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/profile/personal`);
+      this.locationService.href(`${this.configService.lkUrl}/settings/edit`);
     }
   }
 
-  redirectToLK(): void {
-    if (this.isWebView) {
+  redirectToLK(isLegal?: boolean): void {
+    if (this.isWebView || isLegal) {
       this.locationService.href(`${this.configService.lkUrl}/notifications`);
     } else {
       this.locationService.href(`${this.configService.lkUrl}/orders/all`);
     }
+  }
+
+  redirectToLKByOrgType(): void {
+    const { additionalParameters } = this.screenService.getStore();
+    const isLegal = [OrgType.Legal, OrgType.Business].includes(additionalParameters.orgType);
+    this.redirectToLK(isLegal);
   }
 
   redirectToHome(): void {
@@ -87,6 +93,10 @@ export class NavigationService {
 
   redirectTo(url: string): void {
     this.locationService.href(url);
+  }
+
+  redirectExternal(url: string): void {
+    this.window.open(url, '_blank');
   }
 
   private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT): void {

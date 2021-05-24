@@ -1,17 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import { delayWhen, map } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { ComponentDto, ApplicantAnswersDto } from 'epgu-constructor-types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { LocationService } from '../../core/services/location/location.service';
-import {
-  ApplicantAnswersDto,
-  ComponentDto,
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { LoggerService } from '../../core/services/logger/logger.service';
+import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 
 /**
  * Это технический компонент для организации каких-то действий не требующийх отображения данных.
@@ -29,15 +27,19 @@ export class EmptyScreenComponent {
   navigationMap: Record<string, Function> = {
     home: this.navigationService.redirectToHome.bind(this.navigationService),
     redirectToLK: this.navigationService.redirectToLK.bind(this.navigationService),
+    nextStep: this.navigationService.next.bind(this.navigationService),
   };
 
   /**
    * Возврат ссылки для редиректа
    */
-  redirectLink$: Observable<Function> = combineLatest([
+  redirectLink$: Observable<Function | null> = combineLatest([
     this.screenService.component$,
     this.screenService.applicantAnswers$,
-  ]).pipe(map(this.createLink.bind(this)));
+  ]).pipe(
+    delayWhen(([component]) => this.download(component.attrs.downloadLink)),
+    map(this.createLink.bind(this)),
+  );
 
   constructor(
     public screenService: ScreenService,
@@ -45,6 +47,7 @@ export class EmptyScreenComponent {
     private navigationService: NavigationService,
     private locationService: LocationService,
     private loggerService: LoggerService,
+    private fileDownloaderService: FileDownloaderService,
   ) {}
 
   createLink([component, applicantAnswers]: [ComponentDto, ApplicantAnswersDto]): Function {
@@ -80,5 +83,9 @@ export class EmptyScreenComponent {
       return params.length > 0 ? `?${params}` : '';
     }
     return '';
+  }
+
+  private download(downloadLink?: string): Observable<unknown> {
+    return downloadLink ? this.fileDownloaderService.download(downloadLink) : of();
   }
 }

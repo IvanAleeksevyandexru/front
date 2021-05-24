@@ -3,16 +3,14 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationPayload } from '../../form-player/form-player.types';
-import {
-  ComponentDto,
-  DisplayDto
-} from '../../form-player/services/form-player-api/form-player-api.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
-import { ComponentResolverComponent } from '../../component/component-resolver/component-resolver.component';
+import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto, DisplayDto } from 'epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -44,11 +42,11 @@ describe('UniqueScreenComponent', () => {
     component = fixture.componentInstance;
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         UniqueScreenComponent,
-        ComponentResolverComponent,
+        ComponentUniqueResolverComponent,
       ],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },

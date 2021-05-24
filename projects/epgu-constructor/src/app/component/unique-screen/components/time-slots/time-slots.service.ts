@@ -8,10 +8,7 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
-  DictionaryConditions,
-  DictionaryOptions,
   DictionaryResponse,
-  DictionaryUnionKind,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
@@ -32,6 +29,7 @@ import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 
@@ -58,6 +56,7 @@ export class TimeSlotsService {
   private availableMonths: string[];
   private areas: string[];
   private config: configType = {};
+  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -153,6 +152,7 @@ export class TimeSlotsService {
     timeSlotsType: TimeSlotsTypes,
   ): Observable<boolean> {
     this.timeSlotsType = timeSlotsType;
+    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs;
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
@@ -212,6 +212,7 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes: UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+      departmentRegion: data.departmentRegion,
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
@@ -310,6 +311,9 @@ export class TimeSlotsService {
     slotsType: TimeSlotsTypes,
     serviceId: string,
   ): Array<{ name: string; value: string }> {
+    if (this.timeSlotRequestAttrs) {
+      return this.timeSlotRequestAttrs;
+    }
     const settings = {
       [TimeSlotsTypes.BRAK]: [
         { name: 'SolemnRegistration', value: this.solemn },
@@ -358,25 +362,29 @@ export class TimeSlotsService {
       address: this.getAddress(this.department.attributeValues),
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
-      subject: this.config.subject as string || subject,
+      subject: (this.config.subject as string) || subject,
       params: [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
         },
+        {
+          name: 'userSelectedRegionFromForm',
+          value: this.config.departmentRegion as string,
+        },
       ],
-      eserviceId: this.config.eserviceId as string || eserviceId,
-      serviceCode: this.config.serviceCode as string || serviceCode,
+      eserviceId: (this.config.eserviceId as string) || eserviceId,
+      serviceCode: (this.config.serviceCode as string) || serviceCode,
       bookId: this.bookId,
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
-      calendarName: this.config.calendarName as string || calendarName,
+      calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
       slotId: [selectedSlot.slotId],
-      serviceId: [this.config.serviceId as string || serviceId],
+      serviceId: [(this.config.serviceId as string) || serviceId],
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.MVD) {
@@ -407,7 +415,7 @@ export class TimeSlotsService {
 
   private initSlotsMap(slots: TimeSlot[]): void {
     slots.forEach((slot) => {
-      const slotDate = new Date(slot.visitTimeISO);
+      const slotDate = new Date(slot.visitTimeStr);
       if (!this.slotsMap[slotDate.getFullYear()]) {
         this.slotsMap[slotDate.getFullYear()] = {};
       }

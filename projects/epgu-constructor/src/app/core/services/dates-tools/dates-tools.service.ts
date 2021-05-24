@@ -29,8 +29,12 @@ import {
   min as _min,
   max as _max,
   intervalToDuration as _intervalToDuration,
+  differenceInCalendarDays as _differenceInCalendarDays,
+  startOfISOWeek as _startOfISOWeek,
+  endOfISOWeek as _endOfISOWeek,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
+import { replaceArguments } from '../../../shared/constants/utils';
 import {
   DATE_ISO_STRING_FORMAT,
   DurationTimeTypes,
@@ -50,7 +54,19 @@ interface Duration {
 @Injectable()
 export class DatesToolsService {
 
-  constructor(private http?: HttpClient) {}
+  constructor(private http?: HttpClient) { }
+
+  /**
+   * Возвращает true, если первая дата меньше второй,
+   * иначе false
+   * @param {Date | Number} dateLeft первая проверяемая дата
+   * @param {Date | Number} dateRight вторая проверяемая дата
+   */
+  // Существуют кейзы, когда с реактивной формы приходят пустые строки в качестве первого аргумента, см. [EPGUCORE-53879]
+  @replaceArguments(null, (arg) => arg === '')
+  public isBefore(dateLeft: Date | number, dateRight: Date | number): boolean {
+    return _isBefore(dateLeft, dateRight);
+  }
 
   /**
    * Возвращает true, если переданная дата является сегодняшней датой,
@@ -62,12 +78,18 @@ export class DatesToolsService {
   }
 
   /**
-   * Возвращает сегодняшнюю дату
+   * 
+   * @param resetTime если true, то сбрасывает время до 00:00:00
+   * @returns Возвращает сегодняшнюю дату
    */
-  public async getToday(): Promise<Date> {
+  public async getToday(resetTime = false): Promise<Date> {
     const path = 'api/service/actions/currentDateTime';
     const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
-    return new Date(timeString);
+    const date = new Date(timeString);
+    if (resetTime) {
+      date.setHours(0, 0, 0, 0);
+    }
+    return date;
   }
 
   /**
@@ -111,16 +133,6 @@ export class DatesToolsService {
    */
   public isSameDate(dateLeft: Date | number, dateRight: Date | number): boolean {
     return _isSameDay(dateLeft, dateRight);
-  }
-
-  /**
-   * Возвращает true, если первая дата меньше второй,
-   * иначе false
-   * @param {Date | Number} dateLeft первая проверяемая дата
-   * @param {Date | Number} dateRight вторая проверяемая дата
-   */
-  public isBefore(dateLeft: Date | number, dateRight: Date | number): boolean {
-    return _isBefore(dateLeft, dateRight);
   }
 
   /**
@@ -185,6 +197,9 @@ export class DatesToolsService {
    * иначе Invalid Date
    * @param {Date | Number} date конвертируемая дата в виде строки
    * @param {string} format строка маска для распарсивания строки с датой (по умолчанию ISOString вида yyyy-MM-dd\'T\'HH:mm:ss.SSSxxx )
+   * @todo параметр format используется и для парсинга первого параметра, если он передан в виде строки, и
+   * для форматирования результата. Тогда зачем нужна возможность передавать первым параметром строку, если она вернется в
+   * том же формате?
    */
   public format(date: Date | number | string, format: string = DATE_ISO_STRING_FORMAT): string {
     if (!date) {
@@ -407,6 +422,34 @@ export class DatesToolsService {
     }
 
     return copiedDate;
+  }
+
+  /**
+   *
+   * @param date1 первая дата
+   * @param date2 вторая дата
+   * @returns возращает разницу в днях. date2 минус date1
+   */
+  public differenceInCalendarDays(date1: Date | number, date2: Date | number): number {
+    return _differenceInCalendarDays(date2, date1);
+  }
+
+  /**
+   *
+   * @param date дата
+   * @returns возращает начало недели
+   */
+  public startOfISOWeek(date: Date | number): Date {
+    return _startOfISOWeek(date);
+  }
+
+  /**
+   *
+   * @param date дата
+   * @returns возращает конец недели
+   */
+  public endOfISOWeek(date: Date | number): Date {
+    return _endOfISOWeek(date);
   }
 
   /**

@@ -14,6 +14,8 @@ import { CustomListDropDowns } from '../../components-list.types';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { configureTestSuite } from 'ng-bullet';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -23,7 +25,7 @@ describe('MvdGiacLookupComponent', () => {
 
   let formService: ComponentsListFormServiceStub;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         MvdGiacLookupComponent,
@@ -32,6 +34,7 @@ describe('MvdGiacLookupComponent', () => {
       imports: [MockModule(EpguLibModule)],
       providers: [
         DictionaryToolsService,
+        DatesToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },

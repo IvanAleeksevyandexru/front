@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 @Injectable()
 export class PrepareServiceStub {
   prepare() {}
@@ -10,4 +11,5 @@ export class PrepareServiceStub {
   compressImage() {}
 
   validateSize() {}
+  checkAndSetMaxCountByTypes() {}
 }

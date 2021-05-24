@@ -4,6 +4,7 @@
   "assets": ["src/assets"],
   "allowedNonPeerDependencies": [
     "epgu-lib",
+    "epgu-constructor-types",
     "ics",
     "@alyle/ui",
     "angular-resize-event",

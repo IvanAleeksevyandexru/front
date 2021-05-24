@@ -3,6 +3,7 @@ import { LoggerService } from '../logger/logger.service';
 import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { InitDataService } from './init-data.service';
 import { FormPlayerContext, ServiceEntity } from '../../../form-player/form-player.types';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('InitDataService', () => {
@@ -11,18 +12,18 @@ describe('InitDataService', () => {
   let serviceEntity: ServiceEntity;
   let context: FormPlayerContext;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         InitDataService,
         { provide: LoggerService, useClass: LoggerServiceStub },
       ]
     });
-    service = TestBed.inject(InitDataService);
-    loggerService = TestBed.inject(LoggerService);
   });
 
   beforeEach(() => {
+    service = TestBed.inject(InitDataService);
+    loggerService = TestBed.inject(LoggerService);
     serviceEntity = {
       serviceId: '10000100',
       targetId: '-10000100'
@@ -33,8 +34,8 @@ describe('InitDataService', () => {
   describe('init()', () => {
     it('should call checkProps method', () => {
       spyOn<any>(service, 'checkProps').and.callThrough();
-      service.init(serviceEntity);
-      expect(service['checkProps']).toBeCalledWith(serviceEntity);
+      service.init(serviceEntity, context);
+      expect(service['checkProps']).toBeCalledWith(serviceEntity, context);
     });
 
     it('should call set serviceId', () => {
@@ -146,6 +147,12 @@ describe('InitDataService', () => {
       const orderId = '12345';
       service['_orderId'] = orderId;
       expect(service.orderId).toBe(orderId);
+    });
+
+    it('gepsId', () => {
+      const gepsId = '12345';
+      service['_gepsId'] = gepsId;
+      expect(service.gepsId).toBe(gepsId);
     });
 
     it('invited', () => {

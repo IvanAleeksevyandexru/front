@@ -10,6 +10,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class RedirectComponent {
   @Input() set link(link: Function) {
-    link();
+    if (link) link();
   }
 }

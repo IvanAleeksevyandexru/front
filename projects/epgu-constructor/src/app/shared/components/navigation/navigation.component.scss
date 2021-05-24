@@ -26,13 +26,10 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    &:focus {
-      outline: 1px dashed $color-divider;
+    &:active,
+    &:focus,
+    &:hover {
+      color: $color-active-item;
     }
   }
-}
-
-.icon-arrow {
-  margin-right: 4px;
-  transform: rotate(135deg);
 }

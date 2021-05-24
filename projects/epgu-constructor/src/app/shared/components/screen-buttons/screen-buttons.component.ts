@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScreenActionDto } from '../../../form-player/services/form-player-api/form-player-api.types';
+import { ScreenButton } from 'epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-screen-buttons',
@@ -8,8 +8,14 @@ import { ScreenActionDto } from '../../../form-player/services/form-player-api/f
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenButtonsComponent {
-  @Input() screenButtons: Array<ScreenActionDto>;
+  @Input() screenButtons: Array<ScreenButton>;
   @Input() isLoading = false;
   @Input() disabled = false;
   @Input() disabledForAll = false;
+
+  public clickedButton: ScreenButton;
+
+  setClickedButton(button: ScreenButton): void {
+    this.clickedButton = button;
+  }
 }

@@ -10,10 +10,8 @@ import {
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import {
-  DictionaryConditions,
-  DictionaryUnionKind,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryConditions, DictionaryUnionKind } from 'epgu-constructor-types';
+
 
 const billsInfo = {
   error: {

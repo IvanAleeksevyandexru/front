@@ -14,13 +14,14 @@ import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
   let component: OutputHtmlComponent;
   let modalService: ModalService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ImgPrefixerPipe, SafePipe, OutputHtmlComponent, ClickableLabelDirective],
       providers: [
@@ -32,12 +33,13 @@ describe('OutputHtmlComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(OutputHtmlComponent);
-        component = fixture.componentInstance;
-        modalService = TestBed.inject(ModalService);
-      });
+      .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(OutputHtmlComponent);
+    component = fixture.componentInstance;
+    modalService = TestBed.inject(ModalService);
   });
 
   it('should open modal if clarifications are set', () => {

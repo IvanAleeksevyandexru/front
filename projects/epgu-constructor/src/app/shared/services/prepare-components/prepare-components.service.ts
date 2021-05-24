@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  ComponentAttrsDto,
-  ComponentDto,
-} from '../../../form-player/services/form-player-api/form-player-api.types';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import {
@@ -14,9 +10,9 @@ import { DatesToolsService } from '../../../core/services/dates-tools/dates-tool
 import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
-import { DictionaryFilters } from '../dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
+import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from 'epgu-constructor-types';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -24,7 +20,7 @@ export class PrepareComponentsService {
     private cachedAnswersService: CachedAnswersService,
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
-    private refRelationService: RefRelationService,
+    private refRelationService: RefRelationService
   ) {}
 
   public prepareComponents(
@@ -136,7 +132,10 @@ export class PrepareComponentsService {
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
-      const parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+      let parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+      if (parentId) {
+        parsedCachedValue = parsedCachedValue[parentIndex][parentId];
+      }
 
       if (Array.isArray(parsedCachedValue)) {
         return JSON.stringify(parsedCachedValue);
@@ -176,9 +175,14 @@ export class PrepareComponentsService {
   private getCache(type: string, id: string, cachedAnswers: CachedAnswers): string | null {
     const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(type); // TODO костыль от backend(-a);
 
-    return shouldBeTakenFromTheCache
-      ? this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
-      : null;
+    if (shouldBeTakenFromTheCache) {
+      if (type === 'RepeatableFields') {
+        return this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
+          this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
+      }
+      return this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
+    }
+    return null;
   }
 
   private getComponentWithCaches(
@@ -257,7 +261,7 @@ export class PrepareComponentsService {
   ): ComponentDto {
     const { attrs } = component;
 
-    if (component.type === CustomScreenComponentTypes.DocInput) {
+    if (component.type === CustomScreenComponentTypes.DocInput || component.type === UniqueScreenComponentTypes.registrationAddr) {
       const fields = attrs.fields as DocInputField[];
       const haveDateRef = ({ attrs }: DocInputField): boolean =>
         Boolean(attrs?.minDateRef || attrs?.maxDateRef);
@@ -334,12 +338,12 @@ export class PrepareComponentsService {
     if (filter?.simple?.value?.asString) {
       const valueRef = filter.simple.value;
 
-      valueRef.asString = valueRef.asString.replace(`\${${key}}`, value);
+      valueRef.asString = (valueRef.asString as string).replace(`\${${key}}`, value);
     } else if (filter?.union?.subs) {
       const subs = filter.union.subs;
 
       filter.union.subs = subs.map((subFilter) => {
-        subFilter.simple.value.asString.replace(`\${${key}}`, value);
+        (subFilter.simple.value.asString as string).replace(`\${${key}}`, value);
 
         return subFilter;
       });
@@ -362,7 +366,6 @@ export class PrepareComponentsService {
           cachedAnswers,
         );
       }
-
       return component;
     });
   }

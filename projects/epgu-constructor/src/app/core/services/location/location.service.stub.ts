@@ -9,4 +9,6 @@ export class LocationServiceStub {
   reload(): void {}
 
   deleteParam(): void {}
+
+  path(): void {}
 }

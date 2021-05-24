@@ -3,6 +3,7 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerConfigApiService } from './form-player-config-api.service';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 
 describe('FormPlayerConfigApiService', () => {
@@ -10,7 +11,7 @@ describe('FormPlayerConfigApiService', () => {
   let http: HttpTestingController;
   let responseMock = [42];
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -18,9 +19,12 @@ describe('FormPlayerConfigApiService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(FormPlayerConfigApiService);
     http = TestBed.inject(HttpTestingController);
-  }));
+  });
 
   afterEach(waitForAsync(() => http.verify()));
 

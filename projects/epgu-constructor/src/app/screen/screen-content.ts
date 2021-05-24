@@ -1,19 +1,20 @@
 import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
-import {
-  ApplicantAnswersDto,
-  CachedAnswersDto,
-  ComponentActionDto,
-  ComponentAnswerDto,
-  ComponentDto,
-  DisplayDto,
-  DisplaySubjHead,
-  ScenarioErrorsDto,
-  ScreenActionDto,
-} from '../form-player/services/form-player-api/form-player-api.types';
-import { Gender } from '../shared/types/gender';
-import { ScreenStore, ScreenTypes } from './screen.types';
+import { ScreenStore, ScreenTypes, ServiceInfo } from './screen.types';
 import { concatMap, map } from 'rxjs/operators';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
+import {
+  DisplayDto,
+  DisplaySubjHead,
+  Gender,
+  ComponentDto,
+  ScenarioErrorsDto,
+  ScreenButton,
+  ComponentAnswerDto,
+  ComponentActionDto,
+  ApplicantAnswersDto,
+  CachedAnswersDto,
+  LogicComponents
+} from 'epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;
 export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
@@ -37,13 +38,17 @@ export class ScreenContent {
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   private _componentError = new BehaviorSubject<string>(null);
   private _componentLabel = new BehaviorSubject<string>(null);
-  private _buttons = new BehaviorSubject<Array<ScreenActionDto>>(null);
-  private _button = new BehaviorSubject<ScreenActionDto>(null);
+  private _buttons = new BehaviorSubject<Array<ScreenButton>>(null);
+  private _button = new BehaviorSubject<ScreenButton>(null);
   private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
   private _action = new BehaviorSubject<ComponentActionDto>(null);
   private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
+  private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
+  private _logicAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
+  private _serviceInfo = new BehaviorSubject<null | ServiceInfo>(null);
+  private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
 
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
@@ -81,6 +86,16 @@ export class ScreenContent {
   }
   public get display$(): Observable<DisplayDto> {
     return this._display.asObservable();
+  }
+
+  public get isTheSameScreenWithErrors(): boolean {
+    return this._isTheSameScreenWithErrors.getValue();
+  }
+  public set isTheSameScreenWithErrors(val: boolean) {
+    this._isTheSameScreenWithErrors.next(val);
+  }
+  public get isTheSameScreenWithErrors$(): Observable<boolean> {
+    return this._isTheSameScreenWithErrors.asObservable();
   }
 
   public get suggestions(): { [key: string]: ISuggestionItem } {
@@ -256,23 +271,23 @@ export class ScreenContent {
     return this._componentLabel.asObservable();
   }
 
-  public get buttons(): Array<ScreenActionDto> {
+  public get buttons(): Array<ScreenButton> {
     return this._buttons.getValue();
   }
-  public set buttons(val: Array<ScreenActionDto>) {
+  public set buttons(val: Array<ScreenButton>) {
     this._buttons.next(val);
   }
-  public get buttons$(): Observable<ScreenActionDto[]> {
+  public get buttons$(): Observable<ScreenButton[]> {
     return this._buttons.asObservable();
   }
 
-  public get button(): ScreenActionDto {
+  public get button(): ScreenButton {
     return this._button.getValue();
   }
-  public set button(val: ScreenActionDto) {
+  public set button(val: ScreenButton) {
     this._button.next(val);
   }
-  public get button$(): Observable<ScreenActionDto> {
+  public get button$(): Observable<ScreenButton> {
     return this._button.asObservable();
   }
 
@@ -327,6 +342,39 @@ export class ScreenContent {
     return this._cachedAnswers.asObservable();
   }
 
+  public get logicComponents(): LogicComponents[] {
+    return this._logicComponents.getValue();
+  }
+  public set logicComponents(val: LogicComponents[]) {
+    this._logicComponents.next(val);
+  }
+
+  public get logicAnswers$(): Observable<ApplicantAnswersDto> {
+    return this._logicAnswers.asObservable();
+  }
+
+  public get logicAnswers(): ApplicantAnswersDto {
+    return this._logicAnswers.getValue();
+  }
+  public set logicAnswers(val: ApplicantAnswersDto) {
+    this._logicAnswers.next(val);
+  }
+
+  public get logicComponents$(): Observable<LogicComponents[]> {
+    return this._logicComponents.asObservable();
+  }
+
+  public get serviceInfo(): ServiceInfo {
+    return this._serviceInfo.getValue();
+  }
+  public set serviceInfo(val: ServiceInfo) {
+    this._serviceInfo.next(val);
+  }
+
+  public get serviceInfo$(): Observable<ServiceInfo> {
+    return this._serviceInfo.asObservable();
+  }
+
   public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {
     const {
       errors = {} as ScenarioErrorsDto,
@@ -336,6 +384,8 @@ export class ScreenContent {
       applicantAnswers,
       cachedAnswers,
       serviceCode,
+      logicComponents = [],
+      serviceInfo = {},
     } = screenStore;
     const {
       header,
@@ -347,8 +397,10 @@ export class ScreenContent {
       cssClass,
       buttons,
       firstScreen,
+      hideBackButton,
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
+    this.isTheSameScreenWithErrors = this.display?.id === display?.id && errors && Object.keys(errors).length !== 0;
     this.screenType = type;
     this.display = display;
     this.header = header;
@@ -356,7 +408,7 @@ export class ScreenContent {
     this.submitLabel = submitLabel;
     this.gender = gender;
     this.terminal = terminal;
-    this.showNav = !terminal && !(isWebView && firstScreen);
+    this.showNav = (!terminal && !(isWebView && firstScreen)) && (terminal ? false : !hideBackButton);
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
@@ -373,6 +425,8 @@ export class ScreenContent {
     this.applicantAnswers = applicantAnswers;
     this.cachedAnswers = cachedAnswers;
     this.serviceCode = serviceCode;
+    this.logicComponents = logicComponents;
+    this.serviceInfo = serviceInfo;
   }
 
   public getComponentData(str: string): ComponentValue {

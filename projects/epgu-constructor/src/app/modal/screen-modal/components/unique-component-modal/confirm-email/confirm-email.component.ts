@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DTOActionAction } from 'epgu-constructor-types/dist/base/component-action-dto';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
+import { UniqueScreenComponentTypes } from '../../../../../component/unique-screen/unique-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-confirm-email',
@@ -48,9 +50,11 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public resendEmailConfirmation(): void {
-    const options: NavigationOptions = {
-      url: 'service/actions/resendEmailConfirmation',
-    };
+    const url =
+      this.screenService.componentType === UniqueScreenComponentTypes.ConfirmLegalNewEmail
+        ? DTOActionAction.resendLegalEmailConfirmation
+        : DTOActionAction.resendEmailConfirmation;
+    const options: NavigationOptions = { url };
     this.navModalService.next({ options });
     this.isTimerShow = true;
   }

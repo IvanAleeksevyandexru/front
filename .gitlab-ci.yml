@@ -5,16 +5,20 @@ cache: &global_cache
   paths:
     - node_modules/
     - dist/
+    - projects/epgu-constructor/node_modules
+    - projects/epgu-constructor-types/node_modules
+    - projects/epgu-constructor-types/dist
 
 stages:
   - install
+  - postinstall
   - code-quality
   - library-build
   - library-publish
   - build
   - image
   - deploy
-
+  - code_check
 Install:
   stage: install
   except:
@@ -29,22 +33,21 @@ Install:
     - master
     - stage
 
-Lint:
-  stage: code-quality
+Pre-build:
+  stage: postinstall
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     <<: *global_cache
-    policy: pull
   script:
-    - yarn lint
+    - yarn lib:type:build
   only:
     - merge_requests
     - master
     - stage
 
-Test:
+Lint-test-dry:
   stage: code-quality
   except:
     variables:
@@ -53,7 +56,14 @@ Test:
     <<: *global_cache
     policy: pull
   script:
-    - yarn test:coverage
+    - echo -e "##########\nlint\n##########"
+    - yarn lint || true
+    - echo -e "##########\ntest\n##########"
+    - yarn test:coverage || true
+    - echo -e "#########\ndry\n##########"
+    - yarn test:dry || true
+    - echo -e "##########\ndone\n##########"
+  allow_failure: true
   artifacts:
     reports:
       cobertura: coverage/jest/cobertura-coverage.xml
@@ -63,21 +73,6 @@ Test:
     - master
     - stage
 
-Code-dry:
-  stage: code-quality
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
-  allow_failure: true
-  script:
-    - yarn test:dry
-  only:
-    - merge_requests
-    - master
-    - stage
 
 Library-build:
   stage: library-build
@@ -124,7 +119,7 @@ Library-build:
 #     - git reset --hard HEAD~1
 #   only:
 #     - master
-    - stage
+#    - stage
 
 Build:
   stage: build
@@ -135,8 +130,6 @@ Build:
     - yarn build --prod
 #    - /devops/notify/notify.sh fronted_new_master_available
   only:
-    - master
-    - stage
     - merge_requests
 
 # Build-image:
@@ -207,3 +200,4 @@ Build:
 #     - merge_requests
 #     - master
 #     - stage#
+

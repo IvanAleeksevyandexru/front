@@ -11,7 +11,6 @@ import {
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from 'epgu-lib';
 import { combineLatest } from 'rxjs';
-
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   EmployeeType,
@@ -165,7 +164,7 @@ export class EmployeeHistoryFormService {
 
   private setValidatorsByDataSource(ds: EmployeeHistoryDataSource, form: FormGroup): void {
     // Список контролов, на которых не нужно вешать валидаторы
-    const missedControls = ['type', 'label', 'positionHint', 'placeHint'];
+    const missedControls = ['type', 'label'];
 
     for (const [key, value] of Object.entries(ds)) {
       if (!missedControls.includes(key)) {

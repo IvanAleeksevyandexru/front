@@ -7,7 +7,7 @@
     <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>
 
     <epgu-constructor-screen-pad>
-      <div class="card">
+      <div>
         <div *ngIf="isAreasVisible" class="dropdown-list">
           <lib-dropdown
             [items]="areas"
@@ -15,7 +15,10 @@
             (changed)="areaChanged()"
           ></lib-dropdown>
         </div>
-        <div class="dropdown-list">
+        <div *ngIf="isMonthsRangeVisible" class="months-range">
+          {{monthsRange}}
+        </div>
+        <div *ngIf="!isMonthsRangeVisible" class="dropdown-list">
           <lib-dropdown
             [disabled]="fixedMonth"
             [items]="monthsYears"
@@ -35,12 +38,7 @@
                     </div>
                   </div>
                   <div class="calendar-week" *ngFor="let week of weeks">
-                    <div *ngFor="let day of week" class="calendar-day" (click)="selectDate(day.date)" [ngClass]="{
-                    'today': isToday(day.date),
-                    'locked': isDateLocked(day.date),
-                    'selected': isSelected(day.date),
-                    'outer': isDateOutOfMonth(day.date)
-                  }">
+                    <div *ngFor="let day of week" class="calendar-day" (click)="selectDate(day.date)" [ngClass]="day.classes">
                       <span class="calendar-day-text">{{day ? day.number : ''}}</span>
                     </div>
                   </div>
@@ -54,7 +52,7 @@
           <div *ngFor="let slot of timeSlots" class="time-slot-item"
                [ngClass]="{'selected': isSlotSelected(slot)}"
                (click)="chooseTimeSlot(slot)">
-            {{slot.slotTime | date:'shortTime':slot.timezone}}
+            {{slot.slotTime | date:'shortTime'}}
           </div>
         </div>
 

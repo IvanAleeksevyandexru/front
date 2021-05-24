@@ -1,13 +1,13 @@
+/**
+ * Информация о нужном платеже
+ */
 import {
   DictionaryOptions,
   DictionarySimpleFilter,
   DictionarySubFilter,
-  DictionaryUnionKind,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
+  DictionaryUnionKind
+} from 'epgu-constructor-types';
 
-/**
- * Информация о нужном платеже
- */
 export interface PaymentInfoInterface {
   codeOrg: string;
   paymentPurpose: string;

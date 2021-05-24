@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UtilsService } from './utils.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('UtilsService', () => {
   let service: UtilsService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         UtilsService
       ]
     });
-    service = TestBed.inject(UtilsService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  beforeEach(() => {
+    service = TestBed.inject(UtilsService);
   });
 
   describe('getObjectProperty()', () => {
@@ -130,21 +130,6 @@ describe('UtilsService', () => {
     });
   });
 
-  describe('isValidScenarioDto()', () => {
-    it('should return true', () => {
-      expect(service.isValidScenarioDto({ scenarioDto: { display: true } as any } )).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(service.isValidScenarioDto({ scenarioDto: { display: false } as any } )).toBe(false);
-    });
-
-    it('should return falsy values if there is no value', () => {
-      expect(service.isValidScenarioDto(null)).toBe(null);
-      expect(service.isValidScenarioDto(undefined)).toBe(undefined);
-    });
-  });
-
   describe('isDefined()', () => {
     it('should return true', () => {
       expect(service.isDefined({})).toBe(true);
@@ -172,17 +157,6 @@ describe('UtilsService', () => {
     it('should return {} if object is {} or []', () => {
       expect(service.filterIncorrectObjectFields([])).toEqual({});
       expect(service.filterIncorrectObjectFields({})).toEqual({});
-    });
-  });
-
-  describe('isValidOrderId()', () => {
-    it('should return true', () => {
-        expect(service.isValidOrderId(10)).toBe(true);
-        expect(service.isValidOrderId('10')).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(service.isValidOrderId(undefined)).toBe(false);
     });
   });
 

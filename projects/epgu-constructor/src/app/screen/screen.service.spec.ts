@@ -14,13 +14,16 @@ import { ConfigService } from '../core/services/config/config.service';
 import { LoggerService } from '../core/services/logger/logger.service';
 import { DateRangeService } from '../shared/services/date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
+import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../core/services/local-storage/local-storage.service.stub';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: 653920,
@@ -86,7 +89,7 @@ describe('ScreenService', () => {
   let currentAnswersService: CurrentAnswersService;
   let deviceDetectorService: DeviceDetectorService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -105,9 +108,14 @@ describe('ScreenService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
 
     cachedAnswersService = TestBed.inject(CachedAnswersService);

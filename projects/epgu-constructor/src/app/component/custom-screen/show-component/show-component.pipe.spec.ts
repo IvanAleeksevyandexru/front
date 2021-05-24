@@ -3,6 +3,7 @@ import { ShowComponentPipe } from './show-component.pipe';
 import { CustomListStatusElements } from '../components-list.types';
 import { ComponentsListFormService } from '../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../services/components-list-form/components-list-form.service.stub';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ShowComponentPipe', () => {
   let pipe: ShowComponentPipe;
@@ -12,7 +13,7 @@ describe('ShowComponentPipe', () => {
     formService['_shownElements'] = shownElements;
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ShowComponentPipe],
       providers: [

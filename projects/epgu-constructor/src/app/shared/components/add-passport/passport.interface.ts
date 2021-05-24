@@ -1,4 +1,4 @@
-import { TextTransform } from '../../types/textTransform';
+import { TextTransform } from 'epgu-constructor-types';
 
 export interface PassportAttr {
   participant:{ role: string; mode: string };

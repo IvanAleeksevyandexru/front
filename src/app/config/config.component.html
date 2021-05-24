@@ -1,7 +1,12 @@
 <form class="config" [formGroup]="configForm">
   <div class="config__input" *ngFor="let fieldName of fieldsName">
     <label [for]="fieldName">{{ fieldName }}</label>
-    <lib-plain-input epgu-constructor-trim id="series" [formControl]="configForm.get(fieldName)"></lib-plain-input>
+    <ng-container *ngIf="numberFields.includes(fieldName)">
+      <lib-plain-input type="number" [formControl]="configForm.get(fieldName)"></lib-plain-input>
+    </ng-container>
+    <ng-container *ngIf="!numberFields.includes(fieldName)">
+      <lib-plain-input epgu-constructor-trim [formControl]="configForm.get(fieldName)"></lib-plain-input>
+    </ng-container>
   </div>
 
   <div class="config__cta-wrapper">

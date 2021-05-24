@@ -1,16 +1,14 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from 'epgu-lib';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { ComponentAttrsDto } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
 import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
-// eslint-disable-next-line max-len
 import { ComponentsListToolsService } from '../../../../custom-screen/services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { AddPassportComponent } from './add-passport.component';
@@ -22,6 +20,9 @@ import { ActionService } from '../../../../../shared/directives/action/action.se
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -51,7 +52,7 @@ describe('AddPassportComponent', () => {
     ],
   };
 
-  beforeEach(fakeAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent, ScreenPadComponent],
       imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
@@ -68,9 +69,10 @@ describe('AddPassportComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         SuggestHandlerService,
+        DateRestrictionsService
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddPassportComponent);

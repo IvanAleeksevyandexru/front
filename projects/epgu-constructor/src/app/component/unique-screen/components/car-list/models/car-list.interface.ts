@@ -1,9 +1,5 @@
 import { ServiceResult } from '../../car-info/models/car-info.interface';
-import {
-  ComponentActionDto,
-  ComponentAttrsDto
-} from '../../../../../form-player/services/form-player-api/form-player-api.types';
-
+import { ComponentActionDto, ComponentAttrsDto } from 'epgu-constructor-types';
 
 export interface CarListComponentAttrsDto extends ComponentAttrsDto {
   errors: CarInfoErrorsDto;
@@ -55,6 +51,23 @@ export interface VehicleOwnerInfo {
   lastRegActionName: string;
   restrictions: Restriction[];
   ownerPeriods: OwnerPeriod[];
+  leasingFlag: boolean;
+  uniqueRowNumber: string;
+  searchingSpec?: SearchingSpec;
+  regActions?: RegActions[];
+  manufacturer?: string;
+  vin2?: string;
+  vehicleTypeTAM?: string;
+  ecologyClass?: string;
+  transmissionTypeDesc?: string;
+  wheelLocationDesc?: string;
+  driveUnitTypeDesc?: string;
+  approveSerNum?: string;
+  utilizStatus?: string;
+  tdtpo?: string;
+  customsRestrictions?: boolean;
+  engineType: string;
+  gazEnvironmentFlag?: boolean;
 }
 
 interface OwnerPeriod {
@@ -74,4 +87,20 @@ interface Restriction {
   enforcementProceedingsNumber: string;
   enforcementProceedingsDate: string;
   enforcementProceedingsName: string;
+}
+
+export interface SearchingSpec {
+  searchingSpecFlag: boolean;
+  specProductType: string;
+  operationDate: string;
+  techOperation: string;
+  subDivision: string;
+}
+
+export interface RegActions {
+  confidentSign: boolean;
+  leasingFlag: boolean;
+  regActionName: string;
+  regDate: string;
+  regDepartment: string;
 }

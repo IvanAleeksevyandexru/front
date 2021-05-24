@@ -8,16 +8,20 @@ import {
   displayOnRefMock, filterOnRefMock,
   getValueRefMock
 } from './ref-relation.mock';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         RefRelationService
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(RefRelationService);
   });
 
@@ -115,6 +119,11 @@ describe('RefRelationService', () => {
         const value = { id: 'value' };
         expect(service.getValueFromComponentVal(value)).toBe('value');
       });
+      it('should return parsed JSON, if arg is JSON string', () => {
+        const value = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
+        const expectedResult = [{ id: 'AUS', label:'Австралия' },{ id: 'RUS', label:'Россия' }];
+        expect(service.getValueFromComponentVal(value)).toEqual(expectedResult);
+      });
     });
 
     describe('isValueEquals()', () => {
@@ -132,6 +141,22 @@ describe('RefRelationService', () => {
       });
       it('should return true, if value is string and componentValue has equal string', () => {
         expect(service.isValueEquals('value', { id: 'value' })).toBe(true);
+      });
+      it('should return true, if componentValue is JSON array and some items equals to value', () => {
+        const componentVal = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
+        expect(service.isValueEquals('RUS', componentVal)).toBe(true);
+      });
+      it('should return false, if componentValue is JSON array and none items are equal to value', () => {
+        const componentVal = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
+        expect(service.isValueEquals('JAP', componentVal)).toBe(false);
+      });
+      it('should return true, if componentValue is JSON array and some items equals to one of the', () => {
+        const componentVal = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
+        expect(service.isValueEquals(['RUS', 'JAP'], componentVal)).toBe(true);
+      });
+      it('should return false, if componentValue is JSON array and none items are equal to one of the', () => {
+        const componentVal = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
+        expect(service.isValueEquals(['JAP', 'TUR'], componentVal)).toBe(false);
       });
     });
   });

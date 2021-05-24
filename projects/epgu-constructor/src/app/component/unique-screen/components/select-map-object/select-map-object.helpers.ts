@@ -1,13 +1,9 @@
+import { DictionaryConditions, DictionaryOptions, DictionaryUnionKind } from 'epgu-constructor-types';
+
 /**
  * Возвращает опции атрибута запроса доступности оплаты в ГИБДД
  * @param id - объект фильтра для оплаты
  */
-import {
-  DictionaryConditions,
-  DictionaryOptions,
-  DictionaryUnionKind
-} from '../../../../shared/services/dictionary/dictionary-api.types';
-
 export const getPaymentRequestOptionGIBDD = (id: number): DictionaryOptions => {
   return {
     treeFiltering: 'ONELEVEL',

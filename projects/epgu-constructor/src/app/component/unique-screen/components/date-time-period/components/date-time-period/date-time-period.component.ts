@@ -11,6 +11,7 @@ import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addDays, addYears, format, isSameDay, parseISO } from 'date-fns';
 import { pairwise, startWith, tap } from 'rxjs/operators';
+import { ComponentAttrsDto } from 'epgu-constructor-types';
 import {
   getDateTimeObject,
   getTimeChunks,
@@ -19,7 +20,6 @@ import {
 import { DateTimePeriodFormValues, DateTimePeriodState } from '../../date-time-period.types';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ComponentAttrsDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-date-time-period',

@@ -11,15 +11,27 @@
 }
 
 .screen-button {
-  margin: 24px 0 0 24px;
-
-  &:first-child {
-    margin-left: 0;
-  }
-
+  margin: 24px 0 0;
   @include screen-button-width;
   @include tablets-down {
-    margin-left: 0;
+    // Кнопка nextstep всегда первая на mob
+    &[data-button-type="nextstep"]:not(:first-child) {
+      order: -1;
+    }
+  }
+  @include tablets-up {
+    &:not(:first-child) {
+      margin-left: 32px;
+    }
+    // Кнопка nextstep всегда последняя на tab/desk
+    &[data-button-type="nextstep"]:not(:last-child) {
+      order: 10;
+      margin-left: 32px;
+      // Если nextstep была первой, следующая за ней без левого отступа
+      & + *:nth-child(2) {
+        margin-left: 0;
+      }
+    }
   }
 
   ::ng-deep {

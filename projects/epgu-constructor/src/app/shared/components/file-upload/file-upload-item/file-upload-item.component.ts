@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, of, Subject, Subscription, throwError } from 'rxjs';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   catchError,
   concatMap,
   filter,
   finalize,
   map,
+  mapTo,
   mergeMap,
   reduce,
   take,
@@ -14,19 +16,21 @@ import {
   tap,
 } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Clarifications } from 'epgu-constructor-types';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { ModalService } from '../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
-  Clarifications,
   FileResponseToBackendUploadsItem,
   FileUploadItem,
+  MaxCountByType,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadService } from '../file-upload.service';
 import {
+  beforeFilesPlural,
   createError,
   ErrorActions,
   FileItem,
@@ -38,6 +42,7 @@ import {
   OperationType,
   OverLimits,
   plurals,
+  updateLimits,
   UPLOAD_OBJECT_TYPE,
 } from './data';
 import { PrepareService } from '../prepare.service';
@@ -45,7 +50,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
-import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -61,17 +66,43 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   @Input()
   set data(data: FileUploadItem) {
     this.loadData = data;
-
     this.maxTotalSize = this.fileUploadService.getMaxTotalFilesSize();
     this.maxTotalAmount = this.fileUploadService.getMaxTotalFilesAmount();
-    this.updateAcceptTypes();
+    this.maxAmount = this.fileUploadService.getUploader(data.uploadId).maxAmount;
+    this.readonly = this.data?.readonly === true;
   }
+  readonly: boolean;
 
   plurals = plurals;
+  beforeFilesPlural = beforeFilesPlural;
 
   maxTotalSize: number;
   maxTotalAmount: number;
-  acceptTypes?: string;
+
+  maxAmount?: number = 0;
+
+  get acceptTypes(): string {
+    if (this.data?.maxCountByTypes && !this.store?.lastSelected) {
+      return getAcceptTypes(
+        this.data?.maxCountByTypes
+          .reduce<string[]>((acc, countType) => acc.concat(countType.type), [])
+          .filter((item, index, arr) => arr.indexOf(item) === index),
+      );
+    }
+    return this.store?.lastSelected
+      ? getAcceptTypes(this.store?.lastSelected.type)
+      : getAcceptTypes(this.data.fileType);
+  }
+  get hasImageTypes(): boolean {
+    const types = this.acceptTypes;
+    return (
+      types.indexOf('.jpeg') !== -1 ||
+      types.indexOf('.jpg') !== -1 ||
+      types.indexOf('.gif') !== -1 ||
+      types.indexOf('.png') !== -1 ||
+      types.indexOf('.bmp') !== -1
+    );
+  }
 
   isMobile: boolean = this.deviceDetectorService.isMobile;
   fileStatus = FileItemStatus;
@@ -95,11 +126,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
+    tap(() => this.updateLimits()),
     concatMap(
       (file: FileItem) =>
-        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes), // Валидируем файл
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store), // Валидируем файл
     ),
-    filter((file: FileItem) => this.limitFilter(file)), // Фильруем по лимитам
+    filter((file: FileItem) => this.amountFilter(file)), // Фильруем по лимитам
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
     filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
     tap((file: FileItem) => this.incrementLimits(file)), // Обновляем лимиты
@@ -172,6 +204,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         takeUntil(
           storage[operation.item.id].cancel.pipe(
             filter((status) => status === true),
+            tap(() =>
+              operation.item.status === FileItemStatus.uploading
+                ? this.decrementLimitByFileItem(operation.item)
+                : null,
+            ),
             tap(() => this.store.changeStatus(operation.item, fileStatus)),
             tap(() =>
               operation.type === OperationType.upload || operation.type === OperationType.prepare
@@ -188,7 +225,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     }),
   );
 
-  uploadersCounterChanges$ = this.fileUploadService.changes.pipe(tap(() => this.maxLimitUpdate()));
+  uploadersCounterChanges$ = this.fileUploadService.changes.pipe(
+    tap(() => this.updateLimits()),
+    tap(() => this.maxLimitUpdate()),
+  );
 
   subscriptions: Subscription = new Subscription()
     .add(this.processingFiles$.subscribe())
@@ -208,8 +248,30 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private prepareService: PrepareService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
-    private autocompleteService: AutocompleteService,
+    private autocompletePrepareService: AutocompletePrepareService,
   ) {}
+
+  decrementLimitByFileItem(file: FileItem): void {
+    this.prepareService.checkAndSetMaxCountByTypes(this.data, file, this.store, false);
+    this.decrementLimits(file);
+    this.resetLimits();
+  }
+
+  updateLimits(): void {
+    if (!(this.loadData?.maxCountByTypes?.length > 0)) {
+      return;
+    }
+    updateLimits(
+      this.loadData,
+      this.store,
+      this.fileUploadService.getAmount(this.loadData.uploadId),
+    );
+    this.fileUploadService.changeMaxAmount(
+      (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
+      this.loadData.uploadId,
+    );
+    this.maxAmount = this.fileUploadService.getUploader(this.loadData.uploadId).maxAmount;
+  }
 
   ngOnInit(): void {
     this.maxFileNumber = -1;
@@ -277,36 +339,33 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.overLimits.next(limits);
   }
 
-  limitFilter(file: FileItem): boolean {
-    const maxTotalAmount = file?.error?.type === ErrorActions.addMaxTotalAmount;
+  amountFilter(file: FileItem): boolean {
     const maxTotalSize = file?.error?.type === ErrorActions.addMaxTotalSize;
+    const maxTotalAmount = file?.error?.type === ErrorActions.addMaxTotalAmount;
     const maxAmount = file?.error?.type === ErrorActions.addMaxAmount;
     const limits = { ...this.overLimits.getValue() };
     limits.totalAmount.count = maxTotalAmount
       ? limits.totalAmount.count + 1
       : limits.totalAmount.count;
-    limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
     limits.amount.count = maxAmount ? limits.amount.count + 1 : limits.amount.count;
+    limits.totalSize.count = maxTotalSize ? limits.totalSize.count + 1 : limits.totalSize.count;
     this.overLimits.next(limits);
-    return !maxAmount && !maxTotalSize && !maxTotalAmount;
+    return !maxAmount && !maxTotalAmount && !maxTotalSize;
   }
 
   reduceChanges(
     acc: FileResponseToBackendUploadsItem,
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
-    const ignoreActions = [
-      ErrorActions.addInvalidType,
-      ErrorActions.addInvalidFile,
-      ErrorActions.addUploadErr,
-    ];
-    if (!ignoreActions.includes(value?.error?.type) && value.item) {
+    const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
+    const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
+
+    if ((availableErrorCondition || !value?.error) && value.item) {
       acc.value.push(value.item);
       if (value.error) {
         acc.errors.push(value.error.text);
       }
     }
-
     return acc;
   }
 
@@ -363,7 +422,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     return of(fileItem).pipe(
       tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.preparation)),
       concatMap((file: FileItem) =>
-        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.acceptTypes),
+        this.prepareService.prepare(file, this.data, this.getError.bind(this), this.store),
       ),
       tap((file: FileItem) => this.store.update(file)),
       tap((file: FileItem) => (file.status !== FileItemStatus.error ? this.addUpload(file) : null)),
@@ -373,16 +432,22 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   addDownload(file: FileItem): void {
     this.createOperation(OperationType.download, file);
   }
+
   downloading(operation: Operation): Observable<void> {
     const fileItem = operation.item;
     const { status } = fileItem;
+
     return of(fileItem).pipe(
       tap((file) => this.store.changeStatus(file, FileItemStatus.downloading)),
       concatMap((file) => this.terabyteService.downloadFile(file.createUploadedParams())),
       tap((result) => {
         this.terabyteService.pushFileToBrowserForDownload(result, fileItem.item);
       }),
-      finalize(() => {
+      catchError((e) => {
+        this.store.update(fileItem.setError(this.getError(ErrorActions.addDownloadErr)));
+        return throwError(e);
+      }),
+      tap(() => {
         this.store.changeStatus(fileItem, status);
       }),
       map(() => undefined),
@@ -397,7 +462,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     if (!suggestions) return false;
 
     const { list } = suggestions;
-    const filteredUploadedFiles = this.autocompleteService
+    const filteredUploadedFiles = this.autocompletePrepareService
       .getParsedSuggestionsUploadedFiles(list)
       .filter((file: UploadedFile) => file.mnemonic.includes(this.loadData?.uploadId));
     return !!filteredUploadedFiles.length;
@@ -411,9 +476,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((file) =>
         status === FileItemStatus.uploaded
           ? this.terabyteService.deleteFile(file.createUploadedParams()).pipe(
-              tap(() => this.decrementLimits(fileItem)),
-              tap(() => this.resetLimits()),
-              map(() => undefined),
+              tap(() => this.decrementLimitByFileItem(fileItem)),
+              mapTo(undefined),
             )
           : of(undefined),
       ),
@@ -479,7 +543,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         item.setItem(newUploaded).setStatus(FileItemStatus.uploaded);
         this.store.update(item);
       }),
-      map(() => undefined),
+      mapTo(undefined),
     );
   }
 
@@ -496,6 +560,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.processingFiles.next(fileList);
   }
 
+  getMnemonicWithoutOrder(mnemonic: string): string {
+    const result = mnemonic.match(/\.[0-9]*$/);
+    return result ? mnemonic.replace(result[0], '') : mnemonic;
+  }
+
   getListStream(objectId: string): Observable<UploadedFile> {
     return of(objectId).pipe(
       tap(() => this.listUploadingStatus.next(true)),
@@ -504,7 +573,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       concatMap((files: UploadedFile[]) => from(files)),
       filter(
         (file) =>
-          file?.mnemonic?.includes(this.getSubMnemonicPath()) &&
+          this.getSubMnemonicPath() === this.getMnemonicWithoutOrder(file?.mnemonic) &&
           file?.objectId.toString() === this.objectId.toString(),
       ),
       map((file) => {
@@ -512,7 +581,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.suggestions$.pipe(take(1)).subscribe((suggestions) => {
           suggestionsFiles = suggestions[this.componentId]?.list;
         });
-        const suggestionsUploadedFiles = this.autocompleteService.getParsedSuggestionsUploadedFiles(
+        const suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
           suggestionsFiles,
         );
 
@@ -542,6 +611,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
       ),
       tap((file: FileItem) => this.store.add(file)),
+      tap((file: FileItem) =>
+        this.prepareService.checkAndSetMaxCountByTypes(this.data, file, this.store),
+      ),
       tap((file: FileItem) => this.incrementLimits(file)),
       tap((file: FileItem) => this.updateMaxFileNumber(file.item)),
     );
@@ -572,11 +644,12 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   getError(action: ErrorActions): FileItemError {
-    return createError(action, this.data);
-  }
-
-  updateAcceptTypes(): void {
-    this.acceptTypes = getAcceptTypes(this.data.fileType);
+    return createError(
+      action,
+      this.data,
+      this.store,
+      this.fileUploadService.getMaxTotalFilesSize(),
+    );
   }
 
   updateUploadingInfo(file: FileItem, isDeleted?: boolean): void {

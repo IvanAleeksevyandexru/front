@@ -1,4 +1,9 @@
-import { ConfirmationModal } from '../../../modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModal, StatusIcon } from 'epgu-constructor-types';
+
+export const STATUS_ICON_MAP = {
+  [StatusIcon.WARNING]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">',
+  [StatusIcon.ERROR]: '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/image-error.svg">',
+};
 
 const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
@@ -29,6 +34,17 @@ const BOOKING_ONLINE_ERROR_TEXT = `<div class="text_modal_error">
 <span>Для получения справки приходите на приём без записи по адресу: <br>
 {addressLink} <br>
 Вы можете посмотреть дополнительную информацию на устройстве или <br> в браузере — нажмите «Скачать PDF» в личном кабинете</span></div>`;
+
+const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Отправить заявление может только руководитель</h4>
+<span>Заявление сохранено как черновик и доступно в личном кабинете руководителя. Вы можете редактировать его, пока оно не отправлено</span>
+</div>`;
+
+const TIME_INVITATION_ERROR_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/stop.svg">
+<h4>Пока нельзя отправить</h4>
+<span>Вы уже выслали приглашение. Подождите, оправить письмо повторно можно через 5 минут.</span></div>`;
 
 export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: COMMON_ERROR_MODAL_PARAMS_TEXT,
@@ -91,6 +107,27 @@ export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
     label: 'В личный кабинет',
     closeModal: true,
     value: 'redirectToLk'
+  }],
+  isShortModal: true,
+};
+
+export const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR: ConfirmationModal = {
+  text: NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT,
+  title: '',
+  showCloseButton: true,
+  showCrossButton: true,
+  buttons: [],
+  isShortModal: true,
+};
+
+export const TIME_INVITATION_ERROR: ConfirmationModal = {
+  text: TIME_INVITATION_ERROR_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [{
+    label: 'Вернуться к заявлению',
+    closeModal: true,
   }],
   isShortModal: true,
 };

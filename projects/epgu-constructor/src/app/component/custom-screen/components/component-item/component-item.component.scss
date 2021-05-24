@@ -1,20 +1,17 @@
-@import '../../../../../styles/core/palettes';
-@import '../../../../../styles/core/variables';
+@import '../../../../../styles/core/';
+
+:host {
+  display: block;
+  margin-bottom: $screen-pad-24;
+}
 
 .form {
   &__error {
-    margin-bottom: 4px;
+    margin-bottom: $screen-pad-4;
     color: $color-gosred;
   }
 
   &__info {
-    margin-top: 8px;
+    margin-top: $screen-pad-8;
   }
-}
-
-.label {
-  margin-bottom: $screen-pad-p;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: bold;
 }

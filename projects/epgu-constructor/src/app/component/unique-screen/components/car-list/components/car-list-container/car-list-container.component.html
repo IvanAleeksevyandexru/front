@@ -37,11 +37,8 @@
         <epgu-constructor-car-list
           [label]="component?.attrs?.label"
           [clarifications]="component?.attrs?.clarifications"
-          [provider]="lookupProvider"
           [control]="control"
           [carFixedItems]="carFixedItems"
-          [formatter]="lookupFormatter"
-          [searchCaseSensitive]="lookupSearchCaseSensitive"
           [staticDomainAssetsPath]="config.staticDomainAssetsPath"
           (formChangeEvent)="setState($event)"
         ></epgu-constructor-car-list>
@@ -51,9 +48,10 @@
     <div class="screen-footer">
       <epgu-constructor-screen-buttons
         class="screen-buttons"
-        *ngIf="(screenService.buttons$ | async).length"
+        *ngIf="showButtons$ | async"
         [screenButtons]="screenService.buttons$ | async"
         [isLoading]="screenService.isLoading$ | async"
+        [disabled]="(currentAnswersService.isValid$ | async) === false"
       ></epgu-constructor-screen-buttons>
     </div>
   </epgu-constructor-screen-container>

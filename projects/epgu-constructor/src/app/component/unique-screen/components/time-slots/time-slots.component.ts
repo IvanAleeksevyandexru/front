@@ -8,13 +8,12 @@ import {
 import { ListItem } from 'epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DisplayDto, ConfirmationModal } from 'epgu-constructor-types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { DisplayDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { ModalService } from '../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -30,6 +29,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import {
+  IDay,
   SlotInterface,
   TimeSlot,
   TimeSlotsAnswerInterface,
@@ -74,7 +74,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  public weeks = [];
+  public weeks: Array<Array<IDay>> = [];
   public areas: ListItem[] = [];
   public isAreasVisible = false;
   public monthsYears: ListItem[] = [];
@@ -90,12 +90,20 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public changeTSConfirm = false;
   bookedSlot: SlotInterface;
   errorMessage;
+  public isMonthsRangeVisible = false;
+  public get monthsRange(): string {
+    return Array.from(this._monthsRange).join(' — ');
+  }
 
   private errorModalResultSub = new Subscription();
   private cachedAnswer: TimeSlotsAnswerInterface;
   private timeSlotType: TimeSlotsTypes;
   private nextStepAction = NEXT_STEP_ACTION;
   private emptySlotsModal: ConfirmationModal = null;
+  private firstDayOfMainSection: Date;
+  private daysInMainSection: number;
+  private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
+  private _monthsRange = new Set();
 
   constructor(
     private modalService: ModalService,
@@ -116,6 +124,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
     }
+
+    this.initSettings();
 
     if (this.screenService.component) {
       this.setCancelReservation(
@@ -138,7 +148,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public checkExistenceSlots(): void {
     this.isExistsSlots = this.weeks.some((week) => {
       return week.some((day) => {
-        return !this.isDateLocked(day.date);
+        return !this.isDateLocked(day.date, this.firstDayOfMainSection, this.daysInMainSection);
       });
     });
   }
@@ -155,9 +165,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     return date && this.datesHelperService.getMonth(date) !== this.activeMonthNumber;
   }
 
-  public isDateLocked(date: Date): boolean {
+  public isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
     return (
-      this.isDateOutOfMonth(date) ||
+      this.isDateOutOfSection(date, firstDayOfMainSection, daysInMainSection) ||
       this.timeSlotsService.isDateLocked(date, this.currentArea?.id) ||
       this.checkDateRestrictions(date)
     );
@@ -168,7 +178,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * @param date день для выбора
    */
   public selectDate(date: Date): void {
-    if (this.isDateLocked(date) || this.isDateOutOfMonth(date)) {
+    if (
+      this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection) ||
+      this.isDateOutOfMonth(date)
+    ) {
       return;
     }
     if (this.date?.toISOString() === date.toISOString()) {
@@ -222,12 +235,12 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.checkExistenceSlots();
   }
 
-  public monthChanged(ev: ListItem): void {
+  public async monthChanged(ev: ListItem): Promise<void> {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
-    this.renderSingleMonthGrid(this.weeks);
+    await this.renderSingleMonthGrid(this.weeks);
     this.checkExistenceSlots();
   }
 
@@ -336,7 +349,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.timeSlotType = value.timeSlotType;
 
     this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
-      (isBookedDepartment) => {
+      async (isBookedDepartment) => {
         if (this.timeSlotsService.hasError()) {
           this.inProgress = false;
           this.errorMessage = this.timeSlotsService.getErrorMessage();
@@ -345,7 +358,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           }
           this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
         } else {
-          this.serviceInitHandle(!!isBookedDepartment);
+          await this.serviceInitHandle(!!isBookedDepartment);
         }
 
         this.inProgress = false;
@@ -356,7 +369,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           this.showModal(this.emptySlotsModal);
         }
 
-        this.changeDetectionRef.markForCheck();
+        this.changeDetectionRef.detectChanges();
       },
       () => {
         this.errorMessage = this.timeSlotsService.getErrorMessage();
@@ -368,58 +381,74 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     );
   }
 
+  private addDayToWeek(week: Array<IDay>, date: Date, today: Date): void {
+    const isOutOfSection = this.isDateOutOfSection(
+      date,
+      this.firstDayOfMainSection,
+      this.daysInMainSection,
+    );
+    const isOutOfMonth = this.isDateOutOfMonth(date);
+    const month = this.datesHelperService.getMonth(date);
+    if (isOutOfMonth && !isOutOfSection) {
+      this.visibleMonths[month] = true;
+    }
+    // Заполняем список месяцев в шапке календаря
+    if (!isOutOfSection) {
+      const monthName = this.datesHelperService.format(date, 'LLLL');
+      this._monthsRange.add(monthName.charAt(0).toUpperCase() + monthName.slice(1));
+    }
+
+    week.push({
+      number: this.datesHelperService.getDate(date),
+      date,
+      classes: {
+        'is-past': this.datesHelperService.differenceInCalendarDays(today, date) < 0,
+        today: this.isToday(date),
+        locked: this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection),
+        selected: this.isSelected(date),
+        'outer-month': isOutOfMonth,
+        'outer-section': isOutOfSection,
+        visible: this.visibleMonths[month] || false,
+      },
+    });
+  }
+
   // TODO
   // eslint-disable-next-line @typescript-eslint/typedef
-  private renderSingleMonthGrid(output): void {
+  private async renderSingleMonthGrid(output): Promise<void> {
     output.splice(0, output.length); // in-place clear
+    const daysToShow = this.screenService.component?.attrs.daysToShow;
 
-    let firstDayOfMonth = new Date(Date.now());
-    firstDayOfMonth = this.datesHelperService.setCalendarDate(
-      firstDayOfMonth,
-      this.activeYearNumber,
-      this.activeMonthNumber,
+    const today = await this.datesHelperService.getToday(true);
+
+    if (this.screenService.component?.attrs.startSection === 'today') {
+      this.firstDayOfMainSection = today;
+    } else {
+      this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
+        today,
+        this.activeYearNumber,
+        this.activeMonthNumber,
+        1,
+      );
+    }
+
+    const firstDate = this.datesHelperService.startOfISOWeek(this.firstDayOfMainSection);
+    this.daysInMainSection =
+      daysToShow || this.datesHelperService.getDaysInMonth(this.firstDayOfMainSection);
+    const lastDate = this.datesHelperService.endOfISOWeek(
+      this.datesHelperService.add(this.firstDayOfMainSection, this.daysInMainSection - 1, 'days'),
     );
-    firstDayOfMonth = this.datesHelperService.startOfMonth(firstDayOfMonth);
-    firstDayOfMonth = this.datesHelperService.startOfDay(firstDayOfMonth);
-
-    const firstDayOfWeekInMonth = this.datesHelperService.getISODay(firstDayOfMonth);
-    const daysInMonth = this.datesHelperService.getDaysInMonth(firstDayOfMonth);
+    const totalDays = this.datesHelperService.differenceInCalendarDays(firstDate, lastDate);
+    let date = firstDate;
     let week = 0;
     output.push([]);
-    if (firstDayOfWeekInMonth > 1) {
-      for (let i = 1; i < firstDayOfWeekInMonth; i += 1) {
-        const date = this.datesHelperService.add(
-          firstDayOfMonth,
-          i - firstDayOfWeekInMonth,
-          'days',
-        );
-
-        output[0].push({
-          number: this.datesHelperService.getDate(date),
-          date: this.datesHelperService.toDate(date),
-        });
-      }
-    }
-    for (let i = 0; i < daysInMonth; i += 1) {
+    for (let i = 0; i <= totalDays; i += 1) {
       if (output[week].length && output[week].length % 7 === 0) {
         week += 1;
         output.push([]);
       }
-      const date = this.datesHelperService.add(firstDayOfMonth, i, 'days');
-      output[week].push({
-        number: this.datesHelperService.getDate(date),
-        date: this.datesHelperService.toDate(date),
-      });
-    }
-    let days = 0;
-    while (output[week].length < 7) {
-      let date = this.datesHelperService.add(firstDayOfMonth, 1, 'months');
-      date = this.datesHelperService.add(date, days, 'days');
-      days += 1;
-      output[week].push({
-        number: this.datesHelperService.getDate(date),
-        date: this.datesHelperService.toDate(date),
-      });
+      this.addDayToWeek(output[week], date, today);
+      date = this.datesHelperService.add(date, 1, 'days');
     }
   }
 
@@ -585,7 +614,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Обработка инициализации текущего сервиса
    * @param isBookedDepartment Флаг показывающий что выбран департамент, на который уже есть бронь
    */
-  private serviceInitHandle(isBookedDepartment: boolean): void {
+  private async serviceInitHandle(isBookedDepartment: boolean): Promise<void> {
     this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
     this.activeMonthNumber = this.timeSlotsService.getCurrentMonth();
@@ -595,7 +624,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
     if (this.currentMonth) {
-      this.monthChanged(this.currentMonth);
+      await this.monthChanged(this.currentMonth);
     }
 
     if (this.bookedSlot && isBookedDepartment) {
@@ -614,5 +643,18 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   private initModalsSettings(): void {
     this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
+  }
+
+  private isDateOutOfSection(
+    date: Date,
+    firstDayOfMainSection: Date,
+    daysInMainSection: number,
+  ): boolean {
+    const diff = this.datesHelperService.differenceInCalendarDays(firstDayOfMainSection, date);
+    return diff < 0 || diff >= daysInMainSection;
+  }
+
+  private initSettings(): void {
+    this.isMonthsRangeVisible = this.screenService.component.attrs?.isMonthsRangeVisible;
   }
 }

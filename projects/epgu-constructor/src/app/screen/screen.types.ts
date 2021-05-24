@@ -1,10 +1,6 @@
 import { NavigationPayload } from '../form-player/form-player.types';
-import { Answer } from '../shared/types/answer';
-import {
-  ComponentDto,
-  DisplayDto,
-  ScenarioDto,
-} from '../form-player/services/form-player-api/form-player-api.types';
+import { ComponentDto, Answer, DisplayDto, ScenarioDto } from 'epgu-constructor-types';
+
 
 /**
  * Интерфейс для базового компонента
@@ -25,6 +21,7 @@ export interface ScreenStoreDisplayDtoI extends DisplayDto {
 export interface ScreenStore extends Partial<ScenarioDto> {
   display?: ScreenStoreDisplayDtoI;
   serviceCode?: string;
+  serviceInfo?: ServiceInfo;
 }
 
 export interface Screen {
@@ -40,4 +37,8 @@ export enum ScreenTypes {
   'UNIQUE' = 'UNIQUE',
   'INVITATION_ERROR' = 'INVITATION_ERROR',
   'EMPTY' = 'EMPTY',
+}
+
+export interface ServiceInfo {
+  billNumber?: string;
 }

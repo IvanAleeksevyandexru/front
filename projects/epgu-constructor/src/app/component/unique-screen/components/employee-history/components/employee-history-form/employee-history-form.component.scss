@@ -6,8 +6,8 @@
   &__generation {
     @include shadow-second();
     border-radius: $border-xl;
-    padding: $screen-pad-p;
-    margin-bottom: $screen-pad-p;
+    padding: $screen-pad-24;
+    margin-bottom: $screen-pad-24;
     background: $color-white;
 
     .icon-close {
@@ -20,7 +20,7 @@
   &__footer {
     &__msg {
       color: $color-gosred;
-      padding: $screen-pad-p;
+      padding: $screen-pad-24;
     }
   }
 
@@ -74,7 +74,7 @@
     }
 
     & > div:first-child {
-      margin-bottom: $screen-pad-p;
+      margin-bottom: $screen-pad-24;
     }
 
     @include phones-up() {
@@ -88,7 +88,7 @@
         }
 
         &:not(:first-child) {
-          margin-left: $screen-pad-p;
+          margin-left: $screen-pad-24;
         }
       }
 
@@ -103,7 +103,7 @@
 
   &__date,
   &__input {
-    margin-bottom: $screen-pad-p;
+    margin-bottom: $screen-pad-24;
   }
 
   &__newGeneration {

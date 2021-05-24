@@ -19,6 +19,8 @@ import { ComponentsListRelationsService } from '../../../component/custom-screen
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 import { TimerComponentBase } from './timer.interface';
+import { configureTestSuite } from 'ng-bullet';
+import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 const someDate = '2020-01-01T00:00:00.000Z';
 const millisecondsOfSomeDate = new Date(someDate).getTime();
@@ -31,7 +33,7 @@ describe('TimerComponent', () => {
   let currentTime = millisecondsOfSomeDate + 2000;
   let expirationTime = millisecondsOfSomeDate + 10000;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [TimerComponent, TimerPipe],
       providers: [
@@ -48,6 +50,7 @@ describe('TimerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DateRestrictionsService
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule)],
     }).compileComponents();
@@ -60,10 +63,6 @@ describe('TimerComponent', () => {
       attrs: { startTime, currentTime, expirationTime }
     } as any as TimerComponentBase;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should support serverTime', () => {

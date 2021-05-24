@@ -5,6 +5,7 @@ import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { ConfigService } from './config.service';
 import { Config } from './config.types';
 import { LoadServiceStub } from './load-service-stub';
+import { configureTestSuite } from 'ng-bullet';
 
 const configMock: Config = {
   dictionaryUrl: 'dictionaryUrl',
@@ -65,7 +66,7 @@ const configMock: Config = {
 describe('ConfigService', () => {
   let service: ConfigService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         ConfigService,
@@ -73,6 +74,9 @@ describe('ConfigService', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(ConfigService);
   });
 

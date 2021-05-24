@@ -30,6 +30,7 @@ export class ModalService {
 
     componentRef.instance['detachView'] = (data): void => {
       this.appRef.detachView(componentRef.hostView);
+      componentRef.destroy();
       modalResult.next(data);
     };
 
@@ -52,6 +53,7 @@ export class ModalService {
     const modalContainer = document.getElementById('modal-container');
     const modalRootNode = this.renderer.createElement('div');
     this.renderer.addClass(modalRootNode, 'modal-overlay');
+    this.renderer.setAttribute(modalRootNode, 'tabindex', '0');
     modalContainer.appendChild(modalRootNode);
 
     const componentRef = componentFactory.create(this.injector, [], modalRootNode);
@@ -59,6 +61,7 @@ export class ModalService {
     Object.assign(componentRef.instance, modalParameters);
     this.appRef.attachView(componentRef.hostView);
     componentRef.changeDetectorRef.detectChanges();
+    modalRootNode.focus();
     return componentRef;
   }
 

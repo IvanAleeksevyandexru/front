@@ -34,7 +34,7 @@ export class CurrencyTransformDirective implements OnInit{
   @HostListener('change', ['$event.target'])
   onBlur(target: HTMLInputElement): void {
     if (this.currency) {
-      let price = target.value || '0';
+      let price = target.value;
       if (!Number.isNaN(+price)) {
         this.renderer.setProperty(target, 'value', this.normalizeCurrency(price));
         this.ngControl.control.setValue(price.replace(/\s+/g, ''), { emitModelToViewChange: false });

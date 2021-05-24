@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ComponentDto } from 'epgu-constructor-types';
 import { ConfigService } from '../../../core/services/config/config.service';
-import { ComponentDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 
 @Component({
   selector: 'epgu-constructor-info-screen-body',

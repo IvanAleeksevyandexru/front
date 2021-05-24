@@ -1,14 +1,15 @@
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenTypes } from './screen.types';
 import {
-  ApplicantAnswersDto,
   ComponentActionDto,
-  ComponentDto,
-  DisplayDto,
-  DisplaySubjHead,
   DTOActionAction,
-} from '../form-player/services/form-player-api/form-player-api.types';
-import { Gender } from '../shared/types/gender';
+  DisplaySubjHead,
+  DisplayDto,
+  ComponentDto,
+  ApplicantAnswersDto,
+  Gender,
+} from 'epgu-constructor-types';
+
 
 const screenStoreSample: ScreenStore = {
   orderId: 653920,

@@ -9,7 +9,6 @@ export class ComponentsListFormServiceStub {
   private _changes = new EventEmitter<CustomComponentOutputData>();
   private _shownElements: CustomListStatusElements = {};
 
-
   get form(): FormArray {
     return this._form;
   }
@@ -19,4 +18,6 @@ export class ComponentsListFormServiceStub {
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
   }
+
+  emitChanges() {}
 }

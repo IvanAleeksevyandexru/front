@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RadioComponent } from 'epgu-lib';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MonthYear } from 'epgu-lib';
 
@@ -19,10 +19,27 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
 import { MemoModule } from '../../../../../../shared/pipes/memo/memo.module';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { Gender } from '../../../../../../shared/types/gender';
-import { TextTransform } from '../../../../../../shared/types/textTransform';
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import { PrepareComponentsService } from '../../../../../../shared/services/prepare-components/prepare-components.service';
+import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
+import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../../core/services/logger/logger.service';
+import { ComponentsListRelationsService } from '../../../../../custom-screen/services/components-list-relations/components-list-relations.service';
+import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
+import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
+import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { configureTestSuite } from 'ng-bullet';
+import { Gender, TextTransform } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
+import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -44,11 +61,11 @@ describe('EmployeeHistoryFormComponent', () => {
     required: true,
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeHistoryFormComponent,
-        MockComponent(EmployeeHistoryDescriptionComponent),
+        MockComponents(EmployeeHistoryDescriptionComponent, EmployeeHistoryClarificationComponent),
         RadioComponent,
       ],
       imports: [
@@ -69,22 +86,35 @@ describe('EmployeeHistoryFormComponent', () => {
         EmployeeHistoryMonthsService,
         EventBusService,
         DatesToolsService,
+        ScreenService,
+        CurrentAnswersService,
+        DeviceDetectorService,
+        PrepareComponentsService,
+        CachedAnswersService,
+        DictionaryToolsService,
+        DictionaryApiService,
+        ConfigService,
+        LoggerService,
+        ComponentsListRelationsService,
+        DateRangeService,
+        RefRelationService,
+        SuggestHandlerService,
+        DateRestrictionsService,
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     })
       .overrideComponent(EmployeeHistoryFormComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
-    datesToolsService = TestBed.inject(DatesToolsService);
-    jest
-      .spyOn(datesToolsService, 'getToday')
-      .mockResolvedValue(new Date(MOCK_TODAY));
   });
 
   beforeEach(() => {
     const dateMock = new MonthYear(1, 2021);
     jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
 
+    datesToolsService = TestBed.inject(DatesToolsService);
+    jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date(MOCK_TODAY));
     employeeHistoryFormService = TestBed.inject(EmployeeHistoryFormService);
     employeeHistoryDataSourceService = TestBed.inject(EmployeeHistoryDataSourceService);
     employeeHistoryMonthsService = TestBed.inject(EmployeeHistoryMonthsService);
@@ -106,7 +136,6 @@ describe('EmployeeHistoryFormComponent', () => {
         type: 'student',
         position: '',
         place: 'Место учебы без сокращений и аббревиатур',
-        placeHint: 'Как в дипломе или аттестате',
         address: 'Юридический адрес полностью, включая регион и город',
       };
       const result = component.availableControlsOfType('student');

@@ -7,12 +7,12 @@ import { LocationService } from '../../../core/services/location/location.servic
 import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
 import {
   ActionApiResponse,
-  ActionDTO,
+  ActionRequestPayload,
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
-} from './form-player-api.types';
+} from 'epgu-constructor-types';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -40,7 +40,7 @@ export class FormPlayerApiService {
   }
 
   public getServiceData(orderId?: number): Observable<FormPlayerApiResponse> {
-    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { serviceId, targetId, serviceInfo, gepsId } = this.initDataService;
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
 
@@ -52,10 +52,14 @@ export class FormPlayerApiService {
       body['serviceInfo'] = serviceInfo;
     }
 
+    if (gepsId) {
+      body['gepsId'] = gepsId;
+    }
+
     return this.post<FormPlayerApiResponse>(path, body);
   }
 
-  public sendAction<T>(path: string, body: ActionDTO): Observable<ActionApiResponse<T>> {
+  public sendAction<T>(path: string, body: ActionRequestPayload): Observable<ActionApiResponse<T>> {
     return this.http.post<ActionApiResponse<T>>(`${this.configService.apiUrl}/${path}`, body);
   }
 
@@ -66,6 +70,10 @@ export class FormPlayerApiService {
   ): Observable<FormPlayerApiResponse> {
     let path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = this.locationService.getHref();
+
+    if (options.deliriumAction) {
+      data.deliriumAction = options.deliriumAction;
+    }
 
     if (options.isInternalScenarioFinish) {
       data.isInternalScenario = false;
@@ -84,7 +92,7 @@ export class FormPlayerApiService {
     const { orderId, serviceId } = this.initDataService;
     const body = {
       parentOrderId: orderId,
-      serviceId
+      serviceId,
     };
     const path = `${this.configService.apiUrl}/service/booking`;
     return this.post<FormPlayerApiResponse>(path, body);

@@ -1,5 +1,6 @@
 import {
   FileUploadItem,
+  MaxCountByType,
   TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
@@ -40,6 +41,13 @@ export enum FileItemStatusText {
 
 export class FileItemStore {
   files = new BehaviorSubject<FileItem[]>([]);
+  lastSelected?: MaxCountByType;
+
+  getUniqueTypes(without?: FileItem): string[] {
+    const files = this.files.getValue();
+    const useFiles = without ? files.filter((file) => file.id !== without.id) : files;
+    return Array.from(new Set(useFiles.map((v) => v.getType())));
+  }
 
   add(file: FileItem): FileItemStore {
     const files = [...this.files.getValue(), file];
@@ -172,6 +180,10 @@ export class FileItem {
       objectType: objectType,
       mnemonic: mnemonic,
     } as TerraUploadFileOptions;
+  }
+
+  getType(): string {
+    return this.raw.name.split('.').pop().toUpperCase();
   }
 
   isTypeValid(acceptTypes?: string): boolean {
@@ -309,7 +321,11 @@ export const plurals = {
   files: ['файл', 'файла', 'файлов'],
   attach: ['прикрепился', 'прикрепилось', 'прикрепилось'],
   before: ['', 'до', 'до'],
+  uploadingFiles: ['файл', 'ещё', 'ещё'],
+  choosingFiles: ['файл', 'файлы', 'файлы'],
 };
+
+export const beforeFilesPlural = ['файл', 'файлов', 'файлов'];
 
 export const getAcceptTypes = (
   types: string[],
@@ -318,7 +334,7 @@ export const getAcceptTypes = (
   caseType: 'lower' | 'upper' = 'lower',
 ): string => {
   const caseName = caseType === 'lower' ? 'toLowerCase' : 'toUpperCase';
-  return !types.length
+  return !types?.length
     ? null
     : types
         .map((fileType) => `${prefix}${fileType}`)
@@ -326,11 +342,16 @@ export const getAcceptTypes = (
         [caseName]();
 };
 
-export const createError = (action: ErrorActions, data: FileUploadItem): FileItemError => {
+export const createError = (
+  action: ErrorActions,
+  data: FileUploadItem,
+  store: FileItemStore,
+  totalSize: number = 0,
+): FileItemError => {
   const errorHandler = {};
   errorHandler[ErrorActions.addMaxTotalSize] = {
-    text: '',
-    description: '',
+    text: `Файл тяжелее ${getSizeInMB(totalSize)} МБ`,
+    description: 'Попробуйте уменьшить размер или загрузите файл полегче',
   };
   errorHandler[ErrorActions.addMaxAmount] = {
     text: '',
@@ -345,14 +366,14 @@ export const createError = (action: ErrorActions, data: FileUploadItem): FileIte
     description: 'Попробуйте уменьшить размер или загрузите файл полегче',
   };
   getAcceptTypes(data.fileType, '', ', ', 'upper');
+
+  const types = store?.lastSelected
+    ? getAcceptTypes(store?.lastSelected.type, '', ', ', 'upper')
+    : getAcceptTypes(data.fileType, '', ', ', 'upper');
+
   errorHandler[ErrorActions.addInvalidType] = {
     text: 'Проверьте формат файла',
-    description: `Попробуйте заменить на другой. Доступны для загрузки ${getAcceptTypes(
-      data.fileType,
-      '',
-      ', ',
-      'upper',
-    )}`,
+    description: `Попробуйте заменить на другой. Доступны для загрузки ${types}`,
   };
   errorHandler[ErrorActions.addInvalidFile] = {
     text: 'Файл повреждён',
@@ -383,3 +404,44 @@ export interface OverLimits {
   totalAmount: OverLimitsItem;
   amount: OverLimitsItem;
 }
+
+export const updateLimits = (
+  config: FileUploadItem,
+  store: FileItemStore,
+  amount: number,
+  file?: FileItem,
+  isAdd = true,
+): void => {
+  if (!(config?.maxCountByTypes?.length > 0)) {
+    return;
+  }
+  const types = store.getUniqueTypes(!isAdd && file ? file : null);
+  if (isAdd && file && !types.includes(file.getType())) {
+    types.push(file.getType());
+  }
+
+  const findedType = config?.maxCountByTypes.find(({ type }) =>
+    types.every((fileType) => type.includes(fileType)),
+  );
+
+  if (findedType) {
+    if (!store.lastSelected || findedType.maxFileCount >= amount) {
+      store.lastSelected = findedType;
+    }
+  }
+  if (types.length === 0) {
+    store.lastSelected = config?.maxCountByTypes.reduce(
+      (acc, v) => {
+        acc.maxFileCount += v.maxFileCount;
+        acc.type = acc.type
+          .concat(v.type)
+          .filter((item, index, arr) => arr.indexOf(item) === index);
+        return acc;
+      },
+      {
+        type: [],
+        maxFileCount: 0,
+      },
+    );
+  }
+};

@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn, } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService } from 'epgu-lib';
@@ -15,9 +9,10 @@ import {
   CustomComponentAttrValidation,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
+import { INCORRENT_DATE_FIELD, InvalidControlMsg, REQUIRED_FIELD } from '../../constants/helper-texts';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -39,17 +34,13 @@ export class ValidationService {
 
   constructor(
     private dateRangeService: DateRangeService,
+    private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
   ) {}
 
   customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
-    const validations =
-      componentValidations &&
-      componentValidations.filter(
-        (validationRule) =>
-          validationRule.updateOn === 'change' || typeof validationRule.updateOn === 'undefined',
-      );
+    const validations = componentValidations;
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
@@ -65,7 +56,7 @@ export class ValidationService {
       if (validations?.length) {
         const error = this.getError(validations, control, component);
         if (error) {
-          return this.validationErrorMsg(error.errorMsg);
+          return this.validationErrorMsg(error.errorMsg, error?.errorDesc);
         }
         customMessage = validations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -78,7 +69,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? null
-        : this.validationErrorMsg(customMessage?.errorMsg);
+        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc);
     };
   }
 
@@ -98,7 +89,7 @@ export class ValidationService {
       if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
-          return of(this.validationErrorMsg(error.errorMsg));
+          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc));
         }
         customMessage = onBlurValidations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -111,7 +102,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? of(null)
-        : of(this.validationErrorMsg(customMessage?.errorMsg));
+        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc));
     };
   }
 
@@ -133,7 +124,7 @@ export class ValidationService {
     };
   }
 
-  public dateValidator(component: CustomComponent): ValidatorFn {
+  public dateValidator(component: CustomComponent, componentsGroupIndex?: number): ValidatorFn {
     const validations =
       component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
       [];
@@ -142,13 +133,15 @@ export class ValidationService {
       if (validations.length === 0) return;
 
       const minDate =
+        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
         this.dateRangeService.rangeMap.get(component.id)?.min ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
       const maxDate =
+        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
         this.dateRangeService.rangeMap.get(component.id)?.max ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 
-      const error = validations.find((validation) => {
+      const error = control.value && validations.find((validation) => {
         switch ((validation.condition as unknown) as DateValidationCondition) {
           case '<':
             return this.datesToolsService.isBefore(control.value, minDate);
@@ -164,7 +157,7 @@ export class ValidationService {
       });
 
       if (error) {
-        return this.validationErrorMsg(error.errorMsg);
+        return this.validationErrorMsg(error.errorMsg ? error.errorMsg: INCORRENT_DATE_FIELD);
       }
     };
   }
@@ -202,8 +195,8 @@ export class ValidationService {
     }
   }
 
-  private validationErrorMsg(error: string = InvalidControlMsg.formatField): ValidationErrors {
-    return { msg: error };
+  private validationErrorMsg(error: string = InvalidControlMsg.formatField, desc?: string): ValidationErrors {
+    return { msg: error, desc };
   }
 
   private getError(

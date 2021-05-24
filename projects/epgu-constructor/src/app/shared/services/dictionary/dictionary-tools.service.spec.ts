@@ -6,21 +6,23 @@ import { mockSelectMapObjectStore } from '../../../component/unique-screen/compo
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { ScenarioDto } from '../../../form-player/services/form-player-api/form-player-api.types';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
-import { DictionaryConditions } from './dictionary-api.types';
 import { DictionaryToolsService } from './dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ScreenStore } from '../../../screen/screen.types';
 import {
   CustomComponent,
+  CustomComponentAttr,
   CustomListDictionaries,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
-import set = Reflect.set;
+import { configureTestSuite } from 'ng-bullet';
+import { ScenarioDto, DictionaryConditions, DictionaryValueTypes, AttributeTypes } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { FormArray } from '@angular/forms';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -28,6 +30,7 @@ const getDictionary = (count = 0) => {
   for (let i = 0; i < count; i += 1) {
     items.push({
       value: `R780000${i}`,
+      title: `TITLE_FOR_R780000${i}`,
     });
   }
 
@@ -37,6 +40,32 @@ const getDictionary = (count = 0) => {
     total: items.length,
     items,
   };
+};
+
+const form = {
+  value: [
+    {
+      type: 'DateInput',
+      id: 'act3',
+      label: 'Дата актовой записи',
+      required: true,
+      value: new Date('2021-04-08T00:00:00.000Z'),
+    },
+    {
+      type: 'StringInput',
+      id: 'act2',
+      label: 'Номер актовой записи',
+      required: true,
+      value: 'test',
+    },
+    {
+      type: 'Lookup',
+      id: 'act4',
+      label: 'Орган ЗАГС, составивший актовую запись',
+      required: true,
+      value: '',
+    },
+  ],
 };
 
 describe('DictionaryToolsService', () => {
@@ -93,7 +122,37 @@ describe('DictionaryToolsService', () => {
   };
   const screenStore: ScreenStore = {};
 
-  beforeEach(() => {
+  const setup = (componentType: string, dictionaryItems: Array<object> = [], attrs: Partial<CustomComponentAttr> = {}) => {
+    const component = ({
+      id: 'test',
+      type: componentType,
+      attrs: {
+        dictionaryType: 'TEST',
+        ...attrs,
+      }
+    } as any) as CustomComponent;
+    const dictionaryId = utils.getDictKeyByComp(component);
+    const dictionaryData = {
+      loading: false,
+      paginationLoading: false,
+      data: [],
+      origin: component,
+      list: dictionaryItems,
+    };
+
+    const dictionaries = ({
+      [dictionaryId]: dictionaryData,
+    } as any) as CustomListDictionaries;
+
+    return {
+      component,
+      dictionaryId,
+      dictionaryData,
+      dictionaries,
+    };
+  };
+
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -103,9 +162,13 @@ describe('DictionaryToolsService', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
+        DateRestrictionsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(DictionaryToolsService);
     MapStore = cloneDeep(mockSelectMapObjectStore);
     compValue = JSON.parse(MapStore.display.components[0].value);
@@ -117,7 +180,7 @@ describe('DictionaryToolsService', () => {
         attributeName: 'SHOW_ON_MAP',
         condition: DictionaryConditions.EQUALS,
         value: '{"asString":"true"}',
-        valueType: 'value',
+        valueType: DictionaryValueTypes.value,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({ asString: 'true' });
@@ -128,7 +191,7 @@ describe('DictionaryToolsService', () => {
         attributeName: 'CODE',
         condition: DictionaryConditions.CONTAINS,
         value: 'regCode',
-        valueType: 'preset',
+        valueType: DictionaryValueTypes.preset,
       };
       const compValue = JSON.parse(MapStore.display.components[0].value);
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
@@ -140,21 +203,55 @@ describe('DictionaryToolsService', () => {
         attributeName: 'CODE',
         condition: DictionaryConditions.CONTAINS,
         value: 'orderId',
-        valueType: 'root',
+        valueType: DictionaryValueTypes.root,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({ asString: 763712529 });
     });
 
-    it('should calc valueType root', () => {
+    it('should calc valueType ref', () => {
       const dFilter = {
         attributeName: 'CODE',
         condition: DictionaryConditions.CONTAINS,
         value: 'pd4.value.regAddr.kladrCode',
-        valueType: 'ref',
+        valueType: DictionaryValueTypes.ref,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({ asString: '77000000000358800' });
+    });
+
+    it('should calc valueType rawFilter', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'searchString',
+        valueType: DictionaryValueTypes.rawFilter,
+      };
+      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ asString: 'searchString' });
+    });
+
+    it('should calc valueType formValue with date', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'act3',
+        valueType: DictionaryValueTypes.formValue,
+        dateFormat: 'yyyy-MM-dd',
+      };
+      const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ asString: '2021-04-08' });
+    });
+
+    it('should calc valueType formValue with string', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'act2',
+        valueType: DictionaryValueTypes.formValue,
+      };
+      const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ asString: 'test' });
     });
 
     it('should calc valueType INVALID_VALUE_TYPE', () => {
@@ -166,7 +263,7 @@ describe('DictionaryToolsService', () => {
       };
       expect(() => {
         service['getValueForFilter'](compValue, MapStore, dFilter);
-      }).toThrowError(`Неверный valueType для фильтров карты - ${dFilter.valueType}`);
+      }).toThrowError(`Неверный valueType для фильтров - ${dFilter.valueType}`);
     });
   });
 
@@ -242,36 +339,49 @@ describe('DictionaryToolsService', () => {
     });
   });
 
+  describe('adaptDictionaryToListItem()', () => {
+    it('should return ListElement with default mapping', () => {
+      const items = getDictionary(2).items;
+      const actualListItems = service.adaptDictionaryToListItem(items);
+      const expectedListItems = [
+        {
+          id: 'R7800000',
+          originalItem: { title: 'TITLE_FOR_R7800000', value: 'R7800000' },
+          text: 'TITLE_FOR_R7800000',
+        },
+        {
+          id: 'R7800001',
+          originalItem: { title: 'TITLE_FOR_R7800001', value: 'R7800001' },
+          text: 'TITLE_FOR_R7800001',
+        },
+      ];
+      expect(expectedListItems).toEqual(actualListItems);
+    });
+
+    it('should return ListElement with custom mapping', () => {
+      const items = [
+        { asd: 'TITLE_FOR_R7800000', zxc: 'R7800000' },
+        { asd: 'TITLE_FOR_R7800001', zxc: 'R7800001' },
+      ];
+      const mappingParams = { idPath: 'zxc', textPath: 'asd' };
+      const actualListItems = service.adaptDictionaryToListItem(items, mappingParams);
+      const expectedListItems = [
+        {
+          id: 'R7800000',
+          originalItem: { asd: 'TITLE_FOR_R7800000', zxc: 'R7800000' },
+          text: 'TITLE_FOR_R7800000',
+        },
+        {
+          id: 'R7800001',
+          originalItem: { asd: 'TITLE_FOR_R7800001', zxc: 'R7800001' },
+          text: 'TITLE_FOR_R7800001',
+        },
+      ];
+      expect(expectedListItems).toEqual(actualListItems);
+    });
+  });
+
   describe('isResultEmpty()', function () {
-    const setup = (componentType: string, dictionaryItems: Array<object> = []) => {
-      const component = ({
-        id: 'test',
-        type: componentType,
-        attrs: {
-          dictionaryType: 'TEST',
-        }
-      } as any) as CustomComponent;
-      const dictionaryId = utils.getDictKeyByComp(component);
-      const dictionaryData = {
-        loading: false,
-        paginationLoading: false,
-        data: [],
-        origin: component,
-        list: dictionaryItems,
-      };
-
-      const dictionaries = ({
-        [dictionaryId]: dictionaryData,
-      } as any) as CustomListDictionaries;
-
-      return {
-        component,
-        dictionaryId,
-        dictionaryData,
-        dictionaries,
-      };
-    };
-
     it('should throw exception when component not dropdown and not dictionary', () => {
       const { component } = setup('Undefined');
       const isResultEmpty = () => {
@@ -302,6 +412,153 @@ describe('DictionaryToolsService', () => {
       service.dictionaries$.next(dictionaries);
 
       expect(service.isResultEmpty(component)).toBe(true);
+    });
+  });
+
+  describe('loadReferenceData$', () => {
+    it('should use filter from dictionaryOptions if there is no dictionaryFilter', () => {
+      const { component } = setup('Lookup', [], {
+        dictionaryOptions: {
+          parentRefItemValue: '00000000000',
+          filter: {
+            simple: {
+              attributeName: 'Id_Mark',
+              condition: DictionaryConditions.EQUALS,
+              value: { asString: '123' },
+            },
+          },
+        },
+      });
+
+      const data = {
+        component,
+        data: getDictionary(0),
+      };
+
+      const getDictionariesSpy = jest.spyOn(service, 'getDictionaries$').mockReturnValue(of(data));
+
+      service.loadReferenceData$([component], {}, {});
+
+      expect(getDictionariesSpy).toBeCalledTimes(1);
+      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, { pageNum: 0, ...component.attrs.dictionaryOptions });
+    });
+
+    it('should use dictionaryFilter if it exists', () => {
+      const { component } = setup('Lookup', [], {
+        dictionaryFilter: [{
+          attributeName: 'ID',
+          value: 'dogovor_number.value',
+          valueType: 'ref',
+          condition: 'EQUALS'
+        }],
+      });
+      const dictionaryOptions = {
+        filter: {
+          simple: {
+            attributeName: 'ID',
+            condition: 'EQUALS',
+            value: {
+              asString: 'val',
+            },
+          },
+        },
+        pageNum: 0,
+      };
+
+      const data = {
+        component,
+        data: getDictionary(0),
+      };
+
+      const getDictionariesSpy = jest.spyOn(service, 'getDictionaries$').mockReturnValue(of(data));
+
+      service.loadReferenceData$([component], {}, { applicantAnswers: { dogovor_number: { value: 'val' }}});
+
+      expect(getDictionariesSpy).toBeCalledTimes(1);
+      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, dictionaryOptions);
+    });
+
+    it('should combine dictionaryFilter and params from dictionaryOptions', () => {
+      const { component } = setup('Lookup', [], {
+        dictionaryFilter: [{
+          attributeName: 'ID',
+          value: 'dogovor_number.value',
+          valueType: 'ref',
+          condition: 'EQUALS'
+        }],
+        dictionaryOptions: {
+          parentRefItemValue: '00000000000',
+          filter: {
+            simple: {
+              attributeName: 'Id_Mark',
+              condition: DictionaryConditions.EQUALS,
+              value: { asString: '123' },
+            },
+          },
+        },
+      });
+      const dictionaryOptions = {
+        parentRefItemValue: '00000000000',
+        filter: {
+          simple: {
+            attributeName: 'ID',
+            condition: 'EQUALS',
+            value: {
+              asString: 'val',
+            },
+          },
+        },
+        pageNum: 0,
+      };
+
+      const data = {
+        component,
+        data: getDictionary(0),
+      };
+
+      const getDictionariesSpy = jest.spyOn(service, 'getDictionaries$').mockReturnValue(of(data));
+
+      service.loadReferenceData$([component], {}, { applicantAnswers: { dogovor_number: { value: 'val' }}});
+
+      expect(getDictionariesSpy).toBeCalledTimes(1);
+      expect(getDictionariesSpy).toBeCalledWith(component.attrs.dictionaryType, component, dictionaryOptions);
+    });
+  });
+
+  describe('prepareSimpleFilter', () => {
+    it('should pass asString by default', () => {
+      const filter = service.prepareSimpleFilter({ value: 42 }, {}, {
+        attributeName: 'TEST',
+        condition: 'EQUALS' as DictionaryConditions,
+        value: 'value',
+        valueType: 'preset'
+      });
+
+      expect(filter).toEqual({
+        simple: {
+          attributeName: 'TEST',
+          condition: 'EQUALS',
+          value: { asString: 42 },
+        },
+      });
+    });
+
+    it('should pass asDecimal if attributeType is set', () => {
+      const filter = service.prepareSimpleFilter({ value: 42 }, {}, {
+        attributeName: 'TEST',
+        attributeType: 'asDecimal' as AttributeTypes,
+        condition: 'EQUALS' as DictionaryConditions,
+        value: 'value',
+        valueType: 'preset'
+      });
+
+      expect(filter).toEqual({
+        simple: {
+          attributeName: 'TEST',
+          condition: 'EQUALS',
+          value: { asDecimal: 42 },
+        },
+      });
     });
   });
 });

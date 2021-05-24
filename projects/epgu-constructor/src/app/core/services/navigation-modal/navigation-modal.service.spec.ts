@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NavigationModalService } from './navigation-modal.service';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('NavigationModalService', () => {
   let service: NavigationModalService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [NavigationModalService],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(NavigationModalService);
   });
 

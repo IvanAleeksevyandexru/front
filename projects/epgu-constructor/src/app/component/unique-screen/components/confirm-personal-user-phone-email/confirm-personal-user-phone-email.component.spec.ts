@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormatPhonePipe } from 'epgu-lib';
-import { of } from 'rxjs';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -9,14 +8,11 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
-import {
-  ActionType,
-  ComponentActionDto, DTOActionAction,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-
+import { configureTestSuite } from 'ng-bullet';
+import { ActionType, ComponentActionDto, DTOActionAction } from 'epgu-constructor-types';
 
 describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   let component: ConfirmPersonalUserPhoneEmailComponent;
@@ -38,7 +34,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   };
 
 
-  beforeEach(waitForAsync(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [
@@ -54,14 +50,14 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmPersonalUserPhoneEmailComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
-    component.data$ = of(mockData);
+    screenService.component = mockData;
     fixture.detectChanges();
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
   });
@@ -72,14 +68,14 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
 
   describe('updateValue()', () => {
     it('should update value', () => {
-      component.updateValue('test@gmail.com');
+      component.updateValue('test@gmail.com', []);
 
       expect(currentAnswersService.isValid).toEqual(true);
       expect(currentAnswersService.state).toEqual('test@gmail.com');
     });
 
     it('shouldn\'t update value', () => {
-      component.updateValue(null);
+      component.updateValue(null, []);
 
       expect(currentAnswersService.isValid).toEqual(false);
       expect(currentAnswersService.state).toEqual(undefined);

@@ -4,11 +4,17 @@ import {
   FileItem,
   FileItemError,
   FileItemStatus,
+  FileItemStore,
+  getAcceptTypes,
   getSizeInMB,
+  updateLimits,
 } from './file-upload-item/data';
-import { FileUploadItem } from '../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileUploadItem,
+  MaxCountByType,
+} from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { FileUploadService } from './file-upload.service';
 import {
   CompressionOptions,
@@ -30,10 +36,11 @@ export class PrepareService {
     file: FileItem,
     config: FileUploadItem,
     getError: getErrorType,
-    acceptTypes?: string,
+    store: FileItemStore,
   ): Observable<FileItem> {
     return of(file).pipe(
-      map((file: FileItem) => this.validateType(file, getError, acceptTypes)), // Проверка типа
+      tap((file: FileItem) => this.checkAndSetMaxCountByTypes(config, file, store)),
+      map((file: FileItem) => this.validateType(config, file, getError, store)), // Проверка типа
       map((file: FileItem) =>
         file.status !== FileItemStatus.error ? this.validateAmount(file, config, getError) : file,
       ), // Проверка кол-ва
@@ -46,8 +53,33 @@ export class PrepareService {
     );
   }
 
-  validateType(file: FileItem, getError: getErrorType, acceptTypes?: string): FileItem {
-    return file.isTypeValid(acceptTypes)
+  checkAndSetMaxCountByTypes(
+    config: FileUploadItem,
+    file: FileItem,
+    store: FileItemStore,
+    isAdd = true,
+  ): void {
+    if (!(config?.maxCountByTypes?.length > 0)) {
+      return;
+    }
+    updateLimits(config, store, this.fileUploadService.getAmount(config.uploadId), file, isAdd);
+    this.fileUploadService.changeMaxAmount(
+      (store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
+      config.uploadId,
+    );
+  }
+
+  validateType(
+    config: FileUploadItem,
+    file: FileItem,
+    getError: getErrorType,
+    store: FileItemStore,
+  ): FileItem {
+    return file.isTypeValid(
+      store?.lastSelected
+        ? getAcceptTypes(store?.lastSelected.type)
+        : getAcceptTypes(config.fileType),
+    )
       ? file
       : file.setError(getError(ErrorActions.addInvalidType));
   }
@@ -73,9 +105,7 @@ export class PrepareService {
           catchError(() => {
             return of(file.setError(getError(ErrorActions.addInvalidFile)));
           }),
-          map((raw: File) => {
-            return file.setRaw(raw);
-          }),
+          map((raw: Blob | FileItem) => (raw instanceof Blob ? file.setRaw(raw as File) : file)),
         )
       : of(file);
   }

@@ -3,15 +3,13 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { ListItem } from 'epgu-lib';
 import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
-import { ScenarioErrorsDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
 import { isEqualObj } from '../../../../shared/constants/utils';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DictionaryConditions } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
@@ -26,12 +24,15 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components-list.types';
-// eslint-disable-next-line max-len
-import { AddressHelperService, DadataSuggestionsAddressForLookup, } from '../../../../shared/services/address-helper/address-helper.service';
+import {
+  AddressHelperService,
+  DadataSuggestionsAddressForLookup,
+} from '../../../../shared/services/address-helper/address-helper.service';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { ScenarioErrorsDto, DictionaryConditions } from 'epgu-constructor-types';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -72,9 +73,12 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto): FormArray {
+  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto, componentsGroupIndex?: number): FormArray {
     this.errors = errors;
-    this._shownElements = this.componentsListRelationsService.createStatusElements(components);
+    this._shownElements = this.componentsListRelationsService.createStatusElements(
+      components,
+      this.screenService.cachedAnswers,
+    );
 
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
@@ -82,7 +86,7 @@ export class ComponentsListFormService {
     this._form = new FormArray(
       components.map((component: CustomComponent, index) => {
         this.indexesByIds[component.id] = index;
-        return this.createGroup(component, components, errors[component.id]);
+        return this.createGroup(component, components, errors[component.id], componentsGroupIndex);
       }),
     );
     this.validationService.form = this.form;
@@ -101,6 +105,7 @@ export class ComponentsListFormService {
         false,
         this.screenService,
         this.dictionaryToolsService,
+        componentsGroupIndex
       );
     });
 
@@ -125,30 +130,22 @@ export class ComponentsListFormService {
 
   public patch(component: CustomComponent): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const defaultIndex = component.attrs?.defaultIndex;
-    // Если есть defaultIndex и нет сохранненого ранее значения, то берем из справочника элемент по индексу defaultIndex
-    if (defaultIndex !== undefined && !component.value) {
-      if (this.dictionaryToolsService.isDropdownLike(component.type)) {
-        const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
-        const key: string = component.id;
-        const value: ListItem = dicts[key] && dicts[key][defaultIndex];
-        control.get('value').patchValue(value);
-      } else {
-        const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-        const key: string = utils.getDictKeyByComp(component);
-        const value: ListItem = dicts[key]?.list[defaultIndex];
-        control.get('value').patchValue(value);
-      }
-    } else if (component.type === CustomScreenComponentTypes.DropDownDepts) {
-      const lockedValue = component.attrs?.lockedValue;
-      const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-      const key: string = utils.getDictKeyByComp(component);
-      const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
+    const { defaultIndex = undefined, lookupDefaultValue = undefined } = component.attrs;
+    const noValue = !component.value;
+    const hasDefaultIndex = defaultIndex !== undefined;
+    const hasDefaultValue = lookupDefaultValue !== undefined;
+    const isDropdownLike = this.dictionaryToolsService.isDropdownLike(component.type);
+    const isDictionaryLike = this.dictionaryToolsService.isDictionaryLike(component.type);
+    const isDropDownDepts = component.type === CustomScreenComponentTypes.DropDownDepts;
 
-      if (lockedValue && !repeatedWithNoFilters) {
-        const value: ListItem = dicts[key]?.list[defaultIndex];
-        control.get('value').patchValue(value);
-      }
+    if (hasDefaultIndex && noValue && isDropdownLike) {
+      this.patchDropDownLikeWithDefaultIndex(component, control, defaultIndex);
+    } else if (hasDefaultIndex && isDropDownDepts) { // DropDownDepts has value as address
+      this.patchDropDownDeptsValue(component, control, defaultIndex);
+    } else if (hasDefaultIndex && noValue && !isDropdownLike) {
+      this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
+    } else if (hasDefaultValue && noValue && isDictionaryLike) {
+      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue);
     } else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
@@ -168,7 +165,9 @@ export class ComponentsListFormService {
     this._changes.emit(prepareStateForSending);
   }
 
-  public addressHelperServiceProvider(attrs: CustomComponentAttr): LookupProvider | LookupPartialProvider {
+  public addressHelperServiceProvider(
+    attrs: CustomComponentAttr,
+  ): LookupProvider | LookupPartialProvider {
     return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
   }
 
@@ -236,7 +235,7 @@ export class ComponentsListFormService {
     return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
   }
 
-  private setRelationResult(component: CustomComponent, result?: CustomComponentAttr): void {
+  private setRelationResult(component: CustomComponent, result?: Partial<CustomComponent>): void {
     if (!result) {
       if (this.cachedAttrsComponents[component.id]) {
         this.resetRelation(component);
@@ -250,7 +249,7 @@ export class ComponentsListFormService {
     const stringResult = JSON.stringify(result);
     if (this.cachedAttrsComponents[component.id].last !== stringResult) {
       component.attrs = this.cachedAttrsComponents[component.id].base;
-      this.relationPatch(component, result.attrs); // TODO: выглядит так что возможно ошибка т.к. есть атрибут refsAttrs
+      this.relationPatch(component, result.attrs);
       this.cachedAttrsComponents[component.id].last = stringResult;
     }
   }
@@ -290,6 +289,7 @@ export class ComponentsListFormService {
     component: CustomComponent,
     components: Array<CustomComponent>,
     errorMsg: string,
+    componentsGroupIndex?: number
   ): FormGroup {
     const validators = [
       this.validationService.customValidator(component),
@@ -297,7 +297,7 @@ export class ComponentsListFormService {
     ];
 
     if (component.type === CustomScreenComponentTypes.DateInput) {
-      validators.push(this.validationService.dateValidator(component));
+      validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
     const { type, attrs, id, label, required } = component;
@@ -317,7 +317,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation(component) },
+      { updateOn: this.updateOnValidation() },
     );
 
     if (component.attrs?.hidden) {
@@ -336,6 +336,7 @@ export class ComponentsListFormService {
           true,
           this.screenService,
           this.dictionaryToolsService,
+          componentsGroupIndex
         );
         // TODO: в перспективе избавиться от этой хардкодной логики
         this.checkAndFetchCarModel(next, prev);
@@ -346,12 +347,9 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (
-      next.attrs.dictionaryType === 'MARKI_TS' &&
-      !isEqualObj<CustomListFormGroup>(prev, next)
-    ) {
+    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
       const indexVehicle: number = this.form.controls.findIndex(
-        (control: AbstractControl) => control.value?.id === next.id
+        (control: AbstractControl) => control.value?.id === next.id,
       );
 
       const options = {
@@ -367,7 +365,7 @@ export class ComponentsListFormService {
       };
 
       const model: AbstractControl = this.form.controls.find(
-        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS'
+        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
       );
 
       model.get('value').patchValue('');
@@ -389,15 +387,48 @@ export class ComponentsListFormService {
   }
 
   private watchFormArray$(): Observable<Array<CustomListFormGroup>> {
-    return this.form.valueChanges.pipe(
-      distinctUntilChanged((prev, next) =>
-        isEqualObj<boolean | number | string | object>(prev, next),
-      ),
-      takeUntil(this.ngUnsubscribe$),
-    );
+    return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 
-  private updateOnValidation(component: CustomComponent): UpdateOn {
-    return component.attrs?.updateOnValidation || 'change';
+  private updateOnValidation(): UpdateOn {
+    return 'change';
+  }
+
+  private patchDropDownLikeWithDefaultIndex(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+    const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
+    const key: string = component.id;
+    const value: ListItem = dicts[key] && dicts[key][defaultIndex];
+
+    control.get('value').patchValue(value);
+  }
+
+  private patchDictionaryLikeWithDefaultIndex(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+    const key: string = utils.getDictKeyByComp(component);
+    const value: ListItem = dicts[key]?.list[defaultIndex];
+
+    control.get('value').patchValue(value);
+  }
+
+  private patchDropDownDeptsValue(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+    const lockedValue = component.attrs?.lockedValue;
+    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+    const key: string = utils.getDictKeyByComp(component);
+    const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
+
+    if (lockedValue && !repeatedWithNoFilters) {
+      const value: ListItem = dicts[key]?.list[defaultIndex];
+      control.get('value').patchValue(value);
+    }
+  }
+
+  private patchDictionaryLikeWithDefaultValue(component: CustomComponent, control: AbstractControl, defaultValue: string | number): void {
+    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
+    const key: string = utils.getDictKeyByComp(component);
+    const value: ListItem = dicts[key]?.list.find(({ id }) => id === defaultValue);
+
+    if (value) {
+      control.get('value').patchValue(value);
+    }
   }
 }

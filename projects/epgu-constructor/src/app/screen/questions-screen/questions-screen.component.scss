@@ -5,84 +5,37 @@
 }
 
 .quiz {
-  &__content {
-    @include tablets-up {
-      margin-bottom: 32px;
-    }
-  }
-
-  &__head {
-    margin-bottom: 16px;
-    &:only-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &__answers {
-    width: 100% !important;
-    flex-direction: column;
-    align-items: stretch !important; // в какой то момент стили компонента переопределяют то что навешенно сверху.
-    margin-left: 0;
-    margin-right: 0;
-    @include tablets-up {
-      margin-top: 0;
-    }
-  }
-
-  &__answer {
-    margin: 0 0 16px 0;
-    border: 1px solid $color-white;
-    @include tablets-up {
-      margin: 0 0 24px 0;
-    }
+  padding-bottom: 24px;
+  @include tablets-up {
+    padding-bottom: 64px;
   }
 }
 
-.screen-body .quiz__answers {
+.quiz__title {
+  //Обнуляет отступы от page-name
+  margin: 0;
+  @include tablets-up {
+    margin: 0;
+  }
+}
+
+.quiz__description {
   margin-top: 16px;
+  & p:not(:first-child) {
+    margin-top: 16px;
+  }
 }
 
-// при разном порядке загрузки компонентов перебиваются другими стилями.
-.screen-body.quiz__content {
+.quiz__container {
+  margin-top: 24px;
   @include tablets-up {
-    margin-bottom: 32px;
-    .quiz__answers {
-      margin-top: 0;
-    }
+    margin-top: 32px;
   }
 }
-.screen-body .quiz__answer {
+
+.quiz__item:not(:first-child) {
+  margin-top: 16px;
   @include tablets-up {
-    margin-top: 0;
-  }
-}
-
-:host::ng-deep {
-  .quiz__text {
-    @include screen-content;
-  }
-
-  .question-screen .quiz__text {
-    @include screen-content-margins;
-  }
-
-  .quiz__container .screen-footer {
-    @include tablets-down {
-      flex-wrap: wrap;
-    }
-  }
-
-  .screen-body.screen-body {
-    @include tablets-up {
-      margin-bottom: 16px;
-    }
-
-    @include tablets-down {
-      margin-bottom: 0;
-    }
-  }
-
-  .screen-footer > .screen-buttons {
-    margin-top: 0;
+    margin-top: 24px;
   }
 }

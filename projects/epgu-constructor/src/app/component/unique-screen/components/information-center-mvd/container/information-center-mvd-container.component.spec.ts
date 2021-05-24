@@ -11,7 +11,6 @@ import { DictionaryApiService } from '../../../../../shared/services/dictionary/
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { DTOActionAction } from '../../../../../form-player/services/form-player-api/form-player-api.types';
 import { InformationCenterMvdI } from '../interface/information-center-mvd.interface';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { InformationCenterCardComponent } from '../components/information-center-card/information-center-card.component';
@@ -20,11 +19,13 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-// eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
+import { configureTestSuite } from 'ng-bullet';
+import { DTOActionAction } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -61,7 +62,7 @@ describe('InformationCenterMvdContainerComponent', () => {
     },
   };
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         InformationCenterMvdContainerComponent,
@@ -82,7 +83,8 @@ describe('InformationCenterMvdContainerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
-        RefRelationService
+        RefRelationService,
+        DateRestrictionsService
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {

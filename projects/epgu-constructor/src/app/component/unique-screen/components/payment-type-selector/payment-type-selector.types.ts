@@ -1,5 +1,4 @@
-import { ComponentActionDto } from '../../../../form-player/services/form-player-api/form-player-api.types';
-import { Clarifications } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { ComponentActionDto, Clarifications } from 'epgu-constructor-types';
 
 export interface PaymentTypeSelectorInterface {
   actions: Array<ComponentActionDto>;

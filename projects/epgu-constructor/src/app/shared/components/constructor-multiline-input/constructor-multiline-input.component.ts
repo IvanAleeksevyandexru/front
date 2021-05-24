@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn, Width } from 'epgu-lib';
+import { TextTransform } from 'epgu-constructor-types';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
-import { TextTransform } from '../../types/textTransform';
 
 @Component({
   selector: 'epgu-constructor-constructor-multiline-input',

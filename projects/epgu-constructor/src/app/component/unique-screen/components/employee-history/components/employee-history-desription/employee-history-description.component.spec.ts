@@ -1,16 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-
 import { EmployeeHistoryDescriptionComponent } from './employee-history-description.component';
+import { configureTestSuite } from 'ng-bullet';
+import { AutocompletePrepareService } from '../../../../../../core/services/autocomplete/autocomplete-prepare.service';
+import { AutocompleteAutofillService } from '../../../../../../core/services/autocomplete/autocomplete-autofill.service';
 
 describe('EmployeeHistoryDescriptionComponent', () => {
   let component: EmployeeHistoryDescriptionComponent;
   let fixture: ComponentFixture<EmployeeHistoryDescriptionComponent>;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryDescriptionComponent],
+      providers: [AutocompletePrepareService, AutocompleteAutofillService],
     })
       .overrideComponent(EmployeeHistoryDescriptionComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -43,8 +46,9 @@ describe('EmployeeHistoryDescriptionComponent', () => {
 
   describe('Progress template', () => {
     const selector = '.employee-history__progress';
-
     it('should be show progress template if has periods', () => {
+      component.isCompleted = false;
+      fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
     });

@@ -23,12 +23,10 @@ import { ComponentsListRelationsService } from './components-list-relations.serv
 import { Observable } from 'rxjs';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
-import {
-  DictionaryConditions,
-  DictionaryFilters,
-  DictionaryValueTypes,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
+import { configureTestSuite } from 'ng-bullet';
+import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes } from 'epgu-constructor-types';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -107,7 +105,7 @@ describe('ComponentsListRelationsService', () => {
   let refRelationService: RefRelationService;
   let dateRangeService: DateRangeService;
 
-  beforeEach(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         ComponentsListRelationsService,
@@ -122,9 +120,12 @@ describe('ComponentsListRelationsService', () => {
         ConfigService,
         LoggerService,
         FormBuilder,
+        DateRestrictionsService
       ],
     });
+  });
 
+  beforeEach(() => {
     service = TestBed.inject(ComponentsListRelationsService);
     screenService = TestBed.inject(ScreenService);
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
@@ -332,6 +333,12 @@ describe('ComponentsListRelationsService', () => {
 
   describe('createStatusElements()', () => {
     it('should return status elements', () => {
+      const cachedAnswers = {
+        rf1: {
+          visited: true,
+          value: 'fake data',
+        },
+      };
       const components = [
         createComponentMock({
           id: 'comp1',
@@ -359,7 +366,7 @@ describe('ComponentsListRelationsService', () => {
         }),
       ];
 
-      expect(service.createStatusElements(components)).toEqual({
+      expect(service.createStatusElements(components, cachedAnswers)).toEqual({
         comp1: {
           relation: CustomComponentRefRelation.displayOn,
           isShown: false,
@@ -717,7 +724,7 @@ describe('ComponentsListRelationsService', () => {
         // dependentControl изменился, потому что initInitialValues === TRUE
         // value === '', потому что в dictinaries нет нужного словаря
         expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.get('value').value).toBe('');
+        expect(dependentControl.get('value').value).toBe(null);
 
         dependentControl = new FormGroup({
           id: new FormControl(dependentComponent.id),
@@ -1178,13 +1185,18 @@ describe('ComponentsListRelationsService', () => {
   });
 
   describe('hasRelation()', () => {
+    const cachedAnswers = {
+      rf1: {
+        visited: true,
+        value: 'fake data',
+      },
+    };
     it('should return true, if component has identic relation', () => {
-      const relation = CustomComponentRefRelation.displayOn;
-      expect(service.hasRelation(componentMock, relation)).toBe(true);
+      expect(service.hasRelation(componentMock, cachedAnswers)).toBe(true);
     });
     it('should return false, if component has no identic relation', () => {
-      const relation = CustomComponentRefRelation.displayOff;
-      expect(service.hasRelation(componentMock, relation)).toBe(false);
+      const component = { ...componentMock,  attrs: { ref: [] }};
+      expect(service.hasRelation(component, cachedAnswers)).toBe(false);
     });
   });
 
@@ -1353,12 +1365,12 @@ describe('ComponentsListRelationsService', () => {
 
   describe('onAfterFilterOnRel()', () => {
     const setup = (
-      reference = {
+      references = [{
         relatedRel: componentMock.id,
         val: '*',
         relation: 'filterOn',
         dictionaryFilter: [],
-      },
+      }],
     ) => {
       const dependentComponent = {
         id: 'acc_org',
@@ -1366,7 +1378,7 @@ describe('ComponentsListRelationsService', () => {
         required: true,
         label: 'Расчётный счёт',
         attrs: {
-          ref: reference ? [reference] : [],
+          ref: references ? [...references] : [],
         },
         value: '',
         visited: false,
@@ -1380,7 +1392,7 @@ describe('ComponentsListRelationsService', () => {
       const control = mockForm.controls[0];
       const dependentControl = mockForm.controls[1];
 
-      return { control, dependentComponent, dependentControl, mockForm, reference };
+      return { control, dependentComponent, dependentControl, mockForm, references };
     };
 
     it('should do nothing when no ref', () => {
@@ -1393,7 +1405,7 @@ describe('ComponentsListRelationsService', () => {
     });
 
     it('should reset dependent control', () => {
-      const { dependentControl, control, mockForm, dependentComponent, reference } = setup();
+      const { dependentControl, control, mockForm, dependentComponent } = setup();
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
 
@@ -1414,6 +1426,50 @@ describe('ComponentsListRelationsService', () => {
       );
 
       expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
+    });
+
+    it('should NOT affect another relations', () => {
+      const refs = [
+        {
+          relatedRel: componentMock.id,
+          val: '',
+          relation: 'displayOff'
+        },
+        {
+          relatedRel: componentMock.id,
+          val: '*',
+          relation: 'filterOn',
+          dictionaryFilter: [{
+            attributeName: 'section',
+            condition: 'EQUALS',
+            value: 'id',
+            valueType: 'preset'
+          }]
+        }
+      ];
+      const refsExpected = JSON.parse(JSON.stringify(refs));
+      const { dependentControl, control, mockForm, dependentComponent } = setup(refs);
+      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
+      control.markAsTouched();
+
+      dictionaryToolsService.initDictionary({
+        component: dependentComponent as CustomComponent,
+        data: {
+          error: { code: 0, message: 'emptyDictionary' },
+          fieldErrors: [],
+          items: [],
+          total: 0,
+        },
+      });
+
+      service.onAfterFilterOnRel(
+        dependentComponent as CustomComponent,
+        mockForm,
+        dictionaryToolsService,
+      );
+
+      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
+      expect(dependentComponent.attrs.ref).toEqual(refsExpected);
     });
   });
 });

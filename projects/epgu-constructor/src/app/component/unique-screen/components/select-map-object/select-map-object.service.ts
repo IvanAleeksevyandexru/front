@@ -11,10 +11,7 @@ import {
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { filter } from 'rxjs/operators';
-import {
-  ComponentBaloonContentDto,
-  ComponentDictionaryFilterDto,
-} from '../../../../form-player/services/form-player-api/form-player-api.types';
+import { ComponentBaloonContentDto, ComponentDictionaryFilterDto } from 'epgu-constructor-types';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -262,10 +259,12 @@ export class SelectMapObjectService implements OnDestroy {
     const res = [];
     attrs.forEach((attr) => {
       let itemValue = item.attributeValues[attr.name];
-      res.push({
-        value: itemValue,
-        label: attr.label,
-      });
+      if (itemValue) {
+        res.push({
+          value: itemValue,
+          label: attr.label,
+        });
+      }
     });
     return res;
   }

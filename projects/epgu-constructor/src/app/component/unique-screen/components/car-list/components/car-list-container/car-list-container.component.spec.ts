@@ -4,7 +4,6 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { of } from 'rxjs';
-import { DisplayDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { ScreenTypes } from '../../../../../../screen/screen.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -27,9 +26,12 @@ import { CarList } from '../../models/car-list.interface';
 import { ModalService } from '../../../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
+import { configureTestSuite } from 'ng-bullet';
+import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
+import { DisplayDto } from 'epgu-constructor-types';
 
 
-describe('CarInfoContainerComponent', () => {
+describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
   let screenService: ScreenService;
   let fixture: ComponentFixture<CarListContainerComponent>;
@@ -62,8 +64,8 @@ describe('CarInfoContainerComponent', () => {
   };
 
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  configureTestSuite( () => {
+    TestBed.configureTestingModule({
       declarations: [
         CarListContainerComponent,
         CarListComponent
@@ -75,7 +77,7 @@ describe('CarInfoContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        CurrentAnswersService, UtilsService, NavigationService, ModalService
+        CurrentAnswersService, UtilsService, NavigationService, ModalService, WINDOW_PROVIDERS
       ],
       imports: [
         BaseModule,
@@ -103,29 +105,6 @@ describe('CarInfoContainerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('search()', () => {
-    it('should return filtered items by reg number', () => {
-      const search$ = component.lookupProvider.search;
-      search$.call('M 005 CX').subscribe(res =>
-        expect(res).toEqual([mockCarList[1]])
-      );
-    });
-
-    it('should return filtered items by mark', () => {
-      const search$ = component.lookupProvider.search;
-      search$.call('Киа Рио').subscribe(res =>
-        expect(res).toEqual([mockCarList[0]])
-      );
-    });
-
-    it('should return []', () => {
-      const search$ = component.lookupProvider.search;
-      search$.call('S 222 ST').subscribe(res =>
-        expect(res).toEqual([mockCarList[0]])
-      );
-    });
   });
 
   describe('handleErrors()', () => {
@@ -186,12 +165,4 @@ describe('CarInfoContainerComponent', () => {
       expect(component.getModelMarkName({} as any)).toEqual('');
     });
   });
-
-  describe('filterBySearchString()', () => {
-    it('should return filtered car fixed items', () => {
-      component.carFixedItems = component.getCarFixedItems(mockCarList as any);
-      expect(component.filterBySearchString('Киа')).toEqual([component.carFixedItems[0]]);
-    });
-  });
-
 });
