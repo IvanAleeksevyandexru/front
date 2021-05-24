@@ -9,6 +9,10 @@
       "children-clubs": [
         "dist/children-clubs/children-clubs",
         "dist/children-clubs"
+      ],
+      "ui-kit": [
+        "dist/ui-kit/ui-kit",
+        "dist/ui-kit"
       ]
     }
   },
