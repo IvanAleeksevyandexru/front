@@ -56,6 +56,11 @@ export interface MaxCountByType {
   maxFileCount: number;
 }
 
+export interface FileUploadValidation {
+  value: string;
+  errorMsg: string;
+}
+
 /**
  * Интерфейс для файла на загругку из JSON
  */
@@ -70,6 +75,7 @@ export interface FileUploadItem {
   pdfFileName?: string;
   maxCountByTypes?: MaxCountByType[];
   readonly?: boolean;
+  validation?: FileUploadValidation[];
 }
 
 /**
