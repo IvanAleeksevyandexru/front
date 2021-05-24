@@ -271,8 +271,8 @@ export class AutocompleteService {
               });
             } else {
               Object.keys(fields).forEach((fieldName) => {
-                const field: { attrs: { suggestionId: string } } = fields[fieldName];
-                const fieldSuggestionId = field?.attrs.suggestionId;
+                const field: { suggestionId: string } = fields[fieldName];
+                const fieldSuggestionId = field?.suggestionId;
                 this.setFieldsSuggestionIds(
                   fieldSuggestionId,
                   component.id,
