@@ -8,7 +8,7 @@ import { UNIQUE_SCREEN_COMPONENTS } from './component-unique-resolver.const';
 import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
-import { ScreenTypes } from '../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 
 @Component({ template: '<div>test</div>' })

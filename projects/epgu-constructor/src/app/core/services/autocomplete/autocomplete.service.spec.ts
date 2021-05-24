@@ -4,7 +4,7 @@ import { DictionaryToolsService } from '../../../shared/services/dictionary/dict
 import { ModalService } from '../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenTypes } from '../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { ConfigService } from '../config/config.service';

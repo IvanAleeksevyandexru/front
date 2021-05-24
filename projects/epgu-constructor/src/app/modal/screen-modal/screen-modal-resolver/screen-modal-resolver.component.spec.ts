@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { ScreenModalResolverComponent } from './screen-modal-resolver.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ScreenTypes } from '../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { UniqueComponentModalModule } from '../components/unique-component-modal/unique-component-modal.module';
 import { UniqueComponentModalComponent } from '../components/unique-component-modal/unique-component-modal.component';
 import { InfoComponentModalComponent } from '../components/info-component-modal/info-component-modal.component';

@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
-import { ScreenStore, ScreenTypes, ServiceInfo } from './screen.types';
+import { ScreenStore, ServiceInfo } from './screen.types';
 import { concatMap, map } from 'rxjs/operators';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
 import {
@@ -14,6 +14,7 @@ import {
   ApplicantAnswersDto,
   CachedAnswersDto,
   LogicComponents,
+  ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;

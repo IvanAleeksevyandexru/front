@@ -24,7 +24,6 @@ import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
 import { FormPlayerNavigation, ServiceEntity } from './form-player.types';
 import { of } from 'rxjs';
-import { ScreenTypes } from '../screen/screen.types';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
 import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/continue-order-modal.service.stub';
 import { By } from '@angular/platform-browser';
@@ -52,6 +51,7 @@ import { LogicComponent } from '../component/logic-screen/component/logic.compon
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;

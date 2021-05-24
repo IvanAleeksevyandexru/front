@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { debounceTime, delay, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
 import {
   FormPlayerNavigation,
@@ -19,7 +20,6 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenModalService } from './screen-modal.service';
 import { ScreenService } from '../../screen/screen.service';
 import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
-import { ScreenTypes } from '../../screen/screen.types';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Component({

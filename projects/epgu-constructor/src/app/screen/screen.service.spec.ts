@@ -5,7 +5,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
-import { ScreenStore, ScreenTypes } from './screen.types';
+import { ScreenStore } from './screen.types';
 import { UtilsService } from '../core/services/utils/utils.service';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
@@ -24,6 +24,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../core/services/local-storage/local-storage.service.stub';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: 653920,

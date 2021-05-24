@@ -12,8 +12,8 @@ import {
 } from '@angular/core';
 import { filter, subscribeOn, takeUntil, tap } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
-import { ScreenTypes } from '../screen.types';
 import { ScreenService } from '../screen.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
