@@ -70,13 +70,12 @@
       <div class="error" *ngIf="error$ | async as errorText">
         <small>{{ errorText }}</small>
       </div>
-    </form>
-
-    <div class="item hint-wrapper" *ngIf="(data$ | async)?.attrs?.hints as hints">
-      <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
-      <div class="item__hint" *ngFor="let hint of hints" (click)="hintClick(hint)">
-        {{ hint.label }}
+      <div class="item hint-wrapper" *ngIf="(data$ | async)?.attrs?.hints as hints">
+        <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
+        <div class="item__hint" *ngFor="let hint of hints" (click)="hintClick(hint)">
+          {{ hint.label }}
+        </div>
       </div>
-    </div>
+    </form>
   </epgu-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
