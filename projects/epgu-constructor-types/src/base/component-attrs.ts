@@ -118,6 +118,7 @@ export interface ComponentAttrsDto {
   daysToShow?: number;
   startSection?: string;
   isMonthsRangeVisible?: boolean;
+  isSelectButtonHidden?: boolean;
 }
 
 export interface IMvdFilter {

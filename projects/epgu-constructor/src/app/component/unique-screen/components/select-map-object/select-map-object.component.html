@@ -67,6 +67,7 @@
             >.
           </div>
           <lib-button
+            *ngIf="!data.attrs.isSelectButtonHidden"
             [showLoader]="screenService.isLoading$ | async"
             [disabled]="!mapObject.agreement"
             (click)="selectObject(mapObject)"
