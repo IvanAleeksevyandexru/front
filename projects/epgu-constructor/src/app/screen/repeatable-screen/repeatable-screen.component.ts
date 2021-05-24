@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
-  OnDestroy,
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
@@ -34,7 +33,7 @@ import { CachedAnswersService } from '../../shared/services/cached-answers/cache
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class RepeatableScreenComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -102,10 +101,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, OnDe
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
-  }
-
-  ngOnDestroy(): void {
-    this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
   }
 
   trackByFunction = (_index: number, item: string): string => item;
