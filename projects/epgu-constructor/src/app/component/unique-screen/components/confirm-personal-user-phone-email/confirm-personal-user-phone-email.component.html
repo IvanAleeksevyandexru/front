@@ -1,6 +1,7 @@
 <epgu-constructor-default-unique-screen-wrapper
+  *ngIf="{ isLoading: screenService.isLoading$ | async } as async"
   [header]="screenService.header$ | async"
-  [isLoading]="screenService.isLoading$ | async"
+  [isLoading]="async.isLoading"
   [screenButtons]="screenService.buttons$ | async"
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
@@ -25,7 +26,7 @@
     <ng-container *ngIf="isEditContactAction">
       <div class="footer" *ngIf="screenService.action$ | async as action">
         <div class="divider"></div>
-        <button class="btn-edit" epgu-constructor-action [action]="action">
+        <button class="btn-edit" epgu-constructor-action [action]="action" [disabled]="async.isLoading">
           <img
             class="btn-edit__icon"
             src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
