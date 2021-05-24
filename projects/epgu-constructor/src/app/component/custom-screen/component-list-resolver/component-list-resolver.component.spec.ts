@@ -7,9 +7,9 @@ import { ScreenService } from '../../../screen/screen.service';
 import { CUSTOM_SCREEN_COMPONENTS } from './component-list-resolver.const';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { By } from '@angular/platform-browser';
-import { ScreenTypes } from '../../../screen/screen.types';
 import { CustomScreenComponentTypes } from '../components-list.types';
 import { configureTestSuite } from 'ng-bullet';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}

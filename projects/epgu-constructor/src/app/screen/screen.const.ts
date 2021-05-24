@@ -1,12 +1,14 @@
+import { Type } from '@angular/core';
+
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { InfoScreenComponent } from './info-screen/info-screen.component';
 import { QuestionsScreenComponent } from './questions-screen/questions-screen.component';
 import { CustomScreenComponent } from './custom-screen/custom-screen.component';
 import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
 import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
-import { ScreenTypes } from './screen.types';
-import { Type } from '@angular/core';
 import { RepeatableScreenComponent } from './repeatable-screen/repeatable-screen.component';
+import { SpaScreenComponent } from './spa-screen/spa-screen.component';
 
 export type ScreenComponent =
   | InfoScreenComponent
@@ -15,7 +17,8 @@ export type ScreenComponent =
   | RepeatableScreenComponent
   | UniqueScreenComponent
   | InvitationErrorScreenComponent
-  | EmptyScreenComponent;
+  | EmptyScreenComponent
+  | SpaScreenComponent;
 
 export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: Type<ScreenComponent> }> = {
   INFO: InfoScreenComponent,
@@ -25,4 +28,5 @@ export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: Type<ScreenComp
   UNIQUE: UniqueScreenComponent,
   INVITATION_ERROR: InvitationErrorScreenComponent,
   EMPTY: EmptyScreenComponent,
+  SPA: SpaScreenComponent,
 };

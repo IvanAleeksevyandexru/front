@@ -16,7 +16,7 @@ import { AgeType, Gender, UserInfoType } from '../user-info/user-info.type';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { ScreenTypes } from '../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
 
 const displayMock = ({

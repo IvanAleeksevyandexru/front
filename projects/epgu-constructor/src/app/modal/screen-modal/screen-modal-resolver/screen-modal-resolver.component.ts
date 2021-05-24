@@ -13,8 +13,8 @@ import {
 import { filter, subscribeOn, tap } from 'rxjs/operators';
 import { asyncScheduler, Subscription } from 'rxjs';
 
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenTypes } from '../../../screen/screen.types';
 import {
   ScreenModalComponents,
   ScreenModalComponentsType,
