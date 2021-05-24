@@ -154,6 +154,44 @@
           "builder": "@angular-builders/jest:run"
         }
       }
+    },
+    "children-clubs": {
+      "projectType": "library",
+      "root": "projects/children-clubs",
+      "sourceRoot": "projects/children-clubs/src",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "prefix": "children-clubs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/children-clubs/tsconfig.lib.json",
+            "project": "projects/children-clubs/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/children-clubs/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/epgu-constructor/src/**/*.ts",
+              "projects/epgu-constructor/src/**/*.spec.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run"
+        }
+      }
     }
   },
   "defaultProject": "epgu-form-frontend",
