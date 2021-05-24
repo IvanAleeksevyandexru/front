@@ -131,6 +131,11 @@ export class FormPlayerStartManager {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((result) => {
         const orderId = result ? this.initDataService.orderId : null;
+
+        if (!orderId) {
+          this.localStorageService.set('cachedAnswers', {});
+        }
+
         this.formPlayerService.initData(orderId);
       });
   }

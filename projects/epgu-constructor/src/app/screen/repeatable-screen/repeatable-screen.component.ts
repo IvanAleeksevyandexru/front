@@ -24,7 +24,6 @@ import {
   removeItemFromArrByIndex,
   StateStatus,
 } from './repeatable-screen.constant';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
@@ -92,7 +91,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private eventBusService: EventBusService,
-    private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
   ) {}
@@ -103,10 +101,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
-
-    this.navigationService.nextStep$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
-    });
   }
 
   trackByFunction = (_index: number, item: string): string => item;
