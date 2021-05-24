@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
@@ -24,7 +25,6 @@ import {
   removeItemFromArrByIndex,
   StateStatus,
 } from './repeatable-screen.constant';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
@@ -34,7 +34,7 @@ import { CachedAnswersService } from '../../shared/services/cached-answers/cache
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
+export class RepeatableScreenComponent implements OnInit, AfterViewChecked, OnDestroy {
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -92,7 +92,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private eventBusService: EventBusService,
-    private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
   ) {}
@@ -103,10 +102,10 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
+  }
 
-    this.navigationService.nextStep$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
-    });
+  ngOnDestroy(): void {
+    this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
   }
 
   trackByFunction = (_index: number, item: string): string => item;
