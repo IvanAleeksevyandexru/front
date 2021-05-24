@@ -181,10 +181,43 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": "projects/epgu-constructor/.eslintrc.js",
+            "eslintConfig": "projects/children-clubs/.eslintrc.js",
             "lintFilePatterns": [
-              "projects/epgu-constructor/src/**/*.ts",
-              "projects/epgu-constructor/src/**/*.spec.ts"
+              "projects/children-clubs/src/**/*.ts",
+              "projects/children-clubs/src/**/*.spec.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run"
+        }
+      }
+    },
+    "ui-kit": {
+      "projectType": "library",
+      "root": "projects/ui-kit",
+      "sourceRoot": "projects/ui-kit/src",
+      "prefix": "ui-kit",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ui-kit/tsconfig.lib.json",
+            "project": "projects/ui-kit/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui-kit/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/ui-kit/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/ui-kit/src/**/*.ts",
+              "projects/ui-kit/src/**/*.spec.ts"
             ]
           }
         },
