@@ -328,7 +328,7 @@ export class AutocompletePrepareService {
           : dateValue;
       } else {
         dateValue = (this.datesToolsService.parse(value) as unknown) as string;
-        return isFormattedReturn
+        return isFormattedReturn && this.datesToolsService.isValid(dateValue)
           ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
           : dateValue;
       }
