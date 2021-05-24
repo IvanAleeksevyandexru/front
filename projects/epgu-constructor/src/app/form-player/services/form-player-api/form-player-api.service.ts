@@ -12,7 +12,7 @@ import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
-} from '@epgu/epgu-constructor-types';
+} from 'epgu-constructor-types';
 
 @Injectable()
 export class FormPlayerApiService {

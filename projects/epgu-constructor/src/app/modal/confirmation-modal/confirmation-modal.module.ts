@@ -5,12 +5,13 @@ import { ModalService } from '../modal.service';
 import { ConfirmationModalBaseComponent } from './confirmation-modal-base/confirmation-modal-base.component';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { BaseModule } from '../../shared/base.module';
+import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [ConfirmationModalComponent, ConfirmationModalBaseComponent],
   providers: [ModalService],
   exports: [ConfirmationModalComponent, ConfirmationModalBaseComponent],
-  imports: [BaseModule, A11yModule],
+  imports: [BaseModule, A11yModule, ScreenButtonsModule],
   entryComponents: [ConfirmationModalComponent, ConfirmationModalBaseComponent],
 })
 export class ConfirmationModalModule {}

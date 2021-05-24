@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule } from 'epgu-lib';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { MaskHandleModule } from './pipes/mask-handle/mask-handle.module';
 import { ActionModule } from './directives/action/action.module';

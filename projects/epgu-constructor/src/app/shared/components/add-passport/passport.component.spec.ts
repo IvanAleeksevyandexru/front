@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EpguLibModule, HealthService } from '@epgu/epgu-lib';
+import { EpguLibModule, HealthService } from 'epgu-lib';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -11,6 +11,7 @@ import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 import { BaseComponentsModule } from '../base-components/base-components.module';
 import { ConstructorMaskedInputModule } from '../constructor-masked-input/constructor-masked-input.module';
 import { PassportComponent } from './passport.component';
+
 
 describe('PassportComponent', () => {
   let component: PassportComponent;

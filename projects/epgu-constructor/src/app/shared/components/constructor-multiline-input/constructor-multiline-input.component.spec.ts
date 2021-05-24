@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from 'epgu-lib';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
@@ -15,7 +15,7 @@ import { ValidationTypeModule } from '../../directives/validation-type/validatio
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
 import { By } from '@angular/platform-browser';
-import { TextTransform } from '@epgu/epgu-constructor-types';
+import { TextTransform } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorMultilineInputComponent', () => {
@@ -39,7 +39,7 @@ describe('ConstructorMultilineInputComponent', () => {
         ValidationService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        DateRestrictionsService
       ],
     }).compileComponents();
   });

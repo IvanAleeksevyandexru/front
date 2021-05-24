@@ -7,12 +7,11 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ConfirmationModal } from 'epgu-constructor-types';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { PhotoRequirementsModalComponent } from '../photo-requirements-modal/photo-requirements-modal.component';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../../../../modal/modal.service';
-import { ConfirmationModal } from '../../../../../../modal/confirmation-modal/confirmation-modal.interface';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 
 @Component({

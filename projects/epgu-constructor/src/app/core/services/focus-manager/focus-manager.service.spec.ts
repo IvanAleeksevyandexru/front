@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FocusManagerService } from './focus-manager.service';
-import { EpguLibModule, PlainInputComponent, ValidationShowOn } from '@epgu/epgu-lib';
+import { EpguLibModule, PlainInputComponent, ValidationShowOn } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { FormControl } from '@angular/forms';
@@ -29,7 +29,7 @@ describe('FocusManagerService', () => {
         DateRangeService,
         DatesToolsService,
         EventBusService,
-        DateRestrictionsService,
+        DateRestrictionsService
       ],
       imports: [
         EpguLibModule,

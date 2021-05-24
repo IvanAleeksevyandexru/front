@@ -25,11 +25,7 @@ import { ComponentDictionaryFilters } from './components-list-relations.interfac
 import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
-import {
-  DictionaryConditions,
-  DictionaryFilters,
-  DictionaryValueTypes,
-} from '@epgu/epgu-constructor-types';
+import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes } from 'epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('ComponentsListRelationsService', () => {
@@ -124,7 +120,7 @@ describe('ComponentsListRelationsService', () => {
         ConfigService,
         LoggerService,
         FormBuilder,
-        DateRestrictionsService,
+        DateRestrictionsService
       ],
     });
   });
@@ -1035,7 +1031,7 @@ describe('ComponentsListRelationsService', () => {
                 relatedRel: dependentComponent.id,
                 val: 'b',
                 relation: CustomComponentRefRelation.disabled,
-              },
+              }
             ],
           },
         });
@@ -1062,9 +1058,7 @@ describe('ComponentsListRelationsService', () => {
 
         // эта функция будет вызываться 2 раза, первый раз должна вернуть FALSE, второй раз она используется в приватной функции
         // componentHasAnyDisabledRefsWithSameValue() и должна вернуть TRUE, поэтому вместо mockReturnValue сделал mockImplementation
-        jest
-          .spyOn(refRelationService, 'isValueEquals')
-          .mockImplementation((a: unknown, b: unknown) => a === b);
+        jest.spyOn(refRelationService, 'isValueEquals').mockImplementation((a: unknown, b: unknown) => a === b);
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
@@ -1201,7 +1195,7 @@ describe('ComponentsListRelationsService', () => {
       expect(service.hasRelation(componentMock, cachedAnswers)).toBe(true);
     });
     it('should return false, if component has no identic relation', () => {
-      const component = { ...componentMock, attrs: { ref: [] }};
+      const component = { ...componentMock,  attrs: { ref: [] }};
       expect(service.hasRelation(component, cachedAnswers)).toBe(false);
     });
   });
@@ -1371,14 +1365,12 @@ describe('ComponentsListRelationsService', () => {
 
   describe('onAfterFilterOnRel()', () => {
     const setup = (
-      references = [
-        {
-          relatedRel: componentMock.id,
-          val: '*',
-          relation: 'filterOn',
-          dictionaryFilter: [],
-        },
-      ],
+      references = [{
+        relatedRel: componentMock.id,
+        val: '*',
+        relation: 'filterOn',
+        dictionaryFilter: [],
+      }],
     ) => {
       const dependentComponent = {
         id: 'acc_org',
@@ -1441,21 +1433,19 @@ describe('ComponentsListRelationsService', () => {
         {
           relatedRel: componentMock.id,
           val: '',
-          relation: 'displayOff',
+          relation: 'displayOff'
         },
         {
           relatedRel: componentMock.id,
           val: '*',
           relation: 'filterOn',
-          dictionaryFilter: [
-            {
-              attributeName: 'section',
-              condition: 'EQUALS',
-              value: 'id',
-              valueType: 'preset',
-            },
-          ],
-        },
+          dictionaryFilter: [{
+            attributeName: 'section',
+            condition: 'EQUALS',
+            value: 'id',
+            valueType: 'preset'
+          }]
+        }
       ];
       const refsExpected = JSON.parse(JSON.stringify(refs));
       const { dependentControl, control, mockForm, dependentComponent } = setup(refs);

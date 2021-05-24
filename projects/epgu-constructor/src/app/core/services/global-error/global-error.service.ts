@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injectable } from '@angular/core';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from 'epgu-lib';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore } from '../../../screen/screen.types';
 import { LoggerService } from '../logger/logger.service';
@@ -38,7 +38,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       if (this.hasOrderId(store)) {
         orderId = this.utils.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
       }
-
+      
       let errorParams = {
         clientError: error.message ? error.message : error.toString(),
         id: store?.display?.id,

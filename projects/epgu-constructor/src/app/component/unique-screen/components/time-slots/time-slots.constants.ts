@@ -1,4 +1,4 @@
-import { ConfirmationModal } from '../../../../modal/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationModal } from 'epgu-constructor-types';
 
 export class TimeSlotsConstants {
   errorModal: ConfirmationModal = {

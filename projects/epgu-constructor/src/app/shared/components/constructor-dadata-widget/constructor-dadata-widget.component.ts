@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from 'epgu-lib/lib/models/validation-show';
 import { AbstractControl } from '@angular/forms';
 import {
   ISuggestionItem,

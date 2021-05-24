@@ -3,7 +3,7 @@ import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto } from 'epgu-constructor-types';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
@@ -22,11 +22,13 @@ export const componentsNoCache: Array<string> = [
 
 @Injectable()
 export class CachedAnswersService {
+
   private localStorageKey = 'cachedAnswers';
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(private localStorageService: LocalStorageService) {
+  }
 
-  getCachedValueById(answers: CachedAnswers, id: string): string | null {
+  getCachedValueById(answers: CachedAnswers, id: string): string | null{
     return answers[id]?.value || null;
   }
 
@@ -59,10 +61,7 @@ export class CachedAnswersService {
 
     if (allComponentsState) {
       delete allComponentsState[id];
-      this.localStorageService.set<Record<string, unknown>>(
-        this.localStorageKey,
-        allComponentsState,
-      );
+      this.localStorageService.set<Record<string, unknown>>(this.localStorageKey, allComponentsState);
     }
   }
 
@@ -88,7 +87,7 @@ export class CachedAnswersService {
 
       for (const childCache of parsedValue) {
         for (const childComponentId in childCache) {
-          const childComponent = childComponents.find((item) => item.id === childComponentId);
+          const childComponent = childComponents.find(item => item.id === childComponentId);
           if (childComponent?.type === CustomScreenComponentTypes.SnilsInput) {
             childCache[childComponentId] = childCache[childComponentId].snils;
           }

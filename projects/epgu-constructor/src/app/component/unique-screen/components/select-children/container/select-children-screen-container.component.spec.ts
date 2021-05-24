@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from 'epgu-lib';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { MockComponent } from 'ng-mocks';
@@ -30,7 +30,7 @@ import { ActionService } from '../../../../../shared/directives/action/action.se
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { configureTestSuite } from 'ng-bullet';
-import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
+import { CachedAnswersDto } from 'epgu-constructor-types';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;

@@ -1,4 +1,4 @@
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from 'epgu-lib/lib/models/dropdown.model';
 
 export enum ItemStatus {
   invalid = 'INVALID',

@@ -1,6 +1,7 @@
 <epgu-constructor-long-button
   [data]="data"
   [isLoading]="screenService.isLoading$ | async"
+  [disabled]="data.disabled"
   class="answer-btn"
 >
   <div class="answer-btn__container">
@@ -10,10 +11,14 @@
       <lib-question-help-tip [questionTip]="data?.hint"></lib-question-help-tip>
     </span>
     <span class="answer-btn__icon">
-      <span class="icon-loading" *ngIf="isShown(data?.value)">
-        <lib-throbber-hexagon [size]="'medium'"></lib-throbber-hexagon>
+      <span *ngIf="isShown(data?.value)">
+        <lib-round-loader></lib-round-loader>
       </span>
-      <span class="icon-arrow" *ngIf="!isShown(data?.value)"></span>
+      <span
+        class="icon-arrow"
+        *ngIf="!isShown(data?.value)"
+        [ngClass]="{ disabled: data.disabled }"
+      ></span>
     </span>
   </div>
   <div *ngIf="data?.description" class="answer-btn__description">{{ data.description }}</div>

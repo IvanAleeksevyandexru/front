@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto } from 'epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
 import { ModalBaseComponent } from '../../shared/modal-base/modal-base.component';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';

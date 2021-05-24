@@ -7,9 +7,9 @@ import { ComponentAnswerDto } from './qustion-component-answer';
 import { ComponentDictionaryFilterDto, DictionaryOptions } from './dictionary';
 import { TextTransform } from './text-transform';
 import { ConfirmUserDataStyle } from './confirm-user-data';
-import { ConfirmationModal } from './confirmation-modal';
 import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
+import { ConfirmationModal } from '../modal';
 
 export interface ComponentAttrsDto {
   actions?: Array<ComponentActionDto>;
@@ -244,6 +244,7 @@ export interface ComponentDateTimeDto {
   value: string;
   required: boolean;
   hidden: boolean;
+  maxDate?: string;
 }
 
 export interface ComponentUploadedFileDto {

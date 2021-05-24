@@ -1,5 +1,5 @@
 import { ScreenTypes } from '../../screen/screen.types';
-import { DisplayDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { DisplayDto, ActionType, DTOActionAction } from 'epgu-constructor-types';
 
 const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
   id: 'finishscreen_expire_order_error',
@@ -11,13 +11,12 @@ const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
     {
       id: 'finishcomponent_expire_order_error',
       type: 'HtmlString',
-      label:
-        // eslint-disable-next-line max-len
-        '<div class="text--center"><img src=\'{staticDomainAssetsPath}/assets/icons/svg/warn.svg\' /></div><h4 class="text--center">Ссылка устарела</h4><p class=\'text-color--text-helper text--center mt-16\'>Когда-то эта ссылка принесла пользу, но теперь не работает</p>',
+      // eslint-disable-next-line max-len
+      label: '<div class=\"text--center\"><img src=\'{staticDomainAssetsPath}/assets/icons/svg/warn.svg\' /></div><h4 class=\"text--center\">Ссылка устарела</h4><p class=\'text-color--text-helper text--center mt-16\'>Когда-то эта ссылка принесла пользу, но теперь не работает</p>',
       attrs: {},
       value: '',
-      required: true,
-    },
+      required: true
+    }
   ],
   infoComponents: [],
   terminal: true,
@@ -26,10 +25,10 @@ const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
       label: 'На главную',
       value: 'На главную',
       type: ActionType.home,
-      action: DTOActionAction.getNextStep,
-    },
+      action: DTOActionAction.getNextStep
+    }
   ],
-  firstScreen: false,
+  firstScreen: false
 };
 
 export default EXPIRE_ORDER_ERROR_DISPLAY;

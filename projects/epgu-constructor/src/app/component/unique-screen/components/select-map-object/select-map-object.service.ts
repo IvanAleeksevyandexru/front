@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
-import { YaMapService } from '@epgu/epgu-lib';
+import { YaMapService } from 'epgu-lib';
 import { Icons } from './constants';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.interface';
@@ -11,10 +11,7 @@ import {
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { filter } from 'rxjs/operators';
-import {
-  ComponentBaloonContentDto,
-  ComponentDictionaryFilterDto,
-} from '@epgu/epgu-constructor-types';
+import { ComponentBaloonContentDto, ComponentDictionaryFilterDto } from 'epgu-constructor-types';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -318,40 +315,42 @@ export class SelectMapObjectService implements OnDestroy {
       return;
     }
     const serviceContext = this;
-    const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass('', {
-      // Переопределяем функцию build, чтобы при создании макета начинать
-      // слушать событие click на кнопке
-      build: function () {
-        // Сначала вызываем метод build родительского класса.
-        customBalloonContentLayout.superclass.build.call(this);
-        serviceContext.mapEvents = this.events;
-      },
+    const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass('',
+      {
+        // Переопределяем функцию build, чтобы при создании макета начинать
+        // слушать событие click на кнопке
+        build: function () {
+          // Сначала вызываем метод build родительского класса.
+          customBalloonContentLayout.superclass.build.call(this);
+          serviceContext.mapEvents = this.events;
+        },
 
-      clear: function () {
-        customBalloonContentLayout.superclass.clear.call(this);
-      },
+        clear: function () {
+          customBalloonContentLayout.superclass.clear.call(this);
+        },
 
-      applyElementOffset: function () {
-        const balloon = this.getParentElement().querySelector('.map-baloon');
-        balloon.style.left = -(balloon.offsetWidth / 2) + 'px';
-        balloon.style.top = -(balloon.offsetHeight + 15) + 'px';
-      },
+        applyElementOffset: function () {
+          const balloon = this.getParentElement().querySelector('.map-baloon');
+          balloon.style.left = -(balloon.offsetWidth / 2) + 'px';
+          balloon.style.top = -(balloon.offsetHeight + 15) + 'px';
+        },
 
-      onClick: function (e: Event) {
-        e.preventDefault();
-        const objectId = (e.target as Element).getAttribute('data-objectid');
-        let checkedId = objectId || this.activePlacemark.id.toString();
-        if (checkedId) {
-          const item = serviceContext.objectManager.objects.getById(checkedId).properties.res;
-          serviceContext.selectedValue.next(item);
-        }
-      },
+        onClick: function (e: Event) {
+          e.preventDefault();
+          const objectId = (e.target as Element).getAttribute('data-objectid');
+          let checkedId = objectId || this.activePlacemark.id.toString();
+          if (checkedId) {
+            const item = serviceContext.objectManager.objects.getById(checkedId).properties.res;
+            serviceContext.selectedValue.next(item);
+          }
+        },
 
-      onCloseClick: function (e: Event) {
-        e.preventDefault();
-        this.events.fire('userclose');
-      },
-    });
+        onCloseClick: function (e: Event) {
+          e.preventDefault();
+          this.events.fire('userclose');
+        },
+      }
+    );
     return customBalloonContentLayout;
   }
 }
