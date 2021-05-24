@@ -6,11 +6,10 @@ import { NavigationPayload } from '../../form-player/form-player.types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenTypes } from '../screen.types';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

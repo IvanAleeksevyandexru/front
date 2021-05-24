@@ -6,7 +6,6 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenTypes } from '../screen.types';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
 import { RepeatableScreenComponent } from './repeatable-screen.component';
 import { BaseModule } from '../../shared/base.module';
@@ -26,7 +25,7 @@ import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
-import { DisplayDto } from '@epgu/epgu-constructor-types';
+import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
