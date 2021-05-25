@@ -3,11 +3,11 @@ module.exports = {
   rules: {
     '@angular-eslint/directive-selector': [
       'error',
-      { type: 'attribute', prefix: 'ui-kit', style: 'kebab-case' },
+      { type: 'attribute', prefix: 'epgu-cf-ui', style: 'kebab-case' },
     ],
     '@angular-eslint/component-selector': [
       'error',
-      { type: 'element', prefix: 'ui-kit', style: 'kebab-case' },
+      { type: 'element', prefix: 'epgu-cf-ui', style: 'kebab-case' },
     ],
     semi: 'off',
     '@typescript-eslint/semi': ['error'],
