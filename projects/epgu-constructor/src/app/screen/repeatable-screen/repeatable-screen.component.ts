@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
-import { DisplayDto, ScenarioErrorsDto } from 'epgu-constructor-types';
+import { DisplayDto, ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -24,7 +24,6 @@ import {
   removeItemFromArrByIndex,
   StateStatus,
 } from './repeatable-screen.constant';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
@@ -47,6 +46,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
    * Словарь для хранения массива компонентов
    */
   screens: { [key: string]: CustomComponent[] };
+  screensBuf: { [key: string]: CustomComponent[] };
   propData: DisplayDto;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить данные'),
@@ -92,7 +92,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     public screenService: ScreenService,
     private cdr: ChangeDetectorRef,
     private eventBusService: EventBusService,
-    private navigationService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
   ) {}
@@ -103,10 +102,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
-
-    this.navigationService.nextStep$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
-    });
   }
 
   trackByFunction = (_index: number, item: string): string => item;
@@ -186,7 +181,30 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       );
 
     if (isDuplicate) {
-      this.setNewScreen(getScreenComponents(attrs.components, false));
+      // костыль, нужен, чтобы не терялись поля, не являющиеся примитивом
+      // полностью пересоздаем весь набор скринов для сохранения ссылочной структуры
+      this.screensBuf = { ...this.screens };
+      this.screens = {};
+      let iterator = 0;
+
+      Object.keys(this.screensBuf).forEach((key) => {
+        if (this.screensBuf[key]) {
+          this.screensBuf[key].forEach((screen) => {
+            screen.value = this.getState()[iterator][screen.id]; // eslint-disable-line no-param-reassign
+          });
+          this.setNewScreen(getScreenComponents(this.screensBuf[key], iterator < 0));
+          iterator += 1;
+        }
+      });
+
+      // важно, чтобы новый скрин не был перезаписан
+      const components = getScreenComponents(attrs.components, false).map((component) => ({
+        ...component,
+      }));
+      components.forEach((component) => {
+        component.value = ''; // eslint-disable-line no-param-reassign
+      });
+      this.setNewScreen(components);
       return;
     }
 

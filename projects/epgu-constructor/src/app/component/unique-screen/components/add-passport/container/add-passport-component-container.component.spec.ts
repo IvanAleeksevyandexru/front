@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from 'epgu-lib';
+import { HealthService } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';

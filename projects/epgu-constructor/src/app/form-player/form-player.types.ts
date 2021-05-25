@@ -1,4 +1,8 @@
-import { Answer, FormPlayerApiSuccessResponse, ComponentActionDto } from 'epgu-constructor-types';
+import {
+  Answer,
+  FormPlayerApiSuccessResponse,
+  ComponentActionDto,
+} from '@epgu/epgu-constructor-types';
 
 export interface QueryParams {
   [key: string]: string;

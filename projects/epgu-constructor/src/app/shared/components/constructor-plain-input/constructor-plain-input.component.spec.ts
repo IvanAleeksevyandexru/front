@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
@@ -17,7 +17,7 @@ import { TrimModule } from '../../directives/trim/trim.module';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
-import { TextTransform } from 'epgu-constructor-types';
+import { TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 
 describe('ConstructorPlainInputComponent', () => {
@@ -44,7 +44,7 @@ describe('ConstructorPlainInputComponent', () => {
         DateRangeService,
         DatesToolsService,
         UnsubscribeService,
-        DateRestrictionsService
+        DateRestrictionsService,
       ],
     }).compileComponents();
   });

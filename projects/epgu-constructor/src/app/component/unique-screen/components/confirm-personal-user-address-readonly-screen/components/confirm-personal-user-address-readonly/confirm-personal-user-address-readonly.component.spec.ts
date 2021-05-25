@@ -13,7 +13,7 @@ import { UniqueScreenComponentTypes } from '../../../../unique-screen-components
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
-import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from 'epgu-lib';
+import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
@@ -22,7 +22,7 @@ import { LabelComponent } from '../../../../../../shared/components/base-compone
 import { HelperTextComponent } from '../../../../../../shared/components/base-components/helper-text/helper-text.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
-import { ActionType, ComponentActionDto } from 'epgu-constructor-types';
+import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
@@ -34,13 +34,13 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       fields: [
         {
           fieldName: 'regAddr' as FieldNames,
-          label: 'Адрес'
+          label: 'Адрес',
         },
         {
           fieldName: 'regDate' as FieldNames,
           label: 'Дата регистрации',
-          hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ'
-        }
+          hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ',
+        },
       ],
     },
     id: '',
@@ -83,14 +83,15 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        DatesToolsService
+        DatesToolsService,
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   function setup(data: ConfirmAddressInterface = mockData) {
-    const fixture: ComponentFixture<ConfirmPersonalUserAddressReadonlyComponent> = TestBed.createComponent(ConfirmPersonalUserAddressReadonlyComponent);
+    const fixture: ComponentFixture<ConfirmPersonalUserAddressReadonlyComponent> = TestBed.createComponent(
+      ConfirmPersonalUserAddressReadonlyComponent,
+    );
     const component: ConfirmPersonalUserAddressReadonlyComponent = fixture.componentInstance;
     const screenService: ScreenService = TestBed.inject(ScreenService);
     const currentAnswersService: CurrentAnswersService = TestBed.inject(CurrentAnswersService);
@@ -116,7 +117,9 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       component.ngOnInit();
 
       expect(component.valueParsed).toEqual({ regAddr: 'Some addr', regDate: '' });
-      expect(currentAnswersService.state).toEqual(JSON.stringify({ regAddr: 'Some addr', regDate: '' }));
+      expect(currentAnswersService.state).toEqual(
+        JSON.stringify({ regAddr: 'Some addr', regDate: '' }),
+      );
     });
 
     it('should update values and currentAnswersService state on receive value changes with date', () => {
@@ -124,12 +127,16 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
 
       const datesToolsService: DatesToolsService = TestBed.inject(DatesToolsService);
       jest.spyOn(datesToolsService, 'format').mockImplementation((value: string) => value);
-      jest.spyOn(component.form.valueChanges, 'pipe').mockReturnValue(of({ regAddr: 'Some addr', regDate: '2021-05-11' }));
+      jest
+        .spyOn(component.form.valueChanges, 'pipe')
+        .mockReturnValue(of({ regAddr: 'Some addr', regDate: '2021-05-11' }));
 
       component.ngOnInit();
 
       expect(component.valueParsed).toEqual({ regAddr: 'Some addr', regDate: '2021-05-11' });
-      expect(currentAnswersService.state).toEqual(JSON.stringify({ regAddr: 'Some addr', regDate: '2021-05-11' }));
+      expect(currentAnswersService.state).toEqual(
+        JSON.stringify({ regAddr: 'Some addr', regDate: '2021-05-11' }),
+      );
     });
   });
 
@@ -137,7 +144,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
     it('init with empty value', () => {
       const { fixture, component, currentAnswersService } = setup({
         ...mockData,
-        value: null
+        value: null,
       });
 
       component.ngOnInit();
@@ -149,15 +156,18 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
     it('init with some value', () => {
       const { component, currentAnswersService } = setup({
         ...mockData,
-        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' })
+        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' }),
       });
 
       component.ngOnInit();
 
       expect(currentAnswersService.isValid).toBeTruthy();
-      expect(component.valueParsed.regAddr).toEqual( 'Some addr' );
-      expect(typeof component.valueParsed.regDate).toEqual( 'object' );
-      expect(JSON.parse(currentAnswersService.state as string)).toEqual({ regAddr: 'Some addr', regDate: '11.05.2021' });
+      expect(component.valueParsed.regAddr).toEqual('Some addr');
+      expect(typeof component.valueParsed.regDate).toEqual('object');
+      expect(JSON.parse(currentAnswersService.state as string)).toEqual({
+        regAddr: 'Some addr',
+        regDate: '11.05.2021',
+      });
     });
 
     it('should not init field with value when it does not exists at fields', () => {
@@ -165,12 +175,14 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         ...mockData,
         attrs: {
           ...mockData.attrs,
-          fields: [{
-            fieldName: 'regAddr' as FieldNames,
-            label: 'Адрес'
-          }]
+          fields: [
+            {
+              fieldName: 'regAddr' as FieldNames,
+              label: 'Адрес',
+            },
+          ],
         },
-        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' })
+        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' }),
       });
 
       component.ngOnInit();

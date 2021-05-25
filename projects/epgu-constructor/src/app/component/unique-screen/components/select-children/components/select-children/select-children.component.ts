@@ -18,7 +18,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'lodash';
-import { ScenarioErrorsDto, ComponentDto } from 'epgu-constructor-types';
+import { ScenarioErrorsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CustomComponentOutputData } from '../../../../../custom-screen/components-list.types';

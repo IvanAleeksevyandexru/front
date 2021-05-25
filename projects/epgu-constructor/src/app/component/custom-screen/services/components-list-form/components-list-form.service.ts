@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { ListItem } from 'epgu-lib';
-import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { ListItem } from '@epgu/epgu-lib';
+import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
@@ -32,7 +32,7 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ScenarioErrorsDto, DictionaryConditions } from 'epgu-constructor-types';
+import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -140,7 +140,8 @@ export class ComponentsListFormService {
 
     if (hasDefaultIndex && noValue && isDropdownLike) {
       this.patchDropDownLikeWithDefaultIndex(component, control, defaultIndex);
-    } else if (hasDefaultIndex && isDropDownDepts) { // DropDownDepts has value as address
+    } else if (hasDefaultIndex && isDropDownDepts) {
+      // DropDownDepts has value as address
       this.patchDropDownDeptsValue(component, control, defaultIndex);
     } else if (hasDefaultIndex && noValue && !isDropdownLike) {
       this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
@@ -394,7 +395,11 @@ export class ComponentsListFormService {
     return 'change';
   }
 
-  private patchDropDownLikeWithDefaultIndex(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+  private patchDropDownLikeWithDefaultIndex(
+    component: CustomComponent,
+    control: AbstractControl,
+    defaultIndex: number,
+  ): void {
     const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
     const key: string = component.id;
     const value: ListItem = dicts[key] && dicts[key][defaultIndex];
@@ -402,7 +407,11 @@ export class ComponentsListFormService {
     control.get('value').patchValue(value);
   }
 
-  private patchDictionaryLikeWithDefaultIndex(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+  private patchDictionaryLikeWithDefaultIndex(
+    component: CustomComponent,
+    control: AbstractControl,
+    defaultIndex: number,
+  ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
     const key: string = utils.getDictKeyByComp(component);
     const value: ListItem = dicts[key]?.list[defaultIndex];
@@ -410,7 +419,11 @@ export class ComponentsListFormService {
     control.get('value').patchValue(value);
   }
 
-  private patchDropDownDeptsValue(component: CustomComponent, control: AbstractControl, defaultIndex: number): void {
+  private patchDropDownDeptsValue(
+    component: CustomComponent,
+    control: AbstractControl,
+    defaultIndex: number,
+  ): void {
     const lockedValue = component.attrs?.lockedValue;
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
     const key: string = utils.getDictKeyByComp(component);
@@ -422,7 +435,11 @@ export class ComponentsListFormService {
     }
   }
 
-  private patchDictionaryLikeWithDefaultValue(component: CustomComponent, control: AbstractControl, defaultValue: string | number): void {
+  private patchDictionaryLikeWithDefaultValue(
+    component: CustomComponent,
+    control: AbstractControl,
+    defaultValue: string | number,
+  ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
     const key: string = utils.getDictKeyByComp(component);
     const value: ListItem = dicts[key]?.list.find(({ id }) => id === defaultValue);

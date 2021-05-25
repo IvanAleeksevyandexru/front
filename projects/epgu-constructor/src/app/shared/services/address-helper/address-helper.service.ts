@@ -3,7 +3,7 @@ import { from, Observable, of } from 'rxjs';
 import { concatMap, filter, pluck, reduce } from 'rxjs/operators';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { DadataSuggestionsAddress } from '../dictionary/dictionary-api.types';
-import { LookupPartialProvider, LookupProvider } from 'epgu-lib/lib/models/dropdown.model';
+import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 
 export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddress {
   id: string;
@@ -14,7 +14,10 @@ export interface DadataSuggestionsAddressForLookup extends DadataSuggestionsAddr
 export class AddressHelperService {
   constructor(private dictionaryApiService: DictionaryApiService) {}
 
-  public getProvider(searchType: string = 'city', cityFilter?: string[]): LookupProvider | LookupPartialProvider {
+  public getProvider(
+    searchType: string = 'city',
+    cityFilter?: string[],
+  ): LookupProvider | LookupPartialProvider {
     const providers = {
       city: {
         search: (searchString: string): Observable<DadataSuggestionsAddressForLookup[]> => {

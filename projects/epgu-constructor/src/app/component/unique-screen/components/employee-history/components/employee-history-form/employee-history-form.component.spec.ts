@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RadioComponent } from 'epgu-lib';
+import { RadioComponent } from '@epgu/epgu-lib';
 import { MockComponents, MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { MonthYear } from 'epgu-lib';
+import { MonthYear } from '@epgu/epgu-lib';
 
 import { EmployeeHistoryFormComponent } from './employee-history-form.component';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
@@ -35,7 +35,7 @@ import { DateRangeService } from '../../../../../../shared/services/date-range/d
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
-import { Gender, TextTransform } from 'epgu-constructor-types';
+import { Gender, TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';

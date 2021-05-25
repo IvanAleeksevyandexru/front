@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ListItem } from 'epgu-lib';
+import { ListItem } from '@epgu/epgu-lib';
 
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { VehicleOwnerInfo } from '../../models/car-list.interface';
 
 @Component({
