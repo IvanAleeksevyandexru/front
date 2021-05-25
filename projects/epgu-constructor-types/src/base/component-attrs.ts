@@ -119,6 +119,7 @@ export interface ComponentAttrsDto {
   startSection?: string;
   isMonthsRangeVisible?: boolean;
   isSelectButtonHidden?: boolean;
+  expandAllChildrenBlocks?: boolean;
 }
 
 export interface IMvdFilter {
