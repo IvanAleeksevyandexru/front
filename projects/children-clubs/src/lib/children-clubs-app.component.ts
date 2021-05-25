@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'children-clubs-children-clubs',
+  selector: 'children-clubs-app',
   template: `
     <p>
-      children-clubs works!
+      children-clubs app works!
     </p>
   `,
   styles: [],
 })
-export class ChildrenClubsComponent implements OnInit {
+export class ChildrenClubsAppComponent implements OnInit {
   ngOnInit(): void {}
 }

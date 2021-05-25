@@ -1,0 +1,15 @@
+@import '../../../projects/epgu-constructor/src/styles/core';
+
+:host {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+}
+
+.portal-new-sf-player {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  width: 100%;
+}

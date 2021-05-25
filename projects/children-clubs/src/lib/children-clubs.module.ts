@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { ChildrenClubsComponent } from './children-clubs.component';
+import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 
 
 
 @NgModule({
-  declarations: [ChildrenClubsComponent],
+  declarations: [ChildrenClubsAppComponent],
   imports: [
   ],
-  exports: [ChildrenClubsComponent]
+  exports: [ChildrenClubsAppComponent]
 })
 export class ChildrenClubsModule { }

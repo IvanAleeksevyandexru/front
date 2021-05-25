@@ -5,6 +5,7 @@
   "allowedNonPeerDependencies": [
     "@epgu/epgu-lib",
     "@epgu/epgu-constructor-types",
+    "@epgu/epgu-constructor-ui-kit",
     "ics",
     "@alyle/ui",
     "angular-resize-event",
@@ -25,6 +26,7 @@
       "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
       "@epgu/epgu-lib": "@epgu/epgu-lib",
       "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
+      "@epgu/epgu-constructor-ui-kit": "@epgu/epgu-constructor-ui-kit",
       "ics": "ics",
       "@alyle/ui": "@alyle/ui",
       "@alyle/ui/image-cropper": "i4$1",
