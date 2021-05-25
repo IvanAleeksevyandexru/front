@@ -36,7 +36,7 @@
       </form>
 
       <div class="invitation__inner-footer">
-        <lib-button (click)="sendEmail()" [disabled]="!email.valid">{{
+        <lib-button (click)="sendEmail()" [disabled]="!email.valid || !email.value">{{
           data.attrs.sendEmailLabel || 'Отправить'
           }}</lib-button>
       </div>
