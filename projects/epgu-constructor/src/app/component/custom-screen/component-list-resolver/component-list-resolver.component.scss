@@ -2,4 +2,5 @@
 
 :host {
   @include flex-container();
+  justify-content: flex-end;
 }
