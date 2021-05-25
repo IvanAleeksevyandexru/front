@@ -12,7 +12,7 @@
     "build": "ng build --configuration production",
     "lib:type:build": "cd ./projects/epgu-constructor-types && yarn build",
     "lib:children-clubs": "ng build children-clubs --prod",
-    "lib:ui-kit": "ng build ui-kit --prod",
+    "lib:ui-kit": "ng build epgu-constructor-ui-kit --prod",
     "lib:build": "ng build epgu-constructor --prod",
     "lib:build:ivy": "ng build epgu-constructor",
     "lib:watch": "lerna run watch --parallel",

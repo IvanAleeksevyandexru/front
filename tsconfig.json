@@ -10,9 +10,9 @@
         "dist/children-clubs/children-clubs",
         "dist/children-clubs"
       ],
-      "ui-kit": [
-        "dist/ui-kit/ui-kit",
-        "dist/ui-kit"
+      "epgu-constructor-ui-kit": [
+        "dist/epgu-constructor-ui-kit/epgu-cf-ui-kit",
+        "dist/epgu-constructor-ui-kit"
       ]
     }
   },
