@@ -45,6 +45,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
    * Словарь для хранения массива компонентов
    */
   screens: { [key: string]: CustomComponent[] };
+  screensBuf: { [key: string]: CustomComponent[] };
   propData: DisplayDto;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить данные'),
@@ -179,7 +180,30 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       );
 
     if (isDuplicate) {
-      this.setNewScreen(getScreenComponents(attrs.components, false));
+      // костыль, нужен, чтобы не терялись поля, не являющиеся примитивом
+      // полностью пересоздаем весь набор скринов для сохранения ссылочной структуры
+      this.screensBuf = { ...this.screens };
+      this.screens = {};
+      let iterator = 0;
+
+      Object.keys(this.screensBuf).forEach((key) => {
+        if (this.screensBuf[key]) {
+          this.screensBuf[key].forEach((screen) => {
+            screen.value = this.getState()[iterator][screen.id]; // eslint-disable-line no-param-reassign
+          });
+          this.setNewScreen(getScreenComponents(this.screensBuf[key], iterator < 0));
+          iterator += 1;
+        }
+      });
+
+      // важно, чтобы новый скрин не был перезаписан
+      const components = getScreenComponents(attrs.components, false).map((component) => ({
+        ...component,
+      }));
+      components.forEach((component) => {
+        component.value = ''; // eslint-disable-line no-param-reassign
+      });
+      this.setNewScreen(components);
       return;
     }
 
