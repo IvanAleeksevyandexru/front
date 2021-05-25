@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FpContainerComponent } from './fp-container/fp-container.component'
 import { ConfigComponent } from './config/config.component'
+import { ChildrenClubsContainerComponent } from './children-clubs-container/children-clubs-container.component'
 
 
 const routes: Routes = [
@@ -13,7 +14,11 @@ const routes: Routes = [
   {
     path: 'config',
     component: ConfigComponent
-  }
+  },
+  {
+    path: 'spa/children-clubs',
+    component: ChildrenClubsContainerComponent
+  },
 ];
 
 @NgModule({
