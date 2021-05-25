@@ -164,7 +164,7 @@ export class HealthInterceptor implements HttpInterceptor {
           this.isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
           if (this.isValidScenarioDto(responseBody)) {
-            const { scenarioDto, health, callBackOrderId } = responseBody;
+            const { scenarioDto, callBackOrderId } = responseBody;
             const { display } = scenarioDto;
             const { components } = display;
 
