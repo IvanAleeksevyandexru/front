@@ -4,7 +4,7 @@ import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 
 import { ComponentValue } from '../logic.types';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit/src/public-api';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()

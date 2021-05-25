@@ -26,8 +26,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 
 const displayMock = {

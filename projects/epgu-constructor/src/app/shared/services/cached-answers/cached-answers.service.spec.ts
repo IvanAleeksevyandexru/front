@@ -2,8 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CachedAnswersService } from './cached-answers.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
 
 describe('CachedAnswersService', () => {
   let service: CachedAnswersService;

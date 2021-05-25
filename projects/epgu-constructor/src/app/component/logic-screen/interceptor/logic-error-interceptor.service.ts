@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { isNil as _isNil } from 'lodash';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit/src/public-api';
 
 @Injectable()
 export class LogicErrorInterceptor implements HttpInterceptor {

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguCfUiKitModule } from '@epgu/epgu-constructor-ui-kit/src/public-api';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { MaskHandleModule } from './pipes/mask-handle/mask-handle.module';
 import { ActionModule } from './directives/action/action.module';
@@ -20,6 +21,7 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     CommonModule,
     ReactiveFormsModule,
     EpguLibModuleInited,
+    EpguCfUiKitModule,
     PerfectScrollbarModule,
     MaskHandleModule,
     ActionModule,
@@ -32,6 +34,7 @@ export const EpguLibModuleInited = EpguLibModule.forRoot();
     CommonModule,
     ReactiveFormsModule,
     EpguLibModule,
+    EpguCfUiKitModule,
     PerfectScrollbarModule,
     MaskHandleModule,
     ActionModule,

@@ -3,3 +3,4 @@
  */
 
 export * from './lib/epgu-cf-ui-kit.module';
+export * from './lib/services';

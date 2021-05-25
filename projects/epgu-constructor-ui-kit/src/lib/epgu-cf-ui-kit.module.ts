@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
   declarations: [],
   imports: [
   ],
-  exports: []
+  exports: [],
+  providers: []
 })
 export class EpguCfUiKitModule { }
