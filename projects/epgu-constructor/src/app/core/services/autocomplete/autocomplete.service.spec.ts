@@ -278,7 +278,7 @@ describe('AutocompleteService', () => {
   describe('resetComponentsSuggestionsMap()', () => {
     it('should reset componentsSuggestionsMap and suggestionGroupId', () => {
       service['resetComponentsSuggestionsMap']();
-      expect(service.componentsSuggestionsMap).toEqual({});
+      expect(service.componentsSuggestionsSet).toEqual(new Set());
       expect(service.suggestionGroupId).toBeNull();
     });
   });
@@ -306,7 +306,7 @@ describe('AutocompleteService', () => {
       display.components[0].suggestionId = 'prev_region';
       service.init();
       service.repeatableComponents.length = 0;
-      service.componentsSuggestionsMap['prev_region'] = 'pd8';
+      service.componentsSuggestionsSet['prev_region'] = 'pd8';
       expect(service['getComponentsSuggestionsFieldsIds'](display)).toEqual(['prev_region']);
     });
   });

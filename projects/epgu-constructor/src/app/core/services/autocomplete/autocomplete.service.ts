@@ -25,7 +25,7 @@ import { TerraFileOptions } from '../terra-byte-api/terra-byte-api.types';
 
 @Injectable()
 export class AutocompleteService {
-  componentsSuggestionsMap: { [key: string]: string } = {};
+  componentsSuggestionsSet: Set<[string, string]> = new Set();
   suggestionGroupId: string = null;
   repeatableComponents: Array<Array<ComponentDto>> = [];
   parentComponent: ComponentDto = null;
@@ -131,7 +131,7 @@ export class AutocompleteService {
       .on('suggestionSelectedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
-        let { mnemonic, value, id, componentsGroupIndex } = payload;
+        let { value, id, componentsGroupIndex } = payload;
 
         // с помощью автоподстановки будут заполнены некоторые компоненты.
         // для того, чтобы остальные компоненты не потеряли свои значения мы
@@ -139,13 +139,11 @@ export class AutocompleteService {
         this.autocompletePrepareService.loadValuesFromCurrentAnswer(this.repeatableComponents);
 
         if (this.suggestionGroupId) {
-          Object.keys(this.screenService.suggestions).forEach((componentId: string) => {
-            mnemonic = this.screenService.suggestions[componentId].mnemonic;
+          Object.keys(this.screenService.suggestions).forEach(() => {
             this.autocompletePrepareService.findAndUpdateComponentWithValue(
               this.repeatableComponents,
-              this.componentsSuggestionsMap,
+              this.componentsSuggestionsSet,
               this.parentComponent,
-              mnemonic,
               value,
               id,
               componentsGroupIndex,
@@ -154,9 +152,8 @@ export class AutocompleteService {
         } else {
           this.autocompletePrepareService.findAndUpdateComponentWithValue(
             this.repeatableComponents,
-            this.componentsSuggestionsMap,
+            this.componentsSuggestionsSet,
             this.parentComponent,
-            mnemonic,
             value,
             null,
             componentsGroupIndex,
@@ -224,7 +221,7 @@ export class AutocompleteService {
       .subscribe((suggestions: ISuggestionApi[]) => {
         this.autocompletePrepareService.formatAndPassDataToSuggestions(
           this.repeatableComponents,
-          this.componentsSuggestionsMap,
+          this.componentsSuggestionsSet,
           suggestions,
         );
         this.autocompleteAutofillService.autofillIfNeeded(this.parentComponent);
@@ -237,7 +234,7 @@ export class AutocompleteService {
       .subscribe((suggestions: ISuggestionApi[]) => {
         this.autocompletePrepareService.formatAndPassDataToSuggestions(
           this.repeatableComponents,
-          this.componentsSuggestionsMap,
+          this.componentsSuggestionsSet,
           suggestions,
         );
         this.autocompleteAutofillService.autofillIfNeeded(this.parentComponent);
@@ -245,7 +242,7 @@ export class AutocompleteService {
   }
 
   private resetComponentsSuggestionsMap(): void {
-    this.componentsSuggestionsMap = {};
+    this.componentsSuggestionsSet.clear();
     this.suggestionGroupId = null;
   }
 
@@ -257,7 +254,7 @@ export class AutocompleteService {
         .map((component) => {
           const { suggestionId } = component;
           const { fields } = component.attrs;
-          this.componentsSuggestionsMap[suggestionId] = component.id;
+          this.componentsSuggestionsSet.add([suggestionId, component.id]);
           if (allowedAutocompleteComponentsList(component)) {
             if (Array.isArray(fields)) {
               fields.forEach((field: ComponentFieldDto) => {
@@ -301,7 +298,7 @@ export class AutocompleteService {
     fieldSuggestionIdsSet: Set<string>,
   ): void {
     if (fieldSuggestionId) {
-      this.componentsSuggestionsMap[fieldSuggestionId] = `${componentId}.${fieldName}`;
+      this.componentsSuggestionsSet.add([fieldSuggestionId, `${componentId}.${fieldName}`]);
       fieldSuggestionIdsSet.add(fieldSuggestionId);
     }
   }
