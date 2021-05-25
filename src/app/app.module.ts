@@ -14,7 +14,7 @@ import { LayoutModule } from './layout/layout.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { environment } from '../environments/environment';
 import '@angular/common/locales/global/ru';
-import { ChildrenClubsModule } from '@epgu/children-clubs/src/public-api'
+import { ChildrenClubsModule } from 'dist/children-clubs';
 import { ChildrenClubsContainerComponent } from './children-clubs-container/children-clubs-container.component';
 
 @NgModule({
