@@ -3,7 +3,7 @@
  *   необходим для идентификации актуальности передаваемых данных.
  * @property {string}[value] - json like строка с содержимым для запуска spa с нужным стором.
  */
-export interface CloseSpaDto {
+export interface OutputSpaDto {
   componentId: string;
   value: string;
 }

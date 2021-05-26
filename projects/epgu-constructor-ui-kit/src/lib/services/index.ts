@@ -1,2 +1,2 @@
 export * from './local-storage';
-export * from './cf-spa';
+export * from './cf-spa-state';

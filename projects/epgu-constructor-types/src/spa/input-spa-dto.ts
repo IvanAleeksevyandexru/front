@@ -3,7 +3,7 @@
  * @property {string}[callbackRedirectUrl] - url услуги из которой открываем spa, при выходи будет использоваться для перехода.
  * @property {string}[value] - json like строка с содержимым для запуска spa с нужным стором, обычно берём из cachedAnswers.
  */
-export interface OpenSpaDto {
+export interface InputSpaDto {
   componentId: string;
   callbackRedirectUrl: string;
   value: string;
