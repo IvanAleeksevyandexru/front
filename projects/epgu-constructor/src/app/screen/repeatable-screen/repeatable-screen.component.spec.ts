@@ -28,6 +28,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
+import { CustomComponent } from '../../component/custom-screen/components-list.types';
 
 const displayMock = {
   id: 's113',
@@ -246,5 +247,42 @@ describe('RepeatableScreenComponent', () => {
 
     component.init$.subscribe();
     expect(createScreenSpy).toBeCalledTimes(2);
+  });
+
+  describe('isScreensAvailable', () => {
+    const setup = (repeatAmount: number, screensCount: number = 0) => {
+      const displayMockWithMinRepeatAmount = { ...displayMock };
+      displayMockWithMinRepeatAmount.components[0].attrs.repeatAmount = repeatAmount;
+      screenService.display = displayMockWithMinRepeatAmount;
+      spyOn<any>(component, 'createScreen').and.callFake(jest.fn());
+
+      const screens: { [key: string]: CustomComponent[] } = {};
+      for (let i = 0; i < screensCount; i+=1) {
+        screens[`custom${i}`] = [{} as CustomComponent];
+      }
+
+      component.screens = screens;
+      fixture.detectChanges();
+    };
+
+    it('should be true when repeatAmount is bigger than screens count', () => {
+      setup(5, 2);
+      expect(component.isScreensAvailable()).toBeTruthy();
+    });
+
+    it('should not allow to add new copy when repeatAmount is equal screens count', () => {
+      setup(5, 5);
+      expect(component.isScreensAvailable()).toBeFalsy();
+    });
+
+    it('should not allow to add new copy when repeatAmount is equal screens count', () => {
+      setup(5, 6);
+      expect(component.isScreensAvailable()).toBeFalsy();
+    });
+
+    it('should not allow to add new copy when repeatAmount is less or equal than screens count and bigger than default value', () => {
+      setup(25, 22);
+      expect(component.isScreensAvailable()).toBeTruthy();
+    });
   });
 });

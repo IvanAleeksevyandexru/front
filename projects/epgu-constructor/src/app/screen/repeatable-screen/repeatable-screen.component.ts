@@ -111,11 +111,9 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
 
   isScreensAvailable(): boolean {
     const screensAmount: number = Object.keys(this.screens).length;
+    const repeatAmount = this.propData.components[0].attrs?.repeatAmount || defaultScreensAmount;
 
-    return (
-      screensAmount < this.propData.components[0].attrs?.repeatAmount ||
-      screensAmount < defaultScreensAmount
-    );
+    return screensAmount < repeatAmount;
   }
 
   changeComponentList(changes: CustomComponentOutputData, index: number): void {
