@@ -18,7 +18,7 @@ import { InitDataService } from '../../../core/services/init-data/init-data.serv
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Location } from '@angular/common';
 import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';

@@ -13,7 +13,7 @@ import { CachedAnswersService } from '../../../../../shared/services/cached-answ
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from '@epgu/epgu-constructor-types';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;

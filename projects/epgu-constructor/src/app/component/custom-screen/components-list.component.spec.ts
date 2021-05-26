@@ -49,7 +49,7 @@ import { RefRelationService } from '../../shared/services/ref-relation/ref-relat
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {

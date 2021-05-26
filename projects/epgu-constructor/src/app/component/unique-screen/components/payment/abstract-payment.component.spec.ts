@@ -15,7 +15,7 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { LocationService } from '../../../../core/services/location/location.service';
 import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';

@@ -28,7 +28,7 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 import { ModalService } from '../../../modal/modal.service';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;

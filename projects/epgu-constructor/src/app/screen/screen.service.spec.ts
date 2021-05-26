@@ -22,7 +22,7 @@ import { DeviceDetectorServiceStub } from '../core/services/device-detector/devi
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 const makeScreenStoreSample = (): ScreenStore => ({

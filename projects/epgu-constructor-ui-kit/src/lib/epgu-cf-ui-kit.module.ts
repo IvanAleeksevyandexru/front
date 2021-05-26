@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { LocalStorageService } from './services';
 
 
 
@@ -7,6 +8,8 @@ import { NgModule } from '@angular/core';
   imports: [
   ],
   exports: [],
-  providers: []
+  providers: [
+    LocalStorageService
+  ]
 })
 export class EpguCfUiKitModule { }

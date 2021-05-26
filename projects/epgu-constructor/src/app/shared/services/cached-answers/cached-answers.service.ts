@@ -4,7 +4,7 @@ import { UniqueScreenComponentTypes } from '../../../component/unique-screen/uni
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: Array<string> = [

@@ -11,7 +11,7 @@ import { NavigationServiceStub } from '../../../core/services/navigation/navigat
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';

@@ -9,7 +9,7 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit/src/public-api';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService } from '../../../../../../core/services/location/location.service';
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
