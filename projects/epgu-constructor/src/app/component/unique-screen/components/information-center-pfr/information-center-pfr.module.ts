@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { InformationCenterPfrContainerComponent } from './container/information-center-pfr-container.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { CoreModule } from '../../../../core/core.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';

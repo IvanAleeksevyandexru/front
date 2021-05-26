@@ -19,7 +19,7 @@ import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
 import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
@@ -107,7 +107,7 @@ describe('PaymentTypeSelectorComponent', () => {
   it('should view error', () => {
     component.isErrorTemplate = true;
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('epgu-constructor-screen-pad'))).not.toBeNull();
+    expect(fixture.debugElement.query(By.css('epgu-cf-ui-constructor-screen-pad'))).not.toBeNull();
   });
 
   it('should img', () => {

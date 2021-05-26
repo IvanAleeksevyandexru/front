@@ -8,7 +8,7 @@ import { ConstructorDropdownModule } from '../../../../../../shared/components/c
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { InformationCenterCardComponent } from '../information-center-card/information-center-card.component';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterFormComponent', () => {

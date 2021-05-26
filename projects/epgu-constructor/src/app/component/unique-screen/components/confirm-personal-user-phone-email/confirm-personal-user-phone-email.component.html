@@ -6,7 +6,7 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
     <ng-container *ngIf="data.errors">
       <div class="error" *ngFor="let error of data.errors">
         <p class="title"><span [class]="error.icon"></span>{{ error.title }}</p>
@@ -35,5 +35,5 @@
         </button>
       </div>
     </ng-container>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

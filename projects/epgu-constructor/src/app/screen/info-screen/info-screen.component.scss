@@ -1,6 +1,6 @@
-@import '../../../styles/core/functions';
-@import '../../../styles/core/variables';
-@import '../../../styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 :host {
   @include flex-container();

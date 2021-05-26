@@ -16,7 +16,7 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { AddressItemComponent } from '../address-item/address-item.component';
 import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';

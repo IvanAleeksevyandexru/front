@@ -7,7 +7,7 @@ import { EventBusService } from '../../../../../core/services/event-bus/event-bu
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
-import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
+import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ComponentsListToolsService } from '../../../../custom-screen/services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';

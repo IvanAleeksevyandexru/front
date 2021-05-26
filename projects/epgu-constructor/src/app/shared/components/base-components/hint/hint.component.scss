@@ -1,6 +1,6 @@
-@import '../../../../../styles/core/typography';
-@import '../../../../../styles/core/functions';
-@import '../../../../../styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 .hint {
   @include first-letter-uppercase();

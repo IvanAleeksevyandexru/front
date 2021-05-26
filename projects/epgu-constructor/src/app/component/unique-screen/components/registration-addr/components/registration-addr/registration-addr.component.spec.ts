@@ -18,7 +18,7 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { DateValidator } from './date-validator';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
