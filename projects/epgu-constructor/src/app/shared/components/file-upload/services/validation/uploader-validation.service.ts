@@ -42,6 +42,7 @@ export class UploaderValidationService {
   ): Observable<FileItem> {
     return of(file).pipe(
       tap((file: FileItem) => this.checkAndSetMaxCountByTypes(config, file, store)),
+      map((file: FileItem) => this.validateFileName(file, config)),
       map((file: FileItem) => this.validateType(config, file, getError, store)), // Проверка типа
       map((file: FileItem) =>
         file.status !== FileItemStatus.error ? this.validateAmount(file, config, getError) : file,
@@ -93,6 +94,23 @@ export class UploaderValidationService {
         getError(check === -1 ? ErrorActions.addMaxTotalAmount : ErrorActions.addMaxAmount),
       );
     }
+    return file;
+  }
+
+  validateFileName(file: FileItem, config: FileUploadItem): FileItem {
+    if (!config?.validation || config.validation?.length === 0) {
+      return file;
+    }
+    const index = config.validation.findIndex(
+      (validation) => !new RegExp(file.raw.name).test(validation.value),
+    );
+    if (index !== -1) {
+      file.setError({
+        type: ErrorActions.addInvalidFileName,
+        text: config.validation[index]?.errorMsg,
+      });
+    }
+
     return file;
   }
 

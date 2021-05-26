@@ -154,6 +154,77 @@
           "builder": "@angular-builders/jest:run"
         }
       }
+    },
+    "children-clubs": {
+      "projectType": "library",
+      "root": "projects/children-clubs",
+      "sourceRoot": "projects/children-clubs/src",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "prefix": "children-clubs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/children-clubs/tsconfig.lib.json",
+            "project": "projects/children-clubs/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/children-clubs/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/children-clubs/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/children-clubs/src/**/*.ts",
+              "projects/children-clubs/src/**/*.spec.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run"
+        }
+      }
+    },
+    "epgu-constructor-ui-kit": {
+      "projectType": "library",
+      "root": "projects/epgu-constructor-ui-kit",
+      "sourceRoot": "projects/epgu-constructor-ui-kit/src",
+      "prefix": "epgu-cf-ui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/epgu-constructor-ui-kit/tsconfig.lib.json",
+            "project": "projects/epgu-constructor-ui-kit/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/epgu-constructor-ui-kit/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/epgu-constructor-ui-kit/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/epgu-constructor-ui-kit/src/**/*.ts",
+              "projects/epgu-constructor-ui-kit/src/**/*.spec.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run"
+        }
+      }
     }
   },
   "defaultProject": "epgu-form-frontend",

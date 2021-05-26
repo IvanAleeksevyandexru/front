@@ -20,6 +20,7 @@ export enum ErrorActions {
   addMaxTotalSize = 'maxTotalSize',
   addInvalidType = 'invalidType',
   addInvalidFile = 'invalidFile',
+  addInvalidFileName = 'addInvalidFileName',
   addDownloadErr = 'addDownloadErr',
   addUploadErr = 'addUploadErr',
   addDeletionErr = 'addDeletionErr',

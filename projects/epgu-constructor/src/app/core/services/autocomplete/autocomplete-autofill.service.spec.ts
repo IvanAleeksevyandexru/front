@@ -18,8 +18,7 @@ import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('AutocompleteAutofillService', () => {
   let service: AutocompleteAutofillService;

@@ -1,10 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormPlayerModule } from 'dist/epgu-constructor';
+import { FormPlayerModule, ConfigService, UnsubscribeService } from '@epgu/epgu-constructor';
 import { EpguLibCommonModule, EpguLibModule, LoadService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
-import { ConfigService, UnsubscribeService } from 'epgu-constructor';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AppService } from './app.service';
@@ -14,11 +13,19 @@ import { LayoutModule } from './layout/layout.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { environment } from '../environments/environment';
 import '@angular/common/locales/global/ru';
+import { ChildrenClubsModule } from 'dist/children-clubs';
+import { ChildrenClubsContainerComponent } from './children-clubs-container/children-clubs-container.component';
 
 @NgModule({
-  declarations: [AppComponent, ConfigComponent, FpContainerComponent],
+  declarations: [
+    AppComponent,
+    ConfigComponent,
+    FpContainerComponent,
+    ChildrenClubsContainerComponent
+  ],
   imports: [
     EpguLibModule,
+    ChildrenClubsModule,
     EpguLibCommonModule,
     LayoutModule,
     HttpClientModule,

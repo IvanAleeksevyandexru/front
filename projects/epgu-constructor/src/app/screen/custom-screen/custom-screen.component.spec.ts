@@ -18,7 +18,6 @@ import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pa
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenTypes } from '../screen.types';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
@@ -29,7 +28,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ActionType, DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;

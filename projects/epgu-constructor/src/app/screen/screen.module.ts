@@ -24,6 +24,7 @@ import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { UniqueScreenModule } from './unique-screen/unique-screen.module';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.module';
+import { SpaScreenModule } from './spa-screen/spa-screen.module';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -40,6 +41,7 @@ import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.mo
     InvitationErrorScreenModule,
     InfoScreenModule,
     ModalModule,
+    SpaScreenModule,
   ],
   providers: [
     ScreenService,

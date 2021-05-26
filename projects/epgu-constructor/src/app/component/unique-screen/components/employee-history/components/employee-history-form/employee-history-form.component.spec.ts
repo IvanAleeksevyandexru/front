@@ -38,8 +38,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { Gender, TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
-import { LocalStorageService } from '../../../../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../../../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;

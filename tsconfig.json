@@ -4,7 +4,7 @@
       "es6"
     ],
     "target": "es5",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
   "references": [
     {

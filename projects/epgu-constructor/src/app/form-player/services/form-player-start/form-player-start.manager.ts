@@ -8,7 +8,7 @@ import {
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';

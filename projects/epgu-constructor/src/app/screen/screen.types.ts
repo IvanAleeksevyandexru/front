@@ -28,16 +28,6 @@ export interface Screen {
   nextStep: (data?: NavigationPayload) => void;
 }
 
-export enum ScreenTypes {
-  'QUESTION' = 'QUESTION',
-  'INFO' = 'INFO',
-  'CUSTOM' = 'CUSTOM',
-  'REPEATABLE' = 'REPEATABLE',
-  'UNIQUE' = 'UNIQUE',
-  'INVITATION_ERROR' = 'INVITATION_ERROR',
-  'EMPTY' = 'EMPTY',
-}
-
 export interface ServiceInfo {
   billNumber?: string;
 }

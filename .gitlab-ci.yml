@@ -17,6 +17,7 @@ stages:
   - install
   - postinstall
   - code-quality
+  - children-clubs-build
   - library-build
   - library-publish
   - build
@@ -77,6 +78,17 @@ Lint-test-dry:
     - master
     - stage
 
+Children-clubs-build:
+  stage: children-clubs-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn lib:children-clubs
+  only:
+    - merge_requests
+    - master
+    - stage
 
 Library-build:
   stage: library-build

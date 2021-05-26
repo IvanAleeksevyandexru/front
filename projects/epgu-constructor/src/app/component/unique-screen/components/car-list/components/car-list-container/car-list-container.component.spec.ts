@@ -4,7 +4,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
 import { of } from 'rxjs';
-import { ScreenTypes } from '../../../../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
