@@ -1,7 +1,7 @@
 <ng-container *ngIf="item">
   <div class="divider"></div>
   <div class="viewer__info">
-    <div class="viewer__info-date">{{ date | date: 'dd.MM.yyyy' }}</div>
+    <div class="viewer__info-date">{{ date | date: 'dd.MM.yyyy' : 'GMT' }}</div>
     <div class="viewer__info-name">{{ item?.raw?.name }}</div>
     <div class="viewer__info-size">{{ item?.raw?.size | fileSize }}</div>
   </div>
