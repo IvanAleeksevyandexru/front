@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
-
+import { LongButtonModule } from './components/index';
+import { LocalStorageService } from './services/index';
 
 
 @NgModule({
-  declarations: [],
   imports: [
+    LongButtonModule
   ],
-  exports: []
+  providers: [LocalStorageService],
+  exports: [
+    LongButtonModule
+  ]
 })
 export class EpguCfUiKitModule { }

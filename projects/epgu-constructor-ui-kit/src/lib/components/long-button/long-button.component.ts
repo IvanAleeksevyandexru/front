@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentActionDto, ComponentAnswerDto } from '@epgu/epgu-constructor-types';
 
 @Component({
-  selector: 'epgu-constructor-long-button',
+  selector: 'epgu-cf-ui-long-button',
   template: `<button [class.loading]="isLoading" [disabled]="data?.disabled || disabled">
     <ng-content></ng-content>
   </button>`,

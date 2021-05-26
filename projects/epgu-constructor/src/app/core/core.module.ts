@@ -12,7 +12,6 @@ import { AutocompleteService } from './services/autocomplete/autocomplete.servic
 import { ConfigService } from './services/config/config.service';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { InitDataService } from './services/init-data/init-data.service';
-import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { LocationService } from './services/location/location.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
@@ -37,7 +36,6 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
     NavigationModalService,
     SmuEventsService,
     LoggerService,
-    LocalStorageService,
     UtilsService,
     SessionService,
     InitDataService,

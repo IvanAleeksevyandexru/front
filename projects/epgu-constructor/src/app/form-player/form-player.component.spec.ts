@@ -29,8 +29,7 @@ import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/con
 import { By } from '@angular/platform-browser';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { FormPlayerStartManagerStub } from './services/form-player-start/form-player-start.manager.stub';
-import { LocalStorageServiceStub } from '../core/services/local-storage/local-storage.service.stub';
-import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService } from '../core/services/location/location.service';
 import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
 import { SimpleChange } from '@angular/core';

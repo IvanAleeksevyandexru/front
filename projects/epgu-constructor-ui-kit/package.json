@@ -12,6 +12,7 @@
     "@angular/core": "^11.0.0"
   },
   "dependencies": {
+    "@epgu/epgu-constructor-types": "16.1.1",
     "tslib": "^2.0.0"
   }
 }

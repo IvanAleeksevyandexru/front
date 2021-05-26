@@ -12,6 +12,14 @@
       ],
       "epgu-constructor": [
         "dist/epgu-constructor"
+      ],
+      "@epgu/epgu-constructor-ui-kit": [
+        "dist/epgu-constructor-ui-kit/epgu-cf-ui-kit",
+        "dist/epgu-constructor-ui-kit"
+      ],
+      "@epgu/children-clubs": [
+        "dist/children-clubs/children-clubs",
+        "dist/children-clubs"
       ]
     }
   },
