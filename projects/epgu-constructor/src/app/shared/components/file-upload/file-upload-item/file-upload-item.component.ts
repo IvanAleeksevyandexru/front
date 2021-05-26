@@ -78,13 +78,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     ), // Формируем FileItem
     tap(() => this.stat.updateLimits()),
     concatMap(
-      (file: FileItem) =>
-        this.validation.prepare(
-          file,
-          this.uploader.data,
-          this.uploader.getError.bind(this),
-          this.store,
-        ), // Валидируем файл
+      (file: FileItem) => this.validation.prepare(file), // Валидируем файл
     ),
     filter((file: FileItem) => this.stat.amountFilter(file)), // Фильруем по лимитам
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
@@ -267,9 +261,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
       ),
       tap((file: FileItem) => this.store.add(file)),
-      tap((file: FileItem) =>
-        this.validation.checkAndSetMaxCountByTypes(this.uploader.data, file, this.store),
-      ),
+      tap((file: FileItem) => this.validation.checkAndSetMaxCountByTypes(file)),
       tap((file: FileItem) => this.stat.incrementLimits(file)),
       tap((file: FileItem) => this.uploader.updateMaxFileNumber(file.item)),
     );

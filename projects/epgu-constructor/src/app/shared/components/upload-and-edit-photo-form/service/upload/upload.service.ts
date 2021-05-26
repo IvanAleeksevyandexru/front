@@ -3,11 +3,10 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { TerabyteListItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { UploadedFile } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 
-import { TerraUploadedFile } from '../../../file-upload/data';
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
@@ -22,7 +21,7 @@ export class UploadService {
     fileName: string,
     requestData: ComponentUploadedFileDto,
     croppedImageUrl: string,
-  ): Observable<TerabyteListItem & ComponentUploadedFileDto> {
+  ): Observable<UploadedFile & ComponentUploadedFileDto> {
     let dataAfterSend: ComponentUploadedFileDto;
 
     return of(requestData.name).pipe(
@@ -41,7 +40,7 @@ export class UploadService {
   private deletePrevImage(
     fileName: string,
     requestData: ComponentUploadedFileDto,
-  ): Observable<TerraUploadedFile> {
+  ): Observable<UploadedFile> {
     return fileName
       ? this.terraByteApiService.deleteFile(requestData).pipe(catchError(() => of(null)))
       : of(null);

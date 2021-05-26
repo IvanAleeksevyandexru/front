@@ -4,26 +4,13 @@ import {
   CompressionService,
 } from '../../../upload-and-edit-photo-form/service/compression/compression.service';
 
-import {
-  ErrorActions,
-  FileItem,
-  FileItemError,
-  FileItemStatus,
-  FileItemStore,
-  getAcceptTypes,
-  getSizeInMB,
-  updateLimits,
-} from '../../data';
-import {
-  FileUploadItem,
-  MaxCountByType,
-} from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { ErrorActions, FileItem, FileItemStatus, getAcceptTypes, getSizeInMB } from '../../data';
+import { MaxCountByType } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { UploaderStoreService } from '../store/uploader-store.service';
 import { UploaderLimitsService } from '../limits/uploader-limits.service';
-
-type getErrorType = (action: ErrorActions) => FileItemError;
+import { UploaderManagerService } from '../manager/uploader-manager.service';
 
 @Injectable()
 export class UploaderValidationService {
@@ -31,90 +18,81 @@ export class UploaderValidationService {
 
   constructor(
     private compressionService: CompressionService,
-    private fileUploadService: UploaderLimitsService,
+    private limits: UploaderLimitsService,
+    private uploader: UploaderManagerService,
+    private store: UploaderStoreService,
   ) {}
 
-  prepare(
-    file: FileItem,
-    config: FileUploadItem,
-    getError: getErrorType,
-    store: FileItemStore | UploaderStoreService,
-  ): Observable<FileItem> {
+  prepare(file: FileItem): Observable<FileItem> {
     return of(file).pipe(
-      tap((file: FileItem) => this.checkAndSetMaxCountByTypes(config, file, store)),
-      map((file: FileItem) => this.validateFileName(file, config)),
-      map((file: FileItem) => this.validateType(config, file, getError, store)), // Проверка типа
+      tap((file: FileItem) => this.checkAndSetMaxCountByTypes(file)),
+      map((file: FileItem) => this.validateFileName(file)),
+      map((file: FileItem) => this.validateType(file)), // Проверка типа
       map((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.validateAmount(file, config, getError) : file,
+        file.status !== FileItemStatus.error ? this.validateAmount(file) : file,
       ), // Проверка кол-ва
       concatMap((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.compressImage(file, getError) : of(file),
+        file.status !== FileItemStatus.error ? this.compressImage(file) : of(file),
       ), // Компрессия
       map((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.validateSize(file, config, getError) : file,
+        file.status !== FileItemStatus.error ? this.validateSize(file) : file,
       ), // Проверка размера
     );
   }
 
-  checkAndSetMaxCountByTypes(
-    config: FileUploadItem,
-    file: FileItem,
-    store: FileItemStore | UploaderStoreService,
-    isAdd = true,
-  ): void {
-    if (!(config?.maxCountByTypes?.length > 0)) {
+  checkAndSetMaxCountByTypes(file: FileItem, isAdd = true): void {
+    const { data } = this.uploader;
+
+    if (!(data?.maxCountByTypes?.length > 0)) {
       return;
     }
-    updateLimits(config, store, this.fileUploadService.getAmount(config.uploadId), file, isAdd);
-    this.fileUploadService.changeMaxAmount(
-      (store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
-      config.uploadId,
+    this.uploader.updateLimits(this.limits.getAmount(data.uploadId), file, isAdd);
+    this.limits.changeMaxAmount(
+      (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
+      data.uploadId,
     );
   }
 
-  validateType(
-    config: FileUploadItem,
-    file: FileItem,
-    getError: getErrorType,
-    store: FileItemStore | UploaderStoreService,
-  ): FileItem {
+  validateType(file: FileItem): FileItem {
     return file.isTypeValid(
-      store?.lastSelected
-        ? getAcceptTypes(store?.lastSelected.type)
-        : getAcceptTypes(config.fileType),
+      this.store?.lastSelected
+        ? getAcceptTypes(this.store?.lastSelected.type)
+        : getAcceptTypes(this.uploader.data.fileType),
     )
       ? file
-      : file.setError(getError(ErrorActions.addInvalidType));
+      : file.setError(this.uploader.getError(ErrorActions.addInvalidType));
   }
 
-  validateAmount(file: FileItem, config: FileUploadItem, getError: getErrorType): FileItem {
-    const check = this.fileUploadService.checkAmount(1, config.uploadId);
+  validateAmount(file: FileItem): FileItem {
+    const check = this.limits.checkAmount(1, this.uploader.data.uploadId);
     if (check !== 0) {
       file.setError(
-        getError(check === -1 ? ErrorActions.addMaxTotalAmount : ErrorActions.addMaxAmount),
+        this.uploader.getError(
+          check === -1 ? ErrorActions.addMaxTotalAmount : ErrorActions.addMaxAmount,
+        ),
       );
     }
     return file;
   }
 
-  validateFileName(file: FileItem, config: FileUploadItem): FileItem {
-    if (!config?.validation || config.validation?.length === 0) {
+  validateFileName(file: FileItem): FileItem {
+    if (!this.uploader.data?.validation || this.uploader.data.validation?.length === 0) {
       return file;
     }
-    const index = config.validation.findIndex(
+    const index = this.uploader.data.validation.findIndex(
       (validation) => !new RegExp(file.raw.name).test(validation.value),
     );
     if (index !== -1) {
       file.setError({
         type: ErrorActions.addInvalidFileName,
-        text: config.validation[index]?.errorMsg,
+        text: this.uploader.data.validation[index]?.errorMsg,
       });
     }
 
     return file;
   }
 
-  compressImage(file: FileItem, getError: getErrorType): Observable<FileItem> {
+  compressImage(file: FileItem): Observable<FileItem> {
     const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(this.maxImgSizeInBytes),
       deepChecking: true,
@@ -123,18 +101,20 @@ export class UploaderValidationService {
     return this.compressionService.isValidImageType(file.raw)
       ? from(this.compressionService.imageCompression(file.raw, compressedImageOptions)).pipe(
           catchError(() => {
-            return of(file.setError(getError(ErrorActions.addInvalidFile)));
+            return of(file.setError(this.uploader.getError(ErrorActions.addInvalidFile)));
           }),
           map((raw: Blob | FileItem) => (raw instanceof Blob ? file.setRaw(raw as File) : file)),
         )
       : of(file);
   }
 
-  validateSize(file: FileItem, config: FileUploadItem, getError: getErrorType): FileItem {
-    const check = this.fileUploadService.checkSize(file.raw.size, config.uploadId);
+  validateSize(file: FileItem): FileItem {
+    const check = this.limits.checkSize(file.raw.size, this.uploader.data.uploadId);
     if (check !== 0) {
       file.setError(
-        check === -1 ? getError(ErrorActions.addMaxTotalSize) : getError(ErrorActions.addMaxSize),
+        check === -1
+          ? this.uploader.getError(ErrorActions.addMaxTotalSize)
+          : this.uploader.getError(ErrorActions.addMaxSize),
       );
     }
     return file;

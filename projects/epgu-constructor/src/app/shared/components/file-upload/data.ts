@@ -1,16 +1,13 @@
 import {
   FileUploadItem,
-  MaxCountByType,
-  TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../core/services/terra-byte-api/terra-byte-api.types';
 import { BehaviorSubject } from 'rxjs';
 import { v4 } from 'uuid';
-import { UploaderStoreService } from './services/store/uploader-store.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export enum ErrorActions {
   clear = 'clear',
@@ -49,55 +46,6 @@ export interface UploadContext {
   prefixForMnemonic: string;
   data: FileUploadItem;
   clarifications: Clarifications;
-}
-
-export class FileItemStore {
-  files = new BehaviorSubject<FileItem[]>([]);
-  lastSelected?: MaxCountByType;
-
-  getUniqueTypes(without?: FileItem): string[] {
-    const files = this.files.getValue();
-    const useFiles = without ? files.filter((file) => file.id !== without.id) : files;
-    return Array.from(new Set(useFiles.map((v) => v.getType())));
-  }
-
-  add(file: FileItem): FileItemStore {
-    const files = [...this.files.getValue(), file];
-    this.files.next(files);
-    return this;
-  }
-  update(file: FileItem): void {
-    const files = [...this.files.getValue()];
-    const index = files.findIndex((item) => item.id === file.id);
-    files[index] = Object.assign(Object.create(Object.getPrototypeOf(file)), file);
-    this.files.next(files);
-  }
-  remove(file: FileItem): void {
-    const files = [...this.files.getValue()];
-    this.files.next(files.filter((item) => item.id !== file.id));
-  }
-
-  removeWithErrorStatus(ignoreTypes: ErrorActions[] = []): void {
-    const files = [...this.files.getValue()];
-    this.files.next(
-      files.filter(
-        (item) =>
-          (item.status === FileItemStatus.error && ignoreTypes.includes(item?.error?.type)) ||
-          item.status !== FileItemStatus.error,
-      ),
-    );
-  }
-
-  changeStatus(file: FileItem, status: FileItemStatus): void {
-    file.setStatus(status);
-    this.update(file);
-  }
-  errorTo(errorType: ErrorActions, status: FileItemStatus): void {
-    const files = [...this.files.getValue()];
-    files.forEach((item) =>
-      item?.error?.type === errorType ? this.update(item.setStatus(status).clearError()) : null,
-    );
-  }
 }
 
 export class FileItem {
@@ -235,79 +183,6 @@ export interface Operation {
 }
 
 /**
- * Класс подгруженного файла
- */
-export class TerraUploadedFile implements UploadedFile {
-  fileExt?: string;
-  fileName = '';
-  fileSize = 0;
-  fileUid?: number;
-  hasSign?: boolean;
-  metaId?: number;
-  mimeType?: string;
-  mnemonic = '';
-  nodeId?: string;
-  objectId = '';
-  objectTypeId = 0;
-  realPath?: string;
-  uploaded = false;
-  userId?: number;
-  hasError = false;
-  created?: string;
-  updated?: string;
-  deleted?: boolean;
-
-  constructor(props: object = {}) {
-    Object.keys(props).forEach((key) => {
-      this[key] = props[key];
-    });
-  }
-
-  /**
-   * Возвращает объект с данными и параметрами для загрузки на сервер файла
-   */
-  getParamsForUploadFileOptions(): TerraUploadFileOptions {
-    return {
-      name: this.fileName,
-      objectId: this.objectId,
-      objectType: this.objectTypeId,
-      mnemonic: this.mnemonic,
-      mimeType: this.mimeType,
-    } as TerraUploadFileOptions;
-  }
-
-  /**
-   * Возвращает объект с данными и параметрами для загрузки на сервер файла
-   */
-  setParamsForUploadedFile(terraFile: TerabyteListItem, uploaded: boolean): void {
-    Object.keys(terraFile).forEach((key: string) => {
-      this[key] = terraFile[key];
-    });
-    this.uploaded = uploaded;
-  }
-
-  /**
-   * Возвращает объект с данными с параметрами получения сведений о файле
-   */
-  getParamsForFileOptions(): TerraFileOptions {
-    return {
-      objectId: this.objectId,
-      objectType: this.objectTypeId,
-      mnemonic: this.mnemonic,
-      mimeType: this.mimeType,
-    } as TerraFileOptions;
-  }
-
-  /**
-   * Возвращает размер в килобайтах или мегабайтах
-   */
-  getFileSize(): string {
-    const sizeInMB = getSizeInMB(this.fileSize);
-    return `${(sizeInMB < 0.1 ? 0.1 : sizeInMB).toFixed(1)} МБ`;
-  }
-}
-
-/**
  * Тип загружаемого документа
  */
 export const UPLOAD_OBJECT_TYPE = 2;
@@ -359,7 +234,7 @@ export const getAcceptTypes = (
 export const createError = (
   action: ErrorActions,
   data: FileUploadItem,
-  store: FileItemStore | UploaderStoreService,
+  typeList: string[],
   totalSize: number = 0,
 ): FileItemError => {
   const errorHandler = {};
@@ -379,11 +254,8 @@ export const createError = (
     text: `Файл тяжелее ${getSizeInMB(data.maxSize)} МБ`,
     description: 'Попробуйте уменьшить размер или загрузите файл полегче',
   };
-  getAcceptTypes(data.fileType, '', ', ', 'upper');
 
-  const types = store?.lastSelected
-    ? getAcceptTypes(store?.lastSelected.type, '', ', ', 'upper')
-    : getAcceptTypes(data.fileType, '', ', ', 'upper');
+  const types = getAcceptTypes(typeList, '', ', ', 'upper');
 
   errorHandler[ErrorActions.addInvalidType] = {
     text: 'Проверьте формат файла',
@@ -418,45 +290,3 @@ export interface OverLimits {
   totalAmount: OverLimitsItem;
   amount: OverLimitsItem;
 }
-
-export const updateLimits = (
-  config: FileUploadItem,
-  store: FileItemStore | UploaderStoreService,
-  amount: number,
-  file?: FileItem,
-  isAdd = true,
-): void => {
-  if (!(config?.maxCountByTypes?.length > 0)) {
-    return;
-  }
-
-  const types = store.getUniqueTypes(!isAdd && file ? file : null);
-  if (isAdd && file && !types.includes(file.getType())) {
-    types.push(file.getType());
-  }
-
-  const findedType = config?.maxCountByTypes.find(({ type }) =>
-    types.every((fileType) => type.includes(fileType)),
-  );
-
-  if (findedType) {
-    if (!store.lastSelected || findedType.maxFileCount >= amount) {
-      store.lastSelected = findedType;
-    }
-  }
-  if (types.length === 0) {
-    store.lastSelected = config?.maxCountByTypes.reduce(
-      (acc, v) => {
-        acc.maxFileCount += v.maxFileCount;
-        acc.type = acc.type
-          .concat(v.type)
-          .filter((item, index, arr) => arr.indexOf(item) === index);
-        return acc;
-      },
-      {
-        type: [],
-        maxFileCount: 0,
-      },
-    );
-  }
-};

@@ -6,7 +6,7 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { createError, ErrorActions, FileItemError, getAcceptTypes } from '../../data';
+import { createError, ErrorActions, FileItem, FileItemError, getAcceptTypes } from '../../data';
 import { UploaderStoreService } from '../store/uploader-store.service';
 import { UploaderLimitsService } from '../limits/uploader-limits.service';
 
@@ -101,7 +101,12 @@ export class UploaderManagerService {
   }
 
   getError(action: ErrorActions): FileItemError {
-    return createError(action, this.data, this.store, this.limits.getMaxTotalFilesSize());
+    return createError(
+      action,
+      this.data,
+      this.store?.lastSelected ? this.store?.lastSelected.type : this.data.fileType,
+      this.limits.getMaxTotalFilesSize(),
+    );
   }
 
   init(data: FileUploadItem): void {
@@ -139,5 +144,41 @@ export class UploaderManagerService {
   updateMaxFileNumber(file: UploadedFile): void {
     const index = Number(file.mnemonic.split('.').pop());
     this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;
+  }
+
+  updateLimits(amount: number, file?: FileItem, isAdd = true): void {
+    if (!(this.data?.maxCountByTypes?.length > 0)) {
+      return;
+    }
+
+    const types = this.store.getUniqueTypes(!isAdd && file ? file : null);
+    if (isAdd && file && !types.includes(file.getType())) {
+      types.push(file.getType());
+    }
+
+    const findedType = this.data?.maxCountByTypes.find(({ type }) =>
+      types.every((fileType) => type.includes(fileType)),
+    );
+
+    if (findedType) {
+      if (!this.store.lastSelected || findedType.maxFileCount >= amount) {
+        this.store.lastSelected = findedType;
+      }
+    }
+    if (types.length === 0) {
+      this.store.lastSelected = this.data?.maxCountByTypes.reduce(
+        (acc, v) => {
+          acc.maxFileCount += v.maxFileCount;
+          acc.type = acc.type
+            .concat(v.type)
+            .filter((item, index, arr) => arr.indexOf(item) === index);
+          return acc;
+        },
+        {
+          type: [],
+          maxFileCount: 0,
+        },
+      );
+    }
   }
 }

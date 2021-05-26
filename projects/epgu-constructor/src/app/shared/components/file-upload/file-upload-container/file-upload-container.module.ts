@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EpguLibModule } from 'epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 
 import { BaseModule } from '../../../base.module';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';

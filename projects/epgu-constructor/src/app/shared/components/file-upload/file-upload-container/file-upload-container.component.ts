@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { filter } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';

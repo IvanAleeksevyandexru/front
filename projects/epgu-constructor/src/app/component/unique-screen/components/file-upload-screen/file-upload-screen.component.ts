@@ -13,9 +13,10 @@ import {
   FileUploadEmitValue,
   FileUploadEmitValueForComponent,
   FileUploadItem,
+  UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { TerraUploadedFile } from '../../../../shared/components/file-upload/data';
+
 import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
@@ -118,7 +119,7 @@ export class FileUploadScreenComponent implements OnInit {
    */
   isAllFilesUploaded(uploaders: FileUploadEmitValue[]): boolean {
     for (let uploaderIndex = 0; uploaderIndex < uploaders.length; uploaderIndex += 1) {
-      if (!uploaders[uploaderIndex].value.every((file: TerraUploadedFile) => file.uploaded)) {
+      if (!uploaders[uploaderIndex].value.every((file: UploadedFile) => file.uploaded)) {
         return false;
       }
     }
@@ -172,7 +173,7 @@ export class FileUploadScreenComponent implements OnInit {
     }
 
     const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
-      return fileUploaderInfo?.value.filter((file: TerraUploadedFile) => file.uploaded).length > 0;
+      return fileUploaderInfo?.value.filter((file: UploadedFile) => file.uploaded).length > 0;
     }).length;
 
     return totalUploaders === uploadersWithFiles;

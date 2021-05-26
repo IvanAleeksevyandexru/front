@@ -6,4 +6,5 @@ export class UploaderLimitsServiceStub {
   checkAmount() {}
   changeMaxAmount() {}
   getAmount() {}
+  getMaxTotalFilesSize() {}
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ErrorActions, FileItem, OverLimits, updateLimits } from '../../data';
+import { ErrorActions, FileItem, OverLimits } from '../../data';
 import { UploaderMessage } from '../../typings';
 import {
   FileUploadItem,
@@ -87,7 +87,7 @@ export class UploaderStatService {
     if (!(this.config?.maxCountByTypes?.length > 0)) {
       return;
     }
-    updateLimits(this.config, this.store, this.limits.getAmount(this.config.uploadId));
+    this.uploader.updateLimits(this.limits.getAmount(this.config.uploadId));
     this.limits.changeMaxAmount(
       (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
       this.config.uploadId,
@@ -104,7 +104,7 @@ export class UploaderStatService {
   }
 
   decrementLimitByFileItem(file: FileItem): void {
-    this.validation.checkAndSetMaxCountByTypes(this.config, file, this.store, false);
+    this.validation.checkAndSetMaxCountByTypes(file, false);
     this.decrementLimits(file);
     this.resetLimits();
   }

@@ -1,4 +1,3 @@
-import { TerraUploadedFile } from '../../../shared/components/file-upload/data';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export interface Chunk {
@@ -106,35 +105,12 @@ export interface UploadedFile {
   isFromSuggests?: boolean;
 }
 
-/***
- * Интерфейс для файла из списка файлов в хранилище террабайт
- */
-export interface TerabyteListItem {
-  fileName: string;
-  objectId: string;
-  objectTypeId: number;
-  mnemonic: string;
-  updated: string;
-  fileSize: number;
-  alternativeMimeTypes: string[];
-  created: string;
-  deleted: boolean;
-  fileExt: string;
-  fileUid: number;
-  hasSign: boolean;
-  metaId: number;
-  nodeId: string;
-  realPath: string;
-  relativePath: string;
-  userId: number;
-}
-
 /**
  * Интерфейс для события значений файлов
  */
 export interface FileUploadEmitValue {
   uploadId: string;
-  value: TerraUploadedFile[];
+  value: UploadedFile[];
   pdfFileName?: string;
   required: boolean;
 }

@@ -154,14 +154,7 @@ export class UploaderProcessService {
   prepareOperation({ item, cancel }: Operation): Observable<void> {
     return of(item).pipe(
       tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.preparation)),
-      concatMap((file: FileItem) =>
-        this.validation.prepare(
-          file,
-          this.uploader.data,
-          this.uploader.getError.bind(this),
-          this.store,
-        ),
-      ),
+      concatMap((file: FileItem) => this.validation.prepare(file)),
       tap((file: FileItem) => this.store.update(file)),
       tap((file: FileItem) => (file.status !== FileItemStatus.error ? this.upload(file) : null)),
       map(() => undefined),
