@@ -74,6 +74,7 @@ const nextAction: ComponentActionDto = {
   label: '',
   action: DTOActionAction.editPhoneNumber,
   type: ActionType.nextStep,
+  value: 'some value',
 };
 
 const prevAction: ComponentActionDto = {
