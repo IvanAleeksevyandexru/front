@@ -1,2 +1,2 @@
-export * from './local-storage/index';
-export * from './cf-spa/index';
+export * from './local-storage';
+export * from './cf-spa';

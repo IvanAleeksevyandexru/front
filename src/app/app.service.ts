@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { LoadServiceDeviceType, LOCAL_STORAGE_PLATFORM_TYPE } from 'epgu-constructor';
+import { LoadServiceDeviceType, LOCAL_STORAGE_PLATFORM_TYPE } from '@epgu/epgu-constructor';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 const initValues: AppConfig = {

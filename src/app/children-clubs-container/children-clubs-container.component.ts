@@ -6,6 +6,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./children-clubs-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChildrenClubsContainerComponent {
-  constructor() {}
-}
+export class ChildrenClubsContainerComponent {}
