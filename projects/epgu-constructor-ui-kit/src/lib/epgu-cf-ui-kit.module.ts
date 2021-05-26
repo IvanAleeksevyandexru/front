@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { LongButtonModule } from './components/index';
-import { LocalStorageService } from './services/index';
+import { LongButtonModule } from './components';
+import { LocalStorageService } from './services';
 
 
 @NgModule({

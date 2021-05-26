@@ -1,1 +1,1 @@
-export * from './long-button/index';
+export * from './long-button';
