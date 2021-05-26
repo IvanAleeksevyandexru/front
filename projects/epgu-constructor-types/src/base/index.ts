@@ -9,7 +9,6 @@ export * from './component-action-dto';
 export * from './component-attrs';
 export * from './component-dto';
 export * from './confirm-user-data';
-export * from './confirmation-modal';
 export * from './current-value';
 export * from './custom-component-ref';
 export * from './dictionary';

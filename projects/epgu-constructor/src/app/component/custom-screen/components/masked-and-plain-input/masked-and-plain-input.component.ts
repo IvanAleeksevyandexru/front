@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ValidationShowOn } from 'epgu-lib';
+import { ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';

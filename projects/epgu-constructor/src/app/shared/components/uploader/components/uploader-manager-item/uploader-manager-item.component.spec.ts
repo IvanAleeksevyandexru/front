@@ -21,7 +21,7 @@ import {
   OperationType,
 } from '../../../file-upload/data';
 import { By } from '@angular/platform-browser';
-import { FileSizePipe, SmuEventsService } from 'epgu-lib';
+import { FileSizePipe, SmuEventsService } from '@epgu/epgu-lib';
 import { MockModule } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 

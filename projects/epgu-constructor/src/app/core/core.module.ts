@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
-import { SmuEventsService } from 'epgu-lib';
+import { SmuEventsService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 import { initApp } from './initializers/app.initializer';
 import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
@@ -24,6 +24,7 @@ import { TracingService } from './services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 import { FocusManagerService } from './services/focus-manager/focus-manager.service';
 import { HttpHeadersInterceptor } from './interceptor/http-headers.interceptor';
+import { ErrorHandleService } from './interceptor/errors/error-handle.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -44,6 +45,7 @@ import { HttpHeadersInterceptor } from './interceptor/http-headers.interceptor';
     TerraByteApiService,
     TracingService,
     FocusManagerService,
+    ErrorHandleService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
+
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
+
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';

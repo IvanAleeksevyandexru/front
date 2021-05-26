@@ -6,8 +6,9 @@ import { TerraByteApiService } from '../../../../../core/services/terra-byte-api
 import { TerabyteListItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
+
 import { TerraUploadedFile } from '../../../file-upload/data';
-import { ComponentUploadedFileDto } from 'epgu-constructor-types';
+import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class UploadService {

@@ -6,7 +6,7 @@ import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.co
 
 import { FileUploadComponent } from './file-upload.component';
 import { configureTestSuite } from 'ng-bullet';
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
 import { MemoModule } from '../../../pipes/memo/memo.module';
 import { FileUploadContainerComponent } from '../file-upload-container/file-upload-container.component';

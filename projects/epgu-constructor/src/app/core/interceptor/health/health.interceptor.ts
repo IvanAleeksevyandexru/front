@@ -10,9 +10,9 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
-import { HealthService } from 'epgu-lib';
+import { HealthService } from '@epgu/epgu-lib';
 import { UtilsService } from '../../services/utils/utils.service';
-import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from 'epgu-constructor-types';
+import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../services/config/config.service';
 
 export const EXCEPTIONS = ['lib-assets', 'assets'];
@@ -30,7 +30,7 @@ export const GET_SLOTS_MODIFIED = 'getSlots';
 
 export interface DictionaryPayload {
   region: string;
-  dict: string
+  dict: string;
   empty: boolean;
   regdictname: RegionSource;
 }
@@ -116,18 +116,21 @@ export class HealthInterceptor implements HttpInterceptor {
     private configService: ConfigService,
   ) {}
 
-  intercept<T extends DictionaryFilters & UnspecifiedDTO>(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
-
+  intercept<T extends DictionaryFilters & UnspecifiedDTO>(
+    req: HttpRequest<T>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<T>> {
     // Allways reset generated service name and dictionary validation status
     let serviceName = '';
     this.isDictionaryHasError = false;
 
     if (this.isValidHttpEntity(req)) {
-      const splittedUrl = this.utils.getSplittedUrl(req.url).map(el => el.toLowerCase());
+      const splittedUrl = this.utils.getSplittedUrl(req.url).map((el) => el.toLowerCase());
       this.lastUrlPart = splittedUrl.slice(-1)[0];
 
       serviceName = this.utils.getServiceName(req.url);
-      serviceName = serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
+      serviceName =
+        serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
       serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
 
       this.regionCode = this.getRegionCode(req?.body?.filter);
@@ -140,7 +143,10 @@ export class HealthInterceptor implements HttpInterceptor {
       if (serviceName === GET_SLOTS_MODIFIED) {
         const requestBody = req?.body || {};
 
-        if (this.utils.isDefined(requestBody['organizationId']) && Array.isArray(requestBody['organizationId'])) {
+        if (
+          this.utils.isDefined(requestBody['organizationId']) &&
+          Array.isArray(requestBody['organizationId'])
+        ) {
           this.slotInfo['organizationId'] = requestBody['organizationId'][0];
         } else {
           this.slotInfo['organizationId'] = requestBody['organizationId'];
@@ -153,7 +159,7 @@ export class HealthInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       tap((response: HttpResponse<T>) => {
         if (this.isValidHttpEntity(response)) {
-          const responseBody = response?.body || {} as UnspecifiedDTO;
+          const responseBody = response?.body || ({} as UnspecifiedDTO);
 
           this.isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
@@ -162,21 +168,24 @@ export class HealthInterceptor implements HttpInterceptor {
             const { display } = scenarioDto;
             const { components } = display;
 
-            const orderId = this.utils.isDefined(scenarioDto.orderId) ? scenarioDto.orderId : callBackOrderId;
-            const timeSlotValue = components.filter(component => component.type === 'TimeSlot')[0]?.value;
+            const orderId = this.utils.isDefined(scenarioDto.orderId)
+              ? scenarioDto.orderId
+              : callBackOrderId;
+            const timeSlotValue = components.filter((component) => component.type === 'TimeSlot')[0]
+              ?.value;
 
             if (this.utils.isDefined(timeSlotValue) && typeof timeSlotValue === 'string') {
               try {
                 const slot = JSON.parse(timeSlotValue);
                 const department = JSON.parse(slot.department);
-  
+
                 const orgName = department.attributeValues.FULLNAME || department.title;
                 const timeSlotType = slot.timeSlotType;
                 const { serviceCode } = this.configService.timeSlots[timeSlotType];
-  
+
                 this.slotInfo['orgName'] = encodeURIComponent(this.utils.cyrillicToLatin(orgName));
                 this.slotInfo['serviceCode'] = serviceCode;
-              } catch(e) {}
+              } catch (e) {}
             }
 
             this.commonParams = {
@@ -185,10 +194,14 @@ export class HealthInterceptor implements HttpInterceptor {
               orderId: orderId,
             };
 
-            if (serviceName === RENDER_FORM_SERVICE_NAME || serviceName === PREV_STEP_SERVICE_NAME) {
+            if (
+              serviceName === RENDER_FORM_SERVICE_NAME ||
+              serviceName === PREV_STEP_SERVICE_NAME
+            ) {
               this.commonParams = {
                 ...this.commonParams,
-                typeEvent: serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
+                typeEvent:
+                  serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
                 mnemonicScreen: display?.type,
               };
             }
@@ -198,16 +211,25 @@ export class HealthInterceptor implements HttpInterceptor {
           }
 
           if (this.isThatDictionary(responseBody)) {
-
             const { total } = responseBody;
             const dictionaryPayload: DictionaryPayload = {
               empty: total === 0,
-              dict: this.utils.isDefined(this.lastUrlPart) ? this.lastUrlPart.toUpperCase() : undefined,
+              dict: this.utils.isDefined(this.lastUrlPart)
+                ? this.lastUrlPart.toUpperCase()
+                : undefined,
               region: this.regionCode,
-              regdictname: this.utils.isDefined(this.regionCode) ? RegionSource.Okato : RegionSource.Gosbar,
+              regdictname: this.utils.isDefined(this.regionCode)
+                ? RegionSource.Okato
+                : RegionSource.Gosbar,
             };
 
-            this.measureDictionaries(responseBody, dictionaryPayload, this.commonParams, this.isDictionaryHasError, serviceName);
+            this.measureDictionaries(
+              responseBody,
+              dictionaryPayload,
+              this.commonParams,
+              this.isDictionaryHasError,
+              serviceName,
+            );
           }
 
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
@@ -228,7 +250,11 @@ export class HealthInterceptor implements HttpInterceptor {
               payload = { ...payload, ...this.slotInfo };
             }
 
-            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(payload));
+            this.endMeasureHealth(
+              serviceName,
+              RequestStatus.Succeed,
+              this.utils.filterIncorrectObjectFields(payload),
+            );
           }
         }
       }),
@@ -247,21 +273,29 @@ export class HealthInterceptor implements HttpInterceptor {
               this.commonParams.errorMessage = this.utils.cyrillicToLatin(exception.message);
             }
 
-            this.endMeasureHealth(serviceName, RequestStatus.Failed, this.utils.filterIncorrectObjectFields({
-              id: this.commonParams.id,
-              name: this.commonParams.name,
-              orderId: this.commonParams.orderId,
-              serverError: this.commonParams.serverError,
-              dictionaryUrl: this.commonParams.dictionaryUrl,
-              errorMessage: this.commonParams.errorMessage,
-            }));
+            this.endMeasureHealth(
+              serviceName,
+              RequestStatus.Failed,
+              this.utils.filterIncorrectObjectFields({
+                id: this.commonParams.id,
+                name: this.commonParams.name,
+                orderId: this.commonParams.orderId,
+                serverError: this.commonParams.serverError,
+                dictionaryUrl: this.commonParams.dictionaryUrl,
+                errorMessage: this.commonParams.errorMessage,
+              }),
+            );
           } else {
-            this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-              id: this.commonParams.id,
-              name: this.commonParams.name,
-              orderId: this.commonParams.orderId,
-              serverError: 404,
-            }));
+            this.endMeasureHealth(
+              serviceName,
+              RequestStatus.Succeed,
+              this.utils.filterIncorrectObjectFields({
+                id: this.commonParams.id,
+                name: this.commonParams.name,
+                orderId: this.commonParams.orderId,
+                serverError: 404,
+              }),
+            );
           }
 
           return throwError(exception);
@@ -273,23 +307,29 @@ export class HealthInterceptor implements HttpInterceptor {
   private startMeasureHealth(serviceName: string): void {
     this.health.measureStart(serviceName);
 
-    if(serviceName === RENDER_FORM_SERVICE_NAME) {
+    if (serviceName === RENDER_FORM_SERVICE_NAME) {
       this.health.measureStart(ERROR_UPDATE_DRAFT_SERVICE_NAME);
     }
   }
 
-  private endMeasureHealth(serviceName: string, requestStatus: RequestStatus, commonParams: object): void {
+  private endMeasureHealth(
+    serviceName: string,
+    requestStatus: RequestStatus,
+    commonParams: object,
+  ): void {
     this.health.measureEnd(serviceName, requestStatus, commonParams);
 
-    if(serviceName === RENDER_FORM_SERVICE_NAME) {
+    if (serviceName === RENDER_FORM_SERVICE_NAME) {
       this.health.measureEnd(ERROR_UPDATE_DRAFT_SERVICE_NAME, requestStatus, commonParams);
     }
   }
 
   private measureStaticRequests(commonParams: CommonPayload, serviceName: string): void {
-    this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields(
-      commonParams,
-    ));
+    this.endMeasureHealth(
+      serviceName,
+      RequestStatus.Succeed,
+      this.utils.filterIncorrectObjectFields(commonParams),
+    );
   }
 
   private measureDictionaries(
@@ -300,10 +340,12 @@ export class HealthInterceptor implements HttpInterceptor {
     serviceName: string,
   ): void {
     if (dictionaryError) {
-      const keyCode = this.getErrorByKey(responseBody?.error, 'code') ?
-        responseBody?.error?.code : responseBody?.error?.errorCode;
-      const errorMessage = this.utils.isDefined(responseBody?.error?.message) ?
-        responseBody.error.message : responseBody?.error?.errorMessage;
+      const keyCode = this.getErrorByKey(responseBody?.error, 'code')
+        ? responseBody?.error?.code
+        : responseBody?.error?.errorCode;
+      const errorMessage = this.utils.isDefined(responseBody?.error?.message)
+        ? responseBody.error.message
+        : responseBody?.error?.errorMessage;
 
       this.commonParams = {
         ...commonParams,
@@ -315,25 +357,34 @@ export class HealthInterceptor implements HttpInterceptor {
     this.endMeasureHealth(
       serviceName,
       dictionaryError ? RequestStatus.Failed : RequestStatus.Succeed,
-      this.utils.filterIncorrectObjectFields(
-        { ...this.commonParams, ...dictionaryParams },
-      ),
+      this.utils.filterIncorrectObjectFields({ ...this.commonParams, ...dictionaryParams }),
     );
   }
 
-  private measureBackendDictionaries(health: BackendHealthList, orderId: string | number | undefined): void {
-    if (this.utils.isDefined(health) && this.utils.isDefined(health?.dictionaries) && health.dictionaries.length > 0) {
+  private measureBackendDictionaries(
+    health: BackendHealthList,
+    orderId: string | number | undefined,
+  ): void {
+    if (
+      this.utils.isDefined(health) &&
+      this.utils.isDefined(health?.dictionaries) &&
+      health.dictionaries.length > 0
+    ) {
       const { dictionaries } = health;
       dictionaries.forEach((dictionary: BackendDictionary) => {
         const serviceName = dictionary.id;
         this.startMeasureHealth(serviceName);
-        this.endMeasureHealth(serviceName, RequestStatus.Succeed, this.utils.filterIncorrectObjectFields({
-          id: serviceName,
-          status: dictionary.status,
-          method: dictionary.method,
-          orderId: orderId,
-          regdictname: RegionSource.Okato,
-        }));
+        this.endMeasureHealth(
+          serviceName,
+          RequestStatus.Succeed,
+          this.utils.filterIncorrectObjectFields({
+            id: serviceName,
+            status: dictionary.status,
+            method: dictionary.method,
+            orderId: orderId,
+            regdictname: RegionSource.Okato,
+          }),
+        );
       });
     }
   }
@@ -344,31 +395,46 @@ export class HealthInterceptor implements HttpInterceptor {
   }
 
   private isThatDictionary(responseBody: UnspecifiedDTO): boolean {
-    return this.utils.isDefined(responseBody?.fieldErrors) && this.utils.isDefined(responseBody.total);
+    return (
+      this.utils.isDefined(responseBody?.fieldErrors) && this.utils.isDefined(responseBody.total)
+    );
   }
 
   private getErrorByKey(error: undefined | DictionaryError, key: string): boolean {
     return (
-      this.utils.isDefined(error) &&
-      this.utils.isDefined(error[key]) &&
-      Number(error[key]) !== 0
+      this.utils.isDefined(error) && this.utils.isDefined(error[key]) && Number(error[key]) !== 0
     );
-  };
+  }
 
   private isDictionaryHasExternalError(responseBody: UnspecifiedDTO): boolean {
-    return this.getErrorByKey(responseBody?.error, 'code') || this.getErrorByKey(responseBody?.error, 'errorCode');
+    return (
+      this.getErrorByKey(responseBody?.error, 'code') ||
+      this.getErrorByKey(responseBody?.error, 'errorCode')
+    );
   }
 
   private isValidScenarioDto(dto: { scenarioDto: ScenarioDto }): boolean {
-    return this.utils.isDefined(dto) && this.utils.isDefined(dto.scenarioDto) && this.utils.isDefined(dto.scenarioDto.display);
+    return (
+      this.utils.isDefined(dto) &&
+      this.utils.isDefined(dto.scenarioDto) &&
+      this.utils.isDefined(dto.scenarioDto.display)
+    );
   }
 
-  private isValidHttpEntity<T>(payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse): boolean {
+  private isValidHttpEntity<T>(
+    payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse,
+  ): boolean {
     return this.utils.isValidHttpUrl(payload['url']) && !this.checkUrlForExceptions(payload['url']);
   }
 
-  private getFilterType(filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined): FilterType {
-    if (this.utils.isDefined(filter['union']) && this.utils.isDefined(filter['union']['subs']) && Array.isArray(filter['union']['subs'])) {
+  private getFilterType(
+    filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
+  ): FilterType {
+    if (
+      this.utils.isDefined(filter['union']) &&
+      this.utils.isDefined(filter['union']['subs']) &&
+      Array.isArray(filter['union']['subs'])
+    ) {
       return FilterType.UnionKind;
     } else if (this.isValidSubFilter(filter)) {
       return FilterType.SimpleKind;
@@ -377,7 +443,9 @@ export class HealthInterceptor implements HttpInterceptor {
     return FilterType.UnspecifiedKind;
   }
 
-  private isValidSubFilter(filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined): boolean {
+  private isValidSubFilter(
+    filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
+  ): boolean {
     if (
       this.utils.isDefined(filter) &&
       this.utils.isDefined(filter?.simple) &&
@@ -391,14 +459,18 @@ export class HealthInterceptor implements HttpInterceptor {
     return false;
   }
 
-  private getRegionCode(filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined): string | undefined {
+  private getRegionCode(
+    filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
+  ): string | undefined {
     if (this.utils.isDefined(filter)) {
       const filterType = this.getFilterType(filter);
 
-      switch(filterType) {
+      switch (filterType) {
         case FilterType.UnionKind: {
           const { subs } = (filter as DictionaryFilters['filter']).union;
-          const areSubsValid = subs.every((sub: DictionarySubFilter) => this.utils.isDefined(sub?.simple));
+          const areSubsValid = subs.every((sub: DictionarySubFilter) =>
+            this.utils.isDefined(sub?.simple),
+          );
 
           if (areSubsValid) {
             const subFilter: DictionarySubFilter[] = subs.filter((sub: DictionarySubFilter) => {
@@ -424,7 +496,9 @@ export class HealthInterceptor implements HttpInterceptor {
         case FilterType.SimpleKind: {
           const { attributeName, value } = filter.simple;
 
-          return DICTIONARY_CODES.includes(attributeName.toLowerCase()) ? value.asString as string : undefined;
+          return DICTIONARY_CODES.includes(attributeName.toLowerCase())
+            ? (value.asString as string)
+            : undefined;
         }
 
         case FilterType.UnspecifiedKind: {

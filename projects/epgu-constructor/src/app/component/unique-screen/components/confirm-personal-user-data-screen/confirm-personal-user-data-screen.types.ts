@@ -1,5 +1,5 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import { ConfirmUserDataStyle, DTOActionAction } from 'epgu-constructor-types';
+import { ConfirmUserDataStyle, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 export interface ConfirmUserData extends ComponentBase {
   attrs: ConfirmUserDataAttrs;

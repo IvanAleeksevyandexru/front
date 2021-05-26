@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Clarifications } from 'epgu-constructor-types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { get as _get } from 'lodash';
 import { EmployeeType } from '../../employee-history.types';
 

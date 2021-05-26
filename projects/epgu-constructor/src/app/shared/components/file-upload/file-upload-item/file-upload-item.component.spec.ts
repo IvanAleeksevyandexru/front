@@ -45,7 +45,7 @@ import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ComponentAttrsDto } from 'epgu-constructor-types';
+import { ComponentDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderValidationService } from '../services/validation/uploader-validation.service';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';

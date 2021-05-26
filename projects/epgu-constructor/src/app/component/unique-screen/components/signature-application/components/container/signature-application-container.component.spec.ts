@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonComponent, LoaderComponent } from 'epgu-lib';
+import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
@@ -38,7 +38,7 @@ import {
   ApplicantAnswersDto,
   ComponentActionDto,
   DTOActionAction,
-} from 'epgu-constructor-types';
+} from '@epgu/epgu-constructor-types';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;
