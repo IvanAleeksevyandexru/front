@@ -54,6 +54,7 @@ export class SelectChildrenComponent implements OnInit {
   DEFAULT_AVAILABLE = 20;
   NEW_ID = 'new';
   hideAddNewChildButton = false;
+  expandAllChildrenBlocks: boolean;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -62,6 +63,7 @@ export class SelectChildrenComponent implements OnInit {
 
   ngOnInit(): void {
     this.repeatAmount = this.component?.attrs?.repeatAmount || this.DEFAULT_AVAILABLE;
+    this.expandAllChildrenBlocks = this.component?.attrs?.expandAllChildrenBlocks;
 
     this.initVariables();
     this.initStartValues();
@@ -105,9 +107,20 @@ export class SelectChildrenComponent implements OnInit {
         this.addMoreChild(childFromList, isNew ? child : {});
         this.handleSelect(child, index);
       });
+    } else if (this.expandAllChildrenBlocks && this.itemsToSelect.length > 1) {
+      this.initAllChildrenBlocks();
     } else {
       this.addMoreChild();
     }
+  }
+
+  initAllChildrenBlocks(): void {
+    this.itemsToSelect
+      .filter((child) => child.id !== 'new')
+      .forEach((child, index) => {
+        this.addMoreChild(child);
+        this.handleSelect(child, index);
+      });
   }
 
   updateCurrentAnswerServiceValidation(): void {
