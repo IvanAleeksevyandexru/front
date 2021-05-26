@@ -111,6 +111,9 @@ $minModalHeight: 293px;
       & > *:not(:last-child) {
         margin-right: 16px;
       }
+      &::ng-deep .screen-button {
+        margin-top: 0;
+      }
       @include phones-down {
         margin-bottom: 32px;
       }
@@ -123,7 +126,7 @@ $minModalHeight: 293px;
           margin-right: 0;
         }
         & > *:not(:first-child) {
-          margin-bottom: 16px;
+          margin-bottom: 32px;
         }
       }
     }

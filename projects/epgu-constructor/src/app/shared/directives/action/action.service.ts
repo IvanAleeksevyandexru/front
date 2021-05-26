@@ -129,21 +129,25 @@ export class ActionService {
     }
 
     const confirmation = confirmations[action.value];
+    const confirmationButtons = confirmation.buttons;
 
     this.modalService.openModal(ConfirmationModalComponent, {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
-      buttons: [
-        {
-          label: confirmation?.submitLabel || 'Отправить',
-          closeModal: true,
-          handler: handler
-            ? handler
-            : (): void => {
-                this.navigate(action, componentId, 'nextStep');
-              },
-        },
-      ],
+      buttons: confirmationButtons.length
+        ? confirmationButtons
+        : [
+            {
+              label: confirmation?.submitLabel || 'Отправить',
+              closeModal: true,
+              handler: handler
+                ? handler
+                : (): void => {
+                    this.navigate(action, componentId, 'nextStep');
+                  },
+            },
+          ],
+      actionButtons: confirmation.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
     });
@@ -304,6 +308,8 @@ export class ActionService {
         return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family`);
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
+      case DTOActionAction.editMedicalData:
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/health`);
       default:
         return this.navService.redirectToProfileEdit();
     }

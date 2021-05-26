@@ -26,14 +26,14 @@ export class AutocompletePrepareService {
 
   public getFormattedList(
     repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsMap: { [key: string]: string },
+    componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     id: number,
     componentMnemonic: string,
   ): ISuggestionItemList {
     const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
       repeatableComponents,
-      componentsSuggestionsMap,
+      componentsSuggestionsSet,
       fields,
       componentMnemonic,
     );
@@ -43,7 +43,7 @@ export class AutocompletePrepareService {
     if (field) {
       let { value, mnemonic } = field;
       let originalItem = value;
-      value = this.prepareValue(repeatableComponents, componentsSuggestionsMap, value, mnemonic);
+      value = this.prepareValue(repeatableComponents, componentsSuggestionsSet, value);
       return {
         value,
         mnemonic,
@@ -58,25 +58,34 @@ export class AutocompletePrepareService {
 
   public getFormattedHints(
     repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsMap: { [key: string]: string },
+    componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     componentMnemonic: string,
   ): { value: string; mnemonic: string }[] {
     const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
-      return Object.keys(componentsSuggestionsMap).includes(mnemonic);
+      return Array.from(componentsSuggestionsSet).some(([suggestId]) => suggestId === mnemonic);
     };
+    const orderByFieldsMnemonics = Array.from(componentsSuggestionsSet).map(
+      ([suggestionId]) => suggestionId,
+    );
 
-    return fields.reduce((acc: { value: string; mnemonic: string }[], field) => {
-      let { value, mnemonic } = field;
-      if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
-        value = this.prepareValue(repeatableComponents, componentsSuggestionsMap, value, mnemonic);
-        acc.push({
-          value,
-          mnemonic,
-        });
-      }
-      return acc;
-    }, []);
+    return fields
+      .reduce((acc: { value: string; mnemonic: string }[], field) => {
+        let { value, mnemonic } = field;
+        if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
+          value = this.prepareValue(repeatableComponents, componentsSuggestionsSet, value);
+          acc.push({
+            value,
+            mnemonic,
+          });
+        }
+        return acc;
+      }, [])
+      .sort((a, b) => {
+        return (
+          orderByFieldsMnemonics.indexOf(a.mnemonic) - orderByFieldsMnemonics.indexOf(b.mnemonic)
+        );
+      });
   }
 
   public getParsedSuggestionsUploadedFiles(
@@ -96,20 +105,20 @@ export class AutocompletePrepareService {
 
   public formatAndPassDataToSuggestions(
     repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsMap: { [key: string]: string },
+    componentsSuggestionsSet: Set<[string, string]>,
     suggestions: ISuggestionApi[],
   ): void {
     let result: { [key: string]: ISuggestionItem } = {};
 
     suggestions.forEach((suggestion) => {
       const { values } = suggestion;
-      const componentsEntries = Object.entries(componentsSuggestionsMap) || [];
+      const componentsEntries = Array.from(componentsSuggestionsSet) || [];
       values.forEach((value) => {
         const { fields, id } = value;
         componentsEntries.forEach(([componentMnemonic, componentId]: [string, string]) => {
           const componentList: ISuggestionItemList = this.getFormattedList(
             repeatableComponents,
-            componentsSuggestionsMap,
+            componentsSuggestionsSet,
             fields,
             id,
             componentMnemonic,
@@ -133,17 +142,15 @@ export class AutocompletePrepareService {
 
   public findAndUpdateComponentWithValue(
     repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsMap: { [key: string]: string },
+    componentsSuggestionsSet: Set<[string, string]>,
     parentComponent: ComponentDto,
-    mnemonic: string,
     value: string,
     id?: number,
     componentsGroupIndex?: number,
   ): void {
     const component = this.findComponent(
       repeatableComponents,
-      componentsSuggestionsMap,
-      mnemonic,
+      componentsSuggestionsSet,
       componentsGroupIndex,
     );
     const componentValue = this.findComponentValue(component, id, value);
@@ -192,9 +199,8 @@ export class AutocompletePrepareService {
 
   private prepareValue(
     repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsMap: { [key: string]: string },
+    componentsSuggestionsSet: Set<[string, string]>,
     value: string,
-    componentMnemonic?: string,
   ): string {
     if (UtilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
@@ -213,8 +219,7 @@ export class AutocompletePrepareService {
     const componentsGroupIndex = 0;
     const component = this.findComponent(
       repeatableComponents,
-      componentsSuggestionsMap,
-      componentMnemonic,
+      componentsSuggestionsSet,
       componentsGroupIndex,
     );
     if (component) {
@@ -226,20 +231,22 @@ export class AutocompletePrepareService {
 
   private findComponent(
     repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsMap: { [key: string]: string },
-    mnemonic: string,
+    componentsSuggestionsSet: Set<[string, string]>,
     componentsGroupIndex?: number,
   ): ComponentDto {
     /* Иногда сюда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
     вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput */
-    const [componentMnemonic] = mnemonic.split('.');
     if (repeatableComponents.length && componentsGroupIndex > -1) {
       return repeatableComponents[componentsGroupIndex].find((component) => {
-        return componentsSuggestionsMap[componentMnemonic] === component.id;
+        return Array.from(componentsSuggestionsSet).some(
+          ([_, componentId]) => componentId === component.id,
+        );
       });
     } else {
       return this.screenService.display?.components?.find((component) => {
-        return componentsSuggestionsMap[componentMnemonic] === component.id;
+        return Array.from(componentsSuggestionsSet).some(
+          ([_, componentId]) => componentId === component.id,
+        );
       });
     }
   }
