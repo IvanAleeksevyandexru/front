@@ -29,7 +29,7 @@
 {{ preview | json }}
 
 <ng-template #buttonsTemplate>
-  <div *ngIf="buttons.length" class="conf-modal__controls">
+  <div class="conf-modal__controls" *ngIf="buttons.length">
     <lib-button
       *ngFor="let button of buttons"
       epgu-constructor-action
@@ -40,11 +40,10 @@
       (click)="button.handler()"
       >{{ button.label }}</lib-button
     >
-  </div>
-
-  <div *ngIf="actionButtons.length" class="conf-modal__controls">
-    <epgu-constructor-screen-buttons
-      [screenButtons]="actionButtons"
-    ></epgu-constructor-screen-buttons>
+    <div class="conf-modal__button" *ngIf="actionButtons.length">
+      <epgu-constructor-screen-buttons
+        [screenButtons]="actionButtons"
+      ></epgu-constructor-screen-buttons>
+    </div>
   </div>
 </ng-template>

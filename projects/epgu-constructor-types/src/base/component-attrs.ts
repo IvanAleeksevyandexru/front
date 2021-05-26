@@ -237,6 +237,13 @@ export interface ActionConfirmationsDto {
     title?: string;
     text?: string;
     submitLabel?: string;
+    buttons: Array<{
+      label: string;
+      closeModal: boolean;
+      color?: ColorDto;
+      value?: boolean;
+    }>;
+    actionButtons: ComponentActionDto;
   };
 }
 
