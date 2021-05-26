@@ -1,0 +1,17 @@
+{
+  "name": "@epgu/children-clubs",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "cd ../../ && ng build children-clubs --prod",
+    "watch": "cd ../../ && ng build children-clubs --watch",
+    "lint": "cd ../../ && ng lint children-clubs",
+    "lint:fix": "cd ../../ && ng lint children-clubs --fix"
+  },
+  "peerDependencies": {
+    "@angular/common": "^11.0.0",
+    "@angular/core": "^11.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

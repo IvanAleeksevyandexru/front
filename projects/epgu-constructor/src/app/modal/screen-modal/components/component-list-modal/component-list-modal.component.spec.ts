@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { ComponentListModalComponent } from './component-list-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenTypes } from '../../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { ScreenModalService } from '../../screen-modal.service';

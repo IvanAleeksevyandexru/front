@@ -23,7 +23,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
-import { ScreenTypes } from '../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import {

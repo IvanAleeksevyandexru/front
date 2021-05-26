@@ -11,7 +11,6 @@ import { ScreenService } from '../../screen/screen.service';
 import { ScreenModalService } from './screen-modal.service';
 import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { ScreenTypes } from '../../screen/screen.types';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
@@ -27,6 +26,7 @@ import { FormPlayerServiceStub } from '../../form-player/services/form-player/fo
 import { ScreenModalServiceStub } from './screen-modal.service.stub';
 import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 describe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;

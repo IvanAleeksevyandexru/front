@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { takeUntil, tap, subscribeOn } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
 import {
@@ -22,7 +23,6 @@ import {
   ComponentTypes,
   CUSTOM_SCREEN_COMPONENTS,
 } from './component-list-resolver.const';
-import { ScreenTypes } from '../../../screen/screen.types';
 
 @Component({
   selector: 'epgu-constructor-component-list-resolver',

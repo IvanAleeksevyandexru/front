@@ -4,7 +4,17 @@
       "es6"
     ],
     "target": "es5",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "children-clubs": [
+        "dist/children-clubs/children-clubs",
+        "dist/children-clubs"
+      ],
+      "epgu-constructor-ui-kit": [
+        "dist/epgu-constructor-ui-kit/epgu-cf-ui-kit",
+        "dist/epgu-constructor-ui-kit"
+      ]
+    }
   },
   "references": [
     {

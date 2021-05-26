@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { ScreenResolverComponent } from './screen-resolver.component';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenTypes } from '../screen.types';
 import { SCREEN_COMPONENTS } from '../screen.const';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 @Component({
   template: '<div>test</div>',

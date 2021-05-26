@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import {
+  ActionApiResponse,
+  ActionRequestPayload,
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '@epgu/epgu-constructor-types';
+
 import { ConfigService } from '../../../core/services/config/config.service';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -14,7 +22,7 @@ import {
 } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenStore, ScreenTypes } from '../../../screen/screen.types';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
@@ -26,13 +34,7 @@ import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import {
-  ActionApiResponse,
-  ActionRequestPayload,
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-} from '@epgu/epgu-constructor-types';
+import { ScreenStore } from '../../../screen/screen.types';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -127,21 +129,25 @@ export class ActionService {
     }
 
     const confirmation = confirmations[action.value];
+    const confirmationButtons = confirmation.buttons;
 
     this.modalService.openModal(ConfirmationModalComponent, {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
-      buttons: [
-        {
-          label: confirmation?.submitLabel || 'Отправить',
-          closeModal: true,
-          handler: handler
-            ? handler
-            : (): void => {
-                this.navigate(action, componentId, 'nextStep');
-              },
-        },
-      ],
+      buttons: confirmationButtons.length
+        ? confirmationButtons
+        : [
+            {
+              label: confirmation?.submitLabel || 'Отправить',
+              closeModal: true,
+              handler: handler
+                ? handler
+                : (): void => {
+                    this.navigate(action, componentId, 'nextStep');
+                  },
+            },
+          ],
+      actionButtons: confirmation.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
     });
@@ -302,6 +308,8 @@ export class ActionService {
         return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family`);
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
+      case DTOActionAction.editMedicalData:
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/health`);
       default:
         return this.navService.redirectToProfileEdit();
     }
