@@ -2,6 +2,7 @@
   "name": "@epgu/children-clubs",
   "version": "0.0.1",
   "scripts": {
+    "build": "cd ../../ && ng build children-clubs --prod",
     "lint": "cd ../../ && ng lint children-clubs",
     "lint:fix": "cd ../../ && ng lint children-clubs --fix"
   },
