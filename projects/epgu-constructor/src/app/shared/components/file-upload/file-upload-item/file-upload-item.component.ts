@@ -76,7 +76,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
-    tap(() => this.stat.updateLimits()),
     concatMap(
       (file: FileItem) => this.validation.prepare(file), // Валидируем файл
     ),
@@ -101,13 +100,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   );
   suggestions$ = this.screenService.suggestions$;
 
-  uploadersCounterChanges$ = this.limits.changes.pipe(
-    // tap(() => this.stat.updateLimits()),
-    tap(() => this.stat.maxLimitUpdate()),
-  );
+  uploadersCounterChanges$ = this.limits.changes.pipe(tap(() => this.stat.maxLimitUpdate()));
 
   subscriptions: Subscription = new Subscription()
     .add(this.uploader.data$.subscribe())
+    .add(this.files$.subscribe())
     .add(this.initFilesList$.subscribe())
     .add(this.process.stream$.subscribe())
     .add(this.processingFiles$.subscribe())
@@ -131,8 +128,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.add(this.files$.subscribe());
-
     this.eventBusService
       .on(`fileDeleteEvent_${this.uploader.data.uploadId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -264,6 +259,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       tap((file: FileItem) => this.validation.checkAndSetMaxCountByTypes(file)),
       tap((file: FileItem) => this.stat.incrementLimits(file)),
       tap((file: FileItem) => this.uploader.updateMaxFileNumber(file.item)),
+      tap(() => this.stat.updateLimits()),
     );
   }
 

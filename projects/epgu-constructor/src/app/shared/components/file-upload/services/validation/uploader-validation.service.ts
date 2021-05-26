@@ -47,10 +47,9 @@ export class UploaderValidationService {
       return;
     }
     this.uploader.updateLimits(this.limits.getAmount(data.uploadId), file, isAdd);
-    this.limits.changeMaxAmount(
-      (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
-      data.uploadId,
-    );
+    const amount = (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0;
+    this.limits.changeMaxAmount(amount, data.uploadId);
+    this.uploader.maxAmount = amount;
   }
 
   validateType(file: FileItem): FileItem {
@@ -79,8 +78,9 @@ export class UploaderValidationService {
     if (!this.uploader.data?.validation || this.uploader.data.validation?.length === 0) {
       return file;
     }
+
     const index = this.uploader.data.validation.findIndex(
-      (validation) => !new RegExp(file.raw.name).test(validation.value),
+      (validation) => !new RegExp(validation.value).test(file.raw.name),
     );
     if (index !== -1) {
       file.setError({

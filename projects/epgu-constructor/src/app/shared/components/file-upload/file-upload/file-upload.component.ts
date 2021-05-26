@@ -136,15 +136,13 @@ export class FileUploadComponent implements OnInit {
     Record<string, UploadedFile[]>,
   ]): UploadContext {
     const id = `${this.prefixForMnemonic}.${upload.uploadId}`;
-    const context = {
+    return {
       data: upload,
       prefixForMnemonic: this.prefixForMnemonic,
       objectId: this.objectId,
       clarifications: this.attributes?.clarifications,
       files: files[id] || [],
     } as UploadContext;
-
-    return context;
   }
 
   getMnemonicWithoutOrder(mnemonic: string): string {

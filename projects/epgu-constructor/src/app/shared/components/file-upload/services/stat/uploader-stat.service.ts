@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ErrorActions, FileItem, OverLimits } from '../../data';
 import { UploaderMessage } from '../../typings';
-import {
-  FileUploadItem,
-  MaxCountByType,
-} from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { FileUploadItem } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UploaderLimitsService } from '../limits/uploader-limits.service';
 import { UploaderManagerService } from '../manager/uploader-manager.service';
 import { UploaderStoreService } from '../store/uploader-store.service';
@@ -88,10 +85,7 @@ export class UploaderStatService {
       return;
     }
     this.uploader.updateLimits(this.limits.getAmount(this.config.uploadId));
-    this.limits.changeMaxAmount(
-      (this.store.lastSelected as MaxCountByType)?.maxFileCount ?? 0,
-      this.config.uploadId,
-    );
+    this.limits.changeMaxAmount(this.store.lastSelected?.maxFileCount ?? 0, this.config.uploadId);
     this.uploader.maxAmount = this.limits.getUploader(this.config.uploadId).maxAmount;
   }
 

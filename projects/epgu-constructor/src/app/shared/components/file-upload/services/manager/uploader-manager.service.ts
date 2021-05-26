@@ -112,6 +112,10 @@ export class UploaderManagerService {
   init(data: FileUploadItem): void {
     this.maxTotalSize = this.limits.getMaxTotalFilesSize();
     this.maxTotalAmount = this.limits.getMaxTotalFilesAmount();
+    if (data?.maxCountByTypes?.length > 0) {
+      this.updateLimits(this.limits.getAmount(this.data.uploadId));
+      this.limits.changeMaxAmount(this.store.lastSelected?.maxFileCount ?? 0, this.data.uploadId);
+    }
     this.maxAmount = this.limits.getUploader(data.uploadId).maxAmount;
     this.maxSize = this.limits.getUploader(data.uploadId).maxSize;
     this.readonly = data?.readonly === true;
@@ -125,10 +129,9 @@ export class UploaderManagerService {
           .filter((item, index, arr) => arr.indexOf(item) === index),
       );
     }
-    const result = this.store?.lastSelected
+    return this.store?.lastSelected
       ? getAcceptTypes(this.store?.lastSelected.type)
       : getAcceptTypes(this.data.fileType);
-    return result;
   }
 
   get hasImageTypes(): boolean {
