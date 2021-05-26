@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionButtonComponent } from './action-button.component';
-import { LongButtonComponent } from '../long-button/long-button.component';
+import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ActionButtonComponent', () => {
   let component: ActionButtonComponent;
