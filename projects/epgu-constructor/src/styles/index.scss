@@ -12,6 +12,7 @@
   @include flex-container();
   color: $color-summer-night;
   font-family: $font-main;
+  min-width: 320px;
   height: 100%;
 
   & .loader {
