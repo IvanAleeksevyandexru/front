@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FileUploadService } from './file-upload.service';
+import { UploaderLimitsService } from './uploader-limits.service';
 import { configureTestSuite } from 'ng-bullet';
 
-describe('FileUploadService', () => {
-  let service: FileUploadService;
+describe('UploaderLimitsService', () => {
+  let service: UploaderLimitsService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [FileUploadService],
+      providers: [UploaderLimitsService],
     });
   });
 
   beforeEach(() => {
-    service = TestBed.inject(FileUploadService);
+    service = TestBed.inject(UploaderLimitsService);
   });
 
   it('getMaxTotalFilesAmount() should return 0 by default', () => {

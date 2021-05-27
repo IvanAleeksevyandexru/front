@@ -11,7 +11,7 @@ import {
   TerraUploadFileOptions,
 } from './terra-byte-api.types';
 import * as FileSaver from 'file-saver';
-import { TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
+import { TerraUploadedFile } from '../../../shared/components/file-upload/data';
 import { configureTestSuite } from 'ng-bullet';
 
 const createMockBlob = (size: number): Blob => {

@@ -1,7 +1,7 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ModalService } from '../../../../../modal/modal.service';
 import { UploaderViewerComponent } from '../../components/uploader-viewer/uploader-viewer.component';
-import { FileItem } from '../../../file-upload/file-upload-item/data';
+import { FileItem } from '../../../file-upload/data';
 import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { filter, finalize, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';

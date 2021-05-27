@@ -1,4 +1,4 @@
-import { FileItem } from '../file-upload/file-upload-item/data';
+import { FileItem } from '../file-upload/data';
 
 export const iconsTypes = {
   doc: 'DOC',
