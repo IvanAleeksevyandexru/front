@@ -16,9 +16,9 @@ cache: &global_cache
 stages:
   - install
   - postinstall
+  - ui-kit-build
   - code-quality
   - children-clubs-build
-  - ui-kit-build
   - library-build
   - library-publish
   - build
@@ -109,7 +109,7 @@ Library-build:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
-    - yarn lib:build:ivy && yarn lib:build
+    - yarn lib:build
   only:
     - merge_requests
     - master
