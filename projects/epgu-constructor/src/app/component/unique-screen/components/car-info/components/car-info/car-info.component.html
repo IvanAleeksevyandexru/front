@@ -1,14 +1,14 @@
-<epgu-constructor-screen-pad *ngIf="carInfoErrors?.externalCommon; else carInfoBlock">
+<epgu-cf-ui-constructor-screen-pad *ngIf="carInfoErrors?.externalCommon; else carInfoBlock">
   <ng-container
     *ngTemplateOutlet="templateError;
         context: { iconClass: (carInfoErrors.externalCommon.type | errorTemplate).icon ,
          title: (carInfoErrors.externalCommon.type | errorTemplate).title,
          text: carInfoErrors.externalCommon.text}"
   ></ng-container>
-</epgu-constructor-screen-pad>
+</epgu-cf-ui-constructor-screen-pad>
 
 <ng-template #carInfoBlock>
-  <epgu-constructor-screen-pad class="car-info-block">
+  <epgu-cf-ui-constructor-screen-pad class="car-info-block">
     <div *ngIf="carInfoErrors?.vehicle; else vehicleInfo">
       <h5 class="info-list-title">Информация о регистрации ТС</h5>
 
@@ -141,7 +141,7 @@
       ></epgu-constructor-notary-info>
     </ng-template>
 
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 
   <div class="car-info-text-helper"> Данные о транспортном средстве предоставлены из официальной базы ГИБДД</div>
 

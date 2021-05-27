@@ -4,7 +4,7 @@ import { RegistrationAddrComponent } from './components/registration-addr/regist
 // eslint-disable-next-line max-len
 import { ConstructorDadataWidgetModule } from '../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';

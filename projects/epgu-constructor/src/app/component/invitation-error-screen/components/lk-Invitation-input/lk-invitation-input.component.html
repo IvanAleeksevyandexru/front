@@ -1,5 +1,5 @@
 <epgu-constructor-screen-container class="invitation">
-  <epgu-constructor-screen-pad class="screen-body">
+  <epgu-cf-ui-constructor-screen-pad class="screen-body">
     <div *ngIf="!emailSent; else result">
       <div class="invitation__img-wrapper">
         <img [src]="data.attrs.imgSrc" alt="" />
@@ -36,7 +36,7 @@
       </form>
 
       <div class="invitation__inner-footer">
-        <lib-button (click)="sendEmail()" [disabled]="!email.valid">{{
+        <lib-button (click)="sendEmail()" [disabled]="!email.valid || !email.value">{{
           data.attrs.sendEmailLabel || 'Отправить'
           }}</lib-button>
       </div>
@@ -62,7 +62,7 @@
         </div>
       </ng-template>
     </ng-template>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 
   <div class="screen-footer invitation__outer-footer" *ngIf="emailSent">
     <lib-button (click)="navigationService.redirectToLK()">

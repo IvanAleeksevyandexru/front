@@ -20,7 +20,7 @@ import { SelectChildrenScreenContainerComponent } from './select-children-screen
 import { SelectChildrenItemWrapperComponent } from '../components/select-children-item-wrapper/select-children-item-wrapper.component';
 import { SelectChildrenItemComponent } from '../components/select-children-item/select-children-item.component';
 import { SelectChildrenComponent } from '../components/select-children/select-children.component';
-import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';

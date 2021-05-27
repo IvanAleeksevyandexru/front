@@ -5,7 +5,7 @@ import { AddressItemComponent } from './components/address-item/address-item.com
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { TrimModule } from '../../../../shared/directives/trim/trim.module';
 import { TextTransformModule } from '../../../../shared/directives/text-transform/text-transform.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 

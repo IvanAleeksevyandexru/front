@@ -15,8 +15,7 @@ import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.ser
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';

@@ -1,9 +1,7 @@
-<ng-template ngFor let-upload [ngForOf]="attributes.uploads">
-  <epgu-constructor-file-upload-item
-    [objectId]="objectId"
-    [data]="upload"
-    [clarification]="attributes?.clarifications"
-    [prefixForMnemonic]="prefixForMnemonic"
+<ng-container *ngIf="uploads$ | async as uploads">
+  <epgu-constructor-file-upload-container
     class="file-upload-item"
-  ></epgu-constructor-file-upload-item>
-</ng-template>
+    *ngFor="let upload of uploads[0].uploads"
+    [upload]="[upload, uploads[1]] | memo:getUploadContext:this"
+  ></epgu-constructor-file-upload-container>
+</ng-container>

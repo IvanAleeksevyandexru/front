@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { FieldListScreenComponent } from './field-list-screen.component';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';

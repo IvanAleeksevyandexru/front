@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { ServiceEntity, ServiceInfo, FormPlayerContext } from 'epgu-constructor';
+import { ServiceEntity, ServiceInfo, FormPlayerContext } from '@epgu/epgu-constructor';
 
 import { AppService } from '../app.service';
 

@@ -28,8 +28,7 @@ import { DeviceDetectorService } from '../device-detector/device-detector.servic
 import { ModalService } from '../../../modal/modal.service';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -37,7 +36,7 @@ describe('AutocompletePrepareService', () => {
   let datesToolsService: DatesToolsService;
   let screenService: ScreenService;
   let repeatableComponents: Array<Array<ComponentDto>>;
-  let componentsSuggestionsMap: { [key: string]: string };
+  let componentsSuggestionsSet: Set<[string, string]>;
   let parentComponent: ComponentDto;
 
   let mockData: ScenarioDto = {
@@ -165,14 +164,14 @@ describe('AutocompletePrepareService', () => {
   });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
     service = TestBed.inject(AutocompletePrepareService);
     autocompleteService = TestBed.inject(AutocompleteService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     screenService = TestBed.inject(ScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
     repeatableComponents = [];
-    componentsSuggestionsMap = { prev_region: 'pd8_1' };
+    componentsSuggestionsSet = new Set();
+    componentsSuggestionsSet.add(['prev_region', 'pd8_1']);
     parentComponent = mockData.display.components[0];
     screenService.display = mockData.display;
   });
@@ -189,7 +188,7 @@ describe('AutocompletePrepareService', () => {
       expect(
         service.getFormattedHints(
           repeatableComponents,
-          componentsSuggestionsMap,
+          componentsSuggestionsSet,
           fields,
           componentMnemonic,
         ),
@@ -210,7 +209,7 @@ describe('AutocompletePrepareService', () => {
       autocompleteService.init();
       service.formatAndPassDataToSuggestions(
         repeatableComponents,
-        componentsSuggestionsMap,
+        componentsSuggestionsSet,
         mockSuggestionApi,
       );
       expect(screenService.suggestions).toEqual(result);
@@ -222,9 +221,8 @@ describe('AutocompletePrepareService', () => {
       const serviceSetComponentValue = spyOn(service, 'setComponentValue');
       service.findAndUpdateComponentWithValue(
         repeatableComponents,
-        componentsSuggestionsMap,
+        componentsSuggestionsSet,
         parentComponent,
-        'prev_region',
         'value',
       );
       expect(serviceSetComponentValue).toBeCalled();
@@ -236,26 +234,16 @@ describe('AutocompletePrepareService', () => {
       it('if value has json structure', () => {
         const value = '{ "text": "value" }';
         autocompleteService.init();
-        expect(
-          service['prepareValue'](
-            repeatableComponents,
-            componentsSuggestionsMap,
-            value,
-            'prev_region',
-          ),
-        ).toBe('value');
+        expect(service['prepareValue'](repeatableComponents, componentsSuggestionsSet, value)).toBe(
+          'value',
+        );
       });
       it('if value is not json structure', () => {
         const value = mockSuggestionItemList.value;
         autocompleteService.init();
-        expect(
-          service['prepareValue'](
-            repeatableComponents,
-            componentsSuggestionsMap,
-            value,
-            'prev_region',
-          ),
-        ).toBe('value');
+        expect(service['prepareValue'](repeatableComponents, componentsSuggestionsSet, value)).toBe(
+          'value',
+        );
       });
     });
   });
@@ -264,16 +252,10 @@ describe('AutocompletePrepareService', () => {
     it('should return finded component', () => {
       const component = mockData.display.components[0].attrs.components[0];
       const mockRepeatableComponents = [mockData.display.components[0].attrs.components];
-      componentsSuggestionsMap['prev_region1'] = component.id;
-      const componentMnemonic = 'prev_region1';
+      componentsSuggestionsSet.add(['prev_region1', component.id]);
       autocompleteService.init();
       expect(
-        service['findComponent'](
-          mockRepeatableComponents,
-          componentsSuggestionsMap,
-          componentMnemonic,
-          0,
-        ),
+        service['findComponent'](mockRepeatableComponents, componentsSuggestionsSet, 0),
       ).toEqual(component);
     });
   });

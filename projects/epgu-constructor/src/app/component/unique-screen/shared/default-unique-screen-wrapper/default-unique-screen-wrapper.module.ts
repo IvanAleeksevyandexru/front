@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { DefaultUniqueScreenWrapperComponent } from './default-unique-screen-wrapper.component';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';

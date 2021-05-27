@@ -6,7 +6,7 @@ import { MedicalReferralsListContainerComponent } from './medical-refferals-list
 import { ScreenService } from '../../../../../screen/screen.service';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { BaseModule } from '../../../../../shared/base.module';
-import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ConfigService } from '../../../../../core/services/config/config.service';

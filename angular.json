@@ -193,31 +193,31 @@
         }
       }
     },
-    "ui-kit": {
+    "epgu-constructor-ui-kit": {
       "projectType": "library",
-      "root": "projects/ui-kit",
-      "sourceRoot": "projects/ui-kit/src",
-      "prefix": "ui-kit",
+      "root": "projects/epgu-constructor-ui-kit",
+      "sourceRoot": "projects/epgu-constructor-ui-kit/src",
+      "prefix": "epgu-cf-ui",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/ui-kit/tsconfig.lib.json",
-            "project": "projects/ui-kit/ng-package.json"
+            "tsConfig": "projects/epgu-constructor-ui-kit/tsconfig.lib.json",
+            "project": "projects/epgu-constructor-ui-kit/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ui-kit/tsconfig.lib.prod.json"
+              "tsConfig": "projects/epgu-constructor-ui-kit/tsconfig.lib.prod.json"
             }
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "eslintConfig": "projects/ui-kit/.eslintrc.js",
+            "eslintConfig": "projects/epgu-constructor-ui-kit/.eslintrc.js",
             "lintFilePatterns": [
-              "projects/ui-kit/src/**/*.ts",
-              "projects/ui-kit/src/**/*.spec.ts"
+              "projects/epgu-constructor-ui-kit/src/**/*.ts",
+              "projects/epgu-constructor-ui-kit/src/**/*.spec.ts"
             ]
           }
         },

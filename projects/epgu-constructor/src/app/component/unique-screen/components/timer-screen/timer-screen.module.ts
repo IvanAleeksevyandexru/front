@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { TimerScreenComponent } from './timer-screen.component';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CommonModule } from '@angular/common';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
 

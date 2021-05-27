@@ -20,8 +20,7 @@ import { UtilsService } from '../utils/utils.service';
 import { TracingService } from './tracing.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('TracingService', () => {
   let service: TracingService;

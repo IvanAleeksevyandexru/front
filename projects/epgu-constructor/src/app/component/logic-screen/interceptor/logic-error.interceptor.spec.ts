@@ -3,8 +3,7 @@ import { HttpErrorResponse, HttpRequest } from '@angular/common/http';
 import { throwError } from 'rxjs/internal/observable/throwError';
 
 import { LogicErrorInterceptor } from './logic-error-interceptor.service';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('LogicErrorInterceptor', () => {

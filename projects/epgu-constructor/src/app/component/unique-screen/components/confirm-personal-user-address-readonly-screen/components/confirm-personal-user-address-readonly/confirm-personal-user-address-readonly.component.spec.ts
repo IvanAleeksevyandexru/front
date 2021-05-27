@@ -14,7 +14,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
 import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { TextTransformDirective } from '../../../../../../shared/directives/text-transform/text-transform.directive';

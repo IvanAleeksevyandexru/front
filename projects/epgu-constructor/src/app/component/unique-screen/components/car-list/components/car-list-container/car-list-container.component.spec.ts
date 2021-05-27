@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { of } from 'rxjs';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';

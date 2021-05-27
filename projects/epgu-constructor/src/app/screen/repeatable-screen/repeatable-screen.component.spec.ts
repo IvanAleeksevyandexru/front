@@ -11,7 +11,7 @@ import { RepeatableScreenComponent } from './repeatable-screen.component';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
-import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonComponent } from '../../shared/components/clone-button/clone-button.component';
 import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
@@ -26,9 +26,9 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { configureTestSuite } from 'ng-bullet';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
+import { CustomComponent } from '../../component/custom-screen/components-list.types';
 
 const displayMock = {
   id: 's113',
@@ -247,5 +247,42 @@ describe('RepeatableScreenComponent', () => {
 
     component.init$.subscribe();
     expect(createScreenSpy).toBeCalledTimes(2);
+  });
+
+  describe('isScreensAvailable', () => {
+    const setup = (repeatAmount: number, screensCount: number = 0) => {
+      const displayMockWithMinRepeatAmount = { ...displayMock };
+      displayMockWithMinRepeatAmount.components[0].attrs.repeatAmount = repeatAmount;
+      screenService.display = displayMockWithMinRepeatAmount;
+      spyOn<any>(component, 'createScreen').and.callFake(jest.fn());
+
+      const screens: { [key: string]: CustomComponent[] } = {};
+      for (let i = 0; i < screensCount; i+=1) {
+        screens[`custom${i}`] = [{} as CustomComponent];
+      }
+
+      component.screens = screens;
+      fixture.detectChanges();
+    };
+
+    it('should be true when repeatAmount is bigger than screens count', () => {
+      setup(5, 2);
+      expect(component.isScreensAvailable()).toBeTruthy();
+    });
+
+    it('should not allow to add new copy when repeatAmount is equal screens count', () => {
+      setup(5, 5);
+      expect(component.isScreensAvailable()).toBeFalsy();
+    });
+
+    it('should not allow to add new copy when repeatAmount is equal screens count', () => {
+      setup(5, 6);
+      expect(component.isScreensAvailable()).toBeFalsy();
+    });
+
+    it('should not allow to add new copy when repeatAmount is less or equal than screens count and bigger than default value', () => {
+      setup(25, 22);
+      expect(component.isScreensAvailable()).toBeTruthy();
+    });
   });
 });

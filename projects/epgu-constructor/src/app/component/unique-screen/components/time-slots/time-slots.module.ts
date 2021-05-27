@@ -4,7 +4,7 @@ import { TimeSlotsConstants } from './time-slots.constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { TimeSlotsService } from './time-slots.service';

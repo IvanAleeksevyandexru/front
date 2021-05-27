@@ -1,16 +1,18 @@
-@import 'core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
 // Implement styleguide for all library's components
-@import 'components/index.scss';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
 // TODO: remove all normalize css styles, it may affect app's style
 // stylelint-disable
 
 .epgu-form-player {
   counter-reset: section;
-  @import 'core/class';
+  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/class';
   @include flex-container();
   color: $color-summer-night;
   font-family: $font-main;
+  min-width: 320px;
   height: 100%;
 
   & .loader {

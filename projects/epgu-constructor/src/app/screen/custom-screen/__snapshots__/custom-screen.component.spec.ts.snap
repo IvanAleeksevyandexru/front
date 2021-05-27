@@ -20,11 +20,11 @@ exports[`CustomScreenComponent check snapshot 1`] = `
          
         <epgu-constructor-user-info-loader />
       </epgu-constructor-page-name>
-      <epgu-constructor-screen-pad
+      <epgu-cf-ui-constructor-screen-pad
         class="body"
       >
         <epgu-constructor-components-list />
-      </epgu-constructor-screen-pad>
+      </epgu-cf-ui-constructor-screen-pad>
     </div>
     <div
       class="screen-footer"

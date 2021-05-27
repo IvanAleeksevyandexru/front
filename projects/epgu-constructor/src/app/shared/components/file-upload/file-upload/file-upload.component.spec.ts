@@ -1,21 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import {
-  FileUploadAttributes,
-  UploadedFile,
-} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
-import { FileUploadService } from '../file-upload.service';
+
 import { FileUploadComponent } from './file-upload.component';
 import { configureTestSuite } from 'ng-bullet';
 import { Clarifications } from '@epgu/epgu-constructor-types';
+import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
+import { MemoModule } from '../../../pipes/memo/memo.module';
+import { FileUploadContainerComponent } from '../file-upload-container/file-upload-container.component';
+import { UploaderStoreService } from '../services/store/uploader-store.service';
+import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
   let fixture: ComponentFixture<FileUploadComponent>;
   let FileUploadItemComponentMock = MockComponent(FileUploadItemComponent);
-  let uploadService: FileUploadService;
+  let uploadService: UploaderLimitsService;
   let eventService: EventBusService;
   let mockAttributes: FileUploadAttributes = {
     clarifications: ([] as unknown) as Clarifications,
@@ -32,14 +41,28 @@ describe('FileUploadComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [FileUploadComponent, FileUploadItemComponentMock],
-      providers: [FileUploadService, EventBusService],
+      declarations: [
+        MockComponent(FileUploadContainerComponent),
+        FileUploadComponent,
+        FileUploadItemComponentMock,
+      ],
+      imports: [MemoModule],
+      providers: [
+        UploaderLimitsService,
+        EventBusService,
+        UploaderStoreService,
+        { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        AutocompletePrepareService,
+        CurrentAnswersService,
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploadComponent);
-    uploadService = TestBed.inject(FileUploadService);
+    uploadService = TestBed.inject(UploaderLimitsService);
     eventService = TestBed.inject(EventBusService);
     component = fixture.componentInstance;
     component.attributes = mockAttributes;
@@ -90,11 +113,6 @@ describe('FileUploadComponent', () => {
       0,
       mockAttributes.uploads[0].maxSize,
     );
-  });
-  it('should be mnemonic', () => {
-    component.prefixForMnemonic = 'test';
-    fixture.detectChanges();
-    expect(component.getUploadComponentPrefixForMnemonic('ref')).toBe('test.ref');
   });
 
   it('should handleNewValueForItem', () => {
