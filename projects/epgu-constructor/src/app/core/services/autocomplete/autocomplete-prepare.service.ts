@@ -43,7 +43,7 @@ export class AutocompletePrepareService {
     if (field) {
       let { value, mnemonic } = field;
       let originalItem = value;
-      value = this.prepareValue(repeatableComponents, componentsSuggestionsSet, value);
+      value = this.prepareValue(repeatableComponents, componentsSuggestionsSet, value, mnemonic);
       return {
         value,
         mnemonic,
@@ -73,7 +73,12 @@ export class AutocompletePrepareService {
       .reduce((acc: { value: string; mnemonic: string }[], field) => {
         let { value, mnemonic } = field;
         if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
-          value = this.prepareValue(repeatableComponents, componentsSuggestionsSet, value);
+          value = this.prepareValue(
+            repeatableComponents,
+            componentsSuggestionsSet,
+            value,
+            mnemonic,
+          );
           acc.push({
             value,
             mnemonic,
@@ -144,6 +149,7 @@ export class AutocompletePrepareService {
     repeatableComponents: Array<Array<ComponentDto>>,
     componentsSuggestionsSet: Set<[string, string]>,
     parentComponent: ComponentDto,
+    mnemonic: string,
     value: string,
     id?: number,
     componentsGroupIndex?: number,
@@ -151,6 +157,7 @@ export class AutocompletePrepareService {
     const component = this.findComponent(
       repeatableComponents,
       componentsSuggestionsSet,
+      mnemonic,
       componentsGroupIndex,
     );
     const componentValue = this.findComponentValue(component, id, value);
@@ -201,6 +208,7 @@ export class AutocompletePrepareService {
     repeatableComponents: Array<Array<ComponentDto>>,
     componentsSuggestionsSet: Set<[string, string]>,
     value: string,
+    componentMnemonic?: string,
   ): string {
     if (UtilsService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
@@ -220,6 +228,7 @@ export class AutocompletePrepareService {
     const component = this.findComponent(
       repeatableComponents,
       componentsSuggestionsSet,
+      componentMnemonic,
       componentsGroupIndex,
     );
     if (component) {
@@ -232,20 +241,24 @@ export class AutocompletePrepareService {
   private findComponent(
     repeatableComponents: Array<Array<ComponentDto>>,
     componentsSuggestionsSet: Set<[string, string]>,
+    mnemonic: string,
     componentsGroupIndex?: number,
   ): ComponentDto {
     /* Иногда сюда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
     вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput */
+    const [parentMnemonic] = mnemonic.split('.');
     if (repeatableComponents.length && componentsGroupIndex > -1) {
       return repeatableComponents[componentsGroupIndex].find((component) => {
         return Array.from(componentsSuggestionsSet).some(
-          ([_, componentId]) => componentId === component.id,
+          ([componentMnemonic, componentId]) =>
+            componentId === component.id && componentMnemonic === parentMnemonic,
         );
       });
     } else {
       return this.screenService.display?.components?.find((component) => {
         return Array.from(componentsSuggestionsSet).some(
-          ([_, componentId]) => componentId === component.id,
+          ([componentMnemonic, componentId]) =>
+            componentId === component.id && componentMnemonic === parentMnemonic,
         );
       });
     }
