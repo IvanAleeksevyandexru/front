@@ -61,7 +61,7 @@
   .viewer__info-date,
   .viewer__info-size,
   .viewer__info-name {
-    color: $color-telegray-scuro;
+    color:  $color-telegrey-scuro;
     white-space: nowrap;
     @include typ-plain-text;
     font-weight: $fw-bold;
@@ -199,7 +199,7 @@
   left: 0;
   width: 100%;
   padding: 24px;
-  background-color: rgba(11, 31, 51, 0.96);
+  background-color: $color-summer-night;
   color: $color-white;
   text-align: center;
   border-radius: 8px;
@@ -230,7 +230,7 @@
         border: 2px solid $color-white;
       }
       &_confirm {
-        background-color: rgba(77, 131, 250, 0.96);
+        background-color: $color-blu-digitale;
       }
     }
     .viewer__confirmation-button:nth-last-of-type(1) {

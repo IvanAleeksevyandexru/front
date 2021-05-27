@@ -2,30 +2,41 @@
 $color-white: #ffffff;
 $color-gosblue: #0d4cd3;
 $color-gosred: #ee3f58;
-$color-tela-rossa: #e11432;
 $color-summer-night: #0b1f33;
 $color-input: #f5f7fa;
 $color-divider: #99b1e6;
-$color-error-highlight: rgba(238, 63, 88, 0.16); // -> #f8dee4
-$color-shadow: rgba(230, 235, 245, 0.4); // -> #a5bae9
+$color-error-highlight: rgba(238, 63, 88, 0.16);
+$color-shadow: rgba(230, 235, 245, 0.4);
+$color-shadow-second: rgba(230, 235, 245, 0.8);
 $color-background: #fafcff;
 $color-bg-disabled: #d1d5df;
 $color-text-helper: #66727f;
 $color-active-item: #1d5deb;
 $color-giallo-brillante: #fed13e;
-$color-giallo-selezionato: #f8b200;
-$color-tag-line: rgba(29, 93, 235, 0.06); // -> #edf2fe
+$color-giallo-selezionato: #FED13E;
+$color-foglia-di-acero: #FF8A00;
 $color-button-disabled: #e5eaf5;
-$color-button-hover: #66727f;
-$color-tagline-hit: rgba(29, 93, 235, 0.18); // -> #d2dffb
-$color-nephritis: #2dc36a;
-$color-green-sea: #16a086;
-$color-button-hit: #0b40b3;
+$color-tagline-hit: rgba(29, 93, 235, 0.18);
+$color-tagline: #E4ECFD;
+$color-azzurro-alice: #EDF2FE;
+$color-osso-grigio: #86909C;
+$color-telegrey-scuro: #86909C;
+$color-mandorle-pelate: #FEF0CC;
+$color-petalo-rosa: #2DC36A;
+$color-pervinca: #E5EAF5;
 $color-blu-digitale: #4d83fa;
-$color-telegray-scuro: #86909c;
+$color-pulsante-premuto: #0B40B3;
+$color-blu-selvaggio: #9DACCE;
+$color-green-sea: #16a086;
+$color-nephritis: #2dc36a;
+$color-pino-verde: #12826E;
+$color-tela-rossa: #e11432;
 $color-blu-selvaggio: #9dacce;
+$color-blu-traffico: #053B75;
+$color-granito-fresco: #EFF5F9;
+$color-giovani-steli: #DDF5E7;
 
-// TODO: Looks like it's out of brand colors, maybe it need to remove and use brand color instead.
+// УСТАРЕВШЕЕ
 $color-black: #000000;
 $color-mine-shaft: #333333;
 $storm-gray: #76767a;
