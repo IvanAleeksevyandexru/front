@@ -4,7 +4,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CarInfoComponent } from './components/car-info/car-info.component';
 import { CarInfoContainerComponent } from './containers/car-info-screen/car-info-container.component';
 import { ExpansionLinkComponent } from './components/expansion-link/expansion-link.component';

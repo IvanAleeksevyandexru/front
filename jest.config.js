@@ -15,8 +15,12 @@ module.exports = {
   ],
   moduleNameMapper: {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js',
-    '@ifc/common': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js'
+    '@ifc/common': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js',
+    '@epgu/epgu-constructor-ui-kit': '<rootDir>/dist/epgu-constructor-ui-kit'
   },
+  modulePathIgnorePatterns: [
+    '<rootDir>/projects/epgu-constructor-ui-kit'
+  ],
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/epgu-constructor/src/app/**/*.service.ts',

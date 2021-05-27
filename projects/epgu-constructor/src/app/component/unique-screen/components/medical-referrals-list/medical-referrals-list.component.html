@@ -1,5 +1,5 @@
 <ng-container *ngIf="medicalReferralsList?.length; else emptyMedicalReferralsList">
-  <epgu-constructor-screen-pad class="mb-24" *ngFor="let medicalReferral of medicalReferralsList">
+  <epgu-cf-ui-constructor-screen-pad class="mb-24" *ngFor="let medicalReferral of medicalReferralsList">
     <div class="referrals-header mb-24">
       <p class="referrals-number">Направление №{{ medicalReferral.referralNumber }} от
         {{ medicalReferral.referralStartDate
@@ -29,11 +29,11 @@
         Записаться
       </a>
     </div>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </ng-container>
 
 <ng-template #emptyMedicalReferralsList>
-  <epgu-constructor-screen-pad>
+  <epgu-cf-ui-constructor-screen-pad>
     <p class="empty-referrals-info">Направления не найдены</p>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </ng-template>

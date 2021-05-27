@@ -5,7 +5,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
 import { ConstructorDropdownModule } from '../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ComponentsListModule } from '../../../custom-screen/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './container/select-children-screen-container.component';

@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { CarInfoContainerComponent } from './car-info-container.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CarInfo, ServiceResult } from '../../models/car-info.interface';
 import { CarInfoComponent } from '../../components/car-info/car-info.component';
 import { ScreenService } from '../../../../../../screen/screen.service';

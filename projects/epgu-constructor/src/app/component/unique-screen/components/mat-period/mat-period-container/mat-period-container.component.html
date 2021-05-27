@@ -5,13 +5,13 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad class="mb-24">
+  <epgu-cf-ui-constructor-screen-pad class="mb-24">
     <epgu-constructor-mat-period-form
       [components]="components$ | async"
       [cachedValue]="cachedValue$ | async"
       (updateStateEvent)="updateState($event)"
     ></epgu-constructor-mat-period-form>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 
   <epgu-constructor-mat-period-description
     [description]="description$ | async"

@@ -4,7 +4,7 @@ import { LkInvitationInputComponent } from './components/lk-Invitation-input/lk-
 import { ModalModule } from '../../modal/modal.module';
 import { ConstructorPlainInputModule } from '../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../shared/base.module';
 

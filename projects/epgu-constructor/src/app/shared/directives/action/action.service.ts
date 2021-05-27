@@ -134,7 +134,7 @@ export class ActionService {
     this.modalService.openModal(ConfirmationModalComponent, {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
-      buttons: confirmationButtons.length
+      buttons: confirmationButtons?.length
         ? confirmationButtons
         : [
             {
@@ -147,7 +147,7 @@ export class ActionService {
                   },
             },
           ],
-      actionButtons: confirmation.actionButtons || [],
+      actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
     });
