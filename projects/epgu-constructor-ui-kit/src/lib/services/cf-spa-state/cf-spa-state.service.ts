@@ -6,7 +6,7 @@ import {
   SPA_OUTPUT_KEY,
   SpaDataDirectionType
 } from '@epgu/epgu-constructor-types';
-import { LocalStorageService } from '../local-storage';
+import { LocalStorageService } from '../local-storage/local-storage.service';
 
 @Injectable()
 export class CfSpaStateService {
