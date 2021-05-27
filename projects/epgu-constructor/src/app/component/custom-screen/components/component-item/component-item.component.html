@@ -1,3 +1,16 @@
+<div *ngIf="component?.attrs?.image?.src" class="custom__img-wrapper">
+  <img
+    class="custom__img"
+    [src]="component.attrs.image.src"
+    [attr.alt]="component.attrs.image.alt || null"
+  />
+</div>
+<epgu-constructor-output-html
+  *ngIf="component?.attrs?.subLabel"
+  class="custom_subLabel"
+  [html]="component.attrs.subLabel"
+  [clarifications]="component?.attrs?.clarifications"
+></epgu-constructor-output-html>
 <epgu-constructor-label
   [isTextHelper]="component?.attrs?.isTextHelper"
   [tips]="component?.attrs?.labelHint"

@@ -45,4 +45,7 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    "import/core-modules": ["rxjs/operators"]
+  },
 };
