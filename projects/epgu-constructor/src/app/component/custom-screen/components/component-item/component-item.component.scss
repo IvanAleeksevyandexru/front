@@ -15,3 +15,21 @@
     margin-top: $screen-pad-8;
   }
 }
+:host::ng-deep {
+  .custom {
+    &__img-wrapper {
+      text-align: center;
+    }
+    &__img {
+      max-width: 200px;
+    }
+  }
+
+  h3 {
+    font-weight: bold;
+    font-size: $font-xl;
+    line-height: $font-xxl;
+    text-align: center;
+    margin: 24px 0;
+  }  
+}
