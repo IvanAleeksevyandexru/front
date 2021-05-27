@@ -1,19 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-.error {
-  margin-bottom: 16px;
-  .title {
-    @include typ-h6;
-    font-weight: $fw-bold;
-    margin-bottom: 4px;
-  }
-  .description {
-    @include typ-plain-small;
-    color: $color-text-helper;
-    margin: 0;
-  }
-}
-
 .item {
   margin-top: 4px;
 }

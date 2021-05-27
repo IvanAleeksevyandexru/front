@@ -1,0 +1,13 @@
+<div class="error">
+  <p class="title">
+    <ng-container [ngSwitch]="type">
+      <span *ngSwitchCase="'warn'" class="yellow-line"></span>
+      <span *ngSwitchDefault class="red-line"></span>
+    </ng-container>
+    {{ title }}</p>
+  <epgu-constructor-output-html
+    class="description"
+    [html]="description"
+    [clarifications]="clarifications"
+  ></epgu-constructor-output-html>
+</div>
