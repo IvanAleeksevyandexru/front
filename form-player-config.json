@@ -63,7 +63,10 @@
     "isZipkinEnabled": false,
     "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
     "zipkinMaxPayloadSize": 0,
-    "zipkinEnv": "dev01"
+    "zipkinEnv": "dev01",
+    "spa": {
+      "ChildrenClubs": "/spa/children-clubs"
+    }
   },
   "core": {
     "config": {

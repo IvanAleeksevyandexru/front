@@ -19,6 +19,7 @@ import {
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
   ScenarioDto,
+  SPA_OUTPUT_KEY,
 } from '@epgu/epgu-constructor-types';
 
 /**
@@ -123,6 +124,7 @@ export class FormPlayerStartManager {
       !invited &&
       canStartNew &&
       !!orderId &&
+      !this.localStorageService.hasKey(SPA_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)

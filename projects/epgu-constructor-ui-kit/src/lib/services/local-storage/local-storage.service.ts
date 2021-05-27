@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LocalStorageService {
+  hasKey(key: string): boolean {
+    return !!this.get(key);
+  }
+
   get<T>(key: string): T {
     const rawItem = this.getRaw(key);
     return JSON.parse(rawItem) as T;
