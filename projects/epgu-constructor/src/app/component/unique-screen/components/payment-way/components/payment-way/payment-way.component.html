@@ -1,0 +1,44 @@
+<epgu-constructor-output-html
+  class="mb-24"
+  [html]="component.label"
+  [clarifications]="component.attrs?.clarifications"
+>
+</epgu-constructor-output-html>
+
+<lib-radio
+  *ngFor="let payment of paymentWays | keyvalue"
+  [formControl]="paymentControl"
+  [value]="payment.key"
+  [labelText]="payment.value.label"
+  class="payment-way-radio-btn"
+>
+</lib-radio>
+
+<div *ngIf="paymentControl.value">
+  <div class="divider mt-24"></div>
+  <ng-container *ngIf="PaymentTypes.free; else amountTmpl" [ngTemplateOutlet]="programTmpl"></ng-container>
+</div>
+
+<epgu-constructor-output-html
+  *ngIf="paymentsInfo[paymentControl.value]"
+  [html]="paymentsInfo[paymentControl.value]"
+  [clarifications]="component.attrs?.clarifications"
+  class="mt-24"
+>
+</epgu-constructor-output-html>
+
+<ng-template #amountTmpl>
+  <div class="info-list-group-item mt-24" *ngIf="paymentWays[paymentControl.value]?.amount as amount">
+    <div class="info-list-subtitle">Средний размер платежа</div>
+    <div class="info-list-value">
+      {{ amount | currency:'RUB':'symbol-narrow':'0.0-2' }} в месяц
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #programTmpl>
+  <div class="info-list-group-item mt-24" *ngIf="paymentWays[paymentControl.value]?.programType as programType">
+    <div class="info-list-subtitle">Тип программы</div>
+    <div class="info-list-value"> {{ programType }} </div>
+  </div>
+</ng-template>

@@ -33,6 +33,7 @@ import { CarDetailInfoContainerComponent } from '../components/car-info/containe
 import {
   MedicalReferralsListContainerComponent
 } from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
+import { PaymentWayContainerComponent } from '../components/payment-way/components/payment-way-container/payment-way-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -67,6 +68,7 @@ type UniqueScreenComponent =
   | ConfirmPersonalUserAddressReadonlyComponent
   | CarDetailInfoContainerComponent
   | MedicalReferralsListContainerComponent
+  | PaymentWayContainerComponent
   ;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
@@ -118,4 +120,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
   CarDetailInfo: CarDetailInfoContainerComponent,
   MedicalReferrals: MedicalReferralsListContainerComponent,
+  PaymentWay: PaymentWayContainerComponent,
 };

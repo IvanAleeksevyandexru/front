@@ -48,4 +48,5 @@ export enum UniqueScreenComponentTypes {
   confirmUserCorpPhone = 'ConfirmUserCorpPhone',
   carDetailInfo = 'CarDetailInfo',
   medicalReferrals = 'MedicalReferrals',
+  paymentWay = 'PaymentWay',
 }
