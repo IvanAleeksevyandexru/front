@@ -18,11 +18,11 @@ import { InitDataService } from '../../../core/services/init-data/init-data.serv
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Location } from '@angular/common';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, WINDOW_PROVIDERS, LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
+import { SPA_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -270,7 +270,7 @@ describe('FormPlayerStartManager', () => {
   });
 
   describe('shouldShowContinueOrderModal()', () => {
-    const orderId = '1234';
+    const orderId = 1234;
     const invited = false;
     const canStartNew = true;
 
@@ -281,6 +281,17 @@ describe('FormPlayerStartManager', () => {
         canStartNew,
       );
       expect(shouldShowContinueOrderModal).toBe(true);
+    });
+
+    it('should return false if spa output case', () => {
+      localStorage.setItem(SPA_OUTPUT_KEY, '{}');
+      const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
+        orderId,
+        invited,
+        canStartNew,
+      );
+      expect(shouldShowContinueOrderModal).toBe(false);
+      localStorage.removeItem(SPA_OUTPUT_KEY);
     });
 
     it('should return false if not invited, canStartNew, not empty orderId, isNeedToShowLastScreen', () => {
