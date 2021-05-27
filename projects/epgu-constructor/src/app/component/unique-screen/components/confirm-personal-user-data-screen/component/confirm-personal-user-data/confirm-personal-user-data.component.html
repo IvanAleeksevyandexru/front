@@ -5,7 +5,7 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad class="screen-pad-body">
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <epgu-constructor-field-list
       *ngIf="(data$ | async) as data"
       [data]="data"
@@ -20,5 +20,5 @@
         <span class="btn-edit__text" *ngIf="(screenService.action$ | async) as action">{{ action.label }}</span>
       </button>
     </div>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

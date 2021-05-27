@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { LongButtonModule } from './components';
-import { LocalStorageService } from './services';
+// Сокращать пути до ./components и ./services нельзя, т.к. будет ошибка при `ng build epgu-constructor --prod`
+import { LongButtonModule } from './components/long-button/long-button.module';
+import { LocalStorageService } from './services/local-storage/local-storage.service';
 
 
 @NgModule({

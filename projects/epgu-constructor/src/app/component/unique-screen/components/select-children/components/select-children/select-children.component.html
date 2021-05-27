@@ -1,6 +1,6 @@
 <div class="cmp-group">
   <form [formGroup]="selectChildrenForm">
-    <epgu-constructor-screen-pad
+    <epgu-cf-ui-constructor-screen-pad
       class="cmp-group__layer"
       *ngFor="let item of items; let idx = index"
     >
@@ -24,7 +24,7 @@
           (updateItemValidatorsEvent)="updateItemValidators($event, item?.controlId)"
         ></epgu-constructor-select-children-item>
       </epgu-constructor-select-children-item-wrapper>
-    </epgu-constructor-screen-pad>
+    </epgu-cf-ui-constructor-screen-pad>
   </form>
 </div>
 

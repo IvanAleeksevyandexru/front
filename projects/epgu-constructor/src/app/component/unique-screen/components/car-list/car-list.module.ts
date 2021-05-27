@@ -4,7 +4,7 @@ import { EventBusService } from '../../../../core/services/event-bus/event-bus.s
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CarListComponent } from './components/car-list/car-list.component';
 import { CarListContainerComponent } from './components/car-list-container/car-list-container.component';
 import { ConstructorLookupModule } from '../../../../shared/components/constructor-lookup/constructor-lookup.module';

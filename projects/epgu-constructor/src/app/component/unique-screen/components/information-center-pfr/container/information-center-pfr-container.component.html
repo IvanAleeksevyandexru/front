@@ -6,7 +6,7 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad>
+  <epgu-cf-ui-constructor-screen-pad>
     <epgu-constructor-information-center-pfr-simple
       *ngIf="data.attrs.simple.items.length === 1"
       [simpleData]="data.attrs.simple"
@@ -24,5 +24,5 @@
       (selectEvent)="fetchDictionary($event)"
       (formChangeEvent)="changeForm($event)"
     ></epgu-constructor-information-center-pfr-full>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

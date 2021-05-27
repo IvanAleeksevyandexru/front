@@ -15,6 +15,12 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@epgu/epgu-constructor-ui-kit": [
+        "dist/epgu-constructor-ui-kit/epgu-cf-ui-kit",
+        "dist/epgu-constructor-ui-kit"
+      ]
+    }
   }
 }

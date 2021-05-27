@@ -4,15 +4,15 @@
   [screenButtons]="buttons$ | async"
   [showNav]="screenService.showNav$ | async"
 >
-  <epgu-constructor-screen-pad *ngIf="carInfoService.hasCommonLoading$ | async">
+  <epgu-cf-ui-constructor-screen-pad *ngIf="carInfoService.hasCommonLoading$ | async">
     <ng-container [ngTemplateOutlet]="loader"></ng-container>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfoService.hasCommonError$ | async">
+  <epgu-cf-ui-constructor-screen-pad *ngIf="carInfoService.hasCommonError$ | async">
     <ng-container [ngTemplateOutlet]="commonError"></ng-container>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 
-  <epgu-constructor-screen-pad *ngIf="carInfoService.hasData$ | async">
+  <epgu-cf-ui-constructor-screen-pad *ngIf="carInfoService.hasData$ | async">
     <ng-container
       *ngIf="carInfoService.vehicleInfo$ | async as vehicleInfo; else vehicleInfoLoading"
     >
@@ -71,7 +71,7 @@
         ></ng-container>
       </ng-template>
     </ng-container>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
 
 <ng-template #loader let-title="title">

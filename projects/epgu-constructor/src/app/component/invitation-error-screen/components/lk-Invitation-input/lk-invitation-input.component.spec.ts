@@ -10,7 +10,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { LkInvitationInputComponent } from './lk-invitation-input.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
+import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';

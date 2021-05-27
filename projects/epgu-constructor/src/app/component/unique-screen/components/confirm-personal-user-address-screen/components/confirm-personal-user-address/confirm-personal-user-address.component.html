@@ -5,14 +5,14 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad class="screen-pad-body">
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <ng-container *ngTemplateOutlet="formTmpl; context: { $implicit: data$ | async }">
     </ng-container>
 
     <div class="error" *ngIf="screenService.componentError$ | async as error">
       <small>{{ error }}</small>
     </div>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
 
 <ng-template #formTmpl let-data>

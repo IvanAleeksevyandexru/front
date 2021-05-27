@@ -15,7 +15,7 @@
         }}</epgu-constructor-page-name>
       </div>
 
-      <epgu-constructor-screen-pad *ngIf="errorTemplate; else carList">
+      <epgu-cf-ui-constructor-screen-pad *ngIf="errorTemplate; else carList">
         <epgu-constructor-output-html
           [html]="errorTemplate.label"
           [clarifications]="component.attrs?.clarifications"
@@ -31,7 +31,7 @@
             >{{ action.label }}</lib-button
           >
         </div>
-      </epgu-constructor-screen-pad>
+      </epgu-cf-ui-constructor-screen-pad>
 
       <ng-template #carList>
         <epgu-constructor-car-list

@@ -11,7 +11,7 @@
   [show-nav]="async.showNav"
   [class.screen-container-mt]="!async.showNav"
 >
-  <epgu-constructor-screen-pad class="screen-body" [ngClass]="async.displayCssClass">
+  <epgu-cf-ui-constructor-screen-pad class="screen-body" [ngClass]="async.displayCssClass">
     <div *ngIf="async.header">
       <epgu-constructor-page-name class="info__head">{{ async.header }}</epgu-constructor-page-name>
       <div class="divider"></div>
@@ -26,7 +26,7 @@
       [isLoading]="async.isLoading"
       class="info__submit"
     ></epgu-constructor-screen-buttons>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 
   <div class="screen-footer">
     <lib-social-share

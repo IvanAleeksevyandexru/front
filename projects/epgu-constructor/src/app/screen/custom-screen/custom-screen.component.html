@@ -7,14 +7,14 @@
       <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
     </epgu-constructor-page-name>
 
-    <epgu-constructor-screen-pad class="body">
+    <epgu-cf-ui-constructor-screen-pad class="body">
       <epgu-constructor-components-list
         [components]="$any((screenService.display$ | async)?.components)"
         [errors]="screenService.componentErrors$ | async"
         (changes)="changeComponentsList($event)"
       >
       </epgu-constructor-components-list>
-    </epgu-constructor-screen-pad>
+    </epgu-cf-ui-constructor-screen-pad>
   </div>
 
   <div class="screen-footer">
