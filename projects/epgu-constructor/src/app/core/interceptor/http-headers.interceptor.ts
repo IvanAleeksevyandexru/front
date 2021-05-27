@@ -3,7 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 
 import { InitDataService } from '../services/init-data/init-data.service';
-import { LocationService } from '../services/location/location.service';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class HttpHeadersInterceptor implements HttpInterceptor {

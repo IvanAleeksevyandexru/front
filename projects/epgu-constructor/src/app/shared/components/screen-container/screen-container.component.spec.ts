@@ -7,8 +7,7 @@ import { HealthService } from '@epgu/epgu-lib';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NavigationModule } from '../navigation/navigation.module';
 import { CoreModule } from '../../../core/core.module';
-import { LocationService } from '../../../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../base.module';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 

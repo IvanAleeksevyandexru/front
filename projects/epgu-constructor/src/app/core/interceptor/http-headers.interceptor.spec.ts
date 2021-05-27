@@ -6,8 +6,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { HttpHeadersInterceptor } from './http-headers.interceptor';
 import { InitDataService } from '../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../services/init-data/init-data.service.stub';
-import { LocationService } from '../services/location/location.service';
-import { LocationServiceStub } from '../services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('HttpHeadersInterceptor', () => {
   let initDataService: InitDataService;

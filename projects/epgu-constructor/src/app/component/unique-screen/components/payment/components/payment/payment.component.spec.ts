@@ -10,7 +10,7 @@ import { DeviceDetectorService } from '../../../../../../core/services/device-de
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService } from '../../../../../../core/services/location/location.service';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
@@ -27,7 +27,6 @@ import { PaymentComponent } from './payment.component';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
-import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 let mockData: ComponentDto;

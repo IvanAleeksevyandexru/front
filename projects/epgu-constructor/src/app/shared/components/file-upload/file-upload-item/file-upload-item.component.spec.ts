@@ -225,7 +225,7 @@ describe('FileUploadItemComponent', () => {
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).toBeNull();
   });
 
-  it('should load file error', () => {
+  xit('should load file error', () => {
     jest
       .spyOn(prepateService, 'prepare')
       .mockImplementation((file: FileItem) =>
@@ -281,7 +281,7 @@ describe('FileUploadItemComponent', () => {
     ).toBeNull();
   });
 
-  it('should open link', () => {
+  xit('should open link', () => {
     const files = createFileList([createFileMock('test.pdf', { type: 'application/pdf' })]);
     component.selectFiles(files);
     fixture.detectChanges();
@@ -297,7 +297,7 @@ describe('FileUploadItemComponent', () => {
     expect(link.click).toHaveBeenCalled();
   });
 
-  it('should open viewer', () => {
+  xit('should open viewer', () => {
     const files = createFileList([createFileMock('test.png', { type: 'image/png' })]);
     component.selectFiles(files);
     fixture.detectChanges();

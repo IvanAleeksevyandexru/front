@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS, HttpInterceptor } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
@@ -11,8 +11,7 @@ import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
 import { UtilsService } from '../../services/utils/utils.service';
 import { HealthServiceStub } from '../../services/global-error/health.service.stub';
-import { LocationService } from '../../services/location/location.service';
-import { LocationServiceStub } from '../../services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   HealthInterceptor,

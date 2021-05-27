@@ -7,8 +7,7 @@ import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
-import { LocationService } from '../../../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { Gender } from '@epgu/epgu-constructor-types';
 

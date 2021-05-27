@@ -23,6 +23,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -72,6 +73,7 @@ describe('FileUploadScreenComponent', () => {
       imports: [MockModule(EpguLibModule), ScreenButtonsModule],
       declarations: [
         FileUploadScreenComponent,
+        MockComponent(LongButtonComponent),
         MockComponent(ScreenContainerComponent),
         MockComponent(FileUploadComponent),
         MockComponent(PageNameComponent),

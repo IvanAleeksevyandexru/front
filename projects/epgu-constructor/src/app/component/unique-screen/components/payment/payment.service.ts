@@ -13,7 +13,7 @@ import {
   PaymentInfoInterface,
   PaymentsAttrs,
 } from './payment.types';
-import { LocationService } from '../../../../core/services/location/location.service';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DictionaryItem,
   DictionaryResponse,

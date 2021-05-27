@@ -12,7 +12,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { LocationService } from '../../../../../../core/services/location/location.service';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
@@ -20,7 +20,6 @@ import { NavigationService } from '../../../../../../core/services/navigation/na
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
 import { YesNoPipe } from '../../pipes/yes-no.pipe';
 import { ErrorTemplatePipe } from '../../pipes/error-template.pipe';
 import { EnginePowerPipe } from '../../pipes/engine-power.pipe';
