@@ -7,8 +7,7 @@ import { ConfigServiceStub } from '../../../../../../core/services/config/config
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService } from '../../../../../../core/services/location/location.service';
-import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
+import { LocationService, LocationServiceStub, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { ModalService } from '../../../../../../modal/modal.service';
@@ -30,7 +29,6 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
-import { WINDOW_PROVIDERS } from '../../../../../../core/providers/window.provider';
 import {
   ComponentDto,
   ComponentAttrsDto,

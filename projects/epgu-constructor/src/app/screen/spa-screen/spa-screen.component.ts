@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CfSpaStateService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CfSpaStateService,
+  LocalStorageService,
+  LocationService,
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   InputSpaDto,
   OutputSpaDto,
@@ -8,7 +12,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screen-base';
-import { LocationService } from '../../core/services/location/location.service';
+
 import { ConfigService } from '../../core/services/config/config.service';
 
 @Component({

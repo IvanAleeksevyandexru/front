@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CfSpaStateService } from '@epgu/epgu-constructor-ui-kit';
+import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { InputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types';
 
 @Component({
@@ -15,7 +15,10 @@ import { InputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types'
 })
 export class ChildrenClubsAppComponent implements OnInit {
   initState = this.cfSpaStateService.getState<InputSpaDto>(SpaDataDirectionType.INPUT);
-  constructor(private cfSpaStateService: CfSpaStateService) {}
+  constructor(
+    private cfSpaStateService: CfSpaStateService,
+    private locationService: LocationService,
+  ) {}
   ngOnInit(): void {
     setTimeout(() => {
       this.cfSpaStateService.setState(
@@ -26,6 +29,7 @@ export class ChildrenClubsAppComponent implements OnInit {
         },
         SpaDataDirectionType.OUTPUT,
       );
+      this.locationService.href(this.initState.callbackRedirectUrl);
     }, 3000);
   }
 }

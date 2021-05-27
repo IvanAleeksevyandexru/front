@@ -8,8 +8,7 @@ import { NavigationService } from '../../../core/services/navigation/navigation.
 import { NavigationComponent } from './navigation.component';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
-import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
-import { LocationService } from '../../../core/services/location/location.service';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('NavigationComponent', () => {

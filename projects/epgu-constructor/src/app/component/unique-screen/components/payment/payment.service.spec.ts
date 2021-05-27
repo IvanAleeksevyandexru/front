@@ -8,12 +8,11 @@ import { ConfigServiceStub } from '../../../../core/services/config/config.servi
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { PaymentService } from './payment.service';
-import { LocationService } from '../../../../core/services/location/location.service';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
 import { PaymentsAttrs } from './payment.types';
 import { configureTestSuite } from 'ng-bullet';
 

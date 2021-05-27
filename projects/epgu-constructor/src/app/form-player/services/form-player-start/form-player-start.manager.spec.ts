@@ -21,8 +21,7 @@ import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-mod
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Location } from '@angular/common';
-import { WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
-import { LocationService } from '../../../core/services/location/location.service';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 const responseDto = new FormPlayerServiceStub()._store;

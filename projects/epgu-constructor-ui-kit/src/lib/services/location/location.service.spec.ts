@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { LocationService } from './location.service';
-import { WINDOW_PROVIDERS } from '../../providers/window.provider';
+import { WINDOW_PROVIDERS } from '../../providers';
 
 describe('LocationService', () => {
   let locationService: LocationService;

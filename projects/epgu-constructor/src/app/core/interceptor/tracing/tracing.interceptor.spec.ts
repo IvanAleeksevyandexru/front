@@ -17,8 +17,7 @@ import { DatesToolsService } from '../../services/dates-tools/dates-tools.servic
 import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
 import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
-import { LocationService } from '../../services/location/location.service';
-import { LocationServiceStub } from '../../services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SessionService } from '../../services/session/session.service';
 import { TracingService } from '../../services/tracing/tracing.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';

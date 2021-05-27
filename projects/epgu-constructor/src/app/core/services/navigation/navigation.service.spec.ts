@@ -8,8 +8,7 @@ import { DeviceDetectorServiceStub } from '../device-detector/device-detector.se
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub';
 import { MobilViewEvents } from '../../../shared/constants/redirect-event';
-import { LocationService } from '../location/location.service';
-import { WINDOW_PROVIDERS } from '../../providers/window.provider';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';

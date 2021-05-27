@@ -13,7 +13,7 @@ import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { LocationService } from '../../../core/services/location/location.service';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckOrderApiResponse,
   FormPlayerApiSuccessResponse,

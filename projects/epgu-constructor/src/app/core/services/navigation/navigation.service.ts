@@ -10,8 +10,7 @@ import {
 } from '../../../shared/constants/redirect-event';
 import { ConfigService } from '../config/config.service';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
-import { LocationService } from '../location/location.service';
-import { WINDOW } from '../../providers/window.provider';
+import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 
 /**
