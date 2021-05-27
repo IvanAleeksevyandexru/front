@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class FileUploadServiceStub {
+export class UploaderLimitsServiceStub {
   checkSize() {}
   checkAmount() {}
   changeMaxAmount() {}
   getAmount() {}
+  getMaxTotalFilesSize() {}
 }

@@ -17,8 +17,8 @@ enum UploaderCheckType {
 
 type CheckResult = -1 | 0 | 1;
 
-@Injectable()
-export class FileUploadService {
+@Injectable({ providedIn: 'root' })
+export class UploaderLimitsService {
   changes = new Subject<null>();
 
   private totalMaxAmount = new BehaviorSubject<number>(0);

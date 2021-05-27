@@ -9,19 +9,20 @@ import { FileUploadFormComponent } from './file-upload-form.component';
 import { ChangeDetectionStrategy, Injector } from '@angular/core';
 import { FileUploadItemComponent } from '../../../../shared/components/file-upload/file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
-import { FileUploadService } from '../../../../shared/components/file-upload/file-upload.service';
+
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { CustomComponent } from '../../components-list.types';
+import { UploaderLimitsService } from '../../../../shared/components/file-upload/services/limits/uploader-limits.service';
 
 describe('FileUploadComponent', () => {
   const fb = new FormBuilder();
   let component: FileUploadFormComponent;
   let fixture: ComponentFixture<FileUploadFormComponent>;
-  let uploadService: FileUploadService;
+  let uploadService: UploaderLimitsService;
   let eventService: EventBusService;
   let formService: ComponentsListFormService;
   let form: FormArray;
@@ -66,7 +67,7 @@ describe('FileUploadComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        FileUploadService,
+        UploaderLimitsService,
         EventBusService,
         Injector,
       ],
@@ -79,7 +80,7 @@ describe('FileUploadComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileUploadFormComponent);
-    uploadService = TestBed.inject(FileUploadService);
+    uploadService = TestBed.inject(UploaderLimitsService);
     eventService = TestBed.inject(EventBusService);
     formService = TestBed.inject(ComponentsListFormService);
     component = fixture.componentInstance;

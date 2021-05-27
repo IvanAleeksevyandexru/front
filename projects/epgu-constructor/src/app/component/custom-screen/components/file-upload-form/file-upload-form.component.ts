@@ -10,8 +10,8 @@ import {
   FileResponseToBackendUploadsItem,
   FileUploadAttributes,
   FileUploadEmitValue,
+  UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { TerraUploadedFile } from '../../../../shared/components/file-upload/file-upload-item/data';
 
 @Component({
   selector: 'epgu-constructor-file-upload-form',
@@ -99,7 +99,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
     return true;
   }
 
-  private getUploadedFiles(): TerraUploadedFile[] {
+  private getUploadedFiles(): UploadedFile[] {
     return _flatten(this.files.map(({ value }) => value.filter((file) => file.uploaded)));
   }
 }

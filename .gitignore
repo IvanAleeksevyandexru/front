@@ -8,7 +8,7 @@ fs-1.0-SNAPSHOT.jar
 /tmp
 /out-tsc
 /projects/epgu-constructor/src/version.ts
-
+/projects/*/node_modules
 # Only exists if Bazel was run
 /bazel-out
 

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { getSizeInMB } from '../../components/file-upload/file-upload-item/data';
+import { getSizeInMB } from '../../components/file-upload/data';
 
 @Pipe({
   name: 'fileSize',

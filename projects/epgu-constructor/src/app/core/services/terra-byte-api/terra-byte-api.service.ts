@@ -7,12 +7,11 @@ import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
 import {
   Chunk,
   ChunkPacket,
-  TerabyteListItem,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
 } from './terra-byte-api.types';
-import { BYTES_IN_KB, TerraUploadedFile } from '../../../shared/components/file-upload/file-upload-item/data';
+import { BYTES_IN_KB } from '../../../shared/components/file-upload/data';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -44,8 +43,8 @@ export class TerraByteApiService {
    * Возвращает список файлов, для определённого объекта
    * @param objectId - идентификатор объекта
    */
-  getListByObjectId(objectId: string): Observable<TerabyteListItem[]> {
-    return this.http.get<TerabyteListItem[]>(
+  getListByObjectId(objectId: string): Observable<UploadedFile[]> {
+    return this.http.get<UploadedFile[]>(
       this.getTerabyteApiUrl(`/${objectId}`),
       this.getServerRequestOptions(),
     );
@@ -55,9 +54,9 @@ export class TerraByteApiService {
    * Возвращает информацию по файлу
    * @param options - параметры для получения файла
    */
-  getFileInfo(options: TerraFileOptions): Observable<TerabyteListItem> {
+  getFileInfo(options: TerraFileOptions): Observable<UploadedFile> {
     // eslint-disable-next-line max-len
-    return this.http.get<TerabyteListItem>(
+    return this.http.get<UploadedFile>(
       this.getTerabyteApiUrl(
         `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`,
       ),
@@ -147,10 +146,10 @@ export class TerraByteApiService {
    * Запрос на удаление файла
    * @param options - данные о файле
    */
-  deleteFile(options: TerraFileOptions): Observable<TerraUploadedFile> {
+  deleteFile(options: TerraFileOptions): Observable<UploadedFile> {
     const url = `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`;
     // eslint-disable-next-line max-len
-    return this.http.delete<TerraUploadedFile>(
+    return this.http.delete<UploadedFile>(
       this.getTerabyteApiUrl(url),
       this.getServerRequestOptions(),
     );
@@ -180,7 +179,7 @@ export class TerraByteApiService {
    * @param data - Blob данные для скачивания
    * @param file - файл для загрузки
    */
-  pushFileToBrowserForDownload(data: Blob, file: TerraUploadedFile | UploadedFile): void {
+  pushFileToBrowserForDownload(data: Blob, file: UploadedFile): void {
     let resultBlob = data;
 
     if (file.mimeType) {
