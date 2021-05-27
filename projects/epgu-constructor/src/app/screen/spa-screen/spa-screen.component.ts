@@ -1,9 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import {
-  CfSpaStateService,
-  LocalStorageService,
-  LocationService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { InputSpaDto, OutputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screen-base';
@@ -22,7 +18,6 @@ export class SpaScreenComponent extends ScreenBase implements OnInit {
     private cfSpaStateService: CfSpaStateService,
     private locationService: LocationService,
     private configService: ConfigService,
-    private localStorageService: LocalStorageService,
   ) {
     super(injector);
   }

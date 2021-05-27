@@ -9,6 +9,9 @@ import { SpaScreenComponent } from './spa-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
+import { CfSpaStateService, CfSpaStateServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -27,7 +30,7 @@ const displayDtoSample: DisplayDto = {
   terminal: true,
 };
 
-describe('UniqueScreenComponent', () => {
+describe('SpaScreenComponent', () => {
   let component: SpaScreenComponent;
   let fixture: ComponentFixture<SpaScreenComponent>;
 
@@ -49,6 +52,9 @@ describe('UniqueScreenComponent', () => {
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: CfSpaStateService, useClass: CfSpaStateServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
         CurrentAnswersService,
       ],

@@ -4,6 +4,8 @@
   "assets": ["src/styles"],
   "lib": {
     "entryFile": "src/public-api.ts",
+    "cssUrl": "inline",
+    "styleIncludePaths": ["."],
     "umdModuleIds": {
       "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types"
     }

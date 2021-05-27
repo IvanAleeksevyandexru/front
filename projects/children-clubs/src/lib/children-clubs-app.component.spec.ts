@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
+import { CfSpaStateService, CfSpaStateServiceStub, LocationServiceStub, LocationService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -8,7 +9,11 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChildrenClubsAppComponent ]
+      declarations: [ ChildrenClubsAppComponent ],
+      providers: [
+        { provide: CfSpaStateService, useClass: CfSpaStateServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+      ]
     })
     .compileComponents();
   });
@@ -16,6 +21,12 @@ describe('ChildrenClubsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChildrenClubsAppComponent);
     component = fixture.componentInstance;
+    component['initState'] = {
+      componentId: 'spa42',
+      componentType: 'ChildrenClubs',
+      callbackRedirectUrl: '/some/spa/url',
+      value: '{}'
+    };
     fixture.detectChanges();
   });
 
