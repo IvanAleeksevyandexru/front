@@ -4,12 +4,7 @@ import {
   LocalStorageService,
   LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
-import {
-  InputSpaDto,
-  OutputSpaDto,
-  SPA_OUTPUT_KEY,
-  SpaDataDirectionType,
-} from '@epgu/epgu-constructor-types';
+import { InputSpaDto, OutputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screen-base';
 
@@ -33,7 +28,9 @@ export class SpaScreenComponent extends ScreenBase implements OnInit {
   }
 
   ngOnInit(): void {
-    const outputSpaData = this.localStorageService.get<OutputSpaDto>(SPA_OUTPUT_KEY);
+    const outputSpaData = this.cfSpaStateService.getState<OutputSpaDto>(
+      SpaDataDirectionType.OUTPUT,
+    );
 
     if (outputSpaData) {
       this.handleOutputSpaData(outputSpaData);
