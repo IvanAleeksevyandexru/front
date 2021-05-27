@@ -2,35 +2,35 @@
 @import 'breakpoint';
 
 @mixin shadow-main {
-  box-shadow: 0px 24px 48px rgba(230, 235, 245, 0.4);
+  box-shadow: 0px 24px 48px $color-shadow;
 }
 
 @mixin shadow-second {
-  box-shadow: 0px 6px 16px rgba(230, 235, 245, 0.8);
+  box-shadow: 0px 6px 16px $color-shadow-second;
 }
 
 @mixin btn--light {
   background: $color-white;
-  color: $color-button-hit;
+  color: $color-pulsante-premuto;
   &:hover {
     background: $color-active-item;
     color: $color-white;
   }
   &:active {
-    background: $color-button-hit;
+    background: $color-pulsante-premuto;
     color: $color-white;
   }
 }
 
 @mixin btn--transparent {
   background: none;
-  color: $color-button-hit;
+  color: $color-pulsante-premuto;
   &:hover {
     background: $color-active-item;
     color: $color-white;
   }
   &:active {
-    background: $color-button-hit;
+    background: $color-pulsante-premuto;
     color: $color-white;
   }
 }
@@ -42,7 +42,7 @@
     background: $color-active-item;
   }
   &:active {
-    background: $color-button-hit;
+    background: $color-pulsante-premuto;
     color: $color-white;
   }
 }

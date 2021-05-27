@@ -168,7 +168,7 @@
 :host-context(.gray-theme)::ng-deep .white-background {
   background-color: $color-white;
   border-radius: 8px;
-  box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+  box-shadow: 0 24px 48px $color-shadow;
   margin-left: 0;
   padding: 24px;
 }
