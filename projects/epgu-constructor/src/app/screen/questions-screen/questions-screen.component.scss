@@ -39,3 +39,11 @@
     margin-top: 24px;
   }
 }
+:host::ng-deep {
+  .quiz__description {
+    @include screen-content;
+  }
+  .info-screen--quiz .quiz__description {
+    @include screen-content-margins;
+  }
+}
