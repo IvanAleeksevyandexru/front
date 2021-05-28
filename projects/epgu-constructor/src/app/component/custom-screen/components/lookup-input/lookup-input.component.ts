@@ -14,6 +14,7 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 @Component({
   selector: 'epgu-constructor-lookup-input',
   templateUrl: './lookup-input.component.html',
+  styleUrls: ['./lookup-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })

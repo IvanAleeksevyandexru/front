@@ -1,0 +1,7 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+:host::ng-deep {
+  ::placeholder {
+    color: $color-text-helper !important;
+  }
+}
