@@ -8,7 +8,7 @@ import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
 import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
 import { RepeatableScreenComponent } from './repeatable-screen/repeatable-screen.component';
-import { SpaScreenComponent } from './spa-screen/spa-screen.component';
+import { AppScreenComponent } from './app-screen/app-screen.component';
 
 export type ScreenComponent =
   | InfoScreenComponent
@@ -18,7 +18,7 @@ export type ScreenComponent =
   | UniqueScreenComponent
   | InvitationErrorScreenComponent
   | EmptyScreenComponent
-  | SpaScreenComponent;
+  | AppScreenComponent;
 
 export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: Type<ScreenComponent> }> = {
   INFO: InfoScreenComponent,
@@ -28,5 +28,5 @@ export const SCREEN_COMPONENTS: Readonly<{ [key in ScreenTypes]: Type<ScreenComp
   UNIQUE: UniqueScreenComponent,
   INVITATION_ERROR: InvitationErrorScreenComponent,
   EMPTY: EmptyScreenComponent,
-  SPA: SpaScreenComponent,
+  APP: AppScreenComponent,
 };

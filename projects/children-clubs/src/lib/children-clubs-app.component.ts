@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { InputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types';
+import { InputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'children-clubs-app',
@@ -14,7 +14,7 @@ import { InputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types'
   styles: [],
 })
 export class ChildrenClubsAppComponent implements OnInit {
-  initState = this.cfSpaStateService.getState<InputSpaDto>(SpaDataDirectionType.INPUT);
+  initState = this.cfSpaStateService.getState<InputAppDto>(DataDirectionType.INPUT);
   constructor(
     private cfSpaStateService: CfSpaStateService,
     private locationService: LocationService,
@@ -26,8 +26,9 @@ export class ChildrenClubsAppComponent implements OnInit {
           componentId: this.initState.componentId,
           componentType: this.initState.componentType,
           value: '{"someProperty": 42}',
+          isPrevStepCase: false, // передавать true усли с первого экрана нажали назад
         },
-        SpaDataDirectionType.OUTPUT,
+        DataDirectionType.OUTPUT,
       );
       this.locationService.href(this.initState.callbackRedirectUrl);
     }, 3000);

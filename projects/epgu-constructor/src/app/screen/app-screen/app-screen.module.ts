@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { BaseModule } from '../../shared/base.module';
-import { SpaScreenComponent } from './spa-screen.component';
+import { AppScreenComponent } from './app-screen.component';
 
 @NgModule({
-  declarations: [SpaScreenComponent],
-  exports: [SpaScreenComponent],
+  declarations: [AppScreenComponent],
+  exports: [AppScreenComponent],
   imports: [BaseModule],
   providers: [EventBusService]
 })
-export class SpaScreenModule {}
+export class AppScreenModule {}
