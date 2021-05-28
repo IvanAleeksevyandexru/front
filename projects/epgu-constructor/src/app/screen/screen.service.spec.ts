@@ -296,10 +296,13 @@ describe('ScreenService', () => {
       screenService.updateScreenStore(mergeWithState);
 
       expect(updateScreenContentSpy).toBeCalledTimes(1);
-      expect(updateScreenContentSpy).toBeCalledWith({
-        ...store,
-        ...mergeWithState
-      }, deviceDetectorService.isWebView);
+      expect(updateScreenContentSpy).toBeCalledWith(
+        {
+          ...store,
+          ...mergeWithState,
+        },
+        deviceDetectorService.isWebView,
+      );
     });
   });
 
@@ -365,6 +368,20 @@ describe('ScreenService', () => {
       screenService.initScreenStore(store);
 
       expect(screenService.getCompValueFromCachedAnswers()).toBe('cached answer w1 value');
+    });
+  });
+
+  describe('setCompValueToCachedAnswer() method', () => {
+    it('should set component value by component id from parameters', () => {
+      const store = {
+        ...makeScreenStoreSample(),
+        cachedAnswers: {},
+      };
+
+      screenService.initScreenStore(store);
+      screenService.setCompValueToCachedAnswer('w1', 'cached answer w1 value');
+
+      expect(screenService.getCompValueFromCachedAnswers('w1')).toBe('cached answer w1 value');
     });
   });
 });

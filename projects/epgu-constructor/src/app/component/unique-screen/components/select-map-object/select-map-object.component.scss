@@ -52,7 +52,7 @@ hr {
     z-index: 100;
     padding: 32px;
     border-radius: $border-round;
-    box-shadow: 0 24px 48px rgba($color-shadow, 0.4);
+    box-shadow: 0 24px 48px $color-shadow;
 
     .error-region {
       display: grid;

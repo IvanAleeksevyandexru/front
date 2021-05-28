@@ -59,7 +59,7 @@
         position: relative;
       }
       &:hover {
-        background: rgba(13, 76, 211, 0.18);
+        background: $color-gosblue;
         border-radius: 12px;
       }
       &.locked {
@@ -129,7 +129,7 @@
     }
 
     &:hover {
-      background: rgba(29, 93, 235, 0.18);
+      background: $color-tagline-hit;
     }
 
     &.selected {
@@ -172,7 +172,7 @@
 
     ::ng-deep .dropdown-list-container {
       background: $color-white;
-      box-shadow: 0 6px 16px rgba(230, 235, 245, 0.8);
+      box-shadow: 0 6px 16px $color-shadow-second;
       border-color: transparent;
       border-radius: 12px;
       padding: 24px;
@@ -203,10 +203,10 @@
 .cancel-button {
   ::ng-deep button, ::ng-deep button:hover {
     background: $color-white;
-    border: 1px solid $color-button-hit;
+    border: 1px solid $color-pulsante-premuto;
     box-sizing: border-box;
     border-radius: 4px;
-    color: $color-button-hit;
+    color: $color-pulsante-premuto;
   }
 }
 

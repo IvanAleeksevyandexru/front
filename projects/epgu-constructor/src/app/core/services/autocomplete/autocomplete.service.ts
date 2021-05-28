@@ -131,19 +131,24 @@ export class AutocompleteService {
       .on('suggestionSelectedEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
-        let { value, id, componentsGroupIndex } = payload;
+        let { mnemonic, value, id, componentsGroupIndex } = payload;
 
         // с помощью автоподстановки будут заполнены некоторые компоненты.
         // для того, чтобы остальные компоненты не потеряли свои значения мы
         // сохраняем их из currentAnswersService в screenService
-        this.autocompletePrepareService.loadValuesFromCurrentAnswer(this.repeatableComponents);
+        this.autocompletePrepareService.loadValuesFromCurrentAnswer(
+          this.repeatableComponents,
+          this.parentComponent.id,
+        );
 
         if (this.suggestionGroupId) {
-          Object.keys(this.screenService.suggestions).forEach(() => {
+          Object.keys(this.screenService.suggestions).forEach((componentId: string) => {
+            mnemonic = this.screenService.suggestions[componentId].mnemonic;
             this.autocompletePrepareService.findAndUpdateComponentWithValue(
               this.repeatableComponents,
               this.componentsSuggestionsSet,
               this.parentComponent,
+              mnemonic,
               value,
               id,
               componentsGroupIndex,
@@ -154,6 +159,7 @@ export class AutocompleteService {
             this.repeatableComponents,
             this.componentsSuggestionsSet,
             this.parentComponent,
+            mnemonic,
             value,
             null,
             componentsGroupIndex,
