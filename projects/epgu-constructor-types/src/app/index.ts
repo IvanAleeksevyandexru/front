@@ -1,3 +1,3 @@
-export * from './input-spa-dto';
-export * from './output-spa-dto';
-export * from './spa-data-direction-type';
+export * from './input-app-dto';
+export * from './output-app-dto';
+export * from './data-direction-type';
