@@ -77,11 +77,11 @@ export interface Config {
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;
   nsiSuggestDictionaryUrl?: string;
-  spa: SpaRouting;
+  appPathMap: AppPathMap;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';
 
-export type SpaRouting = {
+export type AppPathMap = {
   [key in string]: string
 } | {};

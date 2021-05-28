@@ -24,7 +24,7 @@ describe('ChildrenClubsComponent', () => {
     component['initState'] = {
       componentId: 'spa42',
       componentType: 'ChildrenClubs',
-      callbackRedirectUrl: '/some/spa/url',
+      callbackRedirectUrl: '/some/app/url',
       value: '{}'
     };
     fixture.detectChanges();

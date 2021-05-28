@@ -283,7 +283,7 @@ describe('FormPlayerStartManager', () => {
       expect(shouldShowContinueOrderModal).toBe(true);
     });
 
-    it('should return false if spa output case', () => {
+    it('should return false if app output case', () => {
       localStorage.setItem(SPA_OUTPUT_KEY, '{}');
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
         orderId,

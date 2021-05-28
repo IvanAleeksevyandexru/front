@@ -8,11 +8,11 @@ import { ConfigService } from '../../core/services/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-spa-screen',
-  templateUrl: './spa-screen.component.html',
+  templateUrl: './app-screen.component.html',
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SpaScreenComponent extends ScreenBase implements OnInit {
+export class AppScreenComponent extends ScreenBase implements OnInit {
   constructor(
     public injector: Injector,
     private cfSpaStateService: CfSpaStateService,
@@ -66,8 +66,8 @@ export class SpaScreenComponent extends ScreenBase implements OnInit {
   }
 
   private redirectToSpa(): void {
-    const spaRouting = this.configService.spa;
-    const spaPath = spaRouting[this.screenService.componentType];
-    this.locationService.href(spaPath);
+    const { appPathMap } = this.configService;
+    const appPath = appPathMap[this.screenService.componentType];
+    this.locationService.href(appPath);
   }
 }
