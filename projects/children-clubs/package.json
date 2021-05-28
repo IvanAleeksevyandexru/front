@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "scripts": {
     "build": "cd ../../ && ng build children-clubs --prod",
-    "watch": "cd ../../ && ng build children-clubs --watch",
     "lint": "cd ../../ && ng lint children-clubs",
     "lint:fix": "cd ../../ && ng lint children-clubs --fix"
   },
@@ -12,6 +11,8 @@
     "@angular/core": "^11.0.0"
   },
   "dependencies": {
+    "@epgu/epgu-constructor-types": "16.1.1",
+    "@epgu/epgu-constructor-ui-kit": "0.0.1",
     "tslib": "^2.0.0"
   }
 }

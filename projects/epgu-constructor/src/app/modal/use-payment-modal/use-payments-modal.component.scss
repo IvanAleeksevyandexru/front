@@ -1,4 +1,4 @@
-@import '../../../styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 .payments-modal {
   display: flex;
@@ -50,7 +50,7 @@
       line-height: 24px;
       padding-left: 32px;
       text-decoration: none;
-      color: $color-button-hit;
+      color: $color-pulsante-premuto;
     }
   }
 

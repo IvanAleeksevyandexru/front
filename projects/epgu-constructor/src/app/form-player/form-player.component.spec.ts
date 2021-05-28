@@ -29,10 +29,8 @@ import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/con
 import { By } from '@angular/platform-browser';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { FormPlayerStartManagerStub } from './services/form-player-start/form-player-start.manager.stub';
-import { LocalStorageServiceStub } from '../core/services/local-storage/local-storage.service.stub';
-import { LocalStorageService } from '../core/services/local-storage/local-storage.service';
-import { LocationService } from '../core/services/location/location.service';
-import { WINDOW_PROVIDERS } from '../core/providers/window.provider';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { SimpleChange } from '@angular/core';
 import { EpguLibModuleInited } from '../shared/base.module';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';

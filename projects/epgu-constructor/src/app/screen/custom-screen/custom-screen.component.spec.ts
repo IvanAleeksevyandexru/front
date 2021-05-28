@@ -14,7 +14,7 @@ import { NavigationService } from '../../core/services/navigation/navigation.ser
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { ScreenPadComponent } from '../../shared/components/screen-pad/screen-pad.component';
+import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -193,8 +193,8 @@ describe('CustomScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-screen-pad', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-screen-pad';
+  it('should render epgu-cf-ui-constructor-screen-pad', () => {
+    const selector = 'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -203,7 +203,7 @@ describe('CustomScreenComponent', () => {
 
   it('should render epgu-constructor-components-list', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-components-list';
+      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-components-list';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -241,7 +241,7 @@ describe('CustomScreenComponent', () => {
 
   it('should call changeComponentsList() on epgu-constructor-components-list changes() event', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-constructor-screen-pad epgu-constructor-components-list';
+      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-components-list';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 

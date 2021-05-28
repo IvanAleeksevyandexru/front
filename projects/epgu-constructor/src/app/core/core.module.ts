@@ -7,13 +7,10 @@ import { ErrorsInterceptorService } from './interceptor/errors/errors.intercepto
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
-import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
 import { ConfigService } from './services/config/config.service';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
 import { InitDataService } from './services/init-data/init-data.service';
-import { LocalStorageService } from './services/local-storage/local-storage.service';
-import { LocationService } from './services/location/location.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
@@ -37,7 +34,6 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
     NavigationModalService,
     SmuEventsService,
     LoggerService,
-    LocalStorageService,
     UtilsService,
     SessionService,
     InitDataService,
@@ -81,8 +77,6 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
       deps: [SmuEventsService, CookieService],
       multi: true,
     },
-    WINDOW_PROVIDERS,
-    LocationService,
   ],
 })
 export class CoreModule {}

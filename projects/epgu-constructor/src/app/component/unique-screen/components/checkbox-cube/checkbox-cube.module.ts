@@ -4,7 +4,7 @@ import { EventBusService } from '../../../../core/services/event-bus/event-bus.s
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CheckboxCubeComponent } from './checkbox-cube/checkbox-cube.component';
 import { CheckboxCubeContainerComponent } from './checkbox-cube-container/checkbox-cube-container.component';

@@ -16,7 +16,9 @@ cache: &global_cache
 stages:
   - install
   - postinstall
+  - ui-kit-build
   - code-quality
+  - children-clubs-build
   - library-build
   - library-publish
   - build
@@ -77,6 +79,29 @@ Lint-test-dry:
     - master
     - stage
 
+Children-clubs-build:
+  stage: children-clubs-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn lib:children-clubs:build
+  only:
+    - merge_requests
+    - master
+    - stage
+
+Ui-kit-build:
+  stage: ui-kit-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn lib:ui-kit:build
+  only:
+    - merge_requests
+    - master
+    - stage
 
 Library-build:
   stage: library-build
@@ -84,7 +109,7 @@ Library-build:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
-    - yarn lib:build:ivy && yarn lib:build
+    - yarn lib:build
   only:
     - merge_requests
     - master

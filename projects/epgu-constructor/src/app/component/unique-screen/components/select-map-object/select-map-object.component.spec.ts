@@ -6,8 +6,7 @@ import { ConfigServiceStub } from '../../../../core/services/config/config.servi
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { LocalStorageService } from '../../../../core/services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../../../core/services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';

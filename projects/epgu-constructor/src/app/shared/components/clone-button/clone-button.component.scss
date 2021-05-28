@@ -1,4 +1,4 @@
-@import 'src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 .clone-btn {
   &:focus {
@@ -27,13 +27,13 @@
 
   &__disabled {
     background: $color-bg-disabled;
-    box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
-    color: $color-button-hover;
+    box-shadow: 0 24px 48px $color-shadow;
+    color: $color-text-helper;
     border: none;
 
     &:hover {
       background: $color-bg-disabled;
-      color: $color-button-hover;
+      color: $color-text-helper;
     }
   }
 }

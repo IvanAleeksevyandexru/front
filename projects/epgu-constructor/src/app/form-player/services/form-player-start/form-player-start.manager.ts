@@ -8,17 +8,18 @@ import {
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { LoggerService } from '../../../core/services/logger/logger.service';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
-import { LocationService } from '../../../core/services/location/location.service';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckOrderApiResponse,
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
   ScenarioDto,
+  SPA_OUTPUT_KEY,
 } from '@epgu/epgu-constructor-types';
 
 /**
@@ -123,6 +124,7 @@ export class FormPlayerStartManager {
       !invited &&
       canStartNew &&
       !!orderId &&
+      !this.localStorageService.hasKey(SPA_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)

@@ -15,7 +15,7 @@ import { CarOwnerInfoComponent } from '../../components/car-owner-info/car-owner
 import { LegalComplianceComponent } from '../../components/legal-compliance/legal-compliance.component';
 import { SearchPtsComponent } from '../../components/search-pts/search-pts.component';
 import { NotaryInfoComponent } from '../../components/notary-info/notary-info.component';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CarOwnersComponent } from '../../components/car-owners/car-owners.component';
 import { CarErrorComponent } from '../../components/car-error/car-error.component';
 import { ErrorTemplatePipe } from '../../pipes/error-template.pipe';

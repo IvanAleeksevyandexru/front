@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadService } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../logger/logger.service';
-import { Config, MockApi, TimeSlotsApi } from './config.types';
+import { Config, MockApi, SpaRouting, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
@@ -40,6 +40,7 @@ export class ConfigService implements Config {
   private _oplataUrl: string;
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
+  private _spa: SpaRouting;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -185,6 +186,10 @@ export class ConfigService implements Config {
     return this._nsiSuggestDictionaryUrl;
   }
 
+  get spa(): SpaRouting {
+    return this._spa;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
@@ -227,6 +232,7 @@ export class ConfigService implements Config {
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
+    this._spa = config.spa || {};
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

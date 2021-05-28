@@ -1,4 +1,4 @@
-@import '../../../../../styles/core/';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 :host {
   display: block;
@@ -14,4 +14,20 @@
   &__info {
     margin-top: $screen-pad-8;
   }
+}
+:host::ng-deep {
+  .custom {
+    &__img-wrapper {
+      text-align: center;
+    }
+    &__img {
+      max-width: 200px;
+    }
+  }
+
+  h3 {
+    @include typ-h3;
+    text-align: center;
+    margin: 24px 0;
+  }  
 }

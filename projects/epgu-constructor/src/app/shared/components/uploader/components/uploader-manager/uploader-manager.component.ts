@@ -1,12 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import {
-  CancelAction,
-  ErrorActions,
-  FileItem,
-  FileItemStatus,
-} from '../../../file-upload/file-upload-item/data';
+import { CancelAction, ErrorActions, FileItem, FileItemStatus } from '../../../file-upload/data';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { FilesCollection, SuggestAction } from '../../data';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';

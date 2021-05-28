@@ -120,6 +120,13 @@ export interface ComponentAttrsDto {
   isMonthsRangeVisible?: boolean;
   isSelectButtonHidden?: boolean;
   expandAllChildrenBlocks?: boolean;
+  disclaimer?: DisclaimerDto;
+}
+
+export interface DisclaimerDto {
+  type: 'warn' | 'error';
+  title: string;
+  description: string;
 }
 
 export interface IMvdFilter {

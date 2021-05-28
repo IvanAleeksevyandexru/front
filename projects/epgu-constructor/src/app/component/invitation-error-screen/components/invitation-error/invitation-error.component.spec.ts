@@ -8,7 +8,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { InvitationErrorComponent } from './invitation-error.component';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent } from '../../../../shared/components/screen-pad/screen-pad.component';
+import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
@@ -18,8 +18,7 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { LocationService } from '../../../../core/services/location/location.service';
-import { LocationServiceStub } from '../../../../core/services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';

@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { delayWhen, map } from 'rxjs/operators';
 import { combineLatest, Observable, of } from 'rxjs';
 import { ComponentDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { LocationService } from '../../core/services/location/location.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 

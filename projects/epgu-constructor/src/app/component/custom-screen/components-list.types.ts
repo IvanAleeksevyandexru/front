@@ -14,6 +14,7 @@ import {
   TextTransform,
   ComponentFilterDto,
   ComponentRelationFieldDto,
+  ComponentImageDto,
 } from '@epgu/epgu-constructor-types';
 
 export enum CustomScreenComponentTypes {
@@ -159,6 +160,7 @@ export interface CustomComponentAttr {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
   };
+  image?: ComponentImageDto;
 }
 
 export interface DateRestriction {

@@ -10,7 +10,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { ScreenPadModule } from '../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FormValue, MatPeriod } from '../mat-period.models';
 import { configureTestSuite } from 'ng-bullet';

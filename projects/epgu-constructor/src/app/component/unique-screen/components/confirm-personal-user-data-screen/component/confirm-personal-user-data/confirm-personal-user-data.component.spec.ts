@@ -16,7 +16,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-uni
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
-import { ScreenPadModule } from '../../../../../../shared/components/screen-pad/screen-pad.module';
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
@@ -196,8 +196,8 @@ describe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl.componentInstance.isValid).toBeTruthy();
   });
 
-  it('should render epgu-constructor-screen-pad', () => {
-    const selector = 'epgu-constructor-default-unique-screen-wrapper epgu-constructor-screen-pad';
+  it('should render epgu-cf-ui-constructor-screen-pad', () => {
+    const selector = 'epgu-constructor-default-unique-screen-wrapper epgu-cf-ui-constructor-screen-pad';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 

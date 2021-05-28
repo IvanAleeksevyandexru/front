@@ -10,7 +10,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 
 import { ConfigService } from '../../../core/services/config/config.service';
-import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../core/services/utils/utils.service';
@@ -134,7 +134,7 @@ export class ActionService {
     this.modalService.openModal(ConfirmationModalComponent, {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
-      buttons: confirmationButtons.length
+      buttons: confirmationButtons?.length
         ? confirmationButtons
         : [
             {
@@ -147,7 +147,7 @@ export class ActionService {
                   },
             },
           ],
-      actionButtons: confirmation.actionButtons || [],
+      actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
     });

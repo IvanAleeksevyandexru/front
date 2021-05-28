@@ -17,8 +17,7 @@ import { DatesToolsService } from '../../services/dates-tools/dates-tools.servic
 import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
 import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
-import { LocationService } from '../../services/location/location.service';
-import { LocationServiceStub } from '../../services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SessionService } from '../../services/session/session.service';
 import { TracingService } from '../../services/tracing/tracing.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
@@ -27,8 +26,7 @@ import { TracingHttpInterceptor } from './tracing.interceptor';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;

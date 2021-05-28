@@ -18,7 +18,7 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { FileItem, FileItemStatus } from '../../../file-upload/file-upload-item/data';
+import { FileItem, FileItemStatus } from '../../../file-upload/data';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';

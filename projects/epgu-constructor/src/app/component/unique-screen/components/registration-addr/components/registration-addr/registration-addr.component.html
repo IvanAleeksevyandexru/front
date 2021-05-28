@@ -5,7 +5,7 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-screen-pad class="screen-pad-body">
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <form [formGroup]="redAddrForm" class="form">
       <div class="item" *ngFor="let field of (data$ | async)?.attrs?.fields">
         <epgu-constructor-label
@@ -77,5 +77,5 @@
         </div>
       </div>
     </form>
-  </epgu-constructor-screen-pad>
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

@@ -19,7 +19,7 @@ import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { ModalService } from '../../../modal/modal.service';
-import { LocationService } from '../../services/location/location.service';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { ConfigService } from '../../services/config/config.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';

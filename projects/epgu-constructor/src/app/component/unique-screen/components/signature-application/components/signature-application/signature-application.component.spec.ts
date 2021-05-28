@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
@@ -6,8 +6,7 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { LocationService } from '../../../../../../core/services/location/location.service';
-import { LocationServiceStub } from '../../../../../../core/services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { ModalService } from '../../../../../../modal/modal.service';

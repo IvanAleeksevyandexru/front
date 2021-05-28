@@ -18,10 +18,7 @@ import { AutocompleteService } from '../../core/services/autocomplete/autocomple
 import { UtilsService } from '../../core/services/utils/utils.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  FileItem,
-  FileItemStatus,
-} from '../../shared/components/file-upload/file-upload-item/data';
+import { FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { configureTestSuite } from 'ng-bullet';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 

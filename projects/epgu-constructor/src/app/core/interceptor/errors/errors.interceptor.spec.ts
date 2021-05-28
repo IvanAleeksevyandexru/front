@@ -18,8 +18,7 @@ import {
   TIME_INVITATION_ERROR,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
 } from './errors.interceptor.constants';
-import { LocationService } from '../../services/location/location.service';
-import { LocationServiceStub } from '../../services/location/location.service.stub';
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '../../services/config/config.service';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';

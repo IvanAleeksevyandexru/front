@@ -12,7 +12,7 @@
     </div>
 
     <div class="cmp-group">
-      <epgu-constructor-screen-pad
+      <epgu-cf-ui-constructor-screen-pad
         class="cmp-group__layer"
         *ngFor="let screenKey of objectKeys(screens); let i = index; trackBy: trackByFunction"
       >
@@ -29,7 +29,7 @@
           (changes)="changeComponentList($event, i)"
         >
         </epgu-constructor-components-list>
-      </epgu-constructor-screen-pad>
+      </epgu-cf-ui-constructor-screen-pad>
     </div>
 
     <epgu-constructor-clone-button

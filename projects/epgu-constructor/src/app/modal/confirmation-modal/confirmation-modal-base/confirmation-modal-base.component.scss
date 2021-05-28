@@ -1,5 +1,6 @@
-@import '../../../../styles/core';
-@import '../../../../styles/components/rubles';
+@use "sass:math";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
 
 $my: 7vh;
 $pyConfModal: 64px;
@@ -71,7 +72,7 @@ $minModalHeight: 293px;
             100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight}
           );
           min-height: calc(
-            #{$minModalHeight} - #{$pyConfModal} - #{$headerHeight} - #{$pyConfModal / 2}
+            #{$minModalHeight} - #{$pyConfModal} - #{$headerHeight} - #{math.div($pyConfModal, 2)}
           );
         }
       }

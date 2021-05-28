@@ -1,4 +1,4 @@
-@import '../../../projects/epgu-constructor/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 :host {
   @include flex-container();
@@ -10,7 +10,7 @@
   display: flex;
   flex: 1 0 auto;
   justify-content: center;
-  background-color: #fafcff;
+  background-color: $color-background;
 }
 
 .footer {

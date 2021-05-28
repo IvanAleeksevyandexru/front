@@ -4,15 +4,11 @@
     "outDir": "./out-tsc/app",
     "types": [],
     "paths": {
-      "@ifc/plugin": [
-        "node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js"
-      ],
-      "@ifc/common": [
-        "node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"
-      ],
-      "epgu-constructor": [
-        "dist/epgu-constructor"
-      ]
+      "@ifc/plugin": ["node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"],
+      "@epgu/epgu-constructor": ["dist/epgu-constructor"],
+      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"],
+      "@epgu/children-clubs": ["dist/children-clubs"]
     }
   },
   "files": [

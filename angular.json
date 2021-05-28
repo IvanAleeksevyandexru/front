@@ -195,6 +195,11 @@
     },
     "epgu-constructor-ui-kit": {
       "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "projects/epgu-constructor-ui-kit",
       "sourceRoot": "projects/epgu-constructor-ui-kit/src",
       "prefix": "epgu-cf-ui",

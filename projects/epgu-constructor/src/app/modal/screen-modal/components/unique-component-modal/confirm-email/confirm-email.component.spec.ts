@@ -5,7 +5,7 @@ import { CoreModule } from '../../../../../core/core.module';
 import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { LocationService } from '../../../../../core/services/location/location.service';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';

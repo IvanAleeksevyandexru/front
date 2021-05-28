@@ -1,11 +1,11 @@
-@import "../../../../../../../styles/core";
-@import '../../../../../../../styles/components/rubles';
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
 
 .payment{
   padding: 24px;
   border-radius: 12px;
   background-color: $color-white;
-  box-shadow: 0 24px 48px rgba(230, 235, 245, 0.4);
+  box-shadow: 0 24px 48px $color-shadow;
 
   &.inloading{
     opacity: 0.5;

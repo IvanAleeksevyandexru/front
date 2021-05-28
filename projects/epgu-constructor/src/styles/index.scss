@@ -1,16 +1,18 @@
-@import 'core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
 // Implement styleguide for all library's components
-@import 'components/index.scss';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
 // TODO: remove all normalize css styles, it may affect app's style
 // stylelint-disable
 
 .epgu-form-player {
   counter-reset: section;
-  @import 'core/class';
+  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/class';
   @include flex-container();
   color: $color-summer-night;
   font-family: $font-main;
+  min-width: 320px;
   height: 100%;
 
   & .loader {
@@ -120,8 +122,8 @@
   }
 
   blockquote {
-    background: rgba(11, 64, 179, 0.1);
-    border: 1px solid $color-button-hit;
+    background: $color-osso-grigio;
+    border: 1px solid $color-pulsante-premuto;
     box-sizing: border-box;
     border-radius: $border-md;
   }
@@ -150,62 +152,11 @@
     &--gosred {
       color: $color-gosred;
     }
-    &--tela-rossa {
-      color: $color-tela-rossa;
-    }
     &--summer-night {
       color: $color-summer-night;
     }
-    &--input {
-      color: $color-input;
-    }
-    &--divider {
-      color: $color-divider;
-    }
-    &--error-highlight {
-      color: $color-error-highlight;
-    }
-    &--shadow {
-      color: $color-shadow;
-    }
-    &--background {
-      color: $color-background;
-    }
-    &--bg-disabled {
-      color: $color-bg-disabled;
-    }
     &--text-helper {
       color: $color-text-helper;
-    }
-    &--active-item {
-      color: $color-active-item;
-    }
-    &--giallo-brillante {
-      color: $color-giallo-brillante;
-    }
-    &--giallo-selezionato {
-      color: $color-giallo-selezionato;
-    }
-    &--tag-line {
-      color: $color-tag-line;
-    }
-    &--button-disabled {
-      color: $color-button-disabled;
-    }
-    &--button-hover {
-      color: $color-button-hover;
-    }
-    &--tagline-hit {
-      color: $color-tagline-hit;
-    }
-    &--nephritis {
-      color: $color-nephritis;
-    }
-    &--green-sea {
-      color: $color-green-sea;
-    }
-    &--button-hit {
-      color: $color-button-hit;
     }
   }
 
@@ -231,7 +182,7 @@
       align-items: center;
     }
     &--description {
-      background: $color-tag-line;
+      background: $color-tagline-hit;
       border-radius: 0 4px 4px 4px;
       padding: 16px;
       margin-top: 4px;

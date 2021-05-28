@@ -10,7 +10,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
-import { ScreenPadComponent } from '../../../../../shared/components/screen-pad/screen-pad.component';
+import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { Passport } from '../add-passport.models';
 import { AddPassportComponent } from '../component/add-passport.component';
 import { AddPassportContainerComponent } from './add-passport-component-container.component';
