@@ -43,6 +43,15 @@ export class ScreenService extends ScreenContent {
     return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 
+  public setCompValueToCachedAnswer(componentId: string, value: string): void {
+    const cachedAnswers = this.getStore().cachedAnswers;
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+
+    cachedAnswers[componentId] = { ...cachedAnswers[componentId], value };
+  }
+
   /**
    * Инициализирует работу хранилища
    * @param store - объект хранилища
@@ -84,7 +93,10 @@ export class ScreenService extends ScreenContent {
   private prepareComponents(): void {
     const components = this.screenStore.display.components;
     const cashedAnswers = this.screenStore.cachedAnswers;
-    const screenStoreComponent = this.prepareComponentsService.prepareComponents(components, cashedAnswers);
+    const screenStoreComponent = this.prepareComponentsService.prepareComponents(
+      components,
+      cashedAnswers,
+    );
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };

@@ -175,7 +175,7 @@ export class AutocompletePrepareService {
    * Записывает данные из currentAnswersService в screenService. Это делается для того, чтобы
    * введенные пользователем данные не потерялись после вызова screenService.updateScreenContent()
    */
-  public loadValuesFromCurrentAnswer(repeatableComponents): void {
+  public loadValuesFromCurrentAnswer(repeatableComponents, parentComponentId?: string): void {
     if (repeatableComponents.length) {
       let currentAnswerParsedValue;
       if (UtilsService.hasJsonStructure(this.currentAnswersService.state as string)) {
@@ -196,6 +196,11 @@ export class AutocompletePrepareService {
         for (const repeatableComponentItem of repeatableComponents[index]) {
           repeatableComponentItem.value = currentAnswerItem[repeatableComponentItem.id];
         }
+
+        this.screenService.setCompValueToCachedAnswer(
+          parentComponentId,
+          JSON.stringify(currentAnswerParsedValue),
+        );
       });
     } else {
       for (const component of this.screenService.display.components) {

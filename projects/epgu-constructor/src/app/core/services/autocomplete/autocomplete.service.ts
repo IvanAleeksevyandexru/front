@@ -136,7 +136,10 @@ export class AutocompleteService {
         // с помощью автоподстановки будут заполнены некоторые компоненты.
         // для того, чтобы остальные компоненты не потеряли свои значения мы
         // сохраняем их из currentAnswersService в screenService
-        this.autocompletePrepareService.loadValuesFromCurrentAnswer(this.repeatableComponents);
+        this.autocompletePrepareService.loadValuesFromCurrentAnswer(
+          this.repeatableComponents,
+          this.parentComponent.id,
+        );
 
         if (this.suggestionGroupId) {
           Object.keys(this.screenService.suggestions).forEach((componentId: string) => {
