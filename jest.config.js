@@ -18,9 +18,7 @@ module.exports = {
     '@ifc/common': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/dist/epgu-constructor-ui-kit'
   },
-  modulePathIgnorePatterns: [
-    '<rootDir>/projects/epgu-constructor-ui-kit'
-  ],
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/epgu-constructor/src/app/**/*.service.ts',
