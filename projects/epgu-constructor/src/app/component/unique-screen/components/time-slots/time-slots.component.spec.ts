@@ -37,6 +37,7 @@ import { slotsError } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { mockWeeks } from './mocks/mock-weeks';
+import { HttpClient } from '@angular/common/http';
 
 const moment = moment_;
 moment.locale('ru');
@@ -49,6 +50,7 @@ describe('TimeSlotsComponent', () => {
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
   let datesToolsService: DatesToolsService;
   let store: ScreenStore;
+  let httpClient: HttpClient;
 
   configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
@@ -84,6 +86,7 @@ describe('TimeSlotsComponent', () => {
     timeSlotsService = TestBed.inject(TimeSlotsService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     datesToolsService = TestBed.inject(DatesToolsService);
+    httpClient = TestBed.inject(HttpClient);
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
@@ -101,9 +104,14 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
-    jest
-      .spyOn(datesToolsService, 'getToday')
-      .mockReturnValue(Promise.resolve(new Date('2021-01-01T00:00:00.000Z')));
+
+    jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
+      if (url === 'api/service/actions/currentDateTime') {
+        return of('2021-01-01T00:00:00.000Z');
+      } else {
+        return httpClient.get(url, options);
+      }
+    });
   });
 
   it('should create', () => {
@@ -267,64 +275,23 @@ describe('TimeSlotsComponent', () => {
 
   it('renderSingleMonthGrid works as before', async () => {
     const actual = [];
-    await component['renderSingleMonthGrid'](actual);
     const expected = mockWeeks;
-
+    await component['renderSingleMonthGrid'](actual);
     expect(actual).toEqual(expected);
-  });
-
-  it('checkDateRestrictions works as before', () => {
-    const checkDateRestrictions = (
-      date: Date,
-      startType: moment_.unitOfTime.StartOf = 'day',
-    ): boolean => {
-      let isInvalid = false;
-      const today = moment().startOf(startType);
-      const restrictions = screenService.component.attrs.restrictions;
-      const checks = {
-        minDate: (amount, type): boolean =>
-          moment(date).isBefore(today.clone().add(amount, type).startOf(startType)),
-        maxDate: (amount, type): boolean =>
-          moment(date).isAfter(today.clone().add(amount, type).startOf(startType)),
-      };
-      Object.keys(restrictions).some((key) => {
-        const [amount, type] = restrictions[key];
-        isInvalid = checks[key](amount, type);
-        return isInvalid;
-      });
-      return isInvalid;
-    };
-
-    screenService.component.attrs.restrictions = { minDate: [30, 'd'], maxDate: [1, 'y'] };
-    const date = new Date(Date.now());
-
-    for (let i = -30; i < 30; ++i) {
-      date.setDate(date.getDate() + 1);
-      ['day', 'month'].forEach((unit) => {
-        expect(component['checkDateRestrictions'](date, unit as any)).toEqual(
-          checkDateRestrictions(date, unit as any),
-        );
-      });
-    }
-
-    [
-      '2020-01-01T10:00:00.000Z',
-      '2020-02-01T10:00:00.000Z',
-      '2021-01-01T10:00:00.000Z',
-      '2020-12-31T10:00:00.000Z',
-    ].forEach((dateStr) => {
-      const date = new Date(dateStr);
-      ['day', 'month'].forEach((unit) => {
-        expect(component['checkDateRestrictions'](date, unit as any)).toBe(
-          checkDateRestrictions(date, unit as any),
-        );
-      });
-    });
   });
 
   describe('when dateType is today', () => {
     beforeEach(() => {
-      Date.now = jest.fn().mockReturnValue(new Date('2021-02-15T00:00:00.000Z'));
+      const todayStr = '2021-02-15T00:00:00.000Z';
+      Date.now = jest.fn().mockReturnValue(new Date(todayStr));
+      jest.spyOn(httpClient, 'get').mockRestore();
+      jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
+        if (url === 'api/service/actions/currentDateTime') {
+          return of(todayStr);
+        } else {
+          return httpClient.get(url, options);
+        }
+      });
       screenService.component.attrs.dateType = 'today';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
@@ -351,8 +318,17 @@ describe('TimeSlotsComponent', () => {
 
   describe('when dateType is refDate', () => {
     beforeEach(() => {
+      const todayStr = '2021-02-05T00:00:00.000Z';
       screenService.component.attrs.dateType = 'refDate';
-      screenService.component.attrs.refDate = '2021-02-05T00:00:00.000Z';
+      screenService.component.attrs.refDate = todayStr;
+      jest.spyOn(httpClient, 'get').mockRestore();
+      jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
+        if (url === 'api/service/actions/currentDateTime') {
+          return of(todayStr);
+        } else {
+          return httpClient.get(url, options);
+        }
+      });
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
       fixture.detectChanges();

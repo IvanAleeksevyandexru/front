@@ -32,6 +32,7 @@ import {
   differenceInCalendarDays as _differenceInCalendarDays,
   startOfISOWeek as _startOfISOWeek,
   endOfISOWeek as _endOfISOWeek,
+  formatISO as _formatISO,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { replaceArguments } from '../../../shared/constants/utils';
@@ -87,6 +88,7 @@ export class DatesToolsService {
     const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
     const date = new Date(timeString);
     if (resetTime) {
+      date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
       date.setHours(0, 0, 0, 0);
     }
     return date;
@@ -202,15 +204,34 @@ export class DatesToolsService {
    * том же формате?
    */
   public format(date: Date | number | string, format: string = DATE_ISO_STRING_FORMAT): string {
+    let newDate;
     if (!date) {
       return '';
     }
     if (typeof date === 'string') {
-      date = this.parse(date, format);
+      newDate = this.parse(date, format);
+    } else {
+      newDate = new Date(date);
     }
 
-    return _format(date, format, { locale: _ruLocale });
+    // Если временная зона меньше UTC 00:00 то для избежания смещения дня делается установка года/месяца/дня по UTC
+    const zoneOffset = newDate.getTimezoneOffset();
+    const needToOffsetZone = Math.sign(zoneOffset) === 1;
+    if (needToOffsetZone) {
+      newDate.setFullYear(newDate.getUTCFullYear(), newDate.getUTCMonth(), newDate.getUTCDate());
+    }
+
+    return _format(newDate, format, { locale: _ruLocale });
   }
+
+  /**
+   * Возвращает объект даты в виде строки в ISO формате
+   * @param {Date | Number} date дата для преобразования
+   * @param {object} options дополнительные опции, см. https://date-fns.org/v2.21.3/docs/formatISO
+   */
+     public formatISO(date: Date | number, options?): string {
+      return _formatISO(date, options);
+    }
 
   /**
    * Возвращает число полных лет между первой и второй датой
@@ -292,7 +313,14 @@ export class DatesToolsService {
    * @param {Date | Number} date исходная дата
    */
   public startOfDay(date: Date | number): Date {
-    return _startOfDay(date);
+    let newDate = new Date(date);
+    const zoneOffset = newDate.getTimezoneOffset();
+    // Если временная зона меньше UTC 00:00 то для избежания смещения дня делается установка года/месяца/дня по UTC
+    const needToOffsetZone = Math.sign(zoneOffset) === 1;
+    if (needToOffsetZone) {
+      newDate = this.add(newDate, zoneOffset, 'minutes');
+    }
+    return _startOfDay(newDate);
   }
 
   /**
@@ -328,6 +356,12 @@ export class DatesToolsService {
     day: number | string = null,
   ): Date {
     let newDate = this.toDate(date);
+    const zoneOffset = newDate.getTimezoneOffset();
+    // Если временная зона меньше UTC 00:00 то для избежания смещения дня делается установка года/месяца/дня по UTC
+    const needToOffsetZone = Math.sign(zoneOffset) === 1;
+    if (needToOffsetZone) {
+      newDate = this.add(newDate, zoneOffset, 'minutes');
+    }
     if (year !== null) {
       newDate = this.setYear(newDate, year);
     }
@@ -336,6 +370,9 @@ export class DatesToolsService {
     }
     if (day !== null) {
       newDate = this.setDate(newDate, day);
+    }
+    if (needToOffsetZone) {
+      newDate = this.add(newDate, -zoneOffset, 'minutes');
     }
     return newDate;
   }
@@ -369,7 +406,10 @@ export class DatesToolsService {
    * @param {Date | Number} date исходная дата
    */
   public endOfMonth(date: Date | number): Date {
-    return _endOfMonth(date);
+    let newDate = _endOfMonth(date);
+    // Для избежания смещения дня делается установка года/месяца/дня по UTC
+    newDate.setUTCFullYear(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+    return newDate;
   }
 
   /**
@@ -377,7 +417,14 @@ export class DatesToolsService {
    * @param {Date} date исходная дата
    */
   public getDaysInMonth(date: Date): number {
-    return _getDaysInMonth(date);
+    let newDate = new Date(date);
+    const zoneOffset = newDate.getTimezoneOffset();
+    // Если временная зона меньше UTC 00:00 то для избежания смещения дня делается установка года/месяца/дня по UTC
+    const needToOffsetZone = Math.sign(zoneOffset) === 1;
+    if (needToOffsetZone) {
+      newDate.setFullYear(newDate.getUTCFullYear(), newDate.getUTCMonth(), newDate.getUTCDate());
+    }
+    return _getDaysInMonth(newDate);
   }
 
   /**
