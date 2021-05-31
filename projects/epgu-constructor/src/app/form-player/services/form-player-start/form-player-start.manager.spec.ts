@@ -22,7 +22,7 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 import { Location } from '@angular/common';
 import { LocationService, WINDOW_PROVIDERS, LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
-import { SPA_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
+import { APP_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -284,14 +284,14 @@ describe('FormPlayerStartManager', () => {
     });
 
     it('should return false if app output case', () => {
-      localStorage.setItem(SPA_OUTPUT_KEY, '{}');
+      localStorage.setItem(APP_OUTPUT_KEY, '{}');
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
         orderId,
         invited,
         canStartNew,
       );
       expect(shouldShowContinueOrderModal).toBe(false);
-      localStorage.removeItem(SPA_OUTPUT_KEY);
+      localStorage.removeItem(APP_OUTPUT_KEY);
     });
 
     it('should return false if not invited, canStartNew, not empty orderId, isNeedToShowLastScreen', () => {

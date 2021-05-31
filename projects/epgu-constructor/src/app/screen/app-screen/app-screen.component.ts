@@ -26,14 +26,14 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     const outputSpaData = this.cfAppStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
 
     if (outputSpaData) {
-      this.handleOutputSpaData(outputSpaData);
+      this.handleOutputAppData(outputSpaData);
     } else {
-      this.sendDataToSpa();
-      this.redirectToSpa();
+      this.sendDataToApp();
+      this.redirectToApp();
     }
   }
 
-  private handleOutputSpaData(outputSpaData: OutputAppDto): void {
+  private handleOutputAppData(outputSpaData: OutputAppDto): void {
     // TODO: add checking output id and type logic
 
     const { value } = outputSpaData;
@@ -49,12 +49,12 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     this.navigationService.next(navigation);
   }
 
-  private sendDataToSpa(): void {
-    const spaInputState = this.getSpaInputState();
+  private sendDataToApp(): void {
+    const spaInputState = this.getAppInputState();
     this.cfAppStateService.setState(spaInputState, DataDirectionType.INPUT);
   }
 
-  private getSpaInputState(): InputAppDto {
+  private getAppInputState(): InputAppDto {
     return {
       componentId: this.screenService.component.id,
       componentType: this.screenService.componentType,
@@ -64,7 +64,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     };
   }
 
-  private redirectToSpa(): void {
+  private redirectToApp(): void {
     const { appPathMap } = this.configService;
     const appPath = appPathMap[this.screenService.componentType];
     // TODO: добавить логику на проверку наличия пути

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import {
   InputAppDto,
   OutputAppDto,
-  DataDirectionType
+  DataDirectionType,
+  APP_INPUT_KEY,
+  APP_OUTPUT_KEY,
 } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import { APP_INPUT_KEY, APP_OUTPUT_KEY } from './cf-app-state.types';
 
 @Injectable()
 export class CfAppStateService {

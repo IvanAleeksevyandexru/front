@@ -3,8 +3,13 @@ import { CfAppStateService } from './cf-app-state.service';
 import { configureTestSuite } from 'ng-bullet';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
-import { DataDirectionType, InputAppDto, OutputAppDto } from '@epgu/epgu-constructor-types';
-import { APP_INPUT_KEY, APP_OUTPUT_KEY } from './cf-app-state.types';
+import {
+  APP_INPUT_KEY,
+  APP_OUTPUT_KEY,
+  DataDirectionType,
+  InputAppDto,
+  OutputAppDto
+} from '@epgu/epgu-constructor-types';
 
 describe('CfAppStateService', () => {
   let service: CfAppStateService;
