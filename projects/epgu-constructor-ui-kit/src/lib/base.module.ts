@@ -7,7 +7,7 @@ import { EpguLibModule } from '@epgu/epgu-lib';
 import { ReactiveFormsModule } from '@angular/forms';
 
 /**
- * Здесь храниться всё что необходимо во всех слоях.
+ * Здесь хранится всё что необходимо во всех слоях.
  */
 @NgModule({
   imports: [
