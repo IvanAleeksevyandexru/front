@@ -1,46 +1,51 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../../../../core/services/config/config.service';
 import { Observable } from 'rxjs';
-import { Referral } from '../medical-referrals-list/medical-referrals-list.types';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryConditions, DictionaryValueTypes } from '@epgu/epgu-constructor-types';
+import { HttpClient } from '@angular/common/http';
+import { IGetReferralResponseDto } from './referral-number-dto.interface';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ReferralNumberService {
+  private endpoint = 'v1/equeue/agg/ref/items';
 
   constructor(
+    private dictionaryToolsService: DictionaryToolsService,
     private http: HttpClient,
-    private configService: ConfigService
+    private config: ConfigService,
+    public screenService: ScreenService,
   ) {}
 
-  public getRefferalSearch(RefferalNumber: string, SessionId: string): Observable<Referral[]> {
-    return this.http.post<Referral[]>(`${this.configService.apiUrl}/lk/v1/equeue/agg/ref/items`, {
-      eserviceId: '10000025167',
-      parentRefItemValue: null,
-      treeFiltering: 'ONELEVEL',
-      refName: 'Referral',
-      filter: {
-        union: {
-          unionKind: 'AND',
-          subs: [
-            {
-              simple: {
-                attributeName: 'Referral_Number',
-                condition: 'EQUALS',
-                value: RefferalNumber,
-                checkAllValues: true
-              }
-            },
-            {
-              simple: {
-                attributeName: 'Session_Id',
-                condition: 'EQUALS',
-                value: SessionId,
-                checkAllValues: true
-              }
-            }
-          ]
-        }
-      }
-    });
+  public getReferralSearch(referralNumber: string, sessionId: string, eserviceId: string): Observable<IGetReferralResponseDto> {
+    const filter = this.dictionaryToolsService.getFilterOptions({}, this.screenService.getStore(), [
+      {
+        attributeName: 'Referral_Number',
+        condition: DictionaryConditions.EQUALS,
+        value: JSON.stringify(referralNumber),
+        checkAllValues: true,
+        valueType: DictionaryValueTypes.value,
+      },
+      {
+        attributeName: 'Session_Id',
+        condition: DictionaryConditions.EQUALS,
+        value: JSON.stringify(sessionId),
+        checkAllValues: true,
+        valueType: DictionaryValueTypes.value,
+      },
+    ]);
+
+    return this.http.post<IGetReferralResponseDto>(
+      `${this.config.lkApi}/${this.endpoint}`,
+      {
+        eserviceId,
+        parentRefItemValue: null,
+        treeFiltering: 'ONELEVEL',
+        refName: 'Referral',
+        filter: filter.filter,
+      },
+      { withCredentials: true },
+    );
   }
 }
