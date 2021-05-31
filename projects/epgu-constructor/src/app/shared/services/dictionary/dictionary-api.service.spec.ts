@@ -25,6 +25,17 @@ describe('DictionaryApiService', () => {
     selectAttributes: ['//'],
     tx: 'someTx'
   };
+  let additionalParams = {
+    additionalParams: [
+      {
+        name: 'param1',
+        value: 'value1'
+      },
+    ]
+  };
+  let excludedParams = {
+    excludedParams: ['tx'],
+  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -77,6 +88,30 @@ describe('DictionaryApiService', () => {
         selectAttributes: ['*'],
         tx: ''
       });
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should apply additional params if additionalParams is defined', fakeAsync(() => {
+      service.getDictionary(dictionaryName, { ...optionsMock, ...additionalParams }).subscribe(response => expect(response).toBe(responseMock));
+      const path = `${dictionaryUrl}/${dictionaryName}`;
+      const req = http.expectOne(path);
+      expect(req.request.body).toEqual({
+        ...optionsMock,
+        param1: 'value1'
+      });
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should exclude params if excludedParams is defined', fakeAsync(() => {
+      service.getDictionary(dictionaryName, { ...optionsMock, ...excludedParams }).subscribe(response => expect(response).toBe(responseMock));
+      const path = `${dictionaryUrl}/${dictionaryName}`;
+      const req = http.expectOne(path);
+      const mock = optionsMock;
+      delete mock['tx'];
+
+      expect(req.request.body).toEqual(mock);
       req.flush(responseMock);
       tick();
     }));
