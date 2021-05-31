@@ -28,6 +28,8 @@
   </form>
 </div>
 
-<epgu-constructor-clone-button *ngIf="!isSingleChild" [disabled]="items.length >= repeatAmount">{{
-  addSectionLabel
-}}</epgu-constructor-clone-button>
+<epgu-constructor-clone-button
+  *ngIf="!isSingleChild && !(component.attrs.hideCloneButton && items.length >= repeatAmount)"
+  [disabled]="items.length >= repeatAmount"
+  >{{ addSectionLabel }}</epgu-constructor-clone-button
+>
