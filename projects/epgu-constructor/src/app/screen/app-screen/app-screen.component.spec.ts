@@ -8,7 +8,7 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { AppScreenComponent } from './app-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, DisplayDto, OutputAppDto, ScreenTypes } from '@epgu/epgu-constructor-types';
+import { ComponentDto, DataDirectionType, DisplayDto, OutputAppDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CfAppStateService, CfAppStateServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
@@ -39,7 +39,7 @@ describe('SpaScreenComponent', () => {
   let navigationService: NavigationService;
   let configService: ConfigService;
   let screenService: ScreenService;
-  let eventBusService: EventBusService;
+  let locationService: LocationService;
   let cfAppStateService: CfAppStateService;
 
   const initComponent = () => {
@@ -70,6 +70,7 @@ describe('SpaScreenComponent', () => {
   beforeEach(() => {
     navigationService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
+    locationService = TestBed.inject(LocationService);
     cfAppStateService = TestBed.inject(CfAppStateService);
     configService = TestBed.inject(ConfigService);
     screenService.display = displayDtoSample;
@@ -169,7 +170,6 @@ describe('SpaScreenComponent', () => {
     });
 
     it('shouldn\'t call handleOutputSpaData and should call sendDataToSpa and redirectToSpa when on init', () => {
-      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(null);
       const handleOutputAppDataSpy = jest.spyOn<any, any>(component, 'handleOutputAppData');
       const sendDataToAppSpy = jest.spyOn<any, any>(component, 'sendDataToApp');
       const redirectToAppSpy = jest.spyOn<any, any>(component, 'redirectToApp');
@@ -178,6 +178,33 @@ describe('SpaScreenComponent', () => {
       expect(handleOutputAppDataSpy).not.toBeCalled();
       expect(sendDataToAppSpy).toBeCalled();
       expect(redirectToAppSpy).toBeCalled();
+    });
+
+    it('shouldn call setState of cfAppStateService with init data', () => {
+      const currentUrl = '/some/service/form';
+      jest.spyOn(locationService, 'getHref').mockReturnValue(currentUrl);
+      const currentComponent = {
+        id: 'app1',
+        value: '{ value: { a:42, b: 777 }, state: {}}}',
+        type: 'ChildrenClubs',
+        visited: false,
+        attrs: {}
+      };
+      screenService.component = currentComponent;
+
+      const setStateSpy = jest.spyOn(cfAppStateService, 'setState');
+      fixture.detectChanges();
+      component.ngOnInit();
+
+      const expectedState = {
+        componentId: currentComponent.id,
+        componentType: currentComponent.type,
+        value: currentComponent.value,
+        callbackRedirectUrl: currentUrl,
+        isPrevStepCase: false,
+      };
+
+      expect(setStateSpy).toBeCalledWith(expectedState, DataDirectionType.INPUT);
     });
   });
 });

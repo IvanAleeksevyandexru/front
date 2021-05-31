@@ -65,10 +65,11 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
   }
 
   private getAppInputState(): InputAppDto {
+    const { component } = this.screenService;
     return {
-      componentId: this.screenService.component.id,
-      componentType: this.screenService.componentType,
-      value: this.screenService.component.value,
+      componentId: component.id,
+      componentType: component.type,
+      value: component.value,
       callbackRedirectUrl: this.locationService.getHref(),
       isPrevStepCase: false, // TODO: добавить логику для передачи параметра
     };
