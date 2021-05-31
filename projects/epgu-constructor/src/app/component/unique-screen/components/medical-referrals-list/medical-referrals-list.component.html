@@ -34,6 +34,11 @@
 
 <ng-template #emptyMedicalReferralsList>
   <epgu-cf-ui-constructor-screen-pad>
-    <p class="empty-referrals-info">Направления не найдены</p>
+    <epgu-constructor-disclaimer
+      class="mt-16"
+      [type]="disclaimer.type"
+      [title]="disclaimer.title"
+      [description]="disclaimer.description"
+    ></epgu-constructor-disclaimer>
   </epgu-cf-ui-constructor-screen-pad>
 </ng-template>
