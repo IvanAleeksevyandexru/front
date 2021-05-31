@@ -6,7 +6,7 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, LocationServiceStub, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { ModalService } from '../../../../../../modal/modal.service';
@@ -20,7 +20,6 @@ import { ScreenContainerComponent } from '../../../../../../shared/components/sc
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationComponent } from './signature-application.component';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';

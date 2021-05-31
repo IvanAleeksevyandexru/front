@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
-import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadComponent, HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { By } from '@angular/platform-browser';

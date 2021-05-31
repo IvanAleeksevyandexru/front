@@ -9,7 +9,7 @@ import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/
 import { Full } from '../../information-center-pfr.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
+import { ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterPfrFullComponent', () => {
@@ -85,7 +85,7 @@ describe('InformationCenterPfrFullComponent', () => {
     it('should be call formChangeEvent', () => {
       jest.spyOn(component.formChangeEvent, 'emit');
       jest.spyOn(component, 'handleSelect');
-      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-lookup'));
+      const debugEl = fixture.debugElement.query(By.css('epgu-cf-ui-constructor-constructor-lookup'));
       debugEl.triggerEventHandler('changed', {});
 
       expect(component.formChangeEvent.emit).toHaveBeenCalled();

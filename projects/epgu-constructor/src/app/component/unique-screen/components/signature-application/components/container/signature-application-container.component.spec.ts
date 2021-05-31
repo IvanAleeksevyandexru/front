@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
@@ -6,8 +6,14 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, LocationServiceStub, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LocalStorageService,
+  LocalStorageServiceStub,
+  SafePipe,
+  LocationService,
+  LocationServiceStub,
+  WINDOW_PROVIDERS
+} from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { ModalService } from '../../../../../../modal/modal.service';
@@ -19,7 +25,6 @@ import { NavigationComponent } from '../../../../../../shared/components/navigat
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
 import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { SignatureApplicationData } from '../../models/application.interface';
 import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
 import { SignatureApplicationContainerComponent } from './signature-application-container.component';

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HammerModule } from '@angular/platform-browser';
+import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
 import { ZoomComponent } from './zoom.component';
-import { SafeModule } from '../../pipes/safe/safe.module';
 
 @NgModule({
   declarations: [ZoomComponent],

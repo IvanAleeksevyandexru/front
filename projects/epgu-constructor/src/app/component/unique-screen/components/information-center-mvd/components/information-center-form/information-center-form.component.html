@@ -3,13 +3,13 @@
     [tips]=" sourceDictionaryLabel"
     [label]="sourceDictionaryLabel"
   ></epgu-constructor-label>
-  <epgu-constructor-constructor-dropdown
+  <epgu-cf-ui-constructor-constructor-dropdown
     class="dropdown"
     [localSearch]="true"
     [control]="select"
     (changed)="handleSelect($event)"
     [items]="sourceList"
-  ></epgu-constructor-constructor-dropdown>
+  ></epgu-cf-ui-constructor-constructor-dropdown>
 
   <div class="loader" *ngIf="isLoadingInfoCenter">
     <lib-throbber-hexagon size="medium"></lib-throbber-hexagon>

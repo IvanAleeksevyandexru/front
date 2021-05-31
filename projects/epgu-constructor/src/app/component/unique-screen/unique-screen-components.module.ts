@@ -29,7 +29,7 @@ import { ConfirmPersonalUserDataScreenModule } from './components/confirm-person
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 import { RegistrationAddrScreenModule } from './components/registration-addr/registration-addr-screen.module';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
-import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';

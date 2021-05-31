@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/epgu-lib';
+import { TextTransformService } from '@epgu/epgu-constructor-ui-kit';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
@@ -17,7 +18,6 @@ import { prepareClassifiedSuggestionItems } from '../../../../core/services/auto
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { TextTransformService } from '../../../../shared/services/text-transform/text-transform.service';
 
 @Component({
   selector: 'epgu-constructor-doc-input',

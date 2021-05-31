@@ -8,12 +8,12 @@
   <div [formGroup]="formGroup" class="checkbox-cube">
     <div *ngFor="let checkbox of checkboxes"
          class="checkbox-cube-item">
-      <epgu-constructor-constructor-checkbox
+      <epgu-cf-ui-constructor-constructor-checkbox
         [checkboxId]="checkbox.id"
         [control]="formGroup.get(checkbox.id)"
         [labelText]="checkbox.label"
       >
-      </epgu-constructor-constructor-checkbox>
+      </epgu-cf-ui-constructor-constructor-checkbox>
     </div>
   </div>
 </epgu-cf-ui-constructor-screen-pad>
