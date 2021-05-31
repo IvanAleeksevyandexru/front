@@ -83,7 +83,7 @@ export interface FilterDtoConfig {
 
 export enum AdditionalRequestType {
   ref = 'ref',
-  static = 'static',
+  value = 'value',
 }
 
 export interface AdditionalRequestParam {
