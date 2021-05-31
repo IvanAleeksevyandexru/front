@@ -264,8 +264,10 @@ describe('FormPlayerStartManager', () => {
     it('should call initData of formPlayerService when shouldShowContinueOrderModal return false', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.returnValue(false);
       spyOn(formPlayerService, 'initData').and.callThrough();
+      spyOn(localStorageService, 'set').and.callThrough();
       service['handleOrder'](orderId, invited, canStartNew);
       expect(formPlayerService.initData).toBeCalledWith(orderId);
+      expect(localStorageService.set).toBeCalledWith('cachedAnswers', {});
     });
   });
 
