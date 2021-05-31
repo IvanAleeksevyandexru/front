@@ -12,7 +12,6 @@ import { ComponentDto, DataDirectionType, DisplayDto, OutputAppDto, ScreenTypes 
 import { CfAppStateService, CfAppStateServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
-import { InfoComponentModalComponent } from '../../modal/screen-modal/components/info-component-modal/info-component-modal.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentDtoSample: ComponentDto = {
@@ -130,6 +129,36 @@ describe('SpaScreenComponent', () => {
       };
 
       expect(nextSpy).toBeCalledWith(expectedParam);
+    });
+
+    it('should call navigationService next with params on init', () => {
+      state = {
+        isPrevStepCase: true,
+        value: '{ value: { a:42, b: 777 }, state: {}}}',
+        componentType: 'ChildrenClubs',
+        componentId: 'app1',
+      };
+      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
+      screenService.component = {
+        id: 'app1',
+        value: '',
+        type: 'ChildrenClubs',
+        visited: false,
+        attrs: {}
+      };
+      const prevSpy = jest.spyOn(navigationService, 'prev');
+      component.ngOnInit();
+
+      const expectedParam = {
+        payload: {
+          [screenService.component.id]: {
+            value: state.value,
+            visited: true,
+          },
+        },
+      };
+
+      expect(prevSpy).toBeCalledWith(expectedParam);
     });
 
     it('should throw error when output data has not the same id than current component', () => {
