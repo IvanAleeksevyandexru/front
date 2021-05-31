@@ -5,14 +5,14 @@ import { ConfigServiceStub } from '../../../core/services/config/config.service.
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { UserInfoComponent } from '../user-info/user-info.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { DisplayDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { AgeType, Gender, UserInfoType } from '../user-info/user-info.type';
+import { AgeType, Gender, UserInfoType } from './components/user-info/user-info.type';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
 import { UtilsService } from '../../../core/services/utils/utils.service';
