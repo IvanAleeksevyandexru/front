@@ -59,6 +59,7 @@ export interface Config {
   paymentUrl: string;
   fileUploadApiUrl: string;
   lkUrl: string;
+  lkApi: string;
   yandexMapsApiKey: string;
   invitationUrl: string;
   staticDomainAssetsPath: string;
