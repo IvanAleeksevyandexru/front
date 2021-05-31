@@ -1,0 +1,9 @@
+$px: 16px;
+:host{
+  display: flex;
+  margin-left: -$px;
+  margin-right: -$px;
+}
+.item {
+  padding: 0 $px;
+}
