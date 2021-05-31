@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule, ListItem } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
 import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
@@ -100,7 +100,7 @@ describe('TimeSlotsComponent', () => {
     }
     jest
       .spyOn(timeSlotsService as any, 'getAvailableAreaNames')
-      .mockReturnValue(of(['Кабинет отдела']));
+      .mockReturnValue(of(['Кабинет отдела', 'Дом музыки']));
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
@@ -294,10 +294,10 @@ describe('TimeSlotsComponent', () => {
       });
       screenService.component.attrs.dateType = 'today';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
-      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
     });
 
     it('should allow book date in 30+3 days after today', async () => {
+      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
       await fixture.detectChanges();
       await fixture.whenStable();
       const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
@@ -307,7 +307,35 @@ describe('TimeSlotsComponent', () => {
       expect(lockedDays.length).toEqual(19);
     });
 
+    it('should recalc days styles after change area', async () => {
+      const compValue = JSON.parse(screenService.component.value);
+      compValue.timeSlotType = 'BRAK';
+      screenService.component.attrs.restrictions = { minDate: [0, 'd'], maxDate: [1, 'y'] };
+      screenService.component.value = JSON.stringify(compValue);
+      await fixture.detectChanges();
+      await fixture.whenStable();
+
+      let lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
+      expect(lockedDays.length).toEqual(31);
+
+      fixture.componentInstance.currentArea = {
+        id: 'Торжественный (дневное расписание)',
+        text: 'Торжественный (дневное расписание)',
+      } as ListItem;
+      fixture.componentInstance.areaChanged();
+      let i = 0;
+      fixture.componentInstance.weeks.forEach(week => {
+        week.forEach(day => {
+          if (day.classes.locked) {
+            i++;
+          }
+        });
+      });
+      expect(i).toEqual(30);
+    });
+
     it('should draw days equal to daysToShow extended to weeks length', async () => {
+      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
       screenService.component.attrs.daysToShow = 15;
       await fixture.detectChanges();
       await fixture.whenStable();
