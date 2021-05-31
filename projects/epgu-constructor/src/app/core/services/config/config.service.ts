@@ -18,6 +18,7 @@ export class ConfigService implements Config {
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
   private _lkUrl: string;
+  private _lkApi: string;
   private _paymentUrl: string;
   private _timeSlotApiUrl: string;
   private _listPaymentsApiUrl: string;
@@ -96,6 +97,10 @@ export class ConfigService implements Config {
 
   get lkUrl(): string {
     return this._lkUrl;
+  }
+
+  get lkApi(): string {
+    return this._lkApi;
   }
 
   get paymentUrl(): string {
@@ -202,6 +207,7 @@ export class ConfigService implements Config {
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
+    this._lkApi = config.lkApi ?? `${this.loadService.config.lkApi}`;
     this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
     this._listPaymentsApiUrl =
