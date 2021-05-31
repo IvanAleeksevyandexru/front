@@ -24,9 +24,6 @@ export * from './lib/components/constructor-lookup/constructor-lookup.component'
 export * from './lib/components/error/error.module';
 export * from './lib/components/error/error.component';
 
-export * from './lib/components/gender-radio-button/gender-radio-button.module';
-export * from './lib/components/gender-radio-button/gender-radio-button.component';
-
 export * from './lib/components/input-error/input-error.module';
 export * from './lib/components/input-error/input-error.component';
 
@@ -74,6 +71,5 @@ export * from './lib/services/location/location.service.stub';
 
 export * from './lib/services/text-transform/text-transform.service';
 
-export * from './lib/services/logger/logger.service';
-export * from './lib/services/logger/logger.service.stub';
+
 
