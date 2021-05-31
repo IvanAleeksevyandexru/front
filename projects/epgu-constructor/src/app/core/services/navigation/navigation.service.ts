@@ -79,7 +79,7 @@ export class NavigationService {
 
   redirectToLKByOrgType(): void {
     const { additionalParameters } = this.screenService.getStore();
-    const isLegal = [OrgType.Legal, OrgType.Business].includes(additionalParameters.orgType);
+    const isLegal = [OrgType.Legal, OrgType.Business].includes(additionalParameters?.orgType);
     this.redirectToLK(isLegal);
   }
 
