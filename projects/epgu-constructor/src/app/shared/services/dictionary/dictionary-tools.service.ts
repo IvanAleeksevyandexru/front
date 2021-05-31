@@ -285,7 +285,7 @@ export class DictionaryToolsService {
     return items.map((item) => ({
       originalItem: item,
       id: item[mappingParams.idPath] || item.value,
-      text: item[mappingParams.textPath] || item.title,
+      text: `${item[mappingParams.textPath] || item.title}`,
     }));
   }
 
@@ -312,9 +312,11 @@ export class DictionaryToolsService {
   }
 
   public isDropdownLike(type: CustomScreenComponentTypes): boolean {
-    return (
-      type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac
-    );
+    return [
+      CustomScreenComponentTypes.DropDown,
+      CustomScreenComponentTypes.SearchableDropDown,
+      CustomScreenComponentTypes.MvdGiac,
+    ].includes(type);
   }
 
   public isResultEmpty(component: CustomComponent): boolean {
@@ -432,7 +434,7 @@ export class DictionaryToolsService {
       const itemCode = item.code || item?.value || `${itemText}-${index}`;
       return {
         id: itemCode,
-        text: itemText,
+        text: `${itemText}`,
         unselectable: !!item.disable,
         originalItem: item,
         compare: (): boolean => false,

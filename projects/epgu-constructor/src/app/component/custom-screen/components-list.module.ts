@@ -49,6 +49,7 @@ import { AddressInputComponent } from './components/address-input/address-input.
 import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
 import { ComponentListResolverModule } from './component-list-resolver/component-list-resolver.module';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { SearchableDropdownComponent } from './components/searchable-dropdown/searchable-dropdown.component';
 import { DictionaryComponent } from './components/dictionary/dictionary.component';
 import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
@@ -72,6 +73,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FileUploadFormComponent,
     AddressInputComponent,
     DropdownComponent,
+    SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
   ],
@@ -129,6 +131,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FileUploadFormComponent,
     AddressInputComponent,
     DropdownComponent,
+    SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
   ],
