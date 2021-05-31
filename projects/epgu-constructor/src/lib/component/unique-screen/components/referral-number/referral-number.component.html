@@ -1,0 +1,19 @@
+<epgu-constructor-default-unique-screen-wrapper
+  *ngIf="{ isLoading: screenService.isLoading$ | async } as async"
+  [header]="screenService.header$ | async"
+  [isLoading]="async.isLoading"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <span>Если срок действия направления истек, то повторно его можно будет получить у врача</span>
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body mt-24 mb-24">
+    <span class="small">Номер</span>
+    <lib-standard-input type="number"
+                        [(ngModel)]="referral"></lib-standard-input>
+  </epgu-cf-ui-constructor-screen-pad>
+
+  <lib-button class="block--content-centered"
+              [disabled]="!referral || !referral.length"
+              (click)="findReferral()">Найти</lib-button>
+</epgu-constructor-default-unique-screen-wrapper>
