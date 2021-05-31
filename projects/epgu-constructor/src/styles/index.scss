@@ -175,6 +175,17 @@
           margin-top: 4px;
         }
       }
+      .icon-wrapper {
+        width: 23px;
+        flex: 0 0 auto;
+        text-align: center;
+        display: inline-block;
+        margin-right: 17px;
+        img {
+          max-width: 100%;
+          margin-bottom: 0;
+        }
+      }
     }
     &--content-centered {
       display: flex;

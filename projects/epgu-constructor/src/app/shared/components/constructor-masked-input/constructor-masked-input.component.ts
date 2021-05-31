@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { TextTransform } from '@epgu/epgu-constructor-types';
+import { NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/number-mask-options.interface';
 
 @Component({
   selector: 'epgu-constructor-masked-input',

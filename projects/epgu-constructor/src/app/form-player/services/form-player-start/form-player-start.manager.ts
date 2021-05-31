@@ -112,6 +112,7 @@ export class FormPlayerStartManager {
       this.showContinueOrderModal();
     } else {
       this.formPlayerService.initData(orderId);
+      this.localStorageService.set('cachedAnswers', {});
     }
   }
 

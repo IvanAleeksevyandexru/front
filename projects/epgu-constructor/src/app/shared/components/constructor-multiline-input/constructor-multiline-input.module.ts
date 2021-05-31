@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { TrimModule } from '../../directives/trim/trim.module';
-import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
+import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { BaseModule } from '../../base.module';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';

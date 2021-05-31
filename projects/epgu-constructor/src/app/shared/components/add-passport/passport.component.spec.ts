@@ -7,7 +7,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
+import { MaskHandleModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../base-components/base-components.module';
 import { ConstructorMaskedInputModule } from '../constructor-masked-input/constructor-masked-input.module';
 import { PassportComponent } from './passport.component';

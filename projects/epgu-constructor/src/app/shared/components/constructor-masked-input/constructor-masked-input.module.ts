@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { ConstructorMaskedInputComponent } from './constructor-masked-input.component';
-import { TrimModule } from '../../directives/trim/trim.module';
-import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
+import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { BaseModule } from '../../base.module';
 import { MaskModule } from '../../directives/mask/mask.module';

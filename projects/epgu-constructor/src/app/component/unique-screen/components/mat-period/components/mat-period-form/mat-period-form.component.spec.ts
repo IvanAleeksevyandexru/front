@@ -3,14 +3,12 @@ import { MockModule } from 'ng-mocks';
 import { FormBuilder } from '@angular/forms';
 
 import { MatPeriodFormComponent } from './mat-period-form.component';
-import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule, ErrorModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ErrorModule } from '../../../../../../shared/components/error/error.module';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMaskedInputModule } from '../../../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { BaseModule } from '../../../../../../shared/base.module';
-import { MemoModule } from '../../../../../../shared/pipes/memo/memo.module';
 import { FilterPipe } from '../../pipe/filter.pipe';
 import { DurationService } from '../../service/duration.service';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';

@@ -14,17 +14,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
 import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
-import { TextTransformDirective } from '../../../../../../shared/directives/text-transform/text-transform.directive';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
-import { HelperTextComponent } from '../../../../../../shared/components/base-components/helper-text/helper-text.component';
+import { HelperTextComponent, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
-import { SafePipe } from '../../../../../../shared/pipes/safe/safe.pipe';
 import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {

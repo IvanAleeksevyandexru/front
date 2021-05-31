@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConstructorMaskedInputComponent } from './constructor-masked-input.component';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { MaskHandleModule } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { MaskModule } from '../../directives/mask/mask.module';
-import { MaskHandleModule } from '../../pipes/mask-handle/mask-handle.module';
 import { NgControl } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
 

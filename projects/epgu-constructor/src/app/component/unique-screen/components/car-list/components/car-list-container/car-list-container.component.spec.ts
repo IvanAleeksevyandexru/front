@@ -9,7 +9,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UtilsService } from '../../../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, LocationServiceStub, ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
@@ -19,7 +19,6 @@ import { DeviceDetectorServiceStub } from '../../../../../../core/services/devic
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { CarListContainerComponent } from './car-list-container.component';
 import { CarListComponent } from '../car-list/car-list.component';
-import { ConstructorLookupModule } from '../../../../../../shared/components/constructor-lookup/constructor-lookup.module';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import { CarList } from '../../models/car-list.interface';
 import { ModalService } from '../../../../../../modal/modal.service';

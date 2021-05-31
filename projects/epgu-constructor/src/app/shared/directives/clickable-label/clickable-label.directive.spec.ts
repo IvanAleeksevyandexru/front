@@ -1,6 +1,7 @@
 import { ClickableLabelDirective } from './clickable-label.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
@@ -11,7 +12,6 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../action/action.service';
 import { ActionServiceStub } from '../action/action.service.stub';
 import { Clarifications } from '../../../core/services/terra-byte-api/terra-byte-api.types';
-import { SafePipe } from '../../pipes/safe/safe.pipe';
 import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';

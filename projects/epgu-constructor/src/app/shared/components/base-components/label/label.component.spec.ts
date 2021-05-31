@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LabelComponent } from './label.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { SafePipe } from '../../../pipes/safe/safe.pipe';
+import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { ImgPrefixerPipe } from '../../../pipes/img-prefixer/img-prefixer.pipe';
 import { ClickableLabelDirective } from '../../../directives/clickable-label/clickable-label.directive';
 import { ConfigService } from '../../../../core/services/config/config.service';

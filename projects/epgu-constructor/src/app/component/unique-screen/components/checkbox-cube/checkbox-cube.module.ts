@@ -8,7 +8,7 @@ import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CheckboxCubeComponent } from './checkbox-cube/checkbox-cube.component';
 import { CheckboxCubeContainerComponent } from './checkbox-cube-container/checkbox-cube-container.component';
-import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
 
 const COMPONENTS = [
   CheckboxCubeComponent,

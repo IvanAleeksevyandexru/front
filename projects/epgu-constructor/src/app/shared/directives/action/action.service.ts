@@ -134,6 +134,7 @@ export class ActionService {
     this.modalService.openModal(ConfirmationModalComponent, {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
+      componentId: componentId || this.screenService.component.id,
       buttons: confirmationButtons?.length
         ? confirmationButtons
         : [
@@ -209,8 +210,8 @@ export class ActionService {
     let value: string;
     if (action.type === ActionType.skipStep) {
       return this.prepareDefaultComponentState(componentId, '', action);
-    } else if (action.value !== undefined) {
-      value = action.value;
+    } else if (action.value !== undefined || action.label !== undefined) {
+      value = action.value || action.label;
     } else {
       value =
         typeof this.currentAnswersService.state === 'object'
@@ -323,7 +324,10 @@ export class ActionService {
   }
 
   private handleDeliriumAction(action: ComponentActionDto, componentId: string): void {
-    const navigation = this.prepareNavigationData(action, componentId);
+    const navigation = this.prepareNavigationData(
+      action,
+      componentId || this.screenService.component.id,
+    );
     navigation.options.deliriumAction = action.deliriumAction;
     return this.formPlayerService.navigate(navigation, FormPlayerNavigation.DELIRIUM_NEXT_STEP);
   }

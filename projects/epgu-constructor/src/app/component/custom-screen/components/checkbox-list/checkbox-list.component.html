@@ -1,13 +1,13 @@
 <div [formGroup]="form">
   <ng-template ngFor let-checkbox [ngForOf]="checkboxes" [ngForTrackBy]="checkboxesTrackBy">
-      <epgu-constructor-constructor-checkbox
+      <epgu-cf-ui-constructor-constructor-checkbox
         class="checkbox-list-item"
         [labelText]="checkbox.label"
         [checkboxId]="checkbox.id"
         [control]="form.get(checkbox.id)"
         [hidden]="checkbox.hidden"
       >
-      </epgu-constructor-constructor-checkbox>
+      </epgu-cf-ui-constructor-constructor-checkbox>
   </ng-template>
 </div>
 

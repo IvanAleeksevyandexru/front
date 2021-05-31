@@ -110,7 +110,7 @@ $minModalHeight: 293px;
       justify-content: center;
       flex: 0 1 auto;
       & > *:not(:last-child) {
-        margin-right: 16px;
+        margin-right: 32px;
       }
       &::ng-deep .screen-button {
         margin-top: 0;

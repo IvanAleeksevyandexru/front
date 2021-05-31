@@ -9,7 +9,6 @@ import { configureTestSuite } from 'ng-bullet';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { MaskHandlePipe } from '../../shared/pipes/mask-handle/mask-handle.pipe';
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListComponent } from './components-list.component';
@@ -18,9 +17,13 @@ import { ComponentsListToolsService } from './services/components-list-tools/com
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { ConstructorPlainInputComponent } from '../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { ConstructorDadataWidgetComponent } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.component';
-import { ConstructorDropdownComponent } from '../../shared/components/constructor-dropdown/constructor-dropdown.component';
-import { ConstructorLookupComponent } from '../../shared/components/constructor-lookup/constructor-lookup.component';
-import { ConstructorCheckboxComponent } from '../../shared/components/constructor-checkbox/constructor-checkbox.component';
+import {
+  ConstructorCheckboxComponent,
+  ConstructorDropdownComponent,
+  ConstructorLookupComponent,
+  MaskHandlePipe,
+  MemoModule
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerComponent } from '../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { ConstructorMultilineInputComponent } from '../../shared/components/constructor-multiline-input/constructor-multiline-input.component';
 import { ComponentItemComponent } from './components/component-item/component-item.component';
@@ -37,7 +40,6 @@ import { CachedAnswersService } from '../../shared/services/cached-answers/cache
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
 import { UtilsService } from '../../core/services/utils/utils.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
-import { MemoModule } from '../../shared/pipes/memo/memo.module';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';

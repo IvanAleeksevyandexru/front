@@ -9,8 +9,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
-import { TextTransformModule } from '../../directives/text-transform/text-transform.module';
-import { TrimModule } from '../../directives/trim/trim.module';
+import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
