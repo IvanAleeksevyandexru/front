@@ -6,21 +6,22 @@ import { DeviceDetectorService } from '../../../core/services/device-detector/de
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { A11yModule } from '@angular/cdk/a11y';
 import { ScreenButtonsModule } from '../../../shared/components/screen-buttons/screen-buttons.module';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 describe('ConfirmationModalBaseComponent', () => {
   let component: ConfirmationModalBaseComponent;
   let fixture: ComponentFixture<ConfirmationModalBaseComponent>;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfirmationModalBaseComponent ],
-      imports: [ BaseModule, A11yModule, ScreenButtonsModule ],
+      declarations: [ConfirmationModalBaseComponent],
+      imports: [BaseModule, A11yModule, ScreenButtonsModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         EventBusService,
+        UnsubscribeService,
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

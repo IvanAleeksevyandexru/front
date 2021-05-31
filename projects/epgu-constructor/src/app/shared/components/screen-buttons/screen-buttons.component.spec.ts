@@ -13,6 +13,7 @@ import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
@@ -26,6 +27,7 @@ describe('ScreenButtonsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         CurrentAnswersService,
+        EventBusService,
       ],
     })
       .overrideComponent(ScreenButtonsComponent, {
