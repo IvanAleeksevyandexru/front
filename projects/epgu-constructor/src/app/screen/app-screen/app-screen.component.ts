@@ -77,8 +77,14 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
 
   private redirectToApp(): void {
     const { appPathMap } = this.configService;
-    const appPath = appPathMap[this.screenService.componentType];
-    // TODO: добавить логику на проверку наличия пути
+    const appPath = appPathMap[this.screenService.component.type];
+
+    if (!appPath) {
+      throw new Error(
+        `Looks like we have wrong settings for component type: ${this.screenService.component.type}. Need to set app url.`,
+      );
+    }
+
     this.locationService.href(appPath);
   }
 }

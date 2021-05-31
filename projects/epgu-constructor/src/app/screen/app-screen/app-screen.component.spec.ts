@@ -164,9 +164,25 @@ describe('SpaScreenComponent', () => {
   });
 
   describe('Input case', () => {
+
+    let currentComponent;
+    let currentUrl;
+    const appUrl = '/some/redirect/url';
+
     beforeEach(() => {
-      jest.spyOn(configService, 'appPathMap', 'get').mockReturnValue({ ChildrenClubs: '/some/redirect/url' });
-      screenService.componentType = 'ChildrenClubs';
+      jest.spyOn(configService, 'appPathMap', 'get').mockReturnValue({ ChildrenClubs: appUrl });
+
+      currentComponent = {
+        id: 'app1',
+        value: '{ value: { a:42, b: 777 }, state: {}}}',
+        type: 'ChildrenClubs',
+        visited: false,
+        attrs: {}
+      };
+      screenService.component = currentComponent;
+
+      currentUrl = '/some/service/form';
+      jest.spyOn(locationService, 'getHref').mockReturnValue(currentUrl);
     });
 
     it('shouldn\'t call handleOutputSpaData and should call sendDataToSpa and redirectToSpa when on init', () => {
@@ -181,19 +197,7 @@ describe('SpaScreenComponent', () => {
     });
 
     it('shouldn call setState of cfAppStateService with init data', () => {
-      const currentUrl = '/some/service/form';
-      jest.spyOn(locationService, 'getHref').mockReturnValue(currentUrl);
-      const currentComponent = {
-        id: 'app1',
-        value: '{ value: { a:42, b: 777 }, state: {}}}',
-        type: 'ChildrenClubs',
-        visited: false,
-        attrs: {}
-      };
-      screenService.component = currentComponent;
-
       const setStateSpy = jest.spyOn(cfAppStateService, 'setState');
-      fixture.detectChanges();
       component.ngOnInit();
 
       const expectedState = {
@@ -205,6 +209,20 @@ describe('SpaScreenComponent', () => {
       };
 
       expect(setStateSpy).toBeCalledWith(expectedState, DataDirectionType.INPUT);
+    });
+
+    it('shouldn call href of locationService with app path', () => {
+      const hrefSpy = jest.spyOn(locationService, 'href');
+      component.ngOnInit();
+      expect(hrefSpy).toBeCalledWith(appUrl);
+    });
+
+    it('shouldn throw error if config hasn\'t ', () => {
+      jest.spyOn(configService, 'appPathMap', 'get').mockReturnValue({});
+      const errorCall = () => {
+        component.ngOnInit();
+      };
+      expect(errorCall).toThrowError();
     });
   });
 });
