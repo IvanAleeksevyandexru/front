@@ -36,6 +36,8 @@ import {
   DictionaryValueTypes,
   AttributeTypes,
   FilterDtoConfig,
+  AdditionalRequestParam,
+  AdditionalRequestType,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
@@ -147,6 +149,7 @@ export class DictionaryToolsService {
     component: CustomComponent,
     options: DictionaryOptions,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
+    console.log(options);
     return this.dictionaryApiService
       .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
       .pipe(
@@ -274,6 +277,17 @@ export class DictionaryToolsService {
     return { filter };
   }
 
+  public getAdditionalParams(
+    screenStore: ScreenStore,
+    params?: Array<AdditionalRequestParam>,
+  ): Array<AdditionalRequestParam> {
+    return params.map((param: AdditionalRequestParam) => ({ 
+      value: param?.type === AdditionalRequestType.ref ? this.getValueViaRef(screenStore.applicantAnswers, param.value) : param.value,
+      name: param?.name,
+      type: param?.type,
+    }));
+  }
+
   /**
    * Мапим словарь в ListItem для компонента EPGU отвечающий за список
    * @param items массив элементов словаря
@@ -284,8 +298,8 @@ export class DictionaryToolsService {
   ): Array<ListElement> {
     return items.map((item) => ({
       originalItem: item,
-      id: item[mappingParams.idPath] || item.value,
-      text: item[mappingParams.textPath] || item.title,
+      id: utils.getObjectProperty(item, mappingParams.idPath, undefined) || item.value,
+      text: utils.getObjectProperty(item, mappingParams.textPath, undefined) || item.title,
     }));
   }
 
@@ -520,12 +534,21 @@ export class DictionaryToolsService {
           dFilter.formatValue,
         ),
       }),
-      [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.formatValue(
-          this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
-          dFilter.formatValue,
-        ),
-      }),
+      [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => {
+        if (dFilter?.excludeWrapper) {
+          return this.formatValue(
+            this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
+            dFilter.formatValue,
+          );
+        }
+
+        return {
+          [attributeType]: this.formatValue(
+            this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
+            dFilter.formatValue,
+          ),
+        };
+      },
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
         [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
       }),

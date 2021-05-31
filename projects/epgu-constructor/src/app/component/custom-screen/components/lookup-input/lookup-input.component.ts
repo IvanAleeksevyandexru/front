@@ -57,17 +57,30 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
       const filters = [...this.control.value.attrs.searchProvider.dictionaryFilter];
-      filters[0].value = searchString;
+      const startFilter = this.control.value.attrs.searchProvider?.turnOffStartFilter;
+
+      let additionalParams = {};
+
+      if (!startFilter) {
+        filters[0].value = searchString;
+      } else {
+        additionalParams = this.dictionaryToolsService.getAdditionalParams(
+          this.screenService.getStore(),
+          [...this.control.value.attrs.searchProvider.dictionaryOptions.additionalParams],
+        );
+      }
 
       const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
         this.formService.form,
         this.screenService.getStore(),
         filters,
       );
+
       return this.dictionaryToolsService
         .getDictionaries$(this.control.value.attrs.dictionaryType, this.control.value, {
           ...this.control.value.attrs.searchProvider.dictionaryOptions,
           ...dictionaryOptions,
+          ...{ additionalParams },
         })
         .pipe(
           map((reference) => {
