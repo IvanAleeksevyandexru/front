@@ -78,13 +78,14 @@ describe('SpaScreenComponent', () => {
   });
 
   describe('Output case', () => {
-    it('should call handleOutputSpaData and shouldn\'t call sendDataToSpa and redirectToSpa when onInit', () => {
-      const state: OutputAppDto = {
-        isPrevStepCase: false,
-        value: '{}',
-        componentType: 'ChildrenClubs',
-        componentId: 'app1'
-      };
+    const state: OutputAppDto = {
+      isPrevStepCase: false,
+      value: '{ value: { a:42, b: 777 }, state: {}}}',
+      componentType: 'ChildrenClubs',
+      componentId: 'app1'
+    };
+
+    it('should call handleOutputSpaData and shouldn\'t call sendDataToSpa and redirectToSpa when on init', () => {
       jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
       const handleOutputAppDataSpy = jest.spyOn<any, any>(component, 'handleOutputAppData');
       const sendDataToAppSpy = jest.spyOn<any, any>(component, 'sendDataToApp');
@@ -94,6 +95,30 @@ describe('SpaScreenComponent', () => {
       expect(sendDataToAppSpy).not.toBeCalled();
       expect(redirectToAppSpy).not.toBeCalled();
     });
+
+    it('should call navigationService next with params on init', () => {
+      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
+      screenService.component = {
+        id: 'app1',
+        value: '',
+        type: 'ChildrenClubs',
+        visited: false,
+        attrs: {}
+      };
+      const nextSpy = jest.spyOn(navigationService, 'next');
+      component.ngOnInit();
+
+      const expectedParam = {
+        payload: {
+          [screenService.component.id]: {
+            value: state.value,
+            visited: true,
+          },
+        },
+      };
+
+      expect(nextSpy).toBeCalledWith(expectedParam);
+    });
   });
 
   describe('Input case', () => {
@@ -102,8 +127,8 @@ describe('SpaScreenComponent', () => {
       screenService.componentType = 'ChildrenClubs';
     });
 
-    it('shouldn\'t call handleOutputSpaData and should call sendDataToSpa and redirectToSpa when onInit', () => {
-      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(false);
+    it('shouldn\'t call handleOutputSpaData and should call sendDataToSpa and redirectToSpa when on init', () => {
+      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(null);
       const handleOutputAppDataSpy = jest.spyOn<any, any>(component, 'handleOutputAppData');
       const sendDataToAppSpy = jest.spyOn<any, any>(component, 'sendDataToApp');
       const redirectToAppSpy = jest.spyOn<any, any>(component, 'redirectToApp');
