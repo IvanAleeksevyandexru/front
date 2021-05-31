@@ -6,6 +6,7 @@ import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { UserInfoComponent } from './components/user-info/user-info.component';
+import { CycledInfoComponent } from './components/cycled-info/cycled-info.component';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -18,6 +19,7 @@ import { UserInfoComponentTypes } from './user-info-loader.types';
 import { UtilsService } from '../../../core/services/utils/utils.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
+import { CycledInfo } from './components/cycled-info/cycled-info.types';
 
 const displayMock = ({
   id: 's113',
@@ -39,6 +41,12 @@ const mockMaleValue: UserInfoType = {
   ageType: AgeType.MATURE,
 };
 
+const mockCycledValue: CycledInfo[] = [{
+  fieldName: 'ai19_1.value',
+  value: 'fake value',
+  isBold: false
+}];
+
 describe('UserInfoLoaderComponent', () => {
   let component: UserInfoLoaderComponent;
   let fixture: ComponentFixture<UserInfoLoaderComponent>;
@@ -57,7 +65,7 @@ describe('UserInfoLoaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UserInfoLoaderComponent, UserInfoComponent],
+      declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
       providers: [
         UtilsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -110,5 +118,27 @@ describe('UserInfoLoaderComponent', () => {
     const userInfo = fixture.debugElement.query(By.css('epgu-constructor-user-info'));
 
     expect(userInfo).not.toBeNull();
+  });
+
+  describe('check render types', () => {
+    const userInfoSelector = 'epgu-constructor-user-info';
+    const cycledInfoSelector = 'epgu-constructor-cycled-info';
+
+    const setDisplayInfo = (cmp, value) => jest
+      .spyOn(screenService, 'displayInfoComponents$', 'get')
+      .mockReturnValueOnce(of([[cmp, value]]));
+
+    it('PersonInfo', () => {
+      setDisplayInfo(mockComponent, mockMaleValue );
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(userInfoSelector))).not.toBeNull();
+      expect(fixture.debugElement.query(By.css(cycledInfoSelector))).toBeNull();
+    });
+    it('CycledInfo', () => {
+      setDisplayInfo({ ...mockComponent, type: UserInfoComponentTypes.CycledInfo }, mockCycledValue );
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(userInfoSelector))).toBeNull();
+      expect(fixture.debugElement.query(By.css(cycledInfoSelector))).not.toBeNull();
+    });
   });
 });
