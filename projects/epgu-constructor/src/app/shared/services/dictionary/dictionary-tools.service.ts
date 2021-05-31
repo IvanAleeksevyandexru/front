@@ -294,11 +294,12 @@ export class DictionaryToolsService {
   public adaptDictionaryToListItem(
     items: Array<DictionaryItem | KeyValueMap>,
     mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+    isRoot?: boolean,
   ): Array<ListElement> {
     return items.map((item) => ({
       originalItem: item,
-      id: utils.getObjectProperty(item, mappingParams.idPath, undefined) || item.value,
-      text: utils.getObjectProperty(item, mappingParams.textPath, undefined) || item.title,
+      id: (isRoot ? utils.getObjectProperty(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
+      text: (isRoot ? utils.getObjectProperty(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title,
     }));
   }
 
@@ -542,7 +543,6 @@ export class DictionaryToolsService {
         if (dFilter?.excludeWrapper) {
           return filters;
         }
-        
         return {
           [attributeType]: filters,
         };

@@ -86,6 +86,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
             return this.dictionaryToolsService.adaptDictionaryToListItem(
               reference.data.items,
               reference.component.attrs.mappingParams,
+              startFilter !== undefined && startFilter === true,
             );
           }),
         );
