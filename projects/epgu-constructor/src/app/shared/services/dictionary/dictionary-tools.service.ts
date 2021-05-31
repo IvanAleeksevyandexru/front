@@ -149,7 +149,6 @@ export class DictionaryToolsService {
     component: CustomComponent,
     options: DictionaryOptions,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    console.log(options);
     return this.dictionaryApiService
       .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
       .pipe(
@@ -535,18 +534,17 @@ export class DictionaryToolsService {
         ),
       }),
       [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => {
-        if (dFilter?.excludeWrapper) {
-          return this.formatValue(
-            this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
-            dFilter.formatValue,
-          );
-        }
+        const filters = this.formatValue(
+          this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
+          dFilter.formatValue,
+        );
 
+        if (dFilter?.excludeWrapper) {
+          return filters;
+        }
+        
         return {
-          [attributeType]: this.formatValue(
-            this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
-            dFilter.formatValue,
-          ),
+          [attributeType]: filters,
         };
       },
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
