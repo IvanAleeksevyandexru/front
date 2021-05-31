@@ -16,7 +16,7 @@ const routes: Routes = [
     component: ConfigComponent
   },
   {
-    path: 'spa/children-clubs',
+    path: 'app/children-clubs',
     component: ChildrenClubsContainerComponent
   },
 ];

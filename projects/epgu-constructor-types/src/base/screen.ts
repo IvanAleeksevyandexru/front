@@ -42,5 +42,5 @@ export enum ScreenTypes {
   UNIQUE = 'UNIQUE',
   INVITATION_ERROR = 'INVITATION_ERROR',
   EMPTY = 'EMPTY',
-  SPA = 'SPA',
+  APP = 'APP',
 }
