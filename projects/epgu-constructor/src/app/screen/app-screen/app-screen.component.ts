@@ -34,10 +34,20 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
   }
 
   private handleOutputAppData(outputSpaData: OutputAppDto): void {
-    // TODO: add checking output id and type logic
+    const componentId = this.screenService.component.id;
+    const componentType = this.screenService.component.type;
+    const outputComponentId = outputSpaData.componentId;
+    const outputComponentType = outputSpaData.componentType;
+
+    if (componentId !== outputComponentId || componentType !== outputComponentType) {
+      throw new Error(
+        `Looks like we have some issues. Current component id: ${componentId} and type ${componentType},
+         but output data has component id ${outputComponentId} and type ${outputComponentType}`,
+      );
+    }
 
     const { value } = outputSpaData;
-    const componentId = this.screenService.component.id;
+
     const navigation = {
       payload: {
         [componentId]: {

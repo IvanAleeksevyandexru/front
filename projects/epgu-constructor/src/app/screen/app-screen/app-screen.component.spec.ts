@@ -78,12 +78,23 @@ describe('SpaScreenComponent', () => {
   });
 
   describe('Output case', () => {
-    const state: OutputAppDto = {
-      isPrevStepCase: false,
-      value: '{ value: { a:42, b: 777 }, state: {}}}',
-      componentType: 'ChildrenClubs',
-      componentId: 'app1'
-    };
+    let state: OutputAppDto;
+
+    beforeEach(() => {
+      state = {
+        isPrevStepCase: false,
+        value: '{ value: { a:42, b: 777 }, state: {}}}',
+        componentType: 'ChildrenClubs',
+        componentId: 'app1'
+      };
+      screenService.component = {
+        id: 'app1',
+        value: '',
+        type: 'ChildrenClubs',
+        visited: false,
+        attrs: {}
+      };
+    });
 
     it('should call handleOutputSpaData and shouldn\'t call sendDataToSpa and redirectToSpa when on init', () => {
       jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
@@ -118,6 +129,36 @@ describe('SpaScreenComponent', () => {
       };
 
       expect(nextSpy).toBeCalledWith(expectedParam);
+    });
+
+    it('should throw error when output data has not the same id than current component', () => {
+      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
+      screenService.component = {
+        id: 'app2',
+        value: '',
+        type: 'ChildrenClubs',
+        visited: false,
+        attrs: {}
+      };
+      const errorCall = () => {
+        component.ngOnInit();
+      };
+      expect(errorCall).toThrowError();
+    });
+
+    it('should throw error when output data has not the same type than current component', () => {
+      jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
+      screenService.component = {
+        id: 'app1',
+        value: '',
+        type: 'ChildrenDanceClubs',
+        visited: false,
+        attrs: {}
+      };
+      const errorCall = () => {
+        component.ngOnInit();
+      };
+      expect(errorCall).toThrowError();
     });
   });
 
