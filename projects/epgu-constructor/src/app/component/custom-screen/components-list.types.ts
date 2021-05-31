@@ -5,7 +5,7 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
-import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
+import { NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,

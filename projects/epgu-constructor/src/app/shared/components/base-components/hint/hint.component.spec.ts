@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
 import { HintComponent } from './hint.component';
-import { SafeModule } from '../../../pipes/safe/safe.module';
+import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
 import { ImgPrefixerModule } from '../../../pipes/img-prefixer/img-prefixer.module';
 import { ClickableLabelModule } from '../../../directives/clickable-label/clickable-label.module';
 

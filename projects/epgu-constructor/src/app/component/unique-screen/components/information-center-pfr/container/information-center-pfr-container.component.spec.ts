@@ -13,7 +13,7 @@ import { InformationCenterPfrSimpleComponent } from '../component/information-ce
 import { InformationCenterPfrFullComponent } from '../component/information-center-pfr-full/information-center-pfr-full.component';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
-import { ConstructorDropdownModule } from '../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { InformationCenterPfr, PfrAreaType } from '../information-center-pfr.models';

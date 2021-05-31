@@ -7,7 +7,7 @@ import { MultipleChoiceDictionaryComponent } from './multiple-choice-dictionary.
 import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { BaseModule } from '../../../base.module';
-import { ChipModule } from '../../chip/chip.module';
+import { ChipModule } from '@epgu/epgu-constructor-ui-kit';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';

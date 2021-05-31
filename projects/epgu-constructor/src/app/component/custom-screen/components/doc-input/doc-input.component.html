@@ -6,18 +6,18 @@
     <span>{{ control.value.label }}</span>
   </div>
   <div class="form__error">
-    <epgu-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
+    <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
       <span *ngIf="isValidationShown([docInputFieldsTypes.seriesNumDate, fieldName])">
         {{ fields[fieldName]?.label }}:
         {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg }}
       </span>
-    </epgu-constructor-input-error>
-    <epgu-constructor-input-error *ngIf="hasExpirationDate">
+    </epgu-cf-ui-constructor-input-error>
+    <epgu-cf-ui-constructor-input-error *ngIf="hasExpirationDate">
       <span *ngIf="isValidationShown(docInputFieldsTypes.expirationDate)">
         {{ fields[docInputFieldsTypes.expirationDate]?.label }}:
         {{ form.get(docInputFieldsTypes.expirationDate).errors.msg }}
       </span>
-    </epgu-constructor-input-error>
+    </epgu-cf-ui-constructor-input-error>
   </div>
 
   <div *ngIf="!hasExpirationDate; else expireDate" class="doc-input__group">
@@ -68,12 +68,12 @@
           (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
-      <epgu-constructor-helper-text
+      <epgu-cf-ui-constructor-helper-text
         *ngIf="fields[docInputFieldsTypes.series]?.hint as hint"
         class="doc-input__hint"
       >
         {{ hint }}
-      </epgu-constructor-helper-text>
+      </epgu-cf-ui-constructor-helper-text>
     </div>
     <div
       class="doc-input__group-item doc-input__number"
@@ -125,12 +125,12 @@
           "
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
-      <epgu-constructor-helper-text
+      <epgu-cf-ui-constructor-helper-text
         *ngIf="fields[docInputFieldsTypes.number]?.hint as hint"
         class="doc-input__hint"
       >
         {{ hint }}
-      </epgu-constructor-helper-text>
+      </epgu-cf-ui-constructor-helper-text>
     </div>
     <div class="doc-input__group-item doc-input__date"
     *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
@@ -154,12 +154,12 @@
           markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
         "
       ></epgu-constructor-constructor-date-picker>
-      <epgu-constructor-helper-text
+      <epgu-cf-ui-constructor-helper-text
         *ngIf="fields[docInputFieldsTypes.date]?.hint as hint"
         class="doc-input__hint"
       >
         {{ hint }}
-      </epgu-constructor-helper-text>
+      </epgu-cf-ui-constructor-helper-text>
     </div>
   </div>
   <ng-template #expireDate>
@@ -212,12 +212,12 @@
             (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
-        <epgu-constructor-helper-text
+        <epgu-cf-ui-constructor-helper-text
           *ngIf="fields[docInputFieldsTypes.series]?.hint as hint"
           class="doc-input__hint"
         >
           {{ hint }}
-        </epgu-constructor-helper-text>
+        </epgu-cf-ui-constructor-helper-text>
       </div>
       <div
         class="doc-input__group-item doc-input__number"
@@ -267,12 +267,12 @@
             (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
-        <epgu-constructor-helper-text
+        <epgu-cf-ui-constructor-helper-text
           *ngIf="fields[docInputFieldsTypes.number]?.hint as hint"
           class="doc-input__hint"
         >
           {{ hint }}
-        </epgu-constructor-helper-text>
+        </epgu-cf-ui-constructor-helper-text>
       </div>
     </div>
     <div class="doc-input__group">
@@ -298,12 +298,12 @@
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
           "
         ></epgu-constructor-constructor-date-picker>
-        <epgu-constructor-helper-text
+        <epgu-cf-ui-constructor-helper-text
           *ngIf="fields[docInputFieldsTypes.date]?.hint as hint"
           class="doc-input__hint"
         >
           {{ hint }}
-        </epgu-constructor-helper-text>
+        </epgu-cf-ui-constructor-helper-text>
       </div>
       <div class="doc-input__group-item doc-input__date doc-input__date_expire">
         <epgu-constructor-label
@@ -323,19 +323,19 @@
           [brokenDateFixStrategy]="brokenDateFixStrategy"
           (blurEvent)="markControlAsDirty(docInputFieldsTypes.expirationDate)"
         ></epgu-constructor-constructor-date-picker>
-        <epgu-constructor-helper-text
+        <epgu-cf-ui-constructor-helper-text
           *ngIf="fields[docInputFieldsTypes.expirationDate]?.hint as hint"
           class="doc-input__hint"
         >
           {{ hint }}
-        </epgu-constructor-helper-text>
+        </epgu-cf-ui-constructor-helper-text>
       </div>
     </div>
   </ng-template>
 
-  <epgu-constructor-helper-text *ngIf="fields['hint']?.label as label" class="doc-input__hint">
+  <epgu-cf-ui-constructor-helper-text *ngIf="fields['hint']?.label as label" class="doc-input__hint">
     {{ label }}
-  </epgu-constructor-helper-text>
+  </epgu-cf-ui-constructor-helper-text>
 
   <div class="doc-input__emmiter" *ngIf="!fields[docInputFieldsTypes.emitter]?.attrs?.hidden">
     <epgu-constructor-label
@@ -343,14 +343,14 @@
       [label]="fields[docInputFieldsTypes.emitter]?.label"
       [for]="docInputFieldsTypes.emitter"
     ></epgu-constructor-label>
-    <epgu-constructor-input-error
+    <epgu-cf-ui-constructor-input-error
       *ngIf="
         form.get(docInputFieldsTypes.emitter).invalid &&
         form.get(docInputFieldsTypes.emitter).touched
       "
     >
       {{ form.get(docInputFieldsTypes.emitter).errors.msg }}
-    </epgu-constructor-input-error>
+    </epgu-cf-ui-constructor-input-error>
     <epgu-constructor-constructor-plain-input
       [textTransformType]="fields[docInputFieldsTypes.emitter]?.attrs?.fstuc"
       [id]="docInputFieldsTypes.emitter"
@@ -362,10 +362,10 @@
       (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
     ></epgu-constructor-constructor-plain-input>
   </div>
-  <epgu-constructor-helper-text
+  <epgu-cf-ui-constructor-helper-text
     *ngIf="fields[docInputFieldsTypes.emitter]?.hint as hint"
     class="doc-input__hint"
   >
     {{ hint }}
-  </epgu-constructor-helper-text>
+  </epgu-cf-ui-constructor-helper-text>
 </section>

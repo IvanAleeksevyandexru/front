@@ -8,7 +8,7 @@ import { FileUploadComponent } from './file-upload.component';
 import { configureTestSuite } from 'ng-bullet';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
-import { MemoModule } from '../../../pipes/memo/memo.module';
+import { MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadContainerComponent } from '../file-upload-container/file-upload-container.component';
 import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';

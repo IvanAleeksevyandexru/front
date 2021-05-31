@@ -47,6 +47,8 @@ export * from './lib/directives/text-transform/text-transform.directive';
 
 export * from './lib/pipes/mask-handle/mask-handle.module';
 export * from './lib/pipes/mask-handle/mask-handle.pipe';
+export * from './lib/pipes/mask-handle/mask.constant';
+export * from './lib/pipes/mask-handle/interface/number-mask-options.interface';
 
 export * from './lib/pipes/memo/memo.module';
 export * from './lib/pipes/memo/memo.pipe';

@@ -5,7 +5,7 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
-import { SafePipe } from '../../pipes/safe/safe.pipe';
+import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { ScreenService } from '../../../screen/screen.service';

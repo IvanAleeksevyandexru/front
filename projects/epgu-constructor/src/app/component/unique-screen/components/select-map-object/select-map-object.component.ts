@@ -21,6 +21,7 @@ import {
   ScreenButton,
   DictionaryFilterPriority,
 } from '@epgu/epgu-constructor-types';
+import { ConstructorLookupComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -30,7 +31,6 @@ import { ModalService } from '../../../../modal/modal.service';
 import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
-import { ConstructorLookupComponent } from '../../../../shared/components/constructor-lookup/constructor-lookup.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
   DictionaryResponseForYMap,

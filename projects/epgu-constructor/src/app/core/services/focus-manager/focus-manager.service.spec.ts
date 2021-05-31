@@ -8,8 +8,7 @@ import { ConstructorPlainInputComponent } from '../../../shared/components/const
 
 import { ValidationTypeModule } from '../../../shared/directives/validation-type/validation-type.module';
 import { CurrencyModule } from '../../../shared/directives/currency/currency.module';
-import { TrimModule } from '../../../shared/directives/trim/trim.module';
-import { TextTransformModule } from '../../../shared/directives/text-transform/text-transform.module';
+import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { RankModule } from '../../../shared/directives/rank/rank.module';
 import { ValidationService } from '../../../shared/services/validation/validation.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';

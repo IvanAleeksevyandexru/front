@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { MockComponent, MockModule } from 'ng-mocks';
 
 import { InformationCenterFormComponent } from './information-center-form.component';
-import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { InformationCenterCardComponent } from '../information-center-card/information-center-card.component';
@@ -60,7 +60,7 @@ describe('InformationCenterFormComponent', () => {
         text: 'Республика Башкортостан',
       };
       jest.spyOn(component.handleSelectEvent, 'emit');
-      const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-dropdown'));
+      const debugEl = fixture.debugElement.query(By.css('epgu-cf-ui-constructor-constructor-dropdown'));
       debugEl.triggerEventHandler('changed', event);
       expect(component.handleSelectEvent.emit).toHaveBeenCalledWith(event);
     });
