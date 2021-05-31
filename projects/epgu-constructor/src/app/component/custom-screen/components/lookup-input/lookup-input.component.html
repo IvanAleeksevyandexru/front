@@ -20,6 +20,7 @@
     [suggest]="suggestions$ | async"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
     [itemsProvider]="provider"
+    [placeholder]="control.value?.attrs?.placeholder"
   >
   </lib-lookup>
 </epgu-constructor-component-item>

@@ -5,7 +5,7 @@ import { NavigationServiceStub } from '../../core/services/navigation/navigation
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { SpaScreenComponent } from './spa-screen.component';
+import { AppScreenComponent } from './app-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -31,22 +31,22 @@ const displayDtoSample: DisplayDto = {
 };
 
 describe('SpaScreenComponent', () => {
-  let component: SpaScreenComponent;
-  let fixture: ComponentFixture<SpaScreenComponent>;
+  let component: AppScreenComponent;
+  let fixture: ComponentFixture<AppScreenComponent>;
 
   let navigationService: NavigationService;
   let screenService: ScreenService;
   let eventBusService: EventBusService;
 
   const initComponent = () => {
-    fixture = TestBed.createComponent(SpaScreenComponent);
+    fixture = TestBed.createComponent(AppScreenComponent);
     component = fixture.componentInstance;
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
-        SpaScreenComponent,
+        AppScreenComponent,
         ComponentUniqueResolverComponent,
       ],
       providers: [
