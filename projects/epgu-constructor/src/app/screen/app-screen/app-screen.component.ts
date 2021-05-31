@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { CfAppStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { InputAppDto, OutputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screen-base';
@@ -15,7 +15,7 @@ import { ConfigService } from '../../core/services/config/config.service';
 export class AppScreenComponent extends ScreenBase implements OnInit {
   constructor(
     public injector: Injector,
-    private cfSpaStateService: CfSpaStateService,
+    private cfAppStateService: CfAppStateService,
     private locationService: LocationService,
     private configService: ConfigService,
   ) {
@@ -23,7 +23,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
   }
 
   ngOnInit(): void {
-    const outputSpaData = this.cfSpaStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
+    const outputSpaData = this.cfAppStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
 
     if (outputSpaData) {
       this.handleOutputSpaData(outputSpaData);
@@ -51,7 +51,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
 
   private sendDataToSpa(): void {
     const spaInputState = this.getSpaInputState();
-    this.cfSpaStateService.setState(spaInputState, DataDirectionType.INPUT);
+    this.cfAppStateService.setState(spaInputState, DataDirectionType.INPUT);
   }
 
   private getSpaInputState(): InputAppDto {

@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import {
   InputAppDto,
   OutputAppDto,
-  SPA_INPUT_KEY,
-  SPA_OUTPUT_KEY,
   DataDirectionType
 } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { APP_INPUT_KEY, APP_OUTPUT_KEY } from './cf-app-state.types';
 
 @Injectable()
-export class CfSpaStateService {
+export class CfAppStateService {
   constructor (private localStorageService: LocalStorageService) {}
 
   public setState<T extends InputAppDto | OutputAppDto>(state: T, spaDataDirectionType: DataDirectionType): void {
@@ -25,6 +24,6 @@ export class CfSpaStateService {
   }
 
   private getKey(spaDataDirectionType: DataDirectionType): string {
-    return spaDataDirectionType === DataDirectionType.INPUT ? SPA_INPUT_KEY : SPA_OUTPUT_KEY;
+    return spaDataDirectionType === DataDirectionType.INPUT ? APP_INPUT_KEY : APP_OUTPUT_KEY;
   }
 }

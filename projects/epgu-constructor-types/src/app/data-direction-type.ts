@@ -7,6 +7,3 @@ export enum DataDirectionType {
   INPUT = 'INPUT',
   OUTPUT = 'OUTPUT',
 }
-
-export const SPA_INPUT_KEY = 'SPA_INPUT';
-export const SPA_OUTPUT_KEY = 'SPA_OUTPUT';

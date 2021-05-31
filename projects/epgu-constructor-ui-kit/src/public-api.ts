@@ -14,7 +14,7 @@ export * from './lib/providers/window.provider';
 
 export * from './lib/services/local-storage/local-storage.service';
 export * from './lib/services/local-storage/local-storage.service.stub';
-export * from './lib/services/cf-spa-state/cf-spa-state.service';
-export * from './lib/services/cf-spa-state/cf-spa-state.service.stub';
+export * from './lib/services/cf-app-state/cf-app-state.service';
+export * from './lib/services/cf-app-state/cf-app-state.service.stub';
 export * from './lib/services/location/location.service';
 export * from './lib/services/location/location.service.stub';

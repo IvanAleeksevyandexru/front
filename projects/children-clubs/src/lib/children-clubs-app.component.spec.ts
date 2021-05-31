@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
-import { CfSpaStateService, CfSpaStateServiceStub, LocationServiceStub, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { CfAppStateService, CfAppStateServiceStub, LocationServiceStub, LocationService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -11,7 +11,7 @@ describe('ChildrenClubsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ChildrenClubsAppComponent ],
       providers: [
-        { provide: CfSpaStateService, useClass: CfSpaStateServiceStub },
+        { provide: CfAppStateService, useClass: CfAppStateServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
       ]
     })
