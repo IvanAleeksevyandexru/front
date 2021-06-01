@@ -21,6 +21,8 @@ import { ConfigService } from '../../../../core/services/config/config.service';
 export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
   public provider;
 
+  public showNotFound;
+
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return suggestions[this.control.value?.id];
@@ -50,6 +52,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.showNotFound = !!this.control.value.attrs.hint;
     if (this.control.value.attrs.searchProvider) {
       this.provider = { search: this.providerSearch() };
     }

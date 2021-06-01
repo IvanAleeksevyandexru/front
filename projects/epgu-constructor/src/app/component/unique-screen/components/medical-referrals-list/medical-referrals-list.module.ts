@@ -10,6 +10,7 @@ import { MedicalReferralsListContainerComponent } from './container/medical-reff
 import { MedicalReferralsListComponent } from './medical-referrals-list.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 
 
@@ -22,17 +23,18 @@ const COMPONENTS = [
   declarations: [...COMPONENTS],
   providers: [ScreenService, EventBusService],
   exports: [...COMPONENTS],
-  imports: [
-    BaseModule,
-    BaseComponentsModule,
-    ScreenContainerModule,
-    ScreenPadModule,
-    ConstructorLookupModule,
-    ScreenButtonsModule,
-    DefaultUniqueScreenWrapperModule,
-    MemoModule,
-    AnswerButtonModule,
-  ],
+    imports: [
+        BaseModule,
+        BaseComponentsModule,
+        ScreenContainerModule,
+        ScreenPadModule,
+        ConstructorLookupModule,
+        ScreenButtonsModule,
+        DefaultUniqueScreenWrapperModule,
+        MemoModule,
+        AnswerButtonModule,
+        DisclaimerModule,
+    ],
   entryComponents: [MedicalReferralsListContainerComponent],
 })
 export class MedicalReferralsListModule {}

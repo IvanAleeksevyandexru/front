@@ -1,0 +1,5 @@
+<div *ngIf="value" class="mt-12">
+  <div *ngFor="let cycledInfo of value" class="cycled-info-text" [class.fw-bold]="cycledInfo.isBold">
+    {{ cycledInfo.value }}
+  </div>
+</div>
