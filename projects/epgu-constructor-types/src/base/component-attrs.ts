@@ -121,6 +121,7 @@ export interface ComponentAttrsDto {
   isSelectButtonHidden?: boolean;
   expandAllChildrenBlocks?: boolean;
   disclaimer?: DisclaimerDto;
+  ignoreRootParams?: Array<string>;
 }
 
 export interface DisclaimerDto {
