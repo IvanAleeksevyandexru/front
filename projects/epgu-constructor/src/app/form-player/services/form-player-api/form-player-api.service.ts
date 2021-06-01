@@ -13,6 +13,7 @@ import {
   FormPlayerApiSuccessResponse,
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -85,7 +86,15 @@ export class FormPlayerApiService {
 
     const params = this.getNavigateParams(options.params);
 
-    return this.post<FormPlayerApiResponse>(path, body, params);
+    return this.post<FormPlayerApiResponse>(path, body, params)
+      .pipe(map(result => {
+        if (formPlayerNavigation === FormPlayerNavigation.PREV && result.hasOwnProperty('scenarioDto')) {
+          const scenarioDto = { ...(result as FormPlayerApiSuccessResponse).scenarioDto, isPrevStepCase: true };
+          return { ...result, scenarioDto };
+        }
+
+        return result;
+      }));
   }
 
   public getBooking(): Observable<FormPlayerApiResponse> {
