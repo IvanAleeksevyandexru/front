@@ -5,6 +5,7 @@
 >
   <lib-lookup
     epgu-constructor-validation-type
+    [showNotFound]="showNotFound"
     [component]="control.value"
     [id]="control.value.id"
     [invalid]="control.get('value').invalid && control.get('value').touched"
