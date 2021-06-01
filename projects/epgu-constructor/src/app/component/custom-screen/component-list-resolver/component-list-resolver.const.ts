@@ -17,6 +17,7 @@ import { CityInputComponent } from '../components/city-input/city-input.componen
 import { AddressInputComponent } from '../components/address-input/address-input.component';
 import { FileUploadFormComponent } from '../components/file-upload-form/file-upload-form.component';
 import { DropdownComponent } from '../components/dropdown/dropdown.component';
+import { SearchableDropdownComponent } from '../components/searchable-dropdown/searchable-dropdown.component';
 import { DictionaryComponent } from '../components/dictionary/dictionary.component';
 import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
 import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
@@ -40,7 +41,8 @@ type CustomScreenComponent =
   | CityInputComponent
   | AddressInputComponent
   | FileUploadFormComponent
-  | LookupInputComponent;
+  | LookupInputComponent
+  | SearchableDropdownComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
@@ -72,6 +74,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   AddressInput: AddressInputComponent,
   FileUploadComponent: FileUploadFormComponent,
   DropDown: DropdownComponent,
+  SearchableDropDown: SearchableDropdownComponent,
   ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   Dictionary: DictionaryComponent,
   Lookup: LookupInputComponent,

@@ -1,15 +1,61 @@
 # EpguFormFrontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.3.
+## Файл hosts
 
-## Development server
-Add `127.0.0.1  local.test.gosuslugi.ru` to /etc/hosts file
-First build library types `yarn lib:type:build`
-Then build library `yarn lib:build` or run with watch option `yarn lib:watch`
-Finally run `yarn start` for a dev server. Navigate to `http://local.test.gosuslugi.ru:4200/`. The app will automatically reload if you change any of the source files.
+Перед началом работы обязательно добавьте `127.0.0.1  local.test.gosuslugi.ru` в /etc/hosts файл
+
+## Установка npm модулей
+
+```
+yarn install
+```
+
+## Запуск приложения с отслеживанием изменений кода в папке projects
+
+```
+yarn watch:all
+```
+
+Эта команда запускает config сервер, собирает все библиотеки (с отслеживанием изменений) и запускает приложение (ng serve) на порту 4200.
+После этого откройте в браузере `http://local.test.gosuslugi.ru:4200/`
+
+`yarn watch:all` выполнит следующие команды:
+
+```
+yarn start:config              # Запуск config сервера
+yarn clean                     # удаление папки /dist и /projects/epgu-constructor-types/dist
+yarn lib:type:watch            # сборка библиотеки epgu-constructor-types (с отслеиванием изменений)
+yarn lib:ui-kit:watch          # сборка библиотеки epgu-constructor-ui-kit (с отслеиванием изменений)
+yarn lib:children-clubs:watch  # сборка библиотеки children-clubs (с отслеиванием изменений)
+yarn lib:cf:watch              # сборка библиотеки epgu-constructor (с отслеиванием изменений)
+yarn start                     # запуск приложения (ng serve) на порту 4200 (с отслеживанием изменений в папке /src)
+```
+
+## Запуск приложения без отслеживания изменений кода в папке projects
+
+```
+yarn build:dev:all
+```
+
+Эта команда запускает config сервер, собирает все библиотеки (без отслеживания изменений) и запускает приложение (ng serve) на порту 4200.
+После этого откройте в браузере `http://local.test.gosuslugi.ru:4200/`
+
+`yarn build:dev:all` выполнит следующие команды:
+
+```
+yarn start:config                  # Запуск config сервера
+yarn clean                         # удаление папки /dist и /projects/epgu-constructor-types/dist
+yarn lib:type:build                # сборка библиотеки epgu-constructor-types (без отслеживания изменений)
+yarn lib:ui-kit:build:dev          # сборка библиотеки epgu-constructor-ui-kit (без отслеживания изменений)
+yarn lib:children-clubs:build:dev  # сборка библиотеки children-clubs (без отслеживания изменений)
+yarn lib:build:ivy                 # сборка библиотеки epgu-constructor (без отслеживания изменений)
+yarn start                         # запуск приложения (ng serve) на порту 4200 (с отслеживанием изменений в папке /src)
+```
 
 ## Config server
-Run `yarn start:config`
+```
+yarn start:config
+```
 
 ## Development backend server
 
