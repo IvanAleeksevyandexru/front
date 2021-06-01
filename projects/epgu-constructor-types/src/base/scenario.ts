@@ -39,6 +39,7 @@ export interface ScenarioDto {
   newContactId?: string;
   logicComponents?: LogicComponents[];
   currentLogicValue: CurrentValueDto;
+  isPrevStepCase?: boolean;
 }
 
 export interface ScenarioErrorsDto {

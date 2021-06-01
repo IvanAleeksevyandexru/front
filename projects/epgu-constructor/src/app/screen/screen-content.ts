@@ -50,6 +50,7 @@ export class ScreenContent {
   private _logicAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _serviceInfo = new BehaviorSubject<null | ServiceInfo>(null);
   private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
+  private _isPrevStepCase = new BehaviorSubject<boolean>(null);
 
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
@@ -93,6 +94,16 @@ export class ScreenContent {
   }
   public get isTheSameScreenWithErrors$(): Observable<boolean> {
     return this._isTheSameScreenWithErrors.asObservable();
+  }
+
+  public get isPrevStepCase(): boolean {
+    return this._isPrevStepCase.getValue();
+  }
+  public set isPrevStepCase(val: boolean) {
+    this._isPrevStepCase.next(val);
+  }
+  public get isPrevStepCase$(): Observable<boolean> {
+    return this._isPrevStepCase.asObservable();
   }
 
   public get suggestions(): { [key: string]: ISuggestionItem } {
@@ -383,6 +394,7 @@ export class ScreenContent {
       serviceCode,
       logicComponents = [],
       serviceInfo = {},
+      isPrevStepCase,
     } = screenStore;
     const {
       header,
@@ -399,6 +411,7 @@ export class ScreenContent {
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
     this.isTheSameScreenWithErrors =
       this.display?.id === display?.id && errors && Object.keys(errors).length !== 0;
+    this.isPrevStepCase = isPrevStepCase;
     this.screenType = type;
     this.display = display;
     this.header = header;

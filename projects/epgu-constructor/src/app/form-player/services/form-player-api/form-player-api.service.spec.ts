@@ -3,7 +3,7 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerNavigation, ServiceInfo } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiSuccessResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
@@ -237,6 +237,28 @@ describe('FormPlayerApiService', () => {
       const req = http.expectOne(url);
       expect(req.request.url).toBe(url);
       req.flush(responseMock);
+      tick();
+    }));
+
+    it('shouldn\'t return scenarioDto with isPrevStepCase', fakeAsync(() => {
+      service
+        .navigate(mockData, mockNavigationOptions, FormPlayerNavigation.NEXT)
+        .subscribe((response) => expect((response as FormPlayerApiSuccessResponse).scenarioDto.isPrevStepCase).toBeUndefined());
+      const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.NEXT}`;
+      const req = http.expectOne(url);
+      expect(req.request.url).toBe(url);
+      req.flush({ ...mockData });
+      tick();
+    }));
+
+    it('should return scenarioDto with isPrevStepCase property and true value', fakeAsync(() => {
+      service
+        .navigate(mockData, mockNavigationOptions, FormPlayerNavigation.PREV)
+        .subscribe((response) => expect((response as FormPlayerApiSuccessResponse).scenarioDto.isPrevStepCase).toBeTruthy());
+      const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}`;
+      const req = http.expectOne(url);
+      expect(req.request.url).toBe(url);
+      req.flush({ ...mockData });
       tick();
     }));
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { CfAppStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { InputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
 
 @Component({
@@ -14,14 +14,14 @@ import { InputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
   styles: [],
 })
 export class ChildrenClubsAppComponent implements OnInit {
-  initState = this.cfSpaStateService.getState<InputAppDto>(DataDirectionType.INPUT);
+  initState = this.cfAppStateService.getState<InputAppDto>(DataDirectionType.INPUT);
   constructor(
-    private cfSpaStateService: CfSpaStateService,
+    private cfAppStateService: CfAppStateService,
     private locationService: LocationService,
   ) {}
   ngOnInit(): void {
     setTimeout(() => {
-      this.cfSpaStateService.setState(
+      this.cfAppStateService.setState(
         {
           componentId: this.initState.componentId,
           componentType: this.initState.componentType,
