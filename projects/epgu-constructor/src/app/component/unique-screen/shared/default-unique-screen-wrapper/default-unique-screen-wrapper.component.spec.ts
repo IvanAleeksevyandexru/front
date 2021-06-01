@@ -25,6 +25,7 @@ import { ModalService } from '../../../../modal/modal.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -58,6 +59,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
       ],
       providers: [
         CurrentAnswersService,
+        EventBusService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },

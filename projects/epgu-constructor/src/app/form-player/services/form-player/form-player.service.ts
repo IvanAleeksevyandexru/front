@@ -33,7 +33,7 @@ export class FormPlayerService extends FormPlayerBaseService {
 
   public getOrderStatus(orderId: number): Observable<CheckOrderApiResponse> {
     return this.formPlayerApiService.getOrderStatus(orderId);
-  }
+  }С;
 
   /**
    * Инициализирует данные для показа, смотрим откуда брать данные
