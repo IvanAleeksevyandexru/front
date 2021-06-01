@@ -240,6 +240,22 @@ describe('SpaScreenComponent', () => {
       expect(setStateSpy).toBeCalledWith(expectedState, DataDirectionType.INPUT);
     });
 
+    it('shouldn call setState of cfAppStateService with init data with isPrevStepCase case', () => {
+      const setStateSpy = jest.spyOn(cfAppStateService, 'setState');
+      jest.spyOn(screenService, 'isPrevStepCase', 'get').mockReturnValue(true);
+      component.ngOnInit();
+
+      const expectedState = {
+        componentId: currentComponent.id,
+        componentType: currentComponent.type,
+        value: currentComponent.value,
+        callbackRedirectUrl: currentUrl,
+        isPrevStepCase: true,
+      };
+
+      expect(setStateSpy).toBeCalledWith(expectedState, DataDirectionType.INPUT);
+    });
+
     it('shouldn call href of locationService with app path', () => {
       const hrefSpy = jest.spyOn(locationService, 'href');
       component.ngOnInit();

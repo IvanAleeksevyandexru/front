@@ -77,7 +77,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
       componentType: component.type,
       value: component.value,
       callbackRedirectUrl: this.locationService.getHref(),
-      isPrevStepCase: false, // TODO: добавить логику для передачи параметра
+      isPrevStepCase: !!this.screenService.isPrevStepCase,
     };
   }
 
