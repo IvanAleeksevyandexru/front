@@ -29,7 +29,7 @@
 {{ preview | json }}
 
 <ng-template #buttonsTemplate>
-  <div class="conf-modal__controls" *ngIf="buttons.length">
+  <div class="conf-modal__controls" *ngIf="buttons.length || actionButtons.length">
     <lib-button
       *ngFor="let button of buttons"
       epgu-constructor-action
