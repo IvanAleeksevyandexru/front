@@ -317,13 +317,13 @@ export class TimeSlotsService {
     });
   }
 
-  private deleteIgnoreRequestParams(requestBody: TimeSlotReq | BookTimeSlotReq): Partial<TimeSlotReq> |  Partial<BookTimeSlotReq> {
+  private deleteIgnoreRequestParams(requestBody: TimeSlotReq | BookTimeSlotReq): Partial<TimeSlotReq> | Partial<BookTimeSlotReq> {
     if (!this.screenService.component.attrs.ignoreRootParams) {
       return requestBody;
     }
 
     Object.keys(requestBody).forEach(key => {
-      if (this.screenService.component.attrs.ignoreRootParams.includes(key)){
+      if (this.screenService.component.attrs.ignoreRootParams.includes(key)) {
         delete requestBody[key];
       }
     });
@@ -417,8 +417,6 @@ export class TimeSlotsService {
         : '';
       requestBody.caseNumber = this.config.orderId ? (this.config.orderId as string) : '';
     }
-
-
 
     return <BookTimeSlotReq>this.deleteIgnoreRequestParams(requestBody);
   }
