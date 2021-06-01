@@ -20,6 +20,7 @@ import { DropdownComponent } from '../components/dropdown/dropdown.component';
 import { SearchableDropdownComponent } from '../components/searchable-dropdown/searchable-dropdown.component';
 import { DictionaryComponent } from '../components/dictionary/dictionary.component';
 import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
+import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -27,6 +28,7 @@ type CustomScreenComponent =
   | MaskedAndPlainInputComponent
   | MvdGiacLookupComponent
   | DateInputComponent
+  | MonthPickerComponent
   | TextAreaComponent
   | TimerItemComponent
   | DocInputComponent
@@ -59,6 +61,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   LabelSection: FormOutputHtmlComponent,
   MvdGiac: MvdGiacLookupComponent,
   DateInput: DateInputComponent,
+  MonthPicker: MonthPickerComponent,
   TextArea: TextAreaComponent,
   Timer: TimerItemComponent,
   DocInput: DocInputComponent,

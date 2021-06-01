@@ -1,7 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScreenButton, ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { OnInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+
+import { ScreenButton, ConfirmationModal, ActionType } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
 
 @Component({
@@ -10,7 +13,7 @@ import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface
   styleUrls: ['./confirmation-modal-base.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmationModalBaseComponent {
+export class ConfirmationModalBaseComponent implements OnInit {
   @Input() title?: ConfirmationModal['title'];
   @Input() text: ConfirmationModal['text'];
   @Input() buttons: ConfirmationModalBaseButton[] = [];
@@ -26,8 +29,20 @@ export class ConfirmationModalBaseComponent {
   constructor(
     private deviceDetector: DeviceDetectorService,
     private eventBusService: EventBusService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
+  }
+
+  ngOnInit(): void {
+    this.eventBusService
+      .on('screenButtonClicked')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((button: ScreenButton) => {
+        if (button.type === ActionType.deliriumNextStep) {
+          this.closeModal();
+        }
+      });
   }
 
   closeModal(): void {

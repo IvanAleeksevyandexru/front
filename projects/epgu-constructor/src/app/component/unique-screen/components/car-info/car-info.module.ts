@@ -28,6 +28,7 @@ import { InfoListItemComponent } from './components/info-list-item/info-list-ite
 import { CarRegistrationComponent } from './components/car-registration/car-registration.component';
 import { CarTechnicalDataComponent } from './components/car-technical-data/car-technical-data.component';
 import { CarErrorComponent } from './components/car-error/car-error.component';
+import { YesNoStrictPipe } from './pipes/yes-no-strict.pipe';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -52,6 +53,7 @@ const COMPONENTS = [
   CarRegistrationComponent,
   CarTechnicalDataComponent,
   CarErrorComponent,
+  YesNoStrictPipe,
 ];
 
 @NgModule({

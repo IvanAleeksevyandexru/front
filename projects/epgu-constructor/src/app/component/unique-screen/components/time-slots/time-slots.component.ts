@@ -193,6 +193,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       this.clearDateSelection();
     } else {
       this.date = date;
+      this.recalcDaysStyles();
       this.showTimeSlots(date);
     }
   }
@@ -238,6 +239,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public areaChanged(): void {
     this.clearDateSelection();
     this.checkExistenceSlots();
+    this.recalcDaysStyles();
   }
 
   public async monthChanged(ev: ListItem): Promise<void> {
@@ -406,15 +408,36 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     week.push({
       number: this.datesHelperService.getDate(date),
       date,
-      classes: {
-        'is-past': this.datesHelperService.differenceInCalendarDays(today, date) < 0,
-        today: this.isToday(date),
-        locked: this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection),
-        selected: this.isSelected(date),
-        'outer-month': isOutOfMonth,
-        'outer-section': isOutOfSection,
-        visible: this.visibleMonths[month] || false,
-      },
+      classes: this.getDateStyles(today, date),
+    });
+  }
+
+  private getDateStyles(today: Date, date: Date): { [key: string]: boolean } {
+    const month = this.datesHelperService.getMonth(date);
+    const isOutOfSection = this.isDateOutOfSection(
+      date,
+      this.firstDayOfMainSection,
+      this.daysInMainSection,
+    );
+    const isOutOfMonth = this.isDateOutOfMonth(date);
+    return {
+      'is-past': this.datesHelperService.differenceInCalendarDays(today, date) < 0,
+      today: this.isToday(date),
+      locked: this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection),
+      selected: this.isSelected(date),
+      'outer-month': isOutOfMonth,
+      'outer-section': isOutOfSection,
+      visible: this.visibleMonths[month] || false,
+    };
+  }
+
+  private recalcDaysStyles(): void {
+    this.weeks = this.weeks.map((week) => {
+      return week.map((day) => {
+        const newDay = { ...day };
+        newDay.classes = this.getDateStyles(this.today, newDay.date);
+        return newDay;
+      });
     });
   }
 
@@ -599,6 +622,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.currentSlot = null;
     this.currentAnswersService.state = null;
     this.timeSlots = null;
+    this.recalcDaysStyles();
   }
 
   /**

@@ -17,7 +17,7 @@
     margin-right: math.div($screen-pad-16, 2);
     max-width: calc(100% - #{$screen-pad-16});
     &::ng-deep > .component-list-resolver {
-      & > * > .custom__screen-html {
+      & > * > .label {
         margin-bottom: $screen-pad-12;
       }
     }

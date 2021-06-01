@@ -53,6 +53,8 @@ import { SearchableDropdownComponent } from './components/searchable-dropdown/se
 import { DictionaryComponent } from './components/dictionary/dictionary.component';
 import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
+import { MonthPickerComponent } from './components/month-picker/month-picker.component';
+import { ConstructorMonthPickerModule } from '../../shared/components/constructor-month-picker/constructor-month-picker.module';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
     DateInputComponent,
+    MonthPickerComponent,
     MvdGiacLookupComponent,
     TextAreaComponent,
     MultiChoiceDictionaryComponent,
@@ -93,6 +96,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FieldListModule,
     CurrencyModule,
     ConstructorDatePickerModule,
+    ConstructorMonthPickerModule,
     ConstructorMultilineInputModule,
     MemoModule,
     MultipleChoiceDictionaryModule,
@@ -119,6 +123,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FormOutputHtmlComponent,
     MvdGiacLookupComponent,
     DateInputComponent,
+    MonthPickerComponent,
     TextAreaComponent,
     TimerItemComponent,
     DocInputComponent,
@@ -136,4 +141,4 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     LookupInputComponent,
   ],
 })
-export class ComponentsListModule {}
+export class ComponentsListModule { }

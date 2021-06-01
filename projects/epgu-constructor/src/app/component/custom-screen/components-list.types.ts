@@ -26,6 +26,7 @@ export enum CustomScreenComponentTypes {
   MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
+  MonthPicker = 'MonthPicker',
   RadioInput = 'RadioInput',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
@@ -160,6 +161,7 @@ export interface CustomComponentAttr {
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
+    turnOffStartFilter?: boolean;
   };
   image?: ComponentImageDto;
 }
@@ -196,6 +198,7 @@ export interface CustomComponentOutputData {
 export enum DictionaryUrlTypes {
   dictionary = 'dictionary',
   nsiSuggest = 'nsiSuggest',
+  lkApi = 'lkApi',
 }
 
 /**

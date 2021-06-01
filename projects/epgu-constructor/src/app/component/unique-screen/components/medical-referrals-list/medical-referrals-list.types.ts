@@ -1,3 +1,5 @@
+import { DisclaimerDto, ScreenButton } from '@epgu/epgu-constructor-types';
+
 export interface Referral {
   referralId: string;
   referralNumber: string;
@@ -16,6 +18,17 @@ export interface Referral {
   fromSpecsName: string;
   fromResourceName: string;
   originalItem: Item;
+}
+
+export interface ReferralsInfo {
+  disclaimer: DisclaimerDto;
+  button: ScreenButton;
+  value: ReferralsListParsedValue;
+}
+
+export interface ReferralsListParsedValue {
+  medicalInfo: string;
+  buttonLabel: string;
 }
 
 export interface ReferralsListResponse {
