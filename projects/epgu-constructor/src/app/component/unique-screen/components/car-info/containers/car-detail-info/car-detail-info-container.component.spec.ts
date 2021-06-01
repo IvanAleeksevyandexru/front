@@ -23,6 +23,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { ServiceResult } from '../../models/car-info.interface';
+import { YesNoStrictPipe } from '../../pipes/yes-no-strict.pipe';
 
 describe('CarDetailsInfoComponent', () => {
   let component: CarDetailInfoContainerComponent;
@@ -91,6 +92,7 @@ describe('CarDetailsInfoComponent', () => {
         MockComponent(CarOwnersComponent),
         MockComponent(CarErrorComponent),
         ErrorTemplatePipe,
+        YesNoStrictPipe,
       ],
       imports: [
         MockModule(DefaultUniqueScreenWrapperModule),
