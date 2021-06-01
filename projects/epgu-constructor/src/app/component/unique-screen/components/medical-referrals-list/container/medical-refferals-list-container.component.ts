@@ -1,10 +1,21 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { ComponentActionDto, ComponentDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
+import {
+  ComponentActionDto,
+  ComponentDto,
+  ConfirmationModal,
+  DisclaimerDto,
+  ScreenButton,
+} from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { Referral } from '../medical-referrals-list.types';
+import {
+  Referral,
+  ReferralsInfo,
+  ReferralsListParsedValue,
+  ReferralsListResponse,
+} from '../medical-referrals-list.types';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
@@ -18,15 +29,22 @@ import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/interceptor/error
 })
 export class MedicalReferralsListContainerComponent {
   readonly nextAction = NEXT_STEP_ACTION;
-  action: ComponentActionDto;
+  screenButton: ComponentActionDto;
 
-  medicalReferrals$: Observable<Referral[]> = this.screenService.component$.pipe(
-    filter((component: ComponentDto) => !!component.value),
-    tap((component: ComponentDto) => {
-      this.action = component.attrs.answers[0] as ComponentActionDto;
+  medicalReferralsInfo$: Observable<{
+    referrals: Referral[];
+    disclaimer: DisclaimerDto;
+  }> = combineLatest([this.screenService.component$, this.screenService.button$]).pipe(
+    filter(([component]) => !!component.value),
+    map(([component, button]) => this.mapIntoReferralsInfo(component, button)),
+    tap((referralsInfo: ReferralsInfo) => {
+      this.screenButton = referralsInfo.button;
       this.currentAnswersService.isValid = true;
     }),
-    map((component: ComponentDto) => this.mapComponentValue(component)),
+    map((referralsInfo: ReferralsInfo) => ({
+      referrals: this.mapMedicalInfo(JSON.parse(referralsInfo.value.medicalInfo)?.medicalData),
+      disclaimer: referralsInfo.disclaimer,
+    })),
   );
 
   constructor(
@@ -70,6 +88,21 @@ export class MedicalReferralsListContainerComponent {
     };
   }
 
+  private mapIntoReferralsInfo(component: ComponentDto, button: ScreenButton): ReferralsInfo {
+    const parsedValue: ReferralsListParsedValue = JSON.parse(component.value);
+    return {
+      disclaimer: {
+        ...component.attrs.disclaimer,
+        description: component.arguments.referralDisclaimerDescription,
+      },
+      button: {
+        ...button,
+        label: parsedValue.buttonLabel || button.label,
+      },
+      value: parsedValue,
+    };
+  }
+
   private showError(errorMessage: string): void {
     this.modalService
       .openModal(ConfirmationModalComponent, {
@@ -83,9 +116,7 @@ export class MedicalReferralsListContainerComponent {
       });
   }
 
-  private mapComponentValue(component: ComponentDto): Referral[] {
-    const medicalReferralsResponse = JSON.parse(component.value);
-
+  private mapMedicalInfo(medicalReferralsResponse: ReferralsListResponse): Referral[] {
     if (
       medicalReferralsResponse.error === null ||
       medicalReferralsResponse.error?.errorDetail.errorCode === 0

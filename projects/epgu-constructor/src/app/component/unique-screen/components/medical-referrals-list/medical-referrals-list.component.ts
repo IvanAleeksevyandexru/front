@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { DisclaimerDto } from '@epgu/epgu-constructor-types';
 import { Referral } from './medical-referrals-list.types';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import {
@@ -14,6 +15,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MedicalReferralsListComponent {
+  @Input() disclaimer: DisclaimerDto;
   @Input() medicalReferralsList: Referral[];
 
   @Output() referralWasChosen = new EventEmitter<Referral>();

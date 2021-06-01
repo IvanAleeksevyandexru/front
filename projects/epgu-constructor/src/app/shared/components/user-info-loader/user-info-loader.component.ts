@@ -5,10 +5,11 @@ import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
-import { UserInfoType } from '../user-info/user-info.type';
+import { UserInfoType } from './components/user-info/user-info.type';
 import { ComponentValue } from '../../../screen/screen-content';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { CycledInfo } from './components/cycled-info/cycled-info.types';
 
 @Component({
   selector: 'epgu-constructor-user-info-loader',
@@ -36,14 +37,16 @@ export class UserInfoLoaderComponent {
     map((components) => {
       return components.map(([component, value]: [ComponentDto, ComponentValue]) => {
         switch (component.type) {
-          case (this.componentTypes.PersonInfo as unknown) as UniqueScreenComponentTypes:
+          case (this.userInfoTypes.PersonInfo as unknown) as UniqueScreenComponentTypes:
             return [component, value as UserInfoType];
+          case (this.userInfoTypes.CycledInfo as unknown) as UniqueScreenComponentTypes:
+            return [component, value as CycledInfo];
           default:
             return [component, value];
         }
       });
     }),
   );
-  componentTypes = UserInfoComponentTypes;
+  userInfoTypes = UserInfoComponentTypes;
   constructor(public screenService: ScreenService, private loggerService: LoggerService) {}
 }
