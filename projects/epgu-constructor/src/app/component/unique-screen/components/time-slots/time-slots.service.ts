@@ -304,7 +304,7 @@ export class TimeSlotsService {
   private getSlotsRequest(): TimeSlotReq {
     const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
 
-    return {
+    return <TimeSlotReq>this.deleteIgnoreRequestParams({
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
       caseNumber:
         this.timeSlotsType === TimeSlotsTypes.MVD
@@ -314,7 +314,21 @@ export class TimeSlotsService {
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       routeNumber,
       attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
-    };
+    });
+  }
+
+  private deleteIgnoreRequestParams(requestBody: TimeSlotReq | BookTimeSlotReq): Partial<TimeSlotReq> |  Partial<BookTimeSlotReq> {
+    if (!this.screenService.component.attrs.ignoreRootParams) {
+      return requestBody;
+    }
+
+    Object.keys(requestBody).forEach(key => {
+      if (this.screenService.component.attrs.ignoreRootParams.includes(key)){
+        delete requestBody[key];
+      }
+    });
+
+    return requestBody;
   }
 
   private getSlotsRequestAttributes(
@@ -404,7 +418,9 @@ export class TimeSlotsService {
       requestBody.caseNumber = this.config.orderId ? (this.config.orderId as string) : '';
     }
 
-    return requestBody;
+
+
+    return <BookTimeSlotReq>this.deleteIgnoreRequestParams(requestBody);
   }
 
   private getBookRequestAttributes(
