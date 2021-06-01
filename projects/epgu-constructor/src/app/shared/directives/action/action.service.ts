@@ -58,7 +58,7 @@ export class ActionService {
     private eventBusService: EventBusService,
     private modalService: ModalService,
     private formPlayerService: FormPlayerService,
-  ) {}
+  ) { }
 
   public switchAction(
     action: ComponentActionDto,
@@ -138,16 +138,16 @@ export class ActionService {
       buttons: confirmationButtons?.length
         ? confirmationButtons
         : [
-            {
-              label: confirmation?.submitLabel || 'Отправить',
-              closeModal: true,
-              handler: handler
-                ? handler
-                : (): void => {
-                    this.navigate(action, componentId, 'nextStep');
-                  },
-            },
-          ],
+          {
+            label: confirmation?.submitLabel || 'Отправить',
+            closeModal: true,
+            handler: handler
+              ? handler
+              : (): void => {
+                this.navigate(action, componentId, 'nextStep');
+              },
+          },
+        ],
       actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
@@ -210,8 +210,8 @@ export class ActionService {
     let value: string;
     if (action.type === ActionType.skipStep) {
       return this.prepareDefaultComponentState(componentId, '', action);
-    } else if (action.value !== undefined || action.label !== undefined) {
-      value = action.value || action.label;
+    } else if (action.value !== undefined) {
+      value = action.value;
     } else {
       value =
         typeof this.currentAnswersService.state === 'object'
