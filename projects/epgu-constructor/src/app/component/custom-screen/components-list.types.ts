@@ -25,6 +25,7 @@ export enum CustomScreenComponentTypes {
   MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
+  MonthPicker = 'MonthPicker',
   RadioInput = 'RadioInput',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
