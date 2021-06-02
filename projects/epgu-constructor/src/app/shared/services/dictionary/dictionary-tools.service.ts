@@ -384,9 +384,11 @@ export class DictionaryToolsService {
 
   private initDropdown(reference: CustomListGenericData<Partial<ListItem>[]>): void {
     const dropDowns = this.dropDowns$.getValue();
-    dropDowns[reference.component.id] = reference.data;
+    if (!dropDowns[reference.component.id]) {
+      dropDowns[reference.component.id] = reference.data;
 
-    this.dropDowns$.next(dropDowns);
+      this.dropDowns$.next(dropDowns);
+    }
   }
 
   private getDropdowns$(
