@@ -73,7 +73,7 @@ describe('PhotoFormComponent', () => {
       objectId: '',
     };
     component.fileName = '';
-    component.orderId = '';
+    component.orderId = 0;
     component.allowedImgTypes = ['JPEG', 'JPG', 'PNG', 'BMP'];
     component.startToUploadPhoto = { isStart: false };
     component.startToChangeCroppedImageUrl = { isStart: false };

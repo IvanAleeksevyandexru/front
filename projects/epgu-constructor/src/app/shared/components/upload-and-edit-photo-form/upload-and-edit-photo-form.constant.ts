@@ -46,6 +46,11 @@ const imageErrorText = {
     text: 'Что-то пошло не так. Попробуйте загрузить файл ещё раз сейчас или выберите другой файл.',
     textRules: '',
   },
+  fileName: {
+    title: 'Ошибка имени файла',
+    text: '',
+    textRules: '',
+  }
 };
 
 enum uploadPhotoElemId {
