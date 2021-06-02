@@ -65,7 +65,7 @@ export interface VehicleOwnerInfo {
   approveSerNum?: string;
   utilizStatus?: string;
   tdtpo?: string;
-  customsRestrictions?: boolean;
+  customsRestrictions?: string;
   engineType: string;
 }
 
