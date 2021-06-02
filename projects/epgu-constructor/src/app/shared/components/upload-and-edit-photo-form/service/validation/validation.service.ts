@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { minSize, printImgPx, recommendedDPI } from '../../upload-and-edit-photo-form.constant';
-import { ComponentValidationDto } from '@epgu/epgu-constructor-types/src/base/component-attrs';
+import { ComponentValidationDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ValidationService {
