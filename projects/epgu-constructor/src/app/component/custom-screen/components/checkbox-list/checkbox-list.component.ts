@@ -92,6 +92,10 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
     this.cdr.markForCheck();
   }
 
+  isButtonShow(): boolean {
+    return this.checkboxes.some((el) => !el.showOn);
+  }
+
   private initFormGroup(checkboxes: { [key: string]: CheckboxListElement }): void {
     const validators = this.control.value.required ? [this.requiredValidatorFn()] : [];
     const formGroup = Object.entries(checkboxes).reduce((form, [id, checkbox]) => {

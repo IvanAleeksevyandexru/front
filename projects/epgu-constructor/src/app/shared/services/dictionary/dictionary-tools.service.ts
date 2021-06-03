@@ -36,6 +36,8 @@ import {
   DictionaryValueTypes,
   AttributeTypes,
   FilterDtoConfig,
+  AdditionalRequestParam,
+  AdditionalRequestType,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
@@ -274,6 +276,17 @@ export class DictionaryToolsService {
     return { filter };
   }
 
+  public getAdditionalParams(
+    screenStore: ScreenStore,
+    params?: Array<AdditionalRequestParam>,
+  ): Array<AdditionalRequestParam> {
+    return params.map((param: AdditionalRequestParam) => ({
+      value: param?.type === AdditionalRequestType.ref ? this.getValueViaRef(screenStore.applicantAnswers, param.value) : param.value,
+      name: param?.name,
+      type: param?.type,
+    }));
+  }
+
   /**
    * Мапим словарь в ListItem для компонента EPGU отвечающий за список
    * @param items массив элементов словаря
@@ -281,11 +294,12 @@ export class DictionaryToolsService {
   public adaptDictionaryToListItem(
     items: Array<DictionaryItem | KeyValueMap>,
     mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+    isRoot?: boolean,
   ): Array<ListElement> {
     return items.map((item) => ({
       originalItem: item,
-      id: item[mappingParams.idPath] || item.value,
-      text: item[mappingParams.textPath] || item.title,
+      id: (isRoot ? utils.getObjectProperty(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
+      text: `${(isRoot ? utils.getObjectProperty(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title}`,
     }));
   }
 
@@ -312,9 +326,11 @@ export class DictionaryToolsService {
   }
 
   public isDropdownLike(type: CustomScreenComponentTypes): boolean {
-    return (
-      type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac
-    );
+    return [
+      CustomScreenComponentTypes.DropDown,
+      CustomScreenComponentTypes.SearchableDropDown,
+      CustomScreenComponentTypes.MvdGiac,
+    ].includes(type);
   }
 
   public isResultEmpty(component: CustomComponent): boolean {
@@ -368,9 +384,11 @@ export class DictionaryToolsService {
 
   private initDropdown(reference: CustomListGenericData<Partial<ListItem>[]>): void {
     const dropDowns = this.dropDowns$.getValue();
-    dropDowns[reference.component.id] = reference.data;
+    if (!dropDowns[reference.component.id]) {
+      dropDowns[reference.component.id] = reference.data;
 
-    this.dropDowns$.next(dropDowns);
+      this.dropDowns$.next(dropDowns);
+    }
   }
 
   private getDropdowns$(
@@ -432,7 +450,7 @@ export class DictionaryToolsService {
       const itemCode = item.code || item?.value || `${itemText}-${index}`;
       return {
         id: itemCode,
-        text: itemText,
+        text: `${itemText}`,
         unselectable: !!item.disable,
         originalItem: item,
         compare: (): boolean => false,
@@ -520,12 +538,19 @@ export class DictionaryToolsService {
           dFilter.formatValue,
         ),
       }),
-      [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.formatValue(
+      [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => {
+        const filters = this.formatValue(
           this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
           dFilter.formatValue,
-        ),
-      }),
+        );
+
+        if (dFilter?.excludeWrapper) {
+          return filters;
+        }
+        return {
+          [attributeType]: filters,
+        };
+      },
       [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
         [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
       }),

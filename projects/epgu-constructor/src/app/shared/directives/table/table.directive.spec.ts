@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TableDirective } from './table.directive';
-import { SafePipe } from '../../pipes/safe/safe.pipe';
+import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
+import { TableDirective } from './table.directive';
 
 @Component({
   template: '<div epgu-constructor-table [innerHTML]="html | safe: \'html\'"></div>',

@@ -12,7 +12,7 @@ import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
-import { HelperTextComponent } from '../../../../shared/components/base-components/helper-text/helper-text.component';
+import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';

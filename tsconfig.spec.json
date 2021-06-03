@@ -18,7 +18,7 @@
     "src/polyfills.ts"
   ],
   "include": [
-    "projects/epgu-constructor/src/**/*.spec.ts",
-    "projects/epgu-constructor/src/**/*.d.ts"
+    "projects/*/src/**/*.spec.ts",
+    "projects/*/src/**/*.d.ts",
   ]
 }

@@ -104,6 +104,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private daysInMainSection: number;
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
   private _monthsRange = new Set();
+  private today: Date;
 
   constructor(
     private modalService: ModalService,
@@ -154,7 +155,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   public isToday(date: Date): boolean {
-    return this.datesHelperService.isToday(date);
+    return (
+      date.getUTCFullYear() === this.today.getUTCFullYear() &&
+      date.getUTCMonth() === this.today.getUTCMonth() &&
+      date.getUTCDate() === this.today.getUTCDate()
+    );
   }
 
   public isSelected(date: Date): boolean {
@@ -188,6 +193,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       this.clearDateSelection();
     } else {
       this.date = date;
+      this.recalcDaysStyles();
       this.showTimeSlots(date);
     }
   }
@@ -233,6 +239,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public areaChanged(): void {
     this.clearDateSelection();
     this.checkExistenceSlots();
+    this.recalcDaysStyles();
   }
 
   public async monthChanged(ev: ListItem): Promise<void> {
@@ -401,15 +408,36 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     week.push({
       number: this.datesHelperService.getDate(date),
       date,
-      classes: {
-        'is-past': this.datesHelperService.differenceInCalendarDays(today, date) < 0,
-        today: this.isToday(date),
-        locked: this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection),
-        selected: this.isSelected(date),
-        'outer-month': isOutOfMonth,
-        'outer-section': isOutOfSection,
-        visible: this.visibleMonths[month] || false,
-      },
+      classes: this.getDateStyles(today, date),
+    });
+  }
+
+  private getDateStyles(today: Date, date: Date): { [key: string]: boolean } {
+    const month = this.datesHelperService.getMonth(date);
+    const isOutOfSection = this.isDateOutOfSection(
+      date,
+      this.firstDayOfMainSection,
+      this.daysInMainSection,
+    );
+    const isOutOfMonth = this.isDateOutOfMonth(date);
+    return {
+      'is-past': this.datesHelperService.differenceInCalendarDays(today, date) < 0,
+      today: this.isToday(date),
+      locked: this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection),
+      selected: this.isSelected(date),
+      'outer-month': isOutOfMonth,
+      'outer-section': isOutOfSection,
+      visible: this.visibleMonths[month] || false,
+    };
+  }
+
+  private recalcDaysStyles(): void {
+    this.weeks = this.weeks.map((week) => {
+      return week.map((day) => {
+        const newDay = { ...day };
+        newDay.classes = this.getDateStyles(this.today, newDay.date);
+        return newDay;
+      });
     });
   }
 
@@ -419,13 +447,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     output.splice(0, output.length); // in-place clear
     const daysToShow = this.screenService.component?.attrs.daysToShow;
 
-    const today = await this.datesHelperService.getToday(true);
+    this.today = await this.datesHelperService.getToday(true);
 
     if (this.screenService.component?.attrs.startSection === 'today') {
-      this.firstDayOfMainSection = today;
+      this.firstDayOfMainSection = this.today;
     } else {
       this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
-        today,
+        this.today,
         this.activeYearNumber,
         this.activeMonthNumber,
         1,
@@ -447,7 +475,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         week += 1;
         output.push([]);
       }
-      this.addDayToWeek(output[week], date, today);
+      this.addDayToWeek(output[week], date, this.today);
       date = this.datesHelperService.add(date, 1, 'days');
     }
   }
@@ -466,8 +494,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     const dateType = this.screenService.component?.attrs?.dateType || DateTypeTypes.TODAY;
     const refDateAttr = this.screenService.component?.attrs?.refDate;
 
+    // TODO избавиться от Date.now, переделать на DatesToolsService.getToday()
     if (dateType === DateTypeTypes.TODAY) {
-      return new Date(Date.now());
+      return new Date(this.today || Date.now());
     }
 
     if (dateType === DateTypeTypes.REF_DATE && refDateAttr) {
@@ -593,6 +622,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.currentSlot = null;
     this.currentAnswersService.state = null;
     this.timeSlots = null;
+    this.recalcDaysStyles();
   }
 
   /**

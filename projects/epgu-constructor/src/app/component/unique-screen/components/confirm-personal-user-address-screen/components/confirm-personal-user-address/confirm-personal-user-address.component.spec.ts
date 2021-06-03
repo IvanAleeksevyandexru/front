@@ -16,13 +16,12 @@ import { DatesToolsService } from '../../../../../../core/services/dates-tools/d
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { AddressItemComponent } from '../address-item/address-item.component';
 import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
-import { TextTransformDirective } from '../../../../../../shared/directives/text-transform/text-transform.directive';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
-import { HelperTextComponent } from '../../../../../../shared/components/base-components/helper-text/helper-text.component';
+import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadService } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../logger/logger.service';
-import { Config, MockApi, SpaRouting, TimeSlotsApi } from './config.types';
+import { Config, MockApi, AppPathMap, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
@@ -18,6 +18,7 @@ export class ConfigService implements Config {
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
   private _lkUrl: string;
+  private _lkApi: string;
   private _paymentUrl: string;
   private _timeSlotApiUrl: string;
   private _listPaymentsApiUrl: string;
@@ -40,7 +41,7 @@ export class ConfigService implements Config {
   private _oplataUrl: string;
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
-  private _spa: SpaRouting;
+  private _appPathMap: AppPathMap;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -96,6 +97,10 @@ export class ConfigService implements Config {
 
   get lkUrl(): string {
     return this._lkUrl;
+  }
+
+  get lkApi(): string {
+    return this._lkApi;
   }
 
   get paymentUrl(): string {
@@ -186,8 +191,8 @@ export class ConfigService implements Config {
     return this._nsiSuggestDictionaryUrl;
   }
 
-  get spa(): SpaRouting {
-    return this._spa;
+  get appPathMap(): AppPathMap {
+    return this._appPathMap;
   }
 
   initCore(config: Config = {} as Config): void {
@@ -202,6 +207,7 @@ export class ConfigService implements Config {
     this._fileUploadApiUrl =
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
+    this._lkApi = config.lkApi ?? `${this.loadService.config.lkApi}`;
     this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
     this._listPaymentsApiUrl =
@@ -232,7 +238,7 @@ export class ConfigService implements Config {
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
-    this._spa = config.spa || {};
+    this._appPathMap = config.appPathMap || {};
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

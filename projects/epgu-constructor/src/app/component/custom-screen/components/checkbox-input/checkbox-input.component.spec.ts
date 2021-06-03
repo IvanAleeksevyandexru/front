@@ -10,7 +10,7 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { CheckboxInputComponent } from './checkbox-input.component';
-import { ConstructorCheckboxComponent } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.component';
+import { ConstructorCheckboxComponent } from '@epgu/epgu-constructor-ui-kit';
 
 const mockCheckboxComponent = {
   id: 'Is_markTS_no',

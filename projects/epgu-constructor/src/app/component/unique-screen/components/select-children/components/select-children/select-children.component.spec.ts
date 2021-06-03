@@ -17,7 +17,7 @@ import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
-import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
@@ -145,7 +145,7 @@ describe('SelectChildrenComponent', () => {
 
     // TODO: понять как получить динамические элементы
     xit('cloneButtonClickEvent should not make invalid form valid', () => {
-      let selector = 'epgu-constructor-constructor-dropdown';
+      let selector = 'epgu-cf-ui-constructor-constructor-dropdown';
       const childId = component.items[0].controlId;
       const itemToSelect = component.itemsToSelect[0];
       const childElement = fixture.debugElement.query(By.css(selector));

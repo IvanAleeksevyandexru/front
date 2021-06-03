@@ -33,19 +33,19 @@ describe('MedicalReferralsListContainerComponent', () => {
     id: 'medicalreferrals',
     type: 'MedicalReferrals',
     attrs: {
-      answers: [{
-        label: 'Найти по номеру направления',
-        action: DTOActionAction.getNextStep,
-        type: ActionType.nextStep,
-        value: ''
-      }],
     },
+    arguments: {},
     label: '',
     // eslint-disable-next-line max-len
-    value: '{"totalItems":5,"items":[{"parentItem":null,"children":[],"fields":{"itemName":null,"title":null},"attributes":[{"name":"referralId","value":"205206"},{"name":"referralNumber","value":"445"},{"name":"referralTypeId","value":"6"},{"name":"referralStartDate","value":"2020-01-10"},{"name":"referralEndDate","value":"2021-12-31"},{"name":"paymentSourceId","value":"1"},{"name":"toMoOid","value":"1.2.643.5.1.13.13.12.2.16.1179.0.221506"},{"name":"toMoName","value":"Женская консультация, ГАУЗ &quot;Городская поликлиника № 21&quot;"},{"name":"toSpecsId","value":"34"},{"name":"toSpecsName","value":"врач-кардиолог"},{"name":"toResourceName","value":"Пушкина Анна Ивановна"},{"name":"fromMoOid","value":"1.2.643.5.1.13.13.12.2.16.1080.0.368844"},{"name":"fromMoName","value":"Отделение узких специалистов, ГАУЗ &quot;Городская поликлиника №18&quot;"},{"name":"fromSpecsId","value":"109"},{"name":"fromSpecsName","value":"врач-терапевт"},{"name":"fromResourceName","value":"Николаева Яна Семеновна"}]}],"version":"78541488","error":{"errorDetail":{"errorCode":0,"errorMessage":"Operation completed"},"fieldErrors":[]}}',
+    value: '{"medicalInfo":"{\\"smevVersion\\":3,\\"sessionId\\":\\"9c8f6834-7ddf-4a0d-ac2d-f650ba3a9734\\",\\"eserviceId\\":\\"10000025167\\",\\"medicalData\\":{\\"totalItems\\":5,\\"items\\":[{\\"children\\":[],\\"fields\\":{},\\"attributes\\":[{\\"name\\":\\"referralId\\",\\"value\\":\\"205206\\"},{\\"name\\":\\"referralNumber\\",\\"value\\":\\"445\\"},{\\"name\\":\\"referralTypeId\\",\\"value\\":\\"6\\"},{\\"name\\":\\"referralStartDate\\",\\"value\\":\\"2020-01-10\\"},{\\"name\\":\\"referralEndDate\\",\\"value\\":\\"2021-12-31\\"},{\\"name\\":\\"paymentSourceId\\",\\"value\\":\\"1\\"},{\\"name\\":\\"toMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.16.1179.0.221506\\"},{\\"name\\":\\"toMoName\\",\\"value\\":\\"Женская консультация, ГАУЗ &quot;Городская поликлиника № 21&quot;\\"},{\\"name\\":\\"toSpecsId\\",\\"value\\":\\"34\\"},{\\"name\\":\\"toSpecsName\\",\\"value\\":\\"врач-кардиолог\\"},{\\"name\\":\\"toResourceName\\",\\"value\\":\\"Пушкина Анна Ивановна\\"},{\\"name\\":\\"fromMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.16.1080.0.368844\\"},{\\"name\\":\\"fromMoName\\",\\"value\\":\\"Отделение узких специалистов, ГАУЗ &quot;Городская поликлиника №18&quot;\\"},{\\"name\\":\\"fromSpecsId\\",\\"value\\":\\"109\\"},{\\"name\\":\\"fromSpecsName\\",\\"value\\":\\"врач-терапевт\\"},{\\"name\\":\\"fromResourceName\\",\\"value\\":\\"Николаева Яна Семеновна\\"}]},{\\"children\\":[],\\"fields\\":{},\\"attributes\\":[{\\"name\\":\\"referralId\\",\\"value\\":\\"206789\\"},{\\"name\\":\\"referralNumber\\",\\"value\\":\\"558\\"},{\\"name\\":\\"referralTypeId\\",\\"value\\":\\"8\\"},{\\"name\\":\\"referralStartDate\\",\\"value\\":\\"2020-01-10\\"},{\\"name\\":\\"referralEndDate\\",\\"value\\":\\"2021-12-31\\"},{\\"name\\":\\"paymentSourceId\\",\\"value\\":\\"1\\"},{\\"name\\":\\"toMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.16.1179.0.221506\\"},{\\"name\\":\\"toMoName\\",\\"value\\":\\"Женская консультация, ГАУЗ &quot;Городская поликлиника № 21&quot;\\"},{\\"name\\":\\"toSpecsId\\",\\"value\\":\\"53\\"},{\\"name\\":\\"toSpecsName\\",\\"value\\":\\"врач-оториноларинголог\\"},{\\"name\\":\\"toResourceName\\",\\"value\\":\\"Нестерова Карина Ивановна\\"},{\\"name\\":\\"fromMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.16.1080.0.368844\\"},{\\"name\\":\\"fromMoName\\",\\"value\\":\\"Отделение узких специалистов, ГАУЗ &quot;Городская поликлиника №18&quot;\\"},{\\"name\\":\\"fromSpecsId\\",\\"value\\":\\"109\\"},{\\"name\\":\\"fromSpecsName\\",\\"value\\":\\"врач-терапевт\\"},{\\"name\\":\\"fromResourceName\\",\\"value\\":\\"Иванов Петр Иванович\\"},{\\"name\\":\\"toServiceId\\",\\"value\\":\\"A16.08.010.001\\"},{\\"name\\":\\"toServiceName\\",\\"value\\":\\"Подслизистая вазотомия нижних носовых раковин\\"}]},{\\"children\\":[],\\"fields\\":{},\\"attributes\\":[{\\"name\\":\\"referralId\\",\\"value\\":\\"335335\\"},{\\"name\\":\\"referralNumber\\",\\"value\\":\\"335\\"},{\\"name\\":\\"referralTypeId\\",\\"value\\":\\"6\\"},{\\"name\\":\\"referralStartDate\\",\\"value\\":\\"2020-01-10\\"},{\\"name\\":\\"referralEndDate\\",\\"value\\":\\"2021-12-31\\"},{\\"name\\":\\"paymentSourceId\\",\\"value\\":\\"1\\"},{\\"name\\":\\"toSpecsId\\",\\"value\\":\\"13\\"},{\\"name\\":\\"toSpecsName\\",\\"value\\":\\"врач-акушер-гинеколог\\"},{\\"name\\":\\"toResourceName\\",\\"value\\":\\"Куприянова Ирина Семеновна\\"},{\\"name\\":\\"fromMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.16.1080.0.368844\\"},{\\"name\\":\\"fromMoName\\",\\"value\\":\\"Отделение узких специалистов, ГАУЗ &quot;Городская поликлиника №18&quot;\\"},{\\"name\\":\\"fromSpecsId\\",\\"value\\":\\"109\\"},{\\"name\\":\\"fromSpecsName\\",\\"value\\":\\"врач-терапевт\\"},{\\"name\\":\\"fromResourceName\\",\\"value\\":\\"Николаева Яна Семеновна\\"}]},{\\"children\\":[],\\"fields\\":{},\\"attributes\\":[{\\"name\\":\\"referralId\\",\\"value\\":\\"55544433\\"},{\\"name\\":\\"referralNumber\\",\\"value\\":\\"1589\\"},{\\"name\\":\\"referralTypeId\\",\\"value\\":\\"4\\"},{\\"name\\":\\"referralStartDate\\",\\"value\\":\\"2020-06-30\\"},{\\"name\\":\\"referralEndDate\\",\\"value\\":\\"2022-09-30\\"},{\\"name\\":\\"paymentSourceId\\",\\"value\\":\\"1\\"},{\\"name\\":\\"toMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.59.6018.0.74664\\"},{\\"name\\":\\"toMoName\\",\\"value\\":\\"Поликлиника №1, ГБУЗ ПК &quot; ГКП №4&quot;\\"},{\\"name\\":\\"fromMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.59.10097.0.273023\\"},{\\"name\\":\\"fromMoName\\",\\"value\\":\\"Поликлиника №1, ГБУЗ ПК &quot;ГП №7&quot;\\"},{\\"name\\":\\"fromSpecsId\\",\\"value\\":\\"34\\"},{\\"name\\":\\"fromSpecsName\\",\\"value\\":\\"врач-кардиолог\\"},{\\"name\\":\\"fromResourceName\\",\\"value\\":\\"Пушнина Любовь Аркадьевна\\"},{\\"name\\":\\"toServiceId\\",\\"value\\":\\"A04.10.002.010\\"},{\\"name\\":\\"toServiceName\\",\\"value\\":\\"Эхокардиография с допплерографией\\"}]},{\\"children\\":[],\\"fields\\":{},\\"attributes\\":[{\\"name\\":\\"referralId\\",\\"value\\":\\"5554443322\\"},{\\"name\\":\\"referralNumber\\",\\"value\\":\\"158922\\"},{\\"name\\":\\"referralTypeId\\",\\"value\\":\\"4\\"},{\\"name\\":\\"referralStartDate\\",\\"value\\":\\"2020-06-30\\"},{\\"name\\":\\"referralEndDate\\",\\"value\\":\\"2022-09-30\\"},{\\"name\\":\\"paymentSourceId\\",\\"value\\":\\"1\\"},{\\"name\\":\\"toMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.59.6018.0.74664\\"},{\\"name\\":\\"toMoName\\",\\"value\\":\\"Поликлиника №1, ГБУЗ ПК &quot; ГКП №4&quot;\\"},{\\"name\\":\\"toSpecsId\\",\\"value\\":\\"13\\"},{\\"name\\":\\"toSpecsName\\",\\"value\\":\\"врач-акушер-гинеколог\\"},{\\"name\\":\\"fromMoOid\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.59.10097.0.273023\\"},{\\"name\\":\\"fromMoName\\",\\"value\\":\\"Поликлиника №1, ГБУЗ ПК &quot;ГП №7&quot;\\"},{\\"name\\":\\"fromSpecsId\\",\\"value\\":\\"34\\"},{\\"name\\":\\"fromSpecsName\\",\\"value\\":\\"врач-кардиолог\\"},{\\"name\\":\\"fromResourceName\\",\\"value\\":\\"Пушнина Любовь Аркадьевна\\"}]}],\\"version\\":\\"78541488\\",\\"error\\":{\\"errorDetail\\":{\\"errorCode\\":0,\\"errorMessage\\":\\"Operation completed\\"},\\"fieldErrors\\":[]}}}","buttonLabel":""}',
     required: true,
   };
-  const mockButtons = [];
+  const mockButton = {
+    label: 'Найти по номеру направления',
+    action: DTOActionAction.getNextStep,
+    type: ActionType.nextStep,
+    value: ''
+  };
 
   const mockReferral = {
     referralNumber: '123',
@@ -86,7 +86,7 @@ describe('MedicalReferralsListContainerComponent', () => {
     actionService = TestBed.inject(ActionService);
     modalService = TestBed.inject(ModalService);
     screenService.component = mockComponent;
-    screenService.buttons = mockButtons as any;
+    screenService.button = mockButton as any;
     fixture = TestBed.createComponent(MedicalReferralsListContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -98,13 +98,12 @@ describe('MedicalReferralsListContainerComponent', () => {
 
   it('init state', () => {
     jest.useFakeTimers();
-    expect(currentAnswersService.isValid).toEqual(true);
-    expect(component.action).toEqual(mockComponent.attrs.answers[0]);
 
-    component.medicalReferrals$.subscribe(referrals => {
-      const referralsResult = [
+    component.medicalReferralsInfo$.subscribe(referralsInfo => {
+      console.log(referralsInfo.referrals);
+      const referralResult =
         {
-          originalItem: JSON.parse(mockComponent.value).items[0],
+          originalItem: JSON.parse(JSON.parse(mockComponent.value).medicalInfo).medicalData.items[0],
           referralId: '205206',
           referralNumber: '445',
           referralTypeId: '6',
@@ -121,10 +120,11 @@ describe('MedicalReferralsListContainerComponent', () => {
           fromSpecsId: '109',
           fromSpecsName: 'врач-терапевт',
           fromResourceName: 'Николаева Яна Семеновна'
-        }
-      ];
+        };
 
-      expect(referrals).toEqual(referralsResult);
+      expect(currentAnswersService.isValid).toEqual(true);
+      expect(component.screenButton).toEqual(mockButton);
+      expect(referralsInfo.referrals[0]).toEqual(referralResult);
     });
     jest.runAllTimers();
   });
@@ -185,14 +185,16 @@ describe('MedicalReferralsListContainerComponent', () => {
   it('init state (error)', () => {
     jest.useFakeTimers();
 
-    mockComponent.value = '{"totalItems":0,"items":[],"version":"78541488","error":{"errorDetail":{"errorCode":1,"errorMessage":"Operation failed"},"fieldErrors":[]}}';
+    // eslint-disable-next-line max-len
+    screenService.component.value = '{"medicalInfo":"{\\"smevVersion\\":3,\\"sessionId\\":\\"9c8f6834-7ddf-4a0d-ac2d-f650ba3a9734\\",\\"eserviceId\\":\\"10000025167\\",\\"medicalData\\":{\\"totalItems\\":5,\\"items\\":[],\\"version\\":\\"78541488\\",\\"error\\":{\\"errorDetail\\":{\\"errorCode\\":1,\\"errorMessage\\":\\"Operation failed\\"},\\"fieldErrors\\":[]}}}","buttonLabel":""}';
     fixture.detectChanges();
+
 
     jest.spyOn(actionService, 'switchAction');
     jest.spyOn(modalService, 'openModal').mockReturnValue(of(true));
 
-    component.medicalReferrals$.subscribe(referrals => {
-      expect(referrals).toEqual(null);
+    component.medicalReferralsInfo$.subscribe(referrals => {
+      expect(referrals.referrals).toEqual(null);
       expect(modalService.openModal)
         .toHaveBeenLastCalledWith(ConfirmationModalComponent, component.getModalParams('Operation failed'));
     });

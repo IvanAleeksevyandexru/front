@@ -17,12 +17,12 @@
 
     <div class="info-list-group-item">
       <div class="info-list-subtitle">В розыске</div>
-      <div class="info-list-value">{{ searchingTransportFlag | yesNo }}</div>
+      <div class="info-list-value">{{ searchingTransportFlag | yesNoStrict }}</div>
     </div>
 
     <div class="info-list-group-item">
       <div class="info-list-subtitle">Ограничения на регистрацию</div>
-      <div class="info-list-value">{{ restrictionsFlag | yesNo }}</div>
+      <div class="info-list-value">{{ restrictionsFlag | yesNoStrict }}</div>
     </div>
 
     <div class="info-list-group-item" *ngFor="let restriction of restrictions">

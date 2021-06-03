@@ -210,9 +210,9 @@ describe('DatesToolsService', () => {
       expect(service.format('02.01.2000', DATE_STRING_DOT_FORMAT)).toEqual('02.01.2000');
     });
     it('should return formatted date string if date parameter is Date object', () => {
-      const date = new Date(1);
+      const date = new Date('1990-04-01T00:00:00.000Z');
       const format = DATE_STRING_DOT_FORMAT;
-      expect(service.format(date, format)).toEqual('01.01.1970');
+      expect(service.format(date, format)).toEqual('01.04.1990');
     });
   });
 
@@ -236,10 +236,9 @@ describe('DatesToolsService', () => {
 
   describe('add() method', () => {
     it('should return added date', () => {
-      const date = new Date(1);
-      const controlDate = service.parse('01.01.2000', DATE_STRING_DOT_FORMAT);
-      const resultDate = service.add(date, 30, 'years');
-      expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
+      const date = new Date(0);
+      const resultDate = service.add(date, 1, 'years');
+      expect(resultDate.toISOString()).toEqual('1971-01-01T00:00:00.000Z');
     });
 
     it('should throw error if unit parameter is invalid', () => {
@@ -252,10 +251,9 @@ describe('DatesToolsService', () => {
 
   describe('sub() method', () => {
     it('should return subtracted date', () => {
-      const date = service.parse('01.01.2000', DATE_STRING_DOT_FORMAT);
-      const controlDate = new Date(1);
-      const resultDate = service.sub(date, 30, 'years');
-      expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
+      const date = new Date(0);
+      const resultDate = service.sub(date, 1, 'years');
+      expect(resultDate.toISOString()).toEqual('1969-01-01T00:00:00.000Z');
     });
   });
 
@@ -267,9 +265,8 @@ describe('DatesToolsService', () => {
 
     it('should return setted date for january', () => {
       const date = new Date();
-      const controlDate = new Date(1);
-      const resultDate = service.setCalendarDate(date, 1970, 0, 1);
-      expect(service.isSameDate(controlDate, resultDate)).toBeTruthy();
+      const resultDate = service.setCalendarDate(date, 2019, 3, 10);
+      expect(resultDate.toISOString()).toEqual('2019-04-10T00:00:00.000Z');
     });
   });
 

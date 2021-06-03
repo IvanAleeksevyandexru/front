@@ -7,7 +7,7 @@
       [innerHTML]="data.label | safe: 'html'"
     ></span>
     <div class="widget-form__input">
-      <epgu-constructor-constructor-lookup
+      <epgu-cf-ui-constructor-constructor-lookup
         *ngIf="selectMapObjectService.dictionary && !isNoDepartmentErrorVisible"
         [showNotFound]="true"
         [searchCaseSensitive]="false"
@@ -19,7 +19,7 @@
         [queryMinSymbolsCount]="0"
         #libLookup
       >
-      </epgu-constructor-constructor-lookup>
+      </epgu-cf-ui-constructor-constructor-lookup>
     </div>
     <ng-container *ngTemplateOutlet="errorRegion">
     </ng-container>

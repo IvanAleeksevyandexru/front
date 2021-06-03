@@ -1,19 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { MockComponent } from 'ng-mocks';
 import { CoreModule } from '../../../../../core/core.module';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../shared/components/clone-button/clone-button.module';
-import { ConstructorDropdownModule } from '../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { ComponentsListModule } from '../../../../custom-screen/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './select-children-screen-container.component';
@@ -22,15 +20,12 @@ import { SelectChildrenItemComponent } from '../components/select-children-item/
 import { SelectChildrenComponent } from '../components/select-children/select-children.component';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { ModalService } from '../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
-import { ActionService } from '../../../../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { configureTestSuite } from 'ng-bullet';
 import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
@@ -82,9 +77,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SelectChildrenScreenContainerComponent,
-        SelectChildrenItemWrapperComponent,
-        SelectChildrenItemComponent,
-        SelectChildrenComponent,
+        MockComponent(SelectChildrenComponent),
         MockComponent(DefaultUniqueScreenWrapperComponent),
       ],
       imports: [
@@ -99,16 +92,14 @@ describe('SelectChildrenScreenContainerComponent', () => {
         ComponentsListModule,
       ],
       providers: [
-        UnsubscribeService,
-        HealthService,
         EventBusService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
       ],
+    }).overrideComponent(SelectChildrenScreenContainerComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default },
     }).compileComponents();
   });
 

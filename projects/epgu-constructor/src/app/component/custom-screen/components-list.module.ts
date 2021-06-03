@@ -10,18 +10,20 @@ import { ConstructorPlainInputModule } from '../../shared/components/constructor
 import { ConstructorMaskedInputModule } from '../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../shared/components/add-passport/passport.module';
 import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
-import { ConstructorDropdownModule } from '../../shared/components/constructor-dropdown/constructor-dropdown.module';
-import { ConstructorLookupModule } from '../../shared/components/constructor-lookup/constructor-lookup.module';
-import { ConstructorCheckboxModule } from '../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import {
+  ConstructorCheckboxModule,
+  ConstructorDropdownModule,
+  ConstructorLookupModule,
+  InputErrorModule,
+  MemoModule
+} from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
-import { InputErrorModule } from '../../shared/components/input-error/input-error.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../shared/base.module';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { ConstructorMultilineInputModule } from '../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
-import { MemoModule } from '../../shared/pipes/memo/memo.module';
 import { MultipleChoiceDictionaryModule } from '../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.module';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ComponentItemModule } from './components/component-item/component-item.module';
@@ -49,9 +51,12 @@ import { AddressInputComponent } from './components/address-input/address-input.
 import { FileUploadFormComponent } from './components/file-upload-form/file-upload-form.component';
 import { ComponentListResolverModule } from './component-list-resolver/component-list-resolver.module';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { SearchableDropdownComponent } from './components/searchable-dropdown/searchable-dropdown.component';
 import { DictionaryComponent } from './components/dictionary/dictionary.component';
 import { LookupInputComponent } from './components/lookup-input/lookup-input.component';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
+import { MonthPickerComponent } from './components/month-picker/month-picker.component';
+import { ConstructorMonthPickerModule } from '../../shared/components/constructor-month-picker/constructor-month-picker.module';
 
 @NgModule({
   declarations: [
@@ -61,6 +66,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     MaskedAndPlainInputComponent,
     FormOutputHtmlComponent,
     DateInputComponent,
+    MonthPickerComponent,
     MvdGiacLookupComponent,
     TextAreaComponent,
     MultiChoiceDictionaryComponent,
@@ -72,6 +78,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FileUploadFormComponent,
     AddressInputComponent,
     DropdownComponent,
+    SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
   ],
@@ -91,6 +98,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FieldListModule,
     CurrencyModule,
     ConstructorDatePickerModule,
+    ConstructorMonthPickerModule,
     ConstructorMultilineInputModule,
     MemoModule,
     MultipleChoiceDictionaryModule,
@@ -117,6 +125,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FormOutputHtmlComponent,
     MvdGiacLookupComponent,
     DateInputComponent,
+    MonthPickerComponent,
     TextAreaComponent,
     TimerItemComponent,
     DocInputComponent,
@@ -129,8 +138,9 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
     FileUploadFormComponent,
     AddressInputComponent,
     DropdownComponent,
+    SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
   ],
 })
-export class ComponentsListModule {}
+export class ComponentsListModule { }

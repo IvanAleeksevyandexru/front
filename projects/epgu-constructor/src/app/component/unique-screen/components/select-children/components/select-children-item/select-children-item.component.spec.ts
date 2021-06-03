@@ -5,7 +5,7 @@ import { HealthService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
-import { ConstructorDropdownModule } from '../../../../../../shared/components/constructor-dropdown/constructor-dropdown.module';
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -105,7 +105,7 @@ describe('SelectChildrenItemComponent', () => {
   it('should call selectChildren()', () => {
     jest.spyOn(component, 'selectChildren');
     jest.spyOn(component.selectChildrenEvent, 'emit');
-    const debugEl = fixture.debugElement.query(By.css('epgu-constructor-constructor-dropdown'));
+    const debugEl = fixture.debugElement.query(By.css('epgu-cf-ui-constructor-constructor-dropdown'));
     debugEl.triggerEventHandler('changed', {});
     fixture.detectChanges();
 

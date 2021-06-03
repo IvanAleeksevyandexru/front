@@ -8,7 +8,7 @@ import { MonthYear } from '@epgu/epgu-lib';
 import { EmployeeHistoryFormComponent } from './employee-history-form.component';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMonthPickerModule } from '../../../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
-import { ConstructorCheckboxModule } from '../../../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { ConstructorCheckboxModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
@@ -17,7 +17,6 @@ import { EventBusService } from '../../../../../../core/services/event-bus/event
 import { EmployeeHistoryDescriptionComponent } from '../employee-history-desription/employee-history-description.component';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
-import { MemoModule } from '../../../../../../shared/pipes/memo/memo.module';
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

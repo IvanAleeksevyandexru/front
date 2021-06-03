@@ -36,6 +36,7 @@ import { NotaryInfoComponent } from '../../components/notary-info/notary-info.co
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CarOwnerInfoLinkComponent } from '../../components/car-owner-info-link/car-owner-info-link.component';
 import { configureTestSuite } from 'ng-bullet';
+import { YesNoStrictPipe } from '../../pipes/yes-no-strict.pipe';
 
 describe('CarInfoContainerComponent', () => {
   let component: CarInfoContainerComponent;
@@ -55,12 +56,14 @@ describe('CarInfoContainerComponent', () => {
         NotaryInfoComponent,
         ExpansionLinkComponent,
         YesNoPipe,
+        YesNoStrictPipe,
         ErrorTemplatePipe,
         EnginePowerPipe,
         ModelMarkNamePipe,
         CarDatePipe,
         DefaultValuePipe,
-        EcologyClassPipe
+        EcologyClassPipe,
+        YesNoStrictPipe,
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -73,9 +76,9 @@ describe('CarInfoContainerComponent', () => {
         NavigationService,
       ],
       imports: [
-        BaseModule,
-        BaseComponentsModule,
-        ScreenPadModule,
+        MockModule(BaseModule),
+        MockModule(BaseComponentsModule),
+        MockModule(ScreenPadModule),
         MockModule(DefaultUniqueScreenWrapperModule),
       ],
     }).compileComponents();

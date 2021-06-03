@@ -1,10 +1,17 @@
 import { TestBed } from '@angular/core/testing';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentValidationDto } from '@epgu/epgu-constructor-types';
 
 import { ValidationService } from './validation.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('ValidationService', () => {
   let service: ValidationService;
+  const validations = [
+    {
+      value: '[w.]',
+      errorMsg: 'Недопустимое имя файла',
+    },
+  ] as Array<ComponentValidationDto>;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -18,14 +25,30 @@ describe('ValidationService', () => {
 
   describe('validateImage', () => {
     it('should be return with errors', () => {
-      const expectedValue = { isTypeValid: false, isSizeValid: false, isDPIValid: false };
-      const invalid = service.validateImage('', [], 200, 400);
+      const expectedValue = {
+        isTypeValid: false,
+        isSizeValid: false,
+        isDPIValid: false,
+        fileNameErrorMsg: 'Недопустимое имя файла',
+      };
+      const invalid = service.validateImage('', [], 200, 400, validations);
       expect(invalid).toEqual(expectedValue);
     });
 
     it('should be return without errors', () => {
-      const expectedValue = { isTypeValid: true, isSizeValid: true, isDPIValid: true };
-      const invalid = service.validateImage('file.png', ['JPEG', 'PNG', 'BMP'], 500, 600);
+      const expectedValue = {
+        isTypeValid: true,
+        isSizeValid: true,
+        isDPIValid: true,
+        fileNameErrorMsg: null,
+      };
+      const invalid = service.validateImage(
+        'file.png',
+        ['JPEG', 'PNG', 'BMP'],
+        500,
+        600,
+        validations,
+      );
       expect(invalid).toEqual(expectedValue);
     });
   });
@@ -67,16 +90,41 @@ describe('ValidationService', () => {
   describe('getImageError', () => {
     it('should be return all errors', () => {
       const allowedImgTypes = ['JPEG', 'PNG', 'BMP'];
-      const expectedValue = [['fileType', allowedImgTypes.join(', ')], ['size'], ['dpi']];
-      const errors = service.getImageError(false, false, false, 400, 530, allowedImgTypes);
+      const expectedValue = [
+        ['fileType', allowedImgTypes.join(', ')],
+        ['size'],
+        ['dpi'],
+        ['fileName', 'Недопустимое имя файла'],
+      ];
+      const errors = service.getImageError(
+        false,
+        false,
+        false,
+        400,
+        530,
+        'Недопустимое имя файла',
+        allowedImgTypes,
+      );
       expect(errors).toEqual(expectedValue);
     });
 
     it('should be return common error', () => {
       const allowedImgTypes = ['JPEG', 'PNG', 'BMP'];
       const expectedValue = [['common']];
-      const errors = service.getImageError(true, true, true, 400, 530, allowedImgTypes);
+      const errors = service.getImageError(true, true, true, 400, 530, null, allowedImgTypes);
       expect(errors).toEqual(expectedValue);
+    });
+  });
+
+  describe('validateFileName', () => {
+    it('should be return error', () => {
+      const invalid = service.validateFileName('', validations);
+      expect(invalid).toBe('Недопустимое имя файла');
+    });
+
+    it('should be return null', () => {
+      const valid = service.validateFileName('file.png', validations);
+      expect(valid).toBeNull();
     });
   });
 });

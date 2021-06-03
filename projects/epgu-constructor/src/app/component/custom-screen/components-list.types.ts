@@ -5,7 +5,7 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
-import { NumberMaskOptionsInterface } from '../../shared/pipes/mask-handle/interface/number-mask-options.interface';
+import { NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -21,10 +21,12 @@ export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   Dictionary = 'Dictionary',
   DropDown = 'DropDown',
+  SearchableDropDown = 'SearchableDropDown',
   DropDownDepts = 'DropDownDepts',
   MvdGiac = 'MvdGiac',
   StringInput = 'StringInput',
   DateInput = 'DateInput',
+  MonthPicker = 'MonthPicker',
   RadioInput = 'RadioInput',
   Lookup = 'Lookup',
   AddressInput = 'AddressInput',
@@ -159,6 +161,7 @@ export interface CustomComponentAttr {
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
+    turnOffStartFilter?: boolean;
   };
   image?: ComponentImageDto;
 }
@@ -195,6 +198,7 @@ export interface CustomComponentOutputData {
 export enum DictionaryUrlTypes {
   dictionary = 'dictionary',
   nsiSuggest = 'nsiSuggest',
+  lkApi = 'lkApi',
 }
 
 /**

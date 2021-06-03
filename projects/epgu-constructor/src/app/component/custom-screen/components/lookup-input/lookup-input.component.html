@@ -5,6 +5,7 @@
 >
   <lib-lookup
     epgu-constructor-validation-type
+    [showNotFound]="showNotFound"
     [component]="control.value"
     [id]="control.value.id"
     [invalid]="control.get('value').invalid && control.get('value').touched"
@@ -20,6 +21,7 @@
     [suggest]="suggestions$ | async"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
     [itemsProvider]="provider"
+    [placeholder]="control.value?.attrs?.placeholder"
   >
   </lib-lookup>
 </epgu-constructor-component-item>

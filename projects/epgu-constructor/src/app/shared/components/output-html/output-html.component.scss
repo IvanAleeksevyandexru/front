@@ -78,6 +78,7 @@
   }
 
   ol li::after {
+    @include typ-h6();
     counter-increment: number;
     content: counter(number) '.';
     color: $color-blu-digitale;

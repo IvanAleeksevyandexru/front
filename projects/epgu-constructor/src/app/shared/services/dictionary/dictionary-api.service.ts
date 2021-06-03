@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '../../../core/services/config/config.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
-import { DictionaryOptions } from '@epgu/epgu-constructor-types';
+import { DictionaryOptions, AdditionalRequestParam } from '@epgu/epgu-constructor-types';
 import { DictionaryUrlTypes } from '../../../component/custom-screen/components-list.types';
 
 @Injectable()
@@ -16,6 +16,7 @@ export class DictionaryApiService {
   private dictionaryUrlMap = {
     [DictionaryUrlTypes.dictionary]: (): string => this.config.dictionaryUrl,
     [DictionaryUrlTypes.nsiSuggest]: (): string => this.config.nsiSuggestDictionaryUrl,
+    [DictionaryUrlTypes.lkApi]: (): string => this.config.lkApi,
   };
 
   private dictionaryCache: Record<string, DictionaryResponse> = {};
@@ -109,20 +110,32 @@ export class DictionaryApiService {
   }
 
   private post<T>(path: string, options: DictionaryOptions): Observable<T> {
-    return this.http.post<T>(
-      path,
-      {
-        filter: options.filter,
-        treeFiltering: options.treeFiltering || 'ONELEVEL',
-        pageNum: options.pageNum || 1,
-        pageSize: options.pageSize || '10000',
-        parentRefItemValue: options.parentRefItemValue || '',
-        selectAttributes: options.selectAttributes || ['*'],
-        tx: options.tx || '',
-      },
-      {
-        withCredentials: true,
-      },
-    );
+    const excludedParams = options?.excludedParams;
+    const additionalParams = options?.additionalParams;
+    const payload = {
+      filter: options.filter,
+      treeFiltering: options.treeFiltering || 'ONELEVEL',
+      pageNum: options.pageNum || 1,
+      pageSize: options.pageSize || '10000',
+      parentRefItemValue: options.parentRefItemValue || '',
+      selectAttributes: options.selectAttributes || ['*'],
+      tx: options.tx || '',
+    };
+
+    if (excludedParams && Array.isArray(excludedParams)) {
+      excludedParams.forEach((param: string) => {
+        delete payload[param];
+      });
+    }
+
+    if (additionalParams && Array.isArray(additionalParams)) {
+      additionalParams.forEach((param: AdditionalRequestParam) => {
+        payload[param.name] = param.value;
+      });
+    }
+
+    return this.http.post<T>(path, payload, {
+      withCredentials: true,
+    });
   }
 }

@@ -21,7 +21,7 @@ import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
-import { ConstructorLookupModule } from '../../../../shared/components/constructor-lookup/constructor-lookup.module';
+import { ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
 import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
