@@ -204,8 +204,8 @@ describe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-field-container', () => {
-    const selector = 'epgu-constructor-default-unique-screen-wrapper epgu-constructor-field-container';
+  it('should render epgu-constructor-field-list', () => {
+    const selector = 'epgu-constructor-default-unique-screen-wrapper epgu-constructor-field-list';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
 

@@ -1,21 +1,11 @@
 .wrapper {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.test {
-  width: 30%;
-  min-height: 231px;
-  margin-bottom: 24px;
-  background: green;
-}
-
-.scroll {
-  max-height: 500px;
-  //max-height: calc(100vh - 64px - 368px - 292px - 156px);
-}
-
-.footer {
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -9,7 +9,7 @@ describe('ErrorTemplatePipe', () => {
   });
 
   it('should get an error template by type', () => {
-    expect(pipe.transform(ServiceResult.NOT_FOUND_ERROR)).toEqual({ title:'Данные не найдены', icon: 'info-container-yellow-warning-icon' });
+    expect(pipe.transform(ServiceResult.NOT_FOUND_ERROR)).toEqual({ title:'Данные не найдены', icon: 'info-list-yellow-warning-icon' });
   });
 
   it('should get an empty object if a type is wrong', () => {

@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 const ERROR_TEMPLATE = {
-  NOT_FOUND_ERROR: { title: 'Данные не найдены', icon: 'info-container-yellow-warning-icon' },
-  EXTERNAL_SERVER_ERROR: { title: 'Ошибка загрузки данных', icon: 'info-container-red-warning-icon' },
+  NOT_FOUND_ERROR: { title: 'Данные не найдены', icon: 'info-list-yellow-warning-icon' },
+  EXTERNAL_SERVER_ERROR: { title: 'Ошибка загрузки данных', icon: 'info-list-red-warning-icon' },
 };
 
 @Pipe({

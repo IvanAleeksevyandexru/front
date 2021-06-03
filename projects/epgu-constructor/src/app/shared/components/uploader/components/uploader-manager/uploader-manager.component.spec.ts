@@ -89,7 +89,7 @@ describe('UploaderManagerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be items container', () => {
+  it('should be items list', () => {
     const item = fixture.debugElement.query(By.css('epgu-constructor-uploader-manager-item'))
       ?.nativeElement;
     expect(item).not.toBeNull();

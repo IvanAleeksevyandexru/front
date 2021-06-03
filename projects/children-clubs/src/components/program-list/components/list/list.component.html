@@ -1,20 +1,7 @@
-<perfect-scrollbar
-  [config]="scrollConfig"
-  (psYReachEnd)="addItemsEvent.emit('scroll')"
-  class="scroll"
-  #perfectScroll
->
-  <div *ngFor="let i of list" class="wrapper">
-    <div class="test">{{ i }}</div>
-  </div>
-</perfect-scrollbar>
+<div class="wrapper">
+  <ng-content></ng-content>
+</div>
 
-<!--<div class="scroll" [perfectScrollbar]="scrollConfig" infiniteScroll>-->
-<!--  <div *ngFor="let i of container$ | async" class="wrapper">-->
-<!--    <div class="test">{{ i }}</div>-->
-<!--  </div>-->
-<!--</div>-->
-
-<div class="footer">
-  <lib-button color="white" (click)="addItemsEvent.emit('click')">Показать еще</lib-button>
+<div class="btn">
+  <lib-button color="white" (click)="addItemsEvent.emit()">Показать еще</lib-button>
 </div>

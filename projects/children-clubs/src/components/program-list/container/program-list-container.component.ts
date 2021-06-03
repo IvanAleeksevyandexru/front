@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ProgramListService } from '../program-list.service';
@@ -12,28 +12,18 @@ import { List } from '../program-list.models';
 })
 export class ProgramListContainerComponent {
   list$ = new BehaviorSubject<List>([]);
-  list: List = [];
 
-  constructor(private cdr: ChangeDetectorRef, private listService: ProgramListService) {
-    this.fetchItems('init');
-    // setInterval(() => {
-    //   this.fetchItems('init');
-    // }, 4000)
+  constructor(private listService: ProgramListService) {
+    this.fetchItems();
   }
 
-  fetchItems(event: string): void {
-    console.log(event);
-    this.addItemsToList(this.listService.mockFetchList());
-    // this.listService.fetchList().subscribe((container) => {
-    //   this.addItemsToList(container);
-    // this.perfectScroll.directiveRef.update();
-
-    // this.cdr.detectChanges();
-    // });
+  fetchItems(): void {
+    this.listService.fetchList().subscribe((container) => {
+      this.addItemsToList(container);
+    });
   }
 
   addItemsToList(list: List): void {
-    this.list$.next([...this.list$.getValue(), ...list]);
-    // this.container = this.container.concat(container);
+    this.list$.next(this.list$.getValue().concat(list));
   }
 }

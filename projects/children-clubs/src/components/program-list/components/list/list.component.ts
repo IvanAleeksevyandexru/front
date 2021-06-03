@@ -1,16 +1,13 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
   Output,
   EventEmitter,
-  ViewChild,
-  OnChanges,
-  SimpleChanges,
+  HostListener,
+  Inject,
 } from '@angular/core';
-import { PerfectScrollbarComponent, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { List } from '../../program-list.models';
+import { DOCUMENT } from '@angular/common';
+import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'children-clubs-list',
@@ -18,20 +15,20 @@ import { List } from '../../program-list.models';
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListComponent implements OnChanges {
-  @ViewChild('perfectScroll') perfectScroll: PerfectScrollbarComponent;
-
-  @Input() list: List;
+export class ListComponent {
   @Output() addItemsEvent = new EventEmitter<string>();
-  public scrollConfig: PerfectScrollbarConfigInterface = {
-    suppressScrollX: true,
-    wheelPropagation: false,
-    // minScrollbarLength: 300,
-  };
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.list.firstChange) {
-      this.perfectScroll.directiveRef.update();
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    @Inject(DOCUMENT) private document: Document,
+  ) {}
+
+  @HostListener('window:scroll') scroll(): void {
+    const isBottomPage =
+      this.window.innerHeight + this.window.scrollY === this.document.body.scrollHeight;
+
+    if (isBottomPage) {
+      this.addItemsEvent.emit();
     }
   }
 }
