@@ -7,15 +7,15 @@ import {
   Output,
 } from '@angular/core';
 
-import { FormChangeEvent, PfrAreaType, Simple } from '../../information-center-pfr.models';
+import { FormChangeEvent, PfrAreaType, Simple } from '../../information-center.models';
 
 @Component({
-  selector: 'epgu-constructor-information-center-pfr-simple',
-  templateUrl: './information-center-pfr-simple.component.html',
-  styleUrls: ['./information-center-pfr-simple.component.scss'],
+  selector: 'epgu-constructor-information-center-simple',
+  templateUrl: './information-center-simple.component.html',
+  styleUrls: ['./information-center-simple.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InformationCenterPfrSimpleComponent implements OnInit {
+export class InformationCenterSimpleComponent implements OnInit {
   @Input() simpleData: Simple;
   @Output() formChangeEvent = new EventEmitter<FormChangeEvent>();
 

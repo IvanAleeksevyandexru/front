@@ -4,43 +4,44 @@ import { MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { InformationCenterPfrFullComponent } from './information-center-pfr-full.component';
+import { InformationCenterFullComponent } from './information-center-full.component';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { Full } from '../../information-center-pfr.models';
+import { Full } from '../../information-center.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 
-describe('InformationCenterPfrFullComponent', () => {
-  let component: InformationCenterPfrFullComponent;
-  let fixture: ComponentFixture<InformationCenterPfrFullComponent>;
+describe('InformationCenterFullComponent', () => {
+  let component: InformationCenterFullComponent;
+  let fixture: ComponentFixture<InformationCenterFullComponent>;
   const itemsMock: Full = {
     region: {
       label: 'Регион',
       attributeName: 'parent_attr',
-      condition: 'CONTAINS',
+      condition: 'CONTAINS' as DictionaryConditions,
     },
     district: {
       label: 'Район (Административный центр)',
       attributeName: 'parent_attr',
-      condition: 'EQUALS',
+      condition: 'EQUALS' as DictionaryConditions,
     },
     cityDistrict: {
       label: 'Городской район',
       attributeName: 'parent_attr',
-      condition: 'EQUALS',
+      condition: 'EQUALS' as DictionaryConditions,
     },
     territory: {
       label: 'Территориальный орган',
       attributeName: 'parent_attr',
-      condition: 'CONTAINS',
+      condition: 'CONTAINS' as DictionaryConditions,
     },
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [InformationCenterPfrFullComponent],
+      declarations: [InformationCenterFullComponent],
       imports: [
         MockModule(BaseModule),
         MockModule(BaseComponentsModule),
@@ -48,14 +49,14 @@ describe('InformationCenterPfrFullComponent', () => {
       ],
       providers: [UnsubscribeService, FormBuilder],
     })
-      .overrideComponent(InformationCenterPfrFullComponent, {
+      .overrideComponent(InformationCenterFullComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
       })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InformationCenterPfrFullComponent);
+    fixture = TestBed.createComponent(InformationCenterFullComponent);
     component = fixture.componentInstance;
     component.items = itemsMock;
     component.territoryDictionary = [];
