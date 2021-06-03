@@ -24,7 +24,15 @@ import { NotifierService } from '@epgu/epgu-lib';
     PriorityItemComponent,
     PriorityItemEmptyComponent,
   ],
-  providers: [Icons, PriorityItemsService, NotifierService],
+  providers: [
+    Icons,
+    PriorityItemsService,
+    NotifierService,
+    {
+      provide: 'notifierSetting',
+      useValue: { singleNotifier: true },
+    },
+  ],
   exports: [SelectMapObjectComponent],
   imports: [
     BaseComponentsModule,

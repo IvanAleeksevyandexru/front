@@ -30,6 +30,29 @@
     >
     </epgu-constructor-output-html>
 
+    <ng-container *ngIf="itemsService.maxIsChange">
+      <ng-container *ngIf="itemsService.moreSize$ | async as moreSize">
+        <div *ngIf="moreSize > 0" class="mt-24 mb-24">
+          <epgu-constructor-disclaimer
+            type="error"
+            [title]="'Надо удалить ' + moreSize + ' ' + (plural | pluralize: moreSize)"
+          >
+            Количество доступных садов теперь {{ itemsService.maxKinderGarden }}
+          </epgu-constructor-disclaimer>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="itemsService.items | async as items">
+        <div *ngIf="items.length < itemsService.maxKinderGarden" class="mt-24 mb-24">
+          <epgu-constructor-disclaimer type="info" [title]="'Можно добавить ещё'">
+            Количество доступных садов теперь {{ itemsService.maxKinderGarden }} вместо
+            {{ itemsService.oldMaxKinderGarden }}.
+            <span (click)="selectAction()" class="link-btn select-map">Выбрать на карте</span>
+          </epgu-constructor-disclaimer>
+        </div>
+      </ng-container>
+    </ng-container>
+
     <div *ngIf="itemsService.screenItems | async as items" class="priority-list mt-8">
       <ng-container *ngFor="let item of items; let i = index">
         <epgu-constructor-priority-item
@@ -80,6 +103,15 @@
       >
       </epgu-constructor-constructor-checkbox>
     </div>
+
+    <ng-container *ngIf="itemsService.maxIsChange">
+      <ng-container *ngIf="itemsService.items | async as items">
+        <div *ngIf="items.length > itemsService.maxKinderGarden" class="priority-additional mt-24">
+          Чтобы продолжить, оставьте в списке садов не более {{ itemsService.maxKinderGarden }}.
+          Сейчас их {{ items.length }}
+        </div>
+      </ng-container>
+    </ng-container>
   </div>
 
   <div class="screen-footer">
@@ -95,4 +127,4 @@
     ></epgu-constructor-screen-buttons>
   </ng-template>
 </epgu-constructor-screen-container>
-<lib-notifier></lib-notifier>
+<lib-notifier [id]="notifierId"></lib-notifier>

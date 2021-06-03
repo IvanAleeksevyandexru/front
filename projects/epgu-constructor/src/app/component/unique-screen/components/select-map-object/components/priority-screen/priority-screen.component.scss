@@ -4,7 +4,13 @@
 .form-player__navigation {
   @include navigation-mt();
 }
-
+.priority-additional {
+  color: $color-text-helper;
+}
+.priority-additional,
+.select-map {
+  @include typ-plain-small;
+}
 .head {
   margin-bottom: $navigation-mb;
   display: block;

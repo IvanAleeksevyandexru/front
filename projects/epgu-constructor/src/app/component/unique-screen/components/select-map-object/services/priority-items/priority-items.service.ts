@@ -3,6 +3,12 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { filter, map } from 'rxjs/operators';
 
+export interface CancelContext {
+  index: number;
+  isAdded: boolean;
+  item: DictionaryItem;
+}
+
 @Injectable()
 export class PriorityItemsService {
   status = new BehaviorSubject<boolean>(false);
@@ -16,6 +22,13 @@ export class PriorityItemsService {
   leftItems$ = combineLatest([this.maxKinderGarden$, this.screenItems]).pipe(
     map(() => this.getStep()),
   );
+  moreSize$ = combineLatest([this.maxKinderGarden$, this.items]).pipe(
+    map(([max, items]) => items.length - max),
+  );
+
+  maxIsChange = false;
+  oldMaxKinderGarden = 0;
+
   set maxKinderGarden(max: number) {
     this.maxKinderGarden$$.next(max > 50 ? 50 : max);
   }
@@ -38,7 +51,9 @@ export class PriorityItemsService {
       this.updateScreenItems(items);
     }
   }
-  init(max: number, dictItems: DictionaryItem[]): void {
+  init(oldMax: number, max: number, dictItems: DictionaryItem[]): void {
+    this.maxIsChange = oldMax != max;
+    this.oldMaxKinderGarden = oldMax;
     this.maxKinderGarden = max;
     this.set(dictItems);
   }
@@ -99,13 +114,40 @@ export class PriorityItemsService {
     this.screenItems.next(items);
   }
 
-  remove(item: DictionaryItem): void {
+  cancelByItems(
+    items: DictionaryItem[],
+    context: CancelContext,
+    isLastRemove = false,
+  ): DictionaryItem[] {
+    items.splice(context.index, 0, context.item);
+    if (context.isAdded && isLastRemove) {
+      items.pop();
+    }
+    return items;
+  }
+
+  cancel(context: CancelContext): void {
+    this.updateItems(this.cancelByItems(this.getItems(), context));
+    this.updateScreenItems(this.cancelByItems(this.getScreenItems(), context, true));
+  }
+
+  remove(item: DictionaryItem): CancelContext {
     const size = this.getStep();
+    const result = { index: -1, isAdded: size > 0, item };
+    const index = this.getItems().findIndex(
+      (dictionaryItem) => dictionaryItem?.attributeValues?.CODE === item?.attributeValues?.CODE,
+    );
+    if (index === -1) {
+      return result;
+    }
+    result.index = index;
     this.updateItems(this.removeByItems(this.getItems(), item));
     this.updateScreenItems(this.removeByItems(this.getScreenItems(), item));
     if (size > 0) {
       this.moreBySize(1);
     }
+
+    return result;
   }
 
   removeByItems(items: DictionaryItem[], item: DictionaryItem): DictionaryItem[] {

@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Output, EventEmitter } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { pluck, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { KinderGardenAttrs } from '@epgu/epgu-constructor-types';
 import { FormControl, Validators } from '@angular/forms';
-import { NotifierService } from '@epgu/epgu-lib';
+import { NotifierService, NotifierType } from '@epgu/epgu-lib';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 
@@ -20,8 +20,6 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
   providers: [UnsubscribeService],
 })
 export class PriorityScreenComponent {
-  @Input() changedMaxKinderGarden: boolean;
-
   @Output() selectMap = new EventEmitter<null>();
   @Output() showMap = new EventEmitter<DictionaryItem>();
   @Output() back = new EventEmitter<null>();
@@ -31,6 +29,8 @@ export class PriorityScreenComponent {
   );
 
   controlCheckbox = new FormControl({ value: true, disabled: false }, Validators.required);
+  notifierId = 'NOTIFIERS_CHILDREN_GARDEN';
+  plural = ['сад', 'сада', 'садов'];
 
   changes$ = combineLatest([
     this.itemsService.items,
@@ -69,17 +69,17 @@ export class PriorityScreenComponent {
   }
 
   deleteAction(item: DictionaryItem): void {
-    this.itemsService.remove(item);
-    //
-    // this.notify.success({
-    //   type: NotifierType.Success,
-    //   message: 'Сад убран из списка',
-    //   onAction: () => {
-    //     this.itemsService.remove(item);
-    //   },
-    //   onCancel: () => {},
-    //   notifierId: `REMOVE_${item?.attributeValues?.CODE}`,
-    // });
+    const context = this.itemsService.remove(item);
+    if (context.index === -1) {
+      return;
+    }
+
+    this.notify.success({
+      type: NotifierType.Success,
+      message: 'Сад убран из списка',
+      onCancel: () => this.itemsService.cancel(context),
+      notifierId: this.notifierId,
+    });
   }
 
   handleKeyEvent(event: KeyboardEvent): void {
