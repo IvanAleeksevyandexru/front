@@ -49,7 +49,6 @@ import { UtilsService } from './services/utils/utils.service';
       deps: [SmuEventsService, CookieService],
       multi: true,
     },
-  ]
+  ],
 })
-export class CoreUiModule { }
-
+export class CoreUiModule {}

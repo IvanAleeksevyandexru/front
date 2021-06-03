@@ -31,7 +31,8 @@ export class ListComponent implements OnInit {
   }
 
   getList(): void {
-    const params = this.filterPanelStorage.get();
-    console.log(params);
+    // TODO: доделать, а пока закоментил, чтобы линтер не ругался
+    // const params = this.filterPanelStorage.get();
+    // console.log(params);
   }
 }

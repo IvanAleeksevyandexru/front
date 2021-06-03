@@ -29,6 +29,8 @@ import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { CustomComponent } from '../../component/custom-screen/components-list.types';
+import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
+import { ComponentsListFormService } from '../../component/custom-screen/services/components-list-form/components-list-form.service';
 
 const displayMock = {
   id: 's113',
@@ -163,6 +165,8 @@ describe('RepeatableScreenComponent', () => {
         EventBusService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         CachedAnswersService,
+        UniquenessErrorsService,
+        ComponentsListFormService,
       ],
     }).compileComponents();
   });
@@ -262,7 +266,7 @@ describe('RepeatableScreenComponent', () => {
       spyOn<any>(component, 'createScreen').and.callFake(jest.fn());
 
       const screens: { [key: string]: CustomComponent[] } = {};
-      for (let i = 0; i < screensCount; i+=1) {
+      for (let i = 0; i < screensCount; i += 1) {
         screens[`custom${i}`] = [{} as CustomComponent];
       }
 
