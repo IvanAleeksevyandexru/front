@@ -1,7 +1,5 @@
 import { ValidationShowOn } from '@epgu/epgu-lib';
-
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
