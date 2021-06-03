@@ -15,7 +15,7 @@ import { fromEvent, merge, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
+import { ComponentUploadedFileDto, ComponentValidationDto } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
@@ -44,6 +44,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   @Input() allowedImgTypes: string[];
   @Input() startToUploadPhoto: { isStart: boolean };
   @Input() startToChangeCroppedImageUrl: { isStart: boolean };
+  @Input() validations: Array<ComponentValidationDto>;
   @Output() uploadPhotoToServerEvent = new EventEmitter<ComponentUploadedFileDto>();
   @Output() croppedImageUrlEvent = new EventEmitter<string>();
 
@@ -235,14 +236,20 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   private validateImage(): void {
     const { width, height, src } = this.imageValidator;
 
-    const { isTypeValid, isSizeValid, isDPIValid } = this.validationService.validateImage(
+    const {
+      isTypeValid,
+      isSizeValid,
+      isDPIValid,
+      fileNameErrorMsg,
+    } = this.validationService.validateImage(
       this.fileName,
       this.allowedImgTypes,
       width,
       height,
+      this.validations,
     );
 
-    if (isTypeValid && isSizeValid && isDPIValid) {
+    if (isTypeValid && isSizeValid && isDPIValid && !fileNameErrorMsg) {
       this.img$.next({ imageObjectUrl: src });
       return;
     }
@@ -253,6 +260,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
       isDPIValid,
       width,
       height,
+      fileNameErrorMsg,
       this.allowedImgTypes,
     );
 

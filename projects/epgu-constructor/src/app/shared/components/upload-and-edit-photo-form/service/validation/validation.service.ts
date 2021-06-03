@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { minSize, printImgPx, recommendedDPI } from '../../upload-and-edit-photo-form.constant';
+import { ComponentValidationDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ValidationService {
@@ -9,15 +10,18 @@ export class ValidationService {
     allowedImgTypes: string[],
     width: number,
     height: number,
+    validations: Array<ComponentValidationDto>,
   ): {
     isTypeValid: boolean;
     isSizeValid: boolean;
     isDPIValid: boolean;
+    fileNameErrorMsg: string | null;
   } {
     return {
       isTypeValid: this.isTypeValid(allowedImgTypes, fileName),
       isSizeValid: this.isSizeValid(width, height),
       isDPIValid: this.isDPIValid(height),
+      fileNameErrorMsg: this.validateFileName(fileName, validations),
     };
   }
 
@@ -48,6 +52,7 @@ export class ValidationService {
     isDPIValid: boolean,
     width: number,
     height: number,
+    fileNameErrorMsg: string | null,
     allowedImgTypes: string[],
   ): string[][] {
     const imageErrors = [];
@@ -60,9 +65,20 @@ export class ValidationService {
     if (!isDPIValid) {
       imageErrors.push(['dpi']);
     }
+    if (!!fileNameErrorMsg) {
+      imageErrors.push(['fileName', fileNameErrorMsg]);
+    }
     if (!imageErrors.length) {
       imageErrors.push(['common']);
     }
     return imageErrors;
+  }
+
+  validateFileName(fileName: string, validations?: Array<ComponentValidationDto>): string | null {
+    if (!validations || validations.length === 0) return null;
+
+    return (
+      validations.find(({ value }) => !new RegExp(value).test(fileName))?.errorMsg || null
+    );
   }
 }
