@@ -16,8 +16,8 @@ cache: &global_cache
 stages:
   - install
   - postinstall
-  - ui-kit-build
   - code-quality
+  - ui-kit-build
   - children-clubs-build
   - library-build
   - library-publish
@@ -55,6 +55,7 @@ Pre-build:
 
 Lint:
   stage: code-quality
+  allow_failure: true
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
@@ -63,7 +64,7 @@ Lint:
     policy: pull
   script:
     - echo -e "##########\nlint\n##########"
-    - yarn lint || true
+    - yarn lint
     - echo -e "##########\ndone\n##########"
   only:
     - merge_requests
@@ -72,6 +73,7 @@ Lint:
 
 Test:
   stage: code-quality
+  allow_failure: true
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
@@ -80,7 +82,7 @@ Test:
     policy: pull
   script:
     - echo -e "##########\ntest\n##########"
-    - yarn test:coverage || true
+    - yarn test:coverage
     - echo -e "##########\ndone\n##########"
   artifacts:
     reports:
