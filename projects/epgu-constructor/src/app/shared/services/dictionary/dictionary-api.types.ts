@@ -101,3 +101,16 @@ export interface DadataNormalizeResponse {
   tax_office: string;
   unparsedParts: string;
 }
+
+export interface DadataKinderGarten {
+  CODE: string;
+  TITLE: string;
+  REGOKATO: string;
+  ADDRESS: string;
+  FIAS: string;
+  PHONE?: string;
+  EMAIL?: string;
+  SCHEDULE?: string;
+  WEBSITE?: string;
+  OKTMO: string;
+}

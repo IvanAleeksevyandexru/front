@@ -1,0 +1,98 @@
+<div class="head form-player__navigation">
+  <div class="head__inner container">
+    <button
+      class="head__left link-btn"
+      name="prev"
+      (click)="backAction()"
+      (keydown)="handleKeyEvent($event)"
+    >
+      <div class="icon-arrow icon-arrow--left icon-arrow--back"></div>
+      <span>Назад</span>
+    </button>
+  </div>
+</div>
+<epgu-constructor-screen-container
+  *ngIf="attrs$ | async as attrs"
+  [show-nav]="false"
+  class="questions-screen"
+  [ngClass]="screenService.displayCssClass$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="attrs?.header" class="">
+      {{ attrs?.header }}
+    </epgu-constructor-page-name>
+    <epgu-constructor-output-html
+      class="quiz__description"
+      *ngIf="attrs?.label"
+      [html]="attrs?.label | imgPrefixer"
+      [clarifications]="attrs?.attrs?.clarifications"
+    >
+    </epgu-constructor-output-html>
+
+    <div *ngIf="itemsService.screenItems | async as items" class="priority-list mt-8">
+      <ng-container *ngFor="let item of items; let i = index">
+        <epgu-constructor-priority-item
+          *ngIf="item !== null"
+          [data]="item"
+          [isUp]="i !== 0"
+          [isDown]="!!items[i + 1]"
+          [index]="i + 1"
+          (delete)="deleteAction($event)"
+          (up)="upAction($event)"
+          (down)="downAction($event)"
+          (showMap)="showAction($event)"
+        ></epgu-constructor-priority-item>
+        <epgu-constructor-priority-item-empty
+          *ngIf="item === null"
+          (selectItem)="selectAction()"
+          [index]="i + 1"
+        ></epgu-constructor-priority-item-empty>
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          itemsService.maxKinderGarden > 6 ||
+          itemsService.maxKinderGarden < (itemsService.items | async).length
+        "
+      >
+        <div
+          (click)="moreAction()"
+          *ngIf="(itemsService.leftItems$ | async) > 0"
+          class="link-btn mt-24"
+        >
+          Показать еще {{ itemsService.leftItems$ | async }}
+        </div>
+        <div
+          (click)="rollUpAction()"
+          *ngIf="(itemsService.leftItems$ | async) <= 0"
+          class="link-btn mt-24"
+        >
+          Свернуть
+        </div>
+      </ng-container>
+    </div>
+    <div class="moreGarden mt-24">
+      <epgu-constructor-constructor-checkbox
+        [labelText]="attrs?.checkboxLabel"
+        checkboxId="moreGarden"
+        [control]="controlCheckbox"
+      >
+      </epgu-constructor-constructor-checkbox>
+    </div>
+  </div>
+
+  <div class="screen-footer">
+    <ng-container *ngTemplateOutlet="screenButtons"></ng-container>
+  </div>
+  <ng-template #screenButtons>
+    <epgu-constructor-screen-buttons
+      class="screen-buttons"
+      *ngIf="attrs?.buttons?.length"
+      [screenButtons]="attrs?.buttons"
+      [disabled]="itemsService.disabled$$ | async"
+      [isLoading]="screenService.isLoading$ | async"
+    ></epgu-constructor-screen-buttons>
+  </ng-template>
+</epgu-constructor-screen-container>
+<lib-notifier></lib-notifier>

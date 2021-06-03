@@ -10,6 +10,15 @@ import { ConfirmUserDataStyle } from './confirm-user-data';
 import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
+import { ScreenButton } from './screen-buttons';
+
+export interface KinderGardenAttrs {
+  header?: string;
+  label?: string;
+  checkboxLabel?: string;
+  buttons?: Array<ScreenButton>;
+  attrs?: ComponentAttrsDto;
+}
 
 export interface ComponentAttrsDto {
   actions?: Array<ComponentActionDto>;
@@ -121,6 +130,7 @@ export interface ComponentAttrsDto {
   isSelectButtonHidden?: boolean;
   expandAllChildrenBlocks?: boolean;
   disclaimer?: DisclaimerDto;
+  mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
 }
 
 export interface DisclaimerDto {

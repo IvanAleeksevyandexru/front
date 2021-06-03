@@ -1,0 +1,72 @@
+<epgu-cf-ui-constructor-screen-pad>
+  <div class="priority-header mb-12">
+    <div class="priority-header__index">{{ index }}</div>
+    <div class="priority-header__actions">
+      <div
+        (click)="downAction()"
+        [ngClass]="{ disabled: !isDown }"
+        class="priority-header__action down"
+      >
+        <img [src]="arrowPath" alt="Опустить" />
+      </div>
+      <div (click)="upAction()" [ngClass]="{ disabled: !isUp }" class="priority-header__action up">
+        <img [src]="arrowPath" alt="Поднять" />
+      </div>
+    </div>
+  </div>
+  <div *ngIf="index > itemsService.maxKinderGarden" class="priority-info mb-24">
+    <div class="priority-info__title mb-4">Этот сад не поместился</div>
+    <div class="priority-info__description">
+      Оставьте в списке садов не более {{ itemsService.maxKinderGarden }}
+    </div>
+  </div>
+  <div class="priority-content mb-8">
+    <div
+      class="priority-description"
+      *ngIf="data.attributeValues?.TITLE"
+      [ngClass]="{ active: isShowDetails }"
+    >
+      {{ data.attributeValues?.TITLE }}
+    </div>
+    <div class="priority-details" *ngIf="isShowDetails">
+      <div class="priority-details__address mt-12">{{ data.attributeValues?.ADDRESS }}</div>
+      <div (click)="showAction()" class="priority-details__show-map link-btn mt-4">На карте</div>
+      <div class="priority-detail" *ngIf="data.attributeValues?.PHONE">
+        <div class="priority-detail__label mt-12">Телефон</div>
+        <div class="priority-detail__value mb-4">{{ data.attributeValues?.PHONE }}</div>
+      </div>
+      <div class="priority-detail" *ngIf="data.attributeValues?.EMAIL">
+        <div class="priority-detail__label mt-12">Email</div>
+        <div class="priority-detail__value mb-4">{{ data.attributeValues?.EMAIL }}</div>
+      </div>
+      <div class="priority-detail" *ngIf="data.attributeValues?.SCHEDULE">
+        <div class="priority-detail__label mt-12">Режим работы</div>
+        <div class="priority-detail__value mb-4">{{ data.attributeValues?.SCHEDULE }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="priority-actions">
+    <div
+      (click)="toggleShowDetails()"
+      *ngIf="isShowDetails"
+      class="priority-action less-details link-btn"
+    >
+      Свернуть
+    </div>
+    <div
+      (click)="toggleShowDetails()"
+      *ngIf="!isShowDetails"
+      class="priority-action more-details link-btn"
+    >
+      Подробнее
+    </div>
+    <div
+      (click)="deleteAction()"
+      [ngClass]="{ max: index > itemsService.maxKinderGarden }"
+      class="priority-action delete link-btn"
+    >
+      Удалить
+    </div>
+  </div>
+</epgu-cf-ui-constructor-screen-pad>
