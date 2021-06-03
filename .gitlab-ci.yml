@@ -55,7 +55,6 @@ Pre-build:
 
 Lint:
   stage: code-quality
-  allow_failure: true
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
@@ -73,7 +72,6 @@ Lint:
 
 Test:
   stage: code-quality
-  allow_failure: true
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
