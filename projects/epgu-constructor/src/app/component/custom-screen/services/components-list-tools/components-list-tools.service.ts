@@ -18,17 +18,17 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.DocInput,
   ];
 
-  constructor() {}
+  constructor() { }
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
 
     if (typeof component.value === 'string' && component.value.length) {
       return this.parseValue(component.value, isDateAndValue, component.type);
-    } else if (typeof component.presetValue === 'string' && component.presetValue.length) {
-      return this.parseValue(component.presetValue, isDateAndValue, component.type);
     } else if (component.value) {
       return component.value;
+    } else if (typeof component.presetValue === 'string' && component.presetValue.length) {
+      return this.parseValue(component.presetValue, isDateAndValue, component.type);
     } else if (!isUndefined(component.attrs.defaultValue)) {
       return this.parseValue(
         (component.attrs.defaultValue as unknown) as string,
