@@ -56,6 +56,7 @@ describe('CarInfoContainerComponent', () => {
         NotaryInfoComponent,
         ExpansionLinkComponent,
         YesNoPipe,
+        YesNoStrictPipe,
         ErrorTemplatePipe,
         EnginePowerPipe,
         ModelMarkNamePipe,

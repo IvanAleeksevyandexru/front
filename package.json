@@ -21,7 +21,7 @@
     "lib:build": "ng build epgu-constructor --prod",
     "lib:cf:watch": "yarn wait-types && yarn wait-ui-kit && ng build epgu-constructor --watch",
     "lib:build:ivy": "ng build epgu-constructor",
-    "lib:watch": "yarn clean && concurrently --restart-tries 10 -n \"TYPE,UI-KIT,CHILDREN-CLUBS,CF\" \"yarn lib:type:watch\" \"yarn lib:ui-kit:watch\" \"yarn lib:children-clubs:watch\" \"yarn lib:cf:watch\"",
+    "lib:watch": "yarn clean && concurrently -k --restart-tries 10 -n \"TYPE,UI-KIT,CHILDREN-CLUBS,CF\" \"yarn lib:type:watch\" \"yarn lib:ui-kit:watch\" \"yarn lib:children-clubs:watch\" \"yarn lib:cf:watch\"",
     "lib:test": "ng test epgu-constructor",
     "lib:lint": "yarn workspaces run lint",
     "lib:lint:fix": "yarn workspaces run lint:fix",
@@ -44,8 +44,8 @@
     "wait-children-clubs": "wait-on dist/children-clubs/package.json",
     "wait-cf": "wait-on dist/epgu-constructor/package.json",
     "clean": "rimraf dist && rimraf projects/epgu-constructor-types/dist",
-    "watch:all": "yarn clean && concurrently --restart-tries 10 -n \"CONFIG,LIB,START\" \"yarn start:config\" \"yarn lib:watch\" \"yarn wait-cf && yarn start\"",
-    "build:dev:all": "yarn clean && concurrently -n \"CONFIG,BUILD AND START\" \"yarn start:config\" \"yarn lib:type:build && yarn lib:ui-kit:build:dev && yarn lib:children-clubs:build:dev && yarn lib:build:ivy && yarn start\""
+    "watch:all": "yarn clean && concurrently -k --restart-tries 10 -n \"CONFIG,LIB,START\" \"yarn start:config\" \"yarn lib:watch\" \"yarn wait-cf && yarn start\"",
+    "build:dev:all": "yarn clean && concurrently -k -n \"CONFIG,BUILD AND START\" \"yarn start:config\" \"yarn lib:type:build && yarn lib:ui-kit:build:dev && yarn lib:children-clubs:build:dev && yarn lib:build:ivy && yarn start\""
   },
   "private": true,
   "husky": {
@@ -140,7 +140,7 @@
     "eslint": "^7.18.0",
     "eslint-config-airbnb-typescript": "9.0.0",
     "eslint-config-prettier": "6.11.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "2.23.4",
     "eslint-plugin-prettier": "3.1.4",
     "husky": "4.2.5",
     "jest": "^26.4.2",
