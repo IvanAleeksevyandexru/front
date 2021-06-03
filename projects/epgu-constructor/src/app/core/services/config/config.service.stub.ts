@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Config, MockApi, TimeSlotsApi } from './config.types';
+import { AppPathMap, Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
@@ -34,6 +34,7 @@ export class ConfigServiceStub implements Config {
   _oplataUrl = 'oplataUrl';
 
   _isLoaded$ = of(false);
+  _appPathMap = {};
 
   constructor() {
     this._timeSlots = {
@@ -197,6 +198,10 @@ export class ConfigServiceStub implements Config {
 
   get oplataUrl(): string {
     return this._oplataUrl;
+  }
+
+  get appPathMap(): AppPathMap {
+    return this._appPathMap;
   }
 
   initCore(): void { }

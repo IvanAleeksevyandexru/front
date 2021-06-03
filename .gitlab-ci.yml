@@ -53,7 +53,7 @@ Pre-build:
     - master
     - stage
 
-Lint-test-dry:
+Lint:
   stage: code-quality
   except:
     variables:
@@ -64,12 +64,24 @@ Lint-test-dry:
   script:
     - echo -e "##########\nlint\n##########"
     - yarn lint || true
+    - echo -e "##########\ndone\n##########"
+  only:
+    - merge_requests
+    - master
+    - stage
+
+Test:
+  stage: code-quality
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
     - echo -e "##########\ntest\n##########"
     - yarn test:coverage || true
-    - echo -e "#########\ndry\n##########"
-    - yarn test:dry || true
     - echo -e "##########\ndone\n##########"
-  allow_failure: true
   artifacts:
     reports:
       cobertura: coverage/jest/cobertura-coverage.xml

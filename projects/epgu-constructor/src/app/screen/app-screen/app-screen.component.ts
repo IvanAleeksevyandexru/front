@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { CfAppStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { InputAppDto, OutputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
+
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screen-base';
-
 import { ConfigService } from '../../core/services/config/config.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { ConfigService } from '../../core/services/config/config.service';
 export class AppScreenComponent extends ScreenBase implements OnInit {
   constructor(
     public injector: Injector,
-    private cfSpaStateService: CfSpaStateService,
+    private cfAppStateService: CfAppStateService,
     private locationService: LocationService,
     private configService: ConfigService,
   ) {
@@ -23,21 +23,32 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
   }
 
   ngOnInit(): void {
-    const outputSpaData = this.cfSpaStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
+    const outputSpaData = this.cfAppStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
 
     if (outputSpaData) {
-      this.handleOutputSpaData(outputSpaData);
+      this.handleOutputAppData(outputSpaData);
     } else {
-      this.sendDataToSpa();
-      this.redirectToSpa();
+      this.sendDataToApp();
+      this.redirectToApp();
     }
   }
 
-  private handleOutputSpaData(outputSpaData: OutputAppDto): void {
-    // TODO: add checking output id and type logic
+  private handleOutputAppData(outputSpaData: OutputAppDto): void {
+    const componentId = this.screenService.component.id;
+    const componentType = this.screenService.component.type;
+    const outputComponentId = outputSpaData.componentId;
+    const outputComponentType = outputSpaData.componentType;
+    const { isPrevStepCase } = outputSpaData;
+
+    if (componentId !== outputComponentId || componentType !== outputComponentType) {
+      throw new Error(
+        `Looks like we have some issues. Current component id: ${componentId} and type ${componentType},
+         but output data has component id ${outputComponentId} and type ${outputComponentType}`,
+      );
+    }
 
     const { value } = outputSpaData;
-    const componentId = this.screenService.component.id;
+
     const navigation = {
       payload: {
         [componentId]: {
@@ -46,28 +57,40 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
         },
       },
     };
-    this.navigationService.next(navigation);
+
+    if (isPrevStepCase) {
+      this.navigationService.prev(navigation);
+    } else {
+      this.navigationService.next(navigation);
+    }
   }
 
-  private sendDataToSpa(): void {
-    const spaInputState = this.getSpaInputState();
-    this.cfSpaStateService.setState(spaInputState, DataDirectionType.INPUT);
+  private sendDataToApp(): void {
+    const spaInputState = this.getAppInputState();
+    this.cfAppStateService.setState(spaInputState, DataDirectionType.INPUT);
   }
 
-  private getSpaInputState(): InputAppDto {
+  private getAppInputState(): InputAppDto {
+    const { component } = this.screenService;
     return {
-      componentId: this.screenService.component.id,
-      componentType: this.screenService.componentType,
-      value: this.screenService.component.value,
+      componentId: component.id,
+      componentType: component.type,
+      value: component.value,
       callbackRedirectUrl: this.locationService.getHref(),
-      isPrevStepCase: false, // TODO: добавить логику для передачи параметра
+      isPrevStepCase: !!this.screenService.isPrevStepCase,
     };
   }
 
-  private redirectToSpa(): void {
+  private redirectToApp(): void {
     const { appPathMap } = this.configService;
-    const appPath = appPathMap[this.screenService.componentType];
-    // TODO: добавить логику на проверку наличия пути
+    const appPath = appPathMap[this.screenService.component.type];
+
+    if (!appPath) {
+      throw new Error(
+        `Looks like we have wrong settings for component type: ${this.screenService.component.type}. Need to set app url.`,
+      );
+    }
+
     this.locationService.href(appPath);
   }
 }

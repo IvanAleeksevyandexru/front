@@ -9,7 +9,9 @@
   },
   "peerDependencies": {
     "@angular/common": "^11.0.0",
-    "@angular/core": "^11.0.0"
+    "@angular/core": "^11.0.0",
+    "@angular/forms": "^11.0.0",
+    "@epgu/epgu-lib": "0.1.2"
   },
   "dependencies": {
     "@epgu/epgu-constructor-types": "16.1.1",

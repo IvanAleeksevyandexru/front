@@ -62,7 +62,8 @@ describe('CarInfoContainerComponent', () => {
         ModelMarkNamePipe,
         CarDatePipe,
         DefaultValuePipe,
-        EcologyClassPipe
+        EcologyClassPipe,
+        YesNoStrictPipe,
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -75,9 +76,9 @@ describe('CarInfoContainerComponent', () => {
         NavigationService,
       ],
       imports: [
-        BaseModule,
-        BaseComponentsModule,
-        ScreenPadModule,
+        MockModule(BaseModule),
+        MockModule(BaseComponentsModule),
+        MockModule(ScreenPadModule),
         MockModule(DefaultUniqueScreenWrapperModule),
       ],
     }).compileComponents();

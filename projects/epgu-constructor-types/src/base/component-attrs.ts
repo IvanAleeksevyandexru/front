@@ -131,6 +131,7 @@ export interface ComponentAttrsDto {
   expandAllChildrenBlocks?: boolean;
   disclaimer?: DisclaimerDto;
   mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
+  hideCloneButton?: boolean;
   ignoreRootParams?: Array<string>;
 }
 

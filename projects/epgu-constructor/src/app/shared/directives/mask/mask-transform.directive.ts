@@ -1,7 +1,6 @@
 import { Directive, HostListener, Input, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { numberMaskDefaultOptions, MASKS } from '../../pipes/mask-handle/mask.constant';
-import { NumberMaskOptionsInterface } from '../../pipes/mask-handle/interface/number-mask-options.interface';
+import { numberMaskDefaultOptions, MASKS, NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
 import { NgControl } from '@angular/forms';
 
 @Directive({

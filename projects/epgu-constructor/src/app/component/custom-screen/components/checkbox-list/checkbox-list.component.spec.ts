@@ -4,7 +4,7 @@ import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angul
 import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { CheckboxListComponent } from './checkbox-list.component';
-import { ConstructorCheckboxModule } from '../../../../shared/components/constructor-checkbox/constructor-checkbox.module';
+import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';

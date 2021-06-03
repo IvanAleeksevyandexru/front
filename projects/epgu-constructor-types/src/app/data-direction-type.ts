@@ -8,5 +8,5 @@ export enum DataDirectionType {
   OUTPUT = 'OUTPUT',
 }
 
-export const SPA_INPUT_KEY = 'SPA_INPUT';
-export const SPA_OUTPUT_KEY = 'SPA_OUTPUT';
+export const APP_INPUT_KEY = 'APP_INPUT';
+export const APP_OUTPUT_KEY = 'APP_OUTPUT';

@@ -63,9 +63,9 @@
           ></epgu-constructor-constructor-plain-input>
         </ng-container>
 
-        <epgu-constructor-helper-text *ngIf="field.hint" class="item__helper-text">{{
+        <epgu-cf-ui-constructor-helper-text *ngIf="field.hint" class="item__helper-text">{{
           field.hint
-        }}</epgu-constructor-helper-text>
+        }}</epgu-cf-ui-constructor-helper-text>
       </div>
       <div class="error" *ngIf="error$ | async as errorText">
         <small>{{ errorText }}</small>
