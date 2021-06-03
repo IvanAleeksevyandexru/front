@@ -1,16 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
+import { EpguLibModule } from '@epgu/epgu-lib';
 
 import { ProgramListContainerComponent } from './program-list-container.component';
+import { ProgramListService } from '../program-list.service';
+import { ListComponent } from '../components/list/list.component';
+import { configureTestSuite } from 'ng-bullet';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
   let fixture: ComponentFixture<ProgramListContainerComponent>;
 
-  beforeEach(async () => {
+  configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProgramListContainerComponent ]
-    })
-    .compileComponents();
+      declarations: [ProgramListContainerComponent, MockComponent(ListComponent)],
+      imports: [EpguLibModule],
+      providers: [ProgramListService],
+    }).compileComponents();
   });
 
   beforeEach(() => {

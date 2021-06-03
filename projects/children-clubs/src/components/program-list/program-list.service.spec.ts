@@ -1,12 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+import { configureTestSuite } from 'ng-bullet';
 
 import { ProgramListService } from './program-list.service';
 
 describe('ProgramListService', () => {
   let service: ProgramListService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
+  configureTestSuite(() => {
+    TestBed.configureTestingModule({
+      providers: [ProgramListService],
+    });
     service = TestBed.inject(ProgramListService);
   });
 
