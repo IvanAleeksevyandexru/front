@@ -201,9 +201,9 @@ describe('CustomScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-components-list', () => {
+  it('should render epgu-constructor-components-container', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-components-list';
+      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-components-container';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -239,9 +239,9 @@ describe('CustomScreenComponent', () => {
     expect(debugEl.componentInstance.errors).toBe(componentErrors);
   });
 
-  it('should call changeComponentsList() on epgu-constructor-components-list changes() event', () => {
+  it('should call changeComponentsList() on epgu-constructor-components-container changes() event', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-components-list';
+      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-components-container';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 

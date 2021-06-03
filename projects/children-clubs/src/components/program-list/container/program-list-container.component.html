@@ -1,0 +1,10 @@
+{{ (list$ | async)?.length }}
+
+<children-clubs-list
+  [list]="list$ | async"
+  (addItemsEvent)="fetchItems($event)"
+></children-clubs-list>
+
+
+
+

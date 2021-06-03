@@ -116,7 +116,7 @@ describe('SelectChildrenItemComponent', () => {
   it('should call updateChild()', () => {
     jest.spyOn(component, 'updateChild');
     jest.spyOn(component.updateChildEvent, 'emit');
-    const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-list'));
+    const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-container'));
     debugEl.triggerEventHandler('changes', {});
     fixture.detectChanges();
 
@@ -127,7 +127,7 @@ describe('SelectChildrenItemComponent', () => {
   it('should call updateItemValueAndValidity()', () => {
     jest.spyOn(component, 'updateItemValueAndValidity');
     jest.spyOn(component.updateItemValueAndValidityEvent, 'emit');
-    const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-list'));
+    const debugEl = fixture.debugElement.query(By.css('epgu-constructor-components-container'));
     debugEl.triggerEventHandler('emitFormStatus', {});
     fixture.detectChanges();
 
