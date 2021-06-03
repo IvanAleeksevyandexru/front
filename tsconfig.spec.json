@@ -11,9 +11,7 @@
     ],
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"],
-      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"],
-      "@epgu/children-clubs": ["dist/children-clubs"]
+      "@ifc/common": ["node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"]
     }
   },
   "files": [

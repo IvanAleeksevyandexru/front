@@ -280,7 +280,7 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     params?: Array<AdditionalRequestParam>,
   ): Array<AdditionalRequestParam> {
-    return params.map((param: AdditionalRequestParam) => ({ 
+    return params.map((param: AdditionalRequestParam) => ({
       value: param?.type === AdditionalRequestType.ref ? this.getValueViaRef(screenStore.applicantAnswers, param.value) : param.value,
       name: param?.name,
       type: param?.type,
@@ -299,7 +299,7 @@ export class DictionaryToolsService {
     return items.map((item) => ({
       originalItem: item,
       id: (isRoot ? utils.getObjectProperty(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
-      text: (isRoot ? utils.getObjectProperty(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title,
+      text: `${(isRoot ? utils.getObjectProperty(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title}`,
     }));
   }
 
@@ -326,9 +326,11 @@ export class DictionaryToolsService {
   }
 
   public isDropdownLike(type: CustomScreenComponentTypes): boolean {
-    return (
-      type === CustomScreenComponentTypes.DropDown || type === CustomScreenComponentTypes.MvdGiac
-    );
+    return [
+      CustomScreenComponentTypes.DropDown,
+      CustomScreenComponentTypes.SearchableDropDown,
+      CustomScreenComponentTypes.MvdGiac,
+    ].includes(type);
   }
 
   public isResultEmpty(component: CustomComponent): boolean {
@@ -446,7 +448,7 @@ export class DictionaryToolsService {
       const itemCode = item.code || item?.value || `${itemText}-${index}`;
       return {
         id: itemCode,
-        text: itemText,
+        text: `${itemText}`,
         unselectable: !!item.disable,
         originalItem: item,
         compare: (): boolean => false,
