@@ -1,0 +1,5 @@
+<children-clubs-list (addItemsEvent)="fetchItems()">
+  <div *ngFor="let item of list$ | async" class="item">
+    <div class="item-mock">{{ item }}</div>
+  </div>
+</children-clubs-list>
