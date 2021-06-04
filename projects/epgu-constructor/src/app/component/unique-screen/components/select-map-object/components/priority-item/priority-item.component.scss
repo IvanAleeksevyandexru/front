@@ -31,6 +31,7 @@
     height: 24px;
     border-radius: 24px;
     background: $color-active-item;
+    border: none;
     &.up {
       margin-left: 16px;
       img {
@@ -74,12 +75,6 @@
   .priority-action {
     @include typ-plain-small;
     &.delete {
-      //color: $color-bg-disabled;
-      //&:hover,
-      //&:focus,
-      //&:active {
-      //  color: $color-bg-disabled;
-      //}
       &.max {
         color: $color-tela-rossa;
       }

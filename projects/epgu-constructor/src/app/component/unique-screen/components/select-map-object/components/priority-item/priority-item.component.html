@@ -1,20 +1,24 @@
-<epgu-cf-ui-constructor-screen-pad>
+<epgu-cf-ui-constructor-screen-pad *ngIf="maxKinderGarden$ | async as maxKinderGarden">
   <div class="priority-header mb-12">
     <div class="priority-header__index">{{ index }}</div>
     <div class="priority-header__actions">
-      <div
+      <button
         (click)="downAction()"
         [ngClass]="{ disabled: !isDown }"
         class="priority-header__action down"
       >
         <img [src]="arrowPath" alt="Опустить" />
-      </div>
-      <div (click)="upAction()" [ngClass]="{ disabled: !isUp }" class="priority-header__action up">
+      </button>
+      <button
+        (click)="upAction()"
+        [ngClass]="{ disabled: !isUp }"
+        class="priority-header__action up"
+      >
         <img [src]="arrowPath" alt="Поднять" />
-      </div>
+      </button>
     </div>
   </div>
-  <div *ngIf="index > itemsService.maxKinderGarden" class="priority-info mb-24">
+  <div *ngIf="index > maxKinderGarden" class="priority-info mb-24">
     <div class="priority-info__title mb-4">Этот сад не поместился</div>
     <div class="priority-info__description">
       Оставьте в списке садов не более {{ itemsService.maxKinderGarden }}
@@ -29,44 +33,48 @@
       {{ data.attributeValues?.TITLE }}
     </div>
     <div class="priority-details" *ngIf="isShowDetails">
-      <div class="priority-details__address mt-12">{{ data.attributeValues?.ADDRESS }}</div>
-      <div (click)="showAction()" class="priority-details__show-map link-btn mt-4">На карте</div>
+      <div *ngIf="data.attributeValues?.ADDRESS" class="priority-details__address mt-12">
+        {{ data.attributeValues.ADDRESS }}
+      </div>
+      <button (click)="showAction()" class="priority-details__show-map link-btn mt-4">
+        На карте
+      </button>
       <div class="priority-detail" *ngIf="data.attributeValues?.PHONE">
         <div class="priority-detail__label mt-12">Телефон</div>
-        <div class="priority-detail__value mb-4">{{ data.attributeValues?.PHONE }}</div>
+        <div class="priority-detail__value mb-4">{{ data.attributeValues.PHONE }}</div>
       </div>
       <div class="priority-detail" *ngIf="data.attributeValues?.EMAIL">
         <div class="priority-detail__label mt-12">Email</div>
-        <div class="priority-detail__value mb-4">{{ data.attributeValues?.EMAIL }}</div>
+        <div class="priority-detail__value mb-4">{{ data.attributeValues.EMAIL }}</div>
       </div>
       <div class="priority-detail" *ngIf="data.attributeValues?.SCHEDULE">
         <div class="priority-detail__label mt-12">Режим работы</div>
-        <div class="priority-detail__value mb-4">{{ data.attributeValues?.SCHEDULE }}</div>
+        <div class="priority-detail__value mb-4">{{ data.attributeValues.SCHEDULE }}</div>
       </div>
     </div>
   </div>
 
   <div class="priority-actions">
-    <div
+    <button
       (click)="toggleShowDetails()"
       *ngIf="isShowDetails"
       class="priority-action less-details link-btn"
     >
       Свернуть
-    </div>
-    <div
+    </button>
+    <button
       (click)="toggleShowDetails()"
       *ngIf="!isShowDetails"
       class="priority-action more-details link-btn"
     >
       Подробнее
-    </div>
-    <div
+    </button>
+    <button
       (click)="deleteAction()"
-      [ngClass]="{ max: index > itemsService.maxKinderGarden }"
+      [ngClass]="{ max: index > maxKinderGarden }"
       class="priority-action delete link-btn"
     >
       Удалить
-    </div>
+    </button>
   </div>
 </epgu-cf-ui-constructor-screen-pad>

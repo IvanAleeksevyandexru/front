@@ -23,6 +23,8 @@ export class PriorityItemComponent {
   isShowDetails = false;
   arrowPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/arrow-down-white.svg`;
 
+  maxKinderGarden$ = this.itemsService.maxKinderGarden$;
+
   constructor(public itemsService: PriorityItemsService, public config: ConfigService) {}
 
   toggleShowDetails(): void {

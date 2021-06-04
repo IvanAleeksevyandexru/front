@@ -26,8 +26,17 @@ export class PriorityItemsService {
     map(([max, items]) => items.length - max),
   );
 
-  maxIsChange = false;
-  oldMaxKinderGarden = 0;
+  oldMaxKinderGarden$$ = new BehaviorSubject<number>(null);
+  oldMaxKinderGarden$ = this.oldMaxKinderGarden$$.pipe(filter((status) => !!status));
+  maxIsChange$ = combineLatest([this.oldMaxKinderGarden$, this.maxKinderGarden$]).pipe(
+    map(([old, now]) => old !== now),
+  );
+  set oldMaxKinderGarden(max: number) {
+    this.oldMaxKinderGarden$$.next(max > 50 ? 50 : max);
+  }
+  get oldMaxKinderGarden(): number {
+    return this.oldMaxKinderGarden$$.getValue();
+  }
 
   set maxKinderGarden(max: number) {
     this.maxKinderGarden$$.next(max > 50 ? 50 : max);
@@ -43,16 +52,16 @@ export class PriorityItemsService {
   set(dictItems: DictionaryItem[]): void {
     const items = [...dictItems];
     this.items.next(items);
-    if (items.length > this.getInitSize()) {
-      this.updateScreenItems(items.slice(0, this.getInitSize()));
+    const size = this.getInitSize();
+    if (items.length > size) {
+      this.updateScreenItems(items.slice(0, size));
     } else if (items.length < 6) {
-      this.updateScreenItems(items.concat(new Array(this.getInitSize() - items.length).fill(null)));
+      this.updateScreenItems(items.concat(new Array(size - items.length).fill(null)));
     } else {
       this.updateScreenItems(items);
     }
   }
   init(oldMax: number, max: number, dictItems: DictionaryItem[]): void {
-    this.maxIsChange = oldMax != max;
     this.oldMaxKinderGarden = oldMax;
     this.maxKinderGarden = max;
     this.set(dictItems);
@@ -65,7 +74,7 @@ export class PriorityItemsService {
     if (selectedSize > this.maxKinderGarden) {
       add = selectedSize - this.maxKinderGarden;
     }
-    let diff = this.maxKinderGarden - items.length + add;
+    const diff = this.maxKinderGarden - items.length + add;
     return diff > 10 ? 10 : diff;
   }
 

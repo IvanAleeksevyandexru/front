@@ -24,6 +24,17 @@ export class PriorityScreenComponent {
   @Output() showMap = new EventEmitter<DictionaryItem>();
   @Output() back = new EventEmitter<null>();
 
+  displayCssClass$ = this.screenService.displayCssClass$;
+  moreSize$ = this.itemsService.moreSize$;
+  items$ = this.itemsService.items;
+  maxKinderGarden$ = this.itemsService.maxKinderGarden$;
+  oldMaxKinderGarden$ = this.itemsService.oldMaxKinderGarden$;
+  screenItems$ = this.itemsService.screenItems;
+  leftItems$ = this.itemsService.leftItems$;
+  disabled$ = this.itemsService.disabled$$;
+  isLoading$ = this.screenService.isLoading$;
+  maxIsChange$ = this.itemsService.maxIsChange$;
+
   attrs$: Observable<KinderGardenAttrs> = this.screenService.component$.pipe(
     pluck('attrs', 'mapKinderGardenPriorityAttrs'),
   );
@@ -54,6 +65,7 @@ export class PriorityScreenComponent {
     public unsubscribeService: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
   ) {}
+
   backAction(): void {
     this.back.emit();
   }
@@ -88,12 +100,15 @@ export class PriorityScreenComponent {
       this.backAction();
     }
   }
+
   selectAction(): void {
     this.selectMap.emit();
   }
+
   rollUpAction(): void {
     this.itemsService.reset();
   }
+
   moreAction(): void {
     this.itemsService.more();
   }
