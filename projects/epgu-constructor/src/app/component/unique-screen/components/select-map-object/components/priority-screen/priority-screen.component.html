@@ -102,12 +102,12 @@
         </ng-container>
 
         <ng-container *ngIf="maxKinderGarden > 6 || maxKinderGarden < items.length">
-          <div (click)="moreAction()" *ngIf="leftItems > 0" class="link-btn mt-24">
+          <button (click)="moreAction()" *ngIf="leftItems > 0" class="link-btn mt-24">
             Показать еще {{ leftItems }}
-          </div>
-          <div (click)="rollUpAction()" *ngIf="leftItems <= 0" class="link-btn mt-24">
+          </button>
+          <button (click)="rollUpAction()" *ngIf="leftItems <= 0" class="link-btn mt-24">
             Свернуть
-          </div>
+          </button>
         </ng-container>
       </div>
       <div class="moreGarden mt-24">
