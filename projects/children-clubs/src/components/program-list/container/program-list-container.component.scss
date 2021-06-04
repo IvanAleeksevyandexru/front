@@ -1,0 +1,14 @@
+.item-mock {
+  min-height: 231px;
+  background: rgb(66, 245, 84);
+  width: 100%;
+}
+
+.item {
+  margin-bottom: 24px;
+  width: 592px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
