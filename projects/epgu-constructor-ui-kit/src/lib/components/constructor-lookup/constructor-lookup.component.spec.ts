@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormControlDirective } from '@angular/forms';
-import {LookupProvider, ValidationShowOn} from '@epgu/epgu-lib';
+import { LookupProvider, ValidationShowOn } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
 import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { BaseModule } from '../../base.module';
