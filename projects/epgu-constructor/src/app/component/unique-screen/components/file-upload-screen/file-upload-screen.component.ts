@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
@@ -85,7 +85,6 @@ export class FileUploadScreenComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
     private modalService: ModalService,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   toCSVUploader(upload: FileUploadItem): FileUploadItem {
