@@ -11,4 +11,4 @@
   </ng-template>
 </div>
 
-<button class="link-btn mt-16" (click)="toggle()">{{ hidden ? labels.show : labels.hide}}</button>
+<button class="link-btn mt-16" (click)="toggle()" *ngIf="isButtonShow()">{{ hidden ? labels.show : labels.hide}}</button>

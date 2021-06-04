@@ -45,7 +45,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
    * Словарь для хранения массива компонентов
    */
   screens: { [key: string]: CustomComponent[] };
-  screensBuf: { [key: string]: CustomComponent[] };
   propData: DisplayDto;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     map((label) => label || 'Добавить данные'),
@@ -171,43 +170,18 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     }
 
     const { attrs } = this.propData.components[0];
-
     const getScreenComponents = (components: unknown[], isFirst: boolean): CustomComponent[] =>
       (components as CustomComponent[]).filter(({ attrs: { onlyFirstScreen = isFirst } }) =>
         isFirst ? onlyFirstScreen : !onlyFirstScreen,
       );
 
     if (isDuplicate) {
-      // костыль, нужен, чтобы не терялись поля, не являющиеся примитивом
-      // полностью пересоздаем весь набор скринов для сохранения ссылочной структуры
-      this.screensBuf = { ...this.screens };
-      this.screens = {};
-      let iterator = 0;
-
-      Object.keys(this.screensBuf).forEach((key) => {
-        if (this.screensBuf[key]) {
-          this.screensBuf[key].forEach((screen) => {
-            screen.value = this.getState()[iterator][screen.id]; // eslint-disable-line no-param-reassign
-          });
-          this.setNewScreen(getScreenComponents(this.screensBuf[key], iterator < 0));
-          iterator += 1;
-        }
+      this.setNewScreen(getScreenComponents(attrs.components, false));
+    } else {
+      attrs.repeatableComponents.forEach((component, i) => {
+        this.setNewScreen(getScreenComponents(component, i < 1) as CustomComponent[]);
       });
-
-      // важно, чтобы новый скрин не был перезаписан
-      const components = getScreenComponents(attrs.components, false).map((component) => ({
-        ...component,
-      }));
-      components.forEach((component) => {
-        component.value = ''; // eslint-disable-line no-param-reassign
-      });
-      this.setNewScreen(components);
-      return;
     }
-
-    attrs.repeatableComponents.forEach((component, i) => {
-      this.setNewScreen(getScreenComponents(component, i < 1) as CustomComponent[]);
-    });
   }
 
   private setNewScreen(components: CustomComponent[]): void {

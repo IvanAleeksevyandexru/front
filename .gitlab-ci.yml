@@ -16,8 +16,8 @@ cache: &global_cache
 stages:
   - install
   - postinstall
-  - ui-kit-build
   - code-quality
+  - ui-kit-build
   - children-clubs-build
   - library-build
   - library-publish
@@ -63,7 +63,7 @@ Lint:
     policy: pull
   script:
     - echo -e "##########\nlint\n##########"
-    - yarn lint || true
+    - yarn lint
     - echo -e "##########\ndone\n##########"
   only:
     - merge_requests
@@ -80,7 +80,7 @@ Test:
     policy: pull
   script:
     - echo -e "##########\ntest\n##########"
-    - yarn test:coverage || true
+    - yarn test:coverage
     - echo -e "##########\ndone\n##########"
   artifacts:
     reports:

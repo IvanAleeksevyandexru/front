@@ -124,8 +124,5 @@ module.exports = {
         "max-len": ["error", { "code": 180, ignorePattern: '^import .*' }],
       }
     }
-  ],
-  settings: {
-    "import/core-modules": ["rxjs/operators"]
-  }
+  ]
 };

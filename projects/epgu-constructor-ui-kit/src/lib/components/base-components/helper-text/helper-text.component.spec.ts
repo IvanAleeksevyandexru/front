@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
 import { HelperTextComponent } from './helper-text.component';
 import { configureTestSuite } from 'ng-bullet';
 
@@ -32,7 +31,7 @@ describe('HelperTextComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 
-  it('component should render passed text', () => {
+  it('should render passed content', () => {
     const helperText = fixture.debugElement
       .query(By.css('.helper-text')).nativeElement.textContent;
     expect(helperText).toEqual(helperTextMock);
