@@ -34,7 +34,7 @@
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",
     "test:dry": "jscpd projects/epgu-constructor --silent --ignore \"**/*.min.js,**/*.map,**/*.spec.ts,**/*.module.ts,**/*.stub.ts\" --format \"javascript,scss,typescript\" --threshold 0",
     "test:dry:dev": "jscpd projects/epgu-constructor --reporters json,html,console --blame --ignore \"**/*.min.js,**/*.map,**/*.spec.ts,**/*.module.ts,**/*.stub.ts\" --format \"javascript,scss,typescript\" --threshold 0",
-    "ci": "yarn lib:type:build && yarn lint && yarn stylelint && yarn test && yarn lib:build:ivy && yarn lib:build && yarn build",
+    "ci": "yarn clean && yarn lint && yarn stylelint && yarn test && yarn lib:type:build && yarn lib:ui-kit:build && yarn lib:children-clubs:build && yarn lib:build && yarn build",
     "release": "standard-version",
     "generate-lib-version-ts": "node scripts/version.js",
     "e2e": "ng e2e",
