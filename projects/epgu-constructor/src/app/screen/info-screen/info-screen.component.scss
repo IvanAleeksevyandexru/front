@@ -13,10 +13,6 @@
 
   &__submit {
     text-align: center;
-    @include tablets-down {
-      padding-top: 24px;
-      margin-top: auto;
-    }
   }
 }
 
@@ -43,7 +39,8 @@
   }
 }
 
-.info-screen--solution-page {
+.info-screen--solution-page,
+.info-screen--solution-page-2 {
   & > .info__submit > ::ng-deep .screen-button {
     margin-top: 40px;
     @include tablets-down {
