@@ -137,6 +137,8 @@ describe('RepeatableScreenComponent', () => {
 
   let eventBusService: EventBusService;
   let screenService: ScreenService;
+  let navigationService: NavigationService;
+  let cachedAnswersService: CachedAnswersService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -168,6 +170,8 @@ describe('RepeatableScreenComponent', () => {
     screenService = TestBed.inject(ScreenService);
     screenService.display = displayMock;
     eventBusService = TestBed.inject(EventBusService);
+    navigationService = TestBed.inject(NavigationService);
+    cachedAnswersService = TestBed.inject(CachedAnswersService);
     fixture = TestBed.createComponent(RepeatableScreenComponent);
     component = fixture.componentInstance;
     screenService.buttons = [];
@@ -283,6 +287,14 @@ describe('RepeatableScreenComponent', () => {
     it('should not allow to add new copy when repeatAmount is less or equal than screens count and bigger than default value', () => {
       setup(25, 22);
       expect(component.isScreensAvailable()).toBeTruthy();
+    });
+  });
+
+  describe('cachedValues', () => {
+    it('should be remove', () => {
+      jest.spyOn(cachedAnswersService, 'removeValueFromLocalStorage');
+      navigationService.next(null);
+      expect(cachedAnswersService.removeValueFromLocalStorage).toHaveBeenCalled();
     });
   });
 });
