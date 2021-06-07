@@ -1,0 +1,83 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+:host {
+  margin-top: 16px;
+  display: block;
+  color: $color-summer-night;
+  @include typ-plain-small;
+}
+.priority-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  .priority-header__index {
+    @include typ-h5;
+  }
+  .priority-header__actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .priority-header__action {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    background: $color-active-item;
+    border: none;
+    &.up {
+      margin-left: 16px;
+      img {
+        transform: rotate(180deg);
+      }
+    }
+    &.disabled {
+      pointer-events: none;
+      background: $color-bg-disabled;
+    }
+  }
+}
+
+.priority-description {
+  &.active {
+    font-weight: $fw-bold;
+  }
+}
+.priority-details {
+  .priority-detail {
+    .priority-detail__label {
+      font-weight: $fw-bold;
+    }
+    .priority-detail__value:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+.priority-info__title {
+  color: $color-tela-rossa;
+}
+.priority-info__description {
+  color: $color-text-helper;
+}
+
+.priority-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  .priority-action {
+    @include typ-plain-small;
+    &.delete {
+      &.max {
+        color: $color-tela-rossa;
+      }
+    }
+  }
+}

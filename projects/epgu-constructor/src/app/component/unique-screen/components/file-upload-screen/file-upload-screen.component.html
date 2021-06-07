@@ -1,47 +1,29 @@
-<ng-container
-  *ngTemplateOutlet="
-    contentComponent;
-    context: {
-      isLoading: isLoading$ | async,
-      header: header$ | async,
-      data: data$ | async,
-      disabled: disabled$ | async,
-      buttons: screenService.buttons$ | async
-    }
-  "
-></ng-container>
-
-<ng-template
-  #contentComponent
-  let-isLoading="isLoading"
-  let-header="header"
-  let-disabled="disabled"
-  let-buttons="buttons"
-  let-data="data"
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-  <epgu-constructor-screen-container
-    [show-nav]="screenService.showNav$ | async"
-    [class.screen-container-mt]="!(screenService.showNav$ | async)"
-  >
-    <div class="screen-body">
-      <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
+  <div *ngIf="data$ | async as data" class="screen-body">
+    <epgu-constructor-page-name *ngIf="header$ | async as header">{{
+      header
+    }}</epgu-constructor-page-name>
 
-      <epgu-constructor-file-upload
-        [objectId]="screenService.orderIdAsString$ | async"
-        [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
-        [attributes]="$any(data).attrs"
-      >
-      </epgu-constructor-file-upload>
-    </div>
+    <epgu-constructor-file-upload
+      [objectId]="screenService.orderIdAsString$ | async"
+      [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+      [attributes]="$any(data).attrs"
+    >
+    </epgu-constructor-file-upload>
+  </div>
 
-    <div class="screen-footer">
+  <div class="screen-footer">
+    <ng-container *ngIf="screenService.buttons$ | async as buttons">
       <epgu-constructor-screen-buttons
         class="screen-buttons"
         *ngIf="buttons.length"
         [screenButtons]="buttons"
-        [isLoading]="isLoading"
-        [disabled]="disabled"
+        [isLoading]="isLoading$ | async"
+        [disabled]="disabled$ | async"
       ></epgu-constructor-screen-buttons>
-    </div>
-  </epgu-constructor-screen-container>
-</ng-template>
+    </ng-container>
+  </div>
+</epgu-constructor-screen-container>
