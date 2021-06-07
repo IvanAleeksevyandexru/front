@@ -174,7 +174,10 @@ export interface CancelAction {
   type: OperationType;
   item: FileItem;
 }
-export type OperationHandler = (operation: Operation) => Observable<void>;
+export type OperationHandler = (
+  operation: Operation,
+  oldStatus: FileItemStatus,
+) => Observable<void>;
 export interface Operation {
   type: OperationType;
   cancel: BehaviorSubject<boolean>; // Если сюда отправить true операция будет отменена

@@ -13,6 +13,7 @@ import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import {
   catchError,
   concatMap,
+  distinctUntilChanged,
   filter,
   finalize,
   map,
@@ -33,11 +34,17 @@ import { UploadedFile } from '../../../../../core/services/terra-byte-api/terra-
 @Injectable()
 export class UploaderProcessService {
   operations: Record<string, Operation> = {};
+  counter = new BehaviorSubject<number>(0);
+  processing$ = this.counter.pipe(
+    map((counter) => counter > 0),
+    distinctUntilChanged(),
+  );
 
   stream = new Subject<Operation>();
   stream$ = this.stream.pipe(
+    tap(() => this.increment()),
     mergeMap((operation: Operation) => {
-      const { item, cancel, handler, type } = operation;
+      const { item, handler, type } = operation;
       const { status: fileStatus } = item;
       const id = this.getOperationId(type, item);
 
@@ -45,16 +52,11 @@ export class UploaderProcessService {
         return of(undefined);
       }
       this.operations[id] = operation;
-      return handler(operation).pipe(
-        takeUntil(
-          cancel.pipe(
-            filter((status) => status),
-            tap(() => this.store.changeStatus(item, fileStatus)),
-          ),
-        ),
+      return handler(operation, fileStatus).pipe(
         catchError(() => of(undefined)),
         finalize(() => {
           delete this.operations[id];
+          this.decrement();
         }),
       );
     }),
@@ -67,6 +69,15 @@ export class UploaderProcessService {
     private stat: UploaderStatService,
     private validation: UploaderValidationService,
   ) {}
+
+  increment(): void {
+    this.counter.next(this.counter.getValue() + 1);
+  }
+
+  decrement(): void {
+    this.counter.next(this.counter.getValue() - 1);
+  }
+
   createOperation(type: OperationType, item: FileItem, handler: OperationHandler): void {
     const operation = {
       type,
@@ -85,7 +96,7 @@ export class UploaderProcessService {
     this.createOperation(OperationType.upload, file, this.uploadOperation.bind(this));
   }
 
-  uploadOperation({ item, cancel }: Operation): Observable<void> {
+  uploadOperation({ item, cancel }: Operation, oldStatus: FileItemStatus): Observable<void> {
     const options = item.createUploadOptions(
       this.uploader.objectId,
       UPLOAD_OBJECT_TYPE,
@@ -114,6 +125,7 @@ export class UploaderProcessService {
       takeUntil(
         cancel.pipe(
           filter((status) => status),
+          tap(() => this.store.changeStatus(item, oldStatus)),
           tap(() => this.store.remove(item)),
           tap(() => this.stat.decrementLimitByFileItem(item)),
         ),
@@ -125,7 +137,7 @@ export class UploaderProcessService {
     this.createOperation(OperationType.delete, file, this.deleteOperation.bind(this));
   }
 
-  deleteOperation({ item }: Operation): Observable<void> {
+  deleteOperation({ item, cancel }: Operation, oldStatus: FileItemStatus): Observable<void> {
     const { status } = item;
 
     return of(item).pipe(
@@ -144,6 +156,12 @@ export class UploaderProcessService {
       }),
       tap(() => this.store.remove(item)),
       mapTo(null),
+      takeUntil(
+        cancel.pipe(
+          filter((status) => status),
+          tap(() => this.store.changeStatus(item, oldStatus)),
+        ),
+      ),
     );
   }
 
@@ -151,7 +169,7 @@ export class UploaderProcessService {
     this.createOperation(OperationType.prepare, file, this.prepareOperation.bind(this));
   }
 
-  prepareOperation({ item, cancel }: Operation): Observable<void> {
+  prepareOperation({ item, cancel }: Operation, oldStatus: FileItemStatus): Observable<void> {
     return of(item).pipe(
       tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.preparation)),
       concatMap((file: FileItem) => this.validation.prepare(file)),
@@ -161,6 +179,7 @@ export class UploaderProcessService {
       takeUntil(
         cancel.pipe(
           filter((status) => status),
+          tap(() => this.store.changeStatus(item, oldStatus)),
           tap(() => this.store.remove(item)),
         ),
       ),
@@ -171,7 +190,7 @@ export class UploaderProcessService {
     this.createOperation(OperationType.download, file, this.downloadOperation.bind(this));
   }
 
-  downloadOperation({ item }: Operation): Observable<void> {
+  downloadOperation({ item, cancel }: Operation, oldStatus: FileItemStatus): Observable<void> {
     const { status } = item;
 
     return of(item).pipe(
@@ -188,6 +207,12 @@ export class UploaderProcessService {
         this.store.changeStatus(item, status);
       }),
       map(() => undefined),
+      takeUntil(
+        cancel.pipe(
+          filter((status) => status),
+          tap(() => this.store.changeStatus(item, oldStatus)),
+        ),
+      ),
     );
   }
 
