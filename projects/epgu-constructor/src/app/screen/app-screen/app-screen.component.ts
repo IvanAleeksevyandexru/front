@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { CfAppStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { InputAppDto, OutputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
+import {
+  InputAppDto,
+  OutputAppDto,
+  DataDirectionType,
+  AppTypes,
+} from '@epgu/epgu-constructor-types';
 
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ScreenBase } from '../screen-base';
@@ -37,7 +42,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     const componentId = this.screenService.component.id;
     const componentType = this.screenService.component.type;
     const outputComponentId = outputSpaData.componentId;
-    const outputComponentType = outputSpaData.componentType;
+    const outputComponentType = outputSpaData.componentType as string;
     const { isPrevStepCase } = outputSpaData;
 
     if (componentId !== outputComponentId || componentType !== outputComponentType) {
@@ -74,7 +79,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     const { component } = this.screenService;
     return {
       componentId: component.id,
-      componentType: component.type,
+      componentType: component.type as AppTypes,
       value: component.value,
       callbackRedirectUrl: this.locationService.getHref(),
       isPrevStepCase: !!this.screenService.isPrevStepCase,
