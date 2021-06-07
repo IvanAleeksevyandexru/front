@@ -6,6 +6,7 @@ import { AppStateStore } from './app-state.store';
 
 @Injectable()
 export class AppStateQuery<T, U>  extends Query<AppState<T, U>> {
+  store$: Observable<AppState<T, U>> = this.select();
   value$: Observable<T> = this.select('value');
   state$: Observable<U> = this.select('state');
 

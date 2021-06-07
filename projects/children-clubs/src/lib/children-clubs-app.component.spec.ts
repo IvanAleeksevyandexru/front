@@ -10,6 +10,8 @@ import {
   AppStateServiceStub,
   AppStateQuery,
   AppStateQueryStub,
+  LocalStorageService,
+  LocalStorageServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 
@@ -27,6 +29,8 @@ describe('ChildrenClubsComponent', () => {
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: CfAppStateService, useClass: CfAppStateServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ]
     })
     .compileComponents();
