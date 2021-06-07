@@ -121,13 +121,10 @@ export class MedicalReferralsListContainerComponent {
       medicalReferralsResponse.error === null ||
       medicalReferralsResponse.error?.errorDetail.errorCode === 0
     ) {
-      return medicalReferralsResponse.items.map((item) => {
-        const attributes = item.attributes.reduce((cur, prev) => {
-          return { [prev.name]: prev.value, ...cur };
-        }, {}) as Referral;
-
-        return { ...attributes, originalItem: item };
-      });
+      return medicalReferralsResponse.items.map((item) => ({
+        ...item.convertedAttributes,
+        originalItem: item,
+      }));
     }
 
     this.showError(medicalReferralsResponse.error?.errorDetail?.errorMessage);
