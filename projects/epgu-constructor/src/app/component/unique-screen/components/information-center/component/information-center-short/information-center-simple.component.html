@@ -1,0 +1,4 @@
+<epgu-constructor-output-html [html]="simpleData.html" class="item"></epgu-constructor-output-html>
+
+<div class="label" [innerHTML]="simpleData.label | safe: 'html'"></div>
+<div class="text" [innerHTML]="simpleData.items[0].text | safe: 'html'"></div>

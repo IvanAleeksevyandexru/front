@@ -22,6 +22,7 @@ export enum UniqueScreenComponentTypes {
   paymentTypeSelector = 'PaymentTypeSelector',
   cityDepartment = 'CityDepartment',
   informationCenterPfr = 'InformationCenterPfr',
+  informationCenterFss = 'InformationCenterFss',
   informationCenterPfrSop = 'InformationCenterPfrSop',
   fieldList = 'FieldList',
   confirmPersonalUserRegReadOnlyAddr = 'ConfirmPersonalUserRegReadOnlyAddr',
