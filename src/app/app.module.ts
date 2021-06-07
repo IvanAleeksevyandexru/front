@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 import '@angular/common/locales/global/ru';
 import { ChildrenClubsModule } from 'dist/children-clubs';
 import { ChildrenClubsContainerComponent } from './children-clubs-container/children-clubs-container.component';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ChildrenClubsContainerComponent } from './children-clubs-container/chil
     FormPlayerModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
   ],
   providers: [
     CookieService,

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -68,7 +68,8 @@ export class FileUploadScreenComponent implements OnInit {
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
-  disabled$ = new BehaviorSubject<boolean>(true);
+  disabled$$ = new BehaviorSubject<boolean>(true);
+  disabled$ = this.disabled$$.pipe(distinctUntilChanged());
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
@@ -84,7 +85,6 @@ export class FileUploadScreenComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
     private modalService: ModalService,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   toCSVUploader(upload: FileUploadItem): FileUploadItem {
@@ -100,7 +100,6 @@ export class FileUploadScreenComponent implements OnInit {
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
         this.handleNewValueSet(payload);
         this.currentAnswersService.state = this.value;
-        this.cdr.markForCheck();
       });
   }
 
@@ -139,7 +138,7 @@ export class FileUploadScreenComponent implements OnInit {
      * Или
      * 2. Если не все файлы загрузились на терабайт
      */
-    this.disabled$.next(
+    this.disabled$$.next(
       !(
         this.isEveryUploaderHasFile(this.value.uploads) &&
         this.isAllFilesUploaded(this.value.uploads)

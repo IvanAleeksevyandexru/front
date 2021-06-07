@@ -62,7 +62,7 @@
 }
 
 @mixin line {
-  content: "";
+  content: '';
   display: inline-block;
   margin-right: 8px;
   width: 24px;
@@ -81,6 +81,12 @@
 .red-line {
   &::before {
     background-image: url('../assets/icons/svg/red-line.svg');
+    @include line;
+  }
+}
+.gray-line {
+  &::before {
+    background-image: url('../assets/icons/svg/gray-line.svg');
     @include line;
   }
 }

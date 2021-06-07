@@ -6,6 +6,10 @@ export * from './lib/epgu-cf-ui-kit.module';
 export * from './lib/base.module';
 
 // Components
+
+export * from './lib/components/app-base/app-base.module';
+export * from './lib/components/app-base/app-base.component';
+
 export * from './lib/components/base-components/base-components.module';
 export * from './lib/components/base-components/helper-text/helper-text.component';
 
@@ -70,6 +74,13 @@ export * from './lib/services/location/location.service';
 export * from './lib/services/location/location.service.stub';
 
 export * from './lib/services/text-transform/text-transform.service';
+
+export * from './lib/services/app-state/app-state.module';
+export * from './lib/services/app-state/app-state.store';
+export * from './lib/services/app-state/app-state.service';
+export * from './lib/services/app-state/app-state.query';
+export * from './lib/services/app-state/app-state.query.stub';
+export * from './lib/services/app-state/app-state.service.stub';
 
 
 

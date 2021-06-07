@@ -7,13 +7,13 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-cf-ui-constructor-screen-pad>
-    <epgu-constructor-information-center-pfr-simple
+    <epgu-constructor-information-center-simple
       *ngIf="data.attrs.simple.items.length === 1"
       [simpleData]="data.attrs.simple"
       (formChangeEvent)="changeForm($event)"
-    ></epgu-constructor-information-center-pfr-simple>
+    ></epgu-constructor-information-center-simple>
 
-    <epgu-constructor-information-center-pfr-full
+    <epgu-constructor-information-center-full
       *ngIf="data.attrs.simple.items.length !== 1"
       [items]="data.attrs.full"
       [cachedValue]="data.value"
@@ -23,6 +23,6 @@
       [territoryDictionary]="territoryDictionary$ | async"
       (selectEvent)="fetchDictionary($event)"
       (formChangeEvent)="changeForm($event)"
-    ></epgu-constructor-information-center-pfr-full>
+    ></epgu-constructor-information-center-full>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

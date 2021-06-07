@@ -15,8 +15,7 @@ describe('ConstructorLookupComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
       imports: [BaseModule],
-      providers: [
-      ],
+      providers: [],
     }).compileComponents();
   });
 
@@ -96,13 +95,13 @@ describe('ConstructorLookupComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     debugEl.triggerEventHandler('changed', {
       id: 1,
-      text: 'some text'
+      text: 'some text',
     });
 
     expect(component.changed.emit).toBeCalledTimes(1);
     expect(component.changed.emit).toBeCalledWith({
       id: 1,
-      text: 'some text'
+      text: 'some text',
     });
   });
 });

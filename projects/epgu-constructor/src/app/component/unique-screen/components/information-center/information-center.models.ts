@@ -22,7 +22,7 @@ export interface Simple {
   html: string;
 }
 
-export interface InformationCenterPfrAttrs {
+export interface InformationCenterAttrs {
   full: Full;
   simple: Simple;
   dictionaryType: string;
@@ -33,7 +33,7 @@ export interface InformationCenterPfr {
   type: UniqueScreenComponentTypes;
   label: string;
   value: string;
-  attrs: InformationCenterPfrAttrs;
+  attrs: InformationCenterAttrs;
 }
 
 export interface SelectEvent {

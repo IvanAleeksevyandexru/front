@@ -18,17 +18,17 @@ import {
   Full,
   PfrAreaType,
   SelectEvent,
-} from '../../information-center-pfr.models';
+} from '../../information-center.models';
 import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
-  selector: 'epgu-constructor-information-center-pfr-full',
-  templateUrl: './information-center-pfr-full.component.html',
-  styleUrls: ['./information-center-pfr-full.component.scss'],
+  selector: 'epgu-constructor-information-center-full',
+  templateUrl: './information-center-full.component.html',
+  styleUrls: ['./information-center-full.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class InformationCenterPfrFullComponent implements OnInit, OnChanges {
+export class InformationCenterFullComponent implements OnInit, OnChanges {
   @Input() items: Full;
   @Input() regionDictionary: Array<ListElement>;
   @Input() districtDictionary: Array<ListElement>;
