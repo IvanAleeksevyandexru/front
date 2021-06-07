@@ -1,11 +1,9 @@
 {
+  "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "lib": [
-      "es6"
+    "types": [
+      "node"
     ],
-    "target": "es5",
-    "experimentalDecorators": true,
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"],
@@ -14,13 +12,5 @@
       "@epgu/children-clubs": ["projects/children-clubs/src/public-api"],
       "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"]
     }
-  },
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+  }
 }

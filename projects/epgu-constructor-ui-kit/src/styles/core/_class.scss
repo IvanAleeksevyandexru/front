@@ -73,14 +73,14 @@
 
 .yellow-line {
   &::before {
-    background-image: url('../assets/icons/svg/yellow-line.svg');
+    background-image: url('/ui-kit-assets/icons/svg/yellow-line.svg');
     @include line;
   }
 }
 
 .red-line {
   &::before {
-    background-image: url('../assets/icons/svg/red-line.svg');
+    background-image: url('/ui-kit-assets/icons/svg/red-line.svg');
     @include line;
   }
 }

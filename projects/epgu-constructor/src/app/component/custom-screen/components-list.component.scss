@@ -7,14 +7,14 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
-  margin-left: math.div(-$screen-pad-16, 2);
-  margin-right: math.div(-$screen-pad-16, 2);
+  margin-left: calc( #{-$screen-pad-16} / 2);
+  margin-right: calc( #{-$screen-pad-16} / 2);
   &__item {
     @include flex-container();
     justify-content: flex-start;
     flex: 1 1 100%;
-    margin-left: math.div($screen-pad-16, 2);
-    margin-right: math.div($screen-pad-16, 2);
+    margin-left: calc( #{$screen-pad-16} / 2);
+    margin-right: calc( #{$screen-pad-16} / 2);
     max-width: calc(100% - #{$screen-pad-16});
     &::ng-deep > .component-list-resolver {
       & > * > .label {
