@@ -24,6 +24,7 @@ import {
   StateStatus,
 } from './repeatable-screen.constant';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-screen',
@@ -92,6 +93,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
+    private navigationService: NavigationService,
   ) {}
 
   ngOnInit(): void {
@@ -100,6 +102,10 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
+
+    this.navigationService.nextStep$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
+    });
   }
 
   trackByFunction = (_index: number, item: string): string => item;
