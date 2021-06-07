@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { FileUploadItemComponent } from './file-upload-item.component';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
@@ -30,7 +30,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
 import {
   FileUploadItem,
-  TerabyteListItem,
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
@@ -38,7 +37,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
-import { ErrorActions, FileItem, FileItemStatus, TerraUploadedFile } from '../data';
+import { ErrorActions, FileItem, FileItemStatus } from '../data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import { ModalServiceStub } from '../../../../modal/modal.service.stub';
@@ -184,19 +183,19 @@ describe('FileUploadItemComponent', () => {
     jest
       .spyOn(terabyteService, 'deleteFile')
       .mockImplementation((options: Partial<TerraUploadFileOptions>) =>
-        of(createUploadedFileMock(options) as TerraUploadedFile),
+        of(createUploadedFileMock(options) as UploadedFile),
       );
     jest
       .spyOn(terabyteService, 'downloadFile')
       .mockImplementation((options: Partial<TerraUploadFileOptions>) => of(new Blob([])));
     jest
       .spyOn(terabyteService, 'getListByObjectId')
-      .mockImplementation(() => of([] as TerabyteListItem[]));
+      .mockImplementation(() => of([] as UploadedFile[]));
 
     jest
       .spyOn(terabyteService, 'getFileInfo')
       .mockImplementation((options: Partial<TerraUploadFileOptions>) =>
-        of(createUploadedFileMock(options) as TerabyteListItem),
+        of(createUploadedFileMock(options) as UploadedFile),
       );
 
     jest.spyOn(screenService, 'orderId', 'get').mockImplementation(() => 123);
