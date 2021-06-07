@@ -19,7 +19,7 @@ import {
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
-import { EmployeeHostoryErrors } from '../employee-history.enums';
+import { EmployeeHistoryErrors, EmployeeHistoryMaxLengthValidators } from '../employee-history.enums';
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 
 @Injectable()
@@ -148,14 +148,14 @@ export class EmployeeHistoryFormService {
         );
         const fromDateToDateDiff = this.datesToolsService.diff(fromDate, toDate);
         if (fromDateToDateDiff > 0) {
-          form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedDateTo });
+          form.get('error').setErrors({ error: EmployeeHistoryErrors.FailedDateTo });
           return;
         } else {
           form.get('error').setErrors(null);
         }
       }
       if (toDateMinDateDiff < 0) {
-        form.get('error').setErrors({ error: EmployeeHostoryErrors.FailedPeriod });
+        form.get('error').setErrors({ error: EmployeeHistoryErrors.FailedPeriod });
       } else {
         form.get('error').setErrors(null);
       }
@@ -169,7 +169,7 @@ export class EmployeeHistoryFormService {
     for (const [key, value] of Object.entries(ds)) {
       if (!missedControls.includes(key)) {
         if (value) {
-          form.get(String(key)).setValidators([Validators.required, this.inputValidators()]);
+          form.get(String(key)).setValidators([Validators.required, this.inputValidators(), this.maxLengthValidators(key)]);
         } else {
           form.get(String(key)).setValidators([Validators.nullValidator]);
         }
@@ -179,15 +179,20 @@ export class EmployeeHistoryFormService {
   }
 
   private inputValidators(): ValidatorFn {
-    //TODO: сделать валидацию через json
     const errorMsg =
       'Для ввода доступны только русские и латинские буквы, цифры, а также символы ()? /.",#№:;-+\'*<>&';
+    const pattern = /^[a-zA-Zа-яА-ЯёЁ\d\s()?.",#№:;\-+\/'*<>&]+$/i;
 
     return (control: AbstractControl): ValidationErrors => {
-      const pattern = new RegExp(/^[a-zA-Zа-яА-ЯёЁ\d\s\(\)\?\.",#№:;\-\+\/'*<>&]{1,255}$/, 'gm');
-      const hasError = !pattern.test(control.value);
+      return Validators.pattern(pattern)(control) ? { errorMsg } : null;
+    };
+  }
 
-      return hasError ? { errorMsg } : null;
+  private maxLengthValidators(fieldName: string): ValidatorFn {
+    const { maxLength, errorMsg } = EmployeeHistoryMaxLengthValidators[fieldName];
+
+    return (control: AbstractControl): ValidationErrors => {
+      return Validators.maxLength(maxLength)(control) ? { errorMsg } : null;
     };
   }
 }
