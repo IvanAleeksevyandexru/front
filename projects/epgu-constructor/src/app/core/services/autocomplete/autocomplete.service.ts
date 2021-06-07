@@ -174,7 +174,7 @@ export class AutocompleteService {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItem) => {
         const text = payload.list.reduce((acc, item: ISuggestionItemList): string => {
-          const hints = item.hints.map((hint) => hint.value).join(' ');
+          const hints = item.hints.map((hint) => hint.value).join(', ');
           const { value, mnemonic, id } = item;
           const html = `
           <div class="suggest-item">
