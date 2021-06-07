@@ -14,6 +14,7 @@ import { LocationService } from '../../services/location/location.service';
   template: '',
 })
 export class AppBaseComponent<T, U> {
+  public appType: string;
   public inputAppData: InputAppDto;
   private appStateService: AppStateService<T, U>;
   private appStateQuery: AppStateQuery<T, U>;
@@ -40,14 +41,13 @@ export class AppBaseComponent<T, U> {
   private setInputAppData(): void {
     const inputAppData = this.cfAppStateService.getState<InputAppDto>(DataDirectionType.INPUT);
 
-    // TODO: сделать проброс типа приложения
-    // if (inputAppData.componentType !== this.appType) {
-    //   throw new Error(
-    //     `Looks like we have some issues.
-    //      Current app type is: ${this.appType}.
-    //      Input data type is: ${inputAppData.componentType}`,
-    //   );
-    // }
+    if (inputAppData.componentType !== this.appType) {
+      throw new Error(
+        `Looks like we have some issues.
+         Current app type is: ${this.appType}.
+         Input data type is: ${inputAppData.componentType}`,
+      );
+    }
 
     this.inputAppData = inputAppData;
   }

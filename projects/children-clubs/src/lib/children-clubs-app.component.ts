@@ -16,6 +16,8 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 export class ChildrenClubsAppComponent
   extends AppBaseComponent<ChildrenClubsValue, ChildrenClubsState>
   implements OnInit {
+  public appType = 'ChildrenClubs';
+
   constructor(public injector: Injector) {
     super(injector);
   }
