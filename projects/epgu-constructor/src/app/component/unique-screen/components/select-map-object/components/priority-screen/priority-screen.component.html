@@ -1,0 +1,143 @@
+<ng-container
+  *ngTemplateOutlet="
+    screen;
+    context: {
+      displayCssClass: displayCssClass$ | async,
+      attrs: attrs$ | async,
+      moreSize: moreSize$ | async,
+      items: items$ | async,
+      maxKinderGarden: maxKinderGarden$ | async,
+      oldMaxKinderGarden: oldMaxKinderGarden$ | async,
+      screenItems: screenItems$ | async,
+      leftItems: leftItems$ | async,
+      disabled: disabled$ | async,
+      isLoading: isLoading$ | async,
+      maxIsChange: maxIsChange$ | async
+    }
+  "
+>
+</ng-container>
+
+<ng-template
+  #screen
+  let-displayCssClass="displayCssClass"
+  let-attrs="attrs"
+  let-moreSize="moreSize"
+  let-items="items"
+  let-maxKinderGarden="maxKinderGarden"
+  let-screenItems="screenItems"
+  let-leftItems="leftItems"
+  let-disabled="disabled"
+  let-isLoading="isLoading"
+  let-oldMaxKinderGarden="oldMaxKinderGarden"
+  let-maxIsChange="maxIsChange"
+>
+  <div class="head form-player__navigation">
+    <div class="head__inner container">
+      <button
+        class="head__left link-btn"
+        name="prev"
+        (click)="backAction()"
+        (keydown)="handleKeyEvent($event)"
+      >
+        <span class="icon-arrow icon-arrow--left icon-arrow--back"></span>
+        <span>Назад</span>
+      </button>
+    </div>
+  </div>
+  <epgu-constructor-screen-container
+    *ngIf="attrs"
+    [show-nav]="false"
+    class="questions-screen screen-container-mt"
+    [ngClass]="displayCssClass"
+  >
+    <div class="screen-body">
+      <epgu-constructor-page-name *ngIf="attrs?.header" class="">
+        {{ attrs.header }}
+      </epgu-constructor-page-name>
+      <epgu-constructor-output-html
+        class="quiz__description"
+        *ngIf="attrs?.label"
+        [html]="attrs.label | imgPrefixer"
+        [clarifications]="attrs?.attrs?.clarifications"
+      >
+      </epgu-constructor-output-html>
+
+      <ng-container *ngIf="maxIsChange">
+        <div *ngIf="moreSize > 0" class="mt-24 mb-24">
+          <epgu-constructor-disclaimer
+            type="error"
+            [title]="'Надо удалить ' + moreSize + ' ' + (plural | pluralize: moreSize)"
+          >
+            Количество доступных садов теперь {{ maxKinderGarden }}
+          </epgu-constructor-disclaimer>
+        </div>
+
+        <div *ngIf="items.length < maxKinderGarden" class="mt-24 mb-24">
+          <epgu-constructor-disclaimer type="info" [title]="'Можно добавить ещё'">
+            Количество доступных садов теперь {{ maxKinderGarden }} вместо {{ oldMaxKinderGarden }}.
+            <button (click)="selectAction()" class="link-btn select-map">Выбрать на карте</button>
+          </epgu-constructor-disclaimer>
+        </div>
+      </ng-container>
+
+      <div *ngIf="screenItems" class="priority-list mt-8">
+        <ng-container *ngFor="let item of screenItems; let i = index">
+          <epgu-constructor-priority-item
+            *ngIf="item !== null"
+            [data]="item"
+            [isUp]="i !== 0"
+            [isDown]="!!items[i + 1]"
+            [index]="i + 1"
+            (delete)="deleteAction($event)"
+            (up)="upAction($event)"
+            (down)="downAction($event)"
+            (showMap)="showAction($event)"
+          ></epgu-constructor-priority-item>
+          <epgu-constructor-priority-item-empty
+            *ngIf="item === null"
+            (selectItem)="selectAction()"
+            [index]="i + 1"
+          ></epgu-constructor-priority-item-empty>
+        </ng-container>
+
+        <ng-container *ngIf="maxKinderGarden > 6 || maxKinderGarden < items.length">
+          <button (click)="moreAction()" *ngIf="leftItems > 0" class="link-btn mt-24">
+            Показать еще {{ leftItems }}
+          </button>
+          <button (click)="rollUpAction()" *ngIf="leftItems <= 0" class="link-btn mt-24">
+            Свернуть
+          </button>
+        </ng-container>
+      </div>
+      <div class="moreGarden mt-24">
+        <epgu-cf-ui-constructor-constructor-checkbox
+          [labelText]="attrs?.checkboxLabel"
+          [control]="controlCheckbox"
+        >
+        </epgu-cf-ui-constructor-constructor-checkbox>
+      </div>
+
+      <ng-container *ngIf="maxIsChange">
+        <div *ngIf="items.length > maxKinderGarden" class="priority-additional mt-24">
+          Чтобы продолжить, оставьте в списке садов не более {{ maxKinderGarden }}. Сейчас их
+          {{ items.length }}
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="screen-footer">
+      <ng-container *ngTemplateOutlet="screenButtons"></ng-container>
+    </div>
+    <ng-template #screenButtons>
+      <epgu-constructor-screen-buttons
+        class="screen-buttons"
+        *ngIf="attrs?.buttons?.length"
+        [screenButtons]="$any(attrs.buttons)"
+        [disabled]="disabled"
+        [isLoading]="isLoading"
+      ></epgu-constructor-screen-buttons>
+    </ng-template>
+  </epgu-constructor-screen-container>
+  <lib-notifier [id]="notifierId"></lib-notifier>
+</ng-template>
