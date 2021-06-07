@@ -18,19 +18,19 @@ import {
   PfrAreaType,
   SelectEvent,
   Simple,
-} from '../information-center-pfr.models';
+} from '../information-center.models';
 import { DictionaryItem } from '../../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 
 @Component({
-  selector: 'epgu-constructor-information-center-pfr',
-  templateUrl: './information-center-pfr-container.component.html',
+  selector: 'epgu-constructor-information-center',
+  templateUrl: './information-center-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class InformationCenterPfrContainerComponent {
+export class InformationCenterContainerComponent {
   public data$ = (this.screenService.component$ as Observable<InformationCenterPfr>).pipe(
     tap((component) => {
       this.dictionaryType = component.attrs.dictionaryType;

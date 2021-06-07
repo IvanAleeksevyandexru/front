@@ -2,21 +2,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 
-import { InformationCenterPfrContainerComponent } from './information-center-pfr-container.component';
+import { InformationCenterContainerComponent } from './information-center-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { InformationCenterPfrSimpleComponent } from '../component/information-center-pfr-short/information-center-pfr-simple.component';
-import { InformationCenterPfrFullComponent } from '../component/information-center-pfr-full/information-center-pfr-full.component';
+import { InformationCenterSimpleComponent } from '../component/information-center-short/information-center-simple.component';
+import { InformationCenterFullComponent } from '../component/information-center-full/information-center-full.component';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
-import { InformationCenterPfr, PfrAreaType } from '../information-center-pfr.models';
+import { InformationCenterPfr, PfrAreaType } from '../information-center.models';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
@@ -25,10 +25,11 @@ import { DatesToolsService } from '../../../../../core/services/dates-tools/date
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 
-describe('InformationCenterPfrContainerComponent', () => {
-  let component: InformationCenterPfrContainerComponent;
-  let fixture: ComponentFixture<InformationCenterPfrContainerComponent>;
+describe('InformationCenterContainerComponent', () => {
+  let component: InformationCenterContainerComponent;
+  let fixture: ComponentFixture<InformationCenterContainerComponent>;
   let screenService: ScreenService;
   let dictionaryApiService: DictionaryApiService;
   const mockData: InformationCenterPfr = {
@@ -39,21 +40,21 @@ describe('InformationCenterPfrContainerComponent', () => {
       dictionaryType: 'TO_PFR',
       simple: { items: [], label: 'LABEL', html: '<p>HTML</p>' },
       full: {
-        region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' },
+        region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' as DictionaryConditions },
         district: {
           label: 'Район (Административный центр)',
           attributeName: 'parent_attr',
-          condition: 'EQUALS',
+          condition: 'EQUALS' as DictionaryConditions,
         },
         cityDistrict: {
           label: 'Городской район',
           attributeName: 'parent_attr',
-          condition: 'EQUALS',
+          condition: 'EQUALS' as DictionaryConditions,
         },
         territory: {
           label: 'Территориальный орган',
           attributeName: 'parent_attr',
-          condition: 'CONTAINS',
+          condition: 'CONTAINS' as DictionaryConditions,
         },
       },
     },
@@ -107,9 +108,9 @@ describe('InformationCenterPfrContainerComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
-        InformationCenterPfrContainerComponent,
-        MockComponent(InformationCenterPfrFullComponent),
-        MockComponent(InformationCenterPfrSimpleComponent),
+        InformationCenterContainerComponent,
+        MockComponent(InformationCenterFullComponent),
+        MockComponent(InformationCenterSimpleComponent),
       ],
       imports: [
         MockModule(BaseModule),
@@ -134,7 +135,7 @@ describe('InformationCenterPfrContainerComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InformationCenterPfrContainerComponent);
+    fixture = TestBed.createComponent(InformationCenterContainerComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
     dictionaryApiService = TestBed.inject(DictionaryApiService);
@@ -155,17 +156,17 @@ describe('InformationCenterPfrContainerComponent', () => {
       expect(component.currentAnswersService.state).toEqual(JSON.stringify(form.value));
     });
 
-    it('should be call changeForm from epgu-constructor-information-center-pfr-full', () => {
+    it('should be call changeForm from epgu-constructor-information-center-full', () => {
       jest.spyOn(component, 'changeForm');
       const debugEl = fixture.debugElement.query(
-        By.css('epgu-constructor-information-center-pfr-full'),
+        By.css('epgu-constructor-information-center-full'),
       );
       debugEl.triggerEventHandler('formChangeEvent', {});
 
       expect(component.changeForm).toHaveBeenCalled();
     });
 
-    it('should be call changeForm from epgu-constructor-information-center-pfr-simple', () => {
+    it('should be call changeForm from epgu-constructor-information-center-simple', () => {
       const mockDataWithSimple: InformationCenterPfr = {
         id: 'dict55',
         type: UniqueScreenComponentTypes.informationCenterPfr,
@@ -174,21 +175,21 @@ describe('InformationCenterPfrContainerComponent', () => {
           dictionaryType: 'TO_PFR',
           simple: { items: [{} as any], label: 'LABEL', html: '<p>HTML</p>' },
           full: {
-            region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' },
+            region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' as DictionaryConditions },
             district: {
               label: 'Район (Административный центр)',
               attributeName: 'parent_attr',
-              condition: 'EQUALS',
+              condition: 'EQUALS' as DictionaryConditions,
             },
             cityDistrict: {
               label: 'Городской район',
               attributeName: 'parent_attr',
-              condition: 'EQUALS',
+              condition: 'EQUALS' as DictionaryConditions,
             },
             territory: {
               label: 'Территориальный орган',
               attributeName: 'parent_attr',
-              condition: 'CONTAINS',
+              condition: 'CONTAINS' as DictionaryConditions,
             },
           },
         },
@@ -198,7 +199,7 @@ describe('InformationCenterPfrContainerComponent', () => {
       fixture.detectChanges();
       jest.spyOn(component, 'changeForm');
       const debugEl = fixture.debugElement.query(
-        By.css('epgu-constructor-information-center-pfr-simple'),
+        By.css('epgu-constructor-information-center-simple'),
       );
       debugEl.triggerEventHandler('formChangeEvent', {});
 
@@ -210,7 +211,7 @@ describe('InformationCenterPfrContainerComponent', () => {
     it('should be call fetchDictionary', () => {
       jest.spyOn(component, 'fetchDictionary');
       const debugEl = fixture.debugElement.query(
-        By.css('epgu-constructor-information-center-pfr-full'),
+        By.css('epgu-constructor-information-center-full'),
       );
       debugEl.triggerEventHandler('selectEvent', {});
 

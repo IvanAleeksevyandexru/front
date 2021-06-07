@@ -20,7 +20,7 @@ import { UnusedPaymentsContainerComponent } from '../components/unused-payments/
 import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
 import { InformationCenterMvdContainerComponent } from '../components/information-center-mvd/container/information-center-mvd-container.component';
 import { CarInfoContainerComponent } from '../components/car-info/containers/car-info-screen/car-info-container.component';
-import { InformationCenterPfrContainerComponent } from '../components/information-center-pfr/container/information-center-pfr-container.component';
+import { InformationCenterContainerComponent } from '../components/information-center/container/information-center-container.component';
 import { FieldListScreenComponent } from '../components/field-list-screen/field-list-screen.component';
 import { TimerScreenComponent } from '../components/timer-screen/timer-screen.component';
 import { CarListContainerComponent } from '../components/car-list/components/car-list-container/car-list-container.component';
@@ -52,7 +52,7 @@ type UniqueScreenComponent =
   | PaymentComponent
   | BillInfoComponent
   | PaymentTypeSelectorContainerComponent
-  | InformationCenterPfrContainerComponent
+  | InformationCenterContainerComponent
   | ConfirmPersonalUserAddressComponent
   | ConfirmPersonalUserDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
@@ -91,8 +91,9 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   PaymentScr: PaymentComponent,
   BillInfo: BillInfoComponent,
   PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
-  InformationCenterPfr: InformationCenterPfrContainerComponent,
-  InformationCenterPfrSop: InformationCenterPfrContainerComponent,
+  InformationCenterPfr: InformationCenterContainerComponent,
+  InformationCenterFss: InformationCenterContainerComponent,
+  InformationCenterPfrSop: InformationCenterContainerComponent,
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
   ConfirmPersonalUserRegReadOnlyAddr: ConfirmPersonalUserAddressReadonlyComponent,
   ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
