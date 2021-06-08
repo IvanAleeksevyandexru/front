@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
-import { InformationCenterPfrSimpleComponent } from './information-center-pfr-simple.component';
+import { InformationCenterSimpleComponent } from './information-center-simple.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('InformationCenterPfrSimpleComponent', () => {
-  let component: InformationCenterPfrSimpleComponent;
-  let fixture: ComponentFixture<InformationCenterPfrSimpleComponent>;
+  let component: InformationCenterSimpleComponent;
+  let fixture: ComponentFixture<InformationCenterSimpleComponent>;
   const mockSimpleData = {
     items: [{ id: '1', text: 'testValue' }],
     label: 'label',
@@ -16,13 +16,13 @@ describe('InformationCenterPfrSimpleComponent', () => {
   };
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [InformationCenterPfrSimpleComponent],
+      declarations: [InformationCenterSimpleComponent],
       imports: [MockModule(BaseModule), MockModule(BaseComponentsModule)],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InformationCenterPfrSimpleComponent);
+    fixture = TestBed.createComponent(InformationCenterSimpleComponent);
     component = fixture.componentInstance;
     component.simpleData = mockSimpleData;
     jest.spyOn(component.formChangeEvent, 'emit');

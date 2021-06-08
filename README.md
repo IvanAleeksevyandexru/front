@@ -10,6 +10,21 @@
 yarn install
 ```
 
+## Быстрый запуск приложения с импортом библиотек их исходников, а не из сборки
+
+```
+yarn start:fast
+```
+
+Эта команда запускает config сервер, и запускает `ng serve` с конфигурацией fast.
+
+`yarn start:fast` выполнит следующие команды:
+
+```
+yarn start:config
+ng serve --host 0.0.0.0 --disable-host-check --hmr --configuration fast
+```
+
 ## Запуск приложения с отслеживанием изменений кода в папке projects
 
 ```

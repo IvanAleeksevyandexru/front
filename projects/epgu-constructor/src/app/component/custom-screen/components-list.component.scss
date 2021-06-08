@@ -7,14 +7,14 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
-  margin-left: math.div(-$screen-pad-16, 2);
-  margin-right: math.div(-$screen-pad-16, 2);
+  margin-left: calc( #{-$screen-pad-16} / 2);
+  margin-right: calc( #{-$screen-pad-16} / 2);
   &__item {
     @include flex-container();
     justify-content: flex-start;
     flex: 1 1 100%;
-    margin-left: math.div($screen-pad-16, 2);
-    margin-right: math.div($screen-pad-16, 2);
+    margin-left: calc( #{$screen-pad-16} / 2);
+    margin-right: calc( #{$screen-pad-16} / 2);
     max-width: calc(100% - #{$screen-pad-16});
     &::ng-deep > .component-list-resolver {
       & > * > .label {
@@ -36,9 +36,9 @@
     }
   }
   &__radio {
-    margin-top: $screen-pad-12;
     &--block {
       display: inline-block;
+      margin-top: $screen-pad-12;
       lib-radio {
         display: block;
         margin-bottom: 16px;
@@ -59,8 +59,12 @@
     }
     &--inline {
       display: inline-flex;
-      lib-radio:not(:first-child) {
-        margin-left: $screen-pad-32;
+      flex-wrap: wrap;
+      lib-radio {
+        margin-top: $screen-pad-12;
+      }
+      lib-radio:not(:last-child) {
+        margin-right: $screen-pad-32;
       }
     }
   }

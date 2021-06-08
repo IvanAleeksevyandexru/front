@@ -1,0 +1,25 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+.container {
+  width: 100%;
+  max-width: 592px;
+  margin-top: 24px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 0;
+  padding-right: 0;
+  @media (max-width: 623px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: $color-gosblue;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-active-item;
+  }
+}

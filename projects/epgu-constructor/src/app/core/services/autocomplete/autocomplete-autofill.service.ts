@@ -12,7 +12,8 @@ export class AutocompleteAutofillService {
     if (autofillComponentsList.includes(component?.type as UniqueScreenComponentTypes)) {
       if (component.type === UniqueScreenComponentTypes.employeeHistory) {
         const suggestions = this.screenService.suggestions[component.id];
-        if (suggestions) {
+        const cachedAnswers = this.screenService.cachedAnswers[component.id];
+        if (suggestions && !cachedAnswers) {
           this.screenService.component.value = this.prepareEmployeeHistoryComponentValue(
             suggestions,
           );

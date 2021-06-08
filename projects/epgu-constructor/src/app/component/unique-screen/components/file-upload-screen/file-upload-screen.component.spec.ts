@@ -105,6 +105,27 @@ describe('FileUploadScreenComponent', () => {
     fixture.detectChanges();
   });
 
+  describe('processing status', () => {
+    it('should be processing event status = true', () => {
+      jest.spyOn(component.uploaderProcessing, 'next');
+      jest.spyOn(screenService, 'updateLoading');
+      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '1' });
+      expect(component.uploaderProcessing.next).toHaveBeenCalledWith(['1']);
+      expect(screenService.updateLoading).toHaveBeenCalledWith(true);
+    });
+
+    it('should be processing event status = false', () => {
+      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '1' });
+      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '2' });
+      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: false, uploadId: '2' });
+      jest.spyOn(component.uploaderProcessing, 'next');
+      jest.spyOn(screenService, 'updateLoading');
+      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: false, uploadId: '1' });
+      expect(component.uploaderProcessing.next).toHaveBeenCalledWith([]);
+      expect(screenService.updateLoading).toHaveBeenCalledWith(false);
+    });
+  });
+
   describe('currentAnswersService.state', () => {
     it('should be undefined by default', () => {
       expect(currentAnswersService.state).toBeUndefined();

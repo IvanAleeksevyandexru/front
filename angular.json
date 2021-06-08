@@ -37,8 +37,18 @@
               },
               {
                 "glob": "**/*",
+                "input": "dist/epgu-constructor-ui-kit/src/ui-kit-assets",
+                "output": "ui-kit-assets"
+              },
+              {
+                "glob": "**/*",
                 "input": "./node_modules/@epgu/epgu-lib/assets/",
                 "output": "./lib-assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "dist/children-clubs/src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -47,6 +57,9 @@
             "scripts": []
           },
           "configurations": {
+            "fast": {
+              "tsConfig": "./tsconfig.app.fast.json"
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -91,6 +104,9 @@
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
+            "fast": {
+              "browserTarget": "epgu-form-frontend:build:fast"
+            },
             "production": {
               "browserTarget": "epgu-form-frontend:build:production"
             },

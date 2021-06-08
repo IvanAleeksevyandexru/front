@@ -77,6 +77,13 @@ export class FileUploadScreenComponent implements OnInit {
     value: '',
     type: ActionType.nextStep,
   };
+  uploaderProcessing = new BehaviorSubject<string[]>([]);
+  uploaderProcessing$ = this.uploaderProcessing.pipe(
+    map((list) => list.length > 0),
+    distinctUntilChanged(),
+    tap((status) => this.screenService.updateLoading(status)),
+  );
+
   private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
 
   constructor(
@@ -101,6 +108,26 @@ export class FileUploadScreenComponent implements OnInit {
         this.handleNewValueSet(payload);
         this.currentAnswersService.state = this.value;
       });
+    this.uploaderProcessing$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+
+    this.eventBusService
+      .on('UPLOADER_PROCESSING_STATUS')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: { uploadId: string; status: boolean }) =>
+        this.setProcessingStatus(payload),
+      );
+  }
+
+  setProcessingStatus({ uploadId, status }: { uploadId: string; status: boolean }): void {
+    const statusList = this.uploaderProcessing.getValue();
+    const index = statusList.lastIndexOf(uploadId);
+    if (status && index === -1) {
+      statusList.push(uploadId);
+      this.uploaderProcessing.next(statusList);
+    } else if (!status && index !== -1) {
+      statusList.splice(index, 1);
+      this.uploaderProcessing.next(statusList);
+    }
   }
 
   /**

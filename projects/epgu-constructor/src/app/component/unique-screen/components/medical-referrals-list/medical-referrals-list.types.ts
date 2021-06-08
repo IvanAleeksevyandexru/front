@@ -49,18 +49,11 @@ export interface ErrorDetail {
 }
 
 export interface Item {
-  parentItem: null;
-  children: any[];
-  fields: Fields;
   attributes: Attribute[];
+  convertedAttributes: Referral;
 }
 
 export interface Attribute {
   name: string;
   value: string;
-}
-
-export interface Fields {
-  itemName: null;
-  title: null;
 }

@@ -60,6 +60,10 @@ if [ "$staticDomainAssetsPath" != '' ]; then
         sed -i "s@staticDomainAssetsPath: ['\`].*['\`]@""staticDomainAssetsPath: '$staticDomainAssetsPath'"'@' /usr/share/nginx/html/main-es5.js
 fi
 
+if [ "$staticDomainLibAssetsPath" != '' ]; then
+        sed -i "s@staticDomainLibAssetsPath: ['\`].*['\`]@""staticDomainLibAssetsPath: '$staticDomainLibAssetsPath'"'@' /usr/share/nginx/html/main-es5.js
+fi
+
 if [ "$mocks" != '' ]; then
         sed -i "s@mocks: ['\`].*['\`]@""mocks: '$mocks'"'@' /usr/share/nginx/html/main-es5.js
 fi
