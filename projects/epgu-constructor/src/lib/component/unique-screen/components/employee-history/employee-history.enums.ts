@@ -1,6 +1,6 @@
 export enum EmployeeHistoryErrors {
   FailedDateTo = 'Дата окончания не может быть раньше, чем дата начала',
-  FailedPeriod = 'Указанный период деятельности не входит в последние 10 лет',
+  FailedPeriod = 'Указанный период деятельности не входит в последние 5 лет',
 }
 
 export const EmployeeHistoryMaxLengthValidators: Record<'position' | 'place' | 'address', { maxLength: number, errorMsg: string }> = {
