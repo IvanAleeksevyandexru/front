@@ -1,0 +1,109 @@
+<div class="modal-overlay">
+  <div class="conf-modal">
+    <form [formGroup]="form">
+            <div class="mb-24">
+              <lib-checkbox
+                [labelText]="formFieldsLabel[formFields.open_record]"
+                [formControlName]="formFields.open_record"
+              ></lib-checkbox>
+            </div>
+
+            <div class="mb-24">
+              <div class="label">{{ formFieldsLabel[formFields.place] }}</div>
+              <lib-dropdown
+                [multi]="true"
+                [formControlName]="formFields[formFields.place]"
+                [items]="focusListElements"
+                [additionalItem]="false"
+              ></lib-dropdown>
+            </div>
+
+            <div class="mb-24">
+              <lib-checkbox
+                [labelText]="formFieldsLabel[formFields.distance_program]"
+                [formControlName]="formFields.distance_program"
+              ></lib-checkbox>
+            </div>
+
+      <div class="divider mb-24"></div>
+
+      <div class="mb-16">
+        <h5 class="title">Форма оплаты</h5>
+        <button class="link-btn">Подробнее о способах оплаты</button>
+      </div>
+
+      <div class="mb-16">
+        <lib-checkbox
+          [labelText]="formFieldsLabel[formFields.budget]"
+          [formControlName]="formFields.budget"
+        ></lib-checkbox>
+      </div>
+
+      <div class="mb-16">
+        <lib-checkbox
+          [labelText]="formFieldsLabel[formFields.pfdod_certificate]"
+          [formControlName]="formFields.pfdod_certificate"
+        ></lib-checkbox>
+      </div>
+
+      <div class="mb-16">
+        <lib-checkbox
+          [labelText]="formFieldsLabel[formFields.paid]"
+          [formControlName]="formFields.paid"
+        ></lib-checkbox>
+      </div>
+
+      <div class="mb-16 half-for-desktop">
+        <div class="label">{{ formFieldsLabel[formFields.price] }}</div>
+        <lib-plain-input [formControlName]="formFields.price"></lib-plain-input>
+      </div>
+
+      <div class="divider mb-24"></div>
+
+      <h5 class="title mb-12">Программа обучения</h5>
+
+      <div class="mb-24 row">
+        <div class="row-item">
+          <div class="label">{{ formFieldsLabel[formFields.focus] }}</div>
+          <lib-dropdown
+            [multi]="true"
+            [formControlName]="formFields[formFields.focus]"
+            [items]="focusListElements"
+          ></lib-dropdown>
+        </div>
+
+        <div class="row-item">
+          <div class="label">{{ formFieldsLabel[formFields.specialization] }}</div>
+          <lib-dropdown
+            [multi]="true"
+            [formControlName]="formFields[formFields.specialization]"
+            [items]="specializationListElements"
+          ></lib-dropdown>
+        </div>
+      </div>
+
+      <div class="mb-24">
+        <div class="label">{{ formFieldsLabel[formFields.level] }}</div>
+        <lib-dropdown
+          [multi]="true"
+          [formControlName]="formFields[formFields.level]"
+          [items]="levelListElements"
+        ></lib-dropdown>
+      </div>
+
+      <div class="mb-24 half-for-desktop">
+        <div class="label">{{ formFieldsLabel[formFields.childAge] }}</div>
+        <lib-plain-input [formControlName]="formFields.childAge"></lib-plain-input>
+      </div>
+
+      <div class="mb-24">
+        <div class="label">{{ formFieldsLabel[formFields.health] }}</div>
+        <lib-dropdown
+          [multi]="true"
+          [formControlName]="formFields[formFields.health]"
+          [items]="healthListElements"
+        ></lib-dropdown>
+      </div>
+    </form>
+  </div>
+</div>

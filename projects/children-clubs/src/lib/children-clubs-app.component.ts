@@ -5,10 +5,11 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 @Component({
   selector: 'children-clubs-app',
   template: `
+    <children-clubs-program-filters-container></children-clubs-program-filters-container>
     <p>
       children-clubs app works!
 
-      {{ inputAppData.componentId }}
+<!--      {{ inputAppData.componentId }}-->
     </p>
   `,
   styles: [],
@@ -22,9 +23,9 @@ export class ChildrenClubsAppComponent
     super(injector);
   }
   ngOnInit(): void {
-    this.openApp();
-    setTimeout(() => {
-      this.closeApp();
-    }, 3000);
+    // this.openApp();
+    // setTimeout(() => {
+    //   this.closeApp();
+    // }, 3000);
   }
 }
