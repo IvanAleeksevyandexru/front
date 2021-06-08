@@ -93,9 +93,10 @@ export class ScreenService extends ScreenContent {
   private prepareComponents(): void {
     const components = this.screenStore.display.components;
     const cashedAnswers = this.screenStore.cachedAnswers;
+    const applicantAnswers = this.screenStore.applicantAnswers;
     const screenStoreComponent = this.prepareComponentsService.prepareComponents(
       components,
-      cashedAnswers,
+      { ...cashedAnswers, ...applicantAnswers },
     );
 
     if (screenStoreComponent.length) {
