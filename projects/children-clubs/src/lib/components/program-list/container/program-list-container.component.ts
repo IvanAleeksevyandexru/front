@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ProgramListService } from '../program-list.service';
-import { List } from '../program-list.models';
+import { Project } from '../../../../typings';
 
 @Component({
   selector: 'children-clubs-program-list',
@@ -11,7 +11,7 @@ import { List } from '../program-list.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgramListContainerComponent {
-  list$ = new BehaviorSubject<List>([]);
+  list$ = new BehaviorSubject<Project[]>([]);
 
   constructor(private listService: ProgramListService) {
     this.fetchItems();
@@ -23,7 +23,7 @@ export class ProgramListContainerComponent {
     });
   }
 
-  addItemsToList(list: List): void {
+  addItemsToList(list: Project[]): void {
     this.list$.next(this.list$.getValue().concat(list));
   }
 }
