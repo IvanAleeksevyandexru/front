@@ -12,7 +12,7 @@ import { AppStateQueryStub } from '../../services/app-state/app-state.query.stub
 import { CfAppStateServiceStub } from '../../services/cf-app-state/cf-app-state.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
-import { AppTypes, InputAppDto } from '@epgu/epgu-constructor-types';
+import { AppTypes, DataDirectionType, InputAppDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 
 export interface TestValueType {
@@ -40,8 +40,11 @@ describe('AppBaseModule', () => {
   let localStorageService: LocalStorageService;
   let appStateService: AppStateService<TestValueType, TestStateType>;
   let appStateQuery: AppStateQuery<TestValueType, TestStateType>;
+  let locationService: LocationService;
   let mockInputData: InputAppDto;
   let getLocalStorageSpy;
+  let setStateSpy;
+  let key: string;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -71,10 +74,14 @@ describe('AppBaseModule', () => {
     localStorageService = TestBed.inject(LocalStorageService);
     appStateService = TestBed.inject(AppStateService);
     appStateQuery = TestBed.inject(AppStateQuery);
+    locationService = TestBed.inject(LocationService);
     jest.spyOn(cfAppStateService, 'getState').mockReturnValue(mockInputData);
+    jest.spyOn(appStateQuery, 'storeState', 'get').mockReturnValue(JSON.parse(mockInputData.value));
     getLocalStorageSpy = jest.spyOn(localStorageService, 'get').mockReturnValue(null);
+    setStateSpy = jest.spyOn(cfAppStateService, 'setState');
     component = fixture.componentInstance;
     fixture.detectChanges();
+    key = `APP_STORAGE_${mockInputData.componentType.toUpperCase()}_${mockInputData.componentId.toUpperCase()}`;
   });
 
   describe('openApp()', () => {
@@ -100,7 +107,6 @@ describe('AppBaseModule', () => {
     });
 
     it('should call localStorageService get with key', () => {
-      const key = `APP_STORAGE_${mockInputData.componentType.toUpperCase()}_${mockInputData.componentId.toUpperCase()}`;
       component.openApp();
       expect(getLocalStorageSpy).toBeCalledWith(key);
     });
@@ -129,7 +135,6 @@ describe('AppBaseModule', () => {
     });
 
     it('should call localStorageService if appState update', () => {
-      const key = `APP_STORAGE_${mockInputData.componentType.toUpperCase()}_${mockInputData.componentId.toUpperCase()}`;
       const storeState = JSON.parse(mockInputData.value);
       const setLocalStorageSpy = jest.spyOn(localStorageService, 'set');
       appStateQuery.store$ = of(storeState);
@@ -138,10 +143,44 @@ describe('AppBaseModule', () => {
     });
   });
   describe('closeApp()', () => {
-    it('should subscribe on update app state', () => {
-      expect(component['storeSub']).toBeUndefined();
+    let expectedOutputData;
+    beforeEach(() => {
+      expectedOutputData = {
+        componentId: mockInputData.componentId,
+        componentType: mockInputData.componentType,
+        value: JSON.stringify(appStateQuery.storeState),
+        isPrevStepCase: false,
+      };
       component.openApp();
-      expect(component['storeSub']).toBeTruthy();
+    });
+
+    it('should call setState of cfAppStateService and pass outputData when there is not isPrevStepCase', () => {
+      component.closeApp();
+      expect(setStateSpy).toBeCalledWith(expectedOutputData, DataDirectionType.OUTPUT);
+    });
+
+    it('should call setState of cfAppStateService and pass outputData when there is isPrevStepCase', () => {
+      expectedOutputData.isPrevStepCase = true;
+      component.closeApp(true);
+      expect(setStateSpy).toBeCalledWith(expectedOutputData, DataDirectionType.OUTPUT);
+    });
+
+    it('should call unsubscribe on synchronization subscription', () => {
+      const unsubscribeSpy = jest.spyOn<any, any>(component['storeSub'], 'unsubscribe');
+      component.closeApp();
+      expect(unsubscribeSpy).toBeCalled();
+    });
+
+    it('should call delete local app state storage with key', () => {
+      const deleteSpy = jest.spyOn(localStorageService, 'delete');
+      component.closeApp();
+      expect(deleteSpy).toBeCalledWith(key);
+    });
+
+    it('should redirect back to cf', () => {
+      const hrefSpy = jest.spyOn(locationService, 'href');
+      component.closeApp();
+      expect(hrefSpy).toBeCalledWith(mockInputData.callbackRedirectUrl);
     });
   });
 });
