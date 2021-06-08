@@ -355,7 +355,9 @@
       [textTransformType]="fields[docInputFieldsTypes.emitter]?.attrs?.fstuc"
       [id]="docInputFieldsTypes.emitter"
       [control]="$any(form.get(docInputFieldsTypes.emitter))"
-      [invalid]="isValidationShown(docInputFieldsTypes.emitter)"
+      [invalid]="
+        form.get(docInputFieldsTypes.emitter).invalid &&
+        form.get(docInputFieldsTypes.emitter).touched"
       [validationShowOn]="validationShowOn"
       [component]="fields[docInputFieldsTypes.emitter]"
       [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.emitter]"
