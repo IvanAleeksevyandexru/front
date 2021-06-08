@@ -68,6 +68,11 @@
       }
     }
   }
+  &__item:first-child {
+    .form__radio--block {
+      margin-top: 0;
+    }
+  }
 
   &__radio &__radio-item:last-child {
     margin-bottom: 0;
