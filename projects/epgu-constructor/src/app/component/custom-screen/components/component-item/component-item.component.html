@@ -17,7 +17,7 @@
   [label]="component?.label"
   [clarifications]="component?.attrs?.clarifications"
   [largeFontSize]="largeFontSize"
-  *ngIf="!disableLabel"
+  *ngIf="!disableLabel && component?.label"
 ></epgu-constructor-label>
 <div class="form__error" *ngIf="hasErrors">
   <div *ngIf="hasUiError && isShowErrors">
