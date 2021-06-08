@@ -86,7 +86,7 @@
 }
 .gray-line {
   &::before {
-    background-image: url('../assets/icons/svg/gray-line.svg');
+    background-image: url('/ui-kit-assets/icons/svg/gray-line.svg');
     @include line;
   }
 }
