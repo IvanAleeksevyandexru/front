@@ -11,10 +11,12 @@ import {
   AppStateQuery,
   AppStateQueryStub,
   LocalStorageService,
-  LocalStorageServiceStub
+  LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
-
+import { ProjectListComponent } from './pages/project-list/project-list.component';
+import { ProgramListModule } from './components/program-list/program-list.module';
+import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -23,7 +25,8 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChildrenClubsAppComponent ],
+      imports: [ProgramListModule, ChildrenClubsFilterPanelModule],
+      declarations: [ChildrenClubsAppComponent, ProjectListComponent],
       providers: [
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
@@ -31,9 +34,8 @@ describe('ChildrenClubsComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -44,7 +46,7 @@ describe('ChildrenClubsComponent', () => {
       componentType: AppTypes.ChildrenClubs,
       callbackRedirectUrl: '/some/app/url',
       value: '{}',
-      isPrevStepCase: false
+      isPrevStepCase: false,
     });
     component = fixture.componentInstance;
     fixture.detectChanges();
