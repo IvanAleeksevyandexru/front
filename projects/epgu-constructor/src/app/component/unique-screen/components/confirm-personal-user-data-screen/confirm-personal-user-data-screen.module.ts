@@ -4,11 +4,13 @@ import { FieldListModule } from '../../../../shared/components/field-list/field-
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+// eslint-disable-next-line max-len
+import { ConfirmPersonalUserLegalDataComponent } from './component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
 
 @NgModule({
-  declarations: [ConfirmPersonalUserDataComponent],
+  declarations: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
   exports: [ConfirmPersonalUserDataComponent],
   imports: [BaseModule, FieldListModule, ScreenPadModule, DefaultUniqueScreenWrapperModule],
-  entryComponents: [ConfirmPersonalUserDataComponent]
+  entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent]
 })
 export class ConfirmPersonalUserDataScreenModule {}
