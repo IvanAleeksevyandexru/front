@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { EpguLibModule } from '@epgu/epgu-lib';
-import { EpguCfUiKitModule } from '@epgu/epgu-constructor-ui-kit';
+import { EpguCfUiKitModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 
 import { ListComponent } from './list.component';
+import { ItemComponent } from '../item/item.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -11,8 +12,8 @@ describe('ListComponent', () => {
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ListComponent],
-      imports: [EpguLibModule, EpguCfUiKitModule],
+      declarations: [ListComponent, ItemComponent],
+      imports: [EpguLibModule, EpguCfUiKitModule, ScreenPadModule],
     }).compileComponents();
   });
 
