@@ -137,4 +137,11 @@ describe('AppBaseModule', () => {
       expect(setLocalStorageSpy).toBeCalledWith(key, storeState);
     });
   });
+  describe('closeApp()', () => {
+    it('should subscribe on update app state', () => {
+      expect(component['storeSub']).toBeUndefined();
+      component.openApp();
+      expect(component['storeSub']).toBeTruthy();
+    });
+  });
 });

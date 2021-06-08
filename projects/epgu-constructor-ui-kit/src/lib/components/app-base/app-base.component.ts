@@ -39,8 +39,8 @@ export class AppBaseComponent<T, U> {
     this.enableStorageSynchronization();
   }
 
-  closeApp(): void {
-    this.setOutputAppData();
+  closeApp(isPrevStepCase: boolean = false): void {
+    this.setOutputAppData(isPrevStepCase);
     this.disableStorageSynchronization();
     this.redirectToCf();
   }
@@ -93,13 +93,13 @@ export class AppBaseComponent<T, U> {
     return `APP_STORAGE_${this.inputAppData.componentType.toUpperCase()}_${this.inputAppData.componentId.toUpperCase()}`;
   }
 
-  private setOutputAppData(): void {
+  private setOutputAppData(isPrevStepCase: boolean): void {
     const { storeState } = this.appStateQuery;
     const outputAppData: OutputAppDto = {
       componentId: this.inputAppData.componentId,
       componentType: this.inputAppData.componentType,
       value: JSON.stringify(storeState),
-      isPrevStepCase: false, // TODO: нужно продумать механизм для apps
+      isPrevStepCase,
     };
     this.cfAppStateService.setState<OutputAppDto>(outputAppData, DataDirectionType.OUTPUT);
   }
