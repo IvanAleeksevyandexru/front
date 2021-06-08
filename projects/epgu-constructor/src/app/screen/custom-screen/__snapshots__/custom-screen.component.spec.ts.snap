@@ -5,6 +5,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
   currentAnswersService={[Function CurrentAnswersService]}
   customScreenService={[Function CustomScreenService]}
   eventBusService={[Function EventBusService]}
+  helperText="undefined"
   injector={[Function Injector_]}
   navigationService={[Function NavigationServiceStub]}
   ngUnsubscribe$={[Function UnsubscribeService]}
@@ -25,6 +26,7 @@ exports[`CustomScreenComponent check snapshot 1`] = `
       >
         <epgu-constructor-components-list />
       </epgu-cf-ui-constructor-screen-pad>
+      
     </div>
     <div
       class="screen-footer"

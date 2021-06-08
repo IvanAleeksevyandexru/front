@@ -102,12 +102,22 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   uploadersCounterChanges$ = this.limits.changes.pipe(tap(() => this.stat.maxLimitUpdate()));
 
+  processingStatus$ = this.process.processing$.pipe(
+    tap((status) => {
+      this.eventBusService.emit('UPLOADER_PROCESSING_STATUS', {
+        uploadId: this.data.uploadId,
+        status,
+      });
+    }),
+  );
+
   subscriptions: Subscription = new Subscription()
     .add(this.uploader.data$.subscribe())
     .add(this.files$.subscribe())
     .add(this.initFilesList$.subscribe())
     .add(this.process.stream$.subscribe())
     .add(this.processingFiles$.subscribe())
+    .add(this.processingStatus$.subscribe())
     .add(this.uploadersCounterChanges$.subscribe());
 
   constructor(

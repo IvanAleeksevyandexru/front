@@ -15,6 +15,7 @@ import {
   ComponentFilterDto,
   ComponentRelationFieldDto,
   ComponentImageDto,
+  ComponentAttrsDto,
 } from '@epgu/epgu-constructor-types';
 
 export enum CustomScreenComponentTypes {
@@ -115,7 +116,7 @@ export type CustomComponentAttrField = Array<{
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
-export interface CustomComponentAttr {
+export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryType?: string;
   subLabel?: string;
@@ -152,6 +153,7 @@ export interface CustomComponentAttr {
   customUnrecLabel?: string;
   clarifications?: Clarifications;
   isTextHelper?: boolean;
+  isBottomSlot?: boolean;
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;
   refs?: { [key: string]: string };

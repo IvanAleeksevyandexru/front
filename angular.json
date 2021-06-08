@@ -44,6 +44,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/@epgu/epgu-lib/assets/",
                 "output": "./lib-assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "dist/children-clubs/src/assets",
+                "output": "assets"
               }
             ],
             "styles": [

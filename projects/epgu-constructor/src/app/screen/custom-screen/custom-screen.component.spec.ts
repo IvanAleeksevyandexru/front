@@ -5,6 +5,7 @@ import { EpguLibModule } from '@epgu/epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import {
+  CustomComponent,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
 } from '../../component/custom-screen/components-list.types';
@@ -28,7 +29,12 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { ModalService } from '../../modal/modal.service';
 import { ModalServiceStub } from '../../modal/modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ActionType, DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  ComponentDto,
+  ActionType,
+  DTOActionAction,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -38,6 +44,29 @@ describe('CustomScreenComponent', () => {
   let navigationService: NavigationServiceStub;
   let customScreenService: CustomScreenService;
   let datesToolsService: DatesToolsService;
+  let components = [
+    {
+      id: 'bd01',
+      type: 'LabelSection',
+      label: 'Нажимая “Отправить заявление”, вы соглашаетесь с правилами предоставления услуги',
+      attrs: {
+        isTextHelper: true,
+        isBottomSlot: true,
+      },
+      value: '',
+      visited: false,
+    },
+    {
+      id: 'bd1',
+      type: 'LabelSection',
+      label: 'Нажимая “Отправить заявление”, вы соглашаетесь с правилами предоставления услуги',
+      attrs: {
+        isTextHelper: true,
+      },
+      value: '',
+      visited: false,
+    },
+  ] as ComponentDto[];
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -83,6 +112,30 @@ describe('CustomScreenComponent', () => {
 
   it('check snapshot', () => {
     expect(fixture).toMatchSnapshot();
+  });
+
+  describe('ngOnInit()', () => {
+    it('should call setHelperText()', () => {
+      const spy = spyOn(component, 'setHelperText');
+      component.ngOnInit();
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('setHelperText()', () => {
+    it('should mutate initial components list length, if there is LabelSection with specific attrs among them', () => {
+      screenService.display = {
+        components,
+        header: 'header1',
+        id: 'id1',
+        name: 'name1',
+        submitLabel: 'label1',
+        type: ScreenTypes.CUSTOM,
+        terminal: true,
+      };
+      component.ngOnInit();
+      expect(screenService.display.components.length).toBe(1);
+    });
   });
 
   describe('dataToSend property', () => {
