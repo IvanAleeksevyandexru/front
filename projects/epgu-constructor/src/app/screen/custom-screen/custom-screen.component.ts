@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
+  CustomComponent,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
+  CustomScreenComponentTypes,
 } from '../../component/custom-screen/components-list.types';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { NavigationPayload } from '../../form-player/form-player.types';
@@ -15,12 +17,17 @@ import { CustomScreenService } from './custom-screen.service';
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class CustomScreenComponent extends ScreenBase {
+export class CustomScreenComponent extends ScreenBase implements OnInit {
   dataToSend: NavigationPayload;
   isValid: boolean;
+  helperText: CustomComponent;
 
   constructor(public injector: Injector, private customScreenService: CustomScreenService) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    this.setHelperText();
   }
 
   /**
@@ -47,5 +54,24 @@ export class CustomScreenComponent extends ScreenBase {
     this.dataToSend = this.customScreenService.getFormattedData(changes);
     this.currentAnswersService.isValid = this.isValid;
     this.currentAnswersService.state = this.dataToSend;
+  }
+
+  private setHelperText(): void {
+    const components = this.screenService.display?.components;
+    let helperTextIndex = -1;
+    this.helperText = components?.find((component: CustomComponent, index: number) => {
+      if (
+        component.attrs.isTextHelper &&
+        component.attrs.isBottomSlot &&
+        component.type === CustomScreenComponentTypes.LabelSection
+      ) {
+        helperTextIndex = index;
+        return true;
+      }
+      return false;
+    }) as CustomComponent;
+    if (helperTextIndex > -1) {
+      components?.splice(helperTextIndex, 1);
+    }
   }
 }

@@ -3,7 +3,8 @@
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="screen-body">
-    <epgu-constructor-page-name>{{ screenService.header$ | async }}
+    <epgu-constructor-page-name
+      >{{ screenService.header$ | async }}
       <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
     </epgu-constructor-page-name>
 
@@ -15,6 +16,16 @@
       >
       </epgu-constructor-components-list>
     </epgu-cf-ui-constructor-screen-pad>
+
+    <epgu-constructor-label
+      [isTextHelper]="helperText?.attrs?.isTextHelper"
+      [tips]="helperText?.attrs?.labelHint"
+      [label]="helperText?.label"
+      [clarifications]="helperText?.attrs?.clarifications"
+      [largeFontSize]="true"
+      class="mt-24"
+      *ngIf="helperText"
+    ></epgu-constructor-label>
   </div>
 
   <div class="screen-footer">
