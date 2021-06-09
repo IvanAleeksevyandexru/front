@@ -28,6 +28,8 @@ export interface TimeSlotValueInterface {
   bookAttributes?: string;
   parentOrderId?: string;
   timeSlotRequestAttrs?: Array<{ name: string; value: string }>;
+  bookingRequestParams?: Array<{ name: string; value: string }>;
+  userSelectedRegion?: string;
 }
 
 export interface DepartmentInterface {
@@ -146,6 +148,7 @@ export interface BookTimeSlotReq {
   slotId?: string[];
   serviceId?: string[];
   caseNumber?: string;
+  userSelectedRegion?: string;
 }
 
 export interface IDay {
