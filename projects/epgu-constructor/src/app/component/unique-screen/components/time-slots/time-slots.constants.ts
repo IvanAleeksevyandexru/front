@@ -17,6 +17,7 @@ export enum TimeSlotsTypes {
   RAZBRAK = 'RAZBRAK',
   GIBDD = 'GIBDD',
   MVD = 'MVD',
+  DOCTOR = 'DOCTOR'
 }
 
 export enum DateTypeTypes {

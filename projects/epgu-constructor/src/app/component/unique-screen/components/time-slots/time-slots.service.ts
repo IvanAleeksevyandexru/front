@@ -211,6 +211,9 @@ export class TimeSlotsService {
       bookAttributes:
         UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
+      bookParams: data.bookingRequestParams,
+      attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
+      userSelectedRegion: data.userSelectedRegion,
     };
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
@@ -387,7 +390,8 @@ export class TimeSlotsService {
       orgName: this.department.attributeValues.FULLNAME || this.department.title,
       routeNumber,
       subject: (this.config.subject as string) || subject,
-      params: [
+      userSelectedRegion: this.config.userSelectedRegion as string,
+      params: this.config.bookParams as attributesMapType || [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
@@ -411,7 +415,7 @@ export class TimeSlotsService {
       serviceId: [(this.config.serviceId as string) || serviceId],
     };
 
-    if (this.timeSlotsType === TimeSlotsTypes.MVD) {
+    if ([TimeSlotsTypes.MVD, TimeSlotsTypes.DOCTOR].includes(this.timeSlotsType)) {
       requestBody.parentOrderId = this.config.parentOrderId
         ? (this.config.parentOrderId as string)
         : '';
@@ -435,8 +439,9 @@ export class TimeSlotsService {
     return (this.config.bookAttributes as attributesMapType) || settings[slotsType];
   }
 
-  private getAddress({ ADDRESS, ADDRESS_OUT, address }: { [key: string]: string }): string {
-    return ADDRESS || ADDRESS_OUT || address;
+  private getAddress(attributeValues: { [key: string]: string }): string {
+    return attributeValues[this.config.attributeNameWithAddress as string]
+    || attributeValues.ADDRESS || attributeValues.ADDRESS_OUT || attributeValues.address;
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
