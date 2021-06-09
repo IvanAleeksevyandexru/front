@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { catchError, delay, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { BehaviorSubject, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ComponentValue } from '../logic.types';
@@ -15,11 +15,11 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
   providers: [UnsubscribeService],
 })
 export class LogicComponent {
-  isLoading$ = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.screenService.isLogicComponentLoading$;
   components$ = this.screenService.logicComponents$.pipe(
     filter((components) => components.length > 0),
     map((components) => {
-      this.isLoading$.next(true);
+      this.screenService.isLogicComponentLoading = true;
       return components.map((component) => ({
         id: component.id,
         value: JSON.parse(component.value) as ComponentValue,
@@ -41,7 +41,9 @@ export class LogicComponent {
     }),
     catchError(() => this.screenService.logicComponents$),
     delay(500),
-    tap(() => this.isLoading$.next(false)),
+    tap(() => {
+      this.screenService.isLogicComponentLoading = false;
+    }),
     takeUntil(this.unSubscribeService$),
   );
 

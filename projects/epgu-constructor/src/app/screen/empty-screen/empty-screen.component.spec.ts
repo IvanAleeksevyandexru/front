@@ -19,6 +19,7 @@ import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
+import { ActionService } from '../../shared/directives/action/action.service';
 
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
@@ -40,6 +41,7 @@ describe('EmptyScreenComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         MockProvider(FileDownloaderService),
+        MockProvider(ActionService),
       ],
     }).overrideComponent(EmptyScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -101,54 +103,6 @@ describe('EmptyScreenComponent', () => {
       expect(locationService.href).toHaveBeenCalledWith('http://example.com');
     });
 
-    it('should to redirectToLK', () => {
-      spyOn(navigationService, 'redirectToLK').and.callThrough();
-      fixture = TestBed.createComponent(EmptyScreenComponent);
-      component = fixture.componentInstance;
-      const componentSchema = {
-        attrs: {
-          actions: [{ type: 'redirectToLK' }],
-        },
-        id: 'id1',
-        type: 'type1',
-      } as ComponentDto;
-
-      component.createLink([componentSchema, {}])();
-
-      expect(navigationService.redirectToLK).toHaveBeenCalled();
-    });
-    it('should to Home', () => {
-      spyOn(navigationService, 'redirectToHome').and.callThrough();
-      fixture = TestBed.createComponent(EmptyScreenComponent);
-      component = fixture.componentInstance;
-      const componentSchema = {
-        attrs: {
-          actions: [{ type: 'home' }],
-        },
-        id: 'id1',
-        type: 'type1',
-      } as ComponentDto;
-
-      component.createLink([componentSchema, {}])();
-
-      expect(navigationService.redirectToHome).toHaveBeenCalled();
-    });
-    it('should other type action', () => {
-      spyOn(navigationService, 'redirectToHome').and.callThrough();
-      fixture = TestBed.createComponent(EmptyScreenComponent);
-      component = fixture.componentInstance;
-      const componentSchema = {
-        attrs: {
-          actions: [{ type: 'download' }],
-        },
-        id: 'id1',
-        type: 'type1',
-      } as ComponentDto;
-
-      component.createLink([componentSchema, {}])();
-
-      expect(navigationService.redirectToHome).toHaveBeenCalled();
-    });
     it('should unknown', () => {
       spyOn(loggerService, 'error').and.callThrough();
       fixture = TestBed.createComponent(EmptyScreenComponent);
