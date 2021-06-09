@@ -12,6 +12,7 @@ import {
   AppStateQueryStub,
   LocalStorageService,
   LocalStorageServiceStub,
+  WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './pages/project-list/project-list.component';
@@ -28,6 +29,7 @@ describe('ChildrenClubsComponent', () => {
       imports: [ProgramListModule, ChildrenClubsFilterPanelModule],
       declarations: [ChildrenClubsAppComponent, ProjectListComponent],
       providers: [
+        { provide: WINDOW, useValue: window },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: CfAppStateService, useClass: CfAppStateServiceStub },
@@ -44,7 +46,7 @@ describe('ChildrenClubsComponent', () => {
     jest.spyOn(cfAppStateService, 'getState').mockReturnValue({
       componentId: 'spa42',
       componentType: AppTypes.ChildrenClubs,
-      callbackRedirectUrl: '/some/app/url',
+      callbackRedirectUrl: '/some/lib/url',
       value: '{}',
       isPrevStepCase: false,
     });
