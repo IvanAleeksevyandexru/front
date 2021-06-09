@@ -25,8 +25,5 @@ export class ChildrenClubsAppComponent
 
   ngOnInit(): void {
     this.openApp();
-    // setTimeout(() => {
-    //   this.closeApp();
-    // }, 3000);
   }
 }
