@@ -10,6 +10,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { ConfigService } from '../../../../core/services/config/config.service';
+import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -38,7 +39,8 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     ? this.config.lookupQueryTimeoutMs
     : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
 
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
 
   constructor(
     private dictionaryToolsService: DictionaryToolsService,

@@ -22,7 +22,10 @@ import {
 import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
+import {
+  prepareClassifiedSuggestionItems,
+  SUGGEST_SEPORATOR_DEFAULT,
+} from '../../../../../../core/services/autocomplete/autocomplete.const';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 
 type AddressFields = ConfirmAddressFieldsInterface & {
@@ -50,6 +53,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   form: FormGroup;
   isRequired: boolean;
+  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
 
   constructor(
     public config: ConfigService,
