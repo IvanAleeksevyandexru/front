@@ -1,0 +1,18 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body"  *ngIf="(component$ | async) as data">
+    <epgu-constructor-field-list [data]="data"></epgu-constructor-field-list>
+    <div class="data-footer" *ngIf="data.attrs.hint">
+      <div class="divider mb-24"></div>
+      <epgu-constructor-output-html
+        [clarifications]="data.attrs.clarifications"
+        [html]="data.attrs.hint"
+      ></epgu-constructor-output-html>
+    </div>
+  </epgu-cf-ui-constructor-screen-pad>
+</epgu-constructor-default-unique-screen-wrapper>

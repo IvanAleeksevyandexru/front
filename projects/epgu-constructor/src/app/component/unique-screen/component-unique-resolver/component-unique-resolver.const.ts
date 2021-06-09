@@ -33,6 +33,7 @@ import { CarDetailInfoContainerComponent } from '../components/car-info/containe
 import {
   MedicalReferralsListContainerComponent
 } from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
+import { ConfirmPersonalUserLegalDataComponent } from '../components/confirm-personal-user-data-screen/component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -55,6 +56,7 @@ type UniqueScreenComponent =
   | InformationCenterContainerComponent
   | ConfirmPersonalUserAddressComponent
   | ConfirmPersonalUserDataComponent
+  | ConfirmPersonalUserLegalDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
@@ -101,7 +103,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmChildData: ConfirmPersonalUserDataComponent,
   ConfirmPersonalUserEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmPersonalUserPhone: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmLegalData: ConfirmPersonalUserDataComponent,
+  ConfirmLegalData: ConfirmPersonalUserLegalDataComponent,
   ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
   RegistrationAddr: RegistrationAddrComponent,
