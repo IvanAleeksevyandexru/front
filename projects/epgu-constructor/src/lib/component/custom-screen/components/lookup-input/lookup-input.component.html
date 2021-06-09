@@ -19,6 +19,7 @@
     [required]="control.value.required"
     [queryTimeout]="queryTimeout"
     [suggest]="suggestions$ | async"
+    [suggestSeparator]="suggestSeporator"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
     [itemsProvider]="provider"
     [placeholder]="control.value?.attrs?.placeholder"

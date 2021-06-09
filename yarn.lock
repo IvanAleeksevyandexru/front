@@ -1555,10 +1555,10 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
-"@epgu/epgu-lib@0.1.9":
-  version "0.1.9"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-0.1.9.tgz#99c7984ec80a472584e453a255b99e6c39713401"
-  integrity sha512-G+1gYEi0CgpzwrqzdKTlNXHTu5hnsMZZU2AudWV1q6XV3FhNJyKKP6uKMV/j7szfQmYKLdGqVSheyW+Y02bb5w==
+"@epgu/epgu-lib@0.1.19":
+  version "0.1.19"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-0.1.19.tgz#2441f3121cae128892f6bbc18c55c307af60d270"
+  integrity sha512-f7RvN7gLBftVnQqWhXuit5utQx7ZUEIoMi9PTpKmqB0BR5hI963r2vVMVB7sHwqyVNQZOd3l0faLYsfO3TkxnQ==
   dependencies:
     "@angular/animations" "11.0.0"
     "@angular/cdk" "11.0.0"

@@ -4,6 +4,7 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-dropdown',
@@ -12,7 +13,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 })
 export class DropdownComponent extends AbstractComponentListItemComponent {
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-
+  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
   constructor(
     public injector: Injector,
     public dictionaryToolsService: DictionaryToolsService,

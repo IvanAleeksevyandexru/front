@@ -19,7 +19,7 @@
     "rxjs": "6.6.6",
     "ngx-perfect-scrollbar": "8.0.0",
     "text-mask-core": "5.1.2",
-    "@epgu/epgu-lib": "0.1.9",
+    "@epgu/epgu-lib": "0.1.19",
     "date-fns": "2.16.1",
     "uuid": "8.3.0",
     "@types/hammerjs": "2.0.38",
