@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class Icons {

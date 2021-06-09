@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { Observable, throwError, of } from 'rxjs';
 import {
   TimeSlotReq,

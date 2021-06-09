@@ -8,11 +8,15 @@ import {
 } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { LocalStorageService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../../../core/services/config/config.service';
+import {
+  LocalStorageService,
+  LocationService,
+  UnsubscribeService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';

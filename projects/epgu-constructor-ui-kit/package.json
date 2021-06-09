@@ -14,7 +14,8 @@
     "@datorama/akita": "^6.1.3",
     "@epgu/epgu-lib": "0.1.2",
     "rxjs": "6.6.6",
-    "lodash": ""
+    "lodash": "",
+    "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
     "@epgu/epgu-constructor-types": "16.1.1",

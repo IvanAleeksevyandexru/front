@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConfigService } from '../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';

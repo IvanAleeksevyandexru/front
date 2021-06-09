@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
 import { PriorityItemsService } from '../../services/priority-items/priority-items.service';
 
 @Component({

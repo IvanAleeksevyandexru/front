@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ModalService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -16,8 +15,6 @@ import {
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-
-import { ModalService } from '../../../../modal/modal.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { LoggerService } from '../logger/logger.service';
-import { LoggerServiceStub } from '../logger/logger.service.stub';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from './init-data.service';
 import { FormPlayerContext, ServiceEntity } from '../../../form-player/form-player.types';
 import { configureTestSuite } from 'ng-bullet';

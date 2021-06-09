@@ -6,7 +6,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ScreenService } from '../../../screen/screen.service';
 import { UNIQUE_SCREEN_COMPONENTS } from './component-unique-resolver.const';
 import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { LoggerService } from '../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';

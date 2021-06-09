@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { LoadService, SmuEventsService } from '@epgu/epgu-lib';
-import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
-import { MOBILE_VIEW_COOKIE_NAME } from '../../../shared/constants/cookie';
 import { CookieService } from 'ngx-cookie-service';
+import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
+
+export const MOBILE_VIEW_COOKIE_NAME = 'mobVersion';
 
 export enum LoadServiceDeviceType {
   'desk' = 'desk',

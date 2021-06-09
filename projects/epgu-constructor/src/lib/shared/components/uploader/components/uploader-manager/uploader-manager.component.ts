@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CancelAction, ErrorActions, FileItem, FileItemStatus } from '../../../file-upload/data';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { FilesCollection, SuggestAction } from '../../data';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager',

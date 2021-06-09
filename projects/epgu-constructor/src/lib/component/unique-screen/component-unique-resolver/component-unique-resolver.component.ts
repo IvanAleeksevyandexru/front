@@ -16,7 +16,7 @@ import {
 import { takeUntil, tap, subscribeOn, filter } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import {
   ScreenComponentTypes,

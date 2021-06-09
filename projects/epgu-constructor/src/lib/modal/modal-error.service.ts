@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
-import { ModalService } from './modal.service';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit/src/lib/modal/modal.service';
 
 @Injectable()
 export class ModalErrorService {

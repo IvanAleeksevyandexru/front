@@ -7,12 +7,12 @@ import {
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { LoggerService } from '../../../core/services/logger/logger.service';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckOrderApiResponse,

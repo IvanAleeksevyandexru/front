@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
 import { FieldListComponent } from './field-list.component';
-import { ImgPrefixerPipe } from '../../pipes/img-prefixer/img-prefixer.pipe';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlModule } from '../output-html/output-html.module';
 import { RankPipe, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';

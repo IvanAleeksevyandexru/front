@@ -6,9 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { ErrorsInterceptorService } from './errors.interceptor';
-import { ModalService } from '../../../modal/modal.service';
-import { ModalServiceStub } from '../../../modal/modal.service.stub';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
@@ -19,8 +17,8 @@ import {
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
 } from './errors.interceptor.constants';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../services/config/config.service';
-import { ConfigServiceStub } from '../../services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -33,6 +31,7 @@ import { FormPlayerServiceStub } from '../../../form-player/services/form-player
 import { configureTestSuite } from 'ng-bullet';
 import { ErrorHandleService } from './error-handle.service';
 import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -186,29 +185,6 @@ describe('ErrorsInterceptor', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       DRAFT_STATEMENT_NOT_FOUND,
-    );
-    tick();
-  }));
-
-  it('should open modal with COMMON_ERROR_MODAL_PARAMS params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
-    formPlayerApi.checkIfOrderExist().subscribe(
-      () => fail('should have failed with the 405 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(405);
-      },
-    );
-    const requestToError = httpMock.expectOne(
-      `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
-    );
-    const body = new HttpErrorResponse({
-      status: 405,
-      statusText: 'Method Not Allowed',
-    });
-    requestToError.flush('Method Not Allowed', body);
-    expect(modalService.openModal).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      COMMON_ERROR_MODAL_PARAMS,
     );
     tick();
   }));

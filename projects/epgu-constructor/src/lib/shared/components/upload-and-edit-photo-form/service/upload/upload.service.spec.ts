@@ -6,8 +6,8 @@ import { UploadService } from './upload.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { CompressionService } from '../compression/compression.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 

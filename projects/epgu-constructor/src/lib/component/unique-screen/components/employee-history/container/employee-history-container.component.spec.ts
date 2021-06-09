@@ -7,7 +7,7 @@ import { EmployeeHistoryContainerComponent } from './employee-history-container.
 import { EmployeeHistoryDescriptionComponent } from '../components/employee-history-desription/employee-history-description.component';
 import { EmployeeHistoryFormComponent } from '../components/employee-history-form/employee-history-form.component';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { EmployeeHistoryDataSourceService } from '../services/employee-history.data-source.service';

@@ -10,12 +10,12 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '../config/config.service';
-import { ConfigServiceStub } from '../config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
-import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
-import { EventBusService } from '../event-bus/event-bus.service';
-import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '../utils/utils.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
@@ -24,11 +24,10 @@ import { AutocompleteService } from './autocomplete.service';
 import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
-import { DeviceDetectorService } from '../device-detector/device-detector.service';
-import { ModalService } from '../../../modal/modal.service';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService, LocalStorageServiceStub, ModalService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;

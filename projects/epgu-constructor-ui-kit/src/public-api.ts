@@ -51,6 +51,9 @@ export * from './lib/base/pipes/mask-handle/mask-handle.pipe';
 export * from './lib/base/pipes/mask-handle/mask.constant';
 export * from './lib/base/pipes/mask-handle/interface/number-mask-options.interface';
 
+export * from './lib/base/pipes/img-prefixer/img-prefixer.module';
+export * from './lib/base/pipes/img-prefixer/img-prefixer.pipe';
+
 export * from './lib/base/pipes/memo/memo.module';
 export * from './lib/base/pipes/memo/memo.pipe';
 
@@ -74,6 +77,16 @@ export * from './lib/core/services/location/location.service';
 export * from './lib/core/services/location/location.service.stub';
 
 export * from './lib/core/services/text-transform/text-transform.service';
+export * from './lib/core/services/unsubscribe/unsubscribe.service';
+export * from './lib/core/services/device-detector/device-detector.service';
+export * from './lib/core/services/device-detector/device-detector.service.stub';
+export * from './lib/core/services/device-detector/smu-events.service.stub';
+export * from './lib/core/services/event-bus/event-bus.service';
+export * from './lib/core/services/logger/logger.service';
+export * from './lib/core/services/logger/logger.service.stub';
+export * from './lib/core/services/config/config.types';
+export * from './lib/core/services/config/config.service';
+export * from './lib/core/services/config/config.service.stub';
 
 export * from './lib/app/app-state/app-state.module';
 export * from './lib/app/app-state/app-state.store';
@@ -82,5 +95,13 @@ export * from './lib/app/app-state/app-state.query';
 export * from './lib/app/app-state/app-state.query.stub';
 export * from './lib/app/app-state/app-state.service.stub';
 
+
+export * from './lib/modal/modal.service';
+export * from './lib/modal/modal.service.stub';
+export * from './lib/modal/shared/shared-modal.module';
+export * from './lib/modal/shared/modal-base/modal-base.component';
+export * from './lib/modal/shared/modal-container/modal-container.component';
+export * from './lib/modal/shared/common-modal/common-modal.component';
+export * from './lib/modal/shared/common-modal/common-modal.component';
 
 

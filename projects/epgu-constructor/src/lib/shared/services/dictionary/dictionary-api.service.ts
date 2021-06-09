@@ -5,7 +5,7 @@ import {
   DadataSuggestionsResponse,
   DictionaryResponse,
 } from './dictionary-api.types';
-import { ConfigService } from '../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
 import { DictionaryOptions, AdditionalRequestParam } from '@epgu/epgu-constructor-types';

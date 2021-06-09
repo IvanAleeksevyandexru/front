@@ -7,7 +7,7 @@ import { UploaderManagerItemComponent } from './components/uploader-manager-item
 import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 import { BaseModule } from '../../base.module';
 import { UploaderViewerComponent } from './components/uploader-viewer/uploader-viewer.component';
-import { ModalService } from '../../../modal/modal.service';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ViewerService } from './services/viewer/viewer.service';
 
 import { ZoomModule } from '../zoom/zoom.module';

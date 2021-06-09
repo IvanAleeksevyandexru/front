@@ -3,9 +3,8 @@ import { UploaderViewerComponent } from '../../components/uploader-viewer/upload
 import { ViewerService } from './viewer.service';
 import { UploaderViewerContentComponent } from '../../components/uploader-viewer-content/uploader-viewer-content.component';
 import { ZoomModule } from '../../../zoom/zoom.module';
-import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy, ComponentRef, EventEmitter, Type } from '@angular/core';
-import { ModalService } from '../../../../../modal/modal.service';
 import { BaseModule } from '../../../../base.module';
 import { FilesCollection, SuggestAction } from '../../data';
 import { BehaviorSubject, of } from 'rxjs';
@@ -14,10 +13,10 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { By } from '@angular/platform-browser';

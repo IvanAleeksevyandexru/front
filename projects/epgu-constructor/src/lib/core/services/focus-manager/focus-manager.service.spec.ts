@@ -13,7 +13,7 @@ import { RankModule } from '../../../shared/directives/rank/rank.module';
 import { ValidationService } from '../../../shared/services/validation/validation.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
-import { EventBusService } from '../event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('FocusManagerService', () => {

@@ -2,9 +2,11 @@ import { OnInit, ChangeDetectionStrategy, Component, Input } from '@angular/core
 import { takeUntil } from 'rxjs/operators';
 
 import { ScreenButton, ConfirmationModal, ActionType } from '@epgu/epgu-constructor-types';
-import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  DeviceDetectorService,
+  EventBusService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModalBaseButton } from './confirmation-modal-base.interface';
 
 @Component({

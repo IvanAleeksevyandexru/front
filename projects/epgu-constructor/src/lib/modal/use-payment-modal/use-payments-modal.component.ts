@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
+import { ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { UnusedPaymentInterface } from '../../component/unique-screen/components/unused-payments/unused-payment.interface';
 
 @Component({

@@ -1,10 +1,18 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormArray } from '@angular/forms';
 import { of } from 'rxjs';
 import { cloneDeep } from 'lodash';
+import { configureTestSuite } from 'ng-bullet';
+import {
+  ScenarioDto,
+  DictionaryConditions,
+  DictionaryValueTypes,
+  AttributeTypes,
+} from '@epgu/epgu-constructor-types';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { mockSelectMapObjectStore } from '../../../component/unique-screen/components/select-map-object/mocks/mock-select-map-object';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
@@ -19,15 +27,7 @@ import {
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { UtilsService as utils } from '../../../core/services/utils/utils.service';
-import { configureTestSuite } from 'ng-bullet';
-import {
-  ScenarioDto,
-  DictionaryConditions,
-  DictionaryValueTypes,
-  AttributeTypes,
-} from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
-import { FormArray } from '@angular/forms';
 
 const getDictionary = (count = 0) => {
   const items = [];

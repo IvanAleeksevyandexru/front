@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SuggestHandlerService } from './suggest-handler.service';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ISuggestionItem,
   ISuggestionItemList,

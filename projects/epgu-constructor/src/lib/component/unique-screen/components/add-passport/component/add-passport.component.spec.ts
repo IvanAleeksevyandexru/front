@@ -1,27 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from 'ng-bullet';
 import { HealthService } from '@epgu/epgu-lib';
+import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import {
+  EventBusService,
+  ScreenPadComponent,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
-import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ComponentsListToolsService } from '../../../../custom-screen/services/components-list-tools/components-list-tools.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { AddPassportComponent } from './add-passport.component';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { ModalService } from '../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { configureTestSuite } from 'ng-bullet';
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 describe('AddPassportComponent', () => {

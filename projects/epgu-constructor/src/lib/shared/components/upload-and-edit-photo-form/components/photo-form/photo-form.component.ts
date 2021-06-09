@@ -16,11 +16,14 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ComponentUploadedFileDto, ComponentValidationDto } from '@epgu/epgu-constructor-types';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ModalService,
+  EventBusService,
+  DeviceDetectorService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
-import { ModalService } from '../../../../../modal/modal.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
 import { PhotoEditorModalComponent } from '../photo-editor-modal/photo-editor-modal.component';

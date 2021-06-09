@@ -1,12 +1,22 @@
 import { cloneDeep } from 'lodash';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import { ScenarioDto } from '@epgu/epgu-constructor-types';
+import {
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  ConfigService,
+  ConfigServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  ModalService,
+  ModalServiceStub,
+  ConstructorLookupModule,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../core/services/device-detector/device-detector.service.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
@@ -15,13 +25,9 @@ import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { ModalErrorService } from '../../../../modal/modal-error.service';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
-import { ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
 import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
@@ -33,7 +39,6 @@ import { Icons } from './constants';
 import { mockSelectMapObjectStore } from './mocks/mock-select-map-object';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { IGeoCoordsResponse } from './select-map-object.interface';
-import { of } from 'rxjs';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
 import {
   DictionaryItem,
@@ -44,9 +49,8 @@ import { PrepareComponentsService } from '../../../../shared/services/prepare-co
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { configureTestSuite } from 'ng-bullet';
-import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ModalErrorService } from '../../../../modal/modal-error.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;

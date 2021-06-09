@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmationModalBaseComponent } from './confirmation-modal-base.component';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { BaseModule } from '../../../shared/base.module';
-import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { A11yModule } from '@angular/cdk/a11y';
+import { EventBusService, UnsubscribeService, DeviceDetectorServiceStub, DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { BaseModule } from '../../../shared/base.module';
 import { ScreenButtonsModule } from '../../../shared/components/screen-buttons/screen-buttons.module';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+
 
 describe('ConfirmationModalBaseComponent', () => {
   let component: ConfirmationModalBaseComponent;

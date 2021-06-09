@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ISuggestionItem, ISuggestionItemList } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class SuggestHandlerService {

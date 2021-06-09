@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@a
 import { timer } from 'rxjs';
 import { takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { TimerComponentDtoAction, TimerLabelSection } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { createTimer, isWarning } from './timer.helper';
 import { TimerComponentBase, TimerInterface } from './timer.interface';

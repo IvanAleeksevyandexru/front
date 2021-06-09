@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { configureTestSuite } from 'ng-bullet';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { DropdownListModalComponent } from './dropdown-list-modal.component';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { FilterPipe } from '../pipes/filter.pipe';
 import { BaseModule } from '../../../shared/base.module';
-import { ConfirmationModalModule } from '../../confirmation-modal/confirmation-modal.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { ActionService } from '../../../shared/directives/action/action.service';
-import { configureTestSuite } from 'ng-bullet';
+import { ConfirmationModalModule } from '../../confirmation-modal/confirmation-modal.module';
 
 const dropdownData = {
   title: 'Категории граждан и условия для досрочного назначения пенсии',

@@ -1,18 +1,21 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { LocalStorageService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
+import {
+  LocalStorageService,
+  LocationService,
+  DeviceDetectorService,
+  ModalService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../../../../modal/modal.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../../../shared/constants/form-player';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { SignatureApplicationData } from '../../models/application.interface';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-signature-application-container',

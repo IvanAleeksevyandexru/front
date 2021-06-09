@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoggerService } from '../../../core/services/logger/logger.service';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
   Navigation,

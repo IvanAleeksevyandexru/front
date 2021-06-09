@@ -13,9 +13,9 @@ import {
 import { filter, subscribeOn, takeUntil, tap } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenService } from '../screen.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-screen-resolver',

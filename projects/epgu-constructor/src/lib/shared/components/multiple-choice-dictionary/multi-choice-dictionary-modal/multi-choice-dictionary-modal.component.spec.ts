@@ -5,11 +5,10 @@ import { ListElement } from '@epgu/epgu-lib';
 import { FormBuilder } from '@angular/forms';
 
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionary-api.service.stub';
-import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { BaseModule } from '../../../base.module';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
@@ -18,6 +17,7 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
+import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;

@@ -5,7 +5,7 @@ import { ComponentListResolverComponent } from './component-list-resolver.compon
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ScreenService } from '../../../screen/screen.service';
 import { CUSTOM_SCREEN_COMPONENTS } from './component-list-resolver.const';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { CustomScreenComponentTypes } from '../components-list.types';
 import { configureTestSuite } from 'ng-bullet';

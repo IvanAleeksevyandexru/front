@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, TemplateRef } from '@angu
 import { ModalBaseComponent } from '../modal-base/modal-base.component';
 
 @Component({
-  selector: 'epgu-constructor-common-modal',
+  selector: 'epgu-cf-ui-common-modal',
   templateUrl: './common-modal.component.html',
   styleUrls: ['./common-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

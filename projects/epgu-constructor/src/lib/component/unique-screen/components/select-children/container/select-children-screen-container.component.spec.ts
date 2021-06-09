@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { MockComponent } from 'ng-mocks';
 import { CoreModule } from '../../../../../core/core.module';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../shared/base.module';

@@ -4,8 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
-import { ConfigService } from '../../../core/services/config/config.service';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { DadataSuggestionsResponse } from '../dictionary/dictionary-api.types';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';

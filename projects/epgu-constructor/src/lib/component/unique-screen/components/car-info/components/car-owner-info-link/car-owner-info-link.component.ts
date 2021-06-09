@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { FileDownloaderService } from '../../../../../../shared/services/file-downloader/file-downloader.service';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
 
 @Component({
   selector: 'epgu-constructor-car-owner-info-link',

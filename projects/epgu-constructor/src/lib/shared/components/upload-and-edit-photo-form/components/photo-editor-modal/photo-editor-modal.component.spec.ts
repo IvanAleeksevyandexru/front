@@ -7,10 +7,10 @@ import { ButtonComponent } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { isBoolean } from '../../../../constants/utils';
 import { configureTestSuite } from 'ng-bullet';
 

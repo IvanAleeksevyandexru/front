@@ -2,10 +2,10 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { catchError, delay, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ComponentValue } from '../logic.types';
 import { LogicService } from '../service/logic.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-logic',

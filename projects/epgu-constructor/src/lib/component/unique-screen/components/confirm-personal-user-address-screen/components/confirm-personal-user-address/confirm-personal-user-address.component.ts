@@ -9,9 +9,9 @@ import {
 import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { ActionService } from '../../../../../shared/directives/action/action.service';

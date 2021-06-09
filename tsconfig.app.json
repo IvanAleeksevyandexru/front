@@ -13,10 +13,11 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+    "projects/epgu-constructor-ui-kit/src/lib/modal/modal.service.ts",
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
   ],
   "angularCompilerOptions": {
     "enableIvy": true

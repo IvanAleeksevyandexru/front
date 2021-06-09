@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActionType } from '@epgu/epgu-constructor-types';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfirmUserData,
   ConfirmUserDataErrorType,
 } from '../../confirm-personal-user-data-screen.types';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
+
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',

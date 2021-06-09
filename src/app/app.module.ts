@@ -1,21 +1,23 @@
 import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormPlayerModule, ConfigService, UnsubscribeService } from '@epgu/epgu-constructor';
+import { FormPlayerModule } from '@epgu/epgu-constructor';
 import { EpguLibCommonModule, EpguLibModule, LoadService } from '@epgu/epgu-lib';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit'
 import { CookieService } from 'ngx-cookie-service';
+import '@angular/common/locales/global/ru';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { ChildrenClubsModule } from '@epgu/children-clubs';
+
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AppService } from './app.service';
 import { ConfigComponent } from './config/config.component';
 import { FpContainerComponent } from './fp-container/fp-container.component';
 import { LayoutModule } from './layout/layout.module';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { environment } from '../environments/environment';
-import '@angular/common/locales/global/ru';
-import { ChildrenClubsModule } from '@epgu/children-clubs';
 import { ChildrenClubsContainerComponent } from './children-clubs-container/children-clubs-container.component';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 @NgModule({
   declarations: [

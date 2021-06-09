@@ -7,13 +7,16 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalBaseButton } from '../../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
-import { ModalBaseComponent } from '../../../../../../modal/shared/modal-base/modal-base.component';
+import {
+  ModalBaseComponent,
+  EventBusService,
+  UnsubscribeService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
+import { ConfirmationModalBaseButton } from '../../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
 
 @Component({
   selector: 'epgu-constructor-photo-requirements-modal',

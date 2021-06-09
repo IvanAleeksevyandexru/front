@@ -5,8 +5,7 @@ import { of } from 'rxjs';
 
 import { PhotoDescriptionComponent } from './photo-description.component';
 import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from '@epgu/epgu-constructor-types';

@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';

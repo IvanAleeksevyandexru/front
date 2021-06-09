@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigService } from '../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { CycledInfoComponent } from './components/cycled-info/cycled-info.component';
-import { LoggerService } from '../../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';

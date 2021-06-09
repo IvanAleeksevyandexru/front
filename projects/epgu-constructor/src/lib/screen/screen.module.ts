@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';

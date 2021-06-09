@@ -20,8 +20,8 @@ import {
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject, combineLatest, from, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   FileResponseToBackendUploadsItem,
   FileUploadAttributes,
