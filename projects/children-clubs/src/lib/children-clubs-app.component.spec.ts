@@ -42,7 +42,7 @@ describe('ChildrenClubsComponent', () => {
     jest.spyOn(cfAppStateService, 'getState').mockReturnValue({
       componentId: 'spa42',
       componentType: AppTypes.ChildrenClubs,
-      callbackRedirectUrl: '/some/app/url',
+      callbackRedirectUrl: '/some/lib/url',
       value: '{}',
       isPrevStepCase: false
     });

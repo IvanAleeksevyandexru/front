@@ -1,8 +1,0 @@
-<ng-container [ngSwitch]="screenService.componentType$ | async">
-
-	<epgu-constructor-redirect
-    *ngSwitchCase="emptyComponentName.redirect"
-    [link]="redirectLink$ | async"
-  ></epgu-constructor-redirect>
-
-</ng-container>
