@@ -66,7 +66,7 @@ export class ValidationService {
       if (validations?.length) {
         const error = this.getError(validations, control, component);
         if (error) {
-          return this.validationErrorMsg(error.errorMsg, error?.errorDesc);
+          return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -210,8 +210,9 @@ export class ValidationService {
   private validationErrorMsg(
     error: string = InvalidControlMsg.formatField,
     desc?: string,
+    textFromJson = false,
   ): ValidationErrors {
-    return { msg: error, desc };
+    return { msg: error, desc, textFromJson };
   }
 
   private getError(
