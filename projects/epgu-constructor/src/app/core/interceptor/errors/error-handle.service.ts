@@ -50,7 +50,7 @@ export class ErrorHandleService {
           const addressLink = `<a target='_blank' href='https://yandex.ru/maps/?text=${address}'>${address}</a>`;
           const regExp = /\{addressLink\}?/g;
           BOOKING_ONLINE_ERROR.text = BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
-  
+
           this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
             if (redirectToLk) {
               this.navigationService.redirectToLK();
@@ -68,7 +68,7 @@ export class ErrorHandleService {
         const errorMessage = error.errorDetail.errorMessage;
 
         if (
-          errorMessage.includes('NO_DATA') || 
+          errorMessage.includes('NO_DATA') ||
           !errorMessage.includes('FAILURE') && !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
         ) {
           const message = errorMessage.replace('NO_DATA:', '');
