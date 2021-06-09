@@ -32,12 +32,12 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "dist/epgu-constructor/src/assets",
+                "input": "projects/epgu-constructor/src/assets",
                 "output": "assets"
               },
               {
                 "glob": "**/*",
-                "input": "dist/epgu-constructor-ui-kit/src/ui-kit-assets",
+                "input": "projects/epgu-constructor-ui-kit/src/ui-kit-assets",
                 "output": "ui-kit-assets"
               },
               {
@@ -47,7 +47,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "dist/children-clubs/src/assets",
+                "input": "projects/children-clubs/src/assets",
                 "output": "assets"
               }
             ],
