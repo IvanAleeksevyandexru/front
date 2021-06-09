@@ -34,6 +34,7 @@ export class UploaderValidationService {
       concatMap((file: FileItem) =>
         file.status !== FileItemStatus.error ? this.compressImage(file) : of(file),
       ), // Компрессия
+      map((file: FileItem) => this.validateMinSize(file)), //Проверка min размера файла
       map((file: FileItem) =>
         file.status !== FileItemStatus.error ? this.validateSize(file) : file,
       ), // Проверка размера
@@ -116,6 +117,13 @@ export class UploaderValidationService {
           ? this.uploader.getError(ErrorActions.addMaxTotalSize)
           : this.uploader.getError(ErrorActions.addMaxSize),
       );
+    }
+    return file;
+  }
+  validateMinSize(file: FileItem): FileItem {
+    const minSize = this.uploader.data?.minSize || 1;
+    if (file.raw.size < minSize) {
+      file.setError(this.uploader.getError(ErrorActions.addMinSize));
     }
     return file;
   }
