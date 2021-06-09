@@ -79,7 +79,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? null
-        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc);
+        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true);
     };
   }
 
@@ -99,7 +99,7 @@ export class ValidationService {
       if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
-          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc));
+          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -112,7 +112,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? of(null)
-        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc));
+        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true));
     };
   }
 
@@ -169,7 +169,7 @@ export class ValidationService {
         });
 
       if (error) {
-        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD);
+        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
       }
     };
   }
