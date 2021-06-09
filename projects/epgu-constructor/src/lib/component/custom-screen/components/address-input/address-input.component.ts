@@ -2,9 +2,9 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ConfigService } from '../../../../core/services/config/config.service';
+
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';

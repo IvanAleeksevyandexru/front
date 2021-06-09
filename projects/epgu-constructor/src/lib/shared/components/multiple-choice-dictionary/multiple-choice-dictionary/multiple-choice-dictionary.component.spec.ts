@@ -2,16 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import { ModalService, ModalServiceStub, ChipModule } from '@epgu/epgu-constructor-ui-kit';
 
 import { MultipleChoiceDictionaryComponent } from './multiple-choice-dictionary.component';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { BaseModule } from '../../../base.module';
-import { ChipModule } from '@epgu/epgu-constructor-ui-kit';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
-import { configureTestSuite } from 'ng-bullet';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 describe('MultipleChoiceDictionaryComponent', () => {
   let component: MultipleChoiceDictionaryComponent;

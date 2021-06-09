@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
 import { UserInfoType } from './components/user-info/user-info.type';
 import { ComponentValue } from '../../../screen/screen-content';
-import { LoggerService } from '../../../core/services/logger/logger.service';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { CycledInfo } from './components/cycled-info/cycled-info.types';
 

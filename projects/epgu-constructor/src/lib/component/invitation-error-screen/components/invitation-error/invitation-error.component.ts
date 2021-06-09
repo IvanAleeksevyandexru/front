@@ -10,10 +10,13 @@ import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { ComponentDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  LocationService,
+  UnsubscribeService,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 

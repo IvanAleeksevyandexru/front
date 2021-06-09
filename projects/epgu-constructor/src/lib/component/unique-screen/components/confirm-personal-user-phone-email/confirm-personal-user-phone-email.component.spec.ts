@@ -1,15 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormatPhonePipe } from '@epgu/epgu-lib';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';

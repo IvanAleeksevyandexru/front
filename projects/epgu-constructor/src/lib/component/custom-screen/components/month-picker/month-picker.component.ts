@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, AfterViewInit } from '@angular/core';
 import { ValidationShowOn } from '@epgu/epgu-lib';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { EmployeeHistoryMonthsService } from '../../../unique-screen/components/employee-history/services/employee-history.months.service';
 

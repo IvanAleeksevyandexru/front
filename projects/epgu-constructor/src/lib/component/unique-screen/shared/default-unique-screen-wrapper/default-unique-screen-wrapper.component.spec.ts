@@ -14,18 +14,17 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { AnswerButtonComponent } from '../../../../shared/components/answer-button/answer-button.component';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../../../core/services/logger/logger.service.stub';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BaseModule } from '../../../../shared/base.module';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',

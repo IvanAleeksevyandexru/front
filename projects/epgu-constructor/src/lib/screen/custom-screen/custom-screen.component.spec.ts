@@ -10,7 +10,7 @@ import {
   CustomComponentValidationConditions,
 } from '../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
@@ -26,8 +26,7 @@ import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-import { ModalService } from '../../modal/modal.service';
-import { ModalServiceStub } from '../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import {
   ComponentDto,

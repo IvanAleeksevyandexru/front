@@ -5,19 +5,22 @@ import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponents } from 'ng-mocks';
+import {
+  HelperTextComponent,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub, LoggerService, LoggerServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { ComponentItemComponent } from './component-item.component';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
-import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../shared/base.module';
 import { CoreModule } from '../../../../core/core.module';
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -55,6 +58,7 @@ describe('ComponentItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
         CurrentAnswersService,
       ],
     }).overrideComponent(ComponentItemComponent, {

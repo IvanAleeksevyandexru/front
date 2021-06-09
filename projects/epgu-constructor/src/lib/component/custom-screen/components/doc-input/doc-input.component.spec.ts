@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent } from './doc-input.component';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListModule } from '../../components-list.module';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,8 +9,14 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { MockComponent, MockModule } from 'ng-mocks';
 import { BaseModule } from '../../../../shared/base.module';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import {
+  ConfigService, ConfigServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  ModalService,
+  ModalServiceStub,
+  UnsubscribeService
+} from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { EpguLibModule } from '@epgu/epgu-lib';
@@ -48,6 +53,8 @@ describe('DocInputComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         ComponentsListFormService,
         ComponentsListToolsService,
         UnsubscribeService,

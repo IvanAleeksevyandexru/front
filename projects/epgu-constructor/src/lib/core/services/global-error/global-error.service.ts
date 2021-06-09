@@ -3,7 +3,7 @@ import { ErrorHandler, Injectable } from '@angular/core';
 import { HealthService } from '@epgu/epgu-lib';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore } from '../../../screen/screen.types';
-import { LoggerService } from '../logger/logger.service';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '../utils/utils.service';
 
 interface Error {

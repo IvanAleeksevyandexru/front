@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { LoadService } from '@epgu/epgu-lib';
+import { ImgPrefixerPipe } from './img-prefixer.pipe';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { LoadServiceStub } from '../../../core/services/config/load-service-stub';
 import { LoggerService } from '../../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
-import { ImgPrefixerPipe } from './img-prefixer.pipe';
 
 describe('ImgPrefixerPipe', () => {
   let pipe: ImgPrefixerPipe;
@@ -18,7 +18,7 @@ describe('ImgPrefixerPipe', () => {
       ],
     });
 
-    configService = TestBed.get(ConfigService);
+    configService = TestBed.inject(ConfigService);
     pipe = new ImgPrefixerPipe(configService);
   });
 

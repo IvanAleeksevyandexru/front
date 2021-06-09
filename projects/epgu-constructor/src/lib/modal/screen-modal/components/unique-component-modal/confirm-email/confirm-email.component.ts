@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
+import { EventBusService, UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UniqueScreenComponentTypes } from '../../../../../component/unique-screen/unique-screen-components.types';

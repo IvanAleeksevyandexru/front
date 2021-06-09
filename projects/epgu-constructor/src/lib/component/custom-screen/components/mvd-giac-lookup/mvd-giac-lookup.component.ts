@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { BehaviorSubject } from 'rxjs';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomListDropDowns } from '../../components-list.types';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({

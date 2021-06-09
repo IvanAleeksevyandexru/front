@@ -9,9 +9,9 @@ import {
 import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
 
-import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
+import { ModalBaseComponent, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
-import { ConfigService } from '../../../../../core/services/config/config.service';
+
 import { ImageErrorText, NewSizeEvent } from '../../upload-and-edit-photo-form.model';
 import { minCropSize, imageErrorText } from '../../upload-and-edit-photo-form.constant';
 

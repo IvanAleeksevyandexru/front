@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarDetailInfoService } from './car-detail-info.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 
 describe('CarDetailInfoService', () => {

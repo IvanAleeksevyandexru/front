@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { combineLatest, Observable } from 'rxjs';
 import { first, mapTo, startWith, take, takeUntil } from 'rxjs/operators';
 import { flatten as _flatten } from 'lodash';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ScreenService } from '../../../../screen/screen.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadAttributes,

@@ -8,6 +8,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
@@ -16,7 +17,6 @@ import {
   CheckboxCubeComponentAttrsDto,
   CubeElement,
 } from '../models/checkbox-cube.interface';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-checkbox-cube-container',

@@ -7,7 +7,7 @@ import {
   PaymentInfoInterface,
   PaymentsAttrs,
 } from './payment.types';
-import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';

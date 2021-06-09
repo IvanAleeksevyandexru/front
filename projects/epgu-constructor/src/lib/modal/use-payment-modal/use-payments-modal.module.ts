@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ModalService } from '../modal.service';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { UsePaymentsModalComponent } from './use-payments-modal.component';
 import { BaseModule } from '../../shared/base.module';
 

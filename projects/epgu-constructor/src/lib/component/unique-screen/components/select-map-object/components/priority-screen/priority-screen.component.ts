@@ -5,11 +5,11 @@ import { Observable } from 'rxjs/internal/Observable';
 import { KinderGardenAttrs } from '@epgu/epgu-constructor-types';
 import { FormControl, Validators } from '@angular/forms';
 import { NotifierService, NotifierType } from '@epgu/epgu-lib';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 
 import { PriorityItemsService } from '../../services/priority-items/priority-items.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 @Component({

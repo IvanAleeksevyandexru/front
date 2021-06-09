@@ -3,7 +3,7 @@ import {
   HostBinding,
   HostListener
 } from '@angular/core';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

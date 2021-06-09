@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { CoreModule } from '../../../../../../core/core.module';
 import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ModalModule } from '../../../../../../modal/modal.module';

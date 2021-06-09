@@ -9,7 +9,13 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { ConstructorDadataWidgetComponent } from './constructor-dadata-widget.component';
 import { BaseModule } from '../../base.module';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  UnsubscribeService
+} from '@epgu/epgu-constructor-ui-kit';
 
 describe('ConstructorDadataWidgetComponent', () => {
   let component: ConstructorDadataWidgetComponent;
@@ -22,6 +28,8 @@ describe('ConstructorDadataWidgetComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         UnsubscribeService,
       ],
     }).compileComponents();

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomScreenComponentTypes } from '../../components-list.types';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({

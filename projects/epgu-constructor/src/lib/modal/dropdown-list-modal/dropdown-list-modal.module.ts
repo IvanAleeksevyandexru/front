@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { BaseModule } from '../../shared/base.module';
 import { DropdownListComponent } from './components/dropdown-list/dropdown-list.component';
 import { DropdownListModalComponent } from './components/dropdown-list-modal.component';

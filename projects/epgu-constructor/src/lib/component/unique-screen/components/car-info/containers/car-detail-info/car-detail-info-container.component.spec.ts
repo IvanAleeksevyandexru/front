@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { ScreenPadModule, ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarDetailInfoContainerComponent } from './car-detail-info-container.component';
 import { CarDetailInfoService } from '../../service/car-detail-info.service';
@@ -15,13 +16,10 @@ import { CarOwnerInfoComponent } from '../../components/car-owner-info/car-owner
 import { LegalComplianceComponent } from '../../components/legal-compliance/legal-compliance.component';
 import { SearchPtsComponent } from '../../components/search-pts/search-pts.component';
 import { NotaryInfoComponent } from '../../components/notary-info/notary-info.component';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CarOwnersComponent } from '../../components/car-owners/car-owners.component';
 import { CarErrorComponent } from '../../components/car-error/car-error.component';
 import { ErrorTemplatePipe } from '../../pipes/error-template.pipe';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { ServiceResult } from '../../models/car-info.interface';
 import { YesNoStrictPipe } from '../../pipes/yes-no-strict.pipe';
 

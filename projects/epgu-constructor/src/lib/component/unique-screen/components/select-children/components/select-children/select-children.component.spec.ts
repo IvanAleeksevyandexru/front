@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { SelectChildrenComponent } from './select-children.component';
 import { CoreModule } from '../../../../../../core/core.module';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
+import { LoggerService, LoggerServiceStub, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { SelectChildrenItemComponent } from '../select-children-item/select-children-item.component';
@@ -19,10 +19,9 @@ import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
 import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -63,6 +62,8 @@ describe('SelectChildrenComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         CurrentAnswersService,
         DatesToolsService,
         RefRelationService,

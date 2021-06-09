@@ -15,8 +15,8 @@ import { InitDataServiceStub } from '../../core/services/init-data/init-data.ser
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormPlayerContext, QueryParams, ServiceEntity, ServiceInfo } from '../../../form-player/form-player.types';
-import { LoggerService } from '../logger/logger.service';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 
 /**
  * Сервис необходим для хранения входных параметров с которыми стартует приложение

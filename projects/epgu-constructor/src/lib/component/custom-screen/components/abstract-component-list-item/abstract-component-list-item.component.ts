@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Injector, Input, OnInit } from '@angular/
 import { AbstractControl } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 
 @Component({

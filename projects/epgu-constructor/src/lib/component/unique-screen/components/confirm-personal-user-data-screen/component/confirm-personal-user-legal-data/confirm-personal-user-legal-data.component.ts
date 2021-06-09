@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmPersonalUserDataComponent } from '../confirm-personal-user-data/confirm-personal-user-data.component';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmUserLegalData } from '../../confirm-personal-user-data-screen.types';
 
 @Component({

@@ -8,8 +8,8 @@ import {
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
 import { DisplayDto, ScenarioErrorsDto, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { isEqualObj } from '../../shared/constants/utils';

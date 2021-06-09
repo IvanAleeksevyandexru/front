@@ -6,10 +6,10 @@ import { ZoomModule } from '../../../zoom/zoom.module';
 import { UploaderViewerContentComponent } from '../uploader-viewer-content/uploader-viewer-content.component';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../core/services/device-detector/device-detector.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 import {
   TerraUploadFileOptions,

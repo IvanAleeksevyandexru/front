@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../shared/base.module';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverModule } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.module';

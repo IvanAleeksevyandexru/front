@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DateRangeAttrs } from '../../../../shared/services/date-range/date-range.models';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({

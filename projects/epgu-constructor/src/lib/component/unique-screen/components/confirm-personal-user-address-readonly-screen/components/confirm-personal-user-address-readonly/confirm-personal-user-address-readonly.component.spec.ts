@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ConfirmPersonalUserAddressReadonlyComponent } from './confirm-personal-user-address-readonly.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -23,7 +23,7 @@ import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
-import { ImgPrefixerPipe } from '../../../../../../shared/pipes/img-prefixer/img-prefixer.pipe';
+import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {

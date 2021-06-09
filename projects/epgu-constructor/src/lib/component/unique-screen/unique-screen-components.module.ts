@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalModule } from '../../modal/modal.module';
 import { BaseModule } from '../../shared/base.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';

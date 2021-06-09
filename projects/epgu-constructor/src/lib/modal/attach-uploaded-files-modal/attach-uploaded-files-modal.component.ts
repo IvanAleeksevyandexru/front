@@ -9,10 +9,15 @@ import {
 } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ModalBaseComponent,
+  UnsubscribeService,
+  EventBusService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { ScreenService } from '../../screen/screen.service';
-import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import {
   ISuggestionItem,
@@ -20,8 +25,7 @@ import {
 } from '../../core/services/autocomplete/autocomplete.inteface';
 import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
 import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/constants/dates';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { ConfigService } from '../../core/services/config/config.service';
+
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';

@@ -10,12 +10,12 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
-import { DeviceDetectorService } from '../device-detector/device-detector.service';
-import { LoggerService } from '../logger/logger.service';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { SessionService } from '../session/session.service';
-import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '../utils/utils.service';
 import { TracingService } from './tracing.service';
 import { configureTestSuite } from 'ng-bullet';

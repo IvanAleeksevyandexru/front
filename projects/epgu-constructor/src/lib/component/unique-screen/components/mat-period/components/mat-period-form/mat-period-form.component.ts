@@ -10,9 +10,9 @@ import { FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms
 import { ListElement } from '@epgu/epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
 
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { FormField, FormValue, PaymentType } from '../../mat-period.models';
 import { DurationService } from '../../service/duration.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../../../custom-screen/components-list.types';
 

@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Config } from '../../../core/services/config/config.types';
-import { ConfigService } from '../../../core/services/config/config.service';
+import { Config, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class FormPlayerConfigApiService {

@@ -8,9 +8,9 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { EventBusService } from '../../../../../core/services/event-bus/event-bus.service';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 

@@ -1,7 +1,7 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { waitForAsync, TestBed, fakeAsync } from '@angular/core/testing';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { brakBookRequest } from './mocks/mock-time-slots';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { configureTestSuite } from 'ng-bullet';

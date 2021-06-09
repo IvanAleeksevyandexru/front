@@ -1,18 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 // eslint-disable-next-line max-len
-import { ConfirmationModalBaseComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
@@ -20,6 +18,7 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
+import { ConfirmationModalBaseComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;

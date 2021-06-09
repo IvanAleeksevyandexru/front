@@ -1,5 +1,5 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
-import { ModalService } from '../../../../../modal/modal.service';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { UploaderViewerComponent } from '../../components/uploader-viewer/uploader-viewer.component';
 import { FileItem } from '../../../file-upload/data';
 import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';

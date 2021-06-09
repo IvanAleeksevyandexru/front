@@ -14,9 +14,9 @@ import { LoadService } from '@epgu/epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../core/services/config/config.service';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { NavigationService } from '../core/services/navigation/navigation.service';
-import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
 import { ScreenService } from '../screen/screen.service';
 import {
   FormPlayerContext,

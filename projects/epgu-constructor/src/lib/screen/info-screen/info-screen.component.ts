@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../core/services/config/config.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { LocationService, UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenBase } from '../screen-base';
 
 @Component({

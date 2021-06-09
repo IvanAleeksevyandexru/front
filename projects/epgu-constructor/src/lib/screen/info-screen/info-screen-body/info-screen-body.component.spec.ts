@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { InfoScreenBodyComponent } from './info-screen-body.component';
 import { MockComponent } from 'ng-mocks';
 import { OutputHtmlComponent } from '../../../shared/components/output-html/output-html.component';

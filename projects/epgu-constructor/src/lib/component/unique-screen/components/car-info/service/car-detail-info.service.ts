@@ -3,11 +3,11 @@ import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, merge, of } from 'rxjs';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarDetailInfo } from '../containers/car-detail-info/car-detail-info.models';
 import { VehicleOwnerInfo } from '../../car-list/models/car-list.interface';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { ConfigService } from '../../../../../core/services/config/config.service';
 import { NotaryInfo, ServiceResult } from '../models/car-info.interface';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 

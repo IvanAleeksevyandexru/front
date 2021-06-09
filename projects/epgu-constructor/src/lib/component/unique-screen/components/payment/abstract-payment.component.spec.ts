@@ -1,18 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import {
+  UnsubscribeService,
+  ConfigService,
+  ConfigServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { AbstractPaymentComponent } from './abstract-payment.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { PaymentService } from './payment.service';
 import { PaymentServiceStub } from './payment.service.stub';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -21,7 +24,7 @@ import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dat
 import { billsInfoMock, billsInfoMockPaid, billsInfoMockPaidWithError } from './payment-data.stub';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
-import { configureTestSuite } from 'ng-bullet';
+
 
 describe('AbstractPaymentComponent', () => {
   let component: AbstractPaymentComponent;

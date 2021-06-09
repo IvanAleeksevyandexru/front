@@ -3,7 +3,7 @@ import { AbstractControl, FormArray } from '@angular/forms';
 import { ListElement } from '@epgu/epgu-lib';
 
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildI } from '../../select-children.models';
 import {
   CustomComponent,

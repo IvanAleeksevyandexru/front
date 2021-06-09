@@ -23,8 +23,8 @@ import {
 } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ComponentBase } from '../../../screen/screen.types';
 import { PassportAttr, PassportFields, PassportFormFields } from './passport.interface';
 import {

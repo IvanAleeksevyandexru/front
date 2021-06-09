@@ -8,10 +8,8 @@ import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
-import { ConfigService } from './services/config/config.service';
-import { DeviceDetectorService } from './services/device-detector/device-detector.service';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from './services/init-data/init-data.service';
-import { LoggerService } from './services/logger/logger.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { SessionService } from './services/session/session.service';
@@ -28,12 +26,10 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
  */
 @NgModule({
   providers: [
-    ConfigService,
     DeviceDetectorService,
     NavigationService,
     NavigationModalService,
     SmuEventsService,
-    LoggerService,
     UtilsService,
     SessionService,
     InitDataService,

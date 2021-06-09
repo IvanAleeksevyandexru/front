@@ -32,6 +32,10 @@ export class ConfigServiceStub implements Config {
   _zipkinMaxPayloadSize: number;
   _zipkinEnv = '';
   _oplataUrl = 'oplataUrl';
+  _lkApi = '';
+  _lookupQueryTimeoutMs = 42;
+  _nsiSuggestDictionaryUrl = '';
+  _suggestionsApiUrl = '';
 
   _isLoaded$ = of(false);
   _appPathMap = {};
@@ -202,6 +206,22 @@ export class ConfigServiceStub implements Config {
 
   get appPathMap(): AppPathMap {
     return this._appPathMap;
+  }
+
+  get lkApi(): string {
+    return this._lkApi;
+  }
+
+  get lookupQueryTimeoutMs(): number {
+    return this._lookupQueryTimeoutMs;
+  }
+
+  get nsiSuggestDictionaryUrl(): string {
+    return this._nsiSuggestDictionaryUrl;
+  }
+
+  get suggestionsApiUrl(): string {
+    return this._suggestionsApiUrl;
   }
 
   initCore(): void { }

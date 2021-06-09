@@ -5,10 +5,23 @@ import { MockComponents, MockPipe } from 'ng-mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
+import {
+  EventBusService,
+  ConfigService,
+  ConfigServiceStub,
+  ConstructorCheckboxComponent,
+  ConstructorDropdownComponent,
+  ConstructorLookupComponent,
+  MaskHandlePipe,
+  MemoModule,
+  LoggerService,
+  UnsubscribeService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { ConfigService } from '../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListComponent } from './components-list.component';
@@ -17,13 +30,6 @@ import { ComponentsListToolsService } from './services/components-list-tools/com
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { ConstructorPlainInputComponent } from '../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { ConstructorDadataWidgetComponent } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.component';
-import {
-  ConstructorCheckboxComponent,
-  ConstructorDropdownComponent,
-  ConstructorLookupComponent,
-  MaskHandlePipe,
-  MemoModule
-} from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerComponent } from '../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { ConstructorMultilineInputComponent } from '../../shared/components/constructor-multiline-input/constructor-multiline-input.component';
 import { ComponentItemComponent } from './components/component-item/component-item.component';
@@ -39,19 +45,14 @@ import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
 import { UtilsService } from '../../core/services/utils/utils.service';
-import { LoggerService } from '../../core/services/logger/logger.service';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ComponentsListFormServiceStub } from './services/components-list-form/components-list-form.service.stub';
-import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../core/services/device-detector/device-detector.service.stub';
 import { ShowComponentPipe } from './show-component/show-component.pipe';
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {

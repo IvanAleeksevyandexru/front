@@ -11,7 +11,7 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { MultipleChoiceDictionaryComponent } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary/multiple-choice-dictionary.component';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('MultiChoiceDictionaryComponent', () => {
   let component: MultiChoiceDictionaryComponent;

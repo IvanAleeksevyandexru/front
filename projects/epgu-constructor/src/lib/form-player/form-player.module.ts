@@ -3,7 +3,7 @@ import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';

@@ -12,6 +12,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ListElement } from '@epgu/epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
 
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CachedValue,
   FormChangeEvent,
@@ -19,7 +20,6 @@ import {
   PfrAreaType,
   SelectEvent,
 } from '../../information-center.models';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-information-center-full',

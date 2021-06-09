@@ -8,8 +8,8 @@ import {
   DictionaryConditions,
   DictionaryFilters,
 } from '@epgu/epgu-constructor-types';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import {
   CachedValue,

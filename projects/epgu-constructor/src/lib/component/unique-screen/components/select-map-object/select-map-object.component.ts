@@ -21,14 +21,16 @@ import {
   ScreenButton,
   DictionaryFilterPriority,
 } from '@epgu/epgu-constructor-types';
-import { ConstructorLookupComponent } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ConstructorLookupComponent,
+  ModalService,
+  CommonModalComponent,
+  DeviceDetectorService,
+  UnsubscribeService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../../modal/modal.service';
-import { CommonModalComponent } from '../../../../modal/shared/common-modal/common-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -44,9 +46,10 @@ import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import { IFillCoordsResponse, IGeoCoordsResponse } from './select-map-object.interface';
 import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
-import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ModalErrorService } from '../../../../modal/modal-error.service';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',

@@ -7,9 +7,9 @@ import {
   DictionaryConditions,
   DictionaryFilters,
 } from '@epgu/epgu-constructor-types';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenStore } from '../../../../../screen/screen.types';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import {
   DictionaryToRequestI,
   InformationCenterMvdI,

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { IconList, UserInfoType } from './user-info.type';
 
-import { ConfigService } from '../../../../../core/services/config/config.service';
 import { UtilsService } from '../../../../../core/services/utils/utils.service';
 
 @Component({
