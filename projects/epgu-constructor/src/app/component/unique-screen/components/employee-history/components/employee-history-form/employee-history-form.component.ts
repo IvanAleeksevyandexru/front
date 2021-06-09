@@ -44,6 +44,9 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   clarifications: Record<EmployeeType, Clarifications>;
+  addSectionLabel$ = this.screenService.componentLabel$.pipe(
+    map((label) => label || 'Добавить данные'),
+  );
 
   constructor(
     public employeeFormService: EmployeeHistoryFormService,
