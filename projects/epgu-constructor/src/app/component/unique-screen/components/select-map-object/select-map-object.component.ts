@@ -58,6 +58,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
+  @ViewChild('libLookup', { static: false }) libLookup: ConstructorLookupComponent;
   data: ComponentBase;
   applicantAnswers: ApplicantAnswersDto;
   public mappedDictionaryForLookup;
@@ -306,6 +307,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.mapIsLoaded = true;
     this.initSelectedValue();
     this.cdr.detectChanges();
+    this.libLookup.lookupComponent.setSearchBarFocus();
   }
 
   private setMapOpstions(): void {
