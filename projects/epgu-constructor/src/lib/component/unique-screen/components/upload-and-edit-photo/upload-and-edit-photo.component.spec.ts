@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from '@epgu/epgu-lib';
 import { Subject } from 'rxjs';
 import { CoreModule } from '../../../../core/core.module';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '../../../../core/services/config/config.service';
 import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
@@ -59,7 +59,7 @@ describe('UploadAndEditPhotoComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [UploadAndEditPhotoModule, RouterTestingModule, CoreModule],
+      imports: [UploadAndEditPhotoModule, RouterTestingModule, CoreModule, CoreUiModule],
       providers: [
         TerraByteApiService,
         HealthService,

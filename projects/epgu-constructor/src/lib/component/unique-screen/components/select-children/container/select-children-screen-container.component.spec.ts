@@ -11,12 +11,10 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../shared/components/clone-button/clone-button.module';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
+import { ConstructorDropdownModule, CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { ComponentsListModule } from '../../../../custom-screen/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './select-children-screen-container.component';
-import { SelectChildrenItemWrapperComponent } from '../components/select-children-item-wrapper/select-children-item-wrapper.component';
-import { SelectChildrenItemComponent } from '../components/select-children-item/select-children-item.component';
 import { SelectChildrenComponent } from '../components/select-children/select-children.component';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -82,6 +80,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
       ],
       imports: [
         CoreModule,
+        CoreUiModule,
         RouterTestingModule,
         ReactiveFormsModule,
         BaseModule,

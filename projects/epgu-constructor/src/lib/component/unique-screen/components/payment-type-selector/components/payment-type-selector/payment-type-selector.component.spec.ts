@@ -7,7 +7,7 @@ import { ConfigService } from '../../../../../../core/services/config/config.ser
 import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ModalModule } from '../../../../../../modal/modal.module';
@@ -60,6 +60,7 @@ describe('PaymentTypeSelectorComponent', () => {
         ModalModule,
         BaseModule,
         CoreModule,
+        CoreUiModule,
         RouterTestingModule,
         BaseComponentsModule,
         ScreenContainerModule,

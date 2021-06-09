@@ -27,6 +27,7 @@ import { ScreenModalServiceStub } from './screen-modal.service.stub';
 import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;
@@ -39,6 +40,7 @@ describe('ScreenModalComponent', () => {
       imports: [
         RouterTestingModule,
         BaseModule,
+        CoreUiModule,
         ComponentsListModule,
         UniqueComponentModalModule,
         InfoComponentModalModule,
