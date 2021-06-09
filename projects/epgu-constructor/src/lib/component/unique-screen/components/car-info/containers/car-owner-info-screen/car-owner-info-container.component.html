@@ -1,0 +1,15 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="(screenService.component$ | async).attrs.actions"
+  [showNav]="screenService.showNav$ | async"
+>
+  <epgu-constructor-car-owner-info
+    [carOwnerInfo]="carOwnerInfo$ | async"
+  ></epgu-constructor-car-owner-info>
+
+  <epgu-constructor-car-owner-info-link
+    *ngIf="pdfLink$ | async as downloadLink"
+    [pdfLink]="downloadLink"
+  ></epgu-constructor-car-owner-info-link>
+</epgu-constructor-default-unique-screen-wrapper>

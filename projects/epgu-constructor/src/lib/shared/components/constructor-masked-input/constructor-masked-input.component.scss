@@ -1,0 +1,8 @@
+::ng-deep.showPlaceholder-on-focus {
+  input::placeholder {
+    opacity: 0;
+  }
+  input:focus::placeholder {
+    opacity: 1;
+  }
+}

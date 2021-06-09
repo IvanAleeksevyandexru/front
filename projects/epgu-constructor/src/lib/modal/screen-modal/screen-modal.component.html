@@ -1,0 +1,21 @@
+<ng-container *ngIf="showModal">
+  <div class="modal-overlay">
+    <div class="screen-modal">
+      <div *ngIf="showCrossButton" class="modal__close" (click)="closeModal()"></div>
+      <div *ngIf="screenService.header$ | async as title" class="screen-modal__header" #headerBlock>
+        <h4 class="modal__title" [innerHTML]="title | safe: 'html'"></h4>
+      </div>
+      <div class="screen-modal__body">
+        <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
+          <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+        </perfect-scrollbar>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #contentBlock>
+  <div class="screen-modal__content">
+    <epgu-constructor-screen-modal-resolver></epgu-constructor-screen-modal-resolver>
+  </div>
+</ng-template>

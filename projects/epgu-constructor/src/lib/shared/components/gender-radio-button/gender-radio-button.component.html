@@ -1,0 +1,10 @@
+<lib-radio
+  class="item"
+  name="gender"
+  *ngFor="let gender of genders"
+  [disabled]=""
+  [checked]="gender.value === innerValue"
+  [labelText]="gender.label"
+  [value]="gender.value"
+  (click)="change(gender)"
+></lib-radio>

@@ -1,0 +1,14 @@
+
+<svg width="306" height="394" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <rect fill="none" id="canvas_background" height="396" width="308" y="-1" x="-1"/>
+ </g>
+ <g>
+  <g stroke="null" id="svg_1" opacity="0.2">
+   <path stroke="null" id="svg_2" fill="#0B1F33" d="m306,0l-306,0l0,393l306,0l0,-393zm-152.5,363.80571c61.027,0 110.5,-74.40276 110.5,-166.18286c0,-91.78021 -49.473,-166.18286 -110.5,-166.18286c-61.0275,0 -110.5,74.40265 -110.5,166.18286c0,91.7801 49.4725,166.18286 110.5,166.18286z" clip-rule="evenodd" fill-rule="evenodd"/>
+   <line stroke="white" id="svg_3" stroke-dasharray="10 10" stroke-width="2" y2="30.31714" x2="306" y1="30.31714" x1="3"/>
+   <line stroke="white" x1="0" id="svg_4" stroke-dasharray="10 10" stroke-width="2" y2="364.92857" x2="306" y1="364.92857"/>
+   <line stroke="white" x1="0" id="svg_5" stroke-dasharray="10 10" stroke-width="2" y2="309.90857" x2="306" y1="309.90857"/>
+  </g>
+ </g>
+</svg>

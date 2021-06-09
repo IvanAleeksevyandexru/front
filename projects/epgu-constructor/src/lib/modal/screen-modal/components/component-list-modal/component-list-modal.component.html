@@ -1,0 +1,21 @@
+<div class="component-list" [style.minHeight.px]="screenModalService.minContentHeight$ | async">
+  <div class="component-list__body">
+    <epgu-constructor-components-list
+      [shouldPendingRequestsBeCancelledAfterDestroy]="false"
+      [components]="$any((screenService.display$ | async).components)"
+      [errors]="screenService.componentErrors$ | async"
+      (changes)="changeComponentsList($event)">
+    </epgu-constructor-components-list>
+  </div>
+
+  <div class="component-list__footer">
+    <lib-button
+      [showLoader]="screenService.isLoading$ | async"
+      (click)="nextScreen()"
+      class="submit-button"
+      [disabled]="(screenService.isLoading$ | async) || !isValid"
+    >
+      {{ screenService.submitLabel$ | async }}
+    </lib-button>
+  </div>
+</div>

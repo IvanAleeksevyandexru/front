@@ -1,0 +1,117 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+.photo {
+  display: flex;
+
+  @include phones-down {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  &__uploading-container {
+    height: 100%;
+    background-color: $color-white;
+    border-radius: 8px;
+    flex-basis: 344px;
+    max-width: 344px; // ie не включает padding в flex-basis
+    padding: 32px;
+
+    .file-over {
+      opacity: 0.7;
+    }
+  }
+
+  &__uploading-container-mobile {
+    flex-basis: 288px;
+    padding: 24px;
+    border-radius: 12px;
+  }
+
+  &__cropped-image {
+    border-radius: 8px;
+    width: 100%;
+
+    @include phones-down {
+      border-radius: 12px;
+    }
+  }
+
+  &__uploading-area {
+    width: 100%;
+    position: relative;
+
+    & > img {
+      width: 100%;
+    }
+  }
+
+  &__text {
+    flex: 1;
+
+    @include phones-up {
+      padding-left: 32px;
+    }
+  }
+
+  &__uploading-inner-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    flex-direction: column;
+    text-align: center;
+    width: 200px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    @include tablets-down {
+      width: 188px;
+    }
+  }
+
+  &__uploading-text {
+    color: $color-text-helper;
+    margin-bottom: 12px;
+
+    @include typ-plain-text;
+
+    @include tablets-up {
+      width: 240px;
+    }
+
+    @include tablets-down {
+      margin-bottom: 16px;
+    }
+
+    &_mt-68 {
+      margin-top: 68px;
+    }
+
+    &_mt-80 {
+      margin-top: 80px;
+    }
+  }
+
+  &__uploading-button {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    padding: 0 24px;
+    color: $color-gosblue;
+    cursor: pointer;
+    height: 52px;
+    border: 2px solid $color-gosblue;
+    border-radius: 8px;
+    background-color: $color-white;
+    margin-bottom: 18px;
+    width: 100%;
+
+    img {
+      margin-right: auto;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}

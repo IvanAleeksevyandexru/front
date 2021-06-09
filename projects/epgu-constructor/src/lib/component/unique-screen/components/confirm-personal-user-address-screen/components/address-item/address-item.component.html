@@ -1,0 +1,7 @@
+<div>
+  <epgu-constructor-label [tips]="tips" [label]="label"></epgu-constructor-label>
+  <ng-content></ng-content>
+  <epgu-cf-ui-constructor-helper-text class="address-item-hint" *ngIf="hint">
+    {{ hint }}
+  </epgu-cf-ui-constructor-helper-text>
+</div>

@@ -1,0 +1,20 @@
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: { type: screenService.componentType$ | async }
+  "
+>
+</ng-container>
+
+<ng-template #templateContent let-type="type">
+  <ng-container>
+    <epgu-constructor-confirm-phone
+      *ngIf="[uniqueComponentName.phoneNumberConfirmCodeInput, uniqueComponentName.confirmCodeInput].includes(type)"
+    >
+    </epgu-constructor-confirm-phone>
+    <epgu-constructor-confirm-email
+      *ngIf="[uniqueComponentName.ConfirmNewEmail, uniqueComponentName.ConfirmLegalNewEmail].includes(type)"
+    >
+    </epgu-constructor-confirm-email>
+  </ng-container>
+</ng-template>

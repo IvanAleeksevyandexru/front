@@ -1,0 +1,23 @@
+<ng-container
+  *ngTemplateOutlet="
+    PassportLookup;
+    context: { $implicit: control.value }
+  "
+>
+</ng-container>
+
+<ng-template #PassportLookup let-component>
+  <epgu-constructor-component-item
+    [control]="control.get('value')"
+    [component]="component"
+    [invalid]="control.invalid"
+  >
+    <epgu-constructor-passport
+      [formControl]="$any(control.get('value'))"
+      [attrs]="component?.attrs"
+      [suggestions]="suggestions$ | async"
+      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+    >
+    </epgu-constructor-passport>
+  </epgu-constructor-component-item>
+</ng-template>

@@ -1,0 +1,61 @@
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
+
+    <div class="payment" [class.inloading]="inLoading" [ngSwitch]="status">
+      <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
+        <div class="info__text">
+          <strong>{{ paymentPurpose }}</strong>
+        </div>
+        <div class="info__text" *ngIf="uin.length">УИН {{ uin }}</div>
+        <div class="info__text" *ngIf="docInfo.length">Начисление на {{ docInfo }}</div>
+        <div class="payment__sum" *ngIf="sum.length">
+          {{ sum }} Р
+          <span class="del" *ngIf="sumWithoutDiscount.length">{{ sumWithoutDiscount }} Р</span>
+        </div>
+        <div class="info__hint" *ngIf="sumWithoutDiscount.length && validDiscountDate.length">
+          Скидка действует при оплате до {{ validDiscountDate }}
+        </div>
+        <div class="is__payed" *ngIf="isPaid">
+          Оплачено
+        </div>
+      </div>
+
+      <div class="info" *ngSwitchCase="paymentStatus.ERROR">
+        <img
+          class="info__img"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/error-icon.svg"
+          alt=""
+        />
+        <div class="info__text">При получении реквизитов оплаты пошлины произошла ошибка.</div>
+        <div class="info__text">
+          Попробуйте обновить страницу или
+          <a href="https://www.gosuslugi.ru/help" target="_blank">обратитесь в службу поддержки</a>.
+          Ваш черновик автоматически сохранен.
+        </div>
+      </div>
+
+      <div class="info" *ngSwitchCase="paymentStatus.SERVER_ERROR">
+        <img
+          class="info__img"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/server-error.svg"
+          alt=""
+        />
+        <div class="info__text">
+          Попробуйте зайти на страницу позже. Если ошибка не исчезнет,
+          <a href="https://www.gosuslugi.ru/help" target="_blank">сообщите нам о ней</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen-footer" *ngIf="isShown">
+    <lib-button [showLoader]="inLoading" (click)="redirectToPayWindow()" class="submit-button">
+      {{ (submitLabel$ | async) || "Оплатить" }}
+    </lib-button>
+  </div>
+</epgu-constructor-screen-container>

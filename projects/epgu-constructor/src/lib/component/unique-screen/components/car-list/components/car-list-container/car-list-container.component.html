@@ -1,0 +1,58 @@
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: { component: component$ | async, display: display$ | async, showNav: showNav$ | async }
+  "
+>
+</ng-container>
+
+<ng-template #templateContent let-component="component" let-display="display" let-showNav="showNav">
+  <epgu-constructor-screen-container [show-nav]="showNav" [class.screen-container-mt]="!showNav">
+    <div class="screen-body">
+      <div *ngIf="display.header" class="head">
+        <epgu-constructor-page-name *ngIf="!hasError">{{
+          display.header
+        }}</epgu-constructor-page-name>
+      </div>
+
+      <epgu-cf-ui-constructor-screen-pad *ngIf="errorTemplate; else carList">
+        <epgu-constructor-output-html
+          [html]="errorTemplate.label"
+          [clarifications]="component.attrs?.clarifications"
+        ></epgu-constructor-output-html>
+
+        <div class="error__submit">
+          <lib-button
+            *ngFor="let action of errorTemplate.actions"
+            epgu-constructor-action
+            [action]="action"
+            [color]="action.color"
+            class="screen-footer__btn"
+            >{{ action.label }}</lib-button
+          >
+        </div>
+      </epgu-cf-ui-constructor-screen-pad>
+
+      <ng-template #carList>
+        <epgu-constructor-car-list
+          [label]="component?.attrs?.label"
+          [clarifications]="component?.attrs?.clarifications"
+          [control]="control"
+          [carFixedItems]="carFixedItems"
+          [staticDomainAssetsPath]="config.staticDomainAssetsPath"
+          (formChangeEvent)="setState($event)"
+        ></epgu-constructor-car-list>
+      </ng-template>
+    </div>
+
+    <div class="screen-footer">
+      <epgu-constructor-screen-buttons
+        class="screen-buttons"
+        *ngIf="showButtons$ | async"
+        [screenButtons]="screenService.buttons$ | async"
+        [isLoading]="screenService.isLoading$ | async"
+        [disabled]="(currentAnswersService.isValid$ | async) === false"
+      ></epgu-constructor-screen-buttons>
+    </div>
+  </epgu-constructor-screen-container>
+</ng-template>

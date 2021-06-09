@@ -1,0 +1,16 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-constructor-select-children
+    [addSectionLabel]="addSectionLabel$ | async"
+    [cachedValue]="cachedValue$ | async"
+    [component]="component$ | async"
+    [errors]="screenService.componentErrors$ | async"
+    (updateCurrentAnswerServiceStateEvent)="updateCurrentAnswersState($event)"
+    (updateCurrentAnswerServiceValidationEvent)="updateCurrentAnswersValid($event)"
+  ></epgu-constructor-select-children>
+</epgu-constructor-default-unique-screen-wrapper>

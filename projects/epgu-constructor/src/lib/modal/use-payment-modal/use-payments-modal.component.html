@@ -1,0 +1,27 @@
+<div class="payments-modal">
+  <div class="payments-modal__header" >
+    <a class="modal__close" (click)="clickPayLater()"></a>
+    <h4 class="modal__title">Хотите ли вы использовать ранее оплаченную пошлину?</h4>
+  </div>
+  <div class="payments-modal__body">
+    <h6>Ранее вы уже оплачивали пошлину по этой услуге, но не воспользовались ей.</h6>
+    <div class="payments-modal__text-wrapper">
+      <div *ngFor="let payment of paymentsList" class="payment-box">
+        <div>Сумма: <br><b class="payment-value">{{payment.amount}} руб.</b></div>
+        <div>УИН: <br><b class="payment-value">{{payment.uin}}</b></div>
+        <div class="row-wide">
+          <lib-button (click)="clickUsePayment(payment.uin)">Использовать пошлину</lib-button>
+          <a [href]="payment.link" target="_blank" class="payment-info">Просмотреть платеж</a>
+        </div>
+      </div>
+      <div>Или вы можете дождаться выставления новой пошлины ведомством и оплатить ее.</div>
+    </div>
+    <div class="payments-modal__controls">
+      <lib-button
+        class="payments-modal__button"
+        color="white"
+        (click)="clickPayLater()"
+        >Оплатить позже</lib-button>
+    </div>
+  </div>
+</div>

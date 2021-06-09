@@ -1,0 +1,48 @@
+<epgu-constructor-screen-container
+  class="payment-type-selector"
+  [show-nav]="showNav"
+  [class.screen-container-mt]="!showNav"
+>
+  <epgu-cf-ui-constructor-screen-pad *ngIf="isErrorTemplate; else templateRef" class="screen-body">
+    <ng-container *ngTemplateOutlet="templateRef"></ng-container>
+  </epgu-cf-ui-constructor-screen-pad>
+
+  <ng-template #templateRef>
+    <div class="screen-body">
+      <div *ngIf="paymentTypeSelector.srcImg" class="payment-type-selector__img">
+        <img src="{{ paymentTypeSelector.srcImg }}" alt="" />
+      </div>
+
+      <epgu-constructor-page-name
+        class="payment-type-selector__header"
+        [class.payment-type-selector__header-center]="isErrorTemplate"
+        >{{ paymentTypeSelector.header }}</epgu-constructor-page-name
+      >
+
+      <epgu-constructor-output-html
+        *ngIf="paymentTypeSelector.subHeader"
+        [html]="paymentTypeSelector.subHeader"
+        class="payment-type-selector__sub-header"
+      ></epgu-constructor-output-html>
+
+      <epgu-constructor-output-html
+        [html]="paymentTypeSelector.body"
+        [clarifications]="paymentTypeSelector?.clarifications"
+      >
+      </epgu-constructor-output-html>
+    </div>
+
+    <div class="screen-footer">
+      <ng-container *ngFor="let action of paymentTypeSelector.actions">
+        <epgu-constructor-payment-type-selector-button
+          [class.answer-btn]="!isErrorTemplate"
+          *ngIf="applicantType === action.applicantType ? true : !action.applicantType"
+          [applicantType]="applicantType"
+          [isErrorTemplate]="isErrorTemplate"
+          [action]="action"
+        >
+        </epgu-constructor-payment-type-selector-button>
+      </ng-container>
+    </div>
+  </ng-template>
+</epgu-constructor-screen-container>

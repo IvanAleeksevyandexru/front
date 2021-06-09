@@ -1,0 +1,44 @@
+<div [formGroup]="pfrForm">
+  <div class="item">
+    <epgu-constructor-label [label]="items.region.label"></epgu-constructor-label>
+    <epgu-cf-ui-constructor-constructor-lookup
+      [fixedItems]="regionDictionary"
+      (changed)="handleSelect($event, pfrAreAType.district)"
+      [control]="pfrForm.get(pfrAreAType.region)"
+      [clearable]="true"
+    >
+    </epgu-cf-ui-constructor-constructor-lookup>
+  </div>
+
+  <div class="item" *ngIf="districtDictionary.length">
+    <epgu-constructor-label [label]="items.district.label"></epgu-constructor-label>
+    <epgu-cf-ui-constructor-constructor-lookup
+      [fixedItems]="districtDictionary"
+      (changed)="handleSelect($event, pfrAreAType.cityDistrict)"
+      [control]="pfrForm.get(pfrAreAType.district)"
+      [clearable]="true"
+    >
+    </epgu-cf-ui-constructor-constructor-lookup>
+  </div>
+
+  <div class="item" *ngIf="cityDistrictDictionary.length">
+    <epgu-constructor-label [label]="items.cityDistrict.label"></epgu-constructor-label>
+    <epgu-cf-ui-constructor-constructor-lookup
+      [fixedItems]="cityDistrictDictionary"
+      (changed)="handleSelect($event, pfrAreAType.territory)"
+      [control]="pfrForm.get(pfrAreAType.cityDistrict)"
+      [clearable]="true"
+    >
+    </epgu-cf-ui-constructor-constructor-lookup>
+  </div>
+
+  <div class="item" *ngIf="territoryDictionary.length as length">
+    <epgu-constructor-label [label]="items.territory.label"></epgu-constructor-label>
+    <epgu-cf-ui-constructor-constructor-lookup
+      [fixedItems]="territoryDictionary"
+      [control]="pfrForm.get(pfrAreAType.territory)"
+      [clearable]="length > 1"
+    >
+    </epgu-cf-ui-constructor-constructor-lookup>
+  </div>
+</div>

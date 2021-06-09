@@ -1,0 +1,12 @@
+<epgu-cf-ui-constructor-screen-pad class="screen-pad-body" [formGroup]="form">
+  <section class="add-passport-screen">
+    <div class="add-passport-screen__body">
+      <epgu-constructor-passport
+        [attrs]="$any(attrs)"
+        formControlName="passport"
+        [suggestions]="(suggestions$ | async)[componentId$ | async]"
+        (selectSuggest)="suggestHandlerService.handleEvent($event, null)">
+      </epgu-constructor-passport>
+    </div>
+  </section>
+</epgu-cf-ui-constructor-screen-pad>

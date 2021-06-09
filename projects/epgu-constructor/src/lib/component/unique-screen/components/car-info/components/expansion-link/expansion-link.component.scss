@@ -1,0 +1,10 @@
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+
+.expansion-link {
+  @include typ-plain-text;
+}
+
+.expansion-show-details-link {
+  margin-top: 4px;
+  display: inline-block;
+}

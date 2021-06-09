@@ -1,0 +1,17 @@
+<p *ngIf="(durationAmount && balanceAmount) || (paymentType === 'one' && durationAmount)">
+  <span class="helper-text"> {{ description.durationLabel }}</span
+  ><br />
+  <span>{{ durationAmount }} {{ duration[paymentType] | pluralize: durationAmount }}</span>
+</p>
+<p *ngIf="(durationAmount && balanceAmount) || (paymentType === 'one' && balanceAmount)">
+  <span class="helper-text">{{ description.balanceLabel }}</span>
+  <br />
+  <span class="balance-amount">{{ balanceAmount | toMoney | addZeroPenny }} <span class="rubles"></span></span>
+</p>
+
+<p *ngIf="!isValidBalanceAmount">
+  <epgu-constructor-output-html
+    [html]="description.balanceError"
+    [clarifications]=""
+  ></epgu-constructor-output-html>
+</p>

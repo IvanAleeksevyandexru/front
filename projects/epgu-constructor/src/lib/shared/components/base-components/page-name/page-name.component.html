@@ -1,0 +1,10 @@
+<h1>
+  <ng-content></ng-content>
+</h1>
+
+<epgu-constructor-output-html
+  *ngIf="screenService.subHeader$ | async as subheader"
+  [html]="subheader.text"
+  [clarifications]="subheader.clarifications"
+>
+</epgu-constructor-output-html>

@@ -1,0 +1,38 @@
+<epgu-constructor-confirmation-modal-base
+  class="req-modal"
+  title="Требования к фото"
+  [buttons]="buttons"
+  [text]="modalName"
+  [showCrossButton]="true"
+>
+  <div *ngIf="setting.warning" class="req-modal__warning">
+    <epgu-constructor-output-html [html]="setting.warning"></epgu-constructor-output-html>
+  </div>
+  <div class="req-modal__body">
+    <div class="req-item" *ngFor="let requirement of setting.body">
+      <div class="req-item__title" [innerHTML]="requirement.title | safe: 'html'"></div>
+      <div [innerHTML]="requirement.text | imgPrefixer | safe: 'html'"></div>
+      <div class="req-item__photo-container">
+        <div class="req-item__photo-item" *ngFor="let photo of requirement.examplePhotos">
+          <img
+            class="req-item__photo"
+            src="{{config.staticDomainContentPath}}/catalog/new/photo/{{
+              requirement.type
+            }}-{{ photo.type }}.png"
+            alt=""
+          />
+          <div class="req-item__photo-desc">
+            <img [src]="photo.valid ? validIconPath : invalidIconPath" alt="" />
+            <span [innerHTML]="photo.description | safe: 'html'"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="setting.footer"
+    (click)="handleClickOnElemById($event)"
+    class="req-modal__footer"
+    [innerHTML]="setting.footer | safe: 'html'"
+  ></div>
+</epgu-constructor-confirmation-modal-base>

@@ -1,0 +1,4 @@
+.checkbox-list-item:not(:first-child)::ng-deep lib-checkbox:not([hidden]) {
+  display: block;
+  margin-top: 16px;
+}

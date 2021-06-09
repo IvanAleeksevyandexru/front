@@ -1,0 +1,20 @@
+<lib-date-picker
+  epgu-constructor-validation-type
+  [component]="component"
+  [invalid]="invalid"
+  [validationShowOn]="validationShowOn"
+  [name]="name"
+  [formControl]="$any(control)"
+  [readOnly]="readOnly"
+  [minDate]="minDate"
+  [maxDate]="maxDate"
+  [clearable]="clearable"
+  [align]="align"
+  [disabled]="disabled"
+  [brokenDateFixStrategy]="brokenDateFixStrategy"
+  [textModelValue]="textModelValue"
+  (change)="onChange($event)"
+  (dateSelected)="onDateSelected($event)"
+  (cleared)="onCleared()"
+  (blur)="onBlur()"
+></lib-date-picker>

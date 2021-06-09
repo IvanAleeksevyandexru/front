@@ -1,0 +1,9 @@
+<epgu-constructor-signature-application
+  [isMobile]="isMobile"
+  [showNav]="screenService.showNav$ | async"
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [component]="component$ | async"
+  [button]="screenService.button$ | async"
+  (next)="redirectToLK()">
+</epgu-constructor-signature-application>

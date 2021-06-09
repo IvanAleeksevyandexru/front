@@ -1,0 +1,9 @@
+<div class="mb-24">{{ description }}</div>
+
+<epgu-constructor-radio-tax
+  *ngFor="let payment of payments; let i = index"
+  [payment]="payment"
+  [isSelect]="payment.uin === selectedPayment.uin"
+  (paymentSelectEvent)="handleSelect($event)"
+  [class.mb-24]="payments.length - 1 !== i"
+></epgu-constructor-radio-tax>

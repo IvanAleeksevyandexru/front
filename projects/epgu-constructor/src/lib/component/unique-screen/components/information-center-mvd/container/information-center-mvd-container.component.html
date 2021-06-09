@@ -1,0 +1,16 @@
+<epgu-constructor-default-unique-screen-wrapper
+  *ngIf="data$ | async as data"
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+>
+  <epgu-constructor-information-center-form
+    [infoCenterList]="infoCenterList"
+    [isLoadingInfoCenter]="isLoadingInfoCenter"
+    [sourceDictionaryLabel]="(data$ | async)?.attrs.sourceDictionary.label"
+    [dictionaryToRequestLabel]="(data$ | async)?.attrs.dictionaryToRequest.label"
+    [sourceList]="sourceList"
+    (handleSelectEvent)="handleSelect($event)"
+  ></epgu-constructor-information-center-form>
+</epgu-constructor-default-unique-screen-wrapper>

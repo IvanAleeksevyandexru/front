@@ -1,0 +1,202 @@
+<div class="fileupload__wrapper">
+  <div *ngIf="data.title" class="title">
+    {{ data.title }}
+    <epgu-constructor-user-info-loader [isDisplay]="false"></epgu-constructor-user-info-loader>
+  </div>
+  <div class="file__bottom">
+    <epgu-constructor-output-html
+      class="info__text"
+      [html]="data.label"
+      [clarifications]="clarification"
+    >
+    </epgu-constructor-output-html>
+  </div>
+
+  <epgu-constructor-uploader-manager
+    (update)="update($event)"
+    (delete)="addDelete($event)"
+    (download)="addDownload($event)"
+    (cancel)="cancel($event.type, $event.item)"
+    (repeat)="repeat($event)"
+    (suggest)="suggest($event)"
+    [list]="files | async"
+    [readonly]="uploader.readonly"
+  ></epgu-constructor-uploader-manager>
+  <ng-container *ngIf="!uploader.readonly">
+    <ng-container *ngIf="overLimits | async as limits">
+      <ng-container
+        *ngIf="
+          limits.amount.count === 0 &&
+            limits.totalSize.count === 0 &&
+            limits.totalAmount.count === 0 &&
+            !limits.totalAmount.isMax &&
+            !limits.totalSize.isMax &&
+            !limits.amount.isMax;
+          else infoTemplate
+        "
+      ></ng-container>
+      <epgu-constructor-uploader
+        *ngIf="
+          limits.amount.count === 0 &&
+          limits.totalAmount.count === 0 &&
+          !limits.totalAmount.isMax &&
+          !limits.totalSize.isMax &&
+          !limits.amount.isMax
+        "
+        (upload)="selectFiles($event)"
+      >
+        <div class="uploader-info">
+          <span *ngIf="isMobile && !uploader.hasImageTypes">Выберите файл</span>
+          <span *ngIf="!isMobile"
+            >Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на
+            компьютере</span
+          >
+          <span *ngIf="isMobile && uploader.hasImageTypes">Выберите файл или сделайте фото</span>
+        </div>
+        <div class="uploader-buttons">
+          <button
+            *ngIf="isPrevUploadedFilesButtonShown((suggestions$ | async)[componentId])"
+            class="fileupload__link-button"
+            (click)="attachUploadedFiles()"
+          >
+            <div class="fileupload__icon"></div>
+            Ранее загруженные
+          </button>
+          <epgu-constructor-uploader-button capture="environment" accept="image/*">
+            <button *ngIf="this.isMobile && uploader.hasImageTypes" class="fileupload__link-button">
+              <img
+                src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
+                class="fileupload__button-icon"
+                alt="Фото"
+              />
+              Сделать фото
+            </button>
+          </epgu-constructor-uploader-button>
+          <epgu-constructor-uploader-button [multiple]="true" [accept]="uploader.acceptTypes">
+            <button class="fileupload__link-button">
+              <img
+                src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
+                class="fileupload__button-icon"
+                alt="Файл"
+              />
+              Выбрать {{ plurals.uploadingFiles | pluralize: uploader.maxAmount }}
+            </button>
+          </epgu-constructor-uploader-button>
+        </div>
+      </epgu-constructor-uploader>
+
+      <ng-template #infoTemplate>
+        <ng-container
+          *ngIf="
+            limits.amount.count !== 0 ||
+              limits.totalSize.count !== 0 ||
+              limits.totalAmount.count !== 0;
+            then errorTemplate;
+            else messageTemplate
+          "
+        >
+        </ng-container>
+      </ng-template>
+      <ng-template #messageTemplate>
+        <ng-container
+          *ngIf="limits.totalAmount.isMax; then totalAmountMax; else otherMessateTemplate"
+        ></ng-container>
+        <ng-template #otherMessateTemplate>
+          <ng-container
+            *ngIf="limits.amount.isMax; then amountMax; else totalSizeMax"
+          ></ng-container>
+        </ng-template>
+      </ng-template>
+      <ng-template #errorTemplate>
+        <ng-container
+          *ngIf="limits.totalAmount.count !== 0; then totalAmount; else otherErrorTemplate"
+        ></ng-container>
+        <ng-template #otherErrorTemplate>
+          <ng-container
+            *ngIf="limits.amount.count !== 0; then amount; else totalSize"
+          ></ng-container>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #totalAmount>
+        <div class="message__text message__text_error">
+          <ng-container
+            *ngTemplateOutlet="filesPluralAttach; context: { $implicit: limits.totalAmount.count }"
+          ></ng-container>
+        </div>
+        <div class="message__description">
+          Всего в заявлении можно загрузить
+          {{ plurals.before | pluralize: uploader.maxTotalAmount }}
+          {{ uploader.maxTotalAmount }}
+          {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
+          <ng-container *ngIf="uploader.maxTotalAmount > 1"
+            >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
+          >
+        </div>
+      </ng-template>
+      <ng-template #amount>
+        <div class="message__text message__text_error">
+          <ng-container
+            *ngTemplateOutlet="filesPluralAttach; context: { $implicit: limits.amount.count }"
+          ></ng-container>
+        </div>
+        <div class="message__description">
+          Здесь можно загрузить
+          {{ plurals.before | pluralize: uploader.maxAmount }}
+          {{ uploader.maxAmount }}
+          {{ beforeFilesPlural | pluralize: uploader.maxAmount }}.
+          <ng-container *ngIf="uploader.maxAmount > 1"
+            >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
+          >
+        </div>
+      </ng-template>
+      <ng-template #totalSize>
+        <div class="message__text message__text_error">
+          <ng-container
+            *ngTemplateOutlet="filesPluralAttach; context: { $implicit: limits.totalSize.count }"
+          ></ng-container>
+        </div>
+        <div class="message__description">
+          Всего в заявлении можно загрузить файлов на {{ uploader.maxTotalSize | fileSize }}. Чтобы
+          выбрать другие файлы, удалите часть прикрепленных
+        </div>
+      </ng-template>
+
+      <ng-template #totalAmountMax>
+        <div class="message__text">Выбрано максимальное количество файлов</div>
+        <div class="message__description">
+          Всего в заявлении можно загрузить
+          {{ plurals.before | pluralize: uploader.maxTotalAmount }}
+          {{ uploader.maxTotalAmount }}&nbsp;
+          {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
+          <ng-container *ngIf="uploader.maxTotalAmount > 1"
+            >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
+          >
+        </div>
+      </ng-template>
+      <ng-template #amountMax>
+        <div class="message__text">Выбрано максимальное количество файлов</div>
+        <div class="message__description">
+          Здесь можно загрузить {{ plurals.before | pluralize: uploader.maxAmount }}
+          {{ uploader.maxAmount }} {{ beforeFilesPlural | pluralize: uploader.maxAmount }}.
+          <ng-container *ngIf="uploader.maxAmount > 1"
+            >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
+          >
+        </div>
+      </ng-template>
+      <ng-template #totalSizeMax>
+        <div class="message__text">Выбран максимальный объём файлов</div>
+        <div class="message__description">
+          Всего в заявлении можно загрузить файлов на {{ uploader.maxTotalSize | fileSize }}. Если
+          хотите выбрать еще файлы, удалите часть прикрепленных
+        </div>
+      </ng-template>
+    </ng-container></ng-container
+  >
+</div>
+
+<ng-template #filesPluralAttach let-value>
+  {{ value }}
+  {{ plurals.files | pluralize: value }}
+  не {{ plurals.attach | pluralize: value }}
+</ng-template>

@@ -1,0 +1,55 @@
+<epgu-constructor-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div class="screen-body">
+    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
+
+    <div class="payment" [class.inloading]="inLoading">
+      <div class="info">
+        <div class="info__text" *ngIf="data.label?.length" [innerHTML]="data.label"></div>
+        <div class="info__title">
+          Наименование платежа
+        </div>
+        <div class="info__text">
+          <strong>{{ paymentPurpose }}</strong>
+        </div>
+        <ng-template [ngIf]="uin.length">
+          <div class="info__title">
+            Уникальный идентификатор начисления
+          </div>
+          <div class="info__text">{{ uin }}</div>
+          <div class="info__title">
+            Дата выставления счета
+          </div>
+          <div class="info__text">{{ billDate }}</div>
+        </ng-template>
+        <ng-template [ngIf]="sum.length">
+          <div class="info__title">
+            Сумма платежа
+          </div>
+          <div class="info__text">{{ sum }} <span class="rubles"></span></div>
+        </ng-template>
+        <div class="is__payed" *ngIf="isPaid">
+          Оплачено
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="screen-footer">
+    <div class="footer">
+      <div class="footer__item">
+        <lib-button type="anchor" [link]="getBillLink" color="white" target="_blank" class="btn">
+          Скачать квитанцию
+        </lib-button>
+      </div>
+      <div class="footer__item">
+        <lib-button (click)="nextStep()" class="submit-button">
+          {{ (submitLabel$ | async) || "Далее" }}
+        </lib-button>
+      </div>
+    </div>
+  </div>
+</epgu-constructor-screen-container>

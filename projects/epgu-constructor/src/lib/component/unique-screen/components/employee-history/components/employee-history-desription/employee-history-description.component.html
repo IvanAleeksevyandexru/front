@@ -1,0 +1,16 @@
+<section *ngIf="!!periods.length && !isCompleted" class="employee-history__progress">
+  <div class="employee-history__progress__notification">
+    <div class="employee-history__progress__icon"></div>
+    <div class="employee-history__progress__msg">Не заполнены периоды</div>
+  </div>
+  <div class="employee-history__progress__periods">
+    <div *ngFor="let period of periods">
+      <span>{{ getPeriod(period) }}</span>
+    </div>
+  </div>
+</section>
+
+<section *ngIf="isCompleted" class="employee-history__completed">
+  <div class="employee-history__completed__icon"></div>
+  <div class="employee-history__completed__msg">Вы заполнили {{ years }} лет</div>
+</section>
