@@ -7,7 +7,11 @@
   </div>
   <div class="form__error">
     <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
-      <span *ngIf="isValidationShown([docInputFieldsTypes.seriesNumDate, fieldName])">
+      <span *ngIf="
+        form.get([docInputFieldsTypes.seriesNumDate, fieldName]).invalid &&
+        form.get([docInputFieldsTypes.seriesNumDate, fieldName]).touched &&
+        form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg
+      ">
         {{ fields[fieldName]?.label }}:
         {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg }}
       </span>
@@ -114,7 +118,8 @@
           "
           [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
           [invalid]="
-            isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+            form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]).invalid &&
+            form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]).touched
           "
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
