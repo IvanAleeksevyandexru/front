@@ -3,5 +3,10 @@
   "extends": "./tsconfig.app.json",
   "angularCompilerOptions": {
     "enableIvy": false
-  }
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts",
+    "projects/epgu-constructor-ui-kit/src/lib/modal/modal.service.ts",
+  ]
 }

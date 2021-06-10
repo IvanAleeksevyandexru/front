@@ -32,13 +32,23 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "dist/epgu-constructor/src/assets",
+                "input": "projects/epgu-constructor/src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/epgu-constructor-ui-kit/src/ui-kit-assets",
+                "output": "ui-kit-assets"
               },
               {
                 "glob": "**/*",
                 "input": "./node_modules/@epgu/epgu-lib/assets/",
                 "output": "./lib-assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/children-clubs/src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -47,6 +57,9 @@
             "scripts": []
           },
           "configurations": {
+            "fast": {
+              "tsConfig": "./tsconfig.app.fast.json"
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -91,6 +104,9 @@
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
+            "fast": {
+              "browserTarget": "epgu-form-frontend:build:fast"
+            },
             "production": {
               "browserTarget": "epgu-form-frontend:build:production"
             },
@@ -103,18 +119,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "epgu-form-frontend:build"
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "epgu-form-frontend:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "epgu-form-frontend:serve:production"
-            }
           }
         }
       }

@@ -11,10 +11,13 @@ import {
   AppStateQuery,
   AppStateQueryStub,
   LocalStorageService,
-  LocalStorageServiceStub
+  LocalStorageServiceStub,
+  WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
-
+import { ProjectListComponent } from './pages/project-list/project-list.component';
+import { ProgramListModule } from './components/program-list/program-list.module';
+import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -23,17 +26,18 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChildrenClubsAppComponent ],
+      imports: [ProgramListModule, ChildrenClubsFilterPanelModule],
+      declarations: [ChildrenClubsAppComponent, ProjectListComponent],
       providers: [
+        { provide: WINDOW, useValue: window },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: CfAppStateService, useClass: CfAppStateServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -42,9 +46,9 @@ describe('ChildrenClubsComponent', () => {
     jest.spyOn(cfAppStateService, 'getState').mockReturnValue({
       componentId: 'spa42',
       componentType: AppTypes.ChildrenClubs,
-      callbackRedirectUrl: '/some/app/url',
+      callbackRedirectUrl: '/some/lib/url',
       value: '{}',
-      isPrevStepCase: false
+      isPrevStepCase: false,
     });
     component = fixture.componentInstance;
     fixture.detectChanges();
