@@ -4,6 +4,8 @@ import { DateRestrictionsService } from './date-restrictions.service';
 import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
 import { FormArray } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 describe('DateRestrictionsService', () => {
   let service: DateRestrictionsService;
@@ -14,6 +16,8 @@ describe('DateRestrictionsService', () => {
       providers: [
         DateRestrictionsService,
         DatesToolsService,
+        ConfigService,
+        LoggerService,
       ],
       imports: [HttpClientTestingModule]
     });

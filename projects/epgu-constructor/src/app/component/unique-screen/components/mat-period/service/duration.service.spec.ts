@@ -9,6 +9,8 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { configureTestSuite } from 'ng-bullet';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../core/services/logger/logger.service';
 
 describe('DurationService', () => {
   let service: DurationService;
@@ -21,6 +23,8 @@ describe('DurationService', () => {
         ValidationService,
         DateRangeService,
         { provide: ScreenService, use: ScreenServiceStub },
+        ConfigService,
+        LoggerService,
       ],
       imports: [HttpClientTestingModule],
     });

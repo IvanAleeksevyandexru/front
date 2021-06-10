@@ -41,6 +41,7 @@ import {
   DurationTimeTypes,
   StartOfTypes,
 } from '../../../shared/constants/dates';
+import { ConfigService } from '../config/config.service';
 
 interface Duration {
   years?: number;
@@ -55,7 +56,10 @@ interface Duration {
 @Injectable()
 export class DatesToolsService {
 
-  constructor(private http?: HttpClient) { }
+  constructor(
+    private http?: HttpClient,
+    private configService?: ConfigService,
+  ) { }
 
   /**
    * Возвращает true, если первая дата меньше второй,
@@ -84,7 +88,7 @@ export class DatesToolsService {
    * @returns Возвращает сегодняшнюю дату
    */
   public async getToday(resetTime = false): Promise<Date> {
-    const path = 'api/service/actions/currentDateTime';
+    const path = this.configService.apiUrl + '/service/actions/currentDateTime';
     const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
     const date = new Date(timeString);
     if (resetTime) {

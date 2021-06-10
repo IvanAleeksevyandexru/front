@@ -105,7 +105,7 @@ describe('TimeSlotsComponent', () => {
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
 
     jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-      if (url === 'api/service/actions/currentDateTime') {
+      if (url === '/api/service/actions/currentDateTime') {
         return of('2021-01-01T00:00:00.000Z');
       } else {
         return httpClient.get(url, options);
@@ -285,7 +285,7 @@ describe('TimeSlotsComponent', () => {
       Date.now = jest.fn().mockReturnValue(new Date(todayStr));
       jest.spyOn(httpClient, 'get').mockRestore();
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-        if (url === 'api/service/actions/currentDateTime') {
+        if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
         } else {
           return httpClient.get(url, options);
@@ -350,7 +350,7 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.refDate = todayStr;
       jest.spyOn(httpClient, 'get').mockRestore();
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-        if (url === 'api/service/actions/currentDateTime') {
+        if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
         } else {
           return httpClient.get(url, options);

@@ -6,6 +6,8 @@ import { EmployeeHistoryMonthsService } from './employee-history.months.service'
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../core/services/logger/logger.service';
 
 describe('EmployeeHistoryMonthsService', () => {
   let service: EmployeeHistoryMonthsService;
@@ -14,7 +16,12 @@ describe('EmployeeHistoryMonthsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EmployeeHistoryMonthsService, DatesToolsService],
+      providers: [
+        EmployeeHistoryMonthsService,
+        DatesToolsService,
+        ConfigService,
+        LoggerService,
+      ],
     });
   });
 
