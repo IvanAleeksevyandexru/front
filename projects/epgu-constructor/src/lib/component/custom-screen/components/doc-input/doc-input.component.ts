@@ -220,8 +220,12 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     this.form.get(control).updateValueAndValidity();
   }
 
-  isValidationShown(control: string | string[]): boolean {
+  isInvalidAndDirty(control: string | string[]): boolean {
     return this.form.get(control).invalid && this.form.get(control).dirty;
+  }
+
+  isInvalidAndTouched(control: string | string[]): boolean {
+    return this.form.get(control).invalid && this.form.get(control).touched;
   }
 
   private getParsedComponentValues(): DocInputFields {
