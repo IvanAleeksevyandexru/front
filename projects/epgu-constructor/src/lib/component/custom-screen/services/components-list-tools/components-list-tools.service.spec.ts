@@ -3,7 +3,7 @@ import { ComponentsListToolsService } from './components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
 import { configureTestSuite } from 'ng-bullet';

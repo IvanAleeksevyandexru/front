@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import {
-  ConstructorDropdownModule,
+  ConstructorDropdownModule, CoreUiModule,
   HttpCancelService,
   LoggerService,
   LoggerServiceStub
@@ -15,7 +15,7 @@ import { ComponentsListModule } from '../../../../../custom-screen/components-li
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -74,6 +74,7 @@ describe('SelectChildrenItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
       imports: [
+        CoreUiModule,
         RouterTestingModule,
         ConstructorDropdownModule,
         ComponentsListModule,

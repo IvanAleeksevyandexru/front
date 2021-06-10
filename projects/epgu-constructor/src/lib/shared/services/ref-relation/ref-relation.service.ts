@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 import { ListElement } from '@epgu/epgu-lib';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class RefRelationService {

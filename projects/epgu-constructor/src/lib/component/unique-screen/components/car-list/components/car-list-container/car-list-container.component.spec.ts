@@ -21,7 +21,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';

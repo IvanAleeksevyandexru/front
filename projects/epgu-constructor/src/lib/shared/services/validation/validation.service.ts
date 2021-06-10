@@ -19,9 +19,9 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
-} from '../../constants/helper-texts';
+} from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {

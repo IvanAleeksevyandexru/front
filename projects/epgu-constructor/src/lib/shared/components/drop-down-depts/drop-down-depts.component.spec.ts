@@ -6,8 +6,8 @@ import { CoreModule } from '../../../core/core.module';
 import { BaseModule } from '../../base.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { UtilsService } from '../../../core/services/utils/utils.service';
-import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfigService,
   ConfigServiceStub,

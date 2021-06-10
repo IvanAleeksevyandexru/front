@@ -9,12 +9,9 @@ import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from './services/init-data/init-data.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
-import { SessionService } from './services/session/session.service';
-import { UtilsService } from './services/utils/utils.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { TracingService } from './services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
-import { FocusManagerService } from './services/focus-manager/focus-manager.service';
 import { HttpHeadersInterceptor } from './interceptor/http-headers.interceptor';
 import { ErrorHandleService } from './interceptor/errors/error-handle.service';
 
@@ -27,13 +24,10 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
     NavigationService,
     NavigationModalService,
     SmuEventsService,
-    UtilsService,
-    SessionService,
     InitDataService,
     AutocompleteService,
     TerraByteApiService,
     TracingService,
-    FocusManagerService,
     ErrorHandleService,
     {
       provide: ErrorHandler,

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { FormControl } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { TextTransform } from '@epgu/epgu-constructor-types';
-import { NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
+import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import {
   ISuggestionItem,
@@ -26,7 +26,7 @@ export class ConstructorMaskedInputComponent {
   @Input() clearable: boolean;
   @Input() invalid: boolean;
   @Input() mask: string | string[];
-  @Input() maskOptions?: Partial<NumberMaskOptionsInterface>;
+  @Input() maskOptions?: Partial<NumberMaskOptions>;
   @Input() name: string;
   @Input() id: string;
   @Input() placeholder: string;

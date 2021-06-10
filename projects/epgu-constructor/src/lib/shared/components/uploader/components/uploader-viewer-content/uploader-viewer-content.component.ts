@@ -7,7 +7,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DeviceDetectorService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DeviceDetectorService,
+  ConfigService,
+  createDownloadEvent,
+} from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
 
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
@@ -15,7 +19,6 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
 
 import { ZoomEvent } from '../../../zoom/typings';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { createDownloadEvent } from '../../../../constants/redirect-event';
 import { FileItem, FileItemStatus } from '../../../file-upload/data';
 
 @Component({

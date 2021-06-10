@@ -18,7 +18,7 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';

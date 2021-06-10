@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined } from '../../../../shared/constants/utils';
+import { isUndefined } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -13,7 +13,7 @@ import {
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
+import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';

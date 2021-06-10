@@ -21,7 +21,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';

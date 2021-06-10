@@ -9,20 +9,23 @@ import { ListItem } from '@epgu/epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
-import { ModalService, UnsubscribeService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
-
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import {
+  ModalService,
+  UnsubscribeService,
+  HttpCancelService,
+  DatesToolsService,
   DATE_STRING_YEAR_MONTH,
   DATE_TIME_STRING_FULL,
   months,
   StartOfTypes,
   weekDaysAbbr,
-} from '../../../../shared/constants/dates';
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';

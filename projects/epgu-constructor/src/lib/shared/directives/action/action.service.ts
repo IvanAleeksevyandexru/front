@@ -18,7 +18,7 @@ import {
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
   Navigation,

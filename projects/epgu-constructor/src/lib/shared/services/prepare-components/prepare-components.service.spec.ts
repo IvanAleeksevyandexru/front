@@ -12,9 +12,9 @@ import {
 
 import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';

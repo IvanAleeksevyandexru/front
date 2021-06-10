@@ -13,12 +13,12 @@ import {
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
+  DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,

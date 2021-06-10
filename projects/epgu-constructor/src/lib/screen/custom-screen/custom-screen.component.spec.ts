@@ -9,7 +9,7 @@ import {
   CustomComponentOutputData,
   CustomComponentValidationConditions,
 } from '../../component/custom-screen/components-list.types';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';

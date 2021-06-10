@@ -19,7 +19,7 @@ import { CarInfo, ServiceResult } from '../../models/car-info.interface';
 import { CarInfoComponent } from '../../components/car-info/car-info.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';

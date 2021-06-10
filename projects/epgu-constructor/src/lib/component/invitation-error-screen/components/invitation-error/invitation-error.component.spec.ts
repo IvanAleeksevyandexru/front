@@ -25,7 +25,7 @@ import { ValidationService } from '../../../../shared/services/validation/valida
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';

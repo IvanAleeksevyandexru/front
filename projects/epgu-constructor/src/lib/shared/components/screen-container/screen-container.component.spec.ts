@@ -6,7 +6,7 @@ import {
   LocationService,
   WINDOW_PROVIDERS,
   LoggerService,
-  LoggerServiceStub, ConfigService, ConfigServiceStub
+  LoggerServiceStub, ConfigService, ConfigServiceStub, CoreUiModule
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenContainerComponent } from './screen-container.component';
@@ -23,7 +23,7 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CoreModule, BaseModule, RouterTestingModule, NavigationModule],
+        imports: [CoreModule, CoreUiModule, BaseModule, RouterTestingModule, NavigationModule],
         declarations: [ScreenContainerComponent],
         providers: [
           LocationService,

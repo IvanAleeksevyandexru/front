@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent } from '../../../component/custom-screen/components-list.types';
+import { CustomComponent } from '@epgu/epgu-constructor/src/lib/component/custom-screen/components-list.types';
 
 interface TranslitAlphabet {
   [propName: string]: string;
@@ -220,7 +220,7 @@ export class UtilsService {
     if (numRegex.test(preparedArray[0])) {
       preparedArray = this.sliceArrayFromRight(preparedArray, 3, false);
     }
-    
+
     preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));
 
     const serviceName = preparedArray.join('-');

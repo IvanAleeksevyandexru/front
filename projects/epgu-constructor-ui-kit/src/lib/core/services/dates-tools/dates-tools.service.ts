@@ -35,12 +35,8 @@ import {
   formatISO as _formatISO,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
-import { replaceArguments } from '../../../shared/constants/utils';
-import {
-  DATE_ISO_STRING_FORMAT,
-  DurationTimeTypes,
-  StartOfTypes,
-} from '../../../shared/constants/dates';
+import { replaceArguments } from '../utils/utils';
+import { DATE_ISO_STRING_FORMAT, DurationTimeTypes, StartOfTypes } from '../../../base/constants/dates';
 
 interface Duration {
   years?: number;
@@ -79,7 +75,7 @@ export class DatesToolsService {
   }
 
   /**
-   * 
+   *
    * @param resetTime если true, то сбрасывает время до 00:00:00
    * @returns Возвращает сегодняшнюю дату
    */

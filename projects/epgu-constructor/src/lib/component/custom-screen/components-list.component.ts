@@ -19,12 +19,13 @@ import {
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
+  UtilsService as utils,
+  OPTIONAL_FIELD,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
-import { UtilsService as utils } from '../../core/services/utils/utils.service';
+
 import { ScreenService } from '../../screen/screen.service';
-import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import {
   CustomComponent,
   CustomComponentOutputData,

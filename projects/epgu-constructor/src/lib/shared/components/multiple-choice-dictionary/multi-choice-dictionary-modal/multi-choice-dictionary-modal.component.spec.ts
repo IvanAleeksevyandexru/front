@@ -13,7 +13,7 @@ import { BaseModule } from '../../../base.module';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../services/date-range/date-range.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';

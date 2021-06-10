@@ -16,7 +16,7 @@ import { DisplayDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { AgeType, Gender, UserInfoType } from './components/user-info/user-info.type';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
 import { CycledInfo } from './components/cycled-info/cycled-info.types';

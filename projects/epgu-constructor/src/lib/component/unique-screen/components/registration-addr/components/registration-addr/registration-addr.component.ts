@@ -4,7 +4,11 @@ import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 import { ComponentActionDto } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  ConfigService,
+  DatesToolsService,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -16,7 +20,7 @@ import {
   RegistrationAddrFormValue,
   RegistrationAddrHints,
 } from '../../registration-addr-screen.types';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
