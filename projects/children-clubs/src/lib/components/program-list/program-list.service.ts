@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { List } from './program-list.models';
+import { Project } from '../../../typings';
+import data from './../../../stubs/projects.stub';
 
 @Injectable()
 export class ProgramListService {
-  fetchList(): Observable<List> {
+  limit = 3;
+  offset = 0;
+  fetchList(): Observable<Project[]> {
     return of(this.mockFetchList());
   }
 
-  mockFetchList(): List {
-    return new Array(3).fill(null).map(() => Math.random());
+  mockFetchList(): Project[] {
+    const nowOffset = this.offset + this.limit;
+    const result = data.slice(this.offset, nowOffset);
+    this.offset = nowOffset;
+    return result;
   }
 }

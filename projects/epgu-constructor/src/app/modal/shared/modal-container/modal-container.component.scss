@@ -1,8 +1,0 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
-
-:host::ng-deep {
-  .modal-overlay {
-    @include modal-overlay();
-  }
-}
-
