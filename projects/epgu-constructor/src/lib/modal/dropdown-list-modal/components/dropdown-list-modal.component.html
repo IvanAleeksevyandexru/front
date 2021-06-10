@@ -1,14 +1,22 @@
 <ng-container *ngIf="(data$ | async) as data">
-  <epgu-constructor-confirmation-modal-base
+  <epgu-cf-ui-cta-modal
     [title]="data.title"
     text="dr_modal"
     [showCrossButton]="true"
-    [buttons]="buttons"
+    [showButtons]="buttons.length > 0"
   >
     <div class="dr_modal__body">
       <epgu-constructor-dropdown-list
         [items]="data.items"
       ></epgu-constructor-dropdown-list>
     </div>
-  </epgu-constructor-confirmation-modal-base>
+    <ng-container *ngIf="buttons.length">
+      <lib-button
+        modal-buttons
+        *ngFor="let button of buttons"
+        class="conf-modal__button"
+        (click)="button.handler()"
+      >{{ button.label }}</lib-button>
+    </ng-container>
+  </epgu-cf-ui-cta-modal>
 </ng-container>

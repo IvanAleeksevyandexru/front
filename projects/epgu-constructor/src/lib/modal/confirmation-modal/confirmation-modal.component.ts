@@ -9,12 +9,13 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenButton, ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { ScreenButton, ConfirmationModal, ActionType } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
   ModalService,
   UnsubscribeService,
   ModalBaseComponent,
+  ConfirmationModalBaseButton,
 } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
@@ -41,7 +42,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   componentId?: ConfirmationModal['componentId'];
   preview?: ConfirmationModal['preview'];
 
-  buttons: ConfirmationModal['buttons'] = [];
+  buttons: ConfirmationModalBaseButton[] = [];
   actionButtons: ScreenButton[] = [];
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
@@ -69,6 +70,15 @@ export class ConfirmationModalComponent extends ModalBaseComponent
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.closeModal();
+      });
+
+    this.eventBusService
+      .on('screenButtonClicked')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((button: ScreenButton) => {
+        if (button.type === ActionType.deliriumNextStep) {
+          this.closeModal();
+        }
       });
   }
 

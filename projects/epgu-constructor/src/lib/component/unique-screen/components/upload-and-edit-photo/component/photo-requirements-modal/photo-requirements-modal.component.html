@@ -1,7 +1,7 @@
-<epgu-constructor-confirmation-modal-base
+<epgu-cf-ui-cta-modal
   class="req-modal"
   title="Требования к фото"
-  [buttons]="buttons"
+  [showButtons]="buttons.length > 0"
   [text]="modalName"
   [showCrossButton]="true"
 >
@@ -35,4 +35,16 @@
     class="req-modal__footer"
     [innerHTML]="setting.footer | safe: 'html'"
   ></div>
-</epgu-constructor-confirmation-modal-base>
+  <ng-container *ngIf="buttons.length">
+    <lib-button
+      modal-buttons
+      *ngFor="let button of buttons"
+      epgu-constructor-action
+      [action]="button.action"
+      [showLoader]="button.loader"
+      class="conf-modal__button"
+      [color]="button.color || ''"
+      (click)="button.handler()"
+    >{{ button.label }}</lib-button>
+  </ng-container>
+</epgu-cf-ui-cta-modal>

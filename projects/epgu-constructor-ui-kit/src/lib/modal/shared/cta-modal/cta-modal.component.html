@@ -29,21 +29,8 @@
 {{ preview | json }}
 
 <ng-template #buttonsTemplate>
-  <div class="conf-modal__controls" *ngIf="buttons.length || actionButtons.length">
-    <lib-button
-      *ngFor="let button of buttons"
-      epgu-constructor-action
-      [action]="button.action"
-      [showLoader]="button.loader"
-      class="conf-modal__button"
-      [color]="button.color || ''"
-      (click)="button.handler()"
-      >{{ button.label }}</lib-button
-    >
-    <div class="conf-modal__button" *ngIf="actionButtons.length">
-      <epgu-constructor-screen-buttons
-        [screenButtons]="actionButtons"
-      ></epgu-constructor-screen-buttons>
-    </div>
+  <div class="conf-modal__controls" *ngIf="showButtons">
+    <ng-content select="[modal-buttons]"></ng-content>
+    <ng-content select="[modal-action-buttons]"></ng-content>
   </div>
 </ng-template>

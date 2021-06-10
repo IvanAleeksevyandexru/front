@@ -10,7 +10,7 @@ import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 // eslint-disable-next-line max-len
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, ModalServiceStub, CtaModalComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
@@ -18,7 +18,6 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
-import { ConfirmationModalBaseComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.component';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -42,7 +41,7 @@ describe('PhotoRequirementsModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         PhotoRequirementsModalComponent,
-        MockComponent(ConfirmationModalBaseComponent),
+        MockComponent(CtaModalComponent),
       ],
       imports: [BaseModule, BaseComponentsModule],
       providers: [
