@@ -6,6 +6,7 @@ import { ProgramListContainerComponent } from './program-list-container.componen
 import { ProgramListService } from '../program-list.service';
 import { ListComponent } from '../components/list/list.component';
 import { configureTestSuite } from 'ng-bullet';
+import { ItemComponent } from '../components/item/item.component';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -13,7 +14,11 @@ describe('ListComponent', () => {
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProgramListContainerComponent, MockComponent(ListComponent)],
+      declarations: [
+        ProgramListContainerComponent,
+        MockComponent(ListComponent),
+        MockComponent(ItemComponent),
+      ],
       imports: [EpguLibModule],
       providers: [ProgramListService],
     }).compileComponents();

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { LoadServiceDeviceType, LOCAL_STORAGE_PLATFORM_TYPE } from '@epgu/epgu-constructor-ui-kit'
+
 import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
-import { ActivatedRoute } from '@angular/router';
-import { LoadServiceDeviceType, LOCAL_STORAGE_PLATFORM_TYPE } from '@epgu/epgu-constructor';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 const initValues: AppConfig = {
   serviceId: environment.serviceId,
