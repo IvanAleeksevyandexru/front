@@ -17,6 +17,7 @@ describe('HttpCancelInterceptor', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        HttpCancelInterceptor,
         HttpCancelService,
         { provide: HTTP_INTERCEPTORS, useClass: HttpCancelInterceptor, multi: true },
       ],

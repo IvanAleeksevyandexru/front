@@ -14,7 +14,12 @@ import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
-import { EventBusService, UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  UnsubscribeService,
+  ConfigService,
+  HttpCancelService,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { UtilsService as utils } from '../../core/services/utils/utils.service';
@@ -27,7 +32,6 @@ import {
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
-import { HttpCancelService } from '../../core/interceptor/http-cancel/http-cancel.service';
 import { ComponentsListFormService } from './services/components-list-form/components-list-form.service';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';

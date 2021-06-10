@@ -88,6 +88,8 @@ export * from './lib/core/services/config/config.types';
 export * from './lib/core/services/config/config.service';
 export * from './lib/core/services/config/config.service.stub';
 
+export * from './lib/core/interceptor/http-cancel/http-cancel.service';
+
 export * from './lib/app/app-state/app-state.module';
 export * from './lib/app/app-state/app-state.store';
 export * from './lib/app/app-state/app-state.service';
@@ -103,5 +105,7 @@ export * from './lib/modal/shared/modal-base/modal-base.component';
 export * from './lib/modal/shared/modal-container/modal-container.component';
 export * from './lib/modal/shared/common-modal/common-modal.component';
 export * from './lib/modal/shared/common-modal/common-modal.component';
+export * from './lib/modal/shared/cta-modal/cta-modal.interface';
+export * from './lib/modal/shared/cta-modal/cta-modal.component';
 
 

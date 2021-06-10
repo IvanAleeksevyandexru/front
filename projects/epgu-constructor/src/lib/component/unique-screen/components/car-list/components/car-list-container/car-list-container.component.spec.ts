@@ -13,7 +13,7 @@ import {
   DeviceDetectorServiceStub,
   ModalService,
   ModalServiceStub,
-  WINDOW_PROVIDERS
+  WINDOW_PROVIDERS, HttpCancelService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '../../../../../../shared/base.module';
@@ -78,6 +78,7 @@ describe('CarListContainerComponent', () => {
         UtilsService,
         NavigationService,
         ModalService,
+        HttpCancelService,
         WINDOW_PROVIDERS,
       ],
       imports: [

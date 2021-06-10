@@ -6,9 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { HttpCancelService } from './http-cancel.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class HttpCancelInterceptor implements HttpInterceptor {
   constructor(private httpCancelService: HttpCancelService) {}
 
