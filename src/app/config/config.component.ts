@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UnsubscribeService } from '@epgu/epgu-constructor';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 import { AppService } from '../app.service';
 import { AppConfig } from '../app.type';

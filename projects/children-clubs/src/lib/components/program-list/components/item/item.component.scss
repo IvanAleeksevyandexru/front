@@ -1,0 +1,82 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+:host {
+  @include typ-plain-text;
+  color: $color-summer-night;
+}
+.project-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project__info {
+  padding-left: 16px;
+  flex-basis: 58%;
+  order: 3;
+  @include phones-down {
+    flex-basis: 100%;
+    padding-left: 0;
+  }
+}
+.project__image {
+  flex-basis: 42%;
+  width: 244px;
+  height: 159px;
+  overflow: hidden;
+  border-radius: 12px;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+  .project__age-limit {
+    padding: 8px 10px;
+    background: $color-white;
+    color: $color-summer-night;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+  }
+  order: 1;
+  @include phones-down {
+    order: 0;
+    margin-bottom: 16px;
+    flex-basis: 100%;
+    margin-top: -24px;
+    margin-left: -24px;
+    margin-right: -24px;
+    min-width: calc(100% + 48px);
+    border-radius: 12px 12px 0 0;
+    height: 191px;
+  }
+}
+.project__organization {
+  color: $color-text-helper;
+}
+
+.project__info-item {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+
+  @include phones-down {
+    margin-top: 16px;
+  }
+}
+
+.item-icon {
+  margin-right: 16px;
+}
+
+.project__title {
+  @include typ-h5;
+  order: 0;
+  padding-bottom: 16px;
+  @include phones-down {
+    order: 1;
+    padding-bottom: 12px;
+  }
+  color: $color-gosblue;
+  flex-basis: 100%;
+}
