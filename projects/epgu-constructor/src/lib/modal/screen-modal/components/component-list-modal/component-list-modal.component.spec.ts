@@ -16,7 +16,13 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { BaseModule } from '../../../../shared/base.module';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ConfigService, ConfigServiceStub, LoggerService, LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  HttpCancelService,
+  LoggerService,
+  LoggerServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -50,6 +56,7 @@ describe('ComponentListModalComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         CustomScreenService,
+        HttpCancelService,
         DatesToolsService,
         DictionaryToolsService,
         RefRelationService
