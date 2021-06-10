@@ -12,14 +12,13 @@ import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-sc
 import { RedirectComponent } from '../../component/empty-screen/components/redirect.component';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 import { ActionService } from '../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 
 describe('EmptyScreenComponent', () => {
   let component: EmptyScreenComponent;
@@ -27,9 +26,9 @@ describe('EmptyScreenComponent', () => {
 
   let screenService: ScreenService;
   let locationService: LocationService;
-  let navigationService: NavigationService;
   let loggerService: LoggerService;
   let fileDownloaderService: FileDownloaderService;
+  let actionService: ActionService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -37,11 +36,10 @@ describe('EmptyScreenComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         MockProvider(FileDownloaderService),
-        MockProvider(ActionService),
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).overrideComponent(EmptyScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -51,10 +49,9 @@ describe('EmptyScreenComponent', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     locationService = TestBed.inject(LocationService);
-    navigationService = TestBed.inject(NavigationService);
     loggerService = TestBed.inject(LoggerService);
     fileDownloaderService = TestBed.inject(FileDownloaderService);
-
+    actionService = TestBed.inject(ActionService);
     fixture = TestBed.createComponent(EmptyScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -170,6 +167,23 @@ describe('EmptyScreenComponent', () => {
       component.redirectLink$.subscribe();
 
       expect(spy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('actionService', () => {
+    it('should be call actionService.switchAction', () => {
+      const componentSchema = {
+        attrs: {
+          actions: [{ type: 'home', value: 'value' }],
+        },
+        id: 'id1',
+        type: 'type1',
+      } as ComponentDto;
+      screenService.component = componentSchema;
+
+      const spy = jest.spyOn(actionService, 'switchAction');
+      component.createLink([componentSchema, {}])();
+      expect(spy).toHaveBeenCalledWith({ type: 'home', value: 'value' }, 'id1');
     });
   });
 });
