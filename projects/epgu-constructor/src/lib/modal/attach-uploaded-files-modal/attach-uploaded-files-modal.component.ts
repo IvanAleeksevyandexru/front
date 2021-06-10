@@ -14,8 +14,13 @@ import {
   UnsubscribeService,
   EventBusService,
   ConfigService,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import {
+  DATE_STRING_DASH_FORMAT,
+  DATE_TIME_STRING_SHORT,
+} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { ScreenService } from '../../screen/screen.service';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
@@ -23,8 +28,6 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../core/services/autocomplete/autocomplete.inteface';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/constants/dates';
 
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';

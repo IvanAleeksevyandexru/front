@@ -4,7 +4,7 @@ import {
   DATE_TIME_STRING_DOT_FORMAT,
   DATE_STRING_DOT_FORMAT,
   DATE_STRING_SLASH_FORMAT, DurationTimeTypes
-} from '../../../shared/constants/dates';
+} from 'projects/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 import { DatesToolsService } from './dates-tools.service';
 import * as moment_ from 'moment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';

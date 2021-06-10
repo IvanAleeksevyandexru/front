@@ -87,6 +87,16 @@ export * from './lib/core/services/logger/logger.service.stub';
 export * from './lib/core/services/config/config.types';
 export * from './lib/core/services/config/config.service';
 export * from './lib/core/services/config/config.service.stub';
+export * from './lib/core/services/config/load-service-stub';
+export * from './lib/core/services/dates-tools/dates';
+export * from './lib/core/services/dates-tools/dates-tools.service';
+export * from './lib/core/services/dates-tools/dates-tools.service.stub';
+export * from './lib/core/services/focus-manager/focus-manager.service';
+export * from './lib/core/services/focus-manager/focus-manager.service.stub';
+export * from './lib/core/services/session/session.service';
+export * from './lib/core/services/utils/utils';
+export * from './lib/core/services/utils/utils.service';
+export * from './lib/core/services/utils/utils.service.stub';
 
 export * from './lib/core/interceptor/http-cancel/http-cancel.service';
 

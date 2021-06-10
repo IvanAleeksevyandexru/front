@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { ConstantsService, ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, ConfigService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+
 import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 
 @Component({

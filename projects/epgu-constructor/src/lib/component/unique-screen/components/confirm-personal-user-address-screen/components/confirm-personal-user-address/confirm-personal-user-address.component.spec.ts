@@ -12,7 +12,7 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';

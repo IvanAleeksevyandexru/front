@@ -10,7 +10,10 @@ import {
   ConfigService,
   ConfigServiceStub,
   ModalService,
-  ModalServiceStub, LoggerService, LoggerServiceStub,
+  ModalServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  FocusManagerService, FocusManagerServiceStub, CoreUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ComponentItemComponent } from './component-item.component';
@@ -48,6 +51,7 @@ describe('ComponentItemComponent', () => {
       ],
       imports: [
         CoreModule,
+        CoreUiModule,
         BaseModule,
         RouterTestingModule,
         WebcamShootModule,
@@ -59,6 +63,7 @@ describe('ComponentItemComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: FocusManagerService, useClass: FocusManagerServiceStub },
         CurrentAnswersService,
       ],
     }).overrideComponent(ComponentItemComponent, {

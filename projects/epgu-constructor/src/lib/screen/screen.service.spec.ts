@@ -6,9 +6,9 @@ import { CachedAnswersService } from '../shared/services/cached-answers/cached-a
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore } from './screen.types';
-import { UtilsService } from '../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
-import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { DateRangeService } from '../shared/services/date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

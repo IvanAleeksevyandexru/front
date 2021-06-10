@@ -35,12 +35,12 @@ import {
   formatISO as _formatISO,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
-import { replaceArguments } from '../../../shared/constants/utils';
+import { replaceArguments } from 'projects/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
 import {
   DATE_ISO_STRING_FORMAT,
   DurationTimeTypes,
   StartOfTypes,
-} from '../../../shared/constants/dates';
+} from 'projects/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 
 interface Duration {
   years?: number;
@@ -79,7 +79,7 @@ export class DatesToolsService {
   }
 
   /**
-   * 
+   *
    * @param resetTime если true, то сбрасывает время до 00:00:00
    * @returns Возвращает сегодняшнюю дату
    */

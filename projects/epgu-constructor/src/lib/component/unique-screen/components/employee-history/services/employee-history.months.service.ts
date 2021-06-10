@@ -7,12 +7,12 @@ import {
   EmployeeHistoryModel,
   EmployeeHistoryUncheckedPeriod,
 } from '../employee-history.types';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DATE_MONTH_YEAR_FORMAT,
   DATE_STRING_LLLL_YYYY_FORMAT,
   DATE_STRING_SLASH_FORMAT,
-} from '../../../../../shared/constants/dates';
+} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 
 @Injectable()
 export class EmployeeHistoryMonthsService {

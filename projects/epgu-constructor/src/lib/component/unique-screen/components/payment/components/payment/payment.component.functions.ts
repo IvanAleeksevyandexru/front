@@ -1,5 +1,5 @@
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 import { BillInfoAddAttrsResponse, BillInfoResponse } from '../../payment.types';
 
 

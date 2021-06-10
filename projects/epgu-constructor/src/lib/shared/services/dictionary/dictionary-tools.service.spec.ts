@@ -13,7 +13,7 @@ import {
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 import { mockSelectMapObjectStore } from '../../../component/unique-screen/components/select-map-object/mocks/mock-select-map-object';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
@@ -26,7 +26,7 @@ import {
   CustomListDictionaries,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { UtilsService as utils } from '../../../core/services/utils/utils.service';
+import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 const getDictionary = (count = 0) => {

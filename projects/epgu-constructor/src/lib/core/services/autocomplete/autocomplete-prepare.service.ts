@@ -3,7 +3,7 @@ import { Answer, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
-import { UtilsService } from '../utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { isChildrenListType } from './autocomplete.const';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import {
@@ -13,8 +13,8 @@ import {
   ISuggestionItemList,
 } from './autocomplete.inteface';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
-import { DatesToolsService } from '../dates-tools/dates-tools.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../shared/constants/dates';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 
 @Injectable()
 export class AutocompletePrepareService {

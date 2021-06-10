@@ -21,7 +21,7 @@ import { IRegistrationAddrComponent } from '../../registration-addr-screen.types
 import { RegistrationAddrComponent } from './registration-addr.component';
 import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateValidator } from './date-validator';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';

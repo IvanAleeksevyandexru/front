@@ -11,7 +11,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { of } from 'rxjs';
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
 import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';

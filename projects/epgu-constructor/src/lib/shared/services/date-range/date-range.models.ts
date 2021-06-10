@@ -1,4 +1,4 @@
-import { DurationTimeTypes } from '../../constants/dates';
+import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 import { CustomComponentAttr, CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 
 export interface DateRangeAttrs extends CustomComponentAttr {

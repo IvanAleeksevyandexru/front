@@ -10,7 +10,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -75,7 +75,7 @@ describe('ValidationTypeDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
+      imports: [CoreModule, CoreUiModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
       providers: [
         ValidationService,
         NgControl,
