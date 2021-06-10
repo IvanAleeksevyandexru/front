@@ -1,6 +1,6 @@
 import { DadataResult, RelativeDate } from '@epgu/epgu-lib';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentActionDto, TextTransform } from '@epgu/epgu-constructor-types';
 
 export interface IRegistrationAddrComponent extends ComponentBase {

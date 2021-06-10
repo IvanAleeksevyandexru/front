@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeAttrs, DateRange, Range, DateRangeRef } from './date-range.models';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 

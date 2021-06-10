@@ -7,7 +7,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';

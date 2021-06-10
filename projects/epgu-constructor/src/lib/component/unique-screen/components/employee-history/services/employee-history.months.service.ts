@@ -12,7 +12,7 @@ import {
   DATE_MONTH_YEAR_FORMAT,
   DATE_STRING_LLLL_YYYY_FORMAT,
   DATE_STRING_SLASH_FORMAT,
-} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+} from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class EmployeeHistoryMonthsService {

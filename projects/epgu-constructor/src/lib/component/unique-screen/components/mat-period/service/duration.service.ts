@@ -13,7 +13,7 @@ import { PaymentType } from '../mat-period.models';
 import {
   DATE_STRING_DOT_FORMAT,
   DATE_STRING_LLLL_YYYY_FORMAT,
-} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+} from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class DurationService {

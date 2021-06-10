@@ -1,11 +1,12 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { DisclaimerDto } from '@epgu/epgu-constructor-types';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
+  DatesToolsService,
   BEFORE_DATE_FORMAT,
   DATE_STRING_DASH_FORMAT,
   DATE_STRING_DOT_FORMAT,
-} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { Referral } from './medical-referrals-list.types';
 
 @Component({

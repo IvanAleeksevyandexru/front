@@ -14,7 +14,7 @@ import {
 } from './autocomplete.inteface';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class AutocompletePrepareService {

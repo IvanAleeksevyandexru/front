@@ -1,6 +1,6 @@
 @use "sass:math";
-@import '../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
-@import '../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
+@import '../../../../styles/core/index';
+@import '../../../../styles/components/rubles';
 
 $my: 7vh;
 $pyConfModal: 64px;

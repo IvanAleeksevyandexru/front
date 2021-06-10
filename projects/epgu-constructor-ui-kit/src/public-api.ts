@@ -49,7 +49,7 @@ export * from './lib/base/directives/text-transform/text-transform.directive';
 export * from './lib/base/pipes/mask-handle/mask-handle.module';
 export * from './lib/base/pipes/mask-handle/mask-handle.pipe';
 export * from './lib/base/pipes/mask-handle/mask.constant';
-export * from './lib/base/pipes/mask-handle/interface/number-mask-options.interface';
+export * from './lib/base/pipes/mask-handle/mask-options';
 
 export * from './lib/base/pipes/img-prefixer/img-prefixer.module';
 export * from './lib/base/pipes/img-prefixer/img-prefixer.pipe';
@@ -88,7 +88,6 @@ export * from './lib/core/services/config/config.types';
 export * from './lib/core/services/config/config.service';
 export * from './lib/core/services/config/config.service.stub';
 export * from './lib/core/services/config/load-service-stub';
-export * from './lib/core/services/dates-tools/dates';
 export * from './lib/core/services/dates-tools/dates-tools.service';
 export * from './lib/core/services/dates-tools/dates-tools.service.stub';
 export * from './lib/core/services/focus-manager/focus-manager.service';
@@ -121,3 +120,4 @@ export * from './lib/modal/shared/cta-modal/cta-modal.component';
 
 export * from './lib/base/constants/helper-texts';
 export * from './lib/base/constants/redirect-event';
+export * from './lib/base/constants/dates';

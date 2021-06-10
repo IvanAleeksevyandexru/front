@@ -15,12 +15,10 @@ import {
   EventBusService,
   ConfigService,
   DatesToolsService,
-} from '@epgu/epgu-constructor-ui-kit';
-
-import {
   DATE_STRING_DASH_FORMAT,
   DATE_TIME_STRING_SHORT,
-} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { ScreenService } from '../../screen/screen.service';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';

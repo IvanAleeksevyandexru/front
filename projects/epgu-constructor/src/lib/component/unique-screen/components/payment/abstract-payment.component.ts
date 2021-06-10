@@ -14,9 +14,9 @@ import {
   UnsubscribeService,
   ConfigService,
   DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';

@@ -14,15 +14,13 @@ import {
   UnsubscribeService,
   HttpCancelService,
   DatesToolsService,
-} from '@epgu/epgu-constructor-ui-kit';
-
-import {
   DATE_STRING_YEAR_MONTH,
   DATE_TIME_STRING_FULL,
   months,
   StartOfTypes,
   weekDaysAbbr,
-} from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';

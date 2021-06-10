@@ -35,12 +35,8 @@ import {
   formatISO as _formatISO,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
-import { replaceArguments } from 'projects/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
-import {
-  DATE_ISO_STRING_FORMAT,
-  DurationTimeTypes,
-  StartOfTypes,
-} from 'projects/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
+import { replaceArguments } from '../utils/utils';
+import { DATE_ISO_STRING_FORMAT, DurationTimeTypes, StartOfTypes } from '../../../base/constants/dates';
 
 interface Duration {
   years?: number;

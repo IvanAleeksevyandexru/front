@@ -1,14 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  DATE_ISO_STRING_FORMAT,
-  DATE_TIME_STRING_DOT_FORMAT,
-  DATE_STRING_DOT_FORMAT,
-  DATE_STRING_SLASH_FORMAT, DurationTimeTypes
-} from 'projects/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates';
 import { DatesToolsService } from './dates-tools.service';
 import * as moment_ from 'moment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { DATE_ISO_STRING_FORMAT, DATE_STRING_DOT_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DurationTimeTypes } from '../../../base/constants/dates';
 
 const moment = moment_;
 moment.locale('ru');

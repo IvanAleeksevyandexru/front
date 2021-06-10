@@ -1,5 +1,4 @@
-// @see https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/text-mask-addons/index.d.ts
-export interface NumberMaskOptionsInterface {
+export interface NumberMaskOptions {
   prefix: string;
   suffix: string;
   includeThousandsSeparator: boolean;

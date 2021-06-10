@@ -1,11 +1,4 @@
 import { ListItem } from '@epgu/epgu-lib';
-import { ComponentBase } from '../../screen/screen.types';
-import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
-import {
-  DictionaryItem,
-  DictionaryResponse,
-} from '../../shared/services/dictionary/dictionary-api.types';
-import { NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -17,6 +10,15 @@ import {
   ComponentImageDto,
   ComponentAttrsDto,
 } from '@epgu/epgu-constructor-types';
+// @ts-ignore
+import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
+
+import { ComponentBase } from '../../screen/screen.types';
+import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../shared/services/dictionary/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -147,7 +149,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   suggestionId?: string;
   searchType?: string;
   cityFilter?: string[];
-  maskOptions?: NumberMaskOptionsInterface;
+  maskOptions?: NumberMaskOptions;
   labelHint?: string;
   hint?: string;
   customUnrecLabel?: string;
