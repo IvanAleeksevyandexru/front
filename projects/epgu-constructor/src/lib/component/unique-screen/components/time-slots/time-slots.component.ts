@@ -9,10 +9,9 @@ import { ListItem } from '@epgu/epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
-import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, UnsubscribeService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
-import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';

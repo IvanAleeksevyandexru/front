@@ -12,11 +12,11 @@ import {
   EventBusService,
   UnsubscribeService,
   ConfigService,
+  ConfirmationModalBaseButton,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
-import { ConfirmationModalBaseButton } from '../../../../../../modal/confirmation-modal/confirmation-modal-base/confirmation-modal-base.interface';
 
 @Component({
   selector: 'epgu-constructor-photo-requirements-modal',

@@ -9,7 +9,11 @@ import {
 import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  ConfigService,
+  HttpCancelService,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -19,7 +23,6 @@ import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
-import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import {

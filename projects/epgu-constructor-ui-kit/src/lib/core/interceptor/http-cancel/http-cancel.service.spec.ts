@@ -6,6 +6,12 @@ describe('HttpCancelService', () => {
   let service: HttpCancelService;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [HttpCancelService]
+    });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(HttpCancelService);
   });
 

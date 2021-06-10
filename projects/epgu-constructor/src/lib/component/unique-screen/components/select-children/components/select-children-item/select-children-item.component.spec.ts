@@ -5,7 +5,12 @@ import { HealthService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
-import { ConstructorDropdownModule, LoggerService, LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorDropdownModule,
+  HttpCancelService,
+  LoggerService,
+  LoggerServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -85,6 +90,7 @@ describe('SelectChildrenItemComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         CurrentAnswersService,
+        HttpCancelService,
         DictionaryToolsService,
         RefRelationService,
       ],
