@@ -1188,6 +1188,42 @@ describe('ComponentsListRelationsService', () => {
         expect(service.clearFilter).toBeCalledWith(dependentComponent.id);
       });
     });
+
+    describe('if relation === autoFillTextFromRefs', () => {
+      it('should patch dependentControl value', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf2',
+          relation: CustomComponentRefRelation.autoFillTextFromRefs,
+          relatedRelValues: {
+            reference_to_name: 'title',
+            reference_to_address: 'address',
+          },
+          val: ''
+        };
+
+        componentVal = { title: 'some title', address: 'some address' };
+
+        dependentControl = new FormGroup({
+          id: new FormControl('rf2'),
+          label: new FormControl('label with ${reference_to_name}'),
+          clarification: new FormControl('clarification with ${reference_to_address}'),
+          hint: new FormControl('not match for replace ${not_match}'),
+        });
+
+        service['handleAutoFillTextFromRefs'](
+          reference,
+          componentVal,
+          dependentControl,
+        );
+
+        expect(dependentControl.value).toEqual({
+          id: 'rf2',
+          label: 'label with some title',
+          clarification: 'clarification with some address',
+          hint: 'not match for replace ${not_match}',
+        });
+      });
+    });
   });
 
   describe('hasRelation()', () => {

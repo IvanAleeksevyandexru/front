@@ -57,6 +57,7 @@ import { LookupInputComponent } from './components/lookup-input/lookup-input.com
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { MonthPickerComponent } from './components/month-picker/month-picker.component';
 import { ConstructorMonthPickerModule } from '../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { DepartmentLookupComponent } from './components/department-lookup/department-lookup.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ConstructorMonthPickerModule } from '../../shared/components/constructo
     SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
+    DepartmentLookupComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -141,6 +143,7 @@ import { ConstructorMonthPickerModule } from '../../shared/components/constructo
     SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
+    DepartmentLookupComponent,
   ],
 })
 export class ComponentsListModule { }

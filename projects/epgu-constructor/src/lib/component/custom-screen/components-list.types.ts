@@ -216,6 +216,7 @@ export enum CustomComponentRefRelation {
   autofillFromDictionary = 'autofillFromDictionary',
   reset = 'reset',
   validateDependentControl = 'validateDependentControl',
+  autoFillTextFromRefs = 'autoFillTextFromRefs',
 }
 
 export enum CustomComponentValidationConditions {
@@ -232,6 +233,7 @@ export interface CustomComponentRef {
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
   sourceId?: string;
+  relatedRelValues?: { [key: string]: string };
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
