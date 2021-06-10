@@ -30,6 +30,16 @@ const DRAFT_STATEMENT_NOT_FOUND_TEXT = `<div class="text_modal_error">
 <h4>Черновик заявления не найден</h4>
 <span>Проверьте в личном кабинете или создайте заявление заново.</span></div>`;
 
+const ITEMS_REQUEST_TEXT_NO_DATA = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Внимание!</h4>
+<span>{textAsset}</span></div>`;
+
+const ITEMS_REQUEST_TEXT_FAILURE = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="https://gu-st.ru/content/catalog/new/marriage_6_booking_deny.svg">
+<h4>Внимание!</h4>
+<span>{textAsset}</span></div>`;
+
 const BOOKING_ONLINE_ERROR_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>В подразделение нельзя записаться онлайн</h4>
@@ -117,6 +127,40 @@ export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
       label: 'В личный кабинет',
       closeModal: true,
       value: 'redirectToLk',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const ITEMS_NO_DATA: ConfirmationModal = {
+  text: ITEMS_REQUEST_TEXT_NO_DATA,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'Вернуться к заявлению',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const ITEMS_FAILURE: ConfirmationModal = {
+  text: ITEMS_REQUEST_TEXT_FAILURE,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'На главную',
+      color: 'white',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+    {
+      label: 'Вернуться к заявлению',
+      closeModal: true,
     },
   ],
   isShortModal: true,

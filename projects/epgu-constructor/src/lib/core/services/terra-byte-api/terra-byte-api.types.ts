@@ -70,6 +70,7 @@ export interface FileUploadItem {
   fileType?: string[];
   maxFileCount?: number;
   maxSize?: number;
+  minSize?: number;
   required?: boolean;
   pdfFileName?: string;
   maxCountByTypes?: MaxCountByType[];

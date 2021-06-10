@@ -4,15 +4,8 @@ import { EmptyScreenComponentsModule } from '../../component/empty-screen/empty-
 import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-	declarations: [
-	  EmptyScreenComponent
-  ],
-	exports: [
-	  EmptyScreenComponent
-  ],
-	imports: [
-    BaseModule,
-    EmptyScreenComponentsModule
-	],
+  declarations: [EmptyScreenComponent],
+  exports: [EmptyScreenComponent],
+  imports: [BaseModule, EmptyScreenComponentsModule],
 })
 export class EmptyScreenModule {}
