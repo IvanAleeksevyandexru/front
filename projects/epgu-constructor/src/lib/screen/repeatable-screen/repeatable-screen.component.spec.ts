@@ -232,7 +232,7 @@ describe('RepeatableScreenComponent', () => {
     const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
     eventBusService.emit('cloneButtonClickEvent', 'any');
     expect(setNewScreenSpy).toBeCalledTimes(1);
-    expect(setNewScreenSpy).toBeCalledWith(components);
+    expect(setNewScreenSpy).toBeCalledWith(components, undefined);
   });
 
   it('should been called setNewScreen method with screens components', () => {
