@@ -28,7 +28,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HintComponent } from '../../../../shared/components/base-components/hint/hint.component';
-import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
+import { OPTIONAL_FIELD } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;

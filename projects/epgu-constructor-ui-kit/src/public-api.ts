@@ -119,3 +119,5 @@ export * from './lib/modal/shared/cta-modal/cta-modal.interface';
 export * from './lib/modal/shared/cta-modal/cta-modal.component';
 
 
+export * from './lib/base/constants/helper-texts';
+export * from './lib/base/constants/redirect-event';

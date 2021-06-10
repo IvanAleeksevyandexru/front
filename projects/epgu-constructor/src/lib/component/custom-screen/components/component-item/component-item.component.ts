@@ -9,8 +9,12 @@ import {
 import { AbstractControl } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import { FocusState } from '@epgu/epgu-lib';
-import { UnsubscribeService, FocusManagerService } from '@epgu/epgu-constructor-ui-kit';
-import { OPTIONAL_FIELD } from '../../../../shared/constants/helper-texts';
+import {
+  UnsubscribeService,
+  FocusManagerService,
+  OPTIONAL_FIELD,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
 
 @Component({
