@@ -4,6 +4,7 @@ import {
   ConfirmationModal,
   ErrorModal,
   FormPlayerApiSuccessResponse,
+  ItemsErrorResponse,
 } from '@epgu/epgu-constructor-types';
 import { ModalService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 
@@ -16,6 +17,8 @@ import {
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   STATUS_ICON_MAP,
   TIME_INVITATION_ERROR,
+  ITEMS_NO_DATA,
+  ITEMS_FAILURE,
 } from './errors.interceptor.constants';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -23,6 +26,7 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+
 
 @Injectable()
 export class ErrorHandleService {
@@ -33,26 +37,57 @@ export class ErrorHandleService {
     private configService: ConfigService,
   ) {}
 
-  public handleResponse(httpResponse: HttpResponse<FormPlayerApiSuccessResponse>): void {
+  public handleResponse(httpResponse: HttpResponse<unknown>): void {
     const { status, url, body } = httpResponse;
-    const value = String(body.scenarioDto.display?.components[0]?.value);
-    if (
-      status === 200 &&
-      url.includes('service/booking') &&
-      value.includes('BOOKING_UNAVAILABLE_EMPTY_ORG_ID')
-    ) {
-      try {
-        const address: string = JSON.parse(value)?.ADDRESS;
-        const addressLink = `<a target='_blank' href='https://yandex.ru/maps/?text=${address}'>${address}</a>`;
-        const regExp = /\{addressLink\}?/g;
-        BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
 
-        this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
-          if (redirectToLk) {
-            this.navigationService.redirectToLK();
-          }
-        });
-      } catch (e) {}
+    if (status === 200) {
+      const bookingValue = String((body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value);
+      const error = (body as ItemsErrorResponse)?.error;
+
+      if (url.includes('service/booking') && bookingValue.includes('BOOKING_UNAVAILABLE_EMPTY_ORG_ID')) {
+        try {
+          const address: string = JSON.parse(bookingValue)?.ADDRESS;
+          const addressLink = `<a target='_blank' href='https://yandex.ru/maps/?text=${address}'>${address}</a>`;
+          const regExp = /\{addressLink\}?/g;
+          BOOKING_ONLINE_ERROR.text = BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
+
+          this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
+            if (redirectToLk) {
+              this.navigationService.redirectToLK();
+            }
+          });
+        } catch (e) {}
+      }
+
+      if (
+        url.includes('agg/ref/items') &&
+        (error !== null || error !== undefined) &&
+        error?.errorDetail?.errorMessage !== undefined &&
+        error?.errorDetail?.errorMessage !== ''
+      ) {
+        const errorMessage = error.errorDetail.errorMessage;
+
+        if (
+          errorMessage.includes('NO_DATA') ||
+          !errorMessage.includes('FAILURE') && !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
+        ) {
+          const message = errorMessage.replace('NO_DATA:', '');
+          ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
+
+          this.showModal(ITEMS_NO_DATA);
+        }
+
+        if (errorMessage.includes('FAILURE') || errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')) {
+          const message = errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
+          ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
+
+          this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
+            if (redirectToLk) {
+              this.navigationService.redirectToLK();
+            }
+          });
+        }
+      }
     }
   }
 

@@ -9,7 +9,7 @@ import {
 
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { instanceOfFormPlayerApiSuccessResponse } from './data';
+import { isValidRequest } from './data';
 import { ErrorHandleService } from './error-handle.service';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
           res instanceof HttpResponse &&
           res?.body &&
           typeof res.body === 'object' &&
-          instanceOfFormPlayerApiSuccessResponse(res.body)
+          isValidRequest(res.body)
         ) {
           this.errorHandleService.handleResponse(res);
         }

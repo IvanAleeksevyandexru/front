@@ -11,7 +11,9 @@
         isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, fieldName]) &&
         form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg
       ">
-        {{ fields[fieldName]?.label }}:
+        <ng-container *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson">
+          {{ fields[fieldName]?.label }}:
+        </ng-container>
         {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg }}
       </span>
     </epgu-cf-ui-constructor-input-error>
