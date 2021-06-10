@@ -18,7 +18,7 @@
 
     <ng-template #contentBlock>
       <div class="conf-modal__content" [class.conf-modal__short-modal]="isShortModal">
-        <ng-content></ng-content>
+        <ng-content select="[modal-content]"></ng-content>
         <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
           <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
         </ng-container>

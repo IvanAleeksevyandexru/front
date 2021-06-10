@@ -6,15 +6,16 @@
   [preview]="preview"
   [isShortModal]="isShortModal"
 >
-  <epgu-constructor-output-html
-    [html]="text"
-    [componentId]="componentId"
-  >
-  </epgu-constructor-output-html>
+  <ng-container modal-content>
+    <epgu-constructor-output-html
+      [html]="text"
+      [componentId]="componentId"
+    >
+    </epgu-constructor-output-html>
+  </ng-container>
 
-  <ng-container *ngIf="buttons.length">
+  <ng-container *ngIf="buttons.length" modal-buttons>
     <lib-button
-      modal-buttons
       *ngFor="let button of buttons"
       epgu-constructor-action
       [action]="button.action"

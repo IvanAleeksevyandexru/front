@@ -2,19 +2,6 @@
 
 // TODO Избавиться от ng-deep
 :host::ng-deep {
-  .conf-modal__button {
-    &:first-child {
-      margin-bottom: 0;
-    }
-    @include phones-down {
-      margin-bottom: 32px;
-    }
-    width: 100%;
-    @include tablets-up {
-      width: auto;
-    }
-  }
-
   .conf-modal__text {
     white-space: pre-line;
     font-size: 16px;

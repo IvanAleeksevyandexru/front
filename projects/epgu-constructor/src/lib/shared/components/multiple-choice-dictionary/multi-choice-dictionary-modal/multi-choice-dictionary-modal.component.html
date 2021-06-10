@@ -5,7 +5,7 @@
   [isButtonsOutsideContent]="true"
   text="multi-choice-dictionary"
 >
-  <ng-container *ngIf="!isLoading; else loading">
+  <ng-container *ngIf="!isLoading; else loading" modal-content>
     <div [formGroup]="form">
       <lib-search-bar
         formControlName="input"
@@ -26,9 +26,8 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="!isLoading && buttons">
+  <ng-container *ngIf="!isLoading && buttons" modal-buttons>
     <lib-button
-      modal-buttons
       *ngFor="let button of buttons"
       class="conf-modal__button"
       (click)="button.handler()"

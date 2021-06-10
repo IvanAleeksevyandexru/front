@@ -5,14 +5,16 @@
     [showCrossButton]="true"
     [showButtons]="buttons.length > 0"
   >
-    <div class="dr_modal__body">
-      <epgu-constructor-dropdown-list
-        [items]="data.items"
-      ></epgu-constructor-dropdown-list>
-    </div>
-    <ng-container *ngIf="buttons.length">
+    <ng-container modal-content>
+      <div class="dr_modal__body">
+        <epgu-constructor-dropdown-list
+          [items]="data.items"
+        ></epgu-constructor-dropdown-list>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="buttons.length" modal-buttons>
       <lib-button
-        modal-buttons
         *ngFor="let button of buttons"
         class="conf-modal__button"
         (click)="button.handler()"
