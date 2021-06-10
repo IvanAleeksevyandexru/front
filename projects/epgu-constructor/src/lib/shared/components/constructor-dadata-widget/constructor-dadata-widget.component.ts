@@ -5,6 +5,7 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../core/services/autocomplete/autocomplete.inteface';
+import { SUGGEST_SEPORATOR_DEFAULT } from '../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-constructor-dadata-widget',
@@ -29,4 +30,6 @@ export class ConstructorDadataWidgetComponent {
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
     ISuggestionItem | ISuggestionItemList
   >();
+
+  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
 }
