@@ -88,6 +88,8 @@ export * from './lib/core/services/config/config.types';
 export * from './lib/core/services/config/config.service';
 export * from './lib/core/services/config/config.service.stub';
 
+export * from './lib/core/interceptor/http-cancel/http-cancel.service';
+
 export * from './lib/app/app-state/app-state.module';
 export * from './lib/app/app-state/app-state.store';
 export * from './lib/app/app-state/app-state.service';

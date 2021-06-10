@@ -1,6 +1,8 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
+
 // Сокращать пути до ./components и ./services нельзя, т.к. будет ошибка при `ng build epgu-constructor --prod`
 import { CfAppStateService } from './services/cf-app-state/cf-app-state.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
@@ -12,6 +14,8 @@ import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ConfigService } from './services/config/config.service';
 import { LoggerService } from './services/logger/logger.service';
 import { initApp } from './initializers/app.initializer';
+import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
+import { HttpCancelService } from './interceptor/http-cancel/http-cancel.service';
 
 @NgModule({
   providers: [
@@ -23,7 +27,13 @@ import { initApp } from './initializers/app.initializer';
     LocationService,
     ConfigService,
     LoggerService,
+    HttpCancelService,
     WINDOW_PROVIDERS,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCancelInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initApp,

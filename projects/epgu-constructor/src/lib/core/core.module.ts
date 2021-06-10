@@ -3,7 +3,6 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
-import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -48,11 +47,6 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorsInterceptorService,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpCancelInterceptor,
       multi: true,
     },
     {

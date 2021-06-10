@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -82,6 +82,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         DatesToolsService,
+        HttpCancelService,
       ],
     }).compileComponents();
   });

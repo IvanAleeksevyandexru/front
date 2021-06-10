@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule, ListItem } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent, HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadComponent, HelperTextComponent, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -69,6 +69,7 @@ describe('TimeSlotsComponent', () => {
         DatesToolsService,
         TimeSlotsService,
         UtilsService,
+        HttpCancelService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

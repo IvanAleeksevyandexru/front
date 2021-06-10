@@ -5,7 +5,7 @@ import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -80,6 +80,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         SuggestHandlerService,
         EventBusService,
         FormBuilder,
+        HttpCancelService,
       ],
     })
       .overrideComponent(ConfirmPersonalUserAddressComponent, {
