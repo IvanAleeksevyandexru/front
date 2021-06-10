@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Directive, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../../../../screen/screen.types';
-import { ConfigService } from '../../../../../core/services/config/config.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
 import { ConfirmUserDataErrorType } from '../confirm-personal-user-data-screen.types';
 
 @Directive()
