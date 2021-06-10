@@ -15,6 +15,8 @@ import { DateRangeService } from '../../../shared/services/date-range/date-range
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { EventBusService } from '../event-bus/event-bus.service';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { ConfigService } from '../config/config.service';
+import { LoggerService } from '../logger/logger.service';
 
 describe('FocusManagerService', () => {
   let service: FocusManagerService;
@@ -29,6 +31,8 @@ describe('FocusManagerService', () => {
         DatesToolsService,
         EventBusService,
         DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
       imports: [
         EpguLibModule,

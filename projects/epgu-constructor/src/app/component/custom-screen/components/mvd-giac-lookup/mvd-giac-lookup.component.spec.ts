@@ -16,6 +16,8 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
 import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -35,6 +37,8 @@ describe('MvdGiacLookupComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        ConfigService,
+        LoggerService,
       ],
     })
       .overrideComponent(MvdGiacLookupComponent, {

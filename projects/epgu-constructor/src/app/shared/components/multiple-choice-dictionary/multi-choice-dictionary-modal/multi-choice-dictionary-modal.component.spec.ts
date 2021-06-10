@@ -18,6 +18,8 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
+import { ConfigService } from '../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -74,6 +76,8 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         DatesToolsService,
         RefRelationService,
         DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {

@@ -26,6 +26,8 @@ import { RefRelationService } from '../../../../../shared/services/ref-relation/
 import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../core/services/logger/logger.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -85,6 +87,8 @@ describe('InformationCenterMvdContainerComponent', () => {
         DatesToolsService,
         RefRelationService,
         DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {
