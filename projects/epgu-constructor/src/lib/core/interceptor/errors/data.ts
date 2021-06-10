@@ -1,7 +1,5 @@
-import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
-
-export function instanceOfFormPlayerApiSuccessResponse(
+export function isValidRequest(
   obj: object,
-): obj is FormPlayerApiSuccessResponse {
-  return 'scenarioDto' in obj;
+): boolean {
+  return 'scenarioDto' in obj || 'items' in obj;
 }

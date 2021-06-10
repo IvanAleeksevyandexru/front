@@ -15,6 +15,8 @@ import {
   BOOKING_ONLINE_ERROR,
   TIME_INVITATION_ERROR,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
+  ITEMS_NO_DATA,
+  ITEMS_FAILURE,
 } from './errors.interceptor.constants';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -160,6 +162,60 @@ describe('ErrorsInterceptor', () => {
     tick();
   }));
 
+  it('should open modal with ITEMS_NO_DATA params', fakeAsync(() => {
+    const data = {
+      items: [],
+      error: {
+        errorDetail: {
+          errorMessage: 'NO_DATA:TEST MESSAGE',
+        },
+      },
+    };
+    const url = 'agg/ref/items';
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpClient
+      .post(url, {})
+      .pipe(catchError(() => of()))
+      .subscribe();
+    const req = httpMock.expectOne(url);
+
+    expect(req.request.method).toBe('POST');
+
+    req.flush(data, { status: 200, statusText: 'success' });
+    expect(spy).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      ITEMS_NO_DATA,
+    );
+    tick();
+  }));
+
+  it('should open modal with ITEMS_FAILURE params', fakeAsync(() => {
+    const data = {
+      items: [],
+      error: {
+        errorDetail: {
+          errorMessage: 'UNKNOWN_REQUEST_DESCRIPTION:TEST MESSAGE',
+        },
+      },
+    };
+    const url = 'agg/ref/items';
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpClient
+      .post(url, {})
+      .pipe(catchError(() => of()))
+      .subscribe();
+    const req = httpMock.expectOne(url);
+
+    expect(req.request.method).toBe('POST');
+
+    req.flush(data, { status: 200, statusText: 'success' });
+    expect(spy).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      ITEMS_FAILURE,
+    );
+    tick();
+  }));
+
   it('should open modal with DRAFT_STATEMENT_NOT_FOUND params', fakeAsync(() => {
     spyOn(modalService, 'openModal').and.callThrough();
     formPlayerApi.checkIfOrderExist().subscribe(
@@ -245,7 +301,7 @@ describe('ErrorsInterceptor', () => {
   it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
     spyOn(navigationService, 'patchOnCli').and.callThrough();
     const orderId = '42';
-    formPlayerApi.getOrderStatus(orderId).subscribe(
+    formPlayerApi.getOrderStatus(Number(orderId)).subscribe(
       () => fail('should have failed with the 410 error'),
       (error: HttpErrorResponse) => {
         expect(error.status).toEqual(410);
