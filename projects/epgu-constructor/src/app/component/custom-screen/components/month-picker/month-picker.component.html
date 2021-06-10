@@ -6,8 +6,8 @@
   <epgu-constructor-constructor-month-picker
     [id]="control.value?.id"
     [control]="$any(control.get('value'))"
-    [minMonth]="monthsService.minDateFrom"
-    [maxMonth]="monthsService.maxDate"
+    [minMonth]="minMonth"
+    [maxMonth]="maxMonth"
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [validationShowOn]="validationShowOn"
     [hideTillNowAvailable]="true"
