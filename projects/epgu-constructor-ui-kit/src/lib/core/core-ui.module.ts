@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { SmuEventsService } from '@epgu/epgu-lib';
+import { CookieService } from 'ngx-cookie-service';
 // Сокращать пути до ./components и ./services нельзя, т.к. будет ошибка при `ng build epgu-constructor --prod`
 import { CfAppStateService } from './services/cf-app-state/cf-app-state.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
@@ -9,6 +11,7 @@ import { EventBusService } from './services/event-bus/event-bus.service';
 import { UnsubscribeService } from './services/unsubscribe/unsubscribe.service';
 import { ConfigService } from './services/config/config.service';
 import { LoggerService } from './services/logger/logger.service';
+import { initApp } from './initializers/app.initializer';
 
 @NgModule({
   providers: [
@@ -21,6 +24,12 @@ import { LoggerService } from './services/logger/logger.service';
     ConfigService,
     LoggerService,
     WINDOW_PROVIDERS,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initApp,
+      deps: [SmuEventsService, CookieService],
+      multi: true,
+    },
   ]
 })
 export class CoreUiModule { }
