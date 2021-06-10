@@ -12,6 +12,7 @@ import {
   LocationServiceStub,
   UnsubscribeService,
   HelperTextComponent,
+  ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -29,6 +30,9 @@ import { DatesToolsService } from '../../../../core/services/dates-tools/dates-t
 import { ComponentBase } from '../../../../screen/screen.types';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { InvitationErrorService } from '../../invitation-error.service';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
@@ -36,7 +40,12 @@ describe('InvitationErrorComponent', () => {
   let locationService: LocationService;
   let fixture: ComponentFixture<InvitationErrorComponent>;
   const mockData = { label: '', attrs: { url: '' }, id: '', type: '' } as ComponentBase;
-  const mockAnswers = { d1: { visited: true, value: '010-732-732 01' }};
+  const mockAnswers = {
+    d1: {
+      visited: true,
+      value: '010-732-732 01',
+    },
+  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -64,6 +73,9 @@ describe('InvitationErrorComponent', () => {
         DateRangeService,
         DatesToolsService,
         DateRestrictionsService,
+        InvitationErrorService,
+        ModalService,
+        { provide: NavigationService, useClass: NavigationServiceStub },
       ],
     }).compileComponents();
   });
@@ -84,25 +96,6 @@ describe('InvitationErrorComponent', () => {
       spyOn(validationService, 'customValidator').and.callThrough();
       form.setValidators(validationService.customValidator(mockData as CustomComponent));
       expect(validationService.customValidator).toBeCalledWith(mockData as CustomComponent);
-    });
-  });
-
-  describe('redirectToLK()', () => {
-    it('should redirect to lk', () => {
-      spyOn(locationService, 'href').and.callThrough();
-      component.redirectToLK();
-      expect(locationService.href).toBeCalledWith('');
-    });
-  });
-
-  describe('sendEmail()', () => {
-    it('should set flag emailSent to true', () => {
-      component.data = mockData;
-      component.applicantAnswers = mockAnswers;
-
-      component['sendEmail']();
-      fixture.detectChanges();
-      expect(component['emailSent']).toBe(true);
     });
   });
 });
