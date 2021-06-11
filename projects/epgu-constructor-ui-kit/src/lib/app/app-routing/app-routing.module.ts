@@ -10,7 +10,7 @@ export const APP_ROUTING_COMPONENT_MAP = new InjectionToken<string>('appRoutingC
 })
 export class AppRoutingModule {
   constructor(private appRoutingService: AppRoutingService, @Inject(APP_ROUTING_COMPONENT_MAP) private appRoutingComponentMap) {
-    appRoutingService.initRouting(appRoutingComponentMap);
+    this.appRoutingService.initRouting(this.appRoutingComponentMap);
   }
 
   static forRoot(appRoutingComponentMap: AppRoutingComponentMap): ModuleWithProviders<AppRoutingModule> {
