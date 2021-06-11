@@ -3,7 +3,14 @@ import { MockModule } from 'ng-mocks';
 import { FormBuilder } from '@angular/forms';
 
 import { MatPeriodFormComponent } from './mat-period-form.component';
-import { ConstructorDropdownModule, ErrorModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorDropdownModule,
+  ErrorModule,
+  MemoModule,
+  DatesToolsService,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
@@ -11,7 +18,6 @@ import { ConstructorMaskedInputModule } from '../../../../../../shared/component
 import { BaseModule } from '../../../../../../shared/base.module';
 import { FilterPipe } from '../../pipe/filter.pipe';
 import { DurationService } from '../../service/duration.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -19,8 +25,6 @@ import { DateRangeService } from '../../../../../../shared/services/date-range/d
 import { LabelPipe } from '../../pipe/label.pipe';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -80,7 +84,7 @@ describe('MatPeriodFormComponent', () => {
     paymentDate: '23',
   };
   let validationService: ValidationService;
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MatPeriodFormComponent, FilterPipe, LabelPipe],
       imports: [

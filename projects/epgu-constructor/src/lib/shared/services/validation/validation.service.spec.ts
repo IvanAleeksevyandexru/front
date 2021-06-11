@@ -132,7 +132,7 @@ describe('ValidationService', () => {
       control.setValue('123456789аб');
       expect(customValidator(control)).toEqual({
         msg: 'Поле может содержать не более 10 символов',
-        textFromJson: true
+        textFromJson: true,
       });
     });
 
@@ -142,7 +142,7 @@ describe('ValidationService', () => {
       control.setValue('123афы№%$');
       expect(customValidator(control)).toEqual({
         msg: 'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-        textFromJson: true
+        textFromJson: true,
       });
     });
 
@@ -158,7 +158,10 @@ describe('ValidationService', () => {
       const control = new FormControl(null);
       expect(customValidator(control)).toEqual({ msg: '', textFromJson: false });
       control.markAsTouched();
-      expect(customValidator(control)).toEqual({ msg: 'Обязательно для заполнения', textFromJson: false });
+      expect(customValidator(control)).toEqual({
+        msg: 'Обязательно для заполнения',
+        textFromJson: false,
+      });
     });
   });
 
@@ -178,7 +181,10 @@ describe('ValidationService', () => {
       const control = new FormControl('input');
       control.setValue('фыждлоекa');
       customAsyncValidator(control).subscribe((obj) => {
-        expect(obj).toEqual({ msg: 'Поле должно содержать хотя бы одну цифру', textFromJson: true });
+        expect(obj).toEqual({
+          msg: 'Поле должно содержать хотя бы одну цифру',
+          textFromJson: true,
+        });
         done();
       });
     });

@@ -11,16 +11,16 @@
 
   &__number {
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 4px;
     text-align: center;
     @include typ-h5;
     color: $color-summer-night;
   }
 
-  &__edit-number,
-  &__send-again {
+  &__link-btn {
     display: block;
     margin: 0 auto;
+    padding: 0;
     text-align: center;
     @include typ-plain-small;
     color: $color-gosblue;
@@ -30,14 +30,9 @@
     cursor: pointer;
   }
 
-  &__edit-number {
-    margin: 8px auto 24px;
-  }
-
-  &__warning &__warning-text {
-    margin: 8px 0 16px;
-    color: $color-text-helper;
-    @include typ-plain-small;
+  &__warning {
+    margin-top: 24px;
+    line-height: 24px;
   }
 }
 
@@ -45,10 +40,11 @@
   &__group {
     display: flex;
     justify-content: center;
+    margin-top: 24px;
   }
   &__item {
     display: block;
-    margin: 4px;
+    margin: 0 4px;
     width: 48px;
     &--has-value::ng-deep input,
     &--has-error::ng-deep input {
@@ -72,7 +68,7 @@
 
     &::ng-deep input {
       height: 52px;
-      // letter-spacing: 8px;
+      border-radius: 8px;
       text-align: center;
 
       /* Chrome, Safari, Edge, Opera */
@@ -89,30 +85,24 @@
     }
   }
   &__error {
+    margin-top: 8px;
     color: $color-tela-rossa;
     text-align: center;
     @include typ-plain-small;
   }
 }
 
-.form-hint {
+.form__hint {
   width: 100%;
+  margin: 24px auto 0;
+}
+
+.form__hint-text {
   @include typ-plain-small;
   color: $color-text-helper;
   text-align: center;
-  margin: 24px auto 0;
-  &__timer {
-    color: $color-black;
-  }
 }
 
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 24px;
-  @include tablets-up {
-    margin-top: 32px;
-  }
+.form__timer {
+  color: $color-black;
 }

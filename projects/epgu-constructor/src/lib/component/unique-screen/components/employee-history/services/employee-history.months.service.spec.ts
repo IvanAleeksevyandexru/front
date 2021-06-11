@@ -14,12 +14,7 @@ describe('EmployeeHistoryMonthsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        EmployeeHistoryMonthsService,
-        DatesToolsService,
-        ConfigService,
-        LoggerService,
-      ],
+      providers: [EmployeeHistoryMonthsService, DatesToolsService, ConfigService, LoggerService],
     });
   });
 

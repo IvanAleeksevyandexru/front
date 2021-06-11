@@ -3,12 +3,16 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  UtilsService,
+  DatesToolsService,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { InformationCenterMvdI } from '../interface/information-center-mvd.interface';
@@ -21,13 +25,10 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { LoggerService } from '../../../../../core/services/logger/logger.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
