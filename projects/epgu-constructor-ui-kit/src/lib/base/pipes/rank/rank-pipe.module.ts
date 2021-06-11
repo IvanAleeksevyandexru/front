@@ -7,4 +7,4 @@ import { RankPipe } from './rank.pipe';
   imports: [CommonModule],
   exports: [RankPipe],
 })
-export class RankModule {}
+export class RankPipeModule {}

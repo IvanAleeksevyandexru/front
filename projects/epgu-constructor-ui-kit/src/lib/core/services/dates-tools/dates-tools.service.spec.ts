@@ -11,6 +11,8 @@ import {
 } from '../../../base/constants/dates';
 import { ConfigService } from '../config/config.service';
 import { LoggerService } from '../logger/logger.service';
+import { ConfigServiceStub } from '../config/config.service.stub';
+import { LoggerServiceStub } from '../logger/logger.service.stub';
 
 const moment = moment_;
 moment.locale('ru');
@@ -24,7 +26,11 @@ describe('DatesToolsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [DatesToolsService, ConfigService, LoggerService],
+      providers: [
+        DatesToolsService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+      ],
     });
   });
 
@@ -58,7 +64,7 @@ describe('DatesToolsService', () => {
         done();
       });
 
-      const req = httpTestingController.expectOne('api/service/actions/currentDateTime');
+      const req = httpTestingController.expectOne('/api/service/actions/currentDateTime');
       expect(req.request.method).toBe('GET');
 
       req.flush(MOCK_TODAY);

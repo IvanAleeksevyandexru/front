@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 import { MaskHandleModule } from './pipes/mask-handle/mask-handle.module';
-import { RankModule } from './pipes/rank/rank.module';
+import { RankPipeModule } from './pipes/rank/rank-pipe.module';
 import { SafeModule } from './pipes/safe/safe.module';
 import { ImgPrefixerModule } from './pipes/img-prefixer/img-prefixer.module';
 import { LongButtonModule } from './components/long-button/long-button.module';
@@ -22,7 +22,7 @@ import { LongButtonModule } from './components/long-button/long-button.module';
     LongButtonModule,
     MaskHandleModule,
     SafeModule,
-    RankModule,
+    RankPipeModule,
     ImgPrefixerModule,
   ],
   exports: [
@@ -33,7 +33,7 @@ import { LongButtonModule } from './components/long-button/long-button.module';
     EpguLibModule,
     MaskHandleModule,
     SafeModule,
-    RankModule,
+    RankPipeModule,
     ImgPrefixerModule,
   ],
 })
