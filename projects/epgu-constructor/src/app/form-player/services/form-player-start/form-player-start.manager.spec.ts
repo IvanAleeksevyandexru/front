@@ -5,7 +5,7 @@ import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import {
   LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY, ORDER_TO_ORDER_SCENARIO_KEY,
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
@@ -114,6 +114,16 @@ describe('FormPlayerStartManager', () => {
       service.startPlayer();
       expect(service['startLoadFromQuizCase']).toBeCalled();
       localStorage.removeItem(QUIZ_SCENARIO_KEY);
+    });
+
+    it('should call startLoadFromOrderCase case', () => {
+      location.go('/some-page', 'fromOrder=true');
+      localStorage.setItem(ORDER_TO_ORDER_SCENARIO_KEY, rawSate);
+      initDataService.init({ ...serviceDataMock });
+      spyOn<any>(service, 'startLoadFromOrderCase').and.callThrough();
+      service.startPlayer();
+      expect(service['startLoadFromOrderCase']).toBeCalled();
+      localStorage.removeItem(ORDER_TO_ORDER_SCENARIO_KEY);
     });
 
     it('should call handleOrder case', () => {

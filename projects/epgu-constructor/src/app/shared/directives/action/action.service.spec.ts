@@ -13,7 +13,7 @@ import { UtilsService } from '../../../core/services/utils/utils.service';
 import { UtilsServiceStub } from '../../../core/services/utils/utils.service.stub';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
-import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
+import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
@@ -88,6 +88,27 @@ const quizToOrderAction: ComponentActionDto = {
   value: '',
   action: '/to-some-order' as DTOActionAction,
   type: ActionType.quizToOrder,
+};
+
+const orderToOrderAction: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: '/to-some-order' as DTOActionAction,
+  type: ActionType.orderToOrder,
+  multipleAnswers: [
+    {
+      screenId: 's1',
+      componentId: 'w1',
+      priority: 2,
+      value: 'valueA'
+    },
+    {
+      screenId: 's2',
+      componentId: 'q1',
+      priority: 1,
+      value: 'valueB'
+    }
+  ]
 };
 
 const redirectToLKAction: ComponentActionDto = {
@@ -273,6 +294,32 @@ describe('ActionService', () => {
     };
 
     expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
+    expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
+  });
+
+  it('should call switchAction orderToOrder', () => {
+    spyOn(navigationService, 'redirectTo').and.callThrough();
+    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {}});
+    spyOn(localStorageService, 'set').and.callThrough();
+    actionService.switchAction(orderToOrderAction, null);
+
+    const applicantAnswers = {
+      q1: {
+        value: 'valueB',
+        visited: true
+      },
+      w1: {
+        value: 'valueA',
+        visited: true
+      }
+    };
+
+    const finishedAndCurrentScreens = ['s2', 's1'];
+
+    expect(localStorageService.set).toHaveBeenCalledWith(ORDER_TO_ORDER_SCENARIO_KEY, {
+      applicantAnswers,
+      finishedAndCurrentScreens
+    });
     expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 
