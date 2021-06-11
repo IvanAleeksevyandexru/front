@@ -12,7 +12,7 @@ import {
   LoggerService,
   LoggerServiceStub,
   CurrencyModule,
-  RankModule,
+  RankPipeModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
@@ -40,7 +40,7 @@ describe('ConstructorPlainInputComponent', () => {
         TrimModule,
         TextTransformModule,
         CurrencyModule,
-        RankModule,
+        RankPipeModule,
         ValidationTypeModule,
       ],
       providers: [
