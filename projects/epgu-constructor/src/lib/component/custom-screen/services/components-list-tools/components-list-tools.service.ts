@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isUndefined, toBoolean } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
+import { isUndefined, toBoolean } from '@epgu/epgu-constructor-ui-kit';
 import {
   CustomComponent,
   CustomScreenComponentTypes,

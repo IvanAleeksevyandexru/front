@@ -8,7 +8,7 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
-import { isEqualObj } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
+import { isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {

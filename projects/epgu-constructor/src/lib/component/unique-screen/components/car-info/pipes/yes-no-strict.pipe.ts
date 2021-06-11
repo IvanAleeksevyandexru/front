@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isBoolean } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
+import { isBoolean } from '@epgu/epgu-constructor-ui-kit';
 
 @Pipe({
   name: 'yesNoStrict',

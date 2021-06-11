@@ -23,7 +23,7 @@ import { ComponentDictionaryFilters } from '../../../component/custom-screen/ser
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
-import { isUndefined } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
+import { isUndefined } from '@epgu/epgu-constructor-ui-kit';
 import {
   CachedAnswersDto,
   ComponentDictionaryFilterDto,
