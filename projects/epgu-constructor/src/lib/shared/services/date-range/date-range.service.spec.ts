@@ -12,6 +12,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;
@@ -48,6 +50,8 @@ describe('DateRangeService', () => {
         DatesToolsService,
         DictionaryApiService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        ConfigService,
+        LoggerService,
       ],
       imports: [HttpClientTestingModule],
     });
