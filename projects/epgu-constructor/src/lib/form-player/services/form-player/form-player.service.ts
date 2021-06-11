@@ -11,7 +11,7 @@ import {
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
-import { catchError, finalize, map, mergeMap } from 'rxjs/operators';
+import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -64,10 +64,7 @@ export class FormPlayerService extends FormPlayerBaseService {
             }, undefined, FormPlayerNavigation.NEXT);
         }
       }),
-      map((response) => {
-        this.processResponse(response);
-        return response;
-      }),
+      tap((response) => this.processResponse(response)),
       catchError((error) => {
         this.sendDataError(error);
         return throwError(error);
