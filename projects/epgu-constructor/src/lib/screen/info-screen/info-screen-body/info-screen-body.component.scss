@@ -1,0 +1,24 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
+
+:host {
+  display: block;
+}
+
+@include rubles('.info__text', '/assets/icons/svg/ruble.svg');
+
+.info {
+  &__img-wrapper {
+    text-align: center;
+  }
+  &__img {
+    max-width: 200px;
+  }
+}
+
+:host::ng-deep {
+  .info__text {
+    @include screen-content;
+  }
+}
+

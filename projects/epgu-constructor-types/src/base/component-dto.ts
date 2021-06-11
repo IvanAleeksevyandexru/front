@@ -25,4 +25,6 @@ export interface ComponentDto {
   valueFromCache?: boolean;
   suggestionId?: string;
   arguments?: ArgumentsDto;
+  pronounceText?: string; // для умного поиска
+  pronounceTextType?: string; // для умного поиска
 }

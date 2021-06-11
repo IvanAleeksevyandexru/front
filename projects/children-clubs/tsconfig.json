@@ -8,6 +8,10 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es5",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"],
+      "@epgu/epgu-constructor-ui-kit": ["projects/epgu-constructor-ui-kit/src/public-api"]
+    }
   }
 }

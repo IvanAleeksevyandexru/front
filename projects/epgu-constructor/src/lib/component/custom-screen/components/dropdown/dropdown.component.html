@@ -1,0 +1,23 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <lib-dropdown
+    *ngIf="dictionaryToolsService.dropDowns$ | async as dropDowns"
+    epgu-constructor-validation-type
+    [component]="control.value"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [items]="$any(dropDowns[control.value?.id])"
+    [disabled]="$any(dropDowns[control.value?.id])?.length === 1"
+    [validationShowOn]="validationShowOn"
+    [formControl]="$any(control.get('value'))"
+    [clearable]="true"
+    [localSearch]="control.value.attrs.localSearch"
+    class="cs__select cs-select"
+    [suggest]="(screenService.suggestions$ | async)[control.value?.id]"
+    [suggestSeparator]="suggestSeporator"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+  >
+  </lib-dropdown>
+</epgu-constructor-component-item>

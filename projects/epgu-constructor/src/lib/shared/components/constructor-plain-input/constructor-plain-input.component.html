@@ -1,0 +1,24 @@
+<lib-plain-input
+  epgu-cf-ui-constructor-trim
+  epgu-cf-ui-constructor-text-transform
+  epgu-constructor-validation-type
+  [epgu-constructor-currency-transform]="price"
+  [epgu-constructor-rank-transform]="rank"
+  [isTrim]="!rank && !price"
+  [textTransformType]="textTransformType"
+  [invalid]="invalid"
+  [name]="name"
+  [id]="id"
+  [formControl]="control"
+  [validationShowOn]="validationShowOn"
+  [readOnly]="readOnly"
+  [placeholder]="placeholder"
+  [maxlength]="maxlength"
+  [type]="type"
+  [pattern]="pattern"
+  [component]="component"
+  autocomplete="off"
+  [suggest]="suggestions"
+  [suggestSeparator]="suggestSeporator"
+  (selectSuggest)="selectSuggest.emit($event)"
+></lib-plain-input>

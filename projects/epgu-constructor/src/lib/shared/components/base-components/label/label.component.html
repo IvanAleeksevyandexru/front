@@ -1,0 +1,13 @@
+<label
+  class="label"
+  [class.text-color--text-helper]="isTextHelper"
+  [class.label-large-text]="largeFontSize"
+  [for]="for"
+>
+  <span
+    epgu-constructor-clickable-label
+    [clarifications]="clarifications"
+    [innerHTML]="label | imgPrefixer | safe: 'html'"
+  ></span>
+  <span *ngIf="required"> * </span>
+</label>
