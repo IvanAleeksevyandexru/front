@@ -27,7 +27,7 @@ describe('RankTransformDirective', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [RankTransformDirective, RankTransformTestComponent],
+      declarations: [RankTransformTestComponent],
       imports: [RouterTestingModule, BaseUiModule],
       providers: [DecimalPipe, NgControl],
     })
