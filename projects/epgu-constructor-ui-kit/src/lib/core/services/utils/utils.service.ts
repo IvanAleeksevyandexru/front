@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomComponent } from '@epgu/epgu-constructor/src/lib/component/custom-screen/components-list.types';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 interface TranslitAlphabet {
   [propName: string]: string;
@@ -122,7 +122,7 @@ export class UtilsService {
    * Функция возвращает ключ для получения словаря
    * @param component экземпляр компонента
    */
-  public static getDictKeyByComp(component: CustomComponent): string {
+  public static getDictKeyByComp(component: ComponentDto): string {
     return component.attrs.dictionaryType + component.id;
   }
 
