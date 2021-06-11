@@ -63,7 +63,7 @@ export * from './lib/base/pipes/img-prefixer/img-prefixer.pipe';
 export * from './lib/base/pipes/memo/memo.module';
 export * from './lib/base/pipes/memo/memo.pipe';
 
-export * from './lib/base/pipes/rank/rank.module';
+export * from './lib/base/pipes/rank/rank-pipe.module';
 export * from './lib/base/pipes/rank/rank.pipe';
 
 export * from './lib/base/pipes/safe/safe.module';
@@ -111,6 +111,9 @@ export * from './lib/app/app-state/app-state.service';
 export * from './lib/app/app-state/app-state.query';
 export * from './lib/app/app-state/app-state.query.stub';
 export * from './lib/app/app-state/app-state.service.stub';
+export * from './lib/app/app-routing/app-routing';
+export * from './lib/app/app-routing/app-routing.module';
+export * from './lib/app/app-routing/app-routing.service';
 
 
 export * from './lib/modal/modal.service';
