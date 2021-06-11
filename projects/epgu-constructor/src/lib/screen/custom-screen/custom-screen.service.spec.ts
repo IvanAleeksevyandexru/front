@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomScreenService } from './custom-screen.service';
 
 describe('CustomScreenService', () => {
@@ -9,7 +9,7 @@ describe('CustomScreenService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CustomScreenService, DatesToolsService]
+      providers: [CustomScreenService, DatesToolsService, ConfigService, LoggerService],
     });
     service = TestBed.inject(CustomScreenService);
   });

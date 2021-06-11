@@ -36,7 +36,12 @@ import {
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { replaceArguments } from '../utils/utils';
-import { DATE_ISO_STRING_FORMAT, DurationTimeTypes, StartOfTypes } from '../../../base/constants/dates';
+import { ConfigService } from '../config/config.service';
+import {
+  DATE_ISO_STRING_FORMAT,
+  DurationTimeTypes,
+  StartOfTypes,
+} from '../../../base/constants/dates';
 
 interface Duration {
   years?: number;
@@ -50,8 +55,7 @@ interface Duration {
 
 @Injectable()
 export class DatesToolsService {
-
-  constructor(private http?: HttpClient) { }
+  constructor(private http?: HttpClient, private configService?: ConfigService) {}
 
   /**
    * Возвращает true, если первая дата меньше второй,
@@ -80,7 +84,7 @@ export class DatesToolsService {
    * @returns Возвращает сегодняшнюю дату
    */
   public async getToday(resetTime = false): Promise<Date> {
-    const path = 'api/service/actions/currentDateTime';
+    const path = this.configService.apiUrl + '/service/actions/currentDateTime';
     const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
     const date = new Date(timeString);
     if (resetTime) {
@@ -225,9 +229,9 @@ export class DatesToolsService {
    * @param {Date | Number} date дата для преобразования
    * @param {object} options дополнительные опции, см. https://date-fns.org/v2.21.3/docs/formatISO
    */
-     public formatISO(date: Date | number, options?): string {
-      return _formatISO(date, options);
-    }
+  public formatISO(date: Date | number, options?): string {
+    return _formatISO(date, options);
+  }
 
   /**
    * Возвращает число полных лет между первой и второй датой

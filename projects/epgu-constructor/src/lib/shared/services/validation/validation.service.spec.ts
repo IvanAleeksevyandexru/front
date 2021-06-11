@@ -13,6 +13,8 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { LoggerService } from '../../../core/services/logger/logger.service';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -114,7 +116,9 @@ describe('ValidationService', () => {
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     });
   });
