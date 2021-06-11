@@ -14,6 +14,9 @@ import {
   UnsubscribeService,
   EventBusService,
   ConfigService,
+  DatesToolsService,
+  DATE_STRING_DASH_FORMAT,
+  DATE_TIME_STRING_SHORT,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
@@ -23,8 +26,6 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../core/services/autocomplete/autocomplete.inteface';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { DATE_STRING_DASH_FORMAT, DATE_TIME_STRING_SHORT } from '../../shared/constants/dates';
 
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';

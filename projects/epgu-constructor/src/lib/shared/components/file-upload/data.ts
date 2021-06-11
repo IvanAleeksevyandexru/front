@@ -12,6 +12,7 @@ import { Clarifications } from '@epgu/epgu-constructor-types';
 export enum ErrorActions {
   clear = 'clear',
   addMaxSize = 'maxSize',
+  addMinSize = 'minSize',
   addMaxAmount = 'maxAmount',
   addMaxTotalAmount = 'maxTotalAmount',
   addMaxTotalSize = 'maxTotalSize',
@@ -256,6 +257,11 @@ export const createError = (
   errorHandler[ErrorActions.addMaxSize] = {
     text: `Файл тяжелее ${getSizeInMB(data.maxSize)} МБ`,
     description: 'Попробуйте уменьшить размер или загрузите файл полегче',
+  };
+
+  errorHandler[ErrorActions.addMinSize] = {
+    text: 'Файл повреждён',
+    description: 'Что-то не так с файлом. Попробуйте заменить на другой',
   };
 
   const types = getAcceptTypes(typeList, '', ', ', 'upper');

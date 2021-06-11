@@ -1,15 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { delayWhen, map } from 'rxjs/operators';
+import { delayWhen, filter, map } from 'rxjs/operators';
 import { combineLatest, Observable, of } from 'rxjs';
-import { ComponentDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import {
+  ActionType,
+  ApplicantAnswersDto,
+  ComponentActionDto,
+  ComponentDto,
+} from '@epgu/epgu-constructor-types';
 import { LocationService, UnsubscribeService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
-
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-
 import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
+import { ActionService } from '../../shared/directives/action/action.service';
 
 /**
  * Это технический компонент для организации каких-то действий не требующийх отображения данных.
@@ -23,20 +26,20 @@ import { FileDownloaderService } from '../../shared/services/file-downloader/fil
 })
 export class EmptyScreenComponent {
   emptyComponentName = EmptyScreenComponentTypes;
-
-  navigationMap: Record<string, Function> = {
-    home: this.navigationService.redirectToHome.bind(this.navigationService),
-    redirectToLK: this.navigationService.redirectToLK.bind(this.navigationService),
-    nextStep: this.navigationService.next.bind(this.navigationService),
-  };
-
+  defaultAction = {
+    type: ActionType.home,
+    value: '',
+    label: '',
+  } as ComponentActionDto;
   /**
    * Возврат ссылки для редиректа
    */
   redirectLink$: Observable<Function | null> = combineLatest([
     this.screenService.component$,
     this.screenService.applicantAnswers$,
+    this.screenService.isLogicComponentLoading$,
   ]).pipe(
+    filter(([, , isLogicComponentLoading]) => !isLogicComponentLoading),
     delayWhen(([component]) => this.download(component.attrs.downloadLink)),
     map(this.createLink.bind(this)),
   );
@@ -44,10 +47,10 @@ export class EmptyScreenComponent {
   constructor(
     public screenService: ScreenService,
     private initDataService: InitDataService,
-    private navigationService: NavigationService,
     private locationService: LocationService,
     private loggerService: LoggerService,
     private fileDownloaderService: FileDownloaderService,
+    private actionService: ActionService,
   ) {}
 
   createLink([component, applicantAnswers]: [ComponentDto, ApplicantAnswersDto]): Function {
@@ -58,8 +61,11 @@ export class EmptyScreenComponent {
     if (link) {
       result = this.locationService.href.bind(this.locationService, `${link}${this.queryParams()}`);
     } else if (actions?.length > 0) {
-      const type = this.navigationMap[actions[0]?.type as string] ? actions[0].type : 'home';
-      result = this.navigationMap[type];
+      result = this.actionService.switchAction.bind(
+        this.actionService,
+        actions[0].type ? actions[0] : this.defaultAction,
+        this.screenService.component.id,
+      );
     } else if (refLink) {
       result = this.locationService.href.bind(
         this.locationService,

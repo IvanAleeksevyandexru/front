@@ -9,18 +9,21 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TextTransform, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  ConfigService,
+  HttpCancelService,
+  DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
   ConfirmAddressReadonlyValue,
 } from '../../interface/confirm-address.interface';
-import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 
 @Component({

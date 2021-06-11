@@ -25,11 +25,11 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteApiServiceStub } from '../../../../core/services/autocomplete/autocomplete-api.service.stub';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
+import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   FileUploadItem,
   TerraUploadFileOptions,

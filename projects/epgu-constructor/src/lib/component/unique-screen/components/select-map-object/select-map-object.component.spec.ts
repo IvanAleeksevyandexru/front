@@ -16,13 +16,13 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';

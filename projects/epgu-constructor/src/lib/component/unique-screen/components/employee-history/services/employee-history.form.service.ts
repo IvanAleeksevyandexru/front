@@ -20,7 +20,7 @@ import {
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { EmployeeHistoryErrors, EmployeeHistoryMaxLengthValidators } from '../employee-history.enums';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class EmployeeHistoryFormService {

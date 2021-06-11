@@ -10,13 +10,13 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import {
   ConfigService,
-  ConfigServiceStub,
+  ConfigServiceStub, CoreUiModule,
   LoggerService,
   LoggerServiceStub,
   ScreenPadComponent
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 
@@ -50,7 +50,8 @@ describe('TimerScreenComponent', () => {
       ],
       imports: [
         RouterTestingModule,
-        TimerModule
+        TimerModule,
+        CoreUiModule,
       ],
       providers: [
         CurrentAnswersService,

@@ -13,7 +13,7 @@ import { HealthService } from '@epgu/epgu-lib';
 import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
-import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
 export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';

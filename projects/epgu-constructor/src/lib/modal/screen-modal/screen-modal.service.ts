@@ -112,7 +112,7 @@ export class ScreenModalService extends FormPlayerBaseService {
   }
 
   updateMinContentHeight(headerHeight: number): void {
-    if (window.innerWidth <= 768) {
+    if(window.innerWidth <= 767) {
       this.minContentHeight = window.innerHeight - headerHeight - this.getVerticalPaddings();
     } else {
       this.minContentHeight = 0;

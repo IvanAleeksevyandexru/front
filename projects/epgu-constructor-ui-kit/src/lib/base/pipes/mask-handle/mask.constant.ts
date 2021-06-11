@@ -1,6 +1,6 @@
-import { NumberMaskOptionsInterface } from './interface/number-mask-options.interface';
+import { NumberMaskOptions } from './mask-options';
 
-export const numberMaskDefaultOptions: Partial<NumberMaskOptionsInterface> = {
+export const numberMaskDefaultOptions: Partial<NumberMaskOptions> = {
   prefix: '',
   requireDecimal: true,
   includeThousandsSeparator: true,
@@ -37,7 +37,7 @@ export const MASKS_HANDLERS = {
     return mask;
   },
   [MASKS.NumberMaskInput]: (
-    maskOptions: Partial<NumberMaskOptionsInterface>,
+    maskOptions: Partial<NumberMaskOptions>,
   ): ((string) => Array<string | RegExp>) => {
     const options = { ...numberMaskDefaultOptions, ...maskOptions };
 

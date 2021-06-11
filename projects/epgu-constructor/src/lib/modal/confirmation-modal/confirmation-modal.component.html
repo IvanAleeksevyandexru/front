@@ -1,15 +1,36 @@
-<epgu-constructor-confirmation-modal-base
-  [buttons]="buttons"
-  [actionButtons]="actionButtons"
+<epgu-cf-ui-cta-modal
+  [showButtons]="buttons.length > 0 || actionButtons.length > 0"
   [title]="title"
   [text]="text"
   [showCrossButton]="showCrossButton"
   [preview]="preview"
   [isShortModal]="isShortModal"
 >
-  <epgu-constructor-output-html
-    [html]="text"
-    [componentId]="componentId"
-  >
-  </epgu-constructor-output-html>
-</epgu-constructor-confirmation-modal-base>
+  <ng-container modal-content>
+    <epgu-constructor-output-html
+      [html]="text"
+      [componentId]="componentId"
+    >
+    </epgu-constructor-output-html>
+  </ng-container>
+
+  <ng-container *ngIf="buttons.length" modal-buttons>
+    <lib-button
+      *ngFor="let button of buttons"
+      epgu-constructor-action
+      [action]="button.action"
+      [showLoader]="button.loader"
+      class="conf-modal__button"
+      [color]="button.color || ''"
+      (click)="button.handler()"
+    >{{ button.label }}</lib-button>
+  </ng-container>
+
+  <ng-container *ngIf="actionButtons.length">
+    <div modal-action-buttons class="conf-modal__button" >
+      <epgu-constructor-screen-buttons
+        [screenButtons]="actionButtons"
+      ></epgu-constructor-screen-buttons>
+    </div>
+  </ng-container>
+</epgu-cf-ui-cta-modal>

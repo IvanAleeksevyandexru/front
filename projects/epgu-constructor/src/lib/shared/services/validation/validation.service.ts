@@ -19,9 +19,9 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
-} from '../../constants/helper-texts';
+} from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {
@@ -66,7 +66,7 @@ export class ValidationService {
       if (validations?.length) {
         const error = this.getError(validations, control, component);
         if (error) {
-          return this.validationErrorMsg(error.errorMsg, error?.errorDesc);
+          return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -79,7 +79,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? null
-        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc);
+        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true);
     };
   }
 
@@ -99,7 +99,7 @@ export class ValidationService {
       if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
-          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc));
+          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -112,7 +112,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? of(null)
-        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc));
+        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true));
     };
   }
 
@@ -169,7 +169,7 @@ export class ValidationService {
         });
 
       if (error) {
-        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD);
+        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
       }
     };
   }
@@ -210,8 +210,9 @@ export class ValidationService {
   private validationErrorMsg(
     error: string = InvalidControlMsg.formatField,
     desc?: string,
+    textFromJson = false,
   ): ValidationErrors {
-    return { msg: error, desc };
+    return { msg: error, desc, textFromJson };
   }
 
   private getError(

@@ -5,7 +5,7 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { UploadedFile } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
-import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MonthYear } from '@epgu/epgu-lib';
 
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -14,7 +14,7 @@ describe('EmployeeHistoryMonthsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EmployeeHistoryMonthsService, DatesToolsService],
+      providers: [EmployeeHistoryMonthsService, DatesToolsService, ConfigService, LoggerService],
     });
   });
 

@@ -28,9 +28,9 @@ import {
   DeviceDetectorService,
   UnsubscribeService,
   ConfigService,
+  UtilsService,
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { UtilsService } from '../../../../core/services/utils/utils.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { MASKS, MASKS_HANDLERS } from './mask.constant';
-import { NumberMaskOptionsInterface } from './interface/number-mask-options.interface';
+import { NumberMaskOptions } from './mask-options';
 
 @Pipe({
   name: 'maskHandle',
@@ -13,7 +13,7 @@ export class MaskHandlePipe implements PipeTransform {
           return (MASKS_HANDLERS[MASKS.KadastrNumberInput] as unknown) as Array<string | RegExp>;
         case MASKS.NumberMaskInput:
           return (MASKS_HANDLERS[MASKS.NumberMaskInput](
-            maskOptions as Partial<NumberMaskOptionsInterface>,
+            maskOptions as Partial<NumberMaskOptions>,
           ) as unknown) as Array<string | RegExp>;
         default:
           return null;

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule, ListItem } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent, HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadComponent, HelperTextComponent, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -23,10 +23,10 @@ import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.ser
 import { of } from 'rxjs';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
@@ -69,6 +69,7 @@ describe('TimeSlotsComponent', () => {
         DatesToolsService,
         TimeSlotsService,
         UtilsService,
+        HttpCancelService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -104,7 +105,7 @@ describe('TimeSlotsComponent', () => {
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
 
     jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-      if (url === 'api/service/actions/currentDateTime') {
+      if (url === '/api/service/actions/currentDateTime') {
         return of('2021-01-01T00:00:00.000Z');
       } else {
         return httpClient.get(url, options);
@@ -284,7 +285,7 @@ describe('TimeSlotsComponent', () => {
       Date.now = jest.fn().mockReturnValue(new Date(todayStr));
       jest.spyOn(httpClient, 'get').mockRestore();
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-        if (url === 'api/service/actions/currentDateTime') {
+        if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
         } else {
           return httpClient.get(url, options);
@@ -349,7 +350,7 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.refDate = todayStr;
       jest.spyOn(httpClient, 'get').mockRestore();
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-        if (url === 'api/service/actions/currentDateTime') {
+        if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
         } else {
           return httpClient.get(url, options);

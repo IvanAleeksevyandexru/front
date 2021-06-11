@@ -17,8 +17,8 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { DatesToolsServiceStub } from '../../../../core/services/dates-tools/dates-tools.service.stub';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;

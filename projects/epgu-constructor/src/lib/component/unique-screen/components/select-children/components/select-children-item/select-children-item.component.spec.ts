@@ -5,12 +5,17 @@ import { HealthService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
-import { ConstructorDropdownModule, LoggerService, LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorDropdownModule, CoreUiModule,
+  HttpCancelService,
+  LoggerService,
+  LoggerServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -69,6 +74,7 @@ describe('SelectChildrenItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
       imports: [
+        CoreUiModule,
         RouterTestingModule,
         ConstructorDropdownModule,
         ComponentsListModule,
@@ -85,6 +91,7 @@ describe('SelectChildrenItemComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         CurrentAnswersService,
+        HttpCancelService,
         DictionaryToolsService,
         RefRelationService,
       ],

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 

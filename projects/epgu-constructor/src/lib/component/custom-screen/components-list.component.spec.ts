@@ -19,7 +19,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   LocalStorageService,
-  LocalStorageServiceStub,
+  LocalStorageServiceStub, HttpCancelService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
@@ -39,12 +39,12 @@ import { FieldListComponent } from '../../shared/components/field-list/field-lis
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ValidationService } from '../../shared/services/validation/validation.service';
 import { ScreenService } from '../../screen/screen.service';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { AddressHelperService } from '../../shared/services/address-helper/address-helper.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
-import { UtilsService } from '../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormServiceStub } from './services/components-list-form/components-list-form.service.stub';
@@ -91,6 +91,7 @@ describe('ComponentsListComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        HttpCancelService,
         EventBusService,
         ValidationService,
         ComponentsListToolsService,

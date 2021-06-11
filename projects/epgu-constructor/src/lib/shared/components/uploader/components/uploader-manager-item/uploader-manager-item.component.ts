@@ -8,7 +8,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { SmuEventsService } from '@epgu/epgu-lib';
-import { DeviceDetectorService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DeviceDetectorService,
+  ConfigService,
+  createDownloadEvent,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import {
   CancelAction,
   ErrorActions,
@@ -20,7 +25,6 @@ import {
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 
 import { iconsTypes, SuggestAction } from '../../data';
-import { createDownloadEvent } from '../../../../constants/redirect-event';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',

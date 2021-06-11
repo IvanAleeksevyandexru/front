@@ -5,7 +5,7 @@ import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
@@ -14,7 +14,7 @@ import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';

@@ -9,7 +9,7 @@ import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
-import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '../../services/global-error/health.service.stub';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {

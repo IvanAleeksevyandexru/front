@@ -10,7 +10,7 @@ import {
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
 import { LoadService } from '@epgu/epgu-lib';
-import { LoadServiceStub } from '../../../../../../epgu-constructor-ui-kit/src/lib/core/services/config/load-service-stub';
+import { LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../form-player/form-player.service';

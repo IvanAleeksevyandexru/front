@@ -2,9 +2,9 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { map } from 'rxjs/operators';
 
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
 
 @Component({
   selector: 'epgu-constructor-dictionary',

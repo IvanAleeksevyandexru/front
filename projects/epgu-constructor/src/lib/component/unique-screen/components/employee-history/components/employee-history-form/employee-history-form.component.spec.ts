@@ -17,7 +17,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryDescriptionComponent } from '../employee-history-desription/employee-history-description.component';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenService } from '../../../../../../screen/screen.service';
