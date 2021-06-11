@@ -14,10 +14,8 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
 
 describe('SearchableDropdownComponent', () => {
   let component: SearchableDropdownComponent;
