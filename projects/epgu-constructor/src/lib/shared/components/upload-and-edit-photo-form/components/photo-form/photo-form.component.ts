@@ -251,6 +251,9 @@ export class PhotoFormComponent implements OnChanges, OnInit {
       height,
       this.validations,
     );
+    if (fileNameErrorMsg) {
+      this.fileName = this.uploadedFile?.name || '';
+    }
 
     if (isTypeValid && isSizeValid && isDPIValid && !fileNameErrorMsg) {
       this.img$.next({ imageObjectUrl: src });
