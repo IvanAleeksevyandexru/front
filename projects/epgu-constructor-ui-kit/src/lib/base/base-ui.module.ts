@@ -9,6 +9,8 @@ import { RankPipeModule } from './pipes/rank/rank-pipe.module';
 import { SafeModule } from './pipes/safe/safe.module';
 import { ImgPrefixerModule } from './pipes/img-prefixer/img-prefixer.module';
 import { LongButtonModule } from './components/long-button/long-button.module';
+import { RankModule } from './directives/rank/rank.module';
+import { CurrencyModule } from './directives/currency/currency.module';
 
 /**
  * Здесь хранится всё что необходимо во всех слоях.
@@ -24,6 +26,8 @@ import { LongButtonModule } from './components/long-button/long-button.module';
     SafeModule,
     RankPipeModule,
     ImgPrefixerModule,
+    RankModule,
+    CurrencyModule,
   ],
   exports: [
     CommonModule,
@@ -35,6 +39,8 @@ import { LongButtonModule } from './components/long-button/long-button.module';
     SafeModule,
     RankPipeModule,
     ImgPrefixerModule,
+    RankModule,
+    CurrencyModule,
   ],
 })
 export class BaseUiModule {}
