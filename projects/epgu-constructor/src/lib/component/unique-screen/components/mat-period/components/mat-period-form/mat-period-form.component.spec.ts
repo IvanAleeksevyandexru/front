@@ -19,6 +19,8 @@ import { DateRangeService } from '../../../../../../shared/services/date-range/d
 import { LabelPipe } from '../../pipe/label.pipe';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ConfigService } from '../../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../../core/services/logger/logger.service';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -99,6 +101,8 @@ describe('MatPeriodFormComponent', () => {
         DateRangeService,
         DateRestrictionsService,
         { provide: ScreenService, use: ScreenServiceStub },
+        ConfigService,
+        LoggerService,
       ],
     }).compileComponents();
   });

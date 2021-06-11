@@ -3,7 +3,7 @@ import { ListElement } from '@epgu/epgu-lib';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { DurationService } from './duration.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -21,6 +21,8 @@ describe('DurationService', () => {
         ValidationService,
         DateRangeService,
         { provide: ScreenService, use: ScreenServiceStub },
+        ConfigService,
+        LoggerService,
       ],
       imports: [HttpClientTestingModule],
     });

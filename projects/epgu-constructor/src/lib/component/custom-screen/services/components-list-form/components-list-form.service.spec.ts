@@ -9,7 +9,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentsListFormService } from './components-list-form.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { AddressHelperService } from '../../../../shared/services/address-helper/address-helper.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -138,7 +138,8 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         DictionaryToolsService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        ConfigService,
       ],
     });
   });

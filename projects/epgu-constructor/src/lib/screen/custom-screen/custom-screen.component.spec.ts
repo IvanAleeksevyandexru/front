@@ -34,6 +34,8 @@ import {
   DTOActionAction,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
+import { ConfigService } from '../../core/services/config/config.service';
+import { LoggerService } from '../../core/services/logger/logger.service';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -91,6 +93,8 @@ describe('CustomScreenComponent', () => {
         CurrentAnswersService,
         CustomScreenService,
         DatesToolsService,
+        ConfigService,
+        LoggerService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {

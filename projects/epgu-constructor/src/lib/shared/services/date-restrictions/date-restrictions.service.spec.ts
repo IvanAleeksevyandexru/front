@@ -1,7 +1,7 @@
 import { configureTestSuite } from 'ng-bullet';
 import { TestBed } from '@angular/core/testing';
 import { DateRestrictionsService } from './date-restrictions.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -14,6 +14,8 @@ describe('DateRestrictionsService', () => {
       providers: [
         DateRestrictionsService,
         DatesToolsService,
+        ConfigService,
+        LoggerService,
       ],
       imports: [HttpClientTestingModule]
     });

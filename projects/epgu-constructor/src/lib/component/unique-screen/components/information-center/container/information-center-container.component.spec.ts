@@ -26,6 +26,8 @@ import { RefRelationService } from '../../../../../shared/services/ref-relation/
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { ConfigService } from '../../../../../core/services/config/config.service';
+import { LoggerService } from '../../../../../core/services/logger/logger.service';
 
 describe('InformationCenterContainerComponent', () => {
   let component: InformationCenterContainerComponent;
@@ -129,7 +131,9 @@ describe('InformationCenterContainerComponent', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     }).compileComponents();
   });
