@@ -297,7 +297,7 @@ export class ComponentsListFormService {
       this.validationService.validationBackendError(errorMsg, component),
     ];
 
-    if (component.type === CustomScreenComponentTypes.DateInput) {
+    if (component.type === CustomScreenComponentTypes.DateInput || component.type === CustomScreenComponentTypes.MonthPicker) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
