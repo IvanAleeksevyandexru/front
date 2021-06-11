@@ -8,6 +8,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es5",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "@ifc/plugin": ["node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"],
+      "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"]
+    }
   }
 }

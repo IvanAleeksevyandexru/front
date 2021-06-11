@@ -1,36 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { CfAppStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { InputAppDto, DataDirectionType } from '@epgu/epgu-constructor-types';
+import { Component, Injector, OnInit } from '@angular/core';
+import { AppBaseComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
   template: `
+    <children-clubs-project-list-page></children-clubs-project-list-page>
     <p>
       children-clubs app works!
-
-      {{ initState.componentId }}
+      <button (click)="closeApp()">closeApp</button>
+      {{ inputAppData?.componentId }}
     </p>
   `,
   styles: [],
 })
-export class ChildrenClubsAppComponent implements OnInit {
-  initState = this.cfAppStateService.getState<InputAppDto>(DataDirectionType.INPUT);
-  constructor(
-    private cfAppStateService: CfAppStateService,
-    private locationService: LocationService,
-  ) {}
+export class ChildrenClubsAppComponent
+  extends AppBaseComponent<ChildrenClubsValue, ChildrenClubsState>
+  implements OnInit {
+  public appType = 'ChildrenClubs';
+
+  constructor(public injector: Injector) {
+    super(injector);
+  }
+
   ngOnInit(): void {
-    setTimeout(() => {
-      this.cfAppStateService.setState(
-        {
-          componentId: this.initState.componentId,
-          componentType: this.initState.componentType,
-          value: '{"someProperty": 42}',
-          isPrevStepCase: false, // передавать true усли с первого экрана нажали назад
-        },
-        DataDirectionType.OUTPUT,
-      );
-      this.locationService.href(this.initState.callbackRedirectUrl);
-    }, 3000);
+    this.openApp();
   }
 }

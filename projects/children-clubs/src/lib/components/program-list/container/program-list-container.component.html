@@ -1,0 +1,3 @@
+<children-clubs-list (addItemsEvent)="fetchItems()">
+  <children-clubs-item *ngFor="let item of list$ | async" [data]="item"></children-clubs-item>
+</children-clubs-list>
