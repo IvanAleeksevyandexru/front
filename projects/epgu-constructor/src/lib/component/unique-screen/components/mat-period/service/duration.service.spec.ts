@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ListElement } from '@epgu/epgu-lib';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DurationService } from './duration.service';
-import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';

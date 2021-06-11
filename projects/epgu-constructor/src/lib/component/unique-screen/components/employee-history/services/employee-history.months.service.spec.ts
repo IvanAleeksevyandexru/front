@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MonthYear } from '@epgu/epgu-lib';
-import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

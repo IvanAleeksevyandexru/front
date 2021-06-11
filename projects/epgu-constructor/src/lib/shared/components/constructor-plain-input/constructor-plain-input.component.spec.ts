@@ -10,14 +10,14 @@ import {
   ConfigServiceStub,
   EventBusService,
   LoggerService,
-  LoggerServiceStub
+  LoggerServiceStub,
+  CurrencyModule,
+  RankModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
-import { CurrencyModule } from '../../directives/currency/currency.module';
-import { RankModule } from '../../directives/rank/rank.module';
 import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';

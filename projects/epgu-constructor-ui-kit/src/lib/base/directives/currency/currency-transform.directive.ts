@@ -4,10 +4,10 @@ import { NgControl } from '@angular/forms';
 import { isEmpty as _isEmpty } from 'lodash';
 
 @Directive({
-  selector: '[epgu-constructor-currency-transform]'
+  selector: '[epgu-cf-ui-currency-transform]'
 })
 export class CurrencyTransformDirective implements OnInit{
-  @Input('epgu-constructor-currency-transform') currency: boolean;
+  @Input('epgu-cf-ui-currency-transform') currency: boolean;
 
   constructor(
     private currencyPipe: CurrencyPipe,
