@@ -7,7 +7,7 @@ import { EventBusService } from '../event-bus/event-bus.service';
 import { TrimModule } from '../../../base/directives/trim/trim.module';
 import { TextTransformModule } from '../../../base/directives/text-transform/text-transform.module';
 import { CurrencyModule } from '../../../base/directives/currency/currency.module';
-import { RankModule } from '../../../base/pipes/rank/rank.module';
+import { RankPipeModule } from '../../../base/pipes/rank/rank-pipe.module';
 import { Component } from '@angular/core';
 
 @Component({
@@ -34,7 +34,7 @@ describe('FocusManagerService', () => {
         CurrencyModule,
         TrimModule,
         TextTransformModule,
-        RankModule,
+        RankPipeModule,
       ],
       declarations: [TestPlainInputComponent],
     });
