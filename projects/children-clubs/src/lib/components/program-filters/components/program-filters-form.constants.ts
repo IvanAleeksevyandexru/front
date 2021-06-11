@@ -1,39 +1,39 @@
 import { ListElement } from '@epgu/epgu-lib';
 
 export const FormFieldsName = {
-  open_record: 'open_record',
+  isRegistrationOpen: 'isRegistrationOpen',
   place: 'place',
-  distance_program: 'distance_program',
-  budget: 'budget',
-  pfdod_certificate: 'pfdod_certificate',
+  onlyDistanceProgram: 'onlyDistanceProgram',
+  free: 'free',
+  certificate: 'certificate',
   paid: 'paid',
   private: 'private',
-  price: 'price',
+  maxPrice: 'maxPrice',
   focus: 'focus',
-  specialization: 'specialization',
+  programType: 'programType',
   level: 'level',
-  childAge: 'childAge',
-  health: 'health',
+  age: 'age',
+  ovzType: 'ovzType',
 };
 
 export const FormFieldsLabel = {
-  [FormFieldsName.open_record]: 'Показывать только программы с открытой записью',
+  [FormFieldsName.isRegistrationOpen]: 'Показывать только программы с открытой записью',
   [FormFieldsName.place]: 'Место проведения занятий',
-  [FormFieldsName.distance_program]: 'Показывать только дистанционные программы',
-  [FormFieldsName.budget]: 'Бесплатно',
-  [FormFieldsName.pfdod_certificate]: 'Оплата сертификатом',
+  [FormFieldsName.onlyDistanceProgram]: 'Показывать только дистанционные программы',
+  [FormFieldsName.free]: 'Бесплатно',
+  [FormFieldsName.certificate]: 'Оплата сертификатом',
   [FormFieldsName.paid]: 'Оплата из личных средств',
-  [FormFieldsName.price]: 'Максимальная стоимость в месяц, ₽',
+  [FormFieldsName.maxPrice]: 'Максимальная стоимость в месяц, ₽',
   [FormFieldsName.focus]: 'Направленность',
-  [FormFieldsName.specialization]: 'Специализация',
+  [FormFieldsName.programType]: 'Специализация',
   [FormFieldsName.level]: 'Уровень подготовки',
-  [FormFieldsName.childAge]: 'Возраст ребенка, лет',
-  [FormFieldsName.health]: 'Ограничения здоровья',
+  [FormFieldsName.age]: 'Возраст ребенка, лет',
+  [FormFieldsName.ovzType]: 'Ограничения здоровья',
 };
 
 export const FocusListElements: ListElement[] = [
   {
-    id: 'all',
+    id: 'null',
     text: 'Все',
   },
   {
@@ -64,7 +64,7 @@ export const FocusListElements: ListElement[] = [
 
 export const SpecializationListElements: ListElement[] = [
   {
-    id: 'all',
+    id: 'null',
     text: 'Все',
   },
   {
@@ -83,7 +83,7 @@ export const SpecializationListElements: ListElement[] = [
 
 export const LevelListElements: ListElement[] = [
   {
-    id: 'all',
+    id: 'null',
     text: 'Все',
   },
   {

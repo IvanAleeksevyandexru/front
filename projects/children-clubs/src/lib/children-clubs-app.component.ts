@@ -9,8 +9,9 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
     <p>
       children-clubs app works!
       <button (click)="closeApp()">closeApp</button>
-      {{ inputAppData?.componentId }}
+<!--      {{ inputAppData?.componentId }}-->
     </p>
+    <epgu-cf-ui-modal-container></epgu-cf-ui-modal-container>
   `,
   styles: [],
 })
@@ -24,6 +25,6 @@ export class ChildrenClubsAppComponent
   }
 
   ngOnInit(): void {
-    this.openApp();
+    // this.openApp();
   }
 }

@@ -1,0 +1,88 @@
+@import '../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+@import '../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components/index';
+
+.mb-24 {
+  margin-bottom: 24px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.mb-12 {
+  margin-bottom: 12px;
+}
+
+.title {
+  @include typ-h5();
+}
+
+.error {
+  margin-bottom: 4px;
+  color: $color-gosred;
+}
+
+.divider {
+  background: $color-mercury;
+  border-top: 1px solid $color-mercury;
+}
+
+.half-for-desktop {
+  width: 100%;
+
+  @include tablets-up {
+    width: 50%;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+
+  &-item {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  @include tablets-up {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &-item {
+      width: 48%;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.label {
+  display: block;
+  text-align: left;
+  color: $color-summer-night;
+  @include typ-plain-small;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+
+  @include phones-down {
+    font-weight: bold;
+  }
+
+  margin-bottom: 4px;
+}
+
+.btn {
+  width: auto;
+
+  &-submit {
+    order: 0;
+  }
+
+  @include phones-down {
+    &-submit {
+      order: 1;
+    }
+  }
+}

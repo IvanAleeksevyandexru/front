@@ -33,3 +33,5 @@ export class CtaModalComponent {
     this.eventBusService.emit(`closeModalEvent_${this.text}`);
   }
 }
+
+'[[String[][], String[], String, [String], [[[String]]]], [[[String[], Int],[Int], String], Int][]][][]'

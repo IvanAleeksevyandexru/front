@@ -1,17 +1,44 @@
 import { ListElement } from '@epgu/epgu-lib';
 
 export interface FormValue {
-  open_record: boolean;
+  isRegistrationOpen: boolean;
   place: string;
-  distance_program: boolean;
-  budget: boolean;
-  pfdod_certificate: boolean;
-  paid: boolean;
-  private: boolean;
-  price: string;
+  onlyDistanceProgram: boolean;
+  inlernoPayments?: InlernoPayments;
+  pfdoPayments?: PfdoPayments;
+  maxPrice: string;
   focus: ListElement;
-  specialization: ListElement;
+  programType: ListElement;
   level: ListElement;
-  childAge: string;
-  health: ListElement;
+  age: string;
+  ovzType: ListElement;
+}
+
+export interface InlernoPayments {
+  free: boolean;
+  certificate: boolean;
+  personalFunds: boolean;
+}
+
+export interface PfdoPayments {
+  preprof: boolean;
+  valued: boolean;
+  other: boolean;
+  certificate: boolean;
+  personalFunds: boolean;
+}
+
+// Возможно стоить поговрить чтобы форму отправлять без изменений
+export interface FormOutputValue {
+  isRegistrationOpen: boolean;
+  place: string;
+  onlyDistanceProgram: boolean;
+  inlernoPayments?: InlernoPayments;
+  pfdoPayments?: PfdoPayments;
+  maxPrice: string;
+  focus: string;
+  programType: string;
+  level: string;
+  age: string;
+  ovzType: string;
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { LongButtonModule, AppStateModule, CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { LongButtonModule, AppStateModule, CoreUiModule, SharedModalModule } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
@@ -14,7 +14,8 @@ import { ProgramFiltersModule } from './components/program-filters/program-filte
     AppStateModule,
     ProgramListModule,
     ChildrenClubsFilterPanelModule,
-    ProgramFiltersModule
+    ProgramFiltersModule,
+    SharedModalModule,
   ],
 
   exports: [ChildrenClubsAppComponent],
