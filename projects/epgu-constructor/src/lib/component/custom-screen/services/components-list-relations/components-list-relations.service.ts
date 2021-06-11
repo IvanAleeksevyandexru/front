@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined } from '@epgu/epgu-constructor-ui-kit/src/lib/core/services/utils/utils';
+import { isUndefined } from '@epgu/epgu-constructor-ui-kit';
 import {
   CustomComponent,
   CustomComponentRef,
