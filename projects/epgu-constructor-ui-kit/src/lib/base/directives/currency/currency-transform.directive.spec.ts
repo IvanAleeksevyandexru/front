@@ -5,14 +5,14 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormControl, NgControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BaseModule } from '../../base.module';
+import { BaseUiModule } from '../../base-ui.module';
 
 @Component({
-  selector: 'epgu-constructor-currency-transform-test-component',
+  selector: 'epgu-cf-ui-currency-transform-test-component',
   template: `
     <input
       type="text"
-      [epgu-constructor-currency-transform]="true"
+      [epgu-cf-ui-currency-transform]="true"
       [formControl]="control"
     />`,
 })
@@ -27,7 +27,7 @@ describe('CurrencyTransformDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CurrencyTransformDirective, CurrencyTransformTestComponent],
-      imports: [RouterTestingModule, BaseModule],
+      imports: [RouterTestingModule, BaseUiModule],
       providers: [CurrencyPipe, NgControl],
     })
       .compileComponents()

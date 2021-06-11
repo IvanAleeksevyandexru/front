@@ -4,10 +4,10 @@ import { NgControl } from '@angular/forms';
 import { isEmpty as _isEmpty } from 'lodash';
 
 @Directive({
-  selector: '[epgu-constructor-rank-transform]'
+  selector: '[epgu-cf-ui-rank-transform]'
 })
 export class RankTransformDirective implements OnInit{
-  @Input('epgu-constructor-rank-transform') rank: boolean;
+  @Input('epgu-cf-ui-rank-transform') rank: boolean;
 
   constructor(
     private decimalPipe: DecimalPipe,

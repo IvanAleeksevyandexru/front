@@ -7,7 +7,6 @@ import { FormControl } from '@angular/forms';
 import { ConstructorPlainInputComponent } from '@epgu/epgu-constructor/src/lib/shared/components/constructor-plain-input/constructor-plain-input.component';
 
 import { ValidationTypeModule } from '@epgu/epgu-constructor/src/lib/shared/directives/validation-type/validation-type.module';
-import { CurrencyModule } from '@epgu/epgu-constructor/src/lib/shared/directives/currency/currency.module';
 import { RankModule } from '@epgu/epgu-constructor/src/lib/shared/directives/rank/rank.module';
 import { ValidationService } from '@epgu/epgu-constructor/src/lib/shared/services/validation/validation.service';
 import { DateRangeService } from '@epgu/epgu-constructor/src/lib/shared/services/date-range/date-range.service';
@@ -16,6 +15,7 @@ import { DateRestrictionsService } from '@epgu/epgu-constructor/src/lib/shared/s
 import { EventBusService } from '../event-bus/event-bus.service';
 import { TrimModule } from '../../../base/directives/trim/trim.module';
 import { TextTransformModule } from '../../../base/directives/text-transform/text-transform.module';
+import { CurrencyModule } from '../../../base/directives/currency/currency.module';
 
 describe('FocusManagerService', () => {
   let service: FocusManagerService;
