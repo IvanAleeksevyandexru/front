@@ -7,6 +7,7 @@ import { ScreenContainerModule } from '../../shared/components/screen-container/
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../shared/base.module';
+import { InvitationErrorService } from './invitation-error.service';
 
 const COMPONENTS = [InvitationErrorComponent, LkInvitationInputComponent];
 
@@ -21,6 +22,6 @@ const COMPONENTS = [InvitationErrorComponent, LkInvitationInputComponent];
     ScreenPadModule,
     BaseComponentsModule,
   ],
-  providers: [],
+  providers: [InvitationErrorService],
 })
 export class InvitationErrorScreenComponentsModule {}
