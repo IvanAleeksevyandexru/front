@@ -5,17 +5,22 @@ import { EpguLibModule } from '@epgu/epgu-lib';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import {
-  CustomComponent,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
 } from '../../component/custom-screen/components-list.types';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LoggerService,
+  ConfigService,
+  ModalService,
+  ModalServiceStub,
+  ScreenPadComponent,
+  DatesToolsService,
+  EventBusService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
-import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -26,7 +31,6 @@ import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import {
   ComponentDto,
@@ -91,6 +95,8 @@ describe('CustomScreenComponent', () => {
         CurrentAnswersService,
         CustomScreenService,
         DatesToolsService,
+        ConfigService,
+        LoggerService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {

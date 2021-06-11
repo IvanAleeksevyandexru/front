@@ -44,6 +44,12 @@ export * from './lib/base/directives/trim/trim.directive';
 export * from './lib/base/directives/text-transform/text-transform.module';
 export * from './lib/base/directives/text-transform/text-transform.directive';
 
+export * from './lib/base/directives/currency/currency.module';
+export * from './lib/base/directives/currency/currency-transform.directive';
+
+export * from './lib/base/directives/rank/rank.module';
+export * from './lib/base/directives/rank/rank-transform.directive';
+
 // Pipes
 
 export * from './lib/base/pipes/mask-handle/mask-handle.module';

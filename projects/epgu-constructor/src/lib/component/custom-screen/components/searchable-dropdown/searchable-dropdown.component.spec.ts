@@ -14,7 +14,7 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
 
 describe('SearchableDropdownComponent', () => {
@@ -35,6 +35,8 @@ describe('SearchableDropdownComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        ConfigService,
+        LoggerService,
       ],
     })
       .overrideComponent(SearchableDropdownComponent, {

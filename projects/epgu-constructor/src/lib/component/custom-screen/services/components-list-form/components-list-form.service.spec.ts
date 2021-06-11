@@ -1,24 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentsListFormService } from './components-list-form.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { AddressHelperService } from '../../../../shared/services/address-helper/address-helper.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.service.stub';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  UnsubscribeService,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
@@ -138,7 +136,8 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         DictionaryToolsService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        ConfigService,
       ],
     });
   });
@@ -196,16 +195,13 @@ describe('ComponentsListFormService', () => {
         const extraComponent = JSON.parse(JSON.stringify(componentMockData));
         const getDictionariesSpy = jest.fn(() => ({
           [`${component.attrs.dictionaryType}${component.id}`]: {
-            list: [
-              { id: 'index 0' },
-              { id: 'test' },
-            ]
-          }
+            list: [{ id: 'index 0' }, { id: 'test' }],
+          },
         }));
 
         Object.defineProperty(dictionaryToolsService, 'dictionaries', {
           get: getDictionariesSpy,
-          set: jest.fn()
+          set: jest.fn(),
         });
 
         extraComponent.id = 'someID';
@@ -217,7 +213,14 @@ describe('ComponentsListFormService', () => {
         const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
         const controlPatchSpy = jest.spyOn(control.get('value'), 'patchValue');
 
-        return { convertedValueSpy, dropDownsSpy, component, getDictionariesSpy, control, controlPatchSpy };
+        return {
+          convertedValueSpy,
+          dropDownsSpy,
+          component,
+          getDictionariesSpy,
+          control,
+          controlPatchSpy,
+        };
       };
 
       it('should call dictionaryToolsService.dropDowns$.getValue(), if component type isDropdownLike, has defaultIndex and no value', () => {
@@ -233,7 +236,9 @@ describe('ComponentsListFormService', () => {
       });
 
       it('should pass defaultIndex if it is provided', () => {
-        const { getDictionariesSpy, controlPatchSpy, component } = setup(CustomScreenComponentTypes.Lookup);
+        const { getDictionariesSpy, controlPatchSpy, component } = setup(
+          CustomScreenComponentTypes.Lookup,
+        );
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
@@ -241,7 +246,11 @@ describe('ComponentsListFormService', () => {
       });
 
       it('should pass lookupDefaultValue if it is provided', () => {
-        const { getDictionariesSpy, controlPatchSpy, component } = setup(CustomScreenComponentTypes.Lookup, { lookupDefaultValue: 'test' });
+        const {
+          getDictionariesSpy,
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.Lookup, { lookupDefaultValue: 'test' });
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();

@@ -3,9 +3,13 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule } from 'ng-mocks';
 import { ListElement } from '@epgu/epgu-lib';
 import { FormBuilder } from '@angular/forms';
-
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  LoggerService,
+  UnsubscribeService,
+  DatesToolsService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionary-api.service.stub';
@@ -13,7 +17,6 @@ import { BaseModule } from '../../../base.module';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../services/date-range/date-range.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
@@ -74,6 +77,8 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         DatesToolsService,
         RefRelationService,
         DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {

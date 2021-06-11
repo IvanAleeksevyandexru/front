@@ -1,7 +1,7 @@
 import { configureTestSuite } from 'ng-bullet';
 import { TestBed } from '@angular/core/testing';
 import { DateRestrictionsService } from './date-restrictions.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -11,11 +11,8 @@ describe('DateRestrictionsService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        DateRestrictionsService,
-        DatesToolsService,
-      ],
-      imports: [HttpClientTestingModule]
+      providers: [DateRestrictionsService, DatesToolsService, ConfigService, LoggerService],
+      imports: [HttpClientTestingModule],
     });
   });
 
@@ -23,27 +20,30 @@ describe('DateRestrictionsService', () => {
     service = TestBed.inject(DateRestrictionsService);
     datesToolsService = TestBed.inject(DatesToolsService);
 
-    jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date('2021-01-01T00:00:00.000Z'));
+    jest
+      .spyOn(datesToolsService, 'getToday')
+      .mockResolvedValue(new Date('2021-01-01T00:00:00.000Z'));
   });
 
   describe('getDateRange() method', () => {
     it('should calculate range', async () => {
       const range = await service.getDateRange(
-      'compId',
-      [{
-          condition: '>',
-          type: 'const',
-          value: 'today'
-        }],
+        'compId',
+        [
+          {
+            condition: '>',
+            type: 'const',
+            value: 'today',
+          },
+        ],
         [],
         new FormArray([]),
-        {}
+        {},
       );
-
 
       expect(range).toEqual({
         min: new Date('2021-01-02T00:00:00.000Z'),
-        max: null
+        max: null,
       });
     });
   });
@@ -54,37 +54,42 @@ describe('DateRestrictionsService', () => {
 
       await service.getDateRange(
         'compId',
-        [{
-          condition: '>',
-          type: 'const',
-          value: 'today'
-        }],
+        [
+          {
+            condition: '>',
+            type: 'const',
+            value: 'today',
+          },
+        ],
         [],
         new FormArray([]),
-        {}
+        {},
       );
 
       expect(service.getDateRangeFromStore('compId')).toEqual({
         min: new Date('2021-01-02T00:00:00.000Z'),
-        max: null
+        max: null,
       });
     });
   });
 
   describe('haveDateRef() method', () => {
     it('should return TRUE if restriction type is "ref"', () => {
-      expect(service.haveDateRef({
-        condition: '>',
-        type: 'ref',
-        value: 'today'
-      })).toBeTruthy();
+      expect(
+        service.haveDateRef({
+          condition: '>',
+          type: 'ref',
+          value: 'today',
+        }),
+      ).toBeTruthy();
 
-      expect(service.haveDateRef({
-        condition: '>',
-        type: 'const',
-        value: 'today'
-      })).toBeFalsy();
+      expect(
+        service.haveDateRef({
+          condition: '>',
+          type: 'const',
+          value: 'today',
+        }),
+      ).toBeFalsy();
     });
   });
-
 });

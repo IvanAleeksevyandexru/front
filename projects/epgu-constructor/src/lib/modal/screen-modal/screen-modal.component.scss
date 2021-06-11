@@ -5,6 +5,14 @@ $pyConfModal: 64px;
 $headerHeight: 57px;
 $controlHeight: 55px;
 
+$closeBtnWidth: 24px;
+
+@mixin divider {
+  border-bottom: 1px solid $color-divider;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+}
+
 :host::ng-deep {
   .modal-overlay {
     @include modal-overlay();
@@ -24,21 +32,55 @@ $controlHeight: 55px;
       height: auto;
       border-radius: 12px;
     }
-
     @include phones-down {
       padding: 24px;
     }
 
     &__header {
-      border-bottom: 1px solid $color-divider;
-      padding-bottom: 24px;
-      margin-bottom: 24px;
+      position: relative;
+    }
+
+    &__title {
+      width: 100%;
+      padding-right: calc(#{$closeBtnWidth} + 8px);
+      @include tablets-up {
+        padding-right: calc(#{$closeBtnWidth} + 24px);
+      }
+      @include divider;
+    }
+
+    &__confirm-title {
+      @include tablets-down {
+        padding-right: calc(#{$closeBtnWidth} + 8px);
+        @include divider;
+      }
+      @include tablets-up {
+        padding: 0 calc(#{$closeBtnWidth} + 24px);
+        text-align: center;
+        @include typ-h4;
+      }
+    }
+
+    &__close {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      z-index: 1;
+      cursor: pointer;
+      &:only-child {
+        @include tablets-up {
+          top: 0;
+        }
+      }
     }
 
     &__body {
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      @include tablets-down {
+        flex-grow: 1;
+      }
     }
 
     &__content {
@@ -84,18 +126,21 @@ $controlHeight: 55px;
     }
   }
 
-  .header {
-    &--fake {
-      text-align: center;
-      @include tablets-down {
-        @include typ-h3;
-        text-align: left;
-        padding-right: 50px;
-        color: $color-summer-night;
-        border-bottom: 1px solid $color-divider;
-        padding-bottom: 24px;
-        margin-bottom: 24px;
+  .screen-modal .component-list__body {
+    @include tablets-down {
+      flex-grow: 0;
+      margin-bottom: auto;
+    }
+  }
+
+  @include tablets-up {
+    [ng-reflect-component-type=PhoneNumberChangeInput],
+    [ng-reflect-component-type=NewEmailInput] {
+      .form__input {
+        width: calc(50% - 14px);
       }
     }
   }
 }
+
+

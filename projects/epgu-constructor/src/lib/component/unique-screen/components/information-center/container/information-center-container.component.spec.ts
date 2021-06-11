@@ -1,10 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-
 import { InformationCenterContainerComponent } from './information-center-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  ConstructorDropdownModule,
+  ScreenPadModule,
+  DatesToolsService,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
@@ -13,15 +19,12 @@ import { InformationCenterSimpleComponent } from '../component/information-cente
 import { InformationCenterFullComponent } from '../component/information-center-full/information-center-full.component';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { InformationCenterPfr, PfrAreaType } from '../information-center.models';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
@@ -40,7 +43,11 @@ describe('InformationCenterContainerComponent', () => {
       dictionaryType: 'TO_PFR',
       simple: { items: [], label: 'LABEL', html: '<p>HTML</p>' },
       full: {
-        region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' as DictionaryConditions },
+        region: {
+          label: 'Регион',
+          attributeName: 'parent_attr',
+          condition: 'CONTAINS' as DictionaryConditions,
+        },
         district: {
           label: 'Район (Административный центр)',
           attributeName: 'parent_attr',
@@ -129,7 +136,9 @@ describe('InformationCenterContainerComponent', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService
+        DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     }).compileComponents();
   });
@@ -175,7 +184,11 @@ describe('InformationCenterContainerComponent', () => {
           dictionaryType: 'TO_PFR',
           simple: { items: [{} as any], label: 'LABEL', html: '<p>HTML</p>' },
           full: {
-            region: { label: 'Регион', attributeName: 'parent_attr', condition: 'CONTAINS' as DictionaryConditions },
+            region: {
+              label: 'Регион',
+              attributeName: 'parent_attr',
+              condition: 'CONTAINS' as DictionaryConditions,
+            },
             district: {
               label: 'Район (Административный центр)',
               attributeName: 'parent_attr',

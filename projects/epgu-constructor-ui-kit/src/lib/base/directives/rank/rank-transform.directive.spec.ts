@@ -1,19 +1,19 @@
 import { RankTransformDirective } from './rank-transform.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormControl, NgControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BaseModule } from '../../base.module';
 import { configureTestSuite } from 'ng-bullet';
+import { BaseUiModule } from '../../base-ui.module';
 
 @Component({
-  selector: 'epgu-constructor-rank-transform-test-component',
+  selector: 'epgu-cf-ui-rank-transform-test-component',
   template: `
     <input
       type="text"
-      [epgu-constructor-rank-transform]="true"
+      [epgu-cf-ui-rank-transform]="true"
       [formControl]="control"
     />`,
 })
@@ -28,7 +28,7 @@ describe('RankTransformDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [RankTransformDirective, RankTransformTestComponent],
-      imports: [RouterTestingModule, BaseModule],
+      imports: [RouterTestingModule, BaseUiModule],
       providers: [DecimalPipe, NgControl],
     })
       .compileComponents();

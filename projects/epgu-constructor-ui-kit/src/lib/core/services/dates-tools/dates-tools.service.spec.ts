@@ -3,7 +3,14 @@ import { DatesToolsService } from './dates-tools.service';
 import * as moment_ from 'moment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { DATE_ISO_STRING_FORMAT, DATE_STRING_DOT_FORMAT, DATE_TIME_STRING_DOT_FORMAT, DurationTimeTypes } from '../../../base/constants/dates';
+import {
+  DATE_ISO_STRING_FORMAT,
+  DATE_STRING_DOT_FORMAT,
+  DATE_TIME_STRING_DOT_FORMAT,
+  DurationTimeTypes,
+} from '../../../base/constants/dates';
+import { ConfigService } from '../config/config.service';
+import { LoggerService } from '../logger/logger.service';
 
 const moment = moment_;
 moment.locale('ru');
@@ -17,7 +24,7 @@ describe('DatesToolsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [DatesToolsService],
+      providers: [DatesToolsService, ConfigService, LoggerService],
     });
   });
 
@@ -254,8 +261,12 @@ describe('DatesToolsService', () => {
 
   describe('setDate() method', () => {
     it('should return setted date', () => {
-      expect(service.format(service.setCalendarDate(new Date(2014, 8, 1), null, null, 30), DATE_TIME_STRING_DOT_FORMAT))
-        .toEqual('30.09.2014, 00:00:00');
+      expect(
+        service.format(
+          service.setCalendarDate(new Date(2014, 8, 1), null, null, 30),
+          DATE_TIME_STRING_DOT_FORMAT,
+        ),
+      ).toEqual('30.09.2014, 00:00:00');
     });
 
     it('should return setted date for january', () => {
@@ -289,29 +300,45 @@ describe('DatesToolsService', () => {
 
   describe('endOfMonth() method', () => {
     it('should return date end of month', () => {
-      expect(service.format(service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
-        .toEqual('30.09.2014, 23:59:59');
+      expect(
+        service.format(
+          service.endOfMonth(new Date(2014, 8, 2, 11, 55, 0)),
+          DATE_TIME_STRING_DOT_FORMAT,
+        ),
+      ).toEqual('30.09.2014, 23:59:59');
     });
   });
 
   describe('startOfYear() method', () => {
     it('should return start date of year', () => {
-      expect(service.format(service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
-        .toEqual('01.01.2014, 00:00:00');
+      expect(
+        service.format(
+          service.startOfYear(new Date(2014, 8, 2, 11, 55, 0)),
+          DATE_TIME_STRING_DOT_FORMAT,
+        ),
+      ).toEqual('01.01.2014, 00:00:00');
     });
   });
 
   describe('startOfMonth() method', () => {
     it('should return start date of month', () => {
-      expect(service.format(service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
-        .toEqual('01.09.2014, 00:00:00');
+      expect(
+        service.format(
+          service.startOfMonth(new Date(2014, 8, 2, 11, 55, 0)),
+          DATE_TIME_STRING_DOT_FORMAT,
+        ),
+      ).toEqual('01.09.2014, 00:00:00');
     });
   });
 
   describe('startOfDay() method', () => {
     it('should return start date of day', () => {
-      expect(service.format(service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)), DATE_TIME_STRING_DOT_FORMAT))
-        .toEqual('02.09.2014, 00:00:00');
+      expect(
+        service.format(
+          service.startOfDay(new Date(2014, 8, 2, 11, 55, 0)),
+          DATE_TIME_STRING_DOT_FORMAT,
+        ),
+      ).toEqual('02.09.2014, 00:00:00');
     });
   });
 
