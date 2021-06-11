@@ -26,7 +26,7 @@ describe('CurrencyTransformDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CurrencyTransformDirective, CurrencyTransformTestComponent],
+      declarations: [CurrencyTransformTestComponent],
       imports: [RouterTestingModule, BaseUiModule],
       providers: [CurrencyPipe, NgControl],
     })
