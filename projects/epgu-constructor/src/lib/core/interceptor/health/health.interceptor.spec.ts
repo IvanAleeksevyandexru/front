@@ -110,6 +110,9 @@ describe('HealthInterceptor', () => {
         id: dto.scenarioDto.display.id,
         name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId: orderId,
+        method: 'POST',
+        date: new Date().toISOString(),
+        typeEvent: 'getNextStep'
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
