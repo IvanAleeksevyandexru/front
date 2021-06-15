@@ -1,53 +1,34 @@
-import { HttpClient } from '@angular/common/http';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
-import { finalize, takeUntil } from 'rxjs/operators';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { InvitationType } from './invitation-type';
 import LkInvitationInputAttrs from './lk-invitation-input-attrs';
 import LkInvitationData from './lk-invitation-data';
-import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { InvitationErrorService } from '../../invitation-error.service';
 
 @Component({
   selector: 'epgu-constructor-lk-invitation-input',
   templateUrl: './lk-invitation-input.component.html',
   styleUrls: ['./lk-invitation-input.component.scss'],
-  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LkInvitationInputComponent implements OnInit {
   @Input() data: ComponentDto;
   @Input() header: string;
 
-  public defaultImgSrc = `${this.config.staticDomainAssetsPath}/assets/icons/svg/warn.svg`;
-
   public email: FormControl = new FormControl('');
 
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  public emailSent = false;
-  public success = false;
-  private requestOptions = { withCredentials: true };
 
   public constructor(
     public config: ConfigService,
-    private http: HttpClient,
     private validationService: ValidationService,
-    public readonly navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    private loggerService: LoggerService,
-    private cdr: ChangeDetectorRef,
+    private invitationErrorService: InvitationErrorService,
   ) {}
 
   public ngOnInit(): void {
@@ -64,23 +45,11 @@ export class LkInvitationInputComponent implements OnInit {
     const { templateId = InvitationType.LK_INVITATION } = this.data.attrs as LkInvitationInputAttrs;
     const path = `${urlPrefix}/register/${templateId}`;
 
-    this.http
-      .post(path, this.getInvitationData(), this.requestOptions)
-      .pipe(
-        finalize(() => {
-          this.emailSent = true;
-          this.cdr.markForCheck();
-        }),
-        takeUntil(this.ngUnsubscribe$),
-      )
-      .subscribe(
-        () => {
-          this.success = true;
-        },
-        (error) => {
-          this.loggerService.error(error);
-        },
-      );
+    this.invitationErrorService.post<LkInvitationData>(
+      path,
+      this.getInvitationData(),
+      this.data.attrs,
+    );
   }
 
   private getInvitationData(): LkInvitationData {

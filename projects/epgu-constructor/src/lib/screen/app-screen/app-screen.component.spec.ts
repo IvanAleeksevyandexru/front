@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -10,8 +10,8 @@ import { ComponentUniqueResolverComponent } from '../../component/unique-screen/
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, DataDirectionType, DisplayDto, OutputAppDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CfAppStateService, CfAppStateServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 const componentDtoSample: ComponentDto = {

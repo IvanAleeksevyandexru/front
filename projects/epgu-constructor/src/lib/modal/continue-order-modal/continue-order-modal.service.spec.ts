@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ContinueOrderModalService } from './continue-order-modal.service';
-import { ModalService } from '../modal.service';
-import { ModalServiceStub } from '../modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ContinueOrderModalService', () => {
   let service: ContinueOrderModalService;

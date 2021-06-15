@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { ConstantsService, ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UnsubscribeService, ConfigService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { ConfigService } from '../../../../core/services/config/config.service';
+
+import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -38,7 +38,8 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     ? this.config.lookupQueryTimeoutMs
     : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
 
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
+  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
 
   constructor(
     private dictionaryToolsService: DictionaryToolsService,

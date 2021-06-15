@@ -19,8 +19,8 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'lodash';
 import { ScenarioErrorsDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { CustomComponentOutputData } from '../../../../../custom-screen/components-list.types';
 import { CachedValue, ChildI, ClearEvent, ItemStatus } from '../../select-children.models';
 

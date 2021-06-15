@@ -1,9 +1,9 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {

@@ -1,8 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { ConfigService } from '../config/config.service';
-import { ConfigServiceStub } from '../config/config.service.stub';
-import { DatesToolsService } from '../dates-tools/dates-tools.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { configureTestSuite } from 'ng-bullet';
 

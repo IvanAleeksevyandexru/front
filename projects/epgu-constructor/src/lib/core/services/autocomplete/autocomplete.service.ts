@@ -7,21 +7,20 @@ import {
   mergeMap,
   takeUntil,
 } from 'rxjs/operators';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../modal/modal.service';
+import { ComponentDto, DisplayDto, ComponentFieldDto } from '@epgu/epgu-constructor-types';
+import { ModalService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../screen/screen.service';
-import { EventBusService } from '../event-bus/event-bus.service';
-import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItem, ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { allowedAutocompleteComponentsList, getSuggestionGroupId } from './autocomplete.const';
-import { ComponentDto, DisplayDto, ComponentFieldDto } from '@epgu/epgu-constructor-types';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { EMPTY, from } from 'rxjs';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
 import { TerraFileOptions } from '../terra-byte-api/terra-byte-api.types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Injectable()
 export class AutocompleteService {

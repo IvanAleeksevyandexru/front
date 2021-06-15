@@ -1,6 +1,6 @@
 import { MaskHandlePipe } from './mask-handle.pipe';
 import { MASKS, MASKS_HANDLERS } from './mask.constant';
-import { NumberMaskOptionsInterface } from './interface/number-mask-options.interface';
+import { NumberMaskOptions } from './mask-options';
 
 describe('MaskHandlePipe', () => {
   let pipe: MaskHandlePipe;
@@ -30,7 +30,7 @@ describe('MaskHandlePipe', () => {
 
   describe('test NumberMaskInput', () => {
     const setup = (
-      maskOptions?: Partial<NumberMaskOptionsInterface>,
+      maskOptions?: Partial<NumberMaskOptions>,
     ): { numberMaskTransform: (string) => Array<string | RegExp> } => ({
       numberMaskTransform: (pipe.transform('NumberMaskInput', maskOptions) as unknown) as (
         string,

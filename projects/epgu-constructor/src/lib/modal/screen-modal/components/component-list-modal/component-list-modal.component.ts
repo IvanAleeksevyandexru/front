@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponentOutputData } from '../../../../component/custom-screen/components-list.types';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { Navigation, NavigationPayload } from '../../../../form-player/form-player.types';
 import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
 import { ScreenService } from '../../../../screen/screen.service';

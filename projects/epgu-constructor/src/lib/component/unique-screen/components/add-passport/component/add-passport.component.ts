@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Passport } from '../add-passport.models';
 import { ISuggestionItem } from '../../../../../core/services/autocomplete/autocomplete.inteface';
 import { ScreenService } from '../../../../../screen/screen.service';

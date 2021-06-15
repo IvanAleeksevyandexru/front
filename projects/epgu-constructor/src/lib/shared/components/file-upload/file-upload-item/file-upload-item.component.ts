@@ -5,10 +5,14 @@ import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { DeviceDetectorService } from '../../../../core/services/device-detector/device-detector.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { ModalService } from '../../../../modal/modal.service';
+import {
+  ModalService,
+  DeviceDetectorService,
+  EventBusService,
+  UnsubscribeService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
   FileResponseToBackendUploadsItem,
@@ -27,7 +31,7 @@ import {
 
 import { ScreenService } from '../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';

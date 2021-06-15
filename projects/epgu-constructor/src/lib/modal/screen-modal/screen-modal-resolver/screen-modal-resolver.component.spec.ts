@@ -13,8 +13,8 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { ScreenModalService } from '../screen-modal.service';
 import { ScreenModalServiceStub } from '../screen-modal.service.stub';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 jest.useFakeTimers();

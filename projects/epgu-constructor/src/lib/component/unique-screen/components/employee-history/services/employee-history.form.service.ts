@@ -11,7 +11,7 @@ import {
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from '@epgu/epgu-lib';
 import { combineLatest } from 'rxjs';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import {
   EmployeeType,
   EmployeeHistoryModel,
@@ -20,7 +20,7 @@ import {
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { EmployeeHistoryErrors, EmployeeHistoryMaxLengthValidators } from '../employee-history.enums';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class EmployeeHistoryFormService {

@@ -7,9 +7,9 @@ import {
   MobilViewEvents,
   OPTIONS_FEED_EXIT,
   OPTIONS_FEED_MV,
-} from '../../../shared/constants/redirect-event';
-import { ConfigService } from '../config/config.service';
-import { DeviceDetectorService } from '../device-detector/device-detector.service';
+} from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 

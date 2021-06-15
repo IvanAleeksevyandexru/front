@@ -3,12 +3,16 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  UnsubscribeService,
+  UtilsService,
+  DatesToolsService,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
-import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { InformationCenterMvdI } from '../interface/information-center-mvd.interface';
@@ -21,7 +25,6 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
@@ -85,6 +88,8 @@ describe('InformationCenterMvdContainerComponent', () => {
         DatesToolsService,
         RefRelationService,
         DateRestrictionsService,
+        ConfigService,
+        LoggerService,
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {

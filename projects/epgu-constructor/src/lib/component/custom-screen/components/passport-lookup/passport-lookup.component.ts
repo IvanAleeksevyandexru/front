@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 @Component({

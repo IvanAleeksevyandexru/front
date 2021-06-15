@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ConfirmPersonalUserDataComponent } from '../confirm-personal-user-data/confirm-personal-user-data.component';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmUserLegalData } from '../../confirm-personal-user-data-screen.types';
+import { AbstractConfirmPersonalUserDataDirective } from '../abstract-confirm-personal-user-data.directive';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-legal-data',
@@ -10,8 +9,6 @@ import { ConfirmUserLegalData } from '../../confirm-personal-user-data-screen.ty
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class ConfirmPersonalUserLegalDataComponent extends ConfirmPersonalUserDataComponent {
-  component$: Observable<ConfirmUserLegalData> = this.screenService.component$ as Observable<
-    ConfirmUserLegalData
-  >;
-}
+export class ConfirmPersonalUserLegalDataComponent extends AbstractConfirmPersonalUserDataDirective<
+  ConfirmUserLegalData
+> {}

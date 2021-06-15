@@ -7,13 +7,18 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
+  ScreenTypes,
 } from '@epgu/epgu-constructor-types';
+import {
+  LocalStorageService,
+  ConfigService,
+  EventBusService,
+  ModalService,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { ConfigService } from '../../../core/services/config/config.service';
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
   Navigation,
@@ -22,19 +27,17 @@ import {
 } from '../../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
+import { ActionAnswerDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ComponentStateForNavigate } from './action.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { ModalService } from '../../../modal/modal.service';
 import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import { ScreenStore } from '../../../screen/screen.types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -57,7 +60,7 @@ export class ActionService {
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
-    private formPlayerService: FormPlayerService,
+    private formPlayerService: FormPlayerService
   ) { }
 
   public switchAction(
@@ -89,6 +92,9 @@ export class ActionService {
         break;
       case ActionType.quizToOrder:
         this.quizToOrder(action);
+        break;
+      case ActionType.orderToOrder:
+        this.orderToOrder(action);
         break;
       case ActionType.redirectToLK:
         this.navService.redirectToLKByOrgType();
@@ -285,6 +291,32 @@ export class ActionService {
     }
 
     return bodyResult;
+  }
+
+  private orderToOrder(action: ComponentActionDto): void {
+    this.localStorageService.set(ORDER_TO_ORDER_SCENARIO_KEY, {
+      finishedAndCurrentScreens: this.getFinishedAndCurrentScreensFromMultipleAnswers(action.multipleAnswers),
+      applicantAnswers: this.getApplicantAnswersFromMultipleAnswers(action.multipleAnswers)
+    });
+    const href = action.action;
+    this.navService.redirectTo(href);
+  }
+
+  private getApplicantAnswersFromMultipleAnswers(multipleAnswers: ActionAnswerDto[]): ApplicantAnswersDto {
+    const applicantAnswers: ApplicantAnswersDto = {};
+    for (const answer of multipleAnswers) {
+      applicantAnswers[answer.componentId] = {
+        value: answer.value as string,
+        visited: true
+      };
+    }
+    return applicantAnswers;
+  }
+
+  private getFinishedAndCurrentScreensFromMultipleAnswers(multipleAnswers: ActionAnswerDto[]): string[] {
+    return multipleAnswers
+      .sort((a, b) => a.priority - b.priority)
+      .map((item) => item.screenId);
   }
 
   private quizToOrder(action: ComponentActionDto): void {

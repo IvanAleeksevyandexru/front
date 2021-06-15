@@ -4,7 +4,7 @@ import { PrepareComponentsService } from '../shared/services/prepare-components/
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
-import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ScreenService extends ScreenContent {

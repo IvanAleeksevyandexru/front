@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonComponent } from './clone-button.component';
 
 

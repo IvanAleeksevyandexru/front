@@ -10,6 +10,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
+import { ConfigService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import {
@@ -19,8 +20,6 @@ import {
   VehicleOwnerInfo,
 } from '../../models/car-list.interface';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 
 @Component({
   selector: 'epgu-constructor-car-list-container',

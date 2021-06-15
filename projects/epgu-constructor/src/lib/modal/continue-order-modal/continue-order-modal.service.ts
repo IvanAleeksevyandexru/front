@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
-import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../modal.service';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
+
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 
 @Injectable()
 export class ContinueOrderModalService {

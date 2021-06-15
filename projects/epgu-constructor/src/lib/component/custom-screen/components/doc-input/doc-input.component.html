@@ -1,19 +1,24 @@
 <section class="doc-input">
   <div
-    *ngIf="control.value.label && isValidationShown(docInputFieldsTypes.seriesNumDate)"
+    *ngIf="control.value.label && isInvalidAndDirty(docInputFieldsTypes.seriesNumDate)"
     class="doc-input__title"
   >
     <span>{{ control.value.label }}</span>
   </div>
   <div class="form__error">
     <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
-      <span *ngIf="isValidationShown([docInputFieldsTypes.seriesNumDate, fieldName])">
-        {{ fields[fieldName]?.label }}:
+      <span *ngIf="
+        isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, fieldName]) &&
+        form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg
+      ">
+        <ng-container *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson">
+          {{ fields[fieldName]?.label }}:
+        </ng-container>
         {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg }}
       </span>
     </epgu-cf-ui-constructor-input-error>
     <epgu-cf-ui-constructor-input-error *ngIf="hasExpirationDate">
-      <span *ngIf="isValidationShown(docInputFieldsTypes.expirationDate)">
+      <span *ngIf="isInvalidAndDirty(docInputFieldsTypes.expirationDate)">
         {{ fields[docInputFieldsTypes.expirationDate]?.label }}:
         {{ form.get(docInputFieldsTypes.expirationDate).errors.msg }}
       </span>
@@ -40,9 +45,7 @@
         [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.series]?.placeholder"
         [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
         [showConstantMaskSymbols]="true"
-        [invalid]="
-          isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
-        "
+        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.series]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
@@ -59,9 +62,7 @@
             $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
           "
           [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
-          [invalid]="
-            isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
-          "
+          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
@@ -94,9 +95,7 @@
         [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.number]?.placeholder"
         [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
         [showConstantMaskSymbols]="true"
-        [invalid]="
-          isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
-        "
+        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.number]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
@@ -113,9 +112,7 @@
             $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
           "
           [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
-          [invalid]="
-            isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
-          "
+          [invalid]="isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
@@ -146,7 +143,7 @@
         [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
         [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
         [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
-        [invalid]="isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
+        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
         [validationShowOn]="validationShowOn"
         [clearable]="true"
         [brokenDateFixStrategy]="brokenDateFixStrategy"
@@ -184,9 +181,7 @@
           [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.series]?.placeholder"
           [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
           [showConstantMaskSymbols]="true"
-          [invalid]="
-            isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
-          "
+          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
@@ -203,9 +198,7 @@
               $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
             "
             [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
-            [invalid]="
-              isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
-            "
+            [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.series]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
@@ -239,9 +232,7 @@
           [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.number]?.placeholder"
           [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
           [showConstantMaskSymbols]="true"
-          [invalid]="
-            isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
-          "
+          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
@@ -258,9 +249,7 @@
               $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
             "
             [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
-            [invalid]="
-              isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
-            "
+            [invalid]="isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.number]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
@@ -288,9 +277,7 @@
           [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
           [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
-          [invalid]="
-            isValidationShown([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
-          "
+          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
           [validationShowOn]="validationShowOn"
           [brokenDateFixStrategy]="brokenDateFixStrategy"
           [clearable]="true"
@@ -317,7 +304,7 @@
           [control]="form.get(docInputFieldsTypes.expirationDate)"
           [minDate]="fields[docInputFieldsTypes.expirationDate]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[docInputFieldsTypes.expirationDate]?.attrs?.maxDate || 'today'"
-          [invalid]="isValidationShown(docInputFieldsTypes.expirationDate)"
+          [invalid]="isInvalidAndDirty(docInputFieldsTypes.expirationDate)"
           [validationShowOn]="validationShowOn"
           [clearable]="true"
           [brokenDateFixStrategy]="brokenDateFixStrategy"

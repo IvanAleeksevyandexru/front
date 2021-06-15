@@ -9,22 +9,23 @@ import { ListItem } from '@epgu/epgu-lib';
 import { Observable, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
-import { HttpCancelService } from '../../../../core/interceptor/http-cancel/http-cancel.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../../modal/modal.service';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import {
+  ModalService,
+  UnsubscribeService,
+  HttpCancelService,
+  DatesToolsService,
   DATE_STRING_YEAR_MONTH,
   DATE_TIME_STRING_FULL,
   months,
   StartOfTypes,
   weekDaysAbbr,
-} from '../../../../shared/constants/dates';
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../screen/screen.service';
+import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
@@ -35,6 +36,7 @@ import {
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
 } from './time-slots.types';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-time-slots',

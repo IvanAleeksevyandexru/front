@@ -12,7 +12,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { EmployeeHistoryContainerComponent } from './container/employee-history-container.component';
 import { EmployeeHistoryDescriptionComponent } from './components/employee-history-desription/employee-history-description.component';
 import { EmployeeHistoryFormComponent } from './components/employee-history-form/employee-history-form.component';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 // eslint-disable-next-line max-len
 import { EmployeeHistoryClarificationComponent } from './components/employee-history-clarification/employee-history-clarification.component';

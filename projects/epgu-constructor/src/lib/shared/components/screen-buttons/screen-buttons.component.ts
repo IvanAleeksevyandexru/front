@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ScreenButton } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-screen-buttons',

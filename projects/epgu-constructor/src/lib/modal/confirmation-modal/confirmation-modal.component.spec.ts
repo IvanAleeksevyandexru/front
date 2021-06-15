@@ -1,9 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ModalService } from '../modal.service';
+import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { UnsubscribeService, EventBusService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -14,14 +12,14 @@ describe('ConfirmationModalComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ConfirmationModalComponent],
       providers: [UnsubscribeService, EventBusService, ModalService]
-    })
-      .compileComponents();
+    }).overrideComponent(ConfirmationModalComponent, {
+      set: { changeDetection: ChangeDetectionStrategy.Default },
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ConfirmationModalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

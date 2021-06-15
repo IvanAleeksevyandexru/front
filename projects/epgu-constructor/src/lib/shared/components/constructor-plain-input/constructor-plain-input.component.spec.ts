@@ -4,14 +4,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  EventBusService,
+  LoggerService,
+  LoggerServiceStub,
+  CurrencyModule,
+  RankPipeModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
-import { CurrencyModule } from '../../directives/currency/currency.module';
-import { RankModule } from '../../directives/rank/rank.module';
 import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
@@ -28,16 +34,19 @@ describe('ConstructorPlainInputComponent', () => {
       declarations: [ConstructorPlainInputComponent],
       imports: [
         CoreModule,
+        CoreUiModule,
         BaseModule,
         RouterTestingModule,
         TrimModule,
         TextTransformModule,
         CurrencyModule,
-        RankModule,
+        RankPipeModule,
         ValidationTypeModule,
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
         ValidationService,
         DateRangeService,

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
@@ -19,8 +19,7 @@ import { By } from '@angular/platform-browser';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';

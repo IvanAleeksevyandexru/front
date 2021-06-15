@@ -27,6 +27,7 @@ export interface ComponentActionDto {
 
 export enum ActionType {
   download = 'download',
+  orderToOrder = 'orderToOrder',
   prevStepModal = 'prevStepModal',
   nextStepModal = 'nextStepModal',
   confirmModalStep = 'confirmModalStep',

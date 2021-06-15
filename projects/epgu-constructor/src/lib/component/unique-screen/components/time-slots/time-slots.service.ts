@@ -3,9 +3,9 @@ import { ListItem } from '@epgu/epgu-lib';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
@@ -24,8 +24,8 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { get } from 'lodash';
-import { DATE_STRING_YEAR_MONTH } from '../../../../shared/constants/dates';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { DATE_STRING_YEAR_MONTH } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,

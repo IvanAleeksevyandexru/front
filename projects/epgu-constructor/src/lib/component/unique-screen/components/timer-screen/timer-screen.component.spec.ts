@@ -8,9 +8,15 @@ import { TimerComponentBase } from '../../../../shared/components/timer/timer.in
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
-import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub, CoreUiModule,
+  LoggerService,
+  LoggerServiceStub,
+  ScreenPadComponent
+} from '@epgu/epgu-constructor-ui-kit';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 
@@ -44,13 +50,16 @@ describe('TimerScreenComponent', () => {
       ],
       imports: [
         RouterTestingModule,
-        TimerModule
+        TimerModule,
+        CoreUiModule,
       ],
       providers: [
         CurrentAnswersService,
         DatesToolsService,
         RefRelationService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
       ]
     }).compileComponents();
   });

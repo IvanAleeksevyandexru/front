@@ -14,13 +14,16 @@ import {
   Answer,
   ConfirmationModal,
 } from '@epgu/epgu-constructor-types';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../core/services/config/config.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import {
+  ModalService,
+  LocationService,
+  UnsubscribeService,
+  ConfigService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { NavigationPayload } from '../../form-player/form-player.types';
-import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../modal/modal.service';
 import { ScreenBase } from '../screen-base';
+import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-question-screen',

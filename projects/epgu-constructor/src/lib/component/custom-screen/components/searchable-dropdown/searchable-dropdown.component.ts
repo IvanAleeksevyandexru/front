@@ -2,10 +2,10 @@ import { ValidationShowOn } from '@epgu/epgu-lib';
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { CustomListDropDowns } from '../../components-list.types';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 
 @Component({
   selector: 'epgu-constructor-searchable-dropdown',

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 import { ListElement } from '@epgu/epgu-lib';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class RefRelationService {
@@ -43,41 +43,47 @@ export class RefRelationService {
     value: string | Array<string> | boolean,
     componentVal: { id?: string } | string | number, //TODO: нормализовать типы
   ): boolean {
-    const componentValue = this.getValueFromComponentVal(componentVal);
+    const parsedComponentValue = this.getValueFromComponentVal(componentVal);
 
     if (value === EMPTY_VALUE) {
-      return !componentValue;
+      return !parsedComponentValue;
     }
 
     if (value === NON_EMPTY_VALUE) {
-      return !!componentValue;
+      return !!parsedComponentValue;
     }
 
-    if (Array.isArray(componentValue)) {
+    if (Array.isArray(parsedComponentValue)) {
       if (Array.isArray(value)) {
         return value.some((values) =>
-          componentValue.some((item: ListElement) => item?.id === values),
+          parsedComponentValue.some((item: ListElement) => item?.id === values),
         );
       }
-      return componentValue.some((item: ListElement) => item?.id === value);
+      return parsedComponentValue.some((item: ListElement) => item?.id === value);
     }
 
     if (Array.isArray(value)) {
-      return value.some((values) => values === componentValue);
+      return value.some((values) => values === parsedComponentValue);
     }
 
-    return value === componentValue;
+    return value === parsedComponentValue;
   }
 
   public getValueFromComponentVal(
-    componentVal: { id?: string } | string | number | Date,
-  ): string | Date {
+    componentVal: { id?: string } | string | number | Date | ListElement[],
+  ): string | Date | ListElement[] {
     if (componentVal instanceof Date) {
       return componentVal;
     }
 
     if (UtilsService.hasJsonStructure(componentVal as string)) {
       return JSON.parse(componentVal as string);
+    }
+
+    // NOTICE: иногда сюда приходят значения мультисписка, которые представлены массивом ListElement
+    // необходимо возвращать его в том же виде, чтобы в isValueEquals не ломалась бизнес-логика
+    if (Array.isArray(componentVal)) {
+      return componentVal;
     }
 
     return ['string', 'boolean'].includes(typeof componentVal)

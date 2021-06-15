@@ -1,32 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import { ScreenTypes, DisplayDto } from '@epgu/epgu-constructor-types';
+import {
+  ScreenPadModule,
+  ConfigService,
+  LocationService,
+  LocationServiceStub,
+  ConstructorLookupModule,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  ModalService,
+  ModalServiceStub,
+  WINDOW_PROVIDERS, HttpCancelService
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
-import { of } from 'rxjs';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { LocationService, LocationServiceStub, ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { DeviceDetectorService } from '../../../../../../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../../../../../../core/services/device-detector/device-detector.service.stub';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
 import { CarListContainerComponent } from './car-list-container.component';
 import { CarListComponent } from '../car-list/car-list.component';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import { CarList } from '../../models/car-list.interface';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
-import { configureTestSuite } from 'ng-bullet';
-import { WINDOW_PROVIDERS } from '../../../../../../../../../epgu-constructor-ui-kit/src/lib/core/providers/window.provider';
-import { DisplayDto } from '@epgu/epgu-constructor-types';
 
 describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
@@ -74,6 +78,7 @@ describe('CarListContainerComponent', () => {
         UtilsService,
         NavigationService,
         ModalService,
+        HttpCancelService,
         WINDOW_PROVIDERS,
       ],
       imports: [

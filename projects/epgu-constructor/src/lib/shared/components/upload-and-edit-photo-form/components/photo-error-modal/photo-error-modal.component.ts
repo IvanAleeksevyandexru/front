@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 
-import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
-import { ConfigService } from '../../../../../core/services/config/config.service';
+import { ModalBaseComponent, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ImageErrorText } from '../../upload-and-edit-photo-form.model';
 import { imageErrorText } from '../../upload-and-edit-photo-form.constant';
 

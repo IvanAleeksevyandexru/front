@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
-import { EventBusService } from '../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../core/services/navigation/navigation.service';
-import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 

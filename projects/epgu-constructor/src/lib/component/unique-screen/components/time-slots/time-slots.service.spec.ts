@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -14,14 +13,14 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenStore } from 'projects/epgu-constructor/src/lib/screen/screen.types';
 import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
-import { LoggerService } from 'projects/epgu-constructor/src/lib/core/services/logger/logger.service';
-import { LoggerServiceStub } from 'projects/epgu-constructor/src/lib/core/services/logger/logger.service.stub';
-import { EventBusService } from 'projects/epgu-constructor/src/lib/core/services/event-bus/event-bus.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('TimeSlotsComponent', () => {

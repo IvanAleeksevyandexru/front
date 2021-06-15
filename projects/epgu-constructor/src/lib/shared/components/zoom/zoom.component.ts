@@ -15,7 +15,7 @@ import {
 import { BehaviorSubject, fromEvent, Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { filter, tap } from 'rxjs/operators';
-import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ZoomEvent } from './typings';
 
 @Component({

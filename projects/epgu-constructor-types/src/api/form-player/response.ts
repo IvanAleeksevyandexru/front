@@ -12,6 +12,24 @@ export interface FormPlayerApiSuccessResponse {
   deliriumAction?: string;
 }
 
+export interface ItemsErrorFieldResponse {
+  fieldName: string;
+  errorDetail: {
+    errorCode: number;
+    errorMessage: string;
+  };
+}
+
+export interface ItemsErrorResponse {
+  error: {
+    errorDetail: {
+      errorCode: number;
+      errorMessage: string;
+      fieldErrors?: ItemsErrorFieldResponse[];
+    };
+  };
+}
+
 export interface FormPlayerApiErrorResponse {
   description: string;
   message: string;

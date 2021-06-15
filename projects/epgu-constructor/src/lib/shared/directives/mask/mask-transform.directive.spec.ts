@@ -10,6 +10,13 @@ import { BaseModule } from '../../base.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { configureTestSuite } from 'ng-bullet';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  CoreUiModule,
+  LoggerService,
+  LoggerServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-mask-transform-test-component',
@@ -34,11 +41,13 @@ describe('MaskTransformDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
-      imports: [CoreModule, RouterTestingModule, BaseModule],
+      imports: [CoreModule, CoreUiModule, RouterTestingModule, BaseModule],
       providers: [
         DecimalPipe,
         NgControl,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     })
       .compileComponents();

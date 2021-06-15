@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule, ListItem } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent, HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadComponent, HelperTextComponent, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ModalService } from '../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../modal/modal.service.stub';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -22,12 +21,12 @@ import { ScreenStore } from 'projects/epgu-constructor/src/lib/screen/screen.typ
 import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
 import { of } from 'rxjs';
-import { LoggerService } from 'projects/epgu-constructor/src/lib/core/services/logger/logger.service';
-import { LoggerServiceStub } from 'projects/epgu-constructor/src/lib/core/services/logger/logger.service.stub';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
@@ -70,6 +69,7 @@ describe('TimeSlotsComponent', () => {
         DatesToolsService,
         TimeSlotsService,
         UtilsService,
+        HttpCancelService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -105,7 +105,7 @@ describe('TimeSlotsComponent', () => {
       .mockReturnValue(of(mockSlots as SmevSlotsResponseInterface));
 
     jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-      if (url === 'api/service/actions/currentDateTime') {
+      if (url === '/api/service/actions/currentDateTime') {
         return of('2021-01-01T00:00:00.000Z');
       } else {
         return httpClient.get(url, options);
@@ -285,7 +285,7 @@ describe('TimeSlotsComponent', () => {
       Date.now = jest.fn().mockReturnValue(new Date(todayStr));
       jest.spyOn(httpClient, 'get').mockRestore();
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-        if (url === 'api/service/actions/currentDateTime') {
+        if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
         } else {
           return httpClient.get(url, options);
@@ -350,7 +350,7 @@ describe('TimeSlotsComponent', () => {
       screenService.component.attrs.refDate = todayStr;
       jest.spyOn(httpClient, 'get').mockRestore();
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
-        if (url === 'api/service/actions/currentDateTime') {
+        if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
         } else {
           return httpClient.get(url, options);

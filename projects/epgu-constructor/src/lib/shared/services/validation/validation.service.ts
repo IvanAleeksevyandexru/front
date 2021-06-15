@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { DatesHelperService } from '@epgu/epgu-lib';
+import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 
 import {
   CustomComponent,
@@ -19,9 +19,9 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
-} from '../../constants/helper-texts';
+} from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {
@@ -66,7 +66,7 @@ export class ValidationService {
       if (validations?.length) {
         const error = this.getError(validations, control, component);
         if (error) {
-          return this.validationErrorMsg(error.errorMsg, error?.errorDesc);
+          return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -79,7 +79,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? null
-        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc);
+        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true);
     };
   }
 
@@ -99,7 +99,7 @@ export class ValidationService {
       if (asyncValidationType === 'blur' && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
-          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc));
+          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
           (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
@@ -112,7 +112,7 @@ export class ValidationService {
 
       return this.isValid(component, control.value)
         ? of(null)
-        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc));
+        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true));
     };
   }
 
@@ -142,34 +142,44 @@ export class ValidationService {
     return (control: AbstractControl): ValidationErrors => {
       if (validations.length === 0) return;
 
-      const minDate =
+      let minDate =
         this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
         this.dateRangeService.rangeMap.get(component.id)?.min ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
-      const maxDate =
+      let maxDate =
         this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
         this.dateRangeService.rangeMap.get(component.id)?.max ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 
+      let controlValueAsDate: Date | number;
+      if (control.value instanceof MonthYear) {
+        // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
+        controlValueAsDate = control.value.firstDay();
+        minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+      } else {
+        controlValueAsDate = control.value;
+      }
+
       const error =
-        control.value &&
+        controlValueAsDate &&
         validations.find((validation) => {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              return this.datesToolsService.isBefore(control.value, minDate);
+              return this.datesToolsService.isBefore(controlValueAsDate, minDate);
             case '<=':
-              return this.datesToolsService.isSameOrBefore(control.value, minDate);
+              return this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
             case '>':
-              return this.datesToolsService.isAfter(control.value, maxDate);
+              return this.datesToolsService.isAfter(controlValueAsDate, maxDate);
             case '>=':
-              return this.datesToolsService.isSameOrAfter(control.value, maxDate);
+              return this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
             default:
               return null;
           }
         });
 
       if (error) {
-        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD);
+        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
       }
     };
   }
@@ -210,8 +220,9 @@ export class ValidationService {
   private validationErrorMsg(
     error: string = InvalidControlMsg.formatField,
     desc?: string,
+    textFromJson = false,
   ): ValidationErrors {
-    return { msg: error, desc };
+    return { msg: error, desc, textFromJson };
   }
 
   private getError(

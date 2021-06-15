@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Tracer, BatchRecorder, jsonEncoder, ExplicitContext } from 'zipkin';
 import { HttpLogger } from 'zipkin-transport-http';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
-import { SessionService } from '../session/session.service';
+import { SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../../form-player/form-player.types';
 
 @Injectable()

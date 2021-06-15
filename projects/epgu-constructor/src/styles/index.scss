@@ -107,6 +107,7 @@
     text-decoration: none;
     color: $color-gosblue;
     cursor: pointer;
+    outline: none;
 
     &:hover {
       color: $color-active-item;

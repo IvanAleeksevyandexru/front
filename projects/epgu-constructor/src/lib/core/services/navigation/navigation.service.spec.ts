@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { NavigationService } from './navigation.service';
-import { ConfigServiceStub } from '../config/config.service.stub';
-import { ConfigService } from '../config/config.service';
-import { DeviceDetectorService } from '../device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
-import { SmuEventsServiceStub } from '../device-detector/smu-events.service.stub';
-import { MobilViewEvents } from '../../../shared/constants/redirect-event';
+import { SmuEventsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { MobilViewEvents } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ScreenService } from '../../../screen/screen.service';

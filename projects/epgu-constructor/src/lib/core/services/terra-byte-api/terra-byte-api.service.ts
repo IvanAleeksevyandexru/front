@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, range, from, combineLatest, of } from 'rxjs';
-import { ConfigService } from '../config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import * as FileSaver from 'file-saver';
 import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
 import {

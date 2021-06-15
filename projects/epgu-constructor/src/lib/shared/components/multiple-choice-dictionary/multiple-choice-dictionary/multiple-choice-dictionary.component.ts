@@ -10,8 +10,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListElement } from '@epgu/epgu-lib';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 
-import { ModalService } from '../../../../modal/modal.service';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { CustomComponentDropDownItem } from '../../../../component/custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';

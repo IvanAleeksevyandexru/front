@@ -4,12 +4,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { HealthService } from '@epgu/epgu-lib';
-import { ConfigService } from '../../services/config/config.service';
-import { ConfigServiceStub } from '../../services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
-import { UtilsService } from '../../services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '../../services/global-error/health.service.stub';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {

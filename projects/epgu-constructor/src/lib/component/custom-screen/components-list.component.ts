@@ -13,9 +13,12 @@ import {
 import { Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../../core/services/config/config.service';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import {
+  EventBusService,
+  UnsubscribeService,
+  ConfigService,
+  HttpCancelService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import {
   CustomComponent,
@@ -23,7 +26,6 @@ import {
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
-import { HttpCancelService } from '../../core/interceptor/http-cancel/http-cancel.service';
 import { ComponentsListFormService } from './services/components-list-form/components-list-form.service';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';

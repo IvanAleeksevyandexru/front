@@ -2,23 +2,23 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub } from '../core/services/config/load-service-stub';
+import { LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
-import { UnsubscribeService } from '../core/services/unsubscribe/unsubscribe.service';
-import { ModalContainerComponent } from '../modal/shared/modal-container/modal-container.component';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalContainerComponent, ModalServiceStub, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../core/services/navigation/navigation.service';
-import { LoggerService } from '../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../core/services/logger/logger.service.stub';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenResolverComponent } from '../screen/screen-resolver/screen-resolver.component';
 import { ScreenModalComponent } from '../modal/screen-modal/screen-modal.component';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerConfigApiServiceStub } from './services/form-player-config-api/form-player-config-api.service.stub';
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
-import { ConfigService } from '../core/services/config/config.service';
-import { ConfigServiceStub } from '../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
@@ -34,17 +34,15 @@ import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit
 import { SimpleChange } from '@angular/core';
 import { EpguLibModuleInited } from '../shared/base.module';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
-import { EventBusService } from '../core/services/event-bus/event-bus.service';
-import { ModalServiceStub } from '../modal/modal.service.stub';
-import { ModalService } from '../modal/modal.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
-import { UtilsService } from '../core/services/utils/utils.service';
-import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../screen/current-answers.service';
-import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
-import { DeviceDetectorServiceStub } from '../core/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TracingService } from '../core/services/tracing/tracing.service';
-import { SessionService } from '../core/services/session/session.service';
+import { SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponent } from '../component/logic-screen/component/logic.component';
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
@@ -110,6 +108,7 @@ describe('FormPlayerComponent', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
         TracingService,
         SessionService,
         TerraByteApiService,
@@ -374,11 +373,6 @@ describe('FormPlayerComponent', () => {
     it('should render screen modal', () => {
       const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
       expect(screenModal).toBeTruthy();
-    });
-
-    it('should render modal container', () => {
-      const modalContainer = fixture.debugElement.query(By.css('epgu-constructor-modal-container'));
-      expect(modalContainer).toBeTruthy();
     });
   });
 });

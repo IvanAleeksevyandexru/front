@@ -5,20 +5,20 @@ import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import {
   LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY, ORDER_TO_ORDER_SCENARIO_KEY,
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
 import { LoadService } from '@epgu/epgu-lib';
-import { LoadServiceStub } from '../../../core/services/config/load-service-stub';
-import { LoggerService } from '../../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../../core/services/logger/logger.service.stub';
+import { LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Location } from '@angular/common';
 import { LocationService, WINDOW_PROVIDERS, LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
@@ -114,6 +114,16 @@ describe('FormPlayerStartManager', () => {
       service.startPlayer();
       expect(service['startLoadFromQuizCase']).toBeCalled();
       localStorage.removeItem(QUIZ_SCENARIO_KEY);
+    });
+
+    it('should call startLoadFromOrderCase case', () => {
+      location.go('/some-page', 'fromOrder=true');
+      localStorage.setItem(ORDER_TO_ORDER_SCENARIO_KEY, rawSate);
+      initDataService.init({ ...serviceDataMock });
+      spyOn<any>(service, 'startLoadFromOrderCase').and.callThrough();
+      service.startPlayer();
+      expect(service['startLoadFromOrderCase']).toBeCalled();
+      localStorage.removeItem(ORDER_TO_ORDER_SCENARIO_KEY);
     });
 
     it('should call handleOrder case', () => {

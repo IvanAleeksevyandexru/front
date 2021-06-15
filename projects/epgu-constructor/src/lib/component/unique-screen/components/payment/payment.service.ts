@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { ConfigService } from '../../../../core/services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { getPaymentRequestOptions } from './payment.constants';

@@ -9,11 +9,11 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-
 import { HealthService } from '@epgu/epgu-lib';
-import { UtilsService } from '../../services/utils/utils.service';
 import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../../services/config/config.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
 export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';

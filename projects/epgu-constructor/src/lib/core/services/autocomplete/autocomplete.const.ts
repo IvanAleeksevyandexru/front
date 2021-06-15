@@ -56,3 +56,5 @@ export const isChildrenListType = (component): boolean => {
     UniqueScreenComponentTypes.childrenListUnder14,
   ].includes(component.type as UniqueScreenComponentTypes);
 };
+
+export const SUGGEST_SEPORATOR_DEFAULT = ', ';

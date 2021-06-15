@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from 'lodash';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '../../../../core/services/config/config.service';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import {
   ConfirmUserDataError,

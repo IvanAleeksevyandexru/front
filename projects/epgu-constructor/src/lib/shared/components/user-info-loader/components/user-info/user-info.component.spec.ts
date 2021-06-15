@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserInfoComponent } from './user-info.component';
 import { AgeType, Gender, UserInfoType } from './user-info.type';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 

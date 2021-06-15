@@ -3,7 +3,7 @@ import { ConstructorMaskedInputComponent } from './constructor-masked-input.comp
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { MaskHandleModule } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { MaskModule } from '../../directives/mask/mask.module';
 import { NgControl } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';

@@ -1,26 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceDetectorServiceStub } from '../../core/services/device-detector/device-detector.service.stub';
-import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
+import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
-import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
-import { ConfigService } from '../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
-import { UtilsService } from '../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { configureTestSuite } from 'ng-bullet';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
+import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;

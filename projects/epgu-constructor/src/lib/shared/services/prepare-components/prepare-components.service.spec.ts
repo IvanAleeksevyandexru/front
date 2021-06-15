@@ -1,15 +1,21 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from 'ng-bullet';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
+import {
+  LocalStorageService,
+  LocalStorageServiceStub,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
-import { UtilsService } from '../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ConfigService } from '../../../core/services/config/config.service';
-import { LoggerService } from '../../../core/services/logger/logger.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
@@ -18,10 +24,7 @@ import {
   CustomComponentRefRelation,
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;

@@ -8,6 +8,8 @@ import {
   DisclaimerDto,
   ScreenButton,
 } from '@epgu/epgu-constructor-types';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import {
@@ -18,9 +20,8 @@ import {
 } from '../medical-referrals-list.types';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
-import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalService } from '../../../../../modal/modal.service';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/interceptor/errors/errors.interceptor.constants';
+import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-medical-referrals-list-container',

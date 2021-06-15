@@ -5,16 +5,20 @@ import { HealthService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorDropdownModule, CoreUiModule,
+  HttpCancelService,
+  LoggerService,
+  LoggerServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { ModalService } from '../../../../../../modal/modal.service';
-import { ModalServiceStub } from '../../../../../../modal/modal.service.stub';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -70,6 +74,7 @@ describe('SelectChildrenItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
       imports: [
+        CoreUiModule,
         RouterTestingModule,
         ConstructorDropdownModule,
         ComponentsListModule,
@@ -83,7 +88,10 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         CurrentAnswersService,
+        HttpCancelService,
         DictionaryToolsService,
         RefRelationService,
       ],

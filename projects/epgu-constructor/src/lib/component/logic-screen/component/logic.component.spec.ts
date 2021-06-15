@@ -5,7 +5,7 @@ import { LogicComponent } from './logic.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { LogicService } from '../service/logic.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';

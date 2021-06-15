@@ -1,12 +1,14 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/epgu-lib';
-import { TextTransformService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  TextTransformService,
+  UnsubscribeService,
+  DatesToolsService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import {
   DocInputField,
@@ -221,8 +223,12 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     this.form.get(control).updateValueAndValidity();
   }
 
-  isValidationShown(control: string | string[]): boolean {
+  isInvalidAndDirty(control: string | string[]): boolean {
     return this.form.get(control).invalid && this.form.get(control).dirty;
+  }
+
+  isInvalidAndTouched(control: string | string[]): boolean {
+    return this.form.get(control).invalid && this.form.get(control).touched;
   }
 
   private getParsedComponentValues(): DocInputFields {

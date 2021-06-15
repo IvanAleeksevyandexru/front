@@ -3,9 +3,10 @@ import { LongButtonModule, AppStateModule, CoreUiModule } from '@epgu/epgu-const
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
+import { ProjectListComponent } from './pages/project-list/project-list.component';
 
 @NgModule({
-  declarations: [ChildrenClubsAppComponent],
+  declarations: [ChildrenClubsAppComponent, ProjectListComponent],
   imports: [
     CoreUiModule,
     LongButtonModule,
@@ -13,6 +14,7 @@ import { ChildrenClubsFilterPanelModule } from './components/filter-panel/childr
     ProgramListModule,
     ChildrenClubsFilterPanelModule,
   ],
+
   exports: [ChildrenClubsAppComponent],
 })
 export class ChildrenClubsModule {}

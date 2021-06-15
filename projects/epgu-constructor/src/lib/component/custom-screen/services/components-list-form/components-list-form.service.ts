@@ -4,11 +4,11 @@ import { ListItem } from '@epgu/epgu-lib';
 import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
-import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
-import { isEqualObj } from '../../../../shared/constants/utils';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
+import { isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -297,7 +297,7 @@ export class ComponentsListFormService {
       this.validationService.validationBackendError(errorMsg, component),
     ];
 
-    if (component.type === CustomScreenComponentTypes.DateInput) {
+    if (component.type === CustomScreenComponentTypes.DateInput || component.type === CustomScreenComponentTypes.MonthPicker) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 

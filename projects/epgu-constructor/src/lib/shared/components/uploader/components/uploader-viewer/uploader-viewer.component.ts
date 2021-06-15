@@ -7,7 +7,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ModalBaseComponent } from '../../../../../modal/shared/modal-base/modal-base.component';
+import { ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
 import { FileItem } from '../../../file-upload/data';
 

@@ -9,6 +9,12 @@ import {
 } from '@angular/core';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import {
+  DeviceDetectorService,
+  ConfigService,
+  createDownloadEvent,
+} from '@epgu/epgu-constructor-ui-kit';
+
+import {
   CancelAction,
   ErrorActions,
   FileItem,
@@ -17,10 +23,8 @@ import {
   OperationType,
 } from '../../../file-upload/data';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { ConfigService } from '../../../../../core/services/config/config.service';
+
 import { iconsTypes, SuggestAction } from '../../data';
-import { DeviceDetectorService } from '../../../../../core/services/device-detector/device-detector.service';
-import { createDownloadEvent } from '../../../../constants/redirect-event';
 
 @Component({
   selector: 'epgu-constructor-uploader-manager-item',

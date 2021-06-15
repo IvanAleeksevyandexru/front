@@ -9,7 +9,7 @@ import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-uni
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '../../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('CheckboxCubeContainerComponent', () => {
   let component: CheckboxCubeContainerComponent;

@@ -65,7 +65,8 @@
 
 @mixin screen-buttons-margin {
   :host::ng-deep  {
-    .screen-body.screen-body {
+    .screen-body.screen-body,
+    .screen-body.screen-body:not(.quiz__header) {
       @include tablets-up {
         margin-bottom: 16px;
       }
@@ -75,7 +76,8 @@
       }
     }
 
-    .screen-footer > .screen-buttons {
+    .screen-footer > .screen-buttons,
+    .screen-footer:not(.quiz__container) > .screen-buttons {
       margin-top: 0;
     }
   }

@@ -1,11 +1,12 @@
 import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
-import { ModalService } from '../../../modal/modal.service';
+import { Clarifications, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
-import { getHiddenBlock } from '../../constants/utils';
+import { getHiddenBlock } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { Clarifications, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Directive({
   selector: '[epgu-constructor-clickable-label]',

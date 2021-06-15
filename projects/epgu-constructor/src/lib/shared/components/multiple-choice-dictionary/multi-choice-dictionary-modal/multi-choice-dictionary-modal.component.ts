@@ -19,11 +19,14 @@ import {
 } from 'rxjs/operators';
 import { BehaviorSubject, merge, Observable, of } from 'rxjs';
 
-import { ModalBaseComponent } from '../../../../modal/shared/modal-base/modal-base.component';
+import {
+  ModalBaseComponent,
+  EventBusService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
-import { EventBusService } from '../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+
 import { FormField } from '../multiple-choice-dictionary.models';
 
 @Component({

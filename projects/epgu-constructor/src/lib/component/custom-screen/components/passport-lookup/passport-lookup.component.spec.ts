@@ -5,7 +5,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockProviders } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { PassportLookupComponent } from './passport-lookup.component';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';

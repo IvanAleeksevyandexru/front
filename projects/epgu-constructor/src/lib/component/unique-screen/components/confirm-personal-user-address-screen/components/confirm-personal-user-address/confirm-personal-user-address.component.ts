@@ -9,20 +9,26 @@ import {
 import { Observable } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import {
+  UnsubscribeService,
+  ConfigService,
+  HttpCancelService,
+  DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { DATE_STRING_DOT_FORMAT } from '../../../../../../shared/constants/dates';
 import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
-import { HttpCancelService } from '../../../../../../core/interceptor/http-cancel/http-cancel.service';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
+import {
+  prepareClassifiedSuggestionItems,
+  SUGGEST_SEPORATOR_DEFAULT,
+} from '../../../../../../core/services/autocomplete/autocomplete.const';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 
 type AddressFields = ConfirmAddressFieldsInterface & {
@@ -50,6 +56,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   form: FormGroup;
   isRequired: boolean;
+  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
 
   constructor(
     public config: ConfigService,

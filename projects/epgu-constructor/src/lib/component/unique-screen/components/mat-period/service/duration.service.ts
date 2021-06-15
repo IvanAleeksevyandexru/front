@@ -8,12 +8,12 @@ import {
   startOfYear,
 } from 'date-fns';
 import { ListElement } from '@epgu/epgu-lib';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { PaymentType } from '../mat-period.models';
 import {
   DATE_STRING_DOT_FORMAT,
   DATE_STRING_LLLL_YYYY_FORMAT,
-} from '../../../../../shared/constants/dates';
+} from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class DurationService {

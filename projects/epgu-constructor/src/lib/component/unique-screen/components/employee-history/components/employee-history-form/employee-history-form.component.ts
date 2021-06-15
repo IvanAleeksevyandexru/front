@@ -12,8 +12,8 @@ import { ValidationShowOn } from '@epgu/epgu-lib';
 import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { Gender, TextTransform, ComponentDto, Clarifications } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   EmployeeHistoryDataSource,
   EmployeeHistoryFormData,

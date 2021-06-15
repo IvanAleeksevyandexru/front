@@ -8,16 +8,19 @@ import {
 } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { LocalStorageService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../../../core/services/config/config.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import {
+  LocalStorageService,
+  LocationService,
+  UnsubscribeService,
+  ConfigService,
+  DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
-import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import {

@@ -195,6 +195,13 @@ describe('UploaderValidationService', () => {
       expect(prepareService.validateSize(mockFileItem()).error).toBeUndefined();
     });
 
+    it('should  validateMinSize - error', () => {
+      const fileItem = mockFileItem();
+
+      uploaderService.data = { ...uploadMock, minSize: 124 };
+      expect(prepareService.validateMinSize(fileItem).error?.type).toBe(ErrorActions.addMinSize);
+    });
+
     it('should  validateSize - error maxSize', () => {
       jest.spyOn(uploadService, 'checkSize').mockReturnValueOnce(1);
 

@@ -51,6 +51,7 @@ export class ScreenContent {
   private _serviceInfo = new BehaviorSubject<null | ServiceInfo>(null);
   private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
+  private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
 
   public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
@@ -382,6 +383,17 @@ export class ScreenContent {
 
   public get serviceInfo$(): Observable<ServiceInfo> {
     return this._serviceInfo.asObservable();
+  }
+
+  public get isLogicComponentLoading(): boolean {
+    return this._isLogicComponentLoading.getValue();
+  }
+  public set isLogicComponentLoading(val: boolean) {
+    this._isLogicComponentLoading.next(val);
+  }
+
+  public get isLogicComponentLoading$(): Observable<boolean> {
+    return this._isLogicComponentLoading.asObservable();
   }
 
   public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {

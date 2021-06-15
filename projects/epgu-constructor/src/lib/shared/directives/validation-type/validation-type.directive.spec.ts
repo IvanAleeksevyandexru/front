@@ -10,9 +10,15 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
-import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  EventBusService,
+  LoggerService,
+  LoggerServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
@@ -69,11 +75,13 @@ describe('ValidationTypeDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [CoreModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
+      imports: [CoreModule, CoreUiModule, ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
       providers: [
         ValidationService,
         NgControl,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
         DateRangeService,
         DatesToolsService,

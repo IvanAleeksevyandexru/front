@@ -6,9 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { ErrorsInterceptorService } from './errors.interceptor';
-import { ModalService } from '../../../modal/modal.service';
-import { ModalServiceStub } from '../../../modal/modal.service.stub';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
@@ -17,10 +15,12 @@ import {
   BOOKING_ONLINE_ERROR,
   TIME_INVITATION_ERROR,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
+  ITEMS_NO_DATA,
+  ITEMS_FAILURE,
 } from './errors.interceptor.constants';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '../../services/config/config.service';
-import { ConfigServiceStub } from '../../services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -33,6 +33,7 @@ import { FormPlayerServiceStub } from '../../../form-player/services/form-player
 import { configureTestSuite } from 'ng-bullet';
 import { ErrorHandleService } from './error-handle.service';
 import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -161,6 +162,60 @@ describe('ErrorsInterceptor', () => {
     tick();
   }));
 
+  it('should open modal with ITEMS_NO_DATA params', fakeAsync(() => {
+    const data = {
+      items: [],
+      error: {
+        errorDetail: {
+          errorMessage: 'NO_DATA:TEST MESSAGE',
+        },
+      },
+    };
+    const url = 'agg/ref/items';
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpClient
+      .post(url, {})
+      .pipe(catchError(() => of()))
+      .subscribe();
+    const req = httpMock.expectOne(url);
+
+    expect(req.request.method).toBe('POST');
+
+    req.flush(data, { status: 200, statusText: 'success' });
+    expect(spy).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      ITEMS_NO_DATA,
+    );
+    tick();
+  }));
+
+  it('should open modal with ITEMS_FAILURE params', fakeAsync(() => {
+    const data = {
+      items: [],
+      error: {
+        errorDetail: {
+          errorMessage: 'UNKNOWN_REQUEST_DESCRIPTION:TEST MESSAGE',
+        },
+      },
+    };
+    const url = 'agg/ref/items';
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpClient
+      .post(url, {})
+      .pipe(catchError(() => of()))
+      .subscribe();
+    const req = httpMock.expectOne(url);
+
+    expect(req.request.method).toBe('POST');
+
+    req.flush(data, { status: 200, statusText: 'success' });
+    expect(spy).toHaveBeenCalledWith(
+      ConfirmationModalComponent,
+      ITEMS_FAILURE,
+    );
+    tick();
+  }));
+
   it('should open modal with DRAFT_STATEMENT_NOT_FOUND params', fakeAsync(() => {
     spyOn(modalService, 'openModal').and.callThrough();
     formPlayerApi.checkIfOrderExist().subscribe(
@@ -186,29 +241,6 @@ describe('ErrorsInterceptor', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       DRAFT_STATEMENT_NOT_FOUND,
-    );
-    tick();
-  }));
-
-  it('should open modal with COMMON_ERROR_MODAL_PARAMS params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
-    formPlayerApi.checkIfOrderExist().subscribe(
-      () => fail('should have failed with the 405 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(405);
-      },
-    );
-    const requestToError = httpMock.expectOne(
-      `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
-    );
-    const body = new HttpErrorResponse({
-      status: 405,
-      statusText: 'Method Not Allowed',
-    });
-    requestToError.flush('Method Not Allowed', body);
-    expect(modalService.openModal).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      COMMON_ERROR_MODAL_PARAMS,
     );
     tick();
   }));
@@ -269,7 +301,7 @@ describe('ErrorsInterceptor', () => {
   it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
     spyOn(navigationService, 'patchOnCli').and.callThrough();
     const orderId = '42';
-    formPlayerApi.getOrderStatus(orderId).subscribe(
+    formPlayerApi.getOrderStatus(Number(orderId)).subscribe(
       () => fail('should have failed with the 410 error'),
       (error: HttpErrorResponse) => {
         expect(error.status).toEqual(410);

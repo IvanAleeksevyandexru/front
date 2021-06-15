@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CustomComponentOutputData } from '../../component/custom-screen/components-list.types';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationPayload } from '../../form-player/form-player.types';
 
 @Injectable()

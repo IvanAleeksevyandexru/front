@@ -6,7 +6,7 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 
 @NgModule({

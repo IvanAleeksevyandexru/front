@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ActionService } from './action.service';
-import { ModalService } from '../../../modal/modal.service';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 
 @Directive({

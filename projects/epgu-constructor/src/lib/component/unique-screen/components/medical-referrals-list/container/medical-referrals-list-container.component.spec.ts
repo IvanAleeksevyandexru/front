@@ -9,17 +9,16 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigService } from '../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../core/services/config/config.service.stub';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { MedicalReferralsListComponent } from '../medical-referrals-list.component';
 import { AnswerButtonModule } from '../../../../../shared/components/answer-button/answer-button.module';
-import { ModalService } from '../../../../../modal/modal.service';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
-import { ModalServiceStub } from '../../../../../modal/modal.service.stub';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/interceptor/errors/errors.interceptor.constants';
 import { of } from 'rxjs';
+import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 describe('MedicalReferralsListContainerComponent', () => {
   let component: MedicalReferralsListContainerComponent;

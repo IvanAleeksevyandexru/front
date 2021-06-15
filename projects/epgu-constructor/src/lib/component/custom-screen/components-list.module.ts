@@ -15,11 +15,11 @@ import {
   ConstructorDropdownModule,
   ConstructorLookupModule,
   InputErrorModule,
-  MemoModule
+  MemoModule,
+  CurrencyModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
-import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../shared/base.module';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';

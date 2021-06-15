@@ -10,14 +10,14 @@ import { NavigationModalService } from '../../core/services/navigation-modal/nav
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenModalService } from './screen-modal.service';
 import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
-import { DatesToolsService } from '../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListModule } from '../../component/custom-screen/components-list.module';

@@ -9,17 +9,21 @@ import {
 import { debounceTime, delay, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { DeviceDetectorService } from '../../core/services/device-detector/device-detector.service';
+import {
+  ModalBaseComponent,
+  DeviceDetectorService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import {
   FormPlayerNavigation,
   Navigation,
   NavigationPayload,
 } from '../../form-player/form-player.types';
 import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
-import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+
 import { ScreenModalService } from './screen-modal.service';
 import { ScreenService } from '../../screen/screen.service';
-import { ModalBaseComponent } from '../shared/modal-base/modal-base.component';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Component({

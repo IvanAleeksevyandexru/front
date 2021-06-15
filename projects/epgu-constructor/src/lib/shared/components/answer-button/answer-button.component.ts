@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ComponentAnswerDto } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 
 @Component({

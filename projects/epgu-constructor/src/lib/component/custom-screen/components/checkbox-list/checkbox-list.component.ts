@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckboxList,
   CheckboxListComponentAttrsDto,

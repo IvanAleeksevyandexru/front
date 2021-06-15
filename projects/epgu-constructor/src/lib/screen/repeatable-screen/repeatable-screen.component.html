@@ -23,6 +23,7 @@
         ></div>
         <epgu-constructor-components-list
           class="cmp-group__item"
+          [id]="screenKey"
           [componentsGroupIndex]="i"
           [components]="$any(screens[screenKey])"
           [errors]="(commonError$ | async)?.errors[i] || {}"

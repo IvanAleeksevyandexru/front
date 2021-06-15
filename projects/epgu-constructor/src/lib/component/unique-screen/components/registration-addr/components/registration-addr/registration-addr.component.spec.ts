@@ -2,10 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
+import { configureTestSuite } from 'ng-bullet';
+import {
+  ScreenPadModule,
+  ConfigService,
+  ConfigServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  EventBusService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { ConfigService } from '../../../../../../core/services/config/config.service';
-import { ConfigServiceStub } from '../../../../../../core/services/config/config.service.stub';
-import { UnsubscribeService } from '../../../../../../core/services/unsubscribe/unsubscribe.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -14,17 +21,12 @@ import { IRegistrationAddrComponent } from '../../registration-addr-screen.types
 import { RegistrationAddrComponent } from './registration-addr.component';
 import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateValidator } from './date-validator';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
-import { LoggerService } from '../../../../../../core/services/logger/logger.service';
-import { LoggerServiceStub } from '../../../../../../core/services/logger/logger.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { EventBusService } from '../../../../../../core/services/event-bus/event-bus.service';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
