@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -152,6 +153,7 @@ describe('RepeatableScreenComponent', () => {
       providers: [
         CurrentAnswersService,
         ChangeDetectorRef,
+        ScrollToService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
@@ -230,7 +232,7 @@ describe('RepeatableScreenComponent', () => {
     const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
     eventBusService.emit('cloneButtonClickEvent', 'any');
     expect(setNewScreenSpy).toBeCalledTimes(1);
-    expect(setNewScreenSpy).toBeCalledWith(components);
+    expect(setNewScreenSpy).toBeCalledWith(components, undefined);
   });
 
   it('should been called setNewScreen method with screens components', () => {

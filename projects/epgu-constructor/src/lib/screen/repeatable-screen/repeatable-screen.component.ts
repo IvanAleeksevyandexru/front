@@ -8,6 +8,7 @@ import {
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
 import { DisplayDto, ScenarioErrorsDto, ScreenTypes } from '@epgu/epgu-constructor-types';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { EventBusService, UnsubscribeService, isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
@@ -92,6 +93,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
     private navigationService: NavigationService,
+    private scrollToService: ScrollToService,
   ) {}
 
   ngOnInit(): void {
@@ -107,6 +109,15 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   }
 
   trackByFunction = (_index: number, item: string): string => item;
+
+  triggerScrollTo(target: number | string): void {
+    const config: ScrollToConfigOptions = {
+      target: String(target),
+    };
+    setTimeout(() => {
+      this.scrollToService.scrollTo(config);
+    }, 0);
+  }
 
   ngAfterViewChecked(): void {
     this.cdr.detectChanges();
@@ -134,6 +145,8 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.componentValidation.splice(index, 1);
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
     this.saveState(state);
+    const keys = Object.keys(this.screens);
+    this.triggerScrollTo(keys[keys.length - 1]);
   }
 
   getState(): Record<string, string>[] {
@@ -164,11 +177,11 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
 
   private initScreens(): void {
     for (let i = 0; i < this.minOccures; i += 1) {
-      this.createScreen();
+      this.createScreen(false, true);
     }
   }
 
-  private createScreen(isDuplicate?: boolean): void {
+  private createScreen(isDuplicate?: boolean, initialLoaded?: boolean): void {
     if (!this.isScreensAvailable()) {
       return;
     }
@@ -180,17 +193,23 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       );
 
     if (isDuplicate) {
-      this.setNewScreen(getScreenComponents(attrs.components, false));
+      this.setNewScreen(getScreenComponents(attrs.components, false), initialLoaded);
     } else {
       attrs.repeatableComponents.forEach((component, i) => {
-        this.setNewScreen(getScreenComponents(component, i < 1) as CustomComponent[]);
+        this.setNewScreen(
+          getScreenComponents(component, i < 1) as CustomComponent[],
+          initialLoaded,
+        );
       });
     }
   }
 
-  private setNewScreen(components: CustomComponent[]): void {
+  private setNewScreen(components: CustomComponent[], initialLoaded?: boolean): void {
     const id = this.getNewId();
     this.screens[id] = components;
+    if (!initialLoaded) {
+      this.triggerScrollTo(id);
+    }
   }
 
   private getNewId(): string {
