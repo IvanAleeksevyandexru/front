@@ -76,7 +76,7 @@ export class DateRestrictionsService {
   }
 
   private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number): string {
-    let key = componentId + String();
+    let key = componentId;
     if (componentsGroupIndex !== undefined) {
       key += String(componentsGroupIndex);
     }
@@ -147,11 +147,7 @@ export class DateRestrictionsService {
     const { value } = form.controls.find((control) => control.value.id === component.id).value;
 
     if (value instanceof MonthYear) {
-      const date = new Date();
-      date.setMonth(value.month);
-      date.setFullYear(value.year);
-
-      return date;
+      return value.firstDay();
     }
 
     return value;
