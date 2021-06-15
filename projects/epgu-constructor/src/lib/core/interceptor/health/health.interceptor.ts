@@ -28,6 +28,9 @@ export const PREV_EVENT_TYPE = 'getPrevStep';
 export const GET_SLOTS = 'equeueAggSlotsService';
 export const GET_SLOTS_MODIFIED = 'getSlots';
 
+export const DOWNLOAD_SERVICE = 'DownloadService';
+export const DOWNLOAD_SERVICE_MODIFIED = 'nsiSuggestDownloadUploadedFile';
+
 export interface DictionaryPayload {
   region: string;
   dict: string;
@@ -71,6 +74,8 @@ export interface CommonPayload {
   dictionaryUrl?: string | undefined;
   typeEvent?: string;
   mnemonicScreen?: string;
+  method: string;
+  date: string;
 }
 
 export interface UnspecifiedDTO {
@@ -107,6 +112,7 @@ export class HealthInterceptor implements HttpInterceptor {
   private regionCode: string | undefined;
   private cachedRegionId: string;
   private isDictionaryHasError = false;
+  private mnemonic: string = undefined;
 
   private slotInfo: SlotInfo = {} as SlotInfo;
 
@@ -120,6 +126,16 @@ export class HealthInterceptor implements HttpInterceptor {
     req: HttpRequest<T>,
     next: HttpHandler,
   ): Observable<HttpEvent<T>> {
+    this.mnemonic = undefined;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const requestBody = req?.body as any;
+    if (this.isRequestBodyIsFormDataInstance(requestBody)) {
+      this.mnemonic = requestBody.get('mnemonic') ?? undefined;
+    } else {
+      this.mnemonic = this.getParameterByName(req.urlWithParams, 'mnemonic') ?? undefined;
+    }
+    
     // Allways reset generated service name and dictionary validation status
     let serviceName = '';
     this.isDictionaryHasError = false;
@@ -132,6 +148,7 @@ export class HealthInterceptor implements HttpInterceptor {
       serviceName =
         serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
       serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
+      serviceName = serviceName === DOWNLOAD_SERVICE ? DOWNLOAD_SERVICE_MODIFIED : serviceName;
 
       this.regionCode = this.getRegionCode(req?.body?.filter);
       this.startMeasureHealth(serviceName);
@@ -163,6 +180,12 @@ export class HealthInterceptor implements HttpInterceptor {
 
           this.isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
+          this.commonParams = {
+            ...this.commonParams,
+            method: req.method,
+            date: new Date().toISOString(),
+          };
+
           if (this.isValidScenarioDto(responseBody)) {
             const { scenarioDto, health, callBackOrderId } = responseBody;
             const { display } = scenarioDto;
@@ -189,6 +212,7 @@ export class HealthInterceptor implements HttpInterceptor {
             }
 
             this.commonParams = {
+              ...this.commonParams,
               id: display.id,
               name: this.utils.cyrillicToLatin(display.name),
               orderId: orderId,
@@ -234,9 +258,10 @@ export class HealthInterceptor implements HttpInterceptor {
 
           if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
             let payload = {};
-            const { id, name, orderId } = this.commonParams;
+            const { id, name, orderId, date, method } = this.commonParams;
+            const mnemonic = this.mnemonic;
 
-            payload = { id, name, orderId };
+            payload = { id, name, orderId, mnemonic, date, method };
 
             if (
               serviceName === GET_SLOTS_MODIFIED &&
@@ -302,6 +327,16 @@ export class HealthInterceptor implements HttpInterceptor {
         }
       }),
     );
+  }
+
+  private getParameterByName(url: string, name: string): string | null {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(url);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private isRequestBodyIsFormDataInstance(body: any): boolean {
+    return typeof body === 'object' && typeof body?.append=== 'function' && typeof body?.get === 'function';
   }
 
   private startMeasureHealth(serviceName: string): void {
