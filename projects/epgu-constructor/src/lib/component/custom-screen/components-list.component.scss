@@ -21,6 +21,9 @@
         margin-bottom: $screen-pad-12;
       }
     }
+    ::ng-deep .doc-input {
+      margin-bottom: $screen-pad-24;
+    }
     &--checkbox > * {
       margin-bottom: $screen-pad-16;
     }
@@ -31,6 +34,9 @@
     }
     &:last-child {
       &::ng-deep > .component-list-resolver > * > * {
+        margin-bottom: 0;
+      }
+      ::ng-deep .doc-input {
         margin-bottom: 0;
       }
     }
