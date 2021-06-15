@@ -5,6 +5,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockModule, MockProviders } from 'ng-mocks';
 import { ValidationShowOn } from '@epgu/epgu-lib';
+import { DatesToolsService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DropDownDeptsModule } from '../../../../shared/components/drop-down-depts/drop-down-depts.module';
 import { DepartmentLookupComponent } from './department-lookup.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
@@ -15,11 +16,9 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { UnsubscribeService } from '../../../../core/services/unsubscribe/unsubscribe.service';
 import { CustomListDictionaries } from '../../components-list.types';
 
 const mockComponent = {
@@ -42,9 +41,8 @@ describe('DepartmentLookupComponent', () => {
       providers: [
         UnsubscribeService,
         DictionaryToolsService,
-        DatesToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        MockProviders(ComponentsListRelationsService, SuggestHandlerService),
+        MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
