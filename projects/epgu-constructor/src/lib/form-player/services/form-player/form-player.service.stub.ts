@@ -77,6 +77,10 @@ export class FormPlayerServiceStub {
 
   initPlayerFromQuiz(): void {}
 
+  initPlayerFromOrder(): Observable<{}> {
+    return of({});
+  }
+
   checkIfOrderExist(): Observable<{}> {
     return of({});
   }

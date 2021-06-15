@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { WINDOW_PROVIDERS, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -16,7 +16,7 @@ import { InitDataService } from '../../../core/services/init-data/init-data.serv
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
@@ -295,6 +295,76 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'updateLoading').and.callThrough();
       service.initPlayerFromQuiz(quiz);
       expect(service['updateLoading']).toHaveBeenCalled();
+    });
+  });
+
+  describe('initPlayerFromOrder()', () => {
+    it('should call updateLoading(true) before getServiceData', () => {
+      jest.spyOn(service, 'updateLoading');
+
+      const getServiceDataSubject = new Subject();
+
+      jest.spyOn(formPlayerApiService, 'getServiceData').mockReturnValue(getServiceDataSubject.asObservable());
+
+      service.initPlayerFromOrder({});
+
+      expect(service['updateLoading']).toHaveBeenCalledTimes(1);
+      expect(service['updateLoading']).toHaveBeenCalledWith(true);
+    });
+
+    it('should handle error', (done) => {
+      jest.spyOn(service, 'updateLoading').mockImplementation(() => undefined);
+      jest.spyOn(service, 'sendDataError').mockImplementation(() => undefined);
+
+      const getServiceDataSubject = new Subject();
+
+      jest.spyOn(formPlayerApiService, 'getServiceData').mockReturnValue(getServiceDataSubject.asObservable());
+
+      service.initPlayerFromOrder({}).subscribe(
+        () => null,
+        (err) => {
+          expect(err).toBe('some error');
+
+          expect(service['sendDataError']).toBeCalledTimes(1);
+          expect(service['sendDataError']).toBeCalledWith('some error');
+          done();
+        }
+      );
+
+      (service['updateLoading'] as jest.Mock).mockReset();
+
+      getServiceDataSubject.error('some error');
+
+      expect(service['updateLoading']).toBeCalledTimes(1);
+      expect(service['updateLoading']).toBeCalledWith(false);
+    });
+
+    it('should handle success', (done) => {
+      jest.spyOn(service, 'updateLoading').mockImplementation(() => undefined);
+      jest.spyOn(service, 'processResponse').mockImplementation(() => undefined);
+      jest.spyOn(service, 'hasError').mockReturnValue(false);
+
+      const successGetServiceDataResponse = {} as FormPlayerApiResponse;
+      const successNavigateResponse = {} as FormPlayerApiResponse;
+
+      const getServiceDataSubject = new Subject();
+      const navigateSubject = new Subject();
+
+      jest.spyOn(formPlayerApiService, 'getServiceData').mockReturnValue(getServiceDataSubject.asObservable());
+      jest.spyOn(formPlayerApiService, 'navigate').mockReturnValue(navigateSubject.asObservable());
+
+      service.initPlayerFromOrder({}).subscribe(
+        (response) => {
+          expect(response).toBe(successNavigateResponse);
+
+          expect(service['processResponse']).toBeCalledTimes(1);
+          expect(service['processResponse']).toBeCalledWith(successNavigateResponse);
+          done();
+        }
+      );
+
+      getServiceDataSubject.next(successGetServiceDataResponse);
+      navigateSubject.next(successNavigateResponse);
     });
   });
 
