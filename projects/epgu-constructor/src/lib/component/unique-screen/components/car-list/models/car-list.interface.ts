@@ -80,7 +80,7 @@ interface Restriction {
   status: string;
   restrictionDate: string;
   initiateRegion: string;
-  gibddDepart: string;
+  ospAddress: string;
   mainReason: string;
   restrictionDesc: string;
   enforcementProceedingsNumber: string;
