@@ -112,8 +112,16 @@ export * from './lib/app/app-state/app-state.query';
 export * from './lib/app/app-state/app-state.query.stub';
 export * from './lib/app/app-state/app-state.service.stub';
 export * from './lib/app/app-routing/app-routing';
-export * from './lib/app/app-routing/app-routing.module';
+export * from './lib/app/app-ui.module';
+export * from './lib/app/app-ui-type';
 export * from './lib/app/app-routing/app-routing.service';
+export * from './lib/app/app-routing/app-routing.service.stub';
+export * from './lib/app/app-component-resolver/app-component-resolver.component';
+export * from './lib/app/app-navigation/app-navigation.service';
+export * from './lib/app/app-navigation/app-navigation.service.stub';
+export * from './lib/app/app-navigation-rule/app-navigation-rule';
+export * from './lib/app/app-navigation-rule/app-navigation-rule.service';
+export * from './lib/app/app-navigation-rule/app-navigation-rule.service.stub';
 
 
 export * from './lib/modal/modal.service';

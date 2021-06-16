@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Query } from '@datorama/akita';
-import { AppState } from '@epgu/epgu-constructor-types';
+import { AppRouterState, AppState } from '@epgu/epgu-constructor-types';
 import { AppStateStore } from './app-state.store';
 
 @Injectable()
-export class AppStateQuery<T, U>  extends Query<AppState<T, U>> {
+export class AppStateQuery<T, U extends AppRouterState>  extends Query<AppState<T, U>> {
   store$: Observable<AppState<T, U>> = this.select();
   value$: Observable<T> = this.select('value');
   state$: Observable<U> = this.select('state');

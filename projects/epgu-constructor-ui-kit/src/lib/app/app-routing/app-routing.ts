@@ -1,3 +1,5 @@
+import { Type } from '@angular/core';
+
 export type AppRoutingComponentMap = {
-  [key: string]: unknown
+  [key: string]: Type<unknown>
 };
