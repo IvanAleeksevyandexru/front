@@ -33,8 +33,8 @@ export class AppNavigationRuleService {
     const entries = Object.entries(this.appNavigationRuleMap);
 
     for (const item in entries) {
-      const [name] = entries[item];
-      if (entries.some(([_, { next }]) => next === undefined)) {
+      const [name, value] = entries[item];
+      if (value.next === undefined) {
         return name;
       }
     }
