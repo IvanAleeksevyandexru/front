@@ -287,7 +287,7 @@ export class TimeSlotsService {
       })
       .pipe(
         tap((response) => {
-          if (response.error) {
+          if (response.error && response.error.errorDetail.errorCode !== 0) {
             this.errorMessage = response.error?.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';
