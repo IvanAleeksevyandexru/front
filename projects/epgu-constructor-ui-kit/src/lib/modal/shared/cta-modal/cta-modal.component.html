@@ -5,6 +5,7 @@
   </div>
   <div class="conf-modal__body" [class.preview]="preview">
     <perfect-scrollbar
+      #perfectScroll
       class="perfect-scrollbar"
       *ngIf="!isMobile; else contentBlock"
       [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
