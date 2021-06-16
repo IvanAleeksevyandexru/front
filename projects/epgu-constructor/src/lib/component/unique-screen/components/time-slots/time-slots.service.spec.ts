@@ -22,12 +22,14 @@ import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
+import { of } from 'rxjs';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
   let compValue;
   let cachedAnswer;
+  let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -52,6 +54,7 @@ describe('TimeSlotsComponent', () => {
   beforeEach(() => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     timeSlotsService = TestBed.inject(TimeSlotsService);
+    smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     const store: ScreenStore = cloneDeep(mockScreenMvdStore);
     screenService.initScreenStore((store as unknown) as ScreenStore);
     const component = screenService.component;
@@ -75,4 +78,59 @@ describe('TimeSlotsComponent', () => {
     const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
     expect(organizationId).toBe('9277');
   });
+
+  it('no error for object in cancel response', (done) => {
+    timeSlotsService.timeSlotsType = TimeSlotsTypes.RAZBRAK;
+    jest.spyOn(smev3TimeSlotsRestService, 'cancelSlot').mockReturnValueOnce(
+      of({
+        bookId: null,
+        esiaId: null,
+        status: null,
+        error: {
+          errorDetail: { errorCode: 0, errorMessage: 'Operation completed' },
+          fieldErrors: [],
+        },
+      }),
+    );
+    timeSlotsService['cancelSlot']('123').subscribe((mnemonic) => {
+      expect(timeSlotsService.getErrorMessage()).toBeUndefined();
+      done();
+    });
+  });
+
+  it('error for object in cancel response', (done) => {
+    timeSlotsService.timeSlotsType = TimeSlotsTypes.RAZBRAK;
+    jest.spyOn(smev3TimeSlotsRestService, 'cancelSlot').mockReturnValueOnce(
+      of({
+        bookId: null,
+        esiaId: null,
+        status: null,
+        error: {
+          errorDetail: { errorCode: 123, errorMessage: 'some error' },
+          fieldErrors: [],
+        },
+      }),
+    );
+    timeSlotsService['cancelSlot']('123').subscribe((mnemonic) => {
+      expect(timeSlotsService.getErrorMessage()).toEqual('some error');
+      done();
+    });
+  });
+
+  it('no error for null in cancel response', (done) => {
+    timeSlotsService.timeSlotsType = TimeSlotsTypes.RAZBRAK;
+    jest.spyOn(smev3TimeSlotsRestService, 'cancelSlot').mockReturnValueOnce(
+      of({
+        bookId: null,
+        esiaId: null,
+        status: null,
+        error: null,
+      }),
+    );
+    timeSlotsService['cancelSlot']('123').subscribe((mnemonic) => {
+      expect(timeSlotsService.getErrorMessage()).toBeUndefined();
+      done();
+    });
+  });
+
 });
