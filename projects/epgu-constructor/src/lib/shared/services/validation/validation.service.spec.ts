@@ -209,6 +209,7 @@ describe('ValidationService', () => {
       { type: CustomScreenComponentTypes.SnilsInput, attrs },
       { type: CustomScreenComponentTypes.PersonInnInput, attrs },
       { type: CustomScreenComponentTypes.LegalInnInput, attrs },
+      { type: CustomScreenComponentTypes.CardNumberInput, attrs },
     ];
     const control = new FormControl('input');
     control.setValue('12');
@@ -259,6 +260,25 @@ describe('ValidationService', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '049205603' })]);
       const isValid = service.checkRS('40817810362001249935', { bik: 'bik' });
       expect(isValid).toBeFalsy();
+    });
+  });
+
+  describe('checkCardNumber()', () => {
+    const checkNumber = (number: any) => service.checkCardNumber(number);
+
+    it('should be return true', () => {
+      expect(checkNumber('5469 3800 2401 6155')).toBeTruthy();
+      expect(checkNumber('5469380024016155')).toBeTruthy();
+      expect(checkNumber('5469-3800-2401-6155')).toBeTruthy();
+
+      expect(checkNumber('5213 2439 2469 4266')).toBeTruthy();
+      expect(checkNumber('5213 & 2439 ololo2469 ololo4266')).toBeTruthy();
+      expect(checkNumber('5213 2439 2469 4464')).toBeTruthy();
+    });
+
+    it('should be return false', () => {
+      expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
+      expect(checkNumber('5469 3800 2401')).toBeTruthy();
     });
   });
 });

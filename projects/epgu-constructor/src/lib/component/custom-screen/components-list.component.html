@@ -14,27 +14,6 @@
       "
     >
       <epgu-constructor-component-item
-        *ngSwitchCase="componentType.DropDownDepts"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-      >
-        <epgu-constructor-drop-down-depts
-          *ngIf="dictionaries$ | async as dictionaries"
-          [component]="componentData.value"
-          [invalid]="componentData.get('value').invalid && componentData.get('value').touched"
-          [dictionary]="dictionaries[getDictKeyByComp(componentData.value)]"
-          [validationShowOn]="validationShowOn"
-          [control]="$any(componentData.get('value'))"
-          [required]="componentData.value?.required"
-          [attrs]="componentData.value.attrs"
-          [suggest]="(suggestions$ | async)[componentData.value?.id]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
-        >
-        </epgu-constructor-drop-down-depts>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-item
         *ngSwitchCase="componentType.RadioInput"
         [control]="componentData.get('value')"
         [component]="componentData.value"

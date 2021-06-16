@@ -200,6 +200,23 @@ export class ValidationService {
       .some(({ value }) => check(rs, value.value?.id || value.value));
   }
 
+  public checkCardNumber(cardNumber: string): boolean {
+      let sum = 0;
+      const digits = String(cardNumber).replace(/\D/g, '');
+      for (let i = 0; i < digits.length; i++) {
+        let cardNum = parseInt(digits[i]);
+        if (i % 2 === 0) {
+          cardNum = cardNum * 2;
+
+          if (cardNum > 9) {
+            cardNum = cardNum - 9;
+          }
+        }
+        sum += cardNum;
+      }
+      return sum % 10 === 0;
+  }
+
   private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
@@ -212,6 +229,8 @@ export class ValidationService {
         return value.length === this.personInnLength && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
+      case CustomScreenComponentTypes.CardNumberInput:
+        return this.checkCardNumber(value);
       default:
         return true;
     }
