@@ -1,10 +1,8 @@
-import { AppRouterState } from '@epgu/epgu-constructor-types';
-
 export interface ChildrenClubsValue {
   someKey: string
 }
 
-export interface ChildrenClubsState extends AppRouterState{
+export interface ChildrenClubsState {
   someFilters: {
     [key: string]: string
   }

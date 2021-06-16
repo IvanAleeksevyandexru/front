@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AppRouterState, AppState } from '@epgu/epgu-constructor-types';
+import { AppState } from '@epgu/epgu-constructor-types';
 import { AppStateStore } from './app-state.store';
 import { cloneDeep } from 'lodash';
 
 @Injectable()
-export class AppStateService<T, U extends AppRouterState> {
+export class AppStateService<T, U> {
   constructor(private store: AppStateStore<T, U>) {}
 
   public initialize(initState: AppState<T, U>): void {
@@ -17,5 +17,9 @@ export class AppStateService<T, U extends AppRouterState> {
 
   public updateState(newState: U): void {
     this.store.update(storeState => (cloneDeep({ ...storeState, state: newState })));
+  }
+
+  public updateCurrentComponent(newComponent: string): void {
+    this.store.update(storeState => (cloneDeep({ ...storeState, currentComponent: newComponent })));
   }
 }

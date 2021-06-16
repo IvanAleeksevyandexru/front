@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { AppRoutingService } from './app-routing.service';
 import { AppStateQuery } from '../app-state/app-state.query';
-import { AppRouterState } from '@epgu/epgu-constructor-types';
 import { AppStateQueryStub } from '../app-state/app-state.query.stub';
 import { Component } from '@angular/core';
 import { from } from 'rxjs';
@@ -20,7 +19,7 @@ class Test2Component {}
 
 describe('AppRoutingService', () => {
   let service: AppRoutingService;
-  let appStateQuery: AppStateQuery<unknown, AppRouterState>;
+  let appStateQuery: AppStateQuery<unknown, unknown>;
   const routing = {
     test1: TestComponent,
     test2: Test2Component
@@ -55,7 +54,7 @@ describe('AppRoutingService', () => {
 
     it('should return component', (done) => {
       const currentComponent = 'test2';
-      service['state$'] = from([{}, { currentComponent }]) as unknown as Observable<AppRouterState>;
+      service['currentComponent$'] = from([currentComponent]) as unknown as Observable<string>;
       service.component$.subscribe((component) => {
         expect(component).toBe(Test2Component);
         done();
@@ -64,7 +63,7 @@ describe('AppRoutingService', () => {
 
     it('should return undefined component', (done) => {
       const currentComponent = 'test3';
-      service['state$'] = from([{}, { currentComponent }]) as unknown as Observable<AppRouterState>;
+      service['currentComponent$'] = from([currentComponent]) as unknown as Observable<string>;
       service.component$.subscribe((component) => {
         expect(component).toBeUndefined();
         done();
@@ -74,7 +73,7 @@ describe('AppRoutingService', () => {
     it('shouldn\'t trigger twice if have the same currentComponent', (done) => {
       const currentComponent = 'test2';
       const mockFunc = jest.fn(() => true);
-      service['state$'] = from([{ currentComponent }, { currentComponent }, { currentComponent: 'test1' }]) as unknown as Observable<AppRouterState>;
+      service['currentComponent$'] = from([currentComponent , currentComponent, 'test1']) as unknown as Observable<string>;
       service.component$.subscribe((component) => {
         mockFunc();
       }, () => true, () => {
