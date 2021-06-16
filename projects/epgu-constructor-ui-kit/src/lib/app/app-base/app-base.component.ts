@@ -1,5 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import {
+  AppRouterState,
   AppState,
   DataDirectionType,
   InputAppDto,
@@ -10,11 +11,17 @@ import { CfAppStateService } from '../../core/services/cf-app-state/cf-app-state
 import { AppStateQuery } from '../app-state/app-state.query';
 import { LocationService } from '../../core/services/location/location.service';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
+import { AppNavigationRuleService } from '../app-navigation-rule/app-navigation-rule.service';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+
+export const getAppStorageKey = (componentType: string, componentId: string): string => {
+  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}`;
+};
 
 @Component({
   template: '',
 })
-export class AppBaseComponent<T, U> {
+export class AppBaseComponent<T, U extends AppRouterState> {
   public appType: string;
   public inputAppData: InputAppDto;
 
@@ -23,7 +30,10 @@ export class AppBaseComponent<T, U> {
   private cfAppStateService: CfAppStateService;
   private locationService: LocationService;
   private localStorageService: LocalStorageService;
+  private appNavigationRuleService: AppNavigationRuleService;
+  private eventBusService: EventBusService;
   private storeSub;
+  private eventSub;
 
   constructor(public injector: Injector) {
     this.appStateService = this.injector.get(AppStateService);
@@ -31,6 +41,11 @@ export class AppBaseComponent<T, U> {
     this.cfAppStateService = this.injector.get(CfAppStateService);
     this.locationService = this.injector.get(LocationService);
     this.localStorageService = this.injector.get(LocalStorageService);
+    this.appNavigationRuleService = this.injector.get(AppNavigationRuleService);
+    this.eventBusService = this.injector.get(EventBusService);
+    this.eventSub = this.eventBusService.on('closeApp').subscribe((isPrevStepCase: boolean) => {
+      this.closeApp(isPrevStepCase);
+    });
   }
 
   openApp(): void {
@@ -68,8 +83,22 @@ export class AppBaseComponent<T, U> {
     } else {
       try {
         initState = JSON.parse(this.inputAppData.value) as AppState<T, U>;
+
+        if (!initState.value) {
+          initState.value = {} as T;
+        }
+
+        if (!initState.state) {
+          initState.state = {} as U;
+        }
+
+        if (this.inputAppData.isPrevStepCase) {
+          initState.state.currentComponent = this.appNavigationRuleService.getLast();
+        } else {
+          initState.state.currentComponent = this.appNavigationRuleService.getFirst();
+        }
       } catch (_) {
-        initState = { value: null, state: null };
+        initState = { value: {} as T, state: {} as U };
       }
     }
 
@@ -90,11 +119,12 @@ export class AppBaseComponent<T, U> {
   }
 
   private getStorageKey(): string {
-    return `APP_STORAGE_${this.inputAppData.componentType.toUpperCase()}_${this.inputAppData.componentId.toUpperCase()}`;
+    return getAppStorageKey(this.inputAppData.componentType, this.inputAppData.componentId);
   }
 
   private setOutputAppData(isPrevStepCase: boolean): void {
     const { storeState } = this.appStateQuery;
+    delete storeState.state.currentComponent;
     const outputAppData: OutputAppDto = {
       componentId: this.inputAppData.componentId,
       componentType: this.inputAppData.componentType,
@@ -118,6 +148,7 @@ export class AppBaseComponent<T, U> {
   private disableStorageSynchronization(): void {
     const key = this.getStorageKey();
     this.storeSub.unsubscribe();
+    this.eventSub.unsubscribe();
     this.localStorageService.delete(key);
   }
 }

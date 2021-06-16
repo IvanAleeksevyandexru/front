@@ -4,14 +4,7 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
-  template: `
-    <children-clubs-project-list-page></children-clubs-project-list-page>
-    <p>
-      children-clubs app works!
-      <button (click)="closeApp()">closeApp</button>
-      {{ inputAppData?.componentId }}
-    </p>
-  `,
+  template: `<epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>`,
   styles: [],
 })
 export class ChildrenClubsAppComponent
