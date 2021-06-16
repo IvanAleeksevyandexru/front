@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
-import { AppRouterState, AppTypes, DataDirectionType, InputAppDto } from '@epgu/epgu-constructor-types';
+import { AppTypes, DataDirectionType, InputAppDto } from '@epgu/epgu-constructor-types';
 
 import { AppBaseComponent, getAppStorageKey } from './app-base.component';
 import { AppStateService } from '../app-state/app-state.service';
@@ -23,7 +23,7 @@ export interface TestValueType {
   someKey: string
 }
 
-export interface TestStateType extends AppRouterState {
+export interface TestStateType {
   someFilters: {
     [key: string]: string
   }
@@ -138,7 +138,7 @@ describe('AppBaseModule', () => {
       jest.spyOn(appNavigationRuleService, 'getFirst').mockReturnValue(componentName);
       component.openApp();
       const value = JSON.parse(mockInputData.value);
-      value.state.currentComponent = componentName;
+      value.currentComponent = componentName;
       expect(initializeSpy).toBeCalledWith(value);
     });
 
@@ -149,7 +149,7 @@ describe('AppBaseModule', () => {
       jest.spyOn(appNavigationRuleService, 'getLast').mockReturnValue(componentName);
       component.openApp();
       const value = JSON.parse(mockInputData.value);
-      value.state.currentComponent = componentName;
+      value.currentComponent = componentName;
       expect(initializeSpy).toBeCalledWith(value);
     });
 
@@ -160,7 +160,7 @@ describe('AppBaseModule', () => {
       jest.spyOn(appNavigationRuleService, 'getFirst').mockReturnValue(componentName);
       component.openApp();
       const value = JSON.parse(mockInputData.value);
-      value.state.currentComponent = componentName;
+      value.currentComponent = componentName;
       expect(initializeSpy).toBeCalledWith(value);
     });
 
@@ -215,7 +215,7 @@ describe('AppBaseModule', () => {
 
     it('should call setState of cfAppStateService and pass outputData without currentComponent', () => {
       jest.spyOn(appStateQuery, 'storeState', 'get').mockReturnValue(
-        { value: {} as TestValueType, state: ({ currentComponent: 'lastComponent' } as unknown as TestStateType) });
+        { value: {} as TestValueType, state: {} as TestStateType, currentComponent: 'lastComponent' });
       component.closeApp();
       expect(setStateSpy).toBeCalledWith(expectedOutputData, DataDirectionType.OUTPUT);
     });

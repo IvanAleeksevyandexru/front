@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AppNavigationRuleMap } from './app-navigation-rule';
 import { AppStateQuery } from '../app-state/app-state.query';
-import { AppRouterState } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class AppNavigationRuleService {
 
   private appNavigationRuleMap: AppNavigationRuleMap;
 
-  constructor (private appStateQuery: AppStateQuery<unknown, AppRouterState>) {}
+  constructor (private appStateQuery: AppStateQuery<unknown, unknown>) {}
 
   public initRule(appNavigationRuleMap: AppNavigationRuleMap): void {
     this.appNavigationRuleMap = appNavigationRuleMap;
@@ -34,8 +33,8 @@ export class AppNavigationRuleService {
     const entries = Object.entries(this.appNavigationRuleMap);
 
     for (const item in entries) {
-      const [name] = entries[item];
-      if (entries.some(([_, { next }]) => next === undefined)) {
+      const [name, value] = entries[item];
+      if (value.next === undefined) {
         return name;
       }
     }
@@ -47,12 +46,12 @@ export class AppNavigationRuleService {
   }
 
   public getNext(): string {
-    const current = this.getCurrent();
+    const current = this.appStateQuery.currentComponent;
     return this.appNavigationRuleMap[current].next;
   }
 
   public getPrev(): string {
-    const current = this.getCurrent();
+    const current = this.appStateQuery.currentComponent;
     let prev;
     const entries = Object.entries(this.appNavigationRuleMap);
 
@@ -64,9 +63,5 @@ export class AppNavigationRuleService {
     }
 
     return prev;
-  }
-
-  private getCurrent(): string {
-    return this.appStateQuery.state.currentComponent;
   }
 }

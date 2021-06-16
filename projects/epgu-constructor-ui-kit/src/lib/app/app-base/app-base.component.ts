@@ -1,6 +1,5 @@
 import { Component, Injector } from '@angular/core';
 import {
-  AppRouterState,
   AppState,
   DataDirectionType,
   InputAppDto,
@@ -21,7 +20,7 @@ export const getAppStorageKey = (componentType: string, componentId: string): st
 @Component({
   template: '',
 })
-export class AppBaseComponent<T, U extends AppRouterState> {
+export class AppBaseComponent<T, U> {
   public appType: string;
   public inputAppData: InputAppDto;
 
@@ -93,12 +92,14 @@ export class AppBaseComponent<T, U extends AppRouterState> {
         }
 
         if (this.inputAppData.isPrevStepCase) {
-          initState.state.currentComponent = this.appNavigationRuleService.getLast();
+          initState.currentComponent = this.appNavigationRuleService.getLast();
         } else {
-          initState.state.currentComponent = this.appNavigationRuleService.getFirst();
+          initState.currentComponent = this.appNavigationRuleService.getFirst();
         }
       } catch (_) {
-        initState = { value: {} as T, state: {} as U };
+        throw new Error(
+          `Looks like we have some issues. We can't parse string: "${this.inputAppData.value}"`,
+        );
       }
     }
 
@@ -124,7 +125,7 @@ export class AppBaseComponent<T, U extends AppRouterState> {
 
   private setOutputAppData(isPrevStepCase: boolean): void {
     const { storeState } = this.appStateQuery;
-    delete storeState.state.currentComponent;
+    delete storeState.currentComponent;
     const outputAppData: OutputAppDto = {
       componentId: this.inputAppData.componentId,
       componentType: this.inputAppData.componentType,
