@@ -53,9 +53,15 @@ export class AppNavigationRuleService {
 
   public getPrev(): string {
     const current = this.getCurrent();
-    const [prev] = Object.entries(this.appNavigationRuleMap).find(([_, value]) => {
-      return value.next === current;
-    });
+    let prev;
+    const entries = Object.entries(this.appNavigationRuleMap);
+
+    for (const item in entries) {
+      const [name, { next }] = entries[item];
+      if (next === current) {
+        prev = name;
+      }
+    }
 
     return prev;
   }

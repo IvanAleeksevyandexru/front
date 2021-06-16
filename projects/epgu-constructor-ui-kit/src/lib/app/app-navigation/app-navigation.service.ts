@@ -24,6 +24,7 @@ export class AppNavigationService {
   }
 
   public prev(): void {
+    debugger;
     const prev = this.appNavigationRuleService.getPrev();
     if (prev) {
       this.navigate(prev);
