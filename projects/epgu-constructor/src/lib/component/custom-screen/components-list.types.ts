@@ -44,6 +44,7 @@ export enum CustomScreenComponentTypes {
   PersonInnInput = 'PersonInnInput',
   PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
+  CardNumberInput = 'CardNumberInput',
   CityInput = 'CityInput',
   DocInput = 'DocInput',
   FieldList = 'FieldList',

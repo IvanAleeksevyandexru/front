@@ -58,6 +58,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   LegalInnInput: MaskedAndPlainInputComponent,
   SnilsInput: MaskedAndPlainInputComponent,
   PersonInnInput: MaskedAndPlainInputComponent,
+  CardNumberInput: MaskedAndPlainInputComponent,
   CheckingAccount: MaskedAndPlainInputComponent,
   HtmlString: FormOutputHtmlComponent,
   LabelSection: FormOutputHtmlComponent,
