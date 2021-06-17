@@ -8,49 +8,128 @@ $headerHeight: 57px;
 $controlHeight: 55px;
 $minModalHeight: 293px;
 
-// TODO Избавиться от ng-deep
-:host::ng-deep {
-  & .conf-modal {
-    @include flex-container();
-    @include modal-body();
-    width: 100%;
-    height: 100%;
-    padding: 32px;
+$closeBtnWidth: 24px;
 
+.conf-modal {
+  display: flex;
+  flex-direction: column;
+  @include modal-body();
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  @include tablets-up {
+    max-height: calc(100vh - #{$my * 2});
+    min-height: $minModalHeight;
+    width: 634px;
+    height: auto;
+    border-radius: 12px;
+  }
+  @include phones-down {
+    padding: 24px;
+  }
+  &--short {
     @include phones-down {
-      padding-bottom: 0;
+      padding: 16px 16px 24px;
     }
+  }
+
+  &__header {
+    position: relative;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    width: 100%;
+    padding-right: calc(#{$closeBtnWidth} + 8px);
     @include tablets-up {
-      max-height: calc(100vh - #{$my * 2});
-      min-height: #{$minModalHeight};
-      width: 634px;
-      height: auto;
-      border-radius: 12px;
+      padding-right: calc(#{$closeBtnWidth} + 24px);
     }
+    @include divider;
+  }
 
-    &__header {
-      border-bottom: 1px solid $color-divider;
-      padding-bottom: 24px;
-      margin-bottom: 24px;
-
-      &:empty {
-        border-bottom-color: transparent;
+  &__close {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    z-index: 1;
+    cursor: pointer;
+    &:only-child {
+      @include tablets-up {
+        top: 4px;
       }
     }
+  }
 
-    &__content {
-      overflow: auto;
-      @include flex-container();
-      .text {
-        padding-right: 15px;
-      }
+  &__body {
+    overflow: auto; // для отработки скрола в модалке в моб
+    @include rubles('.conf-modal__body', '/assets/icons/svg/ruble.svg');
+    @include tablets-down {
+      height: 100%;
     }
 
-    &__body, &__content {
-      @include tablets-down {
-        height: 100%;
+    &.preview::ng-deep .text {
+      padding: 0;
+    }
+  }
+
+  &__content {
+    overflow: auto;
+    @include flex-container();
+    @include tablets-down {
+      height: 100%;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 24px;
+    @include tablets-up {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    ::ng-deep {
+      > *:not(:first-child) {
+        margin: 0 0 24px;
+        @include tablets-up {
+          margin: 0 0 0 16px;
+        }
+      }
+      .screen-button {
+        margin-top: 0;
       }
     }
+  }
+}
+
+.conf-modal__content:not(.conf-modal__short-modal)::ng-deep .text {
+  @include tablets-up {
+    padding-right: 15px;
+  }
+}
+
+::ng-deep .text_modal_error {
+  text-align: center;
+  h4 {
+    margin-bottom: 8px;
+  }
+  span {
+    color: $color-text-helper;
+  }
+
+  &__img {
+    display: block;
+    margin: 0 auto 24px;
+  }
+}
+
+:host::ng-deep {
+  .conf-modal {
 
     .perfect-scrollbar {
       .conf-modal__content {
@@ -83,83 +162,9 @@ $minModalHeight: 293px;
         @include tablets-up {
           max-height: calc(
             100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight} *
-              2
+            2
           );
         }
-      }
-    }
-
-    &__short-modal {
-      .text {
-        padding-right: 0;
-      }
-    }
-
-    &__body {
-      overflow: auto; // для отработки скрола в модалке в моб
-      @include rubles('.conf-modal__body', '/assets/icons/svg/ruble.svg');
-      &.preview .text {
-        padding: 0;
-      }
-    }
-
-    &__controls {
-      display: flex;
-      padding-top: 24px;
-      margin-top: auto;
-      flex: 0 1 auto;
-      flex-direction: column-reverse;
-      justify-content: flex-end;
-      & > *:not(:last-child) {
-        margin-right: 0;
-      }
-      & > *:not(:first-child) {
-        margin-bottom: 32px;
-      }
-      @include tablets-up {
-        flex-direction: row;
-        justify-content: center;
-        & > *:not(:last-child) {
-          margin-right: 32px;
-        }
-        & > *:not(:first-child) {
-          margin-bottom: 0;
-        }
-      }
-
-      &::ng-deep .screen-button {
-        margin-top: 0;
-      }
-      @include phones-down {
-        margin-bottom: 32px;
-      }
-    }
-
-    &__button {
-      &:first-child {
-        margin-bottom: 0;
-      }
-      @include phones-down {
-        margin-bottom: 32px;
-      }
-      width: 100%;
-      @include tablets-up {
-        width: auto;
-      }
-    }
-
-    .text_modal_error {
-      text-align: center;
-      h4 {
-        margin-bottom: 8px;
-      }
-      span {
-        color: $color-text-helper;
-      }
-
-      &__img {
-        display: block;
-        margin: 0 auto 24px;
       }
     }
   }

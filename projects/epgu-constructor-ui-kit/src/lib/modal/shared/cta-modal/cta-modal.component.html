@@ -1,7 +1,7 @@
-<div class="conf-modal" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
-  <div *ngIf="showCrossButton" class="modal__close" (click)="closeModal()"></div>
+<div class="conf-modal" [class.conf-modal--short]="isShortModal" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
   <div class="conf-modal__header">
-    <h3 *ngIf="title" class="modal__title" [innerHTML]="title | safe: 'html'"></h3>
+    <h3 *ngIf="title" class="conf-modal__title" [innerHTML]="title | safe: 'html'"></h3>
+    <div *ngIf="showCrossButton" class="conf-modal__close icon-close" (click)="closeModal()"></div>
   </div>
   <div class="conf-modal__body" [class.preview]="preview">
     <perfect-scrollbar
