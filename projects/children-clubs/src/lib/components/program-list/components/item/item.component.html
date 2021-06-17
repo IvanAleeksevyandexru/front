@@ -1,8 +1,12 @@
-<div (click)="show()" class="container">
+<div class="container">
   <epgu-cf-ui-constructor-screen-pad class="project">
     <div class="project-grid">
-      <div class="project__title">{{ data.name }}</div>
-      <div [ngStyle]="{ backgroundImage: 'url(' + data.image + ')' }" class="project__image">
+      <div (click)="show()" class="project__title">{{ data.name }}</div>
+      <div
+        (click)="show()"
+        [ngStyle]="{ backgroundImage: 'url(' + data.image + ')' }"
+        class="project__image"
+      >
         <div class="project__age-limit">{{ data.ageLimit }}</div>
       </div>
       <div class="project__info">

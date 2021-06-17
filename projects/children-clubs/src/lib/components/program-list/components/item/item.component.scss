@@ -2,7 +2,6 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
 :host {
-  cursor: pointer;
   @include typ-plain-text;
   color: $color-summer-night;
 }
@@ -21,6 +20,7 @@
   }
 }
 .project__image {
+  cursor: pointer;
   flex-basis: 42%;
   width: 244px;
   height: 159px;
@@ -71,6 +71,7 @@
 }
 
 .project__title {
+  cursor: pointer;
   @include typ-h5;
   order: 0;
   padding-bottom: 16px;

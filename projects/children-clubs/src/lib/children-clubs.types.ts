@@ -1,10 +1,12 @@
+import { FindOptionsProgram, FindResponseGroup } from '../typings';
+
 export interface ChildrenClubsValue {
-  someKey: string;
+  groupUUID?: string;
 }
 
 export interface ChildrenClubsState {
-  selectedProgramUUID: string;
-  someFilters: {
-    [key: string]: string;
-  };
+  regionId?: string;
+  selectedProgramUUID?: string;
+  programFilters?: FindOptionsProgram;
+  groupFilters?: FindResponseGroup;
 }

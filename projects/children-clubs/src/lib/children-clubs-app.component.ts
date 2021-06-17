@@ -10,7 +10,8 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
-  template: `<epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>`,
+  template: `<epgu-cf-ui-modal-container></epgu-cf-ui-modal-container
+    ><epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>`,
   styleUrls: ['../styles/index.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,35 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+:host {
+  display: block;
+  margin-bottom: $navigation-mb;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color-gosblue;
+}
+
+.head {
+  @include tablets-down {
+    padding: 10px 0;
+    border: 1px solid $color-divider;
+    border-left: none;
+    border-right: none;
+  }
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:active,
+    &:focus,
+    &:hover {
+      color: $color-active-item;
+    }
+  }
+}

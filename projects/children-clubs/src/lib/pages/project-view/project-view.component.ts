@@ -5,7 +5,7 @@ import data from '../../../stubs/projects.stub';
 @Component({
   selector: 'children-clubs-project-view-page',
   templateUrl: './project-view.component.html',
-  styleUrls: ['./project-view.component.scss', '../../../styles.scss'],
+  styleUrls: ['./project-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectViewComponent {

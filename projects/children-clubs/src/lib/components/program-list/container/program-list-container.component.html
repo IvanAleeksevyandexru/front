@@ -1,3 +1,5 @@
+<children-clubs-filter-panel [filtersCount]="3"></children-clubs-filter-panel>
+<lib-throbber-hexagon size="big"></lib-throbber-hexagon>
 <children-clubs-list (addItemsEvent)="fetchItems()">
   <children-clubs-item *ngFor="let item of list$ | async" [data]="item"></children-clubs-item>
 </children-clubs-list>
