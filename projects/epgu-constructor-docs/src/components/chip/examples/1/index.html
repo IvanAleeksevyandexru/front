@@ -1,0 +1,9 @@
+<div class="items">
+  <div *ngFor="let label of labels; let i = index">
+    <epgu-cf-ui-constructor-chip
+      [label]="label"
+      [id]="ids[i]"
+      (closeEvent)="(onClose($event))"
+    ></epgu-cf-ui-constructor-chip>
+  </div>
+</div>

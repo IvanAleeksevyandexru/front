@@ -51,9 +51,7 @@
                 "output": "assets"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -259,10 +257,17 @@
             "aot": true,
             "assets": [
               "projects/epgu-constructor-docs/src/favicon.ico",
-              "projects/epgu-constructor-docs/src/assets"
+              "projects/epgu-constructor-docs/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/epgu-constructor-docs/node_modules/@taiga-ui/icons/src",
+                "output": "./assets/taiga-ui/icons"
+              }
             ],
             "styles": [
-              "projects/epgu-constructor-docs/src/styles.scss"
+              "projects/epgu-constructor-docs/src/styles.scss",
+              "projects/epgu-constructor-docs/node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+              "projects/epgu-constructor-docs/node_modules/@taiga-ui/core/styles/taiga-ui-global.less"
             ],
             "scripts": []
           },
@@ -324,22 +329,17 @@
               "projects/epgu-constructor-docs/src/favicon.ico",
               "projects/epgu-constructor-docs/src/assets"
             ],
-            "styles": [
-              "projects/epgu-constructor-docs/src/styles.scss"
-            ],
+            "styles": ["projects/epgu-constructor-docs/src/styles.scss"],
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/epgu-constructor-docs/tsconfig.app.json",
-              "projects/epgu-constructor-docs/tsconfig.spec.json",
-              "projects/epgu-constructor-docs/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "eslintConfig": "projects/epgu-constructor-docs/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/epgu-constructor-docs/src/**/*.ts",
+              "projects/epgu-constructor-docs/src/**/*.spec.ts"
             ]
           }
         },

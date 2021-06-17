@@ -3,7 +3,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": []
+    "types": [],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@ifc/plugin": ["node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js"],
+      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"]
+    }
   },
   "files": [
     "src/main.ts",

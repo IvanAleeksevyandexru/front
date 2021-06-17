@@ -1,0 +1,42 @@
+{
+  "name": "epgu-constructor-docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "cd ../../ && ng build epgu-constructor-docs --prod",
+    "watch": "cd ../../ && ng build epgu-constructor-docs --watch",
+    "lint": "cd ../../ && ng lint epgu-constructor-docs",
+    "lint:fix": "cd ../../ && ng lint epgu-constructor-docs --fix"
+  },
+  "dependencies": {
+    "@angular/common": "11.0.0",
+    "@angular/compiler": "11.1.0",
+    "@angular/core": "11.0.0",
+    "@angular/forms": "11.0.0",
+    "@angular/localize": "11.0.0",
+    "@datorama/akita": "^6.2.0",
+    "@epgu/epgu-constructor-types": "20.6.0",
+    "@epgu/epgu-constructor-ui-kit": "20.6.0",
+    "@epgu/epgu-lib": "^0.1.19",
+    "@taiga-ui/addon-doc": "^2.11.2",
+    "@taiga-ui/addon-mobile": "^2.11.2",
+    "@taiga-ui/cdk": "^2.11.2",
+    "@taiga-ui/core": "^2.11.2",
+    "@taiga-ui/i18n": "^2.11.2",
+    "@taiga-ui/icons": "^2.11.2",
+    "@taiga-ui/kit": "^2.11.2",
+    "@tinkoff/ng-polymorpheus": "^3.1.8",
+    "lodash": "^4.17.21",
+    "ngx-highlightjs": "^4.1.4",
+    "ngx-perfect-scrollbar": "^8.0.0",
+    "rxjs": "^6.6.6",
+    "zone.js": "^0.10.3"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "11.1.0",
+    "raw-loader": "^4.0.2",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.4"
+  }
+}
