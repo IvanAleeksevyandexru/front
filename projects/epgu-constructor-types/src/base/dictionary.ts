@@ -102,4 +102,5 @@ export interface ComponentDictionaryFilterDto {
   formatValue?: FilterDtoConfig;
   trueForNull?: boolean;
   excludeWrapper?: boolean;
+  checkAllValues?: boolean;
 }

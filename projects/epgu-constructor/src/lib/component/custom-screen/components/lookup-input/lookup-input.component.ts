@@ -15,7 +15,7 @@ import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplet
   selector: 'epgu-constructor-lookup-input',
   templateUrl: './lookup-input.component.html',
   styleUrls: ['./lookup-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   providers: [UnsubscribeService],
 })
 export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {

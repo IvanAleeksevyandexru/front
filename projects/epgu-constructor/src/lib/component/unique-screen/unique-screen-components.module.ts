@@ -28,6 +28,7 @@ import { ConfirmPersonalUserAddressScreenModule } from './components/confirm-per
 import { ConfirmPersonalUserDataScreenModule } from './components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.module';
 import { SelectChildrenScreenModule } from './components/select-children/select-children-screen.module';
 import { RegistrationAddrScreenModule } from './components/registration-addr/registration-addr-screen.module';
+import { ReferralNumberModule } from './components/referral-number/referral-number.module';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
 import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
@@ -65,6 +66,7 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
     ConfirmPersonalUserDataScreenModule,
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,
+    ReferralNumberModule,
     AddPassportModule,
     ConstructorDropdownModule,
     BaseComponentsModule,
@@ -96,6 +98,7 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
     ConfirmPersonalUserDataScreenModule,
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,
+    ReferralNumberModule,
     AddPassportModule,
     FieldListScreenModule,
     TimerScreenModule,
