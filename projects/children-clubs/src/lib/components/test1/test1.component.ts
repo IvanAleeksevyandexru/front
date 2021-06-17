@@ -5,7 +5,7 @@ import { AppNavigationService } from '@epgu/epgu-constructor-ui-kit';
 @Component({
   selector: 'children-clubs-test1',
   template:
-    '<h1>test1 {{ key1 }}</h1><button (click)="prev()">Prev Out</button><button (click)="next()">Next component</button>',
+    '<h1>test1 {{ key1 }}</h1><div class="mt-24"><button (click)="prev()">Prev Out</button><button (click)="next()" class="btn--primary">Next component</button></div>',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Test1Component implements OnInit {

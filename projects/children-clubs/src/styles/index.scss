@@ -1,4 +1,7 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+// Implement styleguide for all library's components
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
 .container {
   width: 100%;
