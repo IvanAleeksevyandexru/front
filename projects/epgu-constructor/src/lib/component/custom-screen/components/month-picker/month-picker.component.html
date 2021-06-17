@@ -1,0 +1,16 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <epgu-constructor-constructor-month-picker
+    [id]="control.value?.id"
+    [control]="$any(control.get('value'))"
+    [minMonth]="minMonth"
+    [maxMonth]="maxMonth"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [hideTillNowAvailable]="true"
+    [align]="align"
+  ></epgu-constructor-constructor-month-picker>
+</epgu-constructor-component-item>

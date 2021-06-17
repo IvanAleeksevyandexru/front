@@ -1,0 +1,48 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
+
+:host {
+  display: block;
+}
+
+@include rubles('.info__text', '/assets/icons/svg/ruble.svg');
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  &__body {
+    flex: 1 0 auto;
+  }
+
+  &__buttons {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__img-wrapper {
+    text-align: center;
+  }
+}
+
+:host::ng-deep {
+  .info__status-image {
+    height: 80px;
+    width: 80px;
+    margin: 27px auto 32px;
+
+    @include tablets-down {
+      margin-top: 30vh;
+    }
+  }
+
+  .info__end-screen-text  {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .info__body .text {
+    padding-right: 0;
+  }
+}

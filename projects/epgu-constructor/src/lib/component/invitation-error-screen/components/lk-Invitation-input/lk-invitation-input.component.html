@@ -1,0 +1,46 @@
+<epgu-constructor-screen-container class="invitation">
+  <epgu-cf-ui-constructor-screen-pad class="screen-body">
+    <div>
+      <div class="invitation__img-wrapper">
+        <img [src]="data.attrs.imgSrc" alt="" />
+      </div>
+
+      <epgu-constructor-page-name class="invitation__head">{{ header }}</epgu-constructor-page-name>
+
+      <epgu-constructor-output-html
+        class="invitation__label"
+        [html]="data.label"
+      ></epgu-constructor-output-html>
+
+      <form class="form">
+        <div class="form__item">
+          <epgu-constructor-label [label]="data.attrs.label"></epgu-constructor-label>
+
+          <div class="form__error">
+            <small *ngIf="email.invalid && email.touched">
+              {{ email.getError('msg') }}
+            </small>
+          </div>
+
+          <epgu-constructor-constructor-plain-input
+            id="email"
+            type="email"
+            placeholder="Email"
+            [control]="email"
+            [invalid]="email.invalid && email.touched"
+            [validationShowOn]="validationShowOn"
+          ></epgu-constructor-constructor-plain-input>
+
+          <epgu-cf-ui-constructor-helper-text>{{ data.attrs.helperText }}</epgu-cf-ui-constructor-helper-text>
+        </div>
+      </form>
+
+      <div class="invitation__inner-footer">
+        <lib-button (click)="sendEmail()" [disabled]="!email.valid || !email.value">{{
+          data.attrs.sendEmailLabel || 'Отправить'
+          }}</lib-button>
+      </div>
+    </div>
+
+  </epgu-cf-ui-constructor-screen-pad>
+</epgu-constructor-screen-container>

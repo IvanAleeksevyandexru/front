@@ -1,0 +1,37 @@
+<div class="conf-modal" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
+  <div *ngIf="showCrossButton" class="modal__close" (click)="closeModal()"></div>
+  <div class="conf-modal__header">
+    <h3 *ngIf="title" class="modal__title" [innerHTML]="title | safe: 'html'"></h3>
+  </div>
+  <div class="conf-modal__body" [class.preview]="preview">
+    <perfect-scrollbar
+      #perfectScroll
+      class="perfect-scrollbar"
+      *ngIf="!isMobile; else contentBlock"
+      [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
+      [config]="scrollConfig"
+    >
+      <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+    </perfect-scrollbar>
+    <ng-container *ngIf="isButtonsOutsideContent && !isMobile">
+      <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+    </ng-container>
+
+    <ng-template #contentBlock>
+      <div class="conf-modal__content" [class.conf-modal__short-modal]="isShortModal">
+        <ng-content select="[modal-content]"></ng-content>
+        <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
+          <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+        </ng-container>
+      </div>
+    </ng-template>
+  </div>
+</div>
+{{ preview | json }}
+
+<ng-template #buttonsTemplate>
+  <div class="conf-modal__controls" *ngIf="showButtons">
+    <ng-content select="[modal-buttons]"></ng-content>
+    <ng-content select="[modal-action-buttons]"></ng-content>
+  </div>
+</ng-template>

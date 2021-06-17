@@ -1,0 +1,64 @@
+<ng-container>
+  <epgu-cf-ui-cta-modal
+    [title]="title"
+    [showCrossButton]="true"
+    text="previewFiles"
+  >
+    <ng-container modal-content>
+      <div class="text_modal_error" *ngIf="suggestionsUploadedFiles.length && !suggestionsFiles.length">
+        <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/image-error.svg">
+        <h4>Нет подходящих файлов</h4>
+        <span>
+        Не удалось найти файлы нужного формата.<br />
+        Загрузите новые
+      </span>
+      </div>
+      <div class="text_modal_error" *ngIf="!suggestionsUploadedFiles.length">
+        <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/stop.svg">
+        <h4>Найти файлы не удалось</h4>
+        <span>Загрузите новые</span>
+      </div>
+
+      <div *ngIf="suggestionsUploadedFiles.length && suggestionsFiles.length">
+        <div *ngFor="let group of suggestionsFilesGroupByDate">
+          <div *ngIf="group[1].length">
+            <h4 class="mb-12 mt-8">{{ group[0] }}</h4>
+            <div class="wrapper">
+              <div *ngFor="let file of group[1]" class="file-item">
+                <button
+                  (click)="previewFile(file)"
+                  class="button"
+                  [ngClass]="{ attached: file.attached }"
+                  *ngIf="!file.error"
+                >
+                  <img
+                    *ngIf="file.isImage"
+                    class="img"
+                    src="{{ fileUploadApiUrl }}/{{ file.item.objectId }}/{{
+                    file.item.objectTypeId
+                  }}/download?mnemonic={{ file.item.mnemonic }}"
+                    (error)="handleImgError($event, file)"
+                    [alt]="file.item.fileName"
+                  />
+                  <div *ngIf="file.error">
+                    <figcaption class="caption">{{ file.item.fileName }}</figcaption>
+                    <figcaption class="caption small mt-16">{{ file.error.text }}</figcaption>
+                  </div>
+                  <div *ngIf="!file.isImage">
+                    <img
+                      class="img"
+                      [src]="basePath + (iconsTypes[file.item.fileExt] || 'TXT') + '.svg'"
+                      [alt]="file.item.fileName"
+                    />
+                    <figcaption class="caption">{{ file.item.fileName }}</figcaption>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </epgu-cf-ui-cta-modal>
+</ng-container>
+

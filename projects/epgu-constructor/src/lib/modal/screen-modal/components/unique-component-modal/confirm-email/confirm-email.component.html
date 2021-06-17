@@ -1,0 +1,32 @@
+<h3 class="screen-modal__confirm-title">Подтвердите адрес почты</h3>
+
+<div class="confirm-email">
+  <div class="confirm-email__body">
+    <span class="confirm-email__helper-text">В процессе изменения на</span>
+    <ng-container *ngIf="(screenService.applicantAnswers$ | async)['nm']?.value as address">
+      <span class="confirm-email__address">{{ address }}</span>
+    </ng-container>
+    <img
+      class="confirm-email__icon"
+      src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/warn.svg"
+    />
+    <span class="confirm-email__helper-text"
+      >Для подтверждения адреса перейдите по ссылке из письма</span
+    >
+  </div>
+
+  <div class="confirm-email__hint form-hint" *ngIf="isTimerShow">
+    Получить код повторно можно через
+    <b
+      class="confirm-email__timer form-hint__timer"
+      [epgu-constructor-counter]="count"
+      [interval]="countInterval"
+      >{{ timer | formatTime }}</b
+    >
+  </div>
+  <div class="confirm-email__hint form-hint" *ngIf="!isTimerShow">
+    <button class="confirm-email__send-again" (click)="resendEmailConfirmation()">
+      Отправить письмо повторно
+    </button>
+  </div>
+</div>

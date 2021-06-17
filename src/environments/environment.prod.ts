@@ -16,6 +16,7 @@ export const environment = {
       yandexMapsApiKey: '9e8e2fc4-5970-4ca6-95c5-3e620095e8e3',
       timingApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/health',
       staticDomain: '',
+      staticDomainLibAssetsPath: 'https://gu-st.ru/portal-st/lib-assets/',
       isEmbedded: false
     },
     data: {
