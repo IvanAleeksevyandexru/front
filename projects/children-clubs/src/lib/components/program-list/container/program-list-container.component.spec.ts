@@ -7,6 +7,7 @@ import { ProgramListService } from '../program-list.service';
 import { ListComponent } from '../components/list/list.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';
+import { ChildrenClubsFilterPanelModule } from '../../filter-panel/children-clubs-filter-panel.module';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -19,7 +20,7 @@ describe('ListComponent', () => {
         MockComponent(ListComponent),
         MockComponent(ItemComponent),
       ],
-      imports: [EpguLibModule],
+      imports: [EpguLibModule, ChildrenClubsFilterPanelModule],
       providers: [ProgramListService],
     }).compileComponents();
   });
