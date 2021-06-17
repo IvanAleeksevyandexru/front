@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@angular/core';
 import { AppRoutingComponentMap } from './app-routing';
 import { AppStateQuery } from '../app-state/app-state.query';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable()
@@ -21,7 +21,8 @@ export class AppRoutingService {
   public get component$(): Observable<Type<unknown>> {
     return this.currentComponent$.pipe(
       distinctUntilChanged(),
-      map((currentComponent ) => {
+      filter(component => !!component),
+      map(currentComponent  => {
         return this.appRoutingComponentMap[currentComponent];
       })
     );
