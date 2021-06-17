@@ -85,7 +85,8 @@
       "lkApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/",
       "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
       "staticDomain": "",
-      "isEmbedded": false
+      "isEmbedded": false,
+      "staticDomainLibAssetsPath": "https://static-uat.egovdev.ru/portal-st/lib-assets/"
     },
     "data": {
       "user": {}

@@ -9,6 +9,7 @@ import {
   ViewChild,
   Type,
   ViewContainerRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { subscribeOn, takeUntil, tap } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
@@ -30,6 +31,7 @@ export class AppComponentResolverComponent implements AfterViewInit, OnDestroy {
     private appRoutingService: AppRoutingService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -53,6 +55,7 @@ export class AppComponentResolverComponent implements AfterViewInit, OnDestroy {
       this.componentRef.destroy();
       this.componentRef = null;
     }
+    this.cdr.markForCheck();
   }
 
   private handleEmptyComponentError(component: Type<unknown>): never {
@@ -69,5 +72,6 @@ export class AppComponentResolverComponent implements AfterViewInit, OnDestroy {
     );
 
     this.componentRef = this.componentContainer.createComponent(componentFactory);
+    this.cdr.markForCheck();
   }
 }
