@@ -1,0 +1,29 @@
+<ng-container
+  *ngTemplateOutlet="
+    dropdownTmpl;
+    context: { $implicit: control.value  }
+  "
+>
+</ng-container>
+
+<ng-template #dropdownTmpl let-component>
+  <epgu-constructor-component-item
+    [control]="control.get('value')"
+    [component]="component"
+    [invalid]="control.invalid"
+  >
+    <epgu-constructor-drop-down-depts
+      *ngIf="dictionaries$ | async as dictionaries"
+      [component]="component"
+      [invalid]="control.get('value').invalid && control.get('value').touched"
+      [dictionary]="dictionaries"
+      [validationShowOn]="validationShowOn"
+      [control]="control.get('value')"
+      [required]="component.required"
+      [attrs]="component.attrs"
+      [suggest]="suggestions$ | async"
+      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+    >
+    </epgu-constructor-drop-down-depts>
+  </epgu-constructor-component-item>
+</ng-template>

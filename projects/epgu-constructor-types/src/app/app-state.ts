@@ -6,4 +6,5 @@
 export interface AppState<T, U> {
   value: T;
   state: U;
+  currentComponent: string;
 }

@@ -13,6 +13,7 @@ export interface CustomComponentRef {
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  relatedRelValues?: { [key: string]: string };
 }
 
 /**
@@ -28,4 +29,5 @@ export enum CustomComponentRefRelation {
   autofillFromDictionary = 'autofillFromDictionary',
   reset = 'reset',
   validateDependentControl = 'validateDependentControl',
+  autoFillTextFromRefs = 'autoFillTextFromRefs',
 }

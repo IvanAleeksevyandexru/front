@@ -31,10 +31,10 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
   }
 
   ngOnInit(): void {
-    const outputSpaData = this.cfAppStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
+    const outputAppData = this.cfAppStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
 
-    if (outputSpaData) {
-      this.handleOutputAppData(outputSpaData);
+    if (outputAppData) {
+      this.handleOutputAppData(outputAppData);
     } else {
       this.sendDataToApp();
       this.redirectToApp();
@@ -83,10 +83,14 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     return {
       componentId: component.id,
       componentType: component.type as AppTypes,
-      value: component.value,
+      value: component.value || this.getDefaultAppInputValue(),
       callbackRedirectUrl: this.locationService.getHref(),
       isPrevStepCase: !!this.screenService.isPrevStepCase,
     };
+  }
+
+  private getDefaultAppInputValue(): string {
+    return '{"value": {}, "state": {}}';
   }
 
   private redirectToApp(): void {

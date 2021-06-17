@@ -10,8 +10,7 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
 } from '@angular/core';
-import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import {
@@ -19,17 +18,11 @@ import {
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
-  UtilsService as utils,
-  OPTIONAL_FIELD,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
-
 import { ScreenService } from '../../screen/screen.service';
 import {
   CustomComponent,
   CustomComponentOutputData,
-  CustomListDictionaries,
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
@@ -58,13 +51,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormCreated = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
 
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
-  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService
-    .dictionaries$;
-  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
-
-  readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
 
   constructor(
@@ -117,10 +103,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public getDictKeyByComp(component: CustomComponent): string {
-    return utils.getDictKeyByComp(component);
-  }
-
   private loadRepository(components: Array<CustomComponent>): void {
     this.dictionaryToolsService
       .loadReferenceData$(
@@ -139,7 +121,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   private handleAfterFilterOnRel(
     references: Array<CustomListReferenceData>,
   ): Observable<Array<CustomListReferenceData>> {
-    return this.dictionaries$.pipe(
+    return this.dictionaryToolsService.dictionaries$.pipe(
       first(),
       map(() => {
         references.forEach((reference) => {

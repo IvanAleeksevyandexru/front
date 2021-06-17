@@ -110,6 +110,9 @@ describe('HealthInterceptor', () => {
         id: dto.scenarioDto.display.id,
         name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId: orderId,
+        method: 'POST',
+        date: new Date().toISOString(),
+        typeEvent: 'getNextStep'
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
@@ -145,6 +148,8 @@ describe('HealthInterceptor', () => {
         dict: 'STRANI_IST',
         empty: true,
         regdictname: 'GOSBAR',
+        date: new Date().toISOString(),
+        method: 'POST'
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
@@ -175,6 +180,8 @@ describe('HealthInterceptor', () => {
         regdictname: 'GOSBAR',
         serverError: 101,
         errorMessage: 'Server is not available',
+        date: new Date().toISOString(),
+        method: 'POST'
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
       expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);

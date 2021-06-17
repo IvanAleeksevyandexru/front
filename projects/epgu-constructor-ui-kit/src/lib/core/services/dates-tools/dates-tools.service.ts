@@ -85,7 +85,7 @@ export class DatesToolsService {
    */
   public async getToday(resetTime = false): Promise<Date> {
     const path = this.configService.apiUrl + '/service/actions/currentDateTime';
-    const timeString = await this.http.get(path, { responseType: 'text' }).toPromise();
+    const timeString = await this.http.get(path, { responseType: 'text', withCredentials: true }).toPromise();
     const date = new Date(timeString);
     if (resetTime) {
       date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());

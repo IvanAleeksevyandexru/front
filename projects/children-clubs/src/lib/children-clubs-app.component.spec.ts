@@ -13,6 +13,11 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
   WINDOW,
+  EventBusService,
+  AppNavigationRuleService,
+  AppNavigationRuleServiceStub,
+  AppRoutingService,
+  AppRoutingServiceStub, AppComponentResolverComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './pages/project-list/project-list.component';
@@ -27,8 +32,11 @@ describe('ChildrenClubsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProgramListModule, ChildrenClubsFilterPanelModule],
-      declarations: [ChildrenClubsAppComponent, ProjectListComponent],
+      declarations: [ChildrenClubsAppComponent, ProjectListComponent, AppComponentResolverComponent],
       providers: [
+        EventBusService,
+        { provide: AppRoutingService, useClass: AppRoutingServiceStub },
+        { provide: AppNavigationRuleService, useClass: AppNavigationRuleServiceStub },
         { provide: WINDOW, useValue: window },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },

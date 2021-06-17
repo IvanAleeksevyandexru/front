@@ -18,4 +18,8 @@ export class AppStateService<T, U> {
   public updateState(newState: U): void {
     this.store.update(storeState => (cloneDeep({ ...storeState, state: newState })));
   }
+
+  public updateCurrentComponent(newComponent: string): void {
+    this.store.update(storeState => (cloneDeep({ ...storeState, currentComponent: newComponent })));
+  }
 }
