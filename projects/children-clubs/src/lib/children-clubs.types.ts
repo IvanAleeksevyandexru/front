@@ -1,9 +1,10 @@
 export interface ChildrenClubsValue {
-  someKey: string
+  someKey: string;
 }
 
 export interface ChildrenClubsState {
+  selectedProgramUUID: string;
   someFilters: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }

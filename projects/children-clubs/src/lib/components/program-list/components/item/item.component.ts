@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AppNavigationService } from '@epgu/epgu-constructor-ui-kit';
 import { Project } from '../../../../../typings';
 
 @Component({
@@ -9,4 +10,9 @@ import { Project } from '../../../../../typings';
 })
 export class ItemComponent {
   @Input() data: Project;
+  constructor(private appNavigationService: AppNavigationService) {}
+
+  show(): void {
+    this.appNavigationService.next();
+  }
 }

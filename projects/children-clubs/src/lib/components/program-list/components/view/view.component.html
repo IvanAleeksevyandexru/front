@@ -1,12 +1,14 @@
-<div (click)="show()" class="container">
+<div *ngIf="data$ | async as data" class="container">
+  <div class="project__title mt-24">{{ data.name }}</div>
   <epgu-cf-ui-constructor-screen-pad class="project">
     <div class="project-grid">
-      <div class="project__title">{{ data.name }}</div>
       <div [ngStyle]="{ backgroundImage: 'url(' + data.image + ')' }" class="project__image">
         <div class="project__age-limit">{{ data.ageLimit }}</div>
       </div>
       <div class="project__info">
         <div class="project__organization">{{ data.organization }}</div>
+        <div class="project__description">{{ data.description }}</div>
+        <div class="divider"></div>
 
         <div class="project__info-item-list">
           <div *ngIf="data?.freeTrainingPossible" class="project__info-item">
@@ -25,7 +27,19 @@
             <div class="item-label">{{ data?.PaymentByCertificatePossible }}</div>
           </div>
         </div>
+        <div class="divider"></div>
+        <div class="project-buttons">
+          <button (click)="showPlan()" class="link-btn">План занятий</button>
+          <button (click)="showGoals()" class="link-btn">Цели обучения</button>
+          <button (click)="showResults()" class="link-btn">Результаты обучения</button>
+          <button (click)="showConditions()" class="link-btn">Особые условия</button>
+        </div>
       </div>
     </div>
   </epgu-cf-ui-constructor-screen-pad>
+  <div class="project__btn-text">Чтобы записатся, выберите одну из 12 доступных групп</div>
+
+  <div class="center btn_pd">
+    <lib-button (click)="next()">Выбрать группу</lib-button>
+  </div>
 </div>
