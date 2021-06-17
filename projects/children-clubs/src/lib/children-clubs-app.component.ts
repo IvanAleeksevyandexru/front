@@ -1,11 +1,19 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { AppBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
   template: `<epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>`,
-  styles: [],
+  styleUrls: ['../styles/index.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChildrenClubsAppComponent
   extends AppBaseComponent<ChildrenClubsValue, ChildrenClubsState>
