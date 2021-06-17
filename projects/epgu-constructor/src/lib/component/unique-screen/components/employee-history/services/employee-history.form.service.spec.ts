@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MonthYear } from '@epgu/epgu-lib';
+import { DeclinePipe, MonthYear } from '@epgu/epgu-lib';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { EmployeeHistoryFormService } from './employee-history.form.service';
@@ -50,6 +50,7 @@ describe('EmployeeHistoryFormService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DeclinePipe,
       ],
     });
   });

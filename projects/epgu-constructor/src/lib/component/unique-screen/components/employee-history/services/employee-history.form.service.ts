@@ -21,6 +21,7 @@ import { EmployeeHistoryMonthsService } from './employee-history.months.service'
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { EmployeeHistoryErrors, EmployeeHistoryMaxLengthValidators } from '../employee-history.enums';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DeclinePipe } from '@epgu/epgu-lib';
 
 @Injectable()
 export class EmployeeHistoryFormService {
@@ -36,6 +37,7 @@ export class EmployeeHistoryFormService {
     private monthsService: EmployeeHistoryMonthsService,
     private ds: EmployeeHistoryDataSourceService,
     private datesToolsService: DatesToolsService,
+    private declinePipe: DeclinePipe
   ) {
     this.defaultType = 'student';
   }
@@ -155,7 +157,16 @@ export class EmployeeHistoryFormService {
         }
       }
       if (toDateMinDateDiff < 0) {
-        form.get('error').setErrors({ error: EmployeeHistoryErrors.FailedPeriod });
+        form.get('error').setErrors({ error:
+            `${EmployeeHistoryErrors.FailedPeriod} ${this.declinePipe.transform(
+              this.monthsService.years,
+              ['последний', 'последние', 'последние'],
+              false
+            )} ${this.declinePipe.transform(
+              this.monthsService.years,
+              ['год', 'года', 'лет']
+            )}`
+        });
       } else {
         form.get('error').setErrors(null);
       }
