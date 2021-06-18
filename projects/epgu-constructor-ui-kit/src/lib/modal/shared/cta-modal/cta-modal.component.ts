@@ -39,7 +39,9 @@ export class CtaModalComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    this.perfectScroll.directiveRef.scrollToTop();
+    if (this.perfectScroll) {
+      this.perfectScroll.directiveRef.scrollToTop();
+    }
   }
 
   closeModal(): void {
