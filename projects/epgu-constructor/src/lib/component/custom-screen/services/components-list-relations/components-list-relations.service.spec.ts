@@ -1203,17 +1203,25 @@ describe('ComponentsListRelationsService', () => {
 
         componentVal = { title: 'some title', address: 'some address' };
 
+        dependentComponent = createComponentMock({
+          id: 'rf2',
+          label: 'label with ${reference_to_name}',
+          clarification: 'clarification with ${reference_to_address}',
+          hint: 'not match for replace ${not_match}',
+        });
+
         dependentControl = new FormGroup({
-          id: new FormControl('rf2'),
-          label: new FormControl('label with ${reference_to_name}'),
-          clarification: new FormControl('clarification with ${reference_to_address}'),
-          hint: new FormControl('not match for replace ${not_match}'),
+          id: new FormControl(dependentComponent.id),
+          label: new FormControl(dependentComponent.label),
+          clarification: new FormControl((dependentComponent as any).clarification),
+          hint: new FormControl(dependentComponent.hint),
         });
 
         service['handleAutoFillTextFromRefs'](
           reference,
           componentVal,
           dependentControl,
+          dependentComponent,
         );
 
         expect(dependentControl.value).toEqual({

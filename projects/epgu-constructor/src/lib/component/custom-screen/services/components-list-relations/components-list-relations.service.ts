@@ -489,7 +489,7 @@ export class ComponentsListRelationsService {
         this.validateDependentControl(dependentControl, form, reference);
         break;
       case CustomComponentRefRelation.autoFillTextFromRefs:
-        this.handleAutoFillTextFromRefs(reference, componentVal, dependentControl);
+        this.handleAutoFillTextFromRefs(reference, componentVal, dependentControl, dependentComponent);
         break;
     }
 
@@ -776,9 +776,10 @@ export class ComponentsListRelationsService {
     reference: CustomComponentRef,
     componentVal: { [key: string]: string },
     dependentControl: AbstractControl,
+    dependentComponent: CustomComponent,
   ): void {
     if(componentVal) {
-      const newValue = JSON.stringify(dependentControl.value).replace(/\${\w+}/gi, (match) => {
+      const newValue = JSON.stringify(dependentComponent).replace(/\${\w+}/gi, (match) => {
         const relatedRelKey = match.replace(/[^\w]+/gi, '');
         const relatedRelValue = reference.relatedRelValues[relatedRelKey];
         if (relatedRelValue){
