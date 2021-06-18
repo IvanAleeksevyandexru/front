@@ -5,18 +5,18 @@
   width: 24px;
   height: 24px;
   background-color: $color-gosblue;
-  mask: url('../ui-kit-assets/icons/svg/arrow.svg');
+  mask: url('../assets/icons/svg/arrow.svg');
   mask-repeat: no-repeat;
   mask-position: center;
   background-position: center;
   background-repeat: no-repeat;
   @include tablets-down {
-    mask: url('../ui-kit-assets/icons/svg/arrow-small.svg');
+    mask: url('../assets/icons/svg/arrow-small.svg');
     mask-repeat: no-repeat;
     mask-position: center;
   }
   &--back {
-    mask: url('../ui-kit-assets/icons/svg/arrow-small.svg');
+    mask: url('../assets/icons/svg/arrow-small.svg');
     mask-position: right;
     mask-repeat: no-repeat;
     width: 16px;
@@ -33,5 +33,5 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url('../ui-kit-assets/icons/svg/close.svg');
+  background-image: url('../assets/icons/svg/close.svg');
 }
