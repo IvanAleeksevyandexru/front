@@ -7,7 +7,7 @@
     <perfect-scrollbar
       #perfectScroll
       class="perfect-scrollbar"
-      *ngIf="!isMobile; else contentBlock"
+      *ngIf="!isMobile && !isShortModal; else contentBlock"
       [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
       [config]="scrollConfig"
     >
@@ -18,7 +18,7 @@
     </ng-container>
 
     <ng-template #contentBlock>
-      <div class="conf-modal__content" [class.conf-modal__short-modal]="isShortModal">
+      <div class="conf-modal__content">
         <ng-content select="[modal-content]"></ng-content>
         <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
           <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
