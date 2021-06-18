@@ -20,7 +20,7 @@ import {
   AppRoutingServiceStub, AppComponentResolverComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
-import { ProjectListComponent } from './pages/project-list/project-list.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 

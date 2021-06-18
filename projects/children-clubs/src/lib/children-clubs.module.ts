@@ -11,17 +11,17 @@ import {
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
-import { ProjectListComponent } from './pages/project-list/project-list.component';
-import { Test1Component } from './components/test1/test1.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
 import { Test2Component } from './components/test2/test2.component';
+import { ProgramListContainerComponent } from './components/program-list/container/program-list-container.component';
 
 const APP_CONFIG: AppUiConfig = {
   appRoutingComponentMap: {
-    test1: Test1Component,
+    programList: ProgramListContainerComponent,
     test2: Test2Component,
   },
   appNavigationRuleMap: {
-    test1: {
+    programList: {
       next: 'test2'
     },
     test2: {}
@@ -29,7 +29,7 @@ const APP_CONFIG: AppUiConfig = {
 };
 
 @NgModule({
-  declarations: [ChildrenClubsAppComponent, ProjectListComponent, Test1Component, Test2Component],
+  declarations: [ChildrenClubsAppComponent, ProjectListComponent, Test2Component],
   imports: [
     CoreUiModule,
     MainContainerModule,
@@ -42,7 +42,7 @@ const APP_CONFIG: AppUiConfig = {
   ],
   exports: [ChildrenClubsAppComponent],
   entryComponents: [
-    Test1Component,
+    ProgramListContainerComponent,
     Test2Component
   ]
 })
