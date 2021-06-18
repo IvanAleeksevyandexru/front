@@ -1,0 +1,14 @@
+@import '../../../../styles/core/index';
+
+:host {
+  counter-reset: section;
+  @include flex-container();
+
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+
+  & .loader {
+    margin: auto;
+  }
+}

@@ -37,6 +37,9 @@ export * from './lib/base/components/long-button/long-button.component';
 export * from './lib/base/components/screen-pad/screen-pad.module';
 export * from './lib/base/components/screen-pad/screen-pad.component';
 
+export * from './lib/base/components/main-container/main-container.module';
+export * from './lib/base/components/main-container/main-container.component';
+
 // Directives
 export * from './lib/base/directives/trim/trim.module';
 export * from './lib/base/directives/trim/trim.directive';

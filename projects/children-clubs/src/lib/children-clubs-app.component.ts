@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostBinding,
   Injector,
   OnInit,
   ViewEncapsulation,
@@ -10,7 +11,7 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
-  template: `<epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>`,
+  templateUrl: './children-clubs-app.component.html',
   styleUrls: ['../styles/index.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +19,7 @@ import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 export class ChildrenClubsAppComponent
   extends AppBaseComponent<ChildrenClubsValue, ChildrenClubsState>
   implements OnInit {
+  @HostBinding('class.app-host') class = true;
   public appType = 'ChildrenClubs';
 
   constructor(public injector: Injector) {
