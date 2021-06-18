@@ -2,7 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { SmuEventsService } from '@epgu/epgu-lib';
-import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, MainContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
@@ -33,6 +33,7 @@ import 'hammerjs';
     ModalModule,
     AutocompleteModule,
     LogicScreenModule,
+    MainContainerModule,
   ],
   providers: [
     FormPlayerConfigApiService,

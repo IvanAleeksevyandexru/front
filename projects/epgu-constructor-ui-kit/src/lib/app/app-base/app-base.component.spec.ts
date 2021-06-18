@@ -177,6 +177,14 @@ describe('AppBaseModule', () => {
       component.openApp();
       expect(setLocalStorageSpy).toBeCalledWith(key, storeState);
     });
+
+    it('should call isFirstLoading$ next with false', () => {
+      const storeState = JSON.parse(mockInputData.value);
+      const nextSpy = jest.spyOn(component.isFirstLoading$, 'next');
+      appStateQuery.store$ = of(storeState);
+      component.openApp();
+      expect(nextSpy).toBeCalledWith(false);
+    });
   });
   describe('closeApp()', () => {
     let expectedOutputData;
