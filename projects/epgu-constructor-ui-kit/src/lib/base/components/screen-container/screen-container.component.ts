@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'epgu-constructor-screen-container',
+  selector: 'epgu-cf-ui-screen-container',
   templateUrl: './screen-container.component.html',
   styleUrls: ['./screen-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

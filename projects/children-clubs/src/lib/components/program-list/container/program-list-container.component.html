@@ -1,3 +1,6 @@
-<children-clubs-list (addItemsEvent)="fetchItems()">
-  <children-clubs-item *ngFor="let item of list$ | async" [data]="item"></children-clubs-item>
-</children-clubs-list>
+<epgu-cf-ui-screen-container>
+  <children-clubs-list (addItemsEvent)="fetchItems()" class="screen-body">
+    <children-clubs-item *ngFor="let item of list$ | async" [data]="item"></children-clubs-item>
+  </children-clubs-list>
+</epgu-cf-ui-screen-container>
+

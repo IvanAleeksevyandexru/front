@@ -7,14 +7,14 @@ import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { RepeatableScreenComponent } from './repeatable-screen.component';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonComponent } from '../../shared/components/clone-button/clone-button.component';
-import { NavigationComponent } from '../../shared/components/navigation/navigation.component';
+import { PrevButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -148,7 +148,7 @@ describe('RepeatableScreenComponent', () => {
         ScreenContainerComponent,
         MockComponent(ComponentsListComponent),
         MockComponent(CloneButtonComponent),
-        MockComponent(NavigationComponent),
+        MockComponent(PrevButtonComponent),
       ],
       providers: [
         CurrentAnswersService,
@@ -198,8 +198,8 @@ describe('RepeatableScreenComponent', () => {
     });
   });
 
-  describe('epgu-constructor-screen-container', () => {
-    const selector = 'epgu-constructor-screen-container';
+  describe('epgu-cf-ui-screen-container', () => {
+    const selector = 'epgu-cf-ui-screen-container';
 
     it('should be rendered', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));

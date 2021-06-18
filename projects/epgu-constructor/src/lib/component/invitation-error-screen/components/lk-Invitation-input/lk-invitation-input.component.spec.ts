@@ -16,7 +16,7 @@ import {
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { LkInvitationInputComponent } from './lk-invitation-input.component';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';

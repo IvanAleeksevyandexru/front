@@ -7,7 +7,7 @@
 </ng-container>
 
 <ng-template #templateContent let-component="component" let-display="display" let-showNav="showNav">
-  <epgu-constructor-screen-container [show-nav]="showNav" [class.screen-container-mt]="!showNav">
+  <epgu-cf-ui-screen-container [show-nav]="showNav" [class.screen-container-mt]="!showNav">
     <div class="screen-body">
       <div *ngIf="display.header" class="head">
         <epgu-constructor-page-name *ngIf="!hasError">{{
@@ -54,5 +54,5 @@
         [disabled]="(currentAnswersService.isValid$ | async) === false"
       ></epgu-constructor-screen-buttons>
     </div>
-  </epgu-constructor-screen-container>
+  </epgu-cf-ui-screen-container>
 </ng-template>

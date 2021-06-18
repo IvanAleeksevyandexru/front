@@ -28,7 +28,7 @@ import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
-import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
+import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -51,6 +51,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
+import { MockModule } from 'ng-mocks';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -64,7 +65,7 @@ describe('SelectMapObjectComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SelectMapObjectComponent],
-      imports: [BaseModule, ConstructorLookupModule, NavigationModule],
+      imports: [BaseModule, ConstructorLookupModule, MockModule(PrevButtonModule)],
       providers: [
         Icons,
         ModalErrorService,

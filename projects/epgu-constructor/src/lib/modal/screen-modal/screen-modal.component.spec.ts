@@ -28,6 +28,10 @@ import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-mod
 import { configureTestSuite } from 'ng-bullet';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { InitDataService } from '../../core/services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 
 describe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;
@@ -50,6 +54,8 @@ describe('ScreenModalComponent', () => {
         ScreenService,
         FormPlayerApiService,
         NavigationModalService,
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         CustomScreenService,

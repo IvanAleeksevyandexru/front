@@ -1,4 +1,4 @@
-<epgu-constructor-screen-container
+<epgu-cf-ui-screen-container
   [show-nav]="screenService.showNav$ | async"
   class="questions-screen quiz"
   [ngClass]="screenService.displayCssClass$ | async"
@@ -22,7 +22,7 @@
     <ng-content *ngTemplateOutlet="answersButtons"></ng-content>
     <ng-container *ngTemplateOutlet="screenButtons"></ng-container>
   </div>
-</epgu-constructor-screen-container>
+</epgu-cf-ui-screen-container>
 
 <ng-template #answersButtons>
   <ng-container *ngFor="let answer of (screenService.answers$ | async)">

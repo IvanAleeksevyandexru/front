@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BaseModule } from '../../shared/base.module';
 import { RepeatableScreenComponent } from './repeatable-screen.component';
 import { CloneButtonModule } from '../../shared/components/clone-button/clone-button.module';
-import { ScreenContainerModule } from '../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../component/custom-screen/components-list.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
