@@ -98,7 +98,7 @@ export interface SearchingSpec {
 
 export interface RegActions {
   confidentSign: boolean;
-  leasingFlag: boolean;
+  leasingFlag: string;
   regActionName: string;
   regDate: string;
   regDepartment: string;
