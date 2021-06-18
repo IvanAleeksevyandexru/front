@@ -12,6 +12,7 @@ export class ConfigServiceStub implements Config {
   _timeSlotApiUrl = '';
   _listPaymentsApiUrl = '';
   _lkUrl = '';
+  _childrenClubsApi = '';
   _paymentUrl = 'https://oplata.gosuslugi.ru';
   _fileUploadApiUrl = '';
   _uinApiUrl = '';
@@ -117,6 +118,10 @@ export class ConfigServiceStub implements Config {
 
   get lkUrl(): string {
     return this._lkUrl;
+  }
+
+  get childrenClubsApi(): string {
+    return this._childrenClubsApi;
   }
 
   get paymentUrl(): string {
@@ -233,6 +238,7 @@ export class ConfigServiceStub implements Config {
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._lkUrl = config.lkUrl;
+    this._childrenClubsApi = config.childrenClubsApi;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;

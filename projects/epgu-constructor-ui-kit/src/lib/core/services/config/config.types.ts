@@ -60,6 +60,7 @@ export interface Config {
   fileUploadApiUrl: string;
   lkUrl: string;
   lkApi: string;
+  childrenClubsApi: string;
   yandexMapsApiKey: string;
   invitationUrl: string;
   staticDomainAssetsPath: string;
