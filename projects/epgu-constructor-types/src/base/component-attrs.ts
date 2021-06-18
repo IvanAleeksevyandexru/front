@@ -134,6 +134,7 @@ export interface ComponentAttrsDto {
   mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
   hideCloneButton?: boolean;
   ignoreRootParams?: Array<string>;
+  placeholderText?: string;
 }
 
 export interface DisclaimerDto {
