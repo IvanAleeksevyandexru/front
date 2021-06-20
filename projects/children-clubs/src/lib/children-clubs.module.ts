@@ -6,17 +6,21 @@ import {
   AppUiModule,
   AppUiConfig,
   SharedModalModule,
+  MainContainerModule,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
-import { ProjectListComponent } from './pages/project-list/project-list.component';
-import { Test1Component } from './components/test1/test1.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
 import { Test2Component } from './components/test2/test2.component';
-import { ProjectViewComponent } from './pages/project-view/project-view.component';
+
 import { BackComponent } from './components/back/back.component';
-import { ProjectGroupComponent } from './pages/project-group/project-group.component';
+
 import { GroupListModule } from './components/group-list/group-list.module';
+import { ProjectViewComponent } from './components/project-view/project-view.component';
+import { ProjectGroupComponent } from './components/project-group/project-group.component';
+import { ProgramListContainerComponent } from './components/program-list/container/program-list-container.component';
 
 const APP_CONFIG: AppUiConfig = {
   appRoutingComponentMap: {
@@ -40,11 +44,11 @@ const APP_CONFIG: AppUiConfig = {
     ChildrenClubsAppComponent,
     ProjectListComponent,
     ProjectViewComponent,
-    Test1Component,
     Test2Component,
   ],
   imports: [
     CoreUiModule,
+    MainContainerModule,
     LongButtonModule,
     AppStateModule,
     GroupListModule,
@@ -52,8 +56,9 @@ const APP_CONFIG: AppUiConfig = {
     ChildrenClubsFilterPanelModule,
     SharedModalModule,
     AppUiModule.forRoot(APP_CONFIG),
+    BaseUiModule,
   ],
   exports: [ChildrenClubsAppComponent],
-  entryComponents: [Test1Component, Test2Component],
+  entryComponents: [ProgramListContainerComponent, Test2Component],
 })
 export class ChildrenClubsModule {}

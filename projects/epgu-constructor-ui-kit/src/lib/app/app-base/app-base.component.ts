@@ -5,6 +5,7 @@ import {
   InputAppDto,
   OutputAppDto,
 } from '@epgu/epgu-constructor-types';
+import { BehaviorSubject } from 'rxjs';
 import { AppStateService } from '../app-state/app-state.service';
 import { CfAppStateService } from '../../core/services/cf-app-state/cf-app-state.service';
 import { AppStateQuery } from '../app-state/app-state.query';
@@ -23,6 +24,7 @@ export const getAppStorageKey = (componentType: string, componentId: string): st
 export class AppBaseComponent<T, U> {
   public appType: string;
   public inputAppData: InputAppDto;
+  public isFirstLoading$ = new BehaviorSubject(true);
 
   private appStateService: AppStateService<T, U>;
   private appStateQuery: AppStateQuery<T, U>;
@@ -144,6 +146,7 @@ export class AppBaseComponent<T, U> {
     this.storeSub = this.appStateQuery.store$.subscribe((storeState) => {
       this.localStorageService.set<AppState<T, U>>(key, storeState);
     });
+    this.isFirstLoading$.next(false);
   }
 
   private disableStorageSynchronization(): void {

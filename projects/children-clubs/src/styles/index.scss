@@ -3,6 +3,10 @@
 // Implement styleguide for all library's components
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
+.app-host {
+  height: 100%;
+}
+
 .container {
   width: 100%;
   max-width: 592px;

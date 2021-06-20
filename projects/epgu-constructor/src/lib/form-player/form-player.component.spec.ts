@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LoadServiceStub, MainContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
@@ -74,7 +74,7 @@ describe('FormPlayerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModuleInited],
+      imports: [EpguLibModuleInited, MainContainerModule],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,
@@ -371,8 +371,28 @@ describe('FormPlayerComponent', () => {
 
   describe('render modal', () => {
     it('should render screen modal', () => {
+      component.isFirstLoading$ = of(false);
+      formPlayerService['_playerLoaded$'] = of(true);
+      configService['_isLoaded$'] = of(true);
+      fixture.detectChanges();
       const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
       expect(screenModal).toBeTruthy();
+    });
+
+    it('should render modal container', () => {
+      const modalContainer = fixture.debugElement.query(By.css('epgu-cf-ui-modal-container'));
+      expect(modalContainer).toBeTruthy();
+    });
+  });
+
+  describe('render logic', () => {
+    it('should render logic component', () => {
+      component.isFirstLoading$ = of(false);
+      formPlayerService['_playerLoaded$'] = of(true);
+      configService['_isLoaded$'] = of(true);
+      fixture.detectChanges();
+      const logicComponent = fixture.debugElement.query(By.css('epgu-constructor-logic'));
+      expect(logicComponent).toBeTruthy();
     });
   });
 });

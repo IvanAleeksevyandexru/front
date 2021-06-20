@@ -1,0 +1,12 @@
+<div class="loader" *ngIf="showLoader">
+  <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+</div>
+
+<ng-container
+  *ngIf="!showLoader"
+>
+  <ng-content></ng-content>
+</ng-container>
+
+<epgu-cf-ui-modal-container></epgu-cf-ui-modal-container>
+
