@@ -21,7 +21,7 @@ import { mapTo } from 'rxjs/operators';
 
 @Injectable()
 export class ApiServiceStub {
-  getProgramList(options: FindOptionsProgram): Observable<BaseProgram[]> {
+  getProgramList(): Observable<BaseProgram[]> {
     return of([
       baseProgramStub,
       baseProgramStub,
@@ -35,15 +35,15 @@ export class ApiServiceStub {
       baseProgramStub,
     ]);
   }
-  getProgram(uuid: string): Observable<Program> {
+  getProgram(): Observable<Program> {
     return timer(1500).pipe(mapTo(programStub));
   }
 
-  getGroupList(uuid: string, options: FindOptionsGroup): Observable<Group[]> {
+  getGroupList(): Observable<Group[]> {
     return of([groupStub, groupStub, groupStub, groupStub, groupStub, groupStub]);
   }
 
-  getRegions(options: DictionaryOptions): Observable<DictionaryItem[]> {
+  getRegions(): Observable<DictionaryItem[]> {
     return of([regionStub, regionStub, regionStub, regionStub]);
   }
 
