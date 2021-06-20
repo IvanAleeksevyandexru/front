@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  BaseProgram,
-  FindOptionsGroup,
-  FindOptionsProgram,
-  FocusDirectionsItem,
-  Group,
-  Program,
-} from '../../typings';
+import { BaseProgram, FocusDirectionsItem, Group, Program } from '../../typings';
 import { Observable, of, timer } from 'rxjs';
-import { DictionaryOptions } from '@epgu/epgu-constructor-types';
+
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import {
   baseProgramStub,
