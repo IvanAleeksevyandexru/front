@@ -18,10 +18,17 @@
 .project__image {
   height: 180px;
   overflow: hidden;
-
   background-position: center center;
   background-size: cover;
   position: relative;
+  margin-bottom: 16px;
+  flex-basis: 100%;
+  margin-top: -24px;
+  margin-left: -24px;
+  margin-right: -24px;
+  min-width: calc(100% + 48px);
+  border-radius: 12px 12px 0 0;
+
   .project__age-limit {
     padding: 8px 10px;
     background: $color-white;
@@ -30,17 +37,14 @@
     position: absolute;
     top: 16px;
     left: 16px;
+    @include phones-down {
+      top: auto;
+      bottom: 16px;
+    }
   }
-
-  margin-bottom: 16px;
-  flex-basis: 100%;
-  margin-top: -24px;
-  margin-left: -24px;
-  margin-right: -24px;
-  min-width: calc(100% + 48px);
-  border-radius: 12px 12px 0 0;
   @include phones-down {
     height: 165px;
+    margin-bottom: 24px;
   }
 }
 .project__description {
@@ -50,6 +54,10 @@
   @include typ-h5;
   font-weight: $fw-regular;
   margin-bottom: 12px;
+  @include phones-down {
+    @include typ-plain-text;
+    margin-bottom: 16px;
+  }
 }
 
 .project__info-item {

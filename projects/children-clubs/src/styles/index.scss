@@ -31,4 +31,20 @@ a {
   background: $color-mercury;
   margin: 16px 0;
   height: 1px;
+  @include phones-down {
+    margin: 24px 0;
+  }
+}
+.loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 2147473647;
+  opacity: 0.7;
+  background: $color-white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

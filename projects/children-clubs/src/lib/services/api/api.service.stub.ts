@@ -7,7 +7,7 @@ import {
   Group,
   Program,
 } from '../../typings';
-import { Observable, of } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import {
@@ -17,6 +17,7 @@ import {
   programStub,
   regionStub,
 } from '../../stubs/projects.stub';
+import { mapTo } from 'rxjs/operators';
 
 @Injectable()
 export class ApiServiceStub {
@@ -35,7 +36,7 @@ export class ApiServiceStub {
     ]);
   }
   getProgram(uuid: string): Observable<Program> {
-    return of(programStub);
+    return timer(1500).pipe(mapTo(programStub));
   }
 
   getGroupList(uuid: string, options: FindOptionsGroup): Observable<Group[]> {

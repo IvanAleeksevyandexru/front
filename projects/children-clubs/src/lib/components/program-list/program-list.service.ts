@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { Project } from '../../../typings';
-import data from './../../../stubs/projects.stub';
+import { Project } from '../../typings';
+import data from './../../stubs/projects.stub';
 
 @Injectable()
 export class ProgramListService {

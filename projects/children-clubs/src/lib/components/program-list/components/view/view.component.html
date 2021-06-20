@@ -1,31 +1,30 @@
-<lib-throbber-hexagon size="big"></lib-throbber-hexagon>
 <div *ngIf="data$ | async as data" class="container">
   <div class="project__title">{{ data.name }}</div>
   <epgu-cf-ui-constructor-screen-pad class="project">
     <div class="project-grid">
-      <div [ngStyle]="{ backgroundImage: 'url(' + data.image + ')' }" class="project__image">
-        <div class="project__age-limit">{{ data.ageLimit }}</div>
+      <div [ngStyle]="{ backgroundImage: 'url(' + data.imageUrl + ')' }" class="project__image">
+        <div class="project__age-limit">{{ data.minAge }}-{{ data.maxAge }} лет</div>
       </div>
       <div class="project__info">
-        <div class="project__organization">{{ data.organization }}</div>
-        <div class="project__description">{{ data.description }}</div>
+        <div class="project__organization">{{ data.partnerName }}</div>
+        <div class="project__description">{{ data.fullName }}</div>
         <div class="divider"></div>
 
         <div class="project__info-item-list">
-          <div *ngIf="data?.freeTrainingPossible" class="project__info-item">
-            <div class="item-icon"><img src="assets/icons/not-paid.svg" /></div>
-            <div class="item-label">{{ data?.freeTrainingPossible }}</div>
+          <div *ngIf="data?.address" class="project__info-item">
+            <div class="item-icon"><img alt="адрес" src="assets/icons/address.svg" /></div>
+            <div class="item-label">{{ data?.address }}</div>
           </div>
-          <div *ngIf="data?.paidTrainingPossible" class="project__info-item">
-            <div class="item-icon"><img src="assets/icons/paid.svg" /></div>
-
-            <div class="item-label">{{ data?.paidTrainingPossible }}</div>
+          <div *ngIf="data?.teachers" class="project__info-item">
+            <div class="item-icon"><img alt="учитель" src="assets/icons/teacher.svg" /></div>
+            <div class="item-label">{{ data?.teachers }}</div>
           </div>
-          <div *ngIf="data?.PaymentByCertificatePossible" class="project__info-item">
-            <div class="item-icon">
-              <img src="assets/icons/cert.svg" />
+          <div *ngIf="data?.maxPersons" class="project__info-item">
+            <div class="item-icon"><img alt="размер группы" src="assets/icons/group.svg" /></div>
+            <div class="item-label">
+              Размер группы до {{ data?.maxPersons }}
+              {{ ['человека', 'человек', 'человек'] | pluralize: data?.maxPersons }}
             </div>
-            <div class="item-label">{{ data?.PaymentByCertificatePossible }}</div>
           </div>
         </div>
         <div class="divider"></div>
@@ -43,4 +42,7 @@
   <div class="center btn_pd">
     <lib-button (click)="next()">Выбрать группу</lib-button>
   </div>
+</div>
+<div class="loader-wrapper" *ngIf="loading$ | async">
+  <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
 </div>

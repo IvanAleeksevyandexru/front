@@ -1,4 +1,4 @@
-import { FindOptionsProgram, FindResponseGroup } from '../typings';
+import { FindOptionsProgram, FindResponseGroup } from './typings';
 
 export interface ChildrenClubsValue {
   groupUUID?: string;

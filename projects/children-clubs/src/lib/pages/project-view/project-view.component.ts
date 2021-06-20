@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Project } from '../../../typings';
-import data from '../../../stubs/projects.stub';
+import { Project } from '../../typings';
+import data from '../../stubs/projects.stub';
 
 @Component({
   selector: 'children-clubs-project-view-page',

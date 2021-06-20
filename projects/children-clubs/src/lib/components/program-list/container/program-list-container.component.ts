@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ProgramListService } from '../program-list.service';
-import { Project } from '../../../../typings';
+import { Project } from '../../../typings';
 
 @Component({
   selector: 'children-clubs-program-list',
