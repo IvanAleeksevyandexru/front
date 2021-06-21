@@ -4,10 +4,8 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  Inject,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+
 import { map } from 'rxjs/operators';
 import { ProgramListService } from '../../program-list.service';
 
@@ -24,11 +22,7 @@ export class ListComponent {
   isShowButton$ = this.listService.isFinish$.pipe(map((status) => !status));
   loadPercentScroll = 80;
 
-  constructor(
-    @Inject(WINDOW) private window: Window,
-    @Inject(DOCUMENT) private document: Document,
-    private listService: ProgramListService,
-  ) {}
+  constructor(private listService: ProgramListService) {}
 
   @HostListener('window:scroll', ['$event']) scroll(event: Event): void {
     const scrollElement: HTMLElement = (event.target as Document).scrollingElement as HTMLElement;

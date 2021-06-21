@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../program-list.service';
 import { BaseProgram } from '../../../typings';
-import { ApiService } from '../../../services/api/api.service';
 
 @Component({
   selector: 'children-clubs-program-list',
@@ -21,7 +20,6 @@ export class ProgramListContainerComponent implements OnInit {
 
   constructor(
     private listService: ProgramListService,
-    private api: ApiService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
