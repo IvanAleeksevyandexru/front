@@ -61,6 +61,11 @@ const configMock: Config = {
   },
   disableUnderConstructionMode: true,
   addToCalendarUrl: 'https://pgu-uat-betalk.test.gosuslugi.ru/',
+  isZipkinEnabled: false,
+  zipkinUrl: 'http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans',
+  zipkinMaxPayloadSize: 0,
+  zipkinEnv: 'dev01',
+  showTraceIdOnError: true,
 };
 
 describe('ConfigService', () => {
@@ -100,6 +105,11 @@ describe('ConfigService', () => {
     expect(service.timeSlots).toBe(configMock.timeSlots);
     expect(service.disableUnderConstructionMode).toBe(configMock.disableUnderConstructionMode);
     expect(service.addToCalendarUrl).toBe(configMock.addToCalendarUrl);
+    expect(service.isZipkinEnabled).toBe(configMock.isZipkinEnabled);
+    expect(service.zipkinUrl).toBe(configMock.zipkinUrl);
+    expect(service.zipkinMaxPayloadSize).toBe(configMock.zipkinMaxPayloadSize);
+    expect(service.zipkinEnv).toBe(configMock.zipkinEnv);
+    expect(service.showTraceIdOnError).toBe(configMock.showTraceIdOnError);
 
     expect(service.isLoaded).toBe(true);
   });

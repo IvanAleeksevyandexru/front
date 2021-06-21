@@ -98,13 +98,14 @@ export class ErrorHandleService {
     httpErrorResponse: HttpErrorResponse,
   ): Observable<HttpEvent<void | never>> {
     const { status, url, error, statusText } = httpErrorResponse;
+    const traceId = httpErrorResponse.headers.get('x-trace-id') || error.traceId;
 
     if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
     } else if (error?.errorModalWindow) {
       this.showErrorModal(error.errorModalWindow);
     } else if (status === 401) {
-      this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
+      this.showModal(AUTH_ERROR_MODAL_PARAMS, traceId).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
@@ -112,14 +113,14 @@ export class ErrorHandleService {
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
     } else if (status === 408 && url.includes('invitations/inviteToSign/send')) {
-      this.showModal(TIME_INVITATION_ERROR); // TODO: переделать кейс на errorModalWindow
+      this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
       if (error.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR); // TODO: переделать кейс на errorModalWindow
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
-        this.showModal(DRAFT_STATEMENT_NOT_FOUND).then((redirectToLk) => {
+        this.showModal(DRAFT_STATEMENT_NOT_FOUND, traceId).then((redirectToLk) => {
           if (redirectToLk) {
             this.navigationService.redirectToLK();
           }
@@ -127,10 +128,10 @@ export class ErrorHandleService {
       } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS).then();
+        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then();
       }
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
-      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS).then((reload) => {
+      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((reload) => {
         if (reload) {
           this.locationService.reload();
         }
@@ -139,8 +140,10 @@ export class ErrorHandleService {
     return throwError(httpErrorResponse);
   }
 
-  private showModal(params: ConfirmationModal): Promise<unknown> {
-    return this.modalService.openModal(ConfirmationModalComponent, params).toPromise();
+  private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
+    return this.modalService
+      .openModal(ConfirmationModalComponent, { ...params, traceId })
+      .toPromise();
   }
 
   private showErrorModal(params: ErrorModal): Promise<unknown> {
