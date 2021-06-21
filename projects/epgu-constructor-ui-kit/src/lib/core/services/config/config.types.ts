@@ -43,6 +43,7 @@ export type TimeSlotsApi = {
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
+ * @property {boolean}isZipkinCascadeMode - делать ли каждый следующий span ребенком предыдущего через parentId, обеспечивая каскадность
  * @property {boolean}showTraceIdOnError - показывать ли traceId в модалках "Не сработало"
  * @property {string}oplataUrl - url до оплаты
  */
@@ -77,6 +78,7 @@ export interface Config {
   zipkinUrl?: string;
   zipkinMaxPayloadSize?: number;
   zipkinEnv?: string;
+  isZipkinCascadeMode?: boolean;
   showTraceIdOnError?: boolean;
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;

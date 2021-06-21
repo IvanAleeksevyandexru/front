@@ -12,7 +12,7 @@ export class TracingService {
   private ctxImpl: ExplicitContext = new ExplicitContext();
   private recorder: BatchRecorder;
   private defaultTags: { [key: string]: string } = {
-    serviceCode: ''
+    serviceCode: '',
   };
 
   constructor(
@@ -47,7 +47,7 @@ export class TracingService {
   }
 
   public isAllowedRemoteServices(url: string): boolean {
-    return this.allowedRemoteServices.some(allowedRemote => url.includes(allowedRemote));
+    return this.allowedRemoteServices.some((allowedRemote) => url.includes(allowedRemote));
   }
 
   public get tracer(): Tracer {

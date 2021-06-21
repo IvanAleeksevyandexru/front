@@ -33,6 +33,7 @@ export class ConfigServiceStub implements Config {
   _zipkinUrl = '';
   _zipkinMaxPayloadSize: number;
   _zipkinEnv = '';
+  _isZipkinCascadeMode = false;
   _showTraceIdOnError = false;
   _oplataUrl = 'oplataUrl';
   _lkApi = '';
@@ -211,6 +212,10 @@ export class ConfigServiceStub implements Config {
     return this._zipkinEnv;
   }
 
+  get isZipkinCascadeMode(): boolean {
+    return this._isZipkinCascadeMode;
+  }
+
   get showTraceIdOnError(): boolean {
     return this._showTraceIdOnError;
   }
@@ -267,6 +272,7 @@ export class ConfigServiceStub implements Config {
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
+    this._showTraceIdOnError = config.isZipkinCascadeMode || false;
     this._showTraceIdOnError = config.showTraceIdOnError || false;
   }
 }
