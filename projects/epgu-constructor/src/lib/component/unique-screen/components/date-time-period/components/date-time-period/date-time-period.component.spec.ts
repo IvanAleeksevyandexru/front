@@ -16,15 +16,34 @@ import { ListElement } from '@epgu/epgu-lib';
 import { addDays, addYears } from 'date-fns';
 import { getDateTimeObject } from '../../utils/date-time-period.utils';
 
-// jest.mock('../../utils/date-time-period.utils');
+const timeDropdownItems: ListElement[] = [];
+for (var i = 0; i < 24; i++) {
+  const hour = (i < 10) ? '0' + i : i;
+  const objHour = [
+    { id: hour + ':00', text: hour + ':00' },
+    { id: hour + ':15', text: hour + ':15' },
+    { id: hour + ':30', text: hour + ':30' },
+    { id: hour + ':45', text: hour + ':45' }
+  ];
+  timeDropdownItems.push(...objHour);
+}
+
+jest.useFakeTimers();
 
 describe('DateTimePeriodComponent', () => {
   let component: DateTimePeriodComponent;
   let fixture: ComponentFixture<DateTimePeriodComponent>;
+  let currentAnswersService: CurrentAnswersService;
+
+  const initComponent = () => {
+    fixture = TestBed.createComponent(DateTimePeriodComponent);
+    component = fixture.componentInstance;
+  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ DateTimePeriodComponent, MockComponents(ScreenPadComponent, InputErrorComponent, LabelComponent, ConstructorDatePickerComponent, ConstructorDropdownComponent) ],
+      declarations: [ DateTimePeriodComponent,
+        MockComponents(ScreenPadComponent, InputErrorComponent, LabelComponent, ConstructorDatePickerComponent, ConstructorDropdownComponent) ],
       providers: [ { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         CurrentAnswersService ],
       imports: [ FormsModule, ReactiveFormsModule ],
@@ -34,8 +53,8 @@ describe('DateTimePeriodComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DateTimePeriodComponent);
-    component = fixture.componentInstance;
+    initComponent();
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     fixture.detectChanges();
   });
 
@@ -102,7 +121,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.beginDate.label', () => {
       component.attrs = {
-        beginDate: {label: 'some label text'} as ComponentDateTimeDto
+        beginDate: { label: 'some label text' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css(selector));
@@ -138,7 +157,7 @@ describe('DateTimePeriodComponent', () => {
     it ('maxDate should be attrs.beginDate?.maxDate', () => {
       
       component.attrs = {
-        beginDate: {maxDate: 'some maxDate'} as ComponentDateTimeDto
+        beginDate: { maxDate: 'some maxDate' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
@@ -187,7 +206,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.beginTime.label', () => {
       component.attrs = {
-        beginTime: {label: 'some label text 2'} as ComponentDateTimeDto
+        beginTime: { label: 'some label text 2' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
@@ -210,16 +229,17 @@ describe('DateTimePeriodComponent', () => {
   describe('epgu-cf-ui-constructor-constructor-dropdown', () => {
     const selector = 'epgu-cf-ui-constructor-constructor-dropdown';
     
-    /*it('items should be startTimeDropdownItems', () => {
+    it('items should be startTimeDropdownItems', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
-      const startTimeDropdownItems: ListElement[] = [
-        { id: '00:00', text: '00:00' },
-        { id: '00:15', text: '00:15' },
-        { id: '00:30', text: '00:30' },
-        { id: '00:45', text: '00:45' }
-      ];
+      const startTimeDropdownItems = timeDropdownItems;
       expect(debugEl.componentInstance.items).toEqual(startTimeDropdownItems);
-    });*/
+    });
+
+    it ('control should be group.controls.startTime', () => {
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
+      const group = debugEl.injector.get(FormGroupDirective).form;
+      expect(debugEl.componentInstance.control).toEqual(group.controls.startTime);
+    });
 
     it('invalid should be true if (startTime.invalid && startTime.touched)', () => {
       let debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
@@ -248,7 +268,6 @@ describe('DateTimePeriodComponent', () => {
     
     it('setOneDayPeriod()', () => {
       jest.spyOn(component, 'setOneDayPeriod');
-      // const mockDate = new Date('2021-05-19T09:19:08.327Z');
 
       const startTime = { id: '00:00', text: '00:00' };
       const startDate = new Date();
@@ -256,8 +275,7 @@ describe('DateTimePeriodComponent', () => {
       component.group.get('startTime').setValue(startTime);
       component.group.get('startDate').setValue(startDate);
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
-            
-      // const spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate as unknown as string);
+
       debugEl.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(component.setOneDayPeriod).toHaveBeenCalled();
@@ -268,7 +286,6 @@ describe('DateTimePeriodComponent', () => {
       const expectedStartDate = addDays(newStartDate, 1);
       expect(component.group.get('endTime').value).toBe(startTime);
       expect(component.group.get('endDate').value).toEqual(expectedStartDate);
-      // spy.mockRestore();
     });
 
     it('setOneYearPeriod()', () => {
@@ -353,7 +370,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.endDate.label', () => {
       component.attrs = {
-        endDate: {label: 'some label text 3'} as ComponentDateTimeDto
+        endDate: { label: 'some label text 3' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[2];
@@ -385,7 +402,7 @@ describe('DateTimePeriodComponent', () => {
     it ('maxDate should be attrs.endDate?.maxDate', () => {
       
       component.attrs = {
-        endDate: {maxDate: 'some maxDate 2'} as ComponentDateTimeDto
+        endDate: { maxDate: 'some maxDate 2' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
@@ -440,7 +457,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.endTime.label', () => {
       component.attrs = {
-        endTime: {label: 'some label text 4'} as ComponentDateTimeDto
+        endTime: { label: 'some label text 4' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[3];
@@ -463,7 +480,9 @@ describe('DateTimePeriodComponent', () => {
   describe('epgu-cf-ui-constructor-constructor-dropdown 2 (endTime)', () => {
     const selector = 'epgu-cf-ui-constructor-constructor-dropdown';
     it ('items should be endTimeDropdownItems', () => {
-
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
+      const endTimeDropdownItems = timeDropdownItems;
+      expect(debugEl.componentInstance.items).toEqual(endTimeDropdownItems);
     });
 
     it ('control should be group.controls.endTime', () => {
@@ -477,24 +496,38 @@ describe('DateTimePeriodComponent', () => {
       expect(debugEl.componentInstance.invalid).toBeFalsy();
       
       component.group.get('endTime').setValue(new Date());
-      console.log('endTime', component.group.get('endTime').value);
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
       expect(debugEl.componentInstance.invalid).toBeFalsy();
 
-      /*component.group.get('endTime').setValue(new Date());
-      console.log('!!!',component.group.get('endTime').value);
+      component.group.get('endTime').setValue({ id: '23:45', text: '23:45' });
       component.group.get('endTime').markAsTouched();
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
-      expect(debugEl.componentInstance.invalid).toBeFalsy();*/
+      expect(debugEl.componentInstance.invalid).toBeFalsy();
 
       component.group.get('endTime').setValue('');
-      console.log('component.group.get(endTime)', component.group.get('endTime'));
       component.group.get('endTime').markAsTouched();
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
       expect(debugEl.componentInstance.invalid).toBeTruthy();
     });
-  })
+
+  });
+
+  it('should set currentAnswersService.isValid is false on init', () => {
+    jest.runAllTimers();
+    expect(currentAnswersService.isValid).toBe(false);
+  });
+
+  it('should init start date', () => {
+    initComponent();
+    component.initialState = {
+      startDateTime: '2021-06-21T11:13:36.390Z',
+      endDateTime: '2021-06-21T11:13:36.390Z'
+    };
+    fixture.detectChanges();
+    expect(component.group.get('startDate').value.toISOString()).toBe('2021-06-21T11:13:36.390Z');
+  });
+
 });
