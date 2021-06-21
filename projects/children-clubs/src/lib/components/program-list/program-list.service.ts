@@ -3,7 +3,7 @@ import { ApiService } from '../../services/api/api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppStateQuery } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
-import { BaseProgram } from '../../typings';
+import { BaseProgram, FocusFilter } from '../../typings';
 import {
   map,
   shareReplay,
@@ -15,6 +15,7 @@ import {
   distinctUntilChanged,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
+import { ListElement } from '@epgu/epgu-lib';
 
 @Injectable()
 export class ProgramListService {
@@ -57,6 +58,15 @@ export class ProgramListService {
         isEqual(prev?.programFilters, next?.programFilters) && prev.okato === next.okato,
     ),
     map((state) => {
+      const filters = { ...(state?.programFilters ?? {}) };
+      const focus = filters?.focus as ListElement;
+      if (focus && focus?.text) {
+        filters.focus = focus.text as FocusFilter;
+      }
+      const place = filters?.place as ListElement;
+      if (place && place?.text) {
+        filters.place = place?.text;
+      }
       return { filters: state?.programFilters ?? {}, okato: state?.okato ?? 0 };
     }),
 

@@ -34,10 +34,10 @@ export class ApiServiceStub {
     } else {
       result = new Array(size).fill(baseProgramStub);
     }
-    return timer(1).pipe(mapTo(result));
+    return timer(1000).pipe(mapTo(result));
   }
   getProgram(): Observable<Program> {
-    return timer(1).pipe(mapTo(programStub));
+    return timer(1000).pipe(mapTo(programStub));
   }
 
   getGroupList(): Observable<Group[]> {

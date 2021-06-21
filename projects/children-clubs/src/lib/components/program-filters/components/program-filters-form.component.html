@@ -1,8 +1,9 @@
 <epgu-cf-ui-cta-modal
   title="Фильтры"
-  text="filters"
+  [text]="modalId"
   [showCrossButton]="true"
   [isButtonsOutsideContent]="true"
+  [scrollTop]="false"
 >
   <form [formGroup]="form" modal-content>
     <div class="mb-24">
@@ -16,7 +17,7 @@
       <div class="label">{{ formFieldsLabel[formFields.place] }}</div>
       <lib-lookup
         [formControlName]="formFields[formFields.place]"
-        [fixedItems]="focusListElements"
+        [itemsProvider]="provider"
         [placeholder]="'Все'"
       ></lib-lookup>
     </div>
@@ -52,8 +53,8 @@
 
       <div class="mb-16">
         <lib-checkbox
-          [labelText]="formFieldsLabel[formFields.paid]"
-          [formControlName]="formFields.paid"
+          [labelText]="formFieldsLabel[formFields.personalFunds]"
+          [formControlName]="formFields.personalFunds"
         ></lib-checkbox>
       </div>
     </div>
@@ -80,9 +81,9 @@
       </div>
 
       <div class="row-item">
-        <div class="label">{{ formFieldsLabel[formFields.programType] }}</div>
+        <div class="label">{{ formFieldsLabel[formFields.direction] }}</div>
         <lib-dropdown
-          [formControlName]="formFields[formFields.programType]"
+          [formControlName]="formFields[formFields.direction]"
           [items]="specializationListElements"
         ></lib-dropdown>
       </div>
