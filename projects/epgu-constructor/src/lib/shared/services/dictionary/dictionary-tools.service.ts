@@ -22,8 +22,8 @@ import { ComponentDictionaryFilters } from '../../../component/custom-screen/ser
 // eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
-import { UtilsService as utils } from '../../../core/services/utils/utils.service';
-import { isUndefined } from '../../constants/utils';
+import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
+import { isUndefined } from '@epgu/epgu-constructor-ui-kit';
 import {
   CachedAnswersDto,
   ComponentDictionaryFilterDto,
@@ -39,7 +39,7 @@ import {
   AdditionalRequestParam,
   AdditionalRequestType,
 } from '@epgu/epgu-constructor-types';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { KeyValueMap } from '../../../core/core.types';
 
@@ -242,7 +242,8 @@ export class DictionaryToolsService {
         attributeName: dFilter.attributeName,
         condition: dFilter.condition,
         value: this.getValueForFilter(componentValue, screenStore, dFilter),
-        trueForNull: dFilter.trueForNull,
+        ...(dFilter.hasOwnProperty('trueForNull') ? { trueForNull: dFilter.trueForNull } : {}),
+        ...(dFilter.hasOwnProperty('checkAllValues') ? { checkAllValues: dFilter.checkAllValues } : {}),
       },
     };
   }

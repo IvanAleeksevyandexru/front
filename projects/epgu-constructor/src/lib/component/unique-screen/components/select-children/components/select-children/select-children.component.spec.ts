@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { SelectChildrenComponent } from './select-children.component';
 import { CoreModule } from '../../../../../../core/core.module';
-import { LoggerService, LoggerServiceStub, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, LoggerService, LoggerServiceStub, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -26,7 +26,7 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { componentMock } from './mocks/select-children.mock';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { configureTestSuite } from 'ng-bullet';
@@ -45,6 +45,7 @@ describe('SelectChildrenComponent', () => {
       ],
       imports: [
         CoreModule,
+        CoreUiModule,
         RouterTestingModule,
         ReactiveFormsModule,
         BaseModule,

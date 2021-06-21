@@ -10,7 +10,7 @@ import { ShowLoaderButtonPipe } from './pipes/show-loader-button.pipe';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit/src/lib/modal/modal.service';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 

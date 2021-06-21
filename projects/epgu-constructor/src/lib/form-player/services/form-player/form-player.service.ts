@@ -1,5 +1,5 @@
 import { Inject, Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 import { FormPlayerNavigation, Navigation } from '../../form-player.types';
@@ -11,6 +11,7 @@ import {
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
+import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -42,6 +43,34 @@ export class FormPlayerService extends FormPlayerBaseService {
   initData(orderId?: number): void {
     this.updateLoading(true);
     this.getOrderData(orderId);
+  }
+
+  initPlayerFromOrder(otherScenario: Partial<ScenarioDto>): Observable<FormPlayerApiResponse> {
+    this.updateLoading(true);
+    return this.formPlayerApiService.getServiceData().pipe(
+      mergeMap((response) => {
+        if (this.hasError(response)) {
+          return throwError(response);
+        } else {
+          const successResponse = response as FormPlayerApiSuccessResponse;
+
+          return this.formPlayerApiService
+            .navigate({
+              ...successResponse,
+              scenarioDto: {
+                ...successResponse.scenarioDto,
+                ...otherScenario
+              }
+            }, undefined, FormPlayerNavigation.NEXT);
+        }
+      }),
+      tap((response) => this.processResponse(response)),
+      catchError((error) => {
+        this.sendDataError(error);
+        return throwError(error);
+      }),
+      finalize(() => this.updateLoading(false))
+    );
   }
 
   initPlayerFromQuiz(quiz: QuizRequestDto): void {

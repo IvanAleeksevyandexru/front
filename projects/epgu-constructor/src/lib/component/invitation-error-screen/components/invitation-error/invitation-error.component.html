@@ -1,6 +1,6 @@
-<epgu-constructor-screen-container class="invitation">
+<epgu-cf-ui-screen-container class="invitation">
   <epgu-cf-ui-constructor-screen-pad class="screen-body">
-    <div *ngIf="!emailSent; else result">
+    <div>
       <div class="invitation__img-wrapper">
         <img [src]="data.attrs.imgSrc" alt="" />
       </div>
@@ -31,42 +31,17 @@
             [validationShowOn]="validationShowOn"
           ></epgu-constructor-constructor-plain-input>
 
-          <epgu-cf-ui-constructor-helper-text>{{ data.attrs.helperText }}</epgu-cf-ui-constructor-helper-text>
+          <epgu-cf-ui-constructor-helper-text>{{
+            data.attrs.helperText
+          }}</epgu-cf-ui-constructor-helper-text>
         </div>
       </form>
 
       <div class="invitation__inner-footer">
         <lib-button (click)="sendEmail()" [disabled]="!email.valid">{{
           data.attrs.sendEmailLabel || 'Отправить'
-          }}</lib-button>
+        }}</lib-button>
       </div>
     </div>
-
-    <ng-template #result>
-      <div *ngIf="success; else errorMessage">
-        <div class="invitation__img-wrapper">
-          <img [src]="data.attrs.success.imgSrc || defaultImgSrc" alt="" />
-        </div>
-
-        <epgu-constructor-output-html [html]="data.attrs.success.label" class="invitation__text">
-        </epgu-constructor-output-html>
-      </div>
-      <ng-template #errorMessage>
-        <div class="info">
-          <div class="invitation__img-wrapper">
-            <img class="info__img" [src]="data.attrs.error.imgSrc || defaultImgSrc" alt="" />
-          </div>
-
-          <epgu-constructor-output-html [html]="data.attrs.error.label" class="invitation__text">
-          </epgu-constructor-output-html>
-        </div>
-      </ng-template>
-    </ng-template>
   </epgu-cf-ui-constructor-screen-pad>
-
-  <div class="screen-footer invitation__outer-footer" *ngIf="emailSent">
-    <lib-button (click)="redirectToLK()">
-      {{ data.attrs.redirectLabel }}
-    </lib-button>
-  </div>
-</epgu-constructor-screen-container>
+</epgu-cf-ui-screen-container>

@@ -1,6 +1,6 @@
-<epgu-constructor-screen-container class="invitation">
+<epgu-cf-ui-screen-container class="invitation">
   <epgu-cf-ui-constructor-screen-pad class="screen-body">
-    <div *ngIf="!emailSent; else result">
+    <div>
       <div class="invitation__img-wrapper">
         <img [src]="data.attrs.imgSrc" alt="" />
       </div>
@@ -42,31 +42,5 @@
       </div>
     </div>
 
-    <ng-template #result>
-      <div *ngIf="success; else errorMessage">
-        <div class="invitation__img-wrapper">
-          <img [src]="data.attrs.success.imgSrc || defaultImgSrc" alt="" />
-        </div>
-
-        <epgu-constructor-output-html [html]="data.attrs.success.label" class="invitation__text">
-        </epgu-constructor-output-html>
-      </div>
-      <ng-template #errorMessage>
-        <div class="info">
-          <div class="invitation__img-wrapper">
-            <img class="info__img" [src]="data.attrs.error.imgSrc || defaultImgSrc" alt="" />
-          </div>
-
-          <epgu-constructor-output-html [html]="data.attrs.error.label" class="invitation__text">
-          </epgu-constructor-output-html>
-        </div>
-      </ng-template>
-    </ng-template>
   </epgu-cf-ui-constructor-screen-pad>
-
-  <div class="screen-footer invitation__outer-footer" *ngIf="emailSent">
-    <lib-button (click)="navigationService.redirectToLK()">
-      {{ data.attrs.redirectLabel }}
-    </lib-button>
-  </div>
-</epgu-constructor-screen-container>
+</epgu-cf-ui-screen-container>

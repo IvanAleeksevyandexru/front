@@ -2,11 +2,11 @@
 @import 'breakpoint';
 
 @mixin shadow-main {
-  box-shadow: 0px 24px 48px $color-shadow;
+  box-shadow: 0 24px 48px $color-shadow;
 }
 
 @mixin shadow-second {
-  box-shadow: 0px 6px 16px $color-shadow-second;
+  box-shadow: 0 6px 16px $color-shadow-second;
 }
 
 @mixin btn--light {
@@ -65,7 +65,8 @@
 
 @mixin screen-buttons-margin {
   :host::ng-deep  {
-    .screen-body.screen-body {
+    .screen-body.screen-body,
+    .screen-body.screen-body:not(.quiz__header) {
       @include tablets-up {
         margin-bottom: 16px;
       }
@@ -75,7 +76,8 @@
       }
     }
 
-    .screen-footer > .screen-buttons {
+    .screen-footer > .screen-buttons,
+    .screen-footer:not(.quiz__container) > .screen-buttons {
       margin-top: 0;
     }
   }
@@ -130,6 +132,12 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+}
+
+@mixin divider { // для header в модалках
+  border-bottom: 1px solid $color-divider;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 // Миксин для установки высоты контента для модалок чтоб на таблетках и мобилке кнопки были внизу

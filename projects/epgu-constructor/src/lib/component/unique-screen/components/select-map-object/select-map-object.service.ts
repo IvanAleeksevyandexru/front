@@ -26,7 +26,7 @@ export interface SelectMapComponentAttrs {
 @Injectable()
 export class SelectMapObjectService implements OnDestroy {
   public dictionary: DictionaryResponseForYMap;
-  public filteredDictionaryItems = [];
+  public filteredDictionaryItems: DictionaryYMapItem[] = [];
   public selectedValue = new Subject();
   public ymaps;
   public templates: { [key: string]: TemplateRef<ViewChild> } = {}; // Шаблоны для модалки
@@ -82,7 +82,7 @@ export class SelectMapObjectService implements OnDestroy {
     });
     this.dictionary.items.forEach((item, index) => {
       const coords = hashMap[item.attributeValues[this.componentAttrs.attributeNameWithAddress]];
-      item.idForMap = index;
+      item.objectId = index;
       if (coords) {
         item.center = [coords.longitude, coords.latitude];
       }
@@ -136,13 +136,13 @@ export class SelectMapObjectService implements OnDestroy {
   /**
    * centers the map by coordinates
    * @param coords
-   * @param objectId
+   * @param object
    */
-  public centeredPlaceMark(coords: number[], objectId: number): void {
+  public centeredPlaceMark(coords: number[], object: DictionaryYMapItem): void {
     let serviceContext = this;
     let offset = -0.00008;
 
-    this.activePlacemarkId = objectId;
+    this.activePlacemarkId = object.idForMap;
 
     if (coords && coords[0] && coords[1]) {
       let center = this.yaMapService.map.getCenter();
@@ -154,22 +154,22 @@ export class SelectMapObjectService implements OnDestroy {
         equal = false;
       }
 
-      if (!equal || (equal && serviceContext.mapOpenedBalloonId !== objectId)) {
+      if (!equal || (equal && serviceContext.mapOpenedBalloonId !== object.idForMap)) {
         this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
           serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
           // Таймаут нужен что бы балун всегда нормально открывался
           // по непонятным причинам без таймаута балун иногда не открывается
           setTimeout(() => {
             serviceContext.objectManager &&
-              serviceContext.objectManager.objects.setObjectOptions(objectId, {
+              serviceContext.objectManager.objects.setObjectOptions(object.idForMap, {
                 iconImageHref: serviceContext.icons.red.iconImageHref,
               });
-            serviceContext.objectManager.objects.balloon.open(objectId);
+            serviceContext.objectManager.objects.balloon.open(object.idForMap);
             serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
             serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
-            serviceContext.mapOpenedBalloonId = objectId;
+            serviceContext.mapOpenedBalloonId = object.idForMap;
             serviceContext.selectedValue.next(
-              serviceContext.objectManager.objects.getById(objectId).properties.res,
+              object,
             );
           }, 200);
         });
@@ -199,10 +199,21 @@ export class SelectMapObjectService implements OnDestroy {
     return this.filteredDictionaryItems.find((object) => object.value === value);
   }
 
+  public findObjectByObjectId(objectId: number): DictionaryYMapItem {
+    let ret;
+    this.filteredDictionaryItems.find((object) => {
+      return object.children.find((child: DictionaryYMapItem) => {
+        ret = child.objectId === objectId && child;
+        return ret;
+      });
+    });
+    return ret;
+  }
+
   public centeredPlaceMarkByObjectValue(value: string): void {
     const valueFromDict = this.findObjectByValue(value);
     if (valueFromDict?.center) {
-      this.centeredPlaceMark(valueFromDict.center, valueFromDict.idForMap);
+      this.centeredPlaceMark(valueFromDict.center, valueFromDict);
     }
   }
 
@@ -238,7 +249,10 @@ export class SelectMapObjectService implements OnDestroy {
       item.agreement = attrValues.GET_CONSENT !== 'true';
       if (hashMap[hashKey]) {
         hashMap[hashKey].children.push(item);
+        item.children = hashMap[hashKey].children;
+        item.idForMap = hashMap[hashKey].idForMap;
       } else {
+        item.idForMap = item.objectId;
         item.children.push(item);
         // expanded - флаг для развертывания секции когда есть залы
         item.expanded = true;

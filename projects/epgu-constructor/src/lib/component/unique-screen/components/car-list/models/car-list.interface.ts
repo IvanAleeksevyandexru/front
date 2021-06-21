@@ -80,7 +80,7 @@ interface Restriction {
   status: string;
   restrictionDate: string;
   initiateRegion: string;
-  gibddDepart: string;
+  ospAddress: string;
   mainReason: string;
   restrictionDesc: string;
   enforcementProceedingsNumber: string;
@@ -98,7 +98,7 @@ export interface SearchingSpec {
 
 export interface RegActions {
   confidentSign: boolean;
-  leasingFlag: boolean;
+  leasingFlag: string;
   regActionName: string;
   regDate: string;
   regDepartment: string;

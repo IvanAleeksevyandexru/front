@@ -8,14 +8,14 @@ import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, LocationServiceStub, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
-import { NavigationComponent } from '../../../../../../shared/components/navigation/navigation.component';
+import { PrevButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
-import { ScreenContainerComponent } from '../../../../../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
@@ -59,7 +59,7 @@ describe('SignatureApplicationComponent', () => {
         SignatureApplicationComponent,
         ScreenContainerComponent,
         PageNameComponent,
-        NavigationComponent,
+        PrevButtonComponent,
         ButtonComponent,
         LoaderComponent,
         OutputHtmlComponent,

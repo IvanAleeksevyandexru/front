@@ -1,23 +1,25 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Injector,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { AppBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
-  template: `
-    <children-clubs-project-list-page></children-clubs-project-list-page>
-    <p>
-      children-clubs app works!
-      <button (click)="closeApp()">closeApp</button>
-<!--      {{ inputAppData?.componentId }}-->
-    </p>
-    <epgu-cf-ui-modal-container></epgu-cf-ui-modal-container>
-  `,
-  styles: [],
+  templateUrl: './children-clubs-app.component.html',
+  styleUrls: ['../styles/index.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChildrenClubsAppComponent
   extends AppBaseComponent<ChildrenClubsValue, ChildrenClubsState>
   implements OnInit {
+  @HostBinding('class.app-host') class = true;
   public appType = 'ChildrenClubs';
 
   constructor(public injector: Injector) {
@@ -25,6 +27,6 @@ export class ChildrenClubsAppComponent
   }
 
   ngOnInit(): void {
-    // this.openApp();
+    this.openApp();
   }
 }

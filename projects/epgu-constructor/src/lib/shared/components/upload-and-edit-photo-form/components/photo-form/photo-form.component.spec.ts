@@ -12,7 +12,7 @@ import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
-import { UtilsService } from '../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../service/validation/validation.service';
 import { UploadService } from '../../service/upload/upload.service';

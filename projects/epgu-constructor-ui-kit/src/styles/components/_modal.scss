@@ -2,6 +2,7 @@
 @import "../core/breakpoint";
 
 .modal {
+  //TODO Заменить на .icon-close
   &__close {
     position: absolute;
     right: 32px;
@@ -32,6 +33,7 @@
 
   &__title {
     padding-right: 50px;
+    //TODO дублирование/переопределение кода, нужно просто заменить везде тег на h3
     color: $color-summer-night;
     @include typ-h3;
   }

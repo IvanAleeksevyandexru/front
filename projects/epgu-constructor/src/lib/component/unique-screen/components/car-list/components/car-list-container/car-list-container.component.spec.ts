@@ -13,15 +13,18 @@ import {
   DeviceDetectorServiceStub,
   ModalService,
   ModalServiceStub,
-  WINDOW_PROVIDERS, HttpCancelService
+  WINDOW_PROVIDERS,
+  HttpCancelService,
+  PrevButtonModule,
+  PREV_BUTTON_NAVIGATION
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UtilsService } from '../../../../../../core/services/utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
@@ -31,6 +34,8 @@ import { CarListComponent } from '../car-list/car-list.component';
 import { ServiceResult } from '../../../car-info/models/car-info.interface';
 import { CarList } from '../../models/car-list.interface';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
+import { MockModule } from 'ng-mocks';
+import { PrevButtonNavigationService } from '../../../../../../core/services/prev-button-navigation/prev-button-navigation.service';
 
 describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
@@ -74,6 +79,7 @@ describe('CarListContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationService },
         CurrentAnswersService,
         UtilsService,
         NavigationService,
@@ -88,6 +94,7 @@ describe('CarListContainerComponent', () => {
         ScreenPadModule,
         ConstructorLookupModule,
         ScreenButtonsModule,
+        MockModule(PrevButtonModule),
       ],
     }).compileComponents();
   });

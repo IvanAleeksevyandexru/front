@@ -3,10 +3,10 @@ import { TimeSlotsComponent } from './time-slots.component';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 
 @NgModule({

@@ -2,7 +2,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -1186,6 +1186,42 @@ describe('ComponentsListRelationsService', () => {
         expect(service.applyFilter).not.toBeCalled();
         expect(service.clearFilter).toBeCalledTimes(1);
         expect(service.clearFilter).toBeCalledWith(dependentComponent.id);
+      });
+    });
+
+    describe('if relation === autoFillTextFromRefs', () => {
+      it('should patch dependentControl value', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf2',
+          relation: CustomComponentRefRelation.autoFillTextFromRefs,
+          relatedRelValues: {
+            reference_to_name: 'title',
+            reference_to_address: 'address',
+          },
+          val: ''
+        };
+
+        componentVal = { title: 'some title', address: 'some address' };
+
+        dependentControl = new FormGroup({
+          id: new FormControl('rf2'),
+          label: new FormControl('label with ${reference_to_name}'),
+          clarification: new FormControl('clarification with ${reference_to_address}'),
+          hint: new FormControl('not match for replace ${not_match}'),
+        });
+
+        service['handleAutoFillTextFromRefs'](
+          reference,
+          componentVal,
+          dependentControl,
+        );
+
+        expect(dependentControl.value).toEqual({
+          id: 'rf2',
+          label: 'label with some title',
+          clarification: 'clarification with some address',
+          hint: 'not match for replace ${not_match}',
+        });
       });
     });
   });

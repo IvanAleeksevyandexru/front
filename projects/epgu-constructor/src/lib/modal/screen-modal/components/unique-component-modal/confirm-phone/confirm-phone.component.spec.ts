@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { CoreModule } from '../../../../../core/core.module';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -51,7 +51,7 @@ describe('ConfirmPhoneComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPhoneComponent, CounterDirective],
-      imports: [ConstructorPlainInputModule, CoreModule, BaseModule, RouterTestingModule],
+      imports: [ConstructorPlainInputModule, CoreModule, CoreUiModule, BaseModule, RouterTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,

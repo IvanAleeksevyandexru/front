@@ -15,10 +15,6 @@
   min-width: 320px;
   height: 100%;
 
-  & .loader {
-    margin: auto;
-  }
-
   img {
     max-width: 100%;
   }
@@ -107,6 +103,7 @@
     text-decoration: none;
     color: $color-gosblue;
     cursor: pointer;
+    outline: none;
 
     &:hover {
       color: $color-active-item;

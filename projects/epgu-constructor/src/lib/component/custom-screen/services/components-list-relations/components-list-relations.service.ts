@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined } from '../../../../shared/constants/utils';
+import { isUndefined } from '@epgu/epgu-constructor-ui-kit';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -13,13 +13,13 @@ import {
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
+import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { DictionaryFilters, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Injectable()
@@ -488,6 +488,9 @@ export class ComponentsListRelationsService {
       case CustomComponentRefRelation.validateDependentControl:
         this.validateDependentControl(dependentControl, form, reference);
         break;
+      case CustomComponentRefRelation.autoFillTextFromRefs:
+        this.handleAutoFillTextFromRefs(reference, componentVal, dependentControl);
+        break;
     }
 
     if (isDependentDisabled) {
@@ -766,6 +769,24 @@ export class ComponentsListRelationsService {
     if (control.value || (refControl.touched && refControl.value.value && control.value)) {
       control.markAllAsTouched();
       control.updateValueAndValidity();
+    }
+  }
+
+  private handleAutoFillTextFromRefs(
+    reference: CustomComponentRef,
+    componentVal: { [key: string]: string },
+    dependentControl: AbstractControl,
+  ): void {
+    if(componentVal) {
+      const newValue = JSON.stringify(dependentControl.value).replace(/\${\w+}/gi, (match) => {
+        const relatedRelKey = match.replace(/[^\w]+/gi, '');
+        const relatedRelValue = reference.relatedRelValues[relatedRelKey];
+        if (relatedRelValue){
+          return utils.getObjectProperty(componentVal, relatedRelValue);
+        }
+        return match;
+      });
+      dependentControl.patchValue({ ...JSON.parse(newValue) }, { onlySelf: true, emitEvent: false });
     }
   }
 }

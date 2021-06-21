@@ -1,29 +1,32 @@
 <div class="container">
   <epgu-cf-ui-constructor-screen-pad class="project">
     <div class="project-grid">
-      <div class="project__title">{{ data.name }}</div>
-      <div [ngStyle]="{ backgroundImage: 'url(' + data.image + ')' }" class="project__image">
-        <div class="project__age-limit">{{ data.ageLimit }}</div>
+      <div (click)="show()" class="project__title">{{ data.name }}</div>
+      <div
+        (click)="show()"
+        [ngStyle]="{ backgroundImage: 'url(' + data.imageUrl + ')' }"
+        class="project__image"
+      >
+        <div class="project__age-limit">{{ data.minAge }}-{{ data.maxAge }} лет</div>
       </div>
       <div class="project__info">
-        <div class="project__organization">{{ data.organization }}</div>
+        <div class="project__organization">{{ data.partnerName }}</div>
 
         <div class="project__info-item-list">
-          <div *ngIf="data?.freeTrainingPossible" class="project__info-item">
-            <div class="item-icon"><img src="assets/icons/not-paid.svg" /></div>
-            <div class="item-label">{{ data?.freeTrainingPossible }}</div>
-          </div>
-          <div *ngIf="data?.paidTrainingPossible" class="project__info-item">
-            <div class="item-icon"><img src="assets/icons/paid.svg" /></div>
-
-            <div class="item-label">{{ data?.paidTrainingPossible }}</div>
-          </div>
-          <div *ngIf="data?.PaymentByCertificatePossible" class="project__info-item">
-            <div class="item-icon">
-              <img src="assets/icons/cert.svg" />
+          <ng-container *ngFor="let item of data.financingSources; let i = index">
+            <div *ngIf="item.code === 'budget'" class="project__info-item">
+              <div class="item-icon"><img src="assets/icons/not-paid.svg" /></div>
+              <div class="item-label">{{ item.name }}</div>
             </div>
-            <div class="item-label">{{ data?.PaymentByCertificatePossible }}</div>
-          </div>
+            <div *ngIf="item.code === 'paid'" class="project__info-item">
+              <div class="item-icon"><img src="assets/icons/paid.svg" /></div>
+              <div class="item-label">{{ item.name }}</div>
+            </div>
+            <div *ngIf="item.code === 'pfdod_certificate'" class="project__info-item">
+              <div class="item-icon"><img src="assets/icons/cert.svg" /></div>
+              <div class="item-label">{{ item.name }}</div>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>

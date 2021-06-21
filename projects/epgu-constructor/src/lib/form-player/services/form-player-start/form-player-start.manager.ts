@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY, ORDER_TO_ORDER_SCENARIO_KEY,
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
@@ -34,7 +34,7 @@ export class FormPlayerStartManager {
     private localStorageService: LocalStorageService,
     private formPlayerService: FormPlayerService,
     public continueOrderModalService: ContinueOrderModalService,
-    private ngUnsubscribe$: UnsubscribeService,
+    private ngUnsubscribe$: UnsubscribeService
   ) {}
 
   public startPlayer(): void {
@@ -48,6 +48,8 @@ export class FormPlayerStartManager {
       this.startLoadNextScreenCase();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
+    } else if (this.hasLoadFromStorageCase('fromOrder', ORDER_TO_ORDER_SCENARIO_KEY)) {
+      this.startLoadFromOrderCase();
     } else if (this.isBookingCase()) {
       this.startBookingCase();
     } else if (orderId) {
@@ -107,6 +109,15 @@ export class FormPlayerStartManager {
     this.locationService.deleteParam('fromQuiz');
   }
 
+  private startLoadFromOrderCase(): void {
+    const otherScenario = this.localStorageService.get<Partial<ScenarioDto>>(ORDER_TO_ORDER_SCENARIO_KEY);
+
+    this.formPlayerService.initPlayerFromOrder(otherScenario).subscribe(() => {
+      this.localStorageService.delete(ORDER_TO_ORDER_SCENARIO_KEY);
+      this.locationService.deleteParam('fromOrder');
+    });
+  }
+
   private handleOrder(orderId?: number, invited?: boolean, canStartNew?: boolean): void {
     if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
       this.showContinueOrderModal();
@@ -128,7 +139,8 @@ export class FormPlayerStartManager {
       !this.localStorageService.hasKey(APP_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY) &&
-      !this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)
+      !this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY) &&
+      !this.hasLoadFromStorageCase('fromOrder', ORDER_TO_ORDER_SCENARIO_KEY)
     );
   }
 

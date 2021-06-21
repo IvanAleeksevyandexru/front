@@ -7,7 +7,7 @@ import { FileUploadScreenComponent } from './file-upload-screen.component';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
@@ -195,8 +195,8 @@ describe('FileUploadScreenComponent', () => {
     });
   });
 
-  describe('epgu-constructor-screen-container', () => {
-    const selector = 'epgu-constructor-screen-container';
+  describe('epgu-cf-ui-screen-container', () => {
+    const selector = 'epgu-cf-ui-screen-container';
 
     it('should be rendered', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));

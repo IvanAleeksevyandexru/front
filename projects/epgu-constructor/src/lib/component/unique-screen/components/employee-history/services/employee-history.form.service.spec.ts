@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { MonthYear } from '@epgu/epgu-lib';
+import { DeclinePipe, MonthYear } from '@epgu/epgu-lib';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { EmployeeHistoryFormService } from './employee-history.form.service';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
-import { DatesToolsService } from '../../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
@@ -50,6 +50,7 @@ describe('EmployeeHistoryFormService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
+        DeclinePipe,
       ],
     });
   });

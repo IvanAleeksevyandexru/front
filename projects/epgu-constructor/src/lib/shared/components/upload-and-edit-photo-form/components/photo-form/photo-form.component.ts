@@ -21,9 +21,9 @@ import {
   EventBusService,
   DeviceDetectorService,
   UnsubscribeService,
+  UtilsService,
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { UtilsService } from '../../../../../core/services/utils/utils.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
 import { PhotoEditorModalComponent } from '../photo-editor-modal/photo-editor-modal.component';
@@ -251,6 +251,9 @@ export class PhotoFormComponent implements OnChanges, OnInit {
       height,
       this.validations,
     );
+    if (fileNameErrorMsg) {
+      this.fileName = this.uploadedFile?.name || '';
+    }
 
     if (isTypeValid && isSizeValid && isDPIValid && !fileNameErrorMsg) {
       this.img$.next({ imageObjectUrl: src });

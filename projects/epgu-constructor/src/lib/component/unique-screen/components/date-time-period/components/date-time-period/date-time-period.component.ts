@@ -12,13 +12,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addDays, addYears, format, isSameDay, parseISO } from 'date-fns';
 import { pairwise, startWith, tap } from 'rxjs/operators';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   getDateTimeObject,
   getTimeChunks,
   getTimeChunksDateObjects,
 } from '../../utils/date-time-period.utils';
 import { DateTimePeriodFormValues, DateTimePeriodState } from '../../date-time-period.types';
-import { DatesToolsService } from '../../../../../../core/services/dates-tools/dates-tools.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 @Component({

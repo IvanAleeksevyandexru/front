@@ -15,6 +15,7 @@ import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScenarioDto,
+  ScenarioErrorsDto,
 } from '@epgu/epgu-constructor-types';
 
 /**
@@ -115,7 +116,8 @@ export abstract class FormPlayerBaseService {
     if (error.status) {
       this.loggerBase.error([error], groupLogName);
     } else {
-      this.loggerBase.error([businessError.scenarioDto?.errors], groupLogName);
+      const { errors, uniquenessErrors } = businessError.scenarioDto;
+      this.loggerBase.error([errors, uniquenessErrors], groupLogName);
       this.initResponse(businessError);
     }
 
@@ -167,8 +169,9 @@ export abstract class FormPlayerBaseService {
    * @param response - ответ сервера
    */
   private hasBusinessErrors(response: FormPlayerApiSuccessResponse): boolean {
-    const errors = response?.scenarioDto?.errors;
-    return errors && !!Object.keys(errors).length;
+    const errors: ScenarioErrorsDto[][] | ScenarioErrorsDto =
+      response?.scenarioDto?.uniquenessErrors || response?.scenarioDto?.errors;
+    return !!errors.length || !!Object.keys(errors).length;
   }
 
   private setDefaultCurrentValue(): void {

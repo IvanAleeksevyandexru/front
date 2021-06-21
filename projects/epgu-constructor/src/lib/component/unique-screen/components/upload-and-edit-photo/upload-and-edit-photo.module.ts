@@ -4,7 +4,7 @@ import { UploadAndEditPhotoContainerComponent } from './container/upload-and-edi
 import { PhotoRequirementsModalComponent } from './component/photo-requirements-modal/photo-requirements-modal.component';
 import { ModalModule } from '../../../../modal/modal.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { PhotoDescriptionComponent } from './component/photo-description/photo-description.component';

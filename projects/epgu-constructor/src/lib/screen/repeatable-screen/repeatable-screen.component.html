@@ -1,4 +1,4 @@
-<epgu-constructor-screen-container
+<epgu-cf-ui-screen-container
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
@@ -23,6 +23,7 @@
         ></div>
         <epgu-constructor-components-list
           class="cmp-group__item"
+          [id]="screenKey"
           [componentsGroupIndex]="i"
           [components]="$any(screens[screenKey])"
           [errors]="(commonError$ | async)?.errors[i] || {}"
@@ -47,4 +48,4 @@
       [disabled]="!isValid"
     ></epgu-constructor-screen-buttons>
   </div>
-</epgu-constructor-screen-container>
+</epgu-cf-ui-screen-container>

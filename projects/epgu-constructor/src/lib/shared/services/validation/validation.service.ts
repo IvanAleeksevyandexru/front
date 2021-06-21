@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { DatesHelperService } from '@epgu/epgu-lib';
+import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 
 import {
   CustomComponent,
@@ -19,9 +19,9 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
-} from '../../constants/helper-texts';
+} from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {
@@ -48,7 +48,7 @@ export class ValidationService {
     private datesToolsService: DatesToolsService,
   ) {}
 
-  customValidator(component: CustomComponent): ValidatorFn {
+  public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
     const validations = componentValidations;
 
@@ -83,7 +83,7 @@ export class ValidationService {
     };
   }
 
-  customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
+  public customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
       (validationRule) => validationRule.updateOn === 'blur',
@@ -142,27 +142,37 @@ export class ValidationService {
     return (control: AbstractControl): ValidationErrors => {
       if (validations.length === 0) return;
 
-      const minDate =
+      let minDate =
         this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
         this.dateRangeService.rangeMap.get(component.id)?.min ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
-      const maxDate =
+      let maxDate =
         this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
         this.dateRangeService.rangeMap.get(component.id)?.max ||
         DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 
+      let controlValueAsDate: Date | number;
+      if (control.value instanceof MonthYear) {
+        // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
+        controlValueAsDate = control.value.firstDay();
+        minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+      } else {
+        controlValueAsDate = control.value;
+      }
+
       const error =
-        control.value &&
+        controlValueAsDate &&
         validations.find((validation) => {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              return this.datesToolsService.isBefore(control.value, minDate);
+              return this.datesToolsService.isBefore(controlValueAsDate, minDate);
             case '<=':
-              return this.datesToolsService.isSameOrBefore(control.value, minDate);
+              return this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
             case '>':
-              return this.datesToolsService.isAfter(control.value, maxDate);
+              return this.datesToolsService.isAfter(controlValueAsDate, maxDate);
             case '>=':
-              return this.datesToolsService.isSameOrAfter(control.value, maxDate);
+              return this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
             default:
               return null;
           }
@@ -175,19 +185,38 @@ export class ValidationService {
   }
 
   public checkRS(rs: string, refs: { [key: string]: string }): boolean {
-    const check = (rs: string, bik: string | null): boolean => {
+    const check = (rs: string, bik: string | null, corr?: string | null): boolean => {
       const bikRs = `${bik?.slice(-3)}${rs}`;
       const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
       const checkSum = coefficients.reduce(
         (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
         0,
       );
-      return checkSum % 10 === 0;
+      return typeof corr === 'string' && corr[0] === '0' ? true : checkSum % 10 === 0;
     };
-
-    return this.form?.controls
+    const values = this.form?.controls
       .filter((control) => Object.values(refs).includes(control.value?.id))
-      .some(({ value }) => check(rs, value.value?.id || value.value));
+      .map(({ value }) => value.value?.id || value.value);
+    const [ bik, manualBik, manualCorr ] = values;
+
+    return manualBik !== null && manualBik !== undefined ? check(rs, manualBik, manualCorr) : check(rs, bik);
+  }
+
+  public checkCardNumber(cardNumber: string): boolean {
+      let sum = 0;
+      const digits = String(cardNumber).replace(/\D/g, '');
+      for (let i = 0; i < digits.length; i++) {
+        let cardNum = parseInt(digits[i]);
+        if (i % 2 === 0) {
+          cardNum = cardNum * 2;
+
+          if (cardNum > 9) {
+            cardNum = cardNum - 9;
+          }
+        }
+        sum += cardNum;
+      }
+      return sum % 10 === 0;
   }
 
   private isValid(component: CustomComponent, value: string): boolean {
@@ -202,6 +231,8 @@ export class ValidationService {
         return value.length === this.personInnLength && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
+      case CustomScreenComponentTypes.CardNumberInput:
+        return this.checkCardNumber(value);
       default:
         return true;
     }

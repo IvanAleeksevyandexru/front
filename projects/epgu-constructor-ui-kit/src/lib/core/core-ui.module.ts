@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -16,9 +16,15 @@ import { LoggerService } from './services/logger/logger.service';
 import { initApp } from './initializers/app.initializer';
 import { HttpCancelInterceptor } from './interceptor/http-cancel/http-cancel.interceptor';
 import { HttpCancelService } from './interceptor/http-cancel/http-cancel.service';
+import { SessionService } from './services/session/session.service';
+import { FocusManagerService } from './services/focus-manager/focus-manager.service';
+import { DatesToolsService } from './services/dates-tools/dates-tools.service';
+import { UtilsService } from './services/utils/utils.service';
+import { ModalService } from '../modal/modal.service';
 
 @NgModule({
   providers: [
+    ModalService,
     LocalStorageService,
     DeviceDetectorService,
     EventBusService,
@@ -28,6 +34,11 @@ import { HttpCancelService } from './interceptor/http-cancel/http-cancel.service
     ConfigService,
     LoggerService,
     HttpCancelService,
+    SessionService,
+    FocusManagerService,
+    DatesToolsService,
+    HttpClient,
+    UtilsService,
     WINDOW_PROVIDERS,
     {
       provide: HTTP_INTERCEPTORS,
@@ -40,7 +51,6 @@ import { HttpCancelService } from './interceptor/http-cancel/http-cancel.service
       deps: [SmuEventsService, CookieService],
       multi: true,
     },
-  ]
+  ],
 })
-export class CoreUiModule { }
-
+export class CoreUiModule {}

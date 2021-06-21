@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UtilsService } from '../../../core/services/utils/utils.service';
-import { DATE_STRING_DOT_FORMAT } from '../../constants/dates';
-import { DatesToolsService } from '../../../core/services/dates-tools/dates-tools.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 import { isAfter, isBefore } from 'date-fns';
 import {
@@ -76,7 +76,7 @@ export class DateRestrictionsService {
   }
 
   private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number): string {
-    let key = componentId + String();
+    let key = componentId;
     if (componentsGroupIndex !== undefined) {
       key += String(componentsGroupIndex);
     }
@@ -147,11 +147,7 @@ export class DateRestrictionsService {
     const { value } = form.controls.find((control) => control.value.id === component.id).value;
 
     if (value instanceof MonthYear) {
-      const date = new Date();
-      date.setMonth(value.month);
-      date.setFullYear(value.year);
-
-      return date;
+      return value.firstDay();
     }
 
     return value;

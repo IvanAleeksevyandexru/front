@@ -11,7 +11,7 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { isBoolean } from '../../../../constants/utils';
+import { isBoolean } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 Object.defineProperty(window, 'matchMedia', {

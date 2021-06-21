@@ -11,7 +11,7 @@ import { DictionaryToolsService } from '../../../shared/services/dictionary/dict
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';

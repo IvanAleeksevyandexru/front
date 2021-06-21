@@ -1,11 +1,4 @@
 import { ListItem } from '@epgu/epgu-lib';
-import { ComponentBase } from '../../screen/screen.types';
-import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
-import {
-  DictionaryItem,
-  DictionaryResponse,
-} from '../../shared/services/dictionary/dictionary-api.types';
-import { NumberMaskOptionsInterface } from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -17,6 +10,15 @@ import {
   ComponentImageDto,
   ComponentAttrsDto,
 } from '@epgu/epgu-constructor-types';
+// @ts-ignore
+import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
+
+import { ComponentBase } from '../../screen/screen.types';
+import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../shared/services/dictionary/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
@@ -42,6 +44,7 @@ export enum CustomScreenComponentTypes {
   PersonInnInput = 'PersonInnInput',
   PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
+  CardNumberInput = 'CardNumberInput',
   CityInput = 'CityInput',
   DocInput = 'DocInput',
   FieldList = 'FieldList',
@@ -147,7 +150,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   suggestionId?: string;
   searchType?: string;
   cityFilter?: string[];
-  maskOptions?: NumberMaskOptionsInterface;
+  maskOptions?: NumberMaskOptions;
   labelHint?: string;
   hint?: string;
   customUnrecLabel?: string;
@@ -216,6 +219,7 @@ export enum CustomComponentRefRelation {
   autofillFromDictionary = 'autofillFromDictionary',
   reset = 'reset',
   validateDependentControl = 'validateDependentControl',
+  autoFillTextFromRefs = 'autoFillTextFromRefs',
 }
 
 export enum CustomComponentValidationConditions {
@@ -232,6 +236,7 @@ export interface CustomComponentRef {
   val: string | Array<string> | boolean;
   relation: CustomComponentRefRelation;
   sourceId?: string;
+  relatedRelValues?: { [key: string]: string };
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;

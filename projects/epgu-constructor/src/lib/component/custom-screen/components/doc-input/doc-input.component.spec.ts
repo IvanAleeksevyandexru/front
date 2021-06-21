@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent } from './doc-input.component';
 import { ComponentsListModule } from '../../components-list.module';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -15,7 +14,8 @@ import {
   LoggerServiceStub,
   ModalService,
   ModalServiceStub,
-  UnsubscribeService
+  UnsubscribeService,
+  DatesToolsService, UtilsService
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -55,6 +55,7 @@ describe('DocInputComponent', () => {
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        UtilsService,
         ComponentsListFormService,
         ComponentsListToolsService,
         UnsubscribeService,

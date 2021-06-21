@@ -11,12 +11,12 @@ import { DictionaryToolsService } from '../../../shared/services/dictionary/dict
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '../dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { SessionService } from '../session/session.service';
+import { SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '../utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { TracingService } from './tracing.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';

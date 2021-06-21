@@ -13,9 +13,19 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
   WINDOW,
+  EventBusService,
+  AppNavigationRuleService,
+  AppNavigationRuleServiceStub,
+  AppRoutingService,
+  AppRoutingServiceStub,
+  AppComponentResolverComponent,
+  SharedModalModule,
+  MainContainerModule,
+  ModalService,
+  ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
-import { ProjectListComponent } from './pages/project-list/project-list.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 
@@ -26,9 +36,23 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProgramListModule, ChildrenClubsFilterPanelModule],
-      declarations: [ChildrenClubsAppComponent, ProjectListComponent],
+      imports: [
+        ProgramListModule,
+        ChildrenClubsFilterPanelModule,
+        SharedModalModule,
+        MainContainerModule,
+      ],
+      declarations: [
+        ChildrenClubsAppComponent,
+        ProjectListComponent,
+        AppComponentResolverComponent,
+      ],
+
       providers: [
+        EventBusService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: AppRoutingService, useClass: AppRoutingServiceStub },
+        { provide: AppNavigationRuleService, useClass: AppNavigationRuleServiceStub },
         { provide: WINDOW, useValue: window },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },

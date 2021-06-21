@@ -5,19 +5,19 @@ import {
   calcRefMock,
   disabledRefMock,
   displayOffRefMock,
-  displayOnRefMock, filterOnRefMock,
-  getValueRefMock
+  displayOnRefMock,
+  filterOnRefMock,
+  getValueRefMock,
 } from './ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
+import { ListElement } from '@epgu/epgu-lib';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        RefRelationService
-      ],
+      providers: [RefRelationService],
     });
   });
 
@@ -64,7 +64,9 @@ describe('RefRelationService', () => {
 
     describe('isAutofillFromDictionaryRelation()', () => {
       it('should return true when pass autofillFromDictionary ref', () => {
-        const result = service.isAutofillFromDictionaryRelation(autofillFromDictionaryRefMock.relation);
+        const result = service.isAutofillFromDictionaryRelation(
+          autofillFromDictionaryRefMock.relation,
+        );
         expect(result).toBeTruthy();
       });
 
@@ -119,9 +121,17 @@ describe('RefRelationService', () => {
         const value = { id: 'value' };
         expect(service.getValueFromComponentVal(value)).toBe('value');
       });
+
+      it('should return component as original array, if arg is array', () => {
+        const value = [{ id: 'value' }] as ListElement[];
+        expect(service.getValueFromComponentVal(value)).toBe(value);
+      });
       it('should return parsed JSON, if arg is JSON string', () => {
         const value = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
-        const expectedResult = [{ id: 'AUS', label:'Австралия' },{ id: 'RUS', label:'Россия' }];
+        const expectedResult = [
+          { id: 'AUS', label: 'Австралия' },
+          { id: 'RUS', label: 'Россия' },
+        ];
         expect(service.getValueFromComponentVal(value)).toEqual(expectedResult);
       });
     });

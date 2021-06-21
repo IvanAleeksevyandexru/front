@@ -4,7 +4,7 @@ import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
-import { getHiddenBlock } from '../../constants/utils';
+import { getHiddenBlock } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 

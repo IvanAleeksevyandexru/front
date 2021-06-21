@@ -16,19 +16,19 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
-import { UtilsService } from '../../../../core/services/utils/utils.service';
-import { UtilsServiceStub } from '../../../../core/services/utils/utils.service.stub';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
-import { NavigationModule } from '../../../../shared/components/navigation/navigation.module';
+import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -51,6 +51,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
+import { MockModule } from 'ng-mocks';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -64,7 +65,7 @@ describe('SelectMapObjectComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SelectMapObjectComponent],
-      imports: [BaseModule, ConstructorLookupModule, NavigationModule],
+      imports: [BaseModule, ConstructorLookupModule, MockModule(PrevButtonModule)],
       providers: [
         Icons,
         ModalErrorService,

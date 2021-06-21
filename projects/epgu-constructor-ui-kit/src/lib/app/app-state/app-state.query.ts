@@ -9,6 +9,7 @@ export class AppStateQuery<T, U>  extends Query<AppState<T, U>> {
   store$: Observable<AppState<T, U>> = this.select();
   value$: Observable<T> = this.select('value');
   state$: Observable<U> = this.select('state');
+  currentComponent$: Observable<string> = this.select('currentComponent');
 
   constructor (protected store: AppStateStore<T, U>) {
     super(store);
@@ -20,6 +21,10 @@ export class AppStateQuery<T, U>  extends Query<AppState<T, U>> {
 
   get state(): U {
     return this.getValue().state;
+  }
+
+  get currentComponent(): string {
+    return this.getValue().currentComponent;
   }
 
   get storeState(): AppState<T, U> {

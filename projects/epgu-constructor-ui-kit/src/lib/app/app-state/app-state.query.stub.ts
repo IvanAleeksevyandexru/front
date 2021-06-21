@@ -6,6 +6,7 @@ export class AppStateQueryStub {
   store$ = of({});
   value$ = of({});
   state$ = of({});
+  currentComponent$ = of({});
 
   get value() {
     return {};
@@ -13,6 +14,10 @@ export class AppStateQueryStub {
 
   get state() {
     return {};
+  }
+
+  get currentComponent(): string {
+    return '';
   }
 
   get storeState() {

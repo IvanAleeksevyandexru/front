@@ -86,8 +86,9 @@ export interface ComponentAttrsDto {
   dictionaryOptions?: DictionaryOptions;
   style?: ConfirmUserDataStyle;
   imgSrc?: string;
-  error?: { imgSrc: string; label: string };
-  success?: { imgSrc: string; label: string };
+  error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  muchTries?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   helperText?: string;
   label?: string;
   sendEmailLabel?: string;
@@ -133,6 +134,7 @@ export interface ComponentAttrsDto {
   mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
   hideCloneButton?: boolean;
   ignoreRootParams?: Array<string>;
+  placeholderText?: string;
 }
 
 export interface DisclaimerDto {

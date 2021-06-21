@@ -15,11 +15,11 @@ import {
   ConstructorDropdownModule,
   ConstructorLookupModule,
   InputErrorModule,
-  MemoModule
+  MemoModule,
+  CurrencyModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
-import { CurrencyModule } from '../../shared/directives/currency/currency.module';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../shared/base.module';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
@@ -57,6 +57,7 @@ import { LookupInputComponent } from './components/lookup-input/lookup-input.com
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { MonthPickerComponent } from './components/month-picker/month-picker.component';
 import { ConstructorMonthPickerModule } from '../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { DepartmentLookupComponent } from './components/department-lookup/department-lookup.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ConstructorMonthPickerModule } from '../../shared/components/constructo
     SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
+    DepartmentLookupComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -141,6 +143,7 @@ import { ConstructorMonthPickerModule } from '../../shared/components/constructo
     SearchableDropdownComponent,
     DictionaryComponent,
     LookupInputComponent,
+    DepartmentLookupComponent,
   ],
 })
 export class ComponentsListModule { }

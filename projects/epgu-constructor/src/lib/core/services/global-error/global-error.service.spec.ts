@@ -7,7 +7,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '../utils/utils.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { GlobalErrorHandler } from './global-error.service';
 import { HealthServiceStub } from './health.service.stub';
 import { configureTestSuite } from 'ng-bullet';

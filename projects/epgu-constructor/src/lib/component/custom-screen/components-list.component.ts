@@ -10,8 +10,7 @@ import {
   SimpleChanges,
   ChangeDetectorRef,
 } from '@angular/core';
-import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import {
@@ -19,16 +18,12 @@ import {
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
+  isEqualObj,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
-import { UtilsService as utils } from '../../core/services/utils/utils.service';
 import { ScreenService } from '../../screen/screen.service';
-import { OPTIONAL_FIELD } from '../../shared/constants/helper-texts';
 import {
   CustomComponent,
   CustomComponentOutputData,
-  CustomListDictionaries,
   CustomListReferenceData,
   CustomScreenComponentTypes,
 } from './components-list.types';
@@ -57,13 +52,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormCreated = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
 
-  validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  brokenDateFixStrategy = BrokenDateFixStrategy.NONE;
-  dictionaries$: BehaviorSubject<CustomListDictionaries> = this.dictionaryToolsService
-    .dictionaries$;
-  suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
-
-  readonly optionalField = OPTIONAL_FIELD;
   readonly componentType = CustomScreenComponentTypes;
 
   constructor(
@@ -93,17 +81,13 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
 
-    const components: Array<CustomComponent> = changes.components?.currentValue;
-    const isErrorsChanged =
-      JSON.stringify(changes.errors?.currentValue) !==
-      JSON.stringify(changes.errors?.previousValue);
+    const components: Array<CustomComponent> =
+      changes.components?.currentValue || this.formService.form.value || this.components;
+    const { currentValue, previousValue } = changes.errors || {};
+    const isErrorsChanged = !isEqualObj(currentValue, previousValue);
 
     if (components || isErrorsChanged) {
-      const formArray = this.formService.create(
-        this.components,
-        this.errors,
-        this.componentsGroupIndex,
-      );
+      const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
       this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);
@@ -114,10 +98,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.shouldPendingRequestsBeCancelledAfterDestroy) {
       this.httpCancelService.cancelPendingRequests();
     }
-  }
-
-  public getDictKeyByComp(component: CustomComponent): string {
-    return utils.getDictKeyByComp(component);
   }
 
   private loadRepository(components: Array<CustomComponent>): void {
@@ -138,7 +118,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   private handleAfterFilterOnRel(
     references: Array<CustomListReferenceData>,
   ): Observable<Array<CustomListReferenceData>> {
-    return this.dictionaries$.pipe(
+    return this.dictionaryToolsService.dictionaries$.pipe(
       first(),
       map(() => {
         references.forEach((reference) => {

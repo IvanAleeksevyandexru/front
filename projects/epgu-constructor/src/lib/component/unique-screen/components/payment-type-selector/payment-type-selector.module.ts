@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 // eslint-disable-next-line max-len
 import { PaymentTypeSelectorContainerComponent } from './components/payment-type-selector-container/payment-type-selector-container.component';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { AnswerButtonModule } from '../../../../shared/components/answer-button/answer-button.module';
 import { ScreenService } from '../../../../screen/screen.service';

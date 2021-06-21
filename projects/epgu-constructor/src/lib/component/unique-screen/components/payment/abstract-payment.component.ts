@@ -13,15 +13,14 @@ import {
   LocationService,
   UnsubscribeService,
   ConfigService,
+  DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
-import { DATE_STRING_DOT_FORMAT } from '../../../../shared/constants/dates';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import {

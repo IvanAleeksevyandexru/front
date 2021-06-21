@@ -16,7 +16,7 @@ export class ContinueOrderModalService {
         <h4 style="text-align: center">У вас есть черновик заявления</h4>
         <p class="helper-text" style="text-align: center; margin-top: 8px;">Продолжить его заполнение?</p></div>`,
       showCloseButton: false,
-      showCrossButton: false,
+      showCrossButton: true,
       buttons: [
         {
           label: 'Начать заново',

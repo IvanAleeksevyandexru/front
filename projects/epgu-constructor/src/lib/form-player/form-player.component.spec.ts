@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub } from '../../../../epgu-constructor-ui-kit/src/lib/core/services/config/load-service-stub';
+import { LoadServiceStub, MainContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
@@ -36,13 +36,13 @@ import { EpguLibModuleInited } from '../shared/base.module';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
-import { UtilsService } from '../core/services/utils/utils.service';
-import { DatesToolsService } from '../core/services/dates-tools/dates-tools.service';
+import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../screen/current-answers.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TracingService } from '../core/services/tracing/tracing.service';
-import { SessionService } from '../core/services/session/session.service';
+import { SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponent } from '../component/logic-screen/component/logic.component';
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
@@ -74,7 +74,7 @@ describe('FormPlayerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModuleInited],
+      imports: [EpguLibModuleInited, MainContainerModule],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,
@@ -226,7 +226,7 @@ describe('FormPlayerComponent', () => {
   });
 
   describe('initNavigation()', () => {
-    it('should call nextStep with param when push nextStep navigation', () => {
+    it('should call nextStep with param when push nextStep prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'nextStep').and.callThrough();
       navService.next(navigationParam);
@@ -234,7 +234,7 @@ describe('FormPlayerComponent', () => {
       expect(component['nextStep']).toBeCalledWith(navigationParam);
     });
 
-    it('should call prevStep with param when push prevStep navigation', () => {
+    it('should call prevStep with param when push prevStep prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'prevStep').and.callThrough();
       navService.prev(navigationParam);
@@ -242,7 +242,7 @@ describe('FormPlayerComponent', () => {
       expect(component['prevStep']).toBeCalledWith(navigationParam);
     });
 
-    it('should call skipStep with param when push skipStep navigation', () => {
+    it('should call skipStep with param when push skipStep prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'skipStep').and.callThrough();
       navService.skip(navigationParam);
@@ -250,7 +250,7 @@ describe('FormPlayerComponent', () => {
       expect(component['skipStep']).toBeCalledWith(navigationParam);
     });
 
-    it('should call patchStepOnCli with param when push patchStepOnCli navigation', () => {
+    it('should call patchStepOnCli with param when push patchStepOnCli prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'patchStepOnCli').and.callThrough();
       navService.patchOnCli(navigationParam);
@@ -371,8 +371,28 @@ describe('FormPlayerComponent', () => {
 
   describe('render modal', () => {
     it('should render screen modal', () => {
+      component.isFirstLoading$ = of(false);
+      formPlayerService['_playerLoaded$'] = of(true);
+      configService['_isLoaded$'] = of(true);
+      fixture.detectChanges();
       const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
       expect(screenModal).toBeTruthy();
+    });
+
+    it('should render modal container', () => {
+      const modalContainer = fixture.debugElement.query(By.css('epgu-cf-ui-modal-container'));
+      expect(modalContainer).toBeTruthy();
+    });
+  });
+
+  describe('render logic', () => {
+    it('should render logic component', () => {
+      component.isFirstLoading$ = of(false);
+      formPlayerService['_playerLoaded$'] = of(true);
+      configService['_isLoaded$'] = of(true);
+      fixture.detectChanges();
+      const logicComponent = fixture.debugElement.query(By.css('epgu-constructor-logic'));
+      expect(logicComponent).toBeTruthy();
     });
   });
 });

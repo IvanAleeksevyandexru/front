@@ -21,6 +21,7 @@ import { SearchableDropdownComponent } from '../components/searchable-dropdown/s
 import { DictionaryComponent } from '../components/dictionary/dictionary.component';
 import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
 import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
+import { DepartmentLookupComponent } from '../components/department-lookup/department-lookup.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -42,7 +43,8 @@ type CustomScreenComponent =
   | AddressInputComponent
   | FileUploadFormComponent
   | LookupInputComponent
-  | SearchableDropdownComponent;
+  | SearchableDropdownComponent
+  | DepartmentLookupComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
@@ -56,6 +58,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   LegalInnInput: MaskedAndPlainInputComponent,
   SnilsInput: MaskedAndPlainInputComponent,
   PersonInnInput: MaskedAndPlainInputComponent,
+  CardNumberInput: MaskedAndPlainInputComponent,
   CheckingAccount: MaskedAndPlainInputComponent,
   HtmlString: FormOutputHtmlComponent,
   LabelSection: FormOutputHtmlComponent,
@@ -74,6 +77,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   AddressInput: AddressInputComponent,
   FileUploadComponent: FileUploadFormComponent,
   DropDown: DropdownComponent,
+  DropDownDepts: DepartmentLookupComponent,
   SearchableDropDown: SearchableDropdownComponent,
   ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   Dictionary: DictionaryComponent,

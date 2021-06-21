@@ -4,11 +4,11 @@ import { ListItem } from '@epgu/epgu-lib';
 import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { DatesToolsService } from '../../../../core/services/dates-tools/dates-tools.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService as utils } from '../../../../core/services/utils/utils.service';
-import { isEqualObj } from '../../../../shared/constants/utils';
+import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
+import { isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -73,7 +73,11 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto, componentsGroupIndex?: number): FormArray {
+  public create(
+    components: Array<CustomComponent>,
+    errors: ScenarioErrorsDto,
+    componentsGroupIndex?: number,
+  ): FormArray {
     this.errors = errors;
     this._shownElements = this.componentsListRelationsService.createStatusElements(
       components,
@@ -90,6 +94,9 @@ export class ComponentsListFormService {
       }),
     );
     this.validationService.form = this.form;
+    if (this.errors) {
+      this._form.markAllAsTouched();
+    }
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
@@ -105,7 +112,7 @@ export class ComponentsListFormService {
         false,
         this.screenService,
         this.dictionaryToolsService,
-        componentsGroupIndex
+        componentsGroupIndex,
       );
     });
 
@@ -290,14 +297,14 @@ export class ComponentsListFormService {
     component: CustomComponent,
     components: Array<CustomComponent>,
     errorMsg: string,
-    componentsGroupIndex?: number
+    componentsGroupIndex?: number,
   ): FormGroup {
     const validators = [
       this.validationService.customValidator(component),
       this.validationService.validationBackendError(errorMsg, component),
     ];
 
-    if (component.type === CustomScreenComponentTypes.DateInput) {
+    if (component.type === CustomScreenComponentTypes.DateInput || component.type === CustomScreenComponentTypes.MonthPicker) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
@@ -337,7 +344,7 @@ export class ComponentsListFormService {
           true,
           this.screenService,
           this.dictionaryToolsService,
-          componentsGroupIndex
+          componentsGroupIndex,
         );
         // TODO: в перспективе избавиться от этой хардкодной логики
         this.checkAndFetchCarModel(next, prev);
