@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormArray, FormControl } from '@angular/forms';
 import {
   CustomComponent,
-  CustomScreenComponentTypes,// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
 import { ValidationService } from './validation.service';
