@@ -20,9 +20,11 @@ import { SessionService } from './services/session/session.service';
 import { FocusManagerService } from './services/focus-manager/focus-manager.service';
 import { DatesToolsService } from './services/dates-tools/dates-tools.service';
 import { UtilsService } from './services/utils/utils.service';
+import { ModalService } from '../modal/modal.service';
 
 @NgModule({
   providers: [
+    ModalService,
     LocalStorageService,
     DeviceDetectorService,
     EventBusService,

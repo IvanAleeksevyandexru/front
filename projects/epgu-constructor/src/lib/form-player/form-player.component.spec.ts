@@ -226,7 +226,7 @@ describe('FormPlayerComponent', () => {
   });
 
   describe('initNavigation()', () => {
-    it('should call nextStep with param when push nextStep navigation', () => {
+    it('should call nextStep with param when push nextStep prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'nextStep').and.callThrough();
       navService.next(navigationParam);
@@ -234,7 +234,7 @@ describe('FormPlayerComponent', () => {
       expect(component['nextStep']).toBeCalledWith(navigationParam);
     });
 
-    it('should call prevStep with param when push prevStep navigation', () => {
+    it('should call prevStep with param when push prevStep prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'prevStep').and.callThrough();
       navService.prev(navigationParam);
@@ -242,7 +242,7 @@ describe('FormPlayerComponent', () => {
       expect(component['prevStep']).toBeCalledWith(navigationParam);
     });
 
-    it('should call skipStep with param when push skipStep navigation', () => {
+    it('should call skipStep with param when push skipStep prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'skipStep').and.callThrough();
       navService.skip(navigationParam);
@@ -250,7 +250,7 @@ describe('FormPlayerComponent', () => {
       expect(component['skipStep']).toBeCalledWith(navigationParam);
     });
 
-    it('should call patchStepOnCli with param when push patchStepOnCli navigation', () => {
+    it('should call patchStepOnCli with param when push patchStepOnCli prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'patchStepOnCli').and.callThrough();
       navService.patchOnCli(navigationParam);

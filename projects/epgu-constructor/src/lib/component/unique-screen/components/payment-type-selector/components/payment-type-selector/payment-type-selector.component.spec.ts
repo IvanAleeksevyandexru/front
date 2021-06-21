@@ -17,7 +17,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
 import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';

@@ -4,7 +4,6 @@ import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ReferralNumberService } from './referral-number.service';
-import { CoreModule } from '../../../../core/core.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
@@ -14,7 +13,6 @@ import { CookieService } from 'ngx-cookie-service';
 @NgModule({
   declarations: [ReferralNumberComponent],
   imports: [
-    CoreModule,
     BaseModule,
     ScreenPadModule,
     ConstructorPlainInputModule,

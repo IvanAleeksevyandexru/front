@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { InformationCenterMvdContainerComponent } from './container/information-center-mvd-container.component';
-import { CoreModule } from '../../../../core/core.module';
 import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
@@ -19,7 +18,6 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
-    CoreModule,
     ConstructorDropdownModule,
     ScreenPadModule,
     BaseModule,

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 
 import { ProgramListContainerComponent } from './program-list-container.component';
@@ -7,6 +7,7 @@ import { ProgramListService } from '../program-list.service';
 import { ListComponent } from '../components/list/list.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -19,7 +20,7 @@ describe('ListComponent', () => {
         MockComponent(ListComponent),
         MockComponent(ItemComponent),
       ],
-      imports: [EpguLibModule],
+      imports: [EpguLibModule, MockModule(ScreenContainerModule)],
       providers: [ProgramListService],
     }).compileComponents();
   });

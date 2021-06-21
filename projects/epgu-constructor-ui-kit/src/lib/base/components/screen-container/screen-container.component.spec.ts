@@ -10,11 +10,11 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenContainerComponent } from './screen-container.component';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { NavigationModule } from '../navigation/navigation.module';
-import { CoreModule } from '../../../core/core.module';
-import { BaseModule } from '../../base.module';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
+import { PrevButtonModule } from '../prev-button/prev-button.module';
+import { CoreModule } from '@epgu/epgu-constructor/src/lib/core/core.module';
+import { BaseModule } from '@epgu/epgu-constructor/src/lib/shared/base.module';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -23,7 +23,7 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CoreModule, CoreUiModule, BaseModule, RouterTestingModule, NavigationModule],
+        imports: [CoreModule, CoreUiModule, BaseModule, RouterTestingModule, PrevButtonModule],
         declarations: [ScreenContainerComponent],
         providers: [
           LocationService,

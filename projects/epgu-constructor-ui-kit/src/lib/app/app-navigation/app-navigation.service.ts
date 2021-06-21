@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { AppStateService } from '../app-state/app-state.service';
 import { AppNavigationRuleService } from '../app-navigation-rule/app-navigation-rule.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';

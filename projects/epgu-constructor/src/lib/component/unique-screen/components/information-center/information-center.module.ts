@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { InformationCenterContainerComponent } from './container/information-center-container.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { CoreModule } from '../../../../core/core.module';
 import { ScreenPadModule, ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
@@ -20,7 +19,6 @@ import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-sc
   ],
   imports: [
     CommonModule,
-    CoreModule,
     ScreenPadModule,
     BaseModule,
     ActionModule,
