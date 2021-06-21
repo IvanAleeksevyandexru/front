@@ -35,6 +35,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
+  DictionaryItem,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
@@ -148,24 +149,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
       this.selectMapObjectService.searchMapObject(searchString);
-      return of(
-        this.dictionaryToolsService.adaptDictionaryToListItem(
-          this.selectMapObjectService.filteredDictionaryItems,
-        ),
-      );
+      const fullItems = [];
+      this.selectMapObjectService.filteredDictionaryItems.forEach((item) => {
+        item.children.forEach((child) => {
+          fullItems.push(child);
+        });
+      });
+      return of(this.dictionaryToolsService.adaptDictionaryToListItem(fullItems));
     };
   }
 
   public selectObject(item: DictionaryYMapItem): void {
-    this.selectedValue = item;
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
       this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(() => this.nextStep());
+        .subscribe(() => this.nextStep(item));
       return;
     }
 
-    this.nextStep();
+    this.nextStep(item);
   }
 
   /**
@@ -185,9 +187,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param mapObject объект на карте
    */
   public expandObject(mapObject: DictionaryYMapItem): void {
-    if (mapObject.expanded) return;
+    if (!mapObject || mapObject.expanded) return;
     this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
-      return { ...child, expanded: child.idForMap === mapObject.idForMap };
+      return { ...child, expanded: child.objectId === mapObject.objectId };
     });
   }
 
@@ -210,7 +212,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       const mapObject = UtilsService.tryToParse(this.data?.value) as DictionaryYMapItem;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
-        this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
+        this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
@@ -240,9 +242,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private subscribeToEmmitNextStepData(): void {
     this.selectMapObjectService.selectedValue
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value) => {
+      .subscribe((value: DictionaryItem) => {
         this.isSearchTitleVisible = !value || !this.isMobile;
         this.selectedValue = value;
+        this.expandObject(value as DictionaryYMapItem);
         this.cdr.detectChanges();
       });
   }
@@ -429,13 +432,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private selectMapObject(mapObject: DictionaryYMapItem): void {
     if (!mapObject) return;
-    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject.idForMap);
+    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject);
   }
 
-  private nextStep(): void {
+  private nextStep(value: DictionaryYMapItem): void {
     this.zone.run(() => {
       const answer = {
-        ...this.selectedValue,
+        ...value,
         children: null,
         regOkato: this.componentValue?.regOkato,
         okato: this.componentValue?.okato,
@@ -468,7 +471,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Метод проверяет доступность оплаты в выбранном отделе ГИБДД
    * @param id объект на карте
    */
-  private availablePaymentInGIBDD(id: number): Observable<boolean> {
+  private availablePaymentInGIBDD(id: string): Observable<boolean> {
     const options = getPaymentRequestOptionGIBDD(id);
 
     return this.dictionaryApiService
