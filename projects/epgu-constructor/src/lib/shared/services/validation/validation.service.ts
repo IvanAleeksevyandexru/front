@@ -48,7 +48,7 @@ export class ValidationService {
     private datesToolsService: DatesToolsService,
   ) {}
 
-  customValidator(component: CustomComponent): ValidatorFn {
+  public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
     const validations = componentValidations;
 
@@ -83,7 +83,7 @@ export class ValidationService {
     };
   }
 
-  customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
+  public customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
       (validationRule) => validationRule.updateOn === 'blur',
