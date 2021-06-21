@@ -133,6 +133,7 @@ export class DateTimePeriodComponent implements OnInit {
       );
 
       const endDateTimeObject = addDays(dateTimeObject, 1);
+
       this.group.patchValue({
         endDate: endDateTimeObject,
         endTime: values.startTime,
