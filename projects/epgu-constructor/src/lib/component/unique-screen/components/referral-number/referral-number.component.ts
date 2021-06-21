@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
@@ -70,6 +70,7 @@ export class ReferralNumberComponent implements OnInit {
     private config: ConfigService,
     private validationService: ValidationService,
     private loggerService: LoggerService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   public ngOnInit(): void {
@@ -111,6 +112,7 @@ export class ReferralNumberComponent implements OnInit {
 
   public goBack(): void {
     this.searchStatus = SearchReferralStatus.WAIT_FOR_USER_INPUT;
+    this.cdr.markForCheck();
   }
 
   public chooseDoctor(): void {
@@ -132,6 +134,7 @@ export class ReferralNumberComponent implements OnInit {
   private setErrorState(errorDetail: IGetReferralResponseErrorDetailDto): void {
     this.searchStatus = SearchReferralStatus.ERROR_RESPONSE;
     this.responseError = errorDetail;
+    this.cdr.markForCheck();
   }
 
   private navigateToNextStep(payload: object): void {
