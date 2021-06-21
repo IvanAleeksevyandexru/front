@@ -1,29 +1,33 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { takeUntil } from 'rxjs/operators';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../program-list.service';
-import { Project } from '../../../../typings';
+import { BaseProgram } from '../../../typings';
 
 @Component({
   selector: 'children-clubs-program-list',
   templateUrl: './program-list-container.component.html',
   styleUrls: ['./program-list-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
-export class ProgramListContainerComponent {
-  list$ = new BehaviorSubject<Project[]>([]);
+export class ProgramListContainerComponent implements OnInit {
+  fullLoading$: Observable<boolean> = this.listService.fullLoading$;
 
-  constructor(private listService: ProgramListService) {
-    this.fetchItems();
-  }
+  data$: Observable<BaseProgram[]> = this.listService.data$;
+
+  constructor(
+    private listService: ProgramListService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {}
 
   fetchItems(): void {
-    this.listService.fetchList().subscribe((container) => {
-      this.addItemsToList(container);
-    });
+    this.listService.getNextPage();
   }
 
-  addItemsToList(list: Project[]): void {
-    this.list$.next(this.list$.getValue().concat(list));
+  ngOnInit(): void {
+    this.listService.load$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
   }
 }

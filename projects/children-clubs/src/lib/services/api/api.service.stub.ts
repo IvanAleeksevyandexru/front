@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
   BaseProgram,
-  FindOptionsGroup,
   FindOptionsProgram,
   FocusDirectionsItem,
   Group,
   Program,
 } from '../../typings';
-import { Observable, of } from 'rxjs';
-import { DictionaryOptions } from '@epgu/epgu-constructor-types';
+import { Observable, of, timer } from 'rxjs';
+
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import {
   baseProgramStub,
@@ -17,32 +16,35 @@ import {
   programStub,
   regionStub,
 } from '../../stubs/projects.stub';
+import { mapTo } from 'rxjs/operators';
 
 @Injectable()
 export class ApiServiceStub {
   getProgramList(options: FindOptionsProgram): Observable<BaseProgram[]> {
-    return of([
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-      baseProgramStub,
-    ]);
+    const maxSizeItems = 17;
+    const page = options.page + 1;
+    const size = options.pageSize;
+    const count = page * size;
+    let result: BaseProgram[] = [];
+    if (count > maxSizeItems) {
+      const diff = maxSizeItems - count + size;
+      if (diff > 0) {
+        result = new Array(diff).fill(baseProgramStub);
+      }
+    } else {
+      result = new Array(size).fill(baseProgramStub);
+    }
+    return timer(1).pipe(mapTo(result));
   }
-  getProgram(uuid: string): Observable<Program> {
-    return of(programStub);
+  getProgram(): Observable<Program> {
+    return timer(1).pipe(mapTo(programStub));
   }
 
-  getGroupList(uuid: string, options: FindOptionsGroup): Observable<Group[]> {
+  getGroupList(): Observable<Group[]> {
     return of([groupStub, groupStub, groupStub, groupStub, groupStub, groupStub]);
   }
 
-  getRegions(options: DictionaryOptions): Observable<DictionaryItem[]> {
+  getRegions(): Observable<DictionaryItem[]> {
     return of([regionStub, regionStub, regionStub, regionStub]);
   }
 

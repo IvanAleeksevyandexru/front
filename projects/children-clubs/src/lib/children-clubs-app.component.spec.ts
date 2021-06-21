@@ -17,7 +17,12 @@ import {
   AppNavigationRuleService,
   AppNavigationRuleServiceStub,
   AppRoutingService,
-  AppRoutingServiceStub, AppComponentResolverComponent, MainContainerModule, ModalService, ModalServiceStub,
+  AppRoutingServiceStub,
+  AppComponentResolverComponent,
+  SharedModalModule,
+  MainContainerModule,
+  ModalService,
+  ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
@@ -31,8 +36,18 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProgramListModule, ChildrenClubsFilterPanelModule, MainContainerModule],
-      declarations: [ChildrenClubsAppComponent, ProjectListComponent, AppComponentResolverComponent],
+      imports: [
+        ProgramListModule,
+        ChildrenClubsFilterPanelModule,
+        SharedModalModule,
+        MainContainerModule,
+      ],
+      declarations: [
+        ChildrenClubsAppComponent,
+        ProjectListComponent,
+        AppComponentResolverComponent,
+      ],
+
       providers: [
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },

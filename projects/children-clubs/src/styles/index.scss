@@ -30,3 +30,12 @@ a {
     color: $color-active-item;
   }
 }
+
+.divider {
+  background: $color-mercury;
+  margin: 16px 0;
+  height: 1px;
+  @include phones-down {
+    margin: 24px 0;
+  }
+}
