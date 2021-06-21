@@ -15,8 +15,6 @@ import { ChildrenClubsFilterPanelModule } from './components/filter-panel/childr
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { Test2Component } from './components/test2/test2.component';
 
-import { BackComponent } from './components/back/back.component';
-
 import { GroupListModule } from './components/group-list/group-list.module';
 import { ProjectViewComponent } from './components/project-view/project-view.component';
 import { ProjectGroupComponent } from './components/project-group/project-group.component';
@@ -39,7 +37,6 @@ const APP_CONFIG: AppUiConfig = {
 
 @NgModule({
   declarations: [
-    BackComponent,
     ProjectGroupComponent,
     ChildrenClubsAppComponent,
     ProjectListComponent,
