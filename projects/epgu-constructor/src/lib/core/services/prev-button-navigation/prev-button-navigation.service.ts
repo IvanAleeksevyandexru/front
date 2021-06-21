@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PrevButtonNavigation } from '@epgu/epgu-constructor-types';
+import { PrevButtonNavigation } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { NavigationService } from '../navigation/navigation.service';

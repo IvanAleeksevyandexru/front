@@ -40,6 +40,7 @@ export * from './lib/base/components/screen-pad/screen-pad.component';
 export * from './lib/base/components/main-container/main-container.module';
 export * from './lib/base/components/main-container/main-container.component';
 
+export * from './lib/base/components/prev-button/prev-button';
 export * from './lib/base/components/prev-button/prev-button.token';
 export * from './lib/base/components/prev-button/prev-button.module';
 export * from './lib/base/components/prev-button/prev-button.component';
