@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FpContainerComponent } from './fp-container/fp-container.component'
 import { ConfigComponent } from './config/config.component'
-import { ChildrenClubsContainerComponent } from './children-clubs-container/children-clubs-container.component'
 
 
 const routes: Routes = [
   {
     path: '',
-    component: FpContainerComponent
+    loadChildren: () => import('./fp-container/fp-container.module').then(m => m.FpContainerModule)
   },
   {
     path: 'config',
@@ -17,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'app/children-clubs',
-    component: ChildrenClubsContainerComponent
+    loadChildren: () => import('./children-clubs-container/children-clubs-container.module').then(m => m.ChildrenClubsContainerModule)
   },
 ];
 
