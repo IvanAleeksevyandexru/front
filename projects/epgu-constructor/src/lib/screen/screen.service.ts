@@ -68,6 +68,7 @@ export class ScreenService extends ScreenContent {
    * @param newState - данные ответа
    */
   public updateScreenStore(newState: ScreenStore): void {
+    this.screenStore.cachedAnswers = newState.cachedAnswers; // NOTICE: явный мердж свойства screenStore
     this.screenStore = { ...this.screenStore, ...newState };
     this.updateScreenContent(this.screenStore, this.deviceDetectorService.isWebView);
   }
