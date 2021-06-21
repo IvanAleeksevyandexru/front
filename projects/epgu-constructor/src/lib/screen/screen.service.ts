@@ -68,9 +68,8 @@ export class ScreenService extends ScreenContent {
    * @param newState - данные ответа
    */
   public updateScreenStore(newState: ScreenStore): void {
-    this.screenStore.cachedAnswers = newState.cachedAnswers; // NOTICE: явный мердж свойства screenStore
-    this.screenStore = { ...this.screenStore, ...newState };
-    this.updateScreenContent(this.screenStore, this.deviceDetectorService.isWebView);
+    const mergedState = { ...this.screenStore, ...newState };
+    this.updateScreenContent(mergedState, this.deviceDetectorService.isWebView);
   }
 
   /**
@@ -95,10 +94,10 @@ export class ScreenService extends ScreenContent {
     const components = this.screenStore.display.components;
     const cashedAnswers = this.screenStore.cachedAnswers;
     const applicantAnswers = this.screenStore.applicantAnswers;
-    const screenStoreComponent = this.prepareComponentsService.prepareComponents(
-      components,
-      { ...cashedAnswers, ...applicantAnswers },
-    );
+    const screenStoreComponent = this.prepareComponentsService.prepareComponents(components, {
+      ...cashedAnswers,
+      ...applicantAnswers,
+    });
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };

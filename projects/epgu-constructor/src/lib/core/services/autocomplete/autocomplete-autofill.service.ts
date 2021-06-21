@@ -17,7 +17,7 @@ export class AutocompleteAutofillService {
           this.screenService.component.value = this.prepareEmployeeHistoryComponentValue(
             suggestions,
           );
-          this.screenService.updateScreenStore(this.screenService);
+          this.screenService.updateScreenStore(this.screenService.getStore());
         }
       }
     }
