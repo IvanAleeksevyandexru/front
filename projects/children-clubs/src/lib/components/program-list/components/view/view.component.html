@@ -26,13 +26,51 @@
               {{ ['человека', 'человек', 'человек'] | pluralize: data?.maxPersons }}
             </div>
           </div>
+          <ng-container *ngFor="let item of data.financingSources; let i = index">
+            <div *ngIf="item.code === 'budget'" class="project__info-item">
+              <div class="item-icon"><img src="assets/icons/not-paid.svg" /></div>
+              <div class="item-label">{{ item.name }}</div>
+            </div>
+            <div *ngIf="item.code === 'paid'" class="project__info-item">
+              <div class="item-icon"><img src="assets/icons/paid.svg" /></div>
+              <div class="item-label">{{ item.name }}</div>
+            </div>
+            <div *ngIf="item.code === 'pfdod_certificate'" class="project__info-item">
+              <div class="item-icon"><img src="assets/icons/cert.svg" /></div>
+              <div class="item-label">{{ item.name }}</div>
+            </div>
+          </ng-container>
         </div>
         <div class="divider"></div>
         <div class="project-buttons">
-          <button (click)="showPlan()" class="link-btn">План занятий</button>
-          <button (click)="showGoals()" class="link-btn">Цели обучения</button>
-          <button (click)="showResults()" class="link-btn">Результаты обучения</button>
-          <button (click)="showConditions()" class="link-btn">Особые условия</button>
+          <button
+            *ngIf="data?.programContent"
+            (click)="openModal('План занятий', data.programContent)"
+            class="link-btn"
+          >
+            План занятий
+          </button>
+          <button
+            *ngIf="data?.goal"
+            (click)="openModal('Цели обучения', data.goal)"
+            class="link-btn"
+          >
+            Цели обучения
+          </button>
+          <button
+            *ngIf="data?.results"
+            (click)="openModal('Результаты обучения', data.results)"
+            class="link-btn"
+          >
+            Результаты обучения
+          </button>
+          <button
+            *ngIf="data?.technicalBase"
+            (click)="openModal('Особые условия', data.technicalBase)"
+            class="link-btn"
+          >
+            Особые условия
+          </button>
         </div>
       </div>
     </div>
@@ -43,6 +81,9 @@
     <lib-button (click)="next()">Выбрать группу</lib-button>
   </div>
 </div>
-<div class="loader-wrapper" *ngIf="loading$ | async">
-  <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+
+<div class="container" *ngIf="loading$ | async">
+  <epgu-cf-ui-constructor-screen-pad>
+    <lib-throbber-hexagon size="big"></lib-throbber-hexagon
+  ></epgu-cf-ui-constructor-screen-pad>
 </div>

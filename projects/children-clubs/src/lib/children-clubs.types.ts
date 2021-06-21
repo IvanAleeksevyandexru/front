@@ -1,12 +1,12 @@
-import { FindOptionsProgram, FindResponseGroup } from './typings';
+import { Filters, FindOptionsGroup } from './typings';
 
 export interface ChildrenClubsValue {
   groupUUID?: string;
 }
 
 export interface ChildrenClubsState {
-  regionId?: string;
+  okato?: number; // TODO: переделать в обязательный
   selectedProgramUUID?: string;
-  programFilters?: FindOptionsProgram;
-  groupFilters?: FindResponseGroup;
+  programFilters?: Filters;
+  groupFilters?: FindOptionsGroup;
 }

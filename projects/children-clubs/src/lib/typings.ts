@@ -1,11 +1,10 @@
-import { Clarifications } from '@epgu/epgu-constructor-types';
-
 export interface NSIDictionaryItem {
   code: string;
   name: string;
 }
 
 export interface BaseProgram {
+  uuid: string;
   name: string;
   partnerName: string;
   address: string;
@@ -26,29 +25,6 @@ export interface Program extends BaseProgram {
   goal: string;
   results: string;
   technicalBase: string;
-}
-
-export interface Project {
-  projectId: number;
-  name: string;
-  description: string;
-  organization: string;
-  image: string;
-  address: string;
-  ageLimit: string;
-  freeTrainingPossible?: string;
-  paidTrainingPossible?: string;
-  PaymentByCertificatePossible?: string;
-  groupSize?: string;
-  teacher?: string;
-  schedule?: string;
-  period?: string;
-  budgetProgramOther?: string;
-  budgetProgramPreProf?: string;
-  budgetProgramSignificant?: string;
-  distanceLearning: string;
-  additional?: string;
-  clarifications?: Clarifications;
 }
 
 export interface FinancialSource {
@@ -111,18 +87,18 @@ export interface PfdoPaymentFilters {
 }
 
 export interface Filters {
-  query: string; //Поисковый запрос по параметрам: адрес проведения занятий, ФИО педагога, название группы
-  isRegistrationOpen: boolean; //Показывать только программы с открытой записью
-  place: string; //Место проведения занятий
-  onlyDistanceProgram: boolean; //Показывать только дистанционные программы
-  inlernoPayments: InlernoPaymentFilters;
-  pfdoPayments: PfdoPaymentFilters;
-  maxPrice: number; //Максимальная стоимость в месяц
-  focus: FocusFilter; //Направленность
-  direction: string; //Специализация
-  level: LevelType; //Уровень подготовки
-  age: number; //Возраст ребенка, лет
-  ovzType: OvzType; //Ограничения здоровья
+  query?: string; //Поисковый запрос по параметрам: адрес проведения занятий, ФИО педагога, название группы
+  isRegistrationOpen?: boolean; //Показывать только программы с открытой записью
+  place?: string; //Место проведения занятий
+  onlyDistanceProgram?: boolean; //Показывать только дистанционные программы
+  inlernoPayments?: InlernoPaymentFilters;
+  pfdoPayments?: PfdoPaymentFilters;
+  maxPrice?: number; //Максимальная стоимость в месяц
+  focus?: FocusFilter; //Направленность
+  direction?: string; //Специализация
+  level?: LevelType; //Уровень подготовки
+  age?: number; //Возраст ребенка, лет
+  ovzType?: OvzType; //Ограничения здоровья
 }
 
 //Параметры для фильтрации групп

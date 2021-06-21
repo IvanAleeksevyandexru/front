@@ -1,3 +1,6 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
 .item-mock {
   min-height: 231px;
   background: rgb(66, 245, 84);
@@ -11,4 +14,9 @@
   &:last-child {
     margin-bottom: 0;
   }
+}
+.title {
+  @include typ-h3;
+  font-weight: $fw-regular;
+  color: $color-summer-night;
 }

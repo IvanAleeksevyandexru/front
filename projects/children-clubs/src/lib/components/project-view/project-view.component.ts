@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Project } from '../../typings';
-import data from '../../stubs/projects.stub';
 
 @Component({
   selector: 'children-clubs-project-view-page',
@@ -8,6 +6,4 @@ import data from '../../stubs/projects.stub';
   styleUrls: ['./project-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectViewComponent {
-  data: Project = data[0];
-}
+export class ProjectViewComponent {}

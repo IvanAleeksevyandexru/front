@@ -13,9 +13,18 @@ import { ListComponent } from './components/list/list.component';
 import { ItemComponent } from './components/item/item.component';
 import { ViewComponent } from './components/view/view.component';
 import { ChildrenClubsFilterPanelModule } from '../filter-panel/children-clubs-filter-panel.module';
+import { ApiService } from '../../services/api/api.service';
+import { ApiServiceStub } from '../../services/api/api.service.stub';
+import { InfoModalComponent } from './components/info-modal/info-modal.component';
 
 @NgModule({
-  declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
+  declarations: [
+    ProgramListContainerComponent,
+    ListComponent,
+    ItemComponent,
+    ViewComponent,
+    InfoModalComponent,
+  ],
   imports: [
     CommonModule,
     EpguLibModule,
@@ -25,7 +34,7 @@ import { ChildrenClubsFilterPanelModule } from '../filter-panel/children-clubs-f
     ChildrenClubsFilterPanelModule,
   ],
 
-  providers: [ProgramListService, ModalService],
+  providers: [ProgramListService, ModalService, { provide: ApiService, useClass: ApiServiceStub }],
   exports: [ProgramListContainerComponent, ViewComponent],
 })
 export class ProgramListModule {}

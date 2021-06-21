@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { AppNavigationService, AppStateService } from '@epgu/epgu-constructor-ui-kit';
-import { Project } from '../../../../typings';
+import {
+  AppNavigationService,
+  AppStateQuery,
+  AppStateService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { BaseProgram } from '../../../../typings';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../../../children-clubs.types';
 
 @Component({
@@ -10,14 +14,18 @@ import { ChildrenClubsState, ChildrenClubsValue } from '../../../../children-clu
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemComponent {
-  @Input() data: Project;
+  @Input() data: BaseProgram;
   constructor(
     private appNavigationService: AppNavigationService,
     private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
 
   show(): void {
-    this.appStateService.updateState({ selectedProgramUUID: 'newUUID' });
+    this.appStateService.updateState({
+      ...this.stateQuery.state,
+      selectedProgramUUID: this.data.uuid,
+    });
     this.appNavigationService.next();
   }
 }
