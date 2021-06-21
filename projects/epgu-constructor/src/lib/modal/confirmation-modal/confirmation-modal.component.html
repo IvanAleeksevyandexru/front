@@ -10,7 +10,9 @@
     <epgu-constructor-output-html [html]="text" [componentId]="componentId">
     </epgu-constructor-output-html>
     <div class="text--center mt-16" *ngIf="configService.showTraceIdOnError && traceId">
-      <small class="text-color--text-helper"> traceId: {{ traceId }} </small>
+      <small class="text-color--text-helper" title="этой надписи не будет в проде">
+        traceId: {{ traceId }}
+      </small>
     </div>
   </ng-container>
 
