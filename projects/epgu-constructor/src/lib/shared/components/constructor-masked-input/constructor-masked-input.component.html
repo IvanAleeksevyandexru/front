@@ -23,6 +23,6 @@
   autocomplete="off"
   [suggest]="suggestions"
   [suggestSeparator]="suggestSeporator"
-  [ngClass]="{ 'showPlaceholder-on-focus': showPlaceholderOnFocus }"
   (selectSuggest)="selectSuggest.emit($event)"
+  [ngClass]="{ 'showPlaceholder-on-focus': showPlaceholderOnFocus }"
 ></lib-standard-masked-input>

@@ -37,6 +37,7 @@ export class ScreenContent {
   private _componentType = new BehaviorSubject<string>(null);
   private _componentValue = new BehaviorSubject<ComponentValue>(null);
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
+  private _uniquenessErrors = new BehaviorSubject<ScenarioErrorsDto[][]>([]);
   private _componentError = new BehaviorSubject<string>(null);
   private _componentLabel = new BehaviorSubject<string>(null);
   private _buttons = new BehaviorSubject<Array<ScreenButton>>(null);
@@ -260,6 +261,16 @@ export class ScreenContent {
     return this._componentErrors.asObservable();
   }
 
+  public get uniquenessErrors(): ScenarioErrorsDto[][] {
+    return this._uniquenessErrors.getValue();
+  }
+  public set uniquenessErrors(val: ScenarioErrorsDto[][]) {
+    this._uniquenessErrors.next(val);
+  }
+  public get uniquenessErrors$(): Observable<ScenarioErrorsDto[][]> {
+    return this._uniquenessErrors.asObservable();
+  }
+
   public get componentError(): string {
     return this._componentError.getValue();
   }
@@ -399,6 +410,7 @@ export class ScreenContent {
   public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {
     const {
       errors = {} as ScenarioErrorsDto,
+      uniquenessErrors = [] as ScenarioErrorsDto[][],
       display = {} as DisplayDto,
       orderId,
       gender,
@@ -436,6 +448,7 @@ export class ScreenContent {
     this.displayCssClass = cssClass;
     this.orderId = orderId;
     this.componentErrors = errors;
+    this.uniquenessErrors = uniquenessErrors;
     this.componentError = errors[firstComponent?.id];
     this.component = firstComponent;
     this.componentType = firstComponent?.type;

@@ -6,7 +6,7 @@ import { Program } from '../../../../typings';
 
 import { ApiService } from '../../../../services/api/api.service';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../../../children-clubs.types';
-import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { ContentModalComponent } from '../content-modal/content-modal.component';
 
 @Component({
   selector: 'children-clubs-view',
@@ -38,7 +38,7 @@ export class ViewComponent implements OnInit {
   }
 
   openModal(title: string, text: string): void {
-    this.modalService.openModal(InfoModalComponent, { title, text }).subscribe();
+    this.modalService.openModal(ContentModalComponent, { title, text }).subscribe();
   }
 
   ngOnInit(): void {

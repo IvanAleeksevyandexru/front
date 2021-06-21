@@ -7,13 +7,13 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
-  selector: 'children-clubs-item',
-  templateUrl: './info-modal.component.html',
-  styleUrls: ['./info-modal.component.scss', '../../../../../styles/index.scss'],
+  selector: 'children-clubs-content-modal',
+  templateUrl: './content-modal.component.html',
+  styleUrls: ['./content-modal.component.scss', '../../../../../styles/index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class InfoModalComponent extends ModalBaseComponent implements OnInit {
+export class ContentModalComponent extends ModalBaseComponent implements OnInit {
   @Input() title: string;
   @Input() text: string;
   modalId: 'infoModal';

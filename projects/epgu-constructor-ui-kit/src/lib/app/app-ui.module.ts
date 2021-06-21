@@ -6,6 +6,8 @@ import { AppComponentResolverComponent } from './app-component-resolver/app-comp
 import { AppNavigationService } from './app-navigation/app-navigation.service';
 import { AppNavigationRuleService } from './app-navigation-rule/app-navigation-rule.service';
 import { AppUiConfig } from './app-ui-type';
+import { PREV_BUTTON_NAVIGATION } from '../base/components/prev-button/prev-button.token';
+import { AppPrevButtonNavigationService } from './app-prev-button-navigation/app-prev-button-navigation.service';
 
 export const APP_ROUTING_COMPONENT_MAP = new InjectionToken<string>('appRoutingComponentMap');
 export const APP_NAVIGATION_RULE_MAP = new InjectionToken<string>('appNavigationRuleMap');
@@ -37,6 +39,10 @@ export class AppUiModule {
         AppRoutingService,
         AppNavigationService,
         AppNavigationRuleService,
+        {
+          provide: PREV_BUTTON_NAVIGATION,
+          useClass: AppPrevButtonNavigationService,
+        }
       ],
     };
   }

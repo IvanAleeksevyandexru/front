@@ -10,7 +10,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -98,8 +98,8 @@ describe('InfoScreenComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('epgu-constructor-screen-container', () => {
-    const selector = 'epgu-constructor-screen-container';
+  describe('epgu-cf-ui-screen-container', () => {
+    const selector = 'epgu-cf-ui-screen-container';
 
     it('should be rendered', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
@@ -125,7 +125,7 @@ describe('InfoScreenComponent', () => {
   });
 
   it('should render epgu-cf-ui-constructor-screen-pad', () => {
-    const selector = 'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad';
+    const selector = 'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -134,7 +134,7 @@ describe('InfoScreenComponent', () => {
 
   it('should render epgu-constructor-page-name if screenService.header is not empty', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-page-name';
+      'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-page-name';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeNull();
@@ -150,7 +150,7 @@ describe('InfoScreenComponent', () => {
 
   it('should render epgu-constructor-info-screen-body', () => {
     const selector =
-      'epgu-constructor-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-info-screen-body';
+      'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-info-screen-body';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -165,7 +165,7 @@ describe('InfoScreenComponent', () => {
   });
 
   describe('lib-social-share', () => {
-    const selector = 'epgu-constructor-screen-container lib-social-share';
+    const selector = 'epgu-cf-ui-screen-container lib-social-share';
 
     it('should be rendered if not hideSocialShare and not terminal', () => {
       let debugEl: DebugElement;

@@ -9,7 +9,7 @@ import { DefaultUniqueScreenWrapperComponent } from './default-unique-screen-wra
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';

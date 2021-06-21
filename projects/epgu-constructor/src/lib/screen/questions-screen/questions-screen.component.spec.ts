@@ -13,7 +13,7 @@ import { NavigationPayload } from '../../form-player/form-player.types';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
-import { ScreenContainerComponent } from '../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -228,8 +228,8 @@ describe('QuestionsScreenComponent', () => {
     });
   });
 
-  describe('epgu-constructor-screen-container', () => {
-    const selector = 'epgu-constructor-screen-container';
+  describe('epgu-cf-ui-screen-container', () => {
+    const selector = 'epgu-cf-ui-screen-container';
 
     it('should be rendered', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
@@ -255,7 +255,7 @@ describe('QuestionsScreenComponent', () => {
   });
 
   it('should render epgu-constructor-page-name', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-page-name';
+    const selector = 'epgu-cf-ui-screen-container epgu-constructor-page-name';
 
     const debugEl = fixture.debugElement.query(By.css(selector));
 
@@ -270,7 +270,7 @@ describe('QuestionsScreenComponent', () => {
   });
 
   describe('epgu-constructor-output-html', () => {
-    const selector = 'epgu-constructor-screen-container epgu-constructor-output-html';
+    const selector = 'epgu-cf-ui-screen-container epgu-constructor-output-html';
 
     it('should be rendered if screenService.component.label is NOT EMPTY', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));

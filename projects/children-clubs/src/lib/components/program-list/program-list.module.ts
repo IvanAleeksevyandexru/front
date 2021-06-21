@@ -6,6 +6,7 @@ import {
   ModalService,
   ScreenPadModule,
   SharedModalModule,
+  ScreenContainerModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListContainerComponent } from './container/program-list-container.component';
 import { ProgramListService } from './program-list.service';
@@ -15,7 +16,7 @@ import { ViewComponent } from './components/view/view.component';
 import { ChildrenClubsFilterPanelModule } from '../filter-panel/children-clubs-filter-panel.module';
 import { ApiService } from '../../services/api/api.service';
 import { ApiServiceStub } from '../../services/api/api.service.stub';
-import { InfoModalComponent } from './components/info-modal/info-modal.component';
+import { ContentModalComponent } from './components/content-modal/content-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { InfoModalComponent } from './components/info-modal/info-modal.component
     ListComponent,
     ItemComponent,
     ViewComponent,
-    InfoModalComponent,
+    ContentModalComponent,
   ],
   imports: [
     CommonModule,
@@ -32,7 +33,9 @@ import { InfoModalComponent } from './components/info-modal/info-modal.component
     SharedModalModule,
     ScreenPadModule,
     ChildrenClubsFilterPanelModule,
+    ScreenContainerModule,
   ],
+  entryComponents: [ContentModalComponent],
 
   providers: [ProgramListService, ModalService, { provide: ApiService, useClass: ApiServiceStub }],
   exports: [ProgramListContainerComponent, ViewComponent],

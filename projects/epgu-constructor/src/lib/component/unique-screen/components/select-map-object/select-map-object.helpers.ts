@@ -8,7 +8,7 @@ import {
  * Возвращает опции атрибута запроса доступности оплаты в ГИБДД
  * @param id - объект фильтра для оплаты
  */
-export const getPaymentRequestOptionGIBDD = (id: number): DictionaryOptions => {
+export const getPaymentRequestOptionGIBDD = (id: string): DictionaryOptions => {
   return {
     treeFiltering: 'ONELEVEL',
     filter: {

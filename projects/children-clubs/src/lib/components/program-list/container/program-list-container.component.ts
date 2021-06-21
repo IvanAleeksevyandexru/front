@@ -2,11 +2,10 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { takeUntil } from 'rxjs/operators';
-import { AppStateQuery, AppStateService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../program-list.service';
-import { BaseProgram, Filters } from '../../../typings';
+import { BaseProgram } from '../../../typings';
 import { ApiService } from '../../../services/api/api.service';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../../children-clubs.types';
 
 @Component({
   selector: 'children-clubs-program-list',
@@ -24,16 +23,7 @@ export class ProgramListContainerComponent implements OnInit {
     private listService: ProgramListService,
     private api: ApiService,
     private ngUnsubscribe$: UnsubscribeService,
-    private query: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
-  changeFilter(): void {
-    const programFilters: Filters = this.query.state?.programFilters ?? {};
-    this.appStateService.updateState({
-      ...this.query.state,
-      programFilters: { ...programFilters, maxPrice: 1 - 0.5 + Math.random() * (10 - 1 + 1) },
-    });
-  }
 
   fetchItems(): void {
     this.listService.getNextPage();

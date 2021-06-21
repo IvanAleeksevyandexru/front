@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { PlainInputComponent, ValidationShowOn } from '@epgu/epgu-lib';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import {
@@ -14,7 +22,7 @@ import { SUGGEST_SEPORATOR_DEFAULT } from '../../../core/services/autocomplete/a
   templateUrl: './constructor-plain-input.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConstructorPlainInputComponent {
+export class ConstructorPlainInputComponent implements AfterViewInit {
   @Input() control: FormControl;
   @Input() validationShowOn: ValidationShowOn;
   @Input() textTransformType?: TextTransform;
@@ -35,5 +43,13 @@ export class ConstructorPlainInputComponent {
     ISuggestionItem | ISuggestionItemList
   >();
 
+  @ViewChild('plainInput', { static: false }) plainInput: PlainInputComponent;
+
   readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
+
+  ngAfterViewInit(): void {
+    if (this.control.touched && this.plainInput) {
+      this.plainInput.touched = true;
+    }
+  }
 }

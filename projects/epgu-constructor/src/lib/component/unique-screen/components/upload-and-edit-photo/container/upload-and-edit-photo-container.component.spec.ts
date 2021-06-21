@@ -11,7 +11,7 @@ import { PhotoFormComponent } from '../../../../../shared/components/upload-and-
 import { PhotoDescriptionComponent } from '../component/photo-description/photo-description.component';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenContainerModule } from '../../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderModule } from '../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';

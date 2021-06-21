@@ -1,4 +1,4 @@
-<epgu-constructor-screen-container
+<epgu-cf-ui-screen-container
   *ngIf="{
     showNav: screenService.showNav$ | async,
     hideSocialShare: (screenService.component$ | async)?.attrs?.hideSocialShare,
@@ -37,4 +37,4 @@
       [url]="locationService.getHref()"
     ></lib-social-share>
   </div>
-</epgu-constructor-screen-container>
+</epgu-cf-ui-screen-container>

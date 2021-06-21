@@ -150,7 +150,7 @@ export class PrepareComponentsService {
     if (parentId && isCachedValueParsable) {
       const value = this.cachedAnswersService.parseCachedValue(cachedValue, component);
 
-      return value[parentIndex][parentId];
+      return value[parentIndex] && value[parentIndex][parentId];
     }
 
     return cachedValue || preset;

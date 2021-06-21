@@ -26,6 +26,7 @@ import { RefRelationService } from '../shared/services/ref-relation/ref-relation
 import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.module';
 import { AppScreenModule } from './app-screen/app-screen.module';
 import { AppScreenComponent } from './app-screen/app-screen.component';
+import { UniquenessErrorsService } from '../shared/services/uniqueness-errors/uniqueness-errors.service';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -54,6 +55,7 @@ import { AppScreenComponent } from './app-screen/app-screen.component';
     DatesToolsService,
     DictionaryToolsService,
     RefRelationService,
+    UniquenessErrorsService,
   ],
   exports: [ScreenResolverComponent],
   entryComponents: [

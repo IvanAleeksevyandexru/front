@@ -5,7 +5,7 @@ import { ScreenPadComponent, HelperTextComponent, HttpCancelService } from '@epg
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-import { ScreenContainerComponent } from '../../../../shared/components/screen-container/screen-container.component';
+import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';

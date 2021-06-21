@@ -73,7 +73,11 @@ export class ComponentsListFormService {
     private screenService: ScreenService,
   ) {}
 
-  public create(components: Array<CustomComponent>, errors: ScenarioErrorsDto, componentsGroupIndex?: number): FormArray {
+  public create(
+    components: Array<CustomComponent>,
+    errors: ScenarioErrorsDto,
+    componentsGroupIndex?: number,
+  ): FormArray {
     this.errors = errors;
     this._shownElements = this.componentsListRelationsService.createStatusElements(
       components,
@@ -90,6 +94,9 @@ export class ComponentsListFormService {
       }),
     );
     this.validationService.form = this.form;
+    if (this.errors) {
+      this._form.markAllAsTouched();
+    }
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
@@ -105,7 +112,7 @@ export class ComponentsListFormService {
         false,
         this.screenService,
         this.dictionaryToolsService,
-        componentsGroupIndex
+        componentsGroupIndex,
       );
     });
 
@@ -290,7 +297,7 @@ export class ComponentsListFormService {
     component: CustomComponent,
     components: Array<CustomComponent>,
     errorMsg: string,
-    componentsGroupIndex?: number
+    componentsGroupIndex?: number,
   ): FormGroup {
     const validators = [
       this.validationService.customValidator(component),
@@ -337,7 +344,7 @@ export class ComponentsListFormService {
           true,
           this.screenService,
           this.dictionaryToolsService,
-          componentsGroupIndex
+          componentsGroupIndex,
         );
         // TODO: в перспективе избавиться от этой хардкодной логики
         this.checkAndFetchCarModel(next, prev);
