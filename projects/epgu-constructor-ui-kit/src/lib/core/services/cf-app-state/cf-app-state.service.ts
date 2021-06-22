@@ -21,7 +21,7 @@ export class CfAppStateService {
     const key = this.getKey(spaDataDirectionType);
     const state = this.localStorageService.get<T>(key);
 
-    if (!isDevMode()) {
+    if (!isDevMode() || key === APP_OUTPUT_KEY ) {
       this.localStorageService.delete(key);
     }
     return state;
