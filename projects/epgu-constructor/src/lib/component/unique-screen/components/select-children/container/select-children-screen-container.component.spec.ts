@@ -24,11 +24,13 @@ import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
+import { UniquenessErrorsService } from '../../../../../shared/services/uniqueness-errors/uniqueness-errors.service';
 
 describe('SelectChildrenScreenContainerComponent', () => {
   let component: SelectChildrenScreenContainerComponent;
   let fixture: ComponentFixture<SelectChildrenScreenContainerComponent>;
   let screenService: ScreenService;
+  let uniquenessErrorsService: UniquenessErrorsService;
   let currentAnswersService: CurrentAnswersService;
   const selector = 'epgu-constructor-select-children';
   let componentMock = {
@@ -94,31 +96,33 @@ describe('SelectChildrenScreenContainerComponent', () => {
         EventBusService,
         CurrentAnswersService,
         CachedAnswersService,
+        UniquenessErrorsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
       ],
-    }).overrideComponent(SelectChildrenScreenContainerComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+    })
+      .overrideComponent(SelectChildrenScreenContainerComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectChildrenScreenContainerComponent);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
+    uniquenessErrorsService = TestBed.inject(UniquenessErrorsService);
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(componentMock) as any);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should be updateCurrentAnswersState()', () => {
+  it('should be updateCurrentAnswersState() and calculatePreparedUniqErrors() called', () => {
     const data = [];
-    jest.spyOn(component, 'updateCurrentAnswersState');
-    const debugEl = fixture.debugElement.query(By.css(selector));
-    debugEl.triggerEventHandler('updateCurrentAnswerServiceStateEvent', data);
-
-    expect(component.updateCurrentAnswersState).toHaveBeenCalled();
+    const spy = jest.spyOn(uniquenessErrorsService, 'calculatePreparedUniqErrors');
+    component.updateCurrentAnswersState(data, 0);
     expect(currentAnswersService.state).toBe(data);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should be updateCurrentAnswersValid()', () => {

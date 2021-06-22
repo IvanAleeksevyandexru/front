@@ -7,7 +7,12 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { SelectChildrenComponent } from './select-children.component';
 import { CoreModule } from '../../../../../../core/core.module';
-import { CoreUiModule, LoggerService, LoggerServiceStub, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CoreUiModule,
+  LoggerService,
+  LoggerServiceStub,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -212,11 +217,15 @@ describe('SelectChildrenComponent', () => {
       expect(spy).toBeCalledTimes(3);
     });
 
-    it('should call updateCurrentAnswerServiceStateEvent', () => {
-      jest.spyOn(component.updateCurrentAnswerServiceStateEvent, 'emit');
-      component.passDataToSend([]);
+    it('should call updateCurrentAnswerServiceStateEvent via eventBusService', () => {
+      const eventMock = {
+        state: [],
+        index: 0,
+      };
+      const eventEmitterSpy = jest.spyOn(eventBusService, 'emit');
 
-      expect(component.updateCurrentAnswerServiceStateEvent.emit).toHaveBeenCalled();
+      component.passDataToSend([], 0);
+      expect(eventEmitterSpy).toBeCalledWith('updateCurrentAnswerServiceStateEvent', eventMock);
     });
   });
 });

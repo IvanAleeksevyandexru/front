@@ -74,7 +74,8 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       let errors: ScenarioErrorsDto[] = [];
       try {
         errors =
-          this.uniqueErrors.preparedUniquenessErrors || JSON.parse(componentErrors[component.id]);
+          this.uniquenessErrorsService.preparedUniquenessErrors ||
+          JSON.parse(componentErrors[component.id]);
       } catch (e) {
         message = componentErrors[component.id];
         errors = [];
@@ -97,12 +98,12 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     private cachedAnswersService: CachedAnswersService,
     private navigationService: NavigationService,
     private scrollToService: ScrollToService,
-    private uniqueErrors: UniquenessErrorsService,
+    private uniquenessErrorsService: UniquenessErrorsService,
   ) {}
 
   ngOnInit(): void {
     this.init$.subscribe();
-    this.uniqueErrors.init();
+    this.uniquenessErrorsService.init();
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -141,7 +142,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
-    this.uniqueErrors.calculatePreparedUniqErrors(state, index);
+    this.uniquenessErrorsService.calculatePreparedUniqErrors(state, index);
   }
 
   removeItem(key: string, index: number): void {

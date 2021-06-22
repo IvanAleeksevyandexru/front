@@ -39,7 +39,8 @@
       "lodash": "lodash",
       "hammerjs": "hammerjs",
       "zipkin": "zipkin",
-      "zipkin-transport-http": "zipkin-transport-http"
+      "zipkin-transport-http": "zipkin-transport-http",
+      "@nicky-lenaers/ngx-scroll-to": "@nicky-lenaers/ngx-scroll-to"
     },
     "styleIncludePaths": ["."]
   }
