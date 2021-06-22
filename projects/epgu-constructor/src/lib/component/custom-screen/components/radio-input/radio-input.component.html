@@ -1,0 +1,29 @@
+<ng-container *ngTemplateOutlet="radioInput; context: { $implicit: control.value }">
+</ng-container>
+
+<ng-template #radioInput let-component>
+  <epgu-constructor-component-item
+    [control]="control.get('value')"
+    [component]="component"
+    [invalid]="control.invalid"
+    [hidden]="component?.attrs?.hidden"
+    [largeFontSize]="true"
+  >
+    <div
+      class="form__radio"
+      [ngClass]="
+            component?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'
+          "
+    >
+      <lib-radio
+        *ngFor="let item of component?.attrs?.supportedValues"
+        [name]="component.id"
+        [labelText]="item.label"
+        [formControl]="$any(control.get('value'))"
+        [value]="item.value"
+        class="form__radio-item"
+      >
+      </lib-radio>
+    </div>
+  </epgu-constructor-component-item>
+</ng-template>
