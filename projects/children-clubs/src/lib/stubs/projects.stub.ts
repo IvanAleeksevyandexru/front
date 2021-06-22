@@ -4,7 +4,6 @@ import {
   FinancingType,
   FocusDirectionsItem,
   Group,
-  NSIDictionaryItem,
   Program,
 } from '../typings';
 
