@@ -9,7 +9,7 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { GlobalErrorHandler } from './global-error.service';
-import { HealthServiceStub } from './health.service.stub';
+import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 
 describe('GlobalErrorHandler', () => {

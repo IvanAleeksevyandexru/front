@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AppNavigationService } from '../app-navigation/app-navigation.service';
-import { PrevButtonNavigation } from '../../base/components/prev-button/prev-button';
+import { PrevButtonNavigation } from '../../base/components/prev-button/prev-button.token';
 
 @Injectable()
 export class AppPrevButtonNavigationService implements PrevButtonNavigation {

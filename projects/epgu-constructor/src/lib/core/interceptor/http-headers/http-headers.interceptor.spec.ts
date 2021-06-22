@@ -4,8 +4,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { configureTestSuite } from 'ng-bullet';
 
 import { HttpHeadersInterceptor } from './http-headers.interceptor';
-import { InitDataService } from '../services/init-data/init-data.service';
-import { InitDataServiceStub } from '../services/init-data/init-data.service.stub';
+import { InitDataService } from '../../services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('HttpHeadersInterceptor', () => {
