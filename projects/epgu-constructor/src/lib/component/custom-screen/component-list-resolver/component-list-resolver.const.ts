@@ -22,6 +22,7 @@ import { DictionaryComponent } from '../components/dictionary/dictionary.compone
 import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
 import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
 import { DepartmentLookupComponent } from '../components/department-lookup/department-lookup.component';
+import { RadioInputComponent } from '../components/radio-input/radio-input.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -44,7 +45,8 @@ type CustomScreenComponent =
   | FileUploadFormComponent
   | LookupInputComponent
   | SearchableDropdownComponent
-  | DepartmentLookupComponent;
+  | DepartmentLookupComponent
+  | RadioInputComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
@@ -82,4 +84,5 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes
   ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   Dictionary: DictionaryComponent,
   Lookup: LookupInputComponent,
+  RadioInput: RadioInputComponent,
 };

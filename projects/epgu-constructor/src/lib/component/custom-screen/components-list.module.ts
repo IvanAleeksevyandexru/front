@@ -58,6 +58,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
 import { MonthPickerComponent } from './components/month-picker/month-picker.component';
 import { ConstructorMonthPickerModule } from '../../shared/components/constructor-month-picker/constructor-month-picker.module';
 import { DepartmentLookupComponent } from './components/department-lookup/department-lookup.component';
+import { RadioInputComponent } from './components/radio-input/radio-input.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { DepartmentLookupComponent } from './components/department-lookup/depart
     DictionaryComponent,
     LookupInputComponent,
     DepartmentLookupComponent,
+    RadioInputComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
