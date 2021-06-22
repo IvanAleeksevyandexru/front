@@ -7,19 +7,19 @@ import {
   AppUiConfig,
   SharedModalModule,
   MainContainerModule,
-  BaseUiModule,
+  BaseUiModule, HEALTH_SERVICE,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramFiltersModule } from './components/program-filters/program-filters.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
-import { Test2Component } from './components/test2/test2.component';
 
 import { GroupListModule } from './components/group-list/group-list.module';
 import { ProjectViewComponent } from './components/project-view/project-view.component';
 import { ProjectGroupComponent } from './components/project-group/project-group.component';
 import { ProgramListContainerComponent } from './components/program-list/container/program-list-container.component';
+import { HealthHandlerService } from './services/health/health-handler.service';
 
 const APP_CONFIG: AppUiConfig = {
   appRoutingComponentMap: {
@@ -28,9 +28,7 @@ const APP_CONFIG: AppUiConfig = {
     projectGroup: ProjectGroupComponent,
   },
   appNavigationRuleMap: {
-    projectList: {
-      next: 'projectView',
-    },
+    projectList: { next: 'projectView' },
     projectView: { next: 'projectGroup' },
     projectGroup: {},
   },
@@ -42,7 +40,6 @@ const APP_CONFIG: AppUiConfig = {
     ChildrenClubsAppComponent,
     ProjectListComponent,
     ProjectViewComponent,
-    Test2Component,
   ],
   imports: [
     CoreUiModule,
@@ -57,7 +54,13 @@ const APP_CONFIG: AppUiConfig = {
     AppUiModule.forRoot(APP_CONFIG),
     BaseUiModule,
   ],
+  providers: [
+    {
+      provide: HEALTH_SERVICE,
+      useClass: HealthHandlerService,
+    }
+  ],
   exports: [ChildrenClubsAppComponent],
-  entryComponents: [ProgramListContainerComponent, Test2Component],
+  entryComponents: [ProgramListContainerComponent],
 })
 export class ChildrenClubsModule {}

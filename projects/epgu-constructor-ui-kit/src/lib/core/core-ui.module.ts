@@ -21,6 +21,7 @@ import { FocusManagerService } from './services/focus-manager/focus-manager.serv
 import { DatesToolsService } from './services/dates-tools/dates-tools.service';
 import { UtilsService } from './services/utils/utils.service';
 import { ModalService } from '../modal/modal.service';
+import { HealthInterceptor } from './interceptor/health/health.interceptor';
 
 @NgModule({
   providers: [
@@ -43,6 +44,11 @@ import { ModalService } from '../modal/modal.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpCancelInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HealthInterceptor,
       multi: true,
     },
     {
