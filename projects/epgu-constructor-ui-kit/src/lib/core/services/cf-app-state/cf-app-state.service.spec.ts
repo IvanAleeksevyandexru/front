@@ -90,19 +90,5 @@ describe('CfAppStateService', () => {
       service.getState(key);
       expect(spy).toBeCalledWith(APP_OUTPUT_KEY);
     });
-
-    it('should call delete of localStorageService with APP_INPUT_KEY', () => {
-      spy = jest.spyOn(localStorageService, 'delete');
-      const key = DataDirectionType.INPUT;
-      service.getState(key);
-      expect(spy).toBeCalledWith(APP_INPUT_KEY);
-    });
-
-    it('should call delete of localStorageService with APP_OUTPUT_KEY', () => {
-      spy = jest.spyOn(localStorageService, 'delete');
-      const key = DataDirectionType.OUTPUT;
-      service.getState(key);
-      expect(spy).toBeCalledWith(APP_OUTPUT_KEY);
-    });
   });
 });
