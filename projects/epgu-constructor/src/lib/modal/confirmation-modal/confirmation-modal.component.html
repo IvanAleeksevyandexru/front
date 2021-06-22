@@ -7,11 +7,13 @@
   [isShortModal]="isShortModal"
 >
   <ng-container modal-content>
-    <epgu-constructor-output-html
-      [html]="text"
-      [componentId]="componentId"
-    >
+    <epgu-constructor-output-html [html]="text" [componentId]="componentId">
     </epgu-constructor-output-html>
+    <div class="text--center mt-16" *ngIf="configService.showTraceIdOnError && traceId">
+      <small class="text-color--text-helper" title="этой надписи не будет в проде">
+        traceId: {{ traceId }}
+      </small>
+    </div>
   </ng-container>
 
   <ng-container *ngIf="buttons.length" modal-buttons>
@@ -23,11 +25,12 @@
       class="conf-modal__button"
       [color]="button.color || ''"
       (click)="button.handler()"
-    >{{ button.label }}</lib-button>
+      >{{ button.label }}</lib-button
+    >
   </ng-container>
 
   <ng-container *ngIf="actionButtons.length">
-    <div modal-action-buttons class="conf-modal__button" >
+    <div modal-action-buttons class="conf-modal__button">
       <epgu-constructor-screen-buttons
         [screenButtons]="actionButtons"
       ></epgu-constructor-screen-buttons>

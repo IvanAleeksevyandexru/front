@@ -25,14 +25,17 @@
       max-width: 100%;
       width: auto;
     }
+
     &.modal__doc-img {
       width: auto;
       max-width: 100%;
       margin: 0 auto;
       display: block;
+
       &:not(:first-child) {
         margin-top: 24px;
       }
+
       @include tablets-down {
         max-width: 100%;
       }
@@ -95,7 +98,10 @@
       &:first-letter {
         text-transform: lowercase;
       }
-
+      // fix для аббервиатур вложенных списков
+      &.first-letter-uppercase:first-letter {
+        text-transform: uppercase;
+      }
       &::after {
         content: ' ';
         position: absolute;

@@ -19,6 +19,7 @@ export class ConfigService implements Config {
   private _fileUploadApiUrl: string;
   private _lkUrl: string;
   private _lkApi: string;
+  private _childrenClubsApi: string;
   private _paymentUrl: string;
   private _timeSlotApiUrl: string;
   private _listPaymentsApiUrl: string;
@@ -36,6 +37,7 @@ export class ConfigService implements Config {
   private _addToCalendarUrl: string;
   private _isZipkinEnabled: boolean;
   private _zipkinUrl: string;
+  private _showTraceIdOnError: boolean;
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
   private _oplataUrl: string;
@@ -101,6 +103,10 @@ export class ConfigService implements Config {
 
   get lkApi(): string {
     return this._lkApi;
+  }
+
+  get childrenClubsApi(): string {
+    return this._childrenClubsApi;
   }
 
   get paymentUrl(): string {
@@ -179,6 +185,10 @@ export class ConfigService implements Config {
     return this._zipkinEnv;
   }
 
+  get showTraceIdOnError(): boolean {
+    return this._showTraceIdOnError;
+  }
+
   get oplataUrl(): string {
     return this._oplataUrl;
   }
@@ -208,6 +218,7 @@ export class ConfigService implements Config {
       config.fileUploadApiUrl ?? `${this.loadService.config.storageApi}files`;
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
     this._lkApi = config.lkApi ?? `${this.loadService.config.lkApi}`;
+    this._childrenClubsApi = config.childrenClubsApi;
     this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
     this._listPaymentsApiUrl =
@@ -237,6 +248,7 @@ export class ConfigService implements Config {
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
+    this._showTraceIdOnError = config.showTraceIdOnError || false;
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._appPathMap = config.appPathMap || {};
     this._isLoaded = true;

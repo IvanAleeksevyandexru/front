@@ -12,6 +12,7 @@ export class ConfigServiceStub implements Config {
   _timeSlotApiUrl = '';
   _listPaymentsApiUrl = '';
   _lkUrl = '';
+  _childrenClubsApi = '';
   _paymentUrl = 'https://oplata.gosuslugi.ru';
   _fileUploadApiUrl = '';
   _uinApiUrl = '';
@@ -31,6 +32,7 @@ export class ConfigServiceStub implements Config {
   _zipkinUrl = '';
   _zipkinMaxPayloadSize: number;
   _zipkinEnv = '';
+  _showTraceIdOnError = false;
   _oplataUrl = 'oplataUrl';
   _lkApi = '';
   _lookupQueryTimeoutMs = 42;
@@ -119,6 +121,10 @@ export class ConfigServiceStub implements Config {
     return this._lkUrl;
   }
 
+  get childrenClubsApi(): string {
+    return this._childrenClubsApi;
+  }
+
   get paymentUrl(): string {
     return this._paymentUrl;
   }
@@ -195,9 +201,12 @@ export class ConfigServiceStub implements Config {
     return this._zipkinMaxPayloadSize;
   }
 
-
   get zipkinEnv(): string {
     return this._zipkinEnv;
+  }
+
+  get showTraceIdOnError(): boolean {
+    return this._showTraceIdOnError;
   }
 
   get oplataUrl(): string {
@@ -224,7 +233,7 @@ export class ConfigServiceStub implements Config {
     return this._suggestionsApiUrl;
   }
 
-  initCore(): void { }
+  initCore(): void {}
 
   set config(config: Config) {
     this._apiUrl = config.apiUrl;
@@ -233,6 +242,7 @@ export class ConfigServiceStub implements Config {
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._lkUrl = config.lkUrl;
+    this._childrenClubsApi = config.childrenClubsApi;
     this._paymentUrl = config.paymentUrl;
     this._timeSlotApiUrl = config.timeSlotApiUrl;
     this._listPaymentsApiUrl = config.listPaymentsApiUrl;
@@ -251,5 +261,6 @@ export class ConfigServiceStub implements Config {
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
+    this._showTraceIdOnError = config.showTraceIdOnError || false;
   }
 }
