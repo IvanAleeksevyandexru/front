@@ -18,6 +18,7 @@ import {
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
+  isEqualObj,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import {
@@ -80,17 +81,13 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
 
-    const components: Array<CustomComponent> = changes.components?.currentValue;
-    const isErrorsChanged =
-      JSON.stringify(changes.errors?.currentValue) !==
-      JSON.stringify(changes.errors?.previousValue);
+    const components: Array<CustomComponent> =
+      changes.components?.currentValue || this.formService.form.value || this.components;
+    const { currentValue, previousValue } = changes.errors || {};
+    const isErrorsChanged = !isEqualObj(currentValue, previousValue);
 
     if (components || isErrorsChanged) {
-      const formArray = this.formService.create(
-        this.components,
-        this.errors,
-        this.componentsGroupIndex,
-      );
+      const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
       this.emitFormCreated.emit(formArray);
       this.subscribeOnFormStatusChanging();
       this.loadRepository(this.components);

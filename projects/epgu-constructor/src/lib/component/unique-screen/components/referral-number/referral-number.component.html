@@ -1,0 +1,70 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <div>{{hasErrorStatus()}}</div>
+  <div class="info" *ngIf="hasErrorStatus(); else inputForm">
+    <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
+      <div class="referral-number__img-wrapper">
+        <img
+          class="info__img"
+          [src]="data.attrs.error?.imgSrc || defaultErrorImgSrc"
+          alt=""
+        />
+      </div>
+
+      <div class="text referral-number__text">
+        <h4>{{ defaultErrorLabel}}</h4>
+        <p class="mt-8">{{ (responseError?.errorMessage || defaultErrorText) | smev3ErrorMessage }}</p>
+      </div>
+    </epgu-cf-ui-constructor-screen-pad>
+
+    <div class="referral-number__footer">
+      <lib-button (click)="goBack()" color="white" buttonType="button">
+        Назад
+      </lib-button>
+      <lib-button (click)="chooseDoctor()" buttonType="button" class="ml-32">
+        Выбрать врача
+      </lib-button>
+    </div>
+  </div>
+
+  <ng-template #inputForm>
+    <epgu-constructor-output-html
+      class="referral-number__label"
+      [html]="data.label"
+    ></epgu-constructor-output-html>
+
+    <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
+      <form class="form">
+        <div class="form__item">
+          <epgu-constructor-label [label]="data.attrs.label"></epgu-constructor-label>
+
+          <div class="form__error">
+            <small *ngIf="referral.invalid && referral.touched">
+              {{ referral.getError('msg') }}
+            </small>
+          </div>
+
+          <epgu-constructor-constructor-plain-input
+            id="referral"
+            type="referral"
+            [placeholder]="data.attrs.placeholderText"
+            [control]="referral"
+            [invalid]="referral.invalid && referral.touched"
+            [validationShowOn]="validationShowOn"
+          ></epgu-constructor-constructor-plain-input>
+        </div>
+      </form>
+    </epgu-cf-ui-constructor-screen-pad>
+
+    <div class="referral-number__footer">
+      <lib-button (click)="findReferral()" [disabled]="!referral.valid || !referral.value">{{
+        data.attrs.findReferralLabel || 'Найти'
+        }}</lib-button>
+    </div>
+  </ng-template>
+</epgu-constructor-default-unique-screen-wrapper>

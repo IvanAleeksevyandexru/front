@@ -77,7 +77,7 @@ export class TimeSlotsService {
     if (timeSlotsForCancel.length) {
       return forkJoin(timeSlotsForCancel.map((timeSlot) => this.cancelSlot(timeSlot.bookId))).pipe(
         switchMap((responses: CancelSlotResponseInterface[]) => {
-          if (responses.some((res) => res.error)) {
+          if (responses.some((res) => res.error && res.error.errorDetail.errorCode !== 0)) {
             this.errorMessage = this.getErrorCancelMessage(responses);
             this.loggerService.error([responses.map((res) => res.error)]);
             return of(null);
@@ -287,7 +287,7 @@ export class TimeSlotsService {
       })
       .pipe(
         tap((response) => {
-          if (response.error) {
+          if (response.error && response.error.errorDetail.errorCode !== 0) {
             this.errorMessage = response.error?.errorDetail
               ? response.error.errorDetail.errorMessage
               : 'check log';

@@ -27,6 +27,8 @@ import { NavigationService } from '../../services/navigation/navigation.service'
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
+export const STATIC_ERROR_MESSAGE = 'Operation completed';
+
 
 @Injectable()
 export class ErrorHandleService {
@@ -63,7 +65,8 @@ export class ErrorHandleService {
         url.includes('agg/ref/items') &&
         (error !== null || error !== undefined) &&
         error?.errorDetail?.errorMessage !== undefined &&
-        error?.errorDetail?.errorMessage !== ''
+        error?.errorDetail?.errorMessage !== '' &&
+        error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !== STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim()
       ) {
         const errorMessage = error.errorDetail.errorMessage;
 

@@ -250,13 +250,23 @@ describe('ValidationService', () => {
   });
 
   describe('checkRS', () => {
-    it('should be return true', () => {
+    it('should return true', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);
       const isValid = service.checkRS('40702810900000002851', { bik: 'bik' });
       expect(isValid).toBeTruthy();
     });
 
-    it('should be return false', () => {
+    it('should return true', () => {
+      service.form = new FormArray([
+        new FormControl({ id: 'bik_dict', value: null }),
+        new FormControl({ id: 'bik', value: '004525988' }),
+        new FormControl({ id: 'corr', value: '03100643000000017300' })
+      ]);
+      const isValid = service.checkRS('40102810545370000003', { bik_dict: 'bik_dict', bik: 'bik', corr: 'corr' });
+      expect(isValid).toBeTruthy();
+    });
+
+    it('should return false', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '049205603' })]);
       const isValid = service.checkRS('40817810362001249935', { bik: 'bik' });
       expect(isValid).toBeFalsy();
@@ -266,7 +276,7 @@ describe('ValidationService', () => {
   describe('checkCardNumber()', () => {
     const checkNumber = (number: any) => service.checkCardNumber(number);
 
-    it('should be return true', () => {
+    it('should return true', () => {
       expect(checkNumber('5469 3800 2401 6155')).toBeTruthy();
       expect(checkNumber('5469380024016155')).toBeTruthy();
       expect(checkNumber('5469-3800-2401-6155')).toBeTruthy();
@@ -276,7 +286,7 @@ describe('ValidationService', () => {
       expect(checkNumber('5213 2439 2469 4464')).toBeTruthy();
     });
 
-    it('should be return false', () => {
+    it('should return false', () => {
       expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
       expect(checkNumber('5469 3800 2401')).toBeTruthy();
     });

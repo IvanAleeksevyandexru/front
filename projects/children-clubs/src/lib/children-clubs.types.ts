@@ -1,9 +1,12 @@
+import { Filters, FindOptionsGroup } from './typings';
+
 export interface ChildrenClubsValue {
-  someKey: string
+  groupUUID?: string;
 }
 
 export interface ChildrenClubsState {
-  someFilters: {
-    [key: string]: string
-  }
+  okato?: number; // TODO: переделать в обязательный
+  selectedProgramUUID?: string;
+  programFilters?: Filters;
+  groupFilters?: FindOptionsGroup;
 }

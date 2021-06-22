@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { delay, filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
 import { DisplayDto, ScenarioErrorsDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { EventBusService, UnsubscribeService, isEqualObj } from '@epgu/epgu-constructor-ui-kit';
@@ -24,6 +24,7 @@ import {
 } from './repeatable-screen.constant';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
 
 @Component({
   selector: 'epgu-constructor-repeatable-screen',
@@ -66,19 +67,21 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.screenService.component$,
     this.getStateStatus$(),
   ]).pipe(
-    filter(([error, component]) => !!error[component.id]),
-    map(([error, component, isChangeState]) => {
+    filter(([componentErrors, component]) => !!componentErrors[component.id]),
+    delay(0),
+    map(([componentErrors, component, statusState]) => {
       let message = '';
       let errors: ScenarioErrorsDto[] = [];
       try {
-        errors = JSON.parse(error[component.id]);
+        errors =
+          this.uniqueErrors.preparedUniquenessErrors || JSON.parse(componentErrors[component.id]);
       } catch (e) {
-        message = error[component.id];
+        message = componentErrors[component.id];
         errors = [];
       }
 
       return {
-        hasError: isChangeState !== 'change',
+        hasError: statusState !== 'change',
         message,
         errors,
       };
@@ -86,18 +89,20 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
   );
 
   constructor(
-    private currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
     private cdr: ChangeDetectorRef,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private cachedAnswersService: CachedAnswersService,
     private navigationService: NavigationService,
     private scrollToService: ScrollToService,
+    private uniqueErrors: UniquenessErrorsService,
   ) {}
 
   ngOnInit(): void {
     this.init$.subscribe();
+    this.uniqueErrors.init();
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -136,6 +141,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
+    this.uniqueErrors.calculatePreparedUniqErrors(state, index);
   }
 
   removeItem(key: string, index: number): void {

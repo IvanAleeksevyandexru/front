@@ -139,7 +139,7 @@ describe('FormPlayerService', () => {
       expect(service['updateLoading']).toHaveBeenCalled();
     });
 
-    it('should call updateRequest with navigation param', () => {
+    it('should call updateRequest with prev-button param', () => {
       const navigation = {};
       spyOn<any>(service, 'updateRequest').and.callThrough();
       service.navigate(navigation, FormPlayerNavigation.NEXT);
@@ -491,13 +491,13 @@ describe('FormPlayerService', () => {
       expect(service['setDefaultCurrentValue']).toBeCalled();
     });
 
-    it('should set navigation.payload as currentValue when isEmptyNavigationPayload return false', () => {
+    it('should set prev-button.payload as currentValue when isEmptyNavigationPayload return false', () => {
       spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
       service['updateRequest'](navigation);
       expect(service['_store'].scenarioDto.currentValue).toBe(navigation.payload);
     });
 
-    it('should update store when navigation.options has store', () => {
+    it('should update store when prev-button.options has store', () => {
       const newStore = JSON.parse(JSON.stringify(response));
       navigation = {
         options: {

@@ -242,7 +242,8 @@ export class DictionaryToolsService {
         attributeName: dFilter.attributeName,
         condition: dFilter.condition,
         value: this.getValueForFilter(componentValue, screenStore, dFilter),
-        trueForNull: dFilter.trueForNull,
+        ...(dFilter.hasOwnProperty('trueForNull') ? { trueForNull: dFilter.trueForNull } : {}),
+        ...(dFilter.hasOwnProperty('checkAllValues') ? { checkAllValues: dFilter.checkAllValues } : {}),
       },
     };
   }

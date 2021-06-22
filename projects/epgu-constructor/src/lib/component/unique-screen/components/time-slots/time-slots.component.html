@@ -1,6 +1,6 @@
-<epgu-constructor-screen-container *ngIf="(data$ | async) as data"
-                                   [show-nav]="screenService.showNav$ | async"
-                                   [class.screen-container-mt]="!(screenService.showNav$ | async)"
+<epgu-cf-ui-screen-container *ngIf="(data$ | async) as data"
+                             [show-nav]="screenService.showNav$ | async"
+                             [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
 
   <div class="screen-body">
@@ -84,4 +84,4 @@
       </lib-button>
     </div>
   </div>
-</epgu-constructor-screen-container>
+</epgu-cf-ui-screen-container>

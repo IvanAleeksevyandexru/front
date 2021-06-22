@@ -47,9 +47,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.componentRef && (changes.componentsGroupIndex || changes.componentIndex)) {
-      // @ts-ignore
       this.componentRef.instance.componentIndex = this.componentIndex;
-      // @ts-ignore
       this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
     }
   }

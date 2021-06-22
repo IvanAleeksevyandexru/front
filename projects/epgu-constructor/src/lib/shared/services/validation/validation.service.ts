@@ -48,7 +48,7 @@ export class ValidationService {
     private datesToolsService: DatesToolsService,
   ) {}
 
-  customValidator(component: CustomComponent): ValidatorFn {
+  public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
     const validations = componentValidations;
 
@@ -83,7 +83,7 @@ export class ValidationService {
     };
   }
 
-  customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
+  public customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
       (validationRule) => validationRule.updateOn === 'blur',
@@ -185,19 +185,21 @@ export class ValidationService {
   }
 
   public checkRS(rs: string, refs: { [key: string]: string }): boolean {
-    const check = (rs: string, bik: string | null): boolean => {
+    const check = (rs: string, bik: string | null, corr?: string | null): boolean => {
       const bikRs = `${bik?.slice(-3)}${rs}`;
       const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
       const checkSum = coefficients.reduce(
         (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
         0,
       );
-      return checkSum % 10 === 0;
+      return typeof corr === 'string' && corr[0] === '0' ? true : checkSum % 10 === 0;
     };
-
-    return this.form?.controls
+    const values = this.form?.controls
       .filter((control) => Object.values(refs).includes(control.value?.id))
-      .some(({ value }) => check(rs, value.value?.id || value.value));
+      .map(({ value }) => value.value?.id || value.value);
+    const [ bik, manualBik, manualCorr ] = values;
+
+    return manualBik !== null && manualBik !== undefined ? check(rs, manualBik, manualCorr) : check(rs, bik);
   }
 
   public checkCardNumber(cardNumber: string): boolean {

@@ -44,6 +44,7 @@ export interface DictionaryYMapItem extends DictionaryItem {
   // fullListItems;
   agreement: boolean;
   expanded: boolean;
+  objectId: number;
 }
 
 export interface DadataSuggestionsAddress {

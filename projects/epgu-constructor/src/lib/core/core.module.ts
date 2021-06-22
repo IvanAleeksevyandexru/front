@@ -1,11 +1,12 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { SmuEventsService } from '@epgu/epgu-lib';
+import { DeviceDetectorService, PREV_BUTTON_NAVIGATION } from '@epgu/epgu-constructor-ui-kit';
+
 import { ErrorsInterceptorService } from './interceptor/errors/errors.interceptor';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from './services/init-data/init-data.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
@@ -14,6 +15,7 @@ import { TracingService } from './services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 import { HttpHeadersInterceptor } from './interceptor/http-headers.interceptor';
 import { ErrorHandleService } from './interceptor/errors/error-handle.service';
+import { PrevButtonNavigationService } from './services/prev-button-navigation/prev-button-navigation.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -53,6 +55,10 @@ import { ErrorHandleService } from './interceptor/errors/error-handle.service';
       useClass: HttpHeadersInterceptor,
       multi: true,
     },
+    {
+      provide: PREV_BUTTON_NAVIGATION,
+      useClass: PrevButtonNavigationService,
+    }
   ],
 })
 export class CoreModule {}

@@ -2,7 +2,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { SmuEventsService } from '@epgu/epgu-lib';
-import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, MainContainerModule, PREV_BUTTON_NAVIGATION } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
@@ -19,6 +19,7 @@ import { LogicScreenModule } from '../component/logic-screen/logic-screen.module
 registerLocaleData(localeRu);
 
 import 'hammerjs';
+import { PrevButtonNavigationService } from '../core/services/prev-button-navigation/prev-button-navigation.service';
 
 /**
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
@@ -33,6 +34,7 @@ import 'hammerjs';
     ModalModule,
     AutocompleteModule,
     LogicScreenModule,
+    MainContainerModule,
   ],
   providers: [
     FormPlayerConfigApiService,
@@ -42,6 +44,10 @@ import 'hammerjs';
     SmuEventsService,
     ConfigService,
     { provide: LOCALE_ID, useValue: 'ru' },
+    {
+      provide: PREV_BUTTON_NAVIGATION,
+      useClass: PrevButtonNavigationService,
+    }
   ],
   exports: [FormPlayerComponent],
   entryComponents: [FormPlayerComponent],

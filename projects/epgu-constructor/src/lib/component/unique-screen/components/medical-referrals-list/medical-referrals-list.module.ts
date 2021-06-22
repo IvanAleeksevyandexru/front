@@ -3,7 +3,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '../../../../shared/components/screen-container/screen-container.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule, ConstructorLookupModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { MedicalReferralsListContainerComponent } from './container/medical-refferals-list-container.component';
