@@ -44,7 +44,7 @@ export class ScreenService extends ScreenContent {
   }
 
   public setCompValueToCachedAnswer(componentId: string, value: string): void {
-    const cachedAnswers = this.getStore().cachedAnswers;
+    const cachedAnswers = this.getStore().cachedAnswers || this.cachedAnswers;
     if (!componentId) {
       componentId = this.component?.id;
     }
@@ -94,10 +94,10 @@ export class ScreenService extends ScreenContent {
     const components = this.screenStore.display.components;
     const cashedAnswers = this.screenStore.cachedAnswers;
     const applicantAnswers = this.screenStore.applicantAnswers;
-    const screenStoreComponent = this.prepareComponentsService.prepareComponents(
-      components,
-      { ...cashedAnswers, ...applicantAnswers },
-    );
+    const screenStoreComponent = this.prepareComponentsService.prepareComponents(components, {
+      ...cashedAnswers,
+      ...applicantAnswers,
+    });
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };
