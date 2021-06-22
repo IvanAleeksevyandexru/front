@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { PREV_BUTTON_NAVIGATION } from './prev-button.token';
-import { PrevButtonNavigation } from './prev-button';
+import { PREV_BUTTON_NAVIGATION, PrevButtonNavigation } from './prev-button.token';
 
 @Component({
   selector: 'epgu-cf-ui-prev-button',

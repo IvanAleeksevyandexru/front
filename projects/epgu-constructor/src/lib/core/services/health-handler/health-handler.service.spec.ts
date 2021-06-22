@@ -1,28 +1,51 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { HealthService } from '@epgu/epgu-lib';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '../../services/init-data/init-data.service';
-import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
+import { InitDataService } from '../init-data/init-data.service';
+import { InitDataServiceStub } from '../init-data/init-data.service.stub';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { HealthServiceStub } from '../../services/global-error/health.service.stub';
+import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
-  HealthInterceptor,
   RENDER_FORM_SERVICE_NAME,
-  RequestStatus,
-} from './health.interceptor';
+  RequestStatus, UnspecifiedDTO,
+} from './health-handler';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
+import { ActionRequestPayload, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { HealthHandlerService } from './health-handler.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-describe('HealthInterceptor', () => {
-  let interceptor: HealthInterceptor;
+
+@Injectable()
+export class TestHealthInterceptor<T extends DictionaryFilters & UnspecifiedDTO> implements HttpInterceptor {
+  constructor(
+    private healthHandlerService: HealthHandlerService
+  ) {}
+
+  intercept(
+    req: HttpRequest<T>,
+    next: HttpHandler,
+  ): Observable<HttpEvent<T>> {
+    return this.healthHandlerService.handleRequest(req, next);
+  }
+}
+
+describe('HealthHandlerService', () => {
+  let service: HealthHandlerService;
   let formPlayerApi: FormPlayerApiService;
   let config: ConfigService;
   let init: InitDataService;
@@ -61,14 +84,15 @@ describe('HealthInterceptor', () => {
         FormPlayerApiService,
         DictionaryApiService,
         UtilsService,
-        HealthInterceptor,
+        HealthHandlerService,
+        TestHealthInterceptor,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: HealthInterceptor,
+          useClass: TestHealthInterceptor,
           multi: true,
         },
       ],
@@ -76,7 +100,6 @@ describe('HealthInterceptor', () => {
   });
 
   beforeEach(() => {
-    interceptor = TestBed.inject(HealthInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
     config = TestBed.inject(ConfigService);
     init = TestBed.inject(InitDataService);
@@ -84,6 +107,7 @@ describe('HealthInterceptor', () => {
     init.orderId = Number(orderId);
     utils = TestBed.inject(UtilsService);
     healthService = TestBed.inject(HealthService);
+    service = TestBed.inject(HealthHandlerService);
     dictionaryService = TestBed.inject(DictionaryApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -259,19 +283,19 @@ describe('HealthInterceptor', () => {
 
     it('should call measureStart of health service with serviceName param', fakeAsync(() => {
       spyOn(healthService, 'measureStart').and.callThrough();
-      interceptor['startMeasureHealth'](serviceName);
+      service['startMeasureHealth'](serviceName);
       expect(healthService.measureStart).toHaveBeenCalledWith(serviceName);
     }));
 
     it('should call measureStart of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       spyOn(healthService, 'measureStart').and.callThrough();
-      interceptor['startMeasureHealth'](serviceName);
+      service['startMeasureHealth'](serviceName);
       expect(healthService.measureStart).toHaveBeenCalledWith(ERROR_UPDATE_DRAFT_SERVICE_NAME);
     }));
 
     it('shouldn\'t call measureStart of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       spyOn(healthService, 'measureStart').and.callThrough();
-      interceptor['startMeasureHealth']('some service name');
+      service['startMeasureHealth']('some service name');
       expect(healthService.measureStart).not.toHaveBeenCalledWith(ERROR_UPDATE_DRAFT_SERVICE_NAME);
     }));
   });
@@ -289,7 +313,7 @@ describe('HealthInterceptor', () => {
 
     it('should call measureEnd of health service with serviceName param', fakeAsync(() => {
       spyOn(healthService, 'measureEnd').and.callThrough();
-      interceptor['endMeasureHealth'](serviceName, requestStatus, configParams);
+      service['endMeasureHealth'](serviceName, requestStatus, configParams);
       expect(healthService.measureEnd).toHaveBeenCalledWith(
         serviceName,
         requestStatus,
@@ -299,7 +323,7 @@ describe('HealthInterceptor', () => {
 
     it('should call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       spyOn(healthService, 'measureEnd').and.callThrough();
-      interceptor['endMeasureHealth'](serviceName, requestStatus, configParams);
+      service['endMeasureHealth'](serviceName, requestStatus, configParams);
       expect(healthService.measureEnd).toHaveBeenCalledWith(
         ERROR_UPDATE_DRAFT_SERVICE_NAME,
         requestStatus,
@@ -309,7 +333,7 @@ describe('HealthInterceptor', () => {
 
     it('shouldn\'t call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       spyOn(healthService, 'measureEnd').and.callThrough();
-      interceptor['endMeasureHealth']('some service name', requestStatus, configParams);
+      service['endMeasureHealth']('some service name', requestStatus, configParams);
       expect(healthService.measureEnd).not.toHaveBeenCalledWith(
         ERROR_UPDATE_DRAFT_SERVICE_NAME,
         requestStatus,

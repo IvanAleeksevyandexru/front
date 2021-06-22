@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import {
   InputAppDto,
   OutputAppDto,
@@ -20,7 +20,10 @@ export class CfAppStateService {
   public  getState<T extends InputAppDto | OutputAppDto>(spaDataDirectionType: DataDirectionType): T {
     const key = this.getKey(spaDataDirectionType);
     const state = this.localStorageService.get<T>(key);
-    this.localStorageService.delete(key);
+
+    if (!isDevMode()) {
+      this.localStorageService.delete(key);
+    }
     return state;
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { InitDataService } from '../services/init-data/init-data.service';
+import { InitDataService } from '../../services/init-data/init-data.service';
 import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()

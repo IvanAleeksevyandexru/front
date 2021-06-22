@@ -40,7 +40,6 @@ export * from './lib/base/components/screen-pad/screen-pad.component';
 export * from './lib/base/components/main-container/main-container.module';
 export * from './lib/base/components/main-container/main-container.component';
 
-export * from './lib/base/components/prev-button/prev-button';
 export * from './lib/base/components/prev-button/prev-button.token';
 export * from './lib/base/components/prev-button/prev-button.module';
 export * from './lib/base/components/prev-button/prev-button.component';
@@ -115,6 +114,10 @@ export * from './lib/core/services/utils/utils.service';
 export * from './lib/core/services/utils/utils.service.stub';
 
 export * from './lib/core/interceptor/http-cancel/http-cancel.service';
+
+export * from './lib/core/interceptor/health/health.token';
+export * from './lib/core/interceptor/health/health.interceptor';
+export * from './lib/core/interceptor/health/health.service.stub';
 
 export * from './lib/app/app-state/app-state.module';
 export * from './lib/app/app-state/app-state.store';
