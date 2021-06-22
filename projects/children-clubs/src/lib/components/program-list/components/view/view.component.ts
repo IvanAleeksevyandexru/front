@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AppNavigationService, AppStateQuery, ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { AppNavigationService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { filter, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
-import { Program } from '../../../../typings';
-
+import { FinancingType, financingTypes, Program } from '../../../../typings';
 import { ApiService } from '../../../../services/api/api.service';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../../../children-clubs.types';
-import { ContentModalComponent } from '../content-modal/content-modal.component';
+import { StateService } from '../../../../services/state/state.service';
+import { ContentModalComponent } from '../../../program-filters/content-modal/content-modal.component';
 
 @Component({
   selector: 'children-clubs-view',
@@ -18,7 +17,10 @@ export class ViewComponent implements OnInit {
   loading = new BehaviorSubject<boolean>(true);
   loading$ = this.loading.asObservable();
 
-  data$: Observable<Program> = this.query.state$.pipe(
+  financingType = FinancingType;
+  financingTypes = financingTypes;
+
+  data$: Observable<Program> = this.stateService.state$.pipe(
     pluck('selectedProgramUUID'),
     filter((uuid) => !!uuid),
     switchMap((uuid: string) => this.api.getProgram(uuid)),
@@ -29,7 +31,7 @@ export class ViewComponent implements OnInit {
   constructor(
     private appNavigationService: AppNavigationService,
     private api: ApiService,
-    private query: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private stateService: StateService,
     private modalService: ModalService,
   ) {}
 
@@ -38,11 +40,13 @@ export class ViewComponent implements OnInit {
   }
 
   openModal(title: string, text: string): void {
-    this.modalService.openModal(ContentModalComponent, { title, text }).subscribe();
+    this.modalService
+      .openModal(ContentModalComponent, { title, text, modalId: 'info' })
+      .subscribe();
   }
 
   ngOnInit(): void {
-    if (!this.query.state?.selectedProgramUUID) {
+    if (!this.stateService.selectedProgramUUID) {
       this.appNavigationService.prev();
     }
   }

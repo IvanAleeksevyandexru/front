@@ -10,6 +10,8 @@ import {
   DeviceDetectorServiceStub,
   ErrorModule,
   EventBusService,
+  ModalService,
+  ModalServiceStub,
   ScreenContainerModule,
   ScreenPadModule,
   SharedModalModule,
@@ -21,6 +23,8 @@ import { EpguLibModule } from '@epgu/epgu-lib';
 import { ChildrenClubsFilterPanelModule } from '../../filter-panel/children-clubs-filter-panel.module';
 import { MockModule } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
+import { StateService } from '../../../services/state/state.service';
+import { StateServiceStub } from '../../../services/state/state.service.stub';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
@@ -31,9 +35,12 @@ describe('ProgramFiltersComponent', () => {
       declarations: [ProgramFiltersFormComponent],
       providers: [
         EventBusService,
+        { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
+        { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
+        { provide: StateService, useClass: StateServiceStub },
       ],
       imports: [
         CommonModule,

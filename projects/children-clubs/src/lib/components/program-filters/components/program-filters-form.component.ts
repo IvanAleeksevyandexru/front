@@ -8,15 +8,14 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import {
-  AppStateQuery,
   EventBusService,
   ModalBaseComponent,
+  ModalService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { map, takeUntil } from 'rxjs/operators';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { cloneDeep } from 'lodash';
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ListElement, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
@@ -29,14 +28,15 @@ import {
   LevelListElements,
 } from './program-filters-form.constants';
 
-import { ChildrenClubsState, ChildrenClubsValue } from '../../../children-clubs.types';
 import { Filters, InlernoPaymentFilters } from '../../../typings';
 import { ApiService } from '../../../services/api/api.service';
+import { StateService } from '../../../services/state/state.service';
+import { ContentModalComponent } from '../content-modal/content-modal.component';
 
 @Component({
   selector: 'children-clubs-program-filters',
   templateUrl: './program-filters-form.component.html',
-  styleUrls: ['./program-filters-form.component.scss'],
+  styleUrls: ['./program-filters-form.component.scss', './../../../../styles/index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
@@ -52,19 +52,30 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   modalId = 'programFilters';
   form: FormGroup;
 
+  clarifiactions = this.stateService.clarifications;
+
   constructor(
     private fb: FormBuilder,
     public injector: Injector,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private stateService: StateService,
     private api: ApiService,
+    private modalService: ModalService,
   ) {
     super(injector);
   }
 
+  openAbout(): void {
+    this.modalService
+      .openModal(ContentModalComponent, {
+        ...this.clarifiactions?.aboutpayment,
+        modalId: 'aboutPayment',
+      })
+      .subscribe();
+  }
   ngOnInit(): void {
-    this.initForm({ ...cloneDeep(this.stateQuery.state?.programFilters ?? {}) });
+    this.initForm(this.stateService.programFilters);
     this.eventBusService
       .on(`closeModalEvent_${this.modalId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))

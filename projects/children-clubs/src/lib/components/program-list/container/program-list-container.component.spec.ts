@@ -22,6 +22,8 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ApiService } from '../../../services/api/api.service';
 import { ApiServiceStub } from '../../../services/api/api.service.stub';
+import { StateService } from '../../../services/state/state.service';
+import { StateServiceStub } from '../../../services/state/state.service.stub';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -43,6 +45,7 @@ describe('ListComponent', () => {
       ],
       providers: [
         ProgramListService,
+        { provide: StateService, useClass: StateServiceStub },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: ApiService, useClass: ApiServiceStub },

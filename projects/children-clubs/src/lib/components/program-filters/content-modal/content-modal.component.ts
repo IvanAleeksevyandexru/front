@@ -9,14 +9,15 @@ import {
 @Component({
   selector: 'children-clubs-content-modal',
   templateUrl: './content-modal.component.html',
-  styleUrls: ['./content-modal.component.scss', '../../../../../styles/index.scss'],
+  styleUrls: ['./content-modal.component.scss', './../../../../styles/index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class ContentModalComponent extends ModalBaseComponent implements OnInit {
   @Input() title: string;
   @Input() text: string;
-  modalId: 'infoModal';
+  @Input() modalId: string;
+
   constructor(
     public injector: Injector,
     private eventBusService: EventBusService,

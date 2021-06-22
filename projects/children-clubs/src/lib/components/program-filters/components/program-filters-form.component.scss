@@ -1,17 +1,5 @@
-@import '../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
-@import '../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components/index';
-
-.mb-24 {
-  margin-bottom: 24px;
-}
-
-.mb-16 {
-  margin-bottom: 16px;
-}
-
-.mb-12 {
-  margin-bottom: 12px;
-}
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
 .title {
   @include typ-h5();

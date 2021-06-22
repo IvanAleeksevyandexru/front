@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import {
-  AppNavigationService,
-  AppStateQuery,
-  AppStateService,
-} from '@epgu/epgu-constructor-ui-kit';
-import { BaseProgram } from '../../../../typings';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../../../children-clubs.types';
+import { AppNavigationService } from '@epgu/epgu-constructor-ui-kit';
+import { BaseProgram, FinancingType, financingTypes } from '../../../../typings';
+
+import { StateService } from '../../../../services/state/state.service';
 
 @Component({
   selector: 'children-clubs-item',
@@ -15,17 +12,17 @@ import { ChildrenClubsState, ChildrenClubsValue } from '../../../../children-clu
 })
 export class ItemComponent {
   @Input() data: BaseProgram;
+
+  financingType = FinancingType;
+  financingTypes = financingTypes;
+
   constructor(
     private appNavigationService: AppNavigationService,
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private stateService: StateService,
   ) {}
 
   show(): void {
-    this.appStateService.updateState({
-      ...this.stateQuery.state,
-      selectedProgramUUID: this.data.uuid,
-    });
+    this.stateService.selectedProgramUUID = this.data.uuid;
     this.appNavigationService.next();
   }
 }

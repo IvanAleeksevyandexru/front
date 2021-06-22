@@ -5,7 +5,7 @@
   [showButtons]="true"
 >
   <ng-container modal-content>
-    {{ text }}
+    <div [innerHTML]="text | imgPrefixer | safe: 'html'"></div>
   </ng-container>
   <ng-container modal-buttons>
     <lib-button type="button" (click)="closeModal()">Закрыть</lib-button>

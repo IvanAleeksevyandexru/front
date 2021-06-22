@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { AppStateQuery } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
 
 @Component({
   selector: 'children-clubs-filter-panel',
@@ -11,12 +9,16 @@ import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.typ
 })
 export class ChildrenClubsFilterPanelComponent implements OnInit {
   @Input() filtersCount: number;
+  @Input() initValue: string;
   @Output() openFilters = new EventEmitter();
   @Output() search = new EventEmitter<string>();
-  searchControl = new FormControl(this.query.state?.programFilters?.query ?? '');
 
-  constructor(private query: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>) {}
+  searchControl = new FormControl('');
+
   ngOnInit(): void {
+    if (this.initValue) {
+      this.searchControl.setValue(this.initValue);
+    }
     this.searchControl.valueChanges
       .pipe(
         filter((value) => value.length > 3 || !value.length),
