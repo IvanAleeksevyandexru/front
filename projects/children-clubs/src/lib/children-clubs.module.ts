@@ -9,6 +9,7 @@ import {
   MainContainerModule,
   BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ProgramFiltersModule } from './components/program-filters/program-filters.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
@@ -51,6 +52,7 @@ const APP_CONFIG: AppUiConfig = {
     GroupListModule,
     ProgramListModule,
     ChildrenClubsFilterPanelModule,
+    ProgramFiltersModule,
     SharedModalModule,
     AppUiModule.forRoot(APP_CONFIG),
     BaseUiModule,

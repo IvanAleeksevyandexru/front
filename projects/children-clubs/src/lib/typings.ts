@@ -1,3 +1,4 @@
+import { ListElement } from '@epgu/epgu-lib';
 export interface NSIDictionaryItem {
   code: string;
   name: string;
@@ -62,7 +63,7 @@ export enum LevelType {
   advanced = 'advanced',
 }
 
-type FocusFilter =
+export type FocusFilter =
   | 'socialno-pedagogicheskoe'
   | 'estestvennonauchnoe'
   | 'hudozhestvennoe'
@@ -89,12 +90,12 @@ export interface PfdoPaymentFilters {
 export interface Filters {
   query?: string; //Поисковый запрос по параметрам: адрес проведения занятий, ФИО педагога, название группы
   isRegistrationOpen?: boolean; //Показывать только программы с открытой записью
-  place?: string; //Место проведения занятий
+  place?: ListElement | string; //Место проведения занятий
   onlyDistanceProgram?: boolean; //Показывать только дистанционные программы
   inlernoPayments?: InlernoPaymentFilters;
   pfdoPayments?: PfdoPaymentFilters;
   maxPrice?: number; //Максимальная стоимость в месяц
-  focus?: FocusFilter; //Направленность
+  focus?: ListElement | FocusFilter; //Направленность
   direction?: string; //Специализация
   level?: LevelType; //Уровень подготовки
   age?: number; //Возраст ребенка, лет
@@ -103,12 +104,12 @@ export interface Filters {
 
 //Параметры для фильтрации групп
 export interface FindOptionsGroup {
-  isRegistrationOpen: boolean; //Показывать только группы с открытой записью
-  inlernoPayments: InlernoPaymentFilters;
-  pfdoPayments: PfdoPaymentFilters;
-  maxPrice: number; //int64 - Максимальная стоимость в месяц
-  level: LevelType; //Уровень подготовки
-  age: number; //int32 - Возраст ребенка, лет
+  isRegistrationOpen?: boolean; //Показывать только группы с открытой записью
+  inlernoPayments?: InlernoPaymentFilters;
+  pfdoPayments?: PfdoPaymentFilters;
+  maxPrice?: number; //int64 - Максимальная стоимость в месяц
+  level?: LevelType; //Уровень подготовки
+  age?: number; //int32 - Возраст ребенка, лет
 }
 
 // Ответ на запрос доступных групп программы

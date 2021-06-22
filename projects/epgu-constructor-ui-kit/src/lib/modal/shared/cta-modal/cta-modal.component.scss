@@ -1,6 +1,7 @@
 @use "sass:math";
 @import '../../../../styles/core/index';
 @import '../../../../styles/components/rubles';
+@import '../../../../styles/components/modal';
 
 $my: 7vh;
 $pyConfModal: 64px;
@@ -158,7 +159,7 @@ $closeBtnWidth: 24px;
       @include tablets-up {
         max-height: calc(
           100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight} *
-          2
+            2
         );
       }
     }

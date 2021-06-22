@@ -3,7 +3,11 @@
     <div class="title">
       Выберите программу
     </div>
-    <children-clubs-filter-panel [filtersCount]="3"></children-clubs-filter-panel>
+    <children-clubs-filter-panel
+      (openFilters)="openFilter()"
+      (search)="search($event)"
+      [filtersCount]="filtersCount$ | async"
+    ></children-clubs-filter-panel>
     <ng-container *ngIf="fullLoading$ | async; else content">
       <epgu-cf-ui-constructor-screen-pad class="loader" *ngIf="fullLoading$ | async">
         <lib-throbber-hexagon size="big"></lib-throbber-hexagon

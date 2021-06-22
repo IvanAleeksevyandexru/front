@@ -25,6 +25,7 @@ export class CtaModalComponent implements AfterViewChecked {
   @Input() preview?: boolean;
   @Input() isShortModal?: boolean;
   @Input() isButtonsOutsideContent? = false;
+  @Input() scrollTop = true;
 
   @ViewChild('perfectScroll', { static: false }) perfectScroll: PerfectScrollbarComponent;
 
@@ -39,7 +40,7 @@ export class CtaModalComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.perfectScroll) {
+    if (this.perfectScroll && this.scrollTop) {
       this.perfectScroll.directiveRef.scrollToTop();
     }
   }

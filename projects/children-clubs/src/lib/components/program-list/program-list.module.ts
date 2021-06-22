@@ -17,6 +17,7 @@ import { ChildrenClubsFilterPanelModule } from '../filter-panel/children-clubs-f
 import { ApiService } from '../../services/api/api.service';
 import { ApiServiceStub } from '../../services/api/api.service.stub';
 import { ContentModalComponent } from './components/content-modal/content-modal.component';
+import { ProgramFiltersModule } from '../program-filters/program-filters.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ContentModalComponent } from './components/content-modal/content-modal.
     ContentModalComponent,
   ],
   imports: [
+    ProgramFiltersModule,
     CommonModule,
     EpguLibModule,
     LongButtonModule,
