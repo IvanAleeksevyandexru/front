@@ -169,7 +169,7 @@ export class AutocompletePrepareService {
         componentsGroupIndex,
       );
       this.screenService.cachedAnswers[parentComponent.id] = cachedAnswer;
-      this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer.value);
+      this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer?.value);
     }
   }
 
@@ -319,7 +319,10 @@ export class AutocompletePrepareService {
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
-      const cachedState = this.currentAnswersService.state[componentsGroupIndex];
+      const cachedState =
+        (this.currentAnswersService.state &&
+          this.currentAnswersService.state[componentsGroupIndex]) ||
+        {};
       if (parsedValue[componentsGroupIndex]) {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,

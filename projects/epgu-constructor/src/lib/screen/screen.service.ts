@@ -44,7 +44,7 @@ export class ScreenService extends ScreenContent {
   }
 
   public setCompValueToCachedAnswer(componentId: string, value: string): void {
-    const cachedAnswers = this.getStore().cachedAnswers;
+    const cachedAnswers = this.getStore().cachedAnswers || this.cachedAnswers;
     if (!componentId) {
       componentId = this.component?.id;
     }
@@ -68,8 +68,8 @@ export class ScreenService extends ScreenContent {
    * @param newState - данные ответа
    */
   public updateScreenStore(newState: ScreenStore): void {
-    const mergedState = { ...this.screenStore, ...newState };
-    this.updateScreenContent(mergedState, this.deviceDetectorService.isWebView);
+    this.screenStore = { ...this.screenStore, ...newState };
+    this.updateScreenContent(this.screenStore, this.deviceDetectorService.isWebView);
   }
 
   /**

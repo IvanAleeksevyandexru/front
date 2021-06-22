@@ -27,7 +27,12 @@ import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
-import { LocalStorageService, LocalStorageServiceStub, ModalService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LocalStorageService,
+  LocalStorageServiceStub,
+  ModalService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -41,7 +46,12 @@ describe('AutocompletePrepareService', () => {
   let mockData: ScenarioDto = {
     applicantAnswers: {},
     currentScenarioId: null,
-    cachedAnswers: {},
+    cachedAnswers: {
+      pd8: {
+        visited: true,
+        value: '[{"value": "value"}]',
+      },
+    },
     currentValue: {},
     display: {
       components: [
@@ -173,6 +183,7 @@ describe('AutocompletePrepareService', () => {
     componentsSuggestionsSet.add(['prev_region', 'pd8_1']);
     parentComponent = mockData.display.components[0];
     screenService.display = mockData.display;
+    screenService.cachedAnswers = mockData.cachedAnswers;
   });
 
   describe('getFormattedHints()', () => {
@@ -226,6 +237,21 @@ describe('AutocompletePrepareService', () => {
         'value',
       );
       expect(serviceSetComponentValue).toBeCalled();
+    });
+    it('should prepareCachedAnswers() and screenService.setCompValueToCachedAnswer() be called, if isChildrenListType passed', () => {
+      const spy1 = spyOn(service, 'prepareCachedAnswers');
+      const spy2 = spyOn(screenService, 'setCompValueToCachedAnswer');
+      const newParentComponent = { ...parentComponent };
+      newParentComponent.type = UniqueScreenComponentTypes.childrenList;
+      service.findAndUpdateComponentWithValue(
+        repeatableComponents,
+        componentsSuggestionsSet,
+        newParentComponent,
+        'prev_region',
+        'value',
+      );
+      expect(spy1).toBeCalled();
+      expect(spy2).toBeCalled();
     });
   });
 
