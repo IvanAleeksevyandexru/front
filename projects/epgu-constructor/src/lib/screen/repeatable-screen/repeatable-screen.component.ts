@@ -1,12 +1,14 @@
 import {
   AfterViewChecked,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { delay, filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { delay, filter, map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DisplayDto, ScenarioErrorsDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { EventBusService, UnsubscribeService, isEqualObj } from '@epgu/epgu-constructor-ui-kit';
@@ -25,6 +27,7 @@ import {
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
+import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 
 @Component({
   selector: 'epgu-constructor-repeatable-screen',
@@ -33,7 +36,8 @@ import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
+export class RepeatableScreenComponent implements OnInit, AfterViewChecked, AfterViewInit {
+  @ViewChild(ComponentsListComponent) cmpList: ComponentsListComponent;
   objectKeys = Object.keys;
   componentId: number;
   isValid: boolean;
@@ -107,10 +111,17 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked {
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(true));
+  }
 
-    this.navigationService.nextStep$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
-    });
+  // TODO решение в рамках https://jira.egovdev.ru/browse/EPGUCORE-57741
+  // временный фикс
+  // нужно переделать работу сохранения в localStorage для циклических компонентов т.k нет обнуления при выходе из цикла
+  ngAfterViewInit(): void {
+    combineLatest([this.cmpList.changes.pipe(startWith('')), this.navigationService.nextStep$])
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
+      });
   }
 
   trackByFunction = (_index: number, item: string): string => item;
