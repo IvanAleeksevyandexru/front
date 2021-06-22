@@ -204,6 +204,7 @@ export enum DictionaryUrlTypes {
   dictionary = 'dictionary',
   nsiSuggest = 'nsiSuggest',
   lkApi = 'lkApi',
+  childrenClubsApi = 'childrenClubsApi',
 }
 
 /**
