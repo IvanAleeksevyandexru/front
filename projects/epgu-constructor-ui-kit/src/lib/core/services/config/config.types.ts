@@ -43,6 +43,7 @@ export type TimeSlotsApi = {
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
+ * @property {boolean}showTraceIdOnError - показывать ли traceId в модалках "Не сработало"
  * @property {string}oplataUrl - url до оплаты
  */
 export interface Config {
@@ -76,6 +77,7 @@ export interface Config {
   zipkinUrl?: string;
   zipkinMaxPayloadSize?: number;
   zipkinEnv?: string;
+  showTraceIdOnError?: boolean;
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;
   nsiSuggestDictionaryUrl?: string;
@@ -84,6 +86,8 @@ export interface Config {
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';
 
-export type AppPathMap = {
-  [key in string]: string
-} | {};
+export type AppPathMap =
+  | {
+      [key in string]: string;
+    }
+  | {};

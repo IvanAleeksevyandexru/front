@@ -21,4 +21,5 @@ export interface ConfirmationModal {
   clarifications?: object;
   componentId?: string;
   isShortModal?: boolean;
+  traceId?: string;
 }

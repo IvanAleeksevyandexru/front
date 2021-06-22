@@ -16,6 +16,7 @@ import {
   UnsubscribeService,
   ModalBaseComponent,
   ConfirmationModalBaseButton,
+  ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
@@ -27,8 +28,9 @@ import {
 })
 export class ConfirmationModalComponent extends ModalBaseComponent
   implements OnInit, AfterViewInit {
-  title?: ConfirmationModal['title'];
   text: ConfirmationModal['text'];
+  title?: ConfirmationModal['title'];
+  traceId?: ConfirmationModal['traceId'];
   showCloseButton: ConfirmationModal['showCloseButton'] = true;
   /** use elemEventHandlers to attach event handler to html element (tag).
    *  E.g. <a id='link'></a>
@@ -50,8 +52,9 @@ export class ConfirmationModalComponent extends ModalBaseComponent
 
   constructor(
     public injector: Injector,
-    private modalService: ModalService,
+    public configService: ConfigService,
     protected elemRef: ElementRef,
+    private modalService: ModalService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,

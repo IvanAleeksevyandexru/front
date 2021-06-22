@@ -37,6 +37,7 @@ export class ConfigService implements Config {
   private _addToCalendarUrl: string;
   private _isZipkinEnabled: boolean;
   private _zipkinUrl: string;
+  private _showTraceIdOnError: boolean;
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
   private _oplataUrl: string;
@@ -184,6 +185,10 @@ export class ConfigService implements Config {
     return this._zipkinEnv;
   }
 
+  get showTraceIdOnError(): boolean {
+    return this._showTraceIdOnError;
+  }
+
   get oplataUrl(): string {
     return this._oplataUrl;
   }
@@ -243,6 +248,7 @@ export class ConfigService implements Config {
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
+    this._showTraceIdOnError = config.showTraceIdOnError || false;
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._appPathMap = config.appPathMap || {};
     this._isLoaded = true;
