@@ -11,52 +11,6 @@ import {
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import { PaymentInfoInterface } from '@epgu/epgu-constructor/src/lib/component/unique-screen/components/payment/payment.types';
 
-const FinancialSources = [
-  {
-    code: 'none',
-    name: 'Не задан',
-  },
-  {
-    code: 'budget',
-    name: 'Бюджетное (бесплатное)',
-  },
-  {
-    code: 'paid',
-    name: 'Внебюджетное (платное)',
-  },
-  {
-    code: 'pfdod_certificate',
-    name: 'Сертификат ПФДОД',
-  },
-  {
-    code: 'private',
-    name: 'Платное (частное)',
-  },
-] as NSIDictionaryItem[];
-
-const ProgramRegistries = [
-  {
-    code: 'preprof',
-    name: 'Реестр предпрофессиональных программ',
-  },
-  {
-    code: 'valued',
-    name: 'Реестр значимых программ',
-  },
-  {
-    code: 'other',
-    name: 'Реестр иных программ',
-  },
-  {
-    code: 'certified',
-    name: 'Реестр сертифицированных программ',
-  },
-  {
-    code: 'paid',
-    name: 'Реестр платных программ',
-  },
-] as NSIDictionaryItem[];
-
 export const baseProgramStub: BaseProgram = {
   uuid: '23fsdsdfsdf',
   name: 'Ритмика, основы танцевального искусства',
