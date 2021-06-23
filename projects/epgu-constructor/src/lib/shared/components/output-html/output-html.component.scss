@@ -180,26 +180,39 @@
 
   // disclaimer
 
-  h6[class^="disclaimer"] {
-    position: relative;
-    padding-left: 32px;
-    &:not(:first-child) {
-      margin-top: 24px;
-    }
-    &:not(:last-child) {
-      margin-bottom: 24px;
-    }
+  h6.disclaimer {
+    &, &#{-yellow}, &#{-blue}, &#{-gray} {
+      position: relative;
+      padding-left: 32px;
+      &:not(:first-child) {
+        margin-top: 24px;
+      }
+      &:not(:last-child) {
+        margin-bottom: 24px;
+      }
 
+      &::before {
+        content: ' ';
+        position: absolute;
+        top: 10px;
+        left: 0;
+        display: inline-block;
+        vertical-align: middle;
+        height: 4px;
+        width: 24px;
+        margin-right: 8px;
+      }
+
+      span {
+        display: block;
+        margin-top: 4px;
+        margin-left: -32px;
+        @include typ-plain-small;
+        color: $color-text-helper;
+      }
+    }
+    
     &::before {
-      content: ' ';
-      position: absolute;
-      top: 10px;
-      left: 0;
-      display: inline-block;
-      vertical-align: middle;
-      height: 4px;
-      width: 24px;
-      margin-right: 8px;
       background-color: $color-gosred;
     }
     &#{-yellow}::before {
@@ -210,14 +223,6 @@
     }
     &#{-gray}::before {
       background-color: $color-telegrey-scuro;
-    }
-
-    span {
-      display: block;
-      margin-top: 4px;
-      margin-left: -32px;
-      @include typ-plain-small;
-      color: $color-text-helper;
     }
   }
 }
