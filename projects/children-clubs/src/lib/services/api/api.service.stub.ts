@@ -7,7 +7,7 @@ import {
   Municipality,
   Program,
 } from '../../typings';
-import { Observable, of, timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import {

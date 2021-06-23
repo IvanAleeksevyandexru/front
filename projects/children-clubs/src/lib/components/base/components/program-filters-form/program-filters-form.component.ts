@@ -184,14 +184,6 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     this.closeModal(outputValue);
   }
 
-  private createInlernoPaymentsGroup(inlernoPayments?: InlernoPaymentFilters): FormGroup {
-    return this.fb.group({
-      [this.formFields.free]: new FormControl(inlernoPayments?.free || false),
-      [this.formFields.certificate]: new FormControl(inlernoPayments?.certificate || false),
-      [this.formFields.personalFunds]: new FormControl(inlernoPayments?.personalFunds || false),
-    });
-  }
-
   private numberValidators(): ValidatorFn {
     const errorMsg = { msg: 'error' };
     return (control: AbstractControl): ValidationErrors => {

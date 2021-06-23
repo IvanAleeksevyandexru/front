@@ -13,7 +13,6 @@ import { EventBusService, ModalService, UnsubscribeService } from '@epgu/epgu-co
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { takeUntil } from 'rxjs/operators';
 import { InlernoPaymentFilters, PfdoPaymentFilters, VendorType } from '../../../../typings';
-import { ApiService } from '../../../../services/api/api.service';
 import { StateService } from '../../../../services/state/state.service';
 import {
   defaultInlearnoFilters,
@@ -47,7 +46,6 @@ export class PaymentSelectorComponent implements OnInit {
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
-    private api: ApiService,
     private modalService: ModalService,
   ) {}
 
