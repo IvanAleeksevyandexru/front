@@ -180,7 +180,7 @@
 
   // disclaimer
 
-  h6[class^="disclaimer"] {
+  h6.disclaimer {
     position: relative;
     padding-left: 32px;
     &:not(:first-child) {
@@ -202,13 +202,13 @@
       margin-right: 8px;
       background-color: $color-gosred;
     }
-    &[class$="yellow"]::before {
+    &#{-yellow}::before {
       background-color: $color-giallo-brillante;
     }
-    &[class$="blue"]::before {
+    &#{-blue}::before {
       background-color: $color-blu-selvaggio;
     }
-    &[class$="gray"]::before {
+    &#{-gray}::before {
       background-color: $color-telegrey-scuro;
     }
 
