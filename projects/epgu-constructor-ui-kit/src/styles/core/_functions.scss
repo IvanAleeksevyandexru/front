@@ -177,10 +177,6 @@
 }
 
 @mixin screen-content {
-  a.block-link {
-    margin-top: 8px;
-    display: block;
-  }
   .background-white {
     background-color: $color-white;
     padding: 0 24px;

@@ -25,6 +25,7 @@
       max-width: 100%;
       width: auto;
     }
+
     &.modal__doc-img {
       width: auto;
       max-width: 100%;
@@ -44,6 +45,9 @@
     padding: 0;
     margin: 0 0 0 16px;
     list-style: none;
+    @include tablets-down {
+      margin-left: 12px;
+    }
   }
 
   ol {
@@ -137,7 +141,7 @@
     padding-left: 20px + 2 * 9px;
   }
 
-  p {
+  p { // TODO убрать переопределение
     margin-top: 12px;
 
     &:not(:first-child) {
@@ -150,6 +154,16 @@
 
     &:first-child {
       margin-top: 0;
+    }
+  }
+
+  a.block-link {
+    display: block;
+    &:not(:first-child) {
+      margin-top: 8px;
+    }
+    &:not(:last-child) {
+      margin-bottom: 8px;
     }
   }
 
