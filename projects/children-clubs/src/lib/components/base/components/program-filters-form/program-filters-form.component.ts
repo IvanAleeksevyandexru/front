@@ -41,7 +41,7 @@ import {
   PfdoPaymentFilters,
   VendorType,
 } from '../../../../typings';
-import { ApiService } from '../../../../services/api/api.service';
+
 import { StateService } from '../../../../services/state/state.service';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 
@@ -78,7 +78,6 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
-    private api: ApiService,
     private dictionary: DictionaryService,
     private cdr: ChangeDetectorRef,
   ) {
