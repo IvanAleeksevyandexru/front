@@ -9,8 +9,7 @@
     [addSectionLabel]="addSectionLabel$ | async"
     [cachedValue]="cachedValue$ | async"
     [component]="component$ | async"
-    [errors]="screenService.componentErrors$ | async"
-    (updateCurrentAnswerServiceStateEvent)="updateCurrentAnswersState($event)"
+    [errors]="componentErrors$ | async"
     (updateCurrentAnswerServiceValidationEvent)="updateCurrentAnswersValid($event)"
   ></epgu-constructor-select-children>
 </epgu-constructor-default-unique-screen-wrapper>

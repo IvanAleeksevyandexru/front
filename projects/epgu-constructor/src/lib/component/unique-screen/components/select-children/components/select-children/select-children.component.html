@@ -16,7 +16,7 @@
           [control]="selectChildrenForm.get(item.controlId)"
           [children]="$any(itemsToSelect)"
           [components]="itemsComponents[idx]"
-          [errors]="errors"
+          [errors]="errors[idx]"
           [isNewChild]="item[isNewRef] === 'true' && selectChildrenForm.value[item.controlId]"
           (selectChildrenEvent)="handleSelect($event, idx, item.controlId)"
           (updateChildEvent)="updateChild($event, item, idx)"

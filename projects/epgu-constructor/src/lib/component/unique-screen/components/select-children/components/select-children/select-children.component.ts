@@ -35,11 +35,9 @@ export class SelectChildrenComponent implements OnInit {
   @Input() addSectionLabel: string;
   @Input() cachedValue: CachedValue;
   @Input() component: ComponentDto;
-  @Input() errors: ScenarioErrorsDto;
+  @Input() errors: ScenarioErrorsDto[];
   @Output() updateCurrentAnswerServiceValidationEvent = new EventEmitter<boolean>();
-  @Output() updateCurrentAnswerServiceStateEvent = new EventEmitter<
-    { [key: string]: string | number | boolean }[]
-  >();
+
   itemsToSelect: Array<ChildI>; // Дети для выпадающего списка
   items: Array<ChildI> = []; // Выбранные дети
   itemsComponents = []; // Компоненты для кастомных детей
@@ -175,14 +173,14 @@ export class SelectChildrenComponent implements OnInit {
     if (formStatus === ItemStatus.invalid) {
       this.selectChildrenForm.setErrors({ invalidForm: true });
     }
-    this.passDataToSend(this.items);
+    this.passDataToSend(this.items, index);
   }
 
   /**
    * Сохраняем данные для отправки, удаляя лишние поля
    */
-  passDataToSend(items: ChildI[], clearEvent?: ClearEvent): void {
-    const itemsToSend = items.map((child) => {
+  passDataToSend(items: ChildI[], index: number, clearEvent?: ClearEvent): void {
+    const itemsToSend: { [key: string]: string | number | boolean }[] = items.map((child) => {
       const childToSend = { ...child };
       delete childToSend.controlId;
       delete childToSend.id;
@@ -193,7 +191,10 @@ export class SelectChildrenComponent implements OnInit {
       }
       return childToSend;
     });
-    this.updateCurrentAnswerServiceStateEvent.emit(itemsToSend);
+    this.eventBusService.emit('updateCurrentAnswerServiceStateEvent', {
+      state: itemsToSend,
+      index,
+    });
     this.setHideStateToSelectedItems(clearEvent);
   }
 
@@ -219,7 +220,7 @@ export class SelectChildrenComponent implements OnInit {
       },
     };
     Object.assign(this.items[index], updatedChildData);
-    this.passDataToSend(this.items);
+    this.passDataToSend(this.items, index);
   }
 
   /**
@@ -256,7 +257,7 @@ export class SelectChildrenComponent implements OnInit {
         isClear: event === null,
         id,
       };
-      this.passDataToSend(this.items, clearEvent);
+      this.passDataToSend(this.items, index, clearEvent);
     }
   }
 
