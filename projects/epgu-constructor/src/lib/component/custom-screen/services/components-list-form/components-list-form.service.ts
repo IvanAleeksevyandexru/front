@@ -90,7 +90,12 @@ export class ComponentsListFormService {
     this._form = new FormArray(
       components.map((component: CustomComponent, index) => {
         this.indexesByIds[component.id] = index;
-        return this.createGroup(component, components, errors[component.id], componentsGroupIndex);
+        return this.createGroup(
+          component,
+          components,
+          errors && errors[component.id],
+          componentsGroupIndex,
+        );
       }),
     );
     this.validationService.form = this.form;
@@ -304,7 +309,10 @@ export class ComponentsListFormService {
       this.validationService.validationBackendError(errorMsg, component),
     ];
 
-    if (component.type === CustomScreenComponentTypes.DateInput || component.type === CustomScreenComponentTypes.MonthPicker) {
+    if (
+      component.type === CustomScreenComponentTypes.DateInput ||
+      component.type === CustomScreenComponentTypes.MonthPicker
+    ) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
