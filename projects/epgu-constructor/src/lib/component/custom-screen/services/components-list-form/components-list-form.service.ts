@@ -99,9 +99,11 @@ export class ComponentsListFormService {
       }),
     );
     this.validationService.form = this.form;
-    if (this.errors) {
-      this._form.markAllAsTouched();
-    }
+    // TODO: временно отключаю т.к. данная имплементация нежелательно аффектит обычные CUSTOM-формы без ошибок уникальности
+    // Додумать механизм до выкатывания фичи в release/22
+    // if (this.errors) {
+    //   this._form.markAllAsTouched();
+    // }
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
