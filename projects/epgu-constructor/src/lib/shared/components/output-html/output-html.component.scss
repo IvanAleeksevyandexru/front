@@ -180,7 +180,7 @@
 
   // disclaimer
 
-  h6.disclaimer {
+  h6[class^="disclaimer"] {
     position: relative;
     padding-left: 32px;
     &:not(:first-child) {
