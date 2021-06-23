@@ -163,10 +163,53 @@
       color: inherit;
     }
   }
+
+  // disclaimer
+
+  h6[class^="disclaimer"] {
+    position: relative;
+    padding-left: 32px;
+    &:not(:first-child) {
+      margin-top: 24px;
+    }
+    &:not(:last-child) {
+      margin-bottom: 24px;
+    }
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      top: 10px;
+      left: 0;
+      display: inline-block;
+      vertical-align: middle;
+      height: 4px;
+      width: 24px;
+      margin-right: 8px;
+      background-color: $color-gosred;
+    }
+    &[class$="yellow"]::before {
+      background-color: $color-giallo-brillante;
+    }
+    &[class$="blue"]::before {
+      background-color: $color-blu-selvaggio;
+    }
+    &[class$="gray"]::before {
+      background-color: $color-telegrey-scuro;
+    }
+
+    span {
+      display: block;
+      margin-top: 4px;
+      margin-left: -32px;
+      @include typ-plain-small;
+      color: $color-text-helper;
+    }
+  }
 }
 
 :host-context(.gray-theme)::ng-deep ul:not(li ul),
-:host-context(.gray-theme)::ng-deep .white-background {
+:host-context(.gray-theme)::ng-deep .white-background { //TODO перепутан с .background-white?
   background-color: $color-white;
   border-radius: 8px;
   box-shadow: 0 24px 48px $color-shadow;
