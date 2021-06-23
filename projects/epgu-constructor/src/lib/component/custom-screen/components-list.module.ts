@@ -146,6 +146,7 @@ import { RadioInputComponent } from './components/radio-input/radio-input.compon
     DictionaryComponent,
     LookupInputComponent,
     DepartmentLookupComponent,
+    RadioInputComponent
   ],
 })
 export class ComponentsListModule { }
