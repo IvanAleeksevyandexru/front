@@ -33,8 +33,10 @@
 
     <div [formGroupName]="'inlernoPayments'">
       <div class="mb-16">
-        <h5 class="title">Форма оплаты</h5>
-        <button class="link-btn">Подробнее о способах оплаты</button>
+        <h5 class="title">Оплата</h5>
+        <button *ngIf="clarifiactions?.aboutpayment" (click)="openAbout()" class="link-btn">
+          {{ clarifiactions.aboutpayment.title }}
+        </button>
       </div>
 
       <div class="mb-16">

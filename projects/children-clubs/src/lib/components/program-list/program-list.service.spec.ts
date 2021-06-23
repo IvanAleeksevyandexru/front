@@ -10,6 +10,8 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ApiService } from '../../services/api/api.service';
 import { ApiServiceStub } from '../../services/api/api.service.stub';
+import { StateService } from '../../services/state/state.service';
+import { StateServiceStub } from '../../services/state/state.service.stub';
 
 describe('ProgramListService', () => {
   let service: ProgramListService;
@@ -19,6 +21,7 @@ describe('ProgramListService', () => {
       providers: [
         ProgramListService,
         { provide: AppStateService, useClass: AppStateServiceStub },
+        { provide: StateService, useClass: StateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],

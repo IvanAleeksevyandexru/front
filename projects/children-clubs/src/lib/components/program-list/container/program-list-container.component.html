@@ -6,6 +6,7 @@
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
+      [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
     ></children-clubs-filter-panel>
     <ng-container *ngIf="fullLoading$ | async; else content">

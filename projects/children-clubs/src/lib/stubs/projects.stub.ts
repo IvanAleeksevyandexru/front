@@ -1,53 +1,14 @@
-import { BaseProgram, NSIDictionaryItem, FocusDirectionsItem, Group, Program } from '../typings';
+import {
+  BaseProgram,
+  EducationType,
+  FinancingType,
+  FocusDirectionsItem,
+  Group,
+  Program,
+} from '../typings';
 
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import { PaymentInfoInterface } from '@epgu/epgu-constructor/src/lib/component/unique-screen/components/payment/payment.types';
-
-const FinancialSources = [
-  {
-    code: 'none',
-    name: 'Не задан',
-  },
-  {
-    code: 'budget',
-    name: 'Бюджетное (бесплатное)',
-  },
-  {
-    code: 'paid',
-    name: 'Внебюджетное (платное)',
-  },
-  {
-    code: 'pfdod_certificate',
-    name: 'Сертификат ПФДОД',
-  },
-  {
-    code: 'private',
-    name: 'Платное (частное)',
-  },
-] as NSIDictionaryItem[];
-
-const ProgramRegistries = [
-  {
-    code: 'preprof',
-    name: 'Реестр предпрофессиональных программ',
-  },
-  {
-    code: 'valued',
-    name: 'Реестр значимых программ',
-  },
-  {
-    code: 'other',
-    name: 'Реестр иных программ',
-  },
-  {
-    code: 'certified',
-    name: 'Реестр сертифицированных программ',
-  },
-  {
-    code: 'paid',
-    name: 'Реестр платных программ',
-  },
-] as NSIDictionaryItem[];
 
 export const baseProgramStub: BaseProgram = {
   uuid: '23fsdsdfsdf',
@@ -60,8 +21,7 @@ export const baseProgramStub: BaseProgram = {
     'https://new.dop.mosreg.ru/images/events/cover/c0e6ae1e506fe02da5c492d8b59d707d_244x159.jpg',
   minAge: 6,
   maxAge: 14,
-  financingSources: FinancialSources,
-  programRegistries: ProgramRegistries,
+  financingTypes: [FinancingType.free, FinancingType.paid, FinancingType.certificate],
 };
 
 export const programStub: Program = {
@@ -73,9 +33,19 @@ export const programStub: Program = {
   teachers: 'Думчиков Д. В.',
   maxPersons: 15,
   programContent: 'programContent text',
-  goal: 'goals text',
+  goals: 'goals text',
   results: 'results text',
   technicalBase: 'technicalBase text',
+  educationForm: EducationType.distance,
+  groupCount: 6,
+  financingTypes: [
+    FinancingType.free,
+    FinancingType.paid,
+    FinancingType.certificate,
+    FinancingType.other,
+    FinancingType.preprof,
+    FinancingType.valued,
+  ],
 };
 
 export const focusDirectionsStub: FocusDirectionsItem = {
@@ -91,6 +61,7 @@ export const focusDirectionsStub: FocusDirectionsItem = {
 };
 
 export const groupStub: Group = {
+  uuid: 'uuid123',
   name: 'Группа 1 П-2 Ритмика П-2',
   ageFrom: 6.0,
   ageTo: 14.0,
@@ -98,22 +69,15 @@ export const groupStub: Group = {
   dateBegin: '2020-10-14',
   dateEnd: '2021-05-31',
   hoursYear: 144.0,
-  costHourManual: '123.44',
   teachers: 'Думчиков Д. В.',
   schedule: 'Пн.12:00—14:00; Ср.16:00—17:00;  <br>Пт 17:00—15:30',
-  financingSources: [
-    {
-      sourceCode: 'budget',
-      cost: 0,
-    },
-    {
-      sourceCode: 'pfdod_certificate',
-      cost: 10000.0,
-    },
-    {
-      sourceCode: 'private',
-      cost: 8000.0,
-    },
+  financingTypes: [
+    FinancingType.free,
+    FinancingType.paid,
+    FinancingType.certificate,
+    FinancingType.other,
+    FinancingType.preprof,
+    FinancingType.valued,
   ],
 };
 
