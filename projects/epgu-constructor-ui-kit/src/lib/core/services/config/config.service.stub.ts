@@ -82,6 +82,11 @@ export class ConfigServiceStub implements Config {
         preliminaryReservationPeriod: '1440',
         routeNumber: '45382000',
       },
+      DOCTOR: {
+        serviceId: '10001000603',
+        calendarName: 'на прием к врачу',
+        subject: 'Запись на прием к врачу',
+      },
     };
   }
 

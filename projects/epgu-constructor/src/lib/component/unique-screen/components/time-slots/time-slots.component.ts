@@ -185,10 +185,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * @param date день для выбора
    */
   public selectDate(date: Date): void {
-    if (
-      this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection) ||
-      this.isDateOutOfMonth(date)
-    ) {
+    if (this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection)) {
       return;
     }
     if (this.date?.toISOString() === date.toISOString()) {
@@ -380,10 +377,12 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
         this.changeDetectionRef.detectChanges();
       },
-      () => {
+      (error) => {
         this.errorMessage = this.timeSlotsService.getErrorMessage();
         this.inProgress = false;
-        this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+        this.showError(
+          `${this.constants.errorInitialiseService} (${this.errorMessage}) (${error})`,
+        );
 
         this.changeDetectionRef.markForCheck();
       },
