@@ -1,12 +1,12 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ListElement } from '@epgu/epgu-lib';
 import { takeUntil } from 'rxjs/operators';
 import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../program-list.service';
-import { BaseProgram, Filters } from '../../../typings';
-import { ProgramFiltersFormComponent } from '../../program-filters/components/program-filters-form.component';
+import { BaseProgram, Filters, VendorType } from '../../../typings';
+import { ProgramFiltersFormComponent } from '../../base/components/program-filters-form/program-filters-form.component';
 
 import { StateService } from '../../../services/state/state.service';
 
@@ -56,6 +56,7 @@ export class ProgramListContainerComponent implements OnInit {
         value !== false &&
         value !== undefined &&
         key !== 'inlernoPayments' &&
+        key !== 'pfdoPayments' &&
         key !== 'place' &&
         key !== 'query' &&
         key !== 'focus',
@@ -74,6 +75,9 @@ export class ProgramListContainerComponent implements OnInit {
     if (filters?.inlernoPayments) {
       count += Object.entries(filters.inlernoPayments).filter((value) => value[1]).length;
     }
+    if (filters?.pfdoPayments) {
+      count += Object.entries(filters.pfdoPayments).filter((value) => value[1]).length;
+    }
 
     this.filtersCount$$.next(count);
   }
@@ -87,7 +91,14 @@ export class ProgramListContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.countingFilters(this.stateService.programFilters);
+    const filters = this.stateService.programFilters;
+    if (this.stateService.vendor === VendorType.inlearno) {
+      delete filters?.pfdoPayments;
+    } else {
+      delete filters?.inlernoPayments;
+    }
+    this.stateService.programFilters = filters;
+    this.countingFilters(filters);
     this.listService.load$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
   }
 }

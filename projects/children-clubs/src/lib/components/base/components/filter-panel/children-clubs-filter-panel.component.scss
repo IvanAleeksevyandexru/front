@@ -1,12 +1,13 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/info-list';
+@import '../../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '../../../../../../../../node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components/info-list';
 
 .filter-panel {
   margin-top: 8px;
   display: flex;
   justify-content: space-between;
 
-  .filter-btn, .preview {
+  .filter-btn,
+  .preview {
     align-self: center;
     display: flex;
   }

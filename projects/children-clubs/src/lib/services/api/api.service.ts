@@ -5,6 +5,7 @@ import {
   FindOptionsProgram,
   FocusDirectionsItem,
   Group,
+  Municipality,
   Program,
 } from '../../typings';
 import { Observable, of } from 'rxjs';
@@ -28,7 +29,11 @@ export class ApiService {
     return of(([options] as unknown) as DictionaryItem[]);
   }
 
-  getDirections(): Observable<FocusDirectionsItem[]> {
-    return of(([] as unknown) as FocusDirectionsItem[]);
+  getDirections(okato: number): Observable<FocusDirectionsItem[]> {
+    return of(([okato] as unknown) as FocusDirectionsItem[]);
+  }
+
+  getMunicipalities(okato: number): Observable<Municipality[]> {
+    return of(([okato] as unknown) as Municipality[]);
   }
 }

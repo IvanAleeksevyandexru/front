@@ -8,8 +8,6 @@ import { ListComponent } from '../components/list/list.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';
 
-import { ChildrenClubsFilterPanelModule } from '../../filter-panel/children-clubs-filter-panel.module';
-
 import {
   AppStateQuery,
   AppStateQueryStub,
@@ -24,6 +22,7 @@ import { ApiService } from '../../../services/api/api.service';
 import { ApiServiceStub } from '../../../services/api/api.service.stub';
 import { StateService } from '../../../services/state/state.service';
 import { StateServiceStub } from '../../../services/state/state.service.stub';
+import { BaseModule } from '../../base/base.module';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -39,8 +38,8 @@ describe('ListComponent', () => {
 
       imports: [
         EpguLibModule,
-        ChildrenClubsFilterPanelModule,
         MockModule(ScreenContainerModule),
+        MockModule(BaseModule),
         ScreenPadModule,
       ],
       providers: [
