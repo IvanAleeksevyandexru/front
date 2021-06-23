@@ -112,6 +112,8 @@ export interface ComponentAttrsDto {
   beginTime?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   canDeleteFirstScreen?: boolean;
+  screenCaption?: string;
+  secondScreenCaption?: string;
   emptySlotsModal?: ConfirmationModal;
   fio?: string;
   firstName?: string;

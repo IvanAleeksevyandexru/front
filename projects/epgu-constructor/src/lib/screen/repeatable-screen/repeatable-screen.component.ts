@@ -42,6 +42,8 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   componentId: number;
   isValid: boolean;
   canDeleteFirstScreen: boolean;
+  screenCaption: string;
+  secondScreenCaption: string;
   minOccures: number;
   componentValidation: Array<boolean> = [];
   parentComponentId: string;
@@ -240,8 +242,15 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.componentId = 0;
     this.parentComponentId = this.propData.components[0].id;
     this.saveState([]);
-    const { canDeleteFirstScreen = true, minOccures = 1 } = this.propData.components[0].attrs;
+    const {
+      canDeleteFirstScreen = true,
+      minOccures = 1,
+      screenCaption,
+      secondScreenCaption,
+    } = this.propData.components[0].attrs;
     this.canDeleteFirstScreen = canDeleteFirstScreen;
     this.minOccures = minOccures;
+    this.screenCaption = screenCaption;
+    this.secondScreenCaption = secondScreenCaption;
   }
 }
