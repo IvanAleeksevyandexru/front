@@ -6,7 +6,7 @@ import { HealthService } from '@epgu/epgu-lib';
 import { catchError, tap } from 'rxjs/operators';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
-import { CommonPayload } from './health-handler';
+import { CommonPayload, CONFIG_API_REQUEST_SUB } from './health-handler';
 
 
 @Injectable()
@@ -83,6 +83,8 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private isValidUrl<T>(payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse): boolean {
-    return payload['url'].includes(this.configService.childrenClubsApi);
+    const url = payload['url'];
+    return url && !url.includes(CONFIG_API_REQUEST_SUB)
+      && url.includes(this.configService.childrenClubsApi);
   }
 }

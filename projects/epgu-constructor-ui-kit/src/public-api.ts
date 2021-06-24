@@ -112,6 +112,8 @@ export * from './lib/core/services/session/session.service';
 export * from './lib/core/services/utils/utils';
 export * from './lib/core/services/utils/utils.service';
 export * from './lib/core/services/utils/utils.service.stub';
+export * from './lib/core/services/config-api/config-api.service';
+export * from './lib/core/services/config-api/config-api.service.stub';
 
 export * from './lib/core/interceptor/http-cancel/http-cancel.service';
 

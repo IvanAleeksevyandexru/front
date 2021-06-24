@@ -7,7 +7,6 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
 import { CoreModule } from '../core/core.module';
@@ -37,7 +36,6 @@ import { PrevButtonNavigationService } from '../core/services/prev-button-naviga
     MainContainerModule,
   ],
   providers: [
-    FormPlayerConfigApiService,
     FormPlayerService,
     FormPlayerApiService,
     CookieService,
