@@ -49,6 +49,19 @@ export interface UploadContext {
   clarifications: Clarifications;
 }
 
+export const extToLowerCase: (name: string) => string = (name: string) => {
+  if (!name) {
+    return name;
+  }
+  const nameWithLowerExt = name.split('.');
+  if (nameWithLowerExt.length > 0) {
+    nameWithLowerExt[nameWithLowerExt.length - 1] = nameWithLowerExt[
+      nameWithLowerExt.length - 1
+    ].toLowerCase();
+  }
+  return nameWithLowerExt.join('.');
+};
+
 export class FileItem {
   id = v4();
   error: FileItemError;
@@ -66,15 +79,9 @@ export class FileItem {
       this.item.uploaded = true;
     }
     if (!raw && item) {
-      const nameWithLowerExt = item.fileName.split('.');
-      if (nameWithLowerExt.length > 0) {
-        nameWithLowerExt[nameWithLowerExt.length - 1] = nameWithLowerExt[
-          nameWithLowerExt.length - 1
-        ].toLowerCase();
-      }
       this.raw = {
         size: item.fileSize,
-        name: nameWithLowerExt.join('.'),
+        name: extToLowerCase(item.fileName),
         type: item.mimeType || '',
       } as File;
       this.isRawMock = true;
