@@ -279,8 +279,13 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   polyfillFile(file: File): File {
     const { type, lastModified, name } = file;
-
-    return new FilePonyfill([file], name, {
+    const nameWithLowerExt = name.split('.');
+    if (nameWithLowerExt.length > 0) {
+      nameWithLowerExt[nameWithLowerExt.length - 1] = nameWithLowerExt[
+        nameWithLowerExt.length - 1
+      ].toLowerCase();
+    }
+    return new FilePonyfill([file], nameWithLowerExt, {
       type,
       lastModified,
     });

@@ -66,9 +66,15 @@ export class FileItem {
       this.item.uploaded = true;
     }
     if (!raw && item) {
+      const nameWithLowerExt = item.fileName.split('.');
+      if (nameWithLowerExt.length > 0) {
+        nameWithLowerExt[nameWithLowerExt.length - 1] = nameWithLowerExt[
+          nameWithLowerExt.length - 1
+        ].toLowerCase();
+      }
       this.raw = {
         size: item.fileSize,
-        name: item.fileName,
+        name: nameWithLowerExt.join('.'),
         type: item.mimeType || '',
       } as File;
       this.isRawMock = true;
