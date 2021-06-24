@@ -1,7 +1,7 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockComponents } from 'ng-mocks';
+import { MockComponents, MockModule } from 'ng-mocks';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -156,7 +156,7 @@ describe('RepeatableScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [BaseModule, BaseComponentsModule, ScreenPadModule, ScreenButtonsModule],
+      imports: [MockModule(BaseModule), BaseComponentsModule, ScreenPadModule, ScreenButtonsModule],
       declarations: [
         RepeatableScreenComponent,
         ScreenContainerComponent,

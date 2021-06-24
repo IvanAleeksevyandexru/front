@@ -16,11 +16,15 @@
         class="cmp-group__layer"
         *ngFor="let screenKey of objectKeys(screens); let i = index; trackBy: trackByFunction"
       >
-        <div
-          class="icon-close"
-          *ngIf="objectKeys(screens).length > minOccures && (canDeleteFirstScreen || i > 0)"
-          (click)="removeItem(screenKey, i)"
-        ></div>
+        <ng-container [ngTemplateOutlet]="groupHeaderTmpl"
+                      [ngTemplateOutletContext]="{
+                        label: (i > 0 && secondScreenCaption)
+                               ? secondScreenCaption
+                               : screenCaption,
+                        index: i,
+                        screenKey: screenKey
+                      }"
+        ></ng-container>
         <epgu-constructor-components-list
           class="cmp-group__item"
           [id]="screenKey"
@@ -33,19 +37,37 @@
       </epgu-cf-ui-constructor-screen-pad>
     </div>
 
-    <epgu-constructor-clone-button
-      [disabled]="!isScreensAvailable()"
-      >{{ addSectionLabel$ | async }}</epgu-constructor-clone-button
-    >
+    <epgu-constructor-clone-button [disabled]="!isScreensAvailable()">
+      {{ addSectionLabel$ | async }}
+    </epgu-constructor-clone-button>
   </div>
 
-  <div class="screen-footer">
+  <div class="screen-footer" *ngIf="screenService.buttons$ | async as buttons">
     <epgu-constructor-screen-buttons
       class="screen-buttons"
-      *ngIf="(screenService.buttons$ | async).length"
-      [screenButtons]="screenService.buttons$ | async"
+      *ngIf="buttons.length"
+      [screenButtons]="buttons"
       [isLoading]="screenService.isLoading$ | async"
       [disabled]="!isValid"
     ></epgu-constructor-screen-buttons>
   </div>
 </epgu-cf-ui-screen-container>
+
+<ng-template
+  #groupHeaderTmpl
+  let-label="label"
+  let-index="index"
+  let-screenKey="screenKey"
+>
+  <div class="cmp-group-header">
+    <epgu-constructor-output-html
+      [class.mb-24]="label"
+      [html]="label"
+    ></epgu-constructor-output-html>
+    <div
+      class="icon-close"
+      *ngIf="objectKeys(screens).length > minOccures && (canDeleteFirstScreen || index > 0)"
+      (click)="removeItem(screenKey, index)"
+    ></div>
+  </div>
+</ng-template>
