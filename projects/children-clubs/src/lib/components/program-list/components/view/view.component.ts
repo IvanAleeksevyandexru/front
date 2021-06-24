@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AppNavigationService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { tap } from 'rxjs/operators';
 import { FinancingType, financingTypes, Program } from '../../../../typings';
-import { ApiService } from '../../../../services/api/api.service';
 import { StateService } from '../../../../services/state/state.service';
 import { ContentModalComponent } from '../../../base/components/content-modal/content-modal.component';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
@@ -27,7 +26,6 @@ export class ViewComponent implements OnInit {
 
   constructor(
     private appNavigationService: AppNavigationService,
-    private api: ApiService,
     private stateService: StateService,
     private modalService: ModalService,
     private dictionaryService: DictionaryService,
