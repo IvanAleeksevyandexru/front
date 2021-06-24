@@ -126,7 +126,7 @@ export interface Filters {
   pfdoPayments?: PfdoPaymentFilters;
   maxPrice?: number; //Максимальная стоимость в месяц
   focus?: ListElement | FocusFilter; //Направленность
-  direction?: string; //Специализация
+  direction?: ListElement | string; //Специализация
   level?: LevelType; //Уровень подготовки
   age?: number; //Возраст ребенка, лет
   ovzType?: OvzType; //Ограничения здоровья
@@ -167,10 +167,20 @@ export interface FindResponseProgram {
 }
 
 export interface FocusDirectionsItem {
-  focus: string;
+  focusName: string;
+  focusCode: string;
   directions: string[];
 }
 
+export interface NormalizedFocusData {
+  focus: ListElement[];
+  directions: Record<string, ListElement[]>;
+}
+
+export interface Municipality {
+  uuid: string;
+  name: string;
+}
 export interface DirectionsResponse {
   items: FocusDirectionsItem[];
 }

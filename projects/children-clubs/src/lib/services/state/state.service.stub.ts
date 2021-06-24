@@ -19,7 +19,7 @@ export class StateServiceStub {
   }
 
   get vendor(): VendorType {
-    return VendorType.inlearno;
+    return VendorType.pfdo;
   }
 
   get okato(): number {

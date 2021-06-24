@@ -17,12 +17,18 @@
 .mb-8 {
   margin-bottom: 8px;
 }
-
+.mb-4 {
+  margin-bottom: 4px;
+}
 .mt-24 {
   margin-top: 24px;
 }
 .app-host {
   height: 100%;
+}
+
+.small-link {
+  @include typ-plain-small;
 }
 
 .container {
@@ -55,5 +61,78 @@ a {
   height: 1px;
   @include phones-down {
     margin: 24px 0;
+  }
+}
+.title {
+  @include typ-h5();
+}
+
+.error {
+  margin-bottom: 4px;
+  color: $color-gosred;
+}
+
+.modal-divider {
+  background: $color-mercury;
+  border-top: 1px solid $color-mercury;
+}
+
+.half-for-desktop {
+  width: 100%;
+
+  @include tablets-up {
+    width: 50%;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+
+  &-item {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  @include tablets-up {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &-item {
+      width: 48%;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.label {
+  display: block;
+  text-align: left;
+  color: $color-summer-night;
+  @include typ-plain-small;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+
+  @include phones-down {
+    font-weight: bold;
+  }
+
+  margin-bottom: 4px;
+}
+
+.btn {
+  width: auto;
+
+  &-submit {
+    order: 0;
+  }
+
+  @include phones-down {
+    &-submit {
+      order: 1;
+    }
   }
 }

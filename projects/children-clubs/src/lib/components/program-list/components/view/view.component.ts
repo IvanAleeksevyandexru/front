@@ -5,7 +5,7 @@ import { filter, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { FinancingType, financingTypes, Program } from '../../../../typings';
 import { ApiService } from '../../../../services/api/api.service';
 import { StateService } from '../../../../services/state/state.service';
-import { ContentModalComponent } from '../../../program-filters/content-modal/content-modal.component';
+import { ContentModalComponent } from '../../../base/components/content-modal/content-modal.component';
 
 @Component({
   selector: 'children-clubs-view',

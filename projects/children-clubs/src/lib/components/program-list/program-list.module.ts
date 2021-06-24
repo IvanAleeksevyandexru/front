@@ -13,22 +13,21 @@ import { ProgramListService } from './program-list.service';
 import { ListComponent } from './components/list/list.component';
 import { ItemComponent } from './components/item/item.component';
 import { ViewComponent } from './components/view/view.component';
-import { ChildrenClubsFilterPanelModule } from '../filter-panel/children-clubs-filter-panel.module';
+
 import { ApiService } from '../../services/api/api.service';
 import { ApiServiceStub } from '../../services/api/api.service.stub';
-import { ProgramFiltersModule } from '../program-filters/program-filters.module';
+import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
 import { StateServiceStub } from '../../services/state/state.service.stub';
 
 @NgModule({
   declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
   imports: [
-    ProgramFiltersModule,
+    BaseModule,
     CommonModule,
     LongButtonModule,
     SharedModalModule,
     ScreenPadModule,
-    ChildrenClubsFilterPanelModule,
     ScreenContainerModule,
     EpguLibModule,
   ],

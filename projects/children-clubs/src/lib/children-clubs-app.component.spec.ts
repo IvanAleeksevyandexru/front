@@ -27,7 +27,7 @@ import {
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
-import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
+import { BaseModule } from './components/base/base.module';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -36,12 +36,7 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ProgramListModule,
-        ChildrenClubsFilterPanelModule,
-        SharedModalModule,
-        MainContainerModule,
-      ],
+      imports: [ProgramListModule, BaseModule, SharedModalModule, MainContainerModule],
       declarations: [
         ChildrenClubsAppComponent,
         ProjectListComponent,

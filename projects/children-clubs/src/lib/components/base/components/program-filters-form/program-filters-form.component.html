@@ -29,39 +29,14 @@
       ></lib-checkbox>
     </div>
 
-    <div class="divider mb-24"></div>
+    <div class="modal-divider mb-24"></div>
 
-    <div [formGroupName]="'inlernoPayments'">
-      <div class="mb-16">
-        <h5 class="title">Оплата</h5>
-        <button *ngIf="clarifiactions?.aboutpayment" (click)="openAbout()" class="link-btn">
-          {{ clarifiactions.aboutpayment.title }}
-        </button>
-      </div>
+    <children-clubs-payment-selector
+      (changes)="paymentFilterChange($event)"
+      [initValue]="initFilters"
+    ></children-clubs-payment-selector>
 
-      <div class="mb-16">
-        <lib-checkbox
-          [labelText]="formFieldsLabel[formFields.free]"
-          [formControlName]="formFields.free"
-        ></lib-checkbox>
-      </div>
-
-      <div class="mb-16">
-        <lib-checkbox
-          [labelText]="formFieldsLabel[formFields.certificate]"
-          [formControlName]="formFields.certificate"
-        ></lib-checkbox>
-      </div>
-
-      <div class="mb-16">
-        <lib-checkbox
-          [labelText]="formFieldsLabel[formFields.personalFunds]"
-          [formControlName]="formFields.personalFunds"
-        ></lib-checkbox>
-      </div>
-    </div>
-
-    <div class="mb-16 half-for-desktop">
+    <div class="mb-24 half-for-desktop">
       <div class="label">{{ formFieldsLabel[formFields.maxPrice] }}</div>
       <lib-plain-input [formControlName]="formFields.maxPrice"></lib-plain-input>
       <epgu-cf-ui-constructor-error
@@ -69,7 +44,7 @@
       ></epgu-cf-ui-constructor-error>
     </div>
 
-    <div class="divider mb-24"></div>
+    <div class="modal-divider mb-24"></div>
 
     <h5 class="title mb-12">Программа обучения</h5>
 
@@ -77,16 +52,21 @@
       <div class="row-item">
         <div class="label">{{ formFieldsLabel[formFields.focus] }}</div>
         <lib-dropdown
+          placeholder="Все"
+          [disabled]="(focusList | async).length === 0"
           [formControlName]="formFields[formFields.focus]"
-          [items]="focusListElements"
+          [items]="focusList | async"
+          (changed)="changeFocus($event)"
         ></lib-dropdown>
       </div>
 
       <div class="row-item">
         <div class="label">{{ formFieldsLabel[formFields.direction] }}</div>
         <lib-dropdown
+          placeholder="Все"
+          [disabled]="(directionList | async).length === 0"
           [formControlName]="formFields[formFields.direction]"
-          [items]="specializationListElements"
+          [items]="directionList | async"
         ></lib-dropdown>
       </div>
     </div>
@@ -115,12 +95,14 @@
       ></lib-dropdown>
     </div>
 
-    <div class="row">
-      <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
-        >Сбросить всё</lib-button
-      >
+    <ng-container modal-buttons>
+      <div class="row mb-4">
+        <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
+          >Сбросить всё</lib-button
+        >
 
-      <lib-button class="row-item btn" (click)="submit()">Применить</lib-button>
-    </div>
+        <lib-button class="row-item btn" (click)="submit()">Применить</lib-button>
+      </div>
+    </ng-container>
   </form>
 </epgu-cf-ui-cta-modal>

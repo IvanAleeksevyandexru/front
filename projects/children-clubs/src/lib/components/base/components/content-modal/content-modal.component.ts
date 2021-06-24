@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'children-clubs-content-modal',
   templateUrl: './content-modal.component.html',
-  styleUrls: ['./content-modal.component.scss', './../../../../styles/index.scss'],
+  styleUrls: ['./content-modal.component.scss', '../../../../../styles/index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })

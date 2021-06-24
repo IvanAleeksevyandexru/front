@@ -5,7 +5,7 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 @Component({
   selector: 'children-clubs-filter-panel',
   templateUrl: './children-clubs-filter-panel.component.html',
-  styleUrls: ['./children-clubs-filter-panel.component.scss', '../../../styles/index.scss'],
+  styleUrls: ['./children-clubs-filter-panel.component.scss', '../../../../../styles/index.scss'],
 })
 export class ChildrenClubsFilterPanelComponent implements OnInit {
   @Input() filtersCount: number;
