@@ -16,6 +16,7 @@ import { PaymentWayComponentAttrsDto } from '../../payment-way.types';
 @Component({
   selector: 'epgu-constructor-payment-way-container',
   templateUrl: './payment-way-container.component.html',
+  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentWayContainerComponent implements OnInit, AfterViewInit {
@@ -43,11 +44,12 @@ export class PaymentWayContainerComponent implements OnInit, AfterViewInit {
   }
 
   private init({ value, required, attrs }: ComponentDto): void {
-    const { paymentWay } = <PaymentWayComponentAttrsDto>attrs;
-    const isNeedSelected = !value && paymentWay.length === 1;
-    this.paymentWayControl.setValue(isNeedSelected ? paymentWay[0].paymentType : value);
+    const { paymentWays } = <PaymentWayComponentAttrsDto>attrs;
+    const isNeedSelected = !value && paymentWays.length === 1;
+    this.paymentWayControl.setValue(isNeedSelected ? paymentWays[0].paymentType : value);
     if (required) {
       this.paymentWayControl.setValidators(Validators.required);
+      this.paymentWayControl.updateValueAndValidity();
     }
   }
 

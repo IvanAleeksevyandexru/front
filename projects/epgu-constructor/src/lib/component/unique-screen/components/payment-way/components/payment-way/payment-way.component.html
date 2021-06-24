@@ -16,7 +16,7 @@
 
 <div *ngIf="paymentControl.value">
   <div class="divider mt-24"></div>
-  <ng-container *ngIf="PaymentTypes.free; else amountTmpl" [ngTemplateOutlet]="programTmpl"></ng-container>
+  <ng-container [ngTemplateOutlet]="programTmpl" [ngTemplateOutletContext]="{ $implicit: paymentWays[paymentControl.value]}"></ng-container>
 </div>
 
 <epgu-constructor-output-html
@@ -27,18 +27,15 @@
 >
 </epgu-constructor-output-html>
 
-<ng-template #amountTmpl>
-  <div class="info-list-group-item mt-24" *ngIf="paymentWays[paymentControl.value]?.amount as amount">
+<ng-template #programTmpl let-program>
+  <div class="info-list-group-item mt-24" *ngIf="program?.amount as amount">
     <div class="info-list-subtitle">Средний размер платежа</div>
     <div class="info-list-value">
-      {{ amount | currency:'RUB':'symbol-narrow':'0.0-2' }} в месяц
+      {{ amount | currency :'RUB':'':'0.0-2' }} {{ plural | pluralize: amount }} в месяц
     </div>
   </div>
-</ng-template>
-
-<ng-template #programTmpl>
-  <div class="info-list-group-item mt-24" *ngIf="paymentWays[paymentControl.value]?.programType as programType">
+  <div class="info-list-group-item mt-24" *ngIf="program?.programType as programType">
     <div class="info-list-subtitle">Тип программы</div>
-    <div class="info-list-value"> {{ programType }} </div>
+    <div class="info-list-value"><b>{{ programsLabel[programType] }}</b></div>
   </div>
 </ng-template>

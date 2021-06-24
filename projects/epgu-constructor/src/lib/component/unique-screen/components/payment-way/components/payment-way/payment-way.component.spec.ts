@@ -5,31 +5,21 @@ import { MockComponents, MockModule } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { PaymentWayComponent } from './payment-way.component';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
-import { PaymentTypes } from '../../payment-way.types';
+import { PaymentTypes, ProgramType } from '../../payment-way.types';
 
 const mockComponents = {
   label: '',
   attrs: {
-    paymentWay: [
+    paymentWays: [
       {
-        paymentType: PaymentTypes.certificate,
-        amount: '1230000',
-        programType: null
+        paymentType: PaymentTypes.paid,
+        amount: 1000,
+        programType: ProgramType.other
       },
-      {
-        paymentType: PaymentTypes.purse,
-        amount: '12300000',
-        programType: null
-      },
-      {
-        paymentType: PaymentTypes.free,
-        amount: null,
-        programType: 'Профессиональная',
-      }
     ],
-    paymentInfo: {
-      free: 'fake free hint',
-      certificate: 'fake certificate hint'
+    html: {
+      paid: 'fake paid html',
+      budget: 'fake budget html'
     }
   }
 };
@@ -54,7 +44,33 @@ describe('PaymentWayComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('set paymentWays with label', () => {
+    const setPaymentWaysWithType = (...types) => {
+      const paymentWays = types.map((paymentType) => ({ paymentType }));
+      component.component = { ...mockComponents, attrs: { paymentWays }} as any;
+      component.ngOnChanges();
+      fixture.detectChanges();
+      return component.paymentWays;
+    };
+
+    expect(setPaymentWaysWithType(PaymentTypes.pfdod_certificate)).toEqual({
+      pfdod_certificate: {  label: 'Сертификатом', paymentType: 'pfdod_certificate' }
+    });
+
+    expect(setPaymentWaysWithType(PaymentTypes.private)).toEqual({
+      private: {  label: 'Из личных средств', paymentType: 'private' }
+    });
+
+    expect(setPaymentWaysWithType(PaymentTypes.paid)).toEqual({
+      paid: {  label: 'Из личных средств', paymentType: 'paid' }
+    });
+
+    expect(setPaymentWaysWithType(PaymentTypes.none)).toEqual({
+      none: {  label: 'Бесплатно', paymentType: 'none' }
+    });
+
+    expect(setPaymentWaysWithType(PaymentTypes.budget)).toEqual({
+      budget: {  label: 'Бесплатно', paymentType: 'budget' }
+    });
   });
 });

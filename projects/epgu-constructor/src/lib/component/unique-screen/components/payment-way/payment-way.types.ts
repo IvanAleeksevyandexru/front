@@ -1,14 +1,22 @@
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 
 export interface PaymentWayComponentAttrsDto extends ComponentAttrsDto {
-  paymentWay: PaymentWay[];
-  paymentInfo: PaymentWayInfo;
+  paymentWays: PaymentWay[];
+  html: PaymentWayInfo;
 }
 
 export enum PaymentTypes {
-  certificate = 'certificate',
-  purse = 'purse',
-  free = 'free',
+  none = 'none',
+  budget = 'budget',
+  paid = 'paid',
+  private = 'private',
+  pfdod_certificate = 'pfdod_certificate',
+}
+
+export enum ProgramType {
+  other = 'other',
+  preprof = 'preprof',
+  valued = 'valued',
 }
 
 export interface PaymentWay {

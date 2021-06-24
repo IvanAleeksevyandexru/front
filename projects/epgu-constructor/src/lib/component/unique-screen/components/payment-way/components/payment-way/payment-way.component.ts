@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { paymentsLabel, programsLabel } from '../../payment-way.const';
 import {
   PaymentTypes,
   PaymentWay,
   PaymentWayComponentAttrsDto,
   PaymentWayInfo,
 } from '../../payment-way.types';
-import { paymentWaysLabel } from '../../payment-way.const';
 
 @Component({
   selector: 'epgu-constructor-payment-way',
@@ -20,19 +20,20 @@ export class PaymentWayComponent implements OnChanges {
   @Input() paymentControl: FormControl;
   paymentWays: Record<keyof typeof PaymentTypes, PaymentWay & { label: string }>;
   paymentsInfo: PaymentWayInfo;
-  PaymentTypes = PaymentTypes;
+  programsLabel = programsLabel;
+  plural = ['рубль', 'рубля', 'рублей'];
 
   ngOnChanges(): void {
     if (this.component) {
-      const { paymentInfo = null, paymentWay } = <PaymentWayComponentAttrsDto>this.component.attrs;
-      this.paymentWays = paymentWay.reduce(
+      const { html, paymentWays } = <PaymentWayComponentAttrsDto>this.component.attrs;
+      this.paymentWays = paymentWays.reduce(
         (acc, item) => ({
           ...acc,
-          [item.paymentType]: { ...item, label: paymentWaysLabel[item.paymentType] },
+          [item.paymentType]: { ...item, label: paymentsLabel[item.paymentType] },
         }),
         {} as Record<keyof typeof PaymentTypes, PaymentWay & { label: string }>,
       );
-      this.paymentsInfo = paymentInfo;
+      this.paymentsInfo = html;
     }
   }
 }

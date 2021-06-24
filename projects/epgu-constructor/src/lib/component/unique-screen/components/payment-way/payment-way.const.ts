@@ -1,7 +1,15 @@
-import { PaymentTypes } from './payment-way.types';
+import { PaymentTypes, ProgramType } from './payment-way.types';
 
-export const paymentWaysLabel: Record<keyof typeof PaymentTypes, string> = {
-  [PaymentTypes.certificate]: 'Сертификатом',
-  [PaymentTypes.purse]: 'Из личных средств',
-  [PaymentTypes.free]: 'Бесплатно'
+export const paymentsLabel: Record<keyof typeof PaymentTypes, string> = {
+  [PaymentTypes.pfdod_certificate]: 'Сертификатом',
+  [PaymentTypes.paid]: 'Из личных средств',
+  [PaymentTypes.private]: 'Из личных средств',
+  [PaymentTypes.none]: 'Бесплатно',
+  [PaymentTypes.budget]: 'Бесплатно',
+};
+
+export const programsLabel: Record<keyof typeof ProgramType, string> = {
+  [ProgramType.other]: 'Иная образовательная',
+  [ProgramType.preprof]: 'Предпрофессиональная',
+  [ProgramType.valued]: 'Значимая',
 };
