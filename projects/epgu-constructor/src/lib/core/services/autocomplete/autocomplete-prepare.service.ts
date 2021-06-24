@@ -316,13 +316,11 @@ export class AutocompletePrepareService {
     componentsGroupIndex: number,
   ): Answer {
     const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
+    const currentAnswerState = this.currentAnswersService.state as Record<string, string>[];
+    const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
-      const cachedState =
-        (this.currentAnswersService.state &&
-          this.currentAnswersService.state[componentsGroupIndex]) ||
-        {};
       if (parsedValue[componentsGroupIndex]) {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,
@@ -335,8 +333,10 @@ export class AutocompletePrepareService {
       cachedAnswer.value = JSON.stringify(parsedValue);
       return cachedAnswer;
     } else {
+      let newCachedAnswer = [...currentAnswerState];
+      newCachedAnswer[componentsGroupIndex] = { [component.id]: component.value };
       return {
-        value: JSON.stringify([{ [component.id]: component.value }]),
+        value: JSON.stringify(newCachedAnswer),
         visited: true,
       };
     }
