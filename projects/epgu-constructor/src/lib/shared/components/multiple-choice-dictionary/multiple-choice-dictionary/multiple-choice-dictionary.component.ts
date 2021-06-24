@@ -32,6 +32,7 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
 })
 export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAccessor {
   @Input() subLabel: string;
+  @Input() modalHeader: string;
   @Input() label: string;
   @Input() dictionaryList?: ListElement[] | CustomComponentDropDownItem[];
   @Input() dictionaryType?: string;
@@ -50,7 +51,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   public onClick(): void {
     this.modalService
       .openModal<ListElement[] | null>(MultiChoiceDictionaryModalComponent, {
-        title: this.subLabel,
+        title: this.modalHeader || this.subLabel,
         dictionaryList: this.dictionaryList,
         dictionaryType: this.dictionaryType,
         selectedItems: this.selectedItems,
