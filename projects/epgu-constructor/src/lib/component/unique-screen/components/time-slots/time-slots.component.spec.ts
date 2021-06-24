@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EpguLibModule, ListItem } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent, HelperTextComponent, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ScreenPadComponent,
+  HelperTextComponent,
+  HttpCancelService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -36,6 +40,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { mockWeeks } from './mocks/mock-weeks';
 import { HttpClient } from '@angular/common/http';
+import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
+import { mockScreenDoctorStore } from './mocks/mock-screen-doctor-store';
+import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
 
 const moment = moment_;
 moment.locale('ru');
@@ -323,8 +330,8 @@ describe('TimeSlotsComponent', () => {
       } as ListItem;
       fixture.componentInstance.areaChanged();
       let i = 0;
-      fixture.componentInstance.weeks.forEach(week => {
-        week.forEach(day => {
+      fixture.componentInstance.weeks.forEach((week) => {
+        week.forEach((day) => {
           if (day.classes.locked) {
             i++;
           }
@@ -396,5 +403,63 @@ describe('TimeSlotsComponent', () => {
     const modalSpy = jest.spyOn(component, 'showError');
     fixture.detectChanges();
     expect(modalSpy).toBeCalled();
+  });
+
+  describe('should forbid select locked date', () => {
+    beforeEach(async () => {
+      const todayStr = '2021-06-23T00:00:00.000Z';
+      Date.now = jest.fn().mockReturnValue(new Date(todayStr));
+      jest.spyOn(smev3TimeSlotsRestService, 'getTimeSlots').mockRestore();
+      jest
+        .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
+        .mockReturnValue(of(mockSlotsDoctor202106 as SmevSlotsResponseInterface));
+      jest.spyOn(httpClient, 'get').mockRestore();
+      jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
+        if (url === '/api/service/actions/currentDateTime') {
+          return of(todayStr);
+        } else {
+          return httpClient.get(url, options);
+        }
+      });
+    });
+
+    function checks(allowedMap) {
+      component.weeks.forEach((week) => {
+        week.forEach((day) => {
+          const key = '' + day.date.getFullYear() + day.date.getMonth() + day.date.getDate();
+          component.selectDate(day.date);
+          expect(component.date).toEqual(allowedMap[key] ? component.date : null);
+          component.date = null;
+        });
+      });
+    }
+
+    it('MVD', async () => {
+      store = cloneDeep(mockScreenMvdStore);
+      screenService.initScreenStore(store);
+      await fixture.detectChanges();
+      await fixture.whenStable();
+      const allowedMap = {
+        2021523: true,
+        2021526: true,
+        2021529: true,       
+      };
+      checks(allowedMap);
+    });
+
+    it('DOCTOR', async () => {
+      store = cloneDeep(mockScreenDoctorStore);
+      screenService.initScreenStore(store);
+      await fixture.detectChanges();
+      await fixture.whenStable();
+      const allowedMap = {
+        2021523: true,
+        2021526: true,
+        2021529: true,
+        202162: true,
+        202165: true,        
+      };
+      checks(allowedMap);
+    });
   });
 });
