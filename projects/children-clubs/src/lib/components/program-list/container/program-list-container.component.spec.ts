@@ -3,7 +3,7 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 
 import { ProgramListContainerComponent } from './program-list-container.component';
-import { ProgramListService } from '../program-list.service';
+import { ProgramListService } from '../../../services/program-list/program-list.service';
 import { ListComponent } from '../components/list/list.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';

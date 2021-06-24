@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { map } from 'rxjs/operators';
-import { ProgramListService } from '../../program-list.service';
+import { ProgramListService } from '../../../../services/program-list/program-list.service';
 
 @Component({
   selector: 'children-clubs-list',

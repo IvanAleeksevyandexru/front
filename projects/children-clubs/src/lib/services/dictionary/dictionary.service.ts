@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
-import { distinctUntilChanged, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
-import { FocusDirectionsItem, Municipality, NormalizedFocusData } from '../../typings';
+import { distinctUntilChanged, filter, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
+import { FocusDirectionsItem, Municipality, NormalizedFocusData, Program } from '../../typings';
 import { ListElement } from '@epgu/epgu-lib';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class DictionaryService {
@@ -25,6 +26,13 @@ export class DictionaryService {
       ),
     ),
     shareReplay(),
+  );
+
+  program$: Observable<Program> = this.state.state$.pipe(
+    pluck('selectedProgramUUID'),
+    filter((uuid) => !!uuid),
+    switchMap((uuid: string) => this.api.getProgram(uuid)),
+    shareReplay(1),
   );
 
   constructor(private api: ApiService, private state: StateService) {}

@@ -134,6 +134,7 @@ export interface Filters {
 
 //Параметры для фильтрации групп
 export interface FindOptionsGroup {
+  query?: string;
   nextSchoolYear: boolean;
   vendor: VendorType;
   isRegistrationOpen?: boolean; //Показывать только группы с открытой записью

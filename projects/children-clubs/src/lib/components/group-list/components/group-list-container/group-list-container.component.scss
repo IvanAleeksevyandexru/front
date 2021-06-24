@@ -1,0 +1,14 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0 64px 0;
+}
+
+.program-name {
+  @include typ-plain-text;
+  color: $color-text-helper;
+}

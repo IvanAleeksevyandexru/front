@@ -1,0 +1,32 @@
+<epgu-cf-ui-screen-container>
+  <div class="screen-body">
+    <div class="title mb-12">
+      Выберите группу обучения
+    </div>
+    <div *ngIf="program$ | async as program" class="program-name mb-24">
+      {{ program.name }}
+    </div>
+    <children-clubs-filter-panel
+      (openFilters)="openFilter()"
+      (search)="search($event)"
+      [initValue]="initValue"
+      [filtersCount]="filtersCount$ | async"
+    ></children-clubs-filter-panel>
+    <ng-container *ngIf="loading$ | async; else content">
+      <epgu-cf-ui-constructor-screen-pad class="loader mt-24">
+        <lib-throbber-hexagon size="big"></lib-throbber-hexagon
+      ></epgu-cf-ui-constructor-screen-pad>
+    </ng-container>
+  </div>
+</epgu-cf-ui-screen-container>
+
+<ng-template #content>
+  <ng-container *ngFor="let item of data$ | async; let i = index">
+    <children-clubs-group-item [data]="item" [index]="i"> </children-clubs-group-item>
+  </ng-container>
+  <div class="btn">
+    <lib-button *ngIf="isShowButton$ | async" color="white" (click)="next()"
+      >Показать еще</lib-button
+    >
+  </div>
+</ng-template>

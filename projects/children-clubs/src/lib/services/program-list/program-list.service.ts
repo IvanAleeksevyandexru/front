@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../services/api/api.service';
+import { ApiService } from '../api/api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseProgram, FocusFilter } from '../../typings';
 import {
@@ -14,7 +14,7 @@ import {
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ListElement } from '@epgu/epgu-lib';
-import { StateService } from '../../services/state/state.service';
+import { StateService } from '../state/state.service';
 
 @Injectable()
 export class ProgramListService {
@@ -59,16 +59,19 @@ export class ProgramListService {
     map((state) => {
       const filters = { ...(state?.programFilters ?? {}) };
       const focus = filters?.focus as ListElement;
-      if (focus && focus?.text) {
-        filters.focus = focus.text as FocusFilter;
+      if (focus && focus?.id) {
+        filters.focus = focus.id as FocusFilter;
       }
       const place = filters?.place as ListElement;
-      if (place && place?.text) {
-        filters.place = place?.text;
+      if (place && place?.id) {
+        filters.place = place?.id as string;
+      }
+      const direction = filters?.direction as ListElement;
+      if (direction && direction?.id) {
+        filters.direction = direction?.id as string;
       }
       return { filters };
     }),
-
     tap(() => this.reset()),
     switchMap((options) =>
       this.page$$.pipe(
