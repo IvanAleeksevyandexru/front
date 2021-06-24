@@ -1,0 +1,99 @@
+<epgu-cf-ui-screen-container>
+  <div class="screen-body">
+    <div *ngIf="data$ | async as data">
+      <div class="project__title">{{ data.name }}</div>
+      <epgu-cf-ui-constructor-screen-pad class="project">
+        <div class="project-grid">
+          <div [ngStyle]="{ backgroundImage: 'url(' + data.imageUrl + ')' }" class="project__image">
+            <div class="project__age-limit">{{ data.minAge }}-{{ data.maxAge }} лет</div>
+          </div>
+          <div class="project__info">
+            <div class="project__organization">{{ data.partnerName }}</div>
+            <div class="project__description">{{ data.fullName }}</div>
+            <div class="divider"></div>
+
+            <div class="project__info-item-list">
+              <div *ngIf="data?.address" class="project__info-item">
+                <div class="item-icon"><img alt="адрес" src="assets/icons/address.svg" /></div>
+                <div class="item-label">{{ data?.address }}</div>
+              </div>
+              <div *ngIf="data?.teachers" class="project__info-item">
+                <div class="item-icon"><img alt="учитель" src="assets/icons/teacher.svg" /></div>
+                <div class="item-label">{{ data?.teachers }}</div>
+              </div>
+              <div *ngIf="data?.maxPersons" class="project__info-item">
+                <div class="item-icon">
+                  <img alt="размер группы" src="assets/icons/group.svg" />
+                </div>
+                <div class="item-label">
+                  Размер группы до {{ data?.maxPersons }}
+                  {{ ['человека', 'человек', 'человек'] | pluralize: data?.maxPersons }}
+                </div>
+              </div>
+              <ng-container *ngFor="let item of data.financingTypes; let i = index">
+                <div class="project__info-item">
+                  <div class="item-icon">
+                    <img
+                      [alt]="financingTypes[item].text"
+                      src="assets/icons/{{ financingTypes[item].icon }}"
+                    />
+                  </div>
+                  <div class="item-label">{{ financingTypes[item].text }}</div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="divider"></div>
+            <div class="project-buttons">
+              <button
+                *ngIf="data?.programContent"
+                (click)="openModal('План занятий', data.programContent)"
+                class="link-btn"
+              >
+                План занятий
+              </button>
+              <button
+                *ngIf="data?.goals"
+                (click)="openModal('Цели обучения', data.goals)"
+                class="link-btn"
+              >
+                Цели обучения
+              </button>
+              <button
+                *ngIf="data?.results"
+                (click)="openModal('Результаты обучения', data.results)"
+                class="link-btn"
+              >
+                Результаты обучения
+              </button>
+              <button
+                *ngIf="data?.technicalBase"
+                (click)="openModal('Особые условия', data.technicalBase)"
+                class="link-btn"
+              >
+                Особые условия
+              </button>
+            </div>
+          </div>
+        </div>
+      </epgu-cf-ui-constructor-screen-pad>
+      <div class="project__btn-text">
+        <ng-container *ngIf="data.groupCount > 1; else oneGroup"
+          >Чтобы записатся, выберите одну из {{ data.groupCount }} доступных групп</ng-container
+        >
+      </div>
+      <ng-template #oneGroup>
+        Чтобы записаться, выберите группу
+      </ng-template>
+
+      <div class="center btn_pd">
+        <lib-button (click)="next()">Выбрать группу</lib-button>
+      </div>
+    </div>
+
+    <div *ngIf="loading$ | async">
+      <epgu-cf-ui-constructor-screen-pad>
+        <lib-throbber-hexagon size="big"></lib-throbber-hexagon
+      ></epgu-cf-ui-constructor-screen-pad>
+    </div>
+  </div>
+</epgu-cf-ui-screen-container>

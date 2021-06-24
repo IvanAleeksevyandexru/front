@@ -1,0 +1,40 @@
+<epgu-cf-ui-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div class="screen-body">
+    <epgu-constructor-page-name
+      >{{ screenService.header$ | async }}
+      <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
+    </epgu-constructor-page-name>
+
+    <epgu-cf-ui-constructor-screen-pad class="body">
+      <epgu-constructor-components-list
+        [components]="$any((screenService.display$ | async)?.components)"
+        [errors]="screenService.componentErrors$ | async"
+        (changes)="changeComponentsList($event)"
+      >
+      </epgu-constructor-components-list>
+    </epgu-cf-ui-constructor-screen-pad>
+
+    <epgu-constructor-label
+      [isTextHelper]="helperText?.attrs?.isTextHelper"
+      [tips]="helperText?.attrs?.labelHint"
+      [label]="helperText?.label"
+      [clarifications]="helperText?.attrs?.clarifications"
+      [largeFontSize]="true"
+      class="mt-24"
+      *ngIf="helperText"
+    ></epgu-constructor-label>
+  </div>
+
+  <div class="screen-footer">
+    <epgu-constructor-screen-buttons
+      class="screen-buttons"
+      *ngIf="(screenService.buttons$ | async).length"
+      [screenButtons]="screenService.buttons$ | async"
+      [isLoading]="screenService.isLoading$ | async"
+      [disabled]="!isValid"
+    ></epgu-constructor-screen-buttons>
+  </div>
+</epgu-cf-ui-screen-container>

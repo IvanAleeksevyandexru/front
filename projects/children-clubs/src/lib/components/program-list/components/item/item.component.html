@@ -1,0 +1,31 @@
+<div class="container">
+  <epgu-cf-ui-constructor-screen-pad class="project">
+    <div class="project-grid">
+      <div (click)="show()" class="project__title">{{ data.name }}</div>
+      <div
+        (click)="show()"
+        [ngStyle]="{ backgroundImage: 'url(' + data.imageUrl + ')' }"
+        class="project__image"
+      >
+        <div class="project__age-limit">{{ data.minAge }}-{{ data.maxAge }} лет</div>
+      </div>
+      <div class="project__info">
+        <div class="project__organization">{{ data.partnerName }}</div>
+
+        <div class="project__info-item-list">
+          <ng-container *ngFor="let item of data.financingTypes; let i = index">
+            <div class="project__info-item">
+              <div class="item-icon">
+                <img
+                  [alt]="financingTypes[item].text"
+                  src="assets/icons/{{ financingTypes[item].icon }}"
+                />
+              </div>
+              <div class="item-label">{{ financingTypes[item].text }}</div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </epgu-cf-ui-constructor-screen-pad>
+</div>

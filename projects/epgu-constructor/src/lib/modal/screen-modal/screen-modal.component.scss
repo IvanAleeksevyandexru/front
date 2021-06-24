@@ -1,0 +1,140 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+$my: 96px;
+$pyConfModal: 64px;
+$headerHeight: 57px;
+$controlHeight: 55px;
+
+$closeBtnWidth: 24px;
+
+:host::ng-deep {
+  .modal-overlay {
+    @include modal-overlay();
+  }
+
+  .screen-modal {
+    display: flex;
+    flex-direction: column;
+    @include modal-body();
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+    @include tablets-up {
+      max-height: calc(100vh - #{$my * 2});
+      min-height: 293px;
+      width: 634px;
+      height: auto;
+      border-radius: 12px;
+    }
+    @include phones-down {
+      padding: 24px;
+    }
+
+    &__header {
+      position: relative;
+    }
+
+    &__title {
+      width: 100%;
+      padding-right: calc(#{$closeBtnWidth} + 8px);
+      @include tablets-up {
+        padding-right: calc(#{$closeBtnWidth} + 24px);
+      }
+      @include divider;
+    }
+
+    &__confirm-title {
+      @include tablets-down {
+        padding-right: calc(#{$closeBtnWidth} + 8px);
+        @include divider;
+      }
+      @include tablets-up {
+        padding: 0 calc(#{$closeBtnWidth} + 24px);
+        text-align: center;
+        @include typ-h4;
+      }
+    }
+
+    &__close {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      z-index: 1;
+      cursor: pointer;
+      &:only-child {
+        @include tablets-up {
+          top: 0;
+        }
+      }
+    }
+
+    &__body {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      @include tablets-down {
+        flex-grow: 1;
+      }
+    }
+
+    &__content {
+      .text {
+        padding-right: 15px;
+      }
+    }
+
+    &__controls {
+      display: flex;
+      margin-top: 26px;
+      justify-content: center;
+      flex: 1 1 auto;
+      & > *:not(:last-child) {
+        margin-right: 20px;
+      }
+
+      @include tablets-down {
+        flex-direction: column;
+        justify-content: flex-end;
+        & > *:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    &__button {
+      @include tablets-down {
+        width: 100%;
+      }
+    }
+  }
+
+  .ps-content {
+    display: block;
+    height: 100%;
+    padding-right: 5px; // fix overlapping content by scroll
+    padding-bottom: 2px; // hack for avoid overlapping of buttons
+
+    @include tablets-up {
+      max-height: calc(100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight});
+    }
+  }
+
+  .screen-modal .component-list__body {
+    @include tablets-down {
+      flex-grow: 0;
+      margin-bottom: auto;
+    }
+  }
+
+  @include tablets-up {
+    [ng-reflect-component-type=PhoneNumberChangeInput],
+    [ng-reflect-component-type=NewEmailInput] {
+      .form__input {
+        width: calc(50% - 14px);
+      }
+    }
+  }
+}
+
+

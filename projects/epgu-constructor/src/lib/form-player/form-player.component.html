@@ -1,0 +1,9 @@
+<epgu-cf-ui-main-container [showLoader]="isFirstLoading$ | async">
+  <ng-container
+    *ngIf="(formPlayerService.playerLoaded$ | async) && (configService.isLoaded$ | async)"
+  >
+    <epgu-constructor-screen-resolver></epgu-constructor-screen-resolver>
+    <epgu-constructor-screen-modal></epgu-constructor-screen-modal>
+    <epgu-constructor-logic></epgu-constructor-logic>
+  </ng-container>
+</epgu-cf-ui-main-container>

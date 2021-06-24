@@ -14,6 +14,8 @@ export interface DictionaryOptions {
   parentRefItemValue?: string;
   selectAttributes?: Array<string>;
   tx?: string;
+  excludedParams?: string[];
+  additionalParams?: AdditionalRequestParam;
 }
 
 export interface DictionaryFilters {
@@ -79,6 +81,17 @@ export interface FilterDtoConfig {
   additionalString?: string;
 }
 
+export enum AdditionalRequestType {
+  ref = 'ref',
+  value = 'value',
+}
+
+export interface AdditionalRequestParam {
+  type: AdditionalRequestType;
+  value: string;
+  name: string;
+}
+
 export interface ComponentDictionaryFilterDto {
   attributeName: string;
   attributeType?: AttributeTypes; // asString as default
@@ -88,4 +101,6 @@ export interface ComponentDictionaryFilterDto {
   dateFormat?: string;
   formatValue?: FilterDtoConfig;
   trueForNull?: boolean;
+  excludeWrapper?: boolean;
+  checkAllValues?: boolean;
 }

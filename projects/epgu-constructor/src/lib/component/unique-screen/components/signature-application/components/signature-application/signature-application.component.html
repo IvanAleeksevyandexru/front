@@ -1,0 +1,36 @@
+<epgu-cf-ui-screen-container
+    [show-nav]="!isMobile && showNav"
+    [class.screen-container-mt]="!(!isMobile && showNav)"
+  >
+    <div class="screen-body">
+      <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
+      <div class="application" *ngIf="isMobile; else desktopTemplate">
+        <div class="application__center">
+          <img [src]="component.attrs.image.src"/>
+        </div>
+
+        <epgu-constructor-output-html
+          [html]="component.label"
+        ></epgu-constructor-output-html>
+      </div>
+    </div>
+
+    <div class="screen-footer">
+      <div class="footer">
+        <lib-button
+          [showLoader]="isLoading"
+          (click)="nextAction()"
+          class="submit-button"
+        >
+          {{ button.label || 'Продолжить' }}
+        </lib-button>
+      </div>
+    </div>
+  </epgu-cf-ui-screen-container>
+
+  <ng-template #desktopTemplate>
+    <div class="application__center">
+      <lib-loader></lib-loader>
+    </div>
+  </ng-template>
+

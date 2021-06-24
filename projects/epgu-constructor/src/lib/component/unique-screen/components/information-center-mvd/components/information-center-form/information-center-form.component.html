@@ -1,0 +1,30 @@
+<epgu-cf-ui-constructor-screen-pad>
+  <epgu-constructor-label
+    [tips]=" sourceDictionaryLabel"
+    [label]="sourceDictionaryLabel"
+  ></epgu-constructor-label>
+  <epgu-cf-ui-constructor-constructor-dropdown
+    class="dropdown"
+    [localSearch]="true"
+    [control]="select"
+    (changed)="handleSelect($event)"
+    [items]="sourceList"
+  ></epgu-cf-ui-constructor-constructor-dropdown>
+
+  <div class="loader" *ngIf="isLoadingInfoCenter">
+    <lib-throbber-hexagon size="medium"></lib-throbber-hexagon>
+  </div>
+
+  <div class="list" *ngIf="infoCenterList.length && !isLoadingInfoCenter">
+    <epgu-constructor-label
+      class="list-label"
+      [tips]=" dictionaryToRequestLabel"
+      [label]="dictionaryToRequestLabel"
+    ></epgu-constructor-label>
+
+    <epgu-constructor-information-center-card
+      *ngFor="let item of infoCenterList"
+      [item]="$any(item)"
+    ></epgu-constructor-information-center-card>
+  </div>
+</epgu-cf-ui-constructor-screen-pad>

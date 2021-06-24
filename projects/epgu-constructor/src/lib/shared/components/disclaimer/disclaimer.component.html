@@ -1,0 +1,21 @@
+<div class="error">
+  <p class="title">
+    <ng-container [ngSwitch]="type">
+      <span *ngSwitchCase="'warn'" class="yellow-line"></span>
+      <span *ngSwitchCase="'info'" class="gray-line"></span>
+      <span *ngSwitchDefault class="red-line"></span>
+    </ng-container>
+    {{ title }}
+  </p>
+  <ng-container *ngIf="description; else contentDescription">
+    <epgu-constructor-output-html
+      class="description"
+      [html]="description"
+      [clarifications]="clarifications"
+    ></epgu-constructor-output-html>
+  </ng-container>
+</div>
+
+<ng-template #contentDescription>
+  <div class="description"><ng-content></ng-content></div>
+</ng-template>

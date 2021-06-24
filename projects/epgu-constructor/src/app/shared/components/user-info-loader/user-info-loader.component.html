@@ -1,6 +1,0 @@
-<ng-container *ngFor="let component of (components$ | async)">
-  <ng-container [ngSwitch]="component[0].type">
-        <epgu-constructor-user-info *ngSwitchCase="componentTypes.PersonInfo" [value]="$any(component[1])"  ></epgu-constructor-user-info>
-  </ng-container>
-</ng-container>
-

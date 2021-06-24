@@ -1,0 +1,58 @@
+<h3 class="screen-modal__confirm-title">Введите код подтверждения</h3>
+
+<div class="confirm-phone">
+  <span class="confirm-phone__helper-text">Код придет в СМС на номер</span>
+
+  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)?.pd1?.value as phoneNumber">
+    <span class="confirm-phone__number">{{phoneNumber}}</span>
+    <button class="confirm-phone__link-btn" (click)="editNumber()">Редактировать</button>
+  </ng-container>
+
+  <!-- TO DO: получать phoneNumber из одного источника -->
+  <ng-container  *ngIf="(screenService.component$ | async).attrs?.phoneNumber as phoneNumber">
+    <span class="confirm-phone__number">{{phoneNumber | formatPhone }}</span>
+  </ng-container>
+
+  <div class="confirm-phone__warning" *ngIf="(screenService.component$ | async)?.attrs?.validateMessage">
+    <div>
+      <b><svg width="24" height="4" viewBox="0 0 24 4"
+              xmlns="http://www.w3.org/2000/svg"
+              style="margin-right: 8px; vertical-align: middle;">
+        <path d="M24 0H0V4H24V0Z" fill="#FED13E"></path> </svg>Обратите внимание!</b>
+      <p class="helper-text mt-4">
+        {{(screenService.component$ | async)?.attrs?.validateMessage}}
+      </p>
+    </div>
+  </div>
+
+  <div class="form">
+    <div class="form__group" #codeGroup>
+      <epgu-constructor-constructor-plain-input
+        *ngFor="let control of codeFormArray.controls"
+        class="form__item"
+        libOnlyNumbers
+        [class.form__item--has-error]="isItemHasError(control.value.codeValue)"
+        [class.form__item--has-value]="control.value.codeValue"
+        [maxlength]="1"
+        type="text"
+        pattern="\d*"
+        [control]="$any(control.get('codeValue'))"
+      >
+      </epgu-constructor-constructor-plain-input>
+    </div>
+
+    <div class="form__error" *ngIf="screenService.componentError$ | async as error">{{error}}</div>
+    <div class="form__hint">
+      <p class="form__hint-text" *ngIf="isTimerShow">
+        Получить код повторно можно через
+        <b class="form__timer"
+          [epgu-constructor-counter]="count"
+          [interval]="countInterval"
+        >
+          {{timer | formatTime}}
+        </b>
+      </p>
+      <button class="confirm-phone__link-btn" *ngIf="!isTimerShow" (click)="sendCodeAgain()">Получить код повторно</button>
+    </div>
+  </div>
+</div>

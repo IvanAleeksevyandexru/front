@@ -1,8 +1,0 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes";
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
-
-.error {
-  margin-bottom: 4px;
-  color: $color-tela-rossa;
-  @include typ-plain-small;
-}

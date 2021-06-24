@@ -32,6 +32,8 @@ export interface DisplayDto {
   infoComponents?: string[];
   suggestion?: SuggestionGroup;
   hideBackButton?: boolean;
+  pronounceText?: string; // для умного поиска
+  pronounceTextType?: string; // для умного поиска
 }
 
 export enum ScreenTypes {
@@ -42,5 +44,5 @@ export enum ScreenTypes {
   UNIQUE = 'UNIQUE',
   INVITATION_ERROR = 'INVITATION_ERROR',
   EMPTY = 'EMPTY',
-  SPA = 'SPA',
+  APP = 'APP',
 }

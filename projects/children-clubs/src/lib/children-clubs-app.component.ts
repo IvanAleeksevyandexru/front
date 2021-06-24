@@ -1,35 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { CfSpaStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { InputSpaDto, SpaDataDirectionType } from '@epgu/epgu-constructor-types';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Injector,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import { AppBaseComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
 
 @Component({
   selector: 'children-clubs-app',
-  template: `
-    <p>
-      children-clubs app works!
-
-      {{ initState.componentId }}
-    </p>
-  `,
-  styles: [],
+  templateUrl: './children-clubs-app.component.html',
+  styleUrls: ['../styles/index.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChildrenClubsAppComponent implements OnInit {
-  initState = this.cfSpaStateService.getState<InputSpaDto>(SpaDataDirectionType.INPUT);
-  constructor(
-    private cfSpaStateService: CfSpaStateService,
-    private locationService: LocationService,
-  ) {}
+export class ChildrenClubsAppComponent
+  extends AppBaseComponent<ChildrenClubsValue, ChildrenClubsState>
+  implements OnInit {
+  @HostBinding('class.app-host') class = true;
+  public appType = 'ChildrenClubs';
+
+  constructor(public injector: Injector) {
+    super(injector);
+  }
+
   ngOnInit(): void {
-    setTimeout(() => {
-      this.cfSpaStateService.setState(
-        {
-          componentId: this.initState.componentId,
-          componentType: this.initState.componentType,
-          value: '{"someProperty": 42}',
-        },
-        SpaDataDirectionType.OUTPUT,
-      );
-      this.locationService.href(this.initState.callbackRedirectUrl);
-    }, 3000);
+    this.openApp();
   }
 }

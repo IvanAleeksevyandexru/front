@@ -1,0 +1,25 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+.item-mock {
+  min-height: 231px;
+  background: rgb(66, 245, 84);
+  width: 100%;
+}
+
+.item {
+  margin-bottom: 24px;
+  width: 592px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.title {
+  @include typ-h3;
+  font-weight: $fw-regular;
+  color: $color-summer-night;
+}
+.loader {
+  margin-top: 24px;
+}

@@ -1,0 +1,17 @@
+<div>
+  <h5 class="header mb-16">{{ label }}</h5>
+
+  <div *ngIf="selectedItems.length" class="wrapper mb-16">
+    <epgu-cf-ui-constructor-chip
+      class="item"
+      *ngFor="let item of selectedItems"
+      [label]="item.text"
+      [id]="item.id"
+      (closeEvent)="remove($event)"
+    ></epgu-cf-ui-constructor-chip>
+  </div>
+
+  <button class="link-btn" (click)="onClick()">
+    {{ selectedItems.length ? 'Выбрать еще' : 'Выбрать' }}
+  </button>
+</div>

@@ -1,0 +1,78 @@
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
+
+.payment{
+  padding: 24px;
+  border-radius: 12px;
+  background-color: $color-white;
+  box-shadow: 0 24px 48px $color-shadow;
+
+  &.inloading{
+    opacity: 0.5;
+  }
+}
+
+.info__text {
+  color: $color-summer-night;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 24px;
+  margin: 0;
+}
+
+.payment__sum {
+  color: $color-summer-night;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+  margin: 0;
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+
+.del{
+  color: $color-text-helper;
+  font-size: 14px;
+  font-weight: normal;
+  text-decoration: line-through;
+  margin-left: 12px;
+}
+
+.info__img {
+  max-width: 100%;
+}
+
+.info__hint,
+.info__title{
+  color: $color-text-helper;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.is__payed{
+  display: inline-block;
+  color: $color-white;
+  background-color: $color-green-sea;
+  line-height: 32px;
+  padding: 0 10px;
+  border-radius: 16px;
+}
+
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+  padding-bottom: 40px;
+  flex-direction: column;
+
+  @include tablets-up {
+    margin-top: 44px;
+  }
+}
+
+.footer__item{
+  margin-bottom: 10px;
+}
+
+@include rubles('.info__text', '/assets/icons/svg/ruble.svg');

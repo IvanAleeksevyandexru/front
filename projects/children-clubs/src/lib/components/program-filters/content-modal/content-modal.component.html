@@ -1,0 +1,13 @@
+<epgu-cf-ui-cta-modal
+  [text]="modalId"
+  [title]="title"
+  [showCrossButton]="true"
+  [showButtons]="true"
+>
+  <ng-container modal-content>
+    <div [innerHTML]="text | imgPrefixer | safe: 'html'"></div>
+  </ng-container>
+  <ng-container modal-buttons>
+    <lib-button type="button" (click)="closeModal()">Закрыть</lib-button>
+  </ng-container>
+</epgu-cf-ui-cta-modal>

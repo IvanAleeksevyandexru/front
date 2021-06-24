@@ -1,0 +1,28 @@
+<lib-standard-masked-input
+  epgu-cf-ui-constructor-trim
+  epgu-cf-ui-constructor-text-transform
+  epgu-constructor-validation-type
+  [epgu-constructor-mask-transform]="mask"
+  [maskOptions]="maskOptions"
+  [isTrim]="isTrim"
+  [textTransformType]="textTransformType"
+  [clearable]="clearable"
+  [mask]="$any(mask | maskHandle: maskOptions)"
+  [name]="name"
+  [id]="id"
+  [showMaskAsPlaceholder]="showMaskAsPlaceholder"
+  [placeholder]="placeholder"
+  [showConstantMaskSymbols]="showConstantMaskSymbols"
+  [formControl]="control"
+  [invalid]="invalid"
+  [validationShowOn]="validationShowOn"
+  [readOnly]="readonly"
+  (change)="onChange($event)"
+  (blur)="onBlur()"
+  [component]="component"
+  autocomplete="off"
+  [suggest]="suggestions"
+  [suggestSeparator]="suggestSeporator"
+  (selectSuggest)="selectSuggest.emit($event)"
+  [ngClass]="{ 'showPlaceholder-on-focus': showPlaceholderOnFocus }"
+></lib-standard-masked-input>

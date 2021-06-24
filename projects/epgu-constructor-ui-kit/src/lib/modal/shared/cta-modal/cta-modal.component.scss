@@ -1,0 +1,167 @@
+@use "sass:math";
+@import '../../../../styles/core/index';
+@import '../../../../styles/components/rubles';
+@import '../../../../styles/components/modal';
+
+$my: 7vh;
+$pyConfModal: 64px;
+$headerHeight: 57px;
+$controlHeight: 55px;
+$minModalHeight: 293px;
+$closeBtnWidth: 24px;
+
+.conf-modal {
+  display: flex;
+  flex-direction: column;
+  @include modal-body();
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  @include tablets-up {
+    max-height: calc(100vh - #{$my * 2});
+    min-height: $minModalHeight;
+    width: 634px;
+    height: auto;
+    border-radius: 12px;
+  }
+  @include phones-down {
+    padding: 24px;
+  }
+  &--short {
+    @include phones-down {
+      padding: 16px 16px 24px;
+    }
+  }
+
+  &__header {
+    position: relative;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    width: 100%;
+    padding-right: calc(#{$closeBtnWidth} + 8px);
+    @include tablets-up {
+      padding-right: calc(#{$closeBtnWidth} + 24px);
+    }
+    @include divider;
+  }
+
+  &__close {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    z-index: 1;
+    cursor: pointer;
+    &:only-child {
+      @include tablets-up {
+        top: 4px;
+      }
+    }
+  }
+
+  &__body {
+    overflow: auto; // для отработки скрола в модалке в моб
+    @include rubles('.conf-modal__body', '/assets/icons/svg/ruble.svg');
+    @include tablets-down {
+      height: 100%;
+    }
+
+    &.preview::ng-deep .text {
+      padding: 0;
+    }
+  }
+
+  &__content {
+    overflow: auto;
+    @include flex-container();
+    @include tablets-down {
+      height: 100%;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 24px;
+    @include tablets-up {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    ::ng-deep {
+      > *:not(:first-child) {
+        margin: 0 0 24px;
+        @include tablets-up {
+          margin: 0 0 0 16px;
+        }
+      }
+      .screen-button {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+::ng-deep .text_modal_error {
+  text-align: center;
+
+  h4 {
+    margin-bottom: 8px;
+  }
+
+  span {
+    color: $color-text-helper;
+  }
+
+  &__img {
+    display: block;
+    margin: 0 auto 24px;
+  }
+}
+
+:host::ng-deep {
+  .perfect-scrollbar {
+    .conf-modal__content {
+      overflow: initial;
+      height: auto;
+      display: flex;
+      position: relative;
+    }
+
+    .conf-modal__controls {
+      margin-right: -15px; // центрирует кнопки
+    }
+
+    .ps-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding-right: 15px; // fix overlapping content by scroll
+      padding-bottom: 2px; // hack for avoid overlapping of buttons
+      @include tablets-up {
+        max-height: calc(
+          100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight}
+        );
+        min-height: calc(
+          #{$minModalHeight} - #{$pyConfModal} - #{$headerHeight} - #{$pyConfModal} / 2
+        );
+      }
+    }
+  }
+
+  .perfect-scrollbar-button-outside-content {
+    .ps-content {
+      @include tablets-up {
+        max-height: calc(
+          100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight} *
+            2
+        );
+      }
+    }
+  }
+}

@@ -2,6 +2,12 @@
 import { ComponentAttrsDto } from './component-attrs';
 import { ArgumentsDto } from './arguments';
 
+export interface ILinkedValue {
+  argument: string;
+  defaultValue?: string;
+  source?: string;
+}
+
 /**
  * @property {Array<object>}attrs - объект с дополнительной информацией
  * (например для select элементов могут приходить словари)
@@ -25,4 +31,7 @@ export interface ComponentDto {
   valueFromCache?: boolean;
   suggestionId?: string;
   arguments?: ArgumentsDto;
+  pronounceText?: string; // для умного поиска
+  pronounceTextType?: string; // для умного поиска
+  linkedValues?: ILinkedValue[];
 }

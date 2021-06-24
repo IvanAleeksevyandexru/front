@@ -29,6 +29,7 @@ export interface ScenarioDto {
   currentValue: CurrentValueDto;
   display: DisplayDto;
   errors: ScenarioErrorsDto;
+  uniquenessErrors: ScenarioErrorsDto[][];
   gender: Gender;
   finishedAndCurrentScreens: string[];
   orderId: number;
@@ -39,6 +40,7 @@ export interface ScenarioDto {
   newContactId?: string;
   logicComponents?: LogicComponents[];
   currentLogicValue: CurrentValueDto;
+  isPrevStepCase?: boolean;
 }
 
 export interface ScenarioErrorsDto {

@@ -10,6 +10,15 @@ import { ConfirmUserDataStyle } from './confirm-user-data';
 import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
+import { ScreenButton } from './screen-buttons';
+
+export interface KinderGardenAttrs {
+  header?: string;
+  label?: string;
+  checkboxLabel?: string;
+  buttons?: Array<ScreenButton>;
+  attrs?: ComponentAttrsDto;
+}
 
 export interface ComponentAttrsDto {
   actions?: Array<ComponentActionDto>;
@@ -77,8 +86,9 @@ export interface ComponentAttrsDto {
   dictionaryOptions?: DictionaryOptions;
   style?: ConfirmUserDataStyle;
   imgSrc?: string;
-  error?: { imgSrc: string; label: string };
-  success?: { imgSrc: string; label: string };
+  error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  muchTries?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   helperText?: string;
   label?: string;
   sendEmailLabel?: string;
@@ -121,6 +131,10 @@ export interface ComponentAttrsDto {
   isSelectButtonHidden?: boolean;
   expandAllChildrenBlocks?: boolean;
   disclaimer?: DisclaimerDto;
+  mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
+  hideCloneButton?: boolean;
+  ignoreRootParams?: Array<string>;
+  placeholderText?: string;
 }
 
 export interface DisclaimerDto {

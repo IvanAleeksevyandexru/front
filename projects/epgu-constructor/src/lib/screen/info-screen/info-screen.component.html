@@ -1,0 +1,40 @@
+<epgu-cf-ui-screen-container
+  *ngIf="{
+    showNav: screenService.showNav$ | async,
+    hideSocialShare: (screenService.component$ | async)?.attrs?.hideSocialShare,
+    displayCssClass: screenService.displayCssClass$ | async,
+    header: screenService.header$ | async,
+    isLoading: screenService.isLoading$ | async,
+    terminal: screenService.terminal$ | async,
+    buttons: screenService.buttons$ | async
+  } as async"
+  [show-nav]="async.showNav"
+  [class.screen-container-mt]="!async.showNav"
+>
+  <epgu-cf-ui-constructor-screen-pad class="screen-body" [ngClass]="async.displayCssClass">
+    <div *ngIf="async.header">
+      <epgu-constructor-page-name class="info__head">{{ async.header }}</epgu-constructor-page-name>
+      <div class="divider"></div>
+    </div>
+
+    <epgu-constructor-info-screen-body [data]="screenService.component">
+    </epgu-constructor-info-screen-body>
+
+    <epgu-constructor-screen-buttons
+      *ngIf="async.buttons.length"
+      [screenButtons]="async.buttons"
+      [isLoading]="async.isLoading"
+      class="info__submit"
+    ></epgu-constructor-screen-buttons>
+  </epgu-cf-ui-constructor-screen-pad>
+
+  <div class="screen-footer">
+    <lib-social-share
+      *ngIf="!async.hideSocialShare && !async.terminal"
+      class="social-share"
+      [isNewDesign]="true"
+      [isNewDesignDisabled]="configService.isSocialShareDisabled"
+      [url]="locationService.getHref()"
+    ></lib-social-share>
+  </div>
+</epgu-cf-ui-screen-container>

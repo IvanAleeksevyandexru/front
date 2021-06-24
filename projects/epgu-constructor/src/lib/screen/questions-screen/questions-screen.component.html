@@ -1,0 +1,48 @@
+<epgu-cf-ui-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  class="questions-screen quiz"
+  [ngClass]="screenService.displayCssClass$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div class="screen-body quiz__header">
+    <epgu-constructor-page-name class="quiz__title">
+      {{ screenService.header$ | async }}
+      <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
+    </epgu-constructor-page-name>
+    <epgu-constructor-output-html
+      class="quiz__description"
+      *ngIf="screenService.componentLabel$ | async"
+      [html]="screenService.componentLabel$ | async | imgPrefixer"
+      [clarifications]="(screenService.component$ | async).attrs?.clarifications"
+    >
+    </epgu-constructor-output-html>
+  </div>
+
+  <div class="screen-footer quiz__container">
+    <ng-content *ngTemplateOutlet="answersButtons"></ng-content>
+    <ng-container *ngTemplateOutlet="screenButtons"></ng-container>
+  </div>
+</epgu-cf-ui-screen-container>
+
+<ng-template #answersButtons>
+  <ng-container *ngFor="let answer of (screenService.answers$ | async)">
+    <epgu-constructor-answer-button
+      [data]="answer"
+      class="quiz__item"
+      [selectedValue]="selectedAnswer"
+      (click)="answerChoose(answer)"
+      (keydown.enter)="answerChoose(answer)"
+      (keydown.space)="answerChoose(answer)"
+    >
+    </epgu-constructor-answer-button>
+  </ng-container>
+</ng-template>
+
+<ng-template #screenButtons>
+  <epgu-constructor-screen-buttons
+    class="screen-buttons"
+    *ngIf="(screenService.buttons$ | async).length"
+    [screenButtons]="screenService.buttons$ | async"
+    [isLoading]="screenService.isLoading$ | async"
+  ></epgu-constructor-screen-buttons>
+</ng-template>

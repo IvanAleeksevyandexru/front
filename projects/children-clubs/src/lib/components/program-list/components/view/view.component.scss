@@ -1,0 +1,104 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+:host {
+  @include typ-plain-text;
+  color: $color-summer-night;
+}
+.project-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project__info {
+  order: 3;
+  flex-basis: 100%;
+  padding-left: 0;
+}
+.project__image {
+  height: 180px;
+  overflow: hidden;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+  margin-bottom: 16px;
+  flex-basis: 100%;
+  margin-top: -24px;
+  margin-left: -24px;
+  margin-right: -24px;
+  min-width: calc(100% + 48px);
+  border-radius: 12px 12px 0 0;
+
+  .project__age-limit {
+    padding: 8px 10px;
+    background: $color-white;
+    color: $color-summer-night;
+    border-radius: 8px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    @include phones-down {
+      top: auto;
+      bottom: 16px;
+    }
+  }
+  @include phones-down {
+    height: 165px;
+    margin-bottom: 24px;
+  }
+}
+.project__description {
+  color: $color-text-helper;
+}
+.project__organization {
+  @include typ-h5;
+  font-weight: $fw-regular;
+  margin-bottom: 12px;
+  @include phones-down {
+    @include typ-plain-text;
+    margin-bottom: 16px;
+  }
+}
+
+.project__info-item {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+
+  @include phones-down {
+    margin-top: 16px;
+  }
+}
+
+.item-icon {
+  margin-right: 16px;
+}
+
+.project__title {
+  @include typ-h3;
+  order: 0;
+  margin-bottom: 24px;
+  flex-basis: 100%;
+}
+.project__btn-text {
+  margin-top: 24px;
+  color: $color-text-helper;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn_pd {
+  padding: 40px 0 64px 0;
+}
+
+.project-buttons > .link-btn {
+  margin-top: 12px;
+  display: block;
+  @include typ-plain-text;
+}
+.project-buttons > .link-btn:first-child {
+  margin-top: 0;
+}

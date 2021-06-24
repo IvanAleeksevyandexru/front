@@ -1,0 +1,86 @@
+@use "sass:math";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+
+.form {
+  @include flex-container();
+  flex-flow: wrap;
+  margin-left: calc( #{-$screen-pad-16} / 2);
+  margin-right: calc( #{-$screen-pad-16} / 2);
+  &__item {
+    @include flex-container();
+    justify-content: flex-start;
+    flex: 1 1 100%;
+    margin-left: calc( #{$screen-pad-16} / 2);
+    margin-right: calc( #{$screen-pad-16} / 2);
+    max-width: calc(100% - #{$screen-pad-16});
+    &::ng-deep > .component-list-resolver {
+      & > * > .label {
+        margin-bottom: $screen-pad-12;
+      }
+    }
+    ::ng-deep .doc-input {
+      margin-bottom: $screen-pad-24;
+    }
+    &--checkbox > * {
+      margin-bottom: $screen-pad-16;
+    }
+    &[class*="grid"] {
+      &:last-child > * {
+        margin-bottom: $screen-pad-24 !important;
+      }
+    }
+    &:last-child {
+      &::ng-deep > .component-list-resolver > * > * {
+        margin-bottom: 0;
+      }
+      ::ng-deep .doc-input {
+        margin-bottom: 0;
+      }
+    }
+  }
+  &__radio {
+    &--block {
+      display: inline-block;
+      margin-top: $screen-pad-12;
+      lib-radio {
+        display: block;
+        margin-bottom: 16px;
+      }
+
+      lib-checkbox {
+        display: block;
+        margin-bottom: 16px;
+
+        &::ng-deep .labelText {
+          line-height: 24px;
+        }
+
+        &:first-child {
+          margin-top: 4px;
+        }
+      }
+    }
+    &--inline {
+      display: inline-flex;
+      flex-wrap: wrap;
+      lib-radio {
+        margin-top: $screen-pad-12;
+      }
+      lib-radio:not(:last-child) {
+        margin-right: $screen-pad-32;
+      }
+    }
+  }
+  &__item:first-child {
+    .form__radio--block {
+      margin-top: 0;
+    }
+  }
+
+  &__radio &__radio-item:last-child {
+    margin-bottom: 0;
+  }
+}

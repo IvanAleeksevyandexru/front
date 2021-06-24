@@ -1,0 +1,20 @@
+<form class="form">
+  <div
+    *ngFor="let componentData of formService.form.controls; let idx = index"
+    class="form__item {{
+      componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
+    }}"
+    [class.form__item--checkbox]="[componentType.CheckBox].includes(componentData.value?.type)"
+  >
+    <epgu-constructor-component-list-resolver
+      *ngIf="
+        formService.shownElements[componentData.value?.id]?.isShown
+          | showComponent: componentData.value?.attrs?.hidden
+      "
+      [componentIndex]="idx"
+      [componentsGroupIndex]="componentsGroupIndex"
+      [componentType]="componentData.value?.type"
+      class="component-list-resolver"
+    ></epgu-constructor-component-list-resolver>
+  </div>
+</form>

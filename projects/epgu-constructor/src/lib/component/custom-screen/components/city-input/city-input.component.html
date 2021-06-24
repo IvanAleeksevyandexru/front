@@ -1,0 +1,16 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <epgu-cf-ui-constructor-constructor-lookup
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [control]="$any(control.get('value'))"
+    [itemsProvider]="
+            control.value?.attrs | memo: formService.addressHelperServiceProvider:formService
+          "
+    [clearable]="clearable"
+  >
+  </epgu-cf-ui-constructor-constructor-lookup>
+</epgu-constructor-component-item>
