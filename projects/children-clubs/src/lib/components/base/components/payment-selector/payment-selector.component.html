@@ -1,0 +1,69 @@
+<div [formGroup]="form">
+  <div class="mb-16">
+    <h5 class="title">Оплата</h5>
+  </div>
+
+  <ng-container *ngIf="vendor === vendorType.inlearno; else pdfo">
+    <div class="mb-16">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.free]"
+        [formControlName]="formFields.free"
+      ></lib-checkbox>
+    </div>
+
+    <div class="mb-16">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.certificate]"
+        [formControlName]="formFields.certificate"
+      ></lib-checkbox>
+    </div>
+
+    <div class="mb-24">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.personalFunds]"
+        [formControlName]="formFields.personalFunds"
+      ></lib-checkbox></div
+  ></ng-container>
+
+  <ng-template #pdfo>
+    <div class="mb-16">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.valued]"
+        [formControlName]="formFields.valued"
+      ></lib-checkbox>
+    </div>
+    <div class="mb-16">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.preprof]"
+        [formControlName]="formFields.preprof"
+      ></lib-checkbox>
+    </div>
+    <div class="mb-16">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.other]"
+        [formControlName]="formFields.other"
+      ></lib-checkbox>
+    </div>
+    <div class="mb-16">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.certificate]"
+        [formControlName]="formFields.certificate"
+      ></lib-checkbox>
+    </div>
+
+    <div class="mb-24">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.personalFunds]"
+        [formControlName]="formFields.personalFunds"
+      ></lib-checkbox>
+    </div>
+  </ng-template>
+
+  <button
+    *ngIf="clarifiactions?.aboutpayment"
+    (click)="openAboutPayment()"
+    class="link-btn mb-24 small-link"
+  >
+    {{ clarifiactions.aboutpayment.title }}
+  </button>
+</div>

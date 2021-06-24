@@ -6,46 +6,15 @@
     }}"
     [class.form__item--checkbox]="[componentType.CheckBox].includes(componentData.value?.type)"
   >
-    <ng-container
-      [ngSwitch]="componentData.value?.type"
+    <epgu-constructor-component-list-resolver
       *ngIf="
         formService.shownElements[componentData.value?.id]?.isShown
           | showComponent: componentData.value?.attrs?.hidden
       "
-    >
-      <epgu-constructor-component-item
-        *ngSwitchCase="componentType.RadioInput"
-        [control]="componentData.get('value')"
-        [component]="componentData.value"
-        [invalid]="componentData.invalid"
-        [hidden]="componentData.value?.attrs?.hidden"
-        [largeFontSize]="true"
-      >
-        <div
-          class="form__radio"
-          [ngClass]="
-            componentData.value?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'
-          "
-        >
-          <lib-radio
-            *ngFor="let item of componentData.value?.attrs?.supportedValues"
-            [name]="componentData.value.id"
-            [labelText]="item.label"
-            [formControl]="$any(componentData.get('value'))"
-            [value]="item.value"
-            class="form__radio-item"
-          >
-          </lib-radio>
-        </div>
-      </epgu-constructor-component-item>
-
-      <epgu-constructor-component-list-resolver
-        *ngSwitchDefault
-        [componentIndex]="idx"
-        [componentsGroupIndex]="componentsGroupIndex"
-        [componentType]="componentData.value?.type"
-        class="component-list-resolver"
-      ></epgu-constructor-component-list-resolver>
-    </ng-container>
+      [componentIndex]="idx"
+      [componentsGroupIndex]="componentsGroupIndex"
+      [componentType]="componentData.value?.type"
+      class="component-list-resolver"
+    ></epgu-constructor-component-list-resolver>
   </div>
 </form>

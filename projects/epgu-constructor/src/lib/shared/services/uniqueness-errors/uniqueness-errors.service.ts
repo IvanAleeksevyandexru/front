@@ -70,6 +70,7 @@ export class UniquenessErrorsService {
           this.removeLastDuplicateError(componendIdMapped);
           setTimeout(() => {
             this._preparedUniquenessErrors = this.prepareUniquenessErrors(this._initErrors);
+            this.triggerComponentErrorsUpdate();
           });
         }
       });

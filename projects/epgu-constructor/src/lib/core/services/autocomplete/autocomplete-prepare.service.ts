@@ -163,11 +163,13 @@ export class AutocompletePrepareService {
     const componentValue = this.findComponentValue(component, id, value);
     this.setComponentValue(component, componentValue);
     if (isChildrenListType(parentComponent)) {
-      this.screenService.cachedAnswers[parentComponent.id] = this.prepareCachedAnswers(
+      const cachedAnswer: Answer = this.prepareCachedAnswers(
         parentComponent,
         component,
         componentsGroupIndex,
       );
+      this.screenService.cachedAnswers[parentComponent.id] = cachedAnswer;
+      this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer?.value);
     }
   }
 
@@ -317,7 +319,10 @@ export class AutocompletePrepareService {
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
-      const cachedState = this.currentAnswersService.state[componentsGroupIndex];
+      const cachedState =
+        (this.currentAnswersService.state &&
+          this.currentAnswersService.state[componentsGroupIndex]) ||
+        {};
       if (parsedValue[componentsGroupIndex]) {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,

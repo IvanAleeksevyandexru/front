@@ -1,4 +1,28 @@
 import { ListElement } from '@epgu/epgu-lib';
+
+export enum VendorType {
+  inlearno = 'inlearno',
+  pfdo = 'pfdo',
+}
+
+export enum FinancingType {
+  free = 'free',
+  other = 'other',
+  preprof = 'preprof',
+  valued = 'valued',
+  paid = 'paid',
+  certificate = 'certificate',
+}
+
+export const financingTypes: Record<string, { icon: string; text: string }> = {
+  free: { icon: 'not-paid.svg', text: 'Возможно бесплатное обучение' },
+  other: { icon: 'budget-other.svg', text: 'Бюджетная программа (иная образовательная)' },
+  preprof: { icon: 'budget-pre-prof.svg', text: 'Бюджетная программа (предпрофессиональная)' },
+  valued: { icon: 'budget-sign.svg', text: 'Бюджетная программа (значимая)' },
+  paid: { icon: 'paid.svg', text: 'Возможно платное обучение' },
+  certificate: { icon: 'cert.svg', text: 'Возможна оплата сертификатом' },
+};
+
 export interface NSIDictionaryItem {
   code: string;
   name: string;
@@ -13,8 +37,11 @@ export interface BaseProgram {
   imageSmallUrl: string;
   minAge: number;
   maxAge: number;
-  financingSources: NSIDictionaryItem[];
-  programRegistries: NSIDictionaryItem[];
+  financingTypes: FinancingType[];
+}
+
+export enum EducationType {
+  distance = 'distance',
 }
 
 export interface Program extends BaseProgram {
@@ -23,17 +50,21 @@ export interface Program extends BaseProgram {
   teachers: string;
   maxPersons: number;
   programContent: string;
-  goal: string;
+  goals: string;
   results: string;
   technicalBase: string;
+  educationForm: EducationType | string;
+  groupCount: number;
 }
 
 export interface FinancialSource {
   sourceCode: string;
   cost: number;
+  monthlyCost: number;
 }
 
 export interface Group {
+  uuid: string;
   name: string;
   ageFrom: number; //float
   ageTo: number; //float
@@ -41,10 +72,9 @@ export interface Group {
   dateBegin: string; //date
   dateEnd: string; //date
   hoursYear: number; //float
-  costHourManual: string;
   teachers: string;
   schedule: string;
-  financingSources: FinancialSource[];
+  financingTypes: FinancingType[];
 }
 
 export enum OvzType {
@@ -96,7 +126,7 @@ export interface Filters {
   pfdoPayments?: PfdoPaymentFilters;
   maxPrice?: number; //Максимальная стоимость в месяц
   focus?: ListElement | FocusFilter; //Направленность
-  direction?: string; //Специализация
+  direction?: ListElement | string; //Специализация
   level?: LevelType; //Уровень подготовки
   age?: number; //Возраст ребенка, лет
   ovzType?: OvzType; //Ограничения здоровья
@@ -104,6 +134,8 @@ export interface Filters {
 
 //Параметры для фильтрации групп
 export interface FindOptionsGroup {
+  nextSchoolYear: boolean;
+  vendor: VendorType;
   isRegistrationOpen?: boolean; //Показывать только группы с открытой записью
   inlernoPayments?: InlernoPaymentFilters;
   pfdoPayments?: PfdoPaymentFilters;
@@ -120,6 +152,8 @@ export interface FindResponseGroup {
 //Параметры для фильтрации программ
 export interface FindOptionsProgram {
   filters: Filters;
+  nextSchoolYear: boolean; //Следующий учебный год (с 1 сентября), выбирается после региона
+  vendor: VendorType; //Вендор выбранного региона, со значениями "inlearno" или "pfdo"
   okato: number; //ОКАТО региона, в котором ищутся программы. Обязательное поле.
   page: number; //Номера страницы, начиная с 0. По умолчанию 0
   pageSize: number; // Размер страницы
@@ -133,10 +167,20 @@ export interface FindResponseProgram {
 }
 
 export interface FocusDirectionsItem {
-  focus: string;
+  focusName: string;
+  focusCode: string;
   directions: string[];
 }
 
+export interface NormalizedFocusData {
+  focus: ListElement[];
+  directions: Record<string, ListElement[]>;
+}
+
+export interface Municipality {
+  uuid: string;
+  name: string;
+}
 export interface DirectionsResponse {
   items: FocusDirectionsItem[];
 }

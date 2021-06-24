@@ -6,9 +6,9 @@ import {
   ScreenContainerModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsFilterPanelModule } from '../filter-panel/children-clubs-filter-panel.module';
 
 import { GroupListComponent } from './components/group-list/group-list.component';
+import { BaseModule } from '../base/base.module';
 
 @NgModule({
   declarations: [GroupListComponent],
@@ -17,7 +17,7 @@ import { GroupListComponent } from './components/group-list/group-list.component
     EpguLibModule,
     LongButtonModule,
     ScreenPadModule,
-    ChildrenClubsFilterPanelModule,
+    BaseModule,
     ScreenContainerModule,
   ],
 

@@ -1,4 +1,5 @@
 import { ListElement } from '@epgu/epgu-lib';
+import { InlernoPaymentFilters, PfdoPaymentFilters } from '../../typings';
 
 export const FormFieldsName = {
   isRegistrationOpen: 'isRegistrationOpen',
@@ -14,6 +15,23 @@ export const FormFieldsName = {
   level: 'level',
   age: 'age',
   ovzType: 'ovzType',
+  preprof: 'preprof',
+  valued: 'valued',
+  other: 'other',
+};
+
+export const defaultPdfoFilters = {
+  valued: false,
+  preprof: false,
+  other: false,
+  certificate: false,
+  personalFunds: false,
+};
+
+export const defaultInlearnoFilters = {
+  free: false,
+  certificate: false,
+  personalFunds: false,
 };
 
 export const FormFieldsLabel = {
@@ -29,6 +47,9 @@ export const FormFieldsLabel = {
   [FormFieldsName.level]: 'Уровень подготовки',
   [FormFieldsName.age]: 'Возраст ребенка, лет',
   [FormFieldsName.ovzType]: 'Ограничения здоровья',
+  [FormFieldsName.preprof]: 'Бесплатно (предпрофессиональные)',
+  [FormFieldsName.valued]: 'Бесплатно (значимые)',
+  [FormFieldsName.other]: 'Бесплатно (иные программы)',
 };
 
 export const FocusListElements: ListElement[] = [
@@ -142,3 +163,17 @@ export const HealthListElements: ListElement[] = [
     text: 'Нарушение интеллекта',
   },
 ];
+
+export interface FormValue {
+  isRegistrationOpen: boolean;
+  place: string;
+  onlyDistanceProgram: boolean;
+  inlernoPayments?: InlernoPaymentFilters;
+  pfdoPayments?: PfdoPaymentFilters;
+  maxPrice: string;
+  focus: ListElement;
+  direction: ListElement;
+  level: ListElement;
+  age: string;
+  ovzType: ListElement;
+}

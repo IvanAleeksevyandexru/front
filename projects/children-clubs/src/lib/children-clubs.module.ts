@@ -7,12 +7,12 @@ import {
   AppUiConfig,
   SharedModalModule,
   MainContainerModule,
-  BaseUiModule, HEALTH_SERVICE,
+  BaseUiModule,
+  HEALTH_SERVICE,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ProgramFiltersModule } from './components/program-filters/program-filters.module';
+import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
-import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 
 import { GroupListModule } from './components/group-list/group-list.module';
@@ -48,8 +48,7 @@ const APP_CONFIG: AppUiConfig = {
     AppStateModule,
     GroupListModule,
     ProgramListModule,
-    ChildrenClubsFilterPanelModule,
-    ProgramFiltersModule,
+    BaseModule,
     SharedModalModule,
     AppUiModule.forRoot(APP_CONFIG),
     BaseUiModule,
@@ -58,7 +57,7 @@ const APP_CONFIG: AppUiConfig = {
     {
       provide: HEALTH_SERVICE,
       useClass: HealthHandlerService,
-    }
+    },
   ],
   exports: [ChildrenClubsAppComponent],
   entryComponents: [ProgramListContainerComponent],

@@ -132,7 +132,7 @@ describe('ConfirmationModalComponent', () => {
   });
 
   it('should render epgu-constructor-screen-buttons if actionButtons is not empty', () => {
-    const selector = '[modal-action-buttons] > epgu-constructor-screen-buttons';
+    const selector = 'epgu-constructor-screen-buttons';
 
     let debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeNull();

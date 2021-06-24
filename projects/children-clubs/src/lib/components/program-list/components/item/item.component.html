@@ -13,18 +13,15 @@
         <div class="project__organization">{{ data.partnerName }}</div>
 
         <div class="project__info-item-list">
-          <ng-container *ngFor="let item of data.financingSources; let i = index">
-            <div *ngIf="item.code === 'budget'" class="project__info-item">
-              <div class="item-icon"><img src="assets/icons/not-paid.svg" /></div>
-              <div class="item-label">{{ item.name }}</div>
-            </div>
-            <div *ngIf="item.code === 'paid'" class="project__info-item">
-              <div class="item-icon"><img src="assets/icons/paid.svg" /></div>
-              <div class="item-label">{{ item.name }}</div>
-            </div>
-            <div *ngIf="item.code === 'pfdod_certificate'" class="project__info-item">
-              <div class="item-icon"><img src="assets/icons/cert.svg" /></div>
-              <div class="item-label">{{ item.name }}</div>
+          <ng-container *ngFor="let item of data.financingTypes; let i = index">
+            <div class="project__info-item">
+              <div class="item-icon">
+                <img
+                  [alt]="financingTypes[item].text"
+                  src="assets/icons/{{ financingTypes[item].icon }}"
+                />
+              </div>
+              <div class="item-label">{{ financingTypes[item].text }}</div>
             </div>
           </ng-container>
         </div>

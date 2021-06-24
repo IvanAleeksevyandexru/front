@@ -35,6 +35,7 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 import { LoadService } from '@epgu/epgu-lib';
+import { BaseModule } from './components/base/base.module';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -43,12 +44,7 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ProgramListModule,
-        ChildrenClubsFilterPanelModule,
-        SharedModalModule,
-        MainContainerModule,
-      ],
+      imports: [ProgramListModule, BaseModule, SharedModalModule, MainContainerModule],
       declarations: [
         ChildrenClubsAppComponent,
         ProjectListComponent,

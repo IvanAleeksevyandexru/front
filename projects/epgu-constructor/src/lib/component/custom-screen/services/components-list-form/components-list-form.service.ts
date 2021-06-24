@@ -90,13 +90,20 @@ export class ComponentsListFormService {
     this._form = new FormArray(
       components.map((component: CustomComponent, index) => {
         this.indexesByIds[component.id] = index;
-        return this.createGroup(component, components, errors[component.id], componentsGroupIndex);
+        return this.createGroup(
+          component,
+          components,
+          errors && errors[component.id],
+          componentsGroupIndex,
+        );
       }),
     );
     this.validationService.form = this.form;
-    if (this.errors) {
-      this._form.markAllAsTouched();
-    }
+    // TODO: временно отключаю т.к. данная имплементация нежелательно аффектит обычные CUSTOM-формы без ошибок уникальности
+    // Додумать механизм до выкатывания фичи в release/22
+    // if (this.errors) {
+    //   this._form.markAllAsTouched();
+    // }
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
@@ -304,7 +311,10 @@ export class ComponentsListFormService {
       this.validationService.validationBackendError(errorMsg, component),
     ];
 
-    if (component.type === CustomScreenComponentTypes.DateInput || component.type === CustomScreenComponentTypes.MonthPicker) {
+    if (
+      component.type === CustomScreenComponentTypes.DateInput ||
+      component.type === CustomScreenComponentTypes.MonthPicker
+    ) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 

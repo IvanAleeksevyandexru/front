@@ -23,6 +23,7 @@ import {
 import {
   beforeFilesPlural,
   ErrorActions,
+  extToLowerCase,
   FileItem,
   FileItemStatus,
   OperationType,
@@ -280,7 +281,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   polyfillFile(file: File): File {
     const { type, lastModified, name } = file;
 
-    return new FilePonyfill([file], name, {
+    return new FilePonyfill([file], extToLowerCase(name), {
       type,
       lastModified,
     });

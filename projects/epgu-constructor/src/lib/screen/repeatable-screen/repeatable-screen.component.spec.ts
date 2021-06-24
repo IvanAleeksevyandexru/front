@@ -1,7 +1,7 @@
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockComponent } from 'ng-mocks';
+import { MockComponents } from 'ng-mocks';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -44,7 +44,19 @@ const displayMock = {
       type: 'RepeatableFields',
       label: 'Добавить еще  ФИО',
       attrs: {
-        repeatableComponents: [],
+        repeatableComponents: [
+          [
+            {
+              id: 'pd8_1',
+              type: 'Lookup',
+              label: 'Прежний регион',
+              attrs: { dictionaryType: 'regions_56555' },
+              value: '',
+              required: true,
+              suggestionId: 'prev_region',
+            }
+          ],
+        ],
         repeatAmount: '20',
         components: [
           {
@@ -131,7 +143,7 @@ const displayMock = {
   impasse: false,
   terminal: false,
   firstScreen: false,
-} as DisplayDto;
+} as unknown as DisplayDto;
 
 describe('RepeatableScreenComponent', () => {
   let component: RepeatableScreenComponent;
@@ -148,9 +160,7 @@ describe('RepeatableScreenComponent', () => {
       declarations: [
         RepeatableScreenComponent,
         ScreenContainerComponent,
-        MockComponent(ComponentsListComponent),
-        MockComponent(CloneButtonComponent),
-        MockComponent(PrevButtonComponent),
+        MockComponents(ComponentsListComponent, CloneButtonComponent, PrevButtonComponent),
       ],
       providers: [
         CurrentAnswersService,

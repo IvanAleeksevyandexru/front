@@ -165,7 +165,7 @@ export class AutocompleteService {
           );
         }
 
-        this.screenService.updateScreenStore(this.screenService);
+        this.screenService.updateScreenStore(this.screenService.getStore());
       });
 
     this.eventBusService

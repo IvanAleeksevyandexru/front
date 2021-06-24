@@ -16,7 +16,8 @@ import {
 export class ContentModalComponent extends ModalBaseComponent implements OnInit {
   @Input() title: string;
   @Input() text: string;
-  modalId: 'infoModal';
+  @Input() modalId: string;
+
   constructor(
     public injector: Injector,
     private eventBusService: EventBusService,

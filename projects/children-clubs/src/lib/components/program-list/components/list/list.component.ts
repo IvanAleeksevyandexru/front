@@ -20,6 +20,7 @@ export class ListComponent {
 
   loading$ = this.listService.loading$;
   isShowButton$ = this.listService.isFinish$.pipe(map((status) => !status));
+
   loadPercentScroll = 80;
 
   constructor(private listService: ProgramListService) {}

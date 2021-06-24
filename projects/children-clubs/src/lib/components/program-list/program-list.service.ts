@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../services/api/api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AppStateQuery } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
 import { BaseProgram, FocusFilter } from '../../typings';
 import {
   map,
@@ -16,6 +14,7 @@ import {
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ListElement } from '@epgu/epgu-lib';
+import { StateService } from '../../services/state/state.service';
 
 @Injectable()
 export class ProgramListService {
@@ -52,7 +51,7 @@ export class ProgramListService {
     return this.data$$.getValue();
   }
 
-  load$: Observable<void> = this.stateQuery.state$.pipe(
+  load$: Observable<void> = this.stateService.state$.pipe(
     distinctUntilChanged(
       (prev, next) =>
         isEqual(prev?.programFilters, next?.programFilters) && prev.okato === next.okato,
@@ -67,7 +66,7 @@ export class ProgramListService {
       if (place && place?.text) {
         filters.place = place?.text;
       }
-      return { filters: state?.programFilters ?? {}, okato: state?.okato ?? 0 };
+      return { filters };
     }),
 
     tap(() => this.reset()),
@@ -77,10 +76,19 @@ export class ProgramListService {
         filter((page) => !this.isFinish && (page + 1) * this.pageSize > this.data.length),
         concatMap((page) => {
           this.loading$$.next(true);
-          return this.api.getProgramList({ ...options, page, pageSize: this.pageSize }).pipe(
-            tap(() => this.loading$$.next(false)),
-            tap((data: BaseProgram[]) => this.add(data)),
-          );
+          return this.api
+            .getProgramList({
+              ...options,
+              page,
+              pageSize: this.pageSize,
+              okato: this.stateService.okato,
+              vendor: this.stateService.vendor,
+              nextSchoolYear: this.stateService.nextSchoolYear,
+            })
+            .pipe(
+              tap(() => this.loading$$.next(false)),
+              tap((data: BaseProgram[]) => this.add(data)),
+            );
         }),
         mapTo(null),
       ),
@@ -88,10 +96,7 @@ export class ProgramListService {
     shareReplay(1),
   );
 
-  constructor(
-    private api: ApiService,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-  ) {}
+  constructor(private api: ApiService, private stateService: StateService) {}
 
   add(data: BaseProgram[]): void {
     if (this.data.length === 0) {

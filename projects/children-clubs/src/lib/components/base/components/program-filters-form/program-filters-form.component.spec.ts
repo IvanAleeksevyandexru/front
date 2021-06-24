@@ -10,17 +10,21 @@ import {
   DeviceDetectorServiceStub,
   ErrorModule,
   EventBusService,
-  ScreenContainerModule,
-  ScreenPadModule,
+  ModalService,
+  ModalServiceStub,
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ApiService } from '../../../services/api/api.service';
-import { ApiServiceStub } from '../../../services/api/api.service.stub';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from '../../../../services/api/api.service';
+import { ApiServiceStub } from '../../../../services/api/api.service.stub';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EpguLibModule } from '@epgu/epgu-lib';
-import { ChildrenClubsFilterPanelModule } from '../../filter-panel/children-clubs-filter-panel.module';
-import { MockModule } from 'ng-mocks';
+
+import { MockComponent } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
+import { StateService } from '../../../../services/state/state.service';
+import { StateServiceStub } from '../../../../services/state/state.service.stub';
+import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
+import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
@@ -28,12 +32,16 @@ describe('ProgramFiltersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProgramFiltersFormComponent],
+      declarations: [ProgramFiltersFormComponent, MockComponent(PaymentSelectorComponent)],
       providers: [
         EventBusService,
+        { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
+        { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
+        { provide: StateService, useClass: StateServiceStub },
+        DictionaryService,
       ],
       imports: [
         CommonModule,

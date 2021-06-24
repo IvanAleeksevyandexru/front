@@ -34,6 +34,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
     component = fixture.componentInstance;
     component.label = 'Label';
     component.subLabel = 'SubLabel';
+    component.modalHeader = 'modalHeader';
     component.dictionaryType = 'STRANI_IST';
     fixture.detectChanges();
   });
@@ -69,7 +70,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
       jest.spyOn(modalService, 'openModal');
       component.onClick();
       expect(modalService.openModal).toHaveBeenCalledWith(MultiChoiceDictionaryModalComponent, {
-        title: component.subLabel,
+        title: component.modalHeader,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
         selectedItems: component.selectedItems,
