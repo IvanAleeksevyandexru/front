@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ListElement } from '@epgu/epgu-lib';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../program-list.service';
 import { BaseProgram, Filters, VendorType } from '../../../typings';
@@ -84,6 +84,7 @@ export class ProgramListContainerComponent implements OnInit {
   openFilter(): void {
     this.modalService
       .openModal<Filters>(ProgramFiltersFormComponent)
+      .pipe(filter((filters) => !!filters))
       .subscribe((programFilters) => {
         this.countingFilters(programFilters);
         this.stateService.programFilters = programFilters;

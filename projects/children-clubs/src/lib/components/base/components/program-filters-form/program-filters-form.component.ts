@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Injector,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -79,7 +72,6 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
     private dictionary: DictionaryService,
-    private cdr: ChangeDetectorRef,
   ) {
     super(injector);
   }
@@ -95,17 +87,19 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     this.focusMap = data.directions;
     this.focusList.next(data.focus);
 
-    const focus = this.stateService.programFilters?.focus as ListElement;
-    if (focus) {
-      this.changeFocus(focus);
-      this.form.get(this.formFields.focus).setValue(focus);
-    }
-    const direction = this.stateService.programFilters?.direction as ListElement;
-    if (direction) {
-      this.form.get(this.formFields.direction).setValue(direction);
-    }
-    this.form.updateValueAndValidity();
-    this.cdr.markForCheck();
+    setTimeout(() => {
+      const focus = this.stateService.programFilters?.focus as ListElement;
+      if (focus) {
+        this.changeFocus(focus);
+        this.form.get(this.formFields.focus).setValue(focus);
+      }
+      setTimeout(() => {
+        const direction = this.stateService.programFilters?.direction as ListElement;
+        if (direction) {
+          this.form.get(this.formFields.direction).setValue(direction);
+        }
+      });
+    });
   }
 
   paymentFilterChange(value: InlernoPaymentFilters | PfdoPaymentFilters): void {
