@@ -33,7 +33,6 @@ import {
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
-import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
 import { LoadService } from '@epgu/epgu-lib';
 import { BaseModule } from './components/base/base.module';
 
