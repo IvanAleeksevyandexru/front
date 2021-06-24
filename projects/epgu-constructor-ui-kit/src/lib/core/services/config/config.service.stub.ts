@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AppPathMap, Config, MockApi, TimeSlotsApi } from './config.types';
+import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
   _apiUrl = '/api';
   _configApiUrl = '/api';
-  _configId = 'default-config';
+  _configId = DEFAULT_CONFIG_ID;
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';

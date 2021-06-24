@@ -14,10 +14,8 @@ import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenResolverComponent } from '../screen/screen-resolver/screen-resolver.component';
 import { ScreenModalComponent } from '../modal/screen-modal/screen-modal.component';
 import { InitDataService } from '../core/services/init-data/init-data.service';
-import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
-import { FormPlayerConfigApiServiceStub } from './services/form-player-config-api/form-player-config-api.service.stub';
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigApiService, ConfigApiServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
@@ -53,7 +51,7 @@ describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
   let component: FormPlayerComponent;
   let formPlayerService: FormPlayerService;
-  let formPlayerConfigApiService: FormPlayerConfigApiService;
+  let formPlayerConfigApiService: ConfigApiService;
   let loadService: LoadService;
   let configService: ConfigService;
   let navService: NavigationService;
@@ -99,7 +97,7 @@ describe('FormPlayerComponent', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: FormPlayerConfigApiService, useClass: FormPlayerConfigApiServiceStub },
+        { provide: ConfigApiService, useClass: ConfigApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -119,7 +117,7 @@ describe('FormPlayerComponent', () => {
   beforeEach(() => {
     formPlayerService = TestBed.inject(FormPlayerService);
     initDataService = TestBed.inject(InitDataService);
-    formPlayerConfigApiService = TestBed.inject(FormPlayerConfigApiService);
+    formPlayerConfigApiService = TestBed.inject(ConfigApiService);
     loadService = TestBed.inject(LoadService);
     configService = TestBed.inject(ConfigService);
     navService = TestBed.inject(NavigationService);
