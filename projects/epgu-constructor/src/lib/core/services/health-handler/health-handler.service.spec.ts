@@ -21,10 +21,10 @@ import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   RENDER_FORM_SERVICE_NAME,
-  RequestStatus, UnspecifiedDTO,
+  UnspecifiedDTO,
 } from './health-handler';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { ActionRequestPayload, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { ActionRequestPayload, DictionaryFilters, RequestStatus } from '@epgu/epgu-constructor-types';
 import { HealthHandlerService } from './health-handler.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';

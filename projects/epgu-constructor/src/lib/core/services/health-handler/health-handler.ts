@@ -1,4 +1,4 @@
-import { ScenarioDto } from '@epgu/epgu-constructor-types';
+import { HealthPayload, ScenarioDto } from '@epgu/epgu-constructor-types';
 
 export const EXCEPTIONS = ['lib-assets', 'assets'];
 export const RENDER_FORM_SERVICE_NAME = 'renderForm';
@@ -50,17 +50,10 @@ export interface BackendHealthList {
   dictionaries: BackendDictionary[];
 }
 
-export interface CommonPayload {
-  id: string;
-  name: string;
-  orderId: string | number | undefined;
-  serverError?: string | number | undefined;
-  errorMessage?: string | number | undefined;
-  dictionaryUrl?: string | undefined;
+export interface CommonPayload extends HealthPayload {
   typeEvent?: string;
   mnemonicScreen?: string;
-  method: string;
-  date: string;
+  dictionaryUrl?: string;
 }
 
 export interface UnspecifiedDTO {
@@ -83,9 +76,4 @@ export enum FilterType {
 export enum RegionSource {
   Gosbar = 'GOSBAR',
   Okato = 'OKATO',
-}
-
-export enum RequestStatus {
-  Succeed = 0,
-  Failed = 1,
 }

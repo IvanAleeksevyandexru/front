@@ -1,4 +1,5 @@
 import { AppTypes } from './app-types';
+import { FpHealthPayload } from '../api';
 
 /**
  * @property {string}[componentId] - идентификатор lib компаненты из услуги, необходим для проверки при переходах.
@@ -7,6 +8,7 @@ import { AppTypes } from './app-types';
  * @property {string}[value] - json like строка с содержимым для запуска lib с нужным стором, обычно берём из cachedAnswers.
  *   Должна будет серелизоваться в AppState тип.
  * @property {boolean}[isPrevStepCase] - флаг для передачи контекста сквозной навигации по услуги.
+ * @property {object}[healthPayload] - данные по текущему экрану и заявке, нужны для хелс сервиса.
  */
 export interface InputAppDto {
   componentId: string;
@@ -14,4 +16,5 @@ export interface InputAppDto {
   callbackRedirectUrl: string;
   value: string;
   isPrevStepCase: boolean;
+  healthPayload: FpHealthPayload;
 }
