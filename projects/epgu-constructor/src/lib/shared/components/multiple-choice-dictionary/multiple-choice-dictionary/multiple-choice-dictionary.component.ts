@@ -51,7 +51,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   public onClick(): void {
     this.modalService
       .openModal<ListElement[] | null>(MultiChoiceDictionaryModalComponent, {
-        title: this.modalHeader,
+        title: this.modalHeader || this.subLabel,
         dictionaryList: this.dictionaryList,
         dictionaryType: this.dictionaryType,
         selectedItems: this.selectedItems,
