@@ -12,10 +12,11 @@ import {
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HealthService } from '@epgu/epgu-lib';
 import {
+  AppStateQuery, AppStateQueryStub,
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
-  UtilsService,
+  UtilsService, UtilsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
 
@@ -70,6 +71,8 @@ describe('HealthHandlerService', () => {
         TestHealthInterceptor,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
+        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: AppStateQuery, useClass: AppStateQueryStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TestHealthInterceptor,

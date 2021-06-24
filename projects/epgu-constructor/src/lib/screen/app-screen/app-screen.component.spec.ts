@@ -31,6 +31,8 @@ const displayDtoSample: DisplayDto = {
   terminal: true,
 };
 
+const orderId = 456123;
+
 describe('SpaScreenComponent', () => {
   let component: AppScreenComponent;
   let fixture: ComponentFixture<AppScreenComponent>;
@@ -74,6 +76,7 @@ describe('SpaScreenComponent', () => {
     configService = TestBed.inject(ConfigService);
     screenService.display = displayDtoSample;
     screenService.component = componentDtoSample;
+    screenService.orderId = orderId;
     initComponent();
   });
 
@@ -235,6 +238,11 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: false,
+        healthPayload: {
+          id: displayDtoSample.id,
+          name: displayDtoSample.name,
+          orderId: orderId
+        },
       };
 
       expect(setStateSpy).toBeCalledWith(expectedState, DataDirectionType.INPUT);
@@ -251,6 +259,11 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: true,
+        healthPayload: {
+          id: displayDtoSample.id,
+          name: displayDtoSample.name,
+          orderId: orderId
+        },
       };
 
       expect(setStateSpy).toBeCalledWith(expectedState, DataDirectionType.INPUT);
