@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   HTTP_INTERCEPTORS, HttpClient,
-  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -16,9 +15,8 @@ import {
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
-  UtilsService, UtilsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ActionRequestPayload, RequestStatus } from '@epgu/epgu-constructor-types';
+import { RequestStatus } from '@epgu/epgu-constructor-types';
 
 import { HealthHandlerService } from './health-handler.service';
 import { REGION_NAME } from './health-handler';
@@ -55,7 +53,6 @@ describe('HealthHandlerService', () => {
         TestHealthInterceptor,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         {
           provide: HTTP_INTERCEPTORS,
