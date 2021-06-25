@@ -57,8 +57,16 @@ export interface Program extends BaseProgram {
   groupCount: number;
 }
 
+export enum FinancialSourceType {
+  none = 'none',
+  budget = 'budget',
+  pfdod_certificate = 'pfdod_certificate',
+  paid = 'paid',
+  private = 'private',
+}
+
 export interface FinancialSource {
-  sourceCode: string;
+  sourceCode: FinancialSourceType;
   cost: number;
   monthlyCost: number;
 }
@@ -74,7 +82,7 @@ export interface Group {
   hoursYear: number; //float
   teachers: string;
   schedule: string;
-  financingTypes: FinancingType[];
+  financingTypes: FinancialSource[];
 }
 
 export enum OvzType {

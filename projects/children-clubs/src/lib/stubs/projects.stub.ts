@@ -1,6 +1,7 @@
 import {
   BaseProgram,
   EducationType,
+  FinancialSourceType,
   FinancingType,
   FocusDirectionsItem,
   Group,
@@ -114,16 +115,13 @@ export const groupStub: Group = {
   size: '15',
   dateBegin: '2020-10-14',
   dateEnd: '2021-05-31',
-  hoursYear: 144.0,
+  hoursYear: 148.0,
   teachers: 'Думчиков Д. В.',
-  schedule: 'Пн.12:00—14:00; Ср.16:00—17:00;  <br>Пт 17:00—15:30',
+  schedule: 'Пн.12:00—14:00  <br> Ср.16:00—17:00  <br>Пт 17:00—15:30',
   financingTypes: [
-    FinancingType.free,
-    FinancingType.paid,
-    FinancingType.certificate,
-    FinancingType.other,
-    FinancingType.preprof,
-    FinancingType.valued,
+    { sourceCode: FinancialSourceType.pfdod_certificate, cost: 100, monthlyCost: 1500 },
+    { sourceCode: FinancialSourceType.paid, cost: 120, monthlyCost: 1600 },
+    { sourceCode: FinancialSourceType.private, cost: 130, monthlyCost: 1700 },
   ],
 };
 

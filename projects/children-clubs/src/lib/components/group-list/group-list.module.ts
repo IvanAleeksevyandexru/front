@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EpguLibModule, ModalService } from '@epgu/epgu-lib';
 import {
+  ImgPrefixerModule,
   LongButtonModule,
+  SafeModule,
   ScreenContainerModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -25,6 +27,8 @@ import { GroupItemComponent } from './components/group-item/group-item.component
     ScreenPadModule,
     BaseModule,
     ScreenContainerModule,
+    SafeModule,
+    ImgPrefixerModule,
   ],
 
   providers: [

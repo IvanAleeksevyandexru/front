@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { Group, Program } from '../../typings';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Group } from '../../typings';
 import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ChildrenClubsState } from '../../children-clubs.types';
@@ -22,8 +22,6 @@ export class GroupListService {
 
   data$$ = new BehaviorSubject<Group[]>([]);
   data$ = this.data$$.asObservable();
-  program$$ = new BehaviorSubject<Program>(null);
-  program$ = this.program$$.asObservable();
 
   get data(): Group[] {
     return this.data$$.getValue();
@@ -38,7 +36,6 @@ export class GroupListService {
     ),
     filter((state) => !!state.selectedProgramUUID),
     tap(() => this.reset()),
-    tap(console.log),
     switchMap((state: ChildrenClubsState) =>
       this.getGroupList(state).pipe(tap(() => this.loading$$.next(false))),
     ),
@@ -50,13 +47,10 @@ export class GroupListService {
     private dictionary: DictionaryService,
   ) {}
 
-  getGroupList(state: ChildrenClubsState): Observable<[Program, Group[]]> {
-    return combineLatest([
-      this.dictionary.program$.pipe(tap((data) => this.setProgram(data))),
-      this.api
-        .getGroupList(state.selectedProgramUUID, this.state.groupFilters)
-        .pipe(tap((data) => this.setGroupList(data))),
-    ]);
+  getGroupList(state: ChildrenClubsState): Observable<Group[]> {
+    return this.api
+      .getGroupList(state.selectedProgramUUID, this.state.groupFilters)
+      .pipe(tap((data) => this.setGroupList(data)));
   }
 
   next(): void {
@@ -77,10 +71,6 @@ export class GroupListService {
     this.page$$.next(page);
   }
 
-  setProgram(program: Program): void {
-    this.program$$.next(program);
-  }
-
   setGroupList(groupList: Group[]): void {
     this.allData$$.next(groupList);
     this.next();
@@ -96,6 +86,5 @@ export class GroupListService {
     this.resetPagination();
     this.data$$.next([]);
     this.allData$$.next([]);
-    this.program$$.next(null);
   }
 }

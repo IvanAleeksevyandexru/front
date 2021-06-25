@@ -19,7 +19,6 @@ import { ApiServiceStub } from '../../services/api/api.service.stub';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
 import { StateServiceStub } from '../../services/state/state.service.stub';
-import { DictionaryService } from '../../services/dictionary/dictionary.service';
 
 @NgModule({
   declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
@@ -36,7 +35,6 @@ import { DictionaryService } from '../../services/dictionary/dictionary.service'
   providers: [
     ProgramListService,
     ModalService,
-    DictionaryService,
     { provide: ApiService, useClass: ApiServiceStub },
     { provide: StateService, useClass: StateServiceStub },
   ],

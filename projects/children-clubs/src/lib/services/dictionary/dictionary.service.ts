@@ -6,7 +6,7 @@ import { FocusDirectionsItem, Municipality, NormalizedFocusData, Program } from 
 import { ListElement } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DictionaryService {
   focusData$ = this.state.state$.pipe(
     pluck('okato'),
@@ -31,8 +31,9 @@ export class DictionaryService {
   program$: Observable<Program> = this.state.state$.pipe(
     pluck('selectedProgramUUID'),
     filter((uuid) => !!uuid),
+    distinctUntilChanged(),
     switchMap((uuid: string) => this.api.getProgram(uuid)),
-    shareReplay(1),
+    shareReplay(),
   );
 
   constructor(private api: ApiService, private state: StateService) {}
