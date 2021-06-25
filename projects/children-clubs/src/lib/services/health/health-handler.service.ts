@@ -6,7 +6,21 @@ import { HealthService } from '@epgu/epgu-lib';
 import { catchError, tap } from 'rxjs/operators';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
-import { CommonPayload, CONFIG_API_REQUEST_SUB } from './health-handler';
+import {
+  CommonPayload,
+  CONFIG_API_REQUEST_SUB, DIRECTIONS_NAME,
+  DIRECTIONS_SUB_URL,
+  MUNICIPALITIES_NAME,
+  MUNICIPALITIES_SUB_URL,
+  PROGRAM_DETAIL_NAME,
+  PROGRAM_DETAIL_SUB_URL,
+  REGION_NAME,
+  REGIONS_SUB_URL,
+  SEARCH_GROUP_NAME,
+  SEARCH_GROUP_SUB_URL,
+  SEARCH_PROGRAM_NAME,
+  SEARCH_PROGRAM_SUB_URL
+} from './health-handler';
 
 
 @Injectable()
@@ -53,7 +67,7 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private handleValidRequest<T>(request: HttpRequest<T>): void {
-    this.serviceName = this.utils.getServiceName(request.url);
+    this.initServiceName(request.url);
     this.health.measureStart(this.serviceName);
   }
 
@@ -86,5 +100,20 @@ export class HealthHandlerService implements HealthHandler {
     const url = payload['url'];
     return url && !url.includes(CONFIG_API_REQUEST_SUB)
       && url.includes(this.configService.childrenClubsApi);
+  }
+
+  private initServiceName(url: string): void {
+    if (url.includes(this.configService.childrenClubsApi)) {
+      this.serviceName = url.includes(REGIONS_SUB_URL) ? REGION_NAME : this.serviceName;
+      this.serviceName = url.includes(SEARCH_GROUP_SUB_URL) ? SEARCH_GROUP_NAME : this.serviceName;
+      this.serviceName = url.includes(SEARCH_PROGRAM_SUB_URL) ? SEARCH_PROGRAM_NAME : this.serviceName;
+      this.serviceName = url.includes(MUNICIPALITIES_SUB_URL) ? MUNICIPALITIES_NAME : this.serviceName;
+      this.serviceName = url.includes(DIRECTIONS_SUB_URL) ? DIRECTIONS_NAME : this.serviceName;
+      this.serviceName = url.includes(PROGRAM_DETAIL_SUB_URL) && !this.serviceName ? PROGRAM_DETAIL_NAME : this.serviceName;
+    }
+
+    if(!this.serviceName) {
+      this.serviceName = this.utils.getServiceName(url);
+    }
   }
 }
