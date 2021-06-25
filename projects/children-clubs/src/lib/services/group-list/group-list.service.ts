@@ -6,7 +6,6 @@ import { Group } from '../../typings';
 import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ChildrenClubsState } from '../../children-clubs.types';
-import { DictionaryService } from '../dictionary/dictionary.service';
 
 @Injectable()
 export class GroupListService {
@@ -41,11 +40,7 @@ export class GroupListService {
     ),
   );
 
-  constructor(
-    private api: ApiService,
-    private state: StateService,
-    private dictionary: DictionaryService,
-  ) {}
+  constructor(private api: ApiService, private state: StateService) {}
 
   getGroupList(state: ChildrenClubsState): Observable<Group[]> {
     return this.api
