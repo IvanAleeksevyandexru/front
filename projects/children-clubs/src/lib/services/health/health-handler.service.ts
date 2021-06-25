@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { AppStateQuery, ConfigService, HealthHandler, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { AppStateQuery, ConfigService, HealthHandler } from '@epgu/epgu-constructor-ui-kit';
 import { HealthService } from '@epgu/epgu-lib';
 import { catchError, tap } from 'rxjs/operators';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
@@ -30,7 +30,6 @@ export class HealthHandlerService implements HealthHandler {
 
   constructor (
     private health: HealthService,
-    private utils: UtilsService,
     private configService: ConfigService,
     private appStateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
@@ -110,10 +109,6 @@ export class HealthHandlerService implements HealthHandler {
       this.serviceName = url.includes(MUNICIPALITIES_SUB_URL) ? MUNICIPALITIES_NAME : this.serviceName;
       this.serviceName = url.includes(DIRECTIONS_SUB_URL) ? DIRECTIONS_NAME : this.serviceName;
       this.serviceName = url.includes(PROGRAM_DETAIL_SUB_URL) && !this.serviceName ? PROGRAM_DETAIL_NAME : this.serviceName;
-    }
-
-    if(!this.serviceName) {
-      this.serviceName = this.utils.getServiceName(url);
     }
   }
 }

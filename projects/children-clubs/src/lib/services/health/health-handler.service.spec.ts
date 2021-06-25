@@ -2,8 +2,7 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  HTTP_INTERCEPTORS,
-  HttpErrorResponse,
+  HTTP_INTERCEPTORS, HttpClient,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -16,11 +15,11 @@ import {
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
-  UtilsService, UtilsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
+import { RequestStatus } from '@epgu/epgu-constructor-types';
 
 import { HealthHandlerService } from './health-handler.service';
+import { REGION_NAME } from './health-handler';
 
 
 
@@ -40,28 +39,11 @@ export class TestHealthInterceptor implements HttpInterceptor {
 
 describe('HealthHandlerService', () => {
   let service: HealthHandlerService;
+  let configService: ConfigService;
   let healthService: HealthService;
   let httpMock: HttpTestingController;
-
-  let serviceId = 'local';
-  let orderId = '12345';
-
-  const api = 'service/10000000101/scenario/getNextStep';
-  const dto = {
-    scenarioDto: {
-      display: {
-        id: 'w1',
-        name: 'Приветствие',
-        components: [
-          {
-            id: 'zp1',
-            type: 'DocInput',
-            label: 'Загранпаспорт',
-          },
-        ],
-      },
-    },
-  } as ActionRequestPayload;
+  let http: HttpClient;
+  const apiUrl = 'http://localhost:8180/api/v1/';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -71,7 +53,6 @@ describe('HealthHandlerService', () => {
         TestHealthInterceptor,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         {
           provide: HTTP_INTERCEPTORS,
@@ -84,13 +65,50 @@ describe('HealthHandlerService', () => {
 
   beforeEach(() => {
     healthService = TestBed.inject(HealthService);
+    configService = TestBed.inject(ConfigService);
     service = TestBed.inject(HealthHandlerService);
+    http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
+    jest.spyOn(configService, 'childrenClubsApi', 'get').mockReturnValue(apiUrl);
   });
 
   afterEach(waitForAsync(() => httpMock.verify()));
 
-  it('should create', () => {
-    expect(healthService).toBeTruthy();
+  describe('Call start and end measure', () => {
+    it('should call healthService measureStart and measureEnd with name', fakeAsync((
+      done,
+    ) => {
+      const api = 'http://localhost:8180/api/v1/regions';
+      const payload = {};
+      jest.spyOn(healthService, 'measureStart');
+      jest.spyOn(healthService, 'measureEnd');
+      jest.spyOn<any, any>(service, 'getPayload').mockReturnValue(payload);
+      http.get(api).subscribe((response) => {
+        expect(response).toBeTruthy();
+        done();
+      });
+      const requestToDictionary = httpMock.expectOne(api);
+      const dataToFlush = {};
+      requestToDictionary.flush(dataToFlush);
+      expect(healthService.measureStart).toHaveBeenCalledWith(REGION_NAME);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(REGION_NAME, RequestStatus.Succeed, payload);
+    }));
+
+    it('shouldn\'t call healthService measureStart and measureEnd if it\'s not valid request for health', fakeAsync((
+      done,
+    ) => {
+      const api = 'https://pgu-uat-fed.test.gosuslugi.ru/api/v1/some-wrong-endpoint';
+      jest.spyOn(healthService, 'measureStart');
+      jest.spyOn(healthService, 'measureEnd');
+      http.get(api).subscribe((response) => {
+        expect(response).toBeTruthy();
+        done();
+      });
+      const requestToDictionary = httpMock.expectOne(api);
+      const dataToFlush = {};
+      requestToDictionary.flush(dataToFlush);
+      expect(healthService.measureStart).not.toHaveBeenCalled();
+      expect(healthService.measureEnd).not.toHaveBeenCalled();
+    }));
   });
 });
