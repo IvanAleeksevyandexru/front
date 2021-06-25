@@ -111,9 +111,5 @@ export class HealthHandlerService implements HealthHandler {
       this.serviceName = url.includes(DIRECTIONS_SUB_URL) ? DIRECTIONS_NAME : this.serviceName;
       this.serviceName = url.includes(PROGRAM_DETAIL_SUB_URL) && !this.serviceName ? PROGRAM_DETAIL_NAME : this.serviceName;
     }
-
-    if(!this.serviceName) {
-      this.serviceName = this.utils.getServiceName(url);
-    }
   }
 }
