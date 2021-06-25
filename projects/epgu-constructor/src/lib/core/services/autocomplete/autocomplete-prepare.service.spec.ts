@@ -33,6 +33,7 @@ import {
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { Answer } from '@epgu/epgu-constructor-types';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -318,6 +319,19 @@ describe('AutocompletePrepareService', () => {
       const value = 'value';
       service['setComponentValue'](component, value);
       expect(component.value).toEqual(value);
+    });
+  });
+
+  describe('prepareCachedAnswers()', () => {
+    it('should return Answer', () => {
+      const answer: Answer = {
+        visited: true,
+        value: '[{"value":"value","ai18":"value"}]',
+      };
+      const parentComponent = { id: 'pd8' } as ComponentDto;
+      const component = { id: 'ai18', value: 'value' } as ComponentDto;
+      const result = service['prepareCachedAnswers'](parentComponent, component, 0);
+      expect(result).toEqual(answer);
     });
   });
 
