@@ -60,6 +60,10 @@ export class TracingService {
     this.onServiceCodeChangeHandler();
   }
 
+  public isAllowedRemoteServices(url: string): boolean {
+    return this.allowedRemoteServices.some(allowedRemote => url.includes(allowedRemote));
+  }
+
   private onServiceCodeChangeHandler(): void {
     this.screenService.serviceCode$
       .pipe(

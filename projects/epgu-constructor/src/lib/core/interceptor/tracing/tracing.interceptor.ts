@@ -24,7 +24,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     }
 
     const { url }: { url: string } = req;
-    if (!this.tracingService.allowedRemoteServices.some(allowedRemote => url.includes(allowedRemote))) {
+    if (!this.tracingService.isAllowedRemoteServices(url)) {
       return next.handle(req);
     }
 
