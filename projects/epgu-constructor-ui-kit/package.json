@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@epgu/epgu-constructor-types": "16.1.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "zipkin": "0.22.0",
+    "zipkin-transport-http": "0.22.0"
   }
 }

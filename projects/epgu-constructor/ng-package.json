@@ -10,8 +10,6 @@
     "@alyle/ui",
     "angular-resize-event",
     "@tanker/file-ponyfill",
-    "zipkin",
-    "zipkin-transport-http",
     "node-fetch",
     "os"
   ],
@@ -38,8 +36,6 @@
       "date-fns/locale": "locale",
       "lodash": "lodash",
       "hammerjs": "hammerjs",
-      "zipkin": "zipkin",
-      "zipkin-transport-http": "zipkin-transport-http",
       "@nicky-lenaers/ngx-scroll-to": "@nicky-lenaers/ngx-scroll-to"
     },
     "styleIncludePaths": ["."]

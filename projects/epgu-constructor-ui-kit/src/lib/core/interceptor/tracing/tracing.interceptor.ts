@@ -1,5 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TracingService } from '../../services/tracing/tracing.service';
 import { Tracer } from 'zipkin';
@@ -16,7 +22,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     private tracingService: TracingService,
   ) {}
 
-  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const remoteService = 'form-backend';
     const { tracer }: { tracer: Tracer } = this.tracingService;
     if (!tracer) {
@@ -35,9 +41,9 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     tracer: Tracer,
     url: string,
     remoteServiceName: string,
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     const httpClient = new ZipkinHttpClient({
       remoteServiceName,
       tracer
@@ -47,7 +53,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
       headers: {}
     };
     const zipkinReq = httpClient.recordRequest(request, url, req.method);
-    const zipkinHeaders = zipkinReq.headers as any;
+    const zipkinHeaders = zipkinReq.headers;
     const traceId = tracer.id;
 
     req = req.clone({
@@ -55,12 +61,12 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     });
 
     return next.handle(req).pipe(
-      tap((event: HttpEvent<any>) => {
+      tap((event: HttpEvent<unknown>) => {
         if (event instanceof HttpResponse) {
           httpClient.recordResponse(traceId, event.status.toString());
         }
       }),
-      catchError((err: any) => {
+      catchError((err: HttpErrorResponse) => {
         httpClient.recordError(traceId, (JSON.stringify(err) as unknown) as Error);
         return throwError(err);
       })

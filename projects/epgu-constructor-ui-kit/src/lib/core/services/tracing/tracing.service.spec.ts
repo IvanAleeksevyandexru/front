@@ -1,15 +1,15 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { BatchRecorder, Tracer } from 'zipkin';
-import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
-import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
+import { ComponentsListRelationsService } from '@epgu/epgu-constructor/src/lib/component/custom-screen/services/components-list-relations/components-list-relations.service';
+import { CurrentAnswersService } from '@epgu/epgu-constructor/src/lib/screen/current-answers.service';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { CachedAnswersService } from '@epgu/epgu-constructor/src/lib/shared/services/cached-answers/cached-answers.service';
+import { DateRangeService } from '@epgu/epgu-constructor/src/lib/shared/services/date-range/date-range.service';
+import { DictionaryApiService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service';
+import { PrepareComponentsService } from '@epgu/epgu-constructor/src/lib/shared/services/prepare-components/prepare-components.service';
+import { RefRelationService } from '@epgu/epgu-constructor/src/lib/shared/services/ref-relation/ref-relation.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -19,7 +19,7 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { TracingService } from './tracing.service';
 import { configureTestSuite } from 'ng-bullet';
-import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
+import { DateRestrictionsService } from '@epgu/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('TracingService', () => {
@@ -80,7 +80,7 @@ describe('TracingService', () => {
     });
     it('should init allowedRemoteServices and fill it with values', () => {
       service.init(true);
-      expect(service.allowedRemoteServices.length).toBeGreaterThan(0);
+      expect(service._allowedRemoteServices.length).toBeGreaterThan(0);
     });
     it('should init defaultTags', () => {
       service.init(true);
