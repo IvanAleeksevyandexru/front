@@ -37,8 +37,8 @@
               },
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor-ui-kit/src/ui-kit-assets",
-                "output": "ui-kit-assets"
+                "input": "projects/epgu-constructor-ui-kit/src/assets",
+                "output": "assets"
               },
               {
                 "glob": "**/*",

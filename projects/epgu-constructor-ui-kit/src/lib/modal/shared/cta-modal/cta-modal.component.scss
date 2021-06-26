@@ -63,7 +63,7 @@ $closeBtnWidth: 24px;
 
   &__body {
     overflow: auto; // для отработки скрола в модалке в моб
-    @include rubles('.conf-modal__body', '/assets/icons/svg/ruble.svg');
+    @include rubles('.conf-modal__body');
     @include tablets-down {
       height: 100%;
     }

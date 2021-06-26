@@ -1,3 +1,6 @@
+@import "variables";
+@import "functions";
+
 .mb {
   &-0 {
     margin-bottom: 0 !important;
@@ -73,20 +76,20 @@
 
 .yellow-line {
   &::before {
-    background-image: url('../assets/icons/svg/yellow-line.svg');
+    background-image: escape-svg($yellow-line-icon);
     @include line;
   }
 }
 
 .red-line {
   &::before {
-    background-image: url('../assets/icons/svg/red-line.svg');
+    background-image: escape-svg($red-line-icon);
     @include line;
   }
 }
 .gray-line {
   &::before {
-    background-image: url('../assets/icons/svg/gray-line.svg');
+    background-image: escape-svg($gray-line-icon);
     @include line;
   }
 }
