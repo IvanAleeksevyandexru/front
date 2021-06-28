@@ -11,7 +11,7 @@
         (openFilters)="openFilter()"
         (search)="search($event)"
         [initValue]="initValue"
-        [filtersCount]="filtersCount$ | async"
+        [filtersCount]="filtersCount$$ | async"
       ></children-clubs-filter-panel>
       <ng-container *ngIf="loading$ | async; else content">
         <epgu-cf-ui-constructor-screen-pad class="loader mt-24">

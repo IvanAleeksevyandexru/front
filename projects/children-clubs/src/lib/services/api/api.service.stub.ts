@@ -40,11 +40,11 @@ export class ApiServiceStub {
   }
 
   getProgram(): Observable<Program> {
-    return timer(1000).pipe(mapTo(programStub));
+    return timer(1).pipe(mapTo(programStub));
   }
 
   getGroupList(): Observable<Group[]> {
-    return timer(1500).pipe(mapTo(new Array(43).fill(groupStub)));
+    return timer(1).pipe(mapTo(new Array(43).fill(groupStub)));
   }
 
   getRegions(): Observable<DictionaryItem[]> {

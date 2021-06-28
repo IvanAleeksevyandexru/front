@@ -19,10 +19,12 @@ import { ContentModalComponent } from './components/content-modal/content-modal.
 import { ChildrenClubsFilterPanelComponent } from './components/filter-panel/children-clubs-filter-panel.component';
 import { PaymentSelectorComponent } from './components/payment-selector/payment-selector.component';
 import { DictionaryService } from '../../services/dictionary/dictionary.service';
+import { GroupFiltersFormComponent } from './components/group-filters-form/group-filters-form.component';
 
 @NgModule({
   declarations: [
     ProgramFiltersFormComponent,
+    GroupFiltersFormComponent,
     ContentModalComponent,
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
