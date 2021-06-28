@@ -1,0 +1,59 @@
+<epgu-cf-ui-cta-modal
+  title="Фильтры"
+  [text]="modalId"
+  [showCrossButton]="true"
+  [isButtonsOutsideContent]="true"
+  [scrollTop]="false"
+>
+  <form [formGroup]="form" modal-content>
+    <div class="mb-24">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.isRegistrationOpen]"
+        [formControlName]="formFields.isRegistrationOpen"
+      ></lib-checkbox>
+    </div>
+
+    <div class="modal-divider mb-24"></div>
+
+    <children-clubs-payment-selector
+      (changes)="paymentFilterChange($event)"
+      [initValue]="initFilters"
+    ></children-clubs-payment-selector>
+
+    <div class="mb-24 half-for-desktop">
+      <div class="label">{{ formFieldsLabel[formFields.maxPrice] }}</div>
+      <lib-plain-input [formControlName]="formFields.maxPrice"></lib-plain-input>
+      <epgu-cf-ui-constructor-error
+        [data]="form.get(formFields.maxPrice)"
+      ></epgu-cf-ui-constructor-error>
+    </div>
+
+    <div class="modal-divider mb-24"></div>
+
+    <div class="mb-24 half-for-desktop">
+      <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
+      <lib-plain-input [formControlName]="formFields.age"></lib-plain-input>
+      <epgu-cf-ui-constructor-error
+        [data]="form.get(formFields.age)"
+      ></epgu-cf-ui-constructor-error>
+    </div>
+
+    <div class="mb-24 half-for-desktop">
+      <div class="label">{{ formFieldsLabel[formFields.level] }}</div>
+      <lib-dropdown
+        [formControlName]="formFields[formFields.level]"
+        [items]="levelListElements"
+      ></lib-dropdown>
+    </div>
+
+    <ng-container modal-buttons>
+      <div class="row mb-4">
+        <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
+          >Сбросить всё</lib-button
+        >
+
+        <lib-button class="row-item btn" (click)="submit()">Применить</lib-button>
+      </div>
+    </ng-container>
+  </form>
+</epgu-cf-ui-cta-modal>
