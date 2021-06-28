@@ -12,7 +12,10 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from './autocomplete.inteface';
-import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
+import {
+  CustomComponentAttr,
+  CustomScreenComponentTypes,
+} from '../../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 
@@ -239,7 +242,7 @@ export class AutocompletePrepareService {
       componentsGroupIndex,
     );
     if (component) {
-      value = this.getDateValueIfDateInput(component, value, true);
+      value = this.getFormattedValue(component, value, true);
     }
 
     return value;
@@ -289,7 +292,7 @@ export class AutocompletePrepareService {
 
   private setComponentValue(component: ComponentDto, value: string): void {
     if (component && value) {
-      value = this.getDateValueIfDateInput(component, value);
+      value = this.getFormattedValue(component, value);
 
       // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
       if (UtilsService.hasJsonStructure(value)) {
@@ -316,13 +319,11 @@ export class AutocompletePrepareService {
     componentsGroupIndex: number,
   ): Answer {
     const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
+    const currentAnswerState = this.currentAnswersService.state as Record<string, string>[];
+    const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
-      const cachedState =
-        (this.currentAnswersService.state &&
-          this.currentAnswersService.state[componentsGroupIndex]) ||
-        {};
       if (parsedValue[componentsGroupIndex]) {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,
@@ -335,14 +336,16 @@ export class AutocompletePrepareService {
       cachedAnswer.value = JSON.stringify(parsedValue);
       return cachedAnswer;
     } else {
+      let newCachedAnswer = [...currentAnswerState];
+      newCachedAnswer[componentsGroupIndex] = { [component.id]: component.value };
       return {
-        value: JSON.stringify([{ [component.id]: component.value }]),
+        value: JSON.stringify(newCachedAnswer),
         visited: true,
       };
     }
   }
 
-  private getDateValueIfDateInput(
+  private getFormattedValue(
     component: ComponentDto,
     value: string,
     isFormattedReturn?: boolean,
@@ -362,6 +365,9 @@ export class AutocompletePrepareService {
           ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
           : dateValue;
       }
+    } else if (component.type === CustomScreenComponentTypes.RadioInput) {
+      const componentAttrs = component.attrs as CustomComponentAttr;
+      return componentAttrs.supportedValues.find((item) => item.value === value)?.label || value;
     }
     return value;
   }

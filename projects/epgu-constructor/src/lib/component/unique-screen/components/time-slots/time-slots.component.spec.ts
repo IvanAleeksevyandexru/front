@@ -400,7 +400,9 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
-    const modalSpy = jest.spyOn(component, 'showError');
+    const modalSpy = jest.spyOn(component, 'showError').mockImplementation((errorMessage) => {
+      return errorMessage;
+    });
     fixture.detectChanges();
     expect(modalSpy).toBeCalled();
   });

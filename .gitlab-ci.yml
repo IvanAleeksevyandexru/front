@@ -132,9 +132,6 @@ Library-build:
 #   except:
 #     variables:
 #       - $GITLAB_USER_LOGIN == $CI_USER
-#   before_script:
-#     - echo "registry=http://npm.gosuslugi.local/" > ~/.npmrc
-#     - echo "//npm.gosuslugi.local/:_authToken=\"${NPM_TOKEN}\"" >> ~/.npmrc
 #   script:
 #     - echo $GITLAB_USER_LOGIN
 #     - echo $CI_USER

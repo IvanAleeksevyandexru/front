@@ -1,5 +1,8 @@
+@import '../core/variables';
+@import '../core/functions';
+
 // TODO вынести в глобальную область и избавиться от mixin!
-@mixin rubles($class-name, $background-path) {
+@mixin rubles($class-name) {
   #{$class-name}{
     &::ng-deep .rubles{
       display: inline-block;
@@ -16,7 +19,7 @@
       position: absolute;
       right: -14px;
       top: 5px;
-      background: no-repeat center center url($background-path);
+      background: no-repeat center center escape-svg($ruble-icon);
       background-size: contain;
     }
   }

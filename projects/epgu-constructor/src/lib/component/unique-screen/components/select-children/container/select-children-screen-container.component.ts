@@ -6,8 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { ComponentActionDto, ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { ComponentActionDto, ComponentDto, ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -24,25 +24,25 @@ import { UniquenessErrorsService } from '../../../../../shared/services/uniquene
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectChildrenScreenContainerComponent implements OnInit, AfterViewInit {
-  componentId: string;
+  component: ComponentDto;
   addSectionLabel$ = this.screenService.componentLabel$.pipe(
     takeUntil(this.ngUnsubscribe$),
     map((label) => label || 'Добавить ребёнка'),
   );
-  cachedValue$: Observable<CachedValue> = this.screenService.component$.pipe(
+  cachedValue$: Observable<CachedValue> = this.screenService.cachedAnswers$.pipe(
     takeUntil(this.ngUnsubscribe$),
-    map((data) => {
-      const cachedValue = this.screenService.getCompValueFromCachedAnswers(data.id);
+    filter((cachedAnswers) => !!cachedAnswers[this.component?.id]),
+    map((cachedAnswers) => {
+      const cachedValue = cachedAnswers[this.component.id].value;
 
       return cachedValue
-        ? this.cachedAnswersService.parseCachedValue<CachedValue>(cachedValue, data)
+        ? this.cachedAnswersService.parseCachedValue<CachedValue>(cachedValue, this.component)
         : null;
     }),
   );
   component$: Observable<ScreenStoreComponentDtoI> = this.screenService.component$.pipe(
     takeUntil(this.ngUnsubscribe$),
     map((component) => {
-      this.componentId = component.id;
       return this.screenService.getCompFromDisplay(component.id);
     }),
   );
@@ -65,6 +65,7 @@ export class SelectChildrenScreenContainerComponent implements OnInit, AfterView
   ) {}
 
   ngOnInit(): void {
+    this.component = this.screenService.component;
     this.eventBusService
       .on('updateCurrentAnswerServiceStateEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))

@@ -35,6 +35,7 @@ import {
 } from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
 import { ConfirmPersonalUserLegalDataComponent } from '../components/confirm-personal-user-data-screen/component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
 import { ReferralNumberComponent } from '../components/referral-number/referral-number.component';
+import { PaymentWayContainerComponent } from '../components/payment-way/components/payment-way-container/payment-way-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -71,6 +72,7 @@ type UniqueScreenComponent =
   | CarDetailInfoContainerComponent
   | MedicalReferralsListContainerComponent
   | ReferralNumberComponent
+  | PaymentWayContainerComponent
   ;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
@@ -123,5 +125,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
   CarDetailInfo: CarDetailInfoContainerComponent,
   MedicalReferrals: MedicalReferralsListContainerComponent,
-  ReferralNumber: ReferralNumberComponent
+  ReferralNumber: ReferralNumberComponent,
+  PaymentWay: PaymentWayContainerComponent,
 };

@@ -52,56 +52,6 @@ export const FormFieldsLabel = {
   [FormFieldsName.other]: 'Бесплатно (иные программы)',
 };
 
-export const FocusListElements: ListElement[] = [
-  {
-    id: 'null',
-    text: 'Все',
-  },
-  {
-    id: 'socialno_gumanitarnoe',
-    text: 'Социально-гуманитарная',
-  },
-  {
-    id: 'estestvennonauchnoe',
-    text: 'Естественнонаучная',
-  },
-  {
-    id: 'hudozhestvennoe',
-    text: 'Художественная',
-  },
-  {
-    id: 'fizkulturno_sportivnoe',
-    text: 'Физкультурно-спортивная',
-  },
-  {
-    id: 'turistsko_kraevedcheskoe',
-    text: 'Туристско-краеведческая',
-  },
-  {
-    id: 'tekhnicheskoe',
-    text: 'Техническая',
-  },
-];
-
-export const SpecializationListElements: ListElement[] = [
-  {
-    id: 'null',
-    text: 'Все',
-  },
-  {
-    id: 'general',
-    text: 'Общеразвивающая',
-  },
-  {
-    id: 'preprof',
-    text: 'Предпрофессиональная',
-  },
-  {
-    id: 'sport',
-    text: 'Спортивная подготовка',
-  },
-];
-
 export const LevelListElements: ListElement[] = [
   {
     id: 'null',

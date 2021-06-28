@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ListElement } from '@epgu/epgu-lib';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ProgramListService } from '../program-list.service';
+import { ProgramListService } from '../../../services/program-list/program-list.service';
 import { BaseProgram, Filters, VendorType } from '../../../typings';
 import { ProgramFiltersFormComponent } from '../../base/components/program-filters-form/program-filters-form.component';
 
