@@ -64,3 +64,16 @@
 .info__action::ng-deep button{
   margin-bottom: 24px;
 }
+
+.info__actions {
+  @include tablets-up {
+    display: flex;
+    justify-content: center;
+    .info__action {
+      margin-right: 32px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

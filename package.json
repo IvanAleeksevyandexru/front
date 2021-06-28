@@ -84,7 +84,7 @@
     "@epgu/children-clubs": "0.0.1",
     "@epgu/epgu-constructor-types": "16.1.1",
     "@epgu/epgu-constructor-ui-kit": "0.0.1",
-    "@epgu/epgu-lib": "0.1.19",
+    "@epgu/epgu-lib": "3.0.369-3-core",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "9.0.0",

@@ -20,7 +20,7 @@
     "ngx-perfect-scrollbar": "8.0.0",
     "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
     "text-mask-core": "5.1.2",
-    "@epgu/epgu-lib": "0.1.19",
+    "@epgu/epgu-lib": "3.0.369-3-core",
     "date-fns": "2.16.1",
     "uuid": "8.3.0",
     "@types/hammerjs": "2.0.38",

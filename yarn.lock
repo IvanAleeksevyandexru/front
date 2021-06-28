@@ -315,10 +315,38 @@
     tslib "^2.0.0"
     yargs "15.3.0"
 
+"@angular/compiler-cli@11.1.0":
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-11.1.0.tgz#111f420a9ab9274947f805b9f41ddce8f24070ea"
+  integrity sha512-PLeVrqBpn43G7DeBkDQqH38Y+VMlCIbxiP4Vv1rFAmKVNIm9J8m8jdC3EQSTXVV+L3oDCVP5/ERSCZ8Jqx6UoA==
+  dependencies:
+    "@babel/core" "^7.8.6"
+    "@babel/types" "^7.8.6"
+    canonical-path "1.0.0"
+    chokidar "^3.0.0"
+    convert-source-map "^1.5.1"
+    dependency-graph "^0.7.2"
+    fs-extra "4.0.2"
+    magic-string "^0.25.0"
+    minimist "^1.2.0"
+    reflect-metadata "^0.1.2"
+    semver "^6.3.0"
+    source-map "^0.6.1"
+    sourcemap-codec "^1.4.8"
+    tslib "^2.0.0"
+    yargs "^16.1.1"
+
 "@angular/compiler@11.0.0":
   version "11.0.0"
   resolved "http://npm.gosuslugi.local/@angular%2fcompiler/-/compiler-11.0.0.tgz#b49997d0130e7c8cfe84fa73e5610892f4a772af"
   integrity sha512-I7wVhdqvhtBTQTtW61z0lwPb1LiQQ0NOwjsbfN5sAc7/uwxw7em+Kyb/XJgBwgaTKtAL8bZEzdoQGLdsSKQF2g==
+  dependencies:
+    tslib "^2.0.0"
+
+"@angular/compiler@11.1.0":
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-11.1.0.tgz#0e2e18fe0cb64ec696986f12f80debcbdccc8d20"
+  integrity sha512-XW+McH/RVjpLtNkft6UYZQbjhXwX/hvLgUa9jGlTuIFM5o7W4XRPnq5sfn3+QvzdROF0j8S5sy47mGVNQOYMNg==
   dependencies:
     tslib "^2.0.0"
 
@@ -1612,10 +1640,10 @@
     "@epgu/epgu-constructor-types" "20.6.0"
     tslib "^2.0.0"
 
-"@epgu/epgu-lib@0.1.19":
-  version "0.1.19"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-0.1.19.tgz#2441f3121cae128892f6bbc18c55c307af60d270"
-  integrity sha512-f7RvN7gLBftVnQqWhXuit5utQx7ZUEIoMi9PTpKmqB0BR5hI963r2vVMVB7sHwqyVNQZOd3l0faLYsfO3TkxnQ==
+"@epgu/epgu-lib@3.0.369-3-core":
+  version "3.0.369-3-core"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-3.0.369-3-core.tgz#72a2eeec4ad5f08b30ee5d301dc9da06c158d22e"
+  integrity sha512-E5xJeFmL0+YDi/evzqOX53Cnbm9K+y1e+wLjW3jhspuUwCtgSCdne5K95Kq5JcIR/XQWODJV2CUxKHw9Tf6/cA==
   dependencies:
     "@angular/animations" "11.0.0"
     "@angular/cdk" "11.0.0"
@@ -2392,7 +2420,7 @@
     "@taiga-ui/i18n" "2.11.2"
     tslib "^1.10.0"
 
-"@taiga-ui/i18n@2.11.2":
+"@taiga-ui/i18n@2.11.2", "@taiga-ui/i18n@^2.11.2":
   version "2.11.2"
   resolved "https://registry.yarnpkg.com/@taiga-ui/i18n/-/i18n-2.11.2.tgz#5dedc77adfe6b237680427d216a089112d6cca06"
   integrity sha512-xfEpTqAwlF3VDv/ZD5dFs6Q2tR2LceTO+IInBfUdZ6DFuvcfadEK8OqQPvH7umIlJeBhWAja27/eNI90AGEwgw==
@@ -2452,7 +2480,7 @@
   dependencies:
     tslib "^1.10.0"
 
-"@tinkoff/ng-polymorpheus@3.1.8":
+"@tinkoff/ng-polymorpheus@3.1.8", "@tinkoff/ng-polymorpheus@^3.1.8":
   version "3.1.8"
   resolved "https://registry.yarnpkg.com/@tinkoff/ng-polymorpheus/-/ng-polymorpheus-3.1.8.tgz#60de8e769436bad51315eddc70bcd0a2b0d29cad"
   integrity sha512-Uedg+nOlf6KmPBYMth/KB+ocNFwYf52QI8jLYxswm1aRQEhI7yH6QLyLplVCxWYcIcke/6PwLY02ce7wknz/fQ==
