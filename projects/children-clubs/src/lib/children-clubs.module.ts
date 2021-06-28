@@ -9,6 +9,7 @@ import {
   MainContainerModule,
   BaseUiModule,
   HEALTH_SERVICE,
+  TRACE_ALLOWED_REMOTE_SERVICES,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
@@ -20,6 +21,14 @@ import { ProjectViewComponent } from './components/project-view/project-view.com
 import { ProjectGroupComponent } from './components/project-group/project-group.component';
 import { ProgramListContainerComponent } from './components/program-list/container/program-list-container.component';
 import { HealthHandlerService } from './services/health/health-handler.service';
+import {
+  DIRECTIONS_SUB_URL,
+  MUNICIPALITIES_SUB_URL,
+  PROGRAM_DETAIL_SUB_URL,
+  REGIONS_SUB_URL,
+  SEARCH_GROUP_SUB_URL,
+  SEARCH_PROGRAM_SUB_URL
+} from './services/health/health-handler';
 
 const APP_CONFIG: AppUiConfig = {
   appRoutingComponentMap: {
@@ -58,6 +67,17 @@ const APP_CONFIG: AppUiConfig = {
       provide: HEALTH_SERVICE,
       useClass: HealthHandlerService,
     },
+    {
+      provide: TRACE_ALLOWED_REMOTE_SERVICES,
+      useValue: [
+        REGIONS_SUB_URL,
+        SEARCH_GROUP_SUB_URL,
+        SEARCH_PROGRAM_SUB_URL,
+        PROGRAM_DETAIL_SUB_URL,
+        MUNICIPALITIES_SUB_URL,
+        DIRECTIONS_SUB_URL,
+      ]
+    }
   ],
   exports: [ChildrenClubsAppComponent],
   entryComponents: [ProgramListContainerComponent],

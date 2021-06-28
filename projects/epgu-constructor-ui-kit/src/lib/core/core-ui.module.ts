@@ -23,6 +23,8 @@ import { UtilsService } from './services/utils/utils.service';
 import { ModalService } from '../modal/modal.service';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { ConfigApiService } from './services/config-api/config-api.service';
+import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
+import { TracingService } from './services/tracing/tracing.service';
 
 @NgModule({
   providers: [
@@ -42,6 +44,7 @@ import { ConfigApiService } from './services/config-api/config-api.service';
     DatesToolsService,
     HttpClient,
     UtilsService,
+    TracingService,
     WINDOW_PROVIDERS,
     {
       provide: HTTP_INTERCEPTORS,
@@ -51,6 +54,11 @@ import { ConfigApiService } from './services/config-api/config-api.service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HealthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TracingHttpInterceptor,
       multi: true,
     },
     {

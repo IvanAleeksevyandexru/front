@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub, MainContainerModule } from '@epgu/epgu-constructor-ui-kit';
+import { LoadServiceStub, MainContainerModule, TracingServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
@@ -38,8 +38,7 @@ import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../screen/current-answers.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { TracingService } from '../core/services/tracing/tracing.service';
+import { DeviceDetectorServiceStub, TracingService } from '@epgu/epgu-constructor-ui-kit';
 import { SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponent } from '../component/logic-screen/component/logic.component';
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
@@ -57,6 +56,8 @@ describe('FormPlayerComponent', () => {
   let navService: NavigationService;
   let screenService: ScreenService;
   let loggerService: LoggerService;
+  let autocompleteService: AutocompleteService;
+  let tracingService: TracingService;
   let continueOrderModalService: ContinueOrderModalService;
   let initDataService: InitDataService;
   let formPlayerStartService: FormPlayerStartManager;
@@ -95,6 +96,7 @@ describe('FormPlayerComponent', () => {
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: TracingService, useClass: TracingServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigApiService, useClass: ConfigApiServiceStub },
@@ -107,7 +109,6 @@ describe('FormPlayerComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        TracingService,
         SessionService,
         TerraByteApiService,
       ],
@@ -119,6 +120,8 @@ describe('FormPlayerComponent', () => {
     initDataService = TestBed.inject(InitDataService);
     formPlayerConfigApiService = TestBed.inject(ConfigApiService);
     loadService = TestBed.inject(LoadService);
+    autocompleteService = TestBed.inject(AutocompleteService);
+    tracingService = TestBed.inject(TracingService);
     configService = TestBed.inject(ConfigService);
     navService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
@@ -172,6 +175,43 @@ describe('FormPlayerComponent', () => {
       spyOn(initDataService, 'init').and.callThrough();
       component.ngOnChanges({ service: new SimpleChange(null, serviceDataMock, true) });
       expect(initDataService.init).toBeCalledWith(serviceDataMock, contextMock);
+    });
+  });
+
+  describe('initConfigDependentEntities()', () => {
+    it('should call autocompleteService init with true', () => {
+      configService['_isAutocompleteServiceDisabled'] = true;
+      spyOn(autocompleteService, 'init').and.callThrough();
+      component['initConfigDependentEntities']();
+      expect(autocompleteService.init).toBeCalledWith(true);
+    });
+
+    it('should call autocompleteService init with false', () => {
+      spyOn(autocompleteService, 'init').and.callThrough();
+      component['initConfigDependentEntities']();
+      expect(autocompleteService.init).toBeCalledWith(false);
+    });
+
+    it('should call tracingService init with true', () => {
+      configService['_isZipkinEnabled'] = true;
+      spyOn(tracingService, 'init').and.callThrough();
+      component['initConfigDependentEntities']();
+      expect(tracingService.init).toBeCalledWith(true);
+    });
+
+    it('should call tracingService init with false', () => {
+      spyOn(tracingService, 'init').and.callThrough();
+      component['initConfigDependentEntities']();
+      expect(tracingService.init).toBeCalledWith(false);
+    });
+
+    it('should call tracingService setter serviceCode', () => {
+      const serviceCode = '42';
+      const setSpy = jest.spyOn(tracingService, 'serviceCode', 'set');
+      screenService.serviceCode = serviceCode;
+      component['initConfigDependentEntities']();
+      fixture.detectChanges();
+      expect(setSpy).toBeCalledWith(serviceCode);
     });
   });
 

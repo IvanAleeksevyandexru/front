@@ -11,10 +11,15 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LoadService } from '@epgu/epgu-lib';
-import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
+import { filter, mergeMap, takeUntil, tap, take, distinctUntilChanged } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService, ConfigService, ConfigApiService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  ConfigService,
+  ConfigApiService,
+  TracingService,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen/screen.service';
@@ -29,7 +34,6 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
-import { TracingService } from '../core/services/tracing/tracing.service';
 
 /**
  * Точка входа для приложения, эквивалент AppComponent.
@@ -111,6 +115,17 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   private initConfigDependentEntities(): void {
     this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
     this.tracingService.init(this.configService.isZipkinEnabled || false);
+    this.screenService.serviceCode$
+      .pipe(
+        filter((serviceCode) => serviceCode !== null),
+        distinctUntilChanged(
+          (prevServiceCode, nextServiceCode) => prevServiceCode === nextServiceCode,
+        ),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe((serviceCode: string) => {
+        this.tracingService.serviceCode = serviceCode;
+      });
   }
 
   private initNavigation(): void {
