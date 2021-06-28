@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
-import { distinctUntilChanged, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
-import { FocusDirectionsItem, Municipality, NormalizedFocusData } from '../../typings';
+import { distinctUntilChanged, filter, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
+import { FocusDirectionsItem, Municipality, NormalizedFocusData, Program } from '../../typings';
 import { ListElement } from '@epgu/epgu-lib';
+import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DictionaryService {
   focusData$ = this.state.state$.pipe(
     pluck('okato'),
@@ -24,6 +25,14 @@ export class DictionaryService {
         (municipality) => ({ id: municipality.uuid, text: municipality.name } as ListElement),
       ),
     ),
+    shareReplay(),
+  );
+
+  program$: Observable<Program> = this.state.state$.pipe(
+    pluck('selectedProgramUUID'),
+    filter((uuid) => !!uuid),
+    distinctUntilChanged(),
+    switchMap((uuid: string) => this.api.getProgram(uuid)),
     shareReplay(),
   );
 

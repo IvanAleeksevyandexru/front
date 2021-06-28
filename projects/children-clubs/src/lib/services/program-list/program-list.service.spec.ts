@@ -8,10 +8,10 @@ import {
   AppStateService,
   AppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ApiService } from '../../services/api/api.service';
-import { ApiServiceStub } from '../../services/api/api.service.stub';
-import { StateService } from '../../services/state/state.service';
-import { StateServiceStub } from '../../services/state/state.service.stub';
+import { ApiService } from '../api/api.service';
+import { ApiServiceStub } from '../api/api.service.stub';
+import { StateService } from '../state/state.service';
+import { StateServiceStub } from '../state/state.service.stub';
 
 describe('ProgramListService', () => {
   let service: ProgramListService;

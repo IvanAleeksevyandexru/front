@@ -1,6 +1,6 @@
 <epgu-cf-ui-screen-container>
   <div class="screen-body">
-    <div class="title">
+    <div class="title mb-24">
       Выберите программу
     </div>
     <children-clubs-filter-panel
@@ -10,7 +10,7 @@
       [filtersCount]="filtersCount$ | async"
     ></children-clubs-filter-panel>
     <ng-container *ngIf="fullLoading$ | async; else content">
-      <epgu-cf-ui-constructor-screen-pad class="loader" *ngIf="fullLoading$ | async">
+      <epgu-cf-ui-constructor-screen-pad class="loader">
         <lib-throbber-hexagon size="big"></lib-throbber-hexagon
       ></epgu-cf-ui-constructor-screen-pad>
     </ng-container>
