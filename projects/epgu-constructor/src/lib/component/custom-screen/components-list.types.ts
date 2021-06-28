@@ -161,7 +161,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   repeatWithNoFilters?: boolean;
   refs?: { [key: string]: string };
   dateRestrictions?: DateRestriction[];
-  mappingParams?: { idPath: string; textPath: string };
+  mappingParams?: { idPath: string; textPath: string , isRoot: boolean};
   dictionaryUrlType?: DictionaryUrlTypes;
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
