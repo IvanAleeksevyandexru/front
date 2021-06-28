@@ -1,0 +1,70 @@
+<tui-doc-page [header]="header" [package]="package" [type]="type">
+  <ng-template pageTab="Описание">
+    <div i18n class="tui-space_bottom-3">
+      Chip &mdash; компонент для кликабельных закрывающихся плашек, которые могут использоваться в
+      облаке тэгов, мультисписках и пр. Используется как составной компонент в других компонентах,
+      например в выпадающих мульти-списках (<a>MultipleChoiceDictionaryComponent</a>).
+    </div>
+    <tui-doc-example id="example" heading="Пример" [content]="example1">
+      <example-1-epgu-chip-component></example-1-epgu-chip-component>
+    </tui-doc-example>
+  </ng-template>
+
+  <ng-template pageTab="API">
+    <tui-doc-demo>
+      <epgu-cf-ui-constructor-chip
+        [label]="label"
+        [id]="id"
+        (closeEvent)="onClose($event)"
+      ></epgu-cf-ui-constructor-chip>
+    </tui-doc-demo>
+    <tui-doc-documentation>
+      <ng-template
+        documentationPropertyName="label"
+        documentationPropertyType="string"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="label"
+      >
+        Текстовое значение плашки
+      </ng-template>
+      <ng-template
+        documentationPropertyName="id"
+        documentationPropertyType="string"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="id"
+      >
+        Строчный идентификатор плашки, используется для определения скрытия нужной плашки кликом по
+        крестику, если их представлено несколько на одной странице
+      </ng-template>
+      <ng-template
+        documentationPropertyName="closeEvent"
+        documentationPropertyMode="output"
+        documentationPropertyType="string"
+      >
+        Производит событие, оповещающее о том, что была закрыта конкретная плашка
+      </ng-template>
+    </tui-doc-documentation>
+  </ng-template>
+
+  <ng-template pageTab="Setup">
+    <ol class="b-demo-steps">
+      <li>
+        <p>Импорт <code>ChipModule</code> в модули используемого компонента</p>
+
+        <tui-doc-code
+          filename="target-component.module.ts"
+          [code]="exampleImportModule"
+        ></tui-doc-code>
+      </li>
+
+      <li>
+        <p>Иcпользование в шаблоне:</p>
+
+        <tui-doc-code
+          filename="target-component.template.html"
+          [code]="exampleInsertTemplate"
+        ></tui-doc-code>
+      </li>
+    </ol>
+  </ng-template>
+</tui-doc-page>

@@ -1,6 +1,7 @@
 import {
   BaseProgram,
   EducationType,
+  FinancialSourceType,
   FinancingType,
   FocusDirectionsItem,
   Group,
@@ -48,17 +49,63 @@ export const programStub: Program = {
   ],
 };
 
-export const focusDirectionsStub: FocusDirectionsItem = {
-  focus: 'Социально-гуманитарная',
-  directions: [
-    'Социально-гуманитарная',
-    'Естественнонаучная',
-    'Художественная',
-    'Физкультурно-спортивная',
-    'Туристско-краеведческая',
-    'Техническая',
-  ],
-};
+export const focusDirectionsStubList: FocusDirectionsItem[] = [
+  {
+    focusName: 'Социально-гуманитарная',
+    focusCode: 'socialno_gumanitarnoe',
+    directions: [
+      'Социально-гуманитарная',
+      'Общеразвивающая',
+      'Предпрофессиональная',
+      'Спортивная подготовка',
+    ],
+  },
+  {
+    focusName: 'Естественнонаучная',
+    focusCode: 'estestvennonauchnoe',
+    directions: [
+      'Естественнонаучная',
+      'Общеразвивающая',
+      'Предпрофессиональная',
+      'Спортивная подготовка',
+    ],
+  },
+  {
+    focusName: 'Художественная',
+    focusCode: 'hudozhestvennoe',
+    directions: [
+      'Художественная',
+      'Общеразвивающая',
+      'Предпрофессиональная',
+      'Спортивная подготовка',
+    ],
+  },
+  {
+    focusName: 'Физкультурно-спортивная',
+    focusCode: 'fizkulturno_sportivnoe',
+    directions: [
+      'Физкультурно-спортивная',
+      'Общеразвивающая',
+      'Предпрофессиональная',
+      'Спортивная подготовка',
+    ],
+  },
+  {
+    focusName: 'Туристско-краеведческая',
+    focusCode: 'turistsko_kraevedcheskoe',
+    directions: [
+      'Туристско-краеведческая',
+      'Общеразвивающая',
+      'Предпрофессиональная',
+      'Спортивная подготовка',
+    ],
+  },
+  {
+    focusName: 'Техническая',
+    focusCode: 'tekhnicheskoe',
+    directions: ['Техническая', 'Общеразвивающая', 'Предпрофессиональная', 'Спортивная подготовка'],
+  },
+];
 
 export const groupStub: Group = {
   uuid: 'uuid123',
@@ -68,18 +115,26 @@ export const groupStub: Group = {
   size: '15',
   dateBegin: '2020-10-14',
   dateEnd: '2021-05-31',
-  hoursYear: 144.0,
+  hoursYear: 148.0,
   teachers: 'Думчиков Д. В.',
-  schedule: 'Пн.12:00—14:00; Ср.16:00—17:00;  <br>Пт 17:00—15:30',
+  schedule: 'Пн.12:00—14:00  <br> Ср.16:00—17:00  <br>Пт 17:00—15:30',
   financingTypes: [
-    FinancingType.free,
-    FinancingType.paid,
-    FinancingType.certificate,
-    FinancingType.other,
-    FinancingType.preprof,
-    FinancingType.valued,
+    { sourceCode: FinancialSourceType.pfdod_certificate, cost: 100, monthlyCost: 1500 },
+    { sourceCode: FinancialSourceType.paid, cost: 120, monthlyCost: 1600 },
+    { sourceCode: FinancialSourceType.private, cost: 130, monthlyCost: 1700 },
   ],
 };
+
+const municipality = { uuid: 'dfsdf', name: 'Муниципалитет1' };
+export const municipalityStub = [
+  municipality,
+  municipality,
+  municipality,
+  municipality,
+  municipality,
+  municipality,
+  municipality,
+];
 
 export const regionStub: DictionaryItem = {
   value: 'a478166c-9c75-aaeb-a8b3-0242ac13000a',

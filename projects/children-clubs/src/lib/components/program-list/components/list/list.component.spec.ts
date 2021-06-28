@@ -14,7 +14,7 @@ import {
 
 import { ListComponent } from './list.component';
 import { ItemComponent } from '../item/item.component';
-import { ProgramListService } from '../../program-list.service';
+import { ProgramListService } from '../../../../services/program-list/program-list.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';

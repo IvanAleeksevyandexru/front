@@ -210,15 +210,16 @@ export class UtilsService {
    * https://www.gosuslugi.ru/600101/1/form_item -> form_item -> formItem
    * https://www.gosuslugi.ru/600101/1/form -> form -> form
    * @param url
+   * @param sliceFrom
    */
-  public getServiceName(url: string): string {
+  public getServiceName(url: string, sliceFrom: number = 3): string {
     const numRegex = /^\d+$/;
     const splittedUrl = this.getSplittedUrl(url);
 
-    let preparedArray = this.sliceArrayFromRight(splittedUrl, 3);
+    let preparedArray = this.sliceArrayFromRight(splittedUrl, sliceFrom);
 
     if (numRegex.test(preparedArray[0])) {
-      preparedArray = this.sliceArrayFromRight(preparedArray, 3, false);
+      preparedArray = this.sliceArrayFromRight(preparedArray, sliceFrom, false);
     }
 
     preparedArray = preparedArray.map((urlPath) => (numRegex.test(urlPath) ? '' : urlPath));

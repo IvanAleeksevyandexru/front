@@ -33,6 +33,7 @@ import {
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
+import { Answer } from '@epgu/epgu-constructor-types';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -321,18 +322,41 @@ describe('AutocompletePrepareService', () => {
     });
   });
 
-  describe('getDateValueIfDateInput()', () => {
+  describe('prepareCachedAnswers()', () => {
+    it('should return Answer', () => {
+      const answer: Answer = {
+        visited: true,
+        value: '[{"value":"value","ai18":"value"}]',
+      };
+      const parentComponent = { id: 'pd8' } as ComponentDto;
+      const component = { id: 'ai18', value: 'value' } as ComponentDto;
+      const result = service['prepareCachedAnswers'](parentComponent, component, 0);
+      expect(result).toEqual(answer);
+    });
+  });
+
+  describe('getFormattedValue()', () => {
     describe('should return date string', () => {
       const component = _cloneDeep(mockData.display.components[0]);
       component.type = 'DateInput';
       const value = '2020-01-01T00:00:00.000Z';
       it('formatted', () => {
-        expect(service['getDateValueIfDateInput'](component, value, true)).toEqual('01.01.2020');
+        expect(service['getFormattedValue'](component, value, true)).toEqual('01.01.2020');
       });
       it('not formatted', () => {
-        expect(service['getDateValueIfDateInput'](component, value, false)).toEqual(
+        expect(service['getFormattedValue'](component, value, false)).toEqual(
           datesToolsService.toDate(value),
         );
+      });
+    });
+    describe('should return mapped value', () => {
+      const component = _cloneDeep(mockData.display.components[0]);
+      component.type = 'RadioInput';
+      const value = 'F';
+      const label = 'Женский';
+      component.attrs.supportedValues = [{ value, label }];
+      it('radio button label string as value', () => {
+        expect(service['getFormattedValue'](component, value, true)).toEqual(label);
       });
     });
   });

@@ -65,7 +65,18 @@ describe('MultipleChoiceDictionaryComponent', () => {
   });
 
   describe('onClick', () => {
-    it('should be open modal', () => {
+    it('should be open modal with modalHeader', () => {
+      jest.spyOn(modalService, 'openModal');
+      component.modalHeader = 'modalHeader';
+      component.onClick();
+      expect(modalService.openModal).toHaveBeenCalledWith(MultiChoiceDictionaryModalComponent, {
+        title: component.modalHeader,
+        dictionaryList: undefined,
+        dictionaryType: component.dictionaryType,
+        selectedItems: component.selectedItems,
+      });
+    });
+    it('should be open modal without modalHeader', () => {
       jest.spyOn(modalService, 'openModal');
       component.onClick();
       expect(modalService.openModal).toHaveBeenCalledWith(MultiChoiceDictionaryModalComponent, {

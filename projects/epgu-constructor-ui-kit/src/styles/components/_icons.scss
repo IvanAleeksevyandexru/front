@@ -1,22 +1,25 @@
-@import "./../core/palettes";
+@import "../core/palettes";
+@import "../core/variables";
+@import "../core/functions";
+@import "../core/breakpoint";
 
 .icon-arrow {
   display: inline-block;
   width: 24px;
   height: 24px;
   background-color: $color-gosblue;
-  mask: url('../assets/icons/svg/arrow.svg');
+  mask: escape-svg($arrow-icon);
   mask-repeat: no-repeat;
   mask-position: center;
   background-position: center;
   background-repeat: no-repeat;
   @include tablets-down {
-    mask: url('../assets/icons/svg/arrow-small.svg');
+    mask: escape-svg($arrow-small-icon);
     mask-repeat: no-repeat;
     mask-position: center;
   }
   &--back {
-    mask: url('../assets/icons/svg/arrow-small.svg');
+    mask: escape-svg($arrow-small-icon);
     mask-position: right;
     mask-repeat: no-repeat;
     width: 16px;
@@ -25,7 +28,7 @@
     transform: rotate(180deg);
   }
   &.disabled {
-    background-color:  $color-telegrey-scuro;
+    background-color: $color-telegrey-scuro;
   }
 }
 
@@ -33,5 +36,5 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url('../assets/icons/svg/close.svg');
+  background-image: escape-svg($close-icon);
 }

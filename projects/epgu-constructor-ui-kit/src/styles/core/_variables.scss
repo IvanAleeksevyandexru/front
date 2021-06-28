@@ -19,3 +19,20 @@ $screen-pad-12: 12px;
 $screen-pad-8: 8px;
 $screen-pad-4: 4px;
 $modal-z-index: 2147473648; // value overlaps gosbar by 1
+
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (
+    ("<","%3c"),
+    (">","%3e"),
+    ("#","%23"),
+    ("(","%28"),
+    (")","%29"),
+) !default;
+
+$arrow-small-icon: url("data:image/svg+xml,<svg width='6' height='10' viewBox='0 0 6 10' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0.50356 1.51725C0.22523 1.23826 0.225146 0.786657 0.503374 0.507568C0.782627 0.22745 1.23626 0.227313 1.51568 0.507261L5.29488 4.29356C5.68452 4.68393 5.68452 5.31607 5.29488 5.70644L1.51569 9.49274C1.23626 9.77269 0.782627 9.77255 0.503374 9.49243C0.225147 9.21334 0.22523 8.76174 0.50356 8.48275L3.97813 5L0.50356 1.51725Z' fill='#0D4CD3'/></svg>") !default;
+$arrow-icon: url("data:image/svg+xml,<svg width='9' height='16' viewBox='0 0 9 16' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M2.21072 0.393822C1.70499 -0.131274 0.885034 -0.131274 0.3793 0.393822C-0.126433 0.918919 -0.126433 1.77027 0.3793 2.29536L6.78928 8.95076C7.29501 9.47586 8.11497 9.47586 8.6207 8.95076C9.12643 8.42567 9.12643 7.57432 8.6207 7.04922L2.21072 0.393822Z' fill='#0D4CD3'/><path d='M0.379497 13.7046C-0.126237 14.2297 -0.126237 15.0811 0.379497 15.6062C0.88523 16.1313 1.70519 16.1313 2.21092 15.6062L8.6207 8.95076C9.12643 8.42567 9.12643 7.57432 8.6207 7.04922C8.11497 6.52412 7.29521 6.52414 6.78947 7.04924L0.379497 13.7046Z' fill='#0D4CD3'/></svg>") !default;
+$close-icon: url("data:image/svg+xml,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M3.92307 19.9231L19.9231 3.9231' stroke='#0D4CD3' stroke-width='2'/><path d='M3.92307 3.9231L19.9231 19.9231' stroke='#0D4CD3' stroke-width='2'/></svg>") !default;
+$gray-line-icon: url("data:image/svg+xml,<svg width='25' height='4' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M24.5 0H.5v4h24V0z' fill='#9DACCE'/></svg>") !default;
+$red-line-icon: url("data:image/svg+xml,<svg width='24' height='4' viewBox='0 0 24 4' xmlns='http://www.w3.org/2000/svg'><path d='M24 0H0V4H32V0Z' fill='#EE3F58'></path></svg>") !default;
+$yellow-line-icon: url("data:image/svg+xml,<svg width='24' height='4' viewBox='0 0 24 4' xmlns='http://www.w3.org/2000/svg'><path d='M24 0H0V4H32V0Z' fill='#FED13E'></path></svg>") !default;
+$ruble-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 440'><path d='M232.522 242.428c63.913 0 115.91-54.382 115.91-121.227C348.432 54.37 296.435 0 232.522 0H120.568v282.428h-29v30h29V440h30V312.428h101.955v-30H150.568v-40h81.954zM150.568 30h81.955c47.371 0 85.91 40.912 85.91 91.201 0 50.303-38.539 91.227-85.91 91.227h-81.955V30z'/></svg>") !default;

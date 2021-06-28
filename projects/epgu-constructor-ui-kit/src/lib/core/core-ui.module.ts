@@ -22,6 +22,7 @@ import { DatesToolsService } from './services/dates-tools/dates-tools.service';
 import { UtilsService } from './services/utils/utils.service';
 import { ModalService } from '../modal/modal.service';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
+import { ConfigApiService } from './services/config-api/config-api.service';
 
 @NgModule({
   providers: [
@@ -33,6 +34,7 @@ import { HealthInterceptor } from './interceptor/health/health.interceptor';
     CfAppStateService,
     LocationService,
     ConfigService,
+    ConfigApiService,
     LoggerService,
     HttpCancelService,
     SessionService,

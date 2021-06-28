@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AppNavigationService, ModalService } from '@epgu/epgu-constructor-ui-kit';
-import { filter, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { FinancingType, financingTypes, Program } from '../../../../typings';
-import { ApiService } from '../../../../services/api/api.service';
 import { StateService } from '../../../../services/state/state.service';
-import { ContentModalComponent } from '../../../program-filters/content-modal/content-modal.component';
+import { ContentModalComponent } from '../../../base/components/content-modal/content-modal.component';
+import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 
 @Component({
   selector: 'children-clubs-view',
@@ -20,19 +20,15 @@ export class ViewComponent implements OnInit {
   financingType = FinancingType;
   financingTypes = financingTypes;
 
-  data$: Observable<Program> = this.stateService.state$.pipe(
-    pluck('selectedProgramUUID'),
-    filter((uuid) => !!uuid),
-    switchMap((uuid: string) => this.api.getProgram(uuid)),
+  data$: Observable<Program> = this.dictionaryService.program$.pipe(
     tap(() => this.loading.next(false)),
-    shareReplay(1),
   );
 
   constructor(
     private appNavigationService: AppNavigationService,
-    private api: ApiService,
     private stateService: StateService,
     private modalService: ModalService,
+    private dictionaryService: DictionaryService,
   ) {}
 
   next(): void {

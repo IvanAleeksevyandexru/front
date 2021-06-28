@@ -23,11 +23,18 @@ import {
   MainContainerModule,
   ModalService,
   ModalServiceStub,
+  UnsubscribeService,
+  LoadServiceStub,
+  ConfigService,
+  ConfigServiceStub,
+  ConfigApiService,
+  ConfigApiServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
-import { ChildrenClubsFilterPanelModule } from './components/filter-panel/children-clubs-filter-panel.module';
+import { LoadService } from '@epgu/epgu-lib';
+import { BaseModule } from './components/base/base.module';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -36,12 +43,7 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ProgramListModule,
-        ChildrenClubsFilterPanelModule,
-        SharedModalModule,
-        MainContainerModule,
-      ],
+      imports: [ProgramListModule, BaseModule, SharedModalModule, MainContainerModule],
       declarations: [
         ChildrenClubsAppComponent,
         ProjectListComponent,
@@ -50,6 +52,7 @@ describe('ChildrenClubsComponent', () => {
 
       providers: [
         EventBusService,
+        UnsubscribeService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: AppRoutingService, useClass: AppRoutingServiceStub },
         { provide: AppNavigationRuleService, useClass: AppNavigationRuleServiceStub },
@@ -60,6 +63,9 @@ describe('ChildrenClubsComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: LoadService, useClass: LoadServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ConfigApiService, useClass: ConfigApiServiceStub },
       ],
     }).compileComponents();
   });

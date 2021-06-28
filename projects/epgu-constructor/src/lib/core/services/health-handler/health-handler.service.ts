@@ -16,7 +16,6 @@ import {
   PREV_STEP_SERVICE_NAME,
   RegionSource,
   RENDER_FORM_SERVICE_NAME,
-  RequestStatus,
   SlotInfo,
   UnspecifiedDTO
 } from './health-handler';
@@ -25,7 +24,7 @@ import { ConfigService, HealthHandler, UtilsService } from '@epgu/epgu-construct
 import { catchError, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { DictionaryFilters, DictionarySubFilter, ScenarioDto } from '@epgu/epgu-constructor-types';
+import { DictionaryFilters, DictionarySubFilter, RequestStatus, ScenarioDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class HealthHandlerService implements HealthHandler {
@@ -144,7 +143,7 @@ export class HealthHandlerService implements HealthHandler {
 
       const orderId = this.utils.isDefined(scenarioDto.orderId)
         ? scenarioDto.orderId
-        : callBackOrderId;
+        : callBackOrderId as number;
       const timeSlotValue = components.filter((component) => component.type === 'TimeSlot')[0]
         ?.value;
 

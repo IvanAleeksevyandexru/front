@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Query } from '@datorama/akita';
-import { AppState } from '@epgu/epgu-constructor-types';
+import { AppState, FpHealthPayload } from '@epgu/epgu-constructor-types';
 import { AppStateStore } from './app-state.store';
 
 @Injectable()
@@ -25,6 +25,10 @@ export class AppStateQuery<T, U>  extends Query<AppState<T, U>> {
 
   get currentComponent(): string {
     return this.getValue().currentComponent;
+  }
+
+  get fpHealthPayload(): FpHealthPayload {
+    return this.getValue().healthPayload;
   }
 
   get storeState(): AppState<T, U> {

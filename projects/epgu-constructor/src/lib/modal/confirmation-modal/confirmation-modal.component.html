@@ -29,8 +29,8 @@
     >
   </ng-container>
 
-  <ng-container *ngIf="actionButtons.length">
-    <div modal-action-buttons class="conf-modal__button">
+  <ng-container *ngIf="actionButtons.length" modal-action-buttons>
+    <div class="conf-modal__button">
       <epgu-constructor-screen-buttons
         [screenButtons]="actionButtons"
       ></epgu-constructor-screen-buttons>

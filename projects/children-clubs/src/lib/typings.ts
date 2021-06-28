@@ -57,8 +57,16 @@ export interface Program extends BaseProgram {
   groupCount: number;
 }
 
+export enum FinancialSourceType {
+  none = 'none',
+  budget = 'budget',
+  pfdod_certificate = 'pfdod_certificate',
+  paid = 'paid',
+  private = 'private',
+}
+
 export interface FinancialSource {
-  sourceCode: string;
+  sourceCode: FinancialSourceType;
   cost: number;
   monthlyCost: number;
 }
@@ -74,7 +82,7 @@ export interface Group {
   hoursYear: number; //float
   teachers: string;
   schedule: string;
-  financingTypes: FinancingType[];
+  financingTypes: FinancialSource[];
 }
 
 export enum OvzType {
@@ -126,7 +134,7 @@ export interface Filters {
   pfdoPayments?: PfdoPaymentFilters;
   maxPrice?: number; //Максимальная стоимость в месяц
   focus?: ListElement | FocusFilter; //Направленность
-  direction?: string; //Специализация
+  direction?: ListElement | string; //Специализация
   level?: LevelType; //Уровень подготовки
   age?: number; //Возраст ребенка, лет
   ovzType?: OvzType; //Ограничения здоровья
@@ -134,6 +142,7 @@ export interface Filters {
 
 //Параметры для фильтрации групп
 export interface FindOptionsGroup {
+  query?: string;
   nextSchoolYear: boolean;
   vendor: VendorType;
   isRegistrationOpen?: boolean; //Показывать только группы с открытой записью
@@ -167,10 +176,20 @@ export interface FindResponseProgram {
 }
 
 export interface FocusDirectionsItem {
-  focus: string;
+  focusName: string;
+  focusCode: string;
   directions: string[];
 }
 
+export interface NormalizedFocusData {
+  focus: ListElement[];
+  directions: Record<string, ListElement[]>;
+}
+
+export interface Municipality {
+  uuid: string;
+  name: string;
+}
 export interface DirectionsResponse {
   items: FocusDirectionsItem[];
 }

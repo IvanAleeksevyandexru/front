@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AppPathMap, Config, MockApi, TimeSlotsApi } from './config.types';
+import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
   _apiUrl = '/api';
   _configApiUrl = '/api';
-  _configId = 'default-config';
+  _configId = DEFAULT_CONFIG_ID;
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
   _timeSlotApiUrl = '';
@@ -81,6 +82,11 @@ export class ConfigServiceStub implements Config {
         preliminaryReservation: 'true',
         preliminaryReservationPeriod: '1440',
         routeNumber: '45382000',
+      },
+      DOCTOR: {
+        serviceId: '10001000603',
+        calendarName: 'на прием к врачу',
+        subject: 'Запись на прием к врачу',
       },
     };
   }

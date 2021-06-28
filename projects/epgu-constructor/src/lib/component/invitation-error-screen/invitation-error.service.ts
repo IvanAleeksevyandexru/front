@@ -6,6 +6,9 @@ import { ComponentAttrsDto, ConfirmationModal } from '@epgu/epgu-constructor-typ
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 
+export const SUCCESS_MESSAGE = 'Приглашение отправлено';
+export const FAILURE_MESSAGE = 'Ваше приглашение не было отправлено. Попробуйте позже';
+
 @Injectable()
 export class InvitationErrorService {
   private requestOptions = { withCredentials: true };
@@ -25,15 +28,18 @@ export class InvitationErrorService {
       .subscribe(
         (response) => {
           if (response.errorCode === this.successCode) {
-            const { buttons, label } = attrs.success;
+            const buttons = attrs.success?.buttons || [];
+            const label = attrs.success?.label || SUCCESS_MESSAGE;
             this.openModal(label, buttons);
           } else if (response.errorCode === this.muchTriesCode) {
-            const { buttons, label } = attrs.muchTries;
+            const buttons = attrs.muchTries?.buttons || [];
+            const label = attrs.muchTries?.label || FAILURE_MESSAGE;
             this.openModal(label, buttons);
           }
         },
         (error) => {
-          const { buttons, label } = attrs.error;
+          const buttons = attrs.error?.buttons || [];
+          const label = attrs.error?.label || FAILURE_MESSAGE;
           this.openModal(label, buttons);
           this.loggerService.error(error);
         },

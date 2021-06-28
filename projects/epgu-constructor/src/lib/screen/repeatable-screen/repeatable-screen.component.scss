@@ -6,10 +6,15 @@
   }
 }
 
-.icon-close {
+.cmp-group-header {
   display: flex;
-  margin-left: auto;
-  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+  .icon-close {
+    display: flex;
+    align-self: end;
+    cursor: pointer;
+  }
 }
 
 .btn--add {

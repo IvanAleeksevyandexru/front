@@ -3,6 +3,7 @@ import { LoadService } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../logger/logger.service';
 import { Config, MockApi, AppPathMap, TimeSlotsApi } from './config.types';
+import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ConfigService implements Config {
@@ -74,7 +75,7 @@ export class ConfigService implements Config {
   }
 
   get configId(): string {
-    return this._configId || 'default-config';
+    return this._configId || DEFAULT_CONFIG_ID;
   }
 
   set configId(configId: string) {

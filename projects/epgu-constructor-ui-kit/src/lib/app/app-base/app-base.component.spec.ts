@@ -18,6 +18,13 @@ import { LocalStorageServiceStub } from '../../core/services/local-storage/local
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { AppNavigationRuleService } from '../app-navigation-rule/app-navigation-rule.service';
 import { AppNavigationRuleServiceStub } from '../app-navigation-rule/app-navigation-rule.service.stub';
+import { LoadService } from '@epgu/epgu-lib';
+import { LoadServiceStub } from '../../core/services/config/load-service-stub';
+import { ConfigService } from '../../core/services/config/config.service';
+import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
+import { ConfigApiService } from '../../core/services/config-api/config-api.service';
+import { ConfigApiServiceStub } from '../../core/services/config-api/config-api.service.stub';
+import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
 export interface TestValueType {
   someKey: string
@@ -57,12 +64,16 @@ describe('AppBaseModule', () => {
       declarations: [ TestAppComponent ],
       providers: [
         EventBusService,
+        UnsubscribeService,
         { provide: AppNavigationRuleService, useClass: AppNavigationRuleServiceStub },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: CfAppStateService, useClass: CfAppStateServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: LoadService, useClass: LoadServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ConfigApiService, useClass: ConfigApiServiceStub },
       ]
     })
     .compileComponents();

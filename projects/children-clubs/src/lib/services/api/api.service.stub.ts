@@ -4,15 +4,17 @@ import {
   FindOptionsProgram,
   FocusDirectionsItem,
   Group,
+  Municipality,
   Program,
 } from '../../typings';
-import { Observable, of, timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 
 import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import {
   baseProgramStub,
-  focusDirectionsStub,
+  focusDirectionsStubList,
   groupStub,
+  municipalityStub,
   programStub,
   regionStub,
 } from '../../stubs/projects.stub';
@@ -36,19 +38,24 @@ export class ApiServiceStub {
     }
     return timer(1).pipe(mapTo(result));
   }
+
   getProgram(): Observable<Program> {
-    return timer(1).pipe(mapTo(programStub));
+    return timer(1000).pipe(mapTo(programStub));
   }
 
   getGroupList(): Observable<Group[]> {
-    return of([groupStub, groupStub, groupStub, groupStub, groupStub, groupStub]);
+    return timer(1500).pipe(mapTo(new Array(43).fill(groupStub)));
   }
 
   getRegions(): Observable<DictionaryItem[]> {
-    return of([regionStub, regionStub, regionStub, regionStub]);
+    return timer(1).pipe(mapTo([regionStub, regionStub, regionStub, regionStub]));
   }
 
   getDirections(): Observable<FocusDirectionsItem[]> {
-    return of([focusDirectionsStub, focusDirectionsStub, focusDirectionsStub]);
+    return timer(1).pipe(mapTo(focusDirectionsStubList));
+  }
+
+  getMunicipalities(): Observable<Municipality[]> {
+    return timer(1).pipe(mapTo(municipalityStub));
   }
 }

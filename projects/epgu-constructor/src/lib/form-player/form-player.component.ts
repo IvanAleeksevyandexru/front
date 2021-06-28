@@ -14,7 +14,7 @@ import { LoadService } from '@epgu/epgu-lib';
 import { filter, mergeMap, takeUntil, tap, take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, ConfigService, ConfigApiService } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen/screen.service';
@@ -25,7 +25,6 @@ import {
   NavigationPayload,
   ServiceEntity,
 } from './form-player.types';
-import { FormPlayerConfigApiService } from './services/form-player-config-api/form-player-config-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
@@ -56,7 +55,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(
     private initDataService: InitDataService,
-    public formPlayerConfigApiService: FormPlayerConfigApiService,
+    public formPlayerConfigApiService: ConfigApiService,
     public formPlayerService: FormPlayerService,
     private navService: NavigationService,
     private ngUnsubscribe$: UnsubscribeService,

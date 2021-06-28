@@ -1,0 +1,79 @@
+<div class="card-toggle-pad">
+  <div class="card-toggle">
+    <input [value]="true" type="checkbox" id="card-{{ index }}" />
+    <label class="card-toggle-header group-item-header" for="card-{{ index }}">
+      <span class="card-toggle-label"
+        ><b>{{ group?.name }}</b></span
+      ></label
+    >
+    <div class="card-toggle-content group-item-content">
+      <div class="modal-divider"></div>
+      <div *ngIf="group?.teachers" class="group-item mt-16">
+        <div class="group-item__key">Педагог</div>
+        <div class="group-item__value">{{ group.teachers }}</div>
+      </div>
+      <div *ngIf="program?.address" class="group-item mt-16">
+        <div class="group-item__key">Место проведения занятий</div>
+        <div class="group-item__value">{{ program.address }}</div>
+      </div>
+      <div *ngIf="group?.dateBegin" class="group-item mt-16">
+        <div class="group-item__key">Период обучения</div>
+        <div class="group-item__value">
+          {{ group.dateBegin | date: 'dd.MM.yyyy'
+          }}<ng-container *ngIf="group?.dateEnd"
+            >&nbsp;- {{ group.dateEnd | date: 'dd.MM.yyyy' }}</ng-container
+          ><ng-container *ngIf="group.hoursYear">
+            ({{ group.hoursYear }}
+            {{ ['час', 'часа', 'часов'] | pluralize: group.hoursYear }})</ng-container
+          >
+        </div>
+      </div>
+      <div class="group-item mt-16">
+        <div class="group-item__key">Расписание занятий</div>
+        <div
+          [innerHTML]="group.schedule | imgPrefixer | safe: 'html'"
+          class="group-item__value"
+        ></div>
+      </div>
+      <div *ngIf="group?.ageFrom && group?.ageTo" class="group-item mt-16">
+        <div class="group-item__key">Возраст учащихся</div>
+        <div class="group-item__value">от {{ group.ageFrom }} до {{ group.ageTo }} лет</div>
+      </div>
+      <div *ngIf="group?.size" class="group-item mt-16">
+        <div class="group-item__key">План приема</div>
+        <div class="group-item__value">до {{ group?.size }} человек</div>
+      </div>
+      <div *ngIf="isPayments && !isMutliPayments; else multi" class="group-item mt-16">
+        <div class="group-item__key">Стоимость обучения</div>
+        <div class="group-item__value">
+          {{ certCost || paidCost | toMoney }}
+          {{ ['рубль', 'рубля', 'рублей'] | pluralize: certCost || paidCost }} в месяц
+        </div>
+      </div>
+      <div *ngIf="payments.length > 0" class="group-item mt-16">
+        <div class="group-item__key">Доступные способы оплаты</div>
+        <div class="group-item__value">{{ payments }}</div>
+      </div>
+      <div class="btn-container mt-24">
+        <lib-button (click)="finish()" type="button">Записаться в эту группу</lib-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #multi>
+  <div class="group-item mt-16">
+    <div class="group-item__key">Стоимость обучения при оплате сертификатом</div>
+    <div class="group-item__value">
+      {{ certCost | toMoney }}
+      {{ ['рубль', 'рубля', 'рублей'] | pluralize: certCost }} в месяц
+    </div>
+  </div>
+  <div class="group-item mt-16">
+    <div class="group-item__key">Стоимость обучения при оплате из личных средств</div>
+    <div class="group-item__value">
+      {{ paidCost | toMoney }}
+      {{ ['рубль', 'рубля', 'рублей'] | pluralize: paidCost }} в месяц
+    </div>
+  </div>
+</ng-template>
