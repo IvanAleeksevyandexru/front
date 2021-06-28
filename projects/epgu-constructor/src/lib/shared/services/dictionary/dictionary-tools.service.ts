@@ -226,6 +226,7 @@ export class DictionaryToolsService {
     dictionaries[id].list = this.adaptDictionaryToListItem(
       reference.data.items,
       reference.component.attrs.mappingParams,
+      reference.component.attrs.mappingParams?.isRoot
     );
     dictionaries[id].repeatedWithNoFilters = reference?.meta?.repeatedWithNoFilters;
 
