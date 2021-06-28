@@ -116,6 +116,7 @@ export * from './lib/core/services/config-api/config-api.service';
 export * from './lib/core/services/config-api/config-api.service.stub';
 
 export * from './lib/core/services/tracing/tracing.service';
+export * from './lib/core/services/tracing/tracing.service.stub';
 export * from './lib/core/services/tracing/tracing.token';
 
 export * from './lib/core/interceptor/http-cancel/http-cancel.service';
