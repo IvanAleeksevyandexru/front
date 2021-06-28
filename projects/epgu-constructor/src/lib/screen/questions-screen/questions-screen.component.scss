@@ -1,9 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-:host {
-  @include flex-container();
-}
-
 .quiz {
   padding-bottom: 24px;
   @include tablets-up {
@@ -21,9 +17,6 @@
 
 .quiz__description {
   margin-top: 16px;
-  & p:not(:first-child) {
-    margin-top: 16px;
-  }
 }
 
 .quiz__container {
@@ -39,11 +32,9 @@
     margin-top: 24px;
   }
 }
+
 :host::ng-deep {
   .quiz__description {
     @include screen-content;
-  }
-  .info-screen--quiz .quiz__description {
-    @include screen-content-margins;
   }
 }
