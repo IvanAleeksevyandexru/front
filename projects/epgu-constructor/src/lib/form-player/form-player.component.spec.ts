@@ -7,7 +7,11 @@ import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ModalContainerComponent, ModalServiceStub, ModalService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ModalContainerComponent,
+  ModalServiceStub,
+  ModalService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -15,7 +19,11 @@ import { ScreenResolverComponent } from '../screen/screen-resolver/screen-resolv
 import { ScreenModalComponent } from '../modal/screen-modal/screen-modal.component';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
-import { ConfigService, ConfigApiService, ConfigApiServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigApiService,
+  ConfigApiServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
@@ -46,6 +54,7 @@ import { AutocompleteAutofillService } from '../core/services/autocomplete/autoc
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { AnimationBuilder } from '@angular/animations';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -110,6 +119,7 @@ describe('FormPlayerComponent', () => {
         TracingService,
         SessionService,
         TerraByteApiService,
+        AnimationBuilder,
       ],
     }).compileComponents();
   });

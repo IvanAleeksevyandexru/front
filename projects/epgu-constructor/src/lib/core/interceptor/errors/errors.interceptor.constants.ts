@@ -11,7 +11,7 @@ const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Не сработало</h4>
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
-<a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a>.</span></div>`;
+<a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a> и передайте код ошибки:</span></div>`;
 
 const AUTH_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
@@ -23,7 +23,7 @@ const ORDER_NOT_FOUND_ERROR_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Запрашиваемого черновика не существует</h4>
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
-<a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a>.</span></div>`;
+<a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a> и передайте код ошибки:</span></div>`;
 
 const DRAFT_STATEMENT_NOT_FOUND_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">

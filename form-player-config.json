@@ -71,7 +71,7 @@
     "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
     "zipkinMaxPayloadSize": 0,
     "zipkinEnv": "dev01",
-    "showTraceIdOnError": false,
+    "showTraceIdOnError": true,
     "appPathMap": {
       "ChildrenClubs": "/app/children-clubs"
     }
