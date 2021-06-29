@@ -68,7 +68,7 @@ export class ErrorHandleService {
         error?.errorDetail?.errorMessage !== '' &&
         error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !== STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim()
       ) {
-        const errorMessage = error.errorDetail.errorMessage;
+        const errorMessage = error?.errorDetail.errorMessage;
 
         if (
           errorMessage.includes('NO_DATA') ||
@@ -98,12 +98,12 @@ export class ErrorHandleService {
     httpErrorResponse: HttpErrorResponse,
   ): Observable<HttpEvent<void | never>> {
     const { status, url, error, statusText } = httpErrorResponse;
-    const traceId = httpErrorResponse.headers.get('x-trace-id') || error.traceId;
+    const traceId = httpErrorResponse.headers.get('x-trace-id') || error?.traceId;
 
     if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
     } else if (error?.errorModalWindow) {
-      this.showErrorModal(error.errorModalWindow);
+      this.showErrorModal(error?.errorModalWindow);
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS, traceId).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
@@ -115,7 +115,7 @@ export class ErrorHandleService {
     } else if (status === 408 && url.includes('invitations/inviteToSign/send')) {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
-      if (error.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
+      if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
         this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
