@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 import { InlernoPaymentFilters, PfdoPaymentFilters, VendorType } from '../../../../typings';
 import { StateService } from '../../../../services/state/state.service';
 import {
+  aboutPayment,
   defaultInlearnoFilters,
   defaultPdfoFilters,
   FormFieldsLabel,
@@ -33,7 +34,7 @@ export class PaymentSelectorComponent implements OnInit {
   @Input() initValue: PfdoPaymentFilters | InlernoPaymentFilters;
   @Output() changes = new EventEmitter<PfdoPaymentFilters | InlernoPaymentFilters>();
 
-  clarifiactions = this.stateService.clarifications;
+  aboutPayment = aboutPayment;
   vendor = this.stateService.vendor;
   formFields = FormFieldsName;
   formFieldsLabel = FormFieldsLabel;
@@ -65,10 +66,7 @@ export class PaymentSelectorComponent implements OnInit {
 
   openAboutPayment(): void {
     this.modalService
-      .openModal(ContentModalComponent, {
-        ...this.clarifiactions?.aboutpayment,
-        modalId: 'aboutPayment',
-      })
+      .openModal(ContentModalComponent, { ...aboutPayment, modalId: 'aboutPayment' })
       .subscribe();
   }
 

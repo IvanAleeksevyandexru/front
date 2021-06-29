@@ -19,15 +19,28 @@
         ></epgu-cf-ui-constructor-screen-pad>
       </ng-container>
       <ng-template #content>
-        <ng-container *ngFor="let item of data$ | async; let i = index">
-          <children-clubs-group-item [program]="program" class="mt-24" [data]="item" [index]="i">
-          </children-clubs-group-item>
+        <ng-container *ngIf="data$ | async as data">
+          <ng-container *ngIf="$any(data)?.length > 0">
+            <ng-container *ngFor="let item of data$ | async; let i = index">
+              <children-clubs-group-item
+                [program]="program"
+                class="mt-24"
+                [data]="item"
+                [index]="i"
+              >
+              </children-clubs-group-item>
+            </ng-container>
+            <div class="btn">
+              <lib-button *ngIf="isShowButton$ | async" color="white" (click)="next()"
+                >Показать еще</lib-button
+              >
+            </div>
+          </ng-container>
+          <children-clubs-not-found
+            *ngIf="$any(data)?.length === 0"
+            class="mt-24"
+          ></children-clubs-not-found>
         </ng-container>
-        <div class="btn">
-          <lib-button *ngIf="isShowButton$ | async" color="white" (click)="next()"
-            >Показать еще</lib-button
-          >
-        </div>
       </ng-template>
     </ng-container>
     <epgu-cf-ui-constructor-screen-pad *ngIf="fullLoading$ | async" class="loader">

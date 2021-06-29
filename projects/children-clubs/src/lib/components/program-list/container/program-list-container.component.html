@@ -15,9 +15,20 @@
       ></epgu-cf-ui-constructor-screen-pad>
     </ng-container>
     <ng-template #content>
-      <children-clubs-list (addItemsEvent)="fetchItems()">
-        <children-clubs-item *ngFor="let item of data$ | async" [data]="item"></children-clubs-item>
-      </children-clubs-list>
+      <ng-container *ngIf="data$ | async as data">
+        <ng-container *ngIf="$any(data)?.length > 0">
+          <children-clubs-list (addItemsEvent)="fetchItems()">
+            <children-clubs-item
+              *ngFor="let item of data$ | async"
+              [data]="item"
+            ></children-clubs-item>
+          </children-clubs-list>
+        </ng-container>
+        <children-clubs-not-found
+          class="mt-24"
+          *ngIf="$any(data)?.length === 0"
+        ></children-clubs-not-found>
+      </ng-container>
     </ng-template>
   </div>
 </epgu-cf-ui-screen-container>

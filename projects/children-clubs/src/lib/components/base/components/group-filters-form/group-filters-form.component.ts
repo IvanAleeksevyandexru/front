@@ -27,8 +27,6 @@ import {
   defaultPdfoFilters,
   FormFieldsLabel,
   FormFieldsName,
-  HealthListElements,
-  LevelListElements,
 } from '../../base.models';
 
 import { StateService } from '../../../../services/state/state.service';
@@ -42,17 +40,16 @@ import { StateService } from '../../../../services/state/state.service';
 })
 export class GroupFiltersFormComponent extends ModalBaseComponent implements OnInit {
   @Input() formValue?: Filters;
-  healthListElements = HealthListElements;
-  levelListElements = LevelListElements;
   formFieldsLabel = FormFieldsLabel;
   formFields = FormFieldsName;
   modalId = 'groupFilters';
   form: FormGroup;
   initFilters =
     this.stateService.vendor === VendorType.inlearno
-      ? this.stateService.groupFilters?.inlernoPayments
+      ? this.stateService.groupFilters?.inlearnoPayments
       : this.stateService.groupFilters?.pfdoPayments;
-  filterKey = this.stateService.vendor === VendorType.inlearno ? 'inlernoPayments' : 'pfdoPayments';
+  filterKey =
+    this.stateService.vendor === VendorType.inlearno ? 'inlearnoPayments' : 'pfdoPayments';
 
   constructor(
     private fb: FormBuilder,
@@ -79,8 +76,6 @@ export class GroupFiltersFormComponent extends ModalBaseComponent implements OnI
   }
 
   initForm(value: FindOptionsGroup): void {
-    const level = this.levelListElements.find((item) => item.id === value?.level);
-
     const defaultFilters =
       this.stateService.vendor === VendorType.inlearno
         ? defaultInlearnoFilters
@@ -90,22 +85,18 @@ export class GroupFiltersFormComponent extends ModalBaseComponent implements OnI
       [this.formFields.isRegistrationOpen]: new FormControl(value?.isRegistrationOpen || false),
       [this.filterKey]: new FormControl(this.initFilters || defaultFilters),
       [this.formFields.maxPrice]: new FormControl(value?.maxPrice || null, this.numberValidators()),
-      [this.formFields.level]: new FormControl(level || this.levelListElements[0]),
       [this.formFields.age]: new FormControl(value?.age || null, this.numberValidators()),
     });
   }
 
   resetForm(): void {
     this.eventBusService.emit('RESET_FILTER');
-    this.form.reset({
-      [this.formFields.level]: this.levelListElements[0],
-    });
+    this.form.reset();
   }
 
   submit(): void {
     const outputValue = {
       ...this.form.value,
-      [this.formFields.level]: this.form.value[this.formFields.level].id,
     };
 
     this.closeModal(outputValue);

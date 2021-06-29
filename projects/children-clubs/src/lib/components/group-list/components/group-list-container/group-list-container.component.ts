@@ -65,14 +65,14 @@ export class GroupListContainerComponent implements OnInit {
         value !== undefined &&
         key !== 'vendor' &&
         key !== 'nextSchoolYear' &&
-        key !== 'inlernoPayments' &&
+        key !== 'inlearnoPayments' &&
         key !== 'pfdoPayments' &&
         key !== 'query',
     );
     count += finded.length;
 
-    if (filters?.inlernoPayments) {
-      count += Object.entries(filters.inlernoPayments).filter((value) => value[1]).length;
+    if (filters?.inlearnoPayments) {
+      count += Object.entries(filters.inlearnoPayments).filter((value) => value[1]).length;
     }
     if (filters?.pfdoPayments) {
       count += Object.entries(filters.pfdoPayments).filter((value) => value[1]).length;
@@ -99,7 +99,7 @@ export class GroupListContainerComponent implements OnInit {
     if (this.state.vendor === VendorType.inlearno) {
       delete filters?.pfdoPayments;
     } else {
-      delete filters?.inlernoPayments;
+      delete filters?.inlearnoPayments;
     }
     this.state.groupFilters = filters;
     this.countingFilters(filters);

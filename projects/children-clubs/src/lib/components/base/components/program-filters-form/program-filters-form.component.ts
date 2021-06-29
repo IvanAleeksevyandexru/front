@@ -56,9 +56,10 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   form: FormGroup;
   initFilters =
     this.stateService.vendor === VendorType.inlearno
-      ? this.stateService.programFilters?.inlernoPayments
+      ? this.stateService.programFilters?.inlearnoPayments
       : this.stateService.programFilters?.pfdoPayments;
-  filterKey = this.stateService.vendor === VendorType.inlearno ? 'inlernoPayments' : 'pfdoPayments';
+  filterKey =
+    this.stateService.vendor === VendorType.inlearno ? 'inlearnoPayments' : 'pfdoPayments';
 
   focusData$ = this.dictionary.focusData$.pipe(tap((focus) => this.setFocus(focus)));
   focusMap: Record<string, ListElement[]> = {};
@@ -141,7 +142,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
 
     this.form = this.fb.group({
       [this.formFields.isRegistrationOpen]: new FormControl(value?.isRegistrationOpen || false),
-      [this.formFields.place]: new FormControl(value?.place || null),
+      [this.formFields.municipality]: new FormControl(value?.municipality || null),
       [this.formFields.onlyDistanceProgram]: new FormControl(value?.onlyDistanceProgram || false),
       [this.filterKey]: new FormControl(this.initFilters || defaultFilters),
       [this.formFields.maxPrice]: new FormControl(value?.maxPrice || null, this.numberValidators()),
@@ -160,7 +161,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       [this.formFields.direction]: null,
       [this.formFields.level]: this.levelListElements[0],
       [this.formFields.ovzType]: this.healthListElements[0],
-      [this.formFields.place]: null,
+      [this.formFields.municipality]: null,
     });
   }
 
@@ -169,7 +170,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       ...this.form.value,
       [this.formFields.focus]: this.form.value[this.formFields.focus],
       [this.formFields.direction]: this.form.value[this.formFields.direction],
-      [this.formFields.place]: this.form.value[this.formFields.place],
+      [this.formFields.municipality]: this.form.value[this.formFields.municipality],
       [this.formFields.level]: this.form.value[this.formFields.level].id,
       [this.formFields.ovzType]: this.form.value[this.formFields.ovzType].id,
     };

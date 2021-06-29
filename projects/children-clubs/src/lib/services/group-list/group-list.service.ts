@@ -43,8 +43,12 @@ export class GroupListService {
   constructor(private api: ApiService, private state: StateService) {}
 
   getGroupList(state: ChildrenClubsState): Observable<Group[]> {
+    const { groupFilters } = this.state;
+    if (groupFilters?.query?.length === 0) {
+      delete groupFilters.query;
+    }
     return this.api
-      .getGroupList(state.selectedProgramUUID, this.state.groupFilters)
+      .getGroupList(state.selectedProgramUUID, groupFilters)
       .pipe(tap((data) => this.setGroupList(data)));
   }
 

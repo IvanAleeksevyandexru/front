@@ -23,11 +23,6 @@ export const financingTypes: Record<string, { icon: string; text: string }> = {
   certificate: { icon: 'cert.svg', text: 'Возможна оплата сертификатом' },
 };
 
-export interface NSIDictionaryItem {
-  code: string;
-  name: string;
-}
-
 export interface BaseProgram {
   uuid: string;
   name: string;
@@ -44,6 +39,15 @@ export enum EducationType {
   distance = 'distance',
 }
 
+export enum TypeOfBudget {
+  preprof = 'preprof',
+  valued = 'valued',
+  other = 'other',
+}
+export interface Region {
+  uuid: string;
+  name: string;
+}
 export interface Program extends BaseProgram {
   fullName: string;
   announce: string;
@@ -55,6 +59,10 @@ export interface Program extends BaseProgram {
   technicalBase: string;
   educationForm: EducationType | string;
   groupCount: number;
+  typeOfBudget: TypeOfBudget;
+  datasource: string;
+  region: Region;
+  municipal: Municipality;
 }
 
 export enum FinancialSourceType {
@@ -82,10 +90,11 @@ export interface Group {
   hoursYear: number; //float
   teachers: string;
   schedule: string;
-  financingTypes: FinancialSource[];
+  financingSources: FinancialSource[];
 }
 
 export enum OvzType {
+  all = 'all',
   deafness = 'deafness',
   hearing_impairment = 'hearing_impairment',
   blindness = 'blindness',
@@ -96,6 +105,7 @@ export enum OvzType {
   intellectual_disability = 'intellectual_disability',
 }
 export enum LevelType {
+  null = 'null',
   initial = 'initial',
   basic = 'basic',
   advanced = 'advanced',
@@ -128,9 +138,9 @@ export interface PfdoPaymentFilters {
 export interface Filters {
   query?: string; //Поисковый запрос по параметрам: адрес проведения занятий, ФИО педагога, название группы
   isRegistrationOpen?: boolean; //Показывать только программы с открытой записью
-  place?: ListElement | string; //Место проведения занятий
+  municipality?: ListElement | string; //Место проведения занятий
   onlyDistanceProgram?: boolean; //Показывать только дистанционные программы
-  inlernoPayments?: InlernoPaymentFilters;
+  inlearnoPayments?: InlernoPaymentFilters;
   pfdoPayments?: PfdoPaymentFilters;
   maxPrice?: number; //Максимальная стоимость в месяц
   focus?: ListElement | FocusFilter; //Направленность
@@ -146,10 +156,9 @@ export interface FindOptionsGroup {
   nextSchoolYear?: boolean;
   vendor?: VendorType;
   isRegistrationOpen?: boolean; //Показывать только группы с открытой записью
-  inlernoPayments?: InlernoPaymentFilters;
+  inlearnoPayments?: InlernoPaymentFilters;
   pfdoPayments?: PfdoPaymentFilters;
   maxPrice?: number; //int64 - Максимальная стоимость в месяц
-  level?: LevelType; //Уровень подготовки
   age?: number; //int32 - Возраст ребенка, лет
 }
 
@@ -189,6 +198,10 @@ export interface NormalizedFocusData {
 export interface Municipality {
   uuid: string;
   name: string;
+}
+
+export interface MunicipalityResponse {
+  items: Municipality[];
 }
 export interface DirectionsResponse {
   items: FocusDirectionsItem[];

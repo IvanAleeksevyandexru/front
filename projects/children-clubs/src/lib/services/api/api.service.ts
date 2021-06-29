@@ -1,39 +1,72 @@
 import { Injectable } from '@angular/core';
 import {
   BaseProgram,
+  DirectionsResponse,
   FindOptionsGroup,
   FindOptionsProgram,
+  FindResponseGroup,
+  FindResponseProgram,
   FocusDirectionsItem,
   Group,
   Municipality,
+  MunicipalityResponse,
   Program,
 } from '../../typings';
-import { Observable, of } from 'rxjs';
-import { DictionaryOptions } from '@epgu/epgu-constructor-types';
-import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
+import { Observable } from 'rxjs';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  DIRECTIONS_SUB_URL,
+  MUNICIPALITIES_SUB_URL,
+  PROGRAM_DETAIL_SUB_URL,
+  SEARCH_GROUP_SUB_URL,
+  SEARCH_PROGRAM_SUB_URL,
+} from '../health/health-handler';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
+  constructor(private config: ConfigService, private http: HttpClient) {}
+
   getProgramList(options: FindOptionsProgram): Observable<BaseProgram[]> {
-    return of(([options] as unknown) as BaseProgram[]);
+    return this.http
+      .post<FindResponseProgram>(
+        `${this.config.childrenClubsApi}${SEARCH_PROGRAM_SUB_URL}`,
+        options,
+      )
+      .pipe(map((result) => result?.items ?? []));
   }
+
   getProgram(uuid: string): Observable<Program> {
-    return of(({ uuid } as unknown) as Program);
+    return this.http.get<Program>(
+      `${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}`,
+    );
   }
 
   getGroupList(uuid: string, options: FindOptionsGroup): Observable<Group[]> {
-    return of(([{ uuid, options }] as unknown) as Group[]);
-  }
-
-  getRegions(options: DictionaryOptions): Observable<DictionaryItem[]> {
-    return of(([options] as unknown) as DictionaryItem[]);
+    return this.http
+      .post<FindResponseGroup>(
+        `${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}${SEARCH_GROUP_SUB_URL}`,
+        options,
+      )
+      .pipe(map((result) => result?.items ?? []));
   }
 
   getDirections(okato: number): Observable<FocusDirectionsItem[]> {
-    return of(([okato] as unknown) as FocusDirectionsItem[]);
+    const params = new HttpParams().append('okato', String(okato));
+
+    return this.http
+      .get<DirectionsResponse>(`${this.config.childrenClubsApi}${DIRECTIONS_SUB_URL}`, { params })
+      .pipe(map((result) => result?.items ?? []));
   }
 
   getMunicipalities(okato: number): Observable<Municipality[]> {
-    return of(([okato] as unknown) as Municipality[]);
+    const params = new HttpParams().append('okato', String(okato));
+
+    return this.http
+      .get<MunicipalityResponse>(`${this.config.childrenClubsApi}${MUNICIPALITIES_SUB_URL}`, {
+        params,
+      })
+      .pipe(map((result) => result?.items ?? []));
   }
 }

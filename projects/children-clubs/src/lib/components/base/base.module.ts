@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
 import {
+  ConfigService,
   ErrorModule,
   ImgPrefixerModule,
   SafeModule,
@@ -12,7 +13,7 @@ import {
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ApiService } from '../../services/api/api.service';
-import { ApiServiceStub } from '../../services/api/api.service.stub';
+
 import { StateService } from '../../services/state/state.service';
 import { StateServiceStub } from '../../services/state/state.service.stub';
 import { ContentModalComponent } from './components/content-modal/content-modal.component';
@@ -20,6 +21,7 @@ import { ChildrenClubsFilterPanelComponent } from './components/filter-panel/chi
 import { PaymentSelectorComponent } from './components/payment-selector/payment-selector.component';
 import { DictionaryService } from '../../services/dictionary/dictionary.service';
 import { GroupFiltersFormComponent } from './components/group-filters-form/group-filters-form.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { GroupFiltersFormComponent } from './components/group-filters-form/group
     ContentModalComponent,
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
+    NotFoundComponent,
   ],
   imports: [
     ScreenPadModule,
@@ -42,10 +45,12 @@ import { GroupFiltersFormComponent } from './components/group-filters-form/group
   ],
   providers: [
     DictionaryService,
-    { provide: ApiService, useClass: ApiServiceStub },
+    ConfigService,
+    ApiService,
     { provide: StateService, useClass: StateServiceStub },
   ],
   exports: [
+    NotFoundComponent,
     ProgramFiltersFormComponent,
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,

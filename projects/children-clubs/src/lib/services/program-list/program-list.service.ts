@@ -62,13 +62,16 @@ export class ProgramListService {
       if (focus && focus?.id) {
         filters.focus = focus.id as FocusFilter;
       }
-      const place = filters?.place as ListElement;
+      const place = filters?.municipality as ListElement;
       if (place && place?.id) {
-        filters.place = place?.id as string;
+        filters.municipality = place?.id as string;
       }
       const direction = filters?.direction as ListElement;
       if (direction && direction?.id) {
         filters.direction = direction?.id as string;
+      }
+      if (filters?.query?.length === 0) {
+        delete filters.query;
       }
       return { filters };
     }),

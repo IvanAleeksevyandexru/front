@@ -55,15 +55,15 @@ export class ProgramListContainerComponent implements OnInit {
         value !== 'all' &&
         value !== false &&
         value !== undefined &&
-        key !== 'inlernoPayments' &&
+        key !== 'inlearnoPayments' &&
         key !== 'pfdoPayments' &&
-        key !== 'place' &&
+        key !== 'municipality' &&
         key !== 'query' &&
         key !== 'focus',
     );
     count += finded.length;
 
-    if ((filters?.place as ListElement)?.text) {
+    if ((filters?.municipality as ListElement)?.text) {
       count += 1;
     }
 
@@ -72,8 +72,8 @@ export class ProgramListContainerComponent implements OnInit {
       count += 1;
     }
 
-    if (filters?.inlernoPayments) {
-      count += Object.entries(filters.inlernoPayments).filter((value) => value[1]).length;
+    if (filters?.inlearnoPayments) {
+      count += Object.entries(filters.inlearnoPayments).filter((value) => value[1]).length;
     }
     if (filters?.pfdoPayments) {
       count += Object.entries(filters.pfdoPayments).filter((value) => value[1]).length;
@@ -96,7 +96,7 @@ export class ProgramListContainerComponent implements OnInit {
     if (this.stateService.vendor === VendorType.inlearno) {
       delete filters?.pfdoPayments;
     } else {
-      delete filters?.inlernoPayments;
+      delete filters?.inlearnoPayments;
     }
     this.stateService.programFilters = filters;
     this.countingFilters(filters);
