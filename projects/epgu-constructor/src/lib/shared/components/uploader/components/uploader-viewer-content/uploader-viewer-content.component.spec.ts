@@ -7,6 +7,9 @@ import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import {
@@ -72,10 +75,12 @@ describe('UploaderViewerContentComponent', () => {
       declarations: [UploaderViewerContentComponent, FileSizePipe],
       imports: [MockModule(BaseModule), MockModule(ZoomModule)],
       providers: [
+        SuggestMonitorService,
         { provide: LOCALE_ID, useValue: 'ru-RU' },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
       .overrideComponent(UploaderViewerContentComponent, {

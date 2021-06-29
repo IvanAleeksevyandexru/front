@@ -4,9 +4,10 @@ import { SuggestHandlerService } from './suggest-handler.service';
 import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
 import { HealthService } from '@epgu/epgu-lib';
 import { ScreenService } from '../../../screen/screen.service';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   ISuggestionItem,
   ISuggestionItemList,

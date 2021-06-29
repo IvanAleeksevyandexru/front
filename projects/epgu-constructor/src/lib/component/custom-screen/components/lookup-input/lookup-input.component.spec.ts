@@ -26,6 +26,7 @@ import { CurrentAnswersService } from 'projects/epgu-constructor/src/lib/screen/
 import { ScreenServiceStub } from 'projects/epgu-constructor/src/lib/screen/screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
+import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -71,7 +72,8 @@ describe('LookupInputComponent', () => {
         SuggestHandlerService,
         EventBusService,
         CurrentAnswersService,
-        LoggerService
+        LoggerService,
+        SuggestMonitorService,
       ]
     })
       .overrideComponent(DictionaryComponent, {

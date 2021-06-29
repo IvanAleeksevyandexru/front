@@ -17,6 +17,7 @@ import { AddPassportContainerComponent } from './add-passport-component-containe
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
+import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 
 describe('AddPassportContainerComponent', () => {
   let component: AddPassportContainerComponent;
@@ -44,6 +45,7 @@ describe('AddPassportContainerComponent', () => {
         CurrentAnswersService,
         HealthService,
         EventBusService,
+        SuggestMonitorService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         SuggestHandlerService,
       ],
