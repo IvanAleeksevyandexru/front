@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SuggestHandlerService } from './suggest-handler.service';
+import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ISuggestionItem,
@@ -9,6 +10,7 @@ import {
 
 describe('SuggestHandlerService', () => {
   let service: SuggestHandlerService;
+  let monitor: SuggestMonitorService;
   let eventBusService: EventBusService;
 
   beforeAll(() => {
@@ -16,6 +18,7 @@ describe('SuggestHandlerService', () => {
       providers: [SuggestHandlerService, EventBusService],
     });
     service = TestBed.inject(SuggestHandlerService);
+    monitor = TestBed.inject(SuggestMonitorService);
     eventBusService = TestBed.inject(EventBusService);
   });
 
