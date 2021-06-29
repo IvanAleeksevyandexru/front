@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Clarifications } from '@epgu/epgu-constructor-types';
+
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
