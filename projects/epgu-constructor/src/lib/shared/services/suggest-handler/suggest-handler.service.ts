@@ -23,7 +23,9 @@ export class SuggestHandlerService {
     }
 
     if (source !== undefined) {
-      this.monitor.handleAutocompleteEvent(SuggestActions.REUSE_ACTION, source);
+      this.monitor.handleAutocompleteEvent(SuggestActions.REUSE_ACTION, source, {
+        date: new Date().toISOString(),
+      });
     }
   }
 }

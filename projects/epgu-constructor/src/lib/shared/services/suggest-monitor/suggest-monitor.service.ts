@@ -13,7 +13,6 @@ export class SuggestMonitorService {
     this.health.measureStart(event);
     this.health.measureEnd(event, 0, {
       suggestField: this.getAdditionalFieldId() + fieldType,
-      date: new Date().toISOString(),
       userId: this.cookie.get('u'),
       ...params,
     });

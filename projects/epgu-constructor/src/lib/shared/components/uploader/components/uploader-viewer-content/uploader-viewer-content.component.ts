@@ -113,6 +113,7 @@ export class UploaderViewerContentComponent {
     }
     this.monitor.handleAutocompleteEvent(SuggestActions.DOWNLOAD_ACTION, 'UPLOAD_DOWNLOAD_BUTTON', {
       mnemonic: this.item.createUploadedParams().mnemonic,
+      date: new Date().toISOString(),
     });
   }
 
@@ -143,6 +144,7 @@ export class UploaderViewerContentComponent {
     this.suggest.emit({ file: this.item, isAdd });
     this.monitor.handleAutocompleteEvent(SuggestActions.ADD_ACTION, 'UPLOAD_ADD_BUTTON', {
       mnemonic: this.item.createUploadedParams().mnemonic,
+      date: new Date().toISOString(),
     });
   }
 }
