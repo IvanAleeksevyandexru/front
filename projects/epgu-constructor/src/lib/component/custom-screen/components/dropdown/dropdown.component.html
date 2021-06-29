@@ -17,7 +17,7 @@
     class="cs__select cs-select"
     [suggest]="(screenService.suggestions$ | async)[control.value?.id]"
     [suggestSeparator]="suggestSeporator"
-    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'DROPDOWN')"
   >
   </lib-dropdown>
 </epgu-constructor-component-item>

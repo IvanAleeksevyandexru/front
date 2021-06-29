@@ -4,8 +4,6 @@ import {
   BackendHealthList,
   CommonPayload, DICTIONARY_CODES, DictionaryError,
   DictionaryPayload,
-  DOWNLOAD_SERVICE,
-  DOWNLOAD_SERVICE_MODIFIED,
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   EXCEPTIONS, FilterType,
   GET_SLOTS,
@@ -97,7 +95,7 @@ export class HealthHandlerService implements HealthHandler {
     this.serviceName =
       this.serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : this.serviceName;
     this.serviceName = this.serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : this.serviceName;
-    this.serviceName = this.serviceName === DOWNLOAD_SERVICE ? DOWNLOAD_SERVICE_MODIFIED : this.serviceName;
+    // this.serviceName = this.serviceName === DOWNLOAD_SERVICE ? DOWNLOAD_SERVICE_MODIFIED : this.serviceName;
 
     this.regionCode = this.getRegionCode(request?.body?.filter);
     this.startMeasureHealth(this.serviceName);

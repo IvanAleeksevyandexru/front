@@ -9,7 +9,7 @@ import { BaseModule } from '../../base.module';
 import { UploaderViewerComponent } from './components/uploader-viewer/uploader-viewer.component';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ViewerService } from './services/viewer/viewer.service';
-
+import { SuggestMonitorService } from '../../services/suggest-monitor/suggest-monitor.service';
 import { ZoomModule } from '../zoom/zoom.module';
 import { UploaderViewerContentComponent } from './components/uploader-viewer-content/uploader-viewer-content.component';
 
@@ -23,7 +23,11 @@ import { UploaderViewerContentComponent } from './components/uploader-viewer-con
     UploaderViewerContentComponent,
   ],
 
-  providers: [ModalService, ViewerService],
+  providers: [
+    ModalService,
+    ViewerService,
+    SuggestMonitorService,
+  ],
   imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
   entryComponents: [UploaderViewerComponent],

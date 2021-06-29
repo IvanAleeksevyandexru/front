@@ -13,9 +13,6 @@ export const PREV_EVENT_TYPE = 'getPrevStep';
 export const GET_SLOTS = 'equeueAggSlotsService';
 export const GET_SLOTS_MODIFIED = 'getSlots';
 
-export const DOWNLOAD_SERVICE = 'DownloadService';
-export const DOWNLOAD_SERVICE_MODIFIED = 'nsiSuggestDownloadUploadedFile';
-
 export interface DictionaryPayload {
   region: string;
   dict: string;
