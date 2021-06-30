@@ -6,7 +6,7 @@ import {
   OutputAppDto,
 } from '@epgu/epgu-constructor-types';
 import { BehaviorSubject } from 'rxjs';
-import { filter, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { LoadService } from '@epgu/epgu-lib';
 
 import { AppStateService } from '../app-state/app-state.service';
@@ -32,7 +32,8 @@ export class AppBaseComponent<T, U> {
   public configId: string;
   public inputAppData: InputAppDto;
   public isFirstLoading$ = new BehaviorSubject(true);
-  public isConfigReady$ = new BehaviorSubject<boolean>(false);
+  public isConfigReady = new BehaviorSubject<boolean>(false);
+  public isConfigReady$ = this.isConfigReady.pipe(filter((status) => status));
 
   private appStateService: AppStateService<T, U>;
   private appStateQuery: AppStateQuery<T, U>;
@@ -71,9 +72,6 @@ export class AppBaseComponent<T, U> {
 
   openApp(): void {
     this.initAppConfig();
-    this.setInputAppData();
-    this.initializeAppState();
-    this.enableStorageSynchronization();
   }
 
   closeApp(isPrevStepCase: boolean = false): void {
@@ -90,11 +88,15 @@ export class AppBaseComponent<T, U> {
           this.configService.initCore();
         }),
         mergeMap(() => this.configApiService.getFormPlayerConfig()),
+        take(1),
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((config) => {
         this.configService.config = config;
-        this.isConfigReady$.next(true);
+        this.setInputAppData();
+        this.initializeAppState();
+        this.enableStorageSynchronization();
+        this.isConfigReady.next(true);
         this.cdr.markForCheck();
       });
   }

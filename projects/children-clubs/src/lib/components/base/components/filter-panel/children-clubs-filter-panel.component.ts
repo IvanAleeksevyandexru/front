@@ -10,6 +10,8 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 export class ChildrenClubsFilterPanelComponent implements OnInit {
   @Input() filtersCount: number;
   @Input() initValue: string;
+  @Input() isShowMenu = false;
+  @Input() title = 'Введите адрес проведения занятий, ФИО педагога, название группы';
   @Output() openFilters = new EventEmitter();
   @Output() search = new EventEmitter<string>();
 
