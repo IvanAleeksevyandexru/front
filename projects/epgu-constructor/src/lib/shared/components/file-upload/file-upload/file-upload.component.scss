@@ -1,4 +1,8 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+
 :host {
+  display: block;
+  @include shadow-main();
   .file-upload-item {
     margin-bottom: 24px;
   }
