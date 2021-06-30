@@ -75,8 +75,13 @@
     }
   }
   &__item:first-child {
-    .form__radio--block {
+    &::ng-deep .form__radio--block {
       margin-top: 0;
+    }
+  }
+  &__item:last-child::ng-deep {
+    .component-list-resolver {
+      margin-bottom: 0;
     }
   }
 
