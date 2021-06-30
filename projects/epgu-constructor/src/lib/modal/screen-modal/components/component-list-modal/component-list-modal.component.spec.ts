@@ -23,6 +23,7 @@ import {
   LoggerService,
   LoggerServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockModule } from 'ng-mocks';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -46,7 +47,7 @@ describe('ComponentListModalComponent', () => {
       ],
       imports: [
         BaseModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         ComponentsListModule,
         RouterTestingModule
       ],

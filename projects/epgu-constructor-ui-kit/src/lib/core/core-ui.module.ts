@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { CookieService } from 'ngx-cookie-service';
@@ -25,6 +25,7 @@ import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { ConfigApiService } from './services/config-api/config-api.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 import { TracingService } from './services/tracing/tracing.service';
+import { GlobalErrorHandler } from './services/global-error/global-error.service';
 
 @NgModule({
   providers: [
@@ -46,6 +47,10 @@ import { TracingService } from './services/tracing/tracing.service';
     UtilsService,
     TracingService,
     WINDOW_PROVIDERS,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpCancelInterceptor,

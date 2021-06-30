@@ -31,6 +31,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
+import { MockModule } from 'ng-mocks';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -60,7 +61,7 @@ describe('PaymentTypeSelectorComponent', () => {
         ModalModule,
         BaseModule,
         CoreModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         RouterTestingModule,
         BaseComponentsModule,
         ScreenContainerModule,

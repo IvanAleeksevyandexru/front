@@ -28,6 +28,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { MockModule } from 'ng-mocks';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;
@@ -74,7 +75,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
         ModalModule,
         BaseModule,
         CoreModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         RouterTestingModule,
         BaseComponentsModule,
         ScreenContainerModule,

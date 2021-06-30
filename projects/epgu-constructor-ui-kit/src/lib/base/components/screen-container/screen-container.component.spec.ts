@@ -15,6 +15,7 @@ import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.
 import { PrevButtonModule } from '../prev-button/prev-button.module';
 import { CoreModule } from '@epgu/epgu-constructor/src/lib/core/core.module';
 import { BaseModule } from '@epgu/epgu-constructor/src/lib/shared/base.module';
+import { MockModule } from 'ng-mocks';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -23,7 +24,7 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CoreModule, CoreUiModule, BaseModule, RouterTestingModule, PrevButtonModule],
+        imports: [CoreModule, MockModule(CoreUiModule), BaseModule, RouterTestingModule, PrevButtonModule],
         declarations: [ScreenContainerComponent],
         providers: [
           LocationService,

@@ -24,6 +24,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MockModule } from 'ng-mocks';
 
 describe('ConfirmPhoneComponent', () => {
   let component: ConfirmPhoneComponent;
@@ -51,7 +52,7 @@ describe('ConfirmPhoneComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPhoneComponent, CounterDirective],
-      imports: [ConstructorPlainInputModule, CoreModule, CoreUiModule, BaseModule, RouterTestingModule],
+      imports: [ConstructorPlainInputModule, CoreModule, MockModule(CoreUiModule), BaseModule, RouterTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,
