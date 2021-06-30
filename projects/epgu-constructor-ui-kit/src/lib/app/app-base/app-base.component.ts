@@ -6,7 +6,7 @@ import {
   OutputAppDto,
 } from '@epgu/epgu-constructor-types';
 import { BehaviorSubject } from 'rxjs';
-import { filter, mergeMap, take, tap } from 'rxjs/operators';
+import { filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { LoadService } from '@epgu/epgu-lib';
 
 import { AppStateService } from '../app-state/app-state.service';
@@ -89,6 +89,7 @@ export class AppBaseComponent<T, U> {
         }),
         mergeMap(() => this.configApiService.getFormPlayerConfig()),
         take(1),
+        takeUntil(this.ngUnsubscribe$),
       )
       .subscribe((config) => {
         this.configService.config = config;
