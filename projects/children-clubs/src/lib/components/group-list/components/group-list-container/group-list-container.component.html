@@ -8,6 +8,7 @@
         {{ program.name }}
       </div>
       <children-clubs-filter-panel
+        [title]="titleFilter"
         (openFilters)="openFilter()"
         (search)="search($event)"
         [initValue]="initValue"

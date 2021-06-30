@@ -16,7 +16,7 @@ import { GroupListService } from '../../services/group-list/group-list.service';
 import { ApiService } from '../../services/api/api.service';
 
 import { StateService } from '../../services/state/state.service';
-import { StateServiceStub } from '../../services/state/state.service.stub';
+
 import { GroupItemComponent } from './components/group-item/group-item.component';
 
 @NgModule({
@@ -32,13 +32,7 @@ import { GroupItemComponent } from './components/group-item/group-item.component
     ImgPrefixerModule,
   ],
 
-  providers: [
-    GroupListService,
-    ConfigService,
-    ModalService,
-    ApiService,
-    { provide: StateService, useClass: StateServiceStub },
-  ],
+  providers: [GroupListService, ConfigService, ModalService, ApiService, StateService],
   exports: [GroupListContainerComponent, GroupItemComponent],
 })
 export class GroupListModule {}

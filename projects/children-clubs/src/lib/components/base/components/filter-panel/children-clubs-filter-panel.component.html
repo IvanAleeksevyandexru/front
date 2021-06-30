@@ -1,7 +1,7 @@
 <div>
   <epgu-cf-ui-constructor-screen-pad>
     <div class="info-list-subtitle">
-      Введите адрес проведения занятий, ФИО педагога, название группы
+      {{ title }}
     </div>
     <lib-search-bar [formControl]="searchControl"></lib-search-bar>
 
@@ -13,7 +13,7 @@
         Фильтры
         <span *ngIf="filtersCount">({{ filtersCount }})</span>
       </a>
-      <div class="preview">
+      <div *ngIf="isShowMenu" class="preview">
         <img src="../../../../../assets/icons/map.svg" />
         <img src="../../../../../assets/icons/list.svg" />
       </div>

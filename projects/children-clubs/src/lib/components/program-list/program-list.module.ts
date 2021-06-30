@@ -18,7 +18,6 @@ import { ViewComponent } from './components/view/view.component';
 import { ApiService } from '../../services/api/api.service';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
-import { StateServiceStub } from '../../services/state/state.service.stub';
 
 @NgModule({
   declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
@@ -32,13 +31,7 @@ import { StateServiceStub } from '../../services/state/state.service.stub';
     EpguLibModule,
   ],
 
-  providers: [
-    ProgramListService,
-    ModalService,
-    ConfigService,
-    ApiService,
-    { provide: StateService, useClass: StateServiceStub },
-  ],
+  providers: [ProgramListService, ModalService, ConfigService, ApiService, StateService],
   exports: [ProgramListContainerComponent, ViewComponent],
 })
 export class ProgramListModule {}

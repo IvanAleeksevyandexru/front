@@ -15,7 +15,6 @@ import {
 import { ApiService } from '../../services/api/api.service';
 
 import { StateService } from '../../services/state/state.service';
-import { StateServiceStub } from '../../services/state/state.service.stub';
 import { ContentModalComponent } from './components/content-modal/content-modal.component';
 import { ChildrenClubsFilterPanelComponent } from './components/filter-panel/children-clubs-filter-panel.component';
 import { PaymentSelectorComponent } from './components/payment-selector/payment-selector.component';
@@ -43,12 +42,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     SafeModule,
     ImgPrefixerModule,
   ],
-  providers: [
-    DictionaryService,
-    ConfigService,
-    ApiService,
-    { provide: StateService, useClass: StateServiceStub },
-  ],
+  providers: [DictionaryService, ConfigService, ApiService, StateService],
   exports: [
     NotFoundComponent,
     ProgramFiltersFormComponent,

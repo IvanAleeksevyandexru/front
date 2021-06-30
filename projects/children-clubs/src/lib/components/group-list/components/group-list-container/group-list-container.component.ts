@@ -22,6 +22,7 @@ import { GroupFiltersFormComponent } from '../../../base/components/group-filter
 })
 export class GroupListContainerComponent implements OnInit {
   loading$ = this.groupService.loading$;
+  titleFilter = 'Введите ФИО педагога, название группы';
 
   filtersCount$$ = new BehaviorSubject<number>(0);
   initValue = this.state.groupFilters.query || '';

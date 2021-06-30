@@ -27,21 +27,23 @@ import { ConfigApiServiceStub } from '../../core/services/config-api/config-api.
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 
 export interface TestValueType {
-  someKey: string
+  someKey: string;
 }
 
 export interface TestStateType {
   someFilters: {
-    [key: string]: string
-  }
+    [key: string]: string;
+  };
 }
 
 @Component({
-  template: ''
+  template: '',
 })
 class TestAppComponent extends AppBaseComponent<TestValueType, TestStateType> {
   public appType = 'TestAppComponent';
-  constructor (public injector: Injector) {super(injector);}
+  constructor(public injector: Injector) {
+    super(injector);
+  }
 }
 
 describe('AppBaseModule', () => {
@@ -54,6 +56,7 @@ describe('AppBaseModule', () => {
   let locationService: LocationService;
   let appNavigationRuleService: AppNavigationRuleService;
   let eventBusService: EventBusService;
+  let loadService: LoadService;
   let mockInputData: InputAppDto;
   let getLocalStorageSpy;
   let setStateSpy;
@@ -61,7 +64,7 @@ describe('AppBaseModule', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ TestAppComponent ],
+      declarations: [TestAppComponent],
       providers: [
         EventBusService,
         UnsubscribeService,
@@ -74,9 +77,8 @@ describe('AppBaseModule', () => {
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ConfigApiService, useClass: ConfigApiServiceStub },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -85,9 +87,10 @@ describe('AppBaseModule', () => {
       componentType: 'TestAppComponent' as AppTypes,
       value: '{"value": {}, "state": {}}',
       callbackRedirectUrl: '/some/redirect/url',
-      isPrevStepCase: false
+      isPrevStepCase: false,
     };
-
+    loadService = TestBed.inject(LoadService);
+    loadService.loaded.next(true);
     fixture = TestBed.createComponent(TestAppComponent);
     cfAppStateService = TestBed.inject(CfAppStateService);
     localStorageService = TestBed.inject(LocalStorageService);
@@ -106,17 +109,23 @@ describe('AppBaseModule', () => {
   });
 
   describe('openApp()', () => {
-    it('should set inputAppData', () => {
+    it('should set inputAppData', (done) => {
       component.openApp();
-      expect(component.inputAppData).toBe(mockInputData);
+      component.isConfigReady$.subscribe(() => {
+        expect(component.inputAppData).toBe(mockInputData);
+        done();
+      });
     });
 
     it('should throw error if input types not equal lib type', () => {
       component.appType = 'SomeOtherApp';
       fixture.detectChanges();
+      jest.useFakeTimers();
       const t = () => {
         component.openApp();
+        jest.runAllTimers();
       };
+
       expect(t).toThrowError();
     });
 
@@ -127,74 +136,102 @@ describe('AppBaseModule', () => {
       expect(t).not.toThrowError();
     });
 
-    it('should call localStorageService get with key', () => {
+    it('should call localStorageService get with key', (done) => {
+      component.isConfigReady$.subscribe(() => {
+        expect(getLocalStorageSpy).toBeCalledWith(key);
+        done();
+      });
       component.openApp();
-      expect(getLocalStorageSpy).toBeCalledWith(key);
     });
 
-    it('should call appStateService with stateFromStorage', () => {
+    it('should call appStateService with stateFromStorage', (done) => {
       const stateFromStorageMock = {
         value: 'someValue',
-        state: 'someState'
+        state: 'someState',
       };
       jest.spyOn(localStorageService, 'get').mockReturnValue(stateFromStorageMock);
       const initializeSpy = jest.spyOn(appStateService, 'initialize');
+
+      component.isConfigReady$.subscribe(() => {
+        expect(initializeSpy).toBeCalledWith(stateFromStorageMock);
+        done();
+      });
       component.openApp();
-      expect(initializeSpy).toBeCalledWith(stateFromStorageMock);
     });
 
-    it('should call appStateService with state from input data and firstComponent if there is no stateFromStorage and not prevStepCase', () => {
+    it('should call appStateService with state from input data and firstComponent if there is no stateFromStorage and not prevStepCase', (done) => {
       const componentName = 'firstComponent';
       const initializeSpy = jest.spyOn(appStateService, 'initialize');
       jest.spyOn(appNavigationRuleService, 'getFirst').mockReturnValue(componentName);
+
+      component.isConfigReady$.subscribe(() => {
+        const value = JSON.parse(mockInputData.value);
+        value.currentComponent = componentName;
+        expect(initializeSpy).toBeCalledWith(value);
+        done();
+      });
       component.openApp();
-      const value = JSON.parse(mockInputData.value);
-      value.currentComponent = componentName;
-      expect(initializeSpy).toBeCalledWith(value);
     });
 
-    it('should call appStateService with state from input data and lastComponent if there is no stateFromStorage and prevStepCase', () => {
-      jest.spyOn(cfAppStateService, 'getState').mockReturnValue({ ...mockInputData, isPrevStepCase: true });
+    it('should call appStateService with state from input data and lastComponent if there is no stateFromStorage and prevStepCase', (done) => {
+      jest
+        .spyOn(cfAppStateService, 'getState')
+        .mockReturnValue({ ...mockInputData, isPrevStepCase: true });
       const componentName = 'lastComponent';
       const initializeSpy = jest.spyOn(appStateService, 'initialize');
       jest.spyOn(appNavigationRuleService, 'getLast').mockReturnValue(componentName);
+      component.isConfigReady$.subscribe(() => {
+        const value = JSON.parse(mockInputData.value);
+        value.currentComponent = componentName;
+        expect(initializeSpy).toBeCalledWith(value);
+        done();
+      });
       component.openApp();
-      const value = JSON.parse(mockInputData.value);
-      value.currentComponent = componentName;
-      expect(initializeSpy).toBeCalledWith(value);
     });
 
-    it('should call appStateService with state from input data and set empty value and empty state', () => {
+    it('should call appStateService with state from input data and set empty value and empty state', (done) => {
       jest.spyOn(cfAppStateService, 'getState').mockReturnValue({ ...mockInputData, value: '{}' });
       const componentName = 'firstComponent';
       const initializeSpy = jest.spyOn(appStateService, 'initialize');
       jest.spyOn(appNavigationRuleService, 'getFirst').mockReturnValue(componentName);
+      component.isConfigReady$.subscribe(() => {
+        const value = JSON.parse(mockInputData.value);
+        value.currentComponent = componentName;
+        expect(initializeSpy).toBeCalledWith(value);
+        done();
+      });
       component.openApp();
-      const value = JSON.parse(mockInputData.value);
-      value.currentComponent = componentName;
-      expect(initializeSpy).toBeCalledWith(value);
     });
 
-    it('should subscribe on update lib state', () => {
+    it('should subscribe on update lib state', (done) => {
       expect(component['storeSub']).toBeUndefined();
+      component.isConfigReady$.subscribe(() => {
+        expect(component['storeSub']).toBeTruthy();
+        done();
+      });
       component.openApp();
-      expect(component['storeSub']).toBeTruthy();
     });
 
-    it('should call localStorageService if appState update', () => {
+    it('should call localStorageService if appState update', (done) => {
       const storeState = JSON.parse(mockInputData.value);
       const setLocalStorageSpy = jest.spyOn(localStorageService, 'set');
       appStateQuery.store$ = of(storeState);
+      component.isConfigReady$.subscribe(() => {
+        expect(setLocalStorageSpy).toBeCalledWith(key, storeState);
+        done();
+      });
       component.openApp();
-      expect(setLocalStorageSpy).toBeCalledWith(key, storeState);
     });
 
-    it('should call isFirstLoading$ next with false', () => {
+    it('should call isFirstLoading$ next with false', (done) => {
       const storeState = JSON.parse(mockInputData.value);
       const nextSpy = jest.spyOn(component.isFirstLoading$, 'next');
       appStateQuery.store$ = of(storeState);
+      component.isConfigReady$.subscribe(() => {
+        expect(nextSpy).toBeCalledWith(false);
+        done();
+      });
       component.openApp();
-      expect(nextSpy).toBeCalledWith(false);
     });
   });
   describe('closeApp()', () => {
@@ -233,8 +270,11 @@ describe('AppBaseModule', () => {
     });
 
     it('should call setState of cfAppStateService and pass outputData without currentComponent', () => {
-      jest.spyOn(appStateQuery, 'storeState', 'get').mockReturnValue(
-        { value: {} as TestValueType, state: {} as TestStateType, currentComponent: 'lastComponent' });
+      jest.spyOn(appStateQuery, 'storeState', 'get').mockReturnValue({
+        value: {} as TestValueType,
+        state: {} as TestStateType,
+        currentComponent: 'lastComponent',
+      });
       component.closeApp();
       expect(setStateSpy).toBeCalledWith(expectedOutputData, DataDirectionType.OUTPUT);
     });
