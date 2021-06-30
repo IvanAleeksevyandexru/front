@@ -74,8 +74,8 @@
       }
     }
   }
-  &__item:first-child {
-    &::ng-deep .form__radio--block {
+  &__item:first-child::ng-deep {
+    .form__radio--block {
       margin-top: 0;
     }
   }
