@@ -38,6 +38,7 @@ import { Gender, TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -98,6 +99,7 @@ describe('EmployeeHistoryFormComponent', () => {
         RefRelationService,
         SuggestHandlerService,
         DateRestrictionsService,
+        SuggestMonitorService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     })

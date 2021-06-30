@@ -19,7 +19,9 @@ import { ZoomComponent } from '../../../zoom/zoom.component';
 
 import { ZoomEvent } from '../../../zoom/typings';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
 import { FileItem, FileItemStatus } from '../../../file-upload/data';
+import { SuggestActions } from '../../../../constants/suggest';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
@@ -64,6 +66,7 @@ export class UploaderViewerContentComponent {
     private smu: SmuEventsService,
     private deviceDetector: DeviceDetectorService,
     private teraService: TerraByteApiService,
+    private monitor: SuggestMonitorService,
   ) {}
 
   zoomMoveEnd(): void {
@@ -108,6 +111,10 @@ export class UploaderViewerContentComponent {
     } else {
       this.download.emit(this.item);
     }
+    this.monitor.handleAutocompleteEvent(SuggestActions.DOWNLOAD_ACTION, 'UPLOAD_DOWNLOAD_BUTTON', {
+      mnemonic: this.item.createUploadedParams().mnemonic,
+      date: new Date().toISOString(),
+    });
   }
 
   nextAction(): void {
@@ -135,5 +142,9 @@ export class UploaderViewerContentComponent {
 
   suggestAction(isAdd: boolean): void {
     this.suggest.emit({ file: this.item, isAdd });
+    this.monitor.handleAutocompleteEvent(SuggestActions.ADD_ACTION, 'UPLOAD_ADD_BUTTON', {
+      mnemonic: this.item.createUploadedParams().mnemonic,
+      date: new Date().toISOString(),
+    });
   }
 }

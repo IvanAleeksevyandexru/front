@@ -49,7 +49,7 @@
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.series]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
         (blurEvent)="
           markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
         "
@@ -66,7 +66,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-cf-ui-constructor-helper-text
@@ -99,7 +99,7 @@
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.number]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
         (blurEvent)="
           markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
         "
@@ -116,7 +116,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
           (blurEvent)="
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
           "
@@ -185,7 +185,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
           (blurEvent)="
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
           "
@@ -202,7 +202,7 @@
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.series]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
         <epgu-cf-ui-constructor-helper-text
@@ -236,7 +236,7 @@
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
           (blurEvent)="
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
           "
@@ -253,7 +253,7 @@
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.number]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
         <epgu-cf-ui-constructor-helper-text
@@ -348,7 +348,7 @@
       [validationShowOn]="validationShowOn"
       [component]="fields[docInputFieldsTypes.emitter]"
       [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.emitter]"
-      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
     ></epgu-constructor-constructor-plain-input>
   </div>
   <epgu-cf-ui-constructor-helper-text

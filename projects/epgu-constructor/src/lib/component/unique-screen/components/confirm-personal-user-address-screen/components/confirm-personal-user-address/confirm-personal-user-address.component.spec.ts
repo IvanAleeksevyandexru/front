@@ -24,6 +24,9 @@ import { LabelComponent } from '../../../../../../shared/components/base-compone
 import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
+import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { HealthService } from '@epgu/epgu-lib';
+import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 const mockData = {
   attrs: {
@@ -76,11 +79,13 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
         DatesToolsService,
         SuggestHandlerService,
         EventBusService,
         FormBuilder,
         HttpCancelService,
+        SuggestMonitorService,
       ],
     })
       .overrideComponent(ConfirmPersonalUserAddressComponent, {

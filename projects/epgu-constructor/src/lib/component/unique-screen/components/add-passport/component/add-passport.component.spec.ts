@@ -26,6 +26,7 @@ import { ActionServiceStub } from '../../../../../shared/directives/action/actio
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -65,6 +66,7 @@ describe('AddPassportComponent', () => {
         EventBusService,
         ValidationService,
         DateRangeService,
+        SuggestMonitorService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
         { provide: ConfigService, useClass: ConfigServiceStub },

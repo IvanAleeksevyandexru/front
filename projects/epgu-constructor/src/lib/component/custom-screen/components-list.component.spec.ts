@@ -53,6 +53,9 @@ import { RefRelationService } from '../../shared/services/ref-relation/ref-relat
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
+import { SuggestMonitorService } from '../../shared/services/suggest-monitor/suggest-monitor.service';
+import { HealthService } from '@epgu/epgu-lib';
+import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -91,6 +94,7 @@ describe('ComponentsListComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
         HttpCancelService,
         EventBusService,
         ValidationService,
@@ -110,6 +114,7 @@ describe('ComponentsListComponent', () => {
         RefRelationService,
         SuggestHandlerService,
         DateRestrictionsService,
+        SuggestMonitorService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],

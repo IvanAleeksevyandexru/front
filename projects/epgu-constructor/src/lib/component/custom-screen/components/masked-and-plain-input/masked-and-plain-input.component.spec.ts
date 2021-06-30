@@ -16,6 +16,7 @@ import { ConstructorMaskedInputModule } from '../../../../shared/components/cons
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 
 describe('MaskedAndPlainInputComponent', () => {
   let component: MaskedAndPlainInputComponent;
@@ -59,6 +60,7 @@ describe('MaskedAndPlainInputComponent', () => {
         UnsubscribeService,
         SuggestHandlerService,
         EventBusService,
+        SuggestMonitorService,
         {
           provide: ComponentsListFormService,
           useClass: ComponentsListFormServiceStub,

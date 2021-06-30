@@ -22,7 +22,7 @@
       [required]="component.required"
       [attrs]="component.attrs"
       [suggest]="suggestions$ | async"
-      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'DROPDOWN')"
     >
     </epgu-constructor-drop-down-depts>
   </epgu-constructor-component-item>
