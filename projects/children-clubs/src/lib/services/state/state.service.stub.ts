@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Clarifications } from '@epgu/epgu-constructor-types';
+
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
@@ -19,22 +19,11 @@ export class StateServiceStub {
   }
 
   get vendor(): VendorType {
-    return VendorType.pfdo;
+    return VendorType.inlearno;
   }
 
   get okato(): number {
-    return 123;
-  }
-
-  get clarifications(): Clarifications {
-    return {
-      aboutpayment: {
-        title: 'Подробнее о способах оплаты',
-        text:
-          // eslint-disable-next-line max-len
-          '<h5 class="mb-8">Оплата зависит от типа программы</h5><ul class="mb-24"><li><b>Бесплатная</b> — оплата не потребуется. Муниципалитет устанавливает количество таких программ на ребёнка в год</li><li><b>Сертифицированная</b> — обучение оплачиваетсяиз средств на сертификате, ноне всегда полностью. Часть обучения может оплачиватьсяиз личных средств, если денег на сертификате недостаточно или стоимость кружка выше максимальной суммы, установленной муниципалитетом</li><li><b>Платная</b> — обучение оплачивается из личных средств полностью</li></ul><p class="mt-24"><a href="about:blank">О дополнительном образованиии и персонифицированном финансировании</a></p>',
-      } as Clarifications,
-    };
+    return 46434000000;
   }
 
   get nextSchoolYear(): boolean {

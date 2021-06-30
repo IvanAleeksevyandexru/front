@@ -14,9 +14,9 @@
     </div>
 
     <div class="mb-24">
-      <div class="label">{{ formFieldsLabel[formFields.place] }}</div>
+      <div class="label">{{ formFieldsLabel[formFields.municipality] }}</div>
       <lib-lookup
-        [formControlName]="formFields[formFields.place]"
+        [formControlName]="formFields[formFields.municipality]"
         [itemsProvider]="provider"
         [placeholder]="'Все'"
       ></lib-lookup>

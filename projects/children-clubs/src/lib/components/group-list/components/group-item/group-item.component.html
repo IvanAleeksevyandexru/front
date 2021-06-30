@@ -28,7 +28,7 @@
           >
         </div>
       </div>
-      <div class="group-item mt-16">
+      <div *ngIf="group?.schedule" class="group-item mt-16">
         <div class="group-item__key">Расписание занятий</div>
         <div
           [innerHTML]="group.schedule | imgPrefixer | safe: 'html'"

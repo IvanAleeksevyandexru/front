@@ -38,14 +38,6 @@
       ></epgu-cf-ui-constructor-error>
     </div>
 
-    <div class="mb-24 half-for-desktop">
-      <div class="label">{{ formFieldsLabel[formFields.level] }}</div>
-      <lib-dropdown
-        [formControlName]="formFields[formFields.level]"
-        [items]="levelListElements"
-      ></lib-dropdown>
-    </div>
-
     <ng-container modal-buttons>
       <div class="row mb-4">
         <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"

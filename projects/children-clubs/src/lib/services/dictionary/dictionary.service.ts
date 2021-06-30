@@ -11,7 +11,7 @@ export class DictionaryService {
   focusData$ = this.state.state$.pipe(
     pluck('okato'),
     distinctUntilChanged(),
-    switchMap((okato) => this.api.getDirections(okato)),
+    switchMap(() => this.api.getDirections(this.state.okato)),
     map((data) => this.normalizeFocusData(data)),
     shareReplay(),
   );
@@ -19,7 +19,7 @@ export class DictionaryService {
   municipalitiesList$ = this.state.state$.pipe(
     pluck('okato'),
     distinctUntilChanged(),
-    switchMap((okato) => this.api.getMunicipalities(okato)),
+    switchMap(() => this.api.getMunicipalities(this.state.okato)),
     map((list: Municipality[]) =>
       list.map(
         (municipality) => ({ id: municipality.uuid, text: municipality.name } as ListElement),
@@ -45,8 +45,14 @@ export class DictionaryService {
       directions[item.focusCode] = item.directions.map(
         (direction) => ({ id: direction, text: direction } as ListElement),
       );
+      if (directions[item.focusCode].length > 0) {
+        directions[item.focusCode].unshift({ id: null, text: 'Все' });
+      }
       return { id: item.focusCode, text: item.focusName } as ListElement;
     });
+    if (focus.length > 0) {
+      focus.unshift({ id: null, text: 'Все' });
+    }
     return { directions, focus };
   }
 }
