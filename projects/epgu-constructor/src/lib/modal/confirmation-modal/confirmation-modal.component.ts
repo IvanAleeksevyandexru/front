@@ -7,6 +7,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenButton, ConfirmationModal, ActionType } from '@epgu/epgu-constructor-types';
@@ -18,6 +19,7 @@ import {
   ConfirmationModalBaseButton,
   ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { NotifierService } from '@epgu/epgu-lib';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
@@ -58,6 +60,8 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
+    private clipboard: Clipboard,
+    private notifierService: NotifierService,
   ) {
     super(injector);
   }
@@ -142,5 +146,10 @@ export class ConfirmationModalComponent extends ModalBaseComponent
         handler,
       };
     });
+  }
+
+  copy(traceId: string): void {
+    this.clipboard.copy(traceId);
+    this.notifierService.success({ message: 'Код ошибки скопирован' });
   }
 }
