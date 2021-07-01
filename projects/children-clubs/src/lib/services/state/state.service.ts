@@ -57,4 +57,9 @@ export class StateService {
     const groupFilters = { ...this.groupFilters, ...filters };
     this.changeState({ groupFilters });
   }
+
+  clearGroupFilters(): void {
+    const groupFilters = {};
+    this.changeState({ groupFilters });
+  }
 }
