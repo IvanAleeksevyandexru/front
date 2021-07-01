@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -30,7 +29,6 @@ export class DatePeriodComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
   ) {}
 
