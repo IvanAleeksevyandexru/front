@@ -26,7 +26,7 @@ export class DatePeriodComponent implements OnInit {
 
   @Output() updateState = new EventEmitter<DatePeriodFormState>();
 
-  group: FormGroup;
+  public group: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,

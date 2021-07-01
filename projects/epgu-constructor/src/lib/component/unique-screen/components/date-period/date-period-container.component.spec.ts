@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DatePeriodContainerComponent } from './date-period-container.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { configureTestSuite } from 'ng-bullet';
@@ -41,7 +40,6 @@ describe('DatePeriodContainerComponent', () => {
   });
 
   beforeEach(() => {
-    dateToolsService = TestBed.inject(DatesToolsService);
     screenService = TestBed.inject(ScreenService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     fixture = TestBed.createComponent(DatePeriodContainerComponent);
@@ -92,6 +90,7 @@ describe('DatePeriodContainerComponent', () => {
     });
 
     it('should be return start time values', () => {
+      dateToolsService = TestBed.inject(DatesToolsService);
       screenService.component = {
         id: 'w1',
         type: 'DatePeriod',

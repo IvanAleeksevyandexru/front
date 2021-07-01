@@ -9,16 +9,14 @@
   ></epgu-constructor-disclaimer>
 
   <epgu-cf-ui-constructor-input-error
-    *ngIf="
-      (this.group.controls.startDate.invalid && this.group.controls.startDate.touched)
-    "
+    *ngIf="this.group.controls.startDate.invalid && this.group.controls.startDate.touched"
   >
     Не все поля заполнены
   </epgu-cf-ui-constructor-input-error>
   <div class="form">
     <div class="grid-col-6 grid-col-12-sm form__item">
       <epgu-constructor-label
-        [label]="attrs.beginDate?.label || ''"
+        [label]="attrs.beginDate?.label"
         [for]="'startDate'"
       ></epgu-constructor-label>
 
@@ -31,20 +29,17 @@
         [invalid]="group.controls.startDate.invalid && group.controls.startDate.touched"
       ></epgu-constructor-constructor-date-picker>
     </div>
-
   </div>
 
   <epgu-cf-ui-constructor-input-error
-    *ngIf="
-      (this.group.controls.endDate.invalid && this.group.controls.endDate.touched)
-    "
+    *ngIf="this.group.controls.endDate.invalid && this.group.controls.endDate.touched"
   >
     Не все поля заполнены
   </epgu-cf-ui-constructor-input-error>
   <div class="form">
     <div class="grid-col-6 grid-col-12-sm form__item">
       <epgu-constructor-label
-        [label]="attrs.endDate?.label || ''"
+        [label]="attrs.endDate?.label"
         [for]="'endDate'"
       ></epgu-constructor-label>
 
