@@ -1,0 +1,62 @@
+<epgu-cf-ui-constructor-screen-pad [formGroup]="group">
+  <epgu-constructor-disclaimer
+    *ngIf="attrs?.disclaimer as disclaimer"
+    class="mb-24"
+    [type]="disclaimer.type"
+    [title]="disclaimer.title"
+    [description]="disclaimer.description"
+    [clarifications]="attrs.clarifications"
+  ></epgu-constructor-disclaimer>
+
+  <epgu-cf-ui-constructor-input-error
+    *ngIf="this.group.controls.startDate.invalid && this.group.controls.startDate.touched"
+  >
+    Не все поля заполнены
+  </epgu-cf-ui-constructor-input-error>
+  <div class="form">
+    <div class="grid-col-6 grid-col-12-sm form__item">
+      <epgu-constructor-label
+        [label]="attrs.beginDate?.label"
+        [for]="'startDate'"
+      ></epgu-constructor-label>
+
+      <epgu-constructor-constructor-date-picker
+        [id]="'startDate'"
+        [minDate]="'today'"
+        [control]="group.controls.startDate"
+        [maxDate]="attrs.beginDate?.maxDate"
+        [clearable]="true"
+        [invalid]="group.controls.startDate.invalid && group.controls.startDate.touched"
+      ></epgu-constructor-constructor-date-picker>
+    </div>
+  </div>
+
+  <epgu-cf-ui-constructor-input-error
+    *ngIf="this.group.controls.endDate.invalid && this.group.controls.endDate.touched"
+  >
+    Не все поля заполнены
+  </epgu-cf-ui-constructor-input-error>
+  <div class="form">
+    <div class="grid-col-6 grid-col-12-sm form__item">
+      <epgu-constructor-label
+        [label]="attrs.endDate?.label"
+        [for]="'endDate'"
+      ></epgu-constructor-label>
+
+      <div class="date-time-period-btns" *ngIf="attrs?.hints as hints">
+        <div class="date-time-period-btns__item" *ngFor="let hint of hints" (click)="hintClick(hint)">
+          {{ hint.label }}
+        </div>
+      </div>
+
+      <epgu-constructor-constructor-date-picker
+        [id]="'endDate'"
+        [minDate]="group.controls.startDate.value"
+        [maxDate]="attrs.endDate?.maxDate"
+        [control]="group.controls.endDate"
+        [clearable]="true"
+        [invalid]="group.controls.endDate.invalid && group.controls.endDate.touched"
+      ></epgu-constructor-constructor-date-picker>
+    </div>
+  </div>
+</epgu-cf-ui-constructor-screen-pad>

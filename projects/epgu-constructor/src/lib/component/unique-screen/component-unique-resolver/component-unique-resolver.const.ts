@@ -35,6 +35,7 @@ import {
 } from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
 import { ConfirmPersonalUserLegalDataComponent } from '../components/confirm-personal-user-data-screen/component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
 import { ReferralNumberComponent } from '../components/referral-number/referral-number.component';
+import { DatePeriodContainerComponent } from '../components/date-period/date-period-container.component';
 import { PaymentWayContainerComponent } from '../components/payment-way/components/payment-way-container/payment-way-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
@@ -67,6 +68,7 @@ type UniqueScreenComponent =
   | TimerScreenComponent
   | MatPeriodContainerComponent
   | DateTimePeriodContainerComponent
+  | DatePeriodContainerComponent
   | CheckboxCubeContainerComponent
   | ConfirmPersonalUserAddressReadonlyComponent
   | CarDetailInfoContainerComponent
@@ -120,6 +122,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   Timer: TimerScreenComponent,
   MatPeriod: MatPeriodContainerComponent,
   DateTimePeriod: DateTimePeriodContainerComponent,
+  DatePeriod: DatePeriodContainerComponent,
   CheckboxCube: CheckboxCubeContainerComponent,
   ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,

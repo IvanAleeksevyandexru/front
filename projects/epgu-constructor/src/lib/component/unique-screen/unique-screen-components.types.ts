@@ -45,6 +45,7 @@ export enum UniqueScreenComponentTypes {
   matPeriod = 'MatPeriod',
   checkboxCube = 'CheckboxCube',
   dateTimePeriod = 'DateTimePeriod',
+  datePeriod = 'DatePeriod',
   confirmUserCorpEmail = 'ConfirmUserCorpEmail',
   confirmUserCorpPhone = 'ConfirmUserCorpPhone',
   carDetailInfo = 'CarDetailInfo',
