@@ -13,7 +13,7 @@ export class DictionaryService {
     distinctUntilChanged(),
     switchMap(() => this.api.getDirections(this.state.okato)),
     map((data) => this.normalizeFocusData(data)),
-    shareReplay(),
+    shareReplay(1),
   );
 
   municipalitiesList$ = this.state.state$.pipe(
@@ -25,7 +25,7 @@ export class DictionaryService {
         (municipality) => ({ id: municipality.uuid, text: municipality.name } as ListElement),
       ),
     ),
-    shareReplay(),
+    shareReplay(1),
   );
 
   program$: Observable<Program> = this.state.state$.pipe(
@@ -33,7 +33,7 @@ export class DictionaryService {
     filter((uuid) => !!uuid),
     distinctUntilChanged(),
     switchMap((uuid: string) => this.api.getProgram(uuid)),
-    shareReplay(),
+    shareReplay(1),
   );
 
   constructor(private api: ApiService, private state: StateService) {}

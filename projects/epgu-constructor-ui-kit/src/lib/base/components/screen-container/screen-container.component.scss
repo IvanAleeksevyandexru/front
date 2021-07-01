@@ -17,7 +17,8 @@
   @include navigation-mt();
 }
 
-:host::ng-deep .screen-body:not(.quiz__header) { //не применяется к questions-screen
+:host::ng-deep .screen-body:not(.quiz__header) {
+  //не применяется к questions-screen
   margin-bottom: 24px;
 
   @include tablets-up {
@@ -25,7 +26,8 @@
   }
 }
 
-:host::ng-deep .screen-footer:not(.quiz__container) { //не применяется к questions-screen
+:host::ng-deep .screen-footer:not(.quiz__container) {
+  //не применяется к questions-screen
   $footer-item-mx: 16px;
   $footer-mt: 20px;
   $footer-mb: 24px;
@@ -60,4 +62,17 @@
 
 .screen-footer-to-bottom :host::ng-deep .screen-footer {
   margin-top: auto;
+}
+
+:host-context(.tiny) {
+  .form-player__navigation {
+    padding-top: 0;
+    margin-bottom: 0;
+  }
+  .form-player__navigation::ng-deep > .head {
+    @include tablets-down {
+      border: none;
+      padding: 0;
+    }
+  }
 }
