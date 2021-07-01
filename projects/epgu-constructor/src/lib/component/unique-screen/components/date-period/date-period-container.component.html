@@ -1,0 +1,14 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-constructor-date-period
+    *ngIf="initialState$ | async as initialState"
+    [attrs]="(screenService.component$ | async).attrs"
+    [initialState]="initialState"
+    (updateState)="updateState($event)"
+  ></epgu-constructor-date-period>
+</epgu-constructor-default-unique-screen-wrapper>

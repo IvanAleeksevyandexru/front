@@ -137,7 +137,24 @@ export interface ComponentAttrsDto {
   hideCloneButton?: boolean;
   ignoreRootParams?: Array<string>;
   placeholderText?: string;
+  hints?: Hints[];
 }
+
+export interface Hints {
+  label: string;
+  amount: number;
+  unit: HintTimeTypes;
+}
+
+export type HintTimeTypes =
+  | 'years'
+  | 'months'
+  | 'weeks'
+  | 'days'
+  | 'hours'
+  | 'minutes'
+  | 'seconds'
+  | 'milliseconds';
 
 export interface DisclaimerDto {
   type: 'warn' | 'error';
