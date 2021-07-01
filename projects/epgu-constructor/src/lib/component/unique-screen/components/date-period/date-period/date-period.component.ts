@@ -27,10 +27,7 @@ export class DatePeriodComponent implements OnInit {
 
   public group: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private datesToolsService: DatesToolsService,
-  ) {}
+  constructor(private formBuilder: FormBuilder, private datesToolsService: DatesToolsService) {}
 
   ngOnInit(): void {
     this.group = this.formBuilder.group({
