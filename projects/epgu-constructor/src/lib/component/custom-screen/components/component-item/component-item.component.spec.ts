@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
-import { MockComponents } from 'ng-mocks';
+import { MockComponents, MockModule } from 'ng-mocks';
 import {
   HelperTextComponent,
   ConfigService,
@@ -51,7 +51,7 @@ describe('ComponentItemComponent', () => {
       ],
       imports: [
         CoreModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         BaseModule,
         RouterTestingModule,
         WebcamShootModule,

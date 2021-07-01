@@ -26,6 +26,7 @@ import { DictionaryToolsService } from '../../../../../../shared/services/dictio
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { configureTestSuite } from 'ng-bullet';
+import { MockModule } from 'ng-mocks';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -74,7 +75,7 @@ describe('SelectChildrenItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemComponent],
       imports: [
-        CoreUiModule,
+        MockModule(CoreUiModule),
         RouterTestingModule,
         ConstructorDropdownModule,
         ComponentsListModule,

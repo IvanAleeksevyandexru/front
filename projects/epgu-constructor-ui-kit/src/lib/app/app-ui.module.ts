@@ -8,6 +8,10 @@ import { AppNavigationRuleService } from './app-navigation-rule/app-navigation-r
 import { AppUiConfig } from './app-ui-type';
 import { PREV_BUTTON_NAVIGATION } from '../base/components/prev-button/prev-button.token';
 import { AppPrevButtonNavigationService } from './app-prev-button-navigation/app-prev-button-navigation.service';
+import { ERROR_HANDLER_ORDER_PARAMS_SERVICES } from '../core/services/global-error/global-error.token';
+import {
+  AppErrorHandlerOrderParamsServiceService
+} from './app-error-handler-order-params-service/app-error-handler-order-params-service.service';
 
 export const APP_ROUTING_COMPONENT_MAP = new InjectionToken<string>('appRoutingComponentMap');
 export const APP_NAVIGATION_RULE_MAP = new InjectionToken<string>('appNavigationRuleMap');
@@ -42,6 +46,10 @@ export class AppUiModule {
         {
           provide: PREV_BUTTON_NAVIGATION,
           useClass: AppPrevButtonNavigationService,
+        },
+        {
+          provide: ERROR_HANDLER_ORDER_PARAMS_SERVICES,
+          useClass: AppErrorHandlerOrderParamsServiceService,
         }
       ],
     };

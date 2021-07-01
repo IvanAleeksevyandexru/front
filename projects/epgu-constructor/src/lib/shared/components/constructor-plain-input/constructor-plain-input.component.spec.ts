@@ -24,6 +24,7 @@ import { ValidationService } from '../../services/validation/validation.service'
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
+import { MockModule } from 'ng-mocks';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -34,7 +35,7 @@ describe('ConstructorPlainInputComponent', () => {
       declarations: [ConstructorPlainInputComponent],
       imports: [
         CoreModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         BaseModule,
         RouterTestingModule,
         TrimModule,

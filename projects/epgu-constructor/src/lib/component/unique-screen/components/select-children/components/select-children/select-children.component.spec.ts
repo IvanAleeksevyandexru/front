@@ -35,6 +35,7 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { configureTestSuite } from 'ng-bullet';
+import { MockModule } from 'ng-mocks';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -50,7 +51,7 @@ describe('SelectChildrenComponent', () => {
       ],
       imports: [
         CoreModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         RouterTestingModule,
         ReactiveFormsModule,
         BaseModule,
