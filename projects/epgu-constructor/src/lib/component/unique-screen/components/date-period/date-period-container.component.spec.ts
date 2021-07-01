@@ -37,6 +37,7 @@ describe('DatePeriodContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
+    dateToolsService = TestBed.inject(DatesToolsService);
   });
 
   beforeEach(() => {
@@ -90,7 +91,6 @@ describe('DatePeriodContainerComponent', () => {
     });
 
     it('should be return start time values', () => {
-      dateToolsService = TestBed.inject(DatesToolsService);
       screenService.component = {
         id: 'w1',
         type: 'DatePeriod',
