@@ -68,11 +68,11 @@
   .form-player__navigation {
     padding-top: 0;
     margin-bottom: 0;
-  }
-  .form-player__navigation::ng-deep > .head {
-    @include tablets-down {
-      border: none;
-      padding: 0;
+    &::ng-deep > .head {
+      @include tablets-down {
+        border: none;
+        padding: 0;
+      }
     }
   }
 }
