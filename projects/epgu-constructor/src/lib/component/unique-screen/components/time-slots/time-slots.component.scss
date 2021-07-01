@@ -172,7 +172,7 @@
 
     ::ng-deep .dropdown-list-container {
       background: $color-white;
-      box-shadow: 0 6px 16px $color-shadow-second;
+      @include shadow-second();
       border-color: transparent;
       border-radius: 12px;
       padding: 24px;
