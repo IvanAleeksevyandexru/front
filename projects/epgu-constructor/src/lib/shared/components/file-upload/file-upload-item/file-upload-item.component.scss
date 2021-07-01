@@ -28,8 +28,10 @@
 }
 
 .file__bottom {
-  border-bottom: 1px solid $color-divider;
   margin-bottom: 24px;
+  &--divider {
+    border-bottom: 1px solid $color-divider;
+  }
 }
 
 input[type='file'] {

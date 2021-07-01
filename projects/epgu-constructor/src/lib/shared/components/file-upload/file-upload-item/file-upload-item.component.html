@@ -3,7 +3,7 @@
     {{ data.title }}
     <epgu-constructor-user-info-loader [isDisplay]="false"></epgu-constructor-user-info-loader>
   </div>
-  <div class="file__bottom">
+  <div class="file__bottom" [ngClass]="{ 'file__bottom--divider': isShownDivider() }">
     <epgu-constructor-output-html
       class="info__text"
       [html]="data.label"
