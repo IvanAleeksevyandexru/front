@@ -94,7 +94,6 @@ export interface Group {
 }
 
 export enum OvzType {
-  all = 'all',
   deafness = 'deafness',
   hearing_impairment = 'hearing_impairment',
   blindness = 'blindness',
@@ -105,7 +104,6 @@ export enum OvzType {
   intellectual_disability = 'intellectual_disability',
 }
 export enum LevelType {
-  null = 'null',
   initial = 'initial',
   basic = 'basic',
   advanced = 'advanced',

@@ -79,8 +79,10 @@ export class GroupItemComponent {
       payments.push(this.paymentMethodsMap.paid);
     }
 
-    const result = payments.join(' или ');
-    this.payments = result[0]?.toUpperCase() + result.slice(1);
+    if (payments.length > 0) {
+      const result = payments.join(' или ');
+      this.payments = result[0]?.toUpperCase() + result.slice(1);
+    }
   }
 
   initMultiPayments(): void {

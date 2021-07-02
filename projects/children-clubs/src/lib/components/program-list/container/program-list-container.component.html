@@ -1,4 +1,4 @@
-<epgu-cf-ui-screen-container>
+<epgu-cf-ui-screen-container class="tiny">
   <div class="screen-body">
     <div class="title mb-24">
       Выберите программу
@@ -6,6 +6,7 @@
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
+      [isShowMenu]="true"
       [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
     ></children-clubs-filter-panel>

@@ -27,7 +27,7 @@
 
   &__disabled {
     background: $color-bg-disabled;
-    box-shadow: 0 24px 48px $color-shadow;
+    @include shadow-main();
     color: $color-text-helper;
     border: none;
 

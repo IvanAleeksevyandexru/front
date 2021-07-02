@@ -1,4 +1,3 @@
-@use "sass:math";
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
@@ -74,9 +73,14 @@
       }
     }
   }
-  &__item:first-child {
+  &__item:first-child::ng-deep {
     .form__radio--block {
       margin-top: 0;
+    }
+  }
+  &__item:last-child::ng-deep {
+    .component-list-resolver {
+      margin-bottom: 0;
     }
   }
 

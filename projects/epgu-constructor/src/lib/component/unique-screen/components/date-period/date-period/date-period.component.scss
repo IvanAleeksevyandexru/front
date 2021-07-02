@@ -1,5 +1,8 @@
 @import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
 
+$form-margin: calc( #{-$screen-pad-16} / 2);
+$item-margin: calc( #{$screen-pad-16} / 2);
+
 .date-time-period-title {
   margin-bottom: 8px;
 }
@@ -9,7 +12,7 @@
 
 .date-time-period-btns {
   display: flex;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
   flex-direction: row;
 
   &__item {
@@ -31,16 +34,16 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
-  margin-left: calc( #{-$screen-pad-16} / 2);
-  margin-right: calc( #{-$screen-pad-16} / 2);
+  margin-left: $form-margin;
+  margin-right: $form-margin;
   padding-bottom: 8px;
 
   &__item {
     @include flex-container();
     justify-content: flex-start;
     flex: 1 1 100%;
-    margin-left: calc( #{$screen-pad-16} / 2);
-    margin-right: calc( #{$screen-pad-16} / 2);
+    margin-left: $item-margin;
+    margin-right: $item-margin;
     max-width: calc(100% - #{$screen-pad-16});
     margin-bottom: $screen-pad-24;
   }

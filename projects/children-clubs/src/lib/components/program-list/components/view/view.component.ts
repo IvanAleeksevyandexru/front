@@ -32,7 +32,7 @@ export class ViewComponent implements OnInit {
   ) {}
 
   next(): void {
-    this.stateService.groupFilters = {};
+    this.stateService.clearGroupFilters();
     this.appNavigationService.next();
   }
 
