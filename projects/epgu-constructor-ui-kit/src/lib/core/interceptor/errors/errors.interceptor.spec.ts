@@ -5,8 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { ErrorsInterceptorService } from './errors.interceptor';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ErrorsInterceptor } from './errors.interceptor';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
@@ -17,23 +16,27 @@ import {
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
   ITEMS_NO_DATA,
   ITEMS_FAILURE,
-} from '../../services/fp-error-handler/fp-error-handler.constants';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
-import { NavigationService } from '../../services/navigation/navigation.service';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '../../services/init-data/init-data.service';
-import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
-import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
-import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
-import { FormPlayerNavigation } from '../../../form-player/form-player.types';
-import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+} from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
+import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
+import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
+import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
+import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
+import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
+import DOUBLE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/409-error';
+import EXPIRE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/410-error';
+import { FormPlayerNavigation } from '@epgu/epgu-constructor/src/lib/form-player/form-player.types';
+import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { FpErrorHandlerService } from '../../services/fp-error-handler/fp-error-handler.service';
+import { ErrorHandlerService } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler.service';
 import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../modal/modal.service';
+import { ConfigService } from '../../services/config/config.service';
+import { ModalServiceStub } from '../../../modal/modal.service.stub';
+import { LocationServiceStub } from '../../services/location/location.service.stub';
+import { ConfigServiceStub } from '../../services/config/config.service.stub';
+import { LocationService } from '../../services/location/location.service';
+import { ERROR_HANDLER_SERVICE } from './errors.token';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -54,7 +57,6 @@ describe('ErrorsInterceptor', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
-        FpErrorHandlerService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -62,8 +64,12 @@ describe('ErrorsInterceptor', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: ErrorsInterceptorService,
+          useClass: ErrorsInterceptor,
           multi: true,
+        },
+        {
+          provide: ERROR_HANDLER_SERVICE,
+          useClass: ErrorHandlerService,
         },
       ],
     });

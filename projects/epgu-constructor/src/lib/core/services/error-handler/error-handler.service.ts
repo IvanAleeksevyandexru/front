@@ -6,7 +6,12 @@ import {
   FormPlayerApiSuccessResponse,
   ItemsErrorResponse,
 } from '@epgu/epgu-constructor-types';
-import { ModalService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ModalService,
+  LocationService,
+  ErrorHandlerAbstractService,
+  ConfigService
+} from '@epgu/epgu-constructor-ui-kit';
 
 import {
   AUTH_ERROR_MODAL_PARAMS,
@@ -19,18 +24,17 @@ import {
   TIME_INVITATION_ERROR,
   ITEMS_NO_DATA,
   ITEMS_FAILURE,
-} from './fp-error-handler.constants';
+} from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 
 @Injectable()
-export class FpErrorHandlerService {
+export class ErrorHandlerService implements ErrorHandlerAbstractService {
   constructor(
     private modalService: ModalService,
     private locationService: LocationService,

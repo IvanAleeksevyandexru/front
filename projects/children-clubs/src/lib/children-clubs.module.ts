@@ -9,7 +9,7 @@ import {
   MainContainerModule,
   BaseUiModule,
   HEALTH_SERVICE,
-  TRACE_ALLOWED_REMOTE_SERVICES,
+  TRACE_ALLOWED_REMOTE_SERVICES, ERROR_HANDLER_SERVICE,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
@@ -29,6 +29,7 @@ import {
   SEARCH_GROUP_SUB_URL,
   SEARCH_PROGRAM_SUB_URL
 } from './services/health/health-handler';
+import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 
 const APP_CONFIG: AppUiConfig = {
   appRoutingComponentMap: {
@@ -77,7 +78,11 @@ const APP_CONFIG: AppUiConfig = {
         MUNICIPALITIES_SUB_URL,
         DIRECTIONS_SUB_URL,
       ]
-    }
+    },
+    {
+      provide: ERROR_HANDLER_SERVICE,
+      useClass: ErrorHandlerService,
+    },
   ],
   exports: [ChildrenClubsAppComponent],
   entryComponents: [ProgramListContainerComponent],

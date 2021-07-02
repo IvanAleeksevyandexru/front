@@ -20,7 +20,7 @@ import {
 } from '../medical-referrals-list.types';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/fp-error-handler/fp-error-handler.constants';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
