@@ -130,6 +130,9 @@ export * from './lib/core/interceptor/health/health.service.stub';
 
 export * from './lib/core/interceptor/tracing/tracing.interceptor';
 
+export * from './lib/core/interceptor/errors/errors.interceptor';
+export * from './lib/core/interceptor/errors/errors.token';
+
 export * from './lib/app/app-state/app-state.module';
 export * from './lib/app/app-state/app-state.store';
 export * from './lib/app/app-state/app-state.service';

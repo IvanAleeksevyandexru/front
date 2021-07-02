@@ -32,7 +32,7 @@ import { InitDataService } from '../../core/services/init-data/init-data.service
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { FpErrorHandlerOrderParamsServiceService } from '../../core/services/fp-error-handler-order-params-service/fp-error-handler-order-params-service.service';
+import { ErrorHandlerOrderParamsServiceService } from '../../core/services/error-handler-order-params-service/error-handler-order-params-service.service';
 
 describe('ScreenModalComponent', () => {
   let component: ScreenModalComponent;
@@ -70,7 +70,7 @@ describe('ScreenModalComponent', () => {
         RefRelationService,
         {
           provide: ERROR_HANDLER_ORDER_PARAMS_SERVICES,
-          useClass: FpErrorHandlerOrderParamsServiceService,
+          useClass: ErrorHandlerOrderParamsServiceService,
         },
       ]
     })

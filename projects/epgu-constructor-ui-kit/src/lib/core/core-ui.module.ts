@@ -26,6 +26,7 @@ import { ConfigApiService } from './services/config-api/config-api.service';
 import { TracingHttpInterceptor } from './interceptor/tracing/tracing.interceptor';
 import { TracingService } from './services/tracing/tracing.service';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
+import { ErrorsInterceptor } from './interceptor/errors/errors.interceptor';
 
 @NgModule({
   providers: [
@@ -64,6 +65,11 @@ import { GlobalErrorHandler } from './services/global-error/global-error.service
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TracingHttpInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorsInterceptor,
       multi: true,
     },
     {

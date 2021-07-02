@@ -3,20 +3,20 @@ import { configureTestSuite } from 'ng-bullet';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 
 import {
-  FpErrorHandlerOrderParamsServiceService,
-} from './fp-error-handler-order-params-service.service';
+  ErrorHandlerOrderParamsServiceService,
+} from './error-handler-order-params-service.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 
-describe('FpErrorHandlerOrderParamsServiceService', () => {
-  let service: FpErrorHandlerOrderParamsServiceService;
+describe('ErrorHandlerOrderParamsServiceService', () => {
+  let service: ErrorHandlerOrderParamsServiceService;
   let screenService: ScreenService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        FpErrorHandlerOrderParamsServiceService,
+        ErrorHandlerOrderParamsServiceService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         UtilsService,
       ],
@@ -24,7 +24,7 @@ describe('FpErrorHandlerOrderParamsServiceService', () => {
   });
 
   beforeEach(() => {
-    service = TestBed.inject(FpErrorHandlerOrderParamsServiceService);
+    service = TestBed.inject(ErrorHandlerOrderParamsServiceService);
     screenService = TestBed.inject(ScreenService);
   });
 

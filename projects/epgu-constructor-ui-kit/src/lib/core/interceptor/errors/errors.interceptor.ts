@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
@@ -9,12 +9,11 @@ import {
 
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { isValidRequest } from './data';
-import { ErrorHandleService } from './error-handle.service';
+import { ERROR_HANDLER_SERVICE, ErrorHandlerAbstractService } from './errors.token';
 
 @Injectable()
-export class ErrorsInterceptorService implements HttpInterceptor {
-  constructor(private errorHandleService: ErrorHandleService) {}
+export class ErrorsInterceptor implements HttpInterceptor {
+  constructor(@Inject(ERROR_HANDLER_SERVICE) private errorHandleService: ErrorHandlerAbstractService) {}
 
   public intercept(
     req: HttpRequest<unknown>,
@@ -27,7 +26,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
           res instanceof HttpResponse &&
           res?.body &&
           typeof res.body === 'object' &&
-          isValidRequest(res.body)
+          this.errorHandleService.isValidRequest(res.body)
         ) {
           this.errorHandleService.handleResponse(res);
         }

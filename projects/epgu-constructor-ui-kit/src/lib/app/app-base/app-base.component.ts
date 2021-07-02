@@ -166,12 +166,11 @@ export class AppBaseComponent<T, U> {
   }
 
   private setOutputAppData(isPrevStepCase: boolean): void {
-    const { storeState } = this.appStateQuery;
-    delete storeState.currentComponent;
+    const { value, state } = this.appStateQuery;
     const outputAppData: OutputAppDto = {
       componentId: this.inputAppData.componentId,
       componentType: this.inputAppData.componentType,
-      value: JSON.stringify(storeState),
+      value: JSON.stringify({ value, state }),
       isPrevStepCase,
     };
     this.cfAppStateService.setState<OutputAppDto>(outputAppData, DataDirectionType.OUTPUT);

@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
-export interface ErrorHandlerOrderParamsService {
+export interface ErrorHandlerOrderParamsAbstractService {
   getParams: () => ErrorHandlerOrderParams
 }
 
