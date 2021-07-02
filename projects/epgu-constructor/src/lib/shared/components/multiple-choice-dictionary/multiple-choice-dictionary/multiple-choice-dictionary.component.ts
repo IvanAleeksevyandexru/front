@@ -14,7 +14,7 @@ import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { CustomComponentDropDownItem } from '../../../../component/custom-screen/components-list.types';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/fp-error-handler/fp-error-handler.constants';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({

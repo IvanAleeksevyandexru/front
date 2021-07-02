@@ -16,7 +16,7 @@ import { AnswerButtonModule } from '../../../../../shared/components/answer-butt
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/interceptor/errors/errors.interceptor.constants';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/fp-error-handler/fp-error-handler.constants';
 import { of } from 'rxjs';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 

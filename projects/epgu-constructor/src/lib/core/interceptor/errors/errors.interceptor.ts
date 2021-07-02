@@ -9,12 +9,11 @@ import {
 
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { isValidRequest } from './data';
-import { ErrorHandleService } from './error-handle.service';
+import { FpErrorHandlerService } from '../../services/fp-error-handler/fp-error-handler.service';
 
 @Injectable()
 export class ErrorsInterceptorService implements HttpInterceptor {
-  constructor(private errorHandleService: ErrorHandleService) {}
+  constructor(private errorHandleService: FpErrorHandlerService) {}
 
   public intercept(
     req: HttpRequest<unknown>,
@@ -27,7 +26,7 @@ export class ErrorsInterceptorService implements HttpInterceptor {
           res instanceof HttpResponse &&
           res?.body &&
           typeof res.body === 'object' &&
-          isValidRequest(res.body)
+          this.errorHandleService.isValidRequest(res.body)
         ) {
           this.errorHandleService.handleResponse(res);
         }

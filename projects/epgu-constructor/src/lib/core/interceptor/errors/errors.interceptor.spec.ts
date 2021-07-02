@@ -17,7 +17,7 @@ import {
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
   ITEMS_NO_DATA,
   ITEMS_FAILURE,
-} from './errors.interceptor.constants';
+} from '../../services/fp-error-handler/fp-error-handler.constants';
 import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -31,7 +31,7 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { FormPlayerNavigation } from '../../../form-player/form-player.types';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { configureTestSuite } from 'ng-bullet';
-import { ErrorHandleService } from './error-handle.service';
+import { FpErrorHandlerService } from '../../services/fp-error-handler/fp-error-handler.service';
 import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
@@ -54,7 +54,7 @@ describe('ErrorsInterceptor', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
-        ErrorHandleService,
+        FpErrorHandlerService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

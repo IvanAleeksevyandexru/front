@@ -19,18 +19,18 @@ import {
   TIME_INVITATION_ERROR,
   ITEMS_NO_DATA,
   ITEMS_FAILURE,
-} from './errors.interceptor.constants';
+} from './fp-error-handler.constants';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
-import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationService } from '../navigation/navigation.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 
 @Injectable()
-export class ErrorHandleService {
+export class FpErrorHandlerService {
   constructor(
     private modalService: ModalService,
     private locationService: LocationService,
@@ -149,6 +149,10 @@ export class ErrorHandleService {
       });
     }
     return throwError(httpErrorResponse);
+  }
+
+  public isValidRequest(obj: object): boolean {
+    return 'scenarioDto' in obj || 'items' in obj;
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {

@@ -21,7 +21,7 @@ import {
   weekDaysAbbr,
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/fp-error-handler/fp-error-handler.constants';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';

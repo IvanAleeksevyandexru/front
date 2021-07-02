@@ -15,7 +15,7 @@ import { NavigationModalService } from './services/navigation-modal/navigation-m
 import { NavigationService } from './services/navigation/navigation.service';
 import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
 import { HttpHeadersInterceptor } from './interceptor/http-headers/http-headers.interceptor';
-import { ErrorHandleService } from './interceptor/errors/error-handle.service';
+import { FpErrorHandlerService } from './services/fp-error-handler/fp-error-handler.service';
 import { PrevButtonNavigationService } from './services/prev-button-navigation/prev-button-navigation.service';
 import { HealthHandlerService } from './services/health-handler/health-handler.service';
 import { FormPlayerNavigation } from '../form-player/form-player.types';
@@ -35,7 +35,7 @@ import {
     InitDataService,
     AutocompleteService,
     TerraByteApiService,
-    ErrorHandleService,
+    FpErrorHandlerService,
     HealthHandlerService,
 
     {
