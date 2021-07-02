@@ -126,7 +126,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   needUnfilteredDictionaryToo?: boolean;
-  labelAttr?: string;
+  labelAttr?: string; // TODO: deprecated?
   fields?: CustomComponentAttrField;
   ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
   validation?: Array<CustomComponentAttrValidation>;
@@ -161,7 +161,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   repeatWithNoFilters?: boolean;
   refs?: { [key: string]: string };
   dateRestrictions?: DateRestriction[];
-  mappingParams?: { idPath: string; textPath: string , isRoot: boolean};
+  mappingParams?: { idPath: string; textPath: string; isRoot: boolean };
   dictionaryUrlType?: DictionaryUrlTypes;
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;

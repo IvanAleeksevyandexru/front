@@ -118,7 +118,10 @@ export class UploaderProcessService {
         if (item.item?.isFromSuggests) {
           newUploaded.isFromSuggests = true;
         }
-        item.setItem(newUploaded).setStatus(FileItemStatus.uploaded);
+        item
+          .setItem(newUploaded)
+          .setStatus(FileItemStatus.uploaded)
+          .setDescription(this.uploader.data?.labelHint);
         this.store.update(item);
       }),
       mapTo(undefined),

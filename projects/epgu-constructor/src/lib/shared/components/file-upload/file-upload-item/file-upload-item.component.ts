@@ -252,6 +252,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.process.upload(file);
   }
 
+  isShownDivider(): boolean {
+    return this.files.getValue().length > 0 || !this.data.label;
+  }
+
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit('fileUploadItemValueChangedEvent', {
       uploadId: this.uploader.data.uploadId,

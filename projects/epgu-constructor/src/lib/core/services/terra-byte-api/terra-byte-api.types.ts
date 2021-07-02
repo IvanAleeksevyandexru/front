@@ -66,6 +66,7 @@ export interface FileUploadValidation {
 export interface FileUploadItem {
   uploadId: string;
   label: string;
+  labelHint?: string;
   title?: string;
   fileType?: string[];
   maxFileCount?: number;
@@ -85,6 +86,7 @@ export interface UploadedFile {
   fileName: string;
   objectId: string;
   objectTypeId: number;
+  description: string;
   mnemonic: string;
   uploaded: boolean;
   fileSize: number;
