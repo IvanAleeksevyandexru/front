@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { BatchRecorder, Tracer } from 'zipkin';
+import { BatchRecorder, Tracer } from '@epgu/zipkin';
 
 import { TracingService } from './tracing.service';
 import { SessionService } from '../session/session.service';
@@ -8,7 +8,6 @@ import { ConfigService } from '../config/config.service';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from './tracing.token';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigServiceStub } from '../config/config.service.stub';
-
 
 describe('TracingService', () => {
   let service: TracingService;
@@ -24,11 +23,8 @@ describe('TracingService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         {
           provide: TRACE_ALLOWED_REMOTE_SERVICES,
-          useValue: [
-            someUrl1,
-            someUrl2
-          ]
-        }
+          useValue: [someUrl1, someUrl2],
+        },
       ],
     });
   });

@@ -4,23 +4,20 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TracingService } from '../../services/tracing/tracing.service';
-import { Tracer } from 'zipkin';
+import { Tracer } from '@epgu/zipkin';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs/internal/observable/throwError';
-import * as zipkin from 'zipkin';
+import * as zipkin from '@epgu/zipkin';
 import ZipkinHttpClient = zipkin.Instrumentation.HttpClient;
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TracingHttpInterceptor implements HttpInterceptor {
-
-  constructor(
-    private tracingService: TracingService,
-  ) {}
+  constructor(private tracingService: TracingService) {}
 
   public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const remoteService = 'form-backend';
@@ -42,22 +39,22 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     url: string,
     remoteServiceName: string,
     req: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const httpClient = new ZipkinHttpClient({
       remoteServiceName,
-      tracer
+      tracer,
     });
     const request = {
       url: req.url,
-      headers: {}
+      headers: {},
     };
     const zipkinReq = httpClient.recordRequest(request, url, req.method);
     const zipkinHeaders = zipkinReq.headers;
     const traceId = tracer.id;
 
     req = req.clone({
-      setHeaders: zipkinHeaders
+      setHeaders: zipkinHeaders,
     });
 
     return next.handle(req).pipe(
@@ -69,7 +66,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         httpClient.recordError(traceId, (JSON.stringify(err) as unknown) as Error);
         return throwError(err);
-      })
+      }),
     );
   }
 }

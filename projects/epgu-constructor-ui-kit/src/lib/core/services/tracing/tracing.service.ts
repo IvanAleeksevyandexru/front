@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Tracer, BatchRecorder, jsonEncoder, ExplicitContext } from 'zipkin';
+import { Tracer, BatchRecorder, jsonEncoder, ExplicitContext } from '@epgu/zipkin';
 import { HttpLogger } from 'zipkin-transport-http';
 import { AllowedRemoteServices, TRACE_ALLOWED_REMOTE_SERVICES } from './tracing.token';
 import { ConfigService } from '../config/config.service';
@@ -40,6 +40,7 @@ export class TracingService {
       localServiceName: this.localServiceName,
       supportsJoin: true,
       defaultTags: this.defaultTags, // Need to pray that transfer by reference won't be changed to transfer by value
+      isCascadeMode: this.configService.isZipkinCascadeMode ?? true,
     });
 
     this.defaultTags.userId = this.sessionService.userId;
