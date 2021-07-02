@@ -13,7 +13,9 @@
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-body" [ngClass]="async.displayCssClass">
     <div *ngIf="async.header">
-      <epgu-constructor-page-name class="info__head">{{ async.header }}</epgu-constructor-page-name>
+      <epgu-constructor-page-name class="info__head">
+        <div [outerHTML]="async.header | safe:'html'"></div>
+      </epgu-constructor-page-name>
       <div class="divider"></div>
     </div>
 
