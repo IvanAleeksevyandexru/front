@@ -1,7 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SuggestHandlerService } from './suggest-handler.service';
+import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
+import { HealthService } from '@epgu/epgu-lib';
+import { ScreenService } from '../../../screen/screen.service';
+import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   ISuggestionItem,
   ISuggestionItemList,
@@ -13,7 +19,13 @@ describe('SuggestHandlerService', () => {
 
   beforeAll(() => {
     TestBed.configureTestingModule({
-      providers: [SuggestHandlerService, EventBusService],
+      providers: [
+        SuggestHandlerService,
+        EventBusService,
+        SuggestMonitorService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
+      ],
     });
     service = TestBed.inject(SuggestHandlerService);
     eventBusService = TestBed.inject(EventBusService);

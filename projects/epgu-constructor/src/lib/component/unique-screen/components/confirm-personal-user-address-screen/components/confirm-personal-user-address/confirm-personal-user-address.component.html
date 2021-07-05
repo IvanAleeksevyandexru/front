@@ -34,7 +34,7 @@
           [formControlName]="field.fieldName"
           [suggest]="classifiedSuggestionItems[field.fieldName]"
           [suggestSeparator]="suggestSeporator"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
+          (selectSuggest)="suggestHandlerService.handleEvent($event, null, 'DADATA_WIDGET')"
         >
         </lib-dadata-widget>
       </epgu-constructor-address-item>

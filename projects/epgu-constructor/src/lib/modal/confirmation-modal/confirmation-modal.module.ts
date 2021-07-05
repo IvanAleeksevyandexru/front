@@ -5,12 +5,20 @@ import { BaseUiModule, ModalService, SharedModalModule } from '@epgu/epgu-constr
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [ConfirmationModalComponent],
   providers: [ModalService],
   exports: [ConfirmationModalComponent, SharedModalModule],
-  imports: [BaseModule, BaseUiModule, A11yModule, ScreenButtonsModule, SharedModalModule],
+  imports: [
+    BaseModule,
+    BaseUiModule,
+    A11yModule,
+    ScreenButtonsModule,
+    SharedModalModule,
+    ClipboardModule,
+  ],
   entryComponents: [ConfirmationModalComponent],
 })
 export class ConfirmationModalModule {}

@@ -1,4 +1,4 @@
-<epgu-cf-ui-screen-container>
+<epgu-cf-ui-screen-container class="tiny">
   <div class="screen-body">
     <ng-container *ngIf="program$ | async as program"
       ><div class="title mb-12">
@@ -8,10 +8,11 @@
         {{ program.name }}
       </div>
       <children-clubs-filter-panel
+        [title]="titleFilter"
         (openFilters)="openFilter()"
         (search)="search($event)"
         [initValue]="initValue"
-        [filtersCount]="filtersCount$ | async"
+        [filtersCount]="filtersCount$$ | async"
       ></children-clubs-filter-panel>
       <ng-container *ngIf="loading$ | async; else content">
         <epgu-cf-ui-constructor-screen-pad class="loader mt-24">
@@ -19,15 +20,28 @@
         ></epgu-cf-ui-constructor-screen-pad>
       </ng-container>
       <ng-template #content>
-        <ng-container *ngFor="let item of data$ | async; let i = index">
-          <children-clubs-group-item [program]="program" class="mt-24" [data]="item" [index]="i">
-          </children-clubs-group-item>
+        <ng-container *ngIf="data$ | async as data">
+          <ng-container *ngIf="$any(data)?.length > 0">
+            <ng-container *ngFor="let item of data$ | async; let i = index">
+              <children-clubs-group-item
+                [program]="program"
+                class="mt-24"
+                [data]="item"
+                [index]="i"
+              >
+              </children-clubs-group-item>
+            </ng-container>
+            <div class="btn">
+              <lib-button *ngIf="isShowButton$ | async" color="white" (click)="next()"
+                >Показать еще</lib-button
+              >
+            </div>
+          </ng-container>
+          <children-clubs-not-found
+            *ngIf="$any(data)?.length === 0"
+            class="mt-24"
+          ></children-clubs-not-found>
         </ng-container>
-        <div class="btn">
-          <lib-button *ngIf="isShowButton$ | async" color="white" (click)="next()"
-            >Показать еще</lib-button
-          >
-        </div>
       </ng-template>
     </ng-container>
     <epgu-cf-ui-constructor-screen-pad *ngIf="fullLoading$ | async" class="loader">

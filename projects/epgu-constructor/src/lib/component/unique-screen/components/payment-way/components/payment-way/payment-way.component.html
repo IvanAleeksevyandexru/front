@@ -14,6 +14,13 @@
 >
 </lib-radio>
 
+<epgu-constructor-output-html
+  [html]="component.attrs?.hint"
+  [clarifications]="component.attrs?.clarifications"
+  class="mt-24"
+>
+</epgu-constructor-output-html>
+
 <div *ngIf="paymentControl.value">
   <div class="divider mt-24"></div>
   <ng-container [ngTemplateOutlet]="programTmpl" [ngTemplateOutletContext]="{ $implicit: paymentWays[paymentControl.value]}"></ng-container>

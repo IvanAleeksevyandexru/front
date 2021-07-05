@@ -41,22 +41,21 @@ describe('ClickableLabelDirective', () => {
   let modalService: ModalService;
   let actionService: ActionService;
   let screenService: ScreenService;
+  let currentAnswersService: CurrentAnswersService;
 
   configureTestSuite(() => {
-      TestBed.configureTestingModule({
-        declarations: [ClickableLabelDirective, LabelTestComponent, SafePipe, ImgPrefixerPipe],
-        providers: [
-          { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: ModalService, useClass: ModalServiceStub },
-          { provide: ScreenService, useClass: ScreenServiceStub },
-          { provide: ActionService, useClass: ActionServiceStub },
-          CurrentAnswersService,
-        ],
-        schemas: [NO_ERRORS_SCHEMA],
-      })
-        .compileComponents();
-    },
-  );
+    TestBed.configureTestingModule({
+      declarations: [ClickableLabelDirective, LabelTestComponent, SafePipe, ImgPrefixerPipe],
+      providers: [
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        CurrentAnswersService,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LabelTestComponent);
@@ -64,6 +63,7 @@ describe('ClickableLabelDirective', () => {
     modalService = TestBed.inject(ModalService);
     actionService = TestBed.inject(ActionService);
     screenService = TestBed.inject(ScreenService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
   });
 
   it('should open modal if clarifications are set', () => {
@@ -108,6 +108,19 @@ describe('ClickableLabelDirective', () => {
     spyOn(actionService, 'switchAction').and.callThrough();
     div.querySelector('a').click();
     expect(actionService.switchAction).toHaveBeenCalled();
+  });
+
+  it('should not set _currentAnswersService.state if target ActionType is deleteSuggest', () => {
+    screenService.component = {
+      attrs: {},
+      id: 'test1',
+      type: 'Lookup',
+    };
+    component.label = '<p><a data-action-type="deleteSuggest" data-action-value=0>Ссылка</a></p>';
+    fixture.detectChanges();
+    const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
+    div.querySelector('a').click();
+    expect(currentAnswersService.state).toBeUndefined();
   });
 
   describe('div', () => {

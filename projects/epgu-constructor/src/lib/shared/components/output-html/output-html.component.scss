@@ -222,7 +222,7 @@
 :host-context(.gray-theme)::ng-deep .white-background { //TODO перепутан с .background-white?
   background-color: $color-white;
   border-radius: 8px;
-  box-shadow: 0 24px 48px $color-shadow;
+  @include shadow-main();
   margin-left: 0;
   padding: 24px;
 }

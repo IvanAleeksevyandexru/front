@@ -41,6 +41,7 @@ import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.mod
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/confirm-personal-user-address-readonly-screen/confirm-personal-user-address-readonly-screen.module';
 import { MedicalReferralsListModule } from './components/medical-referrals-list/medical-referrals-list.module';
+import { DatePeriodModule } from './components/date-period/date-period.module';
 import { PaymentWayModule } from './components/payment-way/payment-way.module';
 
 @NgModule({
@@ -79,6 +80,7 @@ import { PaymentWayModule } from './components/payment-way/payment-way.module';
     DateTimePeriodModule,
     MedicalReferralsListModule,
     PaymentWayModule,
+    DatePeriodModule
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -109,6 +111,7 @@ import { PaymentWayModule } from './components/payment-way/payment-way.module';
     CheckboxCubeModule,
     DateTimePeriodModule,
     MedicalReferralsListModule,
+    DatePeriodModule,
     PaymentWayModule,
   ],
   providers: [

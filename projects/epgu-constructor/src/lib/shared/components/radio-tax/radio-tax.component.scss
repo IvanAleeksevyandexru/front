@@ -6,7 +6,7 @@
 
 .radio-tax__container {
   background: $color-white;
-  box-shadow: 0px 24px 48px $color-shadow;
+  @include shadow-main();
   border-radius: 12px;
   padding: 24px;
   display: flex;

@@ -1,0 +1,21 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+:host {
+  display: block;
+}
+.warn {
+  text-align: center;
+}
+.warn img {
+  width: 80px;
+}
+
+.warn-title {
+  @include typ-h4;
+  color: $color-summer-night;
+}
+.warn-description {
+  @include typ-plain-text;
+  color: $color-text-helper;
+}

@@ -9,10 +9,19 @@
   <ng-container modal-content>
     <epgu-constructor-output-html [html]="text" [componentId]="componentId">
     </epgu-constructor-output-html>
-    <div class="text--center mt-16" *ngIf="configService.showTraceIdOnError && traceId">
-      <small class="text-color--text-helper" title="этой надписи не будет в проде">
-        traceId: {{ traceId }}
-      </small>
+    <div
+      class="text--center mt-16 block--content-centered"
+      *ngIf="configService.showTraceIdOnError && traceId"
+    >
+      <span class="bold">
+        {{ traceId }}
+      </span>
+      <button (click)="copy(traceId)" class="copy-btn">
+        <img
+          src="{{ configService.staticDomainAssetsPath }}/assets/icons/svg/copy.svg"
+          alt="копировать"
+        />
+      </button>
     </div>
   </ng-container>
 

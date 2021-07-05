@@ -27,6 +27,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-uni
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
@@ -98,6 +99,7 @@ describe('RegistrationAddrComponent', () => {
         FormBuilder,
         SuggestHandlerService,
         EventBusService,
+        SuggestMonitorService,
       ],
     }).compileComponents();
   });

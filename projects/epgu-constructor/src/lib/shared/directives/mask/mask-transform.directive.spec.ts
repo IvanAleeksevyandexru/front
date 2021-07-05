@@ -17,6 +17,7 @@ import {
   LoggerService,
   LoggerServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockModule } from 'ng-mocks';
 
 @Component({
   selector: 'epgu-constructor-mask-transform-test-component',
@@ -41,7 +42,7 @@ describe('MaskTransformDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
-      imports: [CoreModule, CoreUiModule, RouterTestingModule, BaseModule],
+      imports: [CoreModule, MockModule(CoreUiModule), RouterTestingModule, BaseModule],
       providers: [
         DecimalPipe,
         NgControl,

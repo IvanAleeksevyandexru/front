@@ -1,12 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 import {
   ConfigService,
-  ConfigServiceStub, CtaModalComponent,
-  DeviceDetectorService, DeviceDetectorServiceStub,
+  ConfigServiceStub,
+  CtaModalComponent,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
   EventBusService,
-  ModalService, SharedModalModule, UtilsService
+  ModalService,
+  UtilsService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
@@ -18,7 +22,7 @@ import { NavigationModalService } from '../../core/services/navigation-modal/nav
 import { NavigationModalServiceStub } from '../../core/services/navigation-modal/navigation-modal.service.stub';
 import { MockComponents, MockDirectives, MockModule } from 'ng-mocks';
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule, NotifierService } from '@epgu/epgu-lib';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ScreenButtonsComponent } from '../../shared/components/screen-buttons/screen-buttons.component';
 import { By } from '@angular/platform-browser';
@@ -26,11 +30,15 @@ import { DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
+  let clipboard: Clipboard;
+  let notifierService: NotifierService;
   let fixture: ComponentFixture<ConfirmationModalComponent>;
 
   const initComponent = () => {
     fixture = TestBed.createComponent(ConfirmationModalComponent);
     component = fixture.componentInstance;
+    clipboard = TestBed.inject(Clipboard);
+    notifierService = TestBed.inject(NotifierService);
 
     // без этого будет ошибка
     // Expression has changed after it was checked. Previous value: 'showButtons: false'. Current value: 'showButtons: true'
@@ -38,30 +46,32 @@ describe('ConfirmationModalComponent', () => {
     component.showCloseButton = false;
   };
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         ConfirmationModalComponent,
         MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
-        MockDirectives(ActionDirective)
+        MockDirectives(ActionDirective),
       ],
-      imports: [
-        MockModule(EpguLibModule)
-      ],
+      imports: [MockModule(EpguLibModule)],
       providers: [
         EventBusService,
         ModalService,
         UtilsService,
+        Clipboard,
+        NotifierService,
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-      ]
-    }).overrideComponent(ConfirmationModalComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+      ],
+    })
+      .overrideComponent(ConfirmationModalComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -140,8 +150,8 @@ describe('ConfirmationModalComponent', () => {
     component.actionButtons = [
       {
         label: 'some button label',
-        action: DTOActionAction.editEmail
-      }
+        action: DTOActionAction.editEmail,
+      },
     ];
     fixture.detectChanges();
 
@@ -151,8 +161,18 @@ describe('ConfirmationModalComponent', () => {
     expect(debugEl.componentInstance.screenButtons).toEqual([
       {
         label: 'some button label',
-        action: DTOActionAction.editEmail
-      }
+        action: DTOActionAction.editEmail,
+      },
     ]);
+  });
+
+  describe('copy()', () => {
+    it('should call NotifierService with specific message', () => {
+      const traceId = 'traceId';
+      const message = 'Код ошибки скопирован';
+      const spy = jest.spyOn(notifierService, 'success');
+      component.copy(traceId);
+      expect(spy).toBeCalledWith({ message });
+    });
   });
 });

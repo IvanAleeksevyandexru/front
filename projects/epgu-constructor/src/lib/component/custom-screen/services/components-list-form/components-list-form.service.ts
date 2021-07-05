@@ -275,7 +275,7 @@ export class ComponentsListFormService {
       return;
     }
     const { ref, conditions } = next.attrs?.relationField;
-    const refComponent = this.form.value[this.indexesByIds[ref]];
+    const refComponent = this.form.getRawValue()[this.indexesByIds[ref]];
 
     let result;
     for (let condition of conditions) {

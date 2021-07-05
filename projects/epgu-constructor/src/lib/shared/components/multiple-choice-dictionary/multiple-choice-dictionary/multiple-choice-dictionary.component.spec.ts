@@ -8,7 +8,7 @@ import { ModalService, ModalServiceStub, ChipModule } from '@epgu/epgu-construct
 import { MultipleChoiceDictionaryComponent } from './multiple-choice-dictionary.component';
 import { BaseModule } from '../../../base.module';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/interceptor/errors/errors.interceptor.constants';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 describe('MultipleChoiceDictionaryComponent', () => {

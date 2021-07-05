@@ -7,6 +7,7 @@ import {
   ScreenPadModule,
   SharedModalModule,
   ScreenContainerModule,
+  ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListContainerComponent } from './container/program-list-container.component';
 import { ProgramListService } from '../../services/program-list/program-list.service';
@@ -15,10 +16,8 @@ import { ItemComponent } from './components/item/item.component';
 import { ViewComponent } from './components/view/view.component';
 
 import { ApiService } from '../../services/api/api.service';
-import { ApiServiceStub } from '../../services/api/api.service.stub';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
-import { StateServiceStub } from '../../services/state/state.service.stub';
 
 @NgModule({
   declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
@@ -32,12 +31,7 @@ import { StateServiceStub } from '../../services/state/state.service.stub';
     EpguLibModule,
   ],
 
-  providers: [
-    ProgramListService,
-    ModalService,
-    { provide: ApiService, useClass: ApiServiceStub },
-    { provide: StateService, useClass: StateServiceStub },
-  ],
+  providers: [ProgramListService, ModalService, ConfigService, ApiService, StateService],
   exports: [ProgramListContainerComponent, ViewComponent],
 })
 export class ProgramListModule {}

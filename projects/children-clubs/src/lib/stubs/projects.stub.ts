@@ -6,10 +6,8 @@ import {
   FocusDirectionsItem,
   Group,
   Program,
+  TypeOfBudget,
 } from '../typings';
-
-import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
-import { PaymentInfoInterface } from '@epgu/epgu-constructor/src/lib/component/unique-screen/components/payment/payment.types';
 
 export const baseProgramStub: BaseProgram = {
   uuid: '23fsdsdfsdf',
@@ -47,6 +45,10 @@ export const programStub: Program = {
     FinancingType.preprof,
     FinancingType.valued,
   ],
+  typeOfBudget: TypeOfBudget.valued,
+  region: { uuid: 'sdfsdf', name: 'sdfsdf' },
+  municipal: { uuid: 'sdfsdf', name: 'sdfsdf' },
+  datasource: 'sdfsdf',
 };
 
 export const focusDirectionsStubList: FocusDirectionsItem[] = [
@@ -118,7 +120,7 @@ export const groupStub: Group = {
   hoursYear: 148.0,
   teachers: 'Думчиков Д. В.',
   schedule: 'Пн.12:00—14:00  <br> Ср.16:00—17:00  <br>Пт 17:00—15:30',
-  financingTypes: [
+  financingSources: [
     { sourceCode: FinancialSourceType.pfdod_certificate, cost: 100, monthlyCost: 1500 },
     { sourceCode: FinancialSourceType.paid, cost: 120, monthlyCost: 1600 },
     { sourceCode: FinancialSourceType.private, cost: 130, monthlyCost: 1700 },
@@ -135,40 +137,3 @@ export const municipalityStub = [
   municipality,
   municipality,
 ];
-
-export const regionStub: DictionaryItem = {
-  value: 'a478166c-9c75-aaeb-a8b3-0242ac13000a',
-  title: 'Государственное бюджетное учреждение дополнительного образования «Центр «Ладога»',
-  id: '',
-  text: '',
-  attributes: [],
-  children: [],
-  isLeaf: true,
-  parentValue: null,
-  attributeValues: ({
-    uuid: 'a478166c-9c75-aaeb-a8b3-0242ac13000a',
-    lastmodifiedTs: '1618331000',
-    datasource: '9c05e812-8679-4710-b8cb-5e8bd43cdf48',
-    localId: '108528',
-    isDeleted: 'false',
-    name: 'Ленинградская область',
-    fias: '9c05e812-8679-4710-b8cb-5e8bd43cdf48',
-    oktmo: '46734000',
-    okato: '46434000000',
-    site: 'http://р62.навигатор.дети',
-    portalTitle: 'Навигатор дополнительного образования Московской области',
-    responsible: 'Иванова Есения Валерьевна',
-    phone: '+7 (491) 111-11-11',
-    email: 'email@mail.ru',
-    emailSupport: 'email_support@mail.ru',
-    emailClientSupport: 'email_client_support@mail.ru',
-    organizationName:
-      'Государственное бюджетное учреждение дополнительного образования «Центр «Ладога»',
-    ogrn: '1057811208212',
-    inn: '4703079940',
-    address: {},
-    contactPhone: '+7 (812) 200-98-12',
-    contactEmail: 'navigator@alsop-service.ru',
-    vendor: 'inlearno.com',
-  } as unknown) as PaymentInfoInterface & { [key: string]: string },
-};

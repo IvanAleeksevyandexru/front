@@ -133,6 +133,11 @@ export class FileItem {
     return this;
   }
 
+  setDescription(description: string): FileItem {
+    this.item.description = description;
+    return this;
+  }
+
   createUploadedParams(): TerraFileOptions {
     return {
       objectId: this.item.objectId,

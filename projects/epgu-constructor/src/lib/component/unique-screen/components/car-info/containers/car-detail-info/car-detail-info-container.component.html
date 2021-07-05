@@ -49,7 +49,7 @@
         <ng-container
           *ngTemplateOutlet="
             templateError;
-            context: { type: vehicleInfo.externalServiceCallResult, errorType: 'vehicleErrors' }
+            context: { type: vehicleInfo.externalServiceCallResult, errorType: 'vehicleErrors', title: 'Регистрация ТС' }
           "
         ></ng-container>
         <div class="divider info-list-divider"></div>
@@ -68,7 +68,7 @@
         <ng-container
           *ngTemplateOutlet="
             templateError;
-            context: { type: notaryInfo.externalServiceCallResult, errorType: 'notaryErrors' }
+            context: { type: notaryInfo.externalServiceCallResult, errorType: 'notaryErrors', title: 'Проверка в Федеральной нотариальной палате' }
           "
         ></ng-container>
       </ng-template>
@@ -81,7 +81,8 @@
   <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
 </ng-template>
 
-<ng-template #templateError let-type="type" let-errorType="errorType">
+<ng-template #templateError let-type="type" let-errorType="errorType" let-title="title">
+  <h5 class="info-list-title" *ngIf="title">{{ title }}</h5>
   <epgu-constructor-car-error
     *ngIf="errors$ | async as errors"
     [iconClass]="(type | errorTemplate).icon"

@@ -20,6 +20,7 @@ import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ConfirmEmailComponent } from './confirm-email.component';
+import { MockModule } from 'ng-mocks';
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -42,7 +43,7 @@ describe('ConfirmEmailComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
-      imports: [BaseModule, CoreModule, CoreUiModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [BaseModule, CoreModule, MockModule(CoreUiModule), RouterTestingModule, HttpClientTestingModule],
       providers: [
         UnsubscribeService,
         NavigationService,

@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Inject, Injectable } from '@angular/core';
 import { HealthService } from '@epgu/epgu-lib';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenStore } from '../../../screen/screen.types';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+
+import { UtilsService } from '../utils/utils.service';
+import { LoggerService } from '../logger/logger.service';
+import { ERROR_HANDLER_ORDER_PARAMS_SERVICES, ErrorHandlerOrderParamsAbstractService } from './global-error.token';
 
 interface Error {
   message: string;
@@ -19,32 +19,23 @@ interface ErrorParams {
   browserError: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(
+    @Inject(ERROR_HANDLER_ORDER_PARAMS_SERVICES) private  errorHandlerOrderParamsService: ErrorHandlerOrderParamsAbstractService,
     private health: HealthService,
-    public screenService: ScreenService,
     private utils: UtilsService,
     private loggerService: LoggerService,
   ) {}
 
   handleError(error: Error): void {
     if (!(error instanceof HttpErrorResponse)) {
-      const store = this.screenService.getStore();
-      let orderId = undefined;
-
-      if (this.hasOrderId(store)) {
-        orderId = this.utils.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
-      }
+      const orderParams = this.errorHandlerOrderParamsService.getParams();
 
       let errorParams = {
         clientError: error.message ? error.message : error.toString(),
-        id: store?.display?.id,
-        name: this.utils.cyrillicToLatin(store?.display?.name),
-        orderId: orderId,
         browserError: error.message ? error.stack : null,
+        ...orderParams
       };
 
       errorParams = this.utils.filterIncorrectObjectFields(errorParams) as ErrorParams;
@@ -54,9 +45,5 @@ export class GlobalErrorHandler implements ErrorHandler {
 
       this.loggerService.error([error]);
     }
-  }
-
-  private hasOrderId(store: ScreenStore): boolean {
-    return this.utils.isDefined(store.orderId) || this.utils.isDefined(store.callBackOrderId);
   }
 }

@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule, HealthService } from '@epgu/epgu-lib';
 
 import {
   AppStateQuery,
   AppStateQueryStub,
   AppStateService,
   AppStateServiceStub,
-  CoreUiModule,
+  CoreUiModule, HealthServiceStub,
   LongButtonModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -19,6 +19,7 @@ import { ApiService } from '../../../../services/api/api.service';
 import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';
 import { StateServiceStub } from '../../../../services/state/state.service.stub';
+import { MockModule } from 'ng-mocks';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -29,12 +30,13 @@ describe('ListComponent', () => {
       declarations: [ListComponent, ItemComponent],
       providers: [
         ProgramListService,
+        { provide: HealthService, useClass: HealthServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],
-      imports: [EpguLibModule, LongButtonModule, CoreUiModule, ScreenPadModule],
+      imports: [EpguLibModule, LongButtonModule, MockModule(CoreUiModule), ScreenPadModule],
     }).compileComponents();
   });
 

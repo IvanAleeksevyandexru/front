@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { CoreModule } from '../../../../../core/core.module';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
@@ -82,7 +82,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
       ],
       imports: [
         CoreModule,
-        CoreUiModule,
+        MockModule(CoreUiModule),
         RouterTestingModule,
         ReactiveFormsModule,
         BaseModule,

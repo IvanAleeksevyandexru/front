@@ -59,43 +59,6 @@ export class AutocompletePrepareService {
     }
   }
 
-  public getFormattedHints(
-    repeatableComponents: Array<Array<ComponentDto>>,
-    componentsSuggestionsSet: Set<[string, string]>,
-    fields: ISuggestionApiValueField[],
-    componentMnemonic: string,
-  ): { value: string; mnemonic: string }[] {
-    const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
-      return Array.from(componentsSuggestionsSet).some(([suggestId]) => suggestId === mnemonic);
-    };
-    const orderByFieldsMnemonics = Array.from(componentsSuggestionsSet).map(
-      ([suggestionId]) => suggestionId,
-    );
-
-    return fields
-      .reduce((acc: { value: string; mnemonic: string }[], field) => {
-        let { value, mnemonic } = field;
-        if (mnemonic !== componentMnemonic && isIncludedInComponentsSuggestionsMap(mnemonic)) {
-          value = this.prepareValue(
-            repeatableComponents,
-            componentsSuggestionsSet,
-            value,
-            mnemonic,
-          );
-          acc.push({
-            value,
-            mnemonic,
-          });
-        }
-        return acc;
-      }, [])
-      .sort((a, b) => {
-        return (
-          orderByFieldsMnemonics.indexOf(a.mnemonic) - orderByFieldsMnemonics.indexOf(b.mnemonic)
-        );
-      });
-  }
-
   public getParsedSuggestionsUploadedFiles(
     componentList: ISuggestionItemList[] = [],
   ): UploadedFile[] {
@@ -212,6 +175,47 @@ export class AutocompletePrepareService {
         component.value = this.currentAnswersService.state[component.id]?.value || '';
       }
     }
+  }
+
+  private getFormattedHints(
+    repeatableComponents: Array<Array<ComponentDto>>,
+    componentsSuggestionsSet: Set<[string, string]>,
+    fields: ISuggestionApiValueField[],
+    componentMnemonic: string,
+  ): { value: string; mnemonic: string }[] {
+    const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
+      return Array.from(componentsSuggestionsSet).some(([suggestId]) => suggestId === mnemonic);
+    };
+    const orderByFieldsMnemonics = Array.from(componentsSuggestionsSet).map(
+      ([suggestionId]) => suggestionId,
+    );
+
+    return fields
+      .reduce((acc: { value: string; mnemonic: string }[], field) => {
+        let { value, mnemonic } = field;
+        if (
+          mnemonic !== componentMnemonic &&
+          typeof value !== 'boolean' &&
+          isIncludedInComponentsSuggestionsMap(mnemonic)
+        ) {
+          value = this.prepareValue(
+            repeatableComponents,
+            componentsSuggestionsSet,
+            value,
+            mnemonic,
+          );
+          acc.push({
+            value,
+            mnemonic,
+          });
+        }
+        return acc;
+      }, [])
+      .sort((a, b) => {
+        return (
+          orderByFieldsMnemonics.indexOf(a.mnemonic) - orderByFieldsMnemonics.indexOf(b.mnemonic)
+        );
+      });
   }
 
   private prepareValue(

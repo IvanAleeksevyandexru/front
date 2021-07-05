@@ -23,4 +23,8 @@ export class AppStateQueryStub {
   get storeState() {
     return {};
   }
+
+  get fpHealthPayload() {
+    return {};
+  }
 }

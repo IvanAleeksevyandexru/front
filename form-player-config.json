@@ -13,7 +13,7 @@
     "lkUrl": "https://pgu-uat-betalk.test.gosuslugi.ru",
     "paymentUrl": "https://oplata.gosuslugi.ru",
     "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
-    "childrenClubsApi": "http://localhost:8180/api/v1",
+    "childrenClubsApi": "https://dev01.pgu2-pub.test.gosuslugi.ru/api/eaisdo-service/v1",
     "production": true,
     "mocks": [],
     "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api",
@@ -67,11 +67,12 @@
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
     "suggestionsApiUrl": "/suggests/api/drafts/v1/suggests",
     "staticDomainContentPath": "https://gu-st.ru/content",
-    "isZipkinEnabled": false,
+    "isZipkinEnabled": true,
     "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
     "zipkinMaxPayloadSize": 0,
     "zipkinEnv": "dev01",
-    "showTraceIdOnError": false,
+    "isZipkinCascadeMode": false,
+    "showTraceIdOnError": true,
     "appPathMap": {
       "ChildrenClubs": "/app/children-clubs"
     }

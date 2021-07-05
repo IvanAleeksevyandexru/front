@@ -119,6 +119,9 @@ export * from './lib/core/services/tracing/tracing.service';
 export * from './lib/core/services/tracing/tracing.service.stub';
 export * from './lib/core/services/tracing/tracing.token';
 
+export * from './lib/core/services/global-error/global-error.token';
+export * from './lib/core/services/global-error/global-error.service';
+
 export * from './lib/core/interceptor/http-cancel/http-cancel.service';
 
 export * from './lib/core/interceptor/health/health.token';
@@ -126,6 +129,9 @@ export * from './lib/core/interceptor/health/health.interceptor';
 export * from './lib/core/interceptor/health/health.service.stub';
 
 export * from './lib/core/interceptor/tracing/tracing.interceptor';
+
+export * from './lib/core/interceptor/errors/errors.interceptor';
+export * from './lib/core/interceptor/errors/errors.token';
 
 export * from './lib/app/app-state/app-state.module';
 export * from './lib/app/app-state/app-state.store';
@@ -146,6 +152,7 @@ export * from './lib/app/app-navigation-rule/app-navigation-rule.service';
 export * from './lib/app/app-navigation-rule/app-navigation-rule.service.stub';
 export * from './lib/app/app-prev-button-navigation/app-prev-button-navigation.service';
 export * from './lib/app/app-prev-button-navigation/app-prev-button-navigation.service.stub';
+export * from './lib/app/app-error-handler-order-params-service/app-error-handler-order-params-service.service';
 
 
 export * from './lib/modal/modal.service';

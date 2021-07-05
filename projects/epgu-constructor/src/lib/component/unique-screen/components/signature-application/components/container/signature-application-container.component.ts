@@ -108,7 +108,7 @@ export class SignatureApplicationContainerComponent {
   private redirectToSignatureWindow(): void {
     this.setDataToLocalStorage();
 
-    const { url } = this.data;
+    const { url } = this.screenService.componentValue as SignatureApplicationData;
     this.locationService.href(url);
   }
 

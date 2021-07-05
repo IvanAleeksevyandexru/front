@@ -4,7 +4,7 @@
   "assets": ["src/styles", "src/assets"],
   "allowedNonPeerDependencies": [
     "@epgu/epgu-constructor-types",
-    "zipkin",
+    "@epgu/zipkin",
     "zipkin-transport-http"
   ],
   "lib": {
@@ -13,7 +13,7 @@
     "styleIncludePaths": ["."],
     "umdModuleIds": {
       "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
-      "zipkin": "zipkin",
+      "@epgu/zipkin": "@epgu/zipkin",
       "zipkin-transport-http": "zipkin-transport-http"
     }
   }

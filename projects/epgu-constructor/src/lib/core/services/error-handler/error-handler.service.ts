@@ -6,7 +6,12 @@ import {
   FormPlayerApiSuccessResponse,
   ItemsErrorResponse,
 } from '@epgu/epgu-constructor-types';
-import { ModalService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ModalService,
+  LocationService,
+  ErrorHandlerAbstractService,
+  ConfigService
+} from '@epgu/epgu-constructor-ui-kit';
 
 import {
   AUTH_ERROR_MODAL_PARAMS,
@@ -19,19 +24,17 @@ import {
   TIME_INVITATION_ERROR,
   ITEMS_NO_DATA,
   ITEMS_FAILURE,
-} from './errors.interceptor.constants';
+} from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
-import { NavigationService } from '../../services/navigation/navigation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 
-
 @Injectable()
-export class ErrorHandleService {
+export class ErrorHandlerService implements ErrorHandlerAbstractService {
   constructor(
     private modalService: ModalService,
     private locationService: LocationService,
@@ -43,10 +46,15 @@ export class ErrorHandleService {
     const { status, url, body } = httpResponse;
 
     if (status === 200) {
-      const bookingValue = String((body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value);
+      const bookingValue = String(
+        (body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value,
+      );
       const error = (body as ItemsErrorResponse)?.error;
 
-      if (url.includes('service/booking') && bookingValue.includes('BOOKING_UNAVAILABLE_EMPTY_ORG_ID')) {
+      if (
+        url.includes('service/booking') &&
+        bookingValue.includes('BOOKING_UNAVAILABLE_EMPTY_ORG_ID')
+      ) {
         try {
           const address: string = JSON.parse(bookingValue)?.ADDRESS;
           const addressLink = `<a target='_blank' href='https://yandex.ru/maps/?text=${address}'>${address}</a>`;
@@ -66,13 +74,15 @@ export class ErrorHandleService {
         (error !== null || error !== undefined) &&
         error?.errorDetail?.errorMessage !== undefined &&
         error?.errorDetail?.errorMessage !== '' &&
-        error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !== STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim()
+        error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !==
+          STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim()
       ) {
-        const errorMessage = error.errorDetail.errorMessage;
+        const errorMessage = error?.errorDetail.errorMessage;
 
         if (
           errorMessage.includes('NO_DATA') ||
-          !errorMessage.includes('FAILURE') && !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
+          (!errorMessage.includes('FAILURE') &&
+            !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
         ) {
           const message = errorMessage.replace('NO_DATA:', '');
           ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
@@ -80,8 +90,13 @@ export class ErrorHandleService {
           this.showModal(ITEMS_NO_DATA);
         }
 
-        if (errorMessage.includes('FAILURE') || errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')) {
-          const message = errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
+        if (
+          errorMessage.includes('FAILURE') ||
+          errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
+        ) {
+          const message = errorMessage
+            .replace('FAILURE:', '')
+            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
           ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
 
           this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
@@ -98,14 +113,14 @@ export class ErrorHandleService {
     httpErrorResponse: HttpErrorResponse,
   ): Observable<HttpEvent<void | never>> {
     const { status, url, error, statusText } = httpErrorResponse;
-    const traceId = httpErrorResponse.headers.get('x-trace-id') || error.traceId;
+    const traceId = httpErrorResponse.headers.get('x-trace-id') || error?.traceId;
 
     if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
     } else if (error?.errorModalWindow) {
-      this.showErrorModal(error.errorModalWindow);
+      this.showErrorModal(error?.errorModalWindow);
     } else if (status === 401) {
-      this.showModal(AUTH_ERROR_MODAL_PARAMS, traceId).then((result) => {
+      this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
@@ -115,7 +130,7 @@ export class ErrorHandleService {
     } else if (status === 408 && url.includes('invitations/inviteToSign/send')) {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
-      if (error.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
+      if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
         this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
@@ -138,6 +153,10 @@ export class ErrorHandleService {
       });
     }
     return throwError(httpErrorResponse);
+  }
+
+  public isValidRequest(obj: object): boolean {
+    return 'scenarioDto' in obj || 'items' in obj;
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {

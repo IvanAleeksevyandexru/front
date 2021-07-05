@@ -1,4 +1,4 @@
-<epgu-cf-ui-screen-container>
+<epgu-cf-ui-screen-container class="tiny">
   <div class="screen-body">
     <div class="title mb-24">
       Выберите программу
@@ -6,6 +6,7 @@
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
+      [isShowMenu]="true"
       [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
     ></children-clubs-filter-panel>
@@ -15,9 +16,20 @@
       ></epgu-cf-ui-constructor-screen-pad>
     </ng-container>
     <ng-template #content>
-      <children-clubs-list (addItemsEvent)="fetchItems()">
-        <children-clubs-item *ngFor="let item of data$ | async" [data]="item"></children-clubs-item>
-      </children-clubs-list>
+      <ng-container *ngIf="data$ | async as data">
+        <ng-container *ngIf="$any(data)?.length > 0">
+          <children-clubs-list (addItemsEvent)="fetchItems()">
+            <children-clubs-item
+              *ngFor="let item of data$ | async"
+              [data]="item"
+            ></children-clubs-item>
+          </children-clubs-list>
+        </ng-container>
+        <children-clubs-not-found
+          class="mt-24"
+          *ngIf="$any(data)?.length === 0"
+        ></children-clubs-not-found>
+      </ng-container>
     </ng-template>
   </div>
 </epgu-cf-ui-screen-container>

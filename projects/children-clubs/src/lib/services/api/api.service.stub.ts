@@ -9,14 +9,12 @@ import {
 } from '../../typings';
 import { Observable, timer } from 'rxjs';
 
-import { DictionaryItem } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import {
   baseProgramStub,
   focusDirectionsStubList,
   groupStub,
   municipalityStub,
   programStub,
-  regionStub,
 } from '../../stubs/projects.stub';
 import { mapTo } from 'rxjs/operators';
 
@@ -40,15 +38,11 @@ export class ApiServiceStub {
   }
 
   getProgram(): Observable<Program> {
-    return timer(1000).pipe(mapTo(programStub));
+    return timer(1).pipe(mapTo(programStub));
   }
 
   getGroupList(): Observable<Group[]> {
-    return timer(1500).pipe(mapTo(new Array(43).fill(groupStub)));
-  }
-
-  getRegions(): Observable<DictionaryItem[]> {
-    return timer(1).pipe(mapTo([regionStub, regionStub, regionStub, regionStub]));
+    return timer(1).pipe(mapTo(new Array(43).fill(groupStub)));
   }
 
   getDirections(): Observable<FocusDirectionsItem[]> {

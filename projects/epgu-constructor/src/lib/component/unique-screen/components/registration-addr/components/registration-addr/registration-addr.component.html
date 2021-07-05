@@ -27,7 +27,7 @@
             [control]="redAddrForm.get(field.fieldName)"
             [clearable]="true"
             [suggestions]="classifiedSuggestionItems['regAddr']"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, null, 'DADATA_WIDGET')"
           >
           </epgu-constructor-constructor-dadata-widget>
 
@@ -58,7 +58,7 @@
             [invalid]="redAddrForm.controls[field.fieldName].invalid"
             [control]="$any(redAddrForm.get(field.fieldName))"
             [suggestions]="classifiedSuggestionItems[field.fieldName]"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
+            (selectSuggest)="suggestHandlerService.handleEvent($event, null, 'PLAIN_INPUT')"
             *ngSwitchDefault
           ></epgu-constructor-constructor-plain-input>
         </ng-container>

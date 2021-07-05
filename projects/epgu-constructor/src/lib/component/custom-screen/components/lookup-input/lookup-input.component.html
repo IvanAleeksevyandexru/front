@@ -20,7 +20,7 @@
     [queryTimeout]="queryTimeout"
     [suggest]="suggestions$ | async"
     [suggestSeparator]="suggestSeporator"
-    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex)"
+    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'LOOKUP')"
     [itemsProvider]="provider"
     [placeholder]="control.value?.attrs?.placeholder"
   >

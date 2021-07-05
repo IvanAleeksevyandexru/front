@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective } from 'ng-mocks';
+import { configureTestSuite } from 'ng-bullet';
+
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -23,8 +25,7 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ComponentActionDto, DTOActionAction, ButtonColor } from '@epgu/epgu-constructor-types';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -35,14 +36,14 @@ const componentSample: ComponentDto = {
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
   value: 'value1',
-  color: 'white',
+  color: ButtonColor.TRANSPARENT,
   action: DTOActionAction.editEmail,
 };
 
 const componentActionDtoSample2: ComponentActionDto = {
   label: 'label2',
   value: 'value2',
-  color: 'transparent',
+  color: ButtonColor.TRANSPARENT,
   action: DTOActionAction.getNextStep,
 };
 
@@ -132,20 +133,35 @@ describe('InfoScreenComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should render epgu-constructor-page-name if screenService.header is not empty', () => {
-    const selector =
-      'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-page-name';
+  describe('should render epgu-constructor-page-name if screenService.header is not empty', () => {
+    const selector = 'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-page-name';
 
-    let debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeNull();
+    it('screenService.header as plain text', () => {
+      let debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+  
+      screenService.header = 'any';
+      fixture.detectChanges();
+  
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
+  
+      expect(debugEl.nativeElement.textContent.trim()).toBe('any');
+    });
 
-    screenService.header = 'any';
-    fixture.detectChanges();
+    it('screenService.header as html markup', () => {
+      let debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+      const testHtml = '<div>this is a <i>markup</i> content</div>';
 
-    debugEl = fixture.debugElement.query(By.css(selector));
-    expect(debugEl).toBeTruthy();
+      screenService.header = testHtml;
+      fixture.detectChanges();
+  
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
 
-    expect(debugEl.nativeElement.textContent.trim()).toBe('any');
+      expect(debugEl.nativeElement.innerHTML).toContain(testHtml);
+    });
   });
 
   it('should render epgu-constructor-info-screen-body', () => {

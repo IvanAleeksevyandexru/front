@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Clarifications } from '@epgu/epgu-constructor-types';
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
@@ -24,10 +23,6 @@ export class StateService {
 
   get okato(): number {
     return this.stateQuery.state?.okato;
-  }
-
-  get clarifications(): Clarifications {
-    return this.stateQuery.state?.clarifications;
   }
 
   get nextSchoolYear(): boolean {
@@ -60,6 +55,11 @@ export class StateService {
 
   set groupFilters(filters: FindOptionsGroup) {
     const groupFilters = { ...this.groupFilters, ...filters };
+    this.changeState({ groupFilters });
+  }
+
+  clearGroupFilters(): void {
+    const groupFilters = {};
     this.changeState({ groupFilters });
   }
 }
