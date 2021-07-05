@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { BaseProgram, FocusFilter } from '../../typings';
 import {
   map,
@@ -11,6 +11,7 @@ import {
   concatMap,
   mapTo,
   distinctUntilChanged,
+  catchError,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ListElement } from '@epgu/epgu-lib';
@@ -92,6 +93,7 @@ export class ProgramListService {
               nextSchoolYear: this.stateService.nextSchoolYear,
             })
             .pipe(
+              catchError((_) => of([])),
               tap(() => this.loading$$.next(false)),
               tap((data: BaseProgram[]) => this.add(data)),
             );

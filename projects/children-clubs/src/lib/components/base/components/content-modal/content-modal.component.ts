@@ -1,10 +1,25 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import {
+  ConfigService,
+  ConfirmationModalBaseButton,
   EventBusService,
   ModalBaseComponent,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ConfirmationModal } from '@epgu/epgu-constructor-types';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Clipboard } from '@angular/cdk/clipboard';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { NotifierService } from '@epgu/epgu-lib';
 
 @Component({
   selector: 'children-clubs-content-modal',
@@ -13,15 +28,24 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class ContentModalComponent extends ModalBaseComponent implements OnInit {
+export class ContentModalComponent extends ModalBaseComponent implements OnInit, AfterViewInit {
   @Input() title: string;
   @Input() text: string;
   @Input() modalId: string;
+  @Input() showButtons = true;
+  @Input() showCrossButton = true;
+  @Input() preview?: ConfirmationModal['preview'];
+  @Input() buttons: ConfirmationModalBaseButton[] = [];
+  @Input() traceId?: ConfirmationModal['traceId'];
 
   constructor(
     public injector: Injector,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
+    public configService: ConfigService,
+    private clipboard: Clipboard,
+    private notifierService: NotifierService,
+    private cdr: ChangeDetectorRef,
   ) {
     super(injector);
   }
@@ -32,5 +56,32 @@ export class ContentModalComponent extends ModalBaseComponent implements OnInit 
       .subscribe(() => {
         this.closeModal();
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.setCustomButtons();
+    this.cdr.markForCheck();
+  }
+  setCustomButtons(): void {
+    this.buttons = this.buttons.map((button) => {
+      const handler = (): void => {
+        if (button.handler) {
+          button.handler();
+        }
+        if (button.closeModal) {
+          this.closeModal(button.value);
+        }
+      };
+
+      return {
+        ...button,
+        handler,
+      };
+    });
+  }
+
+  copy(traceId: string): void {
+    this.clipboard.copy(traceId);
+    this.notifierService.success({ message: 'Код ошибки скопирован' });
   }
 }

@@ -18,15 +18,15 @@ export class StateService {
   }
 
   get vendor(): VendorType {
-    return this.stateQuery.state?.vendor;
+    return this.stateQuery.state.vendor;
   }
 
   get okato(): number {
-    return this.stateQuery.state?.okato;
+    return +this.stateQuery.state.okato;
   }
 
   get nextSchoolYear(): boolean {
-    return this.stateQuery.state?.nextSchoolYear;
+    return this.stateQuery.state.nextSchoolYear === 'true';
   }
 
   get selectedProgramUUID(): string {

@@ -60,8 +60,6 @@ export class GroupListContainerComponent implements OnInit {
     const finded = Object.entries(filters).filter(
       ([key, value]) =>
         value !== null &&
-        value !== 'null' &&
-        value !== 'all' &&
         value !== false &&
         value !== undefined &&
         key !== 'vendor' &&
