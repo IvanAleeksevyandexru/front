@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DateTimePeriodContainerComponent } from './date-time-period-container.component';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
@@ -10,11 +9,13 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('DateTimePeriodContainerComponent', () => {
   let component: DateTimePeriodContainerComponent;
   let fixture: ComponentFixture<DateTimePeriodContainerComponent>;
-  let screenService: ScreenService;
+  let screenService: ScreenServiceStub;
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
@@ -30,14 +31,9 @@ describe('DateTimePeriodContainerComponent', () => {
   });
 
   beforeEach(() => {
-    screenService = TestBed.inject(ScreenService);
+    screenService = TestBed.inject(ScreenService) as unknown as ScreenServiceStub;
     fixture = TestBed.createComponent(DateTimePeriodContainerComponent);
     component = fixture.componentInstance;
-  });
-
-  it('should be update currentAnswersService state', () => {
-    component.updateState({} as any);
-    expect(component.currentAnswersService.state).toBe('{}');
   });
 
   describe('initialState', () => {
@@ -85,5 +81,127 @@ describe('DateTimePeriodContainerComponent', () => {
 
       jest.runAllTimers();
     });
+  });
+
+  describe('epgu-constructor-default-unique-screen-wrapper', () => {
+    const selector = 'epgu-constructor-default-unique-screen-wrapper';
+    
+    it('should be rendered', () => {
+      screenService.header = 'header text';
+      const buttons = [
+        { 
+          label: 'button1',
+          action: DTOActionAction.getNextStep
+        },
+        { 
+          label: 'button2',
+          action: DTOActionAction.skipStep
+        }
+      ];
+      screenService.buttons = buttons;
+      fixture.detectChanges();
+      let debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.header).toBe('header text');
+      expect(debugEl.componentInstance.isLoading).toBeFalsy();
+      expect(debugEl.componentInstance.screenButtons).toBe(buttons);
+      expect(debugEl.componentInstance.showNav).toBeFalsy();
+      expect(debugEl.componentInstance.isValid).toBeFalsy();
+
+      screenService.isLoadingSubject.next(true);
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.isLoading).toBeTruthy();
+
+      component.currentAnswersService.isValid = true;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.isValid).toBeTruthy();
+
+      screenService.showNav = true;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.showNav).toBeTruthy();
+      
+    });
+  });
+
+  describe('epgu-constructor-date-time-period', () => {
+    const selector = 'epgu-constructor-date-time-period';
+
+    it('should be rendered if initialState', () => {
+      let debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+      
+      const attrs = {
+        daysToShow: 12,
+        helperText: 'helper text',
+        isMonthsRangeVisible: true,
+        isSelectButtonHidden: false,
+        label: 'label text',
+        phoneNumber: 88008001000,
+        placeholderText: 'placeholder text',
+        step: 2,
+        visited: true,
+        years: 2021,  
+      };
+      screenService.component = {
+        id: 'w1',
+        type: 'DateTimePeriod',
+        label: '',
+        attrs: attrs,
+        value: '',
+      };
+      screenService.cachedAnswers = {
+        w1: {
+          visited: true,
+          value: JSON.stringify({
+            startDateTime: '10.01.2021',
+            endDateTime: '10.01.2022',
+          }),
+        },
+      };
+
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
+      expect(debugEl.componentInstance.attrs).toEqual(attrs);
+      expect(debugEl.componentInstance.attrs.step).toBe(2);
+      expect(debugEl.componentInstance.initialState).toEqual({
+        endDateTime: '10.01.2022',
+        startDateTime: '10.01.2021'        
+      });
+      
+    });
+
+    it('should be call updateState', () => {
+      jest.spyOn(component, 'updateState');
+      screenService.component = {
+        id: 'w1',
+        type: 'DateTimePeriod',
+        label: '',
+        attrs: {},
+        value: '',
+      };
+      screenService.cachedAnswers = {
+        w1: {
+          visited: true,
+          value: JSON.stringify({
+            startDateTime: '10.01.2021',
+            endDateTime: '10.01.2022',
+          }),
+        },
+      };
+      const mockData = {
+        endDateTime: '10.01.2022',
+        startDateTime: '10.01.2021'
+      };
+      fixture.detectChanges();
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      debugEl.triggerEventHandler('updateState', mockData);
+      
+      expect(component.currentAnswersService.state).toBe(JSON.stringify(mockData));
+
+    });
+
   });
 });
