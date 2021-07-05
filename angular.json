@@ -262,6 +262,16 @@
                 "glob": "**/*",
                 "input": "./projects/epgu-constructor-docs/node_modules/@taiga-ui/icons/src",
                 "output": "./assets/taiga-ui/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/epgu-constructor-ui-kit/src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@epgu/epgu-lib/assets/",
+                "output": "./lib-assets"
               }
             ],
             "styles": [

@@ -10,6 +10,16 @@ const routes: Routes = [
       title: 'Chip',
     },
   },
+  {
+    path: 'components/helper-text',
+    loadChildren: () =>
+      import('../components/helper-text/helper-text.module').then(
+        (m) => m.ExampleEpguHelperTextModule,
+      ),
+    data: {
+      title: 'HelperText',
+    },
+  },
 ];
 
 @NgModule({

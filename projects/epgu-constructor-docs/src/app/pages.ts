@@ -7,4 +7,10 @@ export const pages: TuiDocPages = [
     keywords: 'плашка, тэг, лейбл, label, tag, chip',
     route: '/components/chip',
   },
+  {
+    section: 'Components',
+    title: 'HelperText',
+    keywords: 'плашка, тэг, лейбл, label, tag, chip',
+    route: '/components/helper-text',
+  },
 ];
