@@ -48,3 +48,10 @@ export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
 }
+
+export interface EaisdoResponse {
+  error: string;
+  errorType: string;
+  responseType: string;
+  responseData: { [key: string]: unknown };
+}
