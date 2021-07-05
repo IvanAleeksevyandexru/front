@@ -350,7 +350,7 @@ export class DictionaryToolsService {
     throw new Error('Incorrect usage of filterOn ref');
   }
 
-  private prepareOptions(
+  public prepareOptions(
     component: CustomComponent,
     screenStore: ScreenStore,
     dictionaryFilter: Array<ComponentDictionaryFilterDto>,

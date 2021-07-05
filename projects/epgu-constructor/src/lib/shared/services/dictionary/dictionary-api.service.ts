@@ -8,8 +8,7 @@ import {
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
-import { DictionaryOptions, AdditionalRequestParam } from '@epgu/epgu-constructor-types';
-import { DictionaryUrlTypes } from '../../../component/custom-screen/components-list.types';
+import { DictionaryOptions, AdditionalRequestParam, DictionaryUrlTypes } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class DictionaryApiService {

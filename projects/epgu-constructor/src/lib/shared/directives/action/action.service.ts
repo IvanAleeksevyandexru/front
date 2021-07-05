@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, filter } from 'rxjs/operators';
 import {
   ActionApiResponse,
   ActionRequestPayload,
@@ -38,6 +38,8 @@ import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/c
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import { ScreenStore } from '../../../screen/screen.types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { HookService } from '../../../core/services/hook/hook.service';
+import { HookTypes } from '../../../core/services/hook/hook.constants';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -60,7 +62,8 @@ export class ActionService {
     private autocompleteApiService: AutocompleteApiService,
     private eventBusService: EventBusService,
     private modalService: ModalService,
-    private formPlayerService: FormPlayerService
+    private formPlayerService: FormPlayerService,
+    private hookService: HookService,
   ) { }
 
   public switchAction(
@@ -161,9 +164,21 @@ export class ActionService {
   }
 
   private navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
-    const navigation = this.prepareNavigationData(action, componentId);
     const navMethod = navActionToNavMethodMap[stepType];
-    this.navService[navMethod](navigation);
+
+    if (this.hookService.hasHooks(HookTypes.ON_BEFORE_SUBMIT)) {
+      forkJoin(this.hookService.getHooks(HookTypes.ON_BEFORE_SUBMIT)).pipe(
+        catchError(() => of([])),
+      ).subscribe(() => {
+        const navigation = this.prepareNavigationData(action, componentId);
+
+        this.navService[navMethod](navigation);
+      });
+    } else {
+      const navigation = this.prepareNavigationData(action, componentId);
+
+      this.navService[navMethod](navigation);
+    }
   }
 
   private navigateModal(action: ComponentActionDto, componentId: string, stepType: string): void {
