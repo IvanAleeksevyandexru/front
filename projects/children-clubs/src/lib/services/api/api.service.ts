@@ -26,6 +26,8 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
+  baseOptions = { withCredentials: true };
+
   constructor(private config: ConfigService, private http: HttpClient) {}
 
   getProgramList(options: FindOptionsProgram): Observable<BaseProgram[]> {
@@ -33,6 +35,7 @@ export class ApiService {
       .post<FindResponseProgram>(
         `${this.config.childrenClubsApi}${SEARCH_PROGRAM_SUB_URL}`,
         options,
+        this.baseOptions,
       )
       .pipe(map((result) => result?.items ?? []));
   }
@@ -40,6 +43,7 @@ export class ApiService {
   getProgram(uuid: string): Observable<Program> {
     return this.http.get<Program>(
       `${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}`,
+      this.baseOptions,
     );
   }
 
@@ -48,6 +52,7 @@ export class ApiService {
       .post<FindResponseGroup>(
         `${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}${SEARCH_GROUP_SUB_URL}`,
         options,
+        this.baseOptions,
       )
       .pipe(map((result) => result?.items ?? []));
   }
@@ -56,7 +61,10 @@ export class ApiService {
     const params = new HttpParams().append('okato', String(okato));
 
     return this.http
-      .get<DirectionsResponse>(`${this.config.childrenClubsApi}${DIRECTIONS_SUB_URL}`, { params })
+      .get<DirectionsResponse>(`${this.config.childrenClubsApi}${DIRECTIONS_SUB_URL}`, {
+        ...this.baseOptions,
+        params,
+      })
       .pipe(map((result) => result?.items ?? []));
   }
 
@@ -65,6 +73,7 @@ export class ApiService {
 
     return this.http
       .get<MunicipalityResponse>(`${this.config.childrenClubsApi}${MUNICIPALITIES_SUB_URL}`, {
+        ...this.baseOptions,
         params,
       })
       .pipe(map((result) => result?.items ?? []));
