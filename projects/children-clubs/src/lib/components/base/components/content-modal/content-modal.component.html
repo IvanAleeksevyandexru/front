@@ -22,7 +22,7 @@
     </div>
   </ng-container>
   <ng-container modal-buttons>
-    <ng-container *ngIf="buttons; else close">
+    <ng-container *ngIf="buttons.length; else close">
       <lib-button
         *ngFor="let button of buttons"
         [showLoader]="button.loader"
