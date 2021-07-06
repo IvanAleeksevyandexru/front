@@ -1,2 +1,9 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-top: 1px;
+}

@@ -7,9 +7,9 @@ export interface ChildrenClubsValue {
 }
 
 export interface ChildrenClubsState {
-  okato?: number; // TODO: переделать в обязательный
-  nextSchoolYear?: boolean; // TODO: переделать в обязательный
-  vendor?: VendorType; // TODO: переделать в обязательный
+  okato: string;
+  nextSchoolYear: string;
+  vendor: VendorType;
   selectedProgramUUID?: string;
   programFilters?: Filters;
   groupFilters?: FindOptionsGroup;

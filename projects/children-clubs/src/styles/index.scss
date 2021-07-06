@@ -136,3 +136,19 @@ a {
     }
   }
 }
+
+.text--center {
+  text-align: center;
+}
+.bold,
+b,
+strong {
+  font-weight: $fw-bold;
+}
+.block {
+  &--content-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

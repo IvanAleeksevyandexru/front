@@ -29,12 +29,14 @@ import {
   ConfigServiceStub,
   ConfigApiService,
   ConfigApiServiceStub,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { LoadService } from '@epgu/epgu-lib';
 import { BaseModule } from './components/base/base.module';
+import { MockModule } from 'ng-mocks';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -43,7 +45,13 @@ describe('ChildrenClubsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProgramListModule, BaseModule, SharedModalModule, MainContainerModule],
+      imports: [
+        ProgramListModule,
+        BaseModule,
+        SharedModalModule,
+        MainContainerModule,
+        MockModule(BaseUiModule),
+      ],
       declarations: [
         ChildrenClubsAppComponent,
         ProjectListComponent,
