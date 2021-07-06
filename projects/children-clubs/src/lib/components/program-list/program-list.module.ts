@@ -33,5 +33,6 @@ import { StateService } from '../../services/state/state.service';
 
   providers: [ProgramListService, ModalService, ConfigService, ApiService, StateService],
   exports: [ProgramListContainerComponent, ViewComponent],
+  entryComponents: [ProgramListContainerComponent],
 })
 export class ProgramListModule {}
