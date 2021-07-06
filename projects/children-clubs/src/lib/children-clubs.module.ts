@@ -85,6 +85,11 @@ const APP_CONFIG: AppUiConfig = {
     },
   ],
   exports: [ChildrenClubsAppComponent],
-  entryComponents: [ChildrenClubsAppComponent],
+  entryComponents: [
+    ProjectGroupComponent,
+    ChildrenClubsAppComponent,
+    ProjectListComponent,
+    ProjectViewComponent,
+  ],
 })
 export class ChildrenClubsModule {}
