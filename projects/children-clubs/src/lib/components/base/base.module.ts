@@ -46,10 +46,15 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   exports: [
     NotFoundComponent,
     ProgramFiltersFormComponent,
+    GroupFiltersFormComponent,
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
     ContentModalComponent,
   ],
-  entryComponents: [ProgramFiltersFormComponent, ContentModalComponent],
+  entryComponents: [
+    GroupFiltersFormComponent,
+    ProgramFiltersFormComponent,
+    ContentModalComponent,
+  ],
 })
 export class BaseModule {}
