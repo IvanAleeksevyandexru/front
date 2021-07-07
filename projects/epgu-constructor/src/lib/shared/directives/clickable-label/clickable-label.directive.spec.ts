@@ -12,7 +12,10 @@ import {
   SafePipe,
   ModalService,
   ModalServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/epgu-lib';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -52,6 +55,8 @@ describe('ClickableLabelDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        SmuEventsService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
