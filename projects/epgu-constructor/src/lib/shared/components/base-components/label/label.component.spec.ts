@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LabelComponent } from './label.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService, DeviceDetectorServiceStub, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { ClickableLabelDirective } from '../../../directives/clickable-label/clickable-label.directive';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -14,6 +14,7 @@ import { ActionServiceStub } from '../../../directives/action/action.service.stu
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
+import { SmuEventsService } from '@epgu/epgu-lib';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;
@@ -29,7 +30,9 @@ describe('LabelComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService
+        CurrentAnswersService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        SmuEventsService,
       ],
     }).compileComponents();
   });

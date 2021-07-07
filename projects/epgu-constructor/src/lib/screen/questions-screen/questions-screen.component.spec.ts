@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { EpguLibModule, SmuEventsService } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
@@ -99,6 +99,8 @@ describe('QuestionsScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         EventBusService,
         CurrentAnswersService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        SmuEventsService,
       ],
     })
       .overrideComponent(QuestionsScreenComponent, {
