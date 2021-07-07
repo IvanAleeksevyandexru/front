@@ -54,7 +54,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   entryComponents: [
     GroupFiltersFormComponent,
     ProgramFiltersFormComponent,
-    ContentModalComponent
+    ContentModalComponent,
   ],
 })
 export class BaseModule {}
