@@ -12,7 +12,10 @@ import {
   SafePipe,
   ModalService,
   ModalServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/epgu-lib';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -41,6 +44,7 @@ describe('ClickableLabelDirective', () => {
   let modalService: ModalService;
   let actionService: ActionService;
   let screenService: ScreenService;
+  let currentAnswersService: CurrentAnswersService;
 
   configureTestSuite(() => {
       TestBed.configureTestingModule({
@@ -51,6 +55,8 @@ describe('ClickableLabelDirective', () => {
           { provide: ScreenService, useClass: ScreenServiceStub },
           { provide: ActionService, useClass: ActionServiceStub },
           CurrentAnswersService,
+          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+          SmuEventsService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       })
@@ -64,6 +70,7 @@ describe('ClickableLabelDirective', () => {
     modalService = TestBed.inject(ModalService);
     actionService = TestBed.inject(ActionService);
     screenService = TestBed.inject(ScreenService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
   });
 
   it('should open modal if clarifications are set', () => {
@@ -109,7 +116,6 @@ describe('ClickableLabelDirective', () => {
     div.querySelector('a').click();
     expect(actionService.switchAction).toHaveBeenCalled();
   });
-
   describe('div', () => {
     it('should contain label', () => {
       const labelText = 'Test label';

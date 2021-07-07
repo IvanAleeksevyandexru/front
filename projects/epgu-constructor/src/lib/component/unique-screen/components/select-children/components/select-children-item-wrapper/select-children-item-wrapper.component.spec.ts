@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService, SmuEventsService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -31,6 +31,8 @@ describe('SelectChildrenItemWrapperComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        SmuEventsService,
       ],
     }).compileComponents();
   });
