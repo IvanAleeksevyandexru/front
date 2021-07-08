@@ -12,7 +12,10 @@ import {
   SafePipe,
   ModalService,
   ModalServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/epgu-lib';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -52,6 +55,8 @@ describe('ClickableLabelDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        SmuEventsService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -109,20 +114,6 @@ describe('ClickableLabelDirective', () => {
     div.querySelector('a').click();
     expect(actionService.switchAction).toHaveBeenCalled();
   });
-
-  it('should not set _currentAnswersService.state if target ActionType is deleteSuggest', () => {
-    screenService.component = {
-      attrs: {},
-      id: 'test1',
-      type: 'Lookup',
-    };
-    component.label = '<p><a data-action-type="deleteSuggest" data-action-value=0>Ссылка</a></p>';
-    fixture.detectChanges();
-    const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    div.querySelector('a').click();
-    expect(currentAnswersService.state).toBeUndefined();
-  });
-
   describe('div', () => {
     it('should contain label', () => {
       const labelText = 'Test label';
