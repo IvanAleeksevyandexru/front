@@ -108,6 +108,8 @@ export class GroupItemComponent {
     const group: ValueGroup = {
       groupGUID: this.group.uuid,
       name: this.group?.name,
+      dateBegin: this.group?.dateBegin,
+      dateEnd: this.group?.dateEnd,
       financialSourceBudget: this.sources,
       financialSource: this.resultSources,
     };
