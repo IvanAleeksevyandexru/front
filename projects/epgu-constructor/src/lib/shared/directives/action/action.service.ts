@@ -41,7 +41,6 @@ import { ScreenStore } from '../../../screen/screen.types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
-import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -72,7 +71,6 @@ export class ActionService {
     private modalService: ModalService,
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
-    private eaisdoGroupCostService: EaisdoGroupCostService,
   ) {}
 
   public switchAction(

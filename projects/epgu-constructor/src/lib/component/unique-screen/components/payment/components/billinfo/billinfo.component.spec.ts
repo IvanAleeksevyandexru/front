@@ -28,6 +28,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -71,6 +72,7 @@ describe('BillInfoComponent', () => {
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
+        EaisdoGroupCostService,
         WINDOW_PROVIDERS,
       ],
     }).compileComponents();
