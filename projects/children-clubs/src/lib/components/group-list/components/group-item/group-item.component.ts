@@ -65,6 +65,8 @@ export class GroupItemComponent {
   ) {}
 
   setPaymentMethodsInfo(): void {
+    let paymentInfoText;
+
     const payments: string[] = [];
     if (
       this.sources[FinancialSourceType.budget] === 0 ||
@@ -82,11 +84,16 @@ export class GroupItemComponent {
       payments.push(this.paymentMethodsMap.paid);
     }
 
-    if (payments.length > 0) {
+    if (payments.length === 1) {
+      paymentInfoText = payments.pop();
+    } else if (payments.length > 0) {
       const lastPayment = payments.pop();
-      const result = `${payments.join(', ')} или ${lastPayment}`;
-      this.paymentsInfo = result[0]?.toUpperCase() + result.slice(1);
+      paymentInfoText = `${payments.join(', ')} или ${lastPayment}`;
     }
+
+    this.paymentsInfo = paymentInfoText
+      ? paymentInfoText[0]?.toUpperCase() + paymentInfoText.slice(1)
+      : '';
   }
 
   initMultiPayments(): void {
