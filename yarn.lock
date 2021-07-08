@@ -1627,19 +1627,6 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
-"@epgu/epgu-constructor-types@20.6.0":
-  version "20.6.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-20.6.0.tgz#e8279e7ee47bc41c6dc89014a0c3b38d00fb14ab"
-  integrity sha512-XT9ZEwhFwNvn5dsIgesVU0bExeLmI8e7QCNt01/bfQ9+prnwTabT/Msd4B/VuE3fR1jJPfpKWyqZB1Pu78ohKA==
-
-"@epgu/epgu-constructor-ui-kit@20.6.0":
-  version "20.6.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-20.6.0.tgz#e14d383a952cebf46bac40a41cea5e3082674beb"
-  integrity sha512-YRoQOBIy50T/v7mLDMZSQiNwLmfeZqtjiXuxPELs7QyNGN2unQVH3WozOgBl7zHcuKhyMuS2N9prjSB6J6Y1kw==
-  dependencies:
-    "@epgu/epgu-constructor-types" "20.6.0"
-    tslib "^2.0.0"
-
 "@epgu/epgu-lib@3.0.369-3-core":
   version "3.0.369-3-core"
   resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-3.0.369-3-core.tgz#72a2eeec4ad5f08b30ee5d301dc9da06c158d22e"
