@@ -73,7 +73,7 @@ describe('ClickableLabelDirective', () => {
 
   it('should open modal if clarifications are set', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = { test: { text: '', title: '' }};
+    component.clarifications = { test: { text: '', title: '' } };
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     spyOn(modalService, 'openModal').and.callThrough();
@@ -93,7 +93,7 @@ describe('ClickableLabelDirective', () => {
 
   it('should not open modal if clicked element without clarifications', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = { test: { text: '', title: '' }};
+    component.clarifications = { test: { text: '', title: '' } };
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     spyOn(modalService, 'openModal').and.callThrough();
