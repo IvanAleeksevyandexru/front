@@ -22,6 +22,7 @@ import {
 export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   CardNumberInput = 'CardNumberInput',
+  CertificateEaisdo = 'CertificateEaisdo',
   CheckBox = 'CheckBox',
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
@@ -258,6 +259,17 @@ export interface RelationCondition {
   type: 'RegExp' | 'MinDate' | 'MaxDate';
   value: string;
   result: CustomComponentAttr;
+}
+
+export interface CustomComponentWithAttrs<T> extends ComponentBase {
+  attrs: T;
+  type: CustomScreenComponentTypes;
+  id: string;
+  hint?: string;
+  fstuc?: TextTransform;
+  isShown?: boolean;
+  price?: boolean;
+  searchProvider?: { search: Function };
 }
 
 export interface CustomComponent extends ComponentBase {

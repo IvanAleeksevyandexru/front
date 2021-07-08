@@ -1,0 +1,11 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+  [disableLabel]="true"
+>
+  <div
+    class="message"
+    [innerHTML]="outputHtml() | imgPrefixer | safe: 'html'"
+  ></div>
+</epgu-constructor-component-item>

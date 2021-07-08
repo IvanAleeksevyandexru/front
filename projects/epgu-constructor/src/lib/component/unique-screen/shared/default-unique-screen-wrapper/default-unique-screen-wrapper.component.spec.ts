@@ -26,6 +26,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -58,6 +59,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
         MockDirective(ActionDirective),
       ],
       providers: [
+        CertificateEaisdoService,
         CurrentAnswersService,
         EventBusService,
         EaisdoGroupCostService,

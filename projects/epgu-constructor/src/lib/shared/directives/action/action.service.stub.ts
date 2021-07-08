@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { ActionApiResponse, ComponentActionDto, EaisdoResponse } from '@epgu/epgu-constructor-types';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs';
 
 @Injectable()
 export class ActionServiceStub {
@@ -11,4 +13,8 @@ export class ActionServiceStub {
   navigateModal(stepType: string): void {}
 
   switchAction(): void {}
+
+  public handleExternalIntegrationAction(): Observable<ActionApiResponse<EaisdoResponse>> {
+    return of();
+  }
 }
