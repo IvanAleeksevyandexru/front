@@ -9,6 +9,7 @@ import {
   ComponentRelationFieldDto,
   ComponentImageDto,
   ComponentAttrsDto,
+  DictionaryUrlTypes,
 } from '@epgu/epgu-constructor-types';
 // @ts-ignore
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
@@ -198,13 +199,6 @@ export interface CustomComponentOutputData {
     disabled?: boolean;
     condition?: string;
   };
-}
-
-export enum DictionaryUrlTypes {
-  dictionary = 'dictionary',
-  nsiSuggest = 'nsiSuggest',
-  lkApi = 'lkApi',
-  childrenClubsApi = 'childrenClubsApi',
 }
 
 /**

@@ -112,15 +112,15 @@ describe('PaymentTypeSelectorComponent', () => {
   });
 
   it('should img', () => {
-    expect(fixture.debugElement.query(By.css('.payment-type-selector__img > img'))).not.toBeNull();
+    expect(fixture.debugElement.query(By.css('img'))).not.toBeNull();
   });
 
   it('should header', () => {
-    expect(fixture.debugElement.query(By.css('.payment-type-selector__header'))).not.toBeNull();
+    expect(fixture.debugElement.query(By.css('epgu-constructor-page-name'))).not.toBeNull();
   });
 
-  it('should subeader', () => {
-    expect(fixture.debugElement.query(By.css('.payment-type-selector__sub-header'))).not.toBeNull();
+  it('should subHeader', () => {
+    expect(fixture.debugElement.query(By.css('.subtitle'))).not.toBeNull();
   });
 
   it('should body', () => {

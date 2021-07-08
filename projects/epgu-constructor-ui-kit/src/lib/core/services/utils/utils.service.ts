@@ -151,6 +151,18 @@ export class UtilsService {
     }
   }
 
+  public tryToParseOrDefault(value: string|object|[], defaultValue: object = {}): object|[] {
+    if (Array.isArray(value) || typeof value === 'object' && value) {
+      return value;
+    }
+
+    if (UtilsService.hasJsonStructure(value as string)) {
+      return JSON.parse(value as string);
+    }
+
+    return defaultValue;
+  }
+
   public getDeclension(num: number, forms: string[]): string {
     const num0 = Math.abs(num) % 100;
     const n1 = num0 % 10;

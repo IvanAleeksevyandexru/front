@@ -56,6 +56,13 @@ export enum AttributeTypes {
 
 export type DictionaryValue = { [key in AttributeTypes]?: string };
 
+export enum DictionaryUrlTypes {
+  dictionary = 'dictionary',
+  nsiSuggest = 'nsiSuggest',
+  lkApi = 'lkApi',
+  childrenClubsApi = 'childrenClubsApi',
+}
+
 export enum DictionaryUnionKind {
   AND = 'AND',
   OR = 'OR',

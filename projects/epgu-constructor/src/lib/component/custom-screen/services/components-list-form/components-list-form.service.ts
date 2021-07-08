@@ -453,7 +453,7 @@ export class ComponentsListFormService {
     const key: string = utils.getDictKeyByComp(component);
     const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
 
-    if (lockedValue && !repeatedWithNoFilters) {
+    if (lockedValue && !repeatedWithNoFilters || dicts[key]?.list?.length === 1) {
       const value: ListItem = dicts[key]?.list[defaultIndex];
       control.get('value').patchValue(value);
     }

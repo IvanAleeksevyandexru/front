@@ -31,6 +31,10 @@ import {
   DTOActionAction,
   ActionApiResponse,
 } from '@epgu/epgu-constructor-types';
+import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
+import { HookService } from '../../../core/services/hook/hook.service';
+import { HookTypes } from '../../../core/services/hook/hook.constants';
+import { tap } from 'rxjs/operators';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -184,6 +188,7 @@ describe('ActionService', () => {
   let localStorageService: LocalStorageService;
   let formPlayerApiService: FormPlayerApiService;
   let modalService: ModalService;
+  let hookService: HookService;
   let currentAnswersService: CurrentAnswersService;
   let htmlRemover: HtmlRemoverService;
   let formPlayerService: FormPlayerService;
@@ -203,6 +208,7 @@ describe('ActionService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: HookService, useClass: HookServiceStub },
         HtmlRemoverService,
         ActionService,
         NavigationModalService,
@@ -225,6 +231,7 @@ describe('ActionService', () => {
     localStorageService = TestBed.inject(LocalStorageService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     modalService = TestBed.inject(ModalService);
+    hookService = TestBed.inject(HookService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     htmlRemover = TestBed.inject(HtmlRemoverService);
 
@@ -463,6 +470,39 @@ describe('ActionService', () => {
       jest.spyOn(navigationService, 'redirectToProfileEdit');
       actionService.switchAction(action(null), null);
       expect(navigationService.redirectToProfileEdit).toHaveBeenCalled();
+    });
+  });
+
+  describe('navigate with hooks', () => {
+    it('should do navigate after hooks', () => {
+      const restCallObserver = of({ someComponent: { value: 'some data', visited: true, }}).pipe(
+        tap((data) => {
+          screenService.logicAnswers = data;
+        }),
+      );
+      const hasHooksSpy = jest.spyOn(hookService, 'hasHooks').mockReturnValue(true);
+      const getHooksSpy = jest.spyOn(hookService, 'getHooks').mockReturnValue([restCallObserver]);
+      const action = { ...nextAction };
+
+      actionService.switchAction(action, null);
+      expect(nextStepSpy).toHaveBeenCalledWith({
+        options:{
+          params: {},
+          url: 'service/actions/editPhoneNumber',
+        },
+        payload: {
+          12: {
+            value: 'some value',
+            visited: true,
+          },
+          someComponent: {
+            value: 'some data',
+            visited: true,
+          },
+        },
+      });
+      expect(hasHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
+      expect(getHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
     });
   });
 });

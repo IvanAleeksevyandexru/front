@@ -9,7 +9,8 @@ import {
   MainContainerModule,
   BaseUiModule,
   HEALTH_SERVICE,
-  TRACE_ALLOWED_REMOTE_SERVICES, ERROR_HANDLER_SERVICE,
+  TRACE_ALLOWED_REMOTE_SERVICES,
+  ERROR_HANDLER_SERVICE,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
@@ -19,7 +20,6 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 import { GroupListModule } from './components/group-list/group-list.module';
 import { ProjectViewComponent } from './components/project-view/project-view.component';
 import { ProjectGroupComponent } from './components/project-group/project-group.component';
-import { ProgramListContainerComponent } from './components/program-list/container/program-list-container.component';
 import { HealthHandlerService } from './services/health/health-handler.service';
 import {
   DIRECTIONS_SUB_URL,
@@ -27,7 +27,7 @@ import {
   PROGRAM_DETAIL_SUB_URL,
   REGIONS_SUB_URL,
   SEARCH_GROUP_SUB_URL,
-  SEARCH_PROGRAM_SUB_URL
+  SEARCH_PROGRAM_SUB_URL,
 } from './services/health/health-handler';
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 
@@ -77,7 +77,7 @@ const APP_CONFIG: AppUiConfig = {
         PROGRAM_DETAIL_SUB_URL,
         MUNICIPALITIES_SUB_URL,
         DIRECTIONS_SUB_URL,
-      ]
+      ],
     },
     {
       provide: ERROR_HANDLER_SERVICE,
@@ -85,6 +85,11 @@ const APP_CONFIG: AppUiConfig = {
     },
   ],
   exports: [ChildrenClubsAppComponent],
-  entryComponents: [ProgramListContainerComponent],
+  entryComponents: [
+    ProjectGroupComponent,
+    ChildrenClubsAppComponent,
+    ProjectListComponent,
+    ProjectViewComponent,
+  ],
 })
 export class ChildrenClubsModule {}
