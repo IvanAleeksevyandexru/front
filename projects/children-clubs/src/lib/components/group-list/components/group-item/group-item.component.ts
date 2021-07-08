@@ -32,7 +32,7 @@ export class GroupItemComponent {
     this.paidCost =
       this.sources[FinancialSourceType.paid] || this.sources[FinancialSourceType.private];
     this.initMultiPayments();
-    this.initPaymentMethods();
+    this.setPaymentMethodsInfo();
   }
   @Input() program: Program;
   @Input() index: number;
@@ -42,7 +42,7 @@ export class GroupItemComponent {
     cert: 'сертификатом',
     paid: 'из личных средств',
   };
-  payments = '';
+  paymentsInfo = '';
   certCost?: number;
   paidCost?: number;
   sources: Record<string, number> = {};
@@ -64,12 +64,15 @@ export class GroupItemComponent {
     private appNavigationService: AppNavigationService,
   ) {}
 
-  initPaymentMethods(): void {
+  setPaymentMethodsInfo(): void {
     const payments: string[] = [];
-    if (this.sources[FinancialSourceType.budget]) {
+    if (
+      this.sources[FinancialSourceType.budget] === 0 ||
+      this.sources[FinancialSourceType.none] === 0
+    ) {
       payments.push(this.paymentMethodsMap.budget);
     }
-    if (this.sources[FinancialSourceType.pfdod_certificate]) {
+    if (this.sources[FinancialSourceType.pfdod_certificate] > 0) {
       payments.push(this.paymentMethodsMap.cert);
     }
     if (
@@ -80,8 +83,9 @@ export class GroupItemComponent {
     }
 
     if (payments.length > 0) {
-      const result = payments.join(' или ');
-      this.payments = result[0]?.toUpperCase() + result.slice(1);
+      const lastPayment = payments.pop();
+      const result = `${payments.join(', ')} или ${lastPayment}`;
+      this.paymentsInfo = result[0]?.toUpperCase() + result.slice(1);
     }
   }
 
