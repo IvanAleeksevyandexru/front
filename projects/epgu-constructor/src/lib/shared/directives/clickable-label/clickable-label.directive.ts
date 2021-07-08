@@ -1,6 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
 import { Clarifications, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, DeviceDetectorService, createOpenBrowserEvent } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/epgu-lib';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
@@ -22,6 +23,8 @@ export class ClickableLabelDirective {
     private _elementRef: ElementRef,
     private _currentAnswersService: CurrentAnswersService,
     private _ngZone: NgZone,
+    private _smu: SmuEventsService,
+    private _deviceDetector: DeviceDetectorService,
   ) {}
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
@@ -30,6 +33,10 @@ export class ClickableLabelDirective {
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
     const targetElementActionAction = targetElement.getAttribute('data-action-action');
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
+
+    if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this._deviceDetector.isWebView) {
+      this._smu.notify(createOpenBrowserEvent(targetElement.getAttribute('href'), false));
+    }
 
     if (targetElementActionType) {
       event.preventDefault();
