@@ -1,6 +1,5 @@
 import { Directive, HostListener, Input, OnInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import { numberMaskDefaultOptions, MASKS, NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
+import { MASKS, NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { NgControl } from '@angular/forms';
 import { MaskTransformService } from './mask-transform.service';
 
@@ -11,15 +10,7 @@ export class MaskTransformDirective implements OnInit {
   @Input('epgu-constructor-mask-transform') mask: string | string[];
   @Input() maskOptions?: Partial<NumberMaskOptions>;
 
-  // @ts-ignore
-  private localeThousandSeparator = ',';
-  // @ts-ignore
-  private localeDecimalSeparator = '.';
-  // @ts-ignore
-  private options: Partial<NumberMaskOptions> = {};
-
   constructor(
-      private decimalPipe: DecimalPipe,
       private ngControl: NgControl,
       private maskTransformService: MaskTransformService,
   ) {}
@@ -33,11 +24,4 @@ export class MaskTransformDirective implements OnInit {
     }
   }
 
-  public ngOnInit(): void {
-    if (this.mask === MASKS.NumberMaskInput) {
-      this.localeThousandSeparator = this.decimalPipe.transform(1234, '0.0-0').replace(/\d/g, '');
-      this.localeDecimalSeparator = this.decimalPipe.transform(1.23, '0.2-2').replace(/\d/g, '');
-      this.options = { ...numberMaskDefaultOptions, ...this.maskOptions };
-    }
-  }
 }
