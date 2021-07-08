@@ -11,8 +11,11 @@ export class MaskTransformDirective implements OnInit {
   @Input('epgu-constructor-mask-transform') mask: string | string[];
   @Input() maskOptions?: Partial<NumberMaskOptions>;
 
+  // @ts-ignore
   private localeThousandSeparator = ',';
+  // @ts-ignore
   private localeDecimalSeparator = '.';
+  // @ts-ignore
   private options: Partial<NumberMaskOptions> = {};
 
   constructor(
