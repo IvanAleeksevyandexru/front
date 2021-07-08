@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
+import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
 
 @Injectable()
@@ -55,5 +55,13 @@ export class StateServiceStub {
 
   set groupFilters(groupFilters: FindOptionsGroup) {
     this.changeState({ groupFilters });
+  }
+
+  get groupFiltersMode(): GroupFiltersModes {
+    return this.stateQuery.state?.groupFiltersMode;
+  }
+
+  set groupFiltersMode(groupFiltersMode: GroupFiltersModes) {
+    this.changeState({ groupFiltersMode });
   }
 }

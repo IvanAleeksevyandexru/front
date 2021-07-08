@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Icons } from './constants';
 import { SelectMapObjectComponent } from './select-map-object.component';
-import { ConstructorLookupModule, ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
+import { ConstructorLookupModule, ConstructorCheckboxModule, Icons } from '@epgu/epgu-constructor-ui-kit';
 import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { PriorityScreenComponent } from './components/priority-screen/priority-screen.component';

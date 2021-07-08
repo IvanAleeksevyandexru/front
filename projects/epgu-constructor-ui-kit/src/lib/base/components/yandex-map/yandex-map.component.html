@@ -1,0 +1,12 @@
+<lib-map
+  *ngIf="showMap"
+  [externalMode]="!config.staticDomainAssetsPath"
+  [enterpriseYandexMapsEnabled]="true"
+  [yandexMapsApiKey]="config.yandexMapsApiKey"
+  [center]="mapCenter"
+  [redraw]="mapIsLoaded"
+  [controls]="mapControls"
+>
+</lib-map>
+<ng-content select=".search-panel"></ng-content>
+<ng-content select=".map-objects-list"></ng-content>

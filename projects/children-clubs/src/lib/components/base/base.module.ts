@@ -8,6 +8,7 @@ import {
   ConfigService,
   ErrorModule,
   ImgPrefixerModule,
+  PrevButtonModule,
   SafeModule,
   ScreenPadModule,
   SharedModalModule,
@@ -41,6 +42,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ErrorModule,
     SafeModule,
     ImgPrefixerModule,
+    PrevButtonModule,
   ],
   providers: [DictionaryService, ConfigService, ApiService, StateService],
   exports: [

@@ -13,6 +13,7 @@ export interface ChildrenClubsState {
   selectedProgramUUID?: string;
   programFilters?: Filters;
   groupFilters?: FindOptionsGroup;
+  groupFiltersMode: GroupFiltersModes;
 }
 
 export interface ValueProgram {
@@ -29,4 +30,9 @@ export interface ValueGroup {
   name: string;
   financialSource: Record<string, boolean>;
   financialSourceBudget: Record<string, number>;
+}
+
+export enum GroupFiltersModes {
+  map = 'map',
+  list = 'list',
 }

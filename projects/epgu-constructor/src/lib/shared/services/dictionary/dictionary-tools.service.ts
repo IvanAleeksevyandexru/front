@@ -38,10 +38,10 @@ import {
   FilterDtoConfig,
   AdditionalRequestParam,
   AdditionalRequestType,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
-import { KeyValueMap } from '../../../core/core.types';
 
 export type ComponentValue = {
   [key: string]: string | number;

@@ -47,6 +47,10 @@ export * from './lib/base/components/prev-button/prev-button.component';
 export * from './lib/base/components/screen-container/screen-container.module';
 export * from './lib/base/components/screen-container/screen-container.component';
 
+export * from './lib/base/components/yandex-map/yandex-map.module';
+export * from './lib/base/components/yandex-map/yandex-map.service';
+export * from './lib/base/components/yandex-map/constants';
+
 // Directives
 export * from './lib/base/directives/trim/trim.module';
 export * from './lib/base/directives/trim/trim.directive';
@@ -83,6 +87,7 @@ export * from './lib/base/pipes/safe/safe.pipe';
 export * from './lib/core/providers/window.provider';
 
 // Services
+export * from './lib/core/services/addresses-tools/addresses-tools.service';
 export * from './lib/core/services/local-storage/local-storage.service';
 export * from './lib/core/services/local-storage/local-storage.service.stub';
 
@@ -169,3 +174,10 @@ export * from './lib/modal/shared/cta-modal/cta-modal.component';
 export * from './lib/base/constants/helper-texts';
 export * from './lib/base/constants/redirect-event';
 export * from './lib/base/constants/dates';
+
+// Interfaces
+export * from './lib/base/components/yandex-map/yandex-map.interface';
+export * from './lib/core/services/addresses-tools/addresses-tools.service.interface';
+
+// Mocks
+export * from './lib/core/services/select-map-object/mocks/mock-select-map-object';
