@@ -352,7 +352,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private handleFilledCoordinate(coords: IGeoCoordsResponse): void {
     this.selectMapObjectService.saveCoords(coords);
-    this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
+    this.selectMapObjectService.placeObjectsOnMap(this.yaMapService.map);
     this.tryInitSelectedObject();
   }
 

@@ -147,7 +147,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private handleGettingCoordinatesResponse(coords: Array<IYMapPoint<BaseProgram>>): void {
-    this.yandexMapService.placeOjectsOnMap<BaseProgram>(coords);
+    this.yandexMapService.placeObjectsOnMap<BaseProgram>(coords);
   }
 
   private fillCoords(): Observable<Array<IYMapPoint<BaseProgram>>> {

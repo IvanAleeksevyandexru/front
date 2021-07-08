@@ -121,7 +121,7 @@ export class SelectMapObjectService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeOjectsOnMap(map: YaMapService['map']): void {
+  public placeObjectsOnMap(map: YaMapService['map']): void {
     const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
 
     this.objectManager = this.createMapsObjectManager();
@@ -195,7 +195,7 @@ export class SelectMapObjectService implements OnDestroy {
         address?.includes(searchStringLower)
       );
     });
-    this.placeOjectsOnMap(this.yaMapService.map);
+    this.placeObjectsOnMap(this.yaMapService.map);
   }
 
   public findObjectByValue(value: string): DictionaryYMapItem {

@@ -13,6 +13,8 @@ import {
   IYMapPoint,
 } from './yandex-map.interface';
 
+const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
+
 @Injectable()
 export class YandexMapService implements OnDestroy {
   public selectedValue$ = new BehaviorSubject(null);
@@ -26,7 +28,7 @@ export class YandexMapService implements OnDestroy {
     private yaMapService: YaMapService,
     private icons: Icons,
     private ngUnsubscribe$: UnsubscribeService,
-    private deviceDetector: DeviceDetectorService, // private dictionaryToolsService: DictionaryToolsService,
+    private deviceDetector: DeviceDetectorService,
   ) {
     this.yaMapService.mapSubject
       .pipe(
@@ -61,7 +63,6 @@ export class YandexMapService implements OnDestroy {
         res.features.push(obj);
       }
     });
-    console.log('test123', res);
     return res;
   }
 
@@ -69,7 +70,7 @@ export class YandexMapService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeOjectsOnMap<T>(items: IYMapPoint<T>[]): void {
+  public placeObjectsOnMap<T>(items: IYMapPoint<T>[]): void {
     const objects = this.prepareFeatureCollection(items);
 
     this.objectManager = this.createMapsObjectManager();
@@ -93,14 +94,12 @@ export class YandexMapService implements OnDestroy {
     if(feature.type === IFeatureTypes.Cluster && this.isClusterZoomable(feature)) {
       return;
     }
-    let offset = -0.00008;
-
     this.activePlacemarkId = feature.id;
     const coords = feature.geometry.coordinates;
 
     if (coords && coords[0] && coords[1]) {
       this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
-        this.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
+        this.yaMapService.map.setCenter([coords[0], coords[1] + POINT_ON_MAP_OFFSET], range[1] - 2);
         this.objectManager &&
           this.objectManager.objects.setObjectOptions(feature.id, {
             iconImageHref: this.icons.red.iconImageHref,
