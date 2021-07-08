@@ -210,7 +210,6 @@ export class ComponentsListFormService {
         else if(type === 'StringInput' && val.attrs.mask === 'NumberMaskInput') {
           //при вводе любого числа, оно должно отправляться в нужном формате NumberMaskInput (EPGUCORE-59658)
           value = this.maskTransformService.transformNumberMaskInput(value, val.attrs.maskOptions);
-          console.log('NumberMaskInput', value);
         }
         acc[val.id] = { value, isValid, disabled, condition };
       }
