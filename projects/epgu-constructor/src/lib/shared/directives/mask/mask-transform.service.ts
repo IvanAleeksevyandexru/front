@@ -21,10 +21,8 @@ export class MaskTransformService {
       
       let result =
       value.replace(options.decimalSymbol, '.').replace(/[^\d.]/g, '') || '0';
-      if (!Number.isNaN(+result)) {
-        this.localeThousandSeparator = this.decimalPipe.transform(1234, '0.0-0').replace(/\d/g, '');
-        this.localeDecimalSeparator = this.decimalPipe.transform(1.23, '0.2-2').replace(/\d/g, '');
-        
+      
+      if (!Number.isNaN(+result)) {        
         result = this.decimalPipe
           .transform(
             result.substring(0, 10),
