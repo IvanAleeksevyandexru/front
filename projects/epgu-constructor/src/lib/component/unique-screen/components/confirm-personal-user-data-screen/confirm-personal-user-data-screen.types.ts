@@ -1,9 +1,5 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import {
-  Clarifications,
-  ConfirmUserDataStyle,
-  DTOActionAction,
-} from '@epgu/epgu-constructor-types';
+import { Clarifications, ConfirmUserDataStyle, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 export interface ConfirmUserData extends ComponentBase {
   attrs: ConfirmUserDataAttrs;
@@ -44,7 +40,6 @@ export interface ConfirmUserDataAdaptiveField {
 
 export interface ConfirmUserDataFieldsState {
   groupName: string;
-  visibilityLabel: string;
   fields: Array<ConfirmUserDataAdaptiveField>;
   needDivider?: boolean;
 }

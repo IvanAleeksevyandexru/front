@@ -1,93 +1,88 @@
 import { Type } from '@angular/core';
-import { AddressInputComponent } from '../components/address-input/address-input.component';
-import { CheckboxInputComponent } from '../components/checkbox-input/checkbox-input.component';
-import { CheckboxListComponent } from '../components/checkbox-list/checkbox-list.component';
-import { CityInputComponent } from '../components/city-input/city-input.component';
-import { CustomScreenComponentTypes } from '../components-list.types';
-import { DateInputComponent } from '../components/date-input/date-input.component';
-import { DepartmentLookupComponent } from '../components/department-lookup/department-lookup.component';
-import { DictionaryComponent } from '../components/dictionary/dictionary.component';
-import { DocInputComponent } from '../components/doc-input/doc-input.component';
-import { DropdownComponent } from '../components/dropdown/dropdown.component';
-import { EaisdoGroupCostComponent } from '../components/eaisdo-group-cost/eaisdo-group-cost.component';
-import { FieldListItemComponent } from '../components/field-list-item/field-list-item.component';
-import { FileUploadFormComponent } from '../components/file-upload-form/file-upload-form.component';
-import { FormOutputHtmlComponent } from '../components/form-output-html/form-output-html.component';
-import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
+
 import { MaskedAndPlainInputComponent } from '../components/masked-and-plain-input/masked-and-plain-input.component';
-import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
-import { MultiChoiceDictionaryComponent } from '../components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
+import { FormOutputHtmlComponent } from '../components/form-output-html/form-output-html.component';
+import { CustomScreenComponentTypes } from '../components-list.types';
 import { MvdGiacLookupComponent } from '../components/mvd-giac-lookup/mvd-giac-lookup.component';
-import { PassportLookupComponent } from '../components/passport-lookup/passport-lookup.component';
-import { RadioInputComponent } from '../components/radio-input/radio-input.component';
-import { SearchableDropdownComponent } from '../components/searchable-dropdown/searchable-dropdown.component';
+import { DateInputComponent } from '../components/date-input/date-input.component';
 import { TextAreaComponent } from '../components/text-area/text-area.component';
+import { DocInputComponent } from '../components/doc-input/doc-input.component';
+import { MultiChoiceDictionaryComponent } from '../components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
+import { CheckboxListComponent } from '../components/checkbox-list/checkbox-list.component';
+import { CheckboxInputComponent } from '../components/checkbox-input/checkbox-input.component';
+import { PassportLookupComponent } from '../components/passport-lookup/passport-lookup.component';
 import { TimerItemComponent } from '../components/timer-item/timer-item.component';
+import { FieldListItemComponent } from '../components/field-list-item/field-list-item.component';
+import { CityInputComponent } from '../components/city-input/city-input.component';
+import { AddressInputComponent } from '../components/address-input/address-input.component';
+import { FileUploadFormComponent } from '../components/file-upload-form/file-upload-form.component';
+import { DropdownComponent } from '../components/dropdown/dropdown.component';
+import { SearchableDropdownComponent } from '../components/searchable-dropdown/searchable-dropdown.component';
+import { DictionaryComponent } from '../components/dictionary/dictionary.component';
+import { LookupInputComponent } from '../components/lookup-input/lookup-input.component';
+import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
+import { DepartmentLookupComponent } from '../components/department-lookup/department-lookup.component';
+import { RadioInputComponent } from '../components/radio-input/radio-input.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
 type CustomScreenComponent =
-  | AddressInputComponent
-  | CheckboxInputComponent
-  | CheckboxListComponent
-  | CityInputComponent
-  | DateInputComponent
-  | DepartmentLookupComponent
-  | DocInputComponent
-  | EaisdoGroupCostComponent
-  | FieldListItemComponent
-  | FileUploadFormComponent
-  | FormOutputHtmlComponent
-  | LookupInputComponent
   | MaskedAndPlainInputComponent
-  | MonthPickerComponent
-  | MultiChoiceDictionaryComponent
   | MvdGiacLookupComponent
-  | PassportLookupComponent
-  | RadioInputComponent
-  | SearchableDropdownComponent
+  | DateInputComponent
+  | MonthPickerComponent
   | TextAreaComponent
-  | TimerItemComponent;
+  | TimerItemComponent
+  | DocInputComponent
+  | FieldListItemComponent
+  | MultiChoiceDictionaryComponent
+  | CheckboxListComponent
+  | CheckboxInputComponent
+  | PassportLookupComponent
+  | FormOutputHtmlComponent
+  | CityInputComponent
+  | AddressInputComponent
+  | FileUploadFormComponent
+  | LookupInputComponent
+  | SearchableDropdownComponent
+  | DepartmentLookupComponent
+  | RadioInputComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
-export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
-  CustomScreenComponentTypes,
-  Type<CustomScreenComponent>
->> = {
-  AddressInput: AddressInputComponent,
-  CardNumberInput: MaskedAndPlainInputComponent,
-  CheckBox: CheckboxInputComponent,
-  CheckBoxList: CheckboxListComponent,
-  CheckingAccount: MaskedAndPlainInputComponent,
-  CityInput: CityInputComponent,
-  ConfirmPersonalUserRegAddrChange: AddressInputComponent,
-  DateInput: DateInputComponent,
-  Dictionary: DictionaryComponent,
-  DocInput: DocInputComponent,
-  DropDown: DropdownComponent,
-  DropDownDepts: DepartmentLookupComponent,
-  EaisdoGroupCost: EaisdoGroupCostComponent,
-  FieldList: FieldListItemComponent,
-  FileUploadComponent: FileUploadFormComponent,
-  HtmlString: FormOutputHtmlComponent,
-  LabelSection: FormOutputHtmlComponent,
-  LegalInnInput: MaskedAndPlainInputComponent,
-  Lookup: LookupInputComponent,
-  MonthPicker: MonthPickerComponent,
-  MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
-  MvdGiac: MvdGiacLookupComponent,
+export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<CustomScreenComponentTypes, Type<CustomScreenComponent>>> = {
   NewEmailInput: MaskedAndPlainInputComponent,
   NewLegalEmailInput: MaskedAndPlainInputComponent,
+  PhoneNumberChangeInput: MaskedAndPlainInputComponent,
+  StringInput: MaskedAndPlainInputComponent,
   OgrnInput: MaskedAndPlainInputComponent,
   OgrnipInput: MaskedAndPlainInputComponent,
-  PassportLookup: PassportLookupComponent,
-  PersonInnInput: MaskedAndPlainInputComponent,
-  PhoneNumberChangeInput: MaskedAndPlainInputComponent,
-  RadioInput: RadioInputComponent,
-  SearchableDropDown: SearchableDropdownComponent,
+  LegalInnInput: MaskedAndPlainInputComponent,
   SnilsInput: MaskedAndPlainInputComponent,
-  StringInput: MaskedAndPlainInputComponent,
+  PersonInnInput: MaskedAndPlainInputComponent,
+  CardNumberInput: MaskedAndPlainInputComponent,
+  CheckingAccount: MaskedAndPlainInputComponent,
+  HtmlString: FormOutputHtmlComponent,
+  LabelSection: FormOutputHtmlComponent,
+  MvdGiac: MvdGiacLookupComponent,
+  DateInput: DateInputComponent,
+  MonthPicker: MonthPickerComponent,
   TextArea: TextAreaComponent,
   Timer: TimerItemComponent,
+  DocInput: DocInputComponent,
+  FieldList: FieldListItemComponent,
+  MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
+  CheckBoxList: CheckboxListComponent,
+  CheckBox: CheckboxInputComponent,
+  PassportLookup: PassportLookupComponent,
+  CityInput: CityInputComponent,
+  AddressInput: AddressInputComponent,
+  FileUploadComponent: FileUploadFormComponent,
+  DropDown: DropdownComponent,
+  DropDownDepts: DepartmentLookupComponent,
+  SearchableDropDown: SearchableDropdownComponent,
+  ConfirmPersonalUserRegAddrChange: AddressInputComponent,
+  Dictionary: DictionaryComponent,
+  Lookup: LookupInputComponent,
+  RadioInput: RadioInputComponent,
 };

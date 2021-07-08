@@ -63,7 +63,6 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
         const cmpType =
           this.componentType ?? (components[this.componentIndex].type as ComponentTypes);
         this.createComponent(cmpType, screenType);
-
         this.cdr.detectChanges();
       });
   }

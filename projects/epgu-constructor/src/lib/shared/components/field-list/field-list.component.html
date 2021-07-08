@@ -1,13 +1,13 @@
 <div class="data" [ngClass]="style.list">
-  <ng-container *ngFor="let groupItem of preparedData; let i = index">
-    <div *ngIf="calculateVisibility(i)" class="data__group data-group" [ngClass]="[style.group]">
+  <ng-container *ngFor="let groupItem of preparedData">
+    <div class="data__group data-group" [ngClass]="[style.group]">
       <div class="flex-row">
         <epgu-constructor-output-html
-          class="data-group__title"
-          [html]="groupItem?.groupName"
-          [clarifications]="data.attrs?.clarifications"
-          [ngClass]="style.groupTitle"
-        ></epgu-constructor-output-html>
+            class="data-group__title"
+            [html]="groupItem?.groupName"
+            [clarifications]="data.attrs?.clarifications"
+            [ngClass]="style.groupTitle"
+          ></epgu-constructor-output-html>
       </div>
       <div class="data-group__items">
         <div
@@ -31,6 +31,7 @@
       </div>
     </div>
     <div *ngIf="groupItem.needDivider" [ngClass]="['group-divider', style.divider]"></div>
+
   </ng-container>
   <ng-template ngFor let-error [ngForOf]="errors">
     <div *ngIf="error" class="error" [class.mb-24]="error.fields">

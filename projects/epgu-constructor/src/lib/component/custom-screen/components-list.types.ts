@@ -11,7 +11,9 @@ import {
   ComponentAttrsDto,
   DictionaryUrlTypes,
 } from '@epgu/epgu-constructor-types';
+// @ts-ignore
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
+
 import { ComponentBase } from '../../screen/screen.types';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
@@ -20,41 +22,40 @@ import {
 } from '../../shared/services/dictionary/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
-  AddressInput = 'AddressInput',
-  CardNumberInput = 'CardNumberInput',
-  CheckBox = 'CheckBox',
-  CheckBoxList = 'CheckBoxList',
-  CheckingAccount = 'CheckingAccount',
-  CityInput = 'CityInput',
-  ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
-  DateInput = 'DateInput',
-  Dictionary = 'Dictionary',
-  DocInput = 'DocInput',
-  DropDown = 'DropDown',
-  DropDownDepts = 'DropDownDepts',
-  EaisdoGroupCost = 'EaisdoGroupCost',
-  FieldList = 'FieldList',
-  FileUploadComponent = 'FileUploadComponent',
-  HtmlString = 'HtmlString',
   LabelSection = 'LabelSection',
-  LegalInnInput = 'LegalInnInput',
-  Lookup = 'Lookup',
-  MonthPicker = 'MonthPicker',
-  MultipleChoiceDictionary = 'MultipleChoiceDictionary',
+  Dictionary = 'Dictionary',
+  DropDown = 'DropDown',
+  SearchableDropDown = 'SearchableDropDown',
+  DropDownDepts = 'DropDownDepts',
   MvdGiac = 'MvdGiac',
+  StringInput = 'StringInput',
+  DateInput = 'DateInput',
+  MonthPicker = 'MonthPicker',
+  RadioInput = 'RadioInput',
+  Lookup = 'Lookup',
+  AddressInput = 'AddressInput',
+  HtmlString = 'HtmlString',
+  CheckBox = 'CheckBox',
+  PhoneNumberChangeInput = 'PhoneNumberChangeInput',
   NewEmailInput = 'NewEmailInput',
   NewLegalEmailInput = 'NewLegalEmailInput',
   OgrnInput = 'OgrnInput',
   OgrnipInput = 'OgrnipInput',
-  PassportLookup = 'PassportLookup',
+  LegalInnInput = 'LegalInnInput',
   PersonInnInput = 'PersonInnInput',
-  PhoneNumberChangeInput = 'PhoneNumberChangeInput',
-  RadioInput = 'RadioInput',
-  SearchableDropDown = 'SearchableDropDown',
+  PassportLookup = 'PassportLookup',
   SnilsInput = 'SnilsInput',
-  StringInput = 'StringInput',
-  TextArea = 'TextArea',
+  CardNumberInput = 'CardNumberInput',
+  CityInput = 'CityInput',
+  DocInput = 'DocInput',
+  FieldList = 'FieldList',
   Timer = 'Timer',
+  TextArea = 'TextArea',
+  MultipleChoiceDictionary = 'MultipleChoiceDictionary',
+  CheckBoxList = 'CheckBoxList',
+  CheckingAccount = 'CheckingAccount',
+  FileUploadComponent = 'FileUploadComponent',
+  ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
@@ -120,56 +121,55 @@ export type CustomComponentAttrField = Array<{
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
-  add?: { component: string; caption: string[] };
-  arguments?: { [key: string]: string };
-  cityFilter?: string[];
-  clarifications?: Clarifications;
-  customUnrecLabel?: string;
-  dateRestrictions?: DateRestriction[];
-  defaultIndex?: number;
-  defaultValue?: boolean;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   dictionaryList?: CustomComponentDropDownItemList;
-  dictionaryOptions?: DictionaryOptions;
   dictionaryType?: string;
-  dictionaryUrlType?: DictionaryUrlTypes;
-  disabled?: boolean;
-  fields?: CustomComponentAttrField;
-  filter?: ComponentFilterDto;
-  grid?: string;
-  hidden?: boolean;
-  hint?: string;
-  image?: ComponentImageDto;
-  isBottomSlot?: boolean;
-  isTextHelper?: boolean;
-  labelAttr?: string; // TODO: deprecated?
-  labelHint?: string;
-  lockedValue?: boolean;
-  lookupDefaultValue?: string | number;
-  mappingParams?: { idPath: string; textPath: string; isRoot: boolean };
-  maskOptions?: NumberMaskOptions;
-  maxDate?: string;
-  minDate?: string;
+  subLabel?: string;
+  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
   needUnfilteredDictionaryToo?: boolean;
-  onlyFirstScreen?: boolean;
+  labelAttr?: string; // TODO: deprecated?
+  fields?: CustomComponentAttrField;
   ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
-  refs?: { [key: string]: string };
-  relation?: { ref: string; conditions: RelationCondition[] };
-  relationField?: ComponentRelationFieldDto;
-  repeatWithNoFilters?: boolean;
+  validation?: Array<CustomComponentAttrValidation>;
   requiredAttrs?: Array<string>;
+  updateOnValidation?: UpdateOn;
+  supportedValues?: Array<SupportedValue>;
+  relation?: { ref: string; conditions: RelationCondition[] };
+  disabled?: boolean;
+  hidden?: boolean;
+  defaultValue?: boolean;
+  filter?: ComponentFilterDto;
+  defaultIndex?: number;
+  lookupDefaultValue?: string | number;
+  relationField?: ComponentRelationFieldDto;
+  dictionaryOptions?: DictionaryOptions;
+  grid?: string;
+  minDate?: string;
+  maxDate?: string;
+  onlyFirstScreen?: boolean;
+  add?: { component: string; caption: string[] };
+  suggestionId?: string;
+  searchType?: string;
+  cityFilter?: string[];
+  maskOptions?: NumberMaskOptions;
+  labelHint?: string;
+  hint?: string;
+  customUnrecLabel?: string;
+  clarifications?: Clarifications;
+  isTextHelper?: boolean;
+  isBottomSlot?: boolean;
+  lockedValue?: boolean;
+  repeatWithNoFilters?: boolean;
+  refs?: { [key: string]: string };
+  dateRestrictions?: DateRestriction[];
+  mappingParams?: { idPath: string; textPath: string; isRoot: boolean };
+  dictionaryUrlType?: DictionaryUrlTypes;
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
     turnOffStartFilter?: boolean;
   };
-  searchType?: string;
-  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
-  subLabel?: string;
-  suggestionId?: string;
-  supportedValues?: Array<SupportedValue>;
-  updateOnValidation?: UpdateOn;
-  validation?: Array<CustomComponentAttrValidation>;
+  image?: ComponentImageDto;
 }
 
 export interface DateRestriction {

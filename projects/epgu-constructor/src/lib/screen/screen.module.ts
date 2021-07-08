@@ -27,7 +27,6 @@ import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.mo
 import { AppScreenModule } from './app-screen/app-screen.module';
 import { AppScreenComponent } from './app-screen/app-screen.component';
 import { UniquenessErrorsService } from '../shared/services/uniqueness-errors/uniqueness-errors.service';
-import { EaisdoGroupCostService } from '../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -35,40 +34,39 @@ import { EaisdoGroupCostService } from '../shared/services/eaisdo-group-cost/eai
 @NgModule({
   declarations: [ScreenResolverComponent],
   imports: [
-    AppScreenModule,
     BaseModule,
     CustomScreenModule,
-    EmptyScreenModule,
-    InfoScreenModule,
-    InvitationErrorScreenModule,
-    ModalModule,
-    QuestionsScreenModule,
     RepeatableScreenModule,
+    EmptyScreenModule,
+    QuestionsScreenModule,
     UniqueScreenModule,
+    InvitationErrorScreenModule,
+    InfoScreenModule,
+    ModalModule,
+    AppScreenModule,
   ],
   providers: [
+    ScreenService,
     CachedAnswersService,
     CurrentAnswersService,
+    PrepareComponentsService,
+    HtmlRemoverService,
+    EventBusService,
     DatesToolsService,
     DictionaryToolsService,
-    EaisdoGroupCostService,
-    EventBusService,
-    HtmlRemoverService,
-    PrepareComponentsService,
     RefRelationService,
-    ScreenService,
     UniquenessErrorsService,
   ],
   exports: [ScreenResolverComponent],
   entryComponents: [
-    AppScreenComponent,
-    CustomScreenComponent,
-    EmptyScreenComponent,
     InfoScreenComponent,
-    InvitationErrorScreenComponent,
     QuestionsScreenComponent,
-    ScreenResolverComponent,
+    CustomScreenComponent,
     UniqueScreenComponent,
+    InvitationErrorScreenComponent,
+    EmptyScreenComponent,
+    ScreenResolverComponent,
+    AppScreenComponent,
   ],
 })
 export class ScreenModule {

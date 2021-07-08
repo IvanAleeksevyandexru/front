@@ -1627,20 +1627,18 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
-"@epgu/epgu-constructor-types@23.4.1":
-  version "23.4.1"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-23.4.1.tgz#32ddeca296ef8e3403734a1e0fed1bd16cfe96dd"
-  integrity sha512-JFaIYRkEcbXA01D6Ha+2mFtN8lDYIbqbJNIsts6NmFQorc9rkjD/8v6AKtOOwOIj5BRRJfIwIhwesPpnxcRMPw==
+"@epgu/epgu-constructor-types@20.6.0":
+  version "20.6.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-20.6.0.tgz#e8279e7ee47bc41c6dc89014a0c3b38d00fb14ab"
+  integrity sha512-XT9ZEwhFwNvn5dsIgesVU0bExeLmI8e7QCNt01/bfQ9+prnwTabT/Msd4B/VuE3fR1jJPfpKWyqZB1Pu78ohKA==
 
-"@epgu/epgu-constructor-ui-kit@23.4.1":
-  version "23.4.1"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-23.4.1.tgz#395243e19ac54b8d5d4d407eaf738383e35e0eb4"
-  integrity sha512-tM9pebOhtEcQhqZC1MVXBN4PKYjKk17FiUvvbK8dFdiSyyOdmrxzDEqHvZIDKYXQjJSSqEfS6wgKAKKjlm0qsg==
+"@epgu/epgu-constructor-ui-kit@20.6.0":
+  version "20.6.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-20.6.0.tgz#e14d383a952cebf46bac40a41cea5e3082674beb"
+  integrity sha512-YRoQOBIy50T/v7mLDMZSQiNwLmfeZqtjiXuxPELs7QyNGN2unQVH3WozOgBl7zHcuKhyMuS2N9prjSB6J6Y1kw==
   dependencies:
-    "@epgu/epgu-constructor-types" "23.4.1"
-    "@epgu/zipkin" "0.0.3"
+    "@epgu/epgu-constructor-types" "20.6.0"
     tslib "^2.0.0"
-    zipkin-transport-http "0.22.0"
 
 "@epgu/epgu-lib@3.0.369-3-core":
   version "3.0.369-3-core"

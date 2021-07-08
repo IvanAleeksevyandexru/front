@@ -4,7 +4,9 @@ import { ComponentListResolverComponent } from './component-list-resolver.compon
 
 @NgModule({
   declarations: [ComponentListResolverComponent],
-  imports: [CommonModule],
+  imports: [
+    CommonModule
+  ],
   exports: [ComponentListResolverComponent],
 })
 export class ComponentListResolverModule {}

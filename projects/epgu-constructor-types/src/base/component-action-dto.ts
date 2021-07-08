@@ -3,75 +3,72 @@ import { TargetType } from './target-type';
 import { ActionAnswerDto } from './action-answer-dto';
 
 export interface ComponentActionDto {
+  label: string;
   action: DTOActionAction;
+  value?: string;
+  type?: ActionType;
+  hidden?: boolean;
+  disabled?: boolean;
   applicantType?: string;
+  color?: ButtonColor;
+  link?: string;
+  underConstruction?: boolean;
+  hint?: string;
   attrs?: {
     stepsBack?: number;
   };
-  color?: ButtonColor;
   deliriumAction?: string;
-  disabled?: boolean;
-  id?: string;
-  hidden?: boolean;
-  hint?: string;
-  label: string;
-  link?: string;
-  modalHtml?: string;
-  multipleAnswers?: ActionAnswerDto[]; // для умного поиска
-  serviceCode?: string; // для умного поиска
   target?: TargetType; // для умного поиска
+  serviceCode?: string; // для умного поиска
   targetCode?: string; // для умного поиска
-  type?: ActionType;
-  underConstruction?: boolean;
-  value?: string;
+  multipleAnswers?: ActionAnswerDto[]; // для умного поиска
+  modalHtml?: string;
 }
 
 export enum ActionType {
-  attachUploadedFiles = 'attachUploadedFiles',
-  confirmModalStep = 'confirmModalStep',
-  deleteSuggest = 'deleteSuggest',
-  deliriumNextStep = 'deliriumNextStep',
   download = 'download',
-  externalIntegration = 'externalIntegration',
-  dropdownListModal = 'dropdownListModal',
-  getNextQuiz = 'getNextQuiz', // для умного поиска
-  home = 'home',
-  modalRedirectTo = 'modalRedirectTo',
-  nextStep = 'nextStep',
-  nextStepModal = 'nextStepModal',
   orderToOrder = 'orderToOrder',
-  prevStep = 'prevStep',
   prevStepModal = 'prevStepModal',
-  profileEdit = 'profileEdit',
-  quizToOrder = 'quizToOrder',
-  redirect = 'redirect', // для умного поиска
-  redirectToLK = 'redirectToLK',
-  redirectToPayByUin = 'redirectToPayByUin',
+  nextStepModal = 'nextStepModal',
+  confirmModalStep = 'confirmModalStep',
+  modalRedirectTo = 'modalRedirectTo',
+  prevStep = 'prevStep',
+  nextStep = 'nextStep',
   skipStep = 'skipStep',
+  redirectToLK = 'redirectToLK',
+  quizToOrder = 'quizToOrder',
+  profileEdit = 'profileEdit',
+  home = 'home',
+  deleteSuggest = 'deleteSuggest',
+  attachUploadedFiles = 'attachUploadedFiles',
+  dropdownListModal = 'dropdownListModal',
+  deliriumNextStep = 'deliriumNextStep',
+  getNextQuiz = 'getNextQuiz', // для умного поиска
+  redirect = 'redirect', // для умного поиска
+  redirectToPayByUin = 'redirectToPayByUin',
 }
 
 export enum DTOActionAction {
-  attachUploadedFiles = 'attachUploadedFiles',
-  confirmSmsCode = 'service/actions/confirmSmsCode',
-  editChildData = 'editChildData',
-  editEmail = 'service/actions/editUserEmail',
-  editLegalEmail = 'editLegalEmail',
-  editLegalPhone = 'editLegalPhone',
-  editMedicalData = 'editMedicalData',
-  editPassportData = 'editPassportData',
-  editPhoneNumber = 'service/actions/editPhoneNumber',
-  editUserActualResidence = 'service/actions/editUserAddress/actualResidence',
-  editUserPermanentRegistry = 'service/actions/editUserAddress/permanentRegistry',
-  externalIntegrationAction = 'service/actions/externalIntegration',
-  getNextQuiz = 'getNextQuiz', // для умного поиска
   getNextStep = 'getNextScreen',
   getPrevStep = 'getPrevScreen',
-  goBackToMainScenario = 'goBackToMainScenario',
-  redirect = 'redirect', // для умного поиска
-  redirectToPayByUin = 'redirectToPayByUin',
+  skipStep = 'skipStep',
   reject = 'reject',
+  editPhoneNumber = 'service/actions/editPhoneNumber',
+  confirmSmsCode = 'service/actions/confirmSmsCode',
+  editEmail = 'service/actions/editUserEmail',
+  editUserPermanentRegistry = 'service/actions/editUserAddress/permanentRegistry',
+  editUserActualResidence = 'service/actions/editUserAddress/actualResidence',
+  goBackToMainScenario = 'goBackToMainScenario',
   resendEmailConfirmation = 'service/actions/resendEmailConfirmation',
   resendLegalEmailConfirmation = 'service/actions/resendLegalEmailConfirmation',
+  editPassportData = 'editPassportData',
+  editLegalPhone = 'editLegalPhone',
+  editLegalEmail = 'editLegalEmail',
+  editChildData = 'editChildData',
+  editMedicalData = 'editMedicalData',
   serviceEditLegalEmail = 'service/actions/editLegalEmail',
-  skipStep = 'skipStep',
+  attachUploadedFiles = 'attachUploadedFiles',
+  redirect = 'redirect', // для умного поиска
+  getNextQuiz = 'getNextQuiz', // для умного поиска
+  redirectToPayByUin = 'redirectToPayByUin',
 }
