@@ -2,11 +2,10 @@ import { Injectable, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { YaMapService } from '@epgu/epgu-lib';
-import { Icons } from './constants';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { IGeoCoordsResponse, IFeatureCollection } from './select-map-object.interface';
+import { ConfigService, Icons, IFeatureCollection, IGeoCoordsResponse, YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import {
   DictionaryItem,
+  DictionaryResponseError,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
@@ -21,6 +20,10 @@ export interface SelectMapComponentAttrs {
   baloonContent: Array<ComponentBaloonContentDto>;
   dictionaryType: string;
   dictionaryFilter: Array<ComponentDictionaryFilterDto>;
+}
+
+export interface IFillCoordsResponse extends IGeoCoordsResponse {
+  dictionaryError?: DictionaryResponseError;
 }
 
 @Injectable()
@@ -96,7 +99,7 @@ export class SelectMapObjectService implements OnDestroy {
    * prepares and returns collection of objects for yandex map
    * @param items geo objects
    */
-  public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection {
+  public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection<DictionaryItem> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item) => {
       if (item.center) {
@@ -138,7 +141,7 @@ export class SelectMapObjectService implements OnDestroy {
    * @param coords
    * @param object
    */
-  public centeredPlaceMark(coords: number[], object: DictionaryYMapItem): void {
+  public centeredPlaceMark(coords: number[], object: YMapItem<DictionaryItem>): void {
     let serviceContext = this;
     let offset = -0.00008;
 
@@ -299,7 +302,6 @@ export class SelectMapObjectService implements OnDestroy {
       geoObjectBalloonMaxWidth: 265,
       geoObjectBalloonOffset: [0, 0],
       geoObjectHideIconOnBalloonOpen: !1,
-      geoObjectIconColor: '#0D69AF',
       viewportMargin: 300,
       zoomMargin: 64,
       clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
@@ -309,10 +311,8 @@ export class SelectMapObjectService implements OnDestroy {
 
     objectManager.objects.events.add('click', (evt) => {
       let objectId = evt.get('objectId');
-      let obj = objectManager.objects.getById(objectId);
-      let coords = obj.geometry.coordinates;
-      this.selectedValue.next(obj.properties.res);
-      this.centeredPlaceMark(coords, objectId);
+      let obj = this.findObjectByObjectId(objectId);
+      this.centeredPlaceMark(obj.center, obj);
     });
 
     objectManager.objects.balloon.events.add('userclose', () => {

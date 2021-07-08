@@ -1,5 +1,14 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+.nav::ng-deep {
+  margin-bottom: 0;
+
+  & .container {
+    margin: 0 0;
+  }
+}
+
 .filter-panel {
   margin-top: 8px;
   display: flex;
@@ -26,12 +35,47 @@
     }
   }
   .preview {
+    .icon {
+      width: 20px;
+      height: 18px;
+      box-sizing: content-box;
+      border: none;
+    }
+
     > *:not(:last-child) {
       border-right: 1px solid $color-blu-selvaggio;
       padding: 0 14px;
     }
     > *:last-child {
       padding-left: 14px;
+    }
+
+    .map {
+      background: url('./../../../../../assets/icons/map.svg') no-repeat 14px 0;
+
+      &:hover {
+        background: url('./../../../../../assets/icons/map-hover.svg') no-repeat 14px 0;
+        cursor: pointer;
+      }
+
+      &.active {
+        background: url('./../../../../../assets/icons/map-active.svg') no-repeat 14px 0;
+        cursor: default;
+      }
+    }
+
+    .list {
+      background: url('./../../../../../assets/icons/list.svg') no-repeat 14px 0;
+
+      &:hover {
+        background: url('./../../../../../assets/icons/list-hover.svg') no-repeat 14px 0;
+        cursor: pointer;
+      }
+
+      &.active {
+        background: url('./../../../../../assets/icons/list-active.svg') no-repeat 14px 0;
+        cursor: default;
+      }
     }
   }
 }

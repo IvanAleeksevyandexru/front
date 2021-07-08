@@ -1,0 +1,35 @@
+
+<epgu-cf-ui-constructor-yandex-map
+  [showMap]="showMap"
+>
+  <div *ngIf="yandexMapService.selectedValue$ | async as selectedValue" class="map-objects-list">
+    <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
+      <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+    </perfect-scrollbar>
+    <ng-template #contentBlock>
+      <div class="cross-btn" (click)="yandexMapService.closeBalloon()"></div>
+      <div
+        *ngFor="let mapObject of selectedValue"
+        [ngClass]="{ expanded: mapObject.expanded }"
+        (click)="expandObject(mapObject)"
+        class="map-object"
+      >
+        <h5 class="map-object__header">{{ mapObject.name }}</h5>
+        <ng-container *ngIf="mapObject.expanded">
+          <div class="map-object__building">{{ mapObject.partnerName }}</div>
+          <div class="map-object__attr" *ngFor="let item of mapObject.financingTypes">
+            <img
+              [alt]="financingTypes[item].text"
+              src="assets/icons/{{ financingTypes[item].icon }}"
+            />
+            <span class="PGU-AttrsValue">{{ financingTypes[item].text }}</span>
+          </div>
+          <lib-button (click)="selectObject(mapObject)" class="submit-button" width="wide"
+            >Выбрать
+          </lib-button>
+        </ng-container>
+      </div>
+    </ng-template>
+  </div>
+  <ng-content class="search-panel"></ng-content>
+</epgu-cf-ui-constructor-yandex-map>

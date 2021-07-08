@@ -9,10 +9,19 @@ import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';
 
 import {
+  AddressesToolsService,
+  AppNavigationService,
+  AppNavigationServiceStub,
   AppStateQuery,
   AppStateQueryStub,
   AppStateService,
   AppStateServiceStub,
+  ConfigService,
+  ConfigServiceStub,
+  DatesToolsService,
+  DatesToolsServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
   ModalService,
   ModalServiceStub,
   ScreenContainerModule,
@@ -23,6 +32,7 @@ import { ApiServiceStub } from '../../../services/api/api.service.stub';
 import { StateService } from '../../../services/state/state.service';
 import { StateServiceStub } from '../../../services/state/state.service.stub';
 import { BaseModule } from '../../base/base.module';
+import { SelectMapObjectModule } from '../../select-map-object/select-map-object.module';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -41,13 +51,19 @@ describe('ListComponent', () => {
         MockModule(ScreenContainerModule),
         MockModule(BaseModule),
         ScreenPadModule,
+        SelectMapObjectModule,
       ],
       providers: [
         ProgramListService,
+        AddressesToolsService,
         { provide: StateService, useClass: StateServiceStub },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: ApiService, useClass: ApiServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: AppNavigationService, useClass: AppNavigationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
       ],
     }).compileComponents();

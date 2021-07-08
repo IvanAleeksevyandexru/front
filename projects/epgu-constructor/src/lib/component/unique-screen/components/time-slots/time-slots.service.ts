@@ -8,7 +8,6 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { TIMEZONE_STR_OFFSET } from '../select-map-object/constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsTypes } from './time-slots.constants';
 import {
@@ -38,6 +37,8 @@ type attributesMapType = Array<{ name: string; value: string }>;
 type configType = {
   [key: string]: string | attributesMapType;
 };
+
+const TIMEZONE_STR_OFFSET = -6;
 
 @Injectable()
 export class TimeSlotsService {

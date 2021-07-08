@@ -1,5 +1,10 @@
 <div>
   <epgu-cf-ui-constructor-screen-pad>
+    <epgu-cf-ui-prev-button
+      *ngIf="showNav"
+      class="nav"
+    >
+    </epgu-cf-ui-prev-button>
     <div class="info-list-subtitle">
       {{ title }}
     </div>
@@ -14,8 +19,16 @@
         <span *ngIf="filtersCount">({{ filtersCount }})</span>
       </a>
       <div *ngIf="isShowMenu" class="preview">
-        <img src="../../../../../assets/icons/map.svg" />
-        <img src="../../../../../assets/icons/list.svg" />
+        <button
+          class="icon map"
+          [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isMap }"
+          (click)="setGroupFiltersMode(GroupFiltersModes.map)"
+        ></button>
+        <button
+          class="icon list"
+          [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isList }"
+          (click)="setGroupFiltersMode(GroupFiltersModes.list)"
+        ></button>
       </div>
     </div>
   </epgu-cf-ui-constructor-screen-pad>
