@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -30,6 +31,7 @@ import { Observable } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -138,6 +140,8 @@ describe('ComponentsListFormService', () => {
         DictionaryToolsService,
         DateRestrictionsService,
         ConfigService,
+        MaskTransformService,
+        DecimalPipe,
       ],
     });
   });

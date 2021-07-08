@@ -1,3 +1,4 @@
+import { MockProvider } from 'ng-mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocInputComponent } from './doc-input.component';
 import { ComponentsListModule } from '../../components-list.module';
@@ -56,7 +57,7 @@ describe('DocInputComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         UtilsService,
-        ComponentsListFormService,
+        MockProvider(ComponentsListFormService),
         ComponentsListToolsService,
         UnsubscribeService,
         DatesToolsService,
