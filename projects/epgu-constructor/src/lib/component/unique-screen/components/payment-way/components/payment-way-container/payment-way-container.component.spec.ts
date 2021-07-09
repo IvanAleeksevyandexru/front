@@ -112,4 +112,32 @@ describe('PaymentWayContainerComponent', () => {
     expect(fixture.componentInstance.currentAnswersService.state).toBe('test');
     expect(fixture.componentInstance.currentAnswersService.isValid).toBeTruthy();
   });
+
+  it('should set value if there is only one paymentWay', () => {
+    const specificMockComponent = { ...mockComponent, attrs:
+        {
+          ...mockComponent.attrs,
+          paymentWays: [
+            {
+              paymentType: PaymentTypes.budget,
+              amount: null,
+              programType: ProgramType.preprof
+            },
+          ]
+        }
+    };
+    const reFixture = TestBed.createComponent(PaymentWayContainerComponent);
+    const screenService = TestBed.inject(ScreenService);
+    const currentAnswersService = TestBed.inject(CurrentAnswersService);
+    const setStateMock = jest.spyOn(currentAnswersService, 'state', 'set');
+    screenService.component = specificMockComponent as any;
+    reFixture.detectChanges();
+
+    expect(fixture.componentInstance.currentAnswersService.state).toBe(PaymentTypes.budget);
+    expect(fixture.componentInstance.currentAnswersService.isValid).toBeTruthy();
+
+    expect(setStateMock).toHaveBeenCalledTimes(2);
+    expect(setStateMock).toHaveBeenNthCalledWith(1, PaymentTypes.budget);
+    expect(setStateMock).toHaveBeenNthCalledWith(2, PaymentTypes.budget);
+  });
 });
