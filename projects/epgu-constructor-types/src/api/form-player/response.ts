@@ -25,6 +25,7 @@ export interface ItemsErrorResponse {
     errorDetail: {
       errorCode: number;
       errorMessage: string;
+      errorCodeTxt?: string;
       fieldErrors?: ItemsErrorFieldResponse[];
     };
   };
