@@ -123,6 +123,10 @@ export class GroupItemComponent {
       dateEnd: this.group?.dateEnd,
       financialSourceBudget: this.sources,
       financialSource: this.resultSources,
+      orderFrom: this.group?.orderFrom,
+      orderTo: this.group?.orderTo,
+      availableNextYearOrderFrom: this.group?.availableNextYearOrderFrom,
+      availableNextYearOrderTo: this.group?.availableNextYearOrderTo,
     };
     const result: ChildrenClubsValue = { datasource: this.program?.datasource, program, group };
 

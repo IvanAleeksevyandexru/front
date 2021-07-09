@@ -91,6 +91,10 @@ export interface Group {
   teachers: string;
   schedule: string;
   financingSources: FinancialSource[];
+  orderFrom: string;
+  orderTo: string;
+  availableNextYearOrderFrom: string;
+  availableNextYearOrderTo: string;
 }
 
 export enum OvzType {
