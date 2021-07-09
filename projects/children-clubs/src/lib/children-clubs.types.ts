@@ -28,6 +28,8 @@ export interface ValueProgram {
 export interface ValueGroup {
   groupGUID: string;
   name: string;
+  dateBegin: string;
+  dateEnd: string;
   financialSource: Record<string, boolean>;
   financialSourceBudget: Record<string, number>;
 }
