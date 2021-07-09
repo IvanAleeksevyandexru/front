@@ -37,7 +37,7 @@ export class PaymentWayContainerComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.paymentWayControl.valueChanges
-      .pipe(startWith(''), takeUntil(this.ngUnsubscribe$))
+      .pipe(startWith(this.paymentWayControl.value), takeUntil(this.ngUnsubscribe$))
       .subscribe((change) => this.setState(change));
 
     this.cdr.detectChanges();
