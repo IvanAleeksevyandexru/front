@@ -4,7 +4,7 @@ import {
   AppStateQuery,
   AppStateService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { FinancialSourceType, Group, Program } from '../../../../typings';
+import { FinancialSource, FinancialSourceType, Group, Program } from '../../../../typings';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
@@ -22,7 +22,7 @@ export class GroupItemComponent {
   @Input() set data(data: Group) {
     this.group = data;
     data?.financingSources?.forEach((item) => {
-      this.sources[item.sourceCode] = item?.monthlyCost ?? null;
+      this.sources[item.sourceCode] = this.getCost(item) ?? null;
       this.resultSources[item.sourceCode] = true;
     });
     this.isPayments =
@@ -128,5 +128,9 @@ export class GroupItemComponent {
 
     this.appStateService.updateValue({ ...this.stateQuery.value, ...result });
     this.appNavigationService.next();
+  }
+
+  private getCost(item: FinancialSource): number {
+    return item.sourceCode === FinancialSourceType.pfdod_certificate ? item.monthlyCost : item.cost;
   }
 }
