@@ -34,6 +34,7 @@ export interface ComponentAttrsDto {
   baloonContent?: Array<ComponentBaloonContentDto>;
   beginDate?: ComponentDateTimeDto;
   beginTime?: ComponentDateTimeDto;
+  cacheRepeatableFieldsAnswersLocally?: boolean;
   cancelReservation?: string[];
   canDeleteFirstScreen?: boolean;
   characterMask?: string;
