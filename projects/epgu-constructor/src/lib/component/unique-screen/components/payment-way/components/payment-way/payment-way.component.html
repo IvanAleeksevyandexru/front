@@ -38,7 +38,7 @@
   <div class="info-list-group-item mt-24" *ngIf="program?.amount as amount">
     <div class="info-list-subtitle">Средний размер платежа</div>
     <div class="info-list-value">
-      {{ amount | currency :'RUB':'':'0.0-2' }} {{ plural | pluralize: amount }} в месяц
+      <b>{{ amount | currency :'RUB':'':'0.0-2' }} {{ plural | pluralize: amount }} в месяц</b>
     </div>
   </div>
   <div class="info-list-group-item mt-24" *ngIf="program?.programType as programType">
