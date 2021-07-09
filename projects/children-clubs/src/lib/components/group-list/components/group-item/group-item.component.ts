@@ -22,14 +22,7 @@ export class GroupItemComponent {
   @Input() set data(data: Group) {
     this.group = data;
     data?.financingSources?.forEach((item) => {
-      if (
-        item.sourceCode === FinancialSourceType.paid ||
-        item.sourceCode === FinancialSourceType.private
-      ) {
-        this.sources[item.sourceCode] = item?.cost ?? null;
-      } else {
-        this.sources[item.sourceCode] = item?.monthlyCost ?? null;
-      }
+      this.sources[item.sourceCode] = item?.monthlyCost ?? null;
       this.resultSources[item.sourceCode] = true;
     });
 
@@ -39,6 +32,7 @@ export class GroupItemComponent {
     this.initMultiPayments();
     this.setPaymentMethodsInfo();
   }
+
   @Input() program: Program;
   @Input() index: number;
 
