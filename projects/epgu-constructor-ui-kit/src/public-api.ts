@@ -48,6 +48,7 @@ export * from './lib/base/components/screen-container/screen-container.module';
 export * from './lib/base/components/screen-container/screen-container.component';
 
 export * from './lib/base/components/yandex-map/yandex-map.module';
+export * from './lib/base/components/yandex-map/yandex-map.component';
 export * from './lib/base/components/yandex-map/yandex-map.service';
 export * from './lib/base/components/yandex-map/constants';
 
