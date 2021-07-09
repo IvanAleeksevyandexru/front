@@ -95,7 +95,8 @@ export class RegistrationAddrComponent implements OnInit {
   }
 
   hintClick({ amount, unit }: RegistrationAddrHints): void {
-    const regDate = this.datesToolsService.add(new Date(), amount, unit);
+    const date = new Date();
+    const regDate = this.datesToolsService.add(date.setDate(date.getDate() - 1), amount, unit);
     this.redAddrForm.patchValue({ regDate });
   }
 
