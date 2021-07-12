@@ -5,7 +5,8 @@ import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import {
   LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY, ORDER_TO_ORDER_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY,
+  ORDER_TO_ORDER_SCENARIO_KEY,
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
@@ -20,7 +21,12 @@ import { InitDataServiceStub } from '../../../core/services/init-data/init-data.
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Location } from '@angular/common';
-import { LocationService, WINDOW_PROVIDERS, LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LocationService,
+  WINDOW_PROVIDERS,
+  LocalStorageService,
+  LocalStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { APP_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
 
@@ -380,6 +386,13 @@ describe('FormPlayerStartManager', () => {
       spyOn(formPlayerService, 'initData').and.callThrough();
       service['showContinueOrderModal']();
       expect(formPlayerService.initData).toBeCalledWith(null);
+    });
+
+    it('should call deleteAppStorage without orderId', () => {
+      spyOn(continueOrderModalService, 'openModal').and.returnValue(of(false));
+      spyOn(service, 'deleteAppStorage').and.callThrough();
+      service['showContinueOrderModal']();
+      expect(service['deleteAppStorage']).toBeCalled();
     });
   });
 
