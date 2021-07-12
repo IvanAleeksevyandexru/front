@@ -1,0 +1,18 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
+
+:host {
+  position: relative;
+}
+
+.map-object__attr {
+  margin-bottom: 16px;
+  img {
+    vertical-align: bottom;
+    margin-right: 12px;
+  }
+}
+
+.map-object__building {
+  color: $color-text-helper;
+  margin-bottom: 16px;
+}

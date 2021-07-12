@@ -1,0 +1,11 @@
+@import './../../../../styles/core';
+
+:host {
+  @include flex-container();
+  height: 100%;
+}
+
+::ng-deep #map {
+  width: 100%;
+  position: absolute;
+}

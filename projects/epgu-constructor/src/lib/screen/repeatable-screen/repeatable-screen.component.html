@@ -28,7 +28,7 @@
         <epgu-constructor-components-list
           class="cmp-group__item"
           [id]="screenKey"
-          [componentsGroupIndex]="i"
+          [componentsGroupIndex]="+screenKey"
           [components]="$any(screens[screenKey])"
           [errors]="(commonError$ | async)?.errors[i] || {}"
           (changes)="changeComponentList($event, i)"

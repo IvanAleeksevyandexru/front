@@ -1,5 +1,21 @@
-<epgu-cf-ui-screen-container class="tiny">
-  <div class="screen-body">
+<children-clubs-select-map-object
+  [ngClass]="{ invisible: (listService.groupFiltersMode$ | async).isList }"
+>
+  <div class="filter-panel">
+    <children-clubs-filter-panel
+      (openFilters)="openFilter()"
+      (search)="search($event)"
+      [filtersCount]="filtersCount$ | async"
+      [showNav]="(listService.groupFiltersMode$ | async).isMap"
+    ></children-clubs-filter-panel>
+  </div>
+</children-clubs-select-map-object>
+<epgu-cf-ui-screen-container
+  [show-nav]="(listService.groupFiltersMode$ | async).isList"
+  *ngIf="(listService.groupFiltersMode$ | async).isList"
+  class="tiny"
+>
+  <div class="screen-body" *ngIf="(listService.groupFiltersMode$ | async).isList">
     <div class="title mb-24">
       Выберите программу
     </div>

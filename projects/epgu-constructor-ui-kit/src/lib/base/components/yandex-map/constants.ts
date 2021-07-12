@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '../../../core/services/config/config.service';
 
 @Injectable()
 export class Icons {
@@ -33,5 +33,3 @@ export class Icons {
 
   constructor(public config: ConfigService) { }
 }
-
-export const TIMEZONE_STR_OFFSET = -6;

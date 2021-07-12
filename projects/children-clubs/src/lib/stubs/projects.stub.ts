@@ -10,10 +10,24 @@ import {
 } from '../typings';
 
 export const baseProgramStub: BaseProgram = {
-  uuid: '23fsdsdfsdf',
+  uuid: 'qwe' + Math.random(),
   name: 'Ритмика, основы танцевального искусства',
   partnerName: 'МАУ ДО "Центр Гармония',
   address: '141080, Московская область, г. Королёв, проезд Макаренко, дом 4',
+  imageUrl:
+    'https://new.dop.mosreg.ru/images/events/cover/759b2601181f4245e8794e354047e2ea_big.jpg',
+  imageSmallUrl:
+    'https://new.dop.mosreg.ru/images/events/cover/c0e6ae1e506fe02da5c492d8b59d707d_244x159.jpg',
+  minAge: 6,
+  maxAge: 14,
+  financingTypes: [FinancingType.free, FinancingType.paid, FinancingType.certificate],
+};
+
+export const baseProgramStub2: BaseProgram = {
+  uuid: 'asd' + Math.random(),
+  name: 'Ритмика, основы танцевального искусства',
+  partnerName: 'МАУ ДО "Центр Гармония',
+  address: '141080, Московская область, г. Королёв, проезд Макаренко, дом 6А',
   imageUrl:
     'https://new.dop.mosreg.ru/images/events/cover/759b2601181f4245e8794e354047e2ea_big.jpg',
   imageSmallUrl:

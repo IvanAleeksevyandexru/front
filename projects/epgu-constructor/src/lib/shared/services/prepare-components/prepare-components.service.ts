@@ -59,7 +59,7 @@ export class PrepareComponentsService {
       }
 
       const hasPresetTypeRef = component.attrs?.preset?.type === 'REF';
-      const cachedValue = this.getCache(component.type, component.id, cachedAnswers);
+      const cachedValue = this.getCache(component, cachedAnswers);
 
       if (hasPresetTypeRef && !cachedValue) {
         return this.getPresetValue(
@@ -81,7 +81,7 @@ export class PrepareComponentsService {
     parentComponent: ComponentDto,
   ): Array<Array<ComponentDto>> {
     const cachedValue =
-      this.getCache(parentComponent.type, parentComponent.id, cachedAnswers) ||
+      this.getCache(parentComponent, cachedAnswers) ||
       parentComponent.value ||
       null;
     const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
@@ -172,15 +172,16 @@ export class PrepareComponentsService {
       : { ...item, value };
   }
 
-  private getCache(type: string, id: string, cachedAnswers: CachedAnswers): string | null {
+  private getCache(component: ComponentDto, cachedAnswers: CachedAnswers): string | null {
+    const { id, type, attrs } = component;
     const shouldBeTakenFromTheCache = this.cachedAnswersService.shouldBeTakenFromTheCache(type); // TODO костыль от backend(-a);
 
     if (shouldBeTakenFromTheCache) {
-      if (type === 'RepeatableFields') {
-        return (
-          this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
-          this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
-        );
+      if (type === 'RepeatableFields' && attrs.cacheRepeatableFieldsAnswersLocally) {
+          return (
+            this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
+            this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
+          );
       }
       return this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
     }

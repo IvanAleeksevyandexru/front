@@ -29,6 +29,9 @@ import {
   UnsubscribeService,
   ConfigService,
   UtilsService,
+  AddressesToolsService,
+  YMapItem,
+  IGeoCoordsResponse,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../../screen/screen.service';
@@ -44,8 +47,11 @@ import {
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
-import { IFillCoordsResponse, IGeoCoordsResponse } from './select-map-object.interface';
-import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
+import {
+  IFillCoordsResponse,
+  SelectMapComponentAttrs,
+  SelectMapObjectService,
+} from './select-map-object.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -68,7 +74,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mappedDictionaryForLookup;
   public mapCenter: Array<number>;
   public mapControls = [];
-  public provider: LookupProvider<Partial<ListElement>> = { search: this.providerSearch() };
+  public provider: LookupProvider<Partial<ListElement>> = {
+    search: this.providerSearch(),
+  };
   public selectedValue;
   public showMap = false;
   public mapIsLoaded = false;
@@ -106,6 +114,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private dictionaryToolsService: DictionaryToolsService,
     private actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
+    private addressesToolsService: AddressesToolsService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -141,7 +150,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.clearMapVariables();
   }
 
-  public lookupChanged(mapObject: DictionaryYMapItem, lookup: ConstructorLookupComponent): void {
+  public lookupChanged(
+    mapObject: YMapItem<DictionaryItem>,
+    lookup: ConstructorLookupComponent,
+  ): void {
     this.selectMapObject(mapObject);
     lookup.clearInput();
   }
@@ -159,7 +171,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     };
   }
 
-  public selectObject(item: DictionaryYMapItem): void {
+  public selectObject(item: YMapItem<DictionaryItem>): void {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
       this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))
@@ -175,7 +187,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param templateName имя шаблона из this.templates
    * @param item контекст балуна
    */
-  public showModalFromTemplate(templateName: string, item: DictionaryYMapItem): void {
+  public showModalFromTemplate(templateName: string, item: YMapItem<DictionaryItem>): void {
     this.modalService.openModal(CommonModalComponent, {
       modalTemplateRef: this[templateName],
       item,
@@ -186,11 +198,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Метод раскрывает выбранный зал на панели слева
    * @param mapObject объект на карте
    */
-  public expandObject(mapObject: DictionaryYMapItem): void {
+  public expandObject(mapObject: YMapItem<DictionaryItem>): void {
     if (!mapObject || mapObject.expanded) return;
-    this.selectedValue.children = this.selectedValue.children.map((child: DictionaryYMapItem) => {
-      return { ...child, expanded: child.objectId === mapObject.objectId };
-    });
+    this.selectedValue.children = this.selectedValue.children.map(
+      (child: YMapItem<DictionaryItem>) => {
+        return { ...child, expanded: child.objectId === mapObject.objectId };
+      },
+    );
   }
 
   private initVariable(): void {
@@ -209,7 +223,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initSelectedValue(): void {
     if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
-      const mapObject = UtilsService.tryToParse(this.data?.value) as DictionaryYMapItem;
+      const mapObject = UtilsService.tryToParse(this.data?.value) as YMapItem<DictionaryItem>;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
@@ -245,7 +259,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe((value: DictionaryItem) => {
         this.isSearchTitleVisible = !value || !this.isMobile;
         this.selectedValue = value;
-        this.expandObject(value as DictionaryYMapItem);
+        this.expandObject(value);
         this.cdr.detectChanges();
       });
   }
@@ -283,7 +297,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.fillCoords(this.data.attrs.dictionaryFilter)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        switchMap((coords: IFillCoordsResponse) => {
+        switchMap((coords: IGeoCoordsResponse) => {
           if (this.isSecondReqNeeded(coords)) {
             return this.fillCoords(this.data.attrs.secondaryDictionaryFilter);
           }
@@ -338,7 +352,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private handleFilledCoordinate(coords: IGeoCoordsResponse): void {
     this.selectMapObjectService.saveCoords(coords);
-    this.selectMapObjectService.placeOjectsOnMap(this.yaMapService.map);
+    this.selectMapObjectService.placeObjectsOnMap(this.yaMapService.map);
     this.tryInitSelectedObject();
   }
 
@@ -348,7 +362,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
-  private getSelectedObject(): DictionaryYMapItem {
+  private getSelectedObject(): YMapItem<DictionaryItem> {
     return this.selectMapObjectService.findObjectByValue(this.selectedValue.value);
   }
 
@@ -388,20 +402,24 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         const items = needToFilterMvd
           ? this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters)
           : [...dictionary.items];
+        const addresses = items.map(
+          (item: DictionaryItem) =>
+            item.attributeValues[this.screenService.component.attrs.attributeNameWithAddress],
+        );
 
         const chunkSize = items.length / 4;
         return merge(
-          this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
-          this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
-          this.selectMapObjectService.getCoordsByAddress(items.splice(0, chunkSize)),
-          this.selectMapObjectService.getCoordsByAddress(items),
+          this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
+          this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
+          this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
+          this.addressesToolsService.getCoordsByAddress(addresses),
         ).pipe(
           reduce((acc, { coords }) => {
-            return { ...acc, coords: [...acc.coords, ...coords] };
-          }),
+            return [...acc, ...coords];
+          }, []),
           map((coords) => {
             return {
-              ...coords,
+              coords,
               dictionaryError: dictionary.error,
             };
           }),
@@ -430,12 +448,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     return this.selectMapObjectService.componentAttrs.dictionaryType;
   }
 
-  private selectMapObject(mapObject: DictionaryYMapItem): void {
+  private selectMapObject(mapObject: YMapItem<DictionaryItem>): void {
     if (!mapObject) return;
     this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject);
   }
 
-  private nextStep(value: DictionaryYMapItem): void {
+  private nextStep(value: YMapItem<DictionaryItem>): void {
     this.zone.run(() => {
       const answer = {
         ...value,
@@ -522,7 +540,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         chosenMapObject = mapObj;
       }
     });
-    this.selectMapObjectService.centeredPlaceMark(chosenMapObject.center, chosenMapObject.idForMap);
+    this.selectMapObjectService.centeredPlaceMark(chosenMapObject.center, chosenMapObject);
   }
 
   private centerAllPoints(): void {

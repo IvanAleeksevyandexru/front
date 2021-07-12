@@ -16,6 +16,7 @@ import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
+import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
 
 import { GroupListModule } from './components/group-list/group-list.module';
 import { ProjectViewComponent } from './components/project-view/project-view.component';
@@ -60,6 +61,7 @@ const APP_CONFIG: AppUiConfig = {
     ProgramListModule,
     BaseModule,
     SharedModalModule,
+    SelectMapObjectModule,
     AppUiModule.forRoot(APP_CONFIG),
     BaseUiModule,
   ],
