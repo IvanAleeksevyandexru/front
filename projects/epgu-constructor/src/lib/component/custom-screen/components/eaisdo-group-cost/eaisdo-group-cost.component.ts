@@ -44,11 +44,12 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
+
     const externalIntegrationAction: ComponentActionDto =
       this.screenService.buttons.find((button) => button.type === ActionType.externalIntegration) ||
       EXTERNAL_INTEGRATION_ACTION;
 
-    this.control = this.formService.form.controls[this.componentIndex];
     this.component = this.control.value;
     this.eaisdoGroupCostService.currentState = EaisdoStateTypes.wait;
 
