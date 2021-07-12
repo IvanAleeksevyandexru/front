@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { BaseProgram, FocusFilter } from '../../typings';
 import {
   map,
@@ -11,10 +11,14 @@ import {
   concatMap,
   mapTo,
   distinctUntilChanged,
+  catchError,
+  pluck,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ListElement } from '@epgu/epgu-lib';
 import { StateService } from '../state/state.service';
+import { GroupFiltersModes, ChildrenClubsValue, ChildrenClubsState } from '../../children-clubs.types';
+import { AppStateQuery } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ProgramListService {
@@ -46,6 +50,20 @@ export class ProgramListService {
 
   data$$ = new BehaviorSubject<BaseProgram[]>([]);
   data$ = this.data$$.asObservable();
+
+  public groupFiltersMode$: Observable<{
+    isMap: boolean;
+    isList: boolean;
+  }> = this.appStateQuery.state$.pipe(
+    pluck('groupFiltersMode'),
+    map((mode) => {
+      return {
+        isMap: mode === GroupFiltersModes.map,
+        isList: mode === GroupFiltersModes.list,
+      };
+    }),
+    shareReplay(1),
+  );
 
   get data(): BaseProgram[] {
     return this.data$$.getValue();
@@ -92,6 +110,7 @@ export class ProgramListService {
               nextSchoolYear: this.stateService.nextSchoolYear,
             })
             .pipe(
+              catchError((_) => of([])),
               tap(() => this.loading$$.next(false)),
               tap((data: BaseProgram[]) => this.add(data)),
             );
@@ -102,7 +121,11 @@ export class ProgramListService {
     shareReplay(1),
   );
 
-  constructor(private api: ApiService, private stateService: StateService) {}
+  constructor(
+    private api: ApiService,
+    private stateService: StateService,
+    private appStateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+  ) {}
 
   add(data: BaseProgram[]): void {
     if (this.data.length === 0) {

@@ -38,10 +38,10 @@ import {
   FilterDtoConfig,
   AdditionalRequestParam,
   AdditionalRequestType,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
-import { KeyValueMap } from '../../../core/core.types';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -350,7 +350,7 @@ export class DictionaryToolsService {
     throw new Error('Incorrect usage of filterOn ref');
   }
 
-  private prepareOptions(
+  public prepareOptions(
     component: CustomComponent,
     screenStore: ScreenStore,
     dictionaryFilter: Array<ComponentDictionaryFilterDto>,

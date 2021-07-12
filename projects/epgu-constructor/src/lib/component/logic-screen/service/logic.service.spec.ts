@@ -3,11 +3,33 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { configureTestSuite } from 'ng-bullet';
 
 import { LogicService } from './logic.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentValue } from '../logic.types';
+import {
+  DatesToolsService,
+  EventBusService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  UtilsService
+} from '@epgu/epgu-constructor-ui-kit';
+import { HookService } from '../../../core/services/hook/hook.service';
+import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
+import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { DictionaryApiServiceStub } from '../../../shared/services/dictionary/dictionary-api.service.stub';
+import { MockProviders } from 'ng-mocks';
+import { ComponentsListRelationsService } from '../../custom-screen/services/components-list-relations/components-list-relations.service';
+import { SuggestHandlerService } from '../../../shared/services/suggest-handler/suggest-handler.service';
+import { ComponentsListFormService } from '../../custom-screen/services/components-list-form/components-list-form.service';
+import { ComponentsListFormServiceStub } from '../../custom-screen/services/components-list-form/components-list-form.service.stub';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { of } from 'rxjs';
 
 describe('LogicService', () => {
   let service: LogicService;
+  let dictionaryToolsService: DictionaryToolsService;
+  let dictionaryApiService: DictionaryApiService;
   let httpTestingController: HttpTestingController;
   let localStorage: LocalStorageService;
   const componentsPOST: { id: string; value: ComponentValue }[] = [
@@ -46,6 +68,31 @@ describe('LogicService', () => {
       },
     },
   ];
+  const componentsWithDictionary: { id: string; attrs: LogicComponentAttrsDto; value: ComponentValue }[] = [
+    {
+      id: 'rest1',
+      attrs: {
+        dictionaryType: 'CONC_COMPETENT_ORG',
+        dictionaryFilter: [
+          {
+            attributeName: 'LIC_TYPE',
+            attributeType: 'asDecimal',
+            condition: 'EQUALS',
+            value: 's6lookup.value.originalItem.attributeValues.CODE',
+            valueType: 'ref'
+          }
+        ]
+      },
+      value: {
+        url: 'url',
+        headers: { headers: 'headers' },
+        method: 'POST',
+        body: 'body',
+        path: 'path',
+        timeout: '10',
+      },
+    },
+  ];
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -53,6 +100,14 @@ describe('LogicService', () => {
       providers: [
         LogicService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: HookService, useClass: HookServiceStub },
+        DictionaryToolsService,
+        CurrentAnswersService,
+        UtilsService,
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
       ],
     });
   });
@@ -61,6 +116,8 @@ describe('LogicService', () => {
     service = TestBed.inject(LogicService);
     httpTestingController = TestBed.inject(HttpTestingController);
     localStorage = TestBed.inject(LocalStorageService);
+    dictionaryToolsService = TestBed.inject(DictionaryToolsService);
+    dictionaryApiService = TestBed.inject(DictionaryApiService);
   });
 
   afterEach(() => {
@@ -94,6 +151,26 @@ describe('LogicService', () => {
       service.fetch(componentsPOST)[0].subscribe();
       const req = httpTestingController.expectOne('url');
       expect(spy).toHaveBeenCalledWith(req.request.url, req.request.body);
+    });
+  });
+
+  describe('makeRequestAndCall', () => {
+    it('should be return request with body', () => {
+      const store = { applicantAnswers: {}, cachedAnswers: [] };
+      const filters = [{
+        attributeName: 'LIC_TYPE',
+        attributeType: 'asDecimal',
+        condition: 'EQUALS',
+        value: 's6lookup.value.originalItem.attributeValues.CODE',
+        valueType: 'ref'
+      }];
+
+      const prepareSpy = jest.spyOn(dictionaryToolsService, 'prepareOptions').mockReturnValue({ filter: filters });
+      const getDictionarySpy = jest.spyOn(dictionaryApiService, 'getDictionary').mockReturnValue(of({}));
+      service.fetch(componentsWithDictionary)[0].subscribe();
+
+      expect(prepareSpy).toHaveBeenCalledWith({}, store, filters);
+      expect(getDictionarySpy).toHaveBeenCalledWith('CONC_COMPETENT_ORG', { filter: filters, pageNum: 0, }, undefined);
     });
   });
 

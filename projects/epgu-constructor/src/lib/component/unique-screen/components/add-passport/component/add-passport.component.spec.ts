@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService, SmuEventsService } from '@epgu/epgu-lib';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
@@ -11,6 +11,8 @@ import {
   ConfigServiceStub,
   ModalService,
   ModalServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -75,6 +77,8 @@ describe('AddPassportComponent', () => {
         CurrentAnswersService,
         SuggestHandlerService,
         DateRestrictionsService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        SmuEventsService,
       ],
     }).compileComponents();
   });

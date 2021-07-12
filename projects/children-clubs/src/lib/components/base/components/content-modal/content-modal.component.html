@@ -1,13 +1,39 @@
 <epgu-cf-ui-cta-modal
   [text]="modalId"
   [title]="title"
-  [showCrossButton]="true"
-  [showButtons]="true"
+  [showCrossButton]="showCrossButton"
+  [showButtons]="showButtons"
 >
   <ng-container modal-content>
     <div [innerHTML]="text | imgPrefixer | safe: 'html'"></div>
+    <div
+      class="text--center mt-16 block--content-centered"
+      *ngIf="configService.showTraceIdOnError && traceId"
+    >
+      <span class="bold">
+        {{ traceId }}
+      </span>
+      <button (click)="copy(traceId)" class="copy-btn">
+        <img
+          src="{{ configService.staticDomainAssetsPath }}/assets/icons/svg/copy.svg"
+          alt="копировать"
+        />
+      </button>
+    </div>
   </ng-container>
   <ng-container modal-buttons>
-    <lib-button type="button" (click)="closeModal()">Закрыть</lib-button>
+    <ng-container *ngIf="buttons.length; else close">
+      <lib-button
+        *ngFor="let button of buttons"
+        [showLoader]="button.loader"
+        class="conf-modal__button"
+        [color]="button.color || ''"
+        (click)="button.handler()"
+        >{{ button.label }}</lib-button
+      >
+    </ng-container>
+    <ng-template #close
+      ><lib-button type="button" (click)="closeModal()">Закрыть</lib-button></ng-template
+    >
   </ng-container>
 </epgu-cf-ui-cta-modal>

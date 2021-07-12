@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Group } from '../../typings';
-import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { ChildrenClubsState } from '../../children-clubs.types';
 
@@ -36,7 +36,10 @@ export class GroupListService {
     filter((state) => !!state.selectedProgramUUID),
     tap(() => this.reset()),
     switchMap((state: ChildrenClubsState) =>
-      this.getGroupList(state).pipe(tap(() => this.loading$$.next(false))),
+      this.getGroupList(state).pipe(
+        catchError((_) => of([])),
+        tap(() => this.loading$$.next(false)),
+      ),
     ),
   );
 

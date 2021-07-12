@@ -1,45 +1,73 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-:host {
+// Тупики
+
+img {
   display: block;
-  min-height: inherit;
+  max-width: 200px;
+  max-height: 200px;
+  margin: 0 auto 24px;
+  @include phones-down {
+    max-width: 160px;
+    max-height: 160px;
+    margin-bottom: 16px;
+  }
 }
 
-.payment-type-selector {
-  &__img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 8px;
-
-    img {
-      max-width: 217px;
-      max-height: 217px;
-    }
-  }
-
-  &__header {
-    margin-bottom: 16px;
-    &-center {
-      text-align: center;
-    }
-  }
-
-  &__sub-header {
-    font-size: 16px;
-    color: $color-text-helper;
+.title {
+  margin-bottom: 16px;
+  &::ng-deep > * {
+    @include typ-h3;
     text-align: center;
+  }
+}
+
+.subtitle {
+  @include typ-plain-text();
+  color: $color-text-helper;
+  text-align: center;
+  @include phones-down {
+    text-align: left;
+  }
+  &:not(:last-child) {
     margin-bottom: 24px;
   }
+}
 
-  .answer-btn {
-    width: 100%;
+// Квиз (идентичен questions-screen)
 
+.quiz {
+  padding-bottom: 24px;
+  @include tablets-up {
+    padding-bottom: 64px;
+  }
+}
+
+.quiz__title {
+  //Обнуляет отступы от page-name
+  margin: 0;
+  @include tablets-up {
+    margin: 0;
+  }
+}
+
+.quiz__description {
+  margin-top: 16px;
+}
+
+.quiz__container {
+  margin-top: 24px;
+  @include tablets-up {
+    margin-top: 32px;
+  }
+}
+
+.quiz__item {
+  display: block;
+  &:not(:first-child) {
+    margin-top: 16px;
     @include tablets-up {
-      margin: 0 0 24px 0;
-    }
-    &:last-child {
-      margin-bottom: 0;
+      margin-top: 24px;
     }
   }
 }

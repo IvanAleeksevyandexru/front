@@ -13,6 +13,10 @@ import {
   ModalService,
   ModalServiceStub,
   ConstructorLookupModule,
+  Icons,
+  mockSelectMapObjectStore,
+  IGeoCoordsResponse,
+  AddressesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
@@ -35,13 +39,9 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
-import { Icons } from './constants';
-import { mockSelectMapObjectStore } from './mocks/mock-select-map-object';
 import { SelectMapObjectComponent } from './select-map-object.component';
-import { IGeoCoordsResponse } from './select-map-object.interface';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
 import {
-  DictionaryItem,
   DictionaryResponse,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
@@ -81,6 +81,7 @@ describe('SelectMapObjectComponent', () => {
         CachedAnswersService,
         ScreenService,
         DateRestrictionsService,
+        AddressesToolsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -114,8 +115,8 @@ describe('SelectMapObjectComponent', () => {
 
   it('fillCoords()', (done) => {
     jest
-      .spyOn(component.selectMapObjectService, 'getCoordsByAddress')
-      .mockImplementation((items: DictionaryItem[]) => {
+      .spyOn(component['addressesToolsService'], 'getCoordsByAddress')
+      .mockImplementation((items) => {
         return of({
           coords: items.map(() => ({
             address: 'Российская Федерация, г. Москва, ул. Ялтинская',

@@ -2,31 +2,36 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockModule } from 'ng-mocks';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
+import { configureTestSuite } from 'ng-bullet';
+
+import { 
+  ScreenContainerComponent,
+  ScreenPadModule,
+  PrevButtonComponent,
+  EventBusService,
+  UnsubscribeService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  ModalService,
+  ModalServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
+import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { RepeatableScreenComponent } from './repeatable-screen.component';
 import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonComponent } from '../../shared/components/clone-button/clone-button.component';
-import { PrevButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
-import { configureTestSuite } from 'ng-bullet';
-import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { CustomComponent } from '../../component/custom-screen/components-list.types';
 import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
@@ -306,10 +311,74 @@ describe('RepeatableScreenComponent', () => {
   });
 
   describe('cachedValues', () => {
-    it('should be remove', () => {
+    it('should be removed on navigation', () => {
       jest.spyOn(cachedAnswersService, 'removeValueFromLocalStorage');
       navigationService.next(null);
       expect(cachedAnswersService.removeValueFromLocalStorage).toHaveBeenCalled();
+    });
+
+    describe('if cacheRepeatableFieldsAnswersLocally is TRUE', () => {
+      const displayMockCacheEnable = { ...displayMock };
+
+      it('should add values to cache on change', () => {
+        displayMockCacheEnable.components[0].attrs.cacheRepeatableFieldsAnswersLocally = true;
+        screenService.display = displayMockCacheEnable;
+        component.ngOnInit();
+
+        expect(component.cacheRepeatableFieldsAnswersLocally).toBeTruthy();
+
+        jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
+        component.changeComponentList({
+          pd9: { value: 'Имя', valid: true }
+        }, 0);
+
+        expect(cachedAnswersService.setValueToLocalStorage).toHaveBeenCalled();
+      });
+
+      it('should add values to cache on remove item', () => {
+        displayMockCacheEnable.components[0].attrs.cacheRepeatableFieldsAnswersLocally = true;
+        screenService.display = displayMockCacheEnable;
+        component.ngOnInit();
+        
+        expect(component.cacheRepeatableFieldsAnswersLocally).toBeTruthy();
+
+        jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
+        component.removeItem('pd9', 0);
+  
+        expect(cachedAnswersService.setValueToLocalStorage).toHaveBeenCalled();
+      });
+    });
+
+    describe('if cacheRepeatableFieldsAnswersLocally is FALSE', () => {
+      const displayMockCacheDisable = { ...displayMock };
+
+      it('should not add values to cache on change', () => {
+        displayMockCacheDisable.components[0].attrs.cacheRepeatableFieldsAnswersLocally = false;
+        screenService.display = displayMockCacheDisable;
+        component.ngOnInit();
+
+        expect(component.cacheRepeatableFieldsAnswersLocally).toBeFalsy();
+
+        jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
+        component.changeComponentList({
+          pd9: { value: 'Имя', valid: true }
+        }, 0);
+
+        expect(cachedAnswersService.setValueToLocalStorage).not.toHaveBeenCalled();
+      });
+
+      it('should not add values to cache on remove item', () => {
+        displayMockCacheDisable.components[0].attrs.cacheRepeatableFieldsAnswersLocally = false;
+        screenService.display = displayMockCacheDisable;
+        component.ngOnInit();
+
+        expect(component.cacheRepeatableFieldsAnswersLocally).toBeFalsy();
+
+        jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
+        component.removeItem('pd9', 0);
+  
+        expect(cachedAnswersService.setValueToLocalStorage).not.toHaveBeenCalled();
+      });
     });
   });
 });

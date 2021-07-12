@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ListElement } from '@epgu/epgu-lib';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -9,6 +8,7 @@ import { BaseProgram, Filters, VendorType } from '../../../typings';
 import { ProgramFiltersFormComponent } from '../../base/components/program-filters-form/program-filters-form.component';
 
 import { StateService } from '../../../services/state/state.service';
+import { GroupFiltersModes } from '../../../children-clubs.types';
 
 @Component({
   selector: 'children-clubs-program-list',
@@ -26,8 +26,8 @@ export class ProgramListContainerComponent implements OnInit {
   initValue = this.stateService.programFilters?.query;
 
   constructor(
+    public listService: ProgramListService,
     private modalService: ModalService,
-    private listService: ProgramListService,
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
   ) {}
@@ -51,8 +51,6 @@ export class ProgramListContainerComponent implements OnInit {
     const finded = Object.entries(filters).filter(
       ([key, value]) =>
         value !== null &&
-        value !== 'null' &&
-        value !== 'all' &&
         value !== false &&
         value !== undefined &&
         key !== 'inlearnoPayments' &&
@@ -92,6 +90,8 @@ export class ProgramListContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.stateService.groupFiltersMode =
+      this.stateService.groupFiltersMode || GroupFiltersModes.list;
     const filters = this.stateService.programFilters;
     if (this.stateService.vendor === VendorType.inlearno) {
       delete filters?.pfdoPayments;

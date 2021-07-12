@@ -24,3 +24,4 @@ export * from './target-type';
 export * from './text-transform';
 export * from './timer';
 export * from './arguments';
+export * from './core.types';

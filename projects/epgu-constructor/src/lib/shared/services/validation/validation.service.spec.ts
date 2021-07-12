@@ -284,6 +284,8 @@ describe('ValidationService', () => {
       expect(checkNumber('5213 2439 2469 4266')).toBeTruthy();
       expect(checkNumber('5213 & 2439 ololo2469 ololo4266')).toBeTruthy();
       expect(checkNumber('5213 2439 2469 4464')).toBeTruthy();
+      expect(checkNumber('2200 3307 9345 4721 809')).toBeTruthy();
+      expect(checkNumber('2200 3307 1335 4721 6')).toBeTruthy();
     });
 
     it('should return false', () => {

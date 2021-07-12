@@ -170,6 +170,45 @@ describe('ComponentsListFormService', () => {
   });
 
   describe('patch()', () => {
+    const setup = (
+      type = CustomScreenComponentTypes.DropDown,
+      attrs = { defaultIndex: 0 },
+      dictionaryItemsCount = 2
+    ) => {
+      const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
+      const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
+      const component = JSON.parse(JSON.stringify(componentMockData));
+      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
+      const getDictionariesSpy = jest.fn(() => ({
+        [`${component.attrs.dictionaryType}${component.id}`]: {
+          list: Array(dictionaryItemsCount).fill({}).map((_, index) => ({ id: `index ${index}` })),
+        },
+      }));
+
+      Object.defineProperty(dictionaryToolsService, 'dictionaries', {
+        get: getDictionariesSpy,
+        set: jest.fn(),
+      });
+
+      extraComponent.id = 'someID';
+      component.type = type;
+      component.attrs = { ...component.attrs, ...attrs };
+      component.value = undefined;
+      service.create([component, extraComponent], {});
+
+      const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
+      const controlPatchSpy = jest.spyOn(control.get('value'), 'patchValue');
+
+      return {
+        convertedValueSpy,
+        dropDownsSpy,
+        component,
+        getDictionariesSpy,
+        control,
+        controlPatchSpy,
+      };
+    };
+
     it('should call convertedValue if value exists', () => {
       const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
@@ -188,41 +227,6 @@ describe('ComponentsListFormService', () => {
     });
 
     describe('when component has no value', () => {
-      const setup = (type = CustomScreenComponentTypes.DropDown, attrs = { defaultIndex: 0 }) => {
-        const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
-        const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
-        const component = JSON.parse(JSON.stringify(componentMockData));
-        const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-        const getDictionariesSpy = jest.fn(() => ({
-          [`${component.attrs.dictionaryType}${component.id}`]: {
-            list: [{ id: 'index 0' }, { id: 'test' }],
-          },
-        }));
-
-        Object.defineProperty(dictionaryToolsService, 'dictionaries', {
-          get: getDictionariesSpy,
-          set: jest.fn(),
-        });
-
-        extraComponent.id = 'someID';
-        component.type = type;
-        component.attrs = { ...component.attrs, ...attrs };
-        component.value = undefined;
-        service.create([component, extraComponent], {});
-
-        const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
-        const controlPatchSpy = jest.spyOn(control.get('value'), 'patchValue');
-
-        return {
-          convertedValueSpy,
-          dropDownsSpy,
-          component,
-          getDictionariesSpy,
-          control,
-          controlPatchSpy,
-        };
-      };
-
       it('should call dictionaryToolsService.dropDowns$.getValue(), if component type isDropdownLike, has defaultIndex and no value', () => {
         const { dropDownsSpy, component } = setup();
         service.patch(component);
@@ -250,11 +254,37 @@ describe('ComponentsListFormService', () => {
           getDictionariesSpy,
           controlPatchSpy,
           component,
-        } = setup(CustomScreenComponentTypes.Lookup, { lookupDefaultValue: 'test' });
+        } = setup(CustomScreenComponentTypes.Lookup, { lookupDefaultValue: 'index 1' });
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'test' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 1' });
+      });
+    });
+
+    describe('when it is DropDownDepts and has defaultIndex',  () => {
+      it('should patchDropDownDeptsValue when lockedValue is true', () => {
+        const {
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.DropDownDepts, { defaultIndex: 0, lockedValue: true });
+
+        service.patch(component);
+
+        expect(controlPatchSpy).toHaveBeenCalledTimes(1);
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+      });
+
+      it('should patchDropDownDeptsValue when there is one element', () => {
+        const {
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.DropDownDepts, { defaultIndex: 0, lockedValue: false }, 1);
+
+        service.patch(component);
+
+        expect(controlPatchSpy).toHaveBeenCalledTimes(1);
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
       });
     });
   });

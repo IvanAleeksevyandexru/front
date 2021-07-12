@@ -1,6 +1,19 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
 
+.filter-panel {
+  position: absolute;
+  left: calc(50% - 296px);
+  top: 24px;
+  ::ng-deep.container {
+    margin-top: 0px;
+  }
+}
+
+.invisible {
+  display: none;
+}
+
 .item-mock {
   min-height: 231px;
   background: rgb(66, 245, 84);

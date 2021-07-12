@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
+import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
 
 @Injectable()
@@ -18,15 +18,15 @@ export class StateService {
   }
 
   get vendor(): VendorType {
-    return this.stateQuery.state?.vendor;
+    return this.stateQuery.state.vendor;
   }
 
   get okato(): number {
-    return this.stateQuery.state?.okato;
+    return +this.stateQuery.state.okato;
   }
 
   get nextSchoolYear(): boolean {
-    return this.stateQuery.state?.nextSchoolYear;
+    return this.stateQuery.state.nextSchoolYear === 'true';
   }
 
   get selectedProgramUUID(): string {
@@ -56,6 +56,14 @@ export class StateService {
   set groupFilters(filters: FindOptionsGroup) {
     const groupFilters = { ...this.groupFilters, ...filters };
     this.changeState({ groupFilters });
+  }
+
+  get groupFiltersMode(): GroupFiltersModes {
+    return this.stateQuery.state?.groupFiltersMode;
+  }
+
+  set groupFiltersMode(groupFiltersMode: GroupFiltersModes) {
+    this.changeState({ groupFiltersMode });
   }
 
   clearGroupFilters(): void {

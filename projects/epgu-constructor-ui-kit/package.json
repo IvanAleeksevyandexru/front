@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor-ui-kit",
-  "version": "0.0.1",
+  "version": "23.4.1",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor-ui-kit --prod",
     "watch": "cd ../../ && ng build epgu-constructor-ui-kit --watch",
@@ -18,7 +18,7 @@
     "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "16.1.1",
+    "@epgu/epgu-constructor-types": "23.4.1",
     "tslib": "^2.0.0",
     "@epgu/zipkin": "0.0.3",
     "zipkin-transport-http": "0.22.0"

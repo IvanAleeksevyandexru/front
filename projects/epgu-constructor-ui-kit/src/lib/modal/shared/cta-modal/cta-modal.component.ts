@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  ViewChild,
-  AfterViewChecked,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 
 import { PerfectScrollbarConfigInterface, PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
@@ -17,7 +11,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
   styleUrls: ['./cta-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CtaModalComponent implements AfterViewChecked {
+export class CtaModalComponent implements AfterViewInit {
   @Input() title?: ConfirmationModal['title'];
   @Input() text: ConfirmationModal['text'];
   @Input() showButtons = false;
@@ -39,9 +33,14 @@ export class CtaModalComponent implements AfterViewChecked {
     this.isMobile = this.deviceDetector.isMobile;
   }
 
-  ngAfterViewChecked(): void {
+  ngAfterViewInit(): void {
     if (this.perfectScroll && this.scrollTop) {
-      this.perfectScroll.directiveRef.scrollToTop();
+      /* TODO Подумать над лучшей реализацией. Сейчас задержка необходима для корректной работы
+      https://jira.egovdev.ru/secure/attachment/514868/514868_2021-07-06+12-03-52.mp4
+      */
+      setTimeout(() => {
+        this.perfectScroll.directiveRef.scrollToTop();
+      });
     }
   }
 

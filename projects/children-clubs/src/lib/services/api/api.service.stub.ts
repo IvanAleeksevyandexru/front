@@ -11,6 +11,7 @@ import { Observable, timer } from 'rxjs';
 
 import {
   baseProgramStub,
+  baseProgramStub2,
   focusDirectionsStubList,
   groupStub,
   municipalityStub,
@@ -29,11 +30,16 @@ export class ApiServiceStub {
     if (count > maxSizeItems) {
       const diff = maxSizeItems - count + size;
       if (diff > 0) {
-        result = new Array(diff).fill(baseProgramStub);
+        for (let i = 0; i < diff; i++) {
+          result.push({ ...baseProgramStub });
+        }
       }
     } else {
-      result = new Array(size).fill(baseProgramStub);
+      for (let i = 0; i < size; i++) {
+        result.push({ ...baseProgramStub });
+      }
     }
+    result.push({ ...baseProgramStub2 });
     return timer(1).pipe(mapTo(result));
   }
 

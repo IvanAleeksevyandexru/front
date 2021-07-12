@@ -124,6 +124,9 @@ export class AppBaseComponent<T, U> {
     } else {
       try {
         initState = JSON.parse(this.inputAppData.value) as AppState<T, U>;
+        if (this.inputAppData?.healthPayload) {
+          initState.healthPayload = this.inputAppData.healthPayload;
+        }
 
         if (!initState.value) {
           initState.value = {} as T;

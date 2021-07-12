@@ -3,11 +3,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY, ORDER_TO_ORDER_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY,
+  ORDER_TO_ORDER_SCENARIO_KEY,
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { getAppStorageKey, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -20,6 +21,8 @@ import {
   QuizRequestDto,
   ScenarioDto,
   APP_OUTPUT_KEY,
+  APP_INPUT_KEY,
+  OutputAppDto,
 } from '@epgu/epgu-constructor-types';
 
 /**
@@ -34,7 +37,7 @@ export class FormPlayerStartManager {
     private localStorageService: LocalStorageService,
     private formPlayerService: FormPlayerService,
     public continueOrderModalService: ContinueOrderModalService,
-    private ngUnsubscribe$: UnsubscribeService
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   public startPlayer(): void {
@@ -110,7 +113,9 @@ export class FormPlayerStartManager {
   }
 
   private startLoadFromOrderCase(): void {
-    const otherScenario = this.localStorageService.get<Partial<ScenarioDto>>(ORDER_TO_ORDER_SCENARIO_KEY);
+    const otherScenario = this.localStorageService.get<Partial<ScenarioDto>>(
+      ORDER_TO_ORDER_SCENARIO_KEY,
+    );
 
     this.formPlayerService.initPlayerFromOrder(otherScenario).subscribe(() => {
       this.localStorageService.delete(ORDER_TO_ORDER_SCENARIO_KEY);
@@ -153,10 +158,19 @@ export class FormPlayerStartManager {
 
         if (!orderId) {
           this.localStorageService.set('cachedAnswers', {});
+          this.deleteAppStorage();
         }
 
         this.formPlayerService.initData(orderId);
       });
+  }
+
+  private deleteAppStorage(): void {
+    const appInput: OutputAppDto = this.localStorageService.get(APP_INPUT_KEY);
+    if (appInput) {
+      const key = getAppStorageKey(appInput.componentType, appInput.componentId);
+      this.localStorageService.delete(key);
+    }
   }
 
   private getOrderStatus(): void {
