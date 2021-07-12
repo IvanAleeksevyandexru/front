@@ -133,6 +133,7 @@ export class AutocompletePrepareService {
         parentComponent,
         component,
         componentsGroupIndex,
+        componentValue,
       );
       this.screenService.cachedAnswers[parentComponent.id] = cachedAnswer;
       this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer?.value);
@@ -321,10 +322,12 @@ export class AutocompletePrepareService {
     parentComponent: ComponentDto,
     component: ComponentDto,
     componentsGroupIndex: number,
+    componentValue: string,
   ): Answer {
     const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
     const currentAnswerState = this.currentAnswersService.state as Record<string, string>[];
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
+    const currentValue = componentValue || component.value;
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
@@ -332,16 +335,16 @@ export class AutocompletePrepareService {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,
           ...parsedValue[componentsGroupIndex],
-          [component.id]: component.value,
+          [component.id]: currentValue,
         };
       } else {
-        parsedValue[componentsGroupIndex] = { ...cachedState, [component.id]: component.value };
+        parsedValue[componentsGroupIndex] = { ...cachedState, [component.id]: currentValue };
       }
       cachedAnswer.value = JSON.stringify(parsedValue);
       return cachedAnswer;
     } else {
       let newCachedAnswer = [...currentAnswerState];
-      newCachedAnswer[componentsGroupIndex] = { [component.id]: component.value };
+      newCachedAnswer[componentsGroupIndex] = { [component.id]: currentValue };
       return {
         value: JSON.stringify(newCachedAnswer),
         visited: true,
