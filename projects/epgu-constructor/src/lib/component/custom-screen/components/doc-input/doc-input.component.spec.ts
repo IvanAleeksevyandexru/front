@@ -8,25 +8,18 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { BaseModule } from '../../../../shared/base.module';
-import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import {
   ConfigService, ConfigServiceStub,
-  LoggerService,
-  LoggerServiceStub,
   ModalService,
   ModalServiceStub,
-  UnsubscribeService,
-  DatesToolsService, UtilsService
+  DatesToolsService
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { EpguLibModule } from '@epgu/epgu-lib';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 
@@ -54,19 +47,12 @@ describe('DocInputComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        UtilsService,
         MockProvider(ComponentsListFormService),
-        ComponentsListToolsService,
-        UnsubscribeService,
         DatesToolsService,
-        ValidationService,
-        DateRangeService,
         HtmlRemoverService,
         CurrentAnswersService,
         AutocompleteApiService,
-        DictionaryToolsService,
         RefRelationService,
       ],
       imports: [RouterTestingModule, BaseModule, MockModule(EpguLibModule), ComponentsListModule],
