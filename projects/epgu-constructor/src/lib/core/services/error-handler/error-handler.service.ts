@@ -24,6 +24,7 @@ import {
   TIME_INVITATION_ERROR,
   ITEMS_NO_DATA,
   ITEMS_FAILURE,
+  SESSION_TIMEOUT,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -32,6 +33,9 @@ import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
+export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
+// eslint-disable-next-line max-len
+export const SESSION_TIMEOUT_SMEV3 = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -78,32 +82,40 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim()
       ) {
         const errorMessage = error?.errorDetail.errorMessage;
+        const errorCodeTxt = error?.errorDetail?.errorCodeTxt;
 
-        if (
-          errorMessage.includes('NO_DATA') ||
-          (!errorMessage.includes('FAILURE') &&
-            !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
-        ) {
-          const message = errorMessage.replace('NO_DATA:', '');
-          ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
+        if (errorCodeTxt !== undefined && errorCodeTxt !== null) {
+          if (errorCodeTxt === 'NO_DATA') {
+            this.showModalNoData(errorMessage, false);
+          }
 
-          this.showModal(ITEMS_NO_DATA);
-        }
-
-        if (
-          errorMessage.includes('FAILURE') ||
-          errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
-        ) {
-          const message = errorMessage
-            .replace('FAILURE:', '')
-            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
-          ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
-
-          this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
-            if (redirectToLk) {
-              this.navigationService.redirectToLK();
+          if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
+            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+              this.showModalFailure(errorMessage, false, 'SESSION');
+            } else {
+              this.showModalFailure(errorMessage, false, 'FAILURE');
             }
-          });
+          }
+        } else {
+          if (
+            errorMessage.includes('NO_DATA') ||
+            (!errorMessage.includes('FAILURE') &&
+              !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
+          ) {
+            this.showModalNoData(errorMessage, true);
+          }
+  
+          if (
+            errorMessage.includes('FAILURE') ||
+            errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
+          ) {
+            const newErrorMessage = errorMessage.replace('FAILURE:', '');
+            if (newErrorMessage === SESSION_TIMEOUT_SMEV2 || newErrorMessage === SESSION_TIMEOUT_SMEV3) {
+              this.showModalFailure(errorMessage, true, 'SESSION');
+            } else {
+              this.showModalFailure(errorMessage, true, 'FAILURE');
+            }
+          }
         }
       }
     }
@@ -157,6 +169,38 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
   public isValidRequest(obj: object): boolean {
     return 'scenarioDto' in obj || 'items' in obj;
+  }
+
+  private showModalNoData(errorMessage: string, replace: boolean): void {
+    const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
+    ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
+
+    this.showModal(ITEMS_NO_DATA);
+  }
+
+  private showModalFailure(errorMessage: string, replace: boolean, modal: 'SESSION' | 'FAILURE'): void {
+    const message = replace ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '') : errorMessage;
+
+    switch(modal) {
+      case 'FAILURE':
+        ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
+        this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
+          if (redirectToLk) {
+            this.navigationService.redirectToLK();
+          }
+        });
+        break;
+
+      case 'SESSION':
+        SESSION_TIMEOUT.text = SESSION_TIMEOUT.text.replace(/\{textAsset\}?/g, message);
+        this.showModal(SESSION_TIMEOUT).then((reload) => {
+          if (reload) {
+            this.locationService.reload();
+          }
+        });
+        break;
+    }
+    
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {

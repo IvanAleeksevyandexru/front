@@ -166,6 +166,21 @@ export const ITEMS_FAILURE: ConfirmationModal = {
   isShortModal: true,
 };
 
+export const SESSION_TIMEOUT: ConfirmationModal = {
+  text: ITEMS_REQUEST_TEXT_NO_DATA,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'В начало',
+      closeModal: true,
+      value: 'reload',
+    },
+  ],
+  isShortModal: true,
+};
+
 export const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR: ConfirmationModal = {
   text: NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT,
   title: '',
