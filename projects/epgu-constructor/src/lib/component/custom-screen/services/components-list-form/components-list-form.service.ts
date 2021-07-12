@@ -207,7 +207,7 @@ export class ComponentsListFormService {
         if (type === CustomScreenComponentTypes.DateInput && value) {
           value = this.datesToolsService.format(value);
         }
-        else if(type === 'StringInput' && val.attrs.mask === 'NumberMaskInput') {
+        else if(type === CustomScreenComponentTypes.StringInput && val.attrs.mask === 'NumberMaskInput' && value) {
           //при вводе любого числа, оно должно отправляться в нужном формате NumberMaskInput (EPGUCORE-59658)
           value = this.maskTransformService.transformNumberMaskInput(value, val.attrs.maskOptions);
         }
