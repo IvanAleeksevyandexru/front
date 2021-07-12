@@ -8,6 +8,7 @@ import {
   ConfigService,
   ErrorModule,
   ImgPrefixerModule,
+  PrevButtonModule,
   SafeModule,
   ScreenPadModule,
   SharedModalModule,
@@ -41,15 +42,21 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ErrorModule,
     SafeModule,
     ImgPrefixerModule,
+    PrevButtonModule,
   ],
   providers: [DictionaryService, ConfigService, ApiService, StateService],
   exports: [
     NotFoundComponent,
     ProgramFiltersFormComponent,
+    GroupFiltersFormComponent,
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
     ContentModalComponent,
   ],
-  entryComponents: [ProgramFiltersFormComponent, ContentModalComponent],
+  entryComponents: [
+    GroupFiltersFormComponent,
+    ProgramFiltersFormComponent,
+    ContentModalComponent,
+  ],
 })
 export class BaseModule {}

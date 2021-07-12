@@ -3,6 +3,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
+
 import {
   ScreenPadModule,
   ConfigService,
@@ -12,12 +13,11 @@ import {
   EventBusService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { IRegistrationAddrComponent } from '../../registration-addr-screen.types';
+import { FieldNames, IRegistrationAddrComponent } from '../../registration-addr-screen.types';
 import { RegistrationAddrComponent } from './registration-addr.component';
 import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
@@ -35,7 +35,7 @@ describe('RegistrationAddrComponent', () => {
   let configService: ConfigService;
   let screenService: ScreenService;
   let datesToolsService: DatesToolsService;
-  const mockData: IRegistrationAddrComponent = {
+  const mockData = {
     id: 'pd5',
     type: 'RegistrationAddr',
     label: '',
@@ -53,13 +53,13 @@ describe('RegistrationAddrComponent', () => {
       ],
       fields: [
         {
-          fieldName: 'regAddr',
+          fieldName: FieldNames.regAddr,
           label: 'Адрес',
           type: 'input',
           updateOnValidation: 'submit',
         },
         {
-          fieldName: 'regDate',
+          fieldName: FieldNames.regDate,
           label: 'регистрация до',
           type: 'input',
           minDate: 'today',
@@ -72,7 +72,7 @@ describe('RegistrationAddrComponent', () => {
     arguments: {},
     value: '',
     required: true,
-  };
+  } as unknown as IRegistrationAddrComponent;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -148,7 +148,7 @@ describe('RegistrationAddrComponent', () => {
   describe('hintClick', () => {
     it('should be create regDate', () => {
       const mockDate = new Date('2021-05-19T09:19:08.327Z');
-      const expectedDate = new Date('2021-11-19T09:19:08.327Z');
+      const expectedDate = new Date('2021-11-18T09:19:08.327Z');
       // @ts-ignore
       const spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
       component.hintClick({ unit: 'months', amount: 6, label: 'Полгода' });

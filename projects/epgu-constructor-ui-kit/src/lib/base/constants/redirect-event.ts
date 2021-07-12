@@ -2,6 +2,7 @@ export enum MobileEventType {
   open_screen = 'open_screen',
   exit = 'exit',
   file_download = 'file_download',
+  open_browser = 'open_browser',
 }
 
 interface MobileEventParam<T> {
@@ -56,3 +57,9 @@ export const createMobileEvent = <T>(
 
 export const createDownloadEvent: (link: string) => MobileEvent<string> = (link: string) =>
   createMobileEvent(MobileEventType.file_download, [{ key: 'file_path', value: link }]);
+
+export const createOpenBrowserEvent: (link: string, withAuth: boolean) => MobileEvent<unknown> = (link: string, withAuth: boolean) =>
+  createMobileEvent<unknown>(MobileEventType.open_browser, [
+    { key: 'url', value: link },
+    { key: 'withAuth', value: withAuth },
+  ]);

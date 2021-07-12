@@ -10,9 +10,8 @@ import {
   DictionaryValueTypes,
   AttributeTypes,
 } from '@epgu/epgu-constructor-types';
-import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, mockSelectMapObjectStore } from '@epgu/epgu-constructor-ui-kit';
 
-import { mockSelectMapObjectStore } from '../../../component/unique-screen/components/select-map-object/mocks/mock-select-map-object';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';

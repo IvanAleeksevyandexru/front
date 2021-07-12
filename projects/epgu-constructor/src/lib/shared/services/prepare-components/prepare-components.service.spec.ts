@@ -2,19 +2,19 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+
 import {
   LocalStorageService,
   LocalStorageServiceStub,
   ConfigService,
   LoggerService,
+  UtilsService,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
-
+import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswers } from '../../../screen/screen.types';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
@@ -223,6 +223,148 @@ describe('PrepareComponentsService', () => {
     });
   });
 
+  describe('loadValueFromCachedAnswer() for RepeatableFields from localStorage', () => {
+    it('should return local value if cacheRepeatableFieldsAnswersLocally is TRUE', () => {
+      const cachedAnswers = {
+        ai4: [{ rf1:'Ываыавыва' }],
+      };
+      localStorage.setItem('cachedAnswers', JSON.stringify(cachedAnswers));
+
+      const componentMock: ComponentDto = {
+        id: 'ai4',
+        type: 'RepeatableFields',
+        label: '',
+        attrs: {
+          components: [
+            {
+              id: 'rf1',
+              type: 'StringInput',
+              label: 'Прежняя фамилия',
+              attrs: {},
+              value: '',
+              required: true,
+              valueFromCache: false,
+            },
+          ],
+          cacheRepeatableFieldsAnswersLocally: true
+        },
+        value: '',
+        required: true,
+        valueFromCache: false,
+      };
+
+      const repeatableComponents: ComponentDto = {
+        id: 'ai4',
+        type: 'RepeatableFields',
+        label: '',
+        attrs: {
+          components: [
+            {
+              id: 'rf1',
+              type: 'StringInput',
+              label: 'Прежняя фамилия',
+              attrs: {},
+              value: '',
+              required: true,
+              valueFromCache: false,
+            },
+          ], repeatableComponents: [
+            [
+              {
+                id: 'rf1',
+                type: 'StringInput',
+                label: 'Прежняя фамилия',
+                attrs: {},
+                value: 'Ываыавыва',
+                required: true,
+                valueFromCache: true,
+                presetValue: '',
+              },
+            ],
+          ],
+          cacheRepeatableFieldsAnswersLocally: true
+        },
+        value: '',
+        required: true,
+        valueFromCache: false,
+      };
+
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], {});
+      expect(componentDtoIS).toEqual([repeatableComponents]);
+      localStorage.removeItem('cachedAnswers');
+    });
+
+    it('should not return local value if cacheRepeatableFieldsAnswersLocally is FALSE', () => {
+      const cachedAnswers = {
+        ai4: [{ rf1:'Ываыавыва' }],
+      };
+      localStorage.setItem('cachedAnswers', JSON.stringify(cachedAnswers));
+
+      const componentMock: ComponentDto = {
+        id: 'ai4',
+        type: 'RepeatableFields',
+        label: '',
+        attrs: {
+          components: [
+            {
+              id: 'rf1',
+              type: 'StringInput',
+              label: 'Прежняя фамилия',
+              attrs: {},
+              value: '',
+              required: true,
+              valueFromCache: false,
+            },
+          ],
+          cacheRepeatableFieldsAnswersLocally: false
+        },
+        value: '',
+        required: true,
+        valueFromCache: false,
+      };
+
+      const repeatableComponents: ComponentDto = {
+        id: 'ai4',
+        type: 'RepeatableFields',
+        label: '',
+        attrs: {
+          components: [
+            {
+              id: 'rf1',
+              type: 'StringInput',
+              label: 'Прежняя фамилия',
+              attrs: {},
+              value: '',
+              required: true,
+              valueFromCache: false,
+            },
+          ], repeatableComponents: [
+            [
+              {
+                id: 'rf1',
+                type: 'StringInput',
+                label: 'Прежняя фамилия',
+                attrs: {},
+                value: '',
+                required: true,
+                valueFromCache: false,
+                presetValue: '',
+              },
+            ],
+          ],
+          cacheRepeatableFieldsAnswersLocally: false
+        },
+        value: '',
+        required: true,
+        valueFromCache: false,
+      };
+
+      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], {});
+      expect(componentDtoIS).toEqual([repeatableComponents]);
+      localStorage.removeItem('cachedAnswers');
+    });
+  });
+
   describe('loadValueFromCachedAnswer() for refDate', () => {
     const cachedAnswers: CachedAnswers = {
       pd1: {
@@ -319,7 +461,7 @@ describe('PrepareComponentsService', () => {
             },
           },
         },
-      };
+      } as ComponentAttrsDto;
 
       const expectedAttrs = {
         dictionaryOptions: {
@@ -360,7 +502,7 @@ describe('PrepareComponentsService', () => {
         refs: {
           testVal: 'pd1.value.storedValues.middleName',
         },
-      };
+      } as ComponentAttrsDto;
 
       const expectedAttrs = {
         dictionaryOptions: {

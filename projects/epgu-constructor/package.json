@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor",
-  "version": "1.0.0",
+  "version": "23.4.1",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor --prod",
     "watch": "cd ../../ && ng build epgu-constructor --watch",

@@ -71,7 +71,7 @@
         <small>{{ errorText }}</small>
       </div>
       <div class="item hint-wrapper" *ngIf="(data$ | async)?.attrs?.hints as hints">
-        <!--Хинты связываются на текущую дату, и получается текущая дата + timestamp из хинта и кладём в regTo-->
+        <!--Хинты связываются на текущую дату минус один день. Получается (текущая дата - 1) + timestamp из хинта и кладём в regTo-->
         <div class="item__hint" *ngFor="let hint of hints" (click)="hintClick(hint)">
           {{ hint.label }}
         </div>

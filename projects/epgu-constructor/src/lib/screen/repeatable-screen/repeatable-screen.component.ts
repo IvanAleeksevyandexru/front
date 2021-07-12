@@ -47,6 +47,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   minOccures: number;
   componentValidation: Array<boolean> = [];
   parentComponentId: string;
+  cacheRepeatableFieldsAnswersLocally: boolean;
 
   /**
    * Словарь для хранения массива компонентов
@@ -150,9 +151,10 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   }
 
   changeComponentList(changes: CustomComponentOutputData, index: number): void {
-    const state = this.getState();
     this.componentValidation[index] = Object.values(changes).every((item) => item.isValid);
     this.isValid = this.componentValidation.every((valid: boolean) => valid);
+
+    const state = this.getState();
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
     this.uniquenessErrorsService.calculatePreparedUniqErrors(state, index);
@@ -160,13 +162,14 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
 
   removeItem(key: string, index: number): void {
     delete this.screens[key];
-    let state = this.getState();
-    state = removeItemFromArrByIndex(state, index);
-    this.componentValidation.splice(index, 1);
-    this.isValid = this.componentValidation.every((valid: boolean) => valid);
-    this.saveState(state);
     const keys = Object.keys(this.screens);
     this.triggerScrollTo(keys[keys.length - 1]);
+    this.componentValidation.splice(index, 1);
+    this.isValid = this.componentValidation.every((valid: boolean) => valid);
+
+    let state = this.getState();
+    state = removeItemFromArrByIndex(state, index);
+    this.saveState(state);
   }
 
   getState(): Record<string, string>[] {
@@ -176,7 +179,9 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   saveState(state: Record<string, string>[]): void {
     this.state$.next(state);
     this.currentAnswersService.state = JSON.stringify(state);
-    this.cachedAnswersService.setValueToLocalStorage(this.parentComponentId, state);
+    if (this.cacheRepeatableFieldsAnswersLocally) {
+      this.cachedAnswersService.setValueToLocalStorage(this.parentComponentId, state);
+    }
   }
 
   getStateStatus$(): Observable<StateStatus> {
@@ -247,10 +252,12 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
       minOccures = 1,
       screenCaption,
       secondScreenCaption,
+      cacheRepeatableFieldsAnswersLocally = false,
     } = this.propData.components[0].attrs;
     this.canDeleteFirstScreen = canDeleteFirstScreen;
     this.minOccures = minOccures;
     this.screenCaption = screenCaption;
     this.secondScreenCaption = secondScreenCaption;
+    this.cacheRepeatableFieldsAnswersLocally = cacheRepeatableFieldsAnswersLocally;
   }
 }
