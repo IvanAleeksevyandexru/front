@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -30,6 +31,8 @@ import { Observable } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
+import { cloneDeep } from 'lodash';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -97,6 +100,7 @@ describe('ComponentsListFormService', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let addressHelperService: AddressHelperService;
   let componentsListToolsService: ComponentsListToolsService;
+  let maskTransformService: MaskTransformService;
 
   @Component({
     template: `
@@ -138,6 +142,8 @@ describe('ComponentsListFormService', () => {
         DictionaryToolsService,
         DateRestrictionsService,
         ConfigService,
+        MaskTransformService,
+        DecimalPipe,
       ],
     });
   });
@@ -147,6 +153,7 @@ describe('ComponentsListFormService', () => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     addressHelperService = TestBed.inject(AddressHelperService);
     componentsListToolsService = TestBed.inject(ComponentsListToolsService);
+    maskTransformService = TestBed.inject(MaskTransformService);
     fixture = TestBed.createComponent(MockComponent);
     component = fixture.componentInstance;
     component.componentMockData = componentMockData;
@@ -298,6 +305,32 @@ describe('ComponentsListFormService', () => {
       service.emitChanges();
       expect(getPreparedStateForSendingSpy).toHaveBeenCalled();
       expect(emitSpy).toHaveBeenCalled();
+    });
+    it('should call transformNumberMaskInput if type equally StringInput and val.attrs.mask equally NumberMaskInput', async () => {
+      const transformNumberMaskInput = jest.spyOn(maskTransformService, 'transformNumberMaskInput');
+      const componentStub = cloneDeep(componentMockData);
+
+      // @ts-ignore
+      componentStub.attrs.mask = 'NumberMaskInput';
+      componentStub.attrs.ref[0].relation = CustomComponentRefRelation.displayOff;
+      componentStub.attrs.maskOptions = {
+        decimalSymbol: ',',
+        allowDecimal: true
+      };
+      componentStub.value = 'value';
+      let component = JSON.parse(JSON.stringify(componentStub));
+      service.create([componentStub, component], {});
+
+      await service.emitChanges();
+      expect(transformNumberMaskInput).toHaveBeenCalled();
+      expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('0,00');
+
+      componentStub.value = '123';
+      component = JSON.parse(JSON.stringify(componentStub));
+      service.create([componentStub, component], {});
+      
+      await service.emitChanges();
+      expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('123,00');
     });
   });
 
