@@ -32,6 +32,10 @@ export interface ValueGroup {
   dateEnd: string;
   financialSource: Record<string, boolean>;
   financialSourceBudget: Record<string, number>;
+  orderFrom: string;
+  orderTo: string;
+  availableNextYearOrderFrom: string;
+  availableNextYearOrderTo: string;
 }
 
 export enum GroupFiltersModes {
