@@ -1,15 +1,12 @@
 import { DropdownComponent } from './dropdown.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
+import { MockComponent, MockModule, MockProviders } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import {
-  ConfigService, DatesToolsService, EventBusService,
-  LoggerService, UnsubscribeService
-} from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { EpguLibModule } from '@epgu/epgu-lib';
@@ -22,10 +19,7 @@ import { ValidationTypeModule } from '../../../../shared/directives/validation-t
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -54,19 +48,11 @@ describe('DropdownComponent', () => {
       providers: [
         DictionaryToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        DatesToolsService,
-        MockProvider(ComponentsListRelationsService),
+        MockProviders(ComponentsListRelationsService, DatesToolsService, SuggestHandlerService, ValidationService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         UnsubscribeService,
-        ConfigService,
-        LoggerService,
-        SuggestHandlerService,
-        EventBusService,
-        SuggestMonitorService,
-        ValidationService,
-        DateRangeService,
-        DateRestrictionsService
+        EventBusService
       ]
     })
       .overrideComponent(DropdownComponent, {
