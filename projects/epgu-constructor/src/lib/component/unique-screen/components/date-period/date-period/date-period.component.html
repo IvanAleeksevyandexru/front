@@ -22,7 +22,7 @@
 
       <epgu-constructor-constructor-date-picker
         [id]="'startDate'"
-        [minDate]="'today'"
+        [minDate]="attrs.beginDate?.minDate || 'today'"
         [control]="group.controls.startDate"
         [maxDate]="attrs.beginDate?.maxDate"
         [clearable]="true"

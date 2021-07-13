@@ -296,6 +296,7 @@ export interface ComponentDateTimeDto {
   required: boolean;
   hidden: boolean;
   maxDate?: string;
+  minDate?: string;
 }
 
 export interface ComponentUploadedFileDto {
