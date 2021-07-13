@@ -16,6 +16,7 @@ import {
 import {
   AUTH_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
+  NEW_BOOKING_ERROR,
   COMMON_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
@@ -36,6 +37,7 @@ export const STATIC_ERROR_MESSAGE = 'Operation completed';
 export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
 // eslint-disable-next-line max-len
 export const SESSION_TIMEOUT_SMEV3 = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
+export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -54,6 +56,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         (body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value,
       );
       const error = (body as ItemsErrorResponse)?.error;
+
+      if (url.includes('equeue/agg/book') && error) {
+        const errorMessage = error?.errorDetail?.errorMessage || NEW_BOOKING_DEFAULT_ERROR_MESSAGE;
+        this.showModalFailure(errorMessage, false, 'BOOKING');
+      }
 
       if (
         url.includes('service/booking') &&
@@ -178,7 +185,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     this.showModal(ITEMS_NO_DATA);
   }
 
-  private showModalFailure(errorMessage: string, replace: boolean, modal: 'SESSION' | 'FAILURE'): void {
+  private showModalFailure(errorMessage: string, replace: boolean, modal: 'SESSION' | 'FAILURE' | 'BOOKING'): void {
     const message = replace ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '') : errorMessage;
 
     switch(modal) {
@@ -199,8 +206,19 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
         });
         break;
+
+      case 'BOOKING':
+        const modal = {
+          ...NEW_BOOKING_ERROR,
+          text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message)
+        };
+        this.showModal(modal).then((redirectToLk) => {
+          if (redirectToLk) {
+            this.navigationService.redirectToLK();
+          }
+        });
+        break;
     }
-    
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
