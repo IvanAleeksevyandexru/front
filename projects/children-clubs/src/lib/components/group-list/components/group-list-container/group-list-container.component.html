@@ -13,6 +13,7 @@
         (search)="search($event)"
         [initValue]="initValue"
         [filtersCount]="filtersCount$$ | async"
+        [showMap]="false"
       ></children-clubs-filter-panel>
       <ng-container *ngIf="loading$ | async; else content">
         <epgu-cf-ui-constructor-screen-pad class="loader mt-24">
