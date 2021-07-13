@@ -33,7 +33,7 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
-import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
+import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 
 @Injectable()
 export class ComponentsListFormService {
