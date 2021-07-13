@@ -23,6 +23,7 @@ export class YandexMapService implements OnDestroy {
   private objectManager;
   private activePlacemarkId: number;
   private MIN_ZOOM = 4;
+  private DEFAULT_ZOOM = 9;
 
   constructor(
     private yaMapService: YaMapService,
@@ -135,6 +136,23 @@ export class YandexMapService implements OnDestroy {
     });
     this.yaMapService.map.options.set('minZoom', this.MIN_ZOOM);
     this.yaMapService.map.copyrights.togglePromo();
+  }
+
+  public centerAllPoints(): void {
+    const bounds = this.yaMapService.map.geoObjects.getBounds();
+    if (bounds) {
+      this.yaMapService.map
+        .setBounds(bounds, {
+          checkZoomRange: true,
+        })
+        .then(() => {
+          const zoom = this.yaMapService.map.getZoom();
+          // Уменьшаем зум в случае если точки близко или точка одна
+          if (zoom > this.DEFAULT_ZOOM) {
+            this.yaMapService.map.setZoom(this.DEFAULT_ZOOM);
+          }
+        });
+    }
   }
 
   /**
