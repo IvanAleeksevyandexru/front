@@ -22,20 +22,10 @@
 }
 
 :host::ng-deep .screen-body:not(.quiz__header) {
-  //не применяется к questions-screen
-  margin-bottom: 24px;
-
-  @include tablets-up {
-    margin-bottom: 20px;
-  }
+  margin-bottom: 16px;
 }
 
 :host::ng-deep .screen-footer:not(.quiz__container) {
-  //не применяется к questions-screen
-  $footer-item-mx: 16px;
-  $footer-mt: 20px;
-  $footer-mb: 24px;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,27 +35,12 @@
   }
   & > * {
     width: 100%;
-    margin-bottom: $footer-mb;
-    @include tablets-up {
-      width: auto;
-      margin-top: $footer-mt;
-      margin-left: $footer-item-mx;
-      margin-right: $footer-item-mx;
-    }
-    &:not(:first-child) {
-      @include tablets-down {
-        margin-bottom: $footer-item-mx;
-      }
-    }
+    margin-bottom: 16px;
   }
   & > .social-share {
     max-width: 335px;
     width: 100%;
   }
-}
-
-.screen-footer-to-bottom :host::ng-deep .screen-footer {
-  margin-top: auto;
 }
 
 :host-context(.tiny) {
