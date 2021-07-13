@@ -71,9 +71,12 @@ export class FieldListComponent implements OnInit, OnChanges {
   calculateVisibility(idx): boolean {
     const { fieldGroups } = this.data.attrs;
     const currentField = fieldGroups?.[idx];
-    return (
-      typeof currentField.visibilityLabel === 'undefined' ||
-      currentField.visibilityLabel === this.currentEaisdoState
-    );
+    if (currentField) {
+      return (
+        typeof currentField.visibilityLabel === 'undefined' ||
+        currentField.visibilityLabel === this.currentEaisdoState
+      );
+    }
+    return true;
   }
 }
