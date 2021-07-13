@@ -63,6 +63,7 @@ export interface ComponentAttrsDto {
   expandAllChildrenBlocks?: boolean;
   expirationTime?: string;
   fields?: Array<ComponentFieldDto>;
+  fieldGroups?: { groupName: string; visibilityLabel: string; fields: Array<ComponentFieldDto> };
   filter?: ComponentFilterDto;
   fio?: string;
   firstName?: string;
@@ -264,6 +265,7 @@ export interface ComponentRefDto {
 export interface ComponentFieldDto {
   fieldName?: string;
   label?: string;
+  value?: string;
   suggestionId?: string;
 }
 

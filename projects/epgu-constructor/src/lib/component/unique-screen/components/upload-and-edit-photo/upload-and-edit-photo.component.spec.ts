@@ -20,6 +20,7 @@ import { AutocompleteApiService } from '../../../../core/services/autocomplete/a
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
+import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 class MockScreenService {
   header = '';
@@ -75,6 +76,7 @@ describe('UploadAndEditPhotoComponent', () => {
         HtmlRemoverService,
         CurrentAnswersService,
         AutocompleteApiService,
+        EaisdoGroupCostService,
       ],
     }).compileComponents();
   });

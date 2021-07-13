@@ -9,7 +9,7 @@ import { DefaultUniqueScreenWrapperComponent } from './default-unique-screen-wra
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenContainerComponent, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
@@ -25,6 +25,7 @@ import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -59,6 +60,8 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
       providers: [
         CurrentAnswersService,
         EventBusService,
+        EaisdoGroupCostService,
+        UnsubscribeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
