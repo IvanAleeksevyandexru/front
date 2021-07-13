@@ -20,6 +20,7 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
   @Input() isShowMenu = true;
   @Input() title = 'Введите адрес проведения занятий, ФИО педагога, название группы';
   @Input() showNav = false;
+  @Input() showMap = true;
   @Output() openFilters = new EventEmitter();
   @Output() search = new EventEmitter<string>();
 
