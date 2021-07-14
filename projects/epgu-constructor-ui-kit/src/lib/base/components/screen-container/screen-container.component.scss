@@ -34,8 +34,16 @@
     flex-wrap: wrap-reverse;
   }
   & > * {
-    width: 100%;
     margin-bottom: 16px;
+    width: auto;
+    @include tablets-up {
+      &:not(:first-child) {
+        margin-left: 32px;
+      }
+    }
+    @include tablets-down {
+      width: 100%;
+    }
   }
   & > .social-share {
     max-width: 335px;
