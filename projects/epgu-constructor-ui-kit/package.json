@@ -11,7 +11,7 @@
     "@angular/common": "^11.0.0",
     "@angular/core": "^11.0.0",
     "@angular/forms": "^11.0.0",
-    "@datorama/akita": "^6.1.3",
+    "@datorama/akita": "6.2.0",
     "@epgu/epgu-lib": "3.0.369-3-core",
     "rxjs": "6.6.6",
     "lodash": "",

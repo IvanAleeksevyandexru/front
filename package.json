@@ -5,6 +5,7 @@
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --disable-host-check --hmr",
+    "start:prod": "ng serve --host 0.0.0.0 --disable-host-check --hmr --prod --configuration production --optimization=false",
     "start:fast": "concurrently -k --restart-tries 10 -n \"CONFIG,START\" \"yarn start:config\" \"ng serve --host 0.0.0.0 --disable-host-check --hmr --configuration fast\"",
     "start:stage": "ng serve --configuration staging",
     "start:backend": "java -jar pgu-form-service-1.0-SNAPSHOT.jar --server.servlet.context-path=/api --draft-client.enabled=false",
@@ -49,7 +50,8 @@
     "wait-cf": "wait-on dist/epgu-constructor/package.json",
     "clean": "rimraf dist && rimraf projects/epgu-constructor-types/dist",
     "watch:all": "yarn clean && concurrently -k --restart-tries 10 -n \"CONFIG,LIB,START\" \"yarn start:config\" \"yarn lib:watch\" \"yarn wait-cf && yarn start\"",
-    "build:dev:all": "yarn clean && concurrently -k -n \"CONFIG,BUILD AND START\" \"yarn start:config\" \"yarn lib:type:build && yarn lib:ui-kit:build:dev && yarn lib:children-clubs:build:dev && yarn lib:build:ivy && yarn start\""
+    "build:dev:all": "yarn clean && concurrently -k -n \"CONFIG,BUILD AND START\" \"yarn start:config\" \"yarn lib:type:build && yarn lib:ui-kit:build:dev && yarn lib:children-clubs:build:dev && yarn lib:build:ivy && yarn start\"",
+    "build:prod:all": "yarn clean && concurrently -k -n \"CONFIG,BUILD AND START\" \"yarn start:config\" \"yarn lib:type:build && yarn lib:ui-kit:build && yarn lib:children-clubs:build && yarn lib:build && yarn start:prod\""
   },
   "private": true,
   "husky": {
@@ -80,7 +82,7 @@
     "@angular/platform-browser": "11.0.0",
     "@angular/platform-browser-dynamic": "11.0.0",
     "@angular/router": "11.0.0",
-    "@datorama/akita": "^6.1.3",
+    "@datorama/akita": "6.2.0",
     "@epgu/children-clubs": "24.1.1",
     "@epgu/epgu-constructor-types": "24.1.1",
     "@epgu/epgu-constructor-ui-kit": "24.1.1",
@@ -149,6 +151,7 @@
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-prettier": "3.1.4",
+    "http-proxy-middleware": "^2.0.1",
     "husky": "4.2.5",
     "jest": "^26.4.2",
     "jest-canvas-mock": "^2.3.1",
