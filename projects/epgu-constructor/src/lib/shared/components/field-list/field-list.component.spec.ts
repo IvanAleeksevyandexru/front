@@ -9,6 +9,7 @@ import { OutputHtmlModule } from '../output-html/output-html.module';
 import { RankPipe, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -32,6 +33,7 @@ describe('FieldListComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         EaisdoGroupCostService,
         UnsubscribeService,
+        CurrentAnswersService,
       ],
     }).compileComponents();
   });
