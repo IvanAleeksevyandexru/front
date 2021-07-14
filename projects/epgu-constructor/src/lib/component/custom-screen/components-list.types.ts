@@ -170,6 +170,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   supportedValues?: Array<SupportedValue>;
   updateOnValidation?: UpdateOn;
   validation?: Array<CustomComponentAttrValidation>;
+  withAmount?: boolean;
 }
 
 export interface DateRestriction {
