@@ -4,10 +4,8 @@
   display: block;
 }
 
-.item {
-  &:not(:first-child) {
+.item:not(:first-child) {
     margin-top: 16px;
-  }
 }
 
 .value-date {
