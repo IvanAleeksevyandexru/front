@@ -135,7 +135,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           this.handleGettingCoordinatesResponse(coords),
         ),
       )
-      .subscribe();
+      .subscribe(() => this.yandexMapService.centerAllPoints());
   }
 
   private openModal(title: string, text: string): Observable<unknown> {
@@ -166,9 +166,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
             return [...acc, ...coords];
           }, []),
           map((coords) => {
-            const mapItems = programList.map((program, index) => {
+            const addressMap = {};
+            coords.forEach((coord) => {
+              addressMap[coord.address] = [coord.longitude, coord.latitude];
+            });
+            const mapItems = programList.map((program) => {
               return {
-                center: [coords[index].longitude, coords[index].latitude],
+                center: addressMap[program.address],
                 obj: program,
               };
             });

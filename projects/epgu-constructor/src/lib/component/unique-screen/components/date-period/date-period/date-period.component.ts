@@ -10,6 +10,7 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { pairwise, startWith } from 'rxjs/operators';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesHelperService } from '@epgu/epgu-lib';
 import { DatePeriodFormState, DatePeriodFormValues } from '../date-period.types';
 import { RegistrationAddrHints } from '../../registration-addr/registration-addr-screen.types';
 
@@ -56,7 +57,11 @@ export class DatePeriodComponent implements OnInit {
   public hintClick({ amount, unit }: RegistrationAddrHints): void {
     const startDate = this.group.controls.startDate.value;
     if (startDate) {
-      const endDate = this.datesToolsService.add(startDate, amount, unit);
+      const maxDate = DatesHelperService.relativeOrFixedToFixed(this.attrs.endDate.maxDate);
+      const endDate = this.datesToolsService.min([
+        maxDate,
+        this.datesToolsService.add(startDate, amount, unit),
+      ]);
       this.group.patchValue({ endDate });
     }
   }

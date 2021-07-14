@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, BehaviorSubject } from 'rxjs';
 import { catchError, filter } from 'rxjs/operators';
 import {
   ActionApiResponse,
@@ -7,6 +7,7 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
+  EaisdoResponse,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import {
@@ -49,6 +50,12 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionService {
+  public get actionType$(): Observable<ActionType | null> {
+    return this._actionType.asObservable();
+  }
+
+  private _actionType = new BehaviorSubject<ActionType | null>(null);
+
   constructor(
     private actionApiService: FormPlayerApiService,
     private screenService: ScreenService,
@@ -64,34 +71,35 @@ export class ActionService {
     private modalService: ModalService,
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
-  ) { }
+  ) {}
 
   public switchAction(
     action: ComponentActionDto,
     componentId: string,
     targetElement?: HTMLElement,
   ): void {
+    this._actionType.next(action.type);
     switch (action.type) {
-      case ActionType.download:
-        this.downloadAction(action);
-        break;
-      case ActionType.prevStepModal:
-        this.navigateModal(action, componentId, 'prevStep');
-        break;
-      case ActionType.nextStepModal:
-        this.navigateModal(action, componentId, 'nextStep');
-        break;
-      case ActionType.skipStep:
-        this.navigate(action, componentId, 'skipStep');
+      case ActionType.nextStep:
+        this.navigate(action, componentId, 'nextStep');
         break;
       case ActionType.prevStep:
         this.navigate(action, componentId, 'prevStep');
         break;
-      case ActionType.nextStep:
-        this.navigate(action, componentId, 'nextStep');
+      case ActionType.skipStep:
+        this.navigate(action, componentId, 'skipStep');
+        break;
+      case ActionType.nextStepModal:
+        this.navigateModal(action, componentId, 'nextStep');
+        break;
+      case ActionType.prevStepModal:
+        this.navigateModal(action, componentId, 'prevStep');
         break;
       case ActionType.confirmModalStep:
         this.openConfirmationModal(action, componentId);
+        break;
+      case ActionType.download:
+        this.downloadAction(action);
         break;
       case ActionType.quizToOrder:
         this.quizToOrder(action);
@@ -123,6 +131,9 @@ export class ActionService {
       case ActionType.redirectToPayByUin:
         this.redirectToPayByUin();
         break;
+      case ActionType.externalIntegration:
+        this.handleExternalIntegrationAction(action, componentId);
+        break;
     }
   }
 
@@ -147,33 +158,45 @@ export class ActionService {
       buttons: confirmationButtons?.length
         ? confirmationButtons
         : [
-          {
-            label: confirmation?.submitLabel || 'Отправить',
-            closeModal: true,
-            handler: handler
-              ? handler
-              : (): void => {
-                this.navigate(action, componentId, 'nextStep');
-              },
-          },
-        ],
+            {
+              label: confirmation?.submitLabel || 'Отправить',
+              closeModal: true,
+              handler: handler
+                ? handler
+                : (): void => {
+                    this.navigate(action, componentId, 'nextStep');
+                  },
+            },
+          ],
       actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
     });
   }
 
+  public handleExternalIntegrationAction(
+    action: ComponentActionDto,
+    componentId?: string,
+  ): Observable<ActionApiResponse<EaisdoResponse>> {
+    const component = (this.screenService.display.components.find(
+      (component) =>
+        component.id === componentId ||
+        component.type === CustomScreenComponentTypes.EaisdoGroupCost,
+    ) as unknown) as ActionRequestPayload;
+    return this.actionApiService.sendAction<EaisdoResponse>(action.action, component);
+  }
+
   private navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
     const navMethod = navActionToNavMethodMap[stepType];
 
     if (this.hookService.hasHooks(HookTypes.ON_BEFORE_SUBMIT)) {
-      forkJoin(this.hookService.getHooks(HookTypes.ON_BEFORE_SUBMIT)).pipe(
-        catchError(() => of([])),
-      ).subscribe(() => {
-        const navigation = this.prepareNavigationData(action, componentId);
+      forkJoin(this.hookService.getHooks(HookTypes.ON_BEFORE_SUBMIT))
+        .pipe(catchError(() => of([])))
+        .subscribe(() => {
+          const navigation = this.prepareNavigationData(action, componentId);
 
-        this.navService[navMethod](navigation);
-      });
+          this.navService[navMethod](navigation);
+        });
     } else {
       const navigation = this.prepareNavigationData(action, componentId);
 
@@ -310,28 +333,32 @@ export class ActionService {
 
   private orderToOrder(action: ComponentActionDto): void {
     this.localStorageService.set(ORDER_TO_ORDER_SCENARIO_KEY, {
-      finishedAndCurrentScreens: this.getFinishedAndCurrentScreensFromMultipleAnswers(action.multipleAnswers),
-      applicantAnswers: this.getApplicantAnswersFromMultipleAnswers(action.multipleAnswers)
+      finishedAndCurrentScreens: this.getFinishedAndCurrentScreensFromMultipleAnswers(
+        action.multipleAnswers,
+      ),
+      applicantAnswers: this.getApplicantAnswersFromMultipleAnswers(action.multipleAnswers),
     });
     const href = action.action;
     this.navService.redirectTo(href);
   }
 
-  private getApplicantAnswersFromMultipleAnswers(multipleAnswers: ActionAnswerDto[]): ApplicantAnswersDto {
+  private getApplicantAnswersFromMultipleAnswers(
+    multipleAnswers: ActionAnswerDto[],
+  ): ApplicantAnswersDto {
     const applicantAnswers: ApplicantAnswersDto = {};
     for (const answer of multipleAnswers) {
       applicantAnswers[answer.componentId] = {
         value: answer.value as string,
-        visited: true
+        visited: true,
       };
     }
     return applicantAnswers;
   }
 
-  private getFinishedAndCurrentScreensFromMultipleAnswers(multipleAnswers: ActionAnswerDto[]): string[] {
-    return multipleAnswers
-      .sort((a, b) => a.priority - b.priority)
-      .map((item) => item.screenId);
+  private getFinishedAndCurrentScreensFromMultipleAnswers(
+    multipleAnswers: ActionAnswerDto[],
+  ): string[] {
+    return multipleAnswers.sort((a, b) => a.priority - b.priority).map((item) => item.screenId);
   }
 
   private quizToOrder(action: ComponentActionDto): void {

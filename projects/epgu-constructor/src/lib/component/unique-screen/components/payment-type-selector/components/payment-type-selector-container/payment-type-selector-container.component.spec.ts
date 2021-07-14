@@ -29,6 +29,7 @@ import { FormPlayerServiceStub } from '../../../../../../form-player/services/fo
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { MockModule } from 'ng-mocks';
+import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;
@@ -94,6 +95,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         AutocompleteApiService,
+        EaisdoGroupCostService,
       ],
     }).compileComponents();
   });

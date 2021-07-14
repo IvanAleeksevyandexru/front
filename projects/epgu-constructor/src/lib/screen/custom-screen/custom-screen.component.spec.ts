@@ -38,6 +38,7 @@ import {
   DTOActionAction,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -97,6 +98,7 @@ describe('CustomScreenComponent', () => {
         DatesToolsService,
         ConfigService,
         LoggerService,
+        EaisdoGroupCostService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {

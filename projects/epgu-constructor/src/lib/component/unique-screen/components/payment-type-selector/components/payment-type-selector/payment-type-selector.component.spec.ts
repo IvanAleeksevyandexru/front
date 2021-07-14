@@ -32,6 +32,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { MockModule } from 'ng-mocks';
+import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -83,6 +84,7 @@ describe('PaymentTypeSelectorComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         AutocompleteApiService,
+        EaisdoGroupCostService,
       ],
     })
       .overrideComponent(PaymentTypeSelectorComponent, {

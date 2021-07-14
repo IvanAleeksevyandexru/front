@@ -20,7 +20,7 @@
 }
 
 .title {
-  @include typ-h5;
+  @include typ-h4;
 
   margin-bottom: 20px;
   font-weight: bold;
@@ -36,6 +36,7 @@
 .file__bottom {
   margin-bottom: 24px;
   &--divider {
+    padding-bottom: 24px;
     border-bottom: 1px solid $color-divider;
   }
 }

@@ -20,6 +20,7 @@
       </a>
       <div *ngIf="isShowMenu" class="preview">
         <button
+          *ngIf="showMap"
           class="icon map"
           [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isMap }"
           (click)="setGroupFiltersMode(GroupFiltersModes.map)"
