@@ -9,8 +9,9 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, DisplayDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { combineLatest } from 'rxjs';
 import { Passport } from '../add-passport.models';
 import { ISuggestionItem } from '../../../../../core/services/autocomplete/autocomplete.inteface';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -28,7 +29,7 @@ export class AddPassportComponent implements OnInit {
   @Output() changeFormEvent = new EventEmitter<Passport>();
   suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
   componentId$ = this.screenService.component$.pipe(map(({ id }) => id));
-  form: FormGroup;
+  passportForm: FormGroup;
 
   constructor(
     public suggestHandlerService: SuggestHandlerService,
@@ -37,22 +38,32 @@ export class AddPassportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
+    combineLatest([this.screenService.display$])
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(([data]) => {
+        this.createForm(data);
+        this.subscribeToFormChanges();
+      });
+  }
 
-    this.form.valueChanges
+  private createForm(data: DisplayDto): void {
+    const initValue = JSON.parse(
+      data.components.find((component) => component.type === 'PassportLookup').value || '{}',
+    );
+    this.passportForm = new FormGroup({
+      passport: new FormControl(initValue, Validators.required),
+    });
+  }
+
+  private subscribeToFormChanges(): void {
+    this.passportForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$), startWith([null]))
       .subscribe((value) => {
         this.onChangeForm({
           value: value?.passport,
-          isValid: this.form.valid,
+          isValid: this.passportForm.valid,
         });
       });
-  }
-
-  private createForm(): void {
-    this.form = new FormGroup({
-      passport: new FormControl(null, Validators.required),
-    });
   }
 
   private onChangeForm({ isValid, value }: Passport): void {
