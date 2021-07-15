@@ -2,7 +2,7 @@ import { ListElement } from '@epgu/epgu-lib';
 import { PaymentInfoInterface } from '../../../component/unique-screen/components/payment/payment.types';
 
 export interface DictionaryResponse {
-  error: DictionaryResponseError;
+  error?: DictionaryResponseError | null;
   fieldErrors: Array<string>;
   items: Array<DictionaryItem>;
   total: number;
@@ -13,8 +13,14 @@ export interface DictionaryResponseForYMap extends DictionaryResponse {
 }
 
 export interface DictionaryResponseError {
-  code: number;
-  message: string;
+  code?: number;
+  message?: string;
+  errorCode?: number;
+  errorMessage?: string;
+  errorDetail?: {
+    errorCode: number;
+    errorMessage: string;
+  },
 }
 
 /**
