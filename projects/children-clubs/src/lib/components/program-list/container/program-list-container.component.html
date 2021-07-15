@@ -1,5 +1,5 @@
 <children-clubs-select-map-object
-  [ngClass]="{ invisible: (listService.groupFiltersMode$ | async).isList }"
+  *ngIf="(listService.groupFiltersMode$ | async).isMap"
 >
   <div class="filter-panel">
     <children-clubs-filter-panel
@@ -15,7 +15,7 @@
   *ngIf="(listService.groupFiltersMode$ | async).isList"
   class="tiny"
 >
-  <div class="screen-body" *ngIf="(listService.groupFiltersMode$ | async).isList">
+  <div class="screen-body">
     <div class="title mb-24">
       Выберите программу
     </div>

@@ -12,6 +12,8 @@ export class ScreenService extends ScreenContent {
     return this.isLoadingSubject.asObservable();
   }
 
+  public isLoaderVisible = new BehaviorSubject<boolean>(false);
+
   private screenStore: ScreenStore = {};
   private isLoading = false;
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
