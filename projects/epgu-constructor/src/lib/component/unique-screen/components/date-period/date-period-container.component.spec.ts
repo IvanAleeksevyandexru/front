@@ -22,7 +22,6 @@ describe('DatePeriodContainerComponent', () => {
   let fixture: ComponentFixture<DatePeriodContainerComponent>;
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
-  let dateToolsService: DatesToolsService;
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
@@ -37,7 +36,6 @@ describe('DatePeriodContainerComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
-    dateToolsService = TestBed.inject(DatesToolsService);
   });
 
   beforeEach(() => {
@@ -102,8 +100,7 @@ describe('DatePeriodContainerComponent', () => {
       fixture.detectChanges();
       component.initialState$.subscribe((value) => {
         expect(value.endDate).toBeNull();
-        expect(dateToolsService.format(value.startDate, DATE_STRING_DASH_FORMAT))
-          .toEqual(dateToolsService.format(new Date(), DATE_STRING_DASH_FORMAT));
+        expect(value.startDate).toBeNull();
       });
 
       jest.runAllTimers();
