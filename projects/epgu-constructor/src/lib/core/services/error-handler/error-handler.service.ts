@@ -33,6 +33,11 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
+enum ModalFailureType {
+  BOOKING,
+  FAILURE,
+  SESSION,
+}
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
 // eslint-disable-next-line max-len
@@ -59,7 +64,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
       if (url.includes('equeue/agg/book') && error) {
         const errorMessage = error?.errorDetail?.errorMessage || NEW_BOOKING_DEFAULT_ERROR_MESSAGE;
-        this.showModalFailure(errorMessage, false, 'BOOKING');
+        this.showModalFailure(errorMessage, false, ModalFailureType.BOOKING);
       }
 
       if (
@@ -98,9 +103,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
           if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
             if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, false, 'SESSION');
+              this.showModalFailure(errorMessage, false, ModalFailureType.SESSION);
             } else {
-              this.showModalFailure(errorMessage, false, 'FAILURE');
+              this.showModalFailure(errorMessage, false, ModalFailureType.FAILURE);
             }
           }
         } else {
@@ -111,16 +116,16 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           ) {
             this.showModalNoData(errorMessage, true);
           }
-  
+
           if (
             errorMessage.includes('FAILURE') ||
             errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
           ) {
             const newErrorMessage = errorMessage.replace('FAILURE:', '');
             if (newErrorMessage === SESSION_TIMEOUT_SMEV2 || newErrorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, true, 'SESSION');
+              this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
-              this.showModalFailure(errorMessage, true, 'FAILURE');
+              this.showModalFailure(errorMessage, true, ModalFailureType.FAILURE);
             }
           }
         }
@@ -185,11 +190,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     this.showModal(ITEMS_NO_DATA);
   }
 
-  private showModalFailure(errorMessage: string, replace: boolean, modal: 'SESSION' | 'FAILURE' | 'BOOKING'): void {
+  private showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
     const message = replace ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '') : errorMessage;
 
     switch(modal) {
-      case 'FAILURE':
+      case ModalFailureType.FAILURE:
         ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
         this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
           if (redirectToLk) {
@@ -198,7 +203,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         });
         break;
 
-      case 'SESSION':
+      case ModalFailureType.SESSION:
         SESSION_TIMEOUT.text = SESSION_TIMEOUT.text.replace(/\{textAsset\}?/g, message);
         this.showModal(SESSION_TIMEOUT).then((reload) => {
           if (reload) {
@@ -207,7 +212,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         });
         break;
 
-      case 'BOOKING':
+      case ModalFailureType.BOOKING:
         const modal = {
           ...NEW_BOOKING_ERROR,
           text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message)
