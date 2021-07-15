@@ -50,6 +50,30 @@
     }
   }
 
+  ul {
+    &.dash-bullet > li {
+      &:first-letter {
+        text-transform: lowercase;
+      }
+      // fix для аббервиатур вложенных списков
+      &.first-letter-uppercase:first-letter {
+        text-transform: uppercase;
+      }
+      &::after {
+        content: ' ';
+        position: absolute;
+        top: 11px;
+        left: 0;
+        display: inline-block;
+        vertical-align: middle;
+        width: 8px;
+        height: 2px;
+        border-radius: 1px;
+        background-color: $color-blu-digitale;
+      }
+    }
+  }
+
   ol {
     counter-reset: number;
   }
