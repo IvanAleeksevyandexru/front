@@ -665,7 +665,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   private initSlotsAreas(): void {
-    if (this.timeSlotType === TimeSlotsTypes.BRAK) {
+    if ([TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(this.timeSlotType)) {
       this.areas = this.timeSlotsService.getAreasListItems();
       [this.currentArea] = this.areas;
       this.isAreasVisible = this.areas.length > 0;
