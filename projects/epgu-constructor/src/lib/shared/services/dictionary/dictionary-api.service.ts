@@ -52,7 +52,9 @@ export class DictionaryApiService {
 
           return this.post<DictionaryResponse>(path, options).pipe(
             tap((response) => {
-              this.dictionaryCache[id] = response;
+              if (!this.hasDictionaryResponseError(response)) {
+                this.dictionaryCache[id] = response;
+              }
             }),
             finalize(() => {
               const status = this.processStatus.getValue();
@@ -107,6 +109,18 @@ export class DictionaryApiService {
         q: qString,
       },
     });
+  }
+
+  private hasDictionaryResponseError(response: DictionaryResponse): boolean {
+    const error = response.error;
+    if (!error) {
+      return false;
+    }
+    const codeCheck = error.code && error.code !== 0;
+    const errorCodeCheck = error.errorCode && error.code !== 0;
+    const errorDetailMessageCheck = error.errorDetail?.errorMessage &&
+      error.errorDetail.errorMessage.toLowerCase() !== 'operation completed';
+    return !!(codeCheck || errorCodeCheck || errorDetailMessageCheck);
   }
 
   private post<T>(path: string, options: DictionaryOptions): Observable<T> {
