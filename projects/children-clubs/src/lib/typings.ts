@@ -82,6 +82,7 @@ export interface FinancialSource {
 export interface Group {
   uuid: string;
   name: string;
+  available: boolean;
   ageFrom: number; //float
   ageTo: number; //float
   size: string; //byte
