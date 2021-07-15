@@ -3,10 +3,16 @@ import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 
 @Injectable()
 export class StateService {
   state$ = this.stateQuery.state$;
+
+  public isLoaderVisible$: Observable<boolean> = this.stateQuery.state$.pipe(
+    pluck('isLoaderVisible'),
+  );
 
   constructor(
     private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
@@ -64,6 +70,14 @@ export class StateService {
 
   set groupFiltersMode(groupFiltersMode: GroupFiltersModes) {
     this.changeState({ groupFiltersMode });
+  }
+
+  get isLoaderVisible(): boolean {
+    return this.stateQuery.state?.isLoaderVisible;
+  }
+
+  set isLoaderVisible(isLoaderVisible: boolean) {
+    this.changeState({ isLoaderVisible });
   }
 
   clearGroupFilters(): void {
