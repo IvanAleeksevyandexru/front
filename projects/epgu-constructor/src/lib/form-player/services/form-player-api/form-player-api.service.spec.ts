@@ -3,9 +3,13 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormPlayerNavigation, ServiceInfo } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { FormPlayerApiSuccessResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  FormPlayerApiSuccessResponse,
+  QuizDataDto,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
@@ -14,6 +18,7 @@ import { Gender } from '@epgu/epgu-constructor-types';
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;
   let initDataService: InitDataService;
+  let configService: ConfigService;
   let http: HttpTestingController;
   let apiUrl = '/api';
   let serviceId = 'local';
@@ -79,6 +84,7 @@ describe('FormPlayerApiService', () => {
         FormPlayerApiService,
         LocationService,
         WINDOW_PROVIDERS,
+        SessionService,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
@@ -87,6 +93,7 @@ describe('FormPlayerApiService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(FormPlayerApiService);
+    configService = TestBed.inject(ConfigService);
     initDataService = TestBed.inject(InitDataService);
     initDataService.targetId = targetId;
     initDataService.orderId = orderId;
@@ -243,7 +250,11 @@ describe('FormPlayerApiService', () => {
     it('shouldn\'t return scenarioDto with isPrevStepCase', fakeAsync(() => {
       service
         .navigate(mockData, mockNavigationOptions, FormPlayerNavigation.NEXT)
-        .subscribe((response) => expect((response as FormPlayerApiSuccessResponse).scenarioDto.isPrevStepCase).toBeUndefined());
+        .subscribe((response) =>
+          expect(
+            (response as FormPlayerApiSuccessResponse).scenarioDto.isPrevStepCase,
+          ).toBeUndefined(),
+        );
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.NEXT}`;
       const req = http.expectOne(url);
       expect(req.request.url).toBe(url);
@@ -254,7 +265,11 @@ describe('FormPlayerApiService', () => {
     it('should return scenarioDto with isPrevStepCase property and true value', fakeAsync(() => {
       service
         .navigate(mockData, mockNavigationOptions, FormPlayerNavigation.PREV)
-        .subscribe((response) => expect((response as FormPlayerApiSuccessResponse).scenarioDto.isPrevStepCase).toBeTruthy());
+        .subscribe((response) =>
+          expect(
+            (response as FormPlayerApiSuccessResponse).scenarioDto.isPrevStepCase,
+          ).toBeTruthy(),
+        );
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}`;
       const req = http.expectOne(url);
       expect(req.request.url).toBe(url);
@@ -326,6 +341,89 @@ describe('FormPlayerApiService', () => {
       expect(req.request.body).toEqual(body);
       req.flush(responseMock);
       tick();
+    }));
+  });
+
+  describe('getQuizData()', () => {
+    it('should call http with get method', fakeAsync(() => {
+      const apiUrl = configService.quizDataApiUrl;
+      const responseMockData = {};
+
+      service.getQuizData().subscribe((response) => expect(response).toBe(responseMockData));
+      const req = http.expectOne(`${apiUrl}?userId=`);
+      expect(req.request.method).toBe('GET');
+      req.flush(responseMockData);
+      tick();
+    }));
+
+    it('should call http with userId as params', fakeAsync(() => {
+      service.getQuizData().subscribe((response) => expect(response).toBe(responseMock));
+      const apiUrl = configService.quizDataApiUrl;
+      const req = http.expectOne(`${apiUrl}?userId=`);
+      expect(req.request.urlWithParams.includes('userId')).toBeTruthy();
+      req.flush(responseMock);
+      tick();
+    }));
+  });
+
+  describe('getQuizDataByToken()', () => {
+    it('should call http with get method', fakeAsync(() => {
+      const apiUrl = configService.quizDataApiUrl;
+      const token = 'token';
+      const responseMockData = {};
+
+      service
+        .getQuizDataByToken(token)
+        .subscribe((response) => expect(response).toBe(responseMockData));
+      const req = http.expectOne(`${apiUrl}/${token}`);
+      expect(req.request.method).toBe('GET');
+      req.flush(responseMockData);
+      tick();
+    }));
+
+    it('should call http with token passed', fakeAsync(() => {
+      const apiUrl = configService.quizDataApiUrl;
+      const token = 'token';
+
+      service
+        .getQuizDataByToken(token)
+        .subscribe((response) => expect(response).toBe(responseMock));
+      const req = http.expectOne(`${apiUrl}/${token}`);
+      expect(req.request.urlWithParams.includes(token)).toBeTruthy();
+      req.flush(responseMock);
+      tick();
+    }));
+  });
+
+  describe('setQuizData()', () => {
+    let req;
+    beforeEach(fakeAsync(() => {
+      const data: QuizDataDto = { multipleAnswers: '', order: '', quizRaw: '' };
+      const apiUrl = configService.quizDataApiUrl;
+
+      service.setQuizData(data).subscribe((response) => expect(response).toBe(responseMock));
+      req = http.expectOne(`${apiUrl}`);
+    }));
+
+    afterEach(fakeAsync(() => {
+      req.flush(responseMock);
+      tick();
+    }));
+
+    it('should call http with post method', fakeAsync(() => {
+      expect(req.request.method).toBe('POST');
+    }));
+
+    it('should call with body', fakeAsync(() => {
+      const body = req.request.body;
+      expect(body).not.toBeUndefined();
+    }));
+
+    it('should call with body with QuizDataDto', fakeAsync(() => {
+      const body = req.request.body;
+      expect(body.quizRaw).not.toBeUndefined();
+      expect(body.order).not.toBeUndefined();
+      expect(body.multipleAnswers).not.toBeUndefined();
     }));
   });
 });
