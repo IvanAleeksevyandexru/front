@@ -44,6 +44,7 @@ export class EaisdoGroupCostService {
     }
 
     if (responseType === EaisdoResponseTypes.groupCostBadCalculationDataResponse) {
+      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
       return EaisdoStateTypes.errorBad;
     }
 
@@ -51,6 +52,7 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostCertificateExhaustedResponse &&
       financialSource === EaisdoFinancialSourceTypes.pfdod_certificate
     ) {
+      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
       return EaisdoStateTypes.errorExhaustedСertificate;
     }
 
@@ -59,6 +61,7 @@ export class EaisdoGroupCostService {
       (financialSource === EaisdoFinancialSourceTypes.budget ||
         financialSource === EaisdoFinancialSourceTypes.none)
     ) {
+      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
       return EaisdoStateTypes.errorExhaustedProgram;
     }
 
