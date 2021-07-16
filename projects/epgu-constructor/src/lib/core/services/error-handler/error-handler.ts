@@ -132,6 +132,26 @@ export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
   isShortModal: true,
 };
 
+export const NEW_BOOKING_ERROR: ConfirmationModal = {
+  text: ITEMS_REQUEST_TEXT_NO_DATA,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      color: 'white',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+    {
+      label: 'К заявлению',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
 export const ITEMS_NO_DATA: ConfirmationModal = {
   text: ITEMS_REQUEST_TEXT_NO_DATA,
   title: '',
