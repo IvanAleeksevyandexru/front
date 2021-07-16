@@ -10,7 +10,7 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatesToolsService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesHelperService } from '@epgu/epgu-lib';
-import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, distinctUntilChanged, pairwise, startWith } from 'rxjs/operators';
 import { DatePeriodFormState, DatePeriodFormValues } from '../date-period.types';
 import { RegistrationAddrHints } from '../../registration-addr/registration-addr-screen.types';
 
@@ -54,6 +54,12 @@ export class DatePeriodComponent implements OnInit {
           ? this.datesToolsService.min([newValue, attrMaxDate])
           : attrMaxDate;
         this.beginMaxDate = finalMaxDate;
+      });
+
+    this.group.valueChanges
+      .pipe(startWith(this.group.getRawValue() as DatePeriodFormValues), pairwise())
+      .subscribe(([, nextValues]: [DatePeriodFormValues, DatePeriodFormValues]) => {
+        this.updateState.emit({ ...nextValues, isValid: this.group.valid });
       });
   }
 
