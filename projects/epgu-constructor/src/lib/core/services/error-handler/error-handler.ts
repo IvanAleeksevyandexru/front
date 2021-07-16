@@ -65,7 +65,13 @@ export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   showCrossButton: true,
   buttons: [
     {
-      label: 'Вернуться к заявлению',
+      label: 'На предыдущий шаг',
+      color: 'white',
+      closeModal: true,
+      value: 'prevStep',
+    },
+    {
+      label: 'Попробовать ещё раз',
       closeModal: true,
     },
   ],
@@ -159,7 +165,13 @@ export const ITEMS_NO_DATA: ConfirmationModal = {
   showCrossButton: true,
   buttons: [
     {
-      label: 'Вернуться к заявлению',
+      label: 'На предыдущий шаг',
+      color: 'white',
+      closeModal: true,
+      value: 'prevStep',
+    },
+    {
+      label: 'Попробовать ещё раз',
       closeModal: true,
     },
   ],
