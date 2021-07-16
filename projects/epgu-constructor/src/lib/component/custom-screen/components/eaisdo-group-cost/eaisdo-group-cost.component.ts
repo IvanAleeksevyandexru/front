@@ -88,7 +88,7 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
   private handleResponse(response: ActionApiResponse<EaisdoResponse>): void {
     const { errorList, responseData } = response;
     const error = errorList[0];
-    const responseType = responseData?.value?.responseType;
+    const responseType = responseData?.type;
     const financialSource = this.component?.arguments?.financialSource;
     const typeOfBudget = this.component?.arguments?.typeOfBudget;
 
@@ -108,7 +108,8 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
       financialSource,
       typeOfBudget,
     );
-    this.currentAnswersService.state[this.component.id] = responseData || {};
+    this.currentAnswersService.state[this.component.id] =
+      { value: responseData, visited: true } || {};
   }
 
   private handleError(error): void {
