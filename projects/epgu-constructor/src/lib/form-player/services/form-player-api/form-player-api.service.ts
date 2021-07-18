@@ -90,6 +90,17 @@ export class FormPlayerApiService {
 
     const params = this.getNavigateParams(options.params);
 
+    // side-effect
+    if (!!this.configService.quizDataApiUrl) {
+      const order = JSON.stringify(data.scenarioDto.applicantAnswers || {});
+      const multipleAnswers = JSON.stringify(
+        data.scenarioDto.display?.buttons?.find((button) => !!button.multipleAnswers) || {},
+      );
+      const quizRaw = JSON.stringify(data.scenarioDto || {});
+      const quizData = { order, multipleAnswers, quizRaw };
+      this.setQuizData(quizData);
+    }
+
     return this.post<FormPlayerApiResponse>(path, body, params).pipe(
       map((result) => {
         if (
