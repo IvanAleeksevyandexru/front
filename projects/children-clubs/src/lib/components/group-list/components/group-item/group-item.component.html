@@ -2,10 +2,15 @@
   <div class="card-toggle">
     <input [value]="true" type="checkbox" id="card-{{ index }}" />
     <label class="card-toggle-header group-item-header" for="card-{{ index }}">
-      <span class="card-toggle-label"
-        ><b>{{ group?.name }}</b></span
-      ></label
-    >
+      <span class="card-toggle-label">
+        <b>{{ group?.name }}</b>
+      </span>
+    </label>
+    <children-clubs-deny-reason-title
+      *ngIf="denyReasonMessage?.title"
+      class="mt-16"
+      [title]="denyReasonMessage.title"
+    ></children-clubs-deny-reason-title>
     <div class="card-toggle-content group-item-content">
       <div class="modal-divider"></div>
       <div *ngIf="group?.teachers" class="group-item mt-16">
@@ -43,19 +48,20 @@
         <div class="group-item__key">План приема</div>
         <div class="group-item__value">до {{ group?.size }} человек</div>
       </div>
-      <ng-container  *ngIf="!isMultiPaymentsInfoShown; else multi">
-        <div  class="group-item mt-16" *ngIf="certCost > 0 || paidCost > 0">
+      <ng-container *ngIf="!isMultiPaymentsInfoShown; else multi">
+        <div class="group-item mt-16" *ngIf="certCost > 0 || paidCost > 0">
           <div class="group-item__key">Стоимость обучения</div>
           <div class="group-item__value">
             {{ certCost || paidCost | toMoney }}
             {{ ['рубль', 'рубля', 'рублей'] | pluralize: certCost || paidCost }} в месяц
           </div>
         </div>
-      </ng-container >
+      </ng-container>
       <div *ngIf="paymentsInfo" class="group-item mt-16">
         <div class="group-item__key">Доступные способы оплаты</div>
         <div class="group-item__value">{{ paymentsInfo }}</div>
       </div>
+      <div *ngIf="denyReasonMessage" [innerHTML]="denyReasonMessage.text"></div>
       <div class="btn-container mt-24">
         <lib-button (click)="finish()" type="button">Записаться в эту группу</lib-button>
       </div>

@@ -1,0 +1,13 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 16px;
+  border: 2px solid $color-gosred;
+  border-radius: 8px;
+
+  @include typ-plain-text;
+}

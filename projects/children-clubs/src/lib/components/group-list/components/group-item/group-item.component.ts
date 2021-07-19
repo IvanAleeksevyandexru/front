@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import {
   AppNavigationService,
   AppStateQuery,
   AppStateService,
+  DATE_STRING_DASH_FORMAT,
+  DATE_STRING_DOT_FORMAT,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FinancialSource, FinancialSourceType, Group, Program } from '../../../../typings';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
+  DenyReasonMessage,
   ValueGroup,
   ValueProgram,
 } from '../../../../children-clubs.types';
@@ -18,7 +22,7 @@ import {
   styleUrls: ['./group-item.component.scss', '../../../../../styles/index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GroupItemComponent {
+export class GroupItemComponent implements OnInit {
   @Input() set data(data: Group) {
     this.group = data;
     data?.financingSources?.forEach((item) => {
@@ -56,12 +60,18 @@ export class GroupItemComponent {
   isMultiPaymentsInfoShown = false;
   group: Group;
   sourceType = FinancialSourceType;
+  denyReasonMessage: DenyReasonMessage | null = null;
 
   constructor(
     private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
     private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
     private appNavigationService: AppNavigationService,
+    private dateToolService: DatesToolsService,
   ) {}
+
+  ngOnInit(): void {
+    this.getDenyReasonMessage();
+  }
 
   setPaymentMethodsInfo(): void {
     let paymentInfoText;
@@ -134,5 +144,63 @@ export class GroupItemComponent {
 
   private getCost(item: FinancialSource): number {
     return item.sourceCode === FinancialSourceType.pfdod_certificate ? item.monthlyCost : item.cost;
+  }
+
+  private getDenyReasonMessage(): void {
+    try {
+      if (this.group && !(this.group.available ?? true) && this.group.denyReason) {
+        const { denyReason } = this.group;
+        const { denyReason: denyReasonJSON, nextSchoolYear } = this.stateQuery.state;
+        const denyReasonsByPeriod = JSON.parse(denyReasonJSON);
+        const denyReasonMessage: DenyReasonMessage | null =
+          (nextSchoolYear === 'true'
+            ? denyReasonsByPeriod.nextYear[denyReason]
+            : denyReasonsByPeriod.currentYear[denyReason]) || null;
+        if (denyReasonMessage) {
+          this.denyReasonMessage = {
+            text: this.getReplacedDenyReasonMessageStr(denyReasonMessage.text),
+            title: this.getReplacedDenyReasonMessageStr(denyReasonMessage.title),
+          };
+        }
+      }
+    } catch (e) {
+      this.denyReasonMessage = null;
+    }
+  }
+
+  private getReplacedDenyReasonMessageStr(str: string): string {
+    if (!this.group) {
+      return str;
+    }
+    const {
+      dateEnd,
+      dateBegin,
+      orderTo,
+      orderFrom,
+      availableNextYearOrderFrom,
+      availableNextYearOrderTo,
+    } = this.group;
+    return str
+      .replace(/\$\{orderFrom\}?/g, this.formatDateToReplaceInDenyReason(orderFrom))
+      .replace(/\$\{orderTo\}?/g, this.formatDateToReplaceInDenyReason(orderTo))
+      .replace(/\$\{dateBegin\}?/g, this.formatDateToReplaceInDenyReason(dateBegin))
+      .replace(/\$\{dateEnd\}?/g, this.formatDateToReplaceInDenyReason(dateEnd))
+      .replace(
+        /\$\{availableNextYearOrderFrom\}?/g,
+        this.formatDateToReplaceInDenyReason(availableNextYearOrderFrom),
+      )
+      .replace(
+        /\$\{availableNextYearOrderTo\}?/g,
+        this.formatDateToReplaceInDenyReason(availableNextYearOrderTo),
+      );
+  }
+
+  private formatDateToReplaceInDenyReason(date: string | null): string {
+    return date
+      ? this.dateToolService.format(
+          this.dateToolService.parse(date, DATE_STRING_DASH_FORMAT),
+          DATE_STRING_DOT_FORMAT,
+        )
+      : '';
   }
 }
