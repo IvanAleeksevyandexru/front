@@ -5,12 +5,6 @@ import { WINDOW, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 
 import { ToggleTextComponent } from './toggle-text.component';
 
-@Component({ template: `
-  <children-clubs-toggle-text
-  [text]="text"
-  [linesQuantity]="linesQuantity"
-  ></children-clubs-toggle-text>
-` })
 const lineHeight = 24;
 
 class MockElementRef implements ElementRef {
@@ -50,13 +44,13 @@ describe('ToggleTextComponent', () => {
     
     window = TestBed.inject(WINDOW) as Window;
     component['elemRef'] = new MockElementRef();
-  });
-
-  it('should show all text if text length < linesQuantity', () => {
+    
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({
       getPropertyValue: () => '' + lineHeight // mock line-height
     } as unknown as CSSStyleDeclaration);
+  });
 
+  it('should show all text if text length < linesQuantity', () => {
     component.text = 'text text2 text3';
     component.linesQuantity = 2;
 
@@ -68,9 +62,6 @@ describe('ToggleTextComponent', () => {
   });
 
   it('should cut text if text length > linesQuantity = 1', () => {
-    jest.spyOn(window, 'getComputedStyle').mockReturnValue({
-      getPropertyValue: () => '' + lineHeight // mock line-height
-    } as unknown as CSSStyleDeclaration);
     component.text = 'text text2 text3 text4 text5 text6';
     component.linesQuantity = 1;
 
@@ -82,9 +73,6 @@ describe('ToggleTextComponent', () => {
   });
 
   it('should cut text if text length > linesQuantity = 2', () => {
-    jest.spyOn(window, 'getComputedStyle').mockReturnValue({
-      getPropertyValue: () => '' + lineHeight // mock line-height
-    } as unknown as CSSStyleDeclaration);
     component.text = 'text text2 text3 text4 text5 text6';
     component.linesQuantity = 2;
 
