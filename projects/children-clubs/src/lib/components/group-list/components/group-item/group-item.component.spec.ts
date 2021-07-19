@@ -7,13 +7,14 @@ import {
   AppStateService,
   AppStateServiceStub,
   ConfigService,
-  ConfigServiceStub,
+  ConfigServiceStub, DatesToolsService,
   ImgPrefixerModule,
   SafeModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { FinancialSourceType } from '../../../../typings';
 import { GroupItemComponent } from './group-item.component';
+import { DenyReasonTitleComponent } from '../../../base/components/deny-reason-title/deny-reason-title.component';
 
 describe('GroupItemComponent', () => {
   let component: GroupItemComponent;
@@ -26,13 +27,14 @@ describe('GroupItemComponent', () => {
         ImgPrefixerModule,
         SafeModule,
       ],
-      declarations: [GroupItemComponent],
+      declarations: [GroupItemComponent, DenyReasonTitleComponent],
 
       providers: [
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },
         { provide: AppNavigationService, useClass: AppNavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        DatesToolsService,
       ],
     }).compileComponents();
   });
