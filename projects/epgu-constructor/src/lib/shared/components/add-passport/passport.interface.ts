@@ -2,13 +2,13 @@ import { TextTransform } from '@epgu/epgu-constructor-types';
 
 export interface PassportAttr {
   participant: { role: string; mode: string };
-  fields: PassportFields[];
+  fields: PassportField[];
   fstuc?: TextTransform; // TODO проверить на наличие
 }
 
 export type PassportFieldName = 'rfPasportSeries' | 'rfPasportNumber';
 
-export interface PassportFields {
+export interface PassportField {
   mask: Array<string>;
   fieldName: PassportFieldName;
   label: string;
