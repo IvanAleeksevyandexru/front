@@ -37,6 +37,7 @@ import { ConfirmPersonalUserLegalDataComponent } from '../components/confirm-per
 import { ReferralNumberComponent } from '../components/referral-number/referral-number.component';
 import { DatePeriodContainerComponent } from '../components/date-period/date-period-container.component';
 import { PaymentWayContainerComponent } from '../components/payment-way/components/payment-way-container/payment-way-container.component';
+import { TimeSlotDoctorsContainerComponent } from '../components/time-slot-doctors/time-slot-doctors-container/time-slot-doctors-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -49,6 +50,7 @@ type UniqueScreenComponent =
   | EmployeeHistoryContainerComponent
   | RepeatableScreenComponent
   | TimeSlotsComponent
+  | TimeSlotDoctorsContainerComponent
   | CarInfoContainerComponent
   | CarOwnerInfoContainerComponent
   | CarListContainerComponent
@@ -90,7 +92,8 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
-  TimeSlot: TimeSlotsComponent,
+  TimeSlot: TimeSlotDoctorsContainerComponent,
+  TimeSlotDoctors: TimeSlotDoctorsContainerComponent,
   TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,

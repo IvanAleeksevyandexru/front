@@ -1,0 +1,14 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-constructor-time-slot-doctors
+    *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
+    [docLookupAttrs]="timeSlotDoctor.attrs.docLookup"
+    [specLookupAttrs]="timeSlotDoctor.attrs.specLookup"
+    [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
+  ></epgu-constructor-time-slot-doctors>
+</epgu-constructor-default-unique-screen-wrapper>

@@ -1,0 +1,28 @@
+<epgu-cf-ui-constructor-screen-pad>
+  <epgu-constructor-label [label]="specLookupAttrs.label" for="spec"></epgu-constructor-label>
+
+  <epgu-cf-ui-constructor-constructor-lookup
+    epgu-constructor-validation-type
+    [fixedItems]="specLookupList$ | async"
+    [validationShowOn]="validationShowOn"
+    [queryMinSymbolsCount]="0"
+    [virtualScroll]="true"
+    [clearable]="true"
+    [queryMinSymbolsCount]="0"
+  >
+  </epgu-cf-ui-constructor-constructor-lookup>
+
+  <epgu-constructor-label [label]="docLookupAttrs.label"  for="doctors"></epgu-constructor-label>
+
+  <epgu-cf-ui-constructor-constructor-lookup
+    epgu-constructor-validation-type
+    [validationShowOn]="validationShowOn"
+    [queryMinSymbolsCount]="0"
+    [virtualScroll]="true"
+    [clearable]="true"
+    [queryMinSymbolsCount]="0"
+  >
+  </epgu-cf-ui-constructor-constructor-lookup>
+
+
+</epgu-cf-ui-constructor-screen-pad>
