@@ -121,7 +121,6 @@ export type CustomComponentAttrField = Array<{
  */
 export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   add?: { component: string; caption: string[] };
-  arguments?: { [key: string]: string };
   cityFilter?: string[];
   clarifications?: Clarifications;
   customUnrecLabel?: string;
@@ -261,6 +260,7 @@ export interface RelationCondition {
 }
 
 export interface CustomComponent extends ComponentBase {
+  arguments?: { [key: string]: string };
   attrs: CustomComponentAttr;
   type: CustomScreenComponentTypes;
   id: string;
