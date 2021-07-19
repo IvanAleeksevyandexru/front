@@ -25,6 +25,7 @@ export class GroupItemComponent {
       this.sources[item.sourceCode] = this.getCost(item) ?? null;
       this.resultSources[item.sourceCode] = true;
     });
+    this.available = data?.available ?? true;
 
     this.certCost = this.sources[FinancialSourceType.pfdod_certificate];
     this.paidCost =
@@ -55,6 +56,7 @@ export class GroupItemComponent {
   isPayments = false;
   isMultiPaymentsInfoShown = false;
   group: Group;
+  available: boolean;
   sourceType = FinancialSourceType;
 
   constructor(

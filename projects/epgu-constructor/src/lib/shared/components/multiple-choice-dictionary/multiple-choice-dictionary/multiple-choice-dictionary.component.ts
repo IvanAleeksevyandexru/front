@@ -89,13 +89,20 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
     this.onTouched = fn;
   }
 
-  public writeValue(items: ListElement[]): void {
-    const selectedItems = Array.isArray(items) ? items : JSON.parse(items || '[]');
+  public writeValue(items: ListElement[] | string): void {
+    if (!items) return;
+    const value = Array.isArray(items) ? items : JSON.parse(items);
 
-    this.selectedItems = {
-      list: selectedItems,
-      amount: selectedItems.length,
-    };
+    // TODO: когда-нибудь value всегда будет объектом, тогда можно будет убрать вторую проверку
+    // пока что сохраняем обратную совместимость со старыми json'ами услуг
+    if (Array.isArray(value)) {
+      this.selectedItems = {
+        list: value,
+        amount: value.length,
+      };
+    } else {
+      this.selectedItems = value;
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
