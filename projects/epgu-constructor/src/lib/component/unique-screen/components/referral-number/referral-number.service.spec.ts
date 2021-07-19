@@ -16,7 +16,6 @@ import { ComponentsListRelationsService } from '../../../custom-screen/services/
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { expand } from 'rxjs/operators';
 
 describe('ReferralNumberService', () => {
   let service: ReferralNumberService;

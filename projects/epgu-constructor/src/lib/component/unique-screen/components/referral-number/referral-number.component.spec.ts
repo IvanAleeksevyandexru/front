@@ -333,23 +333,13 @@ describe('ReferralNumberComponent', () => {
       expect(getReferralSearchSpy).toHaveBeenCalledWith('445', 'sessionId', 'eserviceId');
     });
 
-    it('should set ERROR STATE and show error message from service when not found', fakeAsync(() => {
+    it('should NOT set ERROR STATE and show error message from service when not found', fakeAsync(() => {
       setup(mockServiceResponseNotFound);
 
       component.findReferral();
       fixture.detectChanges();
 
-      const debugEl = fixture.debugElement;
-
-      expect(component.searchStatus).toEqual('ERROR_RESPONSE' as SearchReferralStatus);
-      expect(component.responseError).toEqual({
-        errorCode: 6,
-        errorMessage: 'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.'
-      });
-      expect(debugEl).toBeTruthy();
-      expect(debugEl.query(By.css(ERROR_MESSAGE_SELECTOR))?.nativeElement?.innerHTML).toBe(
-        'Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.'
-      );
+      expect(component.searchStatus).toEqual('WAIT_FOR_USER_INPUT' as SearchReferralStatus);
     }));
 
     it('should set ERROR STATE and show expired error message when expired', () => {
