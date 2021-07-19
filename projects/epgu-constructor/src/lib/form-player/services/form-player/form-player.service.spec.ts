@@ -261,6 +261,15 @@ describe('FormPlayerService', () => {
     });
   });
 
+  describe('getQuizDataByToken()', () => {
+    it('should call getQuizDataByToken with passed token', () => {
+      const token = 'some token';
+      spyOn<any>(service, 'getQuizDataByToken').and.callThrough();
+      service.getQuizDataByToken(token);
+      expect(service['getQuizDataByToken']).toHaveBeenCalledWith(token);
+    });
+  });
+
   describe('initPlayerFromQuiz()', () => {
     it('should call updateLoading with false true', () => {
       const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };

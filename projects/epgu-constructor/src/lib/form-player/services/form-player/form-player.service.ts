@@ -7,7 +7,7 @@ import { FormPlayerApiService } from '../form-player-api/form-player-api.service
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse,
+  FormPlayerApiSuccessResponse, QuizDataDtoResponse,
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
@@ -43,6 +43,10 @@ export class FormPlayerService extends FormPlayerBaseService {
   initData(orderId?: number): void {
     this.updateLoading(true);
     this.getOrderData(orderId);
+  }
+
+  getQuizDataByToken(token: string): Observable<QuizDataDtoResponse> {
+    return this.formPlayerApiService.getQuizDataByToken(token);
   }
 
   initPlayerFromOrder(otherScenario: Partial<ScenarioDto>): Observable<FormPlayerApiResponse> {

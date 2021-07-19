@@ -11,7 +11,7 @@ import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
-  QuizDataDtoReponse,
+  QuizDataDtoResponse,
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { map } from 'rxjs/operators';
@@ -126,17 +126,17 @@ export class FormPlayerApiService {
     return this.post<FormPlayerApiResponse>(path, body);
   }
 
-  public getQuizData(): Observable<QuizDataDtoReponse> {
+  public getQuizData(): Observable<QuizDataDtoResponse> {
     const userId = this.sessionService.userId;
     const path = `${this.configService.quizDataApiUrl}?userId=${userId}`;
 
-    return this.get<QuizDataDtoReponse>(path);
+    return this.get<QuizDataDtoResponse>(path);
   }
 
-  public getQuizDataByToken(token: string): Observable<QuizDataDtoReponse> {
+  public getQuizDataByToken(token: string): Observable<QuizDataDtoResponse> {
     const path = `${this.configService.quizDataApiUrl}/${token}`;
 
-    return this.get<QuizDataDtoReponse>(path);
+    return this.get<QuizDataDtoResponse>(path);
   }
 
   private getNavigateParams(params: NavigationParams = {}): HttpParams {
