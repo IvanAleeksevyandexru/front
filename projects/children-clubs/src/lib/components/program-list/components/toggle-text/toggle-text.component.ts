@@ -1,4 +1,13 @@
-import { Component, ElementRef, HostListener, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
+import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'children-clubs-toggle-text',
@@ -14,7 +23,7 @@ export class ToggleTextComponent implements OnInit, OnChanges {
   elem: HTMLElement;
   lineHeight: number;
 
-  constructor(protected elemRef: ElementRef<HTMLElement>) {}
+  constructor(@Inject(WINDOW) private window: Window, private elemRef: ElementRef) {}
 
   @HostListener('window:resize')
   onResize(): void {
@@ -39,7 +48,7 @@ export class ToggleTextComponent implements OnInit, OnChanges {
         .match(/\d{1,}/)[0] || 10;
     const elemClone = elem.cloneNode(false) as HTMLElement;
     elem.appendChild(elemClone);
-    let heightElemClone = elemClone.offsetHeight;
+    let elemCloneHeight = elemClone.offsetHeight;
     const maxHeightElem = lineHeight * linesQuantity;
     let result = '';
     const wordlist = text.split(' ');
@@ -47,10 +56,10 @@ export class ToggleTextComponent implements OnInit, OnChanges {
     for (const word of wordlist) {
       result += `${word} [...]`;
       elemClone.innerText = result;
-      heightElemClone = elemClone.offsetHeight;
-      if (heightElemClone > maxHeightElem) {
+      elemCloneHeight = elemClone.offsetHeight;
+      if (elemCloneHeight > maxHeightElem) {
         const j = result.lastIndexOf(word) || result.length;
-        result = result.slice(0, j).replace(/,\s*$/, '');
+        result = result.slice(0, j).replace(/[,\s]*$/, '');
         elem.removeChild(elemClone);
         return result;
       }
