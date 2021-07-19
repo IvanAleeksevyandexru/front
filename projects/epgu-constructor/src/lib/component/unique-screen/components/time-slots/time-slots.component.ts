@@ -19,23 +19,18 @@ import {
   months,
   StartOfTypes,
   weekDaysAbbr,
+  IDay,
+  SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
-
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
-import {
-  IDay,
-  SlotInterface,
-  TimeSlot,
-  TimeSlotsAnswerInterface,
-  TimeSlotValueInterface,
-} from './time-slots.types';
+import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
