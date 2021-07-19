@@ -179,7 +179,7 @@ export const ITEMS_FAILURE: ConfirmationModal = {
       value: 'redirectToLk',
     },
     {
-      label: 'Вернуться к заявлению',
+      label: 'В начало',
       closeModal: true,
     },
   ],
