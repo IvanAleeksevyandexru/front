@@ -11,9 +11,7 @@ import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
-  QuizDataDto,
   QuizDataDtoReponse,
-  QuizDataSaveDtoReponse,
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { map } from 'rxjs/operators';
@@ -90,17 +88,6 @@ export class FormPlayerApiService {
 
     const params = this.getNavigateParams(options.params);
 
-    // side-effect
-    if (!!this.configService.quizDataApiUrl) {
-      const order = JSON.stringify(data.scenarioDto.applicantAnswers || {});
-      const multipleAnswers = JSON.stringify(
-        data.scenarioDto.display?.buttons?.find((button) => !!button.multipleAnswers) || {},
-      );
-      const quizRaw = JSON.stringify(data.scenarioDto || {});
-      const quizData = { order, multipleAnswers, quizRaw };
-      this.setQuizData(quizData);
-    }
-
     return this.post<FormPlayerApiResponse>(path, body, params).pipe(
       map((result) => {
         if (
@@ -150,15 +137,6 @@ export class FormPlayerApiService {
     const path = `${this.configService.quizDataApiUrl}/${token}`;
 
     return this.get<QuizDataDtoReponse>(path);
-  }
-
-  public setQuizData(data: QuizDataDto): Observable<QuizDataSaveDtoReponse> {
-    const userId = this.sessionService.userId;
-
-    const path = `${this.configService.quizDataApiUrl}`;
-    const body = { ...data, userId };
-
-    return this.post<QuizDataSaveDtoReponse>(path, body);
   }
 
   private getNavigateParams(params: NavigationParams = {}): HttpParams {
