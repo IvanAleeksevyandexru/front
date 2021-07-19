@@ -332,6 +332,13 @@ export class ActionService {
   }
 
   private orderToOrder(action: ComponentActionDto): void {
+    // NOTICE: кейс передачи multipleAnswers как JSON-строки в data-action-multipleAnswers атрибуте
+    if (
+      typeof action.multipleAnswers === 'string' &&
+      UtilsService.hasJsonStructure(action.multipleAnswers)
+    ) {
+      action.multipleAnswers = JSON.parse(action.multipleAnswers);
+    }
     this.localStorageService.set(ORDER_TO_ORDER_SCENARIO_KEY, {
       finishedAndCurrentScreens: this.getFinishedAndCurrentScreensFromMultipleAnswers(
         action.multipleAnswers,
