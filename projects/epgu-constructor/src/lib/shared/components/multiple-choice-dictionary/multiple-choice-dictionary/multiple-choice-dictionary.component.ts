@@ -69,7 +69,8 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
       )
       .subscribe((items) => {
         this.writeValue(items);
-        this.onChange(this.withAmount ? this.selectedItems : this.selectedItems.list);
+        const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
+        this.onChange(this.withAmount ? this.selectedItems : selectedItems);
         this.cdr.markForCheck();
       });
   }
@@ -77,7 +78,8 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   public remove(id: number | string): void {
     const items = this.selectedItems.list.filter((item) => item.id !== id);
     this.writeValue(items);
-    this.onChange(this.withAmount ? this.selectedItems : this.selectedItems.list);
+    const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
+    this.onChange(this.withAmount ? this.selectedItems : selectedItems);
     this.onTouched();
   }
 
