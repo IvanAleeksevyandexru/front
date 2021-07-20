@@ -170,7 +170,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then();
+        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((prevStep) => {
+          if (prevStep) {
+            this.navigationService.prev();
+          }
+        });
       }
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
       this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((reload) => {
@@ -190,7 +194,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
     ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
 
-    this.showModal(ITEMS_NO_DATA);
+    this.showModal(ITEMS_NO_DATA).then((prevStep) => {
+      if (prevStep) {
+        this.navigationService.prev();
+      }
+    });
   }
 
   private showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
