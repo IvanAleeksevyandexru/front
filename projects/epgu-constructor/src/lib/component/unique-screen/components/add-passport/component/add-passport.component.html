@@ -2,6 +2,7 @@
   <section class="add-passport-screen">
     <div class="add-passport-screen__body">
       <epgu-constructor-passport
+        [componentId]="componentId$ | async"
         [attrs]="$any(attrs)"
         formControlName="passport"
         [suggestions]="(suggestions$ | async)[componentId$ | async]"

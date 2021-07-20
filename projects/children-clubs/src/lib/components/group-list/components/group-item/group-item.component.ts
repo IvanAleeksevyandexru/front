@@ -29,6 +29,7 @@ export class GroupItemComponent implements OnInit {
       this.sources[item.sourceCode] = this.getCost(item) ?? null;
       this.resultSources[item.sourceCode] = true;
     });
+    this.available = data?.available ?? true;
 
     this.certCost = this.sources[FinancialSourceType.pfdod_certificate];
     this.paidCost =
@@ -59,6 +60,7 @@ export class GroupItemComponent implements OnInit {
   isPayments = false;
   isMultiPaymentsInfoShown = false;
   group: Group;
+  available: boolean;
   sourceType = FinancialSourceType;
   denyReasonMessage: DenyReasonMessage | null = null;
 

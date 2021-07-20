@@ -67,7 +67,7 @@
         class='group-item__deny-reason-text'>
       </div>
       <div class="btn-container mt-24">
-        <lib-button (click)="finish()" type="button">Записаться в эту группу</lib-button>
+        <lib-button (click)="finish()" type="button" [disabled]="!available">Записаться в эту группу</lib-button>
       </div>
     </div>
   </div>

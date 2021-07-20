@@ -39,9 +39,9 @@ enum ModalFailureType {
   SESSION,
 }
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
-export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
+export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 // eslint-disable-next-line max-len
-export const SESSION_TIMEOUT_SMEV3 = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
+export const SESSION_TIMEOUT_SMEV3 = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
 
 @Injectable()
@@ -102,7 +102,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
 
           if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
               this.showModalFailure(errorMessage, false, ModalFailureType.SESSION);
             } else {
               this.showModalFailure(errorMessage, false, ModalFailureType.FAILURE);
@@ -114,15 +114,18 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (!errorMessage.includes('FAILURE') &&
               !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
           ) {
-            this.showModalNoData(errorMessage, true);
+            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
+              this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
+            } else {
+              this.showModalNoData(errorMessage, true);
+            }
           }
 
           if (
             errorMessage.includes('FAILURE') ||
             errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
           ) {
-            const newErrorMessage = errorMessage.replace('FAILURE:', '');
-            if (newErrorMessage === SESSION_TIMEOUT_SMEV2 || newErrorMessage === SESSION_TIMEOUT_SMEV3) {
+            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
               this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
               this.showModalFailure(errorMessage, true, ModalFailureType.FAILURE);
@@ -167,7 +170,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then();
+        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((prevStep) => {
+          if (prevStep) {
+            this.navigationService.prev();
+          }
+        });
       }
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
       this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((reload) => {
@@ -187,7 +194,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
     ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
 
-    this.showModal(ITEMS_NO_DATA);
+    this.showModal(ITEMS_NO_DATA).then((prevStep) => {
+      if (prevStep) {
+        this.navigationService.prev();
+      }
+    });
   }
 
   private showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {

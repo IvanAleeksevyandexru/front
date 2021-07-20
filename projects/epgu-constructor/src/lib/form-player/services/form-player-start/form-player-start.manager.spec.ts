@@ -41,6 +41,7 @@ describe('FormPlayerStartManager', () => {
   let continueOrderModalService: ContinueOrderModalService;
   let initDataService: InitDataService;
   let location: Location;
+  let locationService: LocationService;
 
   let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
@@ -73,6 +74,7 @@ describe('FormPlayerStartManager', () => {
     loggerService = TestBed.inject(LoggerService);
     initDataService = TestBed.inject(InitDataService);
     location = TestBed.inject(Location);
+    locationService = TestBed.inject(LocationService);
   });
 
   describe('startPlayer()', () => {
@@ -110,6 +112,14 @@ describe('FormPlayerStartManager', () => {
       service.startPlayer();
       expect(service['startLoadNextScreenCase']).toBeCalled();
       localStorage.removeItem(NEXT_SCENARIO_KEY);
+    });
+
+    it('should call startLoadFromQuizCase case', () => {
+      location.go('/some-page', 'fromQuiz=true&token=459tudsvdsvb');
+      initDataService.init({ ...serviceDataMock });
+      spyOn<any>(service, 'startLoadFromQuizCaseByToken').and.callThrough();
+      service.startPlayer();
+      expect(service['startLoadFromQuizCaseByToken']).toBeCalled();
     });
 
     it('should call startLoadFromQuizCase case', () => {
@@ -284,6 +294,30 @@ describe('FormPlayerStartManager', () => {
       service['handleOrder'](orderId, invited, canStartNew);
       expect(formPlayerService.initData).toBeCalledWith(orderId);
       expect(localStorageService.set).toBeCalledWith('cachedAnswers', {});
+    });
+  });
+
+  describe('startLoadFromQuizCaseByToken()', () => {
+    it('should call getQuizDataByToken with token', () => {
+      const token = 'some cool token';
+      spyOn(locationService, 'getParamValue').and.returnValue(token);
+      spyOn(formPlayerService, 'getQuizDataByToken').and.callThrough();
+      service['startLoadFromQuizCaseByToken']();
+      expect(formPlayerService.getQuizDataByToken).toBeCalledWith(token);
+    });
+
+    it('should call startLoadFromQuizCase with scenarioDto that return getQuizDataByToken', () => {
+      const token = 'some cool token';
+      const scenarioDto = {};
+      spyOn(locationService, 'getParamValue').and.returnValue(token);
+      spyOn(formPlayerService, 'getQuizDataByToken').and.returnValue(of({
+        data: {
+          order: JSON.stringify(scenarioDto)
+        }
+      }));
+      spyOn<any>(service, 'loadOrderFromQuiz').and.callThrough();
+      service['startLoadFromQuizCaseByToken']();
+      expect(service['loadOrderFromQuiz']).toBeCalledWith(scenarioDto);
     });
   });
 

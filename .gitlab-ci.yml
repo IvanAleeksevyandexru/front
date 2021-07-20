@@ -64,6 +64,7 @@ Lint:
   script:
     - echo -e "##########\nlint\n##########"
     - yarn lint
+    - yarn stylelint
     - echo -e "##########\ndone\n##########"
   only:
     - merge_requests
