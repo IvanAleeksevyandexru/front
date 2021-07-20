@@ -11,8 +11,6 @@ export class LocationServiceStub extends Location {
 
   deleteParam(): void {}
 
-  path(): void {}
-
   hasParam(): void {}
 
   getParamValue(): void {}
