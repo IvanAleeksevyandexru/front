@@ -202,7 +202,7 @@ export const SESSION_TIMEOUT: ConfirmationModal = {
   text: ITEMS_REQUEST_TEXT_NO_DATA,
   title: '',
   showCloseButton: false,
-  showCrossButton: true,
+  showCrossButton: false,
   buttons: [
     {
       label: 'В начало',

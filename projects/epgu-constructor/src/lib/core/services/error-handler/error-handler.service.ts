@@ -39,9 +39,9 @@ enum ModalFailureType {
   SESSION,
 }
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
-export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
+export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 // eslint-disable-next-line max-len
-export const SESSION_TIMEOUT_SMEV3 = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
+export const SESSION_TIMEOUT_SMEV3 = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
 
 @Injectable()
@@ -102,7 +102,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
 
           if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
               this.showModalFailure(errorMessage, false, ModalFailureType.SESSION);
             } else {
               this.showModalFailure(errorMessage, false, ModalFailureType.FAILURE);
@@ -114,7 +114,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (!errorMessage.includes('FAILURE') &&
               !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
           ) {
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
               this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
               this.showModalNoData(errorMessage, true);
@@ -125,7 +125,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             errorMessage.includes('FAILURE') ||
             errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
           ) {
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
               this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
               this.showModalFailure(errorMessage, true, ModalFailureType.FAILURE);

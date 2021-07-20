@@ -507,4 +507,25 @@ describe('ActionService', () => {
       expect(getHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
     });
   });
+
+  describe('prepareActionMultipleAnswers()', () => {
+    it('should return parsed action.mulipleAnswers, if they passed as JSON-string', () => {
+      const action = ({
+        type: ActionType.orderToOrder,
+        action: DTOActionAction.getNextStep,
+        multipleAnswers: '[{"test": "test"}]',
+      } as unknown) as ComponentActionDto;
+      const result = actionService['prepareActionMultipleAnswers'](action);
+      expect(typeof result.multipleAnswers === 'object').toBe(true);
+    });
+    it('should return action.mulipleAnswers as is, if they passed non JSON-string', () => {
+      const action = ({
+        type: ActionType.orderToOrder,
+        action: DTOActionAction.getNextStep,
+        multipleAnswers: [{ test: 'test' }],
+      } as unknown) as ComponentActionDto;
+      const result = actionService['prepareActionMultipleAnswers'](action);
+      expect(typeof result.multipleAnswers === 'object').toBe(true);
+    });
+  });
 });
