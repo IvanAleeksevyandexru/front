@@ -106,9 +106,15 @@ export class FieldListComponent implements OnInit, OnChanges {
 
     return str.replace(regexp, (ignore) => {
       const path = ignore.replace(/[&/\\#,+()$~%'":*?<>{}]/g, '');
+      const parsedPath = path.split('.');
+      const componentId = parsedPath.shift();
+      const componentValue = this.currentAnswersService.state[componentId]?.value;
+      const parsedComponentValue = UtilsService.hasJsonStructure(componentValue)
+        ? JSON.parse(componentValue)
+        : {};
       const newValue = UtilsService.getObjectProperty(
-        this.currentAnswersService.state,
-        path,
+        parsedComponentValue,
+        parsedPath.splice(1, parsedPath.length - 1).join('.'),
         undefined,
       );
       return newValue == null ? ignore : newValue;
