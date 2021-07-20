@@ -61,7 +61,11 @@
         <div class="group-item__key">Доступные способы оплаты</div>
         <div class="group-item__value">{{ paymentsInfo }}</div>
       </div>
-      <div *ngIf="denyReasonMessage" [innerHTML]="denyReasonMessage.text"></div>
+      <div
+        *ngIf="denyReasonMessage"
+        [innerHTML]="denyReasonMessage.text"
+        class='group-item__deny-reason-text'>
+      </div>
       <div class="btn-container mt-24">
         <lib-button (click)="finish()" type="button">Записаться в эту группу</lib-button>
       </div>

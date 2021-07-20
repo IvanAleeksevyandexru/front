@@ -94,16 +94,16 @@ export interface Group {
   ageFrom: number; //float
   ageTo: number; //float
   size: string; //byte
-  dateBegin: string; //date
-  dateEnd: string; //date
+  dateBegin: string | null; //date
+  dateEnd: string | null; //date
   hoursYear: number; //float
   teachers: string;
   schedule: string;
   financingSources: FinancialSource[];
-  orderFrom: string;
-  orderTo: string;
-  availableNextYearOrderFrom: string;
-  availableNextYearOrderTo: string;
+  orderFrom: string | null;
+  orderTo: string | null;
+  availableNextYearOrderFrom: string | null;
+  availableNextYearOrderTo: string | null;
   denyReason: DenyReason | null;
 }
 
