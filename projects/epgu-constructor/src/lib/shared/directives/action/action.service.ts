@@ -332,13 +332,7 @@ export class ActionService {
   }
 
   private orderToOrder(action: ComponentActionDto): void {
-    // NOTICE: кейс передачи multipleAnswers как JSON-строки в data-action-multipleAnswers атрибуте
-    if (
-      typeof action.multipleAnswers === 'string' &&
-      UtilsService.hasJsonStructure(action.multipleAnswers)
-    ) {
-      action.multipleAnswers = JSON.parse(action.multipleAnswers);
-    }
+    action = this.prepareActionMultipleAnswers(action);
     this.localStorageService.set(ORDER_TO_ORDER_SCENARIO_KEY, {
       finishedAndCurrentScreens: this.getFinishedAndCurrentScreensFromMultipleAnswers(
         action.multipleAnswers,
@@ -347,6 +341,14 @@ export class ActionService {
     });
     const href = action.action;
     this.navService.redirectTo(href);
+  }
+
+  private prepareActionMultipleAnswers(action: ComponentActionDto): ComponentActionDto {
+    if (typeof action.multipleAnswers === 'string' &&
+      UtilsService.hasJsonStructure(action.multipleAnswers)) {
+      action.multipleAnswers = JSON.parse(action.multipleAnswers);
+    }
+    return action;
   }
 
   private getApplicantAnswersFromMultipleAnswers(
