@@ -19,9 +19,10 @@ import { ApiService } from '../../services/api/api.service';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
 import { SelectMapObjectModule } from '../select-map-object/select-map-object.module';
+import { ToggleTextComponent } from './components/toggle-text/toggle-text.component';
 
 @NgModule({
-  declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
+  declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent, ToggleTextComponent],
   imports: [
     BaseModule,
     CommonModule,

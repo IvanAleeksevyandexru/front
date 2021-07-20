@@ -19,7 +19,12 @@
               </div>
               <div *ngIf="data?.teachers" class="project__info-item">
                 <div class="item-icon"><img alt="учитель" src="assets/icons/teacher.svg" /></div>
-                <div class="item-label">{{ data?.teachers }}</div>
+                <div class="item-label">
+                  <children-clubs-toggle-text
+                    [text]="data?.teachers"
+                    [linesQuantity]="2"
+                  ></children-clubs-toggle-text>
+                </div>
               </div>
               <div *ngIf="data?.maxPersons" class="project__info-item">
                 <div class="item-icon">
