@@ -49,6 +49,9 @@ export class FormPlayerStartManager {
       this.startLoadLastScreenCase();
     } else if (this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY)) {
       this.startLoadNextScreenCase();
+    } else if (this.locationService.hasParam('fromQuiz')
+      && this.locationService.hasParam('token')) {
+      this.startLoadFromQuizCaseByToken();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
     } else if (this.hasLoadFromStorageCase('fromOrder', ORDER_TO_ORDER_SCENARIO_KEY)) {
@@ -81,7 +84,7 @@ export class FormPlayerStartManager {
 
   private hasLoadFromStorageCase(queryParamName: string, key: string): boolean {
     return (
-      this.locationService.path(true).includes(`${queryParamName}=`) &&
+      this.locationService.hasParam(queryParamName) &&
       !!this.localStorageService.getRaw(key)
     );
   }
@@ -101,15 +104,28 @@ export class FormPlayerStartManager {
     this.locationService.deleteParam('getNextScreen');
   }
 
+  private startLoadFromQuizCaseByToken(): void {
+    const token = this.locationService.getParamValue('token');
+    this.formPlayerService.getQuizDataByToken(token).subscribe((quizDataDtoResponse) => {
+      const scenarioDto =  JSON.parse(quizDataDtoResponse.data.order) as ScenarioDto;
+      this.loadOrderFromQuiz(scenarioDto);
+    });
+  }
+
   private startLoadFromQuizCase(): void {
+    const scenarioDto = this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY);
+    this.loadOrderFromQuiz(scenarioDto);
+    this.localStorageService.delete(QUIZ_SCENARIO_KEY);
+    this.locationService.deleteParam('fromQuiz');
+  }
+
+  private loadOrderFromQuiz(scenarioDto: ScenarioDto): void {
     const quiz: QuizRequestDto = {
-      scenarioDto: this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY),
+      scenarioDto,
       serviceId: this.initDataService.serviceId,
       targetId: this.initDataService.targetId,
     };
     this.formPlayerService.initPlayerFromQuiz(quiz);
-    this.localStorageService.delete(QUIZ_SCENARIO_KEY);
-    this.locationService.deleteParam('fromQuiz');
   }
 
   private startLoadFromOrderCase(): void {
