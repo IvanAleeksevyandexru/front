@@ -12,6 +12,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import {
   LocalStorageService,
+  SessionStorageService,
   ConfigService,
   EventBusService,
   ModalService,
@@ -64,6 +65,7 @@ export class ActionService {
     private utilsService: UtilsService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService,
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
     private autocompleteApiService: AutocompleteApiService,
@@ -389,7 +391,9 @@ export class ActionService {
   private redirectToEdit({ action }: ComponentActionDto): void {
     switch (action) {
       case DTOActionAction.editChildData:
-        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family`);
+        const childId: string = this.sessionStorageService.getRaw('childId');
+        this.sessionStorageService.delete('childId');
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family/child/${childId}`);
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       case DTOActionAction.editMedicalData:
