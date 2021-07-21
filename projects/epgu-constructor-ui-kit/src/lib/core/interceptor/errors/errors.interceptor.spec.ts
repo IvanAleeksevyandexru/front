@@ -9,7 +9,6 @@ import { ErrorsInterceptor } from './errors.interceptor';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
-  COMMON_ERROR_MODAL_PARAMS,
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
   TIME_INVITATION_ERROR,
@@ -37,6 +36,7 @@ import { LocationServiceStub } from '../../services/location/location.service.st
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationService } from '../../services/location/location.service';
 import { ERROR_HANDLER_SERVICE } from './errors.token';
+import { SessionService } from '../../services/session/session.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -57,6 +57,7 @@ describe('ErrorsInterceptor', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
+        SessionService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -188,10 +189,7 @@ describe('ErrorsInterceptor', () => {
     expect(req.request.method).toBe('POST');
 
     req.flush(data, { status: 200, statusText: 'success' });
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      ITEMS_NO_DATA,
-    );
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, ITEMS_NO_DATA);
     tick();
   }));
 
@@ -215,10 +213,7 @@ describe('ErrorsInterceptor', () => {
     expect(req.request.method).toBe('POST');
 
     req.flush(data, { status: 200, statusText: 'success' });
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      ITEMS_FAILURE,
-    );
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, ITEMS_FAILURE);
     tick();
   }));
 

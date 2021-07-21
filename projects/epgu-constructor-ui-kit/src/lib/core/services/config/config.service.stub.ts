@@ -16,6 +16,7 @@ export class ConfigServiceStub implements Config {
   _childrenClubsApi = '';
   _paymentUrl = 'https://oplata.gosuslugi.ru';
   _fileUploadApiUrl = '';
+  _quizDataApiUrl = '/api/v1/quizdata';
   _uinApiUrl = '';
   _billsApiUrl = '';
   _invitationUrl = '';
@@ -122,6 +123,10 @@ export class ConfigServiceStub implements Config {
 
   get fileUploadApiUrl(): string {
     return this._fileUploadApiUrl;
+  }
+
+  get quizDataApiUrl(): string {
+    return this._quizDataApiUrl;
   }
 
   get lkUrl(): string {
@@ -252,6 +257,7 @@ export class ConfigServiceStub implements Config {
     this._dictionaryUrl = config.dictionaryUrl;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
+    this._quizDataApiUrl = config.quizDataApiUrl;
     this._lkUrl = config.lkUrl;
     this._childrenClubsApi = config.childrenClubsApi;
     this._paymentUrl = config.paymentUrl;

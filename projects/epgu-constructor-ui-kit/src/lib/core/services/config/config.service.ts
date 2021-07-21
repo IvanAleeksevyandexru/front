@@ -18,6 +18,7 @@ export class ConfigService implements Config {
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
+  private _quizDataApiUrl: string;
   private _lkUrl: string;
   private _lkApi: string;
   private _childrenClubsApi: string;
@@ -97,6 +98,10 @@ export class ConfigService implements Config {
 
   get fileUploadApiUrl(): string {
     return this._fileUploadApiUrl;
+  }
+
+  get quizDataApiUrl(): string {
+    return this._quizDataApiUrl;
   }
 
   get lkUrl(): string {
@@ -258,6 +263,7 @@ export class ConfigService implements Config {
     this._showTraceIdOnError = config.showTraceIdOnError || false;
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._appPathMap = config.appPathMap || {};
+    this._quizDataApiUrl = config.quizDataApiUrl || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

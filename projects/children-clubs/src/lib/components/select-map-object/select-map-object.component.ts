@@ -61,6 +61,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.programListService.load$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
     this.initVariable();
     this.subscribeToEmmitNextStepData();
+    this.stateService.isLoaderVisible = true;
   }
 
   ngAfterViewInit(): void {
@@ -147,7 +148,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private handleGettingCoordinatesResponse(coords: Array<IYMapPoint<BaseProgram>>): void {
+    this.stateService.isLoaderVisible = false;
     this.yandexMapService.placeObjectsOnMap<BaseProgram>(coords);
+    setTimeout(() => this.cdr.detectChanges(), 0);
   }
 
   private fillCoords(): Observable<Array<IYMapPoint<BaseProgram>>> {

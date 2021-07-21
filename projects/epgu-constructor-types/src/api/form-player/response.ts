@@ -56,3 +56,22 @@ export interface EaisdoResponse {
   responseType: string;
   responseData: { [key: string]: unknown };
 }
+
+export interface QuizDataDto {
+  multipleAnswers: string;
+  order: string;
+  quizRaw: string;
+}
+export interface QuizDataDtoResponse {
+  data: QuizDataDto;
+}
+
+export interface QuizDataSaveDtoRequest {
+  data: QuizDataDto;
+  userId: string;
+}
+
+export interface QuizDataSaveDtoReponse {
+  token: string; // uuid
+  errorMessage: string;
+}

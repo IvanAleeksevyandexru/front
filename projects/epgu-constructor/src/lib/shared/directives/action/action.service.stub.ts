@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ActionApiResponse, ComponentActionDto, EaisdoResponse } from '@epgu/epgu-constructor-types';
-import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs';
+import {
+  ActionApiResponse,
+  ActionType,
+  ComponentActionDto,
+  EaisdoResponse,
+} from '@epgu/epgu-constructor-types';
+import { EMPTY, Observable, of } from 'rxjs';
 
 @Injectable()
 export class ActionServiceStub {
   action: ComponentActionDto;
   componentId: string;
+  public get actionType$(): Observable<ActionType | null> {
+    return of(null);
+  }
 
   navigate(stepType: string): void {}
 
@@ -14,7 +21,16 @@ export class ActionServiceStub {
 
   switchAction(): void {}
 
-  public handleExternalIntegrationAction(): Observable<ActionApiResponse<EaisdoResponse>> {
-    return of();
+  handleExternalIntegrationAction(
+    action: ComponentActionDto,
+    componentId: string,
+  ): Observable<ActionApiResponse<EaisdoResponse>> {
+    return of({
+      errorList: [],
+      responseData: {
+        value: { error: null, errorType: null, responseType: null, responseData: null },
+        type: null,
+      },
+    });
   }
 }

@@ -73,6 +73,14 @@ export enum FinancialSourceType {
   private = 'private',
 }
 
+export enum DenyReason {
+  RegistrationClosed = 'registration_closed',
+  NoTimetable = 'no_timetable',
+  RegistrationNotStarted = 'registration_not_started',
+  RegistrationFinished = 'registration_finished',
+  ModuleFinished = 'module_finished',
+}
+
 export interface FinancialSource {
   sourceCode: FinancialSourceType;
   cost: number;
@@ -82,19 +90,21 @@ export interface FinancialSource {
 export interface Group {
   uuid: string;
   name: string;
+  available: boolean;
   ageFrom: number; //float
   ageTo: number; //float
   size: string; //byte
-  dateBegin: string; //date
-  dateEnd: string; //date
+  dateBegin: string | null; //date
+  dateEnd: string | null; //date
   hoursYear: number; //float
   teachers: string;
   schedule: string;
   financingSources: FinancialSource[];
-  orderFrom: string;
-  orderTo: string;
-  availableNextYearOrderFrom: string;
-  availableNextYearOrderTo: string;
+  orderFrom: string | null;
+  orderTo: string | null;
+  availableNextYearOrderFrom: string | null;
+  availableNextYearOrderTo: string | null;
+  denyReason: DenyReason | null;
 }
 
 export enum OvzType {

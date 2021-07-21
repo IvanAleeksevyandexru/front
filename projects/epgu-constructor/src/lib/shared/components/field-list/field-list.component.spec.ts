@@ -1,21 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
-
 import { FieldListComponent } from './field-list.component';
-import { ImgPrefixerPipe, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ImgPrefixerPipe, UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlModule } from '../output-html/output-html.module';
 import { RankPipe, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
+  let currentAnswersService: CurrentAnswersService;
   let fixture: ComponentFixture<FieldListComponent>;
   const dataMock = {
     attrs: {
       style: {},
+      fieldGroups: [
+        {
+          groupName: '<h4 class=\'mb-12\'>Реквизиты сертификата</h4>',
+          needDivider: true,
+          fields: [{}],
+        },
+        {
+          groupName: '<h5 class=\'mb-12\'>Детали оплаты программы</h5>',
+          visibilityLabel: 'wait',
+          fields: [{}],
+        },
+      ],
     },
     visited: true,
     label: '',
@@ -32,11 +46,14 @@ describe('FieldListComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         EaisdoGroupCostService,
         UnsubscribeService,
+        CurrentAnswersService,
+        UtilsService,
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     fixture = TestBed.createComponent(FieldListComponent);
     component = fixture.componentInstance;
     component.data = dataMock as any;
@@ -45,5 +62,31 @@ describe('FieldListComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('calculateVisibility()', () => {
+    it('should return true, if current fieldGroup item passed by index contain visibilityLabel and match currentEaisdoState', () => {
+      component.currentEaisdoState = EaisdoStateTypes.wait;
+      const result = component.calculateVisibility(1);
+      expect(result).toBeTruthy();
+    });
+    it('should return false, if current fieldGroup item passed by index contain visibilityLabel and doesn\'t match currentEaisdoState', () => {
+      component.currentEaisdoState = EaisdoStateTypes.errorBad;
+      const result = component.calculateVisibility(1);
+      expect(result).toBeFalsy();
+    });
+    it('should return true, if current fieldGroup item passed by index doesn\'t contain visibilityLabel', () => {
+      const result = component.calculateVisibility(0);
+      expect(result).toBeTruthy();
+    });
+  });
+
+  describe('transformString()', () => {
+    const str = '${id.value.value.placeholder}';
+    it('should return transformed string, from passed string with placeholders', () => {
+      currentAnswersService.state = { id: { value: { value: { placeholder: 'someValue' }}}};
+      const result = component['transformString'](str);
+      expect(result).toBe('someValue');
+    });
   });
 });

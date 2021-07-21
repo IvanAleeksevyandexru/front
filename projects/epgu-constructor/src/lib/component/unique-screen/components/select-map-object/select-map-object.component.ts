@@ -120,6 +120,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit(): void {
+    this.screenService.isLoaderVisible.next(true);
     this.initData$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
@@ -325,6 +326,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
     this.handleFilledCoordinate(coords);
     this.mapIsLoaded = true;
+    this.screenService.isLoaderVisible.next(false);
     this.initSelectedValue();
     this.cdr.detectChanges();
     this.libLookup.lookupComponent.setSearchBarFocus();

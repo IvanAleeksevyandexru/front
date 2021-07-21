@@ -5,6 +5,12 @@
 
 :host {
   display: block;
+  .file-upload-item {
+    margin-bottom: 24px;
+  }
+  .file-upload-item:last-child{
+    margin-bottom: 0;
+  }
 }
 .info {
   font-size: 14px;

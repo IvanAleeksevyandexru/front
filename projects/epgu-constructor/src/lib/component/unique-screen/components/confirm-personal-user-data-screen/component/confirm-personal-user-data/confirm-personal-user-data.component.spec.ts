@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import {
@@ -66,6 +66,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   let fixture: ComponentFixture<ConfirmPersonalUserDataComponent>;
   let screenService: ScreenServiceStub;
   let currentAnswersService: CurrentAnswersService;
+  let sessionStorageService: SessionStorageService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -82,6 +83,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
       ],
     })
       .overrideComponent(ConfirmPersonalUserDataComponent, {
@@ -97,6 +99,19 @@ describe('ConfirmPersonalUserDataComponent', () => {
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService.component = componentMock;
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock as any);
+    sessionStorageService = (TestBed.inject(SessionStorageService) as unknown) as SessionStorageServiceStub;
+  });
+
+  it('should set session param in ngOnInit', () => {
+    screenService.getStore().applicantAnswers = {
+      cld1_id : {
+        visited: true,
+        value: '1'
+      }
+    };
+    fixture.detectChanges();
+
+    expect(sessionStorageService.getRaw('childId')).toBe('1');
   });
 
   describe('update value', () => {

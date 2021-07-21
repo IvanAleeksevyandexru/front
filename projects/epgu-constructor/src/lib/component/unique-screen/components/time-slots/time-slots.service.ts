@@ -60,6 +60,7 @@ export class TimeSlotsService {
   private areas: string[];
   private config: configType = {};
   private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
+  private areaNamesIsNeeded: boolean;
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -195,6 +196,9 @@ export class TimeSlotsService {
 
     let department = JSON.parse(data.department);
     this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
+    this.areaNamesIsNeeded = [TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(
+      this.timeSlotsType,
+    );
     if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
@@ -217,13 +221,15 @@ export class TimeSlotsService {
       userSelectedRegion: data.userSelectedRegion,
     };
 
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-      let solemn = data.solemn == 'Да';
+    if (this.areaNamesIsNeeded) {
+      let solemn = data.solemn === 'Да';
       if (this.solemn !== solemn) {
         changed = true;
         this.solemn = solemn;
       }
+    }
 
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
       let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
       if (this.slotsPeriod !== slotsPeriod) {
         changed = true;
@@ -321,12 +327,14 @@ export class TimeSlotsService {
     });
   }
 
-  private deleteIgnoreRequestParams(requestBody: TimeSlotReq | BookTimeSlotReq): Partial<TimeSlotReq> | Partial<BookTimeSlotReq> {
+  private deleteIgnoreRequestParams(
+    requestBody: TimeSlotReq | BookTimeSlotReq,
+  ): Partial<TimeSlotReq> | Partial<BookTimeSlotReq> {
     if (!this.screenService.component.attrs.ignoreRootParams) {
       return requestBody;
     }
 
-    Object.keys(requestBody).forEach(key => {
+    Object.keys(requestBody).forEach((key) => {
       if (this.screenService.component.attrs.ignoreRootParams.includes(key)) {
         delete requestBody[key];
       }
@@ -392,7 +400,7 @@ export class TimeSlotsService {
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
-      params: this.config.bookParams as attributesMapType || [
+      params: (this.config.bookParams as attributesMapType) || [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
@@ -441,8 +449,12 @@ export class TimeSlotsService {
   }
 
   private getAddress(attributeValues: { [key: string]: string }): string {
-    return attributeValues[this.config.attributeNameWithAddress as string]
-    || attributeValues.ADDRESS || attributeValues.ADDRESS_OUT || attributeValues.address;
+    return (
+      attributeValues[this.config.attributeNameWithAddress as string] ||
+      attributeValues.ADDRESS ||
+      attributeValues.ADDRESS_OUT ||
+      attributeValues.address
+    );
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
@@ -483,7 +495,7 @@ export class TimeSlotsService {
    * @param areaName AREA_NAME загса
    */
   private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+    if (this.areaNamesIsNeeded) {
       if (areaName) {
         return of([areaName]);
       } else {
@@ -504,33 +516,43 @@ export class TimeSlotsService {
    * Подготовка тела POST запроса dictionary
    */
   private getOptionsMapDictionary(): DictionaryOptions {
+    const subs = [
+      {
+        simple: {
+          attributeName: 'SHOW_ON_MAP',
+          condition: DictionaryConditions.EQUALS,
+          value: { asString: 'false' },
+        },
+      },
+      {
+        simple: {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: { asString: this.department.value },
+        },
+      },
+      {
+        simple: {
+          attributeName: this.timeSlotsType === TimeSlotsTypes.BRAK ? 'PR2' : 'PR3',
+          condition: DictionaryConditions.CONTAINS,
+          value: { asString: 'true' },
+        },
+      },
+    ];
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+      subs.push({
+        simple: {
+          attributeName: 'SOLEMN',
+          condition: DictionaryConditions.EQUALS,
+          value: { asString: this.solemn.toString() },
+        },
+      });
+    }
     return {
       filter: {
         union: {
           unionKind: DictionaryUnionKind.AND,
-          subs: [
-            {
-              simple: {
-                attributeName: 'SHOW_ON_MAP',
-                condition: DictionaryConditions.EQUALS,
-                value: { asString: 'false' },
-              },
-            },
-            {
-              simple: {
-                attributeName: 'SOLEMN',
-                condition: DictionaryConditions.EQUALS,
-                value: { asString: this.solemn.toString() },
-              },
-            },
-            {
-              simple: {
-                attributeName: 'CODE',
-                condition: DictionaryConditions.CONTAINS,
-                value: { asString: this.department.value },
-              },
-            },
-          ],
+          subs,
         },
       },
       selectAttributes: ['*'],
