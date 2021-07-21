@@ -4,6 +4,7 @@ import {
   LocationService,
   UnsubscribeService,
   ConfigService,
+  LoggerService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   InputAppDto,
@@ -25,6 +26,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     public injector: Injector,
     private cfAppStateService: CfAppStateService,
     private locationService: LocationService,
+    private logger: LoggerService,
     private configService: ConfigService,
   ) {
     super(injector);
@@ -34,6 +36,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
     const outputAppData = this.cfAppStateService.getState<OutputAppDto>(DataDirectionType.OUTPUT);
 
     if (outputAppData) {
+      this.logger.log([outputAppData], 'Output app data');
       this.handleOutputAppData(outputAppData);
     } else {
       this.sendDataToApp();
