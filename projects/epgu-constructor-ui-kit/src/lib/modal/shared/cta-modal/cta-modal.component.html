@@ -13,10 +13,11 @@
     >
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
-    <ng-container *ngIf="isButtonsOutsideContent && !isMobile">
-      <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
-    </ng-container>
-
+    <div *ngIf="true || isButtonsOutsideContent && !isMobile" class="conf-modal__footer">
+      <ng-container>
+        <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+      </ng-container>
+    </div>
     <ng-template #contentBlock>
       <div class="conf-modal__content">
         <ng-content select="[modal-content]"></ng-content>

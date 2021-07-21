@@ -2,7 +2,7 @@
 @import '../../../../styles/components/rubles';
 @import '../../../../styles/components/modal';
 
-$my: 7vh;
+$my: 96px;
 $pyConfModal: 64px;
 $headerHeight: 57px;
 $controlHeight: 55px;
@@ -59,7 +59,6 @@ $closeBtnWidth: 24px;
       }
     }
   }
-
   &__body {
     display: flex;
     flex-direction: column;
@@ -124,7 +123,7 @@ $closeBtnWidth: 24px;
     margin: 0 auto 24px;
   }
 }
-
+/*
 :host::ng-deep {
   .perfect-scrollbar {
     .conf-modal__content {
@@ -166,3 +165,4 @@ $closeBtnWidth: 24px;
     }
   }
 }
+*/
