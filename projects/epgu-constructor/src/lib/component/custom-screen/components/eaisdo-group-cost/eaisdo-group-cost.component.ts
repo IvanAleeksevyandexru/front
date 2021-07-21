@@ -5,7 +5,6 @@ import {
   ActionApiResponse,
   EaisdoResponse,
 } from '@epgu/epgu-constructor-types';
-import { BehaviorSubject } from 'rxjs';
 import { filter, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -29,7 +28,7 @@ import { EaisdoStateTypes } from './eaisdo.interface';
   providers: [UnsubscribeService],
 })
 export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent implements OnInit {
-  isLoading$ = new BehaviorSubject<boolean>(true);
+  isLoading$ = this.screenService.isLoading$;
   component: CustomComponent;
 
   constructor(
@@ -55,10 +54,14 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
     this.actionService
       .handleExternalIntegrationAction(externalIntegrationAction, this.component.id)
       .pipe(
-        tap(() => this.isLoading$.next(true)),
+        tap(() => {
+          this.screenService.updateLoading(true);
+        }),
         tap(() => this.setState()),
         takeUntil(this.ngUnsubscribe$),
-        finalize(() => this.isLoading$.next(false)),
+        finalize(() => {
+          this.screenService.updateLoading(false);
+        }),
       )
       .subscribe(
         (response) => this.handleResponse(response),
@@ -67,7 +70,9 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
 
     this.actionService.actionType$
       .pipe(
-        tap(() => this.isLoading$.next(true)),
+        tap(() => {
+          this.screenService.updateLoading(true);
+        }),
         filter((type) => type === ActionType.externalIntegration),
         tap(() => this.setState()),
         switchMap(() =>
@@ -77,7 +82,9 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
           ),
         ),
         takeUntil(this.ngUnsubscribe$),
-        finalize(() => this.isLoading$.next(false)),
+        finalize(() => {
+          this.screenService.updateLoading(false);
+        }),
       )
       .subscribe(
         (response) => this.handleResponse(response),
@@ -109,7 +116,7 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
       typeOfBudget,
     );
     this.currentAnswersService.state[this.component.id] =
-      { value: responseData, visited: true } || {};
+      { value: JSON.stringify(responseData), visited: true, disabled: false } || {};
   }
 
   private handleError(error): void {
