@@ -18,7 +18,7 @@ export class CtaModalComponent implements AfterViewInit {
   @Input() showCrossButton?: boolean;
   @Input() preview?: boolean;
   @Input() isShortModal?: boolean;
-  @Input() isButtonsOutsideContent? = false;
+  @Input() isButtonsOutsideContent = false;
   @Input() scrollTop = true;
 
   @ViewChild('perfectScroll', { static: false }) perfectScroll: PerfectScrollbarComponent;
