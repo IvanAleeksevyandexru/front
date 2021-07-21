@@ -32,6 +32,7 @@ export interface BaseProgram {
   imageSmallUrl: string;
   minAge: number;
   maxAge: number;
+  available: boolean;
   financingTypes: FinancingType[];
 }
 
@@ -57,8 +58,10 @@ export interface Program extends BaseProgram {
   goals: string;
   results: string;
   technicalBase: string;
+  detailDescription: string;
   educationForm: EducationType | string;
   groupCount: number;
+  availableGroupCount: number;
   typeOfBudget: TypeOfBudget;
   datasource: string;
   region: Region;
