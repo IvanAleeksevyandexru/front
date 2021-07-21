@@ -157,14 +157,11 @@ export class DictionaryToolsService {
     options: DictionaryOptions,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
     return this.dictionaryApiService
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
       .pipe(
         map((dictionary: DictionaryResponse) => ({
           component,
-          data: {
-            ...dictionary,
-          },
+          data: { ...dictionary },
         })),
         map((dictionary) => {
           // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
