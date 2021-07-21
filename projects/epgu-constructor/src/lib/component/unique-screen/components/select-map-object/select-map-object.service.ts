@@ -14,6 +14,7 @@ import {
   ComponentBaloonContentDto,
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -102,7 +103,7 @@ export class SelectMapObjectService implements OnDestroy {
   public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection<DictionaryItem> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item) => {
-      if (item.center) {
+      if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
           id: item.idForMap,
@@ -142,6 +143,7 @@ export class SelectMapObjectService implements OnDestroy {
    * @param object
    */
   public centeredPlaceMark(coords: number[], object: YMapItem<DictionaryItem>): void {
+    this.closeBalloon();
     let serviceContext = this;
     let offset = -0.00008;
 
@@ -170,14 +172,12 @@ export class SelectMapObjectService implements OnDestroy {
             serviceContext.objectManager.objects.balloon.open(object.idForMap);
             serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
             serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
-            serviceContext.mapOpenedBalloonId = object.idForMap;
-            serviceContext.selectedValue.next(
-              object,
-            );
           }, 200);
         });
       }
     }
+    serviceContext.mapOpenedBalloonId = object.idForMap;
+    serviceContext.selectedValue.next(object);
   }
 
   /**
@@ -231,7 +231,15 @@ export class SelectMapObjectService implements OnDestroy {
 
   public closeBalloon(): void {
     this.selectedValue.next(null);
-    this.mapEvents.fire('userclose');
+    this.mapEvents?.fire('userclose');
+  }
+
+  private getHashKey(center: number[]): string {
+    if (center[0] && center[1]) {
+      return `${center[0]}$${center[1]}`;
+    } else {
+      return uuidv4();
+    }
   }
 
   /**
@@ -246,7 +254,7 @@ export class SelectMapObjectService implements OnDestroy {
         return;
       }
 
-      const hashKey = `${item.center[0]}$${item.center[1]}`;
+      const hashKey = this.getHashKey(item.center);
       // agreement - чекбокс согласия с условиями услуг для загсов
       const attrValues = item.attributeValues;
       item.agreement = attrValues.GET_CONSENT !== 'true';
