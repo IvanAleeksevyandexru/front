@@ -21,8 +21,12 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ConfigApiService } from '../../core/services/config-api/config-api.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
 
-export const getAppStorageKey = (componentType: string, componentId: string): string => {
-  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}`;
+export const getAppStorageKey = (
+  componentType: string,
+  componentId: string,
+  orderId: string | number,
+): string => {
+  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}_${orderId}`;
 };
 
 @Component({
@@ -168,7 +172,11 @@ export class AppBaseComponent<T, U> {
   }
 
   private getStorageKey(): string {
-    return getAppStorageKey(this.inputAppData.componentType, this.inputAppData.componentId);
+    return getAppStorageKey(
+      this.inputAppData.componentType,
+      this.inputAppData.componentId,
+      this.inputAppData.orderId,
+    );
   }
 
   private setOutputAppData(isPrevStepCase: boolean): void {

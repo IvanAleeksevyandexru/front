@@ -89,6 +89,7 @@ export class AppScreenComponent extends ScreenBase implements OnInit {
       value: component.value || this.getDefaultAppInputValue(),
       callbackRedirectUrl: this.locationService.getHref(),
       isPrevStepCase: !!this.screenService.isPrevStepCase,
+      orderId: this.screenService.orderId,
       healthPayload: {
         id: this.screenService.display.id,
         name: this.screenService.display.name,
