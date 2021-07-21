@@ -50,6 +50,7 @@ export class FieldListComponent implements OnInit, OnChanges {
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
+    private utilsService: UtilsService,
   ) {}
 
   ngOnInit(): void {
@@ -109,9 +110,7 @@ export class FieldListComponent implements OnInit, OnChanges {
       const parsedPath = path.split('.');
       const componentId = parsedPath.shift();
       const componentValue = this.currentAnswersService.state[componentId]?.value;
-      const parsedComponentValue = UtilsService.hasJsonStructure(componentValue)
-        ? JSON.parse(componentValue)
-        : {};
+      const parsedComponentValue = this.utilsService.tryToParseOrDefault(componentValue, {});
       const newValue = UtilsService.getObjectProperty(
         parsedComponentValue,
         parsedPath.splice(1, parsedPath.length - 1).join('.'),
