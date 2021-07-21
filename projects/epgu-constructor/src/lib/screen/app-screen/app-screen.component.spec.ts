@@ -238,6 +238,7 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: false,
+        orderId: orderId,
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
@@ -259,6 +260,7 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: true,
+        orderId: orderId,
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
