@@ -160,7 +160,6 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
-    turnOffStartFilter?: boolean;
   };
   searchType?: string;
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;

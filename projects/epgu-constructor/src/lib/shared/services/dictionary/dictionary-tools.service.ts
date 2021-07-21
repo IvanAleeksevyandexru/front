@@ -124,6 +124,11 @@ export class DictionaryToolsService {
               dictionaryOptions = null,
               dictionaryFilter = null,
             } = component.attrs;
+            const excludedParams = component.attrs.dictionaryOptions?.excludedParams || [];
+            const additionalParams = this.getAdditionalParams(
+              screenStore,
+              [...component.attrs.dictionaryOptions?.additionalParams || []],
+            );
 
             const defaultOptions: DictionaryOptions = { pageNum: 0 };
             const options: DictionaryOptions = {
@@ -132,6 +137,8 @@ export class DictionaryToolsService {
               ...(dictionaryFilter
                 ? this.prepareOptions(component, screenStore, dictionaryFilter)
                 : {}),
+              ...{ excludedParams },
+              ... { additionalParams },
             };
 
             data.push(this.getDictionaries$(dictionaryType, component, options));
@@ -150,11 +157,14 @@ export class DictionaryToolsService {
     options: DictionaryOptions,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
     return this.dictionaryApiService
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
       .pipe(
         map((dictionary: DictionaryResponse) => ({
           component,
-          data: { ...dictionary },
+          data: {
+            ...dictionary,
+          },
         })),
         map((dictionary) => {
           // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
