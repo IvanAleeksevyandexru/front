@@ -4,6 +4,7 @@
   [showCrossButton]="true"
   [isButtonsOutsideContent]="true"
   [scrollTop]="false"
+  [showButtons]="true"
 >
   <form [formGroup]="form" modal-content>
     <div class="mb-24">
@@ -94,15 +95,16 @@
         [items]="healthListElements"
       ></lib-dropdown>
     </div>
-
-    <ng-container modal-buttons>
-      <div class="row mb-4">
-        <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
-          >Сбросить всё</lib-button
-        >
-
-        <lib-button class="row-item btn" (click)="submit()">Применить</lib-button>
-      </div>
-    </ng-container>
   </form>
+
+  <ng-container modal-buttons>
+    <div class="row mb-4">
+      <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
+        >Сбросить всё</lib-button
+      >
+
+      <lib-button class="row-item btn" (click)="submit()">Применить</lib-button>
+    </div>
+  </ng-container>
+
 </epgu-cf-ui-cta-modal>
