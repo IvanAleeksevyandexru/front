@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
@@ -28,6 +28,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -71,6 +72,8 @@ describe('BillInfoComponent', () => {
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
+        EaisdoGroupCostService,
+        SessionService,
         WINDOW_PROVIDERS,
       ],
     }).compileComponents();

@@ -22,9 +22,9 @@
 
       <epgu-constructor-constructor-date-picker
         [id]="'startDate'"
-        [minDate]="'today'"
+        [minDate]="attrs.beginDate?.minDate || 'today'"
         [control]="group.controls.startDate"
-        [maxDate]="attrs.beginDate?.maxDate"
+        [maxDate]="beginMaxDate || attrs.beginDate?.maxDate"
         [clearable]="true"
         [invalid]="group.controls.startDate.invalid && group.controls.startDate.touched"
       ></epgu-constructor-constructor-date-picker>
@@ -51,7 +51,7 @@
 
       <epgu-constructor-constructor-date-picker
         [id]="'endDate'"
-        [minDate]="group.controls.startDate.value"
+        [minDate]="group.controls.startDate.value || attrs.endDate?.minDate"
         [maxDate]="attrs.endDate?.maxDate"
         [control]="group.controls.endDate"
         [clearable]="true"

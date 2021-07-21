@@ -33,6 +33,7 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -71,6 +72,7 @@ export class ComponentsListFormService {
     private datesRangeService: DateRangeService,
     private dictionaryToolsService: DictionaryToolsService,
     private screenService: ScreenService,
+    private maskTransformService: MaskTransformService,
   ) {}
 
   public create(
@@ -204,6 +206,13 @@ export class ComponentsListFormService {
       if (this.shownElements[val.id].isShown) {
         if (type === CustomScreenComponentTypes.DateInput && value) {
           value = this.datesToolsService.format(value);
+        } else if (
+          type === CustomScreenComponentTypes.StringInput &&
+          val.attrs.mask === 'NumberMaskInput' &&
+          value
+        ) {
+          //при вводе любого числа, оно должно отправляться в нужном формате NumberMaskInput (EPGUCORE-59658)
+          value = this.maskTransformService.transformNumberMaskInput(value, val.attrs.maskOptions);
         }
         acc[val.id] = { value, isValid, disabled, condition };
       }
@@ -318,7 +327,7 @@ export class ComponentsListFormService {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
-    const { type, attrs, id, label, required } = component;
+    const { type, attrs, id, label, required, arguments: _arguments } = component;
 
     const form: FormGroup = this.fb.group(
       {
@@ -327,6 +336,7 @@ export class ComponentsListFormService {
         id,
         label,
         required,
+        arguments: _arguments,
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
@@ -446,7 +456,7 @@ export class ComponentsListFormService {
     const key: string = utils.getDictKeyByComp(component);
     const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
 
-    if (lockedValue && !repeatedWithNoFilters || dicts[key]?.list?.length === 1) {
+    if ((lockedValue && !repeatedWithNoFilters) || dicts[key]?.list?.length === 1) {
       const value: ListItem = dicts[key]?.list[defaultIndex];
       control.get('value').patchValue(value);
     }

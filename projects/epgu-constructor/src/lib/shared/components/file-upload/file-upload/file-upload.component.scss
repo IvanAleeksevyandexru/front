@@ -3,10 +3,4 @@
 :host {
   display: block;
   @include shadow-main();
-  .file-upload-item {
-    margin-bottom: 24px;
-  }
-  .file-upload-item:last-child{
-    margin-bottom: 0;
-  }
 }

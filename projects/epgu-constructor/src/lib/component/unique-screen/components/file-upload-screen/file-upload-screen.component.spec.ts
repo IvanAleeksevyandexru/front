@@ -23,6 +23,7 @@ import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
+import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -84,6 +85,7 @@ describe('FileUploadScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
         CurrentAnswersService,
+        EaisdoGroupCostService,
       ],
     }).overrideComponent(FileUploadScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },

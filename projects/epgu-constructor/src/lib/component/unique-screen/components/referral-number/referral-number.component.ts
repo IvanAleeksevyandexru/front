@@ -91,12 +91,12 @@ export class ReferralNumberComponent implements OnInit {
       .getReferralSearch(this.referral.value, this.sessionId, this.eserviceId)
       .subscribe(
         (response) => {
-          if (response?.error?.errorDetail?.errorCode !== 0) {
-            this.setErrorState(response?.error?.errorDetail);
-          } else if (this.isReferralExpired(response?.items[0]?.attributes)) {
-            this.setErrorState(this.EXPIRED_ERROR_DETAIL);
-          } else {
-            this.navigateToNextStep(response);
+          if (response?.error?.errorDetail?.errorCode === 0) {
+            if (this.isReferralExpired(response?.items[0]?.attributes)) {
+              this.setErrorState(this.EXPIRED_ERROR_DETAIL);
+            } else {
+              this.navigateToNextStep(response);
+            }
           }
         },
         (error) => {

@@ -34,6 +34,7 @@ import {
   ActionApiResponse,
   ComponentDto,
 } from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -160,6 +161,7 @@ describe('ActionDirective', () => {
         HttpClient,
         HttpHandler,
         EventBusService,
+        EaisdoGroupCostService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

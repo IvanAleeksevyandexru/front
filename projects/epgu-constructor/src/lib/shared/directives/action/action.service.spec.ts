@@ -35,6 +35,7 @@ import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { tap } from 'rxjs/operators';
+import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 const mockComponent: ComponentDto = {
   attrs: {},
@@ -103,15 +104,15 @@ const orderToOrderAction: ComponentActionDto = {
       screenId: 's1',
       componentId: 'w1',
       priority: 2,
-      value: 'valueA'
+      value: 'valueA',
     },
     {
       screenId: 's2',
       componentId: 'q1',
       priority: 1,
-      value: 'valueB'
-    }
-  ]
+      value: 'valueB',
+    },
+  ],
 };
 
 const redirectToLKAction: ComponentActionDto = {
@@ -217,6 +218,7 @@ describe('ActionService', () => {
         HttpClient,
         HttpHandler,
         EventBusService,
+        EaisdoGroupCostService,
       ],
     });
   });
@@ -312,19 +314,19 @@ describe('ActionService', () => {
     const applicantAnswers = {
       q1: {
         value: 'valueB',
-        visited: true
+        visited: true,
       },
       w1: {
         value: 'valueA',
-        visited: true
-      }
+        visited: true,
+      },
     };
 
     const finishedAndCurrentScreens = ['s2', 's1'];
 
     expect(localStorageService.set).toHaveBeenCalledWith(ORDER_TO_ORDER_SCENARIO_KEY, {
       applicantAnswers,
-      finishedAndCurrentScreens
+      finishedAndCurrentScreens,
     });
     expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
   });
@@ -475,7 +477,7 @@ describe('ActionService', () => {
 
   describe('navigate with hooks', () => {
     it('should do navigate after hooks', () => {
-      const restCallObserver = of({ someComponent: { value: 'some data', visited: true, }}).pipe(
+      const restCallObserver = of({ someComponent: { value: 'some data', visited: true }}).pipe(
         tap((data) => {
           screenService.logicAnswers = data;
         }),
@@ -486,7 +488,7 @@ describe('ActionService', () => {
 
       actionService.switchAction(action, null);
       expect(nextStepSpy).toHaveBeenCalledWith({
-        options:{
+        options: {
           params: {},
           url: 'service/actions/editPhoneNumber',
         },
@@ -503,6 +505,27 @@ describe('ActionService', () => {
       });
       expect(hasHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
       expect(getHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
+    });
+  });
+
+  describe('prepareActionMultipleAnswers()', () => {
+    it('should return parsed action.mulipleAnswers, if they passed as JSON-string', () => {
+      const action = ({
+        type: ActionType.orderToOrder,
+        action: DTOActionAction.getNextStep,
+        multipleAnswers: '[{"test": "test"}]',
+      } as unknown) as ComponentActionDto;
+      const result = actionService['prepareActionMultipleAnswers'](action);
+      expect(typeof result.multipleAnswers === 'object').toBe(true);
+    });
+    it('should return action.mulipleAnswers as is, if they passed non JSON-string', () => {
+      const action = ({
+        type: ActionType.orderToOrder,
+        action: DTOActionAction.getNextStep,
+        multipleAnswers: [{ test: 'test' }],
+      } as unknown) as ComponentActionDto;
+      const result = actionService['prepareActionMultipleAnswers'](action);
+      expect(typeof result.multipleAnswers === 'object').toBe(true);
     });
   });
 });

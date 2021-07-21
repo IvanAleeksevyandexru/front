@@ -14,6 +14,7 @@ export interface ChildrenClubsState {
   programFilters?: Filters;
   groupFilters?: FindOptionsGroup;
   groupFiltersMode: GroupFiltersModes;
+  isLoaderVisible: boolean;
 }
 
 export interface ValueProgram {

@@ -25,6 +25,7 @@ export interface ItemsErrorResponse {
     errorDetail: {
       errorCode: number;
       errorMessage: string;
+      errorCodeTxt?: string;
       fieldErrors?: ItemsErrorFieldResponse[];
     };
   };
@@ -47,4 +48,30 @@ export interface CheckOrderApiResponse {
 export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
+}
+
+export interface EaisdoResponse {
+  error: string;
+  errorType: string;
+  responseType: string;
+  responseData: { [key: string]: unknown };
+}
+
+export interface QuizDataDto {
+  multipleAnswers: string;
+  order: string;
+  quizRaw: string;
+}
+export interface QuizDataDtoResponse {
+  data: QuizDataDto;
+}
+
+export interface QuizDataSaveDtoRequest {
+  data: QuizDataDto;
+  userId: string;
+}
+
+export interface QuizDataSaveDtoReponse {
+  token: string; // uuid
+  errorMessage: string;
 }

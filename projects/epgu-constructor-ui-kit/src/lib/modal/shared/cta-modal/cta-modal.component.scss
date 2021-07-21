@@ -61,6 +61,8 @@ $closeBtnWidth: 24px;
   }
 
   &__body {
+    display: flex;
+    flex-direction: column;
     overflow: auto; // для отработки скрола в модалке в моб
     @include rubles('.conf-modal__body');
     @include tablets-down {

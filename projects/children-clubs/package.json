@@ -1,6 +1,6 @@
 {
   "name": "@epgu/children-clubs",
-  "version": "23.4.1",
+  "version": "24.1.1",
   "scripts": {
     "build": "cd ../../ && ng build children-clubs --prod",
     "lint": "cd ../../ && ng lint children-clubs",
@@ -15,8 +15,8 @@
     "lodash": ""
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "23.4.1",
-    "@epgu/epgu-constructor-ui-kit": "23.4.1",
+    "@epgu/epgu-constructor-types": "24.1.1",
+    "@epgu/epgu-constructor-ui-kit": "24.1.1",
     "tslib": "^2.0.0"
   }
 }

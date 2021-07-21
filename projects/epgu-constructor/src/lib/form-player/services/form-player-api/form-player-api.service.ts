@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
@@ -11,6 +11,7 @@ import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
+  QuizDataDtoResponse,
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { map } from 'rxjs/operators';
@@ -22,6 +23,7 @@ export class FormPlayerApiService {
     private initDataService: InitDataService,
     private configService: ConfigService,
     private locationService: LocationService,
+    private sessionService: SessionService,
   ) {}
 
   public checkIfOrderExist(): Observable<CheckOrderApiResponse> {
@@ -86,15 +88,22 @@ export class FormPlayerApiService {
 
     const params = this.getNavigateParams(options.params);
 
-    return this.post<FormPlayerApiResponse>(path, body, params)
-      .pipe(map(result => {
-        if (formPlayerNavigation === FormPlayerNavigation.PREV && result.hasOwnProperty('scenarioDto')) {
-          const scenarioDto = { ...(result as FormPlayerApiSuccessResponse).scenarioDto, isPrevStepCase: true };
+    return this.post<FormPlayerApiResponse>(path, body, params).pipe(
+      map((result) => {
+        if (
+          formPlayerNavigation === FormPlayerNavigation.PREV &&
+          result.hasOwnProperty('scenarioDto')
+        ) {
+          const scenarioDto = {
+            ...(result as FormPlayerApiSuccessResponse).scenarioDto,
+            isPrevStepCase: true,
+          };
           return { ...result, scenarioDto };
         }
 
         return result;
-      }));
+      }),
+    );
   }
 
   public getBooking(): Observable<FormPlayerApiResponse> {
@@ -108,13 +117,26 @@ export class FormPlayerApiService {
   }
 
   public quizToOrder(quiz: QuizRequestDto): Observable<FormPlayerApiResponse> {
-    let path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
+    const path = `${this.configService.apiUrl}/quiz/scenario/toOrder`;
 
     const body = {
       ...quiz,
     };
 
     return this.post<FormPlayerApiResponse>(path, body);
+  }
+
+  public getQuizData(): Observable<QuizDataDtoResponse> {
+    const userId = this.sessionService.userId;
+    const path = `${this.configService.quizDataApiUrl}?userId=${userId}`;
+
+    return this.get<QuizDataDtoResponse>(path);
+  }
+
+  public getQuizDataByToken(token: string): Observable<QuizDataDtoResponse> {
+    const path = `${this.configService.quizDataApiUrl}/${token}`;
+
+    return this.get<QuizDataDtoResponse>(path);
   }
 
   private getNavigateParams(params: NavigationParams = {}): HttpParams {
@@ -135,6 +157,13 @@ export class FormPlayerApiService {
       path += `/${pathDir}/scenario/${formPlayerNavigation}`;
     }
     return path;
+  }
+
+  private get<T>(path: string, params?: HttpParams): Observable<T> {
+    return this.http.get<T>(path, {
+      withCredentials: true,
+      params,
+    });
   }
 
   private post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {

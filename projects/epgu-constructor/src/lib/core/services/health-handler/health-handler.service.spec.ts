@@ -10,7 +10,7 @@ import {
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { HealthService } from '@epgu/epgu-lib';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../init-data/init-data.service';
@@ -86,6 +86,7 @@ describe('HealthHandlerService', () => {
         UtilsService,
         HealthHandlerService,
         TestHealthInterceptor,
+        SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },

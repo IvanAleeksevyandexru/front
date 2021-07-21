@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Injectable()
-export class LocationServiceStub {
+export class LocationServiceStub extends Location {
   href(): void {}
 
   getHref(): void {}
@@ -10,5 +11,7 @@ export class LocationServiceStub {
 
   deleteParam(): void {}
 
-  path(): void {}
+  hasParam(): void {}
+
+  getParamValue(): void {}
 }

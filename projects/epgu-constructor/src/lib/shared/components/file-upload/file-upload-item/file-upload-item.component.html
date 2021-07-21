@@ -1,8 +1,8 @@
-<div class="fileupload__wrapper">
+<div class="fileupload__wrapper file-upload-item">
   <div *ngIf="data.title" class="title">
     {{ data.title }}
-    <epgu-constructor-user-info-loader [isDisplay]="false"></epgu-constructor-user-info-loader>
   </div>
+  <div class="divider mb-24"></div>
   <div class="file__bottom" [ngClass]="{ 'file__bottom--divider': isShownDivider() }">
     <epgu-constructor-output-html
       class="info__text"
