@@ -34,8 +34,12 @@ const mockComponent = {
     dictionaryType: 'lookUpInputType',
     searchProvider: {
       dictionaryOptions: { additionalParams: [] },
-      dictionaryFilter: [],
-      turnOffStartFilter: true
+      dictionaryFilter: [{
+        attributeName: 'Session_Id',
+        condition: 'EQUALS',
+        value: 'value',
+        valueType: 'rawFilter'
+      }],
     }
   },
   value: 'lookUpInput',
