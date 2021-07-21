@@ -2,15 +2,16 @@
   <div class="card-toggle">
     <input [value]="true" type="checkbox" id="card-{{ index }}" />
     <label class="card-toggle-header group-item-header" for="card-{{ index }}">
-      <span class="card-toggle-label">
+      <span class="card-toggle-label mt-16">
         <b>{{ group?.name }}</b>
       </span>
+      <children-clubs-deny-reason-title
+        *ngIf="denyReasonMessage?.title"
+        class="mt-16"
+        [title]="denyReasonMessage.title"
+      ></children-clubs-deny-reason-title>
     </label>
-    <children-clubs-deny-reason-title
-      *ngIf="denyReasonMessage?.title"
-      class="mt-16"
-      [title]="denyReasonMessage.title"
-    ></children-clubs-deny-reason-title>
+
     <div class="card-toggle-content group-item-content">
       <div class="modal-divider"></div>
       <div *ngIf="group?.teachers" class="group-item mt-16">
