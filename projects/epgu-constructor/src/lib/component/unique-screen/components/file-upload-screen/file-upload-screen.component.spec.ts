@@ -99,6 +99,7 @@ describe('FileUploadScreenComponent', () => {
     screenService.component = screenServiceComponentMockData;
     screenService.header = '';
     screenService.buttons = [button];
+    jest.spyOn(screenService, 'componentErrors', 'get').mockReturnValue({});
 
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     eventBusService = TestBed.inject(EventBusService);
@@ -143,6 +144,7 @@ describe('FileUploadScreenComponent', () => {
             value: [fileSample],
           },
         ],
+        errors: [],
       };
 
       eventBusService.emit('fileUploadValueChangedEvent', eventData);
@@ -384,6 +386,7 @@ describe('FileUploadScreenComponent', () => {
               ],
             },
           ],
+          errors: [],
           relatedUploads: {
             uploads: [
               {

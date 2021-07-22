@@ -14,6 +14,8 @@ import { UploaderLimitsServiceStub } from '../limits/uploader-limits.service.stu
 import { CompressionServiceStub } from '../../../upload-and-edit-photo-form/service/compression/compression.service.stub';
 import { UploaderManagerService } from '../manager/uploader-manager.service';
 import { UploaderStoreService } from '../store/uploader-store.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 
 const uploadMock: FileUploadItem = {
   title: 'title',
@@ -26,6 +28,7 @@ const uploadMock: FileUploadItem = {
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
+    description: '',
     fileName: '123.pdf',
     objectId: '123',
     mnemonic: 'fu1.FileUploadComponent.passport.1',
@@ -58,6 +61,7 @@ describe('UploaderValidationService', () => {
   let uploadService: UploaderLimitsService;
   let compressService: CompressionService;
   let uploaderService: UploaderManagerService;
+  let screenService: ScreenService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -65,6 +69,7 @@ describe('UploaderValidationService', () => {
         UploaderValidationService,
         UploaderManagerService,
         UploaderStoreService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UploaderLimitsService, useClass: UploaderLimitsServiceStub },
         { provide: CompressionService, useClass: CompressionServiceStub },
       ],
@@ -76,7 +81,8 @@ describe('UploaderValidationService', () => {
     uploadService = TestBed.inject(UploaderLimitsService);
     compressService = TestBed.inject(CompressionService);
     uploaderService = TestBed.inject(UploaderManagerService);
-
+    screenService = TestBed.inject(ScreenService);
+    jest.spyOn(screenService, 'componentErrors', 'get').mockReturnValue({});
     uploaderService.data = uploadMock;
   });
 
@@ -85,6 +91,7 @@ describe('UploaderValidationService', () => {
     jest.spyOn(compressService, 'isValidImageType').mockReturnValueOnce(false);
     jest.spyOn(uploadService, 'checkAmount').mockReturnValueOnce(0);
     jest.spyOn(uploadService, 'checkSize').mockReturnValueOnce(0);
+
     prepareService.prepare(file).subscribe((fileItem) => {
       expect(fileItem?.error).toBeUndefined();
       done();
@@ -107,6 +114,23 @@ describe('UploaderValidationService', () => {
       jest.spyOn(uploaderService, 'data', 'get').mockReturnValue(config);
       prepareService.checkAndSetMaxCountByTypes(mockFileItem());
       expect(uploadService.changeMaxAmount).toHaveBeenCalledWith(3, uploadMock.uploadId);
+    });
+  });
+
+  describe('checkServerError', () => {
+    it('should checkServerError - success', () => {
+      const file = mockFileItem();
+      jest.spyOn(file, 'isTypeValid').mockReturnValueOnce(true);
+      expect(prepareService.checkServerError(file)?.error).toBeUndefined();
+    });
+
+    it('should checkServerError - error', () => {
+      const file = mockFileItem();
+      jest
+        .spyOn(screenService, 'componentErrors', 'get')
+        .mockReturnValueOnce({ 'fu1.FileUploadComponent.passport.1': 'error' });
+
+      expect(prepareService.checkServerError(file)?.error?.type).toBe(ErrorActions.serverError);
     });
   });
 
