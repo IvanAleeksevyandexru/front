@@ -4,7 +4,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
-import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
+import { MockComponent, MockDirective, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
@@ -24,6 +24,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -84,6 +85,7 @@ describe('FileUploadScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
+        CertificateEaisdoService,
         CurrentAnswersService,
         EaisdoGroupCostService,
       ],
