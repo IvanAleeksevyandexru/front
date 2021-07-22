@@ -19,9 +19,14 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 import { ConfigService } from '../../core/services/config/config.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ConfigApiService } from '../../core/services/config-api/config-api.service';
+import { LoggerService } from '../../core/services/logger/logger.service';
 
-export const getAppStorageKey = (componentType: string, componentId: string): string => {
-  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}`;
+export const getAppStorageKey = (
+  componentType: string,
+  componentId: string,
+  orderId: string | number,
+): string => {
+  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}_${orderId}`;
 };
 
 @Component({
@@ -42,6 +47,7 @@ export class AppBaseComponent<T, U> {
   private localStorageService: LocalStorageService;
   private appNavigationRuleService: AppNavigationRuleService;
   private loadService: LoadService;
+  private logger: LoggerService;
   private configService: ConfigService;
   private configApiService: ConfigApiService;
   private cdr: ChangeDetectorRef;
@@ -63,6 +69,7 @@ export class AppBaseComponent<T, U> {
     this.configService = this.injector.get(ConfigService);
     this.configApiService = this.injector.get(ConfigApiService);
     this.cdr = this.injector.get(ChangeDetectorRef);
+    this.logger = this.injector.get(LoggerService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.eventSub = this.eventBusService.on('closeApp').subscribe((isPrevStepCase: boolean) => {
       this.closeApp(isPrevStepCase);
@@ -111,7 +118,7 @@ export class AppBaseComponent<T, U> {
          Input data type is: ${inputAppData.componentType}`,
       );
     }
-
+    this.logger.log([inputAppData], 'Input App Data');
     this.inputAppData = inputAppData;
   }
 
@@ -165,7 +172,11 @@ export class AppBaseComponent<T, U> {
   }
 
   private getStorageKey(): string {
-    return getAppStorageKey(this.inputAppData.componentType, this.inputAppData.componentId);
+    return getAppStorageKey(
+      this.inputAppData.componentType,
+      this.inputAppData.componentId,
+      this.inputAppData.orderId,
+    );
   }
 
   private setOutputAppData(isPrevStepCase: boolean): void {
@@ -176,6 +187,7 @@ export class AppBaseComponent<T, U> {
       value: JSON.stringify({ value, state }),
       isPrevStepCase,
     };
+    this.logger.log([outputAppData], 'Output app data');
     this.cfAppStateService.setState<OutputAppDto>(outputAppData, DataDirectionType.OUTPUT);
   }
 
@@ -186,6 +198,7 @@ export class AppBaseComponent<T, U> {
   private enableStorageSynchronization(): void {
     const key = this.getStorageKey();
     this.storeSub = this.appStateQuery.store$.subscribe((storeState) => {
+      this.logger.log([storeState], 'Current app state');
       this.localStorageService.set<AppState<T, U>>(key, storeState);
     });
     this.isFirstLoading$.next(false);

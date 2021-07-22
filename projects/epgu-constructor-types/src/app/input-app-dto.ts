@@ -8,6 +8,7 @@ import { FpHealthPayload } from '../api';
  * @property {string}[value] - json like строка с содержимым для запуска lib с нужным стором, обычно берём из cachedAnswers.
  *   Должна будет серелизоваться в AppState тип.
  * @property {boolean}[isPrevStepCase] - флаг для передачи контекста сквозной навигации по услуги.
+ * @property {string}[orderId] - уникальный идентификатор прохождения услуги.
  * @property {object}[healthPayload] - данные по текущему экрану и заявке, нужны для хелс сервиса.
  */
 export interface InputAppDto {
@@ -16,5 +17,6 @@ export interface InputAppDto {
   callbackRedirectUrl: string;
   value: string;
   isPrevStepCase: boolean;
+  orderId: number;
   healthPayload: FpHealthPayload;
 }

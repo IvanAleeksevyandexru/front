@@ -62,7 +62,7 @@ export interface QuizDataDto {
   order: string;
   quizRaw: string;
 }
-export interface QuizDataDtoReponse {
+export interface QuizDataDtoResponse {
   data: QuizDataDto;
 }
 

@@ -61,18 +61,8 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
-      let additionalParams = {};
       const filters = [...this.control.value.attrs.searchProvider.dictionaryFilter];
-      const startFilter = this.control.value.attrs.searchProvider?.turnOffStartFilter;
-
-      if (!startFilter) {
-        filters[0].value = searchString;
-      } else {
-        additionalParams = this.dictionaryToolsService.getAdditionalParams(
-          this.screenService.getStore(),
-          [...this.control.value.attrs.searchProvider.dictionaryOptions.additionalParams],
-        );
-      }
+      filters[0].value = searchString;
 
       const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
         this.formService.form,
@@ -84,14 +74,13 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
         .getDictionaries$(this.control.value.attrs.dictionaryType, this.control.value, {
           ...this.control.value.attrs.searchProvider.dictionaryOptions,
           ...dictionaryOptions,
-          ...{ additionalParams },
         })
         .pipe(
           map((reference) => {
             return this.dictionaryToolsService.adaptDictionaryToListItem(
               reference.data.items,
               reference.component.attrs.mappingParams,
-              startFilter !== undefined && startFilter === true,
+              false,
             );
           }),
         );

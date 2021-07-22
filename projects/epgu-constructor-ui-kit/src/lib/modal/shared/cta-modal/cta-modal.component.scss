@@ -98,6 +98,9 @@ $closeBtnWidth: 24px;
     }
 
     ::ng-deep {
+      .row {
+        width: 100%;
+      }
       > *:not(:first-child) {
         margin: 0 0 24px;
         @include tablets-up {

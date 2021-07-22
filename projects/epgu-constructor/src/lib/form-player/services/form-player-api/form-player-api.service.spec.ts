@@ -5,7 +5,6 @@ import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import {
   FormPlayerApiSuccessResponse,
-  QuizDataDto,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
@@ -392,38 +391,6 @@ describe('FormPlayerApiService', () => {
       expect(req.request.urlWithParams.includes(token)).toBeTruthy();
       req.flush(responseMock);
       tick();
-    }));
-  });
-
-  describe('setQuizData()', () => {
-    let req;
-    beforeEach(fakeAsync(() => {
-      const data: QuizDataDto = { multipleAnswers: '', order: '', quizRaw: '' };
-      const apiUrl = configService.quizDataApiUrl;
-
-      service.setQuizData(data).subscribe((response) => expect(response).toBe(responseMock));
-      req = http.expectOne(`${apiUrl}`);
-    }));
-
-    afterEach(fakeAsync(() => {
-      req.flush(responseMock);
-      tick();
-    }));
-
-    it('should call http with post method', fakeAsync(() => {
-      expect(req.request.method).toBe('POST');
-    }));
-
-    it('should call with body', fakeAsync(() => {
-      const body = req.request.body;
-      expect(body).not.toBeUndefined();
-    }));
-
-    it('should call with body with QuizDataDto', fakeAsync(() => {
-      const body = req.request.body;
-      expect(body.quizRaw).not.toBeUndefined();
-      expect(body.order).not.toBeUndefined();
-      expect(body.multipleAnswers).not.toBeUndefined();
     }));
   });
 });

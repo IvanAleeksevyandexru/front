@@ -23,11 +23,13 @@ import { RadioInputComponent } from '../components/radio-input/radio-input.compo
 import { SearchableDropdownComponent } from '../components/searchable-dropdown/searchable-dropdown.component';
 import { TextAreaComponent } from '../components/text-area/text-area.component';
 import { TimerItemComponent } from '../components/timer-item/timer-item.component';
+import { CertificateEaisdoComponent } from '../components/certificate-eaisdo/certificate-eaisdo.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
 type CustomScreenComponent =
   | AddressInputComponent
+  | CertificateEaisdoComponent
   | CheckboxInputComponent
   | CheckboxListComponent
   | CityInputComponent
@@ -57,6 +59,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
 >> = {
   AddressInput: AddressInputComponent,
   CardNumberInput: MaskedAndPlainInputComponent,
+  CertificateEaisdo: CertificateEaisdoComponent,
   CheckBox: CheckboxInputComponent,
   CheckBoxList: CheckboxListComponent,
   CheckingAccount: MaskedAndPlainInputComponent,
