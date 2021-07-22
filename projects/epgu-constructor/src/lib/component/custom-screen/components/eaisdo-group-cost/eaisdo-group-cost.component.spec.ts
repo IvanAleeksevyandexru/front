@@ -154,7 +154,8 @@ describe('EaisdoGroupCostComponent', () => {
       const typeOfBudget: string | unknown = null;
       const responseData: ActionApiResponse<EaisdoResponse>['responseData'] = null;
       const result = {
-          value: null,
+          disabled: false,
+          value: 'null',
           visited: true,
         };
       component['setState'](error, responseType, financialSource, typeOfBudget, responseData);

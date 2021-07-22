@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService, SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
@@ -59,6 +59,7 @@ describe('BillInfoComponent', () => {
         MockProvider(LocalStorageService),
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         EventBusService,
         DatesToolsService,
         ActionService,

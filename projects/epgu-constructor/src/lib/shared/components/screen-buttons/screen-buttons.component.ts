@@ -9,6 +9,7 @@ import { ActionType, ScreenButton } from '@epgu/epgu-constructor-types';
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
 
 @Component({
   selector: 'epgu-constructor-screen-buttons',
@@ -26,6 +27,7 @@ export class ScreenButtonsComponent implements OnInit {
   private isInformerScreen = false;
 
   constructor(
+    private certificateEaisdoService: CertificateEaisdoService,
     private eventBusService: EventBusService,
     private eaisdoGroupCostService: EaisdoGroupCostService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -40,6 +42,10 @@ export class ScreenButtonsComponent implements OnInit {
     this.eaisdoGroupCostService.currentButtonsState$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.cdr.detectChanges());
+
+    this.certificateEaisdoService.showButtons$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.cdr.detectChanges());
   }
 
   setClickedButton(button: ScreenButton): void {
@@ -48,8 +54,13 @@ export class ScreenButtonsComponent implements OnInit {
   }
 
   calculateVisibility(button: ScreenButton): boolean {
+    // TODO Будет лучше если компонент кнопок не будет ничего знать про другие сервисы,
+    // Необходимо перенести логику показа/непоказа или выше в место откуда кнопки приходят или в сервис кнопок, который нужно написать
     if (this.isInformerScreen) {
-      return this.eaisdoGroupCostService.currentButtonsState.includes(button.type);
+      return (
+        this.eaisdoGroupCostService.currentButtonsState.includes(button.type) ||
+        this.certificateEaisdoService.showButtons
+      );
     }
     return true;
   }

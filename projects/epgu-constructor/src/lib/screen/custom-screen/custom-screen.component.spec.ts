@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from '@epgu/epgu-lib';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import {
   CustomComponentOutputData,
@@ -39,6 +39,7 @@ import {
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -94,6 +95,7 @@ describe('CustomScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
         CurrentAnswersService,
+        CertificateEaisdoService,
         CustomScreenService,
         DatesToolsService,
         ConfigService,

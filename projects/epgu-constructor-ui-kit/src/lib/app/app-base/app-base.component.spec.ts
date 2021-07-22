@@ -25,6 +25,8 @@ import { ConfigServiceStub } from '../../core/services/config/config.service.stu
 import { ConfigApiService } from '../../core/services/config-api/config-api.service';
 import { ConfigApiServiceStub } from '../../core/services/config-api/config-api.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
+import { LoggerService } from '../../core/services/logger/logger.service';
+import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
 
 export interface TestValueType {
   someKey: string;
@@ -68,6 +70,7 @@ describe('AppBaseModule', () => {
       providers: [
         EventBusService,
         UnsubscribeService,
+        { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: AppNavigationRuleService, useClass: AppNavigationRuleServiceStub },
         { provide: AppStateService, useClass: AppStateServiceStub },
         { provide: AppStateQuery, useClass: AppStateQueryStub },

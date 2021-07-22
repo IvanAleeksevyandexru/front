@@ -435,6 +435,8 @@ describe('DictionaryToolsService', () => {
               value: { asString: '123' },
             },
           },
+          additionalParams: [],
+          excludedParams: [],
         },
       });
 
@@ -476,6 +478,8 @@ describe('DictionaryToolsService', () => {
           },
         },
         pageNum: 0,
+        additionalParams: [],
+        excludedParams: [],
       };
 
       const data = {
@@ -518,6 +522,8 @@ describe('DictionaryToolsService', () => {
               value: { asString: '123' },
             },
           },
+          additionalParams: [],
+          excludedParams: [],
         },
       });
       const dictionaryOptions = {
@@ -532,6 +538,8 @@ describe('DictionaryToolsService', () => {
           },
         },
         pageNum: 0,
+        additionalParams: [],
+        excludedParams: [],
       };
 
       const data = {
