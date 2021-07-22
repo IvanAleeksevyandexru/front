@@ -10,7 +10,7 @@ import {
   ModalService,
   LocationService,
   ErrorHandlerAbstractService,
-  ConfigService
+  ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import {
@@ -32,6 +32,10 @@ import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import {
+  DictionaryResponse,
+  DictionaryResponseError,
+} from '../../../shared/services/dictionary/dictionary-api.types';
 
 enum ModalFailureType {
   BOOKING,
@@ -39,9 +43,11 @@ enum ModalFailureType {
   SESSION,
 }
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
-export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SESSION_TIMEOUT_SMEV2 =
+  'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 // eslint-disable-next-line max-len
-export const SESSION_TIMEOUT_SMEV3 = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SESSION_TIMEOUT_SMEV3 =
+  'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
 
 @Injectable()
@@ -85,6 +91,23 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         } catch (e) {}
       }
 
+      if (url.includes('nsi/v1/dictionary/mzrf_lpu_equeue_smev3')) {
+        const dictionaryError = error as DictionaryResponseError;
+        const dictionaryResponse = body as DictionaryResponse;
+        if (
+          dictionaryError?.code === 0 &&
+          dictionaryError?.message === 'operation crashed' &&
+          dictionaryResponse?.items?.length &&
+          dictionaryResponse.items[0]?.value === 'FAILURE'
+        ) {
+          this.showModalFailure(
+            'Время сессии истекло, перейдите к началу',
+            true,
+            ModalFailureType.SESSION,
+          );
+        }
+      }
+
       if (
         url.includes('agg/ref/items') &&
         (error !== null || error !== undefined) &&
@@ -102,7 +125,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
 
           if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
-            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
+            if (
+              errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 ||
+              errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3
+            ) {
               this.showModalFailure(errorMessage, false, ModalFailureType.SESSION);
             } else {
               this.showModalFailure(errorMessage, false, ModalFailureType.FAILURE);
@@ -114,7 +140,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (!errorMessage.includes('FAILURE') &&
               !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
           ) {
-            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
+            if (
+              errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 ||
+              errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3
+            ) {
               this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
               this.showModalNoData(errorMessage, true);
@@ -125,7 +154,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             errorMessage.includes('FAILURE') ||
             errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
           ) {
-            if (errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 || errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3) {
+            if (
+              errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV2 ||
+              errorMessage.split('.').join('') === SESSION_TIMEOUT_SMEV3
+            ) {
               this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
               this.showModalFailure(errorMessage, true, ModalFailureType.FAILURE);
@@ -202,9 +234,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   }
 
   private showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
-    const message = replace ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '') : errorMessage;
+    const message = replace
+      ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+      : errorMessage;
 
-    switch(modal) {
+    switch (modal) {
       case ModalFailureType.FAILURE:
         ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
         this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
@@ -226,7 +260,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       case ModalFailureType.BOOKING:
         const modal = {
           ...NEW_BOOKING_ERROR,
-          text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message)
+          text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message),
         };
         this.showModal(modal).then((redirectToLk) => {
           if (redirectToLk) {
