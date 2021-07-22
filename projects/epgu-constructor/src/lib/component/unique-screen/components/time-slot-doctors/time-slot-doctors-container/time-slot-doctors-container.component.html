@@ -5,10 +5,20 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <epgu-constructor-time-slot-doctors
-    *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
-    [docLookupAttrs]="timeSlotDoctor.attrs.docLookup"
-    [specLookupAttrs]="timeSlotDoctor.attrs.specLookup"
-    [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
-  ></epgu-constructor-time-slot-doctors>
+  <ng-container *ngIf="state$$ | async as state">
+    <epgu-constructor-time-slot-doctors
+      *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
+      [specLookupControl]="specLookupControl"
+      [docLookupControl]="docLookupControl"
+      [specProvider]="specProvider"
+      [doctorProvider]="doctorProvider"
+      [docLookupAttrs]="timeSlotDoctor.attrs.docLookup"
+      [specLookupAttrs]="timeSlotDoctor.attrs.specLookup"
+      [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
+      (specLookupWasChanged)="handleSpecLookupValue($event)"
+      (docLookupWasChanged)="handleDocLookupValue($event)"
+      [isDocLookupShown]="!!state.specLookup"
+      [isMapShown]="!!state.docLookup"
+    ></epgu-constructor-time-slot-doctors>
+  </ng-container>
 </epgu-constructor-default-unique-screen-wrapper>

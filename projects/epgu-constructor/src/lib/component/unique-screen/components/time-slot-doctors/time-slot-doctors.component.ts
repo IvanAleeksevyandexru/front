@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'epgu-constructor-time-slot-doctors',
@@ -9,11 +9,21 @@ import { Observable } from 'rxjs';
   styleUrls: ['./time-slot-doctors.component.css'],
 })
 export class TimeSlotDoctorsComponent {
-  @Input() specLookupList$: Observable<any>;
+  @Input() specProvider;
+  @Input() doctorProvider;
+
+  @Input() specLookupControl;
+  @Input() docLookupControl;
 
   @Input() specLookupAttrs: ComponentAttrsDto;
   @Input() docLookupAttrs: ComponentAttrsDto;
   @Input() timeSlotAttrs: ComponentAttrsDto;
+
+  @Input() isDocLookupShown: boolean;
+  @Input() isMapShown: boolean;
+
+  @Output() specLookupWasChanged = new EventEmitter<ListElement>();
+  @Output() docLookupWasChanged = new EventEmitter<ListElement>();
 
   readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 }
