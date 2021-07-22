@@ -1,26 +1,38 @@
-<epgu-constructor-default-unique-screen-wrapper
-  [header]="screenService.header$ | async"
-  [isLoading]="screenService.isLoading$ | async"
-  [screenButtons]="screenService.buttons$ | async"
-  [showNav]="screenService.showNav$ | async"
-  [isValid]="currentAnswersService.isValid$ | async"
->
-  <ng-container *ngIf="state$$ | async as state">
-    <epgu-constructor-time-slot-doctors
-      *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
-      [specLookupControl]="specLookupControl"
-      [docLookupControl]="docLookupControl"
-      [specProvider]="specProvider"
-      [doctorProvider]="doctorProvider"
-      [docLookupAttrs]="timeSlotDoctor.attrs.docLookup"
-      [specLookupAttrs]="timeSlotDoctor.attrs.specLookup"
-      [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
-      (specLookupWasChanged)="handleSpecLookupValue($event)"
-      (docLookupWasChanged)="handleDocLookupValue($event)"
-      (selectDate)="selectDate($event)"
-      (chooseTimeSlot)="chooseTimeSlot($event)"
-      [isDocLookupShown]="!!state.specLookup"
-      [isMapShown]="!!state.docLookup"
-    ></epgu-constructor-time-slot-doctors>
-  </ng-container>
-</epgu-constructor-default-unique-screen-wrapper>
+
+<ng-container *ngIf="currentAnswersService.isValid$ | async as isValid">
+  <epgu-constructor-default-unique-screen-wrapper
+    [header]="screenService.header$ | async"
+    [isLoading]="screenService.isLoading$ | async"
+    [showNav]="screenService.showNav$ | async"
+    [isValid]="isValid"
+  >
+    <ng-container *ngIf="timeSlotDoctorService.state$$ | async as state">
+      <epgu-constructor-time-slot-doctors
+        *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
+        [currentSlot]="currentSlot"
+        [weeks]="weeks"
+        [slotList]="timeSlots"
+        [monthsRange]="monthsRange"
+        [specLookupControl]="specLookupControl"
+        [docLookupControl]="docLookupControl"
+        [specProvider]="specProvider"
+        [doctorProvider]="doctorProvider"
+        [docLookupAttrs]="timeSlotDoctor.attrs.docLookup"
+        [specLookupAttrs]="timeSlotDoctor.attrs.specLookup"
+        [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
+        (specLookupWasChanged)="handleSpecLookupValue($event)"
+        (docLookupWasChanged)="handleDocLookupValue($event)"
+        (selectDate)="selectDate($event)"
+        (chooseTimeSlot)="chooseTimeSlot($event)"
+        [isDocLookupShown]="!!state.specLookup || this.timeSlotDoctorService.isByMedRef"
+        [isMapShown]="!!state.docLookup && slotsLoadingStatus$$.getValue()"
+        [isLoading]="isLoading$ | async"
+        [isChosenTimeStrVisible]="isChosenTimeStrVisible"
+        [chosenTimeStr]="chosenTimeStr"
+        [labelButton]="(screenService.button$ | async).label"
+        [isValid]="isValid"
+        (bookSlot)="clickSubmit()"
+      ></epgu-constructor-time-slot-doctors>
+    </ng-container>
+  </epgu-constructor-default-unique-screen-wrapper>
+</ng-container>

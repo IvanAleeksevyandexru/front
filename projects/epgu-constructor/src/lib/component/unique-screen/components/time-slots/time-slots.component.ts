@@ -326,7 +326,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || !this.currentSlot?.slotId;
   }
 
   isBookSlotSelected(): string {

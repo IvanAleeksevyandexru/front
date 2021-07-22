@@ -25,7 +25,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { TimeSlotDoctorsComponent, TimeSlotDoctorState } from '../time-slot-doctors.interface';
+import { TimeSlotDoctorsComponent } from '../time-slot-doctors.interface';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent } from '../../../../custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
@@ -51,6 +51,9 @@ import { TimeSlotDoctorService } from '../time-slot-doctor.service';
 export class TimeSlotDoctorsContainerComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
+
+  slotsLoadingStatus$$ = new BehaviorSubject<boolean>(false);
+
 
   public date: Date = null;
   public label: string;
@@ -111,11 +114,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   private _monthsRange = new Set();
   private today: Date;
 
-  state$$ = new BehaviorSubject<TimeSlotDoctorState>({
-    specLookup: null,
-    docLookup: null,
-  });
-
   public specProvider;
   public doctorProvider;
 
@@ -128,18 +126,25 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
       return { ...component, parsedValue: JSON.parse(component.value) };
     }),
     tap((component: TimeSlotDoctorsComponent) => {
+      this.timeSlotDoctorService.isByMedRef = !!component.attrs.isByMedRef;
       this.component = component;
       this.specProvider = { search: this.providerSearch(component, component.attrs.specLookup) };
-      this.doctorProvider = {
-        search: this.providerSearch(component, component.attrs.docLookup, () => [
-          {
-            attributeName: 'Service_Id',
-            condition: DictionaryConditions.EQUALS,
-            value: JSON.stringify(this.state$$.getValue().specLookup.id),
-            valueType: DictionaryValueTypes.value,
-          },
-        ]),
-      };
+      if (this.timeSlotDoctorService.isByMedRef) {
+        this.doctorProvider = {
+          search: this.providerSearch(component, component.attrs.docLookup),
+        };
+      } else {
+        this.doctorProvider = {
+          search: this.providerSearch(component, component.attrs.docLookup, () => [
+            {
+              attributeName: 'Service_Id',
+              condition: DictionaryConditions.EQUALS,
+              value: JSON.stringify(this.timeSlotDoctorService.state$$.getValue().specLookup.id),
+              valueType: DictionaryValueTypes.value,
+            },
+          ]),
+        };
+      }
     }),
     filter((component: TimeSlotDoctorsComponent) => !!component.value),
   );
@@ -147,6 +152,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   constructor(
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
+    public timeSlotDoctorService: TimeSlotDoctorService,
     private dictionaryToolsService: DictionaryToolsService,
     private modalService: ModalService,
     public constants: TimeSlotsConstants,
@@ -154,7 +160,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     private changeDetectionRef: ChangeDetectorRef,
     private datesHelperService: DatesToolsService,
     private httpCancelService: HttpCancelService,
-    private timeSlotDoctorService: TimeSlotDoctorService,
     private actionService: ActionService,
   ) {}
 
@@ -171,7 +176,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.screenService.component.id,
         this.screenService.component.attrs?.cancelReservation,
       );
-      this.loadTimeSlots();
+      //this.loadTimeSlots();
     }
   }
 
@@ -180,19 +185,19 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   }
 
   handleSpecLookupValue(specLookup: ListElement): void {
-    const prevState = this.state$$.getValue();
+    const prevState = this.timeSlotDoctorService.state$$.getValue();
     setTimeout(() => {
       this.docLookupControl.setValue('');
-      this.state$$.next({ ...prevState, specLookup: null });
+      this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup: null, docLookup: null });
       setTimeout(() => {
-        this.state$$.next({ ...prevState, specLookup });
+        this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup, docLookup: null });
       }, 0);
     }, 0);
   }
 
   handleDocLookupValue(docLookup: ListElement): void {
-    const prevState = this.state$$.getValue();
-    this.state$$.next({ ...prevState, docLookup });
+    const prevState = this.timeSlotDoctorService.state$$.getValue();
+    this.timeSlotDoctorService.state$$.next({ ...prevState, docLookup });
     this.loadTimeSlots();
   }
 
@@ -348,6 +353,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
     await this.renderSingleMonthGrid(this.weeks);
+    this.slotsLoadingStatus$$.next(true);
     this.checkExistenceSlots();
   }
 
@@ -448,14 +454,15 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   }
 
   private loadTimeSlots(): void {
+    this.slotsLoadingStatus$$.next(false);
     this.inProgress = true;
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
 
     this.initServiceVariables(value);
-    this.timeSlotType = value.timeSlotType;
+    this.timeSlotType = this.screenService.component?.attrs['ts']['timeSlotType'].value;
 
-    this.timeSlotDoctorService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
+    this.timeSlotDoctorService.init(value, this.cachedAnswer, this.timeSlotType).subscribe(
       async (isBookedDepartment) => {
         if (this.timeSlotDoctorService.hasError()) {
           this.inProgress = false;
@@ -544,11 +551,11 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/typedef
   private async renderSingleMonthGrid(output): Promise<void> {
     output.splice(0, output.length); // in-place clear
-    const daysToShow = this.screenService.component?.attrs.daysToShow;
+    const daysToShow = this.screenService.component?.attrs['ts'].daysToShow;
 
     this.today = await this.datesHelperService.getToday(true);
 
-    if (this.screenService.component?.attrs.startSection === 'today') {
+    if (this.screenService.component?.attrs['ts'].startSection === 'today') {
       this.firstDayOfMainSection = this.today;
     } else {
       this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
@@ -614,7 +621,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   private checkDateRestrictions(date: Date, startType: StartOfTypes = 'day'): boolean {
     const refDate = this.datesHelperService.startOf(this.getRefDate(), startType);
 
-    const restrictions = this.screenService.component?.attrs?.restrictions || {};
+    const restrictions = this.screenService.component?.attrs['ts']?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
       minDate: (amount, type): boolean => {

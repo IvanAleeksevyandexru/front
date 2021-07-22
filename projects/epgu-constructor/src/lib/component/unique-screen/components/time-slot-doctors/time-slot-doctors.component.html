@@ -35,17 +35,42 @@
     </epgu-cf-ui-constructor-constructor-lookup>
   </ng-container>
 
-  <epgu-cf-ui-constructor-time-calendar
-    *ngIf="isMapShown"
-    [weeks]="weeks"
-    [currentSlot]="currentSlot"
-    [isExistsSlots]="isExistsSlots"
-    [slotList]="timeSlots"
-    (chooseTimeSlot)="chooseTimeSlot.emit($event)"
-    (selectDate)="selectDate.emit($event)"
-  >
+  <ng-container *ngIf="isMapShown">
 
-  </epgu-cf-ui-constructor-time-calendar>
+    <div class="months-range">
+      {{ monthsRange }}
+    </div>
+
+    <epgu-cf-ui-constructor-time-calendar
+      [weeks]="weeks"
+      [currentSlot]="currentSlot"
+      [isExistsSlots]="isExistsSlots"
+      [slotList]="slotList"
+      (chooseTimeSlot)="chooseTimeSlot.emit($event)"
+      (selectDate)="selectDate.emit($event)"
+    >
+    </epgu-cf-ui-constructor-time-calendar>
+
+  </ng-container>
 
 
 </epgu-cf-ui-constructor-screen-pad>
+
+<div class="screen-footer">
+  <div class="screen-footer--time-slots">
+      <span *ngIf="isChosenTimeStrVisible" class="time">
+        Вы забронировали:
+        <span class="time--bold">
+          {{ chosenTimeStr }}
+        </span>
+      </span>
+    <lib-button
+      [showLoader]="isLoading || inProgress"
+      (click)="bookSlot.emit()"
+      class="submit-button"
+      [disabled]="!this.isValid || this.inProgress || !this.currentSlot?.slotId"
+    >
+      <div class="secondary-font">{{ labelButton }}</div>
+    </lib-button>
+  </div>
+</div>

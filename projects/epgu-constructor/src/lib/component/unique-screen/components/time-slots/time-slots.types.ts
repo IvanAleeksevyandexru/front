@@ -128,7 +128,7 @@ export interface BookTimeSlotReq {
   routeNumber?: string;
   serviceCode?: string;
   subject?: string;
-  params?: { name: string; value: string }[];
+  params?: { name: string; value: string | number }[];
   eserviceId?: string; // TODO eserviceId?????
   bookId?: string;
   organizationId?: string[] | string;

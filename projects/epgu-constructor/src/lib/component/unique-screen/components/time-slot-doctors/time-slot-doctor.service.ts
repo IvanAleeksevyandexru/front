@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { ListItem } from '@epgu/epgu-lib';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -17,7 +17,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
-  DictionaryUnionKind,
+  DictionaryUnionKind, DictionaryValueTypes,
 } from '@epgu/epgu-constructor-types';
 import { TimeSlotsTypes } from '../time-slots/time-slots.constants';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
@@ -27,9 +27,9 @@ import {
   DepartmentInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface, TimeSlotReq, TimeSlotsAnswerInterface,
-  TimeSlotValueInterface
 } from '../time-slots/time-slots.types';
 import { TimeSlot } from 'projects/epgu-constructor/dist/app/component/unique-screen/components/time-slots/time-slots.types';
+import { TimeSlotDoctorState, TimeSlotValueInterface } from './time-slot-doctors.interface';
 
 type attributesMapType = Array<{ name: string; value: string }>;
 
@@ -41,6 +41,13 @@ const TIMEZONE_STR_OFFSET = -6;
 
 @Injectable()
 export class TimeSlotDoctorService {
+  isByMedRef = false;
+
+  state$$ = new BehaviorSubject<TimeSlotDoctorState>({
+    specLookup: null,
+    docLookup: null,
+  });
+
   public activeMonthNumber: number; // 0..11
   public activeYearNumber: number;
   public bookId;
@@ -157,7 +164,7 @@ export class TimeSlotDoctorService {
       this.availableMonths = [];
       this.errorMessage = null;
 
-      return this.getAvailableAreaNames(this.department.attributeValues.AREA_NAME).pipe(
+      return this.getAvailableAreaNames(this.department.attributeValues?.AREA_NAME).pipe(
         switchMap((areaNames) => {
           return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
             map((response) => {
@@ -193,8 +200,11 @@ export class TimeSlotDoctorService {
   changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
-    let department = JSON.parse(data.department);
-    this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
+    //let department = JSON.parse(data.department);
+    let department = {} as any;
+    //this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
+    this.isBookedDepartment = false;
+
     this.areaNamesIsNeeded = [TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(
       this.timeSlotsType,
     );
@@ -215,8 +225,8 @@ export class TimeSlotDoctorService {
       bookAttributes:
         UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
-      bookParams: data.bookingRequestParams,
-      attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
+      bookParams: data.bookingRequestAttrs,
+      attributeNameWithAddress: this.screenService.component.attrs['ts'].attributeNameWithAddress,
       userSelectedRegion: data.userSelectedRegion,
     };
 
@@ -314,15 +324,27 @@ export class TimeSlotDoctorService {
     const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
 
     return <TimeSlotReq>this.deleteIgnoreRequestParams({
-      organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber:
-        this.timeSlotsType === TimeSlotsTypes.MVD
-          ? (this.config.parentOrderId as string)
-          : (this.config.orderId as string),
+      organizationId: [this.config.organizationId as string],
+      caseNumber: this.config.orderId as string,
       serviceId: [(this.config.serviceId as string) || serviceId],
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       routeNumber,
-      attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
+      attributes: [...this.timeSlotRequestAttrs,
+        ...( this.isByMedRef ? [
+          {
+            name: 'Resource_Id',
+            value: this.state$$.getValue().docLookup.id,
+          } ] :
+        [{
+          name: 'Resource_Id',
+          value: this.state$$.getValue().docLookup.id,
+        },
+        {
+          name: 'Service_Id',
+          value: this.state$$.getValue().specLookup.id,
+        }]
+        ) as any
+      ],
     });
   }
 
@@ -340,40 +362,6 @@ export class TimeSlotDoctorService {
     });
 
     return requestBody;
-  }
-
-  private getSlotsRequestAttributes(
-    slotsType: TimeSlotsTypes,
-    serviceId: string,
-  ): Array<{ name: string; value: string }> {
-    if (this.timeSlotRequestAttrs) {
-      return this.timeSlotRequestAttrs;
-    }
-    const settings = {
-      [TimeSlotsTypes.BRAK]: [
-        { name: 'SolemnRegistration', value: this.solemn },
-        { name: 'SlotsPeriod', value: this.slotsPeriod },
-      ],
-      [TimeSlotsTypes.RAZBRAK]: [],
-      [TimeSlotsTypes.MVD]: [],
-      [TimeSlotsTypes.GIBDD]: [
-        { name: 'organizationId', value: this.department.attributeValues.code },
-        { name: 'serviceId', value: (this.config.serviceId as string) || serviceId },
-      ],
-    };
-
-    return settings[slotsType];
-  }
-
-  private getSlotsRequestOrganizationId(slotsType: TimeSlotsTypes): string {
-    const settings = {
-      [TimeSlotsTypes.BRAK]: this.department.attributeValues.CODE,
-      [TimeSlotsTypes.RAZBRAK]: this.department.attributeValues.CODE,
-      [TimeSlotsTypes.MVD]: this.department.value,
-      [TimeSlotsTypes.GIBDD]: this.department.attributeValues.code,
-    };
-
-    return (this.config.organizationId as string) || settings[slotsType];
   }
 
   private getBookRequest(selectedSlot: SlotInterface): BookTimeSlotReq {
@@ -394,66 +382,54 @@ export class TimeSlotDoctorService {
 
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
-      address: this.getAddress(this.department.attributeValues),
-      orgName: this.department.attributeValues.FULLNAME || this.department.title,
+      address: this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] || "Женская консультация, ГАУЗ \"Городская поликлиника № 21\"",
+      orgName: this.department.attributeValues?.FULLNAME || this.department?.title || "Республика Татарстан, г.Казань, ул.Рихарда Зорге, д.103",
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
-      params: (this.config.bookParams as attributesMapType) || [
+      params: [...(this.config.bookParams as attributesMapType),
+        ...(this.isByMedRef ?
+          [{
+            name: 'doctorname',
+            value: this.state$$.getValue().docLookup.text
+          },
         {
-          name: 'phone',
-          value: this.department.attributeValues.PHONE,
+          name: 'doctorid',
+          value: this.state$$.getValue().docLookup.id
+        }] :
+
+        [{
+          name: 'doctorname',
+          value: this.state$$.getValue().docLookup.text
         },
         {
-          name: 'userSelectedRegionFromForm',
-          value: this.config.departmentRegion as string,
+          name: 'doctor',
+          value: this.state$$.getValue().specLookup.text
         },
+        {
+          name: 'doctorid',
+          value: this.state$$.getValue().docLookup.id
+        }])
       ],
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       serviceCode: (this.config.serviceCode as string) || serviceCode,
       bookId: this.bookId,
-      organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
+      organizationId: this.config.organizationId as string,
       calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
-      selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
-      parentOrderId: this.config.orderId as string,
+      selectedHallTitle: this.department.attributeValues?.AREA_NAME || selectedSlot.slotId,
+      parentOrderId: this.config.parentOrderId
+        ? (this.config.parentOrderId as string)
+        : '',
+      caseNumber: this.config.orderId ? (this.config.orderId as string) : '',
       preliminaryReservationPeriod,
-      attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
+      attributes: this.config.bookAttributes as attributesMapType || [],
       slotId: [selectedSlot.slotId],
       serviceId: [(this.config.serviceId as string) || serviceId],
     };
 
-    if ([TimeSlotsTypes.MVD, TimeSlotsTypes.DOCTOR].includes(this.timeSlotsType)) {
-      requestBody.parentOrderId = this.config.parentOrderId
-        ? (this.config.parentOrderId as string)
-        : '';
-      requestBody.caseNumber = this.config.orderId ? (this.config.orderId as string) : '';
-    }
 
     return <BookTimeSlotReq>this.deleteIgnoreRequestParams(requestBody);
-  }
-
-  private getBookRequestAttributes(
-    slotsType: TimeSlotsTypes,
-    serviceId: string,
-  ): attributesMapType {
-    const settings = {
-      [TimeSlotsTypes.BRAK]: [],
-      [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
-      [TimeSlotsTypes.MVD]: [],
-      [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
-    };
-
-    return (this.config.bookAttributes as attributesMapType) || settings[slotsType];
-  }
-
-  private getAddress(attributeValues: { [key: string]: string }): string {
-    return (
-      attributeValues[this.config.attributeNameWithAddress as string] ||
-      attributeValues.ADDRESS ||
-      attributeValues.ADDRESS_OUT ||
-      attributeValues.address
-    );
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
