@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  ViewChild,
-  AfterViewInit,
-  ElementRef,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 
 import { PerfectScrollbarConfigInterface, PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
@@ -32,12 +25,10 @@ export class CtaModalComponent implements AfterViewInit {
 
   public isMobile: boolean;
   public scrollConfig: PerfectScrollbarConfigInterface = { suppressScrollX: true };
-  private modalHeaderHeight: number;
 
   constructor(
     private deviceDetector: DeviceDetectorService,
     private eventBusService: EventBusService,
-    private elemRef: ElementRef,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -51,23 +42,9 @@ export class CtaModalComponent implements AfterViewInit {
         this.perfectScroll.directiveRef.scrollToTop();
       });
     }
-    const elem = this.elemRef.nativeElement.querySelector('.conf-modal__header');
-    this.modalHeaderHeight = this.getElemHeight(elem);
-    const elemBody = this.elemRef.nativeElement.querySelector('.conf-modal__body');
-    const elemControl = this.elemRef.nativeElement.querySelector('.conf-modal__footer');
-    const hControl = this.getElemHeight(elemControl);
-    elemBody.style[
-      'max-height'
-    ] = `calc(100vh - 192px - 64px - ${this.modalHeaderHeight}px - ${hControl}px)`;
   }
 
   closeModal(): void {
     this.eventBusService.emit(`closeModalEvent_${this.text}`);
-  }
-
-  getElemHeight(elem): number {
-    if (!elem) return 0;
-    const result = elem.offsetHeight;
-    return result;
   }
 }

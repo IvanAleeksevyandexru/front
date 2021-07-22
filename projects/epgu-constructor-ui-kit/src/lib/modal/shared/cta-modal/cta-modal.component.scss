@@ -73,6 +73,10 @@ $closeBtnWidth: 24px;
     }
   }
 
+  .wrap-scrollbar {
+    min-height: 100%;
+  }
+
   &__content {
     overflow: auto;
     @include flex-container();
@@ -123,7 +127,7 @@ $closeBtnWidth: 24px;
     margin: 0 auto 24px;
   }
 }
-/*
+
 :host::ng-deep {
   .perfect-scrollbar {
     .conf-modal__content {
@@ -144,25 +148,10 @@ $closeBtnWidth: 24px;
       padding-right: 15px; // fix overlapping content by scroll
       padding-bottom: 2px; // hack for avoid overlapping of buttons
       @include tablets-up {
-        max-height: calc(
-          100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight}
-        );
         min-height: calc(
           #{$minModalHeight} - #{$pyConfModal} - #{$headerHeight} - #{$pyConfModal} / 2
         );
       }
     }
   }
-
-  .perfect-scrollbar-button-outside-content {
-    .ps-content {
-      @include tablets-up {
-        max-height: calc(
-          100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight} *
-            2
-        );
-      }
-    }
-  }
 }
-*/
