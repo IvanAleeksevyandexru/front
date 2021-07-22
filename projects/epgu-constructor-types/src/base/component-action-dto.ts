@@ -53,6 +53,7 @@ export enum ActionType {
 export enum DTOActionAction {
   attachUploadedFiles = 'attachUploadedFiles',
   confirmSmsCode = 'service/actions/confirmSmsCode',
+  confirmEmailCode = 'service/actions/confirmEmailCode',
   editChildData = 'editChildData',
   editEmail = 'service/actions/editUserEmail',
   editLegalEmail = 'editLegalEmail',
