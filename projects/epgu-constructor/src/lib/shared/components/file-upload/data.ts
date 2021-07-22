@@ -22,6 +22,7 @@ export enum ErrorActions {
   addDownloadErr = 'addDownloadErr',
   addUploadErr = 'addUploadErr',
   addDeletionErr = 'addDeletionErr',
+  serverError = 'serverError',
 }
 
 export enum FileItemStatus {

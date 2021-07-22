@@ -164,6 +164,7 @@ export class FileUploadScreenComponent implements OnInit {
      */
     this.disabled$$.next(
       !(
+        $eventData.errors.length === 0 &&
         this.isEveryUploaderHasFile(this.value.uploads) &&
         this.isAllFilesUploaded(this.value.uploads)
       ),

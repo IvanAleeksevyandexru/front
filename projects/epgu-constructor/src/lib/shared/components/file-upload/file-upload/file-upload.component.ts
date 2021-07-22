@@ -149,7 +149,6 @@ export class FileUploadComponent implements OnInit {
     const result = mnemonic.match(/\.[0-9]*$/);
     return result ? mnemonic.replace(result[0], '') : mnemonic;
   }
-  updateUploaders(): void {}
 
   ngOnInit(): void {
     this.setUploadersRestrictions();
