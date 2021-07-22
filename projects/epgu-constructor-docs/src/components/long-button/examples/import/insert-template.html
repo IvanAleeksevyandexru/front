@@ -1,0 +1,12 @@
+<epgu-cf-ui-long-button [isLoading]="isLoadin" [disabled]="disabled" class="answer-btn">
+  <div class="answer-btn__container">
+    <span class="answer-btn__title">{{ label }}</span>
+    <span class="answer-btn__icon">
+      <span *ngIf="isShown(value)">
+        <lib-round-loader></lib-round-loader>
+      </span>
+      <span class="icon-arrow" *ngIf="!isShown(value)" [ngClass]="{ disabled: disabled }"></span>
+    </span>
+  </div>
+  <div *ngIf="description" class="answer-btn__description">{{ description }}</div>
+</epgu-cf-ui-long-button>

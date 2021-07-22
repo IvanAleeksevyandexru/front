@@ -20,6 +20,16 @@ const routes: Routes = [
       title: 'HelperText',
     },
   },
+  {
+    path: 'components/long-button',
+    loadChildren: () =>
+      import('../components/long-button/long-button.module').then(
+        (m) => m.ExampleEpguLongButtonModule,
+      ),
+    data: {
+      title: 'LongText',
+    },
+  },
 ];
 
 @NgModule({

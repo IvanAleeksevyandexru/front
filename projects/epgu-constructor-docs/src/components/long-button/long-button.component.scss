@@ -7,7 +7,22 @@
   cursor: pointer;
 }
 
-.answer-btn {
+.demo {
+  background-color: #e5e7ea;
+}
+
+.buttons-group {
+  display: flex;
+  flex-flow: column nowrap;
+  & > *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.long-button {
+  &::ng-deep > button {
+    display: block;
+  }
   &__container {
     display: flex;
   }
@@ -25,14 +40,6 @@
     margin-left: 24px;
     @include tablets-down {
       margin-left: 16px;
-    }
-  }
-  &__hint { // TODO запрещён к использованию, нужно выпилить
-    position: relative;
-    left: 8px;
-    margin-left: 16px;
-    lib-question-help-tip {
-      display: flex;
     }
   }
   &__description {

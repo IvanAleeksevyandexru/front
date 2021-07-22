@@ -9,8 +9,14 @@ export const pages: TuiDocPages = [
   },
   {
     section: 'Components',
-    title: 'HelperText',
+    title: 'Helper Text',
     keywords: 'плашка, тэг, лейбл, label, tag, chip',
     route: '/components/helper-text',
+  },
+  {
+    section: 'Components',
+    title: 'Long Button',
+    keywords: 'кнопка, длинный, квиз, long, button, quiz',
+    route: '/components/long-button',
   },
 ];
