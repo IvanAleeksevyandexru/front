@@ -36,6 +36,11 @@ export class ViewComponent implements OnInit {
     this.appNavigationService.next();
   }
 
+  prev(): void {
+    this.stateService.clearGroupFilters();
+    this.appNavigationService.prev();
+  }
+
   openModal(title: string, text: string): void {
     this.modalService
       .openModal(ContentModalComponent, { title, text, modalId: 'info' })

@@ -50,6 +50,13 @@
 .project__description {
   color: $color-text-helper;
 }
+.project__status {
+  width: fit-content;
+  margin-top: 16px;
+  padding: 2px 14px;
+  border: 2px solid $color-gosred;
+  border-radius: 8px;
+}
 .project__organization {
   @include typ-h5;
   font-weight: $fw-regular;

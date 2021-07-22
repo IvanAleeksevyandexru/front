@@ -11,6 +11,7 @@
       </div>
       <div class="project__info">
         <div class="project__organization">{{ data.partnerName }}</div>
+        <div class="project__status" *ngIf="!data.available">Запись закрыта</div>
 
         <div class="project__info-item-list">
           <ng-container *ngFor="let item of data.financingTypes; let i = index">
