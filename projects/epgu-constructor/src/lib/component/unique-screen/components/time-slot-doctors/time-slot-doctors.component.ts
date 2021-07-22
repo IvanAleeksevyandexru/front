@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { IDay, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 
 
 @Component({
@@ -9,6 +10,11 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
   styleUrls: ['./time-slot-doctors.component.css'],
 })
 export class TimeSlotDoctorsComponent {
+  @Input() weeks: Array<Array<IDay>> = [];
+  @Input() currentSlot: SlotInterface;
+  @Input() isExistsSlots = true;
+  @Input() timeSlots: SlotInterface[] = [];
+
   @Input() specProvider;
   @Input() doctorProvider;
 
@@ -24,6 +30,9 @@ export class TimeSlotDoctorsComponent {
 
   @Output() specLookupWasChanged = new EventEmitter<ListElement>();
   @Output() docLookupWasChanged = new EventEmitter<ListElement>();
+
+  @Output() chooseTimeSlot = new EventEmitter<SlotInterface>();
+  @Output() selectDate = new EventEmitter<Date>();
 
   readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 }

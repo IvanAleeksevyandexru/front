@@ -19,7 +19,7 @@
 
 
   <ng-container *ngIf="isDocLookupShown">
-    <epgu-constructor-label [label]="docLookupAttrs.label"  for="doctors"></epgu-constructor-label>
+    <epgu-constructor-label [label]="docLookupAttrs.label" for="doctors"></epgu-constructor-label>
 
     <epgu-cf-ui-constructor-constructor-lookup
       epgu-constructor-validation-type
@@ -34,6 +34,18 @@
     >
     </epgu-cf-ui-constructor-constructor-lookup>
   </ng-container>
+
+  <epgu-cf-ui-constructor-time-calendar
+    *ngIf="isMapShown"
+    [weeks]="weeks"
+    [currentSlot]="currentSlot"
+    [isExistsSlots]="isExistsSlots"
+    [slotList]="timeSlots"
+    (chooseTimeSlot)="chooseTimeSlot.emit($event)"
+    (selectDate)="selectDate.emit($event)"
+  >
+
+  </epgu-cf-ui-constructor-time-calendar>
 
 
 </epgu-cf-ui-constructor-screen-pad>

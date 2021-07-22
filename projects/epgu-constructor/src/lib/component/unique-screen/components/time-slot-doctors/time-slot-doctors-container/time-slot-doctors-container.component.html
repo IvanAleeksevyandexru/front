@@ -17,6 +17,8 @@
       [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
       (specLookupWasChanged)="handleSpecLookupValue($event)"
       (docLookupWasChanged)="handleDocLookupValue($event)"
+      (selectDate)="selectDate($event)"
+      (chooseTimeSlot)="chooseTimeSlot($event)"
       [isDocLookupShown]="!!state.specLookup"
       [isMapShown]="!!state.docLookup"
     ></epgu-constructor-time-slot-doctors>
