@@ -8,7 +8,7 @@ import {
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { getAppStorageKey, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -21,8 +21,6 @@ import {
   QuizRequestDto,
   ScenarioDto,
   APP_OUTPUT_KEY,
-  APP_INPUT_KEY,
-  OutputAppDto,
 } from '@epgu/epgu-constructor-types';
 
 /**
@@ -174,19 +172,10 @@ export class FormPlayerStartManager {
 
         if (!orderId) {
           this.localStorageService.set('cachedAnswers', {});
-          this.deleteAppStorage();
         }
 
         this.formPlayerService.initData(orderId);
       });
-  }
-
-  private deleteAppStorage(): void {
-    const appInput: OutputAppDto = this.localStorageService.get(APP_INPUT_KEY);
-    if (appInput) {
-      const key = getAppStorageKey(appInput.componentType, appInput.componentId);
-      this.localStorageService.delete(key);
-    }
   }
 
   private getOrderStatus(): void {
