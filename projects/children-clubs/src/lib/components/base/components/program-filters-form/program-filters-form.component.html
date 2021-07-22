@@ -72,20 +72,22 @@
       </div>
     </div>
 
-    <div class="mb-24">
-      <div class="label">{{ formFieldsLabel[formFields.level] }}</div>
-      <lib-dropdown
-        [formControlName]="formFields[formFields.level]"
-        [items]="levelListElements"
-      ></lib-dropdown>
-    </div>
+    <div class="mb-24 row">
+      <div class="row-item">
+        <div class="label">{{ formFieldsLabel[formFields.level] }}</div>
+        <lib-dropdown
+          [formControlName]="formFields[formFields.level]"
+          [items]="levelListElements"
+        ></lib-dropdown>
+      </div>
 
-    <div class="mb-24 half-for-desktop">
-      <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
-      <lib-plain-input [formControlName]="formFields.age"></lib-plain-input>
-      <epgu-cf-ui-constructor-error
-        [data]="form.get(formFields.age)"
-      ></epgu-cf-ui-constructor-error>
+      <div class="row-item">
+        <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
+        <lib-plain-input [formControlName]="formFields.age"></lib-plain-input>
+        <epgu-cf-ui-constructor-error
+          [data]="form.get(formFields.age)"
+        ></epgu-cf-ui-constructor-error>
+      </div>
     </div>
 
     <div class="mb-24">
