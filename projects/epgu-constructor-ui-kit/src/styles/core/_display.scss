@@ -1,0 +1,70 @@
+@import 'breakpoint';
+
+// Inspired by bootstrap solution. For more usage detail see https://getbootstrap.com/docs/4.0/utilities/display/
+// NOTE: We haven't xs
+
+@mixin displays() {
+  &-none {
+    display: none;
+  }
+
+  &-inline {
+    display: inline;
+  }
+
+  &-inline-block {
+    display: inline;
+  }
+
+  &-block {
+    display: block;
+  }
+
+  &-table {
+    display: table;
+  }
+
+  &-table-cell {
+    display: table-cell;
+  }
+
+  &-table-row {
+    display: table-row;
+  }
+
+  &-flex {
+    display: flex;
+  }
+
+  &-inline-flex {
+    display: inline-flex;
+  }
+}
+
+.d {
+  @include displays();
+
+  &-sm {
+    @include phones-up {
+      @include displays();
+    }
+  }
+
+  &-md {
+    @include tablets-up {
+      @include displays();
+    }
+  }
+
+  &-lg {
+    @include laptop-up {
+      @include displays();
+    }
+  }
+
+  &-xl {
+    @include desktops-up {
+      @include displays();
+    }
+  }
+}
