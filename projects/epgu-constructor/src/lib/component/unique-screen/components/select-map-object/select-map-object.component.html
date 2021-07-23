@@ -1,6 +1,8 @@
 <div class="widget">
   <div class="widget__form widget-form">
     <epgu-cf-ui-prev-button class="nav" *ngIf="screenService.showNav$ | async"></epgu-cf-ui-prev-button>
+    <ng-container *ngTemplateOutlet="errorRegion">
+    </ng-container>
     <span
       *ngIf="isSearchTitleVisible && !isNoDepartmentErrorVisible"
       class="widget-form__title"
@@ -21,8 +23,6 @@
       >
       </epgu-cf-ui-constructor-constructor-lookup>
     </div>
-    <ng-container *ngTemplateOutlet="errorRegion">
-    </ng-container>
   </div>
   <lib-map
     *ngIf="showMap"
