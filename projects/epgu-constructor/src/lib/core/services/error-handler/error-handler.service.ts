@@ -264,7 +264,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
-    console.log(params);
     return this.modalService
       .openModal(ConfirmationModalComponent, { ...params, traceId })
       .toPromise();
