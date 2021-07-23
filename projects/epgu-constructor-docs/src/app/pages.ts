@@ -7,4 +7,16 @@ export const pages: TuiDocPages = [
     keywords: 'плашка, тэг, лейбл, label, tag, chip',
     route: '/components/chip',
   },
+  {
+    section: 'Components',
+    title: 'Helper Text',
+    keywords: 'плашка, тэг, лейбл, label, tag, chip',
+    route: '/components/helper-text',
+  },
+  {
+    section: 'Components',
+    title: 'Long Button',
+    keywords: 'кнопка, длинный, квиз, long, button, quiz',
+    route: '/components/long-button',
+  },
 ];
