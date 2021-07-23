@@ -12,6 +12,6 @@ export class Example1EpguChipComponent {
   ids = ['id1', 'id2', 'id3'];
 
   onClose(id): void {
-    alert(id);
+    console.log(id);
   }
 }

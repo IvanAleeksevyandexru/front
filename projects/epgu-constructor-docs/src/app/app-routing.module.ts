@@ -29,6 +29,14 @@ const routes: Routes = [
     },
   },
   {
+    path: 'components/dropdown',
+    loadChildren: () =>
+      import('../components/dropdown/dropdown.module').then((m) => m.ExampleEpguDropdownModule),
+    data: {
+      title: 'Dropdown',
+    },
+  },
+  {
     path: 'components/long-button',
     loadChildren: () =>
       import('../components/long-button/long-button.module').then(

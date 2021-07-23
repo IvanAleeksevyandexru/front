@@ -1,4 +1,4 @@
-import { CheckboxModule } from '@epgu/epgu-constructor-ui-kit';
+import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
 
 ...
 
