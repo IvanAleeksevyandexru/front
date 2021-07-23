@@ -10,7 +10,7 @@
       *ngIf="(data$ | async) as data"
       [data]="data"
     ></epgu-constructor-field-list>
-    <div class="data-footer" *ngIf="screenService.action.type === actionType.profileEdit">
+    <div class="data-footer" *ngIf="screenService.action?.type">
       <div class="divider"></div>
       <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
         <img
