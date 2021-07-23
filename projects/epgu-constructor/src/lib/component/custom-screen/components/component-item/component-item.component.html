@@ -1,46 +1,48 @@
-<div *ngIf="component?.attrs?.image?.src" class="custom__img-wrapper">
-  <img
-    class="custom__img"
-    [src]="component.attrs.image.src"
-    [attr.alt]="component.attrs.image.alt || null"
-  />
-</div>
-<epgu-constructor-output-html
-  *ngIf="component?.attrs?.subLabel"
-  class="custom_subLabel"
-  [html]="component.attrs.subLabel"
-  [clarifications]="component?.attrs?.clarifications"
-></epgu-constructor-output-html>
-<epgu-constructor-label
-  [isTextHelper]="component?.attrs?.isTextHelper"
-  [tips]="component?.attrs?.labelHint"
-  [label]="component?.label"
-  [clarifications]="component?.attrs?.clarifications"
-  [largeFontSize]="largeFontSize"
-  *ngIf="!disableLabel && component?.label"
-></epgu-constructor-label>
-<div class="form__error" *ngIf="hasErrors">
-  <div *ngIf="hasUiError && isShowErrors">
-    <small>{{ control.getError('msg') }}</small>
-    <epgu-constructor-output-html
-      class="helper-text"
-      [html]="control.getError('desc')"
-      [clarifications]="component?.attrs?.clarifications"
-    ></epgu-constructor-output-html>
+<div class="component-item {{component?.attrs?.class}}">
+  <div *ngIf="component?.attrs?.image?.src" class="custom__img-wrapper">
+    <img
+      class="custom__img"
+      [src]="component.attrs.image.src"
+      [attr.alt]="component.attrs.image.alt || null"
+    />
   </div>
-  <small *ngIf="hasServerError">
-    {{ control.getError('serverError') }}
-  </small>
-</div>
-<div class="form__input">
-  <ng-content></ng-content>
-</div>
-<div class="form__info" *ngIf="hasInfo">
-  <epgu-constructor-hint
-    [hint]="hint"
+  <epgu-constructor-output-html
+    *ngIf="component?.attrs?.subLabel"
+    class="custom_subLabel"
+    [html]="component.attrs.subLabel"
     [clarifications]="component?.attrs?.clarifications"
-  ></epgu-constructor-hint>
-  <epgu-cf-ui-constructor-helper-text *ngIf="isHelperTextVisible">
-    {{ customUnRecLabel }}
-  </epgu-cf-ui-constructor-helper-text>
+  ></epgu-constructor-output-html>
+  <epgu-constructor-label
+    [isTextHelper]="component?.attrs?.isTextHelper"
+    [tips]="component?.attrs?.labelHint"
+    [label]="component?.label"
+    [clarifications]="component?.attrs?.clarifications"
+    [largeFontSize]="largeFontSize"
+    *ngIf="!disableLabel && component?.label"
+  ></epgu-constructor-label>
+  <div class="form__error" *ngIf="hasErrors">
+    <div *ngIf="hasUiError && isShowErrors">
+      <small>{{ control.getError('msg') }}</small>
+      <epgu-constructor-output-html
+        class="helper-text"
+        [html]="control.getError('desc')"
+        [clarifications]="component?.attrs?.clarifications"
+      ></epgu-constructor-output-html>
+    </div>
+    <small *ngIf="hasServerError">
+      {{ control.getError('serverError') }}
+    </small>
+  </div>
+  <div class="form__input">
+    <ng-content></ng-content>
+  </div>
+  <div class="form__info" *ngIf="hasInfo">
+    <epgu-constructor-hint
+      [hint]="hint"
+      [clarifications]="component?.attrs?.clarifications"
+    ></epgu-constructor-hint>
+    <epgu-cf-ui-constructor-helper-text *ngIf="isHelperTextVisible">
+      {{ customUnRecLabel }}
+    </epgu-cf-ui-constructor-helper-text>
+  </div>
 </div>
