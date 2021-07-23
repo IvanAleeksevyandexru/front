@@ -15,6 +15,12 @@ export const pages: TuiDocPages = [
   },
   {
     section: 'Components',
+    title: 'Checkbox',
+    keywords: 'чекбокс, checkbox',
+    route: '/components/checkbox',
+  },
+  {
+    section: 'Components',
     title: 'Long Button',
     keywords: 'кнопка, длинный, квиз, long, button, quiz',
     route: '/components/long-button',

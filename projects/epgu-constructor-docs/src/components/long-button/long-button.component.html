@@ -114,6 +114,14 @@
         <code>value</code>
         , чтобы определить, что нажата именно эта кнопка
       </ng-template>
+
+      <ng-template
+        documentationPropertyName="click"
+        documentationPropertyMode="output"
+        documentationPropertyType="string"
+      >
+        Производит событие, что кнопка с таким-то value была нажата
+      </ng-template>
     </tui-doc-documentation>
   </ng-template>
 
@@ -122,8 +130,8 @@
       <li>
         <p>
           Т.к. Long Button - комплексный компонент, то необходимо импортировать
-          <code>BaseUiModule</code> в модули используемого компонента, чтобы рисовался лоадер при
-          загрузке
+          <code>BaseUiModule</code> в модули используемого компонента, чтобы показывался лоадер в
+          кпноке при загрузке
         </p>
 
         <tui-doc-code
