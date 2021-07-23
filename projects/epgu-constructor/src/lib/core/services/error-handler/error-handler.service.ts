@@ -37,7 +37,7 @@ import {
   DictionaryResponseError,
 } from '../../../shared/services/dictionary/dictionary-api.types';
 
-enum ModalFailureType {
+export enum ModalFailureType {
   BOOKING,
   FAILURE,
   SESSION,
@@ -92,7 +92,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         } catch (e) {}
       }
 
-      if (url.includes('nsi/v1/dictionary/mzrf_lpu_equeue_smev3')) {
+      if (url.includes('dictionary/mzrf_lpu_equeue_smev3')) {
         const dictionaryError = error as DictionaryResponseError;
         const dictionaryResponse = body as DictionaryResponse;
         if (
@@ -214,18 +214,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     return 'scenarioDto' in obj || 'items' in obj;
   }
 
-  private showModalNoData(errorMessage: string, replace: boolean): void {
-    const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
-    ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
-
-    this.showModal(ITEMS_NO_DATA).then((prevStep) => {
-      if (prevStep) {
-        this.navigationService.prev();
-      }
-    });
-  }
-
-  private showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
+  public showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
     const message = replace
       ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
       : errorMessage;
@@ -263,7 +252,19 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
+  private showModalNoData(errorMessage: string, replace: boolean): void {
+    const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
+    ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
+
+    this.showModal(ITEMS_NO_DATA).then((prevStep) => {
+      if (prevStep) {
+        this.navigationService.prev();
+      }
+    });
+  }
+
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
+    console.log(params);
     return this.modalService
       .openModal(ConfirmationModalComponent, { ...params, traceId })
       .toPromise();
