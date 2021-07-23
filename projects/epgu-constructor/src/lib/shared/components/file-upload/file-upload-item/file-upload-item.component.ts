@@ -253,7 +253,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   isShownDivider(): boolean {
-    return this.files.getValue().length > 0;
+    return this.files.getValue().length > 0 && !!this.data.label;
   }
 
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
