@@ -125,7 +125,9 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
           if (searchString.length === 0) {
             return data;
           }
-          return data.filter((item) => item.text.includes(searchString));
+          return data.filter((item) =>
+            item.text.toLowerCase().includes(searchString.toLowerCase()),
+          );
         }),
       );
     };
