@@ -115,6 +115,9 @@ export class ActionService {
       case ActionType.profileEdit:
         this.redirectToEdit(action);
         break;
+      case ActionType.legalEdit:
+        this.redirectToLegalEdit();
+        break;
       case ActionType.home:
         this.navService.redirectToHome();
         break;
@@ -401,6 +404,10 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
+  }
+
+  private redirectToLegalEdit(): void {
+    return this.navService.redirectTo(`${this.configService.lkUrl}/info`);
   }
 
   private openDropdownListModal(
