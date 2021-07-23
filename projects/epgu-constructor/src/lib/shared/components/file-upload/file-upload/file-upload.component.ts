@@ -73,11 +73,16 @@ export class FileUploadComponent implements OnInit {
   suggestions$ = this.screenService.suggestions$;
   componentId = this.screenService.component?.id || null;
 
-  getFilesList$ = this._objectId$.pipe(
+  getFilesList$ = combineLatest([this._objectId$, this.screenService.display$]).pipe(
+    map(([objectId]) => objectId),
     concatMap(
-      (objectId: string) => this.api.getListByObjectId(objectId) as Observable<UploadedFile[]>,
+      (objectId: string) =>
+        this.api
+          .getListByObjectId(objectId)
+          .pipe(
+            catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
+          ) as Observable<UploadedFile[]>,
     ),
-    catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
     concatMap((files: UploadedFile[]) =>
       from(files).pipe(
         filter((file) => !!file?.mnemonic),
