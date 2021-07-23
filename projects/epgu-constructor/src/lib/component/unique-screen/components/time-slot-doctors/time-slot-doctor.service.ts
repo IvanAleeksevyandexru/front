@@ -26,9 +26,8 @@ import {
   CancelSlotResponseInterface,
   DepartmentInterface,
   SmevBookResponseInterface,
-  SmevSlotsMapInterface, TimeSlotReq, TimeSlotsAnswerInterface,
+  SmevSlotsMapInterface, TimeSlot, TimeSlotReq, TimeSlotsAnswerInterface,
 } from '../time-slots/time-slots.types';
-import { TimeSlot } from 'projects/epgu-constructor/dist/app/component/unique-screen/components/time-slots/time-slots.types';
 import { TimeSlotDoctorState, TimeSlotValueInterface } from './time-slot-doctors.interface';
 
 type attributesMapType = Array<{ name: string; value: string }>;
