@@ -21,6 +21,14 @@ const routes: Routes = [
     },
   },
   {
+    path: 'components/checkbox',
+    loadChildren: () =>
+      import('../components/checkbox/checkbox.module').then((m) => m.ExampleEpguCheckboxModule),
+    data: {
+      title: 'Checkbox',
+    },
+  },
+  {
     path: 'components/long-button',
     loadChildren: () =>
       import('../components/long-button/long-button.module').then(
