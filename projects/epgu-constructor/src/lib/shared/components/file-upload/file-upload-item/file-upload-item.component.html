@@ -2,7 +2,7 @@
   <div *ngIf="data.title" class="title">
     {{ data.title }}
   </div>
-  <div class="divider mb-24" *ngIf="!isShownDivider()"></div>
+  <div class="divider mb-24"></div>
   <div class="file__bottom" [ngClass]="{ 'file__bottom--divider': isShownDivider() }">
     <epgu-constructor-output-html
       class="info__text"
