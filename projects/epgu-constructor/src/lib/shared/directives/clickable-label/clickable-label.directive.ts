@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
-import { Clarifications, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { Clarifications, ActionType, DTOActionAction, ActionAnswerDto } from '@epgu/epgu-constructor-types';
 import { ModalService, DeviceDetectorService, createOpenBrowserEvent } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
 
@@ -34,6 +34,7 @@ export class ClickableLabelDirective {
     const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
     const targetElementActionAction = targetElement.getAttribute('data-action-action');
+    const targetElementActionMultipleAnswers = targetElement.getAttribute('data-action-multipleAnswers');
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
     if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this._deviceDetector.isWebView) {
@@ -47,6 +48,7 @@ export class ClickableLabelDirective {
         targetElementActionValue,
         targetElementActionAction,
         targetElement,
+        targetElementActionMultipleAnswers,
       );
     } else if (targetElement.id) {
       if (needPrevent) {
@@ -61,6 +63,7 @@ export class ClickableLabelDirective {
     targetElementActionValue: string,
     targetElementActionAction: string,
     targetElement: HTMLElement,
+    targetElementActionMultipleAnswers?: string,
   ): void {
     if (NgZone.isInAngularZone()) {
       this._handleAction(
@@ -68,6 +71,7 @@ export class ClickableLabelDirective {
         targetElementActionValue,
         targetElementActionAction as DTOActionAction,
         targetElement,
+        targetElementActionMultipleAnswers,
       );
     } else {
       this._ngZone.run(() =>
@@ -76,6 +80,7 @@ export class ClickableLabelDirective {
           targetElementActionValue,
           targetElementActionAction as DTOActionAction,
           targetElement,
+          targetElementActionMultipleAnswers,
         ),
       );
     }
@@ -86,8 +91,10 @@ export class ClickableLabelDirective {
     value?: string,
     action?: DTOActionAction,
     targetElement?: HTMLElement,
+    multipleAnswers?: string,
   ): void {
     let actionDTO: DTOActionAction;
+    const _multipleAnswers = (multipleAnswers as unknown) as ActionAnswerDto[];
     if (action) {
       actionDTO = action;
     } else {
@@ -100,7 +107,7 @@ export class ClickableLabelDirective {
     }
 
     this._actionService.switchAction(
-      { label: '', type, action: actionDTO, value },
+      { label: '', type, action: actionDTO, value, multipleAnswers: _multipleAnswers },
       this.componentId || this._screenService.component.id,
       targetElement,
     );

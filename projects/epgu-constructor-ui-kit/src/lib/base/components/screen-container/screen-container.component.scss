@@ -30,8 +30,10 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 48px;
   @include tablets-down {
     flex-wrap: wrap-reverse;
+    margin-bottom: 24px;
   }
   & > * {
     margin-bottom: 16px;
@@ -48,6 +50,10 @@
   & > .social-share {
     max-width: 390px;
     width: 100%;
+    margin-top: 24px;
+    @include tablets-down {
+      margin-top: 16px;
+    }
   }
 }
 
