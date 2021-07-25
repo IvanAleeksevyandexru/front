@@ -92,7 +92,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
-  TimeSlot: TimeSlotDoctorsContainerComponent,
+  TimeSlot: TimeSlotsComponent,
   TimeSlotDoctor: TimeSlotDoctorsContainerComponent,
   TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,

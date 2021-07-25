@@ -9,6 +9,8 @@
     <ng-container *ngIf="timeSlotDoctorService.state$$ | async as state">
       <epgu-constructor-time-slot-doctors
         *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
+        [timeNotFoundTemplate]="timeNotFoundTemplate"
+        [daysNotFoundTemplate]="daysNotFoundTemplate"
         [label]="timeSlotDoctor.label"
         [currentSlot]="currentSlot"
         [weeks]="weeks"
@@ -34,6 +36,7 @@
         [isValid]="isValid"
         [inLoadingProgress]="inLoadingProgress"
         [inBookingProgress]="inBookingProgress"
+        [isExistsSlots]="isExistsSlots"
         (bookSlot)="clickSubmit()"
       ></epgu-constructor-time-slot-doctors>
     </ng-container>

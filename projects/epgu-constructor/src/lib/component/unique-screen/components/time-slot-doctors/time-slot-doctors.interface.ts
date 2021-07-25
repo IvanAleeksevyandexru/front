@@ -1,7 +1,6 @@
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ListElement } from '@epgu/epgu-lib';
-import { TimeSlotsTypes } from '../time-slots/time-slots.constants';
 
 export interface TimeSlotDoctorsComponent extends ComponentDto {
   attrs: TimeSlotDoctorsAttrs;
@@ -12,7 +11,6 @@ export interface TimeSlotDoctorsAttrs extends ComponentAttrsDto {
   specLookup: ComponentAttrsDto;
   docLookup: ComponentAttrsDto;
   ts: TimeSlotAttrsInterface;
-  isByMedRef: boolean;
 }
 
 export interface TimeSlotDoctorState {
@@ -29,8 +27,6 @@ export interface BookingRequestAttrs {
 
 export interface TimeSlotAttrsInterface extends ComponentAttrsDto {
   department: { type: string; value: string };
-  externalIntegration: 'medicalInfo';
-  timeSlotType: { type: string; value: TimeSlotsTypes };
 }
 
 export interface TimeSlotValueInterface {

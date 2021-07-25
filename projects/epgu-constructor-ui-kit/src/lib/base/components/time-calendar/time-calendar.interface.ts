@@ -11,3 +11,7 @@ export interface SlotInterface {
   timezone: string;
   areaId?: string;
 }
+
+export interface ErrorTemplate {
+  header: string; description: string
+}

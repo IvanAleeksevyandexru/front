@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IDay, SlotInterface } from './time-calendar.interface';
+import { ErrorTemplate, IDay, SlotInterface } from './time-calendar.interface';
 import { weekDaysAbbr } from '../../constants/dates';
 
 @Component({
@@ -8,8 +8,11 @@ import { weekDaysAbbr } from '../../constants/dates';
   styleUrls: ['./time-calendar.component.scss'],
 })
 export class TimeCalendarComponent {
-  @Input() weeks: Array<Array<IDay>> = [];
+  @Input() daysNotFoundTemplate: ErrorTemplate;
+  @Input() timeNotFoundTemplate: ErrorTemplate;
   @Input() isExistsSlots = false;
+
+  @Input() weeks: Array<Array<IDay>> = [];
   @Input() currentSlot: SlotInterface;
   @Input() slotList: SlotInterface[];
   @Output() selectDate = new EventEmitter<Date>();

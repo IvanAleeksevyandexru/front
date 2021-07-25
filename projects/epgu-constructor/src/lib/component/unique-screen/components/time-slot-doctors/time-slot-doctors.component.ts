@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { IDay, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
+import { ErrorTemplate, IDay, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-time-slot-doctors',
@@ -9,8 +9,10 @@ import { IDay, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
   styleUrls: ['./time-slot-doctors.component.scss'],
 })
 export class TimeSlotDoctorsComponent {
-  @Input() label: string;
+  @Input() daysNotFoundTemplate: ErrorTemplate;
+  @Input() timeNotFoundTemplate: ErrorTemplate;
 
+  @Input() label: string;
   @Input() isValid: boolean;
   @Input() isChosenTimeStrVisible: boolean;
   @Input() chosenTimeStr: string;
@@ -23,7 +25,9 @@ export class TimeSlotDoctorsComponent {
   @Input() slotList: SlotInterface[];
   @Input() weeks: Array<Array<IDay>> = [];
   @Input() currentSlot: SlotInterface;
+
   @Input() isExistsSlots = true;
+
   @Input() timeSlots: SlotInterface[] = [];
 
   @Input() specProvider;

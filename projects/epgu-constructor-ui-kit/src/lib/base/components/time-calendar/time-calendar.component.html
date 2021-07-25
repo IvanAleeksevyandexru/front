@@ -34,9 +34,16 @@
     {{ slot.slotTime | date: 'shortTime' }}
   </div>
 </div>
-<div class="time-slots-empty" *ngIf="!isExistsSlots">
-  <h4>В этом месяце всё занято</h4>
+<div class="time-slots-empty" *ngIf="!isExistsSlots && daysNotFoundTemplate">
+  <h4>{{ daysNotFoundTemplate.header }}</h4>
   <epgu-cf-ui-constructor-helper-text size="lg">
-    Выберите другой месяц или подразделение, чтобы забронировать время
+    {{ daysNotFoundTemplate.description }}
   </epgu-cf-ui-constructor-helper-text>
 </div>
+<div class="time-slots-empty" *ngIf="slotList?.length === 0 && timeNotFoundTemplate">
+  <h4>{{ timeNotFoundTemplate.header }}</h4>
+  <epgu-cf-ui-constructor-helper-text size="lg">
+    {{ timeNotFoundTemplate.description }}
+  </epgu-cf-ui-constructor-helper-text>
+</div>
+
