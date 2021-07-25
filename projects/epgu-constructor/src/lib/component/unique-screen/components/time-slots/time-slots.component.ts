@@ -51,6 +51,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
 
+  daysNotFoundTemplate = {
+    header: 'В этом месяце всё занято',
+    description: 'Выберите другой месяц или подразделение, чтобы забронировать время',
+  };
+
   confirmModalParameters: ConfirmationModal = {
     text: 'Вы уверены, что хотите поменять забронированное время?',
     showCloseButton: false,

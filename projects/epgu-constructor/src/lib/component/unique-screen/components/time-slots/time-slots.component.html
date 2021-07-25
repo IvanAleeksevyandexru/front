@@ -30,10 +30,7 @@
         </div>
 
         <epgu-cf-ui-constructor-time-calendar
-          [daysNotFoundTemplate]="{
-            'header': 'В этом месяце всё занято',
-            'description': 'Выберите другой месяц или подразделение, чтобы забронировать время'
-          }"
+          [daysNotFoundTemplate]="daysNotFoundTemplate"
           [weeks]="weeks"
           [currentSlot]="currentSlot"
           [isExistsSlots]="isExistsSlots"
