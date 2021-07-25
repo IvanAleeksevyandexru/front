@@ -5,8 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
@@ -67,7 +65,6 @@ export class TimeSlotDoctorService {
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
     private configService: ConfigService,
-    private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
