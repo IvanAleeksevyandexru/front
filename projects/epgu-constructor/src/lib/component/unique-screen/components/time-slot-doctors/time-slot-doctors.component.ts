@@ -6,9 +6,11 @@ import { IDay, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 @Component({
   selector: 'epgu-constructor-time-slot-doctors',
   templateUrl: './time-slot-doctors.component.html',
-  styleUrls: ['./time-slot-doctors.component.css'],
+  styleUrls: ['./time-slot-doctors.component.scss'],
 })
 export class TimeSlotDoctorsComponent {
+  @Input() label: string;
+
   @Input() isValid: boolean;
   @Input() isChosenTimeStrVisible: boolean;
   @Input() chosenTimeStr: string;

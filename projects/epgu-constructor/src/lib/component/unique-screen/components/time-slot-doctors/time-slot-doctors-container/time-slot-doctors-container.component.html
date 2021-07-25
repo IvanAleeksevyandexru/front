@@ -9,6 +9,7 @@
     <ng-container *ngIf="timeSlotDoctorService.state$$ | async as state">
       <epgu-constructor-time-slot-doctors
         *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
+        [label]="timeSlotDoctor.label"
         [currentSlot]="currentSlot"
         [weeks]="weeks"
         [slotList]="timeSlots"
@@ -31,6 +32,7 @@
         [chosenTimeStr]="chosenTimeStr"
         [labelButton]="(screenService.button$ | async).label"
         [isValid]="isValid"
+        [inProgress]="inProgress"
         (bookSlot)="clickSubmit()"
       ></epgu-constructor-time-slot-doctors>
     </ng-container>

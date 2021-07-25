@@ -17,6 +17,13 @@ export interface TimeSlotDoctorsAttrs extends ComponentAttrsDto {
 export interface TimeSlotDoctorState {
   specLookup: ListElement;
   docLookup: ListElement;
+  bookingRequestAttrs: Partial<BookingRequestAttrs>;
+}
+
+export interface BookingRequestAttrs {
+  Organization_Name: string;
+  MO_Id: string;
+  Address_MO: string;
 }
 
 export interface TimeSlotValueInterface {

@@ -17,7 +17,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
-  DictionaryUnionKind, DictionaryValueTypes,
+  DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
 import { TimeSlotsTypes } from '../time-slots/time-slots.constants';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
@@ -45,6 +45,7 @@ export class TimeSlotDoctorService {
   state$$ = new BehaviorSubject<TimeSlotDoctorState>({
     specLookup: null,
     docLookup: null,
+    bookingRequestAttrs: null,
   });
 
   public activeMonthNumber: number; // 0..11
@@ -157,7 +158,7 @@ export class TimeSlotDoctorService {
     timeSlotsType: TimeSlotsTypes,
   ): Observable<boolean> {
     this.timeSlotsType = timeSlotsType;
-    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs;
+    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs.filter(attrs => !!attrs.value);
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
@@ -220,7 +221,7 @@ export class TimeSlotDoctorService {
       calendarName: data.calendarName,
       eserviceId: data.eserviceId,
       serviceCode: data.serviceCode,
-      organizationId: data.organizationId,
+      organizationId: data.organizationId || this.state$$.getValue().bookingRequestAttrs.MO_Id,
       bookAttributes:
         UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
@@ -381,8 +382,8 @@ export class TimeSlotDoctorService {
 
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
-      address: this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] || "Женская консультация, ГАУЗ \"Городская поликлиника № 21\"",
-      orgName: this.department.attributeValues?.FULLNAME || this.department?.title || "Республика Татарстан, г.Казань, ул.Рихарда Зорге, д.103",
+      address: this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] || this.state$$.getValue().bookingRequestAttrs.Address_MO,
+      orgName: this.department.attributeValues?.FULLNAME || this.department?.title ||  this.state$$.getValue().bookingRequestAttrs.Organization_Name,
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,

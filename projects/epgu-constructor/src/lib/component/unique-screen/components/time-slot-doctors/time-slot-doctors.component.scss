@@ -1,0 +1,12 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+.months-range {
+@include typ-plain-text;
+  color: $color-gosblue;
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.screen-footer--time-slots {
+  margin-top: 24px;
+}

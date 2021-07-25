@@ -25,7 +25,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { TimeSlotDoctorsComponent } from '../time-slot-doctors.interface';
+import { BookingRequestAttrs, TimeSlotDoctorsComponent } from '../time-slot-doctors.interface';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent } from '../../../../custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
@@ -53,7 +53,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   data$: Observable<DisplayDto> = this.screenService.display$;
 
   slotsLoadingStatus$$ = new BehaviorSubject<boolean>(false);
-
 
   public date: Date = null;
   public label: string;
@@ -176,7 +175,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.screenService.component.id,
         this.screenService.component.attrs?.cancelReservation,
       );
-      //this.loadTimeSlots();
+      // this.loadTimeSlots();
     }
   }
 
@@ -197,7 +196,11 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
 
   handleDocLookupValue(docLookup: ListElement): void {
     const prevState = this.timeSlotDoctorService.state$$.getValue();
-    this.timeSlotDoctorService.state$$.next({ ...prevState, docLookup });
+    const bookingRequestAttrs: Partial<BookingRequestAttrs> = {};
+    docLookup.originalItem.attributes.forEach((attribute) => {
+      bookingRequestAttrs[attribute.name] = attribute.value;
+    });
+    this.timeSlotDoctorService.state$$.next({ ...prevState, docLookup, bookingRequestAttrs });
     this.loadTimeSlots();
   }
 
@@ -327,14 +330,18 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.timeSlots = timeSlots;
         if (this.timeSlotDoctorService.hasError()) {
           this.showError(
-            `${this.constants.errorLoadingTimeSlots} (${this.timeSlotDoctorService.getErrorMessage()})`,
+            `${
+              this.constants.errorLoadingTimeSlots
+            } (${this.timeSlotDoctorService.getErrorMessage()})`,
           );
         }
         this.changeDetectionRef.markForCheck();
       },
       () => {
         this.showError(
-          `${this.constants.errorLoadingTimeSlots}  (${this.timeSlotDoctorService.getErrorMessage()})`,
+          `${
+            this.constants.errorLoadingTimeSlots
+          }  (${this.timeSlotDoctorService.getErrorMessage()})`,
         );
         this.changeDetectionRef.markForCheck();
       },
@@ -386,7 +393,9 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.inProgress = false;
         if (this.timeSlotDoctorService.hasError()) {
           this.showError(
-            `${this.constants.errorFailBookTimeSlot}  (${this.timeSlotDoctorService.getErrorMessage()})`,
+            `${
+              this.constants.errorFailBookTimeSlot
+            }  (${this.timeSlotDoctorService.getErrorMessage()})`,
           );
           return;
         }
@@ -450,7 +459,10 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   }
 
   private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
-    this.timeSlotDoctorService.cancelReservation = [currentTimeSlotId, ...(cancelReservation || [])];
+    this.timeSlotDoctorService.cancelReservation = [
+      currentTimeSlotId,
+      ...(cancelReservation || []),
+    ];
   }
 
   private loadTimeSlots(): void {
@@ -460,7 +472,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     const value = JSON.parse(this.screenService.component?.value);
 
     this.initServiceVariables(value);
-    this.timeSlotType = this.screenService.component?.attrs['ts']['timeSlotType'].value;
+    this.timeSlotType = this.screenService.component?.attrs['ts'].timeSlotType.value;
 
     this.timeSlotDoctorService.init(value, this.cachedAnswer, this.timeSlotType).subscribe(
       async (isBookedDepartment) => {
@@ -478,7 +490,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.inProgress = false;
 
         this.checkExistenceSlots();
-
 
         this.changeDetectionRef.detectChanges();
       },
@@ -776,7 +787,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
       this.isAreasVisible = this.areas.length > 0;
     }
   }
-
 
   private isDateOutOfSection(
     date: Date,
