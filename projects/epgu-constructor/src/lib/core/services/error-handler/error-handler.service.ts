@@ -16,6 +16,7 @@ import {
 import {
   AUTH_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
+  NEW_BOOKING_ERROR,
   COMMON_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
@@ -32,10 +33,16 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 
+enum ModalFailureType {
+  BOOKING,
+  FAILURE,
+  SESSION,
+}
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 export const SESSION_TIMEOUT_SMEV2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу.';
 // eslint-disable-next-line max-len
-export const SESSION_TIMEOUT_SMEV3 = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
+export const SESSION_TIMEOUT_SMEV3 = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -54,6 +61,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         (body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value,
       );
       const error = (body as ItemsErrorResponse)?.error;
+
+      if (url.includes('equeue/agg/book') && error) {
+        const errorMessage = error?.errorDetail?.errorMessage || NEW_BOOKING_DEFAULT_ERROR_MESSAGE;
+        this.showModalFailure(errorMessage, false, ModalFailureType.BOOKING);
+      }
 
       if (
         url.includes('service/booking') &&
@@ -91,9 +103,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
           if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
             if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, false, 'SESSION');
+              this.showModalFailure(errorMessage, false, ModalFailureType.SESSION);
             } else {
-              this.showModalFailure(errorMessage, false, 'FAILURE');
+              this.showModalFailure(errorMessage, false, ModalFailureType.FAILURE);
             }
           }
         } else {
@@ -102,18 +114,21 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (!errorMessage.includes('FAILURE') &&
               !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
           ) {
-            this.showModalNoData(errorMessage, true);
+            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+              this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
+            } else {
+              this.showModalNoData(errorMessage, true);
+            }
           }
-  
+
           if (
             errorMessage.includes('FAILURE') ||
             errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
           ) {
-            const newErrorMessage = errorMessage.replace('FAILURE:', '');
-            if (newErrorMessage === SESSION_TIMEOUT_SMEV2 || newErrorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, true, 'SESSION');
+            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
+              this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
-              this.showModalFailure(errorMessage, true, 'FAILURE');
+              this.showModalFailure(errorMessage, true, ModalFailureType.FAILURE);
             }
           }
         }
@@ -155,7 +170,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then();
+        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((prevStep) => {
+          if (prevStep) {
+            this.navigationService.prev();
+          }
+        });
       }
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
       this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((reload) => {
@@ -175,14 +194,18 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
     ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
 
-    this.showModal(ITEMS_NO_DATA);
+    this.showModal(ITEMS_NO_DATA).then((prevStep) => {
+      if (prevStep) {
+        this.navigationService.prev();
+      }
+    });
   }
 
-  private showModalFailure(errorMessage: string, replace: boolean, modal: 'SESSION' | 'FAILURE'): void {
+  private showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
     const message = replace ? errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '') : errorMessage;
 
     switch(modal) {
-      case 'FAILURE':
+      case ModalFailureType.FAILURE:
         ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
         this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
           if (redirectToLk) {
@@ -191,7 +214,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         });
         break;
 
-      case 'SESSION':
+      case ModalFailureType.SESSION:
         SESSION_TIMEOUT.text = SESSION_TIMEOUT.text.replace(/\{textAsset\}?/g, message);
         this.showModal(SESSION_TIMEOUT).then((reload) => {
           if (reload) {
@@ -199,8 +222,19 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
         });
         break;
+
+      case ModalFailureType.BOOKING:
+        const modal = {
+          ...NEW_BOOKING_ERROR,
+          text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message)
+        };
+        this.showModal(modal).then((redirectToLk) => {
+          if (redirectToLk) {
+            this.navigationService.redirectToLK();
+          }
+        });
+        break;
     }
-    
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {

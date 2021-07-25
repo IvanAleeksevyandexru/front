@@ -12,6 +12,7 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { Observable, of } from 'rxjs';
@@ -187,6 +188,7 @@ describe('ActionService', () => {
   let modalNextStepSpy: jasmine.Spy;
   let skipStepSpy: jasmine.Spy;
   let localStorageService: LocalStorageService;
+  let sessionStorageService: SessionStorageService;
   let formPlayerApiService: FormPlayerApiService;
   let modalService: ModalService;
   let hookService: HookService;
@@ -207,7 +209,7 @@ describe('ActionService', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: UtilsService, useClass: UtilsServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: HookService, useClass: HookServiceStub },
         HtmlRemoverService,
@@ -231,6 +233,7 @@ describe('ActionService', () => {
     navigationService = TestBed.inject(NavigationService);
     navigationModalService = TestBed.inject(NavigationModalService);
     localStorageService = TestBed.inject(LocalStorageService);
+    sessionStorageService = TestBed.inject(SessionStorageService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     modalService = TestBed.inject(ModalService);
     hookService = TestBed.inject(HookService);
@@ -452,9 +455,10 @@ describe('ActionService', () => {
 
     it('editChildData', () => {
       jest.spyOn(navigationService, 'redirectTo');
+      sessionStorageService.setRaw('childId', '1');
       actionService.switchAction(action(DTOActionAction.editChildData), null);
       expect(navigationService.redirectTo).toHaveBeenCalled();
-      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family');
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family/child/1');
     });
 
     it('editLegalPhone or editLegalEmail', () => {
@@ -505,6 +509,27 @@ describe('ActionService', () => {
       });
       expect(hasHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
       expect(getHooksSpy).toHaveBeenCalledWith(HookTypes.ON_BEFORE_SUBMIT);
+    });
+  });
+
+  describe('prepareActionMultipleAnswers()', () => {
+    it('should return parsed action.mulipleAnswers, if they passed as JSON-string', () => {
+      const action = ({
+        type: ActionType.orderToOrder,
+        action: DTOActionAction.getNextStep,
+        multipleAnswers: '[{"test": "test"}]',
+      } as unknown) as ComponentActionDto;
+      const result = actionService['prepareActionMultipleAnswers'](action);
+      expect(typeof result.multipleAnswers === 'object').toBe(true);
+    });
+    it('should return action.mulipleAnswers as is, if they passed non JSON-string', () => {
+      const action = ({
+        type: ActionType.orderToOrder,
+        action: DTOActionAction.getNextStep,
+        multipleAnswers: [{ test: 'test' }],
+      } as unknown) as ComponentActionDto;
+      const result = actionService['prepareActionMultipleAnswers'](action);
+      expect(typeof result.multipleAnswers === 'object').toBe(true);
     });
   });
 });

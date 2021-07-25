@@ -9,7 +9,12 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { delay, filter, map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { DisplayDto, ScenarioErrorsDto, ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  ComponentAttrsDto,
+  DisplayDto,
+  ScenarioErrorsDto,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { EventBusService, UnsubscribeService, isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -64,7 +69,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     tap((data: DisplayDto) => {
       this.propData = data;
       this.initVariable();
-      this.initScreens();
+      this.initScreens(this.propData.components[0].attrs);
     }),
   );
   state$ = new BehaviorSubject<Record<string, string>[]>([]);
@@ -114,7 +119,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.createScreen(true));
+      .subscribe(() => this.createScreen(this.propData.components[0].attrs, true));
   }
 
   // TODO решение в рамках https://jira.egovdev.ru/browse/EPGUCORE-57741
@@ -200,18 +205,25 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     );
   }
 
-  private initScreens(): void {
-    for (let i = 0; i < this.minOccures; i += 1) {
-      this.createScreen(false, true);
+  private initScreens(attrs: ComponentAttrsDto): void {
+    if (attrs.repeatableComponents.length < this.minOccures) {
+      for (let i = 0; i < this.minOccures; i += 1) {
+        this.createScreen(attrs, false, true);
+      }
+    } else {
+      this.createScreen(attrs, false, true);
     }
   }
 
-  private createScreen(isDuplicate?: boolean, initialLoaded?: boolean): void {
+  private createScreen(
+    attrs: ComponentAttrsDto,
+    isDuplicate?: boolean,
+    initialLoaded?: boolean,
+  ): void {
     if (!this.isScreensAvailable()) {
       return;
     }
 
-    const { attrs } = this.propData.components[0];
     const getScreenComponents = (components: unknown[], isFirst: boolean): CustomComponent[] =>
       (components as CustomComponent[]).filter(({ attrs: { onlyFirstScreen = isFirst } }) =>
         isFirst ? onlyFirstScreen : !onlyFirstScreen,

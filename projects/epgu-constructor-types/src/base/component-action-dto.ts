@@ -43,6 +43,7 @@ export enum ActionType {
   prevStep = 'prevStep',
   prevStepModal = 'prevStepModal',
   profileEdit = 'profileEdit',
+  legalEdit = 'legalEdit',
   quizToOrder = 'quizToOrder',
   redirect = 'redirect', // для умного поиска
   redirectToLK = 'redirectToLK',

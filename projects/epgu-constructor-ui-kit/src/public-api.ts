@@ -95,6 +95,8 @@ export * from './lib/core/providers/window.provider';
 export * from './lib/core/services/addresses-tools/addresses-tools.service';
 export * from './lib/core/services/local-storage/local-storage.service';
 export * from './lib/core/services/local-storage/local-storage.service.stub';
+export * from './lib/core/services/session-storage/session-storage.service';
+export * from './lib/core/services/session-storage/session-storage.service.stub';
 
 export * from './lib/core/services/cf-app-state/cf-app-state.service';
 export * from './lib/core/services/cf-app-state/cf-app-state.service.stub';

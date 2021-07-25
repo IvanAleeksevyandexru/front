@@ -10,6 +10,26 @@ const routes: Routes = [
       title: 'Chip',
     },
   },
+  {
+    path: 'components/helper-text',
+    loadChildren: () =>
+      import('../components/helper-text/helper-text.module').then(
+        (m) => m.ExampleEpguHelperTextModule,
+      ),
+    data: {
+      title: 'HelperText',
+    },
+  },
+  {
+    path: 'components/long-button',
+    loadChildren: () =>
+      import('../components/long-button/long-button.module').then(
+        (m) => m.ExampleEpguLongButtonModule,
+      ),
+    data: {
+      title: 'LongText',
+    },
+  },
 ];
 
 @NgModule({

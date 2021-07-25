@@ -69,7 +69,8 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
       )
       .subscribe((items) => {
         this.writeValue(items);
-        this.onChange(this.withAmount ? this.selectedItems : this.selectedItems.list);
+        const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
+        this.onChange(this.withAmount ? this.selectedItems : selectedItems);
         this.cdr.markForCheck();
       });
   }
@@ -77,7 +78,8 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   public remove(id: number | string): void {
     const items = this.selectedItems.list.filter((item) => item.id !== id);
     this.writeValue(items);
-    this.onChange(this.withAmount ? this.selectedItems : this.selectedItems.list);
+    const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
+    this.onChange(this.withAmount ? this.selectedItems : selectedItems);
     this.onTouched();
   }
 
@@ -89,13 +91,20 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
     this.onTouched = fn;
   }
 
-  public writeValue(items: ListElement[]): void {
-    const selectedItems = Array.isArray(items) ? items : JSON.parse(items || '[]');
+  public writeValue(items: ListElement[] | string): void {
+    if (!items) return;
+    const value = Array.isArray(items) ? items : JSON.parse(items);
 
-    this.selectedItems = {
-      list: selectedItems,
-      amount: selectedItems.length,
-    };
+    // TODO: когда-нибудь value всегда будет объектом, тогда можно будет убрать вторую проверку
+    // пока что сохраняем обратную совместимость со старыми json'ами услуг
+    if (Array.isArray(value)) {
+      this.selectedItems = {
+        list: value,
+        amount: value.length,
+      };
+    } else {
+      this.selectedItems = value;
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

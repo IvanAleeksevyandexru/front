@@ -8,7 +8,7 @@ import {
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { getAppStorageKey, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -21,8 +21,6 @@ import {
   QuizRequestDto,
   ScenarioDto,
   APP_OUTPUT_KEY,
-  APP_INPUT_KEY,
-  OutputAppDto,
 } from '@epgu/epgu-constructor-types';
 
 /**
@@ -49,6 +47,9 @@ export class FormPlayerStartManager {
       this.startLoadLastScreenCase();
     } else if (this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY)) {
       this.startLoadNextScreenCase();
+    } else if (this.locationService.hasParam('fromQuiz')
+      && this.locationService.hasParam('token')) {
+      this.startLoadFromQuizCaseByToken();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
     } else if (this.hasLoadFromStorageCase('fromOrder', ORDER_TO_ORDER_SCENARIO_KEY)) {
@@ -81,7 +82,7 @@ export class FormPlayerStartManager {
 
   private hasLoadFromStorageCase(queryParamName: string, key: string): boolean {
     return (
-      this.locationService.path(true).includes(`${queryParamName}=`) &&
+      this.locationService.hasParam(queryParamName) &&
       !!this.localStorageService.getRaw(key)
     );
   }
@@ -101,15 +102,28 @@ export class FormPlayerStartManager {
     this.locationService.deleteParam('getNextScreen');
   }
 
+  private startLoadFromQuizCaseByToken(): void {
+    const token = this.locationService.getParamValue('token');
+    this.formPlayerService.getQuizDataByToken(token).subscribe((quizDataDtoResponse) => {
+      const scenarioDto =  JSON.parse(quizDataDtoResponse.data.order) as ScenarioDto;
+      this.loadOrderFromQuiz(scenarioDto);
+    });
+  }
+
   private startLoadFromQuizCase(): void {
+    const scenarioDto = this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY);
+    this.loadOrderFromQuiz(scenarioDto);
+    this.localStorageService.delete(QUIZ_SCENARIO_KEY);
+    this.locationService.deleteParam('fromQuiz');
+  }
+
+  private loadOrderFromQuiz(scenarioDto: ScenarioDto): void {
     const quiz: QuizRequestDto = {
-      scenarioDto: this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY),
+      scenarioDto,
       serviceId: this.initDataService.serviceId,
       targetId: this.initDataService.targetId,
     };
     this.formPlayerService.initPlayerFromQuiz(quiz);
-    this.localStorageService.delete(QUIZ_SCENARIO_KEY);
-    this.locationService.deleteParam('fromQuiz');
   }
 
   private startLoadFromOrderCase(): void {
@@ -158,19 +172,10 @@ export class FormPlayerStartManager {
 
         if (!orderId) {
           this.localStorageService.set('cachedAnswers', {});
-          this.deleteAppStorage();
         }
 
         this.formPlayerService.initData(orderId);
       });
-  }
-
-  private deleteAppStorage(): void {
-    const appInput: OutputAppDto = this.localStorageService.get(APP_INPUT_KEY);
-    if (appInput) {
-      const key = getAppStorageKey(appInput.componentType, appInput.componentId);
-      this.localStorageService.delete(key);
-    }
   }
 
   private getOrderStatus(): void {

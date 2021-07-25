@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 // Сокращать пути до ./components и ./services нельзя, т.к. будет ошибка при `ng build epgu-constructor --prod`
 import { CfAppStateService } from './services/cf-app-state/cf-app-state.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
+import { SessionStorageService } from './services/session-storage/session-storage.service';
 import { LocationService } from './services/location/location.service';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { DeviceDetectorService } from './services/device-detector/device-detector.service';
@@ -33,6 +34,7 @@ import { AddressesToolsService } from './services/addresses-tools/addresses-tool
   providers: [
     ModalService,
     LocalStorageService,
+    SessionStorageService,
     DeviceDetectorService,
     EventBusService,
     UnsubscribeService,

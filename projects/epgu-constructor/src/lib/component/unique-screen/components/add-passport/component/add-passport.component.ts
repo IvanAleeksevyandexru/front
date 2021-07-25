@@ -25,10 +25,11 @@ import { SuggestHandlerService } from '../../../../../shared/services/suggest-ha
 })
 export class AddPassportComponent implements OnInit {
   @Input() attrs: ComponentAttrsDto;
+  @Input() cachedValue?: string;
   @Output() changeFormEvent = new EventEmitter<Passport>();
   suggestions$: Observable<{ [key: string]: ISuggestionItem }> = this.screenService.suggestions$;
   componentId$ = this.screenService.component$.pipe(map(({ id }) => id));
-  form: FormGroup;
+  passportForm: FormGroup;
 
   constructor(
     public suggestHandlerService: SuggestHandlerService,
@@ -37,22 +38,25 @@ export class AddPassportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
+    this.createForm(this.cachedValue);
+    this.subscribeToFormChanges();
+  }
 
-    this.form.valueChanges
+  private createForm(initValue: string): void {
+    this.passportForm = new FormGroup({
+      passport: new FormControl(initValue, Validators.required),
+    });
+  }
+
+  private subscribeToFormChanges(): void {
+    this.passportForm.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$), startWith([null]))
       .subscribe((value) => {
         this.onChangeForm({
           value: value?.passport,
-          isValid: this.form.valid,
+          isValid: this.passportForm.valid,
         });
       });
-  }
-
-  private createForm(): void {
-    this.form = new FormGroup({
-      passport: new FormControl(null, Validators.required),
-    });
   }
 
   private onChangeForm({ isValid, value }: Passport): void {

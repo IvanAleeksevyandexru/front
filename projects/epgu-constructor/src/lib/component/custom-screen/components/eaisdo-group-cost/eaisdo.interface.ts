@@ -14,11 +14,11 @@ export enum EaisdoStateTypes {
 }
 
 export enum EaisdoResponseTypes {
-  groupCostCalculationResponse = 'groupCostCalculationResponse',
-  groupCostIneffectualResponse = 'groupCostIneffectualResponse',
-  groupCostFreeOfChargeResponse = 'groupCostFreeOfChargeResponse',
-  groupCostCertificateExhaustedResponse = 'groupCostCertificateExhaustedResponse',
-  groupCostBadCalculationDataResponse = 'groupCostBadCalculationDataResponse',
+  groupCostCalculationResponse = 'GroupCostCalculationResponse',
+  groupCostIneffectualResponse = 'GroupCostIneffectualResponse',
+  groupCostFreeOfChargeResponse = 'GroupCostFreeOfChargeResponse',
+  groupCostCertificateExhaustedResponse = 'GroupCostCertificateExhaustedResponse',
+  groupCostBadCalculationDataResponse = 'GroupCostBadCalculationDataResponse',
 }
 
 export enum EaisdoFinancialSourceTypes {

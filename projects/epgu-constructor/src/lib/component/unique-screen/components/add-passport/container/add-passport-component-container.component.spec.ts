@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HealthService } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, FocusManagerService, FocusManagerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -48,6 +48,7 @@ describe('AddPassportContainerComponent', () => {
         SuggestMonitorService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         SuggestHandlerService,
+        { provide: FocusManagerService, useClass: FocusManagerServiceStub },
       ],
     }).compileComponents();
   });
