@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { ListItem } from '@epgu/epgu-lib';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
@@ -8,7 +7,6 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
 
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
@@ -26,7 +24,10 @@ import {
   CancelSlotResponseInterface,
   DepartmentInterface,
   SmevBookResponseInterface,
-  SmevSlotsMapInterface, TimeSlot, TimeSlotReq, TimeSlotsAnswerInterface,
+  SmevSlotsMapInterface,
+  TimeSlot,
+  TimeSlotReq,
+  TimeSlotsAnswerInterface,
 } from '../time-slots/time-slots.types';
 import { TimeSlotDoctorState, TimeSlotValueInterface } from './time-slot-doctors.interface';
 
@@ -57,8 +58,7 @@ export class TimeSlotDoctorService {
   public cancelReservation: string[];
 
   public department: DepartmentInterface;
-  private solemn: boolean;
-  private slotsPeriod;
+
   private slotsMap: SmevSlotsMapInterface;
   private bookedSlot: SlotInterface;
   private errorMessage;
@@ -66,7 +66,6 @@ export class TimeSlotDoctorService {
   private areas: string[];
   private config: configType = {};
   private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
-  private areaNamesIsNeeded: boolean;
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -152,19 +151,14 @@ export class TimeSlotDoctorService {
     return this.activeYearNumber;
   }
 
-  init(
-    data: TimeSlotValueInterface,
-    cachedAnswer: TimeSlotsAnswerInterface,
-    timeSlotsType: TimeSlotsTypes,
-  ): Observable<boolean> {
-    this.timeSlotsType = timeSlotsType;
-    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs.filter(attrs => !!attrs.value);
+  init(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): Observable<boolean> {
+    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs.filter((attrs) => !!attrs.value);
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
       this.slotsMap = {};
       this.availableMonths = [];
       this.errorMessage = null;
 
-      return this.getAvailableAreaNames(this.department.attributeValues?.AREA_NAME).pipe(
+      return of(['']).pipe(
         switchMap((areaNames) => {
           return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
             map((response) => {
@@ -204,9 +198,6 @@ export class TimeSlotDoctorService {
     //this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
     this.isBookedDepartment = false;
 
-    this.areaNamesIsNeeded = [TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(
-      this.timeSlotsType,
-    );
     if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
@@ -228,25 +219,6 @@ export class TimeSlotDoctorService {
       attributeNameWithAddress: this.screenService.component.attrs['ts'].attributeNameWithAddress,
       userSelectedRegion: data.userSelectedRegion,
     };
-
-    if (this.areaNamesIsNeeded) {
-      let solemn = data.solemn === 'Да';
-      if (this.solemn !== solemn) {
-        changed = true;
-        this.solemn = solemn;
-      }
-    }
-
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-      let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
-      if (this.slotsPeriod !== slotsPeriod) {
-        changed = true;
-        this.slotsPeriod = slotsPeriod;
-        const [activeYearNumber, activeMonthNumber] = slotsPeriod.split('-');
-        this.activeMonthNumber = parseInt(activeMonthNumber, 10) - 1;
-        this.activeYearNumber = parseInt(activeYearNumber, 10);
-      }
-    }
 
     if (JSON.stringify(this.config) !== JSON.stringify(config)) {
       changed = true;
@@ -293,7 +265,7 @@ export class TimeSlotDoctorService {
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
-    const { eserviceId } = this.configService.timeSlots[this.timeSlotsType];
+    const { eserviceId } = this.configService.timeSlots[TimeSlotsTypes.DOCTOR];
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
@@ -320,7 +292,9 @@ export class TimeSlotDoctorService {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
+    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[
+      TimeSlotsTypes.DOCTOR
+    ];
 
     return <TimeSlotReq>this.deleteIgnoreRequestParams({
       organizationId: [this.config.organizationId as string],
@@ -328,21 +302,25 @@ export class TimeSlotDoctorService {
       serviceId: [(this.config.serviceId as string) || serviceId],
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       routeNumber,
-      attributes: [...this.timeSlotRequestAttrs,
-        ...( this.isByMedRef ? [
-          {
-            name: 'Resource_Id',
-            value: this.state$$.getValue().docLookup.id,
-          } ] :
-        [{
-          name: 'Resource_Id',
-          value: this.state$$.getValue().docLookup.id,
-        },
-        {
-          name: 'Service_Id',
-          value: this.state$$.getValue().specLookup.id,
-        }]
-        ) as any
+      attributes: [
+        ...this.timeSlotRequestAttrs,
+        ...((this.isByMedRef
+          ? [
+              {
+                name: 'Resource_Id',
+                value: this.state$$.getValue().docLookup.id,
+              },
+            ]
+          : [
+              {
+                name: 'Resource_Id',
+                value: this.state$$.getValue().docLookup.id,
+              },
+              {
+                name: 'Service_Id',
+                value: this.state$$.getValue().specLookup.id,
+              },
+            ]) as any),
       ],
     });
   }
@@ -377,38 +355,47 @@ export class TimeSlotDoctorService {
       calendarName,
       preliminaryReservationPeriod,
       routeNumber,
-    } = this.configService.timeSlots[this.timeSlotsType];
+    } = this.configService.timeSlots[TimeSlotsTypes.DOCTOR];
 
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
-      address: this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] || this.state$$.getValue().bookingRequestAttrs.Address_MO,
-      orgName: this.department.attributeValues?.FULLNAME || this.department?.title ||  this.state$$.getValue().bookingRequestAttrs.Organization_Name,
+      address:
+        this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] ||
+        this.state$$.getValue().bookingRequestAttrs.Address_MO,
+      orgName:
+        this.department.attributeValues?.FULLNAME ||
+        this.department?.title ||
+        this.state$$.getValue().bookingRequestAttrs.Organization_Name,
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
-      params: [...(this.config.bookParams as attributesMapType),
-        ...(this.isByMedRef ?
-          [{
-            name: 'doctorname',
-            value: this.state$$.getValue().docLookup.text
-          },
-        {
-          name: 'doctorid',
-          value: this.state$$.getValue().docLookup.id
-        }] :
-
-        [{
-          name: 'doctorname',
-          value: this.state$$.getValue().docLookup.text
-        },
-        {
-          name: 'doctor',
-          value: this.state$$.getValue().specLookup.text
-        },
-        {
-          name: 'doctorid',
-          value: this.state$$.getValue().docLookup.id
-        }])
+      params: [
+        ...(this.config.bookParams as attributesMapType),
+        ...(this.isByMedRef
+          ? [
+              {
+                name: 'doctorname',
+                value: this.state$$.getValue().docLookup.text,
+              },
+              {
+                name: 'doctorid',
+                value: this.state$$.getValue().docLookup.id,
+              },
+            ]
+          : [
+              {
+                name: 'doctorname',
+                value: this.state$$.getValue().docLookup.text,
+              },
+              {
+                name: 'doctor',
+                value: this.state$$.getValue().specLookup.text,
+              },
+              {
+                name: 'doctorid',
+                value: this.state$$.getValue().docLookup.id,
+              },
+            ]),
       ],
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       serviceCode: (this.config.serviceCode as string) || serviceCode,
@@ -417,16 +404,13 @@ export class TimeSlotDoctorService {
       calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
       selectedHallTitle: this.department.attributeValues?.AREA_NAME || selectedSlot.slotId,
-      parentOrderId: this.config.parentOrderId
-        ? (this.config.parentOrderId as string)
-        : '',
+      parentOrderId: this.config.parentOrderId ? (this.config.parentOrderId as string) : '',
       caseNumber: this.config.orderId ? (this.config.orderId as string) : '',
       preliminaryReservationPeriod,
-      attributes: this.config.bookAttributes as attributesMapType || [],
+      attributes: (this.config.bookAttributes as attributesMapType) || [],
       slotId: [selectedSlot.slotId],
       serviceId: [(this.config.serviceId as string) || serviceId],
     };
-
 
     return <BookTimeSlotReq>this.deleteIgnoreRequestParams(requestBody);
   }
@@ -445,10 +429,6 @@ export class TimeSlotDoctorService {
         this.availableMonths.push(month);
       }
 
-      if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-        this.availableMonths = [this.slotsPeriod];
-      }
-
       let daySlots = monthSlots[slotDate.getMonth()];
       if (!daySlots[slotDate.getDate()]) {
         daySlots[slotDate.getDate()] = [];
@@ -461,29 +441,6 @@ export class TimeSlotDoctorService {
         timezone: slot.visitTimeISO.substr(TIMEZONE_STR_OFFSET),
       });
     });
-  }
-
-  /**
-   * Метод возвращает массив с AREA_NAME для слотов загса. Если был выбран загс с AREA_NAME = null
-   * то нужно из справочника запросить список кабинетов
-   * @param areaName AREA_NAME загса
-   */
-  private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
-    if (this.areaNamesIsNeeded) {
-      if (areaName) {
-        return of([areaName]);
-      } else {
-        return this.dictionaryApiService
-          .getSelectMapDictionary('FNS_ZAGS_ORGANIZATION_AREA', this.getOptionsMapDictionary())
-          .pipe(
-            map((response: DictionaryResponse) => {
-              return response.items.map((zags) => zags.attributeValues.AREA_NAME);
-            }),
-          );
-      }
-    } else {
-      return of(['']);
-    }
   }
 
   /**
@@ -507,21 +464,13 @@ export class TimeSlotDoctorService {
       },
       {
         simple: {
-          attributeName: this.timeSlotsType === TimeSlotsTypes.BRAK ? 'PR2' : 'PR3',
+          attributeName: 'PR3',
           condition: DictionaryConditions.CONTAINS,
           value: { asString: 'true' },
         },
       },
     ];
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-      subs.push({
-        simple: {
-          attributeName: 'SOLEMN',
-          condition: DictionaryConditions.EQUALS,
-          value: { asString: this.solemn.toString() },
-        },
-      });
-    }
+
     return {
       filter: {
         union: {

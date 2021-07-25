@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement, ListItem } from '@epgu/epgu-lib';
@@ -6,6 +6,7 @@ import {
   ComponentAttrsDto,
   ConfirmationModal,
   DictionaryConditions,
+  DictionaryOptions,
   DictionaryValueTypes,
   DisplayDto,
 } from '@epgu/epgu-constructor-types';
@@ -25,7 +26,11 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { BookingRequestAttrs, TimeSlotDoctorsComponent } from '../time-slot-doctors.interface';
+import {
+  BookingRequestAttrs,
+  TimeSlotDoctorsAttrs,
+  TimeSlotDoctorsComponent,
+} from '../time-slot-doctors.interface';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent } from '../../../../custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
@@ -48,14 +53,14 @@ import { TimeSlotDoctorService } from '../time-slot-doctor.service';
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
 })
-export class TimeSlotDoctorsContainerComponent implements OnInit {
+export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
 
   slotsLoadingStatus$$ = new BehaviorSubject<boolean>(false);
 
   public date: Date = null;
-  public label: string;
+
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public chosenTimeStr: string;
@@ -81,44 +86,30 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  public weeks: Array<Array<IDay>> = [];
-  public areas: ListItem[] = [];
-  public isAreasVisible = false;
-  public monthsYears: ListItem[] = [];
-  public timeSlots: SlotInterface[] = [];
-  public dialogButtons = [];
-  public isExistsSlots = true;
-  public currentSlot: SlotInterface;
-  public currentMonth: ListItem;
-  public currentArea: ListItem;
-  public blockMobileKeyboard = false;
-  public fixedMonth = false;
-  public inLoadingProgress = false;
-  public inBookingProgress = false;
-  public changeTSConfirm = false;
+  weeks: Array<Array<IDay>> = [];
+  monthsYears: ListItem[] = [];
+  timeSlots: SlotInterface[] = [];
+  dialogButtons = [];
+  isExistsSlots = true;
+  currentSlot: SlotInterface;
+  currentMonth: ListItem;
+  blockMobileKeyboard = false;
+  fixedMonth = false;
+  inLoadingProgress = false;
+  inBookingProgress = false;
+  changeTSConfirm = false;
   bookedSlot: SlotInterface;
   errorMessage;
-  public isMonthsRangeVisible = false;
+  isMonthsRangeVisible = false;
 
-  public get monthsRange(): string {
+  get monthsRange(): string {
     return Array.from(this._monthsRange).join(' — ');
   }
+  specProvider;
+  doctorProvider;
 
-  private errorModalResultSub = new Subscription();
-  private cachedAnswer: TimeSlotsAnswerInterface;
-  private timeSlotType: TimeSlotsTypes;
-  private nextStepAction = NEXT_STEP_ACTION;
-  private firstDayOfMainSection: Date;
-  private daysInMainSection: number;
-  private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
-  private _monthsRange = new Set();
-  private today: Date;
-
-  public specProvider;
-  public doctorProvider;
-
-  public specLookupControl = new FormControl();
-  public docLookupControl = new FormControl();
+  specLookupControl = new FormControl();
+  docLookupControl = new FormControl();
 
   component: TimeSlotDoctorsComponent;
   timeSlotDoctors$: Observable<TimeSlotDoctorsComponent> = this.screenService.component$.pipe(
@@ -149,6 +140,16 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     filter((component: TimeSlotDoctorsComponent) => !!component.value),
   );
 
+  private errorModalResultSub = new Subscription();
+  private cachedAnswer: TimeSlotsAnswerInterface;
+  private timeSlotType: TimeSlotsTypes;
+  private nextStepAction = NEXT_STEP_ACTION;
+  private firstDayOfMainSection: Date;
+  private daysInMainSection: number;
+  private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
+  private _monthsRange = new Set();
+  private today: Date;
+
   constructor(
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
@@ -164,7 +165,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.specLookupControl.invalid);
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
@@ -177,7 +177,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.screenService.component.id,
         this.screenService.component.attrs?.cancelReservation,
       );
-      // this.loadTimeSlots();
     }
   }
 
@@ -192,8 +191,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
       this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup: null, docLookup: null });
       setTimeout(() => {
         this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup, docLookup: null });
-      }, 0);
-    }, 0);
+      });
+    });
   }
 
   handleDocLookupValue(docLookup: ListElement): void {
@@ -206,60 +205,12 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     this.loadTimeSlots();
   }
 
-  private providerSearch(
-    component: TimeSlotDoctorsComponent,
-    attrs: ComponentAttrsDto,
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    getInitialDictionaryFilterFunc = () => [],
-  ): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
-      let additionalParams = {};
-      const filters = [...attrs.searchProvider.dictionaryFilter];
-      const startFilter = attrs.searchProvider?.turnOffStartFilter;
-
-      if (!startFilter) {
-        filters[0].value = searchString;
-      } else {
-        additionalParams = this.dictionaryToolsService.getAdditionalParams(
-          this.screenService.getStore(),
-          [...attrs.searchProvider.dictionaryOptions.additionalParams],
-        );
-      }
-
-      const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
-        component.parsedValue,
-        this.screenService.getStore(),
-        [...getInitialDictionaryFilterFunc(), ...filters],
-      );
-
-      return this.dictionaryToolsService
-        .getDictionaries$(
-          attrs.dictionaryType as string,
-          { ...component, attrs } as CustomComponent,
-          {
-            ...(attrs.searchProvider.dictionaryOptions as any),
-            ...dictionaryOptions,
-            ...{ additionalParams },
-          },
-        )
-        .pipe(
-          map((reference) => {
-            return this.dictionaryToolsService.adaptDictionaryToListItem(
-              reference.data.items,
-              reference.component.attrs.mappingParams,
-              startFilter !== undefined && startFilter === true,
-            );
-          }),
-        );
-    };
-  }
-
   /**
    * Проверяет есть ли в текущем месяце пустые слоты
    * Если да, to this.isExistsSlots = true
    * Функция вызывается при каждой регенерации календаря
    */
-  public checkExistenceSlots(): void {
+  checkExistenceSlots(): void {
     this.isExistsSlots = this.weeks.some((week) => {
       return week.some((day) => {
         return !this.isDateLocked(day.date, this.firstDayOfMainSection, this.daysInMainSection);
@@ -267,7 +218,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     });
   }
 
-  public isToday(date: Date): boolean {
+  isToday(date: Date): boolean {
     return (
       date.getUTCFullYear() === this.today.getUTCFullYear() &&
       date.getUTCMonth() === this.today.getUTCMonth() &&
@@ -275,18 +226,18 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     );
   }
 
-  public isSelected(date: Date): boolean {
+  isSelected(date: Date): boolean {
     return this.datesHelperService.isSameDate(date, this.date);
   }
 
-  public isDateOutOfMonth(date: Date): boolean {
+  isDateOutOfMonth(date: Date): boolean {
     return date && this.datesHelperService.getMonth(date) !== this.activeMonthNumber;
   }
 
-  public isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
+  isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
     return (
       this.isDateOutOfSection(date, firstDayOfMainSection, daysInMainSection) ||
-      this.timeSlotDoctorService.isDateLocked(date, this.currentArea?.id) ||
+      this.timeSlotDoctorService.isDateLocked(date) ||
       this.checkDateRestrictions(date)
     );
   }
@@ -295,7 +246,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
    * Клик по дню на календаре. Повторный клик по уже выбранному дню отменяет выбор
    * @param date день для выбора
    */
-  public selectDate(date: Date): void {
+  selectDate(date: Date): void {
     if (this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection)) {
       return;
     }
@@ -312,7 +263,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
    * Клик по слоту на календаре. Повторный клик по уже выбранному слоту отменяет выбор
    * @param slot слот для выбора
    */
-  public chooseTimeSlot(slot: SlotInterface): void {
+  chooseTimeSlot(slot: SlotInterface): void {
     if (this.currentSlot?.slotId === slot.slotId) {
       this.clearDateSelection();
     } else {
@@ -321,13 +272,13 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     }
   }
 
-  public isSlotSelected({ slotId }: SlotInterface): boolean {
+  isSlotSelected({ slotId }: SlotInterface): boolean {
     return this.currentSlot && this.currentSlot.slotId === slotId;
   }
 
-  public showTimeSlots(date: Date): void {
+  showTimeSlots(date: Date): void {
     this.currentSlot = null;
-    this.timeSlotDoctorService.getAvailableSlots(date, this.currentArea?.id).subscribe(
+    this.timeSlotDoctorService.getAvailableSlots(date).subscribe(
       (timeSlots) => {
         this.timeSlots = timeSlots;
         if (this.timeSlotDoctorService.hasError()) {
@@ -350,13 +301,13 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     );
   }
 
-  public areaChanged(): void {
+  areaChanged(): void {
     this.clearDateSelection();
     this.checkExistenceSlots();
     this.recalcDaysStyles();
   }
 
-  public async monthChanged(ev: ListItem): Promise<void> {
+  async monthChanged(ev: ListItem): Promise<void> {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
@@ -375,7 +326,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
    *
    *  Иначе, букаем слот
    */
-  public clickSubmit(): void {
+  clickSubmit(): void {
     if (this.bookedSlot) {
       if (this.isCachedValueChanged()) {
         this.showModal(this.confirmModalParameters);
@@ -388,7 +339,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     }
   }
 
-  public bookTimeSlot(): void {
+  bookTimeSlot(): void {
     this.inBookingProgress = true;
     this.timeSlotDoctorService.checkBooking(this.currentSlot).subscribe(
       (response) => {
@@ -465,6 +416,54 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     return !this.errorMessage;
   }
 
+  private providerSearch(
+    component: TimeSlotDoctorsComponent,
+    attrs: ComponentAttrsDto,
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    getInitialDictionaryFilterFunc = () => [],
+  ): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
+      let additionalParams = {};
+      const filters = [...attrs.searchProvider.dictionaryFilter];
+      const startFilter = attrs.searchProvider?.turnOffStartFilter;
+
+      if (!startFilter) {
+        filters[0].value = searchString;
+      } else {
+        additionalParams = this.dictionaryToolsService.getAdditionalParams(
+          this.screenService.getStore(),
+          [...attrs.searchProvider.dictionaryOptions.additionalParams],
+        );
+      }
+
+      const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
+        component.parsedValue,
+        this.screenService.getStore(),
+        [...getInitialDictionaryFilterFunc(), ...filters],
+      );
+
+      return this.dictionaryToolsService
+        .getDictionaries$(
+          attrs.dictionaryType as string,
+          { ...component, attrs } as CustomComponent,
+          {
+            ...attrs.searchProvider.dictionaryOptions,
+            ...dictionaryOptions,
+            ...{ additionalParams },
+          } as DictionaryOptions,
+        )
+        .pipe(
+          map((reference) => {
+            return this.dictionaryToolsService.adaptDictionaryToListItem(
+              reference.data.items,
+              reference.component.attrs.mappingParams,
+              startFilter !== undefined && startFilter === true,
+            );
+          }),
+        );
+    };
+  }
+
   private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
     this.timeSlotDoctorService.cancelReservation = [
       currentTimeSlotId,
@@ -476,13 +475,13 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     this.slotsLoadingStatus$$.next(false);
     this.inLoadingProgress = true;
     this.clearDateSelection();
-    this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
 
     this.initServiceVariables(value);
-    this.timeSlotType = this.screenService.component?.attrs['ts'].timeSlotType.value;
+    this.timeSlotType = (this.screenService.component
+      ?.attrs as TimeSlotDoctorsAttrs)?.ts?.timeSlotType.value;
 
-    this.timeSlotDoctorService.init(value, this.cachedAnswer, this.timeSlotType).subscribe(
+    this.timeSlotDoctorService.init(value, this.cachedAnswer).subscribe(
       async (isBookedDepartment) => {
         if (this.timeSlotDoctorService.hasError()) {
           this.inLoadingProgress = false;
@@ -570,11 +569,12 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/typedef
   private async renderSingleMonthGrid(output): Promise<void> {
     output.splice(0, output.length); // in-place clear
-    const daysToShow = this.screenService.component?.attrs['ts'].daysToShow;
+    const attrs = this.screenService.component?.attrs as TimeSlotDoctorsAttrs;
+    const daysToShow = attrs?.ts.daysToShow;
 
     this.today = await this.datesHelperService.getToday(true);
 
-    if (this.screenService.component?.attrs['ts'].startSection === 'today') {
+    if (attrs?.ts.startSection === 'today') {
       this.firstDayOfMainSection = this.today;
     } else {
       this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
@@ -640,7 +640,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   private checkDateRestrictions(date: Date, startType: StartOfTypes = 'day'): boolean {
     const refDate = this.datesHelperService.startOf(this.getRefDate(), startType);
 
-    const restrictions = this.screenService.component?.attrs['ts']?.restrictions || {};
+    const restrictions =
+      (this.screenService.component?.attrs as TimeSlotDoctorsAttrs)?.ts?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
       minDate: (amount, type): boolean => {
@@ -714,7 +715,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
 
   /**
    * Устанавливает забуканный слот при его наличие, иначе пытается его проставить из кэша ответов
-   * @param timeSlot таймслот из кэша
    */
   private setBookedSlot(timeSlot: TimeSlot, waitingTimeExpired: boolean): void {
     this.timeSlotDoctorService.waitingTimeExpired = waitingTimeExpired;
@@ -774,7 +774,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     this.errorMessage = undefined;
     this.activeMonthNumber = this.timeSlotDoctorService.getCurrentMonth();
     this.activeYearNumber = this.timeSlotDoctorService.getCurrentYear();
-    this.initSlotsAreas();
 
     this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
@@ -785,14 +784,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     if (this.bookedSlot && isBookedDepartment) {
       this.selectDate(this.bookedSlot.slotTime);
       this.chooseTimeSlot(this.bookedSlot);
-    }
-  }
-
-  private initSlotsAreas(): void {
-    if ([TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(this.timeSlotType)) {
-      this.areas = this.timeSlotDoctorService.getAreasListItems();
-      [this.currentArea] = this.areas;
-      this.isAreasVisible = this.areas.length > 0;
     }
   }
 
