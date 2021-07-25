@@ -32,7 +32,8 @@
         [chosenTimeStr]="chosenTimeStr"
         [labelButton]="(screenService.button$ | async).label"
         [isValid]="isValid"
-        [inProgress]="inProgress"
+        [inLoadingProgress]="inLoadingProgress"
+        [inBookingProgress]="inBookingProgress"
         (bookSlot)="clickSubmit()"
       ></epgu-constructor-time-slot-doctors>
     </ng-container>

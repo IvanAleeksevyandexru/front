@@ -7,7 +7,6 @@
       <epgu-constructor-label [label]="specLookupAttrs.label" for="spec"></epgu-constructor-label>
 
       <epgu-cf-ui-constructor-constructor-lookup
-        epgu-constructor-validation-type
         #specLookup
         [showExpandCollapse]="true"
         [itemsProvider]="specProvider"
@@ -25,9 +24,7 @@
       <epgu-constructor-label [label]="docLookupAttrs.label" for="doctors"></epgu-constructor-label>
 
       <epgu-cf-ui-constructor-constructor-lookup
-        epgu-constructor-validation-type
         #docLookup
-        [showMagnifyingGlass]="false"
         [showExpandCollapse]="true"
         [itemsProvider]="doctorProvider"
         [control]="docLookupControl"
@@ -38,6 +35,8 @@
       >
       </epgu-cf-ui-constructor-constructor-lookup>
     </div>
+
+    <lib-throbber-hexagon *ngIf="inLoadingProgress" class="mt-24" size="big"></lib-throbber-hexagon>
 
     <div *ngIf="isMapShown" class="mt-24">
 
@@ -69,10 +68,10 @@
         </span>
       </span>
     <lib-button
-      [showLoader]="isLoading || inProgress"
+      [showLoader]="isLoading || inBookingProgress"
       (click)="bookSlot.emit()"
       class="submit-button"
-      [disabled]="!this.isValid || this.inProgress || !this.currentSlot?.slotId"
+      [disabled]="!isValid || inLoadingProgress || inBookingProgress || !currentSlot?.slotId"
     >
       <div class="secondary-font">{{ labelButton }}</div>
     </lib-button>

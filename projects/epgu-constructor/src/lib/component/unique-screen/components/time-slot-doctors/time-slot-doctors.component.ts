@@ -14,7 +14,8 @@ export class TimeSlotDoctorsComponent {
   @Input() isValid: boolean;
   @Input() isChosenTimeStrVisible: boolean;
   @Input() chosenTimeStr: string;
-  @Input() inProgress: boolean;
+  @Input() inLoadingProgress: boolean;
+  @Input() inBookingProgress: boolean;
   @Input() isLoading: boolean;
   @Input() labelButton: string;
 

@@ -10,3 +10,10 @@
 .screen-footer--time-slots {
   margin-top: 24px;
 }
+
+.form {
+  &__error {
+    margin-bottom: 4px;
+    color: $color-gosred;
+  }
+}

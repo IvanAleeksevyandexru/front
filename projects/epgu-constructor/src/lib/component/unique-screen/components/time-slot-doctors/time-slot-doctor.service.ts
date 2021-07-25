@@ -200,8 +200,7 @@ export class TimeSlotDoctorService {
   changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
-    //let department = JSON.parse(data.department);
-    let department = {} as any;
+    let department = data.department ? JSON.parse(data.department) : {};
     //this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
     this.isBookedDepartment = false;
 

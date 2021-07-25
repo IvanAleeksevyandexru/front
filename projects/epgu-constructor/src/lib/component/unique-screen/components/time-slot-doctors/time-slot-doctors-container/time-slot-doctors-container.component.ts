@@ -93,7 +93,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   public currentArea: ListItem;
   public blockMobileKeyboard = false;
   public fixedMonth = false;
-  public inProgress = false;
+  public inLoadingProgress = false;
+  public inBookingProgress = false;
   public changeTSConfirm = false;
   bookedSlot: SlotInterface;
   errorMessage;
@@ -163,6 +164,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.specLookupControl.invalid);
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
@@ -387,10 +389,10 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   }
 
   public bookTimeSlot(): void {
-    this.inProgress = true;
+    this.inBookingProgress = true;
     this.timeSlotDoctorService.checkBooking(this.currentSlot).subscribe(
       (response) => {
-        this.inProgress = false;
+        this.inBookingProgress = false;
         if (this.timeSlotDoctorService.hasError()) {
           this.showError(
             `${
@@ -409,7 +411,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
         this.changeDetectionRef.markForCheck();
       },
       () => {
-        this.inProgress = false;
+        this.inBookingProgress = false;
         this.showModal(COMMON_ERROR_MODAL_PARAMS);
         this.changeDetectionRef.markForCheck();
       },
@@ -447,7 +449,12 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
+    return (
+      !this.currentAnswersService.isValid ||
+      this.inLoadingProgress ||
+      this.inBookingProgress ||
+      !this.isBookSlotSelected()
+    );
   }
 
   isBookSlotSelected(): string {
@@ -467,7 +474,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
 
   private loadTimeSlots(): void {
     this.slotsLoadingStatus$$.next(false);
-    this.inProgress = true;
+    this.inLoadingProgress = true;
+    this.clearDateSelection();
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
 
@@ -477,7 +485,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
     this.timeSlotDoctorService.init(value, this.cachedAnswer, this.timeSlotType).subscribe(
       async (isBookedDepartment) => {
         if (this.timeSlotDoctorService.hasError()) {
-          this.inProgress = false;
+          this.inLoadingProgress = false;
           this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
@@ -487,7 +495,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
           await this.serviceInitHandle(!!isBookedDepartment);
         }
 
-        this.inProgress = false;
+        this.inLoadingProgress = false;
 
         this.checkExistenceSlots();
 
@@ -495,7 +503,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit {
       },
       (error) => {
         this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
-        this.inProgress = false;
+        this.inLoadingProgress = false;
         this.showError(
           `${this.constants.errorInitialiseService} (${this.errorMessage}) (${error})`,
         );
