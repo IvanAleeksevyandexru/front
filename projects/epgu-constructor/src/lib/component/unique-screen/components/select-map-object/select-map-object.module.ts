@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { ConstructorLookupModule, ConstructorCheckboxModule, Icons } from '@epgu/epgu-constructor-ui-kit';
@@ -15,6 +16,14 @@ import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 import { NotifierService } from '@epgu/epgu-lib';
+import { SearchPanelResolverComponent } from './components/search-panel-resolver/search-panel-resolver.component';
+import { CommonSearchPanelComponent } from './components/search-panel-resolver/components/common-search-panel/common-search-panel.component';
+import { ElectionsSearchPanelComponent } from './components/search-panel-resolver/components/elections-search-panel/elections-search-panel.component';
+import { ConstructorDadataWidgetModule } from '../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
+import { CommonBalloonContentComponent } from './components/balloon-content-resolver/components/common-balloon-content/common-balloon-content.component';
+import { ElectionsBalloonContentComponent } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.component';
+import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
+
 
 @NgModule({
   declarations: [
@@ -22,6 +31,12 @@ import { NotifierService } from '@epgu/epgu-lib';
     PriorityScreenComponent,
     PriorityItemComponent,
     PriorityItemEmptyComponent,
+    SearchPanelResolverComponent,
+    CommonSearchPanelComponent,
+    ElectionsSearchPanelComponent,
+    BalloonContentResolverComponent,
+    CommonBalloonContentComponent,
+    ElectionsBalloonContentComponent,
   ],
   providers: [
     Icons,
@@ -44,6 +59,7 @@ import { NotifierService } from '@epgu/epgu-lib';
     PrevButtonModule,
     ScreenPadModule,
     DisclaimerModule,
+    ConstructorDadataWidgetModule,
   ],
   entryComponents: [SelectMapObjectComponent],
 })

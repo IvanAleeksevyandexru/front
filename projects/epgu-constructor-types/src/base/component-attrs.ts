@@ -144,6 +144,11 @@ export interface ComponentAttrsDto {
     dictionaryFilter: ComponentDictionaryFilterDto[];
     turnOffStartFilter?: boolean;
   };
+  selectAttributes?: string[];
+  LOMurlTemplate?: string;
+  mapType?: string;
+  electionLevel?: string;
+  electionDate?: string;
 }
 
 export interface Hints {
