@@ -124,6 +124,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   add?: { component: string; caption: string[] };
   cityFilter?: string[];
   clarifications?: Clarifications;
+  class?: string;
   customUnrecLabel?: string;
   dateRestrictions?: DateRestriction[];
   defaultIndex?: number;

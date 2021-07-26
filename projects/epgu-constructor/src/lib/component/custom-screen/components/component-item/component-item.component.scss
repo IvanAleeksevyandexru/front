@@ -1,6 +1,6 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-:host {
+.component-item {
   display: block;
   margin-bottom: $screen-pad-24;
 }
