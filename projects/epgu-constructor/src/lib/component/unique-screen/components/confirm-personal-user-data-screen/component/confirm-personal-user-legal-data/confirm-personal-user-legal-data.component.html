@@ -13,7 +13,7 @@
         [html]="data.attrs.hint"
       ></epgu-constructor-output-html>
     </div>
-    <div class="data-footer" *ngIf="screenService.action.type">
+    <div class="data-footer" *ngIf="screenService.action?.type">
       <div class="divider"></div>
       <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
         <img
