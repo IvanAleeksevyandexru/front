@@ -10,10 +10,10 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UniqueScreenComponentTypes } from 'projects/epgu-constructor/src/lib/component/unique-screen/unique-screen-components.types';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
+import { UniqueScreenComponentTypes } from '../../../../../component/unique-screen/unique-screen-components.types';
 
 interface CodeFormGroup {
   codeMask: Array<RegExp>;
