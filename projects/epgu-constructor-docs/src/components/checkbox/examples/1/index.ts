@@ -18,7 +18,7 @@ export class Example1EpguCheckboxComponent {
 
   handleClick(event): void {
     if (event.target.id) {
-      alert(`${event.target.id}, ${event.target.checked}`);
+      console.log(`${event.target.id}, ${event.target.checked}`);
     }
   }
 }
