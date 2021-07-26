@@ -1,8 +1,8 @@
-<epgu-cf-ui-screen-container *ngIf="(data$ | async) as data"
-                             [show-nav]="screenService.showNav$ | async"
-                             [class.screen-container-mt]="!(screenService.showNav$ | async)"
+<epgu-cf-ui-screen-container
+  *ngIf="data$ | async as data"
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>
 
@@ -16,7 +16,7 @@
           ></lib-dropdown>
         </div>
         <div *ngIf="isMonthsRangeVisible" class="months-range">
-          {{monthsRange}}
+          {{ monthsRange }}
         </div>
         <div *ngIf="!isMonthsRangeVisible" class="dropdown-list">
           <lib-dropdown
@@ -25,43 +25,19 @@
             [(ngModel)]="currentMonth"
             (changed)="monthChanged($event)"
             class="compact-selector"
-            contextClass="compact"></lib-dropdown>
-        </div>
-        <div class="calendar-table">
-          <div class="calendar-grip-container-wrapper">
-            <div class="calendar-grid-container">
-              <div class="calendar-grid-wrap current-month">
-                <div class="calendar-grid">
-                  <div class="calendar-week-days">
-                    <div class="calendar-week-day" *ngFor="let weekDay of daysOfWeek">
-                      <span class="calendar-week-day-text">{{weekDay}}</span>
-                    </div>
-                  </div>
-                  <div class="calendar-week" *ngFor="let week of weeks">
-                    <div *ngFor="let day of week" class="calendar-day" (click)="selectDate(day.date)" [ngClass]="day.classes">
-                      <span class="calendar-day-text">{{day ? day.number : ''}}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <div class="time-slots-items">
-          <div *ngFor="let slot of timeSlots" class="time-slot-item"
-               [ngClass]="{'selected': isSlotSelected(slot)}"
-               (click)="chooseTimeSlot(slot)">
-            {{slot.slotTime | date:'shortTime'}}
-          </div>
+            contextClass="compact"
+          ></lib-dropdown>
         </div>
 
-        <div class="time-slots-empty" *ngIf="!isExistsSlots">
-          <h4>В этом месяце всё занято</h4>
-          <epgu-cf-ui-constructor-helper-text size="lg">
-            Выберите другой месяц или подразделение, чтобы забронировать время
-          </epgu-cf-ui-constructor-helper-text>
-        </div>
+        <epgu-cf-ui-constructor-time-calendar
+          [daysNotFoundTemplate]="daysNotFoundTemplate"
+          [weeks]="weeks"
+          [currentSlot]="currentSlot"
+          [isExistsSlots]="isExistsSlots"
+          [slotList]="timeSlots"
+          (chooseTimeSlot)="chooseTimeSlot($event)"
+          (selectDate)="selectDate($event)"
+        ></epgu-cf-ui-constructor-time-calendar>
       </div>
     </epgu-cf-ui-constructor-screen-pad>
   </div>
@@ -70,7 +46,7 @@
       <span *ngIf="isChosenTimeStrVisible" class="time">
         Вы забронировали:
         <span class="time--bold">
-          {{chosenTimeStr}}
+          {{ chosenTimeStr }}
         </span>
       </span>
       <lib-button

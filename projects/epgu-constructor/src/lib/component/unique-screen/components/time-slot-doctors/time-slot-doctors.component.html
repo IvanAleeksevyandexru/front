@@ -1,0 +1,81 @@
+<div class="mb-16">
+  <epgu-cf-ui-constructor-screen-pad>
+
+    <epgu-constructor-label class="mb-24" [label]="label" for="label"></epgu-constructor-label>
+
+    <div *ngIf="specLookupAttrs">
+      <epgu-constructor-label [label]="specLookupAttrs.label" for="spec"></epgu-constructor-label>
+
+      <epgu-cf-ui-constructor-constructor-lookup
+        #specLookup
+        [showExpandCollapse]="true"
+        [itemsProvider]="specProvider"
+        [control]="specLookupControl"
+        [validationShowOn]="validationShowOn"
+        [virtualScroll]="true"
+        [queryMinSymbolsCount]="0"
+        (changed)="specLookupWasChanged.emit($event)"
+      >
+      </epgu-cf-ui-constructor-constructor-lookup>
+    </div>
+
+
+    <div *ngIf="isDocLookupShown" class="mt-24">
+      <epgu-constructor-label [label]="docLookupAttrs.label" for="doctors"></epgu-constructor-label>
+
+      <epgu-cf-ui-constructor-constructor-lookup
+        #docLookup
+        [showExpandCollapse]="true"
+        [itemsProvider]="doctorProvider"
+        [control]="docLookupControl"
+        [validationShowOn]="validationShowOn"
+        [queryMinSymbolsCount]="0"
+        [virtualScroll]="true"
+        (changed)="docLookupWasChanged.emit($event)"
+      >
+      </epgu-cf-ui-constructor-constructor-lookup>
+    </div>
+
+    <lib-throbber-hexagon *ngIf="inLoadingProgress" class="mt-24" size="big"></lib-throbber-hexagon>
+
+    <div *ngIf="isMapShown" class="mt-24">
+
+      <div class="months-range">
+        {{ monthsRange }}
+      </div>
+
+      <epgu-cf-ui-constructor-time-calendar
+        [daysNotFoundTemplate]="daysNotFoundTemplate"
+        [timeNotFoundTemplate]="timeNotFoundTemplate"
+        [weeks]="weeks"
+        [currentSlot]="currentSlot"
+        [isExistsSlots]="isExistsSlots"
+        [slotList]="slotList"
+        (chooseTimeSlot)="chooseTimeSlot.emit($event)"
+        (selectDate)="selectDate.emit($event)"
+      >
+      </epgu-cf-ui-constructor-time-calendar>
+
+    </div>
+
+
+  </epgu-cf-ui-constructor-screen-pad>
+</div>
+<div class="screen-footer">
+  <div class="screen-footer--time-slots">
+      <span *ngIf="isChosenTimeStrVisible" class="time">
+        Вы забронировали:
+        <span class="time--bold">
+          {{ chosenTimeStr }}
+        </span>
+      </span>
+    <lib-button
+      [showLoader]="isLoading || inBookingProgress"
+      (click)="bookSlot.emit()"
+      class="submit-button"
+      [disabled]="!isValid || inLoadingProgress || inBookingProgress || !currentSlot?.slotId"
+    >
+      <div class="secondary-font">{{ labelButton }}</div>
+    </lib-button>
+  </div>
+</div>

@@ -2,6 +2,7 @@ export enum UniqueScreenComponentTypes {
   fileUploadComponent = 'FileUploadComponent',
   OrderFileProcessingComponent = 'OrderFileProcessingComponent',
   timeSlot = 'TimeSlot',
+  timeSlotDoctor = 'TimeSlotDoctor',
   timeSlotWithComputableDepartment = 'TimeSlotWithComputableDepartment',
   mapService = 'MapService',
   carInfo = 'CarInfo',

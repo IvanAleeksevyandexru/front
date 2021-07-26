@@ -9,7 +9,7 @@
     <ng-content></ng-content>
   </div>
 
-  <div class="screen-footer">
+  <div class="screen-footer" *ngIf="screenButtons">
     <epgu-constructor-screen-buttons
       class="screen-buttons"
       [screenButtons]="screenButtons"

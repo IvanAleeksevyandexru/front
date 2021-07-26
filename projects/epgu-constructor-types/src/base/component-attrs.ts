@@ -139,6 +139,11 @@ export interface ComponentAttrsDto {
   value?: string;
   visited?: boolean;
   years?: number;
+  searchProvider?: {
+    dictionaryOptions: DictionaryOptions;
+    dictionaryFilter: ComponentDictionaryFilterDto[];
+    turnOffStartFilter?: boolean;
+  };
 }
 
 export interface Hints {

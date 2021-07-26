@@ -1,59 +1,77 @@
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
+import { ListElement, ListItem } from '@epgu/epgu-lib';
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { ListItem } from '@epgu/epgu-lib';
-import { Observable, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
+  ComponentAttrsDto,
+  ComponentDictionaryFilterDto,
+  ConfirmationModal,
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionaryValueTypes,
+  DisplayDto,
+} from '@epgu/epgu-constructor-types';
+import { FormControl } from '@angular/forms';
 import {
-  ModalService,
-  UnsubscribeService,
-  HttpCancelService,
-  DatesToolsService,
   DATE_STRING_YEAR_MONTH,
   DATE_TIME_STRING_FULL,
-  months,
-  StartOfTypes,
-  weekDaysAbbr,
+  DatesToolsService,
+  HttpCancelService,
   IDay,
+  ModalService,
   SlotInterface,
+  StartOfTypes,
+  UnsubscribeService,
+  weekDaysAbbr,
+  months,
+  ErrorTemplate,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
-import { ActionService } from '../../../../shared/directives/action/action.service';
-import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
-import { TimeSlotsService } from './time-slots.service';
-import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import {
+  BookingRequestAttrs,
+  TimeSlotDoctorsAttrs,
+  TimeSlotDoctorsComponent,
+} from '../time-slot-doctors.interface';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
+import { CustomComponent } from '../../../../custom-screen/components-list.types';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
+import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
+import { DateTypeTypes, TimeSlotsConstants } from '../../time-slots/time-slots.constants';
+import {
+  TimeSlot,
+  TimeSlotsAnswerInterface,
+  TimeSlotValueInterface,
+} from '../../time-slots/time-slots.types';
+import { ActionService } from '../../../../../shared/directives/action/action.service';
+import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
+import { TimeSlotDoctorService } from '../time-slot-doctor.service';
 
 @Component({
-  selector: 'epgu-constructor-time-slots',
-  templateUrl: './time-slots.component.html',
-  styleUrls: ['./time-slots.component.scss'],
-  providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'epgu-constructor-time-slot-doctors-container',
+  templateUrl: './time-slot-doctors-container.component.html',
 })
-export class TimeSlotsComponent implements OnInit, OnDestroy {
+export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
 
+  slotsLoadingStatus$$ = new BehaviorSubject<boolean>(false);
+
   public date: Date = null;
-  public label: string;
+
   public activeMonthNumber: number;
   public activeYearNumber: number;
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
 
-  daysNotFoundTemplate = {
-    header: 'В этом месяце всё занято',
-    description: 'Выберите другой месяц или подразделение, чтобы забронировать время',
+  readonly daysNotFoundTemplate: ErrorTemplate = {
+    header: 'Нет свободного времени для приёма',
+    description: 'Всё занято на ближайшие 14 дней. Выберите другого врача',
+  };
+
+  readonly timeNotFoundTemplate: ErrorTemplate = {
+    header: 'В этот день всё занято',
+    description: 'Выберите другой, чтобы забронировать время',
   };
 
   confirmModalParameters: ConfirmationModal = {
@@ -76,32 +94,47 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  public weeks: Array<Array<IDay>> = [];
-  public areas: ListItem[] = [];
-  public isAreasVisible = false;
-  public monthsYears: ListItem[] = [];
-  public timeSlots: SlotInterface[] = [];
-  public dialogButtons = [];
-  public isExistsSlots = true;
-  public currentSlot: SlotInterface;
-  public currentMonth: ListItem;
-  public currentArea: ListItem;
-  public blockMobileKeyboard = false;
-  public fixedMonth = false;
-  public inProgress = false;
-  public changeTSConfirm = false;
+  weeks: Array<Array<IDay>> = [];
+  monthsYears: ListItem[] = [];
+  timeSlots: SlotInterface[] = [];
+  dialogButtons = [];
+  isExistsSlots = true;
+  currentSlot: SlotInterface;
+  currentMonth: ListItem;
+  blockMobileKeyboard = false;
+  fixedMonth = false;
+  inLoadingProgress = false;
+  inBookingProgress = false;
+  changeTSConfirm = false;
   bookedSlot: SlotInterface;
   errorMessage;
-  public isMonthsRangeVisible = false;
-  public get monthsRange(): string {
+
+  get monthsRange(): string {
     return Array.from(this._monthsRange).join(' — ');
   }
+  specProvider;
+  doctorProvider;
+
+  specLookupControl = new FormControl();
+  docLookupControl = new FormControl();
+
+  component: TimeSlotDoctorsComponent;
+  timeSlotDoctors$: Observable<TimeSlotDoctorsComponent> = this.screenService.component$.pipe(
+    map((component: TimeSlotDoctorsComponent) => {
+      return { ...component, parsedValue: JSON.parse(component.value) };
+    }),
+    tap((component: TimeSlotDoctorsComponent) => {
+      this.timeSlotDoctorService.isByMedRef = !component.attrs.ts.department;
+
+      this.component = component;
+      this.setProviders(component);
+    }),
+    filter((component: TimeSlotDoctorsComponent) => !!component.value),
+  );
 
   private errorModalResultSub = new Subscription();
   private cachedAnswer: TimeSlotsAnswerInterface;
-  private timeSlotType: TimeSlotsTypes;
   private nextStepAction = NEXT_STEP_ACTION;
-  private emptySlotsModal: ConfirmationModal = null;
   private firstDayOfMainSection: Date;
   private daysInMainSection: number;
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
@@ -109,33 +142,30 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private today: Date;
 
   constructor(
+    public screenService: ScreenService,
+    public currentAnswersService: CurrentAnswersService,
+    public timeSlotDoctorService: TimeSlotDoctorService,
+    private dictionaryToolsService: DictionaryToolsService,
     private modalService: ModalService,
-    private currentAnswersService: CurrentAnswersService,
     public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
     private changeDetectionRef: ChangeDetectorRef,
     private datesHelperService: DatesToolsService,
     private httpCancelService: HttpCancelService,
-    private timeSlotsService: TimeSlotsService,
     private actionService: ActionService,
   ) {}
 
   ngOnInit(): void {
-    this.initModalsSettings();
     const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
     }
-
-    this.initSettings();
 
     if (this.screenService.component) {
       this.setCancelReservation(
         this.screenService.component.id,
         this.screenService.component.attrs?.cancelReservation,
       );
-      this.loadTimeSlots();
     }
   }
 
@@ -143,12 +173,33 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.httpCancelService.cancelPendingRequests();
   }
 
+  handleSpecLookupValue(specLookup: ListElement): void {
+    const prevState = this.timeSlotDoctorService.state$$.getValue();
+    setTimeout(() => {
+      this.docLookupControl.setValue('');
+      this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup: null, docLookup: null });
+      setTimeout(() => {
+        this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup, docLookup: null });
+      });
+    });
+  }
+
+  handleDocLookupValue(docLookup: ListElement): void {
+    const prevState = this.timeSlotDoctorService.state$$.getValue();
+    const bookingRequestAttrs: Partial<BookingRequestAttrs> = {};
+    docLookup.originalItem.attributes.forEach((attribute) => {
+      bookingRequestAttrs[attribute.name] = attribute.value;
+    });
+    this.timeSlotDoctorService.state$$.next({ ...prevState, docLookup, bookingRequestAttrs });
+    this.loadTimeSlots();
+  }
+
   /**
    * Проверяет есть ли в текущем месяце пустые слоты
    * Если да, to this.isExistsSlots = true
    * Функция вызывается при каждой регенерации календаря
    */
-  public checkExistenceSlots(): void {
+  checkExistenceSlots(): void {
     this.isExistsSlots = this.weeks.some((week) => {
       return week.some((day) => {
         return !this.isDateLocked(day.date, this.firstDayOfMainSection, this.daysInMainSection);
@@ -156,7 +207,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public isToday(date: Date): boolean {
+  isToday(date: Date): boolean {
     return (
       date.getUTCFullYear() === this.today.getUTCFullYear() &&
       date.getUTCMonth() === this.today.getUTCMonth() &&
@@ -164,18 +215,18 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     );
   }
 
-  public isSelected(date: Date): boolean {
+  isSelected(date: Date): boolean {
     return this.datesHelperService.isSameDate(date, this.date);
   }
 
-  public isDateOutOfMonth(date: Date): boolean {
+  isDateOutOfMonth(date: Date): boolean {
     return date && this.datesHelperService.getMonth(date) !== this.activeMonthNumber;
   }
 
-  public isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
+  isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
     return (
       this.isDateOutOfSection(date, firstDayOfMainSection, daysInMainSection) ||
-      this.timeSlotsService.isDateLocked(date, this.currentArea?.id) ||
+      this.timeSlotDoctorService.isDateLocked(date) ||
       this.checkDateRestrictions(date)
     );
   }
@@ -184,7 +235,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Клик по дню на календаре. Повторный клик по уже выбранному дню отменяет выбор
    * @param date день для выбора
    */
-  public selectDate(date: Date): void {
+  selectDate(date: Date): void {
     if (this.isDateLocked(date, this.firstDayOfMainSection, this.daysInMainSection)) {
       return;
     }
@@ -201,7 +252,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Клик по слоту на календаре. Повторный клик по уже выбранному слоту отменяет выбор
    * @param slot слот для выбора
    */
-  public chooseTimeSlot(slot: SlotInterface): void {
+  chooseTimeSlot(slot: SlotInterface): void {
     if (this.currentSlot?.slotId === slot.slotId) {
       this.clearDateSelection();
     } else {
@@ -210,38 +261,36 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public isSlotSelected({ slotId }: SlotInterface): boolean {
+  isSlotSelected({ slotId }: SlotInterface): boolean {
     return this.currentSlot && this.currentSlot.slotId === slotId;
   }
 
-  public showTimeSlots(date: Date): void {
+  showTimeSlots(date: Date): void {
     this.currentSlot = null;
-    this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
+    this.timeSlotDoctorService.getAvailableSlots(date).subscribe(
       (timeSlots) => {
         this.timeSlots = timeSlots;
-        if (this.timeSlotsService.hasError()) {
+        if (this.timeSlotDoctorService.hasError()) {
           this.showError(
-            `${this.constants.errorLoadingTimeSlots} (${this.timeSlotsService.getErrorMessage()})`,
+            `${
+              this.constants.errorLoadingTimeSlots
+            } (${this.timeSlotDoctorService.getErrorMessage()})`,
           );
         }
         this.changeDetectionRef.markForCheck();
       },
       () => {
         this.showError(
-          `${this.constants.errorLoadingTimeSlots}  (${this.timeSlotsService.getErrorMessage()})`,
+          `${
+            this.constants.errorLoadingTimeSlots
+          }  (${this.timeSlotDoctorService.getErrorMessage()})`,
         );
         this.changeDetectionRef.markForCheck();
       },
     );
   }
 
-  public areaChanged(): void {
-    this.clearDateSelection();
-    this.checkExistenceSlots();
-    this.recalcDaysStyles();
-  }
-
-  public async monthChanged(ev: ListItem): Promise<void> {
+  async monthChanged(ev: ListItem): Promise<void> {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
@@ -259,7 +308,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    *
    *  Иначе, букаем слот
    */
-  public clickSubmit(): void {
+  clickSubmit(): void {
     if (this.bookedSlot) {
       if (this.isCachedValueChanged()) {
         this.showModal(this.confirmModalParameters);
@@ -272,20 +321,24 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public bookTimeSlot(): void {
-    this.inProgress = true;
-    this.timeSlotsService.checkBooking(this.currentSlot).subscribe(
+  bookTimeSlot(): void {
+    this.inBookingProgress = true;
+    this.timeSlotDoctorService.checkBooking(this.currentSlot).subscribe(
       (response) => {
-        this.inProgress = false;
-        if (this.timeSlotsService.hasError()) {
+        this.inBookingProgress = false;
+        if (this.timeSlotDoctorService.hasError()) {
           this.showError(
-            `${this.constants.errorFailBookTimeSlot}  (${this.timeSlotsService.getErrorMessage()})`,
+            `${
+              this.constants.errorFailBookTimeSlot
+            }  (${this.timeSlotDoctorService.getErrorMessage()})`,
           );
           return;
         }
         const answer = {
           ...response,
-          department: this.timeSlotsService.department,
+          department: this.timeSlotDoctorService.department,
+          docLookup: this.timeSlotDoctorService.state$$.getValue().docLookup,
+          specLookup: this.timeSlotDoctorService.state$$.getValue().specLookup,
         };
         this.setBookedTimeStr(this.currentSlot);
         this.currentAnswersService.state = answer;
@@ -293,7 +346,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.changeDetectionRef.markForCheck();
       },
       () => {
-        this.inProgress = false;
+        this.inBookingProgress = false;
         this.showModal(COMMON_ERROR_MODAL_PARAMS);
         this.changeDetectionRef.markForCheck();
       },
@@ -330,35 +383,94 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     });
   }
 
-  buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || !this.currentSlot?.slotId;
+  private setProviders(component: TimeSlotDoctorsComponent): void {
+    this.specProvider = {
+      search: this.providerSearch(component, component.attrs.specLookup, () => []),
+    };
+    if (this.timeSlotDoctorService.isByMedRef) {
+      this.doctorProvider = {
+        search: this.providerSearch(component, component.attrs.docLookup, () => []),
+      };
+    } else {
+      this.doctorProvider = {
+        search: this.providerSearch(component, component.attrs.docLookup, () => [
+          {
+            attributeName: 'Service_Id',
+            condition: DictionaryConditions.EQUALS,
+            value: JSON.stringify(this.timeSlotDoctorService.state$$.getValue().specLookup.id),
+            valueType: DictionaryValueTypes.value,
+          },
+        ]),
+      };
+    }
   }
 
-  isBookSlotSelected(): string {
-    return this.currentSlot?.slotId;
-  }
+  private providerSearch(
+    component: TimeSlotDoctorsComponent,
+    attrs: ComponentAttrsDto,
+    getInitialDictionaryFilterFunc: () => ComponentDictionaryFilterDto[],
+  ): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
+      let additionalParams = {};
+      const filters = [...attrs.searchProvider.dictionaryFilter];
+      const startFilter = attrs.searchProvider?.turnOffStartFilter;
 
-  calendarAvailable(): boolean {
-    return !this.errorMessage;
+      if (!startFilter) {
+        filters[0].value = searchString;
+      } else {
+        additionalParams = this.dictionaryToolsService.getAdditionalParams(
+          this.screenService.getStore(),
+          [...attrs.searchProvider.dictionaryOptions.additionalParams],
+        );
+      }
+
+      const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
+        component.parsedValue,
+        this.screenService.getStore(),
+        [...getInitialDictionaryFilterFunc(), ...filters],
+      );
+
+      return this.dictionaryToolsService
+        .getDictionaries$(
+          attrs.dictionaryType as string,
+          { ...component, attrs } as CustomComponent,
+          {
+            ...attrs.searchProvider.dictionaryOptions,
+            ...dictionaryOptions,
+            ...{ additionalParams },
+          } as DictionaryOptions,
+        )
+        .pipe(
+          map((reference) => {
+            return this.dictionaryToolsService.adaptDictionaryToListItem(
+              reference.data.items,
+              reference.component.attrs.mappingParams,
+              startFilter !== undefined && startFilter === true,
+            );
+          }),
+        );
+    };
   }
 
   private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
-    this.timeSlotsService.cancelReservation = [currentTimeSlotId, ...(cancelReservation || [])];
+    this.timeSlotDoctorService.cancelReservation = [
+      currentTimeSlotId,
+      ...(cancelReservation || []),
+    ];
   }
 
   private loadTimeSlots(): void {
-    this.inProgress = true;
-    this.label = this.screenService.component?.label;
+    this.slotsLoadingStatus$$.next(false);
+    this.inLoadingProgress = true;
+    this.clearDateSelection();
     const value = JSON.parse(this.screenService.component?.value);
 
     this.initServiceVariables(value);
-    this.timeSlotType = value.timeSlotType;
-
-    this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
+    this.timeSlotDoctorService.init(value, this.cachedAnswer).subscribe(
       async (isBookedDepartment) => {
-        if (this.timeSlotsService.hasError()) {
-          this.inProgress = false;
-          this.errorMessage = this.timeSlotsService.getErrorMessage();
+        if (this.timeSlotDoctorService.hasError()) {
+          this.inLoadingProgress = false;
+          this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
@@ -367,19 +479,15 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           await this.serviceInitHandle(!!isBookedDepartment);
         }
 
-        this.inProgress = false;
+        this.inLoadingProgress = false;
 
         this.checkExistenceSlots();
-
-        if (!this.isExistsSlots && this.emptySlotsModal && !this.timeSlotsService.hasError()) {
-          this.showModal(this.emptySlotsModal);
-        }
 
         this.changeDetectionRef.detectChanges();
       },
       (error) => {
-        this.errorMessage = this.timeSlotsService.getErrorMessage();
-        this.inProgress = false;
+        this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
+        this.inLoadingProgress = false;
         this.showError(
           `${this.constants.errorInitialiseService} (${this.errorMessage}) (${error})`,
         );
@@ -446,11 +554,12 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/typedef
   private async renderSingleMonthGrid(output): Promise<void> {
     output.splice(0, output.length); // in-place clear
-    const daysToShow = this.screenService.component?.attrs.daysToShow;
+    const attrs = this.screenService.component?.attrs as TimeSlotDoctorsAttrs;
+    const daysToShow = attrs?.ts.daysToShow;
 
     this.today = await this.datesHelperService.getToday(true);
 
-    if (this.screenService.component?.attrs.startSection === 'today') {
+    if (attrs?.ts.startSection === 'today') {
       this.firstDayOfMainSection = this.today;
     } else {
       this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
@@ -516,7 +625,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private checkDateRestrictions(date: Date, startType: StartOfTypes = 'day'): boolean {
     const refDate = this.datesHelperService.startOf(this.getRefDate(), startType);
 
-    const restrictions = this.screenService.component?.attrs?.restrictions || {};
+    const restrictions =
+      (this.screenService.component?.attrs as TimeSlotDoctorsAttrs)?.ts?.restrictions || {};
     // Объект с функциями проверки дат на заданные ограничения
     const checks = {
       minDate: (amount, type): boolean => {
@@ -549,7 +659,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    */
   private fillMonthsYears(): void {
     this.monthsYears = [];
-    const availableMonths = this.timeSlotsService.getAvailableMonths();
+    const availableMonths = this.timeSlotDoctorService.getAvailableMonths();
     if (availableMonths.length) {
       availableMonths.sort((date1: string, date2: string): number => {
         return new Date(date1) > new Date(date2) ? 1 : -1;
@@ -590,11 +700,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   /**
    * Устанавливает забуканный слот при его наличие, иначе пытается его проставить из кэша ответов
-   * @param timeSlot таймслот из кэша
    */
   private setBookedSlot(timeSlot: TimeSlot, waitingTimeExpired: boolean): void {
-    this.timeSlotsService.waitingTimeExpired = waitingTimeExpired;
-    let bookedSlot = this.timeSlotsService.getBookedSlot();
+    this.timeSlotDoctorService.waitingTimeExpired = waitingTimeExpired;
+    let bookedSlot = this.timeSlotDoctorService.getBookedSlot();
     if (!bookedSlot && timeSlot) {
       bookedSlot = {
         slotId: timeSlot.slotId,
@@ -602,8 +711,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         timezone: timeSlot.visitTimeISO.substr(-6),
         areaId: timeSlot.areaId,
       };
-      this.timeSlotsService.setBookedSlot(bookedSlot);
-      this.timeSlotsService.bookId = this.cachedAnswer.bookId;
+      this.timeSlotDoctorService.setBookedSlot(bookedSlot);
+      this.timeSlotDoctorService.bookId = this.cachedAnswer.bookId;
     }
 
     this.bookedSlot = waitingTimeExpired ? null : bookedSlot;
@@ -648,9 +757,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private async serviceInitHandle(isBookedDepartment: boolean): Promise<void> {
     this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
-    this.activeMonthNumber = this.timeSlotsService.getCurrentMonth();
-    this.activeYearNumber = this.timeSlotsService.getCurrentYear();
-    this.initSlotsAreas();
+    this.activeMonthNumber = this.timeSlotDoctorService.getCurrentMonth();
+    this.activeYearNumber = this.timeSlotDoctorService.getCurrentYear();
 
     this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
@@ -662,18 +770,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       this.selectDate(this.bookedSlot.slotTime);
       this.chooseTimeSlot(this.bookedSlot);
     }
-  }
 
-  private initSlotsAreas(): void {
-    if ([TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(this.timeSlotType)) {
-      this.areas = this.timeSlotsService.getAreasListItems();
-      [this.currentArea] = this.areas;
-      this.isAreasVisible = this.areas.length > 0;
-    }
-  }
-
-  private initModalsSettings(): void {
-    this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
+    this.slotsLoadingStatus$$.next(true);
   }
 
   private isDateOutOfSection(
@@ -683,9 +781,5 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   ): boolean {
     const diff = this.datesHelperService.differenceInCalendarDays(firstDayOfMainSection, date);
     return diff < 0 || diff >= daysInMainSection;
-  }
-
-  private initSettings(): void {
-    this.isMonthsRangeVisible = this.screenService.component.attrs?.isMonthsRangeVisible;
   }
 }
