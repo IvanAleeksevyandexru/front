@@ -329,7 +329,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.screenService.isLoaderVisible.next(false);
     this.initSelectedValue();
     this.cdr.detectChanges();
-    this.libLookup.lookupComponent.setSearchBarFocus();
+    this.libLookup?.lookupComponent.setSearchBarFocus();
   }
 
   private setMapOpstions(): void {

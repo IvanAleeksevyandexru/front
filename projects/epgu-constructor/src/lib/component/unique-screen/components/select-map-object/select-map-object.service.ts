@@ -14,6 +14,7 @@ import {
   ComponentBaloonContentDto,
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -102,7 +103,7 @@ export class SelectMapObjectService implements OnDestroy {
   public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection<DictionaryItem> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item) => {
-      if (item.center) {
+      if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
           id: item.idForMap,
@@ -141,11 +142,12 @@ export class SelectMapObjectService implements OnDestroy {
    * @param coords
    * @param object
    */
-  public centeredPlaceMark(coords: number[], object: YMapItem<DictionaryItem>): void {
+  public centeredPlaceMark(coords: number[], mapItem: YMapItem<DictionaryItem>): void {
+    this.closeBalloon();
     let serviceContext = this;
     let offset = -0.00008;
 
-    this.activePlacemarkId = object.idForMap;
+    this.activePlacemarkId = mapItem.idForMap;
 
     if (coords && coords[0] && coords[1]) {
       let center = this.yaMapService.map.getCenter();
@@ -157,27 +159,25 @@ export class SelectMapObjectService implements OnDestroy {
         equal = false;
       }
 
-      if (!equal || (equal && serviceContext.mapOpenedBalloonId !== object.idForMap)) {
+      if (!equal || (equal && serviceContext.mapOpenedBalloonId !== mapItem.idForMap)) {
         this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
           serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
           // Таймаут нужен что бы балун всегда нормально открывался
           // по непонятным причинам без таймаута балун иногда не открывается
           setTimeout(() => {
             serviceContext.objectManager &&
-              serviceContext.objectManager.objects.setObjectOptions(object.idForMap, {
+              serviceContext.objectManager.objects.setObjectOptions(mapItem.idForMap, {
                 iconImageHref: serviceContext.icons.red.iconImageHref,
               });
-            serviceContext.objectManager.objects.balloon.open(object.idForMap);
+            serviceContext.objectManager.objects.balloon.open(mapItem.idForMap);
             serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
             serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
-            serviceContext.mapOpenedBalloonId = object.idForMap;
-            serviceContext.selectedValue.next(
-              object,
-            );
           }, 200);
         });
       }
     }
+    serviceContext.mapOpenedBalloonId = mapItem.idForMap;
+    serviceContext.selectedValue.next(mapItem);
   }
 
   /**
@@ -231,7 +231,11 @@ export class SelectMapObjectService implements OnDestroy {
 
   public closeBalloon(): void {
     this.selectedValue.next(null);
-    this.mapEvents.fire('userclose');
+    this.mapEvents?.fire('userclose');
+  }
+
+  private getHashKey(center: [number, number]): string {
+    return (center[0] && center[1]) ? `${center[0]}$${center[1]}` : uuidv4();
   }
 
   /**
@@ -246,7 +250,7 @@ export class SelectMapObjectService implements OnDestroy {
         return;
       }
 
-      const hashKey = `${item.center[0]}$${item.center[1]}`;
+      const hashKey = this.getHashKey(item.center);
       // agreement - чекбокс согласия с условиями услуг для загсов
       const attrValues = item.attributeValues;
       item.agreement = attrValues.GET_CONSENT !== 'true';
