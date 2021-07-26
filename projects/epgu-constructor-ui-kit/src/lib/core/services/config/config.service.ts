@@ -47,6 +47,7 @@ export class ConfigService implements Config {
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
   private _appPathMap: AppPathMap;
+  private _identificationApiUrl: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -216,6 +217,10 @@ export class ConfigService implements Config {
     return this._appPathMap;
   }
 
+  get identificationApiUrl(): string {
+    return this._identificationApiUrl;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
@@ -243,6 +248,7 @@ export class ConfigService implements Config {
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
     this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
+    this._identificationApiUrl = config.identificationApiUrl ?? `${this.loadService.config.identificationApiUrl}`;
   }
 
   set config(config: Config) {
