@@ -8,6 +8,7 @@ import { ComponentsListModule } from '../../component/custom-screen/components-l
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 
 @NgModule({
   declarations: [RepeatableScreenComponent],
@@ -20,6 +21,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     CloneButtonModule,
     ScreenButtonsModule,
     ScrollToModule.forRoot(),
+    UserInfoLoaderModule,
   ],
   exports: [RepeatableScreenComponent],
   entryComponents: [RepeatableScreenComponent]
