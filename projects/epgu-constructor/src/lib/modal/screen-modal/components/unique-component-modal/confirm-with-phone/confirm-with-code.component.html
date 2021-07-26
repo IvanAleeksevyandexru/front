@@ -1,19 +1,24 @@
 <h3 class="screen-modal__confirm-title">Введите код подтверждения</h3>
 
-<div class="confirm-phone">
-  <span class="confirm-phone__helper-text">Код придет в СМС на номер</span>
-
-  <ng-container  *ngIf="(screenService.applicantAnswers$ | async)?.pd1?.value as phoneNumber">
-    <span class="confirm-phone__number">{{phoneNumber}}</span>
-    <button class="confirm-phone__link-btn" (click)="editNumber()">Редактировать</button>
+<div class="confirm-with-code">
+  <ng-container *ngIf="componentType !== uniqueComponentName.confirmEmailCodeInput">
+    <div class="confirm-with-code__helper-text">Код придет в СМС на номер</div>
+    <ng-container  *ngIf="(screenService.applicantAnswers$ | async)?.pd1?.value as phoneNumber">
+      <div class="confirm-with-code__number">{{ phoneNumber }}</div>
+      <button class="confirm-with-code__link-btn" (click)="editNumber()">Редактировать</button>
+    </ng-container>
+    <!-- TO DO: получать phoneNumber из одного источника -->
+    <ng-container  *ngIf="(screenService.component$ | async).attrs?.phoneNumber as phoneNumber">
+      <div class="confirm-with-code__number">{{ phoneNumber | formatPhone }}</div>
+    </ng-container>
   </ng-container>
 
-  <!-- TODO: получать phoneNumber из одного источника -->
-  <ng-container  *ngIf="(screenService.component$ | async).attrs?.phoneNumber as phoneNumber">
-    <span class="confirm-phone__number">{{phoneNumber | formatPhone }}</span>
+  <ng-container *ngIf="componentType === uniqueComponentName.confirmEmailCodeInput">
+    <div class="confirm-with-code__helper-text">Код придет в письме на почту</div>
+    <div class="confirm-with-code__number">{{ (screenService.component$ | async).attrs?.email }}</div>
   </ng-container>
 
-  <div class="confirm-phone__warning" *ngIf="(screenService.component$ | async)?.attrs?.validateMessage">
+  <div class="confirm-with-code__warning" *ngIf="(screenService.component$ | async)?.attrs?.validateMessage">
     <div>
       <b><svg width="24" height="4" viewBox="0 0 24 4"
               xmlns="http://www.w3.org/2000/svg"
@@ -49,10 +54,10 @@
           [epgu-constructor-counter]="count"
           [interval]="countInterval"
         >
-          {{timer | formatTime}}
+          {{ timer | formatTime }}
         </b>
       </p>
-      <button class="confirm-phone__link-btn" *ngIf="!isTimerShow" (click)="sendCodeAgain()">Получить код повторно</button>
+      <button class="confirm-with-code__link-btn" *ngIf="!isTimerShow" (click)="sendCodeAgain()">Получить код повторно</button>
     </div>
   </div>
 </div>

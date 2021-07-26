@@ -57,6 +57,7 @@ export interface ComponentAttrsDto {
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
+  email?: string;
   endDate?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
