@@ -68,7 +68,7 @@
     .screen-body.screen-body,
     .screen-body.screen-body:not(.quiz__header) {
       @include tablets-up {
-        margin-bottom: 16px;
+        margin-bottom: 20px;
       }
 
       @include tablets-down {
