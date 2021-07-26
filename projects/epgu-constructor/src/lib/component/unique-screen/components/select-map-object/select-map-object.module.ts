@@ -61,6 +61,14 @@ import { BalloonContentResolverComponent } from './components/balloon-content-re
     DisclaimerModule,
     ConstructorDadataWidgetModule,
   ],
-  entryComponents: [SelectMapObjectComponent],
+  entryComponents: [
+    SelectMapObjectComponent,
+    SearchPanelResolverComponent,
+    CommonSearchPanelComponent,
+    ElectionsSearchPanelComponent,
+    BalloonContentResolverComponent,
+    CommonBalloonContentComponent,
+    ElectionsBalloonContentComponent,
+  ],
 })
 export class SelectMapObjectModule {}
