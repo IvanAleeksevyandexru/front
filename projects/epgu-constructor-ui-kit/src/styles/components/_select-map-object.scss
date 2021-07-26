@@ -30,7 +30,7 @@ hr {
 }
 
 .nav::ng-deep {
-  margin-bottom: 0;
+  margin-bottom: 8px;
 
   & .container {
     padding-left: 0;
@@ -56,7 +56,7 @@ hr {
 
     .error-region {
       display: grid;
-      padding-top: 24px;
+      padding-top: 16px;
     }
   }
   ::ng-deep #map {
@@ -215,15 +215,12 @@ hr {
 
 @include desktops-down {
   .widget__form {
-    position: static;
     width: auto;
-    padding: 0 0 12px 0;
   }
 
   .widget-form__title {
     display: block;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 0 12px;
   }
 
   .widget-form__input {
@@ -256,7 +253,7 @@ hr {
       margin: 0;
     }
 
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   ::ng-deep {
