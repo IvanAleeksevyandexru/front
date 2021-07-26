@@ -75,7 +75,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.stat.resetLimits()), // Обнуляем каунтеры перебора
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
-    tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
+    tap(() => this.store.removeWithErrorStatus([ErrorActions.serverError])), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map(
@@ -201,13 +201,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
     const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
+    const blockActions = [ErrorActions.serverError];
     const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
 
     if ((availableErrorCondition || !value?.error) && value.item) {
       acc.value.push(value.item);
-      if (value.error) {
-        acc.errors.push(value.error.text);
-      }
+    }
+    if (blockActions.includes(value?.error?.type)) {
+      acc.errors.push(value.error.text);
     }
     return acc;
   }
@@ -274,6 +275,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       map(
         (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
       ),
+      map((file: FileItem) => this.validation.checkServerError(file)),
       tap((file: FileItem) => this.store.add(file)),
       tap((file: FileItem) => this.validation.checkAndSetMaxCountByTypes(file)),
       tap((file: FileItem) => this.stat.incrementLimits(file)),
