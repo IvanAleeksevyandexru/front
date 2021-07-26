@@ -95,6 +95,7 @@ export class YandexMapService implements OnDestroy {
    * @param feature
    */
   public centeredPlaceMark<T>(feature: IFeatureItem<T> | IClusterItem<T>): void {
+    this.closeBalloon();
     if (feature.type === IFeatureTypes.Cluster && this.isClusterZoomable(feature as IClusterItem<T>)) {
       return;
     }
@@ -223,7 +224,7 @@ export class YandexMapService implements OnDestroy {
       clusterize: true,
       clusterDisableClickZoom: true,
       hasBalloon: false,
-      splitRequests: true,
+      splitRequests: false,
       paddingTemplate: 'uik_%b',
       ...settings,
     };
