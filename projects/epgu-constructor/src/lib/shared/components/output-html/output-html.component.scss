@@ -242,8 +242,7 @@
   }
 }
 
-:host-context(.gray-theme)::ng-deep ul:not(li ul),
-:host-context(.gray-theme)::ng-deep .white-background { //TODO перепутан с .background-white?
+:host-context(.gray-theme)::ng-deep ul:not(li ul :host-context(.background-white)) {
   background-color: $color-white;
   border-radius: 8px;
   @include shadow-main();
