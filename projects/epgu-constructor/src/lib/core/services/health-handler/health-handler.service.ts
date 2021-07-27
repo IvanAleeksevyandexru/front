@@ -19,8 +19,7 @@ import {
   UnspecifiedDTO
 } from './health-handler';
 
-import { HealthService } from '../health/health.service';
-import { ConfigService, HealthHandler, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HealthHandler, UtilsService, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';

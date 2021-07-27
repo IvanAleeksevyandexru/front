@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '../../../../../../core/services/health/health.service';
 import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
@@ -9,7 +8,8 @@ import {
   ConstructorDropdownModule, CoreUiModule,
   HttpCancelService,
   LoggerService,
-  LoggerServiceStub
+  LoggerServiceStub,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';

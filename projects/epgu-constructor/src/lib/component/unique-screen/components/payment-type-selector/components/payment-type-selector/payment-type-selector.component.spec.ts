@@ -1,13 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '../../../../../../core/services/health/health.service';
 import { CoreModule } from '../../../../../../core/core.module';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  HealthService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  CoreUiModule,
+  LocationService,
+  WINDOW_PROVIDERS
+} from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ModalModule } from '../../../../../../modal/modal.module';

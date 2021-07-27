@@ -9,13 +9,13 @@ import { EpguLibModule } from '@epgu/epgu-lib';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '../../../../core/services/health/activated-route.stub';
 import {
   ConfigService, ConfigServiceStub,
   DatesToolsService,
   EventBusService,
   LoggerService,
-  UnsubscribeService
+  UnsubscribeService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';

@@ -29,6 +29,7 @@ import { TracingService } from './services/tracing/tracing.service';
 import { GlobalErrorHandler } from './services/global-error/global-error.service';
 import { ErrorsInterceptor } from './interceptor/errors/errors.interceptor';
 import { AddressesToolsService } from './services/addresses-tools/addresses-tools.service';
+import { HealthService } from './services/health/health.service';
 
 @NgModule({
   providers: [
@@ -51,6 +52,7 @@ import { AddressesToolsService } from './services/addresses-tools/addresses-tool
     UtilsService,
     TracingService,
     AddressesToolsService,
+    HealthService,
     WINDOW_PROVIDERS,
     {
       provide: ErrorHandler,

@@ -1,12 +1,15 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import {
   UnsubscribeService,
   LocationService,
   WINDOW_PROVIDERS,
   LoggerService,
-  LoggerServiceStub, ConfigService, ConfigServiceStub, CoreUiModule
+  LoggerServiceStub,
+  ConfigService,
+  ConfigServiceStub,
+  CoreUiModule,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenContainerComponent } from './screen-container.component';

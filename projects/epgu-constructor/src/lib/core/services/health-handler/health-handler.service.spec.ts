@@ -10,7 +10,6 @@ import {
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 
-import { HealthService } from '../health/health.service';
 import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -18,7 +17,7 @@ import { InitDataService } from '../init-data/init-data.service';
 import { InitDataServiceStub } from '../init-data/init-data.service.stub';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, LocationServiceStub, HealthService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   RENDER_FORM_SERVICE_NAME,
@@ -29,7 +28,6 @@ import { ActionRequestPayload, DictionaryFilters, RequestStatus } from '@epgu/ep
 import { HealthHandlerService } from './health-handler.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ActivatedRouteStub } from '../health/activated-route.stub';
 
 @Injectable()
 export class TestHealthInterceptor<T extends DictionaryFilters & UnspecifiedDTO> implements HttpInterceptor {
