@@ -3,7 +3,8 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
-
+import { ActivatedRoute } from '@angular/router';
+import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
 import {
   ScreenPadModule,
   ConfigService,
@@ -93,6 +94,7 @@ describe('RegistrationAddrComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DatesToolsService,
         DateValidator,
         { provide: LoggerService, useClass: LoggerServiceStub },

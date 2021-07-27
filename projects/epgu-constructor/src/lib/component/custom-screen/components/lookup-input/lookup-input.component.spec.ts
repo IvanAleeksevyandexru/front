@@ -8,6 +8,8 @@ import { ComponentItemComponent } from '../component-item/component-item.compone
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { ActivatedRoute } from '@angular/router';
+import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
 import {
   ConfigService, ConfigServiceStub,
   DatesToolsService,
@@ -67,6 +69,7 @@ describe('LookupInputComponent', () => {
       providers: [
         DictionaryToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DatesToolsService,
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
