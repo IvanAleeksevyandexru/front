@@ -114,7 +114,7 @@
   }
 }
 
-:host-context(.gray-theme)::ng-deep ul:not(li ul),
+:host-context(.gray-theme)::ng-deep ul:not(li ul):not(.dashed),
 :host-context(.gray-theme)::ng-deep .white-background { //TODO перепутан с .background-white?
   background-color: $color-white;
   border-radius: 8px;
