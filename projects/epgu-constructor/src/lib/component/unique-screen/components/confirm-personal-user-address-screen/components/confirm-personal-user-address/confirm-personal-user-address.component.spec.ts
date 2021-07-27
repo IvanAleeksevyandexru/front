@@ -25,7 +25,7 @@ import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 const mockData = {

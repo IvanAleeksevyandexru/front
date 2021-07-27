@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import { Subject } from 'rxjs';
 import { CoreModule } from '../../../../core/core.module';
 import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
