@@ -60,5 +60,29 @@ describe('ErrorHandlerService', () => {
         ModalFailureType.SESSION,
       );
     });
+
+    it('/api/lk/v1/equeue/agg/slots', () => {
+      const response = new HttpResponse({
+        status: 200,
+        url: '/api/lk/v1/equeue/agg/slots',
+        body: {
+          error: {
+            errorDetail: {
+              errorCode: 6,
+              errorMessage:
+                'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу',
+            },
+          },
+        },
+      });
+
+      jest.spyOn(service, 'showModalFailure');
+      service.handleResponse(response);
+      expect(service.showModalFailure).toHaveBeenCalledWith(
+        'Время сессии истекло, перейдите к началу',
+        true,
+        ModalFailureType.SESSION,
+      );
+    });
   });
 });
