@@ -30,17 +30,15 @@
       [description]="disclaimer.description"
     ></epgu-constructor-disclaimer>
 
-    <ng-container *ngIf="isEditContactAction">
-      <div class="footer" *ngIf="screenService.action$ | async as action">
-        <div class="divider"></div>
-        <button class="btn-edit" epgu-constructor-action [action]="action" [disabled]="async.isLoading">
-          <img
-            class="btn-edit__icon"
-            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
-          />
-          <span class="btn-edit__text">{{ action.label }}</span>
-        </button>
-      </div>
-    </ng-container>
+    <div class="footer" *ngIf="screenService.action$ | async as action">
+      <div class="divider"></div>
+      <button class="btn-edit" epgu-constructor-action [action]="action" [disabled]="async.isLoading">
+        <img
+          class="btn-edit__icon"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
+        />
+        <span class="btn-edit__text">{{ action.label }}</span>
+      </button>
+    </div>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
