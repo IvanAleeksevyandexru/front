@@ -29,4 +29,8 @@ export class AppNavigationService {
       this.eventBusService.emit('closeApp', true);
     }
   }
+
+  public toDisplay(display: string): void {
+    this.appStateService.updateCurrentComponent(display);
+  }
 }
