@@ -12,26 +12,25 @@ import {
   NEXT_PREV_STEP_SERVICE_NAME,
   PREV_EVENT_TYPE,
   PREV_STEP_SERVICE_NAME,
+  DICTIONARY,
   RegionSource,
   RENDER_FORM_SERVICE_NAME,
   SlotInfo,
   UnspecifiedDTO
 } from './health-handler';
-import { HealthService } from '@epgu/epgu-lib';
-import { ConfigService, HealthHandler, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+
+import { ConfigService, HealthHandler, UtilsService, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { DictionaryFilters, DictionarySubFilter, RequestStatus, ScenarioDto } from '@epgu/epgu-constructor-types';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class HealthHandlerService implements HealthHandler {
   private commonParams: CommonPayload = {} as CommonPayload;
-  private lastUrlPart: string | undefined;
   private regionCode: string | undefined;
   private cachedRegionId: string;
-  private isDictionaryHasError = false;
-  private serviceName: string = undefined;
   private mnemonic: string = undefined;
 
   private slotInfo: SlotInfo = {} as SlotInfo;
@@ -46,23 +45,26 @@ export class HealthHandlerService implements HealthHandler {
     request: HttpRequest<T>,
     next: HttpHandler
   ): Observable<HttpEvent<T>> {
+    let serviceName = '';
+    let lastUrlPart = '';
 
     this.processMnemonic(request);
-    this.resetRequestProperties();
 
     if (this.isValidHttpEntity(request)) {
-      this.handleValidHttpRequestEntity(request);
+      const [service, url] = this.handleValidHttpRequestEntity(request, serviceName);
+      serviceName = service;
+      lastUrlPart = url;
     }
 
     return next.handle(request).pipe(
       tap((response: HttpResponse<T>) => {
         if (this.isValidHttpEntity(response)) {
-          this.handleValidHttpResponseEntity(request, response);
+          this.handleValidHttpResponseEntity(request, response, serviceName, lastUrlPart);
         }
       }),
       catchError((exception: HttpErrorResponse) => {
         if (this.isValidHttpEntity(exception)) {
-          this.handleErrors(exception);
+          this.handleErrors(exception, serviceName);
           return throwError(exception);
         }
       }),
@@ -71,7 +73,6 @@ export class HealthHandlerService implements HealthHandler {
 
   private processMnemonic<T>(request: HttpRequest<T>): void {
     this.mnemonic = undefined;
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const requestBody = request?.body as any;
     if (this.isRequestBodyIsFormDataInstance(requestBody)) {
@@ -81,29 +82,26 @@ export class HealthHandlerService implements HealthHandler {
     }
   }
 
-  private resetRequestProperties(): void {
-    // Allways reset generated service name and dictionary validation status
-    this.serviceName = '';
-    this.isDictionaryHasError = false;
-  }
-
-  private handleValidHttpRequestEntity<T extends DictionaryFilters & UnspecifiedDTO>(request: HttpRequest<T>): void {
+  private handleValidHttpRequestEntity<T extends DictionaryFilters & UnspecifiedDTO>(
+    request: HttpRequest<T>,
+    serviceName: string,
+  ): string[] {
     const splittedUrl = this.utils.getSplittedUrl(request.url).map((el) => el.toLowerCase());
-    this.lastUrlPart = splittedUrl.slice(-1)[0];
+    const lastUrlPart = splittedUrl.slice(-1)[0];
 
-    this.serviceName = this.utils.getServiceName(request.url);
-    this.serviceName =
-      this.serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : this.serviceName;
-    this.serviceName = this.serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : this.serviceName;
+    serviceName = request.url.includes(DICTIONARY) ? `${DICTIONARY}_${uuidv4()}` : this.utils.getServiceName(request.url);
+    serviceName =
+      serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
+    serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
 
     this.regionCode = this.getRegionCode(request?.body?.filter);
-    this.startMeasureHealth(this.serviceName);
+    this.startMeasureHealth(serviceName);
 
     if (this.utils.isDefined(this.regionCode)) {
       this.cachedRegionId = this.regionCode;
     }
 
-    if (this.serviceName === GET_SLOTS_MODIFIED) {
+    if (serviceName === GET_SLOTS_MODIFIED) {
       const requestBody = request?.body || {};
 
       if (
@@ -117,15 +115,18 @@ export class HealthHandlerService implements HealthHandler {
 
       this.slotInfo['region'] = this.cachedRegionId;
     }
+
+    return [serviceName, lastUrlPart];
   }
 
   private handleValidHttpResponseEntity<T extends DictionaryFilters & UnspecifiedDTO>(
     request: HttpRequest<T>,
     response: HttpResponse<T>,
+    serviceName: string,
+    lastUrlPart: string,
   ): void {
     const responseBody = response?.body || ({} as UnspecifiedDTO);
-
-    this.isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
+    const isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
     this.commonParams = {
       ...this.commonParams,
@@ -166,27 +167,27 @@ export class HealthHandlerService implements HealthHandler {
       };
 
       if (
-        this.serviceName === RENDER_FORM_SERVICE_NAME ||
-        this.serviceName === PREV_STEP_SERVICE_NAME
+        serviceName === RENDER_FORM_SERVICE_NAME ||
+        serviceName === PREV_STEP_SERVICE_NAME
       ) {
         this.commonParams = {
           ...this.commonParams,
           typeEvent:
-            this.serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
+            serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
           mnemonicScreen: display?.type,
         };
       }
 
       this.measureBackendDictionaries(health, this.commonParams.orderId);
-      this.measureStaticRequests(this.commonParams, this.serviceName);
+      this.measureStaticRequests(this.commonParams, serviceName);
     }
 
     if (this.isThatDictionary(responseBody)) {
       const { total } = responseBody;
       const dictionaryPayload: DictionaryPayload = {
         empty: total === 0,
-        dict: this.utils.isDefined(this.lastUrlPart)
-          ? this.lastUrlPart.toUpperCase()
+        dict: this.utils.isDefined(lastUrlPart)
+          ? lastUrlPart.toUpperCase()
           : undefined,
         region: this.regionCode,
         regdictname: this.utils.isDefined(this.regionCode)
@@ -198,8 +199,8 @@ export class HealthHandlerService implements HealthHandler {
         responseBody,
         dictionaryPayload,
         this.commonParams,
-        this.isDictionaryHasError,
-        this.serviceName,
+        isDictionaryHasError,
+        serviceName,
       );
     }
 
@@ -211,26 +212,26 @@ export class HealthHandlerService implements HealthHandler {
       payload = { id, name, orderId, mnemonic, date, method };
 
       if (
-        this.serviceName === GET_SLOTS_MODIFIED &&
+        serviceName === GET_SLOTS_MODIFIED &&
         this.utils.isDefined(responseBody['slots']) &&
         Array.isArray(responseBody['slots'])
       ) {
         this.slotInfo['slotsCount'] = responseBody['slots'].length;
       }
 
-      if (this.serviceName === GET_SLOTS_MODIFIED) {
+      if (serviceName === GET_SLOTS_MODIFIED) {
         payload = { ...payload, ...this.slotInfo };
       }
 
       this.endMeasureHealth(
-        this.serviceName,
+        serviceName,
         RequestStatus.Succeed,
         this.utils.filterIncorrectObjectFields(payload),
       );
     }
   }
 
-  private handleErrors(exception: HttpErrorResponse): void {
+  private handleErrors(exception: HttpErrorResponse, serviceName: string): void {
     if (exception.status !== 404) {
       this.commonParams.serverError = exception.status;
 
@@ -245,7 +246,7 @@ export class HealthHandlerService implements HealthHandler {
       }
 
       this.endMeasureHealth(
-        this.serviceName,
+        serviceName,
         RequestStatus.Failed,
         this.utils.filterIncorrectObjectFields({
           id: this.commonParams.id,
@@ -258,7 +259,7 @@ export class HealthHandlerService implements HealthHandler {
       );
     } else {
       this.endMeasureHealth(
-        this.serviceName,
+        serviceName,
         RequestStatus.Succeed,
         this.utils.filterIncorrectObjectFields({
           id: this.commonParams.id,

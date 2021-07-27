@@ -3,7 +3,7 @@ import { MockModule } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EpguLibModule } from '@epgu/epgu-lib';
-
+import { ActivatedRoute } from '@angular/router';
 import { DocInputComponent } from './doc-input.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -15,7 +15,8 @@ import {
   LoggerService,
   ErrorModule,
   InputErrorModule,
-  EventBusService
+  EventBusService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
@@ -38,7 +39,7 @@ const mockComponent = {
   type: 'DocInput',
   attrs: {
     fields: {},
-  }, 
+  },
   value: {
     seriesNumDate: {
       date: null,
@@ -65,6 +66,7 @@ describe('DocInputComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         SuggestHandlerService,
         CurrentAnswersService,
         RefRelationService,
@@ -100,8 +102,8 @@ describe('DocInputComponent', () => {
     component = fixture.componentInstance;
     component.componentIndex = 0;
     mockComponent.attrs.fields = {
-      series: { 
-        attrs: { 
+      series: {
+        attrs: {
           validation: [
             {
               type: 'RegExp',
@@ -156,7 +158,7 @@ describe('DocInputComponent', () => {
     it('should change expiration date if expirationDate field existing', () => {
       expect(component.hasExpirationDate).toBeFalsy();
       mockComponent.attrs.fields['expirationDate'] = { attrs: { validation: [] }};
-      
+
       component.ngOnInit();
 
       expect(component.hasExpirationDate).toBeTruthy();
@@ -262,7 +264,7 @@ describe('DocInputComponent', () => {
         emitter: 'Отделением ОФМС',
       };
       jest.spyOn(formService, 'emitChanges');
- 
+
       component.ngOnInit();
       component.form.patchValue(formValueMock);
       fixture.detectChanges();
@@ -282,7 +284,7 @@ describe('DocInputComponent', () => {
         emitter: 'Отделением ОФМС',
       };
       jest.spyOn(formService, 'emitChanges');
- 
+
       component.ngOnInit();
       component.form.patchValue(formValueMock);
       fixture.detectChanges();
