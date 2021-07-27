@@ -57,6 +57,7 @@ export interface ComponentAttrsDto {
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
+  email?: string;
   endDate?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
@@ -144,6 +145,11 @@ export interface ComponentAttrsDto {
     dictionaryFilter: ComponentDictionaryFilterDto[];
     turnOffStartFilter?: boolean;
   };
+  selectAttributes?: string[];
+  LOMurlTemplate?: string;
+  mapType?: string;
+  electionLevel?: string;
+  electionDate?: string;
 }
 
 export interface Hints {

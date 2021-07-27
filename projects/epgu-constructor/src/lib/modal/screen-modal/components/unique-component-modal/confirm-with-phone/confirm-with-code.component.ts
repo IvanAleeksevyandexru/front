@@ -8,11 +8,12 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
+
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
-
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
+import { UniqueScreenComponentTypes } from '../../../../../component/unique-screen/unique-screen-components.types';
 
 interface CodeFormGroup {
   codeMask: Array<RegExp>;
@@ -21,27 +22,25 @@ interface CodeFormGroup {
 }
 
 @Component({
-  selector: 'epgu-constructor-confirm-phone',
-  templateUrl: './confirm-phone.component.html',
-  styleUrls: ['./confirm-phone.component.scss'],
+  selector: 'epgu-constructor-confirm-with-code',
+  templateUrl: './confirm-with-code.component.html',
+  styleUrls: ['./confirm-with-code.component.scss'],
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmPhoneComponent implements OnInit {
+export class ConfirmWithCodeComponent implements OnInit {
   @ViewChild('codeGroup') codeGroupElement: ElementRef;
-  // <-- variable
+
   enteredCode: number;
   timer: number;
   isTimerShow = true;
-
   codeFormArray = new FormArray([]);
-
-  // <-- constant
+  uniqueComponentName = UniqueScreenComponentTypes;
   correctCodeLength = 4;
   mask = [/\d/, /\d/, /\d/, /\d/];
   count = 89;
   countInterval = 1000;
-
+  componentType: string;
   characterMask: string;
   codeLength: number;
   lastCode: string;
@@ -52,10 +51,11 @@ export class ConfirmPhoneComponent implements OnInit {
     private navModalService: NavigationModalService,
     private fb: FormBuilder,
     private eventBusService: EventBusService,
-    private changeDetectionRef: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
   ) {
     this.characterMask = this.screenService.component.attrs.characterMask;
     this.codeLength = this.screenService.component.attrs.codeLength;
+    this.componentType = this.screenService.component.type;
     this.mask = new Array(this.codeLength).fill(new RegExp(this.characterMask));
   }
 
@@ -66,7 +66,7 @@ export class ConfirmPhoneComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: number) => {
         this.timerChange(payload);
-        this.changeDetectionRef.markForCheck();
+        this.cdr.markForCheck();
       });
   }
 
@@ -145,7 +145,7 @@ export class ConfirmPhoneComponent implements OnInit {
           this.enterCode(code);
           this.lastCode = code;
 
-          this.changeDetectionRef.markForCheck();
+          this.cdr.markForCheck();
         });
     }
   }

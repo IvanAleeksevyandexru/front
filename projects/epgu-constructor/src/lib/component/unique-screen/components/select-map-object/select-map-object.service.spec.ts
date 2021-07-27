@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ConfigService, ConfigServiceStub, Icons, YMapItem } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, DeviceDetectorService, DeviceDetectorServiceStub, Icons, UnsubscribeService, YandexMapService, YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import {
   DictionaryItem,
@@ -19,6 +19,9 @@ describe('SelectMapObjectComponent', () => {
       providers: [
         SelectMapObjectService,
         Icons,
+        YandexMapService,
+        UnsubscribeService,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
@@ -29,9 +32,8 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('prepareFeatureCollection should ignore null coords', () => {
-    const result = selectMapObjectService.prepareFeatureCollection(
-      (nullCoordsItems as unknown) as DictionaryYMapItem[],
-    );
+    selectMapObjectService.filteredDictionaryItems = (nullCoordsItems as unknown) as DictionaryYMapItem[];
+    const result = selectMapObjectService.prepareFeatureCollection();
     expect(result.features.length).toEqual(nullCoordsItems.length - 1);
   });
 

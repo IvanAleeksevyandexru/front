@@ -1,6 +1,6 @@
 @import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
 
-.confirm-phone {
+.confirm-with-code {
   &__helper-text {
     display: block;
     margin: 16px auto 4px;
@@ -42,6 +42,7 @@
     justify-content: center;
     margin-top: 24px;
   }
+
   &__item {
     display: block;
     margin: 0 4px;
@@ -84,25 +85,26 @@
       }
     }
   }
+
   &__error {
     margin-top: 8px;
     color: $color-tela-rossa;
     text-align: center;
     @include typ-plain-small;
   }
-}
 
-.form__hint {
-  width: 100%;
-  margin: 24px auto 0;
-}
-
-.form__hint-text {
-  @include typ-plain-small;
-  color: $color-text-helper;
-  text-align: center;
-}
-
-.form__timer {
-  color: $color-black;
+  &__hint {
+    width: 100%;
+    margin: 24px auto 0;
+  }
+  
+  &__hint-text {
+    @include typ-plain-small;
+    color: $color-text-helper;
+    text-align: center;
+  }
+  
+  &__timer {
+    color: $color-black;
+  }
 }
