@@ -83,28 +83,6 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       expect(updateValue).toHaveBeenCalled();
     });
 
-    it('should set isEditContactAction for editPhoneNumber action', () => {
-      jest
-        .spyOn(screenService, 'action', 'get')
-        .mockReturnValue({ action: DTOActionAction.editPhoneNumber } as any);
-      component.ngOnInit();
-      expect(component.isEditContactAction).toEqual(true);
-    });
-
-    it('should set isEditContactAction for editLegalEmail action', () => {
-      jest
-        .spyOn(screenService, 'action', 'get')
-        .mockReturnValue({ action: DTOActionAction.editLegalEmail } as any);
-      component.ngOnInit();
-      expect(component.isEditContactAction).toEqual(true);
-    });
-
-    it('should set isEditContactAction as false', () => {
-      jest.spyOn(screenService, 'action', 'get').mockReturnValue({} as any);
-      component.ngOnInit();
-      expect(component.isEditContactAction).toEqual(false);
-    });
-
     it('should set isPhoneScreenType for confirmPersonalUserPhone', () => {
       jest
         .spyOn(screenService, 'component', 'get')
