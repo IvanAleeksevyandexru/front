@@ -20,6 +20,7 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   @Input() showLoader = false;
   @Input() mapObject;
   public selectObject: Function;
+  public expandObject: Function;
   public extInfo$: Observable<unknown>;
 
   constructor(

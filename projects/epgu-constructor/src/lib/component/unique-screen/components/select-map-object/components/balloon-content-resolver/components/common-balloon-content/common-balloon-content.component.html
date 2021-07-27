@@ -1,4 +1,4 @@
-<h5 class="map-object__header">{{ mapObject.title }}</h5>
+<h5 (click)="expandObject(mapObject)" class="map-object__header">{{ mapObject.title }}</h5>
 <ng-container *ngIf="mapObject.expanded">
   <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
     <span class="map-object__label">{{ itemContent.label }}: </span>
@@ -18,7 +18,7 @@
     *ngIf="!isSelectButtonHidden"
     [showLoader]="showLoader"
     [disabled]="!mapObject.agreement"
-    (click)="selectObject(mapObject)"
+    (click)="selectObject(mapObject, $event)"
     class="submit-button"
     width="wide"
     >Выбрать

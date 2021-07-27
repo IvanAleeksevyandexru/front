@@ -28,6 +28,7 @@ export class CommonBalloonContentComponent implements IBalloonContent {
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
   public selectObject: Function;
+  public expandObject: Function;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
