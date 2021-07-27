@@ -9,7 +9,11 @@
   margin-left: calc( #{-$screen-pad-16} / 2);
   margin-right: calc( #{-$screen-pad-16} / 2);
   &__item {
+    &.show {
+      display: flex;
+    }
     @include flex-container();
+    display: none;
     justify-content: flex-start;
     flex: 1 1 100%;
     margin-left: calc( #{$screen-pad-16} / 2);
@@ -25,6 +29,9 @@
     }
     &--checkbox > * {
       margin-bottom: $screen-pad-16;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
     &[class*="grid"] {
       &:last-child > * {
@@ -32,7 +39,8 @@
       }
     }
     &:last-child {
-      &::ng-deep > .component-list-resolver > * > * {
+      &::ng-deep > .component-list-resolver > * > *,
+      &::ng-deep > .component-list-resolver .component-item {
         margin-bottom: 0;
       }
       ::ng-deep .doc-input {

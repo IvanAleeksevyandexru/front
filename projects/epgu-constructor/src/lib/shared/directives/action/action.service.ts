@@ -12,6 +12,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import {
   LocalStorageService,
+  SessionStorageService,
   ConfigService,
   EventBusService,
   ModalService,
@@ -64,6 +65,7 @@ export class ActionService {
     private utilsService: UtilsService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
+    private sessionStorageService: SessionStorageService,
     private htmlRemover: HtmlRemoverService,
     private currentAnswersService: CurrentAnswersService,
     private autocompleteApiService: AutocompleteApiService,
@@ -112,6 +114,9 @@ export class ActionService {
         break;
       case ActionType.profileEdit:
         this.redirectToEdit(action);
+        break;
+      case ActionType.legalEdit:
+        this.redirectToLegalEdit();
         break;
       case ActionType.home:
         this.navService.redirectToHome();
@@ -332,6 +337,7 @@ export class ActionService {
   }
 
   private orderToOrder(action: ComponentActionDto): void {
+    action = this.prepareActionMultipleAnswers(action);
     this.localStorageService.set(ORDER_TO_ORDER_SCENARIO_KEY, {
       finishedAndCurrentScreens: this.getFinishedAndCurrentScreensFromMultipleAnswers(
         action.multipleAnswers,
@@ -340,6 +346,14 @@ export class ActionService {
     });
     const href = action.action;
     this.navService.redirectTo(href);
+  }
+
+  private prepareActionMultipleAnswers(action: ComponentActionDto): ComponentActionDto {
+    if (typeof action.multipleAnswers === 'string' &&
+      UtilsService.hasJsonStructure(action.multipleAnswers)) {
+      action.multipleAnswers = JSON.parse(action.multipleAnswers);
+    }
+    return action;
   }
 
   private getApplicantAnswersFromMultipleAnswers(
@@ -380,7 +394,9 @@ export class ActionService {
   private redirectToEdit({ action }: ComponentActionDto): void {
     switch (action) {
       case DTOActionAction.editChildData:
-        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family`);
+        const childId: string = this.sessionStorageService.getRaw('childId');
+        this.sessionStorageService.delete('childId');
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family/child/${childId}`);
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       case DTOActionAction.editMedicalData:
@@ -388,6 +404,10 @@ export class ActionService {
       default:
         return this.navService.redirectToProfileEdit();
     }
+  }
+
+  private redirectToLegalEdit(): void {
+    return this.navService.redirectTo(`${this.configService.lkUrl}/info`);
   }
 
   private openDropdownListModal(

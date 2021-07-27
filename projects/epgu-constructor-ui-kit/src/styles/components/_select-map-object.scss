@@ -30,7 +30,7 @@ hr {
 }
 
 .nav::ng-deep {
-  margin-bottom: 0;
+  margin-bottom: 8px;
 
   & .container {
     padding-left: 0;
@@ -56,7 +56,7 @@ hr {
 
     .error-region {
       display: grid;
-      padding-top: 24px;
+      padding-top: 16px;
     }
   }
   ::ng-deep #map {
@@ -79,35 +79,6 @@ hr {
     top: 12px;
     position: sticky;
     left: calc(100% - #{$crossBtnRightPadding});
-  }
-}
-
-.map-object {
-  padding: 24px;
-  border-bottom: 1px solid $color-mercury;
-  @include typ-plain-small;
-
-  &__header {
-    padding-bottom: 8px;
-  }
-
-  &__attr:last-of-type {
-    padding-bottom: 24px;
-  }
-
-  .details-link {
-    padding-bottom: 24px;
-    margin-top: -8px;
-    display: flex;
-  }
-
-  &__label {
-    font-weight: $fw-semi-bold;
-  }
-
-  &:not(.expanded) {
-    cursor: pointer;
-    color: $color-gosblue;
   }
 }
 
@@ -215,15 +186,12 @@ hr {
 
 @include desktops-down {
   .widget__form {
-    position: static;
     width: auto;
-    padding: 0 0 12px 0;
   }
 
   .widget-form__title {
     display: block;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 0 12px;
   }
 
   .widget-form__input {
@@ -256,7 +224,7 @@ hr {
       margin: 0;
     }
 
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   ::ng-deep {

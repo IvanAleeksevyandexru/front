@@ -52,6 +52,10 @@ export * from './lib/base/components/yandex-map/yandex-map.component';
 export * from './lib/base/components/yandex-map/yandex-map.service';
 export * from './lib/base/components/yandex-map/constants';
 
+export * from './lib/base/components/time-calendar/time-calendar.module';
+export * from './lib/base/components/time-calendar/time-calendar.component';
+export * from './lib/base/components/time-calendar/time-calendar.interface';
+
 // Directives
 export * from './lib/base/directives/trim/trim.module';
 export * from './lib/base/directives/trim/trim.directive';
@@ -91,6 +95,8 @@ export * from './lib/core/providers/window.provider';
 export * from './lib/core/services/addresses-tools/addresses-tools.service';
 export * from './lib/core/services/local-storage/local-storage.service';
 export * from './lib/core/services/local-storage/local-storage.service.stub';
+export * from './lib/core/services/session-storage/session-storage.service';
+export * from './lib/core/services/session-storage/session-storage.service.stub';
 
 export * from './lib/core/services/cf-app-state/cf-app-state.service';
 export * from './lib/core/services/cf-app-state/cf-app-state.service.stub';
@@ -160,7 +166,6 @@ export * from './lib/app/app-prev-button-navigation/app-prev-button-navigation.s
 export * from './lib/app/app-prev-button-navigation/app-prev-button-navigation.service.stub';
 export * from './lib/app/app-error-handler-order-params-service/app-error-handler-order-params-service.service';
 
-
 export * from './lib/modal/modal.service';
 export * from './lib/modal/modal.service.stub';
 export * from './lib/modal/shared/shared-modal.module';
@@ -170,7 +175,6 @@ export * from './lib/modal/shared/common-modal/common-modal.component';
 export * from './lib/modal/shared/common-modal/common-modal.component';
 export * from './lib/modal/shared/cta-modal/cta-modal.interface';
 export * from './lib/modal/shared/cta-modal/cta-modal.component';
-
 
 export * from './lib/base/constants/helper-texts';
 export * from './lib/base/constants/redirect-event';

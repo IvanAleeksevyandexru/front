@@ -32,7 +32,7 @@ export class DictionaryService {
     pluck('selectedProgramUUID'),
     filter((uuid) => !!uuid),
     distinctUntilChanged(),
-    switchMap((uuid: string) => this.api.getProgram(uuid)),
+    switchMap((uuid: string) => this.api.getProgram(uuid, this.state.nextSchoolYear)),
     shareReplay(1),
   );
 

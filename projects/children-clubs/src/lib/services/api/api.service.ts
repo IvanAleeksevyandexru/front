@@ -40,10 +40,15 @@ export class ApiService {
       .pipe(map((result) => result?.items ?? []));
   }
 
-  getProgram(uuid: string): Observable<Program> {
+  getProgram(uuid: string, nextSchoolYear: boolean): Observable<Program> {
+    const params = new HttpParams().append('nextSchoolYear', String(nextSchoolYear));
+
     return this.http.get<Program>(
       `${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}`,
-      this.baseOptions,
+      {
+        ...this.baseOptions,
+        params,
+      }
     );
   }
 

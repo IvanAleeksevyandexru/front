@@ -12,9 +12,16 @@ export class ComponentsListFormServiceStub {
   get form(): FormArray {
     return this._form;
   }
+
+  // for simplify stubbing
+  set form(form: FormArray): void {
+    this._form = form;
+  }
+
   get changes(): EventEmitter<CustomComponentOutputData> {
     return this._changes;
   }
+
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
   }

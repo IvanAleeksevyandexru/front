@@ -22,6 +22,7 @@ import {
 export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
   CardNumberInput = 'CardNumberInput',
+  CertificateEaisdo = 'CertificateEaisdo',
   CheckBox = 'CheckBox',
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
@@ -121,9 +122,9 @@ export type CustomComponentAttrField = Array<{
  */
 export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   add?: { component: string; caption: string[] };
-  arguments?: { [key: string]: string };
   cityFilter?: string[];
   clarifications?: Clarifications;
+  class?: string;
   customUnrecLabel?: string;
   dateRestrictions?: DateRestriction[];
   defaultIndex?: number;
@@ -161,7 +162,6 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
-    turnOffStartFilter?: boolean;
   };
   searchType?: string;
   secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
@@ -260,7 +260,19 @@ export interface RelationCondition {
   result: CustomComponentAttr;
 }
 
+export interface CustomComponentWithAttrs<T> extends ComponentBase {
+  attrs: T;
+  type: CustomScreenComponentTypes;
+  id: string;
+  hint?: string;
+  fstuc?: TextTransform;
+  isShown?: boolean;
+  price?: boolean;
+  searchProvider?: { search: Function };
+}
+
 export interface CustomComponent extends ComponentBase {
+  arguments?: { [key: string]: string };
   attrs: CustomComponentAttr;
   type: CustomScreenComponentTypes;
   id: string;

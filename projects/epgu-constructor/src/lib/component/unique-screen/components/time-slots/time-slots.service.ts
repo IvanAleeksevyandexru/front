@@ -14,7 +14,6 @@ import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
   DepartmentInterface,
-  SlotInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
@@ -23,7 +22,7 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { get } from 'lodash';
-import { DATE_STRING_YEAR_MONTH } from '@epgu/epgu-constructor-ui-kit';
+import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {

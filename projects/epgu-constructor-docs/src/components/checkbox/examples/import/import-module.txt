@@ -1,0 +1,10 @@
+import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
+
+...
+
+@NgModule({
+    imports: [
+        ...
+        ConstructorCheckboxModule,
+    ],
+...

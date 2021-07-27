@@ -62,13 +62,12 @@ export interface QuizDataDto {
   order: string;
   quizRaw: string;
 }
-export interface QuizDataDtoReponse {
+export interface QuizDataDtoResponse {
   data: QuizDataDto;
 }
 
 export interface QuizDataSaveDtoRequest {
   data: QuizDataDto;
-  userId: string;
 }
 
 export interface QuizDataSaveDtoReponse {

@@ -137,7 +137,7 @@ describe('PrepareComponentsService', () => {
       const cachedAnswers: CachedAnswers = {
         ai4: {
           visited: true,
-          value: '[{"rf1":"Ываыавыва"}]',
+          value: '[{"rf1":"Ываыавыва", "rf2": {"biomStu": false,"verifying": false, "exists": false,"snils": "828-054-296 13"}}]',
         },
       };
       const componentMock: ComponentDto = {
@@ -150,6 +150,14 @@ describe('PrepareComponentsService', () => {
               id: 'rf1',
               type: 'StringInput',
               label: 'Прежняя фамилия',
+              attrs: {},
+              value: '',
+              required: true,
+              valueFromCache: false,
+            },           {
+              id: 'rf2',
+              type: 'SnilsInput',
+              label: 'Снилс',
               attrs: {},
               value: '',
               required: true,
@@ -170,6 +178,15 @@ describe('PrepareComponentsService', () => {
             label: 'Прежняя фамилия',
             attrs: {},
             value: 'Ываыавыва',
+            required: true,
+            valueFromCache: false,
+          },
+          {
+            id: 'rf2',
+            type: 'SnilsInput',
+            label: 'Прежняя фамилия',
+            attrs: {},
+            value: '828-054-296 13',
             required: true,
             valueFromCache: false,
           },

@@ -36,6 +36,14 @@ export class FormPlayerApiServiceStub {
     return of({});
   }
 
+  public getQuizData(): Observable<{}> {
+    return of({});
+  }
+
+  public getQuizDataByToken(): Observable<{}> {
+    return of({});
+  }
+
   public getOrderId(): Observable<number> {
     return of(null);
   }

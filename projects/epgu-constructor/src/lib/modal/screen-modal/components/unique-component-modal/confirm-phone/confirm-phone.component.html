@@ -8,7 +8,7 @@
     <button class="confirm-phone__link-btn" (click)="editNumber()">Редактировать</button>
   </ng-container>
 
-  <!-- TO DO: получать phoneNumber из одного источника -->
+  <!-- TODO: получать phoneNumber из одного источника -->
   <ng-container  *ngIf="(screenService.component$ | async).attrs?.phoneNumber as phoneNumber">
     <span class="confirm-phone__number">{{phoneNumber | formatPhone }}</span>
   </ng-container>

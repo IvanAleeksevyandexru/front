@@ -15,7 +15,7 @@ export interface DictionaryOptions {
   selectAttributes?: Array<string>;
   tx?: string;
   excludedParams?: string[];
-  additionalParams?: AdditionalRequestParam;
+  additionalParams?: AdditionalRequestParam[];
 }
 
 export interface DictionaryFilters {

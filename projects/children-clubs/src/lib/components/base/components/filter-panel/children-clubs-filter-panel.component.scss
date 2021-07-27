@@ -17,6 +17,9 @@
   font-size: 16px;
   line-height: 24px;
 
+  .filter-btn {
+    @include typ-plain-text;
+  }
   .filter-btn,
   .preview {
     align-self: center;
@@ -48,7 +51,7 @@
       padding: 0 12px;
       background-position: 50% 50%;
       border-right: 1px solid $color-blu-selvaggio;
-      
+
       &:first-child {
         padding-left: 0;
         background-position: calc(50% - 6px) 50%;

@@ -1,10 +1,11 @@
 <form class="form">
   <ng-container *ngFor="let componentData of formService.form.controls; let idx = index">
+    <!--TODO: разобраться, почему с ngIf элекменты экрана мерцают-->
     <div class="form__item {{
         componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
       }}"
       [class.form__item--checkbox]="[componentType.CheckBox].includes(componentData.value?.type)"
-      *ngIf="
+      [class.show]="
           formService.shownElements[componentData.value?.id]?.isShown
             | showComponent: componentData.value?.attrs?.hidden
         "

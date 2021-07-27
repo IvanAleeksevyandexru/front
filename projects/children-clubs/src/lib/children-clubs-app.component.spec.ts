@@ -29,7 +29,7 @@ import {
   ConfigServiceStub,
   ConfigApiService,
   ConfigApiServiceStub,
-  BaseUiModule,
+  BaseUiModule, LoggerService, LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
@@ -61,6 +61,7 @@ describe('ChildrenClubsComponent', () => {
       providers: [
         EventBusService,
         UnsubscribeService,
+        { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: AppRoutingService, useClass: AppRoutingServiceStub },
         { provide: AppNavigationRuleService, useClass: AppNavigationRuleServiceStub },

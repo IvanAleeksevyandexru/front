@@ -22,6 +22,7 @@ import { PaymentSelectorComponent } from './components/payment-selector/payment-
 import { DictionaryService } from '../../services/dictionary/dictionary.service';
 import { GroupFiltersFormComponent } from './components/group-filters-form/group-filters-form.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-reason-title.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
     NotFoundComponent,
+    DenyReasonTitleComponent
   ],
   imports: [
     ScreenPadModule,
@@ -52,6 +54,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
     ContentModalComponent,
+    DenyReasonTitleComponent,
   ],
   entryComponents: [
     GroupFiltersFormComponent,
