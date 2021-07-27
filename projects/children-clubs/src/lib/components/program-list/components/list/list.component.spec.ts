@@ -1,16 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { EpguLibModule } from '@epgu/epgu-lib';
-import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 
 import {
   AppStateQuery,
   AppStateQueryStub,
   AppStateService,
   AppStateServiceStub,
-  CoreUiModule, HealthServiceStub,
+  CoreUiModule,
+  HealthServiceStub,
   LongButtonModule,
   ScreenPadModule,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ListComponent } from './list.component';

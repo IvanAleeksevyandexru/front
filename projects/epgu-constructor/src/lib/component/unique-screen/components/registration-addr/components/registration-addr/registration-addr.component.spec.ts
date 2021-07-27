@@ -4,7 +4,6 @@ import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '../../../../../../core/services/health/activated-route.stub';
 import {
   ScreenPadModule,
   ConfigService,
@@ -13,6 +12,7 @@ import {
   LoggerServiceStub,
   EventBusService,
   UnsubscribeService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';

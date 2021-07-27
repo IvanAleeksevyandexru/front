@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '../../../../core/services/health/health.service';
 import { Subject } from 'rxjs';
 import { CoreModule } from '../../../../core/core.module';
 import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';

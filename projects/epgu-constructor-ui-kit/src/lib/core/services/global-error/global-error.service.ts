@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
-import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
+import { HealthService } from '../health/health.service';
 
 import { UtilsService } from '../utils/utils.service';
 import { LoggerService } from '../logger/logger.service';
