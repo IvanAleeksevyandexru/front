@@ -1,0 +1,10 @@
+import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
+
+...
+
+@NgModule({
+    imports: [
+        ...
+        ConstructorDropdownModule,
+    ],
+...

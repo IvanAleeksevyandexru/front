@@ -19,23 +19,18 @@ import {
   months,
   StartOfTypes,
   weekDaysAbbr,
+  IDay,
+  SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
-
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
-import {
-  IDay,
-  SlotInterface,
-  TimeSlot,
-  TimeSlotsAnswerInterface,
-  TimeSlotValueInterface,
-} from './time-slots.types';
+import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
@@ -55,6 +50,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public activeYearNumber: number;
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
+
+  daysNotFoundTemplate = {
+    header: 'В этом месяце всё занято',
+    description: 'Выберите другой месяц или подразделение, чтобы забронировать время',
+  };
 
   confirmModalParameters: ConfirmationModal = {
     text: 'Вы уверены, что хотите поменять забронированное время?',
@@ -331,7 +331,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || !this.currentSlot?.slotId;
   }
 
   isBookSlotSelected(): string {

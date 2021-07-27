@@ -1,0 +1,81 @@
+<h5 class="map-object__header">{{ mapObject.title }}</h5>
+<ng-container *ngIf="mapObject.expanded">
+  <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
+    <span class="map-object__label">{{ itemContent.label }}: </span>
+    <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
+  </div>
+  <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
+    На данной площадке действуют дополнительные условия оказания услуг.
+    <a
+      href="javascript:void(0)"
+      (click)="showModalFromTemplate('informationTemplate', mapObject)"
+      class="information-link"
+    >
+      Ознакомиться и подтвердить согласие</a
+    >.
+  </div>
+  <lib-button
+    *ngIf="!isSelectButtonHidden"
+    [showLoader]="showLoader"
+    [disabled]="!mapObject.agreement"
+    (click)="selectObject(mapObject)"
+    class="submit-button"
+    width="wide"
+    >Выбрать
+  </lib-button>
+</ng-container>
+
+<!--В данное модальное окно информацию должен предоставлять сервис который пока что не работает / не существует-->
+<ng-template #detailsTemplate>
+  <h3>ЗАГС Кутузовский</h3>
+  <hr />
+  <div class="map-modal">
+    <div class="map-modal__bold">ЗАГС, осуществляющий регистрацию брака:</div>
+    <div class="map-modal__normal">Хамовнический отдел ЗАГС Управления ЗАГС Москвы</div>
+    <div class="map-modal__bold">Место регистрации брака:</div>
+    <div class="map-modal__normal">Башня "Око" - ресторан "Birds"</div>
+    <img class="modal-img" src="{{ config.staticDomainAssetsPath }}/assets/img/brak001.png" />
+    <img class="modal-img" src="{{ config.staticDomainAssetsPath }}/assets/img/brak002.png" />
+    <div class="map-modal__normal">
+      Одна из новейших площадок для регистрации брака находится на 84 этаже башни «Око» делового
+      центра «Москва-Сити» в ресторане «Birds».
+    </div>
+    <div class="map-modal__normal">
+      Ресторан на высоте 354 метров открылся в начале октября 2019 года. По словам организаторов ,
+      уже прославившихся известным рестораном Ruski, новая площадка станет самым высоким рестораном
+      и клубом на планете.
+    </div>
+    <div class="map-modal__normal">
+      Концепция заведения предусматривает слияние кулинарии и театрального шоу. Гостям на выбор
+      предлагаются меню азиатской и европейской кухни, также в ресторане присутствуют два контактных
+      бара.
+    </div>
+    <div class="map-modal__bold">Режим работы:</div>
+    <div class="map-modal__normal">
+      Рабочие дни: вторник - суббота с 9.00 до 18.00<br />Выходные дни: воскресенье, понедельник
+    </div>
+    <div class="map-modal__normal">
+      Четвертый четверг каждого месяца – санитарный день, приема нет
+    </div>
+    <div class="map-modal__bold">Дополнительные услуги:</div>
+    <div class="map-modal__normal">
+      предоставление штатного фотографа - 1 500 р.<br />предоставление штатного оператора - 1 500 р.
+      <br />автомобиль для свадебного кортежа - 2 000 р./час
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #informationTemplate let-item="item">
+  <h3>Дополнительные условия оказания услуги</h3>
+  <hr />
+  <div class="map-modal">
+    <div class="map-modal__normal">{{ item.attributeValues.AREA_DESCR }}</div>
+    <div *ngIf="item.attributeValues.GET_CONSENT === 'true'" class="map-modal__bottom-confirm">
+      <lib-checkbox
+        [(ngModel)]="item.agreement"
+        labelText="Настоящим подтверждаю, что ознакомлен и согласен с дополнительными условиями оказания услуг"
+      >
+      </lib-checkbox>
+    </div>
+  </div>
+</ng-template>

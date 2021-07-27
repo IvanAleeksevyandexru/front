@@ -421,13 +421,6 @@ describe('FormPlayerStartManager', () => {
       service['showContinueOrderModal']();
       expect(formPlayerService.initData).toBeCalledWith(null);
     });
-
-    it('should call deleteAppStorage without orderId', () => {
-      spyOn(continueOrderModalService, 'openModal').and.returnValue(of(false));
-      spyOn(service, 'deleteAppStorage').and.callThrough();
-      service['showContinueOrderModal']();
-      expect(service['deleteAppStorage']).toBeCalled();
-    });
   });
 
   describe('startBookingCase()', () => {

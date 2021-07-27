@@ -41,6 +41,7 @@ export class ToggleTextComponent implements OnInit, OnChanges {
   }
 
   truncateText(text: string, linesQuantity: number): string {
+    this.showAllText = false;
     const elem = this.elemRef.nativeElement;
     const lineHeight =
       +this.window.getComputedStyle(elem).getPropertyValue('line-height').match(/\d+/)[0] || 0;

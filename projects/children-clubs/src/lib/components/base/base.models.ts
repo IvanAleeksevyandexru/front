@@ -35,11 +35,11 @@ export const defaultInlearnoFilters = {
 
 export const FormFieldsLabel = {
   [FormFieldsName.isRegistrationOpen]: 'Показывать только программы с открытой записью',
-  [FormFieldsName.municipality]: 'Место проведения занятий',
+  [FormFieldsName.municipality]: 'Муниципалитет',
   [FormFieldsName.onlyDistanceProgram]: 'Показывать только дистанционные программы',
   [FormFieldsName.free]: 'Бесплатно',
-  [FormFieldsName.certificate]: 'Оплата сертификатом',
-  [FormFieldsName.personalFunds]: 'Оплата из личных средств',
+  [FormFieldsName.certificate]: 'Сертификатом',
+  [FormFieldsName.personalFunds]: 'Из личных средств',
   [FormFieldsName.maxPrice]: 'Максимальная стоимость в месяц, ₽',
   [FormFieldsName.focus]: 'Направленность',
   [FormFieldsName.direction]: 'Специализация',

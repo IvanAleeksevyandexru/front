@@ -68,7 +68,6 @@ export interface QuizDataDtoResponse {
 
 export interface QuizDataSaveDtoRequest {
   data: QuizDataDto;
-  userId: string;
 }
 
 export interface QuizDataSaveDtoReponse {

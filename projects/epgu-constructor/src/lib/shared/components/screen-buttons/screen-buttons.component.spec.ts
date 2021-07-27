@@ -14,6 +14,8 @@ import { ModalService, ModalServiceStub, UnsubscribeService } from '@epgu/epgu-c
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
@@ -26,6 +28,7 @@ describe('ScreenButtonsComponent', () => {
       providers: [
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        CertificateEaisdoService,
         CurrentAnswersService,
         EventBusService,
         EaisdoGroupCostService,

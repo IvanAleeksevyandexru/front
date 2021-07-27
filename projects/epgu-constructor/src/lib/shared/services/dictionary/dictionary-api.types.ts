@@ -43,7 +43,7 @@ export interface DictionaryItem extends ListElement {
 }
 
 export interface DictionaryYMapItem extends DictionaryItem {
-  center: Array<number>;
+  center: [number, number];
   baloonContent: Object;
   id: string;
   idForMap: number;

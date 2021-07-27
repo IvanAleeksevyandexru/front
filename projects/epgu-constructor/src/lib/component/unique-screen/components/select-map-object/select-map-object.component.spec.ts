@@ -52,6 +52,8 @@ import { ActionServiceStub } from '../../../../shared/directives/action/action.s
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { MockModule } from 'ng-mocks';
+import { SearchPanelResolverComponent } from './components/search-panel-resolver/search-panel-resolver.component';
+import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -64,7 +66,7 @@ describe('SelectMapObjectComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [SelectMapObjectComponent],
+      declarations: [SelectMapObjectComponent, SearchPanelResolverComponent, BalloonContentResolverComponent],
       imports: [BaseModule, ConstructorLookupModule, MockModule(PrevButtonModule)],
       providers: [
         Icons,

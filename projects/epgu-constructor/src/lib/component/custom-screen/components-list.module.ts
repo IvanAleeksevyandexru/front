@@ -60,11 +60,13 @@ import { ConstructorMonthPickerModule } from '../../shared/components/constructo
 import { DepartmentLookupComponent } from './components/department-lookup/department-lookup.component';
 import { RadioInputComponent } from './components/radio-input/radio-input.component';
 import { EaisdoGroupCostComponent } from './components/eaisdo-group-cost/eaisdo-group-cost.component';
+import { CertificateEaisdoComponent } from './components/certificate-eaisdo/certificate-eaisdo.component';
 
 @NgModule({
   declarations: [
     AbstractComponentListItemComponent,
     AddressInputComponent,
+    CertificateEaisdoComponent,
     CheckboxInputComponent,
     CityInputComponent,
     ComponentsListComponent,
@@ -136,6 +138,7 @@ import { EaisdoGroupCostComponent } from './components/eaisdo-group-cost/eaisdo-
     DictionaryComponent,
     DocInputComponent,
     DropdownComponent,
+    CertificateEaisdoComponent,
     EaisdoGroupCostComponent,
     FieldListItemComponent,
     FileUploadFormComponent,

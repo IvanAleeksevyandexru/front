@@ -15,7 +15,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ReferralNumberService } from './referral-number.service';
 import {
   IGetReferralResponseErrorDetailDto,
-  IGetReferralResponseItemAttributeDto,
+  IGetReferralResponseItemDto,
   IReferralNumberDto,
 } from './referral-number-dto.interface';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
@@ -92,10 +92,10 @@ export class ReferralNumberComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response?.error?.errorDetail?.errorCode === 0) {
-            if (this.isReferralExpired(response?.items[0]?.attributes)) {
+            if (this.isReferralExpired(response?.items)) {
               this.setErrorState(this.EXPIRED_ERROR_DETAIL);
             } else {
-              this.navigateToNextStep(response);
+              this.navigateToNextStep(this.referral.value);
             }
           }
         },
@@ -119,16 +119,18 @@ export class ReferralNumberComponent implements OnInit {
     this.navigateToNextStep(this.responseError);
   }
 
-  private isReferralExpired(attributes: IGetReferralResponseItemAttributeDto[]): boolean {
-    const referralEndDate = attributes?.find(({ name }) => name === 'referralEndDate');
+  private isReferralExpired(items: IGetReferralResponseItemDto[]): boolean {
+    return items.every(({ attributes }) => {
+      const referralEndDate = attributes?.find(({ name }) => name === 'referralEndDate');
 
-    return (
-      referralEndDate &&
-      this.datesToolsService.isBefore(
-        this.datesToolsService.parse(referralEndDate.value, DATE_STRING_DASH_FORMAT),
-        Date.now(),
-      )
-    );
+      return (
+        referralEndDate &&
+        this.datesToolsService.isBefore(
+          this.datesToolsService.parse(referralEndDate.value, DATE_STRING_DASH_FORMAT),
+          Date.now(),
+        )
+      );
+    });
   }
 
   private setErrorState(errorDetail: IGetReferralResponseErrorDetailDto): void {
