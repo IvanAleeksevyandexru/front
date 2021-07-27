@@ -1,14 +1,20 @@
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import {
   UnsubscribeService,
   ConfigService,
-  ConfigServiceStub, ScreenPadModule, LoggerService, LoggerServiceStub,
+  ConfigServiceStub,
+  ScreenPadModule,
+  LoggerService,
+  LoggerServiceStub,
+  ModalService,
+  ModalServiceStub,
+  LocationService,
+  LocationServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { ReferralNumberComponent, SearchReferralStatus } from './referral-number.component';
+import { ReferralNumberComponent } from './referral-number.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -27,6 +33,7 @@ import { ValidationService } from '../../../../shared/services/validation/valida
 import { IGetReferralResponseDto } from './referral-number-dto.interface';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Smev3ErrorMessagePipe } from '../../../../shared/pipes/smev-3-error-message/smev-3-error-message.pipe';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 const mockComponent = {
   id: 'referralNumber',
@@ -64,97 +71,7 @@ const mockServiceResponseNotFound: IGetReferralResponseDto = {
   }
 };
 
-const mockServiceResponseExpired: IGetReferralResponseDto = {
-  totalItems: 1,
-  items: [
-    {
-      parentItem: null,
-      children: [],
-      fields: {
-        itemName: null,
-        title: null
-      },
-      attributes: [
-        {
-          name: 'referralId',
-          value: '205206'
-        },
-        {
-          name: 'referralNumber',
-          value: '445'
-        },
-        {
-          name: 'referralTypeId',
-          value: '6'
-        },
-        {
-          name: 'referralStartDate',
-          value: '2020-01-10'
-        },
-        {
-          name: 'referralEndDate',
-          value: '2021-01-01'
-        },
-        {
-          name: 'paymentSourceId',
-          value: '1'
-        },
-        {
-          name: 'toMoOid',
-          value: '1.2.643.5.1.13.13.12.2.16.1179.0.221506'
-        },
-        {
-          name: 'toMoName',
-          value: 'Женская консультация, ГАУЗ "Городская поликлиника № 21"'
-        },
-        {
-          name: 'toSpecsId',
-          value: '34'
-        },
-        {
-          name: 'toSpecsName',
-          value: 'врач-кардиолог'
-        },
-        {
-          name: 'toResourceName',
-          value: 'Пушкина Анна Ивановна'
-        },
-        {
-          name: 'fromMoOid',
-          value: '1.2.643.5.1.13.13.12.2.16.1080.0.368844'
-        },
-        {
-          name: 'fromMoName',
-          value: 'Отделение узких специалистов, ГАУЗ "Городская поликлиника №18"'
-        },
-        {
-          name: 'fromSpecsId',
-          value: '109'
-        },
-        {
-          name: 'fromSpecsName',
-          value: 'врач-терапевт'
-        },
-        {
-          name: 'fromResourceName',
-          value: 'Николаева Яна Семеновна'
-        }
-      ]
-    }
-  ],
-  version: null,
-  error: {
-    errorDetail: {
-      errorCode: 0,
-      errorMessage: 'Operation completed'
-    },
-    fieldErrors: []
-  }
-};
-
-const mockServiceResponseOk: IGetReferralResponseDto = mockServiceResponseExpired; // datesToolsService.isBefore will be mocked in tests
-
-const mockServiceResponseManyItems: IGetReferralResponseDto = {
+const mockServiceResponseOk: IGetReferralResponseDto = {
   totalItems: 1,
   items: [
     {
@@ -323,11 +240,8 @@ describe('ReferralNumberComponent', () => {
   let datesToolsService: DatesToolsService;
   let referralNumberService: ReferralNumberService;
   let navigationService: NavigationService;
-  const ERROR_MESSAGE_SELECTOR = '.referral-number__text .mt-8';
-  const RESPONSE_ERROR_EXAMPLE = {
-    errorCode: -1,
-    errorMessage: 'Повторное направление можно получить у того же специалиста'
-  };
+  let modalService: ModalService;
+
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -348,6 +262,8 @@ describe('ReferralNumberComponent', () => {
         MockProvider(CurrentAnswersService),
         MockProvider(ReferralNumberService),
         MockProvider(ValidationService),
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
@@ -360,6 +276,7 @@ describe('ReferralNumberComponent', () => {
   });
 
   beforeEach(() => {
+    modalService = TestBed.inject(ModalService);
     screenService = TestBed.inject(ScreenService);
     referralNumberService = TestBed.inject(ReferralNumberService);
     navigationService = TestBed.inject(NavigationService);
@@ -374,96 +291,13 @@ describe('ReferralNumberComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('goBack', () => {
-    component.searchStatus = 'ERROR_RESPONSE' as SearchReferralStatus;
-    component.goBack();
-    expect(component.searchStatus).toEqual('WAIT_FOR_USER_INPUT' as SearchReferralStatus);
-  });
-
-  it('hasErrorStatus', () => {
-    component.searchStatus = 'ERROR_RESPONSE' as SearchReferralStatus;
-    expect(component.hasErrorStatus()).toBeTruthy();
-    component.searchStatus = 'WAIT_FOR_USER_INPUT' as SearchReferralStatus;
-    expect(component.hasErrorStatus()).toBeFalsy();
-  });
-
-  it('chooseDoctor', () => {
-    const nextSpy = jest.spyOn(navigationService, 'next').mockReturnValue(undefined);
-
-    component.responseError = null;
-    component.chooseDoctor();
-
-    expect(nextSpy).toHaveBeenCalledWith({
-      payload: {
-        referralNumber: {
-          value: JSON.stringify(null),
-          visited: true,
-        },
-      },
-    });
-  });
-
-  describe('when in error state', () => {
-    beforeEach(() => {
-      component.searchStatus = 'ERROR_RESPONSE' as SearchReferralStatus;
-      component.responseError = RESPONSE_ERROR_EXAMPLE;
-      fixture.detectChanges();
-    });
-
-    it('should render error ', () => {
-      const debugEl = fixture.debugElement;
-
-      expect(debugEl).toBeTruthy();
-      expect(debugEl.query(By.css(ERROR_MESSAGE_SELECTOR))?.nativeElement?.innerHTML).toBe(
-        'Повторное направление можно получить у того же специалиста'
-      );
-    });
-
-    it('should render two buttons', () => {
-      const debugEl = fixture.debugElement;
-
-      expect(debugEl).toBeTruthy();
-      expect(debugEl.queryAll(By.css('lib-button')).length).toBe(2);
-    });
-
-    it('should render form when click on back button', () => {
-      const debugEl = fixture.debugElement;
-
-      expect(debugEl).toBeTruthy();
-
-      debugEl.queryAll(By.css('lib-button'))[0].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(component.hasErrorStatus()).toBeFalsy();
-    });
-
-    it('should render form when click on choose doctor button', () => {
-      const nextSpy = jest.spyOn(navigationService, 'next').mockReturnValue(undefined);
-      const debugEl = fixture.debugElement;
-
-      expect(debugEl).toBeTruthy();
-
-      debugEl.queryAll(By.css('lib-button'))[1].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(nextSpy).toHaveBeenCalledWith({
-        payload: {
-          referralNumber: {
-            value: JSON.stringify(RESPONSE_ERROR_EXAMPLE),
-            visited: true,
-          },
-        },
-      });
-    });
-  });
-
   describe('findReferral', () => {
     const setup = (mock: IGetReferralResponseDto) => {
       component.referral.setValue('445');
       return jest.spyOn(referralNumberService, 'getReferralSearch').mockReturnValue(of(mock));
     };
 
-    it('should call getReferralSeatch from service', () => {
+    it('should call getReferralSearch from service', () => {
       const getReferralSearchSpy = setup(mockServiceResponseNotFound);
 
       component.findReferral();
@@ -471,55 +305,40 @@ describe('ReferralNumberComponent', () => {
       expect(getReferralSearchSpy).toHaveBeenCalledWith('445', 'sessionId', 'eserviceId');
     });
 
-    it('should NOT set ERROR STATE and show error message from service when not found', fakeAsync(() => {
+    it('should navigate to next page with payload when any res was found', () => {
       setup(mockServiceResponseNotFound);
-
-      component.findReferral();
-      fixture.detectChanges();
-
-      expect(component.searchStatus).toEqual('WAIT_FOR_USER_INPUT' as SearchReferralStatus);
-    }));
-
-    it('should set ERROR STATE and show expired error message when expired', () => {
-      setup(mockServiceResponseExpired);
-      const isBeforeSpy = jest.spyOn(datesToolsService, 'isBefore').mockReturnValue(true);
-
-      component.findReferral();
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement;
-
-      expect(isBeforeSpy).toHaveBeenCalledTimes(1);
-      expect(component.searchStatus).toEqual('ERROR_RESPONSE' as SearchReferralStatus);
-      expect(component.responseError).toEqual({
-        errorCode: -1,
-        errorMessage: 'Повторное направление можно получить у того же специалиста'
-      });
-      expect(debugEl).toBeTruthy();
-      expect(debugEl.query(By.css(ERROR_MESSAGE_SELECTOR))?.nativeElement?.innerHTML).toBe(
-        'Повторное направление можно получить у того же специалиста'
-      );
-    });
-
-    it('should navigate to next page with payload when found', () => {
-      setup(mockServiceResponseOk);
-      const isBeforeSpy = jest.spyOn(datesToolsService, 'isBefore').mockReturnValue(false);
       const nextSpy = jest.spyOn(navigationService, 'next').mockReturnValue(undefined);
 
       component.findReferral();
 
-      expect(isBeforeSpy).toHaveBeenCalledTimes(1);
       expect(nextSpy).toHaveBeenCalledWith({
         payload: {
           referralNumber: {
-            value: JSON.stringify('445'),
+            value: '445',
             visited: true,
           },
         },
       });
     });
 
-    it('should set ERROR STATE and show error message when there is network error', fakeAsync(() => {
+    it('should navigate to next page with payload when found', () => {
+      setup(mockServiceResponseOk);
+      const nextSpy = jest.spyOn(navigationService, 'next').mockReturnValue(undefined);
+
+      component.findReferral();
+
+      expect(nextSpy).toHaveBeenCalledWith({
+        payload: {
+          referralNumber: {
+            value: '445',
+            visited: true,
+          },
+        },
+      });
+    });
+
+    it('should open modal and show error message when there is network error', fakeAsync(() => {
+      spyOn(modalService, 'openModal').and.callThrough();
       jest.spyOn(referralNumberService, 'getReferralSearch').mockImplementation(() => {
         return throwError(new Error('network error'));
       });
@@ -528,42 +347,10 @@ describe('ReferralNumberComponent', () => {
       component.findReferral();
       fixture.detectChanges();
 
-      const debugEl = fixture.debugElement;
-
-      expect(component.searchStatus).toEqual('ERROR_RESPONSE' as SearchReferralStatus);
-      expect(debugEl).toBeTruthy();
-      expect(debugEl.query(By.css(ERROR_MESSAGE_SELECTOR))?.nativeElement?.innerHTML).toBe( 'Ошибка загрузки данных' );
+      expect(modalService.openModal).toHaveBeenCalledWith(
+        ConfirmationModalComponent,
+        referralNumberService.COMMON_ERROR_MODAL_PARAMS,
+      );
     }));
-
-    it('should NOT set ERROR STATE and NOT show expired error message when at least one not expired', () => {
-      setup(mockServiceResponseManyItems);
-
-      jest.spyOn(datesToolsService, 'parse')
-        .mockImplementation((date: string) => {
-          const result = new Date();
-
-          result.setFullYear(+date.substr(0, 4));
-          result.setMonth(6);
-          result.setDate(15);
-
-          return result;
-        });
-
-      jest.spyOn(datesToolsService, 'isBefore')
-        .mockImplementation((dateLeft: Date | number) => (dateLeft as Date).getFullYear() === 2021);
-      const nextSpy = jest.spyOn(navigationService, 'next').mockReturnValue(undefined);
-
-      component.findReferral();
-      fixture.detectChanges();
-
-      expect(nextSpy).toHaveBeenCalledWith({
-        payload: {
-          referralNumber: {
-            value: JSON.stringify('445'),
-            visited: true,
-          },
-        },
-      });
-    });
   });
 });

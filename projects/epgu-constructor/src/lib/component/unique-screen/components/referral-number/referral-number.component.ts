@@ -5,9 +5,10 @@ import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import {
   ConfigService,
-  DATE_STRING_DASH_FORMAT,
   DatesToolsService,
+  LocationService,
   LoggerService,
+  ModalService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -15,17 +16,12 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ReferralNumberService } from './referral-number.service';
 import {
   IGetReferralResponseErrorDetailDto,
-  IGetReferralResponseItemDto,
   IReferralNumberDto,
 } from './referral-number-dto.interface';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
-
-export enum SearchReferralStatus {
-  WAIT_FOR_USER_INPUT = 'WAIT_FOR_USER_INPUT',
-  ERROR_RESPONSE = 'ERROR_RESPONSE',
-}
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-referral-number',
@@ -37,28 +33,13 @@ export class ReferralNumberComponent implements OnInit {
   public referral: FormControl = new FormControl('');
   public eserviceId: string;
   public sessionId: string;
-  public searchStatus: SearchReferralStatus = SearchReferralStatus.WAIT_FOR_USER_INPUT;
-  public SearchReferralStatus = SearchReferralStatus;
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  public defaultErrorImgSrc = `${this.config.staticDomainAssetsPath}/assets/icons/svg/warn.svg`;
-  public defaultErrorLabel = 'Внимание!';
-  public defaultErrorText = 'Произошла ошибка, пожалуйста повторите попытку';
   public responseError: IGetReferralResponseErrorDetailDto | null = null;
   public data: IReferralNumberDto;
 
   public data$: Observable<IReferralNumberDto> = this.screenService.component$ as Observable<
     IReferralNumberDto
   >;
-
-  private EXPIRED_ERROR_DETAIL: IGetReferralResponseErrorDetailDto = {
-    errorCode: -1,
-    errorMessage: 'Повторное направление можно получить у того же специалиста',
-  };
-
-  private NETWORK_ERROR_DETAIL: IGetReferralResponseErrorDetailDto = {
-    errorCode: -2,
-    errorMessage: 'Ошибка загрузки данных',
-  };
 
   constructor(
     public readonly screenService: ScreenService,
@@ -71,6 +52,8 @@ export class ReferralNumberComponent implements OnInit {
     private validationService: ValidationService,
     private loggerService: LoggerService,
     private cdr: ChangeDetectorRef,
+    private modalService: ModalService,
+    private locationService: LocationService,
   ) {}
 
   public ngOnInit(): void {
@@ -90,60 +73,33 @@ export class ReferralNumberComponent implements OnInit {
     this.referralNumberService
       .getReferralSearch(this.referral.value, this.sessionId, this.eserviceId)
       .subscribe(
-        (response) => {
-          if (response?.error?.errorDetail?.errorCode === 0) {
-            if (this.isReferralExpired(response?.items)) {
-              this.setErrorState(this.EXPIRED_ERROR_DETAIL);
-            } else {
-              this.navigateToNextStep(this.referral.value);
-            }
-          }
+        () => {
+          this.navigateToNextStep(this.referral.value);
         },
         (error) => {
           this.loggerService.error([error?.message]);
-          this.setErrorState(this.NETWORK_ERROR_DETAIL);
+          this.openErrorModal();
         },
       );
   }
 
-  public hasErrorStatus(): boolean {
-    return this.searchStatus !== SearchReferralStatus.WAIT_FOR_USER_INPUT;
+  private openErrorModal(): void {
+    this.modalService
+      .openModal(ConfirmationModalComponent, this.referralNumberService.COMMON_ERROR_MODAL_PARAMS)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((reload) => {
+        if (reload) {
+          this.locationService.reload();
+        }
+        this.cdr.markForCheck();
+      });
   }
 
-  public goBack(): void {
-    this.searchStatus = SearchReferralStatus.WAIT_FOR_USER_INPUT;
-    this.cdr.markForCheck();
-  }
-
-  public chooseDoctor(): void {
-    this.navigateToNextStep(this.responseError);
-  }
-
-  private isReferralExpired(items: IGetReferralResponseItemDto[]): boolean {
-    return items.every(({ attributes }) => {
-      const referralEndDate = attributes?.find(({ name }) => name === 'referralEndDate');
-
-      return (
-        referralEndDate &&
-        this.datesToolsService.isBefore(
-          this.datesToolsService.parse(referralEndDate.value, DATE_STRING_DASH_FORMAT),
-          Date.now(),
-        )
-      );
-    });
-  }
-
-  private setErrorState(errorDetail: IGetReferralResponseErrorDetailDto): void {
-    this.searchStatus = SearchReferralStatus.ERROR_RESPONSE;
-    this.responseError = errorDetail;
-    this.cdr.markForCheck();
-  }
-
-  private navigateToNextStep(payload: object): void {
+  private navigateToNextStep(payload: string): void {
     const navigation = {
       payload: {
         [this.data.id]: {
-          value: JSON.stringify(payload),
+          value: payload,
           visited: true,
         },
       },
