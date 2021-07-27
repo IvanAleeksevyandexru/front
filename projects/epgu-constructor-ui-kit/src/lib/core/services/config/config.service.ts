@@ -48,6 +48,7 @@ export class ConfigService implements Config {
   private _nsiSuggestDictionaryUrl: string;
   private _appPathMap: AppPathMap;
   private _lkuipElection: string;
+  private _identificationApiUrl: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -220,6 +221,9 @@ export class ConfigService implements Config {
   get lkuipElection(): string {
     return this._lkuipElection;
   }
+  get identificationApiUrl(): string {
+    return this._identificationApiUrl;
+  }
 
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
@@ -249,6 +253,8 @@ export class ConfigService implements Config {
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
     this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
+    this._identificationApiUrl =
+      config.identificationApiUrl ?? `${this.loadService.config.identificationApiUrl}`;
   }
 
   set config(config: Config) {
