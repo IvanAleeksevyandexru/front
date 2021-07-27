@@ -92,6 +92,18 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         } catch (e) {}
       }
 
+      if (
+        url.includes('equeue/agg/slots') &&
+        (error?.errorDetail?.errorCode === 2 || error?.errorDetail?.errorCode === 6) &&
+        error?.errorDetail?.errorMessage?.includes('Закончилось время')
+      ) {
+        this.showModalFailure(
+          'Время сессии истекло, перейдите к началу',
+          true,
+          ModalFailureType.SESSION,
+        );
+      }
+
       if (url.includes('dictionary/mzrf_lpu_equeue_smev3')) {
         const dictionaryError = error as DictionaryResponseError;
         const dictionaryResponse = body as DictionaryResponse;
