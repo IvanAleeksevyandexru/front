@@ -1,0 +1,23 @@
+import { NgModule } from '@angular/core';
+import { FileUploadModule } from '../../../../shared/components/file-upload/file-upload.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
+import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
+import { BaseModule } from '../../../../shared/base.module';
+import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { LunaUploadScreenComponent } from './luna-upload-screen.component';
+
+@NgModule({
+  declarations: [LunaUploadScreenComponent],
+  exports: [LunaUploadScreenComponent],
+  imports: [
+    BaseModule,
+    FileUploadModule,
+    BaseComponentsModule,
+    ScreenContainerModule,
+    UserInfoLoaderModule,
+    ScreenButtonsModule,
+  ],
+  entryComponents: [LunaUploadScreenComponent],
+})
+export class LunaUploadScreenModule {}
