@@ -9,7 +9,7 @@ import { EpguLibModule } from '@epgu/epgu-lib';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
+import { ActivatedRouteStub } from '../../../../core/services/health/activated-route.stub';
 import {
   ConfigService, ConfigServiceStub,
   DatesToolsService,

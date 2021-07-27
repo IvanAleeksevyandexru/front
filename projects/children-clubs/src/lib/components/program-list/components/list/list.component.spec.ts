@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { EpguLibModule, HealthService } from '@epgu/epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 
 import {
   AppStateQuery,

@@ -4,7 +4,7 @@ import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
+import { ActivatedRouteStub } from '../../../../../../core/services/health/activated-route.stub';
 import {
   ScreenPadModule,
   ConfigService,
