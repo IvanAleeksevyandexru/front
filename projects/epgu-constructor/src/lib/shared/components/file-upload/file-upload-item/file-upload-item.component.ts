@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
@@ -41,6 +48,9 @@ import { UploaderProcessService } from '../services/process/uploader-process.ser
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
 import { UploaderValidationService } from '../services/validation/uploader-validation.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
+import { UploadingFile } from '../../uploader/components/uploader/uploader.component';
+import { FileUploadPreviewComponent } from '../file-upload-preview/file-upload-preview.component';
+import { UploaderButtonComponent } from '../../uploader/components/uploader-button/uploader-button.component';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -54,6 +64,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.uploader.maxFileNumber = -1;
     this.initFilesList.next(files);
   }
+
+  @ViewChild('takePhoto', { static: false })
+  takePhoto: UploaderButtonComponent;
+
   get data(): FileUploadItem {
     return this.uploader.data;
   }
@@ -66,7 +80,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   plurals = plurals;
   beforeFilesPlural = beforeFilesPlural;
   componentId = this.screenService.component?.id || null;
-  isMobile: boolean = this.deviceDetectorService.isMobile;
+  // isMobile: boolean = this.deviceDetectorService.isMobile;
+  isMobile = true;
 
   overLimits = this.stat.stats;
 
@@ -266,8 +281,33 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     } as FileResponseToBackendUploadsItem);
   }
 
-  selectFiles(fileList: FileList): void {
-    this.processingFiles.next(fileList);
+  selectFileByStatus(event: UploadingFile, status: boolean | null): void {
+    if (status !== null) {
+      if (status) {
+        this.processingFiles.next(event.files);
+      } else {
+        this.takePhoto?.click();
+      }
+    }
+  }
+
+  selectFiles(event: UploadingFile): void {
+    if (
+      this.uploader.data?.isPreviewPhoto === true &&
+      event?.action === 'photo' &&
+      event.files.length === 1
+    ) {
+      this.modal
+        .openModal<{ changeImage?: boolean; imageObjectUrl?: string } | boolean>(
+          FileUploadPreviewComponent,
+          {
+            imageObjectUrl: window.URL.createObjectURL(event.files[0]),
+          },
+        )
+        .subscribe((status: boolean) => this.selectFileByStatus(event, status));
+      return;
+    }
+    this.processingFiles.next(event.files);
   }
 
   loadList(files: UploadedFile[]): Observable<FileItem> {

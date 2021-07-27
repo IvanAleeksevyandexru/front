@@ -6,6 +6,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { LunaUploadScreenComponent } from './luna-upload-screen.component';
+import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 
 @NgModule({
   declarations: [LunaUploadScreenComponent],
@@ -18,6 +19,7 @@ import { LunaUploadScreenComponent } from './luna-upload-screen.component';
     UserInfoLoaderModule,
     ScreenButtonsModule,
   ],
+  providers: [IdentificationApiService],
   entryComponents: [LunaUploadScreenComponent],
 })
 export class LunaUploadScreenModule {}

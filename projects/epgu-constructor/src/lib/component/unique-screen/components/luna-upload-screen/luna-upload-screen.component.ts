@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { ModalService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -14,11 +14,9 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
-  selector: 'epgu-constructor-file-upload-screen',
+  selector: 'epgu-constructor-luna-upload-screen',
   templateUrl: './luna-upload-screen.component.html',
   styleUrls: ['./luna-upload-screen.component.scss'],
   providers: [UnsubscribeService],
@@ -31,25 +29,8 @@ export class LunaUploadScreenComponent implements OnInit {
       const attrs: FileUploadAttributes = data.attrs as FileUploadAttributes;
       this.allMaxFiles = 0;
 
-      if (data.type === UniqueScreenComponentTypes.OrderFileProcessingComponent && attrs?.uploads) {
-        attrs.maxFileCount = attrs.uploads?.length ?? 0;
-        attrs.uploads = attrs.uploads.map((upload) => this.toCSVUploader(upload));
-        if (this.screenService.componentError) {
-          this.modalService.openModal(ConfirmationModalComponent, {
-            text: this.screenService.componentError,
-            title: 'Ошибка',
-            showCloseButton: false,
-            showCrossButton: true,
-            buttons: [
-              {
-                label: 'Закрыть',
-                closeModal: true,
-              },
-            ],
-            isShortModal: true,
-          });
-        }
-      }
+      attrs.maxFileCount = attrs.uploads?.length ?? 0;
+      attrs.uploads = attrs.uploads.map((upload) => this.initUploader(upload));
 
       this.collectMaxFilesNumber(attrs?.uploads ?? []);
 
@@ -88,11 +69,10 @@ export class LunaUploadScreenComponent implements OnInit {
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
-    private modalService: ModalService,
   ) {}
 
-  toCSVUploader(upload: FileUploadItem): FileUploadItem {
-    const processingUpload = { ...upload, fileType: ['CSV'], maxFileCount: 1 };
+  initUploader(upload: FileUploadItem): FileUploadItem {
+    const processingUpload = { ...upload, fileType: ['PNG', 'JPG', 'JPEG'], maxFileCount: 1 };
     delete processingUpload.maxCountByTypes;
     return processingUpload;
   }
