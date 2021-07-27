@@ -39,4 +39,12 @@ export class AnswerButtonComponent implements OnInit {
   isShown(value: string): boolean {
     return this.isLoading && value === this.selectedValue;
   }
+
+  handleOutputHtmlClick(event: PointerEvent): void {
+    const target = event.target as Element;
+    // при клике по ссылке в answer-button, блокируем переход на следующий экран (открывается clarifications)
+    if (target.tagName === 'A' && target.id && this.data?.attrs?.clarifications[target.id]) {
+      event.stopPropagation();
+    }
+  }
 }
