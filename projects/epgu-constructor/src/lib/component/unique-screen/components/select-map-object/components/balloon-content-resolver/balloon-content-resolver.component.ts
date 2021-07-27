@@ -49,9 +49,6 @@ export class BalloonContentResolverComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.addContent();
-    // setTimeout(() => {
-    //   this.cdr.markForCheck();
-    // }, 0);
     this.cdr.markForCheck();
   }
 
@@ -66,6 +63,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
       evt.stopPropagation();
       this.selectObject.emit(obj);
     };
+    ref.expandObject = (mapObject): void => this.expandObject(mapObject);
     this.cdr.detectChanges();
   }
 
@@ -73,10 +71,9 @@ export class BalloonContentResolverComponent implements AfterViewInit {
    * Метод раскрывает выбранный зал на панели слева
    * @param mapObject объект на карте
    */
-  public expandObject(mapObject: YMapItem<unknown>): void {
+  private expandObject(mapObject: YMapItem<unknown>): void {
     // eslint-disable-next-line no-param-reassign
     mapObject.expanded = !mapObject.expanded;
-    this.balloonContentComponentRef.instance.cdr.markForCheck();
   }
 
   private getComponent(type: ContentTypes): Type<ContentTypesComponents> {

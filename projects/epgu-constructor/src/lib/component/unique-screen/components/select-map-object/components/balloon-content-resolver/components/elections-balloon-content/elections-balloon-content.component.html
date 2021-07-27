@@ -1,4 +1,4 @@
-<h5 class="map-object__header">{{ mapObject.balloonContentHeader }}</h5>
+<h5 (click)="expandObject(mapObject)" class="map-object__header">{{ mapObject.balloonContentHeader }}</h5>
 <div class="map-object__attr" *ngIf="mapObject.expanded && (extInfo$ | async) as extInfo">
   <span class="map-object__label">{{ extInfo.commissionName }}</span>
   <span class="map-object__value">{{ extInfo.address }}</span>
