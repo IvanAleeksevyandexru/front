@@ -21,17 +21,17 @@ export class IdentificationApiService {
   ) {}
 
   passportIdentification(passportRequestBody: PassportIdentificationRequestBody): Observable<PassportIdentificationResponse> {
-    const url = `${this.configService.identificationApiUrl}/vi/identification/passport`;
+    const url = `${this.configService.identificationApiUrl}/passport`;
     return this.http.post<PassportIdentificationResponse>(url, passportRequestBody);
   }
 
   selfieIdentification(selfieRequestBody: SelfieIdentificationRequestBody): Observable<SelfieIdentificationResponse> {
-    const url = `${this.configService.identificationApiUrl}/vi/identification/selfie`;
+    const url = `${this.configService.identificationApiUrl}/selfie`;
     return this.http.post<SelfieIdentificationResponse>(url, selfieRequestBody);
   }
 
   videoIdentification(videoRequestBody: VideoIdentificationRequestBody): Observable<VideoIdentificationResponse> {
-    const url = `${this.configService.identificationApiUrl}/vi/identification/video`;
+    const url = `${this.configService.identificationApiUrl}/video`;
     return this.http.post<VideoIdentificationResponse>(url, videoRequestBody);
   }
 }

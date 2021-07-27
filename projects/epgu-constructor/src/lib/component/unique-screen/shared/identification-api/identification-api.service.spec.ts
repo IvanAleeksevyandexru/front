@@ -41,7 +41,7 @@ describe('IdentificationApiService', () => {
     const responseMock = {};
     const requestBody = {} as PassportIdentificationRequestBody;
     service.passportIdentification(requestBody).subscribe((response) => expect(response).toBe(responseMock));
-    const req = http.expectOne(`${apiUrl}/vi/identification/passport`);
+    const req = http.expectOne(`${apiUrl}/passport`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(requestBody);
     req.flush(responseMock);
@@ -52,7 +52,7 @@ describe('IdentificationApiService', () => {
     const responseMock = {};
     const requestBody = {} as SelfieIdentificationRequestBody;
     service.selfieIdentification(requestBody).subscribe((response) => expect(response).toBe(responseMock));
-    const req = http.expectOne(`${apiUrl}/vi/identification/selfie`);
+    const req = http.expectOne(`${apiUrl}/selfie`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(requestBody);
     req.flush(responseMock);
@@ -63,7 +63,7 @@ describe('IdentificationApiService', () => {
     const responseMock = {};
     const requestBody = {} as VideoIdentificationRequestBody;
     service.videoIdentification(requestBody).subscribe((response) => expect(response).toBe(responseMock));
-    const req = http.expectOne(`${apiUrl}/vi/identification/video`);
+    const req = http.expectOne(`${apiUrl}/video`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(requestBody);
     req.flush(responseMock);

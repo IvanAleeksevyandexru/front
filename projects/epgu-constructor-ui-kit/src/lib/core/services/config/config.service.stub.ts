@@ -41,7 +41,7 @@ export class ConfigServiceStub implements Config {
   _lookupQueryTimeoutMs = 42;
   _nsiSuggestDictionaryUrl = '';
   _suggestionsApiUrl = '';
-  _identificationApiUrl = '/api/identification';
+  _identificationApiUrl = 'http://localhost:8097/v1/identification';
 
   _isLoaded$ = of(false);
   _appPathMap = {};

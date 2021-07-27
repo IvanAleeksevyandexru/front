@@ -5,9 +5,9 @@ export interface PassportIdentificationRequestBody {
 }
 
 export interface PassportIdentificationResponse {
-  response: {
-    items: {[key: string]: string }
-  }
+  status: string;
+  description: string;
+  faceId: string;
 }
 
 export interface SelfieIdentificationRequestBody {
@@ -16,7 +16,9 @@ export interface SelfieIdentificationRequestBody {
 }
 
 export interface SelfieIdentificationResponse {
-
+  status: string;
+  description: string;
+  faceIds: string[];
 }
 
 export interface VideoIdentificationRequestBody {
@@ -25,7 +27,7 @@ export interface VideoIdentificationRequestBody {
 }
 
 export interface VideoIdentificationResponse {
-
+  status: string;
 }
 
 
