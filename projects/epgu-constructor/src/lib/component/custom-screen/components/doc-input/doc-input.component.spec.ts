@@ -4,7 +4,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
+import { ActivatedRouteStub } from '../../../../core/services/health/activated-route.stub';
 import { DocInputComponent } from './doc-input.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';

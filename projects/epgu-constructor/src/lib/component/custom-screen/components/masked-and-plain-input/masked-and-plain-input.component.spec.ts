@@ -5,7 +5,7 @@ import { MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
+import { ActivatedRouteStub } from '../../../../core/services/health/activated-route.stub';
 import { MaskedAndPlainInputComponent } from './masked-and-plain-input.component';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';

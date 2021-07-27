@@ -9,5 +9,6 @@
     "src/polyfills.ts",
     "projects/epgu-constructor-ui-kit/src/lib/modal/modal.service.ts",
     "projects/epgu-constructor-ui-kit/src/lib/core/services/utils/utils.ts",
+    "projects/epgu-constructor/src/lib/core/services/health/health.service.ts",
   ]
 }
