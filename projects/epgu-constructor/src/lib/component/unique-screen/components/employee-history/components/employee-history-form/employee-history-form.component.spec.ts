@@ -4,7 +4,8 @@ import { RadioComponent } from '@epgu/epgu-lib';
 import { MockComponents, MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MonthYear } from '@epgu/epgu-lib';
-
+import { ActivatedRoute } from '@angular/router';
+import { ActivatedRouteStub } from '@epgu/epgu-constructor/src/lib/core/services/health/activated-route.stub';
 import { EmployeeHistoryFormComponent } from './employee-history-form.component';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMonthPickerModule } from '../../../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
@@ -101,6 +102,7 @@ describe('EmployeeHistoryFormComponent', () => {
         DateRestrictionsService,
         SuggestMonitorService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ],
     })
       .overrideComponent(EmployeeHistoryFormComponent, {
