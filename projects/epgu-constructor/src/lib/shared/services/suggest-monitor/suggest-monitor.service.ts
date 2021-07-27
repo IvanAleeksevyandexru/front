@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { SuggestActions, FieldTypes } from '../../constants/suggest';
 

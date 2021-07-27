@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AppStateQuery, ConfigService, HealthHandler } from '@epgu/epgu-constructor-ui-kit';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import { catchError, tap } from 'rxjs/operators';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';

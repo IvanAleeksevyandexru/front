@@ -9,7 +9,7 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import {
   AppStateQuery, AppStateQueryStub,
   ConfigService,

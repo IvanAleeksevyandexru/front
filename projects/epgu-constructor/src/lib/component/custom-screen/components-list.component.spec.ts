@@ -54,7 +54,7 @@ import { SuggestHandlerService } from '../../shared/services/suggest-handler/sug
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
 import { SuggestMonitorService } from '../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor/src/lib/core/services/health/health.service';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO: написать тест
