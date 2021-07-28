@@ -166,6 +166,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
     this.selectMapObjectService.mapType = this.data.attrs.mapType as MapTypes;
+    this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
     this.searchPanelType =
       this.data.attrs.mapType === MapTypes.electionsMap
         ? PanelTypes.electionsPanel
@@ -236,17 +237,20 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.initMapCenter();
   }
 
+  private getUrlTemplate(): string {
+    const region = this.data.attrs.region ? `&region=${this.data.attrs.region}` : '';
+    const url =
+      `${this.config.lkuipElection}/${this.data.attrs.LOMurlTemplate}&electionLevel=${this.data.attrs.electionLevel}` +
+      `&electionDate=${this.data.attrs.electionDate + region}`;
+    return url;
+  }
+
   /**
    * Инициализация карты - попытка определения центра, получение и расстановка точек на карте
    */
   private initMap(): void {
-    this.setMapOpstions();
     if (this.data.attrs.LOMurlTemplate) {
-      this.yandexMapService.placeObjectsOnMap(
-        null,
-        null,
-        `${this.config.lkuipElection}/${this.data.attrs.LOMurlTemplate}&electionLevel=${this.data.attrs.electionLevel}&electionDate=${this.data.attrs.electionDate}`,
-      );
+      this.yandexMapService.placeObjectsOnMap(null, null, this.getUrlTemplate());
       this.mapIsLoaded = true;
       this.screenService.isLoaderVisible.next(false);
     } else {
@@ -297,22 +301,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.screenService.isLoaderVisible.next(false);
     this.initSelectedValue();
     this.cdr.detectChanges();
-  }
-
-  private setMapOpstions(): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.selectMapObjectService.ymaps = (window as any).ymaps;
-    this.yaMapService.map.controls.add('zoomControl', {
-      position: {
-        top: 108,
-        right: 10,
-        bottom: 'auto',
-        left: 'auto',
-      },
-      size: this.isMobile ? 'small' : 'large',
-    });
-    this.yaMapService.map.options.set('minZoom', 4);
-    this.yaMapService.map.copyrights.togglePromo();
   }
 
   /**

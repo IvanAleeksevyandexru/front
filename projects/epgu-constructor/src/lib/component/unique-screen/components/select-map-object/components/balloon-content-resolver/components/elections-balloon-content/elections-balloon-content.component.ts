@@ -7,6 +7,7 @@ import {
   Input,
 } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
 import { IuikFullDataResponse } from './elections-balloon-content.interface';
@@ -31,12 +32,18 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   ) {}
 
   public ngAfterViewInit(): void {
-    this.extInfo$ = this.selectMapObjectService.getElections(
-      this.mapObject.pollStationNumber,
-      this.mapObject.pollStationRegion,
-      this.selectMapObjectService.componentAttrs.electionDate,
-      this.selectMapObjectService.componentAttrs.electionLevel,
-    );
-    this.cdr.markForCheck();
+    this.extInfo$ = this.selectMapObjectService
+      .getElections(
+        this.mapObject.pollStationNumber,
+        this.mapObject.pollStationRegion,
+        this.selectMapObjectService.componentAttrs.electionDate,
+        this.selectMapObjectService.componentAttrs.electionLevel,
+      )
+      .pipe(
+        tap(() => {
+          setTimeout(() => this.cdr.detectChanges(), 0);
+        }),
+      );
+    this.cdr.detectChanges();
   }
 }
