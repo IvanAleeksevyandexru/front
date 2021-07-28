@@ -136,7 +136,10 @@ export class DateRangeService {
   }
 
   private async chooseOperation(refParams: DateRangeRef, date: Date): Promise<Array<Date>> {
-    const today = await this.datesToolsService.getToday();
+    let today;
+    if (refParams.condition.includes('today')) {
+      today = await this.datesToolsService.getToday();
+    }
     switch (refParams.condition) {
       case '>=today':
         return [date, today];
