@@ -1,5 +1,9 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
+:host:not(:first-child) {
+  margin-top: 24px;
+}
+
 .error {
   .title {
     @include typ-h6;

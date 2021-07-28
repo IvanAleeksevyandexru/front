@@ -24,6 +24,7 @@ import { ActionDirective } from '../../../../../../shared/directives/action/acti
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {
@@ -40,6 +41,11 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
           hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ',
         },
       ],
+      disclaimer: {
+        type: 'warn',
+        title: 'Добавьте адрес',
+        description: 'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
+      },
     },
     id: '',
     value: '{}',
@@ -73,6 +79,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         MockComponent(DefaultUniqueScreenWrapperComponent),
         MockComponent(DadataWidgetComponent),
         MockComponent(PlainInputComponent),
+        MockComponent(DisclaimerComponent),
         SafePipe,
         ImgPrefixerPipe,
       ],
