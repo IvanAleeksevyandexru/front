@@ -1,3 +1,4 @@
+import { HttpEvent } from '@angular/common/http';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -8,6 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
+import { IuikFullDataResponse } from './elections-balloon-content.interface';
 
 @Component({
   selector: 'epgu-constructor-elections-balloon-content',
@@ -21,7 +23,7 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   @Input() mapObject;
   public selectObject: Function;
   public expandObject: Function;
-  public extInfo$: Observable<unknown>;
+  public extInfo$: Observable<HttpEvent<IuikFullDataResponse>>;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
