@@ -188,7 +188,8 @@ export class SelectMapObjectService implements OnDestroy {
         address?.includes(searchStringLower)
       );
     });
-    const items = this.filteredDictionaryItems.map((item) => {
+    const items = this.filteredDictionaryItems.map((item, index) => {
+      item.objectId = index;
       return {
         center: item.center,
         obj: item,
