@@ -23,7 +23,6 @@ import {
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
-import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import {
   PassportIdentificationResponse,
   SelfieIdentificationResponse,
@@ -89,7 +88,6 @@ export class LunaUploadScreenComponent implements OnInit {
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
-    private navigationService: NavigationService,
     private actionService: ActionService,
     private cdr: ChangeDetectorRef,
   ) {}
