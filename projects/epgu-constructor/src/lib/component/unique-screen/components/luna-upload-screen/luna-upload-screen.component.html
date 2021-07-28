@@ -16,14 +16,16 @@
   </div>
 
   <div class="screen-footer">
-    <ng-container *ngIf="screenService.buttons$ | async as buttons">
-      <epgu-constructor-screen-buttons
-        class="screen-buttons"
-        *ngIf="buttons.length"
-        [screenButtons]="buttons"
-        [isLoading]="isLoading$ | async"
+    <div class="screen-buttons">
+      <lib-button
         [disabled]="disabled$ | async"
-      ></epgu-constructor-screen-buttons>
-    </ng-container>
+        [showLoader]="(isLoading$ | async) || (apiLoading$ | async)"
+        buttonType="button"
+        class="screen-button"
+        (click)="next()"
+      >
+        {{ 'Продолжить' }}
+      </lib-button>
+    </div>
   </div>
 </epgu-cf-ui-screen-container>

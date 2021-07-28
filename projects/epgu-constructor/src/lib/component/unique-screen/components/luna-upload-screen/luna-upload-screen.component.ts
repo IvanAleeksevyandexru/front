@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import {
+  concatMap,
+  distinctUntilChanged,
+  finalize,
+  map,
+  mapTo,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -14,6 +22,13 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import {
+  PassportIdentificationResponse,
+  SelfieIdentificationResponse,
+} from '../../shared/identification-api/identification-api.types';
+import { ActionService } from '../../../../shared/directives/action/action.service';
 
 @Component({
   selector: 'epgu-constructor-luna-upload-screen',
@@ -47,12 +62,14 @@ export class LunaUploadScreenComponent implements OnInit {
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
   disabled$$ = new BehaviorSubject<boolean>(true);
-  disabled$ = this.disabled$$.pipe(distinctUntilChanged());
+  disabled$ = this.disabled$$.pipe(
+    distinctUntilChanged(),
+    tap(() => setTimeout(() => this.cdr.detectChanges())),
+  );
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   nextStepAction: ComponentActionDto = {
     label: 'Далее',
     action: DTOActionAction.getNextStep,
-    value: '',
     type: ActionType.nextStep,
   };
   uploaderProcessing = new BehaviorSubject<string[]>([]);
@@ -62,17 +79,63 @@ export class LunaUploadScreenComponent implements OnInit {
     tap((status) => this.screenService.updateLoading(status)),
   );
 
+  apiLoading$ = new BehaviorSubject<boolean>(false);
+
   private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
 
   constructor(
     public screenService: ScreenService,
+    private identification: IdentificationApiService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
+    private navigationService: NavigationService,
+    private actionService: ActionService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
+  setRequestState(result: SelfieIdentificationResponse | PassportIdentificationResponse): void {
+    this.currentAnswersService.state = { ...result };
+  }
+
+  getRequest(file: UploadedFile): Observable<void> {
+    const faceId = this.screenService.component?.value;
+
+    return faceId?.length > 0
+      ? this.identification.selfieIdentification({ faceId, selfie: file }).pipe(
+          tap((result) => this.setRequestState(result)),
+          mapTo(null),
+        )
+      : this.identification
+          .passportIdentification({
+            passportInfo: file,
+          })
+          .pipe(
+            tap((result) => this.setRequestState(result)),
+            mapTo(null),
+          );
+  }
+
+  next(): void {
+    of(this.value?.uploads[0]?.value[0])
+      .pipe(
+        tap(() => this.apiLoading$.next(true)),
+        concatMap((file) =>
+          this.getRequest(file).pipe(finalize(() => this.apiLoading$.next(false))),
+        ),
+        tap(() => this.nextStep()),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe();
+  }
+
   initUploader(upload: FileUploadItem): FileUploadItem {
-    const processingUpload = { ...upload, fileType: ['PNG', 'JPG', 'JPEG'], maxFileCount: 1 };
+    const processingUpload = {
+      ...upload,
+      fileType: ['PNG', 'JPG', 'JPEG'],
+      maxFileCount: 1,
+      isPreviewPhoto: true,
+    };
     delete processingUpload.maxCountByTypes;
     return processingUpload;
   }
@@ -83,7 +146,6 @@ export class LunaUploadScreenComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
         this.handleNewValueSet(payload);
-        this.currentAnswersService.state = this.value;
       });
     this.uploaderProcessing$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
 
@@ -149,6 +211,10 @@ export class LunaUploadScreenComponent implements OnInit {
         this.isAllFilesUploaded(this.value.uploads)
       ),
     );
+  }
+
+  private nextStep(): void {
+    this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
   }
 
   /**

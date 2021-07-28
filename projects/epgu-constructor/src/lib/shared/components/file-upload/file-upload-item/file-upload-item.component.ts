@@ -80,8 +80,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   plurals = plurals;
   beforeFilesPlural = beforeFilesPlural;
   componentId = this.screenService.component?.id || null;
-  // isMobile: boolean = this.deviceDetectorService.isMobile;
-  isMobile = true;
+  isMobile: boolean = this.deviceDetectorService.isMobile;
 
   overLimits = this.stat.stats;
 
