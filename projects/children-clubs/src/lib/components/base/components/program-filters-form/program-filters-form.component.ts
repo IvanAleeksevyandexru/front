@@ -118,8 +118,8 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       });
   }
 
-  placeSearch(): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
+  placeSearch(): (val: string) => Observable<Array<Partial<ListElement>>> {
+    return (searchString): Observable<Array<Partial<ListElement>>> => {
       return this.dictionary.municipalitiesList$.pipe(
         map((data) => {
           if (searchString.length === 0) {

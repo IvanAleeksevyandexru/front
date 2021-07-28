@@ -40,7 +40,7 @@ const defaultStyle: ConfirmUserDataStyle = {
 export class FieldListComponent implements OnInit, OnChanges {
   @Input() data: ComponentDto;
 
-  public preparedData: Array<ConfirmUserDataFieldsState> = [];
+  public preparedData: ConfirmUserDataFieldsState[] = [];
   public style: ConfirmUserDataStyle;
   public errors: ConfirmUserDataError[];
   public currentEaisdoState: EaisdoStateTypes;

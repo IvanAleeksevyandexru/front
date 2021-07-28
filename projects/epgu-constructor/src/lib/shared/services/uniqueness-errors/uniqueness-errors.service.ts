@@ -24,7 +24,7 @@ export class UniquenessErrorsService {
   }
 
   private _initErrors: ScenarioErrorsDto[][] = [];
-  private _initValues: Record<string, string>[] = [];
+  private _initValues: Array<Record<string, string>> = [];
   private _componendIdErrorsMap: Record<string, number[][]> = {};
 
   constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {}
@@ -43,7 +43,7 @@ export class UniquenessErrorsService {
       });
   }
 
-  public calculatePreparedUniqErrors(changes: Record<string, string>[], index: number): void {
+  public calculatePreparedUniqErrors(changes: Array<Record<string, string>>, index: number): void {
     if (!changes || !this._initErrors.length) return;
 
     const initComponent = this._initValues[index];
@@ -99,7 +99,7 @@ export class UniquenessErrorsService {
     }
   }
 
-  private getState(): Record<string, string>[] {
+  private getState(): Array<Record<string, string>> {
     const cachedAnswers = this.screenService.cachedAnswers[this.screenService.component.id];
     if (cachedAnswers && UtilsService.hasJsonStructure(cachedAnswers.value)) {
       return JSON.parse(this.screenService.cachedAnswers[this.screenService.component.id]?.value);

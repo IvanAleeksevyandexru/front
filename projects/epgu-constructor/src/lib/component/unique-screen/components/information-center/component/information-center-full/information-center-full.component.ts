@@ -30,10 +30,10 @@ import {
 })
 export class InformationCenterFullComponent implements OnInit, OnChanges {
   @Input() items: Full;
-  @Input() regionDictionary: Array<ListElement>;
-  @Input() districtDictionary: Array<ListElement>;
-  @Input() cityDistrictDictionary: Array<ListElement>;
-  @Input() territoryDictionary: Array<ListElement>;
+  @Input() regionDictionary: ListElement[];
+  @Input() districtDictionary: ListElement[];
+  @Input() cityDistrictDictionary: ListElement[];
+  @Input() territoryDictionary: ListElement[];
   @Input() cachedValue: string;
   @Output() selectEvent = new EventEmitter<SelectEvent>();
   @Output() formChangeEvent = new EventEmitter<FormChangeEvent>();

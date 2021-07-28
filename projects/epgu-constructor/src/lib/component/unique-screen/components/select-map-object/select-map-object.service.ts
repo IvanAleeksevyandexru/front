@@ -25,9 +25,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
-  baloonContent: Array<ComponentBaloonContentDto>;
+  baloonContent: ComponentBaloonContentDto[];
   dictionaryType: string;
-  dictionaryFilter: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter: ComponentDictionaryFilterDto[];
   electionDate?: string;
   electionLevel?: string;
 }
@@ -53,7 +53,7 @@ export class SelectMapObjectService implements OnDestroy {
   public mapType = MapTypes.commonMap;
 
   private objectManager;
-  private __mapStateCenter: Array<number>;
+  private __mapStateCenter: number[];
 
   constructor(
     private http: HttpClient,
@@ -75,7 +75,7 @@ export class SelectMapObjectService implements OnDestroy {
    * Returns geo coords of physical addresses array
    * @param items
    */
-  public getCoordsByAddress(items: Array<DictionaryItem>): Observable<IGeoCoordsResponse> {
+  public getCoordsByAddress(items: DictionaryItem[]): Observable<IGeoCoordsResponse> {
     const path = `${this.config.externalApiUrl}/address/resolve`;
     if (items.length) {
       return this.http.post<IGeoCoordsResponse>(path, {

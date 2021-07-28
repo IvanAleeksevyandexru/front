@@ -15,4 +15,4 @@ export interface ClearEvent {
   id?: string;
 }
 
-export type CachedValue = { [key: string]: string }[] | null;
+export type CachedValue = Array<{ [key: string]: string }> | null;

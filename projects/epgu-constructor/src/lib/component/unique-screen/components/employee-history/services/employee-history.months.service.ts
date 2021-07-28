@@ -44,7 +44,7 @@ export class EmployeeHistoryMonthsService {
   ): EmployeeHistoryUncheckedPeriod[] {
     if (!availableMonths.length) return [];
 
-    const periods: Array<Array<EmployeeHistoryAvailableDates>> = [];
+    const periods: EmployeeHistoryAvailableDates[][] = [];
     let periodIndex = 0;
 
     periods[periodIndex] = [];
@@ -60,7 +60,7 @@ export class EmployeeHistoryMonthsService {
       }
     }
 
-    const getPeriod = (type: 'min' | 'max', convertedDates: Array<Date>): string => {
+    const getPeriod = (type: 'min' | 'max', convertedDates: Date[]): string => {
       const date = this.datesToolsService[type](convertedDates);
       return this.datesToolsService.format(date, DATE_STRING_LLLL_YYYY_FORMAT);
     };
@@ -68,7 +68,7 @@ export class EmployeeHistoryMonthsService {
     return periods
       .filter((period) => period.length)
       .map((period: EmployeeHistoryAvailableDates[]) => {
-        const convertedDates: Array<Date> = period.map(
+        const convertedDates: Date[] = period.map(
           (stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate),
         );
 
@@ -79,12 +79,12 @@ export class EmployeeHistoryMonthsService {
       });
   }
 
-  async updateAvailableMonths(generation: Array<EmployeeHistoryModel>): Promise<void> {
+  async updateAvailableMonths(generation: EmployeeHistoryModel[]): Promise<void> {
     this.uncheckAvailableMonths();
     const date = await this.datesToolsService.getToday();
     generation.forEach((e: EmployeeHistoryModel) => {
       if (e.from && e.to) {
-        const availableMonths: Array<string> = this.getAvailableMonths(
+        const availableMonths: string[] = this.getAvailableMonths(
           this.datesToolsService.setCalendarDate(date, e.from.year, e.from.month, null),
           this.datesToolsService.setCalendarDate(date, e.to.year, e.to.month, null),
         ).map((e: EmployeeHistoryAvailableDates) => e.date);

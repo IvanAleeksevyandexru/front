@@ -26,7 +26,7 @@ export class LogicService {
 
   public fetch(
     components: LogicComponents[],
-  ): Observable<ApplicantAnswersDto>[] {
+  ): Array<Observable<ApplicantAnswersDto>> {
     return components.map((logicComponent) => {
       const value = logicComponent.value as unknown as LogicComponentAttrsDto;
       return this.makeRequestAndCall(logicComponent).pipe(

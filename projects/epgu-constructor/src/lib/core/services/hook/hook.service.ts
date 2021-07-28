@@ -7,7 +7,7 @@ import { HookTypes } from './hook.constants';
   providedIn: 'root'
 })
 export class HookService {
-  private hooks: { [key in HookTypes]?: ObservableInput<NavigationPayload>[] } = {};
+  private hooks: { [key in HookTypes]?: Array<ObservableInput<NavigationPayload>> } = {};
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class HookService {
     return Array.isArray(this.hooks[type]) && this.hooks[type].length > 0;
   }
 
-  public getHooks(type: HookTypes): ObservableInput<NavigationPayload>[] {
+  public getHooks(type: HookTypes): Array<ObservableInput<NavigationPayload>> {
     return Array.isArray(this.hooks[type]) ? this.hooks[type] : [];
   }
 

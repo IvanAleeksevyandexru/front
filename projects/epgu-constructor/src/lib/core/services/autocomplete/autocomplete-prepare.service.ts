@@ -28,13 +28,13 @@ export class AutocompletePrepareService {
   ) {}
 
   public getFormattedList(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     id: number,
     componentMnemonic: string,
   ): ISuggestionItemList {
-    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
+    const hints: Array<{ value: string; mnemonic: string }> = this.getFormattedHints(
       repeatableComponents,
       componentsSuggestionsSet,
       fields,
@@ -75,7 +75,7 @@ export class AutocompletePrepareService {
   }
 
   public formatAndPassDataToSuggestions(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     suggestions: ISuggestionApi[],
   ): void {
@@ -112,7 +112,7 @@ export class AutocompletePrepareService {
   }
 
   public findAndUpdateComponentWithValue(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     parentComponent: ComponentDto,
     mnemonic: string,
@@ -179,11 +179,11 @@ export class AutocompletePrepareService {
   }
 
   private getFormattedHints(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     componentMnemonic: string,
-  ): { value: string; mnemonic: string }[] {
+  ): Array<{ value: string; mnemonic: string }> {
     const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
       return Array.from(componentsSuggestionsSet).some(([suggestId]) => suggestId === mnemonic);
     };
@@ -192,7 +192,7 @@ export class AutocompletePrepareService {
     );
 
     return fields
-      .reduce((acc: { value: string; mnemonic: string }[], field) => {
+      .reduce((acc: Array<{ value: string; mnemonic: string }>, field) => {
         let { value, mnemonic } = field;
         if (
           mnemonic !== componentMnemonic &&
@@ -220,7 +220,7 @@ export class AutocompletePrepareService {
   }
 
   private prepareValue(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     value: string,
     componentMnemonic?: string,
@@ -254,7 +254,7 @@ export class AutocompletePrepareService {
   }
 
   private findComponent(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     mnemonic: string,
     componentsGroupIndex?: number,
@@ -325,7 +325,7 @@ export class AutocompletePrepareService {
     componentValue: string,
   ): Answer {
     const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
-    const currentAnswerState = this.currentAnswersService.state as Record<string, string>[];
+    const currentAnswerState = this.currentAnswersService.state as Array<Record<string, string>>;
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     const currentValue = componentValue || component.value;
     if (cachedAnswer) {

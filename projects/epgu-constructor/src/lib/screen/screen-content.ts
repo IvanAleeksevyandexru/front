@@ -40,11 +40,11 @@ export class ScreenContent {
   private _uniquenessErrors = new BehaviorSubject<ScenarioErrorsDto[][]>([]);
   private _componentError = new BehaviorSubject<string>(null);
   private _componentLabel = new BehaviorSubject<string>(null);
-  private _buttons = new BehaviorSubject<Array<ScreenButton>>(null);
+  private _buttons = new BehaviorSubject<ScreenButton[]>(null);
   private _button = new BehaviorSubject<ScreenButton>(null);
-  private _actions = new BehaviorSubject<Array<ComponentActionDto>>(null);
+  private _actions = new BehaviorSubject<ComponentActionDto[]>(null);
   private _action = new BehaviorSubject<ComponentActionDto>(null);
-  private _answers = new BehaviorSubject<Array<ComponentAnswerDto>>(null);
+  private _answers = new BehaviorSubject<ComponentAnswerDto[]>(null);
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
   private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
@@ -54,26 +54,26 @@ export class ScreenContent {
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
 
-  public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
+  public get displayInfoComponents$(): Observable<Array<[ComponentDto, ComponentValue]>> {
     return this.display$.pipe(
       concatMap(({ infoComponents, components }) =>
         infoComponents
           ? (of(infoComponents).pipe(
               map((infoList) => this.filteredComponents(infoList, components)),
-            ) as Observable<[ComponentDto, ComponentValue][]>)
-          : of([] as [ComponentDto, ComponentValue][]),
+            ) as Observable<Array<[ComponentDto, ComponentValue]>>)
+          : of([] as Array<[ComponentDto, ComponentValue]>),
       ),
     );
   }
 
-  public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
+  public get componentInfoComponents$(): Observable<Array<[ComponentDto, ComponentValue]>> {
     return this.component$.pipe(
       concatMap(({ attrs: { infoComponents }}) =>
         infoComponents
           ? (combineLatest([of(infoComponents), this.display$]).pipe(
               map(([infoList, display]) => this.filteredComponents(infoList, display.components)),
-            ) as Observable<[ComponentDto, ComponentValue][]>)
-          : (of([]) as Observable<[ComponentDto, ComponentValue][]>),
+            ) as Observable<Array<[ComponentDto, ComponentValue]>>)
+          : (of([]) as Observable<Array<[ComponentDto, ComponentValue]>>),
       ),
     );
   }
@@ -291,10 +291,10 @@ export class ScreenContent {
     return this._componentLabel.asObservable();
   }
 
-  public get buttons(): Array<ScreenButton> {
+  public get buttons(): ScreenButton[] {
     return this._buttons.getValue();
   }
-  public set buttons(val: Array<ScreenButton>) {
+  public set buttons(val: ScreenButton[]) {
     this._buttons.next(val);
   }
   public get buttons$(): Observable<ScreenButton[]> {
@@ -311,10 +311,10 @@ export class ScreenContent {
     return this._button.asObservable();
   }
 
-  public get actions(): Array<ComponentActionDto> {
+  public get actions(): ComponentActionDto[] {
     return this._actions.getValue();
   }
-  public set actions(val: Array<ComponentActionDto>) {
+  public set actions(val: ComponentActionDto[]) {
     this._actions.next(val);
   }
   public get actions$(): Observable<ComponentActionDto[]> {
@@ -331,10 +331,10 @@ export class ScreenContent {
     return this._action.asObservable();
   }
 
-  public get answers(): Array<ComponentAnswerDto> {
+  public get answers(): ComponentAnswerDto[] {
     return this._answers.getValue();
   }
-  public set answers(val: Array<ComponentAnswerDto>) {
+  public set answers(val: ComponentAnswerDto[]) {
     this._answers.next(val);
   }
   public get answers$(): Observable<ComponentAnswerDto[]> {
@@ -474,7 +474,7 @@ export class ScreenContent {
     }
   }
 
-  private filteredComponents(infoList, components): [ComponentDto, ComponentValue][] {
+  private filteredComponents(infoList, components): Array<[ComponentDto, ComponentValue]> {
     return infoList
       .map((componentId) => {
         const findedComponent = components.find((component) => component.id === componentId);

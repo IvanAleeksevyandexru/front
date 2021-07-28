@@ -3,13 +3,13 @@ import { PaymentInfoInterface } from '../../../component/unique-screen/component
 
 export interface DictionaryResponse {
   error?: DictionaryResponseError | null;
-  fieldErrors: Array<string>;
-  items: Array<DictionaryItem>;
+  fieldErrors: string[];
+  items: DictionaryItem[];
   total: number;
 }
 
 export interface DictionaryResponseForYMap extends DictionaryResponse {
-  items: Array<DictionaryYMapItem>;
+  items: DictionaryYMapItem[];
 }
 
 export interface DictionaryResponseError {
@@ -35,7 +35,7 @@ export interface DictionaryResponseError {
 export interface DictionaryItem extends ListElement {
   attributeValues: PaymentInfoInterface & { [key: string]: string };
   attributes: Array<string | boolean>;
-  children: Array<unknown>;
+  children: unknown[];
   isLeaf: boolean;
   parentValue: null;
   title: string;
@@ -60,7 +60,7 @@ export interface DadataSuggestionsAddress {
 }
 
 export interface DadataSuggestions {
-  addresses: Array<DadataSuggestionsAddress>;
+  addresses: DadataSuggestionsAddress[];
   error: DictionaryResponseError;
 }
 
@@ -84,7 +84,7 @@ export interface DadataNormalizeAddressElement {
 }
 
 export interface DadataNormalizeAddress {
-  elements: Array<DadataNormalizeAddressElement>;
+  elements: DadataNormalizeAddressElement[];
   fiasCode: string;
   fullAddress: string;
   numericFiasCode: string;

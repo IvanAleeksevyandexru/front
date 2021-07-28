@@ -33,7 +33,7 @@ export interface ServiceInfo {
   userRegion: {
     name: string;
     path: string;
-    codes: Array<string>;
+    codes: string[];
   };
 }
 

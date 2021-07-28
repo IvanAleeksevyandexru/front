@@ -94,7 +94,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  weeks: Array<Array<IDay>> = [];
+  weeks: IDay[][] = [];
   monthsYears: ListItem[] = [];
   timeSlots: SlotInterface[] = [];
   dialogButtons = [];
@@ -409,8 +409,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     component: TimeSlotDoctorsComponent,
     attrs: ComponentAttrsDto,
     getInitialDictionaryFilterFunc: () => ComponentDictionaryFilterDto[],
-  ): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
+  ): (val: string) => Observable<Array<Partial<ListElement>>> {
+    return (searchString): Observable<Array<Partial<ListElement>>> => {
       let additionalParams = {};
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;
@@ -497,7 +497,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     );
   }
 
-  private addDayToWeek(week: Array<IDay>, date: Date, today: Date): void {
+  private addDayToWeek(week: IDay[], date: Date, today: Date): void {
     const isOutOfSection = this.isDateOutOfSection(
       date,
       this.firstDayOfMainSection,

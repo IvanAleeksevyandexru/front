@@ -115,7 +115,7 @@ export interface TimeSlotReq {
   caseNumber?: string;
   serviceId?: string[];
   eserviceId?: string;
-  attributes?: { name: string; value: string | boolean }[];
+  attributes?: Array<{ name: string; value: string | boolean }>;
   routeNumber?: string;
   serviceCode?: string;
 }
@@ -128,7 +128,7 @@ export interface BookTimeSlotReq {
   routeNumber?: string;
   serviceCode?: string;
   subject?: string;
-  params?: { name: string; value: string | number }[];
+  params?: Array<{ name: string; value: string | number }>;
   eserviceId?: string; // TODO eserviceId?????
   bookId?: string;
   organizationId?: string[] | string;
@@ -137,7 +137,7 @@ export interface BookTimeSlotReq {
   selectedHallTitle?: string;
   parentOrderId?: string;
   preliminaryReservationPeriod?: string;
-  attributes?: { name?: string; value?: string }[];
+  attributes?: Array<{ name?: string; value?: string }>;
   slotId?: string[];
   serviceId?: string[];
   caseNumber?: string;

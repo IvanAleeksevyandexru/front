@@ -24,9 +24,9 @@ export class PrepareComponentsService {
   ) {}
 
   public prepareComponents(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
-  ): Array<ScreenStoreComponentDtoI> {
+  ): ScreenStoreComponentDtoI[] {
     let preparedComponents;
     preparedComponents = this.loadValueFromCachedAnswer(components, cachedAnswers);
     preparedComponents = this.handleRelatedRelComponents(preparedComponents, cachedAnswers);
@@ -34,9 +34,9 @@ export class PrepareComponentsService {
   }
 
   private loadValueFromCachedAnswer(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
-  ): Array<ScreenStoreComponentDtoI> {
+  ): ScreenStoreComponentDtoI[] {
     return components.map((component) => {
       component.valueFromCache = false;
       if (component.type === UniqueScreenComponentTypes.repeatableFields) {
@@ -76,17 +76,17 @@ export class PrepareComponentsService {
   }
 
   private setRepeatableFields(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
     parentComponent: ComponentDto,
-  ): Array<Array<ComponentDto>> {
+  ): ComponentDto[][] {
     const cachedValue =
       this.getCache(parentComponent, cachedAnswers) ||
       parentComponent.value ||
       null;
     const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
     if (cachedValueArray.length) {
-      let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
+      let repeatableFieldComponents: ComponentDto[][] = [];
       repeatableFieldComponents = cachedValueArray.map((_component, index) => {
           return this.getCacheRepeatableField(components, cachedValue, index);
       });
@@ -97,10 +97,10 @@ export class PrepareComponentsService {
   }
 
   private getCacheRepeatableField(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedValue: string,
     index: number,
-  ): Array<ComponentDto> {
+  ): ComponentDto[] {
     return components.map((item) => {
       return this.getComponentWithCaches(item, cachedValue, item.id, index);
     });
@@ -244,7 +244,7 @@ export class PrepareComponentsService {
     }
   }
 
-  private getPresetsFromRawPresets(preset: string): Array<string> {
+  private getPresetsFromRawPresets(preset: string): string[] {
     return preset.split('||').map((ref) => ref.trim());
   }
 
@@ -358,9 +358,9 @@ export class PrepareComponentsService {
   }
 
   private handleRelatedRelComponents(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
-  ): Array<ScreenStoreComponentDtoI> {
+  ): ScreenStoreComponentDtoI[] {
     return components.map((component) => {
       const ref = component.attrs?.ref;
       if (ref && Array.isArray(ref)) {
@@ -378,7 +378,7 @@ export class PrepareComponentsService {
   private handleCustomComponentRef(
     component: ComponentDto,
     refs: CustomComponentRef[],
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
   ): ScreenStoreComponentDtoI {
     refs.forEach((ref) => {

@@ -18,7 +18,7 @@ import { CertificateEaisdoService } from '../../services/certificate-eaisdo/cert
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenButtonsComponent implements OnInit {
-  @Input() screenButtons: Array<ScreenButton>;
+  @Input() screenButtons: ScreenButton[];
   @Input() isLoading = false;
   @Input() disabled = false;
   @Input() disabledForAll = false;

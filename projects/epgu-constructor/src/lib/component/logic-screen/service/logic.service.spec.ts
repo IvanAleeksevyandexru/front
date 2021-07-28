@@ -32,7 +32,7 @@ describe('LogicService', () => {
   let dictionaryApiService: DictionaryApiService;
   let httpTestingController: HttpTestingController;
   let localStorage: LocalStorageService;
-  const componentsPOST: { id: string; value: ComponentValue }[] = [
+  const componentsPOST: Array<{ id: string; value: ComponentValue }> = [
     {
       id: 'rest1',
       value: {
@@ -44,7 +44,7 @@ describe('LogicService', () => {
       },
     },
   ];
-  const componentsGET: { id: string; value: ComponentValue }[] = [
+  const componentsGET: Array<{ id: string; value: ComponentValue }> = [
     {
       id: 'rest1',
       value: {
@@ -55,7 +55,7 @@ describe('LogicService', () => {
       },
     },
   ];
-  const componentsWithTimeOut: { id: string; value: ComponentValue }[] = [
+  const componentsWithTimeOut: Array<{ id: string; value: ComponentValue }> = [
     {
       id: 'rest1',
       value: {
@@ -68,7 +68,7 @@ describe('LogicService', () => {
       },
     },
   ];
-  const componentsWithDictionary: { id: string; attrs: LogicComponentAttrsDto; value: ComponentValue }[] = [
+  const componentsWithDictionary: Array<{ id: string; attrs: LogicComponentAttrsDto; value: ComponentValue }> = [
     {
       id: 'rest1',
       attrs: {

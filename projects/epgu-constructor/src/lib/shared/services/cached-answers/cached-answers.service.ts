@@ -7,7 +7,7 @@ import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
-export const componentsNoCache: Array<string> = [
+export const componentsNoCache: string[] = [
   UniqueScreenComponentTypes.carInfo,
   UniqueScreenComponentTypes.carOwnerInfo,
   UniqueScreenComponentTypes.confirmPersonalUserPhone,

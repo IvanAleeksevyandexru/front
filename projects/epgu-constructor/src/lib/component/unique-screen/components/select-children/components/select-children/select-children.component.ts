@@ -38,8 +38,8 @@ export class SelectChildrenComponent implements OnInit {
   @Input() errors: ScenarioErrorsDto[];
   @Output() updateCurrentAnswerServiceValidationEvent = new EventEmitter<boolean>();
 
-  itemsToSelect: Array<ChildI>; // Дети для выпадающего списка
-  items: Array<ChildI> = []; // Выбранные дети
+  itemsToSelect: ChildI[]; // Дети для выпадающего списка
+  items: ChildI[] = []; // Выбранные дети
   itemsComponents = []; // Компоненты для кастомных детей
   selectChildrenForm = new FormGroup({});
   firstNameRef: string;
@@ -180,7 +180,7 @@ export class SelectChildrenComponent implements OnInit {
    * Сохраняем данные для отправки, удаляя лишние поля
    */
   passDataToSend(items: ChildI[], index: number, clearEvent?: ClearEvent): void {
-    const itemsToSend: { [key: string]: string | number | boolean }[] = items.map((child) => {
+    const itemsToSend: Array<{ [key: string]: string | number | boolean }> = items.map((child) => {
       const childToSend = { ...child };
       delete childToSend.controlId;
       delete childToSend.id;
@@ -284,7 +284,7 @@ export class SelectChildrenComponent implements OnInit {
    * метод формирует и возвращает массив компонентов кастомного ребенка
    * @param child - сохраненный ранее ребенок. Используется для заполнения полей
    */
-  private prepareItemComponents(child: ChildI = {}): Array<ComponentDto> {
+  private prepareItemComponents(child: ChildI = {}): ComponentDto[] {
     return this.component?.attrs?.components.map((component) => {
       return {
         ...component,

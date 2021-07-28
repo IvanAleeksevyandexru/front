@@ -247,7 +247,7 @@ export class TimeSlotsService {
     return changed;
   }
 
-  public getAreasListItems(): Array<ListItem> {
+  public getAreasListItems(): ListItem[] {
     return this.areas.map((area) => {
       return new ListItem({
         id: area,
@@ -493,7 +493,7 @@ export class TimeSlotsService {
    * то нужно из справочника запросить список кабинетов
    * @param areaName AREA_NAME загса
    */
-  private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
+  private getAvailableAreaNames(areaName: string): Observable<string[]> {
     if (this.areaNamesIsNeeded) {
       if (areaName) {
         return of([areaName]);
@@ -570,7 +570,7 @@ export class TimeSlotsService {
 
   private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {
     const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath, []);
+    const slots: SlotInterface[] = get(this.slotsMap, slotsPath, []);
     return slots.filter((slot) => slot.areaId === areadId || !areadId);
   }
 }

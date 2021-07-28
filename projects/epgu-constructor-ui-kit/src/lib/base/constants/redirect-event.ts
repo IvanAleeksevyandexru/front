@@ -12,7 +12,7 @@ interface MobileEventParam<T> {
 
 export interface MobileEvent<T> {
   eventType: MobileEventType;
-  eventParams: MobileEventParam<T>[];
+  eventParams: Array<MobileEventParam<T>>;
 }
 
 /**
@@ -49,7 +49,7 @@ export const MobilViewEvents: Record<string, MobileEvent<string>> = {
 
 export const createMobileEvent = <T>(
   type: MobileEventType,
-  params: MobileEventParam<T>[] = [],
+  params: Array<MobileEventParam<T>> = [],
 ): MobileEvent<T> => ({
   eventType: type,
   eventParams: params,

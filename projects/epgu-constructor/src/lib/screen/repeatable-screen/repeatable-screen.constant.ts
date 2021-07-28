@@ -1,6 +1,6 @@
 import { CustomComponentOutputData } from '../../component/custom-screen/components-list.types';
 
-export const removeItemFromArrByIndex = (arr,index): Record<string, string>[] => arr.filter((_, i) => i !== index);
+export const removeItemFromArrByIndex = (arr,index): Array<Record<string, string>> => arr.filter((_, i) => i !== index);
 
 export function prepareDataToSendForRepeatableFieldsComponent(
   changes: CustomComponentOutputData): Record<string, string> {

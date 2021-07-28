@@ -79,7 +79,7 @@ export class SelectChildrenScreenContainerComponent implements OnInit, AfterView
     this.cdr.detectChanges();
   }
 
-  public updateCurrentAnswersState(state: Record<string, string>[], index: number): void {
+  public updateCurrentAnswersState(state: Array<Record<string, string>>, index: number): void {
     this.uniquenessErrorsService.calculatePreparedUniqErrors(state, index);
     this.currentAnswersService.state = state;
   }

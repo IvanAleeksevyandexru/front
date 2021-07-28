@@ -6,8 +6,8 @@ export default interface IDropDownDeptsAttrs {
   dictionaryType?: string;
   lockedValue?: boolean;
   repeatWithNoFilters?: boolean;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
-  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
+  secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
   ref?: Array<CustomComponentRef | DateRangeRef>;
   defaultIndex?: number;
 }

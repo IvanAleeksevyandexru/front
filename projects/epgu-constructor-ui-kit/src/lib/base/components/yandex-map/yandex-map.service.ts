@@ -50,7 +50,7 @@ export class YandexMapService implements OnDestroy {
    * prepares and returns collection of objects for yandex map
    * @param items geo objects
    */
-  public prepareFeatureCollection<T>(items: IYMapPoint<T>[]): IFeatureCollection<T> {
+  public prepareFeatureCollection<T>(items: Array<IYMapPoint<T>>): IFeatureCollection<T> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item, index) => {
       if (item.center) {
@@ -72,7 +72,7 @@ export class YandexMapService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeObjectsOnMap<T>(items: IYMapPoint<T>[], OMSettings?, urlTemplate?: string, LOMSettings?): void {
+  public placeObjectsOnMap<T>(items: Array<IYMapPoint<T>>, OMSettings?, urlTemplate?: string, LOMSettings?): void {
     this.objectManager = this.createMapsObjectManager(OMSettings, urlTemplate, LOMSettings);
     this.objectManager.objects.options.set(this.icons.blue);
     this.objectManager.objects.options.set(

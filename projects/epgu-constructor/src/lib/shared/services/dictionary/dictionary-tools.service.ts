@@ -75,7 +75,7 @@ export class DictionaryToolsService {
   ) {}
 
   public watchForFilters(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
   ): Observable<CustomListReferenceData[]> {
     return this.componentsListRelationsService.filters$.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
@@ -87,12 +87,12 @@ export class DictionaryToolsService {
           ),
         );
       }),
-      tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference)),
+      tap((reference: CustomListReferenceData[]) => this.initDataAfterLoading(reference)),
     );
   }
 
   public loadReferenceData$(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     cachedAnswers: CachedAnswersDto,
     screenStore: ScreenStore,
   ): Observable<CustomListReferenceData[]> {
@@ -147,7 +147,7 @@ export class DictionaryToolsService {
       });
 
     return forkJoin(data).pipe(
-      tap((reference: Array<CustomListReferenceData>) => this.initDataAfterLoading(reference)),
+      tap((reference: CustomListReferenceData[]) => this.initDataAfterLoading(reference)),
     );
   }
 
@@ -259,7 +259,7 @@ export class DictionaryToolsService {
   public prepareUnionFilter(
     componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dictionaryFilters?: Array<ComponentDictionaryFilterDto>,
+    dictionaryFilters?: ComponentDictionaryFilterDto[],
   ): { union: DictionaryUnionFilter } {
     const filters = dictionaryFilters.map((dFilter: ComponentDictionaryFilterDto) =>
       this.prepareSimpleFilter(componentValue, screenStore, dFilter),
@@ -275,7 +275,7 @@ export class DictionaryToolsService {
   public getFilterOptions(
     componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dictionaryFilters?: Array<ComponentDictionaryFilterDto>,
+    dictionaryFilters?: ComponentDictionaryFilterDto[],
   ): DictionaryFilters {
     const filter =
       dictionaryFilters?.length === 1
@@ -287,8 +287,8 @@ export class DictionaryToolsService {
 
   public getAdditionalParams(
     screenStore: ScreenStore,
-    params?: Array<AdditionalRequestParam>,
-  ): Array<AdditionalRequestParam> {
+    params?: AdditionalRequestParam[],
+  ): AdditionalRequestParam[] {
     return params.map((param: AdditionalRequestParam) => ({
       value: param?.type === AdditionalRequestType.ref ? this.getValueViaRef(screenStore.applicantAnswers, param.value) : param.value,
       name: param?.name,
@@ -304,7 +304,7 @@ export class DictionaryToolsService {
     items: Array<DictionaryItem | KeyValueMap>,
     mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
     isRoot?: boolean,
-  ): Array<ListElement> {
+  ): ListElement[] {
     return items.map((item) => ({
       originalItem: item,
       id: (isRoot ? utils.getObjectProperty(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
@@ -360,7 +360,7 @@ export class DictionaryToolsService {
   public prepareOptions(
     component: CustomComponent,
     screenStore: ScreenStore,
-    dictionaryFilter: Array<ComponentDictionaryFilterDto>,
+    dictionaryFilter: ComponentDictionaryFilterDto[],
   ): DictionaryOptions {
     let componentValue: ComponentValue;
     try {
@@ -379,10 +379,10 @@ export class DictionaryToolsService {
     };
   }
 
-  private initDataAfterLoading(references: Array<CustomListReferenceData>): void {
+  private initDataAfterLoading(references: CustomListReferenceData[]): void {
     references.forEach((reference: CustomListReferenceData) => {
       if (this.isDropdownLike(reference.component.type)) {
-        this.initDropdown(reference as CustomListGenericData<Partial<ListItem>[]>);
+        this.initDropdown(reference as CustomListGenericData<Array<Partial<ListItem>>>);
       }
 
       if (this.isDictionaryLike(reference.component.type)) {
@@ -391,7 +391,7 @@ export class DictionaryToolsService {
     });
   }
 
-  private initDropdown(reference: CustomListGenericData<Partial<ListItem>[]>): void {
+  private initDropdown(reference: CustomListGenericData<Array<Partial<ListItem>>>): void {
     const dropDowns = this.dropDowns$.getValue();
     if (!dropDowns[reference.component.id]) {
       dropDowns[reference.component.id] = reference.data;
@@ -403,7 +403,7 @@ export class DictionaryToolsService {
   private getDropdowns$(
     component: CustomComponent,
     cachedAnswers: CachedAnswersDto,
-  ): Observable<CustomListGenericData<Partial<ListItem>[]>> {
+  ): Observable<CustomListGenericData<Array<Partial<ListItem>>>> {
     return of({
       component,
       data: component.attrs?.add
@@ -415,7 +415,7 @@ export class DictionaryToolsService {
   private loadCycledDropdown(
     itemComponent: CustomComponent,
     cachedAnswers: CachedAnswersDto,
-  ): Partial<ListItem>[] {
+  ): Array<Partial<ListItem>> {
     if (!itemComponent?.attrs?.add) {
       return [];
     }
@@ -453,7 +453,7 @@ export class DictionaryToolsService {
     });
   }
 
-  private adaptDropdown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
+  private adaptDropdown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
     return items.map((item: CustomComponentDropDownItem, index: number) => {
       const itemText = item.label || item.title;
       const itemCode = item.code || item?.value || `${itemText}-${index}`;

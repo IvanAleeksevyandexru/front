@@ -155,7 +155,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private fillCoords(): Observable<Array<IYMapPoint<BaseProgram>>> {
     return this.programListService.data$.pipe(
-      switchMap((programList: Array<BaseProgram>) => {
+      switchMap((programList: BaseProgram[]) => {
         // Параллелим получение геоточек на 4 запроса
         const addresses = programList.map((program) => program.address);
         const chunkSize = addresses.length / 4;

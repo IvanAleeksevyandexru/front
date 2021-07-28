@@ -50,7 +50,7 @@ export class CarListContainerComponent implements OnDestroy {
   );
 
   control: FormControl;
-  carFixedItems: Partial<ListItem>[];
+  carFixedItems: Array<Partial<ListItem>>;
   hasError: boolean;
   errorTemplate: ErrorTemplate;
 
@@ -100,7 +100,7 @@ export class CarListContainerComponent implements OnDestroy {
     }</span>`;
   }
 
-  getCarFixedItems(value: CarList): Partial<ListItem>[] {
+  getCarFixedItems(value: CarList): Array<Partial<ListItem>> {
     return value?.vehicles?.map((vehicleInfo) => {
       return {
         id: vehicleInfo.govRegNumber,

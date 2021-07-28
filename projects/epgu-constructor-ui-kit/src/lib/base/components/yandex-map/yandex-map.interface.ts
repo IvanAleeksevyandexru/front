@@ -1,5 +1,5 @@
 export interface IYMapPoint<T> {
-  center: Array<number>;
+  center: number[];
   obj: T;
 }
 

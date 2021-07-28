@@ -414,7 +414,7 @@ export class TimeSlotDoctorService {
 
   private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {
     const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath, []);
+    const slots: SlotInterface[] = get(this.slotsMap, slotsPath, []);
     return slots.filter((slot) => slot.areaId === areadId || !areadId);
   }
 }

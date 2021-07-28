@@ -3,7 +3,7 @@ import { ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 
 @Injectable()
 export class PrepareComponentsServiceStub {
-  public prepareComponents(): Array<ScreenStoreComponentDtoI> {
+  public prepareComponents(): ScreenStoreComponentDtoI[] {
     return [];
   }
 }

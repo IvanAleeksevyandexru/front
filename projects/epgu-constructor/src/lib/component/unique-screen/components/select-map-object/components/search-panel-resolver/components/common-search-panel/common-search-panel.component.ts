@@ -56,8 +56,8 @@ export class CommonSearchPanelComponent implements AfterViewInit {
     this.yandexMapService.centeredPlaceMark(chosenMapObject);
   }
 
-  private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
+  private providerSearch(): (val: string) => Observable<Array<Partial<ListElement>>> {
+    return (searchString): Observable<Array<Partial<ListElement>>> => {
       this.selectMapObjectService.searchMapObject(searchString);
       const fullItems = [];
       this.selectMapObjectService.filteredDictionaryItems.forEach((item) => {

@@ -128,7 +128,7 @@ describe('DictionaryToolsService', () => {
 
   const setup = (
     componentType: string,
-    dictionaryItems: Array<object> = [],
+    dictionaryItems: object[] = [],
     attrs: Partial<CustomComponentAttr> = {},
   ) => {
     const component = ({

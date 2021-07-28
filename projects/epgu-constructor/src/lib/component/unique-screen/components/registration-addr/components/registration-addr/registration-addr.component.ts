@@ -104,7 +104,7 @@ export class RegistrationAddrComponent implements OnInit {
     const regExp = field?.regexp || null;
     const isRequired = this.required;
     const isDateType = field?.type === 'date';
-    const validators: Array<ValidatorFn> = [];
+    const validators: ValidatorFn[] = [];
     if (regExp) {
       validators.push(Validators.pattern(regExp));
     }

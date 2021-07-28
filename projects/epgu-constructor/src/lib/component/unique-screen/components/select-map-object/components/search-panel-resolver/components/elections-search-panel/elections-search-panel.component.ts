@@ -56,8 +56,8 @@ export class ElectionsSearchPanelComponent implements AfterViewInit {
       });
   }
 
-  private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
+  private providerSearch(): (val: string) => Observable<Array<Partial<ListElement>>> {
+    return (searchString): Observable<Array<Partial<ListElement>>> => {
       return this.dictionaryApiService.getDadataSuggestions(searchString).pipe(
         map((response) => {
           return response.suggestions.addresses.map((address) => {

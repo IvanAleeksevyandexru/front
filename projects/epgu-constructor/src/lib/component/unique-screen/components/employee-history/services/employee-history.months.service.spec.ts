@@ -70,7 +70,7 @@ describe('EmployeeHistoryMonthsService', () => {
         date: '01/2021',
         checked: true,
       };
-      const generation: Array<EmployeeHistoryModel> = [
+      const generation: EmployeeHistoryModel[] = [
         {
           type: 'student',
           from: new MonthYear(11, 2020),
