@@ -203,20 +203,26 @@ export class ValidationService {
   }
 
   public checkCardNumber(cardNumber: string): boolean {
-      let sum = 0;
-      const digits = String(cardNumber).replace(/\D/g, '');
-      let isEven = digits.length % 2 === 0;
-      for (let i = 0; i < digits.length; i++) {
-        let cardNum = parseInt(digits[i]);
-        if (isEven ? i % 2 === 0 : i % 2 === 1) {
-          cardNum = cardNum * 2;
-          if (cardNum > 9) {
-            cardNum = cardNum - 9;
-          }
+    let sum = 0;
+    const digits = String(cardNumber).replace(/\D/g, '');
+    let isEven = digits.length % 2 === 0;
+    for (let i = 0; i < digits.length; i++) {
+      let cardNum = parseInt(digits[i]);
+      if (isEven ? i % 2 === 0 : i % 2 === 1) {
+        cardNum = cardNum * 2;
+        if (cardNum > 9) {
+          cardNum = cardNum - 9;
         }
-        sum += cardNum;
       }
-      return sum % 10 === 0;
+      sum += cardNum;
+    }
+    return sum % 10 === 0 ? this.checkMIRCardBins(cardNumber) : false;
+  }
+
+  private checkMIRCardBins(cardNumber: string): boolean {
+    // eslint-disable-next-line max-len
+    const binRegExp = /^(((((3562\s?99|3565\s?04|3565\s?14|3565\s?46|6711\s?82|6763\s?47|6764\s?54|6765\s?31|6769\s?07|6773\s?19|6773\s?84|6768\s?84)[0-9]{2})|6234\s?461[0-9]{1})|6291\s?5700|6292\s?4402)|220[0-4]\s?[0-9]{4})\s?[0-9]{4}\s?([0-9]{4}\s?([0-9]{1}|[0-9]{2}|[0-9]{3})?)$/;
+    return binRegExp.test(cardNumber);
   }
 
   private isValid(component: CustomComponent, value: string): boolean {
