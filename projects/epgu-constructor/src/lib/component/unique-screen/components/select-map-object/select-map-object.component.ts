@@ -414,7 +414,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         this.screenStore,
         dictionaryFilters,
       ),
-      selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
+      // TODO: после правки JSON услуг, вернуть
+      // selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
+      selectAttributes: ['*'],
       pageSize: '100000',
     };
   }
