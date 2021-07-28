@@ -27,7 +27,7 @@ import {
   TimeSlotValueInterface
 } from './time-slot-doctors.interface';
 
-type attributesMapType = Array<{ name: string; value: string }>;
+type attributesMapType = { name: string; value: string }[];
 
 type configType = {
   [key: string]: string | attributesMapType;
@@ -60,7 +60,7 @@ export class TimeSlotDoctorService {
   private errorMessage;
   private availableMonths: string[];
   private config: configType = {};
-  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
+  private timeSlotRequestAttrs: { name: string; value: string }[];
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -414,7 +414,7 @@ export class TimeSlotDoctorService {
 
   private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {
     const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath, []);
+    const slots: SlotInterface[] = get(this.slotsMap, slotsPath, []);
     return slots.filter((slot) => slot.areaId === areadId || !areadId);
   }
 }

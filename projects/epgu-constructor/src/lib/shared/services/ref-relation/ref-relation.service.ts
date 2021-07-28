@@ -40,7 +40,7 @@ export class RefRelationService {
    * @param componentVal - value из компонета
    */
   public isValueEquals(
-    value: string | Array<string> | boolean,
+    value: string | string[] | boolean,
     componentVal: { id?: string } | string | number, //TODO: нормализовать типы
   ): boolean {
     const parsedComponentValue = this.getValueFromComponentVal(componentVal);

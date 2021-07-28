@@ -46,7 +46,7 @@ export class ComponentsListRelationsService {
   ) {}
 
   public getUpdatedShownElements(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     component: CustomListFormGroup | CustomComponent,
     shownElements: CustomListStatusElements,
     form: FormArray,
@@ -96,7 +96,7 @@ export class ComponentsListRelationsService {
   }
 
   updateLimitDatesByDateRestrictions(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     component: CustomComponent | CustomListFormGroup,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
@@ -114,7 +114,7 @@ export class ComponentsListRelationsService {
   }
 
   public createStatusElements(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     cachedAnswers: CachedAnswers,
   ): CustomListStatusElements {
     return components.reduce(
@@ -210,7 +210,7 @@ export class ComponentsListRelationsService {
   public getDependentComponents(
     components: CustomComponent[],
     component: CustomComponent,
-  ): Array<CustomComponent> {
+  ): CustomComponent[] {
     return components.filter((_component: CustomComponent) =>
       this.isComponentDependent(_component.attrs.ref, component),
     );
@@ -302,7 +302,7 @@ export class ComponentsListRelationsService {
 
   private async updateLimitDates(
     component: CustomComponent | CustomListFormGroup,
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number
@@ -338,7 +338,7 @@ export class ComponentsListRelationsService {
 
   private async setLimitDates(
     component: CustomComponent | CustomListFormGroup,
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number): Promise<void> {
@@ -399,7 +399,7 @@ export class ComponentsListRelationsService {
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     shownElements: CustomListStatusElements,
     dictionaries: CustomListDictionaries,

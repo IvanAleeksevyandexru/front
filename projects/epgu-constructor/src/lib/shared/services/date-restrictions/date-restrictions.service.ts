@@ -26,7 +26,7 @@ export class DateRestrictionsService {
   async getDateRange(
     componentId: string,
     dateRestrictions: DateRestriction[],
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number
@@ -117,7 +117,7 @@ export class DateRestrictionsService {
   }
 
   private getDateByRef(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     dateRef: string,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
@@ -135,7 +135,7 @@ export class DateRestrictionsService {
 
   private getDateFromComponents(
     dateId: string,
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
   ): Date {
     const component = components.find((component) => component.id === dateId);
@@ -155,7 +155,7 @@ export class DateRestrictionsService {
 
   private setDateRefs(
     restrictions: DateRestriction[],
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): void {

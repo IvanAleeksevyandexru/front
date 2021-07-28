@@ -40,7 +40,7 @@ describe('AutocompletePrepareService', () => {
   let service: AutocompletePrepareService;
   let datesToolsService: DatesToolsService;
   let screenService: ScreenService;
-  let repeatableComponents: Array<Array<ComponentDto>>;
+  let repeatableComponents: ComponentDto[][];
   let componentsSuggestionsSet: Set<[string, string]>;
   let parentComponent: ComponentDto;
 

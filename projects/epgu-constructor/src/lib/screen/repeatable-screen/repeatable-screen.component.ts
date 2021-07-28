@@ -50,7 +50,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   screenCaption: string;
   secondScreenCaption: string;
   minOccures: number;
-  componentValidation: Array<boolean> = [];
+  componentValidation: boolean[] = [];
   parentComponentId: string;
   cacheRepeatableFieldsAnswersLocally: boolean;
 

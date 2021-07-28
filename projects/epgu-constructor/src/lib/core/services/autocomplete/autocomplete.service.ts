@@ -26,7 +26,7 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 export class AutocompleteService {
   componentsSuggestionsSet: Set<[string, string]> = new Set();
   suggestionGroupId: string = null;
-  repeatableComponents: Array<Array<ComponentDto>> = [];
+  repeatableComponents: ComponentDto[][] = [];
   parentComponent: ComponentDto = null;
 
   constructor(
@@ -210,7 +210,7 @@ export class AutocompleteService {
       });
   }
 
-  public getRepeatableComponents(display): Array<Array<ComponentDto>> {
+  public getRepeatableComponents(display): ComponentDto[][] {
     if (display.components[0]?.attrs?.repeatableComponents) {
       return display.components[0]?.attrs.repeatableComponents;
     } else if (display.components[0]?.attrs?.components) {

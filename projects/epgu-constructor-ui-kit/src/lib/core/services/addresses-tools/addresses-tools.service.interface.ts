@@ -5,6 +5,6 @@ export interface IGeoCoords {
 }
 
 export interface IGeoCoordsResponse {
-  coords: Array<IGeoCoords>;
+  coords: IGeoCoords[];
   error?: string;
 }

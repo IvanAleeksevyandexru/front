@@ -4,7 +4,7 @@ import { Gender } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class EmployeeHistoryDataSourceService {
-  public dataSource: Array<EmployeeHistoryDataSource>;
+  public dataSource: EmployeeHistoryDataSource[];
 
   public getDataSourceByGender(gender: Gender = Gender.male): void {
     this.dataSource = [

@@ -10,7 +10,7 @@ import { ScreenButton } from '@epgu/epgu-constructor-types';
 export class DefaultUniqueScreenWrapperComponent {
   @Input() showNav: boolean;
   @Input() header: string;
-  @Input() screenButtons: Array<ScreenButton>;
+  @Input() screenButtons: ScreenButton[];
   @Input() isLoading: boolean;
   @Input() isValid = true;
 }

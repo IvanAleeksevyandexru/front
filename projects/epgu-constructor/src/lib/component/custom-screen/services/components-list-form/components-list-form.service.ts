@@ -76,7 +76,7 @@ export class ComponentsListFormService {
   ) {}
 
   public create(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     errors: ScenarioErrorsDto,
     componentsGroupIndex?: number,
   ): FormArray {
@@ -221,7 +221,7 @@ export class ComponentsListFormService {
     }, {});
   }
 
-  private relationRegExp(value: string, params: RegExp): Array<string> {
+  private relationRegExp(value: string, params: RegExp): string[] {
     return String(value).match(params);
   }
   private relationMinDate(value: string | Date, params: string): boolean {
@@ -311,7 +311,7 @@ export class ComponentsListFormService {
 
   private createGroup(
     component: CustomComponent,
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     errorMsg: string,
     componentsGroupIndex?: number,
   ): FormGroup {
@@ -406,7 +406,7 @@ export class ComponentsListFormService {
     }
   }
 
-  private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
+  private watchFormGroup$(form: FormGroup): Observable<CustomListFormGroup[]> {
     return form.valueChanges.pipe(
       startWith(form.getRawValue() as unknown),
       pairwise(),
@@ -414,7 +414,7 @@ export class ComponentsListFormService {
     );
   }
 
-  private watchFormArray$(): Observable<Array<CustomListFormGroup>> {
+  private watchFormArray$(): Observable<CustomListFormGroup[]> {
     return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 

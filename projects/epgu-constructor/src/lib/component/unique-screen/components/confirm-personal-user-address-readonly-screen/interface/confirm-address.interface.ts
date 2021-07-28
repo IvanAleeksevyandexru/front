@@ -21,10 +21,10 @@ export interface ConfirmAddressInterface {
 }
 
 interface ConfirmAddressInterfaceAttr {
-  actions: Array<ConfirmAddressActionsInterface>;
-  fields: Array<ConfirmAddressFieldsInterface>;
+  actions: ConfirmAddressActionsInterface[];
+  fields: ConfirmAddressFieldsInterface[];
   fstuc?: TextTransform;
-  hideLevels?: Array<string>;
+  hideLevels?: string[];
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
   disclaimer?: DisclaimerDto;

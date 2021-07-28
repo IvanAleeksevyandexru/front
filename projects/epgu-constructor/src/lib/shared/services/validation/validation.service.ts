@@ -35,7 +35,7 @@ type DateValidationCondition = '<' | '<=' | '>' | '>=';
 @Injectable()
 export class ValidationService {
   public form?: FormArray;
-  private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
+  private readonly typesWithoutValidation: CustomScreenComponentTypes[] = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
@@ -247,7 +247,7 @@ export class ValidationService {
   }
 
   private getError(
-    validations: Array<CustomComponentAttrValidation>,
+    validations: CustomComponentAttrValidation[],
     control: AbstractControl,
     component: CustomComponent,
   ): CustomComponentAttrValidation {

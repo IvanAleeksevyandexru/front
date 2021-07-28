@@ -47,7 +47,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   @Input() allowedImgTypes: string[];
   @Input() startToUploadPhoto: { isStart: boolean };
   @Input() startToChangeCroppedImageUrl: { isStart: boolean };
-  @Input() validations: Array<ComponentValidationDto>;
+  @Input() validations: ComponentValidationDto[];
   @Output() uploadPhotoToServerEvent = new EventEmitter<ComponentUploadedFileDto>();
   @Output() croppedImageUrlEvent = new EventEmitter<string>();
 

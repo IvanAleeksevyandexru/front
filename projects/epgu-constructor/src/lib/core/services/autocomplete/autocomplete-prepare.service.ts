@@ -28,7 +28,7 @@ export class AutocompletePrepareService {
   ) {}
 
   public getFormattedList(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     id: number,
@@ -75,7 +75,7 @@ export class AutocompletePrepareService {
   }
 
   public formatAndPassDataToSuggestions(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     suggestions: ISuggestionApi[],
   ): void {
@@ -112,7 +112,7 @@ export class AutocompletePrepareService {
   }
 
   public findAndUpdateComponentWithValue(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     parentComponent: ComponentDto,
     mnemonic: string,
@@ -179,7 +179,7 @@ export class AutocompletePrepareService {
   }
 
   private getFormattedHints(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     componentMnemonic: string,
@@ -220,7 +220,7 @@ export class AutocompletePrepareService {
   }
 
   private prepareValue(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     value: string,
     componentMnemonic?: string,
@@ -254,7 +254,7 @@ export class AutocompletePrepareService {
   }
 
   private findComponent(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     mnemonic: string,
     componentsGroupIndex?: number,

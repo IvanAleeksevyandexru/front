@@ -24,7 +24,7 @@ interface DocInputField extends CustomComponent {
   hint?: string;
   attrs: {
     labelHint?: string;
-    mask?: Array<string>;
+    mask?: string[];
     validation?: CustomComponentAttrValidation[];
     maxDate?: string;
     minDate?: string;
