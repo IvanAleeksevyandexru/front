@@ -21,12 +21,16 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/epgu-lib';
-import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { FocusState, ValidationShowOn } from '@epgu/epgu-lib';
+import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
 
+import {
+  EventBusService,
+  FocusManagerService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../../screen/screen.types';
-import { PassportAttr, PassportFields, PassportFormFields } from './passport.interface';
+import { PassportAttr, PassportField, PassportFormFields } from './passport.interface';
 import {
   ISuggestionItem,
   ISuggestionItemList,
@@ -55,6 +59,7 @@ import { prepareClassifiedSuggestionItems } from '../../../core/services/autocom
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PassportComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
+  @Input() componentId: string;
   @Input() attrs: PassportAttr;
   @Input() suggestions: ISuggestionItem;
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
@@ -66,17 +71,28 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
 
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;
+  valueErrorsList: { [key: string]: { errorMsg: string; label: string } } = {};
+  focusedInputId: string;
 
   constructor(
     private fb: FormBuilder,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
-    private changeDetectionRef: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
+    private focusManager: FocusManagerService,
   ) {}
 
   ngOnInit(): void {
     this.initFormGroup();
     this.subscribeToFormChanges();
+
+    this.focusManager
+      .stateComponent$(this.componentId)
+      .pipe(
+        tap((state) => this.setFocusedInput(state)),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -89,12 +105,14 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
     const controls = {};
     this.attrs.fields.forEach((field) => {
       this.fieldsNames.push(field.fieldName);
+      this.setValueErrorListItem(field);
+
       controls[field.fieldName] = this.fb.control(null, this.getValidatorsForField(field));
     });
     this.passportForm = this.fb.group(controls);
   }
 
-  getValidatorsForField(field: PassportFields): ValidatorFn[] {
+  getValidatorsForField(field: PassportField): ValidatorFn[] {
     const validators = [Validators.required];
 
     if (field.maxlength) {
@@ -119,7 +137,7 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
       )
       .subscribe((value: ComponentBase) => {
         this.eventBusService.emit('passportValueChangedEvent', value);
-        this.changeDetectionRef.markForCheck();
+        this.cdr.markForCheck();
       });
   }
 
@@ -157,5 +175,37 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
     return this.passportForm.valid
       ? null
       : { invalidForm: { valid: false, message: 'PassportComponent fields are invalid' } };
+  }
+
+  hasWrongValue(control: string | string[]): boolean {
+    return (
+      this.passportForm.get(control).invalid &&
+      this.passportForm.get(control).dirty &&
+      this.passportForm.get(control).value
+    );
+  }
+
+  hasNoValue(control: string | string[]): boolean {
+    return (
+      this.passportForm.get(control).invalid &&
+      this.passportForm.get(control).touched &&
+      this.passportForm.get(control).hasError('required')
+    );
+  }
+
+  showOnFocus(fieldName: string): boolean {
+    return this.passportForm.get(fieldName).touched ? true : fieldName !== this.focusedInputId;
+  }
+
+  private setFocusedInput(state: FocusState): void {
+    this.focusedInputId = state?.current?.id;
+    this.cdr.markForCheck();
+  }
+
+  private setValueErrorListItem(field: PassportField): void {
+    this.valueErrorsList[field.fieldName] = {
+      errorMsg: field.errorMsg,
+      label: field.label,
+    };
   }
 }

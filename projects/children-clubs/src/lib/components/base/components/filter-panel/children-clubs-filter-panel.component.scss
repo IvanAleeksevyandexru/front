@@ -10,10 +10,16 @@
 }
 
 .filter-panel {
-  margin-top: 8px;
+  margin-top: 12px;
+  padding: 0 4px;
   display: flex;
   justify-content: space-between;
+  font-size: 16px;
+  line-height: 24px;
 
+  .filter-btn {
+    @include typ-plain-text;
+  }
   .filter-btn,
   .preview {
     align-self: center;
@@ -36,44 +42,51 @@
   }
   .preview {
     .icon {
-      width: 20px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
+      background-repeat: no-repeat;
+      background-color: transparent;
       box-sizing: content-box;
       border: none;
-    }
-
-    > *:not(:last-child) {
+      padding: 0 12px;
+      background-position: 50% 50%;
       border-right: 1px solid $color-blu-selvaggio;
-      padding: 0 14px;
-    }
-    > *:last-child {
-      padding-left: 14px;
+
+      &:first-child {
+        padding-left: 0;
+        background-position: calc(50% - 6px) 50%;
+      }
+      &:last-child {
+        border-right: none;
+        padding-right: 0;
+        background-position: calc(50% + 6px) 50%;
+      }
     }
 
     .map {
-      background: url('./../../../../../assets/icons/map.svg') no-repeat 14px 0;
+      background-image: url('./../../../../../assets/icons/map.svg');
 
       &:hover {
-        background: url('./../../../../../assets/icons/map-hover.svg') no-repeat 14px 0;
+        background-image: url('./../../../../../assets/icons/map-hover.svg');
         cursor: pointer;
       }
 
       &.active {
-        background: url('./../../../../../assets/icons/map-active.svg') no-repeat 14px 0;
+        background-image: url('./../../../../../assets/icons/map-active.svg');
         cursor: default;
       }
     }
 
     .list {
-      background: url('./../../../../../assets/icons/list.svg') no-repeat 14px 0;
+      background-image: url('./../../../../../assets/icons/list.svg');
 
       &:hover {
-        background: url('./../../../../../assets/icons/list-hover.svg') no-repeat 14px 0;
+        background-image: url('./../../../../../assets/icons/list-hover.svg');
         cursor: pointer;
       }
 
       &.active {
-        background: url('./../../../../../assets/icons/list-active.svg') no-repeat 14px 0;
+        background-image: url('./../../../../../assets/icons/list-active.svg');
         cursor: default;
       }
     }

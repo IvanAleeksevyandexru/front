@@ -13,6 +13,9 @@ import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { ActionType } from '@epgu/epgu-constructor-types';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+import { BaseModule } from '../../../../../../shared/base.module';
 
 const componentMock = {
   id: 'fakeId',
@@ -20,6 +23,13 @@ const componentMock = {
   attrs: { fields: [] },
   value: '',
   visited: false
+};
+
+const actionMock = {
+  label: '',
+  value: '',
+  action: '',
+  type: ActionType.profileEdit,
 };
 
 describe('ConfirmPersonalUserLegalDataComponent', () => {
@@ -32,10 +42,12 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPersonalUserLegalDataComponent],
       imports: [
-        MockModule(DefaultUniqueScreenWrapperModule),
-        MockModule(ScreenPadModule),
-        MockModule(FieldListModule),
         MockModule(OutputHtmlModule),
+        MockModule(DefaultUniqueScreenWrapperModule),
+        MockModule(BaseComponentsModule),
+        MockModule(BaseModule),
+        MockModule(FieldListModule),
+        MockModule(ScreenPadModule),
       ],
       providers: [
         CurrentAnswersService,
@@ -54,7 +66,8 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
     component = fixture.componentInstance;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     currentAnswersService = TestBed.inject(CurrentAnswersService);
-    screenService.component = componentMock as any;
+    screenService.component = componentMock;
+    jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock as any);
   });
 
   it('should render epgu-constructor-default-unique-screen-wrapper', () => {

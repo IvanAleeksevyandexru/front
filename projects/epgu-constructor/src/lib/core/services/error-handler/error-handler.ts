@@ -65,7 +65,13 @@ export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   showCrossButton: true,
   buttons: [
     {
-      label: 'Вернуться к заявлению',
+      label: 'На предыдущий шаг',
+      color: 'white',
+      closeModal: true,
+      value: 'prevStep',
+    },
+    {
+      label: 'Попробовать ещё раз',
       closeModal: true,
     },
   ],
@@ -132,6 +138,26 @@ export const BOOKING_ONLINE_ERROR: ConfirmationModal = {
   isShortModal: true,
 };
 
+export const NEW_BOOKING_ERROR: ConfirmationModal = {
+  text: ITEMS_REQUEST_TEXT_NO_DATA,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      color: 'white',
+      closeModal: true,
+      value: 'redirectToLk',
+    },
+    {
+      label: 'К заявлению',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
 export const ITEMS_NO_DATA: ConfirmationModal = {
   text: ITEMS_REQUEST_TEXT_NO_DATA,
   title: '',
@@ -139,7 +165,13 @@ export const ITEMS_NO_DATA: ConfirmationModal = {
   showCrossButton: true,
   buttons: [
     {
-      label: 'Вернуться к заявлению',
+      label: 'На предыдущий шаг',
+      color: 'white',
+      closeModal: true,
+      value: 'prevStep',
+    },
+    {
+      label: 'Попробовать ещё раз',
       closeModal: true,
     },
   ],
@@ -159,7 +191,7 @@ export const ITEMS_FAILURE: ConfirmationModal = {
       value: 'redirectToLk',
     },
     {
-      label: 'Вернуться к заявлению',
+      label: 'В начало',
       closeModal: true,
     },
   ],
@@ -170,7 +202,7 @@ export const SESSION_TIMEOUT: ConfirmationModal = {
   text: ITEMS_REQUEST_TEXT_NO_DATA,
   title: '',
   showCloseButton: false,
-  showCrossButton: true,
+  showCrossButton: false,
   buttons: [
     {
       label: 'В начало',

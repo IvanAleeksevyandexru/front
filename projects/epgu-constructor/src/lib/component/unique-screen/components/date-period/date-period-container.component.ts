@@ -58,7 +58,7 @@ export class DatePeriodContainerComponent implements AfterViewInit {
       startDate:
         datePeriodState && datePeriodState.startDate
           ? this.datesToolsService.parseISO(`${datePeriodState.startDate}${this.defaultTime}`)
-          : new Date(),
+          : null,
       endDate:
         datePeriodState && datePeriodState.endDate
           ? this.datesToolsService.parseISO(`${datePeriodState.endDate}${this.defaultTime}`)

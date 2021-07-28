@@ -4,9 +4,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-
+import { ActivatedRoute } from '@angular/router';
 import { MaskedAndPlainInputComponent } from './masked-and-plain-input.component';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -61,6 +61,7 @@ describe('MaskedAndPlainInputComponent', () => {
         SuggestHandlerService,
         EventBusService,
         SuggestMonitorService,
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         {
           provide: ComponentsListFormService,
           useClass: ComponentsListFormServiceStub,

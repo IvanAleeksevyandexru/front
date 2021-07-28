@@ -32,6 +32,7 @@ import {
   ButtonColor,
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -84,6 +85,7 @@ describe('InfoScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
+        CertificateEaisdoService,
         CurrentAnswersService,
         EaisdoGroupCostService,
       ],

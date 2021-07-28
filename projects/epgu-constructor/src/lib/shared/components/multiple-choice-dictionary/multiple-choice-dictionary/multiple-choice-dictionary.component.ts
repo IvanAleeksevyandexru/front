@@ -10,12 +10,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ListElement } from '@epgu/epgu-lib';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { CustomComponentDropDownItem } from '../../../../component/custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { MultipleSelectedItems } from '../multiple-choice-dictionary.models';
 
 @Component({
   selector: 'epgu-constructor-multiple-choice-dictionary',
@@ -36,7 +37,9 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   @Input() label: string;
   @Input() dictionaryList?: ListElement[] | CustomComponentDropDownItem[];
   @Input() dictionaryType?: string;
-  selectedItems: ListElement[] = [];
+  @Input() withAmount?: boolean;
+
+  selectedItems: MultipleSelectedItems = { list: [], amount: 0 };
 
   constructor(private modalService: ModalService, private cdr: ChangeDetectorRef) {}
 
@@ -54,27 +57,29 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
         title: this.modalHeader || this.subLabel,
         dictionaryList: this.dictionaryList,
         dictionaryType: this.dictionaryType,
-        selectedItems: this.selectedItems,
+        selectedItems: this.selectedItems.list,
       })
       .pipe(
         switchMap((items) => {
           if (items instanceof Error) {
             return this.openErrorModal();
           }
-          return of(items || this.selectedItems);
+          return of(items || this.selectedItems.list);
         }),
       )
       .subscribe((items) => {
         this.writeValue(items);
-        this.onChange(items);
+        const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
+        this.onChange(this.withAmount ? this.selectedItems : selectedItems);
         this.cdr.markForCheck();
       });
   }
 
   public remove(id: number | string): void {
-    const items = this.selectedItems.filter((item) => item.id !== id);
+    const items = this.selectedItems.list.filter((item) => item.id !== id);
     this.writeValue(items);
-    this.onChange(items);
+    const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
+    this.onChange(this.withAmount ? this.selectedItems : selectedItems);
     this.onTouched();
   }
 
@@ -86,23 +91,31 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
     this.onTouched = fn;
   }
 
-  public writeValue(items: ListElement[]): void {
-    if (Array.isArray(items)) {
-      this.selectedItems = items;
+  public writeValue(items: ListElement[] | string): void {
+    if (!items) return;
+    const value = Array.isArray(items) ? items : JSON.parse(items);
+
+    // TODO: когда-нибудь value всегда будет объектом, тогда можно будет убрать вторую проверку
+    // пока что сохраняем обратную совместимость со старыми json'ами услуг
+    if (Array.isArray(value)) {
+      this.selectedItems = {
+        list: value,
+        amount: value.length,
+      };
     } else {
-      this.selectedItems = JSON.parse(items || '[]');
+      this.selectedItems = value;
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private onChange = (_: ListElement[]): void => {};
+  private onChange = (_: ListElement[] | MultipleSelectedItems): void => {};
 
   private onTouched = (): void => {};
 
   private openErrorModal(): Observable<ListElement[]> {
     return this.modalService
       .openModal(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS)
-      .pipe(mapTo(this.selectedItems));
+      .pipe(mapTo(this.selectedItems.list));
   }
 
   // TODO: сделать приведение к единому типу данных на бэке

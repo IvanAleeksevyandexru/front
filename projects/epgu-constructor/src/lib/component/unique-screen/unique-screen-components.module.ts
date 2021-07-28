@@ -43,6 +43,7 @@ import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/con
 import { MedicalReferralsListModule } from './components/medical-referrals-list/medical-referrals-list.module';
 import { DatePeriodModule } from './components/date-period/date-period.module';
 import { PaymentWayModule } from './components/payment-way/payment-way.module';
+import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-doctors.module';
 
 @NgModule({
   imports: [
@@ -80,7 +81,8 @@ import { PaymentWayModule } from './components/payment-way/payment-way.module';
     DateTimePeriodModule,
     MedicalReferralsListModule,
     PaymentWayModule,
-    DatePeriodModule
+    DatePeriodModule,
+    TimeSlotDoctorsModule
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -113,6 +115,7 @@ import { PaymentWayModule } from './components/payment-way/payment-way.module';
     MedicalReferralsListModule,
     DatePeriodModule,
     PaymentWayModule,
+    TimeSlotDoctorsModule
   ],
   providers: [
     WebcamService,

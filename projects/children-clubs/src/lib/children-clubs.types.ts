@@ -14,6 +14,8 @@ export interface ChildrenClubsState {
   programFilters?: Filters;
   groupFilters?: FindOptionsGroup;
   groupFiltersMode: GroupFiltersModes;
+  isLoaderVisible: boolean;
+  denyReason: string;
 }
 
 export interface ValueProgram {
@@ -41,4 +43,9 @@ export interface ValueGroup {
 export enum GroupFiltersModes {
   map = 'map',
   list = 'list',
+}
+
+export interface DenyReasonMessage {
+  title: string;
+  text: string;
 }

@@ -1,0 +1,65 @@
+<tui-doc-page [header]="header" [package]="package" [type]="type">
+  <ng-template pageTab="Описание">
+    <div i18n class="tui-space_bottom-3">
+      HelperText &mdash; компонент для вывода сопроводительного текста-подсказки, оформленного по
+      дизайн системе: серый цвет шрифта и опционально стандартный размер шрифта (по умолчанию
+      small). Самостоятельно не используется, только в составе других компонентов, например
+      <a>ComponentItemComponent</a>.
+    </div>
+    <tui-doc-example id="example" heading="Пример" [content]="example1">
+      <example-1-epgu-helper-text-component></example-1-epgu-helper-text-component>
+    </tui-doc-example>
+  </ng-template>
+
+  <ng-template pageTab="API">
+    <tui-doc-demo>
+      <epgu-cf-ui-constructor-helper-text [size]="size">
+        {{ content }}
+      </epgu-cf-ui-constructor-helper-text>
+    </tui-doc-demo>
+    <tui-doc-documentation>
+      <ng-template
+        documentationPropertyName="size"
+        documentationPropertyMode="input"
+        documentationPropertyType="string | null"
+        [documentationPropertyValues]="sizeVariants"
+        [(documentationPropertyValue)]="size"
+      >
+        Размер шрифта подсказки: если пустое значение, то small или 'lg' - для увеличенной подсказки
+      </ng-template>
+      <ng-template
+        documentationPropertyName="content"
+        documentationPropertyType="string"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="content"
+      >
+        Текстовое содержимое подсказки
+      </ng-template>
+    </tui-doc-documentation>
+  </ng-template>
+
+  <ng-template pageTab="Setup">
+    <ol class="b-demo-steps">
+      <li>
+        <p>
+          Т.к. HelperTextComponent часть модуля BaseComponentModule, то необходимо импортировать
+          <code>BaseComponentModule</code> в модули используемого компонента
+        </p>
+
+        <tui-doc-code
+          filename="target-component.module.ts"
+          [code]="exampleImportModule"
+        ></tui-doc-code>
+      </li>
+
+      <li>
+        <p>Иcпользование в шаблоне:</p>
+
+        <tui-doc-code
+          filename="target-component.template.html"
+          [code]="exampleInsertTemplate"
+        ></tui-doc-code>
+      </li>
+    </ol>
+  </ng-template>
+</tui-doc-page>

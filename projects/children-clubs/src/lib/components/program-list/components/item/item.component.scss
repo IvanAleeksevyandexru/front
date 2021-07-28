@@ -55,6 +55,18 @@
   color: $color-text-helper;
 }
 
+.project__status {
+  width: fit-content;
+  margin: 16px 0;
+  padding: 2px 14px;
+  border: 2px solid $color-gosred;
+  border-radius: 8px;
+
+  @include phones-down {
+    margin: 12px 0 16px;
+  }
+}
+
 .project__info-item {
   margin-top: 10px;
   display: flex;

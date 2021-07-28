@@ -8,16 +8,16 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
 
-import { HealthService } from '@epgu/epgu-lib';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../init-data/init-data.service';
 import { InitDataServiceStub } from '../init-data/init-data.service.stub';
 import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, LocationServiceStub, HealthService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   RENDER_FORM_SERVICE_NAME,
@@ -28,7 +28,6 @@ import { ActionRequestPayload, DictionaryFilters, RequestStatus } from '@epgu/ep
 import { HealthHandlerService } from './health-handler.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
 
 @Injectable()
 export class TestHealthInterceptor<T extends DictionaryFilters & UnspecifiedDTO> implements HttpInterceptor {
@@ -75,7 +74,6 @@ describe('HealthHandlerService', () => {
   } as ActionRequestPayload;
   const getNextStepAction = 'renderForm';
   const dictionaryName = 'STRANI_IST';
-  const dictionaryAction = 'v1DictionarySTRANIISTService';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -86,10 +84,12 @@ describe('HealthHandlerService', () => {
         UtilsService,
         HealthHandlerService,
         TestHealthInterceptor,
+        SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TestHealthInterceptor,
@@ -175,8 +175,8 @@ describe('HealthHandlerService', () => {
         date: new Date().toISOString(),
         method: 'POST'
       };
-      expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith(expect.any(String));
+      expect(healthService.measureEnd).toHaveBeenCalledWith(expect.any(String), 1, params);
     }));
 
     it('should set error and errorMessage params for the second type of dictionaries', fakeAsync((
@@ -207,8 +207,8 @@ describe('HealthHandlerService', () => {
         date: new Date().toISOString(),
         method: 'POST'
       };
-      expect(healthService.measureStart).toHaveBeenCalledWith(dictionaryAction);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(dictionaryAction, 1, params);
+      expect(healthService.measureStart).toHaveBeenCalledWith(expect.any(String));
+      expect(healthService.measureEnd).toHaveBeenCalledWith(expect.any(String), 1, params);
     }));
   });
 

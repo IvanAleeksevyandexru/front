@@ -1,0 +1,18 @@
+<h5 (click)="expandObject(mapObject)" class="map-object__header">{{ mapObject.balloonContentHeader }}</h5>
+<div class="map-object__attr" *ngIf="mapObject.expanded && (extInfo$ | async) as extInfo">
+  <span class="map-object__label">{{ extInfo.commissionName }}</span>
+  <span class="map-object__value">{{ extInfo.address }}</span>
+  <span class="map-object__label">Телефон</span>
+  <span class="map-object__value">{{ extInfo.phone }}</span>
+  <span class="map-object__label">Выборы и референдумы, доступные на данном участке:</span>
+  <span class="map-object__value election"
+    ><ul>
+      <li *ngFor="let election of extInfo.elections">
+        {{ election.electionName }}
+      </li>
+    </ul></span
+  >
+  <lib-button (click)="selectObject(extInfo, $event)" class="submit-button" width="wide"
+    >Выбрать
+  </lib-button>
+</div>

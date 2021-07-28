@@ -1,14 +1,7 @@
-export interface SlotInterface {
-  slotId: string;
-  slotTime: Date;
-  timezone: string;
-  areaId?: string;
-}
+import { SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 
 export interface SmevSlotsMapInterface {
-  [key: number]: { [
-      key: number]: { [key: number]: SlotInterface[] }
-  }
+  [key: number]: { [key: number]: { [key: number]: SlotInterface[] } };
 }
 
 export interface TimeSlotValueInterface {
@@ -135,7 +128,7 @@ export interface BookTimeSlotReq {
   routeNumber?: string;
   serviceCode?: string;
   subject?: string;
-  params?: { name: string; value: string }[];
+  params?: { name: string; value: string | number }[];
   eserviceId?: string; // TODO eserviceId?????
   bookId?: string;
   organizationId?: string[] | string;
@@ -149,12 +142,4 @@ export interface BookTimeSlotReq {
   serviceId?: string[];
   caseNumber?: string;
   userSelectedRegion?: string;
-}
-
-export interface IDay {
-  date: Date,
-  number: number,
-  classes?: {
-    [key: string]: boolean,
-  }
 }

@@ -28,6 +28,7 @@ import { AppScreenModule } from './app-screen/app-screen.module';
 import { AppScreenComponent } from './app-screen/app-screen.component';
 import { UniquenessErrorsService } from '../shared/services/uniqueness-errors/uniqueness-errors.service';
 import { EaisdoGroupCostService } from '../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 /**
  * Домен скринов. Здесь храниться всё что связанно со скринами и их обязками.
@@ -48,6 +49,7 @@ import { EaisdoGroupCostService } from '../shared/services/eaisdo-group-cost/eai
   ],
   providers: [
     CachedAnswersService,
+    CertificateEaisdoService,
     CurrentAnswersService,
     DatesToolsService,
     DictionaryToolsService,

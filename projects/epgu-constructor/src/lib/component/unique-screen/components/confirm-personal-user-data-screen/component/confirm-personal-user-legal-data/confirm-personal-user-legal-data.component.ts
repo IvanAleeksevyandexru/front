@@ -6,6 +6,7 @@ import { AbstractConfirmPersonalUserDataDirective } from '../abstract-confirm-pe
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-legal-data',
   templateUrl: './confirm-personal-user-legal-data.component.html',
+  styleUrls: ['./confirm-personal-user-legal-data.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })

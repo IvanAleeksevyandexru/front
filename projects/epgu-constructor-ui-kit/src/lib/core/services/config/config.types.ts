@@ -27,6 +27,7 @@ export type TimeSlotsApi = {
  * @property {string}billsApiUrl - url до сервиса по получению информации о счете на оплату, как правило apiHostName/api/pay/v1/bills
  * @property {string}paymentUrl - url до сервиса оплаты, как правило apiHostName
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
+ * @property {string}quizDataApiUrl - url до API сервиса quiz-data, отвечающий за кроссплатформенное хранение квиза
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
@@ -60,6 +61,7 @@ export interface Config {
   billsApiUrl: string;
   paymentUrl: string;
   fileUploadApiUrl: string;
+  quizDataApiUrl: string;
   lkUrl: string;
   lkApi: string;
   childrenClubsApi: string;
@@ -83,6 +85,7 @@ export interface Config {
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;
   nsiSuggestDictionaryUrl?: string;
+  lkuipElection?: string;
   appPathMap: AppPathMap;
 }
 

@@ -4,6 +4,7 @@
       *ngIf="
         (isError &&
           (fileItem?.error?.type === errorTypeAction.addDeletionErr ||
+            fileItem?.error?.type === errorTypeAction.serverError ||
             fileItem?.error?.type === errorTypeAction.addUploadErr)) ||
         !isError
       "
@@ -31,6 +32,7 @@
       *ngIf="
         isError &&
         fileItem?.error?.type !== errorTypeAction.addDeletionErr &&
+        fileItem?.error?.type !== errorTypeAction.serverError &&
         fileItem?.error?.type !== errorTypeAction.addUploadErr
       "
       class="fileType-preview"

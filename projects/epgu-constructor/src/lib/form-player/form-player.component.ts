@@ -77,6 +77,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
+    this.initLoader();
   }
 
   ngAfterViewInit(): void {
@@ -197,5 +198,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private patchStepOnCli(newScenarioDtoDiff?: Partial<ScenarioDto>): void {
     this.formPlayerService.patchStore(newScenarioDtoDiff);
+  }
+
+  private initLoader(): void {
+    this.screenService.isLoaderVisible.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      setTimeout(() => this.changeDetectionRef.detectChanges(), 0);
+    });
   }
 }

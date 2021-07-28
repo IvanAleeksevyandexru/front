@@ -6,7 +6,7 @@
 }
 
 .info-list-subtitle {
-  @include typ-plain-text;
+  @include typ-plain-small;
   color: $color-text-helper;
   margin-bottom: 4px;
 }

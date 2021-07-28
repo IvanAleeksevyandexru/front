@@ -29,6 +29,8 @@ import 'classlist.js';  // Run `npm install --save classlist.js`.
  */
 import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
+import 'isomorphic-fetch'; // Support of fetch for ie11
+
 /**
  * By default, zone.js will patch all possible macroTask and DomEvents
  * user can disable parts of macroTask/DomEvents patch by setting following flags

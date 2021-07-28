@@ -20,6 +20,7 @@ export const baseProgramStub: BaseProgram = {
     'https://new.dop.mosreg.ru/images/events/cover/c0e6ae1e506fe02da5c492d8b59d707d_244x159.jpg',
   minAge: 6,
   maxAge: 14,
+  available: true,
   financingTypes: [FinancingType.free, FinancingType.paid, FinancingType.certificate],
 };
 
@@ -34,6 +35,7 @@ export const baseProgramStub2: BaseProgram = {
     'https://new.dop.mosreg.ru/images/events/cover/c0e6ae1e506fe02da5c492d8b59d707d_244x159.jpg',
   minAge: 6,
   maxAge: 14,
+  available: true,
   financingTypes: [FinancingType.free, FinancingType.paid, FinancingType.certificate],
 };
 
@@ -49,8 +51,10 @@ export const programStub: Program = {
   goals: 'goals text',
   results: 'results text',
   technicalBase: 'technicalBase text',
+  detailDescription: 'detailDescription text',
   educationForm: EducationType.distance,
   groupCount: 6,
+  availableGroupCount: 10,
   financingTypes: [
     FinancingType.free,
     FinancingType.paid,

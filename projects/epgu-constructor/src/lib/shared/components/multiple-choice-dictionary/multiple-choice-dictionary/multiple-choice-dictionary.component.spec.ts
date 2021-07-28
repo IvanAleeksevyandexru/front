@@ -73,7 +73,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
         title: component.modalHeader,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
-        selectedItems: component.selectedItems,
+        selectedItems: component.selectedItems.list,
       });
     });
     it('should be open modal without modalHeader', () => {
@@ -83,14 +83,14 @@ describe('MultipleChoiceDictionaryComponent', () => {
         title: component.subLabel,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
-        selectedItems: component.selectedItems,
+        selectedItems: component.selectedItems.list,
       });
     });
 
     it('should be update value after success close modal', () => {
       jest.spyOn(modalService, 'openModal').mockReturnValue(of([]));
       component.onClick();
-      expect(component.selectedItems).toEqual([]);
+      expect(component.selectedItems.list).toEqual([]);
     });
 
     it('should be  open error modal after error MultiChoiceDictionaryModalComponent', () => {
@@ -106,7 +106,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
 
   describe('remove', () => {
     it('should be update selectedItems after remove', () => {
-      component.selectedItems = [
+      component.selectedItems.list = [
         {
           id: 'AUT',
           text: 'АВСТРИЯ',
@@ -125,7 +125,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
       ];
       fixture.detectChanges();
       component.remove('AUT');
-      expect(component.selectedItems).toEqual([]);
+      expect(component.selectedItems.list).toEqual([]);
     });
   });
 });

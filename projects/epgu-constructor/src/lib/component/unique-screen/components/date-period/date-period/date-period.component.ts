@@ -8,9 +8,9 @@ import {
 } from '@angular/core';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { pairwise, startWith } from 'rxjs/operators';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesHelperService } from '@epgu/epgu-lib';
+import { takeUntil, distinctUntilChanged, pairwise, startWith } from 'rxjs/operators';
 import { DatePeriodFormState, DatePeriodFormValues } from '../date-period.types';
 import { RegistrationAddrHints } from '../../registration-addr/registration-addr-screen.types';
 
@@ -27,8 +27,13 @@ export class DatePeriodComponent implements OnInit {
   @Output() updateState = new EventEmitter<DatePeriodFormState>();
 
   public group: FormGroup;
+  public beginMaxDate: Date;
 
-  constructor(private formBuilder: FormBuilder, private datesToolsService: DatesToolsService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private datesToolsService: DatesToolsService,
+    private ngUnsubscribe$: UnsubscribeService,
+  ) {}
 
   ngOnInit(): void {
     this.group = this.formBuilder.group({
@@ -41,15 +46,19 @@ export class DatePeriodComponent implements OnInit {
       isValid: this.group.valid,
     } as DatePeriodFormState);
 
+    this.group.controls.endDate.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$), distinctUntilChanged())
+      .subscribe((newValue) => {
+        const attrMaxDate = DatesHelperService.relativeOrFixedToFixed(this.attrs.beginDate.maxDate);
+        const finalMaxDate = newValue
+          ? this.datesToolsService.min([newValue, attrMaxDate])
+          : attrMaxDate;
+        this.beginMaxDate = finalMaxDate;
+      });
+
     this.group.valueChanges
       .pipe(startWith(this.group.getRawValue() as DatePeriodFormValues), pairwise())
-      .subscribe(([prevValues, nextValues]: [DatePeriodFormValues, DatePeriodFormValues]) => {
-        const isStartDateChanged = prevValues.startDate !== nextValues.startDate;
-        if (isStartDateChanged) {
-          // eslint-disable-next-line no-param-reassign
-          nextValues.endDate = null;
-          this.group.patchValue(nextValues, { emitEvent: false });
-        }
+      .subscribe(([, nextValues]: [DatePeriodFormValues, DatePeriodFormValues]) => {
         this.updateState.emit({ ...nextValues, isValid: this.group.valid });
       });
   }

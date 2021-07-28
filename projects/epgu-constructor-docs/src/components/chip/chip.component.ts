@@ -31,7 +31,7 @@ export class ExampleEpguChipComponent implements OnInit {
   readonly id = 'id';
 
   public onClose(id): void {
-    alert(id);
+    console.log(id);
   }
 
   ngOnInit(): void {}

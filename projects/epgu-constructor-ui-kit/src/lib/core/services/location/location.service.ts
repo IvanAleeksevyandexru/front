@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Location, LocationStrategy, PlatformLocation } from '@angular/common';
 import { WINDOW } from '../../providers/window.provider';
 
+
 @Injectable()
 export class LocationService extends Location {
   constructor(
@@ -22,6 +23,15 @@ export class LocationService extends Location {
 
   reload(): void {
     this.window.location.reload();
+  }
+
+  hasParam(paramName: string): boolean {
+    return this.path(true).includes(`${paramName}=`);
+  }
+
+  getParamValue(paramName: string): string {
+    const urlParams = new URLSearchParams(this.window.location.search);
+    return urlParams.get(paramName);
   }
 
   deleteParam(...paramNames: string[]): void {

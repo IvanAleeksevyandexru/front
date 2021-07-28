@@ -11,6 +11,7 @@ import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { UploaderStoreService } from '../store/uploader-store.service';
 import { UploaderLimitsService } from '../limits/uploader-limits.service';
 import { UploaderManagerService } from '../manager/uploader-manager.service';
+import { ScreenService } from '../../../../../screen/screen.service';
 
 @Injectable()
 export class UploaderValidationService {
@@ -21,11 +22,15 @@ export class UploaderValidationService {
     private limits: UploaderLimitsService,
     private uploader: UploaderManagerService,
     private store: UploaderStoreService,
+    private screenService: ScreenService,
   ) {}
 
   prepare(file: FileItem): Observable<FileItem> {
     return of(file).pipe(
       tap((file: FileItem) => this.checkAndSetMaxCountByTypes(file)),
+      map((file: FileItem) =>
+        file.status !== FileItemStatus.error ? this.checkServerError(file) : file,
+      ), // Проверка ошибок сервера
       map((file: FileItem) => this.validateFileName(file)),
       map((file: FileItem) => this.validateType(file)), // Проверка типа
       map((file: FileItem) =>
@@ -39,6 +44,18 @@ export class UploaderValidationService {
         file.status !== FileItemStatus.error ? this.validateSize(file) : file,
       ), // Проверка размера
     );
+  }
+
+  checkServerError(file: FileItem): FileItem {
+    const error = this.screenService.componentErrors[file.item?.mnemonic];
+    if (error) {
+      file.setError({
+        type: ErrorActions.serverError,
+        text: 'Ошибка при загрузке',
+        description: error,
+      });
+    }
+    return file;
   }
 
   checkAndSetMaxCountByTypes(file: FileItem, isAdd = true): void {

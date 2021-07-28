@@ -8,12 +8,14 @@ import { ComponentItemComponent } from '../component-item/component-item.compone
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { ActivatedRoute } from '@angular/router';
 import {
   ConfigService, ConfigServiceStub,
   DatesToolsService,
   EventBusService,
   LoggerService,
-  UnsubscribeService
+  UnsubscribeService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -34,8 +36,12 @@ const mockComponent = {
     dictionaryType: 'lookUpInputType',
     searchProvider: {
       dictionaryOptions: { additionalParams: [] },
-      dictionaryFilter: [],
-      turnOffStartFilter: true
+      dictionaryFilter: [{
+        attributeName: 'Session_Id',
+        condition: 'EQUALS',
+        value: 'value',
+        valueType: 'rawFilter'
+      }],
     }
   },
   value: 'lookUpInput',
@@ -63,6 +69,7 @@ describe('LookupInputComponent', () => {
       providers: [
         DictionaryToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DatesToolsService,
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },

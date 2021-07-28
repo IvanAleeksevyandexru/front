@@ -28,6 +28,7 @@ import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-wit
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
+  let dictionaryApiService: DictionaryApiService;
   let compValue;
   let cachedAnswer;
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
@@ -61,6 +62,7 @@ describe('TimeSlotsComponent', () => {
   beforeEach(() => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     timeSlotsService = TestBed.inject(TimeSlotsService);
+    dictionaryApiService = TestBed.inject(DictionaryApiService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     timeSlotsService.cancelReservation = ['ts1', 'ts2', 'ts3'];
   });
@@ -205,6 +207,12 @@ describe('TimeSlotsComponent', () => {
           done();
         });
       });
+    });
+
+    it('getAvailableAreaNames should call request for areas', () => {
+      const areaNamesSpy = jest.spyOn<any, any>(dictionaryApiService, 'getSelectMapDictionary');
+      timeSlotsService['getAvailableAreaNames'](null);
+      expect(areaNamesSpy).toHaveBeenCalledTimes(1);
     });
   });
 

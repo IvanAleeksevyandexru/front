@@ -3,7 +3,10 @@
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="screen-body">
-    <epgu-constructor-page-name>{{ propData.header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name>
+      {{ propData.header }}
+      <epgu-constructor-user-info-loader></epgu-constructor-user-info-loader>
+    </epgu-constructor-page-name>
 
     <div class="common-error" *ngIf="(commonError$ | async)?.hasError">
       <small>

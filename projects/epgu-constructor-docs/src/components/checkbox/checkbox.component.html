@@ -1,0 +1,121 @@
+<tui-doc-page [header]="header" [package]="package" [type]="type">
+  <ng-template pageTab="Описание">
+    <div i18n class="tui-space_bottom-3">
+      Checkbox &mdash; базовое представление чекбокса по умолчанию. Поддерживает свойства id,
+      required, hidden, label и др. Используется как самостоятельный компонент, так и составной в
+      более сложных компонентах, например в
+      <a>CheckboxListComponent</a> или <a>CheckboxCubeComponent</a>
+    </div>
+    <tui-doc-example
+      id="example1"
+      heading="Пример"
+      [description]="example1Description"
+      [content]="example1"
+    >
+      <example-1-epgu-checkbox-component></example-1-epgu-checkbox-component>
+    </tui-doc-example>
+  </ng-template>
+
+  <ng-template pageTab="API">
+    <tui-doc-demo>
+      <epgu-cf-ui-constructor-constructor-checkbox
+        [checkboxId]="checkboxId"
+        [control]="control"
+        [labelText]="labelText"
+        [required]="required"
+        [hidden]="hidden"
+        (click)="handleClick($event)"
+      >
+      </epgu-cf-ui-constructor-constructor-checkbox>
+    </tui-doc-demo>
+    <tui-doc-documentation>
+      <ng-template
+        documentationPropertyName="checkboxId"
+        documentationPropertyType="string"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="checkboxId"
+      >
+        Уникальный строковый идентификатор чекбокса
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="labelText"
+        documentationPropertyType="string"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="labelText"
+      >
+        Поясняющий текст-лейбл, располагаемый рядом с чекбоксом
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="control"
+        documentationPropertyType="AbstractControl"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="control"
+      >
+        Контрол формы для связывания значения чекбокса и форм-группы, внутри которой используется
+        чекбокс
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="disabled"
+        documentationPropertyMode="checkbox"
+        documentationPropertyType="boolean"
+        [(documentationPropertyValue)]="disabled"
+      >
+        Флаг заблокированности чекбокса, управляется опосредованно через состояние контрола
+        <code>control.disabled</code>
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="required"
+        documentationPropertyMode="checkbox"
+        documentationPropertyType="boolean"
+        [(documentationPropertyValue)]="required"
+      >
+        Флаг обязательности чекбокса для участия в валидационных процессах формы
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="hidden"
+        documentationPropertyMode="checkbox"
+        documentationPropertyType="boolean"
+        [(documentationPropertyValue)]="hidden"
+      >
+        Флаг невидимости чекбокса, используется в редких случаях, когда чекбокс выполняет служебную
+        функцию, не виден для пользователя и по-умолчанию всегда выбран, например передается признак
+        <code>isNewChild</code> в форме добавления нового ребенка
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="click"
+        documentationPropertyMode="output"
+        documentationPropertyType="string"
+      >
+        Производит событие, что чекбокс с таким-то checkboxId был нажат
+      </ng-template>
+    </tui-doc-documentation>
+  </ng-template>
+
+  <ng-template pageTab="Setup">
+    <ol class="b-demo-steps">
+      <li>
+        <p>Импорт <code>ConstructorCheckboxModule</code> в модули используемого компонента</p>
+
+        <tui-doc-code
+          filename="target-component.module.ts"
+          [code]="exampleImportModule"
+        ></tui-doc-code>
+      </li>
+
+      <li>
+        <p>Иcпользование в шаблоне:</p>
+
+        <tui-doc-code
+          filename="target-component.template.html"
+          [code]="exampleInsertTemplate"
+        ></tui-doc-code>
+      </li>
+    </ol>
+  </ng-template>
+</tui-doc-page>

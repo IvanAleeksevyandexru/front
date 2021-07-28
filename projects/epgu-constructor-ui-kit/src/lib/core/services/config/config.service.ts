@@ -18,6 +18,7 @@ export class ConfigService implements Config {
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
+  private _quizDataApiUrl: string;
   private _lkUrl: string;
   private _lkApi: string;
   private _childrenClubsApi: string;
@@ -46,6 +47,7 @@ export class ConfigService implements Config {
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
   private _appPathMap: AppPathMap;
+  private _lkuipElection: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -97,6 +99,10 @@ export class ConfigService implements Config {
 
   get fileUploadApiUrl(): string {
     return this._fileUploadApiUrl;
+  }
+
+  get quizDataApiUrl(): string {
+    return this._quizDataApiUrl;
   }
 
   get lkUrl(): string {
@@ -211,12 +217,17 @@ export class ConfigService implements Config {
     return this._appPathMap;
   }
 
+  get lkuipElection(): string {
+    return this._lkuipElection;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._lkuipElection = config.lkuipElection;
     this._nsiSuggestDictionaryUrl =
       config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
@@ -258,6 +269,7 @@ export class ConfigService implements Config {
     this._showTraceIdOnError = config.showTraceIdOnError || false;
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._appPathMap = config.appPathMap || {};
+    this._quizDataApiUrl = config.quizDataApiUrl || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

@@ -5,7 +5,8 @@ import { UploaderViewerContentComponent } from './uploader-viewer-content.compon
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
+import { ActivatedRoute } from '@angular/router';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
@@ -81,6 +82,7 @@ describe('UploaderViewerContentComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ],
     })
       .overrideComponent(UploaderViewerContentComponent, {

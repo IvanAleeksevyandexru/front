@@ -4,7 +4,7 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import {
   ScreenPadComponent,
   HelperTextComponent,
-  HttpCancelService,
+  HttpCancelService, TimeCalendarModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
@@ -60,7 +60,7 @@ describe('TimeSlotsComponent', () => {
   configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
-      imports: [EpguLibModule, HttpClientTestingModule],
+      imports: [EpguLibModule, HttpClientTestingModule, TimeCalendarModule],
       declarations: [
         TimeSlotsComponent,
         MockComponents(
@@ -444,7 +444,7 @@ describe('TimeSlotsComponent', () => {
       const allowedMap = {
         2021523: true,
         2021526: true,
-        2021529: true,       
+        2021529: true,
       };
       checks(allowedMap);
     });
@@ -459,7 +459,7 @@ describe('TimeSlotsComponent', () => {
         2021526: true,
         2021529: true,
         202162: true,
-        202165: true,        
+        202165: true,
       };
       checks(allowedMap);
     });

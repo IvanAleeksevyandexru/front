@@ -62,7 +62,7 @@
             $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
           "
           [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
-          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
+          [invalid]="isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"

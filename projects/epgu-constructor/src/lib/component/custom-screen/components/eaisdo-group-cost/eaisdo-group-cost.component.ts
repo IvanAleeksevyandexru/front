@@ -5,8 +5,8 @@ import {
   ActionApiResponse,
   EaisdoResponse,
 } from '@epgu/epgu-constructor-types';
-import { BehaviorSubject } from 'rxjs';
 import { filter, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { EXTERNAL_INTEGRATION_ACTION } from '../../../../shared/constants/actions';
@@ -25,22 +25,20 @@ import { EaisdoStateTypes } from './eaisdo.interface';
   templateUrl: './eaisdo-group-cost.component.html',
   styleUrls: ['./eaisdo-group-cost.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
 export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent implements OnInit {
-  actionService: ActionService;
-  screenService: ScreenService;
-  currentAnswersService: CurrentAnswersService;
-  eaisdoGroupCostService: EaisdoGroupCostService;
-  isLoading$ = new BehaviorSubject<boolean>(true);
+  isLoading$ = this.screenService.isLoading$;
   component: CustomComponent;
 
-  constructor(public injector: Injector) {
+  constructor(
+    public injector: Injector,
+    private actionService: ActionService,
+    private screenService: ScreenService,
+    private currentAnswersService: CurrentAnswersService,
+    private eaisdoGroupCostService: EaisdoGroupCostService,
+  ) {
     super(injector);
-
-    this.actionService = this.injector.get(ActionService);
-    this.screenService = this.injector.get(ScreenService);
-    this.currentAnswersService = this.injector.get(CurrentAnswersService);
-    this.eaisdoGroupCostService = this.injector.get(EaisdoGroupCostService);
   }
 
   ngOnInit(): void {
@@ -56,10 +54,14 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
     this.actionService
       .handleExternalIntegrationAction(externalIntegrationAction, this.component.id)
       .pipe(
-        tap(() => this.isLoading$.next(true)),
+        tap(() => {
+          this.screenService.updateLoading(true);
+        }),
         tap(() => this.setState()),
         takeUntil(this.ngUnsubscribe$),
-        finalize(() => this.isLoading$.next(false)),
+        finalize(() => {
+          this.screenService.updateLoading(false);
+        }),
       )
       .subscribe(
         (response) => this.handleResponse(response),
@@ -68,7 +70,9 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
 
     this.actionService.actionType$
       .pipe(
-        tap(() => this.isLoading$.next(true)),
+        tap(() => {
+          this.screenService.updateLoading(true);
+        }),
         filter((type) => type === ActionType.externalIntegration),
         tap(() => this.setState()),
         switchMap(() =>
@@ -78,7 +82,9 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
           ),
         ),
         takeUntil(this.ngUnsubscribe$),
-        finalize(() => this.isLoading$.next(false)),
+        finalize(() => {
+          this.screenService.updateLoading(false);
+        }),
       )
       .subscribe(
         (response) => this.handleResponse(response),
@@ -89,9 +95,9 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
   private handleResponse(response: ActionApiResponse<EaisdoResponse>): void {
     const { errorList, responseData } = response;
     const error = errorList[0];
-    const responseType = responseData?.value?.responseType;
-    const financialSource = this.component?.attrs?.arguments?.financialSource;
-    const typeOfBudget = this.component?.attrs?.arguments?.typeOfBudget;
+    const responseType = responseData?.type;
+    const financialSource = this.component?.arguments?.financialSource;
+    const typeOfBudget = this.component?.arguments?.typeOfBudget;
 
     this.setState(error, responseType, financialSource, typeOfBudget, responseData);
   }
@@ -99,8 +105,8 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
   private setState(
     error: { [key: string]: string } = null,
     responseType: string = null,
-    financialSource: string = null,
-    typeOfBudget: string = null,
+    financialSource: string | unknown = null,
+    typeOfBudget: string | unknown = null,
     responseData: ActionApiResponse<EaisdoResponse>['responseData'] = null,
   ): void {
     this.eaisdoGroupCostService.currentState = this.eaisdoGroupCostService.calculateState(
@@ -109,7 +115,8 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
       financialSource,
       typeOfBudget,
     );
-    this.currentAnswersService.state[this.control.value.id] = responseData || {};
+    this.currentAnswersService.state[this.component.id] =
+      { value: JSON.stringify(responseData), visited: true, disabled: false } || {};
   }
 
   private handleError(error): void {
