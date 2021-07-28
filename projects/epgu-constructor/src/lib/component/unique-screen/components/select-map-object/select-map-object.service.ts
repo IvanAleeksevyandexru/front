@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { YaMapService } from '@epgu/epgu-lib';
 import {
@@ -22,6 +22,8 @@ import {
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
 import { v4 as uuidv4 } from 'uuid';
+// eslint-disable-next-line max-len
+import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -240,7 +242,7 @@ export class SelectMapObjectService implements OnDestroy {
     electionDate: string,
     electionLevel: string,
     options?,
-  ): Observable<unknown> {
+  ): Observable<HttpEvent<IuikFullDataResponse>> {
     const path =
       `${this.config.lkuipElection}/api/map/uikFullData?pollStationNumber=` +
       pollStationNumber +
@@ -250,7 +252,7 @@ export class SelectMapObjectService implements OnDestroy {
       electionDate +
       '&electionLevel=' +
       electionLevel;
-    return this.http.get<IGeoCoordsResponse>(path, { ...options, withCredentials: true });
+    return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true });
   }
 
   private getHashKey(center: [number, number]): string {
