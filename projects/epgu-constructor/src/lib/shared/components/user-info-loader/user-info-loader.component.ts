@@ -20,7 +20,7 @@ import { CycledInfo } from './components/cycled-info/cycled-info.types';
 export class UserInfoLoaderComponent {
   @Input() isDisplay = true;
 
-  components$: Observable<Array<[ComponentDto, ComponentValue]>> = of([1, 1]).pipe(
+  components$: Observable<[ComponentDto, ComponentValue][]> = of([1, 1]).pipe(
     concatMap(() =>
       this.isDisplay
         ? this.screenService.displayInfoComponents$.pipe(

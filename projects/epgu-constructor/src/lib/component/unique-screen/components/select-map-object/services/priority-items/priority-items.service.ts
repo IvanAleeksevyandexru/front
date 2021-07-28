@@ -13,7 +13,7 @@ export interface CancelContext {
 export class PriorityItemsService {
   status = new BehaviorSubject<boolean>(false);
   items = new BehaviorSubject<DictionaryItem[]>([]);
-  screenItems = new BehaviorSubject<Array<DictionaryItem | null>>([]);
+  screenItems = new BehaviorSubject<(DictionaryItem | null)[]>([]);
   maxKinderGarden$$ = new BehaviorSubject<number>(null);
   maxKinderGarden$ = this.maxKinderGarden$$.pipe(filter((status) => !!status));
   disabled$$ = combineLatest([this.maxKinderGarden$, this.items]).pipe(

@@ -84,7 +84,7 @@ export class PrepareComponentsService {
       this.getCache(parentComponent, cachedAnswers) ||
       parentComponent.value ||
       null;
-    const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
+    const cachedValueArray: { [key: string]: string }[] = JSON.parse(cachedValue) || [];
     if (cachedValueArray.length) {
       let repeatableFieldComponents: ComponentDto[][] = [];
       repeatableFieldComponents = cachedValueArray.map((_component, index) => {

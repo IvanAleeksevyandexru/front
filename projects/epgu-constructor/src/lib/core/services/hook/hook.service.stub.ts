@@ -17,7 +17,7 @@ export class HookServiceStub {
 
   public addHook(type: HookTypes, observable: ObservableInput<NavigationPayload>): void {}
 
-  public getHooks(type: HookTypes): Array<ObservableInput<NavigationPayload>> {
+  public getHooks(type: HookTypes): ObservableInput<NavigationPayload>[] {
     return [];
   }
 

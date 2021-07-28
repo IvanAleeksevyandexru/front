@@ -409,8 +409,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     component: TimeSlotDoctorsComponent,
     attrs: ComponentAttrsDto,
     getInitialDictionaryFilterFunc: () => ComponentDictionaryFilterDto[],
-  ): (val: string) => Observable<Array<Partial<ListElement>>> {
-    return (searchString): Observable<Array<Partial<ListElement>>> => {
+  ): (val: string) => Observable<Partial<ListElement>[]> {
+    return (searchString): Observable<Partial<ListElement>[]> => {
       let additionalParams = {};
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;

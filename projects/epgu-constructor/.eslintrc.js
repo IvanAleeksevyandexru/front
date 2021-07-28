@@ -14,7 +14,7 @@ module.exports = {
     'no-empty-function': ['error', { "allow": ["constructors"] }],
     'object-curly-spacing': ["error", "always", { "objectsInObjects": false }],
     '@typescript-eslint/no-explicit-any': ["error", { "ignoreRestArgs": false }],
-    '@typescript-eslint/array-type': ["error", { "default": "array-simple" }],
+    '@typescript-eslint/array-type': ["error", { "default": "array" }],
     '@typescript-eslint/typedef': [
       "error",
       {

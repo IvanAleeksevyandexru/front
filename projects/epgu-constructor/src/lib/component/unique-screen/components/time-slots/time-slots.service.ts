@@ -31,7 +31,7 @@ import {
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
 
-type attributesMapType = Array<{ name: string; value: string }>;
+type attributesMapType = { name: string; value: string }[];
 
 type configType = {
   [key: string]: string | attributesMapType;
@@ -58,7 +58,7 @@ export class TimeSlotsService {
   private availableMonths: string[];
   private areas: string[];
   private config: configType = {};
-  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
+  private timeSlotRequestAttrs: { name: string; value: string }[];
   private areaNamesIsNeeded: boolean;
 
   constructor(
@@ -345,7 +345,7 @@ export class TimeSlotsService {
   private getSlotsRequestAttributes(
     slotsType: TimeSlotsTypes,
     serviceId: string,
-  ): Array<{ name: string; value: string }> {
+  ): { name: string; value: string }[] {
     if (this.timeSlotRequestAttrs) {
       return this.timeSlotRequestAttrs;
     }

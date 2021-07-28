@@ -62,11 +62,11 @@ export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string 
 // type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
 
 // @todo. выяснить, почему в коде CustomListDropDowns как объект, а не массив
-export type CustomListDropDowns = Array<{ [key: string]: Array<Partial<ListItem>> }>;
+export type CustomListDropDowns = { [key: string]: Partial<ListItem>[] }[];
 // @todo. выяснить, почему в коде CustomListDictionaries как объект, а не массив
-export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
+export type CustomListDictionaries = { [key: string]: CustomListDictionary[] }[];
 export type CustomListReferenceData = CustomListGenericData<
-  Array<Partial<ListItem>> | DictionaryResponse
+  Partial<ListItem>[] | DictionaryResponse
 >;
 // export type CustomComponentState = { [key: string]: CustomComponentStateItem };
 
@@ -109,11 +109,11 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
-export type CustomComponentAttrField = Array<{
+export type CustomComponentAttrField = {
   fieldName?: string;
   label?: string;
   type?: string;
-}>;
+}[];
 
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -153,7 +153,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   minDate?: string;
   needUnfilteredDictionaryToo?: boolean;
   onlyFirstScreen?: boolean;
-  ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
+  ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
   refs?: { [key: string]: string };
   relation?: { ref: string; conditions: RelationCondition[] };
   relationField?: ComponentRelationFieldDto;

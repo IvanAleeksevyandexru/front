@@ -20,8 +20,8 @@ export interface TimeSlotValueInterface {
   organizationId?: string;
   bookAttributes?: string;
   parentOrderId?: string;
-  timeSlotRequestAttrs?: Array<{ name: string; value: string }>;
-  bookingRequestParams?: Array<{ name: string; value: string }>;
+  timeSlotRequestAttrs?: { name: string; value: string }[];
+  bookingRequestParams?: { name: string; value: string }[];
   userSelectedRegion?: string;
 }
 
@@ -115,7 +115,7 @@ export interface TimeSlotReq {
   caseNumber?: string;
   serviceId?: string[];
   eserviceId?: string;
-  attributes?: Array<{ name: string; value: string | boolean }>;
+  attributes?: { name: string; value: string | boolean }[];
   routeNumber?: string;
   serviceCode?: string;
 }
@@ -128,7 +128,7 @@ export interface BookTimeSlotReq {
   routeNumber?: string;
   serviceCode?: string;
   subject?: string;
-  params?: Array<{ name: string; value: string | number }>;
+  params?: { name: string; value: string | number }[];
   eserviceId?: string; // TODO eserviceId?????
   bookId?: string;
   organizationId?: string[] | string;
@@ -137,7 +137,7 @@ export interface BookTimeSlotReq {
   selectedHallTitle?: string;
   parentOrderId?: string;
   preliminaryReservationPeriod?: string;
-  attributes?: Array<{ name?: string; value?: string }>;
+  attributes?: { name?: string; value?: string }[];
   slotId?: string[];
   serviceId?: string[];
   caseNumber?: string;

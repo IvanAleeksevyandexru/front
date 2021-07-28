@@ -15,7 +15,7 @@ export class CarListComponent {
   @Input() clarifications: Clarifications;
   @Input() staticDomainAssetsPath: string;
   @Input() label: string;
-  @Input() carFixedItems: Array<Partial<ListItem>>;
+  @Input() carFixedItems: Partial<ListItem>[];
   @Input() control: FormControl;
 
   @Output() formChangeEvent = new EventEmitter<VehicleOwnerInfo>();

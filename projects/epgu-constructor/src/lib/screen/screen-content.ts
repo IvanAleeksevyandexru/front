@@ -54,26 +54,26 @@ export class ScreenContent {
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
 
-  public get displayInfoComponents$(): Observable<Array<[ComponentDto, ComponentValue]>> {
+  public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.display$.pipe(
       concatMap(({ infoComponents, components }) =>
         infoComponents
           ? (of(infoComponents).pipe(
               map((infoList) => this.filteredComponents(infoList, components)),
-            ) as Observable<Array<[ComponentDto, ComponentValue]>>)
-          : of([] as Array<[ComponentDto, ComponentValue]>),
+            ) as Observable<[ComponentDto, ComponentValue][]>)
+          : of([] as [ComponentDto, ComponentValue][]),
       ),
     );
   }
 
-  public get componentInfoComponents$(): Observable<Array<[ComponentDto, ComponentValue]>> {
+  public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
     return this.component$.pipe(
       concatMap(({ attrs: { infoComponents }}) =>
         infoComponents
           ? (combineLatest([of(infoComponents), this.display$]).pipe(
               map(([infoList, display]) => this.filteredComponents(infoList, display.components)),
-            ) as Observable<Array<[ComponentDto, ComponentValue]>>)
-          : (of([]) as Observable<Array<[ComponentDto, ComponentValue]>>),
+            ) as Observable<[ComponentDto, ComponentValue][]>)
+          : (of([]) as Observable<[ComponentDto, ComponentValue][]>),
       ),
     );
   }
@@ -474,7 +474,7 @@ export class ScreenContent {
     }
   }
 
-  private filteredComponents(infoList, components): Array<[ComponentDto, ComponentValue]> {
+  private filteredComponents(infoList, components): [ComponentDto, ComponentValue][] {
     return infoList
       .map((componentId) => {
         const findedComponent = components.find((component) => component.id === componentId);

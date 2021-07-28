@@ -1,14 +1,14 @@
 export interface PhotoRequirementsModalSetting {
   warning?: string;
-  body: Array<{
+  body: {
     title: string;
     text: string;
     type: string;
-    examplePhotos: Array<{
+    examplePhotos: {
       valid: boolean;
       description: string;
       type: string;
-    }>;
-  }>;
+    }[];
+  }[];
   footer?: string;
 }

@@ -72,7 +72,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
       this.initScreens(this.propData.components[0].attrs);
     }),
   );
-  state$ = new BehaviorSubject<Array<Record<string, string>>>([]);
+  state$ = new BehaviorSubject<Record<string, string>[]>([]);
 
   commonError$ = combineLatest([
     this.screenService.componentErrors$,
@@ -177,11 +177,11 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.saveState(state);
   }
 
-  getState(): Array<Record<string, string>> {
+  getState(): Record<string, string>[] {
     return JSON.parse(this.currentAnswersService.state as string);
   }
 
-  saveState(state: Array<Record<string, string>>): void {
+  saveState(state: Record<string, string>[]): void {
     this.state$.next(state);
     this.currentAnswersService.state = JSON.stringify(state);
     if (this.cacheRepeatableFieldsAnswersLocally) {

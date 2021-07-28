@@ -295,9 +295,9 @@ export class SelectMapObjectService implements OnDestroy {
    * @param item
    */
   private getMappedAttrsForBaloon(
-    attrs: Array<{ name: string; label: string }>,
+    attrs: { name: string; label: string }[],
     item: DictionaryYMapItem,
-  ): Array<{ name: string; label: string }> {
+  ): { name: string; label: string }[] {
     const res = [];
     attrs.forEach((attr) => {
       let itemValue = item.attributeValues[attr.name];

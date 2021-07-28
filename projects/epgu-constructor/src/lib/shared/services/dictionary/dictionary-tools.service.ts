@@ -81,7 +81,7 @@ export class DictionaryToolsService {
       switchMap((filters: ComponentDictionaryFilters) => {
         return forkJoin(
           components.reduce(
-            (data: Array<Observable<CustomListReferenceData>>, component: CustomComponent) =>
+            (data: Observable<CustomListReferenceData>[], component: CustomComponent) =>
               this.getDictionariesByFilter(data, component, filters),
             [],
           ),
@@ -96,7 +96,7 @@ export class DictionaryToolsService {
     cachedAnswers: CachedAnswersDto,
     screenStore: ScreenStore,
   ): Observable<CustomListReferenceData[]> {
-    const data: Array<Observable<CustomListReferenceData>> = [];
+    const data: Observable<CustomListReferenceData>[] = [];
     components
       .filter((component: CustomComponent) => {
         if (component.attrs.searchProvider) {
@@ -301,7 +301,7 @@ export class DictionaryToolsService {
    * @param items массив элементов словаря
    */
   public adaptDictionaryToListItem(
-    items: Array<DictionaryItem | KeyValueMap>,
+    items: (DictionaryItem | KeyValueMap)[],
     mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
     isRoot?: boolean,
   ): ListElement[] {
@@ -382,7 +382,7 @@ export class DictionaryToolsService {
   private initDataAfterLoading(references: CustomListReferenceData[]): void {
     references.forEach((reference: CustomListReferenceData) => {
       if (this.isDropdownLike(reference.component.type)) {
-        this.initDropdown(reference as CustomListGenericData<Array<Partial<ListItem>>>);
+        this.initDropdown(reference as CustomListGenericData<Partial<ListItem>[]>);
       }
 
       if (this.isDictionaryLike(reference.component.type)) {
@@ -391,7 +391,7 @@ export class DictionaryToolsService {
     });
   }
 
-  private initDropdown(reference: CustomListGenericData<Array<Partial<ListItem>>>): void {
+  private initDropdown(reference: CustomListGenericData<Partial<ListItem>[]>): void {
     const dropDowns = this.dropDowns$.getValue();
     if (!dropDowns[reference.component.id]) {
       dropDowns[reference.component.id] = reference.data;
@@ -403,7 +403,7 @@ export class DictionaryToolsService {
   private getDropdowns$(
     component: CustomComponent,
     cachedAnswers: CachedAnswersDto,
-  ): Observable<CustomListGenericData<Array<Partial<ListItem>>>> {
+  ): Observable<CustomListGenericData<Partial<ListItem>[]>> {
     return of({
       component,
       data: component.attrs?.add
@@ -415,7 +415,7 @@ export class DictionaryToolsService {
   private loadCycledDropdown(
     itemComponent: CustomComponent,
     cachedAnswers: CachedAnswersDto,
-  ): Array<Partial<ListItem>> {
+  ): Partial<ListItem>[] {
     if (!itemComponent?.attrs?.add) {
       return [];
     }
@@ -428,7 +428,7 @@ export class DictionaryToolsService {
     }
     let result:
       | string
-      | Array<Record<string, string | boolean | number>>
+      | Record<string, string | boolean | number>[]
       | Record<string, string | boolean | number>;
     try {
       result = JSON.parse(items.value);
@@ -438,7 +438,7 @@ export class DictionaryToolsService {
     if (!Array.isArray(result)) {
       return [];
     }
-    return (result as Array<Record<string, string | boolean | number>>).map((answer) => {
+    return (result as Record<string, string | boolean | number>[]).map((answer) => {
       const text = caption
         .reduce((acc, value) => {
           acc.push(answer[value]);
@@ -453,7 +453,7 @@ export class DictionaryToolsService {
     });
   }
 
-  private adaptDropdown(items: CustomComponentDropDownItemList): Array<Partial<ListItem>> {
+  private adaptDropdown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
     return items.map((item: CustomComponentDropDownItem, index: number) => {
       const itemText = item.label || item.title;
       const itemCode = item.code || item?.value || `${itemText}-${index}`;
@@ -483,10 +483,10 @@ export class DictionaryToolsService {
   }
 
   private getDictionariesByFilter(
-    data: Array<Observable<CustomListReferenceData>>,
+    data: Observable<CustomListReferenceData>[],
     component: CustomComponent,
     filters: ComponentDictionaryFilters,
-  ): Array<Observable<CustomListReferenceData>> {
+  ): Observable<CustomListReferenceData>[] {
     const isFilterInited = !isUndefined(filters[component.id]);
     const hasFilter = filters[component.id] !== null;
 

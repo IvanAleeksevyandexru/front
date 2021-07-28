@@ -55,7 +55,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   suggestionsFiles: FileItem[] = [];
   suggestionsFilesList: ISuggestionItemList[] = [];
   suggestionsUploadedFiles: UploadedFile[] = [];
-  suggestionsFilesGroupByDate: Array<[string, FileItem[]]> = [];
+  suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   iconsTypes = iconsTypes;
@@ -193,9 +193,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     );
   }
 
-  private getSuggestionsFilesGroupedByDate(
-    suggestionsFiles: FileItem[],
-  ): Array<[string, FileItem[]]> {
+  private getSuggestionsFilesGroupedByDate(suggestionsFiles: FileItem[]): [string, FileItem[]][] {
     return Object.entries(
       suggestionsFiles.reduce((acc, file) => {
         let date: Date | string = this.datesToolsService.parse(

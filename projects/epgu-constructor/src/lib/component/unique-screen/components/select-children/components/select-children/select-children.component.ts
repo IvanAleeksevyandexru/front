@@ -180,7 +180,7 @@ export class SelectChildrenComponent implements OnInit {
    * Сохраняем данные для отправки, удаляя лишние поля
    */
   passDataToSend(items: ChildI[], index: number, clearEvent?: ClearEvent): void {
-    const itemsToSend: Array<{ [key: string]: string | number | boolean }> = items.map((child) => {
+    const itemsToSend: { [key: string]: string | number | boolean }[] = items.map((child) => {
       const childToSend = { ...child };
       delete childToSend.controlId;
       delete childToSend.id;
@@ -293,7 +293,7 @@ export class SelectChildrenComponent implements OnInit {
     });
   }
 
-  private getItemsToSelect(itemsList: Array<{ [key: string]: string }>): ChildI[] {
+  private getItemsToSelect(itemsList: { [key: string]: string }[]): ChildI[] {
     const itemsToSelect = itemsList.map<ChildI>((child) => {
       return {
         ...child,

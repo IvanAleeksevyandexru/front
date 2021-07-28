@@ -34,7 +34,7 @@ export interface DictionaryResponseError {
  */
 export interface DictionaryItem extends ListElement {
   attributeValues: PaymentInfoInterface & { [key: string]: string };
-  attributes: Array<string | boolean>;
+  attributes: (string | boolean)[];
   children: unknown[];
   isLeaf: boolean;
   parentValue: null;

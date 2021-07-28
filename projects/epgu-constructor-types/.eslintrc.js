@@ -26,7 +26,7 @@ module.exports = {
         "lines-between-class-members": "off",
         "max-len": ["error", { "code": 180, "ignoreStrings": true, ignorePattern: '^import .*' }],
         "@typescript-eslint/lines-between-class-members": ["off", "always", { "exceptAfterOverload": false }],
-        '@typescript-eslint/array-type': ["error", { "default": "array-simple" }],
+        '@typescript-eslint/array-type': ["error", { "default": "array" }],
       },
     },
   ],

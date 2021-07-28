@@ -34,7 +34,7 @@ export class AutocompletePrepareService {
     id: number,
     componentMnemonic: string,
   ): ISuggestionItemList {
-    const hints: Array<{ value: string; mnemonic: string }> = this.getFormattedHints(
+    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
       repeatableComponents,
       componentsSuggestionsSet,
       fields,
@@ -183,7 +183,7 @@ export class AutocompletePrepareService {
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     componentMnemonic: string,
-  ): Array<{ value: string; mnemonic: string }> {
+  ): { value: string; mnemonic: string }[] {
     const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
       return Array.from(componentsSuggestionsSet).some(([suggestId]) => suggestId === mnemonic);
     };
@@ -192,7 +192,7 @@ export class AutocompletePrepareService {
     );
 
     return fields
-      .reduce((acc: Array<{ value: string; mnemonic: string }>, field) => {
+      .reduce((acc: { value: string; mnemonic: string }[], field) => {
         let { value, mnemonic } = field;
         if (
           mnemonic !== componentMnemonic &&
@@ -325,7 +325,7 @@ export class AutocompletePrepareService {
     componentValue: string,
   ): Answer {
     const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
-    const currentAnswerState = this.currentAnswersService.state as Array<Record<string, string>>;
+    const currentAnswerState = this.currentAnswersService.state as Record<string, string>[];
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     const currentValue = componentValue || component.value;
     if (cachedAnswer) {
