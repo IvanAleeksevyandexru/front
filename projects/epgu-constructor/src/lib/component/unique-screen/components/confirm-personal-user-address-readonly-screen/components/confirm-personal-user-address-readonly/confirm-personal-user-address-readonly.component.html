@@ -45,6 +45,13 @@
     <div class="error" *ngIf="screenService.componentError$ | async">
       <small>{{ screenService.componentError$ | async }}</small>
     </div>
+    <epgu-constructor-disclaimer
+      *ngIf="(data$ | async)?.attrs?.disclaimer as disclaimer"
+      [type]="disclaimer.type"
+      [title]="disclaimer.title"
+      [description]="disclaimer.description"
+      [clarifications]="(data$ | async)?.attrs?.clarifications"
+    ></epgu-constructor-disclaimer>
 
     <div class="footer" *ngIf="isEditAction">
       <div class="divider"></div>
