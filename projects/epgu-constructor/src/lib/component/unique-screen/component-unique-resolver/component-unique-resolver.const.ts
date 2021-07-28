@@ -41,6 +41,7 @@ import { IdentificationStreamComponent } from '../components/identification-stre
 import { RegistrationAddrReadonlyComponent } from '../components/registration-addr/components/registration-addr-readonly/registration-addr-readonly.component';
 import { PersonUserInnComponent } from '../components/person-user-inn/person-user-inn.component';
 import { KindergartenComponent } from '../components/kindergarten/kindergarten.component';
+import { EquipmentChoiceContainerComponent } from '../components/equipment-choice/container/equipment-choice-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -85,7 +86,7 @@ type UniqueScreenComponent =
   | PersonUserInnComponent
   | RegistrationAddrReadonlyComponent
   | KindergartenComponent
-  ;
+  | EquipmentChoiceContainerComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -145,5 +146,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   MedicalReferrals: MedicalReferralsListContainerComponent,
   ReferralNumber: ReferralNumberComponent,
   PaymentWay: PaymentWayContainerComponent,
-  PersonUserInn: PersonUserInnComponent
+  PersonUserInn: PersonUserInnComponent,
+  EquipmentChoice: EquipmentChoiceContainerComponent,
 };

@@ -11,6 +11,7 @@ import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { By } from '@angular/platform-browser';
 
 describe('MultipleChoiceDictionaryComponent', () => {
   let component: MultipleChoiceDictionaryComponent;
@@ -21,8 +22,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MultipleChoiceDictionaryComponent],
       imports: [MockModule(BaseModule), MockModule(ChipModule)],
-      providers: [{ provide: ModalService, useClass: ModalServiceStub }
-      ],
+      providers: [{ provide: ModalService, useClass: ModalServiceStub }],
     })
       .overrideComponent(MultipleChoiceDictionaryComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -86,7 +86,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
         title: component.modalHeader,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
-        selectedItems: component.selectedItems.list,
+        selectedItems: [],
         dictionaryFilter: component.dictionaryFilter
       });
     });
@@ -97,7 +97,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
         title: component.subLabel,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
-        selectedItems: component.selectedItems.list,
+        selectedItems: [],
         dictionaryFilter: component.dictionaryFilter
       });
     });
@@ -141,6 +141,15 @@ describe('MultipleChoiceDictionaryComponent', () => {
       fixture.detectChanges();
       component.remove('AUT');
       expect(component.selectedItems.list).toEqual([]);
+    });
+  });
+
+  describe('Readonly', () => {
+    it ('should not render remove button if isReadonly is TRUE', () => {
+      component.isReadonly = true;
+      fixture.detectChanges();
+      const debugEl = fixture.debugElement.query(By.css('.link-btn'));
+      expect(debugEl).toBeFalsy();
     });
   });
 });

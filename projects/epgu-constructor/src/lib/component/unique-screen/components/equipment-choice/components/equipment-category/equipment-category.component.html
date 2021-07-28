@@ -1,0 +1,59 @@
+<epgu-cf-ui-constructor-screen-pad class="equipment-category">
+  <epgu-constructor-multiple-choice-dictionary
+    *ngIf="category && category.equipment.length > 0"
+    [formControl]="getFormControl('equipment')"
+    [modalHeader]="'Виды оборудования'"
+    [label]="category.name"
+    [tip]="tipText"
+    [dictionaryList]="category.equipment"
+    [withAmount]="true"
+    [isReadonly]="equipmentUnselectable"
+  ></epgu-constructor-multiple-choice-dictionary>
+  <div
+    class="min-amount-error"
+    *ngIf="getFormControl('equipment').dirty && getFormControl('equipment').invalid"
+  >
+    <small>
+      {{ tipText }}
+    </small>
+  </div>
+  <div
+    *ngIf="itemsWithAdditionalFields.length > 0"
+    class="equipment-category-inputs"
+  >
+    <div class="form-item" *ngFor="let item of itemsWithAdditionalFields">
+      <div class="equipment-category-item-title">
+        {{ item.title }}
+      </div>
+      <ng-container *ngIf="getFormControl(item.value)?.get('factoryNumber')">
+        <label class="label" [for]="item.attributeValues.CATEGORY_ID + '_i_' + item.value + '_fact'">
+          Заводской номер
+        </label>
+        <epgu-constructor-constructor-plain-input
+          class="form-item-input"
+          [id]="item.attributeValues.CATEGORY_ID + '_i_' + item.value + '_fact'"
+          [control]="$any(getFormControl(item.value)?.get('factoryNumber'))"
+          [validationShowOn]="validationShowOn"
+          [invalid]="getFormControl(item.value)?.get('factoryNumber').invalid"
+          [maxlength]="50"
+          type="text"
+        ></epgu-constructor-constructor-plain-input>
+      </ng-container>
+
+      <ng-container *ngIf="getFormControl(item.value)?.get('regNumber')">
+        <label class="label" [for]="item.attributeValues.CATEGORY_ID + '_i_' + item.value + '_reg'">
+          Регистрационный номер
+        </label>
+        <epgu-constructor-constructor-plain-input
+          class="form-item-input"
+          [id]="item.attributeValues.CATEGORY_ID + '_i_' + item.value + '_reg'"
+          [control]="$any(getFormControl(item.value)?.get('regNumber'))"
+          [validationShowOn]="validationShowOn"
+          [invalid]="getFormControl(item.value)?.get('regNumber').invalid"
+          [maxlength]="50"
+          type="text"
+        ></epgu-constructor-constructor-plain-input>
+      </ng-container>
+    </div>
+  </div>
+</epgu-cf-ui-constructor-screen-pad>
