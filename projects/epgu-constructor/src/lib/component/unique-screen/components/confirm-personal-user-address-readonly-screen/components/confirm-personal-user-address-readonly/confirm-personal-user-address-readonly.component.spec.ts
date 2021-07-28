@@ -24,7 +24,7 @@ import { ActionDirective } from '../../../../../../shared/directives/action/acti
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
-import { DisclaimerComponent } from "../../../../../../shared/components/disclaimer/disclaimer.component";
+import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {
