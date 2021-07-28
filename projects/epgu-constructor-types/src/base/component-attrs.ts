@@ -11,6 +11,7 @@ import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { ScreenButton } from './screen-buttons';
+import { KeyValueMap } from './core.types';
 
 export interface KinderGardenAttrs {
   header?: string;
@@ -150,6 +151,8 @@ export interface ComponentAttrsDto {
   mapType?: string;
   electionLevel?: string;
   electionDate?: string;
+  mapOptions?: KeyValueMap;
+  region?: string;
 }
 
 export interface Hints {
