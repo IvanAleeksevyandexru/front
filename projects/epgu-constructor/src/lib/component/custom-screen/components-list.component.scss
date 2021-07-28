@@ -37,6 +37,9 @@
       &:last-child > * {
         margin-bottom: $screen-pad-24 !important;
       }
+      .component-list-resolver {
+        justify-content: flex-start;
+      }
     }
     &:last-child {
       &::ng-deep > .component-list-resolver > * > *,
