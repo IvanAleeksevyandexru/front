@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import {
   LongButtonModule,
-  AppStateModule,
+  MicroAppStateModule,
   CoreUiModule,
-  AppUiModule,
-  AppUiConfig,
+  MicroAppUiModule,
+  MicroAppUiConfig,
   SharedModalModule,
   MainContainerModule,
   BaseUiModule,
@@ -32,7 +32,7 @@ import {
 } from './services/health/health-handler';
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 
-const APP_CONFIG: AppUiConfig = {
+const APP_CONFIG: MicroAppUiConfig = {
   appRoutingComponentMap: {
     projectList: ProjectListComponent,
     projectView: ProjectViewComponent,
@@ -56,13 +56,13 @@ const APP_CONFIG: AppUiConfig = {
     CoreUiModule,
     MainContainerModule,
     LongButtonModule,
-    AppStateModule,
+    MicroAppStateModule,
     GroupListModule,
     ProgramListModule,
     BaseModule,
     SharedModalModule,
     SelectMapObjectModule,
-    AppUiModule.forRoot(APP_CONFIG),
+    MicroAppUiModule.forRoot(APP_CONFIG),
     BaseUiModule,
   ],
   providers: [

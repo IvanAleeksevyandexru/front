@@ -10,7 +10,7 @@ import {
 import { YaMapService } from '@epgu/epgu-lib';
 import {
   AddressesToolsService,
-  AppNavigationService,
+  MicroAppNavigationService,
   ConfigService,
   DeviceDetectorService,
   IYMapPoint,
@@ -48,7 +48,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private deviceDetector: DeviceDetectorService,
     private programListService: ProgramListService,
-    private appNavigationService: AppNavigationService,
+    private appNavigationService: MicroAppNavigationService,
     private stateService: StateService,
     private zone: NgZone,
     private modalService: ModalService,

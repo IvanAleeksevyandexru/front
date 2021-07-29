@@ -1,4 +1,3 @@
-import { HttpEvent } from '@angular/common/http';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
