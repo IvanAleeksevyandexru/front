@@ -9,8 +9,8 @@ import { LoggerService } from '../logger/logger.service';
 import { HealthServiceStub } from '../../interceptor/health/health.service.stub';
 import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { MicroAppErrorHandlerOrderParamsServiceService } from '../../../micro-app/micro-app-error-handler-order-params-service/micro-app-error-handler-order-params-service.service';
-import { MicroAppStateQuery } from '../../../micro-app/micro-app-state/micro-app-state-query.service';
-import { MicroAppStateQueryStub } from '../../../micro-app/micro-app-state/micro-app-state-query-stub.service';
+import { MicroAppStateQuery } from '../../../micro-app/micro-app-state/micro-app-state.query';
+import { MicroAppStateQueryStub } from '../../../micro-app/micro-app-state/micro-app-state.query.stub';
 
 describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;

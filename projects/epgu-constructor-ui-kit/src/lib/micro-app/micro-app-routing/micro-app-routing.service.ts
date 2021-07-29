@@ -1,6 +1,6 @@
 import { Injectable, Type } from '@angular/core';
 import { MicroAppRoutingComponentMap } from './micro-app-routing';
-import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.service';
+import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 

@@ -3,7 +3,7 @@ import {
   ErrorHandlerOrderParams,
   ErrorHandlerOrderParamsAbstractService
 } from '../../core/services/global-error/global-error.token';
-import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.service';
+import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { UtilsService } from '../../core/services/utils/utils.service';
 
 

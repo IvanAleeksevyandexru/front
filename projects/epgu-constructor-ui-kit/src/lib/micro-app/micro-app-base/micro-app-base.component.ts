@@ -11,7 +11,7 @@ import { LoadService } from '@epgu/epgu-lib';
 
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
 import { CfAppStateService } from '../../core/services/cf-app-state/cf-app-state.service';
-import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.service';
+import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { LocationService } from '../../core/services/location/location.service';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { MicroAppNavigationRuleService } from '../micro-app-navigation-rule/micro-app-navigation-rule.service';

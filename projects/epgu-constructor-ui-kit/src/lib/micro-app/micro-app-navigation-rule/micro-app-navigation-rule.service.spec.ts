@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.service';
-import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state-query-stub.service';
+import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
+import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query.stub';
 import { MicroAppNavigationRuleService } from './micro-app-navigation-rule.service';
 
 describe('MicroAppNavigationRuleService', () => {

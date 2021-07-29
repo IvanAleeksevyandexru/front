@@ -6,12 +6,12 @@ import { AppTypes, DataDirectionType, InputAppDto } from '@epgu/epgu-constructor
 
 import { MicroAppBaseComponent, getAppStorageKey } from './micro-app-base.component';
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
-import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.service';
+import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { CfAppStateService } from '../../core/services/cf-app-state/cf-app-state.service';
 import { LocationService } from '../../core/services/location/location.service';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { MicroAppStateServiceStub } from '../micro-app-state/micro-app-state.service.stub';
-import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state-query-stub.service';
+import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query.stub';
 import { CfAppStateServiceStub } from '../../core/services/cf-app-state/cf-app-state.service.stub';
 import { LocationServiceStub } from '../../core/services/location/location.service.stub';
 import { LocalStorageServiceStub } from '../../core/services/local-storage/local-storage.service.stub';
