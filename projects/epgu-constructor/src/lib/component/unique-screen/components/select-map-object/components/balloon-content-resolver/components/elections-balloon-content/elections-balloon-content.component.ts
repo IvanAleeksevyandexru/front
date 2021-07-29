@@ -24,7 +24,7 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   @Input() mapObject;
   public selectObject: Function;
   public expandObject: Function;
-  public extInfo$: Observable<HttpEvent<IuikFullDataResponse>>;
+  public extInfo$: Observable<IuikFullDataResponse>;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
