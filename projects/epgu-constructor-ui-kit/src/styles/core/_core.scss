@@ -1,6 +1,5 @@
 // TODO: врапперы от конструктора и кружков как временный workaround - подумать над скоупом глобальных стилей
-.epgu-form-player,
-.epgu-children-clubs {
+:host::ng-deep {
   img {
     max-width: 100%;
   }
