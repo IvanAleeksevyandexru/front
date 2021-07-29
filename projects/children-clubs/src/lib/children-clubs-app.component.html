@@ -1,9 +1,7 @@
-<div class="epgu-children-clubs">
-  <epgu-cf-ui-modal-container></epgu-cf-ui-modal-container>
-  <epgu-cf-ui-main-container
-    [showLoader]="(isFirstLoading$ | async) || (isConfigReady$ | async) === false || (stateService.isLoaderVisible$ | async)"
-  >
-    <epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>
-  </epgu-cf-ui-main-container>
-  <lib-notifier></lib-notifier>
-</div>
+<epgu-cf-ui-modal-container></epgu-cf-ui-modal-container>
+<epgu-cf-ui-main-container
+  [showLoader]="(isFirstLoading$ | async) || (isConfigReady$ | async) === false || (stateService.isLoaderVisible$ | async)"
+>
+  <epgu-cf-ui-app-component-resolver></epgu-cf-ui-app-component-resolver>
+</epgu-cf-ui-main-container>
+<lib-notifier></lib-notifier>
