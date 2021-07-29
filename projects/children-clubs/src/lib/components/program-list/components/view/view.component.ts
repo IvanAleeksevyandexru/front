@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MicroAppNavigationService, ModalService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  MicroAppNavigationService,
+  ModalService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { tap } from 'rxjs/operators';
 import { FinancingType, financingTypes, Program } from '../../../../typings';
 import { StateService } from '../../../../services/state/state.service';
@@ -25,6 +29,7 @@ export class ViewComponent implements OnInit {
   );
 
   constructor(
+    public config: ConfigService,
     private appNavigationService: MicroAppNavigationService,
     private stateService: StateService,
     private modalService: ModalService,

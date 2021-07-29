@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'children-clubs-not-found',
@@ -9,4 +10,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class NotFoundComponent {
   @Input() title = 'Ничего не найдено';
   @Input() text = 'Задайте другой поисковый запрос или измените фильтры';
+
+  constructor(public config: ConfigService) {}
 }
