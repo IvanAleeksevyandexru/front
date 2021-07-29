@@ -13,6 +13,8 @@ export const PREV_EVENT_TYPE = 'getPrevStep';
 export const GET_SLOTS = 'equeueAggSlotsService';
 export const GET_SLOTS_MODIFIED = 'getSlots';
 
+export const DICTIONARY = 'dictionary';
+
 export interface DictionaryPayload {
   region: string;
   dict: string;

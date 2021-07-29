@@ -221,6 +221,7 @@ export class ConfigService implements Config {
   get lkuipElection(): string {
     return this._lkuipElection;
   }
+
   get identificationApiUrl(): string {
     return this._identificationApiUrl;
   }

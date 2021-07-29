@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { HealthService } from '@epgu/epgu-lib';
+import { HealthService } from '../health/health.service';
 import { GlobalErrorHandler } from './global-error.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ERROR_HANDLER_ORDER_PARAMS_SERVICES } from './global-error.token';
