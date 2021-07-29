@@ -15,6 +15,7 @@ import {
 import { YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import { CommonBalloonContentComponent } from './components/common-balloon-content/common-balloon-content.component';
 import { ElectionsBalloonContentComponent } from './components/elections-balloon-content/elections-balloon-content.component';
+import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 
 type ContentTypesComponents = CommonBalloonContentComponent | ElectionsBalloonContentComponent;
 
@@ -34,7 +35,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
 
   @Input() mapObject;
   @Input() contentType = ContentTypes.commonContent;
-  @Output() selectObject = new EventEmitter<unknown>();
+  @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
 
   private contentMap = {

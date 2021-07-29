@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
-import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
+import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
 
@@ -10,8 +10,8 @@ export class StateServiceStub {
   state$ = this.stateQuery.state$;
 
   constructor(
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    private stateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
 
   changeState(state: Partial<ChildrenClubsState>): void {

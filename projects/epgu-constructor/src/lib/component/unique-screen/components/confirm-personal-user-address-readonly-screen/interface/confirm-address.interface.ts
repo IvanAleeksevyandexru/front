@@ -1,5 +1,5 @@
 import { RelativeDate } from '@epgu/epgu-lib';
-import { TextTransform, DisclaimerDto } from '@epgu/epgu-constructor-types';
+import { TextTransform, DisclaimerDto, Clarifications } from '@epgu/epgu-constructor-types';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FieldNames } from '../../registration-addr/registration-addr-screen.types';
 
@@ -21,10 +21,11 @@ export interface ConfirmAddressInterface {
 }
 
 interface ConfirmAddressInterfaceAttr {
-  actions: Array<ConfirmAddressActionsInterface>;
-  fields: Array<ConfirmAddressFieldsInterface>;
+  clarifications?: Clarifications;
+  actions: ConfirmAddressActionsInterface[];
+  fields: ConfirmAddressFieldsInterface[];
   fstuc?: TextTransform;
-  hideLevels?: Array<string>;
+  hideLevels?: string[];
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
   disclaimer?: DisclaimerDto;
