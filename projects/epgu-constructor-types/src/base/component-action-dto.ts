@@ -1,12 +1,14 @@
 import { ButtonColor } from './color';
 import { TargetType } from './target-type';
 import { ActionAnswerDto } from './action-answer-dto';
+import { Clarifications } from './clarifications';
 
 export interface ComponentActionDto {
   action: DTOActionAction;
   applicantType?: string;
   attrs?: {
     stepsBack?: number;
+    clarifications?: Clarifications;
   };
   color?: ButtonColor;
   deliriumAction?: string;

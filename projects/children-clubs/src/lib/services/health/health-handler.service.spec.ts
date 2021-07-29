@@ -9,13 +9,14 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HealthService } from '@epgu/epgu-lib';
 import {
-  AppStateQuery, AppStateQueryStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
   SessionService,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 
@@ -55,7 +56,7 @@ describe('HealthHandlerService', () => {
         SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TestHealthInterceptor,

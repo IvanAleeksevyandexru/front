@@ -22,6 +22,8 @@ import {
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
 import { v4 as uuidv4 } from 'uuid';
+// eslint-disable-next-line max-len
+import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -188,7 +190,8 @@ export class SelectMapObjectService implements OnDestroy {
         address?.includes(searchStringLower)
       );
     });
-    const items = this.filteredDictionaryItems.map((item) => {
+    const items = this.filteredDictionaryItems.map((item, index) => {
+      item.objectId = index;
       return {
         center: item.center,
         obj: item,
@@ -239,7 +242,7 @@ export class SelectMapObjectService implements OnDestroy {
     electionDate: string,
     electionLevel: string,
     options?,
-  ): Observable<unknown> {
+  ): Observable<IuikFullDataResponse> {
     const path =
       `${this.config.lkuipElection}/api/map/uikFullData?pollStationNumber=` +
       pollStationNumber +
@@ -249,7 +252,7 @@ export class SelectMapObjectService implements OnDestroy {
       electionDate +
       '&electionLevel=' +
       electionLevel;
-    return this.http.get<IGeoCoordsResponse>(path, { ...options, withCredentials: true });
+    return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true }) as unknown as Observable<IuikFullDataResponse>;
   }
 
   private getHashKey(center: [number, number]): string {

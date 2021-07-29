@@ -1,15 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { EpguLibModule, HealthService } from '@epgu/epgu-lib';
+import { EpguLibModule } from '@epgu/epgu-lib';
 
 import {
-  AppStateQuery,
-  AppStateQueryStub,
-  AppStateService,
-  AppStateServiceStub,
-  CoreUiModule, HealthServiceStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
+  MicroAppStateService,
+  MicroAppStateServiceStub,
+  CoreUiModule,
+  HealthServiceStub,
   LongButtonModule,
   ScreenPadModule,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ListComponent } from './list.component';
@@ -31,8 +33,8 @@ describe('ListComponent', () => {
       providers: [
         ProgramListService,
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
-        { provide: AppStateService, useClass: AppStateServiceStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],

@@ -3,10 +3,10 @@ import { configureTestSuite } from 'ng-bullet';
 
 import { ProgramListService } from './program-list.service';
 import {
-  AppStateQuery,
-  AppStateQueryStub,
-  AppStateService,
-  AppStateServiceStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
+  MicroAppStateService,
+  MicroAppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ApiService } from '../api/api.service';
 import { ApiServiceStub } from '../api/api.service.stub';
@@ -20,9 +20,9 @@ describe('ProgramListService', () => {
     TestBed.configureTestingModule({
       providers: [
         ProgramListService,
-        { provide: AppStateService, useClass: AppStateServiceStub },
+        { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],
     });
