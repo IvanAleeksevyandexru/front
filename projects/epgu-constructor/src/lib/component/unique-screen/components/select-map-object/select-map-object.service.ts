@@ -242,7 +242,7 @@ export class SelectMapObjectService implements OnDestroy {
     electionDate: string,
     electionLevel: string,
     options?,
-  ): Observable<HttpEvent<IuikFullDataResponse>> {
+  ): Observable<IuikFullDataResponse> {
     const path =
       `${this.config.lkuipElection}/api/map/uikFullData?pollStationNumber=` +
       pollStationNumber +
@@ -252,7 +252,7 @@ export class SelectMapObjectService implements OnDestroy {
       electionDate +
       '&electionLevel=' +
       electionLevel;
-    return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true });
+    return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true }) as unknown as Observable<IuikFullDataResponse>;
   }
 
   private getHashKey(center: [number, number]): string {
