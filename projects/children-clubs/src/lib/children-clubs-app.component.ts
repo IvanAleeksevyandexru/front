@@ -13,7 +13,7 @@ import { StateService } from './services/state/state.service';
 @Component({
   selector: 'children-clubs-app',
   templateUrl: './children-clubs-app.component.html',
-  styleUrls: ['../styles/index.scss'],
+  styleUrls: ['../styles/index.scss', './children-clubs-app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
