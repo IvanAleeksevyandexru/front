@@ -5,12 +5,12 @@ import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
-import { LunaUploadScreenComponent } from './luna-upload-screen.component';
+import { IdentificationUploadScreenComponent } from './identification-upload-screen.component';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 
 @NgModule({
-  declarations: [LunaUploadScreenComponent],
-  exports: [LunaUploadScreenComponent],
+  declarations: [IdentificationUploadScreenComponent],
+  exports: [IdentificationUploadScreenComponent],
   imports: [
     BaseModule,
     FileUploadModule,
@@ -20,6 +20,6 @@ import { IdentificationApiService } from '../../shared/identification-api/identi
     ScreenButtonsModule,
   ],
   providers: [IdentificationApiService],
-  entryComponents: [LunaUploadScreenComponent],
+  entryComponents: [IdentificationUploadScreenComponent],
 })
-export class LunaUploadScreenModule {}
+export class IdentificationUploadScreenModule {}

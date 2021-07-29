@@ -1,5 +1,5 @@
 export enum UniqueScreenComponentTypes {
-  lunaUploadComponent = 'LunaUploadComponent',
+  IdentificationUploadComponent = 'IdentificationUploadComponent',
   fileUploadComponent = 'FileUploadComponent',
   OrderFileProcessingComponent = 'OrderFileProcessingComponent',
   timeSlot = 'TimeSlot',

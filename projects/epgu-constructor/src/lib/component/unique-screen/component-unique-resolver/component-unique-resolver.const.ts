@@ -36,12 +36,12 @@ import { ReferralNumberComponent } from '../components/referral-number/referral-
 import { DatePeriodContainerComponent } from '../components/date-period/date-period-container.component';
 import { PaymentWayContainerComponent } from '../components/payment-way/components/payment-way-container/payment-way-container.component';
 import { TimeSlotDoctorsContainerComponent } from '../components/time-slot-doctors/time-slot-doctors-container/time-slot-doctors-container.component';
-import { LunaUploadScreenComponent } from '../components/luna-upload-screen/luna-upload-screen.component';
+import { IdentificationUploadScreenComponent } from '../components/identification-upload-screen/identification-upload-screen.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
 type UniqueScreenComponent =
-  | LunaUploadScreenComponent
+  | IdentificationUploadScreenComponent
   | InformationCenterMvdContainerComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
@@ -84,7 +84,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   UniqueScreenComponentTypes,
   Type<UniqueScreenComponent>
 >> = {
-  LunaUploadComponent: LunaUploadScreenComponent,
+  IdentificationUploadComponent: IdentificationUploadScreenComponent,
   CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,

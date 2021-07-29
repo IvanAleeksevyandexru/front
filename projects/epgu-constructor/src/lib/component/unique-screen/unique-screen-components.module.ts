@@ -44,11 +44,11 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
 import { DatePeriodModule } from './components/date-period/date-period.module';
 import { PaymentWayModule } from './components/payment-way/payment-way.module';
 import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-doctors.module';
-import { LunaUploadScreenModule } from './components/luna-upload-screen/luna-upload-screen.module';
+import { IdentificationUploadScreenModule } from './components/identification-upload-screen/identification-upload-screen.module';
 
 @NgModule({
   imports: [
-    LunaUploadScreenModule,
+    IdentificationUploadScreenModule,
     BaseModule,
     WebcamShootModule,
     ModalModule,

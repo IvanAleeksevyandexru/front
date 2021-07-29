@@ -30,13 +30,13 @@ import {
 import { ActionService } from '../../../../shared/directives/action/action.service';
 
 @Component({
-  selector: 'epgu-constructor-luna-upload-screen',
-  templateUrl: './luna-upload-screen.component.html',
-  styleUrls: ['./luna-upload-screen.component.scss'],
+  selector: 'epgu-constructor-identification-upload-screen',
+  templateUrl: './identification-upload-screen.component.html',
+  styleUrls: ['./identification-upload-screen.component.scss'],
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LunaUploadScreenComponent implements OnInit {
+export class IdentificationUploadScreenComponent implements OnInit {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
     tap((data: ComponentBase) => {
