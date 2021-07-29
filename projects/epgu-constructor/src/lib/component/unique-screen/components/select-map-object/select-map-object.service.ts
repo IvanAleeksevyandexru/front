@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { YaMapService } from '@epgu/epgu-lib';
 import {
