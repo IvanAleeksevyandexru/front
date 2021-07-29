@@ -4,7 +4,7 @@ import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.ser
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MicroAppRoutingService {
 
   private appRoutingComponentMap: MicroAppRoutingComponentMap;

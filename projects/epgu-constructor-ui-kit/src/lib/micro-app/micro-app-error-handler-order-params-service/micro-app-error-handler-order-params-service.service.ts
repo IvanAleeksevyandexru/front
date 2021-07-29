@@ -7,7 +7,7 @@ import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.ser
 import { UtilsService } from '../../core/services/utils/utils.service';
 
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MicroAppErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderParamsAbstractService {
   constructor(
     private appStateQuery: MicroAppStateQuery<unknown, unknown>,

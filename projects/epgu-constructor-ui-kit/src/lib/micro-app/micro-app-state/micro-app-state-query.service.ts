@@ -4,7 +4,7 @@ import { Query } from '@datorama/akita';
 import { MicroAppState, FpHealthPayload } from '@epgu/epgu-constructor-types';
 import { MicroAppStateStore } from './micro-app-state.store';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MicroAppStateQuery<T, U>  extends Query<MicroAppState<T, U>> {
   store$: Observable<MicroAppState<T, U>> = this.select();
   value$: Observable<T> = this.select('value');

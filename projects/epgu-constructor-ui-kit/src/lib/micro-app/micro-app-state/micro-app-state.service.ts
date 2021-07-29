@@ -3,7 +3,7 @@ import { MicroAppState } from '@epgu/epgu-constructor-types';
 import { MicroAppStateStore } from './micro-app-state.store';
 import { cloneDeep } from 'lodash';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MicroAppStateService<T, U> {
   constructor(private store: MicroAppStateStore<T, U>) {}
 

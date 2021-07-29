@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MicroAppNavigationRuleMap } from './micro-app-navigation-rule';
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state-query.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MicroAppNavigationRuleService {
 
   private appNavigationRuleMap: MicroAppNavigationRuleMap;

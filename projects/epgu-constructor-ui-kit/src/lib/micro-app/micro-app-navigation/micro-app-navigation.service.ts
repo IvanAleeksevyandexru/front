@@ -4,7 +4,7 @@ import { MicroAppStateService } from '../micro-app-state/micro-app-state.service
 import { MicroAppNavigationRuleService } from '../micro-app-navigation-rule/micro-app-navigation-rule.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MicroAppNavigationService {
   constructor (
     private appStateService: MicroAppStateService<unknown, unknown>,
