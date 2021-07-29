@@ -10,13 +10,23 @@ import { UserInfoLoaderModule } from '../user-info-loader/user-info-loader.modul
 import { UploaderModule } from '../uploader/uploader.module';
 import { FileSizeModule } from '../../pipes/file-size/file-size.module';
 import { FileUploadContainerModule } from './file-upload-container/file-upload-container.module';
+import { FileUploadPreviewComponent } from './file-upload-preview/file-upload-preview.component';
+import { WebcamShootModule } from '../webcam-shoot/webcam-shoot.module';
+import { LyImageCropperModule } from '@alyle/ui/image-cropper';
+import { AngularResizedEventModule } from 'angular-resize-event';
+import { DragAndDropModule } from '../../directives/drag-and-drop/drag-and-drop.module';
+import { FileUploadSliderComponent } from './file-upload-slider/file-upload-slider.component';
 
-const COMPONENTS = [FileUploadComponent];
+const COMPONENTS = [FileUploadComponent, FileUploadPreviewComponent, FileUploadSliderComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
   imports: [
+    WebcamShootModule,
+    LyImageCropperModule,
+    AngularResizedEventModule,
+    DragAndDropModule,
     BaseModule,
     UserInfoLoaderModule,
     UploaderModule,

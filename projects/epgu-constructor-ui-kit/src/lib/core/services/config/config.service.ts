@@ -254,7 +254,8 @@ export class ConfigService implements Config {
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
     this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
-    this._identificationApiUrl = config.identificationApiUrl ?? `${this.loadService.config.identificationApiUrl}`;
+    this._identificationApiUrl =
+      config.identificationApiUrl ?? `${this.loadService.config.identificationApiUrl}`;
   }
 
   set config(config: Config) {
