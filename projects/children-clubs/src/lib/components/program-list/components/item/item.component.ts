@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { AppNavigationService } from '@epgu/epgu-constructor-ui-kit';
+import { MicroAppNavigationService } from '@epgu/epgu-constructor-ui-kit';
 import { BaseProgram, FinancingType, financingTypes } from '../../../../typings';
 
 import { StateService } from '../../../../services/state/state.service';
@@ -17,7 +17,7 @@ export class ItemComponent {
   financingTypes = financingTypes;
 
   constructor(
-    private appNavigationService: AppNavigationService,
+    private appNavigationService: MicroAppNavigationService,
     private stateService: StateService,
   ) {}
 

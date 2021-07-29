@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProgramFiltersFormComponent } from './program-filters-form.component';
 import {
-  AppStateQuery,
-  AppStateQueryStub,
-  AppStateService,
-  AppStateServiceStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
+  MicroAppStateService,
+  MicroAppStateServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   ErrorModule,
@@ -37,8 +37,8 @@ describe('ProgramFiltersComponent', () => {
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
-        { provide: AppStateService, useClass: AppStateServiceStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         DictionaryService,
