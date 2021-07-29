@@ -200,6 +200,9 @@ input[type='file'] {
   @include typ-plain-small;
   color: $color-text-helper;
   margin-bottom: 24px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .fileupload {

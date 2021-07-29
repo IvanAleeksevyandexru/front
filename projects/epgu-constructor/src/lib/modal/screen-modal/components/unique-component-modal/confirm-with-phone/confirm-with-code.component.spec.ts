@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from 'ng-bullet';
+import { of } from 'rxjs';
+import { MockModule } from 'ng-mocks';
+
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { CoreModule } from '../../../../../core/core.module';
 import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -19,16 +23,13 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { ConstructorPlainInputModule } from '../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ValidationService } from '../../../../../shared/services/validation/validation.service';
-import { ConfirmPhoneComponent } from './confirm-phone.component';
-import { configureTestSuite } from 'ng-bullet';
+import { ConfirmWithCodeComponent } from './confirm-with-code.component';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { MockModule } from 'ng-mocks';
 
-describe('ConfirmPhoneComponent', () => {
-  let component: ConfirmPhoneComponent;
-  let fixture: ComponentFixture<ConfirmPhoneComponent>;
+describe('ConfirmWithCodeComponent', () => {
+  let component: ConfirmWithCodeComponent;
+  let fixture: ComponentFixture<ConfirmWithCodeComponent>;
   let navigationModalService: NavigationModalService;
   let screenService: ScreenService;
   const mockData: ComponentDto = {
@@ -39,7 +40,7 @@ describe('ConfirmPhoneComponent', () => {
     visited: true,
     required: true,
     attrs: {
-      characterMask: [],
+      characterMask: '\\d',
       codeLength: 4,
       resendCodeUrl: 'url',
     },
@@ -51,7 +52,7 @@ describe('ConfirmPhoneComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmPhoneComponent, CounterDirective],
+      declarations: [ConfirmWithCodeComponent, CounterDirective],
       imports: [ConstructorPlainInputModule, CoreModule, MockModule(CoreUiModule), BaseModule, RouterTestingModule],
       providers: [
         UnsubscribeService,
@@ -75,7 +76,7 @@ describe('ConfirmPhoneComponent', () => {
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockData);
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData));
     jest.spyOn(screenService, 'applicantAnswers', 'get').mockReturnValue(applicantAnswersDto);
-    fixture = TestBed.createComponent(ConfirmPhoneComponent);
+    fixture = TestBed.createComponent(ConfirmWithCodeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

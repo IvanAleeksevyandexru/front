@@ -11,6 +11,7 @@ import {
   IFeatureCollection,
   IFeatureItem,
   IYMapPoint,
+  ObjectManager,
 } from './yandex-map.interface';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
@@ -19,6 +20,7 @@ const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на к�
 export class YandexMapService implements OnDestroy {
   public selectedValue$ = new BehaviorSubject(null);
   public ymaps;
+  public mapOptions;
 
   private objectManager;
   private activePlacemarkId: number;
@@ -37,7 +39,7 @@ export class YandexMapService implements OnDestroy {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(() => {
-        this.setMapOptions(this.deviceDetector.isMobile);
+        this.setMapOptions(this.deviceDetector.isMobile, this.mapOptions);
       });
   }
 
@@ -58,7 +60,7 @@ export class YandexMapService implements OnDestroy {
           id: index,
           geometry: { type: 'Point', coordinates: item.center },
           properties: {
-            res: { ...item },
+            res: { ...item.obj },
           },
         };
         res.features.push(obj);
@@ -71,32 +73,43 @@ export class YandexMapService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeObjectsOnMap<T>(items: IYMapPoint<T>[]): void {
-    const objects = this.prepareFeatureCollection(items);
-
-    this.objectManager = this.createMapsObjectManager();
+  public placeObjectsOnMap<T>(
+    items: IYMapPoint<T>[],
+    OMSettings?,
+    urlTemplate?: string,
+    LOMSettings?,
+  ): void {
+    this.objectManager = this.createMapsObjectManager(OMSettings, urlTemplate, LOMSettings);
     this.objectManager.objects.options.set(this.icons.blue);
     this.objectManager.objects.options.set(
       'balloonContentLayout',
       this.getCustomBalloonContentLayout(),
     );
     this.objectManager.objects.options.set('balloonLayout', this.getCustomBalloonContentLayout());
-    this.objectManager.add(objects);
+
+    if (!urlTemplate) {
+      const objects = this.prepareFeatureCollection(items);
+      this.objectManager.add(objects);
+    }
+
     this.yaMapService.map.geoObjects.removeAll();
     this.yaMapService.map.geoObjects.add(this.objectManager);
   }
 
   /**
-   * centers the map by coordinates
-   * @param coords
-   * @param object
+   * centers the map by feature
+   * @param feature
    */
-  public centeredPlaceMark<T>(feature: IFeatureItem<T> & IClusterItem<T>): void {
-    if(feature.type === IFeatureTypes.Cluster && this.isClusterZoomable(feature)) {
+  public centeredPlaceMark<T>(feature: IFeatureItem<T> | IClusterItem<T>): void {
+    this.closeBalloon();
+    if (
+      feature.type === IFeatureTypes.Cluster &&
+      this.isClusterZoomable(feature as IClusterItem<T>)
+    ) {
       return;
     }
     this.activePlacemarkId = feature.id;
-    const coords = feature.geometry.coordinates;
+    const coords = feature.geometry?.coordinates;
 
     if (coords && coords[0] && coords[1]) {
       this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
@@ -107,10 +120,30 @@ export class YandexMapService implements OnDestroy {
           });
         const object =
           feature.type === IFeatureTypes.Feature
-            ? [feature.properties.res?.obj]
-            : feature.properties.geoObjects.map((object) => object.properties.res.obj);
+            ? [(feature as IFeatureItem<T>).properties.res]
+            : (feature as IClusterItem<T>).properties.geoObjects.map(
+                (object) => object.properties.res,
+              );
+        if (object.length === 1) {
+          object[0]['expanded'] = true;
+        }
         this.selectedValue$.next(object);
       });
+    }
+  }
+
+  public getObjectById<T>(id: number): IFeatureItem<T> {
+    return this.objectManager.objects.getById(id);
+  }
+
+  /**
+   * centers the map by coords
+   * @param coords координаты
+   * @param zoom уровень приближения
+   */
+  public setCenter(coords: [number, number], zoom?: number): void {
+    if (coords && coords[0] && coords[1]) {
+      this.yaMapService.map.setCenter(coords, zoom);
     }
   }
 
@@ -122,19 +155,19 @@ export class YandexMapService implements OnDestroy {
     this.activePlacemarkId = null;
   }
 
-  public setMapOptions(isMobile: boolean): void {
+  public setMapOptions(isMobile: boolean, options?): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.ymaps = (window as any).ymaps;
     this.yaMapService.map.controls.add('zoomControl', {
       position: {
-        top: 108,
+        top: isMobile ? 240 : 108,
         right: 10,
         bottom: 'auto',
         left: 'auto',
       },
       size: isMobile ? 'small' : 'large',
     });
-    this.yaMapService.map.options.set('minZoom', this.MIN_ZOOM);
+    this.yaMapService.map.options.set({ minZoom: this.MIN_ZOOM, ...options });
     this.yaMapService.map.copyrights.togglePromo();
   }
 
@@ -155,26 +188,10 @@ export class YandexMapService implements OnDestroy {
     }
   }
 
-  /**
-   * returns yandex ObjectManager to work with map's objects
-   */
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  private createMapsObjectManager() {
-    // const serviceContext = this;
-    const OMSettings = {
-      clusterize: !0,
-      minClusterSize: 2,
-      gridSize: 128,
-      geoObjectBalloonMaxWidth: 265,
-      geoObjectBalloonOffset: [0, 0],
-      geoObjectHideIconOnBalloonOpen: !1,
-      viewportMargin: 300,
-      zoomMargin: 64,
-      clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
-      clusterHasBalloon: false,
-    };
-
-    const objectManager = new this.ymaps.ObjectManager(OMSettings);
+  private createMapsObjectManager(OMSettings, urlTemplate: string, LOMSettings): ObjectManager {
+    const objectManager = urlTemplate
+      ? this.createLoadingObjectManager(urlTemplate, LOMSettings)
+      : this.createObjectManager(OMSettings);
 
     objectManager.objects.events.add(
       'click',
@@ -190,6 +207,52 @@ export class YandexMapService implements OnDestroy {
       let clustersId = evt.get('objectId');
       let cluster = objectManager.clusters.getById(clustersId);
       this.centeredPlaceMark(cluster);
+    });
+
+    return objectManager;
+  }
+
+  private createObjectManager(settings?): ObjectManager {
+    const OMSettings = {
+      clusterize: !0,
+      minClusterSize: 2,
+      gridSize: 128,
+      geoObjectBalloonMaxWidth: 265,
+      geoObjectBalloonOffset: [0, 0],
+      geoObjectHideIconOnBalloonOpen: !1,
+      viewportMargin: 300,
+      zoomMargin: 64,
+      clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
+      clusterHasBalloon: false,
+      ...settings,
+    };
+
+    return new this.ymaps.ObjectManager(OMSettings);
+  }
+
+  private createLoadingObjectManager(
+    urlTemplate: string = 'http://mobiz.cowry.team/api/map/uiks?bbox=%b',
+    settings?,
+  ): ObjectManager {
+    const LOMSettings = {
+      clusterize: true,
+      hasBalloon: false,
+      splitRequests: false,
+      paddingTemplate: 'uik_%b',
+      ...settings,
+    };
+
+    const objectManager = new this.ymaps.LoadingObjectManager(urlTemplate, LOMSettings);
+
+    // Маппинг ответа от бэка
+    objectManager.objects.events.add('add', (evt) => {
+      let objectId = evt.get('objectId');
+      let obj = this.objectManager.objects.getById(objectId);
+      obj.properties = {
+        res: {
+          ...obj.properties,
+        },
+      };
     });
 
     return objectManager;

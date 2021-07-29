@@ -9,13 +9,14 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HealthService } from '@epgu/epgu-lib';
 import {
-  AppStateQuery, AppStateQueryStub,
+  AppStateQuery,
+  AppStateQueryStub,
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
   SessionService,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 

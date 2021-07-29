@@ -8,6 +8,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 @NgModule({
   declarations: [ConfirmPersonalUserAddressReadonlyComponent],
@@ -20,7 +21,8 @@ import { ConstructorDatePickerModule } from '../../../../shared/components/const
         TextTransformModule,
         ScreenPadModule,
         DefaultUniqueScreenWrapperModule,
-        ConstructorDatePickerModule
+        ConstructorDatePickerModule,
+        DisclaimerModule,
     ],
   providers: [DatePipe],
   entryComponents: [ConfirmPersonalUserAddressReadonlyComponent]

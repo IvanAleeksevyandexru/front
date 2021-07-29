@@ -1,5 +1,6 @@
 {
   "default-config": {
+    "lkuipElection": "https://lkuip-elections-dev.test.gosuslugi.ru",
     "nsiSuggestDictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi-suggest/v1",
     "dictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
     "externalApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1",

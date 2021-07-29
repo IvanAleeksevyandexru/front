@@ -1,8 +1,15 @@
-import { Injectable, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { YaMapService } from '@epgu/epgu-lib';
-import { ConfigService, Icons, IFeatureCollection, IGeoCoordsResponse, YMapItem } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  Icons,
+  IFeatureCollection,
+  IGeoCoordsResponse,
+  YandexMapService,
+  YMapItem,
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   DictionaryItem,
   DictionaryResponseError,
@@ -15,16 +22,25 @@ import {
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
 import { v4 as uuidv4 } from 'uuid';
+// eslint-disable-next-line max-len
+import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
   baloonContent: Array<ComponentBaloonContentDto>;
   dictionaryType: string;
   dictionaryFilter: Array<ComponentDictionaryFilterDto>;
+  electionDate?: string;
+  electionLevel?: string;
 }
 
 export interface IFillCoordsResponse extends IGeoCoordsResponse {
   dictionaryError?: DictionaryResponseError;
+}
+
+export enum MapTypes {
+  commonMap = 'commonMap',
+  electionsMap = 'electionsMap',
 }
 
 @Injectable()
@@ -33,13 +49,12 @@ export class SelectMapObjectService implements OnDestroy {
   public filteredDictionaryItems: DictionaryYMapItem[] = [];
   public selectedValue = new Subject();
   public ymaps;
-  public templates: { [key: string]: TemplateRef<ViewChild> } = {}; // Шаблоны для модалки
   public componentAttrs: SelectMapComponentAttrs; // Атрибуты компонента из getNextStep
   public mapEvents; // events от карт, устанавливаются при создание балуна
   public mapOpenedBalloonId: number;
+  public mapType = MapTypes.commonMap;
 
   private objectManager;
-  private activePlacemarkId;
   private __mapStateCenter: Array<number>;
 
   constructor(
@@ -47,6 +62,7 @@ export class SelectMapObjectService implements OnDestroy {
     private config: ConfigService,
     private yaMapService: YaMapService,
     private icons: Icons,
+    private yandexMapService: YandexMapService,
   ) {
     this.selectedValue.pipe(filter((value) => !value)).subscribe(() => {
       this.mapOpenedBalloonId = null;
@@ -100,9 +116,9 @@ export class SelectMapObjectService implements OnDestroy {
    * prepares and returns collection of objects for yandex map
    * @param items geo objects
    */
-  public prepareFeatureCollection(items: DictionaryYMapItem[]): IFeatureCollection<DictionaryItem> {
+  public prepareFeatureCollection(): IFeatureCollection<DictionaryItem> {
     const res = { type: 'FeatureCollection', features: [] };
-    items.forEach((item) => {
+    this.filteredDictionaryItems.forEach((item) => {
       if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
@@ -119,25 +135,6 @@ export class SelectMapObjectService implements OnDestroy {
   }
 
   /**
-   * place objects on yandex map
-   * @param map link to yandex map
-   */
-  public placeObjectsOnMap(map: YaMapService['map']): void {
-    const objects = this.prepareFeatureCollection(this.filteredDictionaryItems);
-
-    this.objectManager = this.createMapsObjectManager();
-    this.objectManager.objects.options.set(this.icons.blue);
-    this.objectManager.objects.options.set(
-      'balloonContentLayout',
-      this.getCustomBalloonContentLayout(),
-    );
-    this.objectManager.objects.options.set('balloonLayout', this.getCustomBalloonContentLayout());
-    this.objectManager.add(objects);
-    map.geoObjects.removeAll();
-    map.geoObjects.add(this.objectManager);
-  }
-
-  /**
    * centers the map by coordinates
    * @param coords
    * @param object
@@ -146,8 +143,6 @@ export class SelectMapObjectService implements OnDestroy {
     this.closeBalloon();
     let serviceContext = this;
     let offset = -0.00008;
-
-    this.activePlacemarkId = mapItem.idForMap;
 
     if (coords && coords[0] && coords[1]) {
       let center = this.yaMapService.map.getCenter();
@@ -195,7 +190,14 @@ export class SelectMapObjectService implements OnDestroy {
         address?.includes(searchStringLower)
       );
     });
-    this.placeObjectsOnMap(this.yaMapService.map);
+    const items = this.filteredDictionaryItems.map((item, index) => {
+      item.objectId = index;
+      return {
+        center: item.center,
+        obj: item,
+      };
+    });
+    this.yandexMapService.placeObjectsOnMap(items);
   }
 
   public findObjectByValue(value: string): DictionaryYMapItem {
@@ -232,6 +234,25 @@ export class SelectMapObjectService implements OnDestroy {
   public closeBalloon(): void {
     this.selectedValue.next(null);
     this.mapEvents?.fire('userclose');
+  }
+
+  public getElections(
+    pollStationNumber: string,
+    pollStationRegion: string,
+    electionDate: string,
+    electionLevel: string,
+    options?,
+  ): Observable<HttpEvent<IuikFullDataResponse>> {
+    const path =
+      `${this.config.lkuipElection}/api/map/uikFullData?pollStationNumber=` +
+      pollStationNumber +
+      '&pollStationRegion=' +
+      pollStationRegion +
+      '&electionDate=' +
+      electionDate +
+      '&electionLevel=' +
+      electionLevel;
+    return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true });
   }
 
   private getHashKey(center: [number, number]): string {
@@ -291,85 +312,5 @@ export class SelectMapObjectService implements OnDestroy {
       }
     });
     return res;
-  }
-
-  /**
-   * returns yandex ObjectManager to work with map's objects
-   */
-  // TODO нет в epgu-lib интерфейсов
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  private createMapsObjectManager() {
-    const OMSettings = {
-      clusterize: !0,
-      minClusterSize: 2,
-      gridSize: 128,
-      geoObjectBalloonMaxWidth: 265,
-      geoObjectBalloonOffset: [0, 0],
-      geoObjectHideIconOnBalloonOpen: !1,
-      viewportMargin: 300,
-      zoomMargin: 64,
-      clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
-    };
-
-    const objectManager = new this.ymaps.ObjectManager(OMSettings);
-
-    objectManager.objects.events.add('click', (evt) => {
-      let objectId = evt.get('objectId');
-      let obj = this.findObjectByObjectId(objectId);
-      this.centeredPlaceMark(obj.center, obj);
-    });
-
-    objectManager.objects.balloon.events.add('userclose', () => {
-      objectManager.objects.setObjectOptions(this.activePlacemarkId, {
-        iconImageHref: this.icons.blue.iconImageHref,
-      });
-      this.selectedValue.next(null);
-    });
-
-    return objectManager;
-  }
-
-  // TODO нет в epgu-lib интерфейсов
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  private getCustomBalloonContentLayout() {
-    if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
-      return;
-    }
-    const serviceContext = this;
-    const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass('', {
-      // Переопределяем функцию build, чтобы при создании макета начинать
-      // слушать событие click на кнопке
-      build: function () {
-        // Сначала вызываем метод build родительского класса.
-        customBalloonContentLayout.superclass.build.call(this);
-        serviceContext.mapEvents = this.events;
-      },
-
-      clear: function () {
-        customBalloonContentLayout.superclass.clear.call(this);
-      },
-
-      applyElementOffset: function () {
-        const balloon = this.getParentElement().querySelector('.map-baloon');
-        balloon.style.left = -(balloon.offsetWidth / 2) + 'px';
-        balloon.style.top = -(balloon.offsetHeight + 15) + 'px';
-      },
-
-      onClick: function (e: Event) {
-        e.preventDefault();
-        const objectId = (e.target as Element).getAttribute('data-objectid');
-        let checkedId = objectId || this.activePlacemark.id.toString();
-        if (checkedId) {
-          const item = serviceContext.objectManager.objects.getById(checkedId).properties.res;
-          serviceContext.selectedValue.next(item);
-        }
-      },
-
-      onCloseClick: function (e: Event) {
-        e.preventDefault();
-        this.events.fire('userclose');
-      },
-    });
-    return customBalloonContentLayout;
   }
 }

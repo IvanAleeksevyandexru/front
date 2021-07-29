@@ -9,7 +9,11 @@
   margin-left: calc( #{-$screen-pad-16} / 2);
   margin-right: calc( #{-$screen-pad-16} / 2);
   &__item {
+    &.show {
+      display: flex;
+    }
     @include flex-container();
+    display: none;
     justify-content: flex-start;
     flex: 1 1 100%;
     margin-left: calc( #{$screen-pad-16} / 2);

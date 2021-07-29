@@ -20,6 +20,7 @@ export class ScreenServiceStub extends ScreenContent {
 
   public isLoadingSubject = new BehaviorSubject<boolean>(false);
   public isLoading$: Observable<boolean> = this.isLoadingSubject.asObservable();
+  public isLoaderVisible = new BehaviorSubject<boolean>(false);
 
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;

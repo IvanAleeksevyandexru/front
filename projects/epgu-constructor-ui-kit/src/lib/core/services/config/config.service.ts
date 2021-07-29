@@ -47,6 +47,7 @@ export class ConfigService implements Config {
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
   private _appPathMap: AppPathMap;
+  private _lkuipElection: string;
   private _identificationApiUrl: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
@@ -217,6 +218,10 @@ export class ConfigService implements Config {
     return this._appPathMap;
   }
 
+  get lkuipElection(): string {
+    return this._lkuipElection;
+  }
+
   get identificationApiUrl(): string {
     return this._identificationApiUrl;
   }
@@ -227,6 +232,7 @@ export class ConfigService implements Config {
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._lkuipElection = config.lkuipElection;
     this._nsiSuggestDictionaryUrl =
       config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;

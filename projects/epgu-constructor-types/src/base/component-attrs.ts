@@ -11,6 +11,7 @@ import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { ScreenButton } from './screen-buttons';
+import { KeyValueMap } from './core.types';
 
 export interface KinderGardenAttrs {
   header?: string;
@@ -57,6 +58,7 @@ export interface ComponentAttrsDto {
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
+  email?: string;
   endDate?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
@@ -144,6 +146,13 @@ export interface ComponentAttrsDto {
     dictionaryFilter: ComponentDictionaryFilterDto[];
     turnOffStartFilter?: boolean;
   };
+  selectAttributes?: string[];
+  LOMurlTemplate?: string;
+  mapType?: string;
+  electionLevel?: string;
+  electionDate?: string;
+  mapOptions?: KeyValueMap;
+  region?: string;
 }
 
 export interface Hints {

@@ -87,6 +87,7 @@ export interface Config {
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;
   nsiSuggestDictionaryUrl?: string;
+  lkuipElection?: string;
   appPathMap: AppPathMap;
 }
 

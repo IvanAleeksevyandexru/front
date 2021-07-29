@@ -8,13 +8,7 @@
 
 <ng-template #templateContent let-type="type">
   <ng-container>
-    <epgu-constructor-confirm-phone
-      *ngIf="[uniqueComponentName.phoneNumberConfirmCodeInput, uniqueComponentName.confirmCodeInput].includes(type)"
-    >
-    </epgu-constructor-confirm-phone>
-    <epgu-constructor-confirm-email
-      *ngIf="[uniqueComponentName.ConfirmNewEmail, uniqueComponentName.ConfirmLegalNewEmail].includes(type)"
-    >
-    </epgu-constructor-confirm-email>
+    <epgu-constructor-confirm-with-code *ngIf="confirmWithCodeTypes.includes(type)"></epgu-constructor-confirm-with-code>
+    <epgu-constructor-confirm-email *ngIf="confirmEmailTypes.includes(type)"></epgu-constructor-confirm-email>
   </ng-container>
 </ng-template>

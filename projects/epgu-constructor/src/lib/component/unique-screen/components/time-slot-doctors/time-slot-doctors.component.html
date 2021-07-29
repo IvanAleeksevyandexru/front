@@ -1,7 +1,13 @@
 <div class="mb-16">
   <epgu-cf-ui-constructor-screen-pad>
 
-    <epgu-constructor-label class="mb-24" [label]="label" for="label"></epgu-constructor-label>
+    <epgu-constructor-label
+      *ngIf="label"
+      class="mb-24"
+      [label]="label"
+      for="label"
+    >
+    </epgu-constructor-label>
 
     <div *ngIf="specLookupAttrs">
       <epgu-constructor-label [label]="specLookupAttrs.label" for="spec"></epgu-constructor-label>
@@ -20,7 +26,9 @@
     </div>
 
 
-    <div *ngIf="isDocLookupShown" class="mt-24">
+    <div *ngIf="isDocLookupShown"
+         [class.mt-24]="specLookupAttrs"
+    >
       <epgu-constructor-label [label]="docLookupAttrs.label" for="doctors"></epgu-constructor-label>
 
       <epgu-cf-ui-constructor-constructor-lookup
