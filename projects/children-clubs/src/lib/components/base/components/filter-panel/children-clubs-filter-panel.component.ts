@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
+import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import {
   ChildrenClubsState,
@@ -30,8 +30,8 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
 
   constructor(
     public programListService: ProgramListService,
-    private query: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    private query: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
   ngOnInit(): void {
     if (this.initValue) {
