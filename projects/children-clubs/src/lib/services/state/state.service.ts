@@ -54,9 +54,12 @@ export class StateService {
   }
 
   get groupFilters(): FindOptionsGroup {
-    return this.stateQuery.state?.groupFilters
-      ? cloneDeep(this.stateQuery.state?.groupFilters)
-      : ({ nextSchoolYear: this.nextSchoolYear, vendor: this.vendor } as FindOptionsGroup);
+    const defaultFindOptions: FindOptionsGroup = { nextSchoolYear: this.nextSchoolYear, vendor: this.vendor };
+    if (!this.stateQuery.state?.groupFilters || Object.keys(this.stateQuery.state?.groupFilters).length === 0) {
+      return defaultFindOptions;
+    } else {
+      return cloneDeep(this.stateQuery.state?.groupFilters);
+    }
   }
 
   set groupFilters(filters: FindOptionsGroup) {
