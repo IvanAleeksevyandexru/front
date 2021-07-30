@@ -20,32 +20,6 @@ describe('UtilsService', () => {
     service = TestBed.inject(UtilsService);
   });
 
-  describe('getObjectProperty()', () => {
-    it('should return object property', () => {
-      expect(UtilsService.getObjectProperty({ a: { b: { c: 3 }}}, 'a.b.c'))
-        .toBe(3);
-    });
-
-    it('should return undefined if there is no object property and default value is not determined', () => {
-      expect(UtilsService.getObjectProperty({ a: { b: {}}}, 'a.b.c', undefined))
-        .toBe(undefined);
-    });
-
-    it('should return default value if there is no object property', () => {
-      expect(UtilsService.getObjectProperty({ a: { b: {}}}, 'a.b.c', 0))
-        .toBe(0);
-    });
-
-  });
-
-  describe('getDictKeyByComp()', () => {
-    it('should return dictionary key by component', () => {
-      expect(UtilsService.getDictKeyByComp(
-        { attrs: { dictionaryType: 'testType' }, id: 1 } as any))
-        .toBe('testType1');
-    });
-  });
-
   describe('htmlToText()', () => {
     it('should return text from html', () => {
       expect(UtilsService.htmlToText('Text <span>additional info</span>'))

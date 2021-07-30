@@ -2,9 +2,9 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { map } from 'rxjs/operators';
 
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 
 @Component({
   selector: 'epgu-constructor-dictionary',
@@ -14,7 +14,7 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 export class DictionaryComponent extends AbstractComponentListItemComponent {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   list$ = this.dictionaryToolsService.dictionaries$.pipe(
-    map((dictionaries) => dictionaries[UtilsService.getDictKeyByComp(this.control.value)]?.list),
+    map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
   );
 
   constructor(public injector: Injector, public dictionaryToolsService: DictionaryToolsService) {

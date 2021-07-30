@@ -10,6 +10,7 @@ import {
 import { ConfirmUserDataStyle, ComponentDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { get } from 'lodash';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
@@ -111,7 +112,7 @@ export class FieldListComponent implements OnInit, OnChanges {
       const componentId = parsedPath.shift();
       const componentValue = this.currentAnswersService.state[componentId]?.value;
       const parsedComponentValue = this.utilsService.tryToParseOrDefault(componentValue, {});
-      const newValue = UtilsService.getObjectProperty(
+      const newValue = get(
         parsedComponentValue,
         parsedPath.splice(1, parsedPath.length - 1).join('.'),
         undefined,

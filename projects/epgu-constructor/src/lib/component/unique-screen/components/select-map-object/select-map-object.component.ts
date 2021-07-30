@@ -10,7 +10,7 @@ import {
 import { YaMapService } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { isEqual as _isEqual } from 'lodash';
+import { get, isEqual as _isEqual } from 'lodash';
 import {
   ActionType,
   ApplicantAnswersDto,
@@ -207,10 +207,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
   private getSelectedValue(): { [key: string]: string } {
-    const selectedValue = UtilsService.getObjectProperty(
+    const selectedValue = (get(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,
-    );
+    ) as unknown) as string;
     return JSON.parse(selectedValue);
   }
 

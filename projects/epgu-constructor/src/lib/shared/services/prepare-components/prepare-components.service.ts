@@ -13,6 +13,7 @@ import { DocInputField } from '../../../component/custom-screen/components/doc-i
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { get } from 'lodash';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -164,7 +165,7 @@ export class PrepareComponentsService {
     const cachedValue = JSON.parse(
       this.cachedAnswersService.getCachedValueById(cachedAnswers, id) || '{}',
     );
-    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
+    const value = get(cachedValue, path, item.value);
 
     return typeof value === 'object'
       ? { ...item, value: JSON.stringify(value) }
@@ -227,7 +228,7 @@ export class PrepareComponentsService {
     const cache = cachedAnswers[id].value;
 
     if (UtilsService.hasJsonStructure(cache)) {
-      const date: string = UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+      const date: string = get({ value: JSON.parse(cache) }, path, '');
       if (this.isShortTimeFormat(date)) {
         return date;
       } else {
@@ -321,7 +322,7 @@ export class PrepareComponentsService {
             return attrsWithFilter;
           }
 
-          const value: string = UtilsService.getObjectProperty(
+          const value: string = get(
             { value: JSON.parse(cache) },
             path,
             '',

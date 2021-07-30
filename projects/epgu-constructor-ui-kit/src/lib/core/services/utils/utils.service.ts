@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { TypeHelperService } from '../type-helper/type-helper.service';
 
 
@@ -7,38 +6,9 @@ import { TypeHelperService } from '../type-helper/type-helper.service';
 export class UtilsService {
   constructor (private typeHelperService: TypeHelperService) {}
 
-  /**
-   * Метод для безопасного получения пропертей объекта по пути
-   * @param obj объект, из которого необходимо получить свойство
-   * @param path путь до свойства
-   * @param defaultValue значение по умолчанию в случае не нахождения свойства
-   * @example getObjectProperty({a: {b: {c: 3}}}), 'a.b.c');
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
-    if (!path) return obj;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const travel = (regexp): any =>
-      String.prototype.split
-        .call(path, regexp)
-        .filter(Boolean)
-        .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
-    const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
-    return result === undefined || result === obj ? defaultValue : result;
-  }
-
   static extractDateRef(refDate: string): string[] {
     const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
     return [ref, refDate.replace(ref, '')];
-  }
-
-  /**
-   * Функция возвращает ключ для получения словаря
-   * @param component экземпляр компонента
-   */
-  public static getDictKeyByComp(component: ComponentDto): string {
-    return component.attrs.dictionaryType + component.id;
   }
 
   public static htmlToText(html: string): string {
