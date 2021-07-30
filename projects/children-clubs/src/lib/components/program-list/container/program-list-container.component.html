@@ -34,7 +34,7 @@
     <ng-template #content>
       <ng-container *ngIf="data$ | async as data">
         <ng-container *ngIf="$any(data)?.length > 0">
-          <children-clubs-list (addItemsEvent)="fetchItems()">
+          <children-clubs-list (addItemsEvent)="nextPage()">
             <children-clubs-item
               *ngFor="let item of data$ | async"
               [data]="item"
