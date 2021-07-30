@@ -21,7 +21,6 @@ import {
   EventBusService,
   DeviceDetectorService,
   UnsubscribeService,
-  UtilsService,
   WordTransformService,
 } from '@epgu/epgu-constructor-ui-kit';
 
@@ -76,7 +75,6 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     private modalService: ModalService,
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
-    private utils: UtilsService,
     private wordTransformService: WordTransformService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
