@@ -128,6 +128,8 @@ export * from './lib/core/services/config-api/config-api.service';
 export * from './lib/core/services/config-api/config-api.service.stub';
 export * from './lib/core/services/health/health.service';
 export * from './lib/core/services/health/activated-route.stub';
+export * from './lib/core/services/html-select/html-select.service';
+export * from './lib/core/services/html-select/html-select.service.stub';
 
 export * from './lib/core/services/tracing/tracing.service';
 export * from './lib/core/services/tracing/tracing.service.stub';
