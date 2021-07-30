@@ -13,7 +13,7 @@ import {
   ModalService,
   ModalServiceStub,
   DeviceDetectorService,
-  DeviceDetectorServiceStub,
+  DeviceDetectorServiceStub, HtmlSelectService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
 
@@ -57,6 +57,7 @@ describe('ClickableLabelDirective', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        HtmlSelectService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
