@@ -5,12 +5,13 @@
       <span class="card-toggle-label mt-16">
         <b>{{ group?.name }}</b>
       </span>
+    </label>
+    <div class="deny-reason-container" *ngIf="denyReasonMessage?.title">
       <children-clubs-deny-reason-title
-        *ngIf="denyReasonMessage?.title"
         class="mt-16"
         [title]="denyReasonMessage.title"
       ></children-clubs-deny-reason-title>
-    </label>
+    </div>
 
     <div class="card-toggle-content group-item-content">
       <div class="modal-divider"></div>
