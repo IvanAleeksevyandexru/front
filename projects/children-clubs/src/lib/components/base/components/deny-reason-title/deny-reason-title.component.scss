@@ -12,4 +12,7 @@
   text-align: center;
 
   @include typ-plain-text;
+  @include phones-down {
+    width: 100%;
+  }
 }
