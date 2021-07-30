@@ -9,5 +9,6 @@ export interface MicroAppState<T, U> {
   value: T;
   state: U;
   currentComponent: string;
+  orderId: number;
   healthPayload: FpHealthPayload;
 }
