@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {
+  MicroAppNavigationService,
   ErrorHandlerAbstractService,
   LocationService,
   LoggerService,
@@ -17,6 +18,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private logger: LoggerService,
     private modalService: ModalService,
     private locationService: LocationService,
+    private navigationService: MicroAppNavigationService
   ) {}
 
   public handleResponse(): void {
