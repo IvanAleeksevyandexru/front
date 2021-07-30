@@ -1,13 +1,4 @@
 
-/**
- * Возвращает true, если объекты равны при сравнии
- * @param prev - объект 1
- * @param next - объект 2
- */
-export function isEqualObj<T>(prev: T, next: T): boolean {
-  return JSON.stringify(prev) === JSON.stringify(next);
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isBoolean(value: any): boolean {
   return typeof value === 'boolean';

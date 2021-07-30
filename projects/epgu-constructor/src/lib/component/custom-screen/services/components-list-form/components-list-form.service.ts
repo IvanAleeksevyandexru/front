@@ -4,11 +4,11 @@ import { ListItem } from '@epgu/epgu-lib';
 import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
-import { isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -375,7 +375,7 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
+    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqual(prev, next)) {
       const indexVehicle: number = this.form.controls.findIndex(
         (control: AbstractControl) => control.value?.id === next.id,
       );

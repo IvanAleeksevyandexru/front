@@ -12,13 +12,13 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
-  isEqualObj,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import {
@@ -84,7 +84,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     const components: CustomComponent[] =
       changes.components?.currentValue || this.formService.form.value || this.components;
     const { currentValue, previousValue } = changes.errors || {};
-    const isErrorsChanged = !isEqualObj(currentValue, previousValue);
+    const isErrorsChanged = !isEqual(currentValue, previousValue);
 
     if (components || isErrorsChanged) {
       const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
