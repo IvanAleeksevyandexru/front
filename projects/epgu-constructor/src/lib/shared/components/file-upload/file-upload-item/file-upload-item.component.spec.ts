@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService, HtmlSelectService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, HtmlSelectService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -149,6 +149,7 @@ describe('FileUploadItemComponent', () => {
         UploaderStatService,
         UploaderProcessService,
         HtmlSelectService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(FileUploadItemComponent, {

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ConfirmUserDataStyle, ComponentDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -51,7 +51,7 @@ export class FieldListComponent implements OnInit, OnChanges {
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
-    private utilsService: UtilsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -111,7 +111,7 @@ export class FieldListComponent implements OnInit, OnChanges {
       const parsedPath = path.split('.');
       const componentId = parsedPath.shift();
       const componentValue = this.currentAnswersService.state[componentId]?.value;
-      const parsedComponentValue = this.utilsService.tryToParseOrDefault(componentValue, {});
+      const parsedComponentValue = this.jsonHelperService.tryToParse(componentValue, {});
       const newValue = get(
         parsedComponentValue,
         parsedPath.splice(1, parsedPath.length - 1).join('.'),

@@ -15,7 +15,7 @@ import {
   SessionStorageService,
   ConfigService,
   EventBusService,
-  ModalService,
+  ModalService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -73,6 +73,7 @@ export class ActionService {
     private modalService: ModalService,
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public switchAction(
@@ -350,7 +351,7 @@ export class ActionService {
 
   private prepareActionMultipleAnswers(action: ComponentActionDto): ComponentActionDto {
     if (typeof action.multipleAnswers === 'string' &&
-      UtilsService.hasJsonStructure(action.multipleAnswers)) {
+      this.jsonHelperService.hasJsonStructure(action.multipleAnswers)) {
       action.multipleAnswers = JSON.parse(action.multipleAnswers);
     }
     return action;

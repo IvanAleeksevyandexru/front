@@ -5,7 +5,7 @@ import {
   CustomComponentRef,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
@@ -22,6 +22,7 @@ export class PrepareComponentsService {
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public prepareComponents(
@@ -127,8 +128,8 @@ export class PrepareComponentsService {
       return (parentIndex || parentIndex === 0) && parentId ? parsedJson[parentIndex][parentId].snils: parsedJson.snils;
     }
 
-    const isPresetParsable = UtilsService.hasJsonStructure(preset);
-    const isCachedValueParsable = UtilsService.hasJsonStructure(cachedValue);
+    const isPresetParsable = this.jsonHelperService.hasJsonStructure(preset);
+    const isCachedValueParsable = this.jsonHelperService.hasJsonStructure(cachedValue);
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
@@ -227,7 +228,7 @@ export class PrepareComponentsService {
     const { path, id } = this.getPathFromPreset(preset);
     const cache = cachedAnswers[id].value;
 
-    if (UtilsService.hasJsonStructure(cache)) {
+    if (this.jsonHelperService.hasJsonStructure(cache)) {
       const date: string = get({ value: JSON.parse(cache) }, path, '');
       if (this.isShortTimeFormat(date)) {
         return date;
@@ -318,7 +319,7 @@ export class PrepareComponentsService {
           const { path, id } = this.getPathFromPreset(preset);
           const cache = cachedAnswers[id].value;
 
-          if (!UtilsService.hasJsonStructure(cache)) {
+          if (!this.jsonHelperService.hasJsonStructure(cache)) {
             return attrsWithFilter;
           }
 

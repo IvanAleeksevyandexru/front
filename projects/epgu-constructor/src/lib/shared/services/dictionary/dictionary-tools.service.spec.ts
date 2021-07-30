@@ -12,7 +12,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import {
   ConfigService,
-  ConfigServiceStub,
+  ConfigServiceStub, JsonHelperService,
   mockSelectMapObjectStore
 } from '@epgu/epgu-constructor-ui-kit';
 
@@ -175,6 +175,7 @@ describe('DictionaryToolsService', () => {
         DatesToolsService,
         RefRelationService,
         DateRestrictionsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });

@@ -135,6 +135,8 @@ export * from './lib/core/services/type-helper/type-helper.service';
 export * from './lib/core/services/type-helper/type-helper.service.stub';
 export * from './lib/core/services/word-transform/word-transform.service';
 export * from './lib/core/services/word-transform/word-transform.service.stub';
+export * from './lib/core/services/json-helper/json-helper.service';
+export * from './lib/core/services/json-helper/json-helper.service.stub';
 
 export * from './lib/core/services/tracing/tracing.service';
 export * from './lib/core/services/tracing/tracing.service.stub';

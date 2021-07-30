@@ -3,7 +3,7 @@ import { Answer, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { isChildrenListType } from './autocomplete.const';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import {
@@ -25,6 +25,7 @@ export class AutocompletePrepareService {
     private screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     private datesToolsService: DatesToolsService,
+    private jonHelperService: JsonHelperService,
   ) {}
 
   public getFormattedList(
@@ -147,7 +148,7 @@ export class AutocompletePrepareService {
   public loadValuesFromCurrentAnswer(repeatableComponents, parentComponentId?: string): void {
     if (repeatableComponents.length) {
       let currentAnswerParsedValue;
-      if (UtilsService.hasJsonStructure(this.currentAnswersService.state as string)) {
+      if (this.jonHelperService.hasJsonStructure(this.currentAnswersService.state as string)) {
         currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
       } else {
         currentAnswerParsedValue = this.currentAnswersService.state;
@@ -225,7 +226,7 @@ export class AutocompletePrepareService {
     value: string,
     componentMnemonic?: string,
   ): string {
-    if (UtilsService.hasJsonStructure(value)) {
+    if (this.jonHelperService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
       // Кейс парсинга значения Repeatable компонентов
       if (repeatableComponents.length && parsedValue.length) {
@@ -300,7 +301,7 @@ export class AutocompletePrepareService {
       value = this.getFormattedValue(component, value);
 
       // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
-      if (UtilsService.hasJsonStructure(value)) {
+      if (this.jonHelperService.hasJsonStructure(value)) {
         const parsedValue = JSON.parse(value);
         if (Array.isArray(parsedValue)) {
           const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);

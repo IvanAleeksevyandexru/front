@@ -34,6 +34,7 @@ import { TypeCastService } from './services/type-cast/type-cast.service';
 import { TypeHelperService } from './services/type-helper/type-helper.service';
 import { WordTransformService } from './services/word-transform/word-transform.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
+import { JsonHelperService } from './services/json-helper/json-helper.service';
 
 @NgModule({
   providers: [
@@ -58,6 +59,7 @@ import { HtmlSelectService } from './services/html-select/html-select.service';
     TypeHelperService,
     WordTransformService,
     HtmlSelectService,
+    JsonHelperService,
     TracingService,
     AddressesToolsService,
     HealthService,

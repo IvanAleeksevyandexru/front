@@ -1,6 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { DatesToolsService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, JsonHelperService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -41,6 +41,7 @@ describe('UniquenessErrorsService', () => {
         DateRangeService,
         RefRelationService,
         DateRestrictionsService,
+        JsonHelperService,
       ],
     });
     service = TestBed.inject(UniquenessErrorsService);

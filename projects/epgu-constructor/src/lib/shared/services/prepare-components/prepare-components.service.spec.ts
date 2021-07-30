@@ -9,7 +9,7 @@ import {
   ConfigService,
   LoggerService,
   UtilsService,
-  DatesToolsService, TypeHelperService,
+  DatesToolsService, TypeHelperService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
@@ -49,6 +49,7 @@ describe('PrepareComponentsService', () => {
         DateRangeService,
         RefRelationService,
         DateRestrictionsService,
+        JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       imports: [HttpClientTestingModule],

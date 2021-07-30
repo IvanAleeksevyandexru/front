@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import {
-  ConfigService,
+  ConfigService, JsonHelperService,
   SessionService,
   SessionStorageService,
   SessionStorageServiceStub,
@@ -82,6 +82,7 @@ describe('BillInfoComponent', () => {
         ModalService,
         EaisdoGroupCostService,
         SessionService,
+        JsonHelperService,
         WINDOW_PROVIDERS,
       ],
     }).compileComponents();

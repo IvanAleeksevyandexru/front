@@ -13,7 +13,7 @@ import {
   DatesToolsService,
   UnsubscribeService,
   ConfigService,
-  LoggerService, TypeCastService,
+  LoggerService, TypeCastService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -145,6 +145,7 @@ describe('ComponentsListFormService', () => {
         MaskTransformService,
         DecimalPipe,
         TypeCastService,
+        JsonHelperService,
       ],
     });
   });

@@ -8,7 +8,7 @@ import {
   ConfigService,
   LoggerService,
   UnsubscribeService,
-  DatesToolsService,
+  DatesToolsService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
@@ -79,6 +79,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         DateRestrictionsService,
         ConfigService,
         LoggerService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {

@@ -1,7 +1,12 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { ConfigService, DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  DatesToolsServiceStub,
+  JsonHelperService
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ReferralNumberService } from './referral-number.service';
@@ -34,6 +39,7 @@ describe('ReferralNumberService', () => {
         DateRangeService,
         RefRelationService,
         DateRestrictionsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },

@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { TimeSlotsTypes } from '../time-slots/time-slots.constants';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
@@ -68,6 +67,7 @@ export class TimeSlotDoctorService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
+    public jsonHelperService: JsonHelperService,
   ) {
   }
 
@@ -202,7 +202,7 @@ export class TimeSlotDoctorService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId || this.state$$.getValue().bookingRequestAttrs.MO_Id,
       bookAttributes:
-        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestAttrs,
       attributeNameWithAddress: (<TimeSlotDoctorsAttrs>this.screenService.component.attrs).ts.attributeNameWithAddress,

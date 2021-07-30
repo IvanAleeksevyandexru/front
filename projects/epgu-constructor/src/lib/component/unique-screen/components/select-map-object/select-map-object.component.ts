@@ -25,11 +25,11 @@ import {
   DeviceDetectorService,
   UnsubscribeService,
   ConfigService,
-  UtilsService,
   AddressesToolsService,
   YMapItem,
   IGeoCoordsResponse,
   YandexMapService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../../screen/screen.service';
@@ -113,6 +113,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
     private addressesToolsService: AddressesToolsService,
+    private jsonHelperService: JsonHelperService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -184,7 +185,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initSelectedValue(): void {
     if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
-      const mapObject = UtilsService.tryToParse(this.data?.value) as YMapItem<DictionaryItem>;
+      const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
+        DictionaryItem
+      >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
