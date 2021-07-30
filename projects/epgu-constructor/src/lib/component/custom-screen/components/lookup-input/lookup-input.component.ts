@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { ConstantsService, ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UnsubscribeService, ConfigService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
@@ -30,7 +30,10 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   );
 
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
-    map((dictionaries) => dictionaries[UtilsService.getDictKeyByComp(this.control.value)]?.list),
+    map(
+      (dictionaries) =>
+        dictionaries[this.dictionaryToolsService.getDictKeyByComp(this.control.value)]?.list,
+    ),
   );
 
   // eslint-disable-next-line no-restricted-globals

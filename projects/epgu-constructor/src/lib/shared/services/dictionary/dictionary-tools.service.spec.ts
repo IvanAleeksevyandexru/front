@@ -10,7 +10,12 @@ import {
   DictionaryValueTypes,
   AttributeTypes,
 } from '@epgu/epgu-constructor-types';
-import { ConfigService, ConfigServiceStub, mockSelectMapObjectStore } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  mockSelectMapObjectStore,
+  UtilsService
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
@@ -139,7 +144,7 @@ describe('DictionaryToolsService', () => {
         ...attrs,
       },
     } as any) as CustomComponent;
-    const dictionaryId = utils.getDictKeyByComp(component);
+    const dictionaryId = service.getDictKeyByComp(component);
     const dictionaryData = {
       loading: false,
       paginationLoading: false,
@@ -272,6 +277,14 @@ describe('DictionaryToolsService', () => {
       expect(() => {
         service['getValueForFilter'](compValue, MapStore, dFilter);
       }).toThrowError(`Неверный valueType для фильтров - ${dFilter.valueType}`);
+    });
+  });
+
+  describe('getDictKeyByComp()', () => {
+    it('should return dictionary key by component', () => {
+      expect(service.getDictKeyByComp(
+        { attrs: { dictionaryType: 'testType' }, id: 1 } as any))
+        .toBe('testType1');
     });
   });
 

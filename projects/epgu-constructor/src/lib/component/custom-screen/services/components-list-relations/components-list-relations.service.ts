@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined } from 'lodash';
+import { get, isUndefined } from 'lodash';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -185,7 +185,7 @@ export class ComponentsListRelationsService {
     if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
       return this.refRelationService.isValueEquals(
         displayOff.val,
-        utils.getObjectProperty(
+        get(
           this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
           displayOff.path,
         ) || cachedAnswers[displayOff.relatedRel].value,
@@ -193,7 +193,7 @@ export class ComponentsListRelationsService {
     } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
       return !this.refRelationService.isValueEquals(
         displayOn.val,
-        utils.getObjectProperty(
+        get(
           this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
           displayOn.path,
         ) || cachedAnswers[displayOn.relatedRel].value,
@@ -234,7 +234,7 @@ export class ComponentsListRelationsService {
     const relatedComponent = components.find((item) => item.id === componentId);
 
     if (relatedComponent) {
-      const dictKey = utils.getDictKeyByComp(relatedComponent);
+      const dictKey = DictionaryToolsService.getDictKeyByComp(relatedComponent);
 
       const dictionary = dictionaries[dictKey];
 
@@ -783,7 +783,7 @@ export class ComponentsListRelationsService {
         const relatedRelKey = match.replace(/[^\w]+/gi, '');
         const relatedRelValue = reference.relatedRelValues[relatedRelKey];
         if (relatedRelValue){
-          return utils.getObjectProperty(componentVal, relatedRelValue);
+          return get(componentVal, relatedRelValue);
         }
         return match;
       });

@@ -22,8 +22,7 @@ import { ComponentDictionaryFilters } from '../../../component/custom-screen/ser
 // eslint-disable-next-line max-len
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
-import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
-import { isUndefined } from 'lodash';
+import { isUndefined, get } from 'lodash';
 import {
   CachedAnswersDto,
   ComponentDictionaryFilterDto,
@@ -38,7 +37,7 @@ import {
   FilterDtoConfig,
   AdditionalRequestParam,
   AdditionalRequestType,
-  KeyValueMap,
+  KeyValueMap, ComponentDto,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
@@ -51,6 +50,14 @@ export type ComponentValue = {
 export class DictionaryToolsService {
   private _dropDowns$ = new BehaviorSubject<CustomListDropDowns>([]);
   private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
+
+  /**
+   * Функция возвращает ключ для получения словаря
+   * @param component экземпляр компонента
+   */
+  public static getDictKeyByComp(component: ComponentDto): string {
+    return component.attrs.dictionaryType + component.id;
+  }
 
   public get dropDowns$(): BehaviorSubject<CustomListDropDowns> {
     return this._dropDowns$;
@@ -226,7 +233,7 @@ export class DictionaryToolsService {
 
   public initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
     const dictionaries = this.dictionaries;
-    const id = utils.getDictKeyByComp(reference.component);
+    const id = DictionaryToolsService.getDictKeyByComp(reference.component);
 
     dictionaries[id] = this.getDictionaryFirstState();
     dictionaries[id].loading = false;
@@ -310,8 +317,8 @@ export class DictionaryToolsService {
   ): ListElement[] {
     return items.map((item) => ({
       originalItem: item,
-      id: (isRoot ? utils.getObjectProperty(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
-      text: `${(isRoot ? utils.getObjectProperty(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title}`,
+      id: (isRoot ? get(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
+      text: `${(isRoot ? get(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title}`,
     }));
   }
 
@@ -347,7 +354,7 @@ export class DictionaryToolsService {
 
   public isResultEmpty(component: CustomComponent): boolean {
     if (this.isDictionaryLike(component.type)) {
-      const id = utils.getDictKeyByComp(component);
+      const id = DictionaryToolsService.getDictKeyByComp(component);
       return isUndefined(this.dictionaries[id]?.list?.length)
         ? false
         : this.dictionaries[id]?.list?.length === 0;
@@ -546,7 +553,7 @@ export class DictionaryToolsService {
       }),
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
         [attributeType]: this.formatValue(
-          utils.getObjectProperty(screenStore, dFilter.value, undefined),
+          get(screenStore, dFilter.value, undefined),
           dFilter.formatValue,
         ),
       }),

@@ -8,7 +8,6 @@ import { isEqual } from 'lodash';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -440,7 +439,7 @@ export class ComponentsListFormService {
     defaultIndex: number,
   ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = utils.getDictKeyByComp(component);
+    const key: string = DictionaryToolsService.getDictKeyByComp(component);
     const value: ListItem = dicts[key]?.list[defaultIndex];
 
     control.get('value').patchValue(value);
@@ -453,7 +452,7 @@ export class ComponentsListFormService {
   ): void {
     const lockedValue = component.attrs?.lockedValue;
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = utils.getDictKeyByComp(component);
+    const key: string = DictionaryToolsService.getDictKeyByComp(component);
     const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
 
     if ((lockedValue && !repeatedWithNoFilters) || dicts[key]?.list?.length === 1) {
@@ -468,7 +467,7 @@ export class ComponentsListFormService {
     defaultValue: string | number,
   ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = utils.getDictKeyByComp(component);
+    const key: string = DictionaryToolsService.getDictKeyByComp(component);
     const value: ListItem = dicts[key]?.list.find(({ id }) => id === defaultValue);
 
     if (value) {

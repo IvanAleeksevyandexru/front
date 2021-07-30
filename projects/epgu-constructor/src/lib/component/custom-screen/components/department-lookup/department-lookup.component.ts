@@ -2,7 +2,7 @@ import { ValidationShowOn } from '@epgu/epgu-lib';
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
-import { UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
@@ -22,7 +22,9 @@ export class DepartmentLookupComponent extends AbstractComponentListItemComponen
     }),
   );
   dictionaries$ = this.dictionaryToolsService.dictionaries$.pipe(
-    map((dictionaries) => dictionaries[UtilsService.getDictKeyByComp(this.control.value)]),
+    map(
+      (dictionaries) => dictionaries[DictionaryToolsService.getDictKeyByComp(this.control.value)],
+    ),
   );
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
