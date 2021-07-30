@@ -38,7 +38,7 @@ export class ProgramListService {
   get isFinish(): boolean {
     return this.isFinish$$.getValue();
   }
-  pageSize = 10000;
+  pageSize = 3;
 
   autoScroll$$ = new BehaviorSubject<boolean>(false);
   get autoScroll(): boolean {
