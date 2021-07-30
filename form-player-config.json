@@ -16,6 +16,7 @@
     "quizDataApiUrl": "http://127.0.0.1:8190/quiz-data/data",
     "childrenClubsApi": "https://dev01.pgu2-pub.test.gosuslugi.ru/api/eaisdo-service/v1",
     "identificationApiUrl": "/v1/identification",
+    "wsIdentificationUrl": "wss://guc.notamedia.ru:5443/ws",
     "production": true,
     "mocks": [],
     "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api",

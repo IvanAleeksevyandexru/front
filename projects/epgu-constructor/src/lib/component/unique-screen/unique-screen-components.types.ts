@@ -1,5 +1,6 @@
 export enum UniqueScreenComponentTypes {
   IdentificationUploadComponent = 'IdentificationUploadComponent',
+  IdentificationStreamComponent = 'IdentificationStreamComponent',
   fileUploadComponent = 'FileUploadComponent',
   OrderFileProcessingComponent = 'OrderFileProcessingComponent',
   timeSlot = 'TimeSlot',
