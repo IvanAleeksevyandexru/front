@@ -6,11 +6,20 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ScreenPadModule, TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+
 
 @NgModule({
   declarations: [ConfirmPersonalUserAddressComponent, AddressItemComponent],
   exports: [ConfirmPersonalUserAddressComponent],
-  imports: [BaseModule, BaseComponentsModule, TrimModule, TextTransformModule, ScreenPadModule, DefaultUniqueScreenWrapperModule],
+  imports: [
+    BaseModule,
+    BaseComponentsModule,
+    TrimModule,
+    TextTransformModule,
+    ScreenPadModule,
+    DefaultUniqueScreenWrapperModule,
+    ConstructorDatePickerModule],
   providers: [DatePipe],
   entryComponents: [ConfirmPersonalUserAddressComponent]
 })

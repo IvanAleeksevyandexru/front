@@ -74,4 +74,24 @@ describe('ConstructorDatePickerComponent', () => {
     debugEl.triggerEventHandler('change', event);
     expect(component.dateSelectedEvent.emit).toHaveBeenCalledWith(date);
   });
+
+  describe('input event', () => {
+
+    it('should call date selected event when input is correct', () => {
+      const event = { target: { value: '01.01.2021' }};
+      const date = new Date('01.01.2021');
+      jest.spyOn(component.dateSelectedEvent, 'emit');
+      debugEl.triggerEventHandler('input', event);
+      expect(component.dateSelectedEvent.emit).toHaveBeenCalledWith(date);
+    });
+
+    it('should do nothing if date isnt full', () => {
+      const event = { target: { value: '01.01.____' }};
+      jest.spyOn(component.dateSelectedEvent, 'emit');
+      debugEl.triggerEventHandler('input', event);
+      expect(component.dateSelectedEvent.emit).not.toHaveBeenCalled();
+    });
+
+  });
+
 });
