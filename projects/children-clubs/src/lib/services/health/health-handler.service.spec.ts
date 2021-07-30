@@ -10,8 +10,8 @@ import {
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import {
-  AppStateQuery,
-  AppStateQueryStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
@@ -56,7 +56,7 @@ describe('HealthHandlerService', () => {
         SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TestHealthInterceptor,

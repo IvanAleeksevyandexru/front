@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  AppNavigationService,
-  AppNavigationServiceStub,
-  AppStateQuery,
-  AppStateQueryStub,
-  AppStateService,
-  AppStateServiceStub,
+  MicroAppNavigationService,
+  MicroAppNavigationServiceStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
+  MicroAppStateService,
+  MicroAppStateServiceStub,
   ConfigService,
   ConfigServiceStub,
   DatesToolsService,
@@ -55,7 +55,7 @@ const testState = {
 describe('GroupItemComponent', () => {
   let component: GroupItemComponent;
   let fixture: ComponentFixture<GroupItemComponent>;
-  let stateQuery: AppStateQueryStub;
+  let stateQuery: MicroAppStateQueryStub;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -63,9 +63,9 @@ describe('GroupItemComponent', () => {
       declarations: [GroupItemComponent, DenyReasonTitleComponent],
 
       providers: [
-        { provide: AppStateService, useClass: AppStateServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
-        { provide: AppNavigationService, useClass: AppNavigationServiceStub },
+        { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        { provide: MicroAppNavigationService, useClass: MicroAppNavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         DatesToolsService,
       ],
@@ -78,7 +78,7 @@ describe('GroupItemComponent', () => {
     fixture = TestBed.createComponent(GroupItemComponent);
     component = fixture.componentInstance;
     component.group = testGroup;
-    stateQuery = TestBed.inject(AppStateQuery);
+    stateQuery = TestBed.inject(MicroAppStateQuery);
     jest.spyOn(stateQuery, 'state', 'get').mockReturnValue(testState);
     component.ngOnInit();
     fixture.detectChanges();
