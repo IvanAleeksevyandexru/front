@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -50,6 +50,7 @@ describe('TimeSlotsComponent', () => {
         TimeSlotsService,
         UtilsService,
         TypeHelperService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

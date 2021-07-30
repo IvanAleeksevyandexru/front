@@ -110,16 +110,4 @@ describe('UtilsService', () => {
       expect(service.filterIncorrectObjectFields({})).toEqual({});
     });
   });
-
-  describe('hasJsonStructure()', () => {
-    it('should return true', () => {
-      expect(UtilsService.hasJsonStructure('{"property": true}')).toBe(true);
-      expect(UtilsService.hasJsonStructure('[1,2,3]')).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(UtilsService.hasJsonStructure(null)).toBe(false);
-    });
-  });
-
 });

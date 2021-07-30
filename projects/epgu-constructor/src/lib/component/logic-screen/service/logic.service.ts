@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angul
 import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 
-import { LocalStorageService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto, DictionaryOptions, LogicComponentAttrsDto, LogicComponents } from '@epgu/epgu-constructor-types';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -21,7 +21,7 @@ export class LogicService {
     private screenService: ScreenService,
     private dictionaryApiService: DictionaryApiService,
     private currentAnswersService: CurrentAnswersService,
-    private utils: UtilsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public fetch(
@@ -56,7 +56,7 @@ export class LogicService {
       dictionaryUrlType
     } = value;
 
-    const state = this.utils.tryToParseOrDefault(this.currentAnswersService.state);
+    const state = this.jsonHelperService.tryToParse(this.currentAnswersService.state, {});
     const store = {
       ...this.screenService.getStore(),
       applicantAnswers: {

@@ -10,7 +10,7 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
@@ -61,6 +61,7 @@ describe('AutocompleteAutofillService', () => {
         DateRangeService,
         RefRelationService,
         DateRestrictionsService,
+        JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });

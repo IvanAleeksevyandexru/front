@@ -19,7 +19,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   LocalStorageService,
-  LocalStorageServiceStub, HttpCancelService, TypeHelperService,
+  LocalStorageServiceStub, HttpCancelService, TypeHelperService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
@@ -85,7 +85,7 @@ describe('ComponentsListComponent', () => {
           PassportComponent,
           DocInputComponent,
           FieldListComponent,
-          OutputHtmlComponent
+          OutputHtmlComponent,
         )
       ],
       providers: [
@@ -116,6 +116,7 @@ describe('ComponentsListComponent', () => {
         SuggestMonitorService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        JsonHelperService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {

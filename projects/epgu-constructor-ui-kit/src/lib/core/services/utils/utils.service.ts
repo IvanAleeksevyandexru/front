@@ -17,37 +17,6 @@ export class UtilsService {
     return doc.body ? doc.body.textContent : '';
   }
 
-  public static hasJsonStructure(string: string): boolean {
-    if (typeof string !== 'string') return false;
-    try {
-      const result = JSON.parse(string);
-      const type = Object.prototype.toString.call(result);
-      return type === '[object Object]' || type === '[object Array]';
-    } catch (err) {
-      return false;
-    }
-  }
-
-  public static tryToParse(JSONstring: string): unknown | '' {
-    if (this.hasJsonStructure(JSONstring)) {
-      return JSON.parse(JSONstring);
-    } else {
-      return '';
-    }
-  }
-
-  public tryToParseOrDefault(value: string|object|[], defaultValue: object = {}): object|[] {
-    if (Array.isArray(value) || typeof value === 'object' && value) {
-      return value;
-    }
-
-    if (UtilsService.hasJsonStructure(value as string)) {
-      return JSON.parse(value as string);
-    }
-
-    return defaultValue;
-  }
-
   public getDeclension(num: number, forms: string[]): string {
     const num0 = Math.abs(num) % 100;
     const n1 = num0 % 10;

@@ -3,6 +3,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
 import {
+  JsonHelperService,
   LoadServiceStub,
   MainContainerModule,
   TracingServiceStub,
@@ -127,6 +128,7 @@ describe('FormPlayerComponent', () => {
         SessionService,
         TerraByteApiService,
         AnimationBuilder,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

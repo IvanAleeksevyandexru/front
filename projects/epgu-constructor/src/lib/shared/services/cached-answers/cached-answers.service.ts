@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 
@@ -24,7 +24,10 @@ export const componentsNoCache: string[] = [
 export class CachedAnswersService {
   private localStorageKey = 'cachedAnswers';
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(
+    private localStorageService: LocalStorageService,
+    private jsonHelperService: JsonHelperService,
+  ) {}
 
   getCachedValueById(answers: CachedAnswers, id: string): string | null {
     return answers[id]?.value || null;
@@ -77,7 +80,7 @@ export class CachedAnswersService {
    * @param component - компонент из display.components
    */
   parseCachedValue<T = unknown>(cachedValue: string, component: ComponentDto): T {
-    if (!UtilsService.hasJsonStructure(cachedValue)) {
+    if (!this.jsonHelperService.hasJsonStructure(cachedValue)) {
       throw Error('Cached value should be JSON string');
     }
 

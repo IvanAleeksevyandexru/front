@@ -16,7 +16,7 @@ import {
   Icons,
   mockSelectMapObjectStore,
   IGeoCoordsResponse,
-  AddressesToolsService,
+  AddressesToolsService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
@@ -84,6 +84,7 @@ describe('SelectMapObjectComponent', () => {
         ScreenService,
         DateRestrictionsService,
         AddressesToolsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

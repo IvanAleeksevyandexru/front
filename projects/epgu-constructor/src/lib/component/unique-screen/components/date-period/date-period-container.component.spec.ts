@@ -10,7 +10,7 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import {
   ConfigService,
   ConfigServiceStub, DATE_STRING_DASH_FORMAT,
-  DatesToolsService,
+  DatesToolsService, JsonHelperService,
   LocalStorageService,
   LocalStorageServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
@@ -33,6 +33,7 @@ describe('DatePeriodContainerComponent', () => {
         CachedAnswersService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         DatesToolsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();

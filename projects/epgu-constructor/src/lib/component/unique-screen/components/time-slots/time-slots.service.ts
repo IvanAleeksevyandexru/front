@@ -3,7 +3,7 @@ import { ListItem } from '@epgu/epgu-lib';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -23,7 +23,6 @@ import {
 } from './time-slots.types';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
@@ -68,6 +67,7 @@ export class TimeSlotsService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
+    public jsonHelperService: JsonHelperService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -213,7 +213,7 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes:
-        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,

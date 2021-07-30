@@ -5,7 +5,13 @@ import { LogicComponent } from './logic.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { LogicService } from '../service/logic.service';
-import { DatesToolsService, TypeHelperService, UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  JsonHelperService,
+  TypeHelperService,
+  UnsubscribeService,
+  UtilsService
+} from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -46,6 +52,7 @@ describe('LogicComponent', () => {
         CurrentAnswersService,
         UtilsService,
         TypeHelperService,
+        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),

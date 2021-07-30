@@ -9,7 +9,7 @@ import {
   ScreenPadModule,
   DatesToolsService,
   ConfigService,
-  LoggerService,
+  LoggerService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -139,6 +139,7 @@ describe('InformationCenterContainerComponent', () => {
         DateRestrictionsService,
         ConfigService,
         LoggerService,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

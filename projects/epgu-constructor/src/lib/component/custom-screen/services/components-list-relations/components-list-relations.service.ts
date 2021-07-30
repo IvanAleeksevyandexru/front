@@ -15,7 +15,7 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import {
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
@@ -46,6 +46,7 @@ export class ComponentsListRelationsService {
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public getUpdatedShownElements(
@@ -299,7 +300,7 @@ export class ComponentsListRelationsService {
   }
 
   private getRefValue(value: string | unknown): unknown {
-    const isParsable = utils.hasJsonStructure(value as string);
+    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
     return isParsable ? JSON.parse(value as string) : value;
   }
 

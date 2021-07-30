@@ -10,7 +10,7 @@ import {
   UtilsService,
   DatesToolsService,
   ConfigService,
-  LoggerService, TypeHelperService,
+  LoggerService, TypeHelperService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -91,6 +91,7 @@ describe('InformationCenterMvdContainerComponent', () => {
         DateRestrictionsService,
         ConfigService,
         LoggerService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {
