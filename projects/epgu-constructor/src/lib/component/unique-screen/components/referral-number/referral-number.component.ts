@@ -3,11 +3,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/epgu-lib';
-import {
-  ConfigService,
-  DatesToolsService,
-  UnsubscribeService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
@@ -40,9 +36,7 @@ export class ReferralNumberComponent implements OnInit {
     public readonly screenService: ScreenService,
     public readonly currentAnswersService: CurrentAnswersService,
     public readonly navigationService: NavigationService,
-    private datesToolsService: DatesToolsService,
     private ngUnsubscribe$: UnsubscribeService,
-    private config: ConfigService,
     private validationService: ValidationService,
   ) {}
 
