@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { PhotoFormComponent } from './photo-form.component';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { TypeHelperService, UnsubscribeService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -37,11 +37,14 @@ describe('PhotoFormComponent', () => {
       providers: [
         UnsubscribeService,
         DeviceDetectorService,
+        WordTransformService,
+        TypeHelperService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         TerraByteApiService,
         WebcamService,
         UtilsService,
+        TypeHelperService,
         EventBusService,
         ValidationService,
         UploadService,

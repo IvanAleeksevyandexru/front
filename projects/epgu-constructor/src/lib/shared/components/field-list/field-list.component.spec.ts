@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 import { FieldListComponent } from './field-list.component';
-import { ImgPrefixerPipe, UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ImgPrefixerPipe, TypeHelperService, UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlModule } from '../output-html/output-html.module';
@@ -48,6 +48,7 @@ describe('FieldListComponent', () => {
         UnsubscribeService,
         CurrentAnswersService,
         UtilsService,
+        TypeHelperService,
       ],
     }).compileComponents();
   });

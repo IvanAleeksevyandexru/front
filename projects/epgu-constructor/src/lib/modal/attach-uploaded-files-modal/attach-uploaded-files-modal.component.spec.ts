@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -78,6 +78,7 @@ describe('AttachUploadedFilesModalComponent', () => {
         AutocompleteApiService,
         AutocompletePrepareService,
         UtilsService,
+        TypeHelperService,
         CurrentAnswersService,
       ],
     }).compileComponents();

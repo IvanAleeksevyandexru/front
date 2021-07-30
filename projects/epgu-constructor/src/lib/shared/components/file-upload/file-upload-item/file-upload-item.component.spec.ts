@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, HtmlSelectService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -114,7 +114,7 @@ describe('FileUploadItemComponent', () => {
   let terabyteService: TerraByteApiService;
   let screenService: ScreenService;
   let viewerService: ViewerService;
-  let modalSerivce: ModalService;
+  let modalService: ModalService;
   let fileUploadService: UploaderLimitsService;
   let store: UploaderStoreService;
   let uploader: UploaderManagerService;
@@ -148,6 +148,7 @@ describe('FileUploadItemComponent', () => {
         UploaderManagerService,
         UploaderStatService,
         UploaderProcessService,
+        HtmlSelectService,
       ],
     })
       .overrideComponent(FileUploadItemComponent, {
@@ -164,7 +165,7 @@ describe('FileUploadItemComponent', () => {
     terabyteService = TestBed.inject(TerraByteApiService);
     screenService = TestBed.inject(ScreenService);
     viewerService = TestBed.inject(ViewerService);
-    modalSerivce = TestBed.inject(ModalService);
+    modalService = TestBed.inject(ModalService);
     fileUploadService = TestBed.inject(UploaderLimitsService);
     fileUploadService.registerUploader(
       uploadMock.uploadId,
@@ -317,7 +318,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should open attached viewer', () => {
     jest.spyOn(component, 'isPrevUploadedFilesButtonShown').mockImplementation(() => true);
-    jest.spyOn(modalSerivce, 'openModal');
+    jest.spyOn(modalService, 'openModal');
     fixture.detectChanges();
     const button: HTMLDivElement = fixture.debugElement.queryAll(
       By.css('.fileupload__link-button'),
@@ -325,6 +326,6 @@ describe('FileUploadItemComponent', () => {
     button?.click();
     fixture.detectChanges();
 
-    expect(modalSerivce.openModal).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 });

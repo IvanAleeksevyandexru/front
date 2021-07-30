@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UtilsService } from './utils.service';
 import { configureTestSuite } from 'ng-bullet';
+import { TypeHelperService } from '../type-helper/type-helper.service';
 
 describe('UtilsService', () => {
   let service: UtilsService;
@@ -9,7 +10,8 @@ describe('UtilsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        UtilsService
+        UtilsService,
+        TypeHelperService,
       ]
     });
   });
@@ -94,20 +96,7 @@ describe('UtilsService', () => {
     });
   });
 
-  describe('cyrillicToLatin()', () => {
-    it('should return undefined if there is no input word', () => {
-      expect(service.cyrillicToLatin(undefined)).toBe(undefined);
-      expect(service.cyrillicToLatin(null)).toBe(undefined);
-    });
 
-    it('should return latin from cyrillic', () => {
-      expect(service.cyrillicToLatin('латин')).toBe('latin');
-    });
-
-    it('should return latin from cyrillic uppercase', () => {
-      expect(service.cyrillicToLatin('ЛАтиН')).toBe('LAtiN');
-    });
-  });
 
   describe('getServiceName()', () => {
     it('should return service name', () => {
@@ -130,18 +119,6 @@ describe('UtilsService', () => {
     });
   });
 
-  describe('isDefined()', () => {
-    it('should return true', () => {
-      expect(service.isDefined({})).toBe(true);
-      expect(service.isDefined([])).toBe(true);
-      expect(service.isDefined('defined string')).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(service.isDefined(null)).toBe(false);
-      expect(service.isDefined(undefined)).toBe(false);
-    });
-  });
 
   describe('filterIncorrectObjectFields()', () => {
     it('should return object with all fields are defined', () => {

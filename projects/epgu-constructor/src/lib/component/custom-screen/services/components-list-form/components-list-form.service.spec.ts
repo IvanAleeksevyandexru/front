@@ -13,7 +13,7 @@ import {
   DatesToolsService,
   UnsubscribeService,
   ConfigService,
-  LoggerService,
+  LoggerService, TypeCastService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -144,6 +144,7 @@ describe('ComponentsListFormService', () => {
         ConfigService,
         MaskTransformService,
         DecimalPipe,
+        TypeCastService,
       ],
     });
   });
@@ -328,7 +329,7 @@ describe('ComponentsListFormService', () => {
       componentStub.value = '123';
       component = JSON.parse(JSON.stringify(componentStub));
       service.create([componentStub, component], {});
-      
+
       await service.emitChanges();
       expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('123,00');
     });

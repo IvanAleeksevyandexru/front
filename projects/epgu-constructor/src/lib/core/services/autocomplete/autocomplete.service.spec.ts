@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -127,6 +127,7 @@ describe('AutocompleteService', () => {
         PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,

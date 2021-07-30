@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CachedAnswersService } from './cached-answers.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { TypeHelperService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('CachedAnswersService', () => {
@@ -14,6 +14,7 @@ describe('CachedAnswersService', () => {
       providers: [
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ]
     });

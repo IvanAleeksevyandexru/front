@@ -16,7 +16,7 @@ import {
   WINDOW_PROVIDERS,
   HttpCancelService,
   PrevButtonModule,
-  PREV_BUTTON_NAVIGATION
+  PREV_BUTTON_NAVIGATION, TypeHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '../../../../../../shared/base.module';
@@ -82,6 +82,7 @@ describe('CarListContainerComponent', () => {
         { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationService },
         CurrentAnswersService,
         UtilsService,
+        TypeHelperService,
         NavigationService,
         ModalService,
         HttpCancelService,

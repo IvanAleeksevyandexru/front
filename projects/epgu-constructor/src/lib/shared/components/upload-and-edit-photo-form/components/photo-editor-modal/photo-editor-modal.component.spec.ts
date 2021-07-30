@@ -3,6 +3,8 @@ import { LyImageCropperModule } from '@alyle/ui/image-cropper';
 import { MinimaDark, MinimaLight } from '@alyle/ui/themes/minima';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
+import { isBoolean } from 'lodash';
+import { configureTestSuite } from 'ng-bullet';
 import { ButtonComponent } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -11,8 +13,7 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { isBoolean } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
+
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

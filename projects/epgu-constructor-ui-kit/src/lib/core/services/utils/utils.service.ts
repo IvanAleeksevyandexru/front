@@ -1,50 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { TypeHelperService } from '../type-helper/type-helper.service';
 
-interface TranslitAlphabet {
-  [propName: string]: string;
-}
-
-/*eslint quote-props: ["error", "always"]*/
-const LETTERS = {
-  'а': 'a',
-  'б': 'b',
-  'в': 'v',
-  'г': 'g',
-  'д': 'd',
-  'е': 'e',
-  'ё': 'e',
-  'ж': 'zh',
-  'з': 'z',
-  'и': 'i',
-  'й': 'i',
-  'к': 'k',
-  'л': 'l',
-  'м': 'm',
-  'н': 'n',
-  'о': 'o',
-  'п': 'p',
-  'р': 'r',
-  'с': 's',
-  'т': 't',
-  'у': 'u',
-  'ф': 'f',
-  'х': 'kh',
-  'ч': 'ch',
-  'ц': 'ts',
-  'щ': 'shch',
-  'ш': 'sh',
-  'ъ': 'ie',
-  'ы': 'y',
-  'э': 'e',
-  'ю': 'iu',
-  'я': 'ia',
-  'ь': ''
-} as TranslitAlphabet;
 
 @Injectable()
 export class UtilsService {
-  // TODO: add shared utils
+  constructor (private typeHelperService: TypeHelperService) {}
 
   /**
    * Устанавливает куку
@@ -193,29 +154,6 @@ export class UtilsService {
   }
 
   /**
-   * Converts cyrillic to latin
-   * @param str
-   */
-  public cyrillicToLatin(word: string): string {
-    if (!this.isDefined(word)) {
-      return undefined;
-    }
-
-    let newStr = '';
-
-    for (const char of word) {
-      const isUpperCase = char === char.toUpperCase();
-      const translitChar = LETTERS[char.toLowerCase()];
-      if (translitChar === undefined) {
-        newStr += char;
-      } else {
-        newStr += isUpperCase ? translitChar.toUpperCase() : translitChar;
-      }
-    }
-    return newStr;
-  }
-
-  /**
    * Returns modified service name in camelCase format
    * Example:
    * https://www.gosuslugi.ru/600101/1/form-item -> form-item -> formItem
@@ -253,13 +191,9 @@ export class UtilsService {
     return url && typeof url === 'string';
   }
 
-  public isDefined<T>(value: T | undefined | null): value is T {
-    return (value as T) !== undefined && (value as T) !== null;
-  }
-
   public filterIncorrectObjectFields(obj: object): object {
     return Object.entries(obj).reduce(
-      (a, [k, v]) => (!this.isDefined(v) ? a : ((a[k] = v), a)),
+      (a, [k, v]) => (!this.typeHelperService.isDefined(v) ? a : ((a[k] = v), a)),
       {},
     );
   }

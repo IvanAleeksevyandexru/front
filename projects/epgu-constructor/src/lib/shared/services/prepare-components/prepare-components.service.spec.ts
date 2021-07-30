@@ -9,7 +9,7 @@ import {
   ConfigService,
   LoggerService,
   UtilsService,
-  DatesToolsService,
+  DatesToolsService, TypeHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
@@ -36,6 +36,7 @@ describe('PrepareComponentsService', () => {
       providers: [
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         PrepareComponentsService,
         DatesToolsService,
         DictionaryToolsService,
