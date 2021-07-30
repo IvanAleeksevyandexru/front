@@ -14,4 +14,3 @@ export function replaceArguments(replaceBy: any, compareFn: (arg: any) => boolea
     };
   };
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */

@@ -121,7 +121,6 @@ export * from './lib/core/services/dates-tools/dates-tools.service.stub';
 export * from './lib/core/services/focus-manager/focus-manager.service';
 export * from './lib/core/services/focus-manager/focus-manager.service.stub';
 export * from './lib/core/services/session/session.service';
-export * from './lib/core/services/utils/utils';
 export * from './lib/core/services/utils/utils.service';
 export * from './lib/core/services/utils/utils.service.stub';
 export * from './lib/core/services/config-api/config-api.service';
@@ -192,3 +191,6 @@ export * from './lib/core/services/addresses-tools/addresses-tools.service.inter
 
 // Mocks
 export * from './lib/core/services/select-map-object/mocks/mock-select-map-object';
+
+// Decorators
+export * from './lib/core/decorators/replace-arguments';
