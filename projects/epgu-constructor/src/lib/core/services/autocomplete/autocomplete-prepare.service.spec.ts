@@ -10,7 +10,7 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -157,6 +157,7 @@ describe('AutocompletePrepareService', () => {
         PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,

@@ -4,14 +4,14 @@ import {
   ErrorHandlerOrderParamsAbstractService
 } from '../../core/services/global-error/global-error.token';
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
-import { UtilsService } from '../../core/services/utils/utils.service';
+import { WordTransformService } from '../../core/services/word-transform/word-transform.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderParamsAbstractService {
   constructor(
     private appStateQuery: MicroAppStateQuery<unknown, unknown>,
-    private utils: UtilsService,
+    private wordTransformService: WordTransformService,
   ) {}
 
   public getParams(): ErrorHandlerOrderParams {
@@ -20,7 +20,7 @@ export class MicroAppErrorHandlerOrderParamsServiceService implements ErrorHandl
     return  {
       id,
       orderId,
-      name: this.utils.cyrillicToLatin(name)
+      name: this.wordTransformService.cyrillicToLatin(name)
     };
   }
 }

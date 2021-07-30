@@ -13,6 +13,7 @@ import {
   UnsubscribeService,
   HealthService,
   EventBusService,
+  HtmlSelectService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -75,6 +76,7 @@ describe('SelectChildrenComponent', () => {
         DatesToolsService,
         RefRelationService,
         DictionaryToolsService,
+        HtmlSelectService,
       ],
     })
       .overrideComponent(SelectChildrenComponent, {

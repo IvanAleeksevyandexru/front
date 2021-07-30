@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { CoreModule } from '../../../../../../core/core.module';
-import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, HtmlSelectService, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -96,6 +96,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         EaisdoGroupCostService,
+        HtmlSelectService,
       ],
     }).compileComponents();
   });

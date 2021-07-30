@@ -22,6 +22,7 @@ import {
   DeviceDetectorService,
   UnsubscribeService,
   UtilsService,
+  WordTransformService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -76,6 +77,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     private terabyteService: TerraByteApiService,
     private webcamService: WebcamService,
     private utils: UtilsService,
+    private wordTransformService: WordTransformService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetectionRef: ChangeDetectorRef,
@@ -290,7 +292,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
 
   private setFile(file: File, isPhoto: boolean): void {
     if (isPhoto) {
-      this.fileName = this.utils.cyrillicToLatin(`Фото_${uuidv4()}.jpg`);
+      this.fileName = this.wordTransformService.cyrillicToLatin(`Фото_${uuidv4()}.jpg`);
     } else {
       this.fileName = this.fixFileName(file.name);
     }

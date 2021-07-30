@@ -14,7 +14,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   FocusManagerService,
-  FocusManagerServiceStub
+  FocusManagerServiceStub, HtmlSelectService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -82,6 +82,7 @@ describe('AddPassportComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
         { provide: FocusManagerService, useClass: FocusManagerServiceStub },
+        HtmlSelectService,
       ],
     }).compileComponents();
   });

@@ -9,7 +9,7 @@ import {
   LocationService,
   LocationServiceStub,
   DeviceDetectorService,
-  DeviceDetectorServiceStub
+  DeviceDetectorServiceStub, TypeHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarInfoContainerComponent } from './car-info-container.component';
@@ -76,6 +76,7 @@ describe('CarInfoContainerComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         CurrentAnswersService,
         UtilsService,
+        TypeHelperService,
         NavigationService,
       ],
       imports: [

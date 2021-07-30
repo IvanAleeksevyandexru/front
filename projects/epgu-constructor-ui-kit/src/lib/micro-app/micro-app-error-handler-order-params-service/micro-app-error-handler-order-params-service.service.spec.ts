@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { MicroAppErrorHandlerOrderParamsServiceService } from './micro-app-error-handler-order-params-service.service';
-import { UtilsService } from '../../core/services/utils/utils.service';
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query.stub';
+import { WordTransformService } from '../../core/services/word-transform/word-transform.service';
+import { TypeHelperService } from '../../core/services/type-helper/type-helper.service';
 
 
 describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
@@ -13,8 +14,9 @@ describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppErrorHandlerOrderParamsServiceService,
-        UtilsService,
-        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub }
+        WordTransformService,
+        TypeHelperService,
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
       ],
     });
   });

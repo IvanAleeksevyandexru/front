@@ -9,7 +9,7 @@ import { NavigationModalService } from '../../../../core/services/navigation-mod
 import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, DatesToolsService, TypeCastService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../component/custom-screen/components-list.module';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
@@ -61,7 +61,8 @@ describe('ComponentListModalComponent', () => {
         HttpCancelService,
         DatesToolsService,
         DictionaryToolsService,
-        RefRelationService
+        RefRelationService,
+        TypeCastService,
       ]
     })
       .compileComponents();

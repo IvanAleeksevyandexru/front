@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -49,6 +49,7 @@ describe('TimeSlotsComponent', () => {
         DatesToolsService,
         TimeSlotsService,
         UtilsService,
+        TypeHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -84,7 +85,7 @@ describe('TimeSlotsComponent', () => {
       const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
       expect(organizationId).toBe('123');
     });
-  
+
     it('MVD should take organizationId from department.value', () => {
       const newCompValue = cloneDeep(compValue);
       delete newCompValue.organizationId;

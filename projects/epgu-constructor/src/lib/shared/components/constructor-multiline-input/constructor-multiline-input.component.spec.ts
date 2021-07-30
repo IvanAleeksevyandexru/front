@@ -4,7 +4,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CoreUiModule,
+  DatesToolsService,
+  TypeHelperService,
+  WordTransformService
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -48,6 +53,8 @@ describe('ConstructorMultilineInputComponent', () => {
         DateRangeService,
         DatesToolsService,
         DateRestrictionsService,
+        WordTransformService,
+        TypeHelperService,
       ],
     }).compileComponents();
   });

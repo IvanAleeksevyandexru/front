@@ -10,7 +10,7 @@ import {
   UtilsService,
   DatesToolsService,
   ConfigService,
-  LoggerService,
+  LoggerService, TypeHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -80,6 +80,7 @@ describe('InformationCenterMvdContainerComponent', () => {
       providers: [
         UnsubscribeService,
         UtilsService,
+        TypeHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,

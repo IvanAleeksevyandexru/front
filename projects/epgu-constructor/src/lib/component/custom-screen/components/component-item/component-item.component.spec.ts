@@ -13,7 +13,10 @@ import {
   ModalServiceStub,
   LoggerService,
   LoggerServiceStub,
-  FocusManagerService, FocusManagerServiceStub, CoreUiModule,
+  FocusManagerService,
+  FocusManagerServiceStub,
+  CoreUiModule,
+  HtmlSelectService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ComponentItemComponent } from './component-item.component';
@@ -65,6 +68,7 @@ describe('ComponentItemComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: FocusManagerService, useClass: FocusManagerServiceStub },
         CurrentAnswersService,
+        HtmlSelectService,
       ],
     }).overrideComponent(ComponentItemComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default }

@@ -19,7 +19,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   LocalStorageService,
-  LocalStorageServiceStub, HttpCancelService,
+  LocalStorageServiceStub, HttpCancelService, TypeHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
@@ -105,6 +105,7 @@ describe('ComponentsListComponent', () => {
         PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,

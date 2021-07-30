@@ -5,9 +5,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { LogicService } from './logic.service';
 import {
   DatesToolsService,
-  EventBusService,
   LocalStorageService,
   LocalStorageServiceStub,
+  TypeHelperService,
   UtilsService
 } from '@epgu/epgu-constructor-ui-kit';
 import { HookService } from '../../../core/services/hook/hook.service';
@@ -104,6 +104,7 @@ describe('LogicService', () => {
         DictionaryToolsService,
         CurrentAnswersService,
         UtilsService,
+        TypeHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },

@@ -11,6 +11,8 @@ import { LoggerServiceStub } from '../logger/logger.service.stub';
 import { MicroAppErrorHandlerOrderParamsServiceService } from '../../../micro-app/micro-app-error-handler-order-params-service/micro-app-error-handler-order-params-service.service';
 import { MicroAppStateQuery } from '../../../micro-app/micro-app-state/micro-app-state.query';
 import { MicroAppStateQueryStub } from '../../../micro-app/micro-app-state/micro-app-state.query.stub';
+import { TypeHelperService } from '../type-helper/type-helper.service';
+import { WordTransformService } from '../word-transform/word-transform.service';
 
 describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;
@@ -22,6 +24,8 @@ describe('GlobalErrorHandler', () => {
         GlobalErrorHandler,
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         UtilsService,
+        TypeHelperService,
+        WordTransformService,
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         {
