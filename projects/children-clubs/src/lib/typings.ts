@@ -27,6 +27,7 @@ export interface BaseProgram {
   uuid: string;
   name: string;
   partnerName: string;
+  partnerPhone: string;
   address: string;
   imageUrl: string;
   imageSmallUrl: string;
