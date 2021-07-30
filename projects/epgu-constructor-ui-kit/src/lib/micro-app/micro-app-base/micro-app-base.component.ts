@@ -35,6 +35,7 @@ export class MicroAppBaseComponent<T, U> {
   public isFirstLoading$ = new BehaviorSubject(true);
   public isConfigReady = new BehaviorSubject<boolean>(false);
   public isConfigReady$ = this.isConfigReady.pipe(filter((status) => status));
+  public cdr: ChangeDetectorRef;
 
   private appStateService: MicroAppStateService<T, U>;
   private appStateQuery: MicroAppStateQuery<T, U>;
@@ -46,7 +47,6 @@ export class MicroAppBaseComponent<T, U> {
   private logger: LoggerService;
   private configService: ConfigService;
   private configApiService: ConfigApiService;
-  private cdr: ChangeDetectorRef;
   private ngUnsubscribe$: UnsubscribeService;
   private isCoreConfigLoaded$;
   private eventBusService: EventBusService;
