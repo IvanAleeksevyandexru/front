@@ -8,14 +8,6 @@ export class UtilsService {
   constructor (private typeHelperService: TypeHelperService) {}
 
   /**
-   * Удаляет куку с нужным именем
-   * @param name - имя куки
-   */
-  static removeCookie(name: string): void {
-    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  }
-
-  /**
    * Метод для безопасного получения пропертей объекта по пути
    * @param obj объект, из которого необходимо получить свойство
    * @param path путь до свойства
