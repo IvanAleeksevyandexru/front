@@ -130,6 +130,8 @@ export * from './lib/core/services/health/health.service';
 export * from './lib/core/services/health/activated-route.stub';
 export * from './lib/core/services/html-select/html-select.service';
 export * from './lib/core/services/html-select/html-select.service.stub';
+export * from './lib/core/services/type-cast/type-cast.service';
+export * from './lib/core/services/type-cast/type-cast.service.stub';
 
 export * from './lib/core/services/tracing/tracing.service';
 export * from './lib/core/services/tracing/tracing.service.stub';
