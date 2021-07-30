@@ -23,6 +23,11 @@
 
 :host::ng-deep .screen-body:not(.quiz__header) {
   margin-bottom: 16px;
+  @include tablets-down {
+    &.gray-theme + .screen-footer > .social-share {
+      margin-top: 16px;
+    }
+  }
 }
 
 :host::ng-deep .screen-footer:not(.quiz__container) {
@@ -52,7 +57,7 @@
     width: 100%;
     margin-top: 24px;
     @include tablets-down {
-      margin-top: 16px;
+      margin-top: 8px;
     }
   }
 }
