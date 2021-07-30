@@ -30,6 +30,9 @@ import { GlobalErrorHandler } from './services/global-error/global-error.service
 import { ErrorsInterceptor } from './interceptor/errors/errors.interceptor';
 import { AddressesToolsService } from './services/addresses-tools/addresses-tools.service';
 import { HealthService } from './services/health/health.service';
+import { TypeCastService } from './services/type-cast/type-cast.service';
+import { TypeHelperService } from './services/type-helper/type-helper.service';
+import { WordTransformService } from './services/word-transform/word-transform.service';
 
 @NgModule({
   providers: [
@@ -50,6 +53,9 @@ import { HealthService } from './services/health/health.service';
     DatesToolsService,
     HttpClient,
     UtilsService,
+    TypeCastService,
+    TypeHelperService,
+    WordTransformService,
     TracingService,
     AddressesToolsService,
     HealthService,
