@@ -78,7 +78,6 @@ describe('TracingHttpInterceptor', () => {
         UtilsService,
         TypeHelperService,
         DatesToolsService,
-        DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,

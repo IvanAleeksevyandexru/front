@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { TypeHelperService } from '../type-helper/type-helper.service';
 
 

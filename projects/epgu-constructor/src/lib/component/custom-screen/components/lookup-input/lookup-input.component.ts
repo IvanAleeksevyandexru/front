@@ -10,6 +10,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 
 import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
+import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -30,10 +31,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   );
 
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
-    map(
-      (dictionaries) =>
-        dictionaries[this.dictionaryToolsService.getDictKeyByComp(this.control.value)]?.list,
-    ),
+    map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
   );
 
   // eslint-disable-next-line no-restricted-globals

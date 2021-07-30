@@ -37,10 +37,11 @@ import {
   FilterDtoConfig,
   AdditionalRequestParam,
   AdditionalRequestType,
-  KeyValueMap, ComponentDto,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
+import { getDictKeyByComp } from './dictionary-helper';
 
 export type ComponentValue = {
   [key: string]: string | number;
@@ -50,14 +51,6 @@ export type ComponentValue = {
 export class DictionaryToolsService {
   private _dropDowns$ = new BehaviorSubject<CustomListDropDowns>([]);
   private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
-
-  /**
-   * Функция возвращает ключ для получения словаря
-   * @param component экземпляр компонента
-   */
-  public static getDictKeyByComp(component: ComponentDto): string {
-    return component.attrs.dictionaryType + component.id;
-  }
 
   public get dropDowns$(): BehaviorSubject<CustomListDropDowns> {
     return this._dropDowns$;
@@ -233,7 +226,7 @@ export class DictionaryToolsService {
 
   public initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
     const dictionaries = this.dictionaries;
-    const id = DictionaryToolsService.getDictKeyByComp(reference.component);
+    const id = getDictKeyByComp(reference.component);
 
     dictionaries[id] = this.getDictionaryFirstState();
     dictionaries[id].loading = false;
@@ -354,7 +347,7 @@ export class DictionaryToolsService {
 
   public isResultEmpty(component: CustomComponent): boolean {
     if (this.isDictionaryLike(component.type)) {
-      const id = DictionaryToolsService.getDictKeyByComp(component);
+      const id = getDictKeyByComp(component);
       return isUndefined(this.dictionaries[id]?.list?.length)
         ? false
         : this.dictionaries[id]?.list?.length === 0;

@@ -12,7 +12,9 @@ import {
   CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import {
+  DictionaryToolsService,
+} from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
@@ -21,6 +23,7 @@ import { DateRangeRef, Range } from '../../../../shared/services/date-range/date
 import { CachedAnswers } from '../../../../screen/screen.types';
 import { ApplicantAnswersDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -234,7 +237,7 @@ export class ComponentsListRelationsService {
     const relatedComponent = components.find((item) => item.id === componentId);
 
     if (relatedComponent) {
-      const dictKey = DictionaryToolsService.getDictKeyByComp(relatedComponent);
+      const dictKey = getDictKeyByComp(relatedComponent);
 
       const dictionary = dictionaries[dictKey];
 

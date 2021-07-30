@@ -8,6 +8,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
+import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 
 @Component({
   selector: 'epgu-constructor-department-lookup',
@@ -22,9 +23,7 @@ export class DepartmentLookupComponent extends AbstractComponentListItemComponen
     }),
   );
   dictionaries$ = this.dictionaryToolsService.dictionaries$.pipe(
-    map(
-      (dictionaries) => dictionaries[DictionaryToolsService.getDictKeyByComp(this.control.value)],
-    ),
+    map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]),
   );
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
