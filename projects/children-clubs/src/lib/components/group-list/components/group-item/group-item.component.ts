@@ -124,6 +124,7 @@ export class GroupItemComponent implements OnInit {
       municipalityName: this.program?.municipal?.name,
       regionName: this.program?.region?.name,
       fiasRegion: this.program?.region?.uuid,
+      partnerPhone: this.program?.partnerPhone,
     };
 
     const group: ValueGroup = {

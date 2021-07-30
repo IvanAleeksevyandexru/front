@@ -25,6 +25,7 @@ export interface ValueProgram {
   fiasRegion: string;
   regionName: string;
   typeOfBudget: string;
+  partnerPhone: string;
 }
 
 export interface ValueGroup {
