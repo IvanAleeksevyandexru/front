@@ -10,10 +10,11 @@ import { IdentificationApiService } from '../../shared/identification-api/identi
 import { IdentificationStreamComponent } from './identification-stream.component';
 import { IdentificationStreamService } from '../../shared/identification-stream/identification-stream.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { VideoModalComponent } from './components/video-modal/video-modal.component';
 
 @NgModule({
-  declarations: [IdentificationStreamComponent],
-  exports: [IdentificationStreamComponent],
+  declarations: [IdentificationStreamComponent, VideoModalComponent],
+  exports: [IdentificationStreamComponent, VideoModalComponent],
   imports: [
     BaseModule,
     FileUploadModule,
@@ -24,6 +25,6 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
     ScreenPadModule,
   ],
   providers: [IdentificationApiService, IdentificationStreamService, TerraByteApiService],
-  entryComponents: [IdentificationStreamComponent],
+  entryComponents: [IdentificationStreamComponent, VideoModalComponent],
 })
 export class IdentificationStreamModule {}

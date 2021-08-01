@@ -15,10 +15,6 @@
     "target": "http://localhost:8080",
     "secure": false
   },
-  "/ws": {
-    "target": "wss://212.41.5.62:5443",
-    "secure": false
-  },
   "/v1/identification": {
     "target": "http://localhost:8097",
     "secure": false

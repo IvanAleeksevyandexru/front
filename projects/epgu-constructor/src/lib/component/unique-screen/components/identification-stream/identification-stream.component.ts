@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { concatMap, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { ConfigService, ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { concatMap, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import {
+  ConfigService,
+  DeviceDetectorService,
+  ModalService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 
+import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -10,12 +16,16 @@ import { ComponentBase } from '../../../../screen/screen.types';
 import { VideoModalComponent } from './components/video-modal/video-modal.component';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { UploadedFile } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-identification-stream',
   templateUrl: './identification-stream.component.html',
   styleUrls: ['./identification-stream.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [UnsubscribeService],
 })
 export class IdentificationStreamComponent {
   attrs = this.screenService.component?.attrs;
@@ -25,19 +35,31 @@ export class IdentificationStreamComponent {
     this.screenService.component$,
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
-  disabled$$ = new BehaviorSubject<boolean>(true);
-  disabled$ = this.disabled$$.pipe(distinctUntilChanged());
+
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
 
   result?: UploadedFile;
   apiLoading$ = new BehaviorSubject<boolean>(false);
 
+  nextStepAction: ComponentActionDto = {
+    label: 'Далее',
+    action: DTOActionAction.getNextStep,
+    type: ActionType.nextStep,
+  };
+  isMobile = this.deviceDetectorService.isMobile;
+
   constructor(
     public screenService: ScreenService,
     public config: ConfigService,
+    public navigationService: NavigationService,
     private modalService: ModalService,
     private api: IdentificationApiService,
     private tera: TerraByteApiService,
+    private cdr: ChangeDetectorRef,
+    private actionService: ActionService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private currentAnswersService: CurrentAnswersService,
+    private deviceDetectorService: DeviceDetectorService,
   ) {}
 
   mnemonic(): string {
@@ -51,8 +73,8 @@ export class IdentificationStreamComponent {
         concatMap(({ file }) =>
           this.tera.uploadFile(
             {
-              name: 'test.jpg',
-              mimeType: 'image/jpeg',
+              name: 'frame',
+              mimeType: 'image/png',
               objectId: `${this.screenService.orderId}`,
               objectType: 2,
               mnemonic: this.mnemonic(),
@@ -69,10 +91,36 @@ export class IdentificationStreamComponent {
         ),
       )
       .subscribe((result) => {
-        console.log(result);
         this.result = result;
+        this.cdr.detectChanges();
       });
   }
 
-  next(): void {}
+  next(): void {
+    const resultValue: { selfieId: string; faceId: string } | null =
+      JSON.parse(this.screenService.component?.value) || null;
+    if (resultValue) {
+      of(resultValue)
+        .pipe(
+          tap(() => this.apiLoading$.next(true)),
+          concatMap(({ faceId, selfieId }) =>
+            this.api
+              .videoIdentification({
+                faceId,
+                snapshot: this.result,
+                selfieFaceId: selfieId,
+              })
+              .pipe(finalize(() => this.apiLoading$.next(false))),
+          ),
+        )
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe((result) => {
+          this.currentAnswersService.state = { ...result };
+          this.nextStep();
+        });
+    }
+  }
+  private nextStep(): void {
+    this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
+  }
 }

@@ -44,6 +44,11 @@ export interface LunaPassInfo {
   reqId: number;
 }
 
+export interface LunaPassSuccess {
+  isOk: boolean;
+  jwt: string;
+}
+
 export interface LunaPassConstructor {
   canvasVideo: HTMLCanvasElement;
   ctxVideo: CanvasRenderingContext2D;
@@ -55,18 +60,51 @@ export interface LunaPassConstructor {
   isWSConnected: boolean;
   isReady: boolean;
   onReady: () => void;
-  onSuccess: () => void;
+  onSuccess: (result: LunaPassSuccess) => void;
   rootNode: HTMLElement;
   video: HTMLVideoElement;
   ws: WebSocket;
   wsConnectionString: string;
-
   new (
     element: HTMLElement,
     wsConnectionString: string,
     onReady: () => void,
     onSuccess: (result: unknown) => void,
   );
+  checkLiveness(): void;
+}
+
+export interface LunaPassRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+export interface LunaPassFrameResultDetails {
+  ags: number;
+  eyeglasses: string;
+  faceFramePosition: { faceRect: LunaPassRect; frameRect: LunaPassRect; margins: number[] };
+  headPose: { pitch: number; roll: number; yaw: number };
+  liveness: { qualityScore: number; score: number };
+  mouth: { occluded: number; opened: number; smile: number };
+  quality: {
+    blur: number;
+    darkness: number;
+    illumination: number;
+    light: number;
+    specularity: number;
+    isBlurred: boolean;
+    isDark: boolean;
+    isHighlighted: boolean;
+    isIlluminated: boolean;
+    isSpecular: boolean;
+  };
+}
+export interface LunaPassFrameResult {
+  isOk: boolean;
+  errors: string[];
+  bestshot: string;
+  details: LunaPassFrameResultDetails;
 }
 
 declare var LunaPass: LunaPassConstructor;
@@ -78,13 +116,13 @@ export class IdentificationStreamService {
   createVideoStream(
     element: HTMLElement,
     onReady: () => void,
-    onSuccess: (result: unknown) => void,
+    onSuccess: (result: LunaPassSuccess) => void,
   ): LunaPassConstructor {
     return new LunaPass(
       element,
       this.config.wsIdentificationUrl,
       () => this.ngZone.run(() => onReady()),
-      (result) => this.ngZone.run(() => onSuccess(result)),
+      (result: LunaPassSuccess) => this.ngZone.run(() => onSuccess(result)),
     );
   }
 }

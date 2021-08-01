@@ -1,4 +1,4 @@
-import { ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService, ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -10,9 +10,10 @@ import {
 import {
   IdentificationStreamService,
   LunaPassConstructor,
+  LunaPassFrameResult,
+  LunaPassSuccess,
 } from '../../../../shared/identification-stream/identification-stream.service';
 import { TerraByteApiService } from '../../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { test_image } from './data';
 
 @Component({
   selector: 'epgu-constructor-video-modal',
@@ -25,26 +26,42 @@ export class VideoModalComponent extends ModalBaseComponent implements AfterView
 
   luna?: LunaPassConstructor;
 
-  constructor(public injector: Injector, public streamService: IdentificationStreamService) {
+  constructor(
+    public injector: Injector,
+    public streamService: IdentificationStreamService,
+    public logger: LoggerService,
+  ) {
     super(injector);
   }
 
-  onReady(): void {}
-  onSuccess(): void {}
+  onReady(): void {
+    this.luna.checkLiveness();
+  }
+
+  onSuccess(result: LunaPassSuccess): void {
+    try {
+      const frameResult: LunaPassFrameResult = JSON.parse(
+        atob(result.jwt.replace('/"/', '').split('.')[1]),
+      );
+      if (frameResult.bestshot) {
+        this.modalResult.next({
+          file: TerraByteApiService.base64toBlob(
+            `data:image/png;base64,${frameResult?.bestshot}`,
+            'image/png',
+          ),
+        });
+      }
+      this.closeModal();
+    } catch (e) {
+      this.logger.error([e]);
+    }
+  }
 
   ngAfterViewInit(): void {
     this.luna = this.streamService.createVideoStream(
       this.streamElement?.nativeElement,
       () => this.onReady(),
-      () => this.onSuccess(),
+      (result) => this.onSuccess(result),
     );
-
-    setTimeout(() => {
-      this.modalResult.next({
-        file: TerraByteApiService.base64toBlob(test_image.image.data, test_image.image.mime),
-        status: true,
-      });
-      this.closeModal();
-    }, 5000);
   }
 }

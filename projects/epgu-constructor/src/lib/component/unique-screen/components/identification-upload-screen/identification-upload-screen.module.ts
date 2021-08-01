@@ -7,11 +7,10 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { IdentificationUploadScreenComponent } from './identification-upload-screen.component';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
-import { VideoModalComponent } from '../identification-stream/components/video-modal/video-modal.component';
 
 @NgModule({
-  declarations: [IdentificationUploadScreenComponent, VideoModalComponent],
-  exports: [IdentificationUploadScreenComponent, VideoModalComponent],
+  declarations: [IdentificationUploadScreenComponent],
+  exports: [IdentificationUploadScreenComponent],
   imports: [
     BaseModule,
     FileUploadModule,
@@ -21,6 +20,6 @@ import { VideoModalComponent } from '../identification-stream/components/video-m
     ScreenButtonsModule,
   ],
   providers: [IdentificationApiService],
-  entryComponents: [IdentificationUploadScreenComponent, VideoModalComponent],
+  entryComponents: [IdentificationUploadScreenComponent],
 })
 export class IdentificationUploadScreenModule {}

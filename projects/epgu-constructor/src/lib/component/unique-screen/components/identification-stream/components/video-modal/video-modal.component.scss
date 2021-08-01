@@ -45,6 +45,7 @@
     }
 
     &__body-scroll {
+      height: 100%;
       overflow-y: auto;
     }
 
@@ -53,11 +54,8 @@
       flex: 1;
       flex-direction: column;
       position: relative;
-      padding: 0 32px;
+      height: 100%;
 
-      @include phones-down {
-        padding: 0 24px;
-      }
     }
 
     &__footer {
@@ -219,12 +217,19 @@
 
 .recorder {
   position: relative;
-  height: 300px;
-}
+  height: 100%;
+  background-color: $color-black;
 
+}
 .vllunapass {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  align-items: center;
+  height: 100%;
+}
+.vllunapass::ng-deep #vllunapass-canvasVideo, .vllunapass::ng-deep #vllunapass-canvasInfo {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
 }
