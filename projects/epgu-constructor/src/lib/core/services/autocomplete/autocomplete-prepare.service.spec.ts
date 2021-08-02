@@ -10,7 +10,7 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -40,7 +40,7 @@ describe('AutocompletePrepareService', () => {
   let service: AutocompletePrepareService;
   let datesToolsService: DatesToolsService;
   let screenService: ScreenService;
-  let repeatableComponents: Array<Array<ComponentDto>>;
+  let repeatableComponents: ComponentDto[][];
   let componentsSuggestionsSet: Set<[string, string]>;
   let parentComponent: ComponentDto;
 
@@ -157,9 +157,11 @@ describe('AutocompletePrepareService', () => {
         PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,
+        JsonHelperService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         DictionaryToolsService,
         DictionaryApiService,

@@ -7,7 +7,10 @@
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <form [formGroup]="redAddrForm" class="form">
-      <div class="item" *ngFor="let field of (data$ | async)?.attrs?.fields">
+      <div
+        class="item"
+        *ngFor="let field of (data$ | async)?.attrs?.fields"
+        [ngClass]="{'grid-col-6 grid-col-12-sm': field.type === 'date'}">
         <epgu-constructor-label
           [tips]="field?.attrs?.labelHint"
           [attr.for]="field.fieldName"
@@ -65,7 +68,7 @@
 
         <epgu-cf-ui-constructor-helper-text *ngIf="field.hint" class="item__helper-text">{{
           field.hint
-        }}</epgu-cf-ui-constructor-helper-text>
+          }}</epgu-cf-ui-constructor-helper-text>
       </div>
       <div class="error" *ngIf="error$ | async as errorText">
         <small>{{ errorText }}</small>

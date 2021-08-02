@@ -18,7 +18,7 @@ import { isEqual } from 'lodash';
 import { ListElement } from '@epgu/epgu-lib';
 import { StateService } from '../state/state.service';
 import { GroupFiltersModes, ChildrenClubsValue, ChildrenClubsState } from '../../children-clubs.types';
-import { AppStateQuery } from '@epgu/epgu-constructor-ui-kit';
+import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ProgramListService {
@@ -124,7 +124,7 @@ export class ProgramListService {
   constructor(
     private api: ApiService,
     private stateService: StateService,
-    private appStateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appStateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
 
   add(data: BaseProgram[]): void {

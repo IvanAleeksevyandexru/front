@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ConfigService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { IconList, UserInfoType } from './user-info.type';
 
 @Component({
@@ -11,10 +11,10 @@ import { IconList, UserInfoType } from './user-info.type';
 export class UserInfoComponent {
   @Input() set value(user: UserInfoType) {
     if (
-      this.utils.isDefined(user) &&
-      this.utils.isDefined(user.ageType) &&
-      this.utils.isDefined(user.gender) &&
-      this.utils.isDefined(user.name)
+      this.typeHelperService.isDefined(user) &&
+      this.typeHelperService.isDefined(user.ageType) &&
+      this.typeHelperService.isDefined(user.gender) &&
+      this.typeHelperService.isDefined(user.name)
     ) {
       this.user.ageType = user.ageType;
       this.user.gender = user.gender;
@@ -33,5 +33,5 @@ export class UserInfoComponent {
   user = {} as UserInfoType;
   iconPath = '';
 
-  constructor(public config: ConfigService, private utils: UtilsService) {}
+  constructor(public config: ConfigService, private typeHelperService: TypeHelperService) {}
 }

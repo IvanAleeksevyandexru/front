@@ -5,11 +5,12 @@ import { By } from '@angular/platform-browser';
 
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import {
-  ConstructorDropdownModule, CoreUiModule,
+  ConstructorDropdownModule,
+  CoreUiModule,
   HttpCancelService,
   LoggerService,
   LoggerServiceStub,
-  HealthService,
+  HealthService, TypeCastService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -95,6 +96,7 @@ describe('SelectChildrenItemComponent', () => {
         HttpCancelService,
         DictionaryToolsService,
         RefRelationService,
+        TypeCastService,
       ],
     }).compileComponents();
   });

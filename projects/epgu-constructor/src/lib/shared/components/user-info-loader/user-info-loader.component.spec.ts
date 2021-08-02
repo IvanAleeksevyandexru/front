@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
@@ -68,6 +68,7 @@ describe('UserInfoLoaderComponent', () => {
       declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
       providers: [
         UtilsService,
+        TypeHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },

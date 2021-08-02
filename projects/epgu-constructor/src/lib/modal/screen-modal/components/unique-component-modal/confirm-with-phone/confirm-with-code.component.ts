@@ -16,7 +16,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { UniqueScreenComponentTypes } from '../../../../../component/unique-screen/unique-screen-components.types';
 
 interface CodeFormGroup {
-  codeMask: Array<RegExp>;
+  codeMask: RegExp[];
   codeValue: string | number;
   codeIndexElement: number;
 }

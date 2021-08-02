@@ -35,7 +35,7 @@ import {
   formatISO as _formatISO,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
-import { replaceArguments } from '../utils/utils';
+import { replaceArguments } from '../../decorators/replace-arguments';
 import { ConfigService } from '../config/config.service';
 import {
   DATE_ISO_STRING_FORMAT,

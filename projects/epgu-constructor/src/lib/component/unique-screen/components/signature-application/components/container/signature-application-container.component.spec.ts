@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -94,6 +94,7 @@ describe('SignatureApplicationContainerComponent', () => {
       providers: [
         NavigationService,
         UtilsService,
+        TypeHelperService,
         WINDOW_PROVIDERS,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },

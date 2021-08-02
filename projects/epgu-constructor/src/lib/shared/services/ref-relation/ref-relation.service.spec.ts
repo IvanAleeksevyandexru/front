@@ -11,13 +11,17 @@ import {
 } from './ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
 import { ListElement } from '@epgu/epgu-lib';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [RefRelationService],
+      providers: [
+        RefRelationService,
+        JsonHelperService
+      ],
     });
   });
 

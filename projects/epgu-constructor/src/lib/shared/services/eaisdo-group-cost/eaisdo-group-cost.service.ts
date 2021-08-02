@@ -21,7 +21,7 @@ export class EaisdoGroupCostService {
   }
   private _currentState = new BehaviorSubject<EaisdoStateTypes>(null);
 
-  get currentButtonsState$(): Observable<Array<string>> {
+  get currentButtonsState$(): Observable<string[]> {
     return this._currentButtonsState.asObservable();
   }
   get currentButtonsState(): string[] {

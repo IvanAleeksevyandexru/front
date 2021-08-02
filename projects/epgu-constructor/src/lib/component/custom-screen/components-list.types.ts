@@ -62,9 +62,9 @@ export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string 
 // type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
 
 // @todo. выяснить, почему в коде CustomListDropDowns как объект, а не массив
-export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+export type CustomListDropDowns = { [key: string]: Partial<ListItem>[] }[];
 // @todo. выяснить, почему в коде CustomListDictionaries как объект, а не массив
-export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
+export type CustomListDictionaries = { [key: string]: CustomListDictionary[] }[];
 export type CustomListReferenceData = CustomListGenericData<
   Partial<ListItem>[] | DictionaryResponse
 >;
@@ -77,7 +77,7 @@ export interface CustomListDictionary {
   paginationLoading: boolean;
   origin: CustomComponent;
   data: DictionaryResponse;
-  list: Array<ListItem>;
+  list: ListItem[];
   page: number;
   selectedItem: DictionaryItem;
   repeatedWithNoFilters?: boolean;
@@ -100,7 +100,7 @@ export interface CustomListGenericData<T> {
   };
 }
 
-export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
+export type CustomComponentDropDownItemList = CustomComponentDropDownItem[];
 export type CustomComponentDropDownItem = {
   title?: string;
   label?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
@@ -109,11 +109,11 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
-export type CustomComponentAttrField = Array<{
+export type CustomComponentAttrField = {
   fieldName?: string;
   label?: string;
   type?: string;
-}>;
+}[];
 
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -129,7 +129,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   dateRestrictions?: DateRestriction[];
   defaultIndex?: number;
   defaultValue?: boolean;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryOptions?: DictionaryOptions;
   dictionaryType?: string;
@@ -153,23 +153,23 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   minDate?: string;
   needUnfilteredDictionaryToo?: boolean;
   onlyFirstScreen?: boolean;
-  ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
+  ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
   refs?: { [key: string]: string };
   relation?: { ref: string; conditions: RelationCondition[] };
   relationField?: ComponentRelationFieldDto;
   repeatWithNoFilters?: boolean;
-  requiredAttrs?: Array<string>;
+  requiredAttrs?: string[];
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
   };
   searchType?: string;
-  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
   subLabel?: string;
   suggestionId?: string;
-  supportedValues?: Array<SupportedValue>;
+  supportedValues?: SupportedValue[];
   updateOnValidation?: UpdateOn;
-  validation?: Array<CustomComponentAttrValidation>;
+  validation?: CustomComponentAttrValidation[];
   withAmount?: boolean;
 }
 
@@ -229,13 +229,13 @@ export enum CustomComponentValidationConditions {
  */
 export interface CustomComponentRef {
   relatedRel: string;
-  val: string | Array<string> | boolean;
+  val: string | string[] | boolean;
   relation: CustomComponentRefRelation;
   sourceId?: string;
   relatedRelValues?: { [key: string]: string };
   defaultValue?: string | boolean;
   valueFromCache?: string;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
   isResetable?: boolean;
   path?: string;
 }
@@ -251,7 +251,7 @@ export interface CustomListFormGroup {
 }
 
 export interface CustomDisplay extends DisplayDto {
-  components: Array<CustomComponent>;
+  components: CustomComponent[];
 }
 
 export interface RelationCondition {

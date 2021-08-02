@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import {
-  AppNavigationService,
-  AppStateQuery,
-  AppStateService,
+  MicroAppNavigationService,
+  MicroAppStateQuery,
+  MicroAppStateService,
   DATE_STRING_DASH_FORMAT,
   DATE_STRING_DOT_FORMAT,
   DatesToolsService,
@@ -65,9 +65,9 @@ export class GroupItemComponent implements OnInit {
   denyReasonMessage: DenyReasonMessage | null = null;
 
   constructor(
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-    private appNavigationService: AppNavigationService,
+    private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    private stateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appNavigationService: MicroAppNavigationService,
     private dateToolService: DatesToolsService,
   ) {}
 
@@ -124,6 +124,7 @@ export class GroupItemComponent implements OnInit {
       municipalityName: this.program?.municipal?.name,
       regionName: this.program?.region?.name,
       fiasRegion: this.program?.region?.uuid,
+      partnerPhone: this.program?.partnerPhone,
     };
 
     const group: ValueGroup = {

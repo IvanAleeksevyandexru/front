@@ -14,7 +14,7 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
   ModalService,
-  ModalServiceStub
+  ModalServiceStub, JsonHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -189,6 +189,7 @@ describe('RepeatableScreenComponent', () => {
         CachedAnswersService,
         UniquenessErrorsService,
         ComponentsListFormService,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

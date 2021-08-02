@@ -23,7 +23,7 @@ export class TimeSlotDoctorsComponent {
 
   @Input() monthsRange: string;
   @Input() slotList: SlotInterface[];
-  @Input() weeks: Array<Array<IDay>> = [];
+  @Input() weeks: IDay[][] = [];
   @Input() currentSlot: SlotInterface;
 
   @Input() isExistsSlots = true;

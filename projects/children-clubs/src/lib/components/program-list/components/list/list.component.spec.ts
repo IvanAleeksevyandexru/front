@@ -3,10 +3,10 @@ import { configureTestSuite } from 'ng-bullet';
 import { EpguLibModule } from '@epgu/epgu-lib';
 
 import {
-  AppStateQuery,
-  AppStateQueryStub,
-  AppStateService,
-  AppStateServiceStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
+  MicroAppStateService,
+  MicroAppStateServiceStub,
   CoreUiModule,
   HealthServiceStub,
   LongButtonModule,
@@ -33,8 +33,8 @@ describe('ListComponent', () => {
       providers: [
         ProgramListService,
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
-        { provide: AppStateService, useClass: AppStateServiceStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],

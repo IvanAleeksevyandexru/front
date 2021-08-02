@@ -76,7 +76,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  public weeks: Array<Array<IDay>> = [];
+  public weeks: IDay[][] = [];
   public areas: ListItem[] = [];
   public isAreasVisible = false;
   public monthsYears: ListItem[] = [];
@@ -389,7 +389,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private addDayToWeek(week: Array<IDay>, date: Date, today: Date): void {
+  private addDayToWeek(week: IDay[], date: Date, today: Date): void {
     const isOutOfSection = this.isDateOutOfSection(
       date,
       this.firstDayOfMainSection,

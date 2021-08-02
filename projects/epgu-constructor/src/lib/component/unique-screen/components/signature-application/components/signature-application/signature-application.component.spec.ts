@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HtmlSelectService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -69,6 +69,7 @@ describe('SignatureApplicationComponent', () => {
       providers: [
         NavigationService,
         UtilsService,
+        TypeHelperService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -76,6 +77,7 @@ describe('SignatureApplicationComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
+        HtmlSelectService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

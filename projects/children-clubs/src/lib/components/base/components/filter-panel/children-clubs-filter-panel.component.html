@@ -13,7 +13,7 @@
     <div class="filter-panel">
       <a class="filter-btn" (click)="openFilters.next()">
         <span class="filter-icon" [class.active]="filtersCount">
-          <img src="../../../../../assets/icons/filter.svg" />
+          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/filter.svg" />
         </span>
         Фильтры
         <span *ngIf="filtersCount">({{ filtersCount }})</span>

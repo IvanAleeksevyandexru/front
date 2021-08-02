@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
-  AppNavigationService,
+  MicroAppNavigationService,
   ModalService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -36,7 +36,7 @@ export class GroupListContainerComponent implements OnInit {
     private state: StateService,
     private groupService: GroupListService,
     private dictionary: DictionaryService,
-    private appNavigationService: AppNavigationService,
+    private appNavigationService: MicroAppNavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private modalService: ModalService,
   ) {}

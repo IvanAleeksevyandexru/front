@@ -4,7 +4,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService, SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  JsonHelperService,
+  SessionStorageService,
+  SessionStorageServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -163,6 +168,7 @@ describe('ActionDirective', () => {
         HttpHandler,
         EventBusService,
         EaisdoGroupCostService,
+        JsonHelperService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

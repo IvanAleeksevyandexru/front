@@ -54,7 +54,7 @@ export class InformationCenterContainerComponent {
       const data: Simple = {
         ...simple,
         items: this.dictionaryToolsService.adaptDictionaryToListItem(
-          simple.items as Array<DictionaryItem>,
+          simple.items as DictionaryItem[],
         ),
       };
 
@@ -67,10 +67,10 @@ export class InformationCenterContainerComponent {
       };
     }),
   );
-  public regionDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
-  public districtDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
-  public cityDistrictDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
-  public territoryDictionary$ = new BehaviorSubject<Array<ListElement>>([]);
+  public regionDictionary$ = new BehaviorSubject<ListElement[]>([]);
+  public districtDictionary$ = new BehaviorSubject<ListElement[]>([]);
+  public cityDistrictDictionary$ = new BehaviorSubject<ListElement[]>([]);
+  public territoryDictionary$ = new BehaviorSubject<ListElement[]>([]);
   public nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
   private dictionaryType: string;
 
@@ -106,7 +106,7 @@ export class InformationCenterContainerComponent {
       });
   }
 
-  private updateDictionary(type: PfrAreaType, items: Array<ListElement>): void {
+  private updateDictionary(type: PfrAreaType, items: ListElement[]): void {
     switch (type) {
       case PfrAreaType.region:
         this.territoryDictionary$.next([]);
@@ -136,7 +136,7 @@ export class InformationCenterContainerComponent {
     }
   }
 
-  private updateDictionaryFromCache(type: PfrAreaType, items: Array<ListElement>): void {
+  private updateDictionaryFromCache(type: PfrAreaType, items: ListElement[]): void {
     switch (type) {
       case PfrAreaType.region:
         this.regionDictionary$.next(items);

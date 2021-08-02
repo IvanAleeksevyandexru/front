@@ -3,7 +3,7 @@ import { ListItem } from '@epgu/epgu-lib';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -23,7 +23,6 @@ import {
 } from './time-slots.types';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
@@ -31,7 +30,7 @@ import {
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
 
-type attributesMapType = Array<{ name: string; value: string }>;
+type attributesMapType = { name: string; value: string }[];
 
 type configType = {
   [key: string]: string | attributesMapType;
@@ -58,7 +57,7 @@ export class TimeSlotsService {
   private availableMonths: string[];
   private areas: string[];
   private config: configType = {};
-  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
+  private timeSlotRequestAttrs: { name: string; value: string }[];
   private areaNamesIsNeeded: boolean;
 
   constructor(
@@ -68,6 +67,7 @@ export class TimeSlotsService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
+    public jsonHelperService: JsonHelperService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -213,7 +213,7 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes:
-        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
@@ -247,7 +247,7 @@ export class TimeSlotsService {
     return changed;
   }
 
-  public getAreasListItems(): Array<ListItem> {
+  public getAreasListItems(): ListItem[] {
     return this.areas.map((area) => {
       return new ListItem({
         id: area,
@@ -345,7 +345,7 @@ export class TimeSlotsService {
   private getSlotsRequestAttributes(
     slotsType: TimeSlotsTypes,
     serviceId: string,
-  ): Array<{ name: string; value: string }> {
+  ): { name: string; value: string }[] {
     if (this.timeSlotRequestAttrs) {
       return this.timeSlotRequestAttrs;
     }
@@ -493,7 +493,7 @@ export class TimeSlotsService {
    * то нужно из справочника запросить список кабинетов
    * @param areaName AREA_NAME загса
    */
-  private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
+  private getAvailableAreaNames(areaName: string): Observable<string[]> {
     if (this.areaNamesIsNeeded) {
       if (areaName) {
         return of([areaName]);
@@ -570,7 +570,7 @@ export class TimeSlotsService {
 
   private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {
     const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath, []);
+    const slots: SlotInterface[] = get(this.slotsMap, slotsPath, []);
     return slots.filter((slot) => slot.areaId === areadId || !areadId);
   }
 }

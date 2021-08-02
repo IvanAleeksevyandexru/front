@@ -10,7 +10,7 @@ import {
   DeviceDetectorServiceStub,
   CoreUiModule,
   LocationService,
-  WINDOW_PROVIDERS
+  WINDOW_PROVIDERS, HtmlSelectService
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -89,6 +89,7 @@ describe('PaymentTypeSelectorComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         EaisdoGroupCostService,
+        HtmlSelectService,
       ],
     })
       .overrideComponent(PaymentTypeSelectorComponent, {

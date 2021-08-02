@@ -104,6 +104,7 @@ export interface ComponentAttrsDto {
   noDepartmentsErrorMsg?: string;
   nonStop?: boolean;
   nsi?: string;
+  obliged?: boolean;
   payCode?: number;
   phoneNumber?: number;
   placeholderText?: string;

@@ -1,5 +1,5 @@
 export interface IYMapPoint<T> {
-  center: Array<number>;
+  center: number[];
   obj: T;
 }
 
@@ -21,15 +21,15 @@ export interface IFeatureItem<T> {
 }
 
 export interface IClusterItem<T> extends Pick<IFeatureItem<T>, 'type' | 'id' | 'geometry'> {
-  features: Array<IFeatureItem<T>>;
+  features: IFeatureItem<T>[];
   properties: {
-    geoObjects: Array<IFeatureItem<T>>;
+    geoObjects: IFeatureItem<T>[];
   };
 }
 
 export interface IFeatureCollection<T> {
   type: string;
-  features: Array<IFeatureItem<T>>;
+  features: IFeatureItem<T>[];
 }
 
 export type YMapItem<T> = T & {

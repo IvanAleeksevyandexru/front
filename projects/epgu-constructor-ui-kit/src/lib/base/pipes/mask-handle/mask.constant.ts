@@ -15,7 +15,7 @@ export enum MASKS {
 }
 
 export const MASKS_HANDLERS = {
-  [MASKS.KadastrNumberInput]: (value: string): Array<string | RegExp> => {
+  [MASKS.KadastrNumberInput]: (value: string): (string | RegExp)[] => {
     const mask = [/\d/, /\d/, ':', /\d/, /\d/, ':'];
     const chunks = value.replace(/_/g, '').split(':');
     let i;
@@ -38,7 +38,7 @@ export const MASKS_HANDLERS = {
   },
   [MASKS.NumberMaskInput]: (
     maskOptions: Partial<NumberMaskOptions>,
-  ): ((string) => Array<string | RegExp>) => {
+  ): ((string) => (string | RegExp)[]) => {
     const options = { ...numberMaskDefaultOptions, ...maskOptions };
 
     const cleanupPattern = new RegExp(
@@ -48,14 +48,14 @@ export const MASKS_HANDLERS = {
 
     let hadDecimals = false;
 
-    return (value: string): Array<string | RegExp> => {
+    return (value: string): (string | RegExp)[] => {
       const cleanValue = value.replace(cleanupPattern, '');
       const parts: string[] = cleanValue.split(options.decimalSymbol);
       const hasDecimals: boolean = parts.length > 1;
       const [integerPart, decimalPart] = parts;
       const emptyDecimals: boolean = !hasDecimals || decimalPart === '';
       const maskForDecimalsShown = hasDecimals && (!hadDecimals || !emptyDecimals);
-      const mask: Array<string | RegExp> = [];
+      const mask: (string | RegExp)[] = [];
 
       if (maskForDecimalsShown) {
         for (let i = 0, length = Math.min(options.decimalLimit, decimalPart.length + 1); i < length; i += 1) {

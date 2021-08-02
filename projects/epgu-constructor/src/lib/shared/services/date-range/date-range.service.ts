@@ -87,7 +87,7 @@ export class DateRangeService {
   }
 
   async getMinDate(
-    ref: Array<DateRangeRef>,
+    ref: DateRangeRef[],
     id: string,
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
@@ -96,7 +96,7 @@ export class DateRangeService {
   }
 
   async getMaxDate(
-    ref: Array<DateRangeRef>,
+    ref: DateRangeRef[],
     id: string,
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
@@ -105,7 +105,7 @@ export class DateRangeService {
   }
 
   private async calcDateRange(
-    ref: Array<DateRangeRef>,
+    ref: DateRangeRef[],
     id: string,
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
@@ -135,8 +135,11 @@ export class DateRangeService {
     return range;
   }
 
-  private async chooseOperation(refParams: DateRangeRef, date: Date): Promise<Array<Date>> {
-    const today = await this.datesToolsService.getToday();
+  private async chooseOperation(refParams: DateRangeRef, date: Date): Promise<Date[]> {
+    let today;
+    if (refParams.condition.includes('today')) {
+      today = await this.datesToolsService.getToday();
+    }
     switch (refParams.condition) {
       case '>=today':
         return [date, today];

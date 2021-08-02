@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { isUndefined, toBoolean } from '@epgu/epgu-constructor-ui-kit';
+import { isUndefined } from 'lodash';
+import { TypeCastService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
@@ -18,7 +19,7 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.DocInput,
   ];
 
-  constructor() { }
+  constructor(private typeCastService: TypeCastService) { }
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
@@ -88,7 +89,7 @@ export class ComponentsListToolsService {
         return value;
       }
     } else if (this.isCheckBox(componentType)) {
-      return toBoolean(value);
+      return this.typeCastService.toBoolean(value);
     } else if (componentType === CustomScreenComponentTypes.DropDownDepts) {
       return ''; // Подавляем значение value т.к. оно используется для вставки данных в фильтр
     } else if (this.isPhone(value)) {

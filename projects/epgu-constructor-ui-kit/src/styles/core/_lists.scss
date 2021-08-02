@@ -126,4 +126,19 @@
       background-color: $color-blu-digitale;
     }
   }
+
+  .list-bg-white {
+    background-color: $color-white;
+    border-radius: 8px;
+    @include shadow-main();
+    margin-left: 0;
+    padding: 24px;
+    &:not(:first-child) {
+      margin-top: 0;
+    }
+  }
+
+  li ul.list-bg-white {
+    margin-top: 0;
+  }
 }

@@ -17,7 +17,7 @@ export interface PftAreaTypeParams {
 }
 
 export interface Simple {
-  items: Array<DictionaryItem | ListElement>;
+  items: (DictionaryItem | ListElement)[];
   label: string;
   html: string;
 }

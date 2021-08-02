@@ -26,7 +26,7 @@ import { DeclinePipe } from '@epgu/epgu-lib';
 @Injectable()
 export class EmployeeHistoryFormService {
   employeeHistoryForm: FormArray = this.fb.array([]);
-  employeeHistory: Array<EmployeeHistoryModel> = [];
+  employeeHistory: EmployeeHistoryModel[] = [];
   generateForm: FormGroup;
 
   private readonly defaultType: EmployeeType;

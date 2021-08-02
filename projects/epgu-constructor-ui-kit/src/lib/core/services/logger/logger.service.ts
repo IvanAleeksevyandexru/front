@@ -5,7 +5,7 @@ export const KEY_SHOW_LOG = 'SHOW_LOG';
 @Injectable()
 export class LoggerService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  log(messages: Array<any>, groupName: string = null): void {
+  log(messages: any[], groupName: string = null): void {
     if(this.isShowLog()) {
       if (groupName) {
         this.openGroup(groupName);
@@ -20,7 +20,7 @@ export class LoggerService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error(messages: Array<any>, groupName: string = null): void {
+  error(messages: any[], groupName: string = null): void {
     if (groupName) {
       this.openGroup(groupName);
     }

@@ -2,7 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OutputHtmlComponent } from './output-html.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DeviceDetectorService, DeviceDetectorServiceStub, ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  HtmlSelectService,
+  ImgPrefixerPipe
+} from '@epgu/epgu-constructor-ui-kit';
 import { SafePipe, ConfigService, ConfigServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -29,6 +34,7 @@ describe('OutputHtmlComponent', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        HtmlSelectService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

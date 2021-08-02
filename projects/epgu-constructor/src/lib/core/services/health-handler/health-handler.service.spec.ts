@@ -10,7 +10,7 @@ import {
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 
-import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService, TypeHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../init-data/init-data.service';
@@ -49,6 +49,7 @@ describe('HealthHandlerService', () => {
   let config: ConfigService;
   let init: InitDataService;
   let utils: UtilsService;
+  let wordTransformService: WordTransformService;
   let healthService: HealthService;
   let dictionaryService: DictionaryApiService;
   let httpMock: HttpTestingController;
@@ -82,9 +83,12 @@ describe('HealthHandlerService', () => {
         FormPlayerApiService,
         DictionaryApiService,
         UtilsService,
+        TypeHelperService,
         HealthHandlerService,
         TestHealthInterceptor,
         SessionService,
+        WordTransformService,
+        TypeHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
@@ -109,6 +113,7 @@ describe('HealthHandlerService', () => {
     healthService = TestBed.inject(HealthService);
     service = TestBed.inject(HealthHandlerService);
     dictionaryService = TestBed.inject(DictionaryApiService);
+    wordTransformService = TestBed.inject(WordTransformService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -132,7 +137,7 @@ describe('HealthHandlerService', () => {
       requestToSucceed.flush(dataToFlush);
       const params = {
         id: dto.scenarioDto.display.id,
-        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
+        name: wordTransformService.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId: orderId,
         method: 'POST',
         date: new Date().toISOString(),

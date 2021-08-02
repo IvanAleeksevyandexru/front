@@ -1,166 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { TypeHelperService } from '../type-helper/type-helper.service';
 
-interface TranslitAlphabet {
-  [propName: string]: string;
-}
-
-/*eslint quote-props: ["error", "always"]*/
-const LETTERS = {
-  'а': 'a',
-  'б': 'b',
-  'в': 'v',
-  'г': 'g',
-  'д': 'd',
-  'е': 'e',
-  'ё': 'e',
-  'ж': 'zh',
-  'з': 'z',
-  'и': 'i',
-  'й': 'i',
-  'к': 'k',
-  'л': 'l',
-  'м': 'm',
-  'н': 'n',
-  'о': 'o',
-  'п': 'p',
-  'р': 'r',
-  'с': 's',
-  'т': 't',
-  'у': 'u',
-  'ф': 'f',
-  'х': 'kh',
-  'ч': 'ch',
-  'ц': 'ts',
-  'щ': 'shch',
-  'ш': 'sh',
-  'ъ': 'ie',
-  'ы': 'y',
-  'э': 'e',
-  'ю': 'iu',
-  'я': 'ia',
-  'ь': ''
-} as TranslitAlphabet;
 
 @Injectable()
 export class UtilsService {
-  // TODO: add shared utils
-
-  /**
-   * Устанавливает куку
-   * @param name - имя куки
-   * @param value - значение куки
-   * @param days - количество дней на установку
-   * @param domain - домен, к которому записывается кука
-   */
-  static setCookie(name: string, value: string | number, days: number, domain: string = ''): void {
-    let expires = '';
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = '; expires=' + date.toUTCString();
-    }
-    let cookie = `${name}=${value || ''}${expires}; path=/`;
-    if (domain.length) {
-      cookie += `; domain=${domain};`;
-    }
-    document.cookie = cookie;
-  }
-
-  /**
-   * Получает куку с нужным именем
-   * @param name - имя куки
-   */
-  static getCookie(name: string): string {
-    const nameEQ = name + '=';
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) {
-        return c.substring(nameEQ.length, c.length);
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Удаляет куку с нужным именем
-   * @param name - имя куки
-   */
-  static removeCookie(name: string): void {
-    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  }
-
-  /**
-   * Метод для безопасного получения пропертей объекта по пути
-   * @param obj объект, из которого необходимо получить свойство
-   * @param path путь до свойства
-   * @param defaultValue значение по умолчанию в случае не нахождения свойства
-   * @example getObjectProperty({a: {b: {c: 3}}}), 'a.b.c');
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static getObjectProperty(obj: any, path: string, defaultValue: any = undefined): any {
-    if (!path) return obj;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const travel = (regexp): any =>
-      String.prototype.split
-        .call(path, regexp)
-        .filter(Boolean)
-        .reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj);
-    const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
-    return result === undefined || result === obj ? defaultValue : result;
-  }
+  constructor (private typeHelperService: TypeHelperService) {}
 
   static extractDateRef(refDate: string): string[] {
     const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
     return [ref, refDate.replace(ref, '')];
   }
 
-  /**
-   * Функция возвращает ключ для получения словаря
-   * @param component экземпляр компонента
-   */
-  public static getDictKeyByComp(component: ComponentDto): string {
-    return component.attrs.dictionaryType + component.id;
-  }
-
   public static htmlToText(html: string): string {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     return doc.body ? doc.body.textContent : '';
-  }
-
-  public static hasJsonStructure(string: string): boolean {
-    if (typeof string !== 'string') return false;
-    try {
-      const result = JSON.parse(string);
-      const type = Object.prototype.toString.call(result);
-      return type === '[object Object]' || type === '[object Array]';
-    } catch (err) {
-      return false;
-    }
-  }
-
-  public static tryToParse(JSONstring: string): unknown | '' {
-    if (this.hasJsonStructure(JSONstring)) {
-      return JSON.parse(JSONstring);
-    } else {
-      return '';
-    }
-  }
-
-  public tryToParseOrDefault(value: string|object|[], defaultValue: object = {}): object|[] {
-    if (Array.isArray(value) || typeof value === 'object' && value) {
-      return value;
-    }
-
-    if (UtilsService.hasJsonStructure(value as string)) {
-      return JSON.parse(value as string);
-    }
-
-    return defaultValue;
   }
 
   public getDeclension(num: number, forms: string[]): string {
@@ -190,29 +44,6 @@ export class UtilsService {
     const splitByDirLocation = splitByQueryParam[0].split('/');
 
     return splitByDirLocation;
-  }
-
-  /**
-   * Converts cyrillic to latin
-   * @param str
-   */
-  public cyrillicToLatin(word: string): string {
-    if (!this.isDefined(word)) {
-      return undefined;
-    }
-
-    let newStr = '';
-
-    for (const char of word) {
-      const isUpperCase = char === char.toUpperCase();
-      const translitChar = LETTERS[char.toLowerCase()];
-      if (translitChar === undefined) {
-        newStr += char;
-      } else {
-        newStr += isUpperCase ? translitChar.toUpperCase() : translitChar;
-      }
-    }
-    return newStr;
   }
 
   /**
@@ -253,13 +84,9 @@ export class UtilsService {
     return url && typeof url === 'string';
   }
 
-  public isDefined<T>(value: T | undefined | null): value is T {
-    return (value as T) !== undefined && (value as T) !== null;
-  }
-
   public filterIncorrectObjectFields(obj: object): object {
     return Object.entries(obj).reduce(
-      (a, [k, v]) => (!this.isDefined(v) ? a : ((a[k] = v), a)),
+      (a, [k, v]) => (!this.typeHelperService.isDefined(v) ? a : ((a[k] = v), a)),
       {},
     );
   }

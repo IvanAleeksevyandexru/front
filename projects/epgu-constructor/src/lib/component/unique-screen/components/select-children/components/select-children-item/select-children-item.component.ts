@@ -20,10 +20,10 @@ import {
 export class SelectChildrenItemComponent {
   @Input() idx: number;
   @Input() hint?: string;
-  @Input() children: Array<ListElement>;
+  @Input() children: ListElement[];
   @Input() errors: ScenarioErrorsDto;
   @Input() isNewChild: boolean;
-  @Input() components: Array<CustomComponent>;
+  @Input() components: CustomComponent[];
   @Input() control: AbstractControl;
   @Output() selectChildrenEvent = new EventEmitter<ChildI>();
   @Output() updateChildEvent = new EventEmitter<CustomComponentOutputData>();

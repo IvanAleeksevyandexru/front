@@ -34,7 +34,7 @@ export class ConstructorLookupComponent {
   @Input() virtualScroll: boolean;
   @Input() searchCaseSensitive: boolean;
   @Input() queryMinSymbolsCount = 0;
-  @Input() fixedItems: Array<ListElement>;
+  @Input() fixedItems: ListElement[];
   @Input() itemsProvider:
     | LookupProvider<Partial<ListElement>>
     | LookupPartialProvider<Partial<ListElement>>;

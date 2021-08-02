@@ -12,7 +12,7 @@ export class TimeCalendarComponent {
   @Input() timeNotFoundTemplate: ErrorTemplate;
   @Input() isExistsSlots = false;
 
-  @Input() weeks: Array<Array<IDay>> = [];
+  @Input() weeks: IDay[][] = [];
   @Input() currentSlot: SlotInterface;
   @Input() slotList: SlotInterface[];
   @Output() selectDate = new EventEmitter<Date>();

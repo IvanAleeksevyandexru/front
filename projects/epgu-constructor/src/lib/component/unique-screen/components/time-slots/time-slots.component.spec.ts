@@ -4,7 +4,7 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import {
   ScreenPadComponent,
   HelperTextComponent,
-  HttpCancelService, TimeCalendarModule,
+  HttpCancelService, TimeCalendarModule, TypeHelperService, JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
@@ -76,7 +76,9 @@ describe('TimeSlotsComponent', () => {
         DatesToolsService,
         TimeSlotsService,
         UtilsService,
+        TypeHelperService,
         HttpCancelService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

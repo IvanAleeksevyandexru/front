@@ -3,7 +3,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService, SessionService, SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService, JsonHelperService,
+  SessionService,
+  SessionStorageService,
+  SessionStorageServiceStub,
+  TypeHelperService
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -79,11 +85,13 @@ describe('PaymentComponent', () => {
         NavigationModalService,
         DeviceDetectorService,
         UtilsService,
+        TypeHelperService,
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
         EaisdoGroupCostService,
         SessionService,
+        JsonHelperService,
         WINDOW_PROVIDERS,
       ],
     }).compileComponents();

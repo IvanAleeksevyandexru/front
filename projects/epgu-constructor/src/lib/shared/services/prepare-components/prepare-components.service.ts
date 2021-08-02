@@ -5,7 +5,7 @@ import {
   CustomComponentRef,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
@@ -13,6 +13,7 @@ import { DocInputField } from '../../../component/custom-screen/components/doc-i
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { get } from 'lodash';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -21,12 +22,13 @@ export class PrepareComponentsService {
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public prepareComponents(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
-  ): Array<ScreenStoreComponentDtoI> {
+  ): ScreenStoreComponentDtoI[] {
     let preparedComponents;
     preparedComponents = this.loadValueFromCachedAnswer(components, cachedAnswers);
     preparedComponents = this.handleRelatedRelComponents(preparedComponents, cachedAnswers);
@@ -34,9 +36,9 @@ export class PrepareComponentsService {
   }
 
   private loadValueFromCachedAnswer(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
-  ): Array<ScreenStoreComponentDtoI> {
+  ): ScreenStoreComponentDtoI[] {
     return components.map((component) => {
       component.valueFromCache = false;
       if (component.type === UniqueScreenComponentTypes.repeatableFields) {
@@ -76,17 +78,17 @@ export class PrepareComponentsService {
   }
 
   private setRepeatableFields(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
     parentComponent: ComponentDto,
-  ): Array<Array<ComponentDto>> {
+  ): ComponentDto[][] {
     const cachedValue =
       this.getCache(parentComponent, cachedAnswers) ||
       parentComponent.value ||
       null;
-    const cachedValueArray: Array<{ [key: string]: string }> = JSON.parse(cachedValue) || [];
+    const cachedValueArray: { [key: string]: string }[] = JSON.parse(cachedValue) || [];
     if (cachedValueArray.length) {
-      let repeatableFieldComponents: Array<Array<ComponentDto>> = [];
+      let repeatableFieldComponents: ComponentDto[][] = [];
       repeatableFieldComponents = cachedValueArray.map((_component, index) => {
           return this.getCacheRepeatableField(components, cachedValue, index);
       });
@@ -97,10 +99,10 @@ export class PrepareComponentsService {
   }
 
   private getCacheRepeatableField(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedValue: string,
     index: number,
-  ): Array<ComponentDto> {
+  ): ComponentDto[] {
     return components.map((item) => {
       return this.getComponentWithCaches(item, cachedValue, item.id, index);
     });
@@ -126,8 +128,8 @@ export class PrepareComponentsService {
       return (parentIndex || parentIndex === 0) && parentId ? parsedJson[parentIndex][parentId].snils: parsedJson.snils;
     }
 
-    const isPresetParsable = UtilsService.hasJsonStructure(preset);
-    const isCachedValueParsable = UtilsService.hasJsonStructure(cachedValue);
+    const isPresetParsable = this.jsonHelperService.hasJsonStructure(preset);
+    const isCachedValueParsable = this.jsonHelperService.hasJsonStructure(cachedValue);
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
@@ -164,7 +166,7 @@ export class PrepareComponentsService {
     const cachedValue = JSON.parse(
       this.cachedAnswersService.getCachedValueById(cachedAnswers, id) || '{}',
     );
-    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
+    const value = get(cachedValue, path, item.value);
 
     return typeof value === 'object'
       ? { ...item, value: JSON.stringify(value) }
@@ -226,8 +228,8 @@ export class PrepareComponentsService {
     const { path, id } = this.getPathFromPreset(preset);
     const cache = cachedAnswers[id].value;
 
-    if (UtilsService.hasJsonStructure(cache)) {
-      const date: string = UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+    if (this.jsonHelperService.hasJsonStructure(cache)) {
+      const date: string = get({ value: JSON.parse(cache) }, path, '');
       if (this.isShortTimeFormat(date)) {
         return date;
       } else {
@@ -244,7 +246,7 @@ export class PrepareComponentsService {
     }
   }
 
-  private getPresetsFromRawPresets(preset: string): Array<string> {
+  private getPresetsFromRawPresets(preset: string): string[] {
     return preset.split('||').map((ref) => ref.trim());
   }
 
@@ -317,11 +319,11 @@ export class PrepareComponentsService {
           const { path, id } = this.getPathFromPreset(preset);
           const cache = cachedAnswers[id].value;
 
-          if (!UtilsService.hasJsonStructure(cache)) {
+          if (!this.jsonHelperService.hasJsonStructure(cache)) {
             return attrsWithFilter;
           }
 
-          const value: string = UtilsService.getObjectProperty(
+          const value: string = get(
             { value: JSON.parse(cache) },
             path,
             '',
@@ -358,9 +360,9 @@ export class PrepareComponentsService {
   }
 
   private handleRelatedRelComponents(
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
-  ): Array<ScreenStoreComponentDtoI> {
+  ): ScreenStoreComponentDtoI[] {
     return components.map((component) => {
       const ref = component.attrs?.ref;
       if (ref && Array.isArray(ref)) {
@@ -378,7 +380,7 @@ export class PrepareComponentsService {
   private handleCustomComponentRef(
     component: ComponentDto,
     refs: CustomComponentRef[],
-    components: Array<ComponentDto>,
+    components: ComponentDto[],
     cachedAnswers: CachedAnswers,
   ): ScreenStoreComponentDtoI {
     refs.forEach((ref) => {

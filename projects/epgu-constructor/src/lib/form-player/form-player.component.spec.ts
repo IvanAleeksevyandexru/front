@@ -2,7 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub, MainContainerModule, TracingServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  JsonHelperService,
+  LoadServiceStub,
+  MainContainerModule,
+  TracingServiceStub,
+  TypeHelperService
+} from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
@@ -100,6 +106,7 @@ describe('FormPlayerComponent', () => {
         EventBusService,
         ModalService,
         UtilsService,
+        TypeHelperService,
         DatesToolsService,
         CurrentAnswersService,
         WINDOW_PROVIDERS,
@@ -121,6 +128,7 @@ describe('FormPlayerComponent', () => {
         SessionService,
         TerraByteApiService,
         AnimationBuilder,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

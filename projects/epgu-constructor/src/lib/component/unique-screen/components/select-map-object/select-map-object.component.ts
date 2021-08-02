@@ -10,7 +10,7 @@ import {
 import { YaMapService } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { isEqual as _isEqual } from 'lodash';
+import { get, isEqual as _isEqual } from 'lodash';
 import {
   ActionType,
   ApplicantAnswersDto,
@@ -25,11 +25,11 @@ import {
   DeviceDetectorService,
   UnsubscribeService,
   ConfigService,
-  UtilsService,
   AddressesToolsService,
   YMapItem,
   IGeoCoordsResponse,
   YandexMapService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../../screen/screen.service';
@@ -70,7 +70,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   data: ComponentBase;
   applicantAnswers: ApplicantAnswersDto;
   public mappedDictionaryForLookup;
-  public mapCenter: Array<number>;
+  public mapCenter: number[];
   public mapControls = [];
   public selectedValue;
   public showMap = false;
@@ -113,6 +113,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
     private addressesToolsService: AddressesToolsService,
+    private jsonHelperService: JsonHelperService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -130,7 +131,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenButton>) => {
+      .subscribe((buttons: ScreenButton[]) => {
         this.screenActionButtons = buttons || [];
         this.cdr.markForCheck();
       });
@@ -149,7 +150,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   public selectObject(item: YMapItem<DictionaryItem>): void {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
+      this.availablePaymentInGIBDD(item.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => this.nextStep(item));
       return;
@@ -184,7 +185,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initSelectedValue(): void {
     if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
-      const mapObject = UtilsService.tryToParse(this.data?.value) as YMapItem<DictionaryItem>;
+      const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
+        DictionaryItem
+      >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
         this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
@@ -207,10 +210,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
   private getSelectedValue(): { [key: string]: string } {
-    const selectedValue = UtilsService.getObjectProperty(
+    const selectedValue = (get(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,
-    );
+    ) as unknown) as string;
     return JSON.parse(selectedValue);
   }
 
@@ -347,7 +350,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
   private fillCoords(
-    dictionaryFilters: Array<ComponentDictionaryFilterDto>,
+    dictionaryFilters: ComponentDictionaryFilterDto[],
   ): Observable<IFillCoordsResponse> {
     let options;
     try {
@@ -395,7 +398,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Подготовка тела POST запроса dictionary
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private getOptions(dictionaryFilters: Array<ComponentDictionaryFilterDto>): DictionaryOptions {
+  private getOptions(dictionaryFilters: ComponentDictionaryFilterDto[]): DictionaryOptions {
     return {
       ...this.dictionaryToolsService.getFilterOptions(
         this.componentPresetValue,
@@ -549,9 +552,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private applyRegionFilters(
-    items: Array<DictionaryYMapItem>,
-    mvdFilters: Array<IMvdFilter>,
-  ): Array<DictionaryYMapItem> {
+    items: DictionaryYMapItem[],
+    mvdFilters: IMvdFilter[],
+  ): DictionaryYMapItem[] {
     const filteredMvdFilters = mvdFilters.filter((mvdFilter) =>
       mvdFilter.fiasList.some((fias) =>
         ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),

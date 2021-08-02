@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UtilsService } from './utils.service';
 import { configureTestSuite } from 'ng-bullet';
+import { TypeHelperService } from '../type-helper/type-helper.service';
 
 describe('UtilsService', () => {
   let service: UtilsService;
@@ -9,39 +10,14 @@ describe('UtilsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        UtilsService
+        UtilsService,
+        TypeHelperService,
       ]
     });
   });
 
   beforeEach(() => {
     service = TestBed.inject(UtilsService);
-  });
-
-  describe('getObjectProperty()', () => {
-    it('should return object property', () => {
-      expect(UtilsService.getObjectProperty({ a: { b: { c: 3 }}}, 'a.b.c'))
-        .toBe(3);
-    });
-
-    it('should return undefined if there is no object property and default value is not determined', () => {
-      expect(UtilsService.getObjectProperty({ a: { b: {}}}, 'a.b.c', undefined))
-        .toBe(undefined);
-    });
-
-    it('should return default value if there is no object property', () => {
-      expect(UtilsService.getObjectProperty({ a: { b: {}}}, 'a.b.c', 0))
-        .toBe(0);
-    });
-
-  });
-
-  describe('getDictKeyByComp()', () => {
-    it('should return dictionary key by component', () => {
-      expect(UtilsService.getDictKeyByComp(
-        { attrs: { dictionaryType: 'testType' }, id: 1 } as any))
-        .toBe('testType1');
-    });
   });
 
   describe('htmlToText()', () => {
@@ -94,20 +70,7 @@ describe('UtilsService', () => {
     });
   });
 
-  describe('cyrillicToLatin()', () => {
-    it('should return undefined if there is no input word', () => {
-      expect(service.cyrillicToLatin(undefined)).toBe(undefined);
-      expect(service.cyrillicToLatin(null)).toBe(undefined);
-    });
 
-    it('should return latin from cyrillic', () => {
-      expect(service.cyrillicToLatin('латин')).toBe('latin');
-    });
-
-    it('should return latin from cyrillic uppercase', () => {
-      expect(service.cyrillicToLatin('ЛАтиН')).toBe('LAtiN');
-    });
-  });
 
   describe('getServiceName()', () => {
     it('should return service name', () => {
@@ -130,18 +93,6 @@ describe('UtilsService', () => {
     });
   });
 
-  describe('isDefined()', () => {
-    it('should return true', () => {
-      expect(service.isDefined({})).toBe(true);
-      expect(service.isDefined([])).toBe(true);
-      expect(service.isDefined('defined string')).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(service.isDefined(null)).toBe(false);
-      expect(service.isDefined(undefined)).toBe(false);
-    });
-  });
 
   describe('filterIncorrectObjectFields()', () => {
     it('should return object with all fields are defined', () => {
@@ -159,16 +110,4 @@ describe('UtilsService', () => {
       expect(service.filterIncorrectObjectFields({})).toEqual({});
     });
   });
-
-  describe('hasJsonStructure()', () => {
-    it('should return true', () => {
-      expect(UtilsService.hasJsonStructure('{"property": true}')).toBe(true);
-      expect(UtilsService.hasJsonStructure('[1,2,3]')).toBe(true);
-    });
-
-    it('should return false', () => {
-      expect(UtilsService.hasJsonStructure(null)).toBe(false);
-    });
-  });
-
 });

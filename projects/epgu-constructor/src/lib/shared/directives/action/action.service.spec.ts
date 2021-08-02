@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -221,6 +221,7 @@ describe('ActionService', () => {
         HttpHandler,
         EventBusService,
         EaisdoGroupCostService,
+        JsonHelperService,
       ],
     });
   });

@@ -30,6 +30,7 @@ import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.servi
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from '../../services/tracing/tracing.token';
+import { TypeHelperService } from '../../services/type-helper/type-helper.service';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -75,8 +76,8 @@ describe('TracingHttpInterceptor', () => {
         PrepareComponentsService,
         CachedAnswersService,
         UtilsService,
+        TypeHelperService,
         DatesToolsService,
-        DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,

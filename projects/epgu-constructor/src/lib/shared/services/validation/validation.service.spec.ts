@@ -277,20 +277,23 @@ describe('ValidationService', () => {
     const checkNumber = (number: any) => service.checkCardNumber(number);
 
     it('should return true', () => {
-      expect(checkNumber('5469 3800 2401 6155')).toBeTruthy();
-      expect(checkNumber('5469380024016155')).toBeTruthy();
-      expect(checkNumber('5469-3800-2401-6155')).toBeTruthy();
+      expect(checkNumber('3562990024016152')).toBeTruthy();
+      expect(checkNumber('3562 9900 2401 6152')).toBeTruthy();
+      expect(checkNumber('3562 99002401 6152')).toBeTruthy();
+      expect(checkNumber('35629900 24016152')).toBeTruthy();
 
-      expect(checkNumber('5213 2439 2469 4266')).toBeTruthy();
-      expect(checkNumber('5213 & 2439 ololo2469 ololo4266')).toBeTruthy();
-      expect(checkNumber('5213 2439 2469 4464')).toBeTruthy();
+      expect(checkNumber('6291 5700 1247 5287482')).toBeTruthy();
+      expect(checkNumber('6291 5700 1247 528438')).toBeTruthy();
+      expect(checkNumber('6291 5700 1247 52832')).toBeTruthy();
       expect(checkNumber('2200 3307 9345 4721 809')).toBeTruthy();
       expect(checkNumber('2200 3307 1335 4721 6')).toBeTruthy();
     });
 
     it('should return false', () => {
       expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
-      expect(checkNumber('5469 3800 2401')).toBeTruthy();
+      expect(checkNumber('5469 3800 2401')).toBeFalsy();
+      expect(checkNumber('5469 3800 2401 6155')).toBeFalsy();
+      expect(checkNumber('2205 3307 9345 4730809')).toBeFalsy();
     });
   });
 });

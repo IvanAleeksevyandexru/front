@@ -8,7 +8,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService, LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ComponentAttrsDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
@@ -58,6 +58,7 @@ describe('DateTimePeriodContainerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
+        JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();
@@ -138,11 +139,11 @@ describe('DateTimePeriodContainerComponent', () => {
 
     it('screenButtons should be screenService.buttons', () => {
       const buttons = [
-        { 
+        {
           label: 'button1',
           action: DTOActionAction.getNextStep
         },
-        { 
+        {
           label: 'button2',
           action: DTOActionAction.skipStep
         }
@@ -156,7 +157,7 @@ describe('DateTimePeriodContainerComponent', () => {
     it('showNav should be screenService.showNav', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl.componentInstance.showNav).toBeFalsy();
-      
+
       screenService.showNav = true;
       fixture.detectChanges();
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -181,7 +182,7 @@ describe('DateTimePeriodContainerComponent', () => {
     it('should be rendered if initialState', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeNull();
-      
+
       defineInitialState(attrsSample, mockData);
       fixture.detectChanges();
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -194,7 +195,7 @@ describe('DateTimePeriodContainerComponent', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl.componentInstance.attrs).toEqual(attrsSample);
     });
-    
+
     it('step should be screenService.component.attrs.step', () => {
       const attrs = {
         ...attrsSample,
@@ -219,7 +220,7 @@ describe('DateTimePeriodContainerComponent', () => {
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css(selector));
       debugEl.triggerEventHandler('updateState', mockData);
-      
+
       expect(component.currentAnswersService.state).toBe(JSON.stringify(mockData));
     });
 
