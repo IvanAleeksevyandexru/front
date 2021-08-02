@@ -23,7 +23,7 @@ export class YandexMapService implements OnDestroy {
   public mapOptions;
 
   private objectManager;
-  private activePlacemarkId: number;
+  private activePlacemarkId: number | string;
   private MIN_ZOOM = 4;
   private DEFAULT_ZOOM = 9;
 
@@ -118,18 +118,17 @@ export class YandexMapService implements OnDestroy {
           this.objectManager.objects.setObjectOptions(feature.id, {
             iconImageHref: this.icons.red.iconImageHref,
           });
-        const object =
-          feature.type === IFeatureTypes.Feature
-            ? [(feature as IFeatureItem<T>).properties.res]
-            : (feature as IClusterItem<T>).properties.geoObjects.map(
-                (object) => object.properties.res,
-              );
-        if (object.length === 1) {
-          object[0]['expanded'] = true;
-        }
-        this.selectedValue$.next(object);
       });
     }
+
+    const object =
+      feature.type === IFeatureTypes.Feature
+        ? [(feature as IFeatureItem<T>).properties.res]
+        : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
+    if (object.length === 1) {
+      object[0]['expanded'] = true;
+    }
+    this.selectedValue$.next(object);
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
@@ -148,6 +147,9 @@ export class YandexMapService implements OnDestroy {
   }
 
   public closeBalloon(): void {
+    this.selectedValue$.getValue()?.forEach((element) => {
+      element.expanded = false;
+    });
     this.selectedValue$.next(null);
     this.objectManager.objects.setObjectOptions(this.activePlacemarkId, {
       iconImageHref: this.icons.blue.iconImageHref,
