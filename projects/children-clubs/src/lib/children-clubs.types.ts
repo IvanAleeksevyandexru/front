@@ -26,6 +26,8 @@ export interface ValueProgram {
   regionName: string;
   typeOfBudget: string;
   partnerPhone: string;
+  pfdodRulesLink: string;
+  site: string;
 }
 
 export interface ValueGroup {
