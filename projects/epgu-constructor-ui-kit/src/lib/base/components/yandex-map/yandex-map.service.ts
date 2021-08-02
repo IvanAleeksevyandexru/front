@@ -161,9 +161,10 @@ export class YandexMapService implements OnDestroy {
   public setMapOptions(isMobile: boolean, options?): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.ymaps = (window as any).ymaps;
+    const mobileTop = (Number.parseInt(this.yaMapService.map.container.getElement().style.height))/3;
     this.yaMapService.map.controls.add('zoomControl', {
       position: {
-        top: isMobile ? 240 : 108,
+        top: isMobile ? mobileTop : 108,
         right: 10,
         bottom: 'auto',
         left: 'auto',

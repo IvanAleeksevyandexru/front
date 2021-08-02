@@ -209,16 +209,20 @@
     }
 
     .map-objects-list {
+      height: auto;
       left: 0;
       top: initial;
       width: 100%;
       bottom: 0;
-      max-height: calc(100vh - 250px);
       overflow-y: hidden;
       position: fixed;
 
       &.fixed-height {
         height: 400px;
+      }
+
+      .perfect-scrollbar {
+        max-height: calc(100vh - 250px);
       }
     }
 
