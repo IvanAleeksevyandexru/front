@@ -3,7 +3,7 @@ import { ListItem } from '@epgu/epgu-lib';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -29,6 +29,7 @@ import {
   DictionaryOptions,
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 type attributesMapType = { name: string; value: string }[];
 

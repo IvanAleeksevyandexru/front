@@ -1,6 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { DatesToolsService, JsonHelperService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -16,6 +16,7 @@ import { PrepareComponentsService } from '../prepare-components/prepare-componen
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { UniquenessErrorsService } from './uniqueness-errors.service';
 import { MockProvider } from 'ng-mocks';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('UniquenessErrorsService', () => {
   let service: UniquenessErrorsService;
@@ -40,7 +41,7 @@ describe('UniquenessErrorsService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         JsonHelperService,
       ],
     });

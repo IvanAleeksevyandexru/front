@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import {
   ConfigService,
-  JsonHelperService,
   SessionStorageService,
   SessionStorageServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
@@ -40,6 +39,7 @@ import {
   ComponentDto,
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-action-test',

@@ -16,7 +16,6 @@ import {
   FocusManagerService,
   FocusManagerServiceStub,
   CoreUiModule,
-  HtmlSelectService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ComponentItemComponent } from './component-item.component';
@@ -32,6 +31,7 @@ import { ActionServiceStub } from '../../../../shared/directives/action/action.s
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HintComponent } from '../../../../shared/components/base-components/hint/hint.component';
 import { OPTIONAL_FIELD } from '@epgu/epgu-constructor-ui-kit';
+import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;

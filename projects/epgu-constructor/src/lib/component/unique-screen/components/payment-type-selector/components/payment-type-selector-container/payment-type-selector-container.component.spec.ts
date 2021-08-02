@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { CoreModule } from '../../../../../../core/core.module';
-import { CoreUiModule, HtmlSelectService, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -30,6 +30,7 @@ import { FormPlayerService } from '../../../../../../form-player/services/form-p
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { MockModule } from 'ng-mocks';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('PaymentTypeSelectorContainerComponent', () => {
   let component: PaymentTypeSelectorContainerComponent;

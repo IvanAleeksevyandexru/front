@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EpguLibModule } from '@epgu/epgu-lib';
@@ -75,7 +75,7 @@ describe('DocInputComponent', () => {
         DatesToolsService,
         ValidationService,
         DateRangeService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
         EventBusService,

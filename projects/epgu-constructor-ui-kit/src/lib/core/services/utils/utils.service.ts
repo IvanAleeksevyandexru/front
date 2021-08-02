@@ -6,11 +6,6 @@ import { TypeHelperService } from '../type-helper/type-helper.service';
 export class UtilsService {
   constructor (private typeHelperService: TypeHelperService) {}
 
-  static extractDateRef(refDate: string): string[] {
-    const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
-    return [ref, refDate.replace(ref, '')];
-  }
-
   public static htmlToText(html: string): string {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');

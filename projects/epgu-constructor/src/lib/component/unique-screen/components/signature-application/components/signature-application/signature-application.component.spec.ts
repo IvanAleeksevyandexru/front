@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
-import { ConfigService, HtmlSelectService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -30,6 +30,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

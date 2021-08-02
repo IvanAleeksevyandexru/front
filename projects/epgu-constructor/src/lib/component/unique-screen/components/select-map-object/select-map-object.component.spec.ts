@@ -16,7 +16,7 @@ import {
   Icons,
   mockSelectMapObjectStore,
   IGeoCoordsResponse,
-  AddressesToolsService, JsonHelperService,
+  AddressesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
@@ -51,9 +51,11 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { SearchPanelResolverComponent } from './components/search-panel-resolver/search-panel-resolver.component';
 import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -80,9 +82,10 @@ describe('SelectMapObjectComponent', () => {
         AutocompleteApiService,
         RefRelationService,
         PrepareComponentsService,
+        DateRefService,
         CachedAnswersService,
         ScreenService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         AddressesToolsService,
         JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },

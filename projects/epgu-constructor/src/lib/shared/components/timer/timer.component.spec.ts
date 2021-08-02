@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { CoreModule } from '../../../core/core.module';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -43,7 +43,7 @@ describe('TimerComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         CachedAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         EventBusService,
         DatesToolsService,
         DictionaryToolsService,
@@ -51,7 +51,7 @@ describe('TimerComponent', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService
+        MockProvider(DateRestrictionsService)
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule), MockModule(CoreUiModule)],
     }).compileComponents();

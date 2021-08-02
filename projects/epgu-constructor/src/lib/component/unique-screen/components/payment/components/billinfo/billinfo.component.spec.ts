@@ -5,7 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import {
-  ConfigService, JsonHelperService,
+  ConfigService,
   SessionService,
   SessionStorageService,
   SessionStorageServiceStub,
@@ -35,6 +35,7 @@ import { FormPlayerServiceStub } from '../../../../../../form-player/services/fo
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 
 const mockData: ComponentDto = {
   attrs: {},

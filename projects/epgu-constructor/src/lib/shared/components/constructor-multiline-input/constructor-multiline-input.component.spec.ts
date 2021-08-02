@@ -27,6 +27,7 @@ import { ConstructorMultilineInputComponent } from './constructor-multiline-inpu
 import { By } from '@angular/platform-browser';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ConstructorMultilineInputComponent', () => {
   let component: ConstructorMultilineInputComponent;
@@ -52,7 +53,7 @@ describe('ConstructorMultilineInputComponent', () => {
         ValidationService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         WordTransformService,
         TypeHelperService,
       ],

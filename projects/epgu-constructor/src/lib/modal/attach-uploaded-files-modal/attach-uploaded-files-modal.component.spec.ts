@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceDetectorServiceStub, JsonHelperService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -21,6 +21,7 @@ import { FileItem, FileItemStatus } from '../../shared/components/file-upload/da
 import { configureTestSuite } from 'ng-bullet';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
+import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;

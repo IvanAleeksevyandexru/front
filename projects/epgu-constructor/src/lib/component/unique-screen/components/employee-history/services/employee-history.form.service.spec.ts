@@ -23,6 +23,7 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;
@@ -41,7 +42,7 @@ describe('EmployeeHistoryFormService', () => {
         ScreenService,
         CurrentAnswersService,
         DeviceDetectorService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         DictionaryToolsService,
         DictionaryApiService,

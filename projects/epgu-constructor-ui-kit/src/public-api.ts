@@ -127,16 +127,10 @@ export * from './lib/core/services/config-api/config-api.service';
 export * from './lib/core/services/config-api/config-api.service.stub';
 export * from './lib/core/services/health/health.service';
 export * from './lib/core/services/health/activated-route.stub';
-export * from './lib/core/services/html-select/html-select.service';
-export * from './lib/core/services/html-select/html-select.service.stub';
-export * from './lib/core/services/type-cast/type-cast.service';
-export * from './lib/core/services/type-cast/type-cast.service.stub';
 export * from './lib/core/services/type-helper/type-helper.service';
 export * from './lib/core/services/type-helper/type-helper.service.stub';
 export * from './lib/core/services/word-transform/word-transform.service';
 export * from './lib/core/services/word-transform/word-transform.service.stub';
-export * from './lib/core/services/json-helper/json-helper.service';
-export * from './lib/core/services/json-helper/json-helper.service.stub';
 
 export * from './lib/core/services/tracing/tracing.service';
 export * from './lib/core/services/tracing/tracing.service.stub';

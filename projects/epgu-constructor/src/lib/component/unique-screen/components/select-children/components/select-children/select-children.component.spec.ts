@@ -13,7 +13,6 @@ import {
   UnsubscribeService,
   HealthService,
   EventBusService,
-  HtmlSelectService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -37,6 +36,7 @@ import { RefRelationService } from '../../../../../../shared/services/ref-relati
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { configureTestSuite } from 'ng-bullet';
 import { MockModule } from 'ng-mocks';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -124,7 +124,7 @@ describe('SelectChildrenComponent', () => {
 
         jest.spyOn(component, 'addMoreChild');
         jest.spyOn(component, 'handleSelect');
-  
+
         component.ngOnInit();
 
         expect(component.addMoreChild).toBeCalledWith(component.itemsToSelect[0]);
@@ -144,12 +144,12 @@ describe('SelectChildrenComponent', () => {
           type: 'ChildrenList',
           value: '',
         };
-  
+
         jest.spyOn(component, 'addMoreChild');
         jest.spyOn(component, 'handleSelect');
-  
+
         component.ngOnInit();
-  
+
         expect(component.addMoreChild).toBeCalledWith(component.itemsToSelect[0]);
         expect(component.handleSelect).toBeCalledWith(component.itemsToSelect[0], 0);
       });

@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MockComponents, MockPipe } from 'ng-mocks';
+import { MockComponents, MockPipe, MockProvider } from 'ng-mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
@@ -19,7 +19,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   LocalStorageService,
-  LocalStorageServiceStub, HttpCancelService, TypeHelperService, JsonHelperService,
+  LocalStorageServiceStub, HttpCancelService, TypeHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
@@ -54,6 +54,7 @@ import { SuggestHandlerService } from '../../shared/services/suggest-handler/sug
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
 import { SuggestMonitorService } from '../../shared/services/suggest-monitor/suggest-monitor.service';
+import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -102,7 +103,7 @@ describe('ComponentsListComponent', () => {
         DatesToolsService,
         AddressHelperService,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         UtilsService,
         TypeHelperService,
@@ -112,7 +113,7 @@ describe('ComponentsListComponent', () => {
         UnsubscribeService,
         RefRelationService,
         SuggestHandlerService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         SuggestMonitorService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
