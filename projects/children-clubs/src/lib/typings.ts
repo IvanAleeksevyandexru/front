@@ -66,6 +66,8 @@ export interface Program extends BaseProgram {
   datasource: string;
   region: Region;
   municipal: Municipality;
+  pfdodRulesLink: string;
+  site: string;
 }
 
 export enum FinancialSourceType {
