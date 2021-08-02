@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import {
   DeviceDetectorService, ERROR_HANDLER_ORDER_PARAMS_SERVICES, ERROR_HANDLER_SERVICE,
-  HEALTH_SERVICE,
+  HEALTH_SERVICE, HtmlSelectService, JsonHelperService,
   PREV_BUTTON_NAVIGATION,
-  TRACE_ALLOWED_REMOTE_SERVICES
+  TRACE_ALLOWED_REMOTE_SERVICES, TypeCastService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
@@ -21,6 +21,7 @@ import { FormPlayerNavigation } from '../form-player/form-player.types';
 import {
   ErrorHandlerOrderParamsServiceService
 } from './services/error-handler-order-params-service/error-handler-order-params-service.service';
+import { DateRefService } from './services/date-ref/date-ref.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -36,6 +37,10 @@ import {
     TerraByteApiService,
     ErrorHandlerService,
     HealthHandlerService,
+    DateRefService,
+    TypeCastService,
+    HtmlSelectService,
+    JsonHelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpHeadersInterceptor,

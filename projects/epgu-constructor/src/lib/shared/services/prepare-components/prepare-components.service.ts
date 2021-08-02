@@ -14,6 +14,7 @@ import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { get } from 'lodash';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -23,6 +24,7 @@ export class PrepareComponentsService {
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
     private jsonHelperService: JsonHelperService,
+    private dateRefService: DateRefService,
   ) {}
 
   public prepareComponents(
@@ -288,19 +290,14 @@ export class PrepareComponentsService {
     return component;
   }
 
-  private extractDateRef(refDate: string): string[] {
-    const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
-    return [ref, refDate.replace(ref, '')];
-  }
-
   private setAttrsDateRef(attrs: ComponentAttrsDto, cachedAnswers: CachedAnswers): void {
     if (attrs.minDateRef) {
-      const extract = this.extractDateRef(attrs.minDateRef);
+      const extract = this.dateRefService.extract(attrs.minDateRef);
 
       attrs.minDate = this.getLimitDate(cachedAnswers, extract[0]) + extract[1];
     }
     if (attrs.maxDateRef) {
-      const extract = this.extractDateRef(attrs.maxDateRef);
+      const extract = this.dateRefService.extract(attrs.maxDateRef);
       attrs.maxDate = this.getLimitDate(cachedAnswers, extract[0]) + extract[1];
     }
   }

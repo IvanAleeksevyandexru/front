@@ -25,6 +25,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -50,6 +51,7 @@ describe('PrepareComponentsService', () => {
         RefRelationService,
         DateRestrictionsService,
         JsonHelperService,
+        DateRefService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       imports: [HttpClientTestingModule],
