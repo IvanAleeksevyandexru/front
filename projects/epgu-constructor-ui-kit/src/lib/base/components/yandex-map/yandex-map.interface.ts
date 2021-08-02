@@ -16,7 +16,7 @@ export interface IFeatureItem<T> {
     coordinates: [number | null, number | null];
   };
   properties?: {
-    res?: IYMapPoint<T>;
+    res?: T;
   };
 }
 
@@ -34,6 +34,7 @@ export interface IFeatureCollection<T> {
 
 export type YMapItem<T> = T & {
   expanded?: boolean;
+  objectId?: number;
 };
 
 export class ObjectManager {

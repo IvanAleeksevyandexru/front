@@ -12,6 +12,7 @@ import {
   IFeatureItem,
   IYMapPoint,
   ObjectManager,
+  YMapItem,
 } from './yandex-map.interface';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
@@ -54,7 +55,7 @@ export class YandexMapService implements OnDestroy {
   public prepareFeatureCollection<T>(items: IYMapPoint<T>[]): IFeatureCollection<T> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item, index) => {
-      if (item.center) {
+      if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
           id: index,
@@ -188,6 +189,21 @@ export class YandexMapService implements OnDestroy {
           }
         });
     }
+  }
+
+  public selectMapObject<T>(mapObject: YMapItem<T>): void {
+    if (!mapObject) return;
+    let chosenMapObject = this.getObjectById(mapObject.objectId);
+    if (!chosenMapObject) {
+      chosenMapObject = {
+        geometry: { type: 'Point', coordinates: [null, null] },
+        id: 1,
+        properties: { res: mapObject },
+        type: IFeatureTypes.Feature,
+      };
+      this.centerAllPoints();
+    }
+    this.centeredPlaceMark(chosenMapObject);
   }
 
   private createMapsObjectManager(OMSettings, urlTemplate: string, LOMSettings): ObjectManager {

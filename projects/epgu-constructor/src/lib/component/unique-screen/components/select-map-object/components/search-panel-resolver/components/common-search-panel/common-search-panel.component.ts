@@ -12,7 +12,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { LookupProvider, ListElement } from '@epgu/epgu-lib';
 import { Observable, of } from 'rxjs';
-import { DictionaryItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 
@@ -43,17 +43,15 @@ export class CommonSearchPanelComponent implements AfterViewInit {
   }
 
   public lookupChanged(
-    mapObject: YMapItem<DictionaryItem>,
+    mapObject: YMapItem<DictionaryYMapItem>,
     lookup: ConstructorLookupComponent,
   ): void {
     this.selectMapObject(mapObject);
     lookup.clearInput();
   }
 
-  private selectMapObject(mapObject: YMapItem<DictionaryItem>): void {
-    if (!mapObject) return;
-    const chosenMapObject = this.yandexMapService.getObjectById(mapObject.objectId);
-    this.yandexMapService.centeredPlaceMark(chosenMapObject);
+  private selectMapObject(mapObject: YMapItem<DictionaryYMapItem>): void {
+    this.yandexMapService.selectMapObject(mapObject);
   }
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
