@@ -13,8 +13,11 @@
     </div>
 
     <div class="mb-16">
-      <h5 class="referrals-specialist mb-4">{{ medicalReferral.toSpecsName }}</h5>
-
+      <h5 class="referrals-specialist mb-4" *ngIf="medicalReferral.toSpecsName">{{ medicalReferral.toSpecsName }}</h5>
+      <div class="mb-4 referrals-service" *ngIf="medicalReferral.toServiceName">
+        <p class="referrals-service_plain"  *ngIf="medicalReferral.toSpecsName">Процедура: {{ medicalReferral.toServiceName}}</p>
+        <h5 class="referrals-service_heading" *ngIf="!medicalReferral.toSpecsName">{{ medicalReferral.toServiceName }}</h5>
+      </div>
       <epgu-constructor-output-html
         class="referrals-address"
         [html]="medicalReferral.toMoName"

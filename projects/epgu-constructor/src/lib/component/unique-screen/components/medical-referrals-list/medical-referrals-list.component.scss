@@ -10,6 +10,15 @@
   @include typ-h5();
 }
 
+.referrals-service {
+  &-heading {
+    @include typ-h5();
+  }
+  &-plain {
+    @include typ-plain-text;
+  }
+}
+
 .referrals-address {
   text-transform: capitalize;
   @include typ-plain-text;
