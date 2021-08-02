@@ -89,6 +89,7 @@ export interface Config {
   nsiSuggestDictionaryUrl?: string;
   lkuipElection?: string;
   appPathMap: AppPathMap;
+  wsIdentificationUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

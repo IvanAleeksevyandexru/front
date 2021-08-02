@@ -49,6 +49,7 @@ export class ConfigService implements Config {
   private _appPathMap: AppPathMap;
   private _lkuipElection: string;
   private _identificationApiUrl: string;
+  private _wsIdentificationUrl: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -226,6 +227,10 @@ export class ConfigService implements Config {
     return this._identificationApiUrl;
   }
 
+  get wsIdentificationUrl(): string {
+    return this._wsIdentificationUrl;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
@@ -256,6 +261,8 @@ export class ConfigService implements Config {
     this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
     this._identificationApiUrl =
       config.identificationApiUrl ?? `${this.loadService.config.identificationApiUrl}`;
+    this._wsIdentificationUrl =
+      config.wsIdentificationUrl ?? `${this.loadService.config.wsIdentificationUrl}`;
   }
 
   set config(config: Config) {
