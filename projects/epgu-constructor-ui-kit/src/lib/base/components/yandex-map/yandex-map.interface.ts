@@ -10,10 +10,10 @@ export enum IFeatureTypes {
 
 export interface IFeatureItem<T> {
   type: IFeatureTypes;
-  id: number;
+  id: number | string;
   geometry: {
     type: string;
-    coordinates: [number, number];
+    coordinates: [number | null, number | null];
   };
   properties?: {
     res?: IYMapPoint<T>;

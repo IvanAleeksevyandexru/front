@@ -56,6 +56,7 @@ export interface Program extends BaseProgram {
   teachers: string;
   maxPersons: number;
   programContent: string;
+  partnerPhone: string;
   goals: string;
   results: string;
   technicalBase: string;
