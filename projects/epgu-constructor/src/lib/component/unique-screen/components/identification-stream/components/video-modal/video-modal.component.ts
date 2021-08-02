@@ -52,6 +52,11 @@ export class VideoModalComponent extends ModalBaseComponent implements AfterView
         });
       }
       this.closeModal();
+      if (this.luna.video) {
+        this.luna.video.pause();
+        this.luna.video.srcObject = null;
+        this.luna.ws.close(0);
+      }
     } catch (e) {
       this.logger.error([e]);
     }
