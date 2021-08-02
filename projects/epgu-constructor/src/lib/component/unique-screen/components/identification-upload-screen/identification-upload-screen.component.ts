@@ -97,7 +97,7 @@ export class IdentificationUploadScreenComponent implements OnInit {
   }
 
   getRequest(file: UploadedFile): Observable<void> {
-    const faceId = this.screenService.component?.value;
+    const faceId = this.screenService.component?.arguments?.faceId as string;
 
     return faceId?.length > 0
       ? this.identification.selfieIdentification({ faceId, selfie: file }).pipe(
