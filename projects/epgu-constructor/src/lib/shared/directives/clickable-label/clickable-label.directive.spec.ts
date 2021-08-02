@@ -13,7 +13,7 @@ import {
   ModalService,
   ModalServiceStub,
   DeviceDetectorService,
-  DeviceDetectorServiceStub, HtmlSelectService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
 
@@ -22,6 +22,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../action/action.service';
 import { ActionServiceStub } from '../action/action.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 
 @Component({
   selector: 'epgu-constructor-label-test-component',

@@ -15,7 +15,6 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import {
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
@@ -24,6 +23,7 @@ import { CachedAnswers } from '../../../../screen/screen.types';
 import { ApplicantAnswersDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class ComponentsListRelationsService {

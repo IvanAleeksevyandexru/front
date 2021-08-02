@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
-  HtmlSelectService,
   ImgPrefixerPipe
 } from '@epgu/epgu-constructor-ui-kit';
 import { SafePipe, ConfigService, ConfigServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -17,6 +16,7 @@ import { ClickableLabelDirective } from '../../directives/clickable-label/clicka
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
+import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;

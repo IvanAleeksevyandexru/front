@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub, HtmlSelectService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -15,6 +15,7 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;

@@ -9,7 +9,7 @@ import { NavigationModalService } from '../../../../core/services/navigation-mod
 import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
-import { CoreUiModule, DatesToolsService, TypeCastService } from '@epgu/epgu-constructor-ui-kit';
+import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../component/custom-screen/components-list.module';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
@@ -24,6 +24,9 @@ import {
   LoggerServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -62,6 +65,8 @@ describe('ComponentListModalComponent', () => {
         DatesToolsService,
         DictionaryToolsService,
         RefRelationService,
+        DateRefService,
+        JsonHelperService,
         TypeCastService,
       ]
     })

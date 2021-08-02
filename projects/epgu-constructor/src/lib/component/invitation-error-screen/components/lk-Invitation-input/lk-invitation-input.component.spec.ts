@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
-import { MockComponents, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import {
   ScreenPadComponent,
@@ -90,7 +90,7 @@ xdescribe('LkInvitationInputComponent', () => {
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ModalService,
         InvitationErrorService,
       ],

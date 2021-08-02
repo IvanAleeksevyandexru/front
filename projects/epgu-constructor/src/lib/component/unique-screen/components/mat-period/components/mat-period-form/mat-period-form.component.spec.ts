@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { FormBuilder } from '@angular/forms';
 
 import { MatPeriodFormComponent } from './mat-period-form.component';
@@ -103,7 +103,7 @@ describe('MatPeriodFormComponent', () => {
         DatesToolsService,
         ValidationService,
         DateRangeService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         { provide: ScreenService, use: ScreenServiceStub },
         ConfigService,
         LoggerService,

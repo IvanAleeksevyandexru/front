@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponents, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { configureTestSuite } from 'ng-bullet';
 import {
@@ -72,7 +72,7 @@ describe('InvitationErrorComponent', () => {
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         InvitationErrorService,
         ModalService,
         { provide: NavigationService, useClass: NavigationServiceStub },

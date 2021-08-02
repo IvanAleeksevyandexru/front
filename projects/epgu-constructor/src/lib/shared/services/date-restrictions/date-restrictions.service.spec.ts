@@ -4,6 +4,7 @@ import { DateRestrictionsService } from './date-restrictions.service';
 import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 describe('DateRestrictionsService', () => {
   let service: DateRestrictionsService;
@@ -11,7 +12,13 @@ describe('DateRestrictionsService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [DateRestrictionsService, DatesToolsService, ConfigService, LoggerService],
+      providers: [
+        DateRestrictionsService,
+        DatesToolsService,
+        ConfigService,
+        LoggerService,
+        DateRefService,
+      ],
       imports: [HttpClientTestingModule],
     });
   });

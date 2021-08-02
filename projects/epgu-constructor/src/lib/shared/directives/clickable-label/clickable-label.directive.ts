@@ -4,7 +4,6 @@ import {
   ModalService,
   DeviceDetectorService,
   createOpenBrowserEvent,
-  HtmlSelectService
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
 
@@ -12,6 +11,7 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 

@@ -4,7 +4,7 @@ import { configureTestSuite } from 'ng-bullet';
 
 import { LogicService } from './logic.service';
 import {
-  DatesToolsService, JsonHelperService,
+  DatesToolsService,
   LocalStorageService,
   LocalStorageServiceStub,
   TypeHelperService,
@@ -24,6 +24,7 @@ import { ComponentsListFormServiceStub } from '../../custom-screen/services/comp
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('LogicService', () => {
   let service: LogicService;

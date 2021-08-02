@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
-import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -37,6 +37,7 @@ import { HookService } from '../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { tap } from 'rxjs/operators';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const mockComponent: ComponentDto = {
   attrs: {},

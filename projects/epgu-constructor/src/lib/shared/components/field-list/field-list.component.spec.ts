@@ -3,7 +3,6 @@ import { MockModule } from 'ng-mocks';
 import { FieldListComponent } from './field-list.component';
 import {
   ImgPrefixerPipe,
-  JsonHelperService,
   TypeHelperService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -15,6 +14,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;

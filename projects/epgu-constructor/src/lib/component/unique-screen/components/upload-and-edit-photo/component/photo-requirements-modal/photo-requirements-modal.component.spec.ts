@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub, HtmlSelectService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
@@ -19,6 +19,7 @@ import { uploadPhotoElemId } from '../../../../../../shared/components/upload-an
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;

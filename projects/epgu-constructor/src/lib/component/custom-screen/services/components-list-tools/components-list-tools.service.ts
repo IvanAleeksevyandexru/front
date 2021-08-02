@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { isUndefined } from 'lodash';
-import { TypeCastService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
   CustomScreenComponentValueTypes,
 } from '../../components-list.types';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 
 @Injectable()
 export class ComponentsListToolsService {

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ConfirmUserDataStyle, ComponentDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
-import { JsonHelperService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -21,6 +21,7 @@ import {
   ConfirmUserDataAdaptiveField,
 } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const defaultStyle: ConfirmUserDataStyle = {
   group: 'mb-16',

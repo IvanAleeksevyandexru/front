@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { JsonHelperService, ModalService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -31,6 +31,8 @@ import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -124,7 +126,7 @@ describe('AutocompleteService', () => {
         AutocompletePrepareService,
         HttpHandler,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         UtilsService,
         TypeHelperService,
@@ -137,7 +139,7 @@ describe('AutocompleteService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         TerraByteApiService,
         JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },

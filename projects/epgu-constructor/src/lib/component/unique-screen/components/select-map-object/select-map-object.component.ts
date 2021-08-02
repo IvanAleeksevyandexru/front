@@ -29,7 +29,6 @@ import {
   YMapItem,
   IGeoCoordsResponse,
   YandexMapService,
-  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../../screen/screen.service';
@@ -58,6 +57,7 @@ import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { PanelTypes } from './components/search-panel-resolver/search-panel-resolver.component';
 import { ContentTypes } from './components/balloon-content-resolver/balloon-content-resolver.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
