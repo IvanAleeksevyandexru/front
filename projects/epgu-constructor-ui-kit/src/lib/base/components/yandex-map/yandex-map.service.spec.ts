@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { features } from 'process';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
@@ -7,6 +8,7 @@ import { DeviceDetectorService } from '../../../core/services/device-detector/de
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Icons } from './constants';
+import { mockItemsWithEmptyCoords } from './mocks/mock-items';
 import { mockExpandedPoint, mockPointWithoutCoords } from './mocks/mock-points';
 import { IFeatureItem } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
@@ -58,5 +60,11 @@ describe('SelectMapObjectComponent', () => {
     yandexMapService.centeredPlaceMark(
       (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
     );
+  });
+
+  it('prepareFeatureCollection should ignore null coords', () => {
+    const result = yandexMapService.prepareFeatureCollection(mockItemsWithEmptyCoords);
+    const cnt = result.features.filter((feature) => feature.geometry.coordinates[0] && feature.geometry.coordinates[1]).length;
+    expect(result.features.length).toEqual(cnt);
   });
 });
