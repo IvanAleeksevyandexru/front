@@ -8,9 +8,10 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
-import { JsonHelperService, LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ComponentAttrsDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from 'projects/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
 
 describe('DateTimePeriodContainerComponent', () => {
   let component: DateTimePeriodContainerComponent;

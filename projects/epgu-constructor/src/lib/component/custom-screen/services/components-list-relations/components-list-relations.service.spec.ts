@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -31,6 +31,8 @@ import {
   DictionaryValueTypes,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -125,7 +127,7 @@ describe('ComponentsListRelationsService', () => {
         ConfigService,
         LoggerService,
         FormBuilder,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
       ],
     });
   });

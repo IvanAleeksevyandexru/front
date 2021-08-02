@@ -31,6 +31,7 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from '../../services/tracing/tracing.token';
 import { TypeHelperService } from '../../services/type-helper/type-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -73,7 +74,7 @@ describe('TracingHttpInterceptor', () => {
         ScreenService,
         CurrentAnswersService,
         DeviceDetectorService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         UtilsService,
         TypeHelperService,
@@ -84,9 +85,8 @@ describe('TracingHttpInterceptor', () => {
         RefRelationService,
         SessionService,
         UnsubscribeService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        DateRestrictionsService,
         {
           provide: TRACE_ALLOWED_REMOTE_SERVICES,
           useValue: [

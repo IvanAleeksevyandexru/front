@@ -15,7 +15,7 @@ import {
   SessionStorageService,
   ConfigService,
   EventBusService,
-  ModalService, JsonHelperService,
+  ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -42,6 +42,7 @@ import { ScreenStore } from '../../../screen/screen.types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',

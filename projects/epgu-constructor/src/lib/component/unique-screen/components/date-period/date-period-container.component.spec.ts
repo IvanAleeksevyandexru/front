@@ -10,12 +10,13 @@ import { CachedAnswersService } from '../../../../shared/services/cached-answers
 import {
   ConfigService,
   ConfigServiceStub, DATE_STRING_DASH_FORMAT,
-  DatesToolsService, JsonHelperService,
+  DatesToolsService,
   LocalStorageService,
   LocalStorageServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatePeriodComponent } from './date-period/date-period.component';
 import { parseISO } from 'date-fns';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('DatePeriodContainerComponent', () => {
   let component: DatePeriodContainerComponent;

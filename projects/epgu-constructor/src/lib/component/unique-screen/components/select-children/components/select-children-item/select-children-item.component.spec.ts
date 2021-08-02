@@ -10,7 +10,7 @@ import {
   HttpCancelService,
   LoggerService,
   LoggerServiceStub,
-  HealthService, TypeCastService,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -28,6 +28,9 @@ import { RefRelationService } from '../../../../../../shared/services/ref-relati
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { configureTestSuite } from 'ng-bullet';
 import { MockModule } from 'ng-mocks';
+import { TypeCastService } from '../../../../../../core/services/type-cast/type-cast.service';
+import { DateRefService } from '../../../../../../core/services/date-ref/date-ref.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
@@ -87,6 +90,8 @@ describe('SelectChildrenItemComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
         UnsubscribeService,
+        DateRefService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },

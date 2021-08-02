@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
@@ -25,6 +25,7 @@ import {
   TimeSlotDoctorState,
   TimeSlotValueInterface
 } from './time-slot-doctors.interface';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 type attributesMapType = { name: string; value: string }[];
 

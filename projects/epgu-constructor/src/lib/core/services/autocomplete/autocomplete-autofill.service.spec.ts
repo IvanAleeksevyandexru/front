@@ -10,7 +10,7 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
@@ -19,6 +19,8 @@ import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('AutocompleteAutofillService', () => {
   let service: AutocompleteAutofillService;
@@ -50,7 +52,7 @@ describe('AutocompleteAutofillService', () => {
         DeviceDetectorService,
         HttpClient,
         HttpHandler,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         DatesToolsService,
         DictionaryToolsService,
@@ -60,7 +62,7 @@ describe('AutocompleteAutofillService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],

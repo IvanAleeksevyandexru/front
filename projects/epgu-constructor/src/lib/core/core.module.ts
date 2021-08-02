@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import {
   DeviceDetectorService, ERROR_HANDLER_ORDER_PARAMS_SERVICES, ERROR_HANDLER_SERVICE,
-  HEALTH_SERVICE, HtmlSelectService, JsonHelperService,
+  HEALTH_SERVICE,
   PREV_BUTTON_NAVIGATION,
-  TRACE_ALLOWED_REMOTE_SERVICES, TypeCastService
+  TRACE_ALLOWED_REMOTE_SERVICES
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
@@ -22,6 +22,9 @@ import {
   ErrorHandlerOrderParamsServiceService
 } from './services/error-handler-order-params-service/error-handler-order-params-service.service';
 import { DateRefService } from './services/date-ref/date-ref.service';
+import { TypeCastService } from './services/type-cast/type-cast.service';
+import { HtmlSelectService } from './services/html-select/html-select.service';
+import { JsonHelperService } from './services/json-helper/json-helper.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.

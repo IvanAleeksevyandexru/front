@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ScreenModalComponent } from './screen-modal.component';
 import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -67,7 +67,7 @@ describe('ScreenModalComponent', () => {
         DatesToolsService,
         HtmlRemoverService,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         UnsubscribeService,
         WordTransformService,

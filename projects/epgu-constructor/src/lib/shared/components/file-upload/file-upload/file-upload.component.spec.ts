@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { EventBusService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 
@@ -19,6 +19,7 @@ import { AutocompletePrepareService } from '../../../../core/services/autocomple
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;

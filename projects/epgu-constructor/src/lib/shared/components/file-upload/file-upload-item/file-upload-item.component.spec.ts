@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService, HtmlSelectService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -53,6 +53,8 @@ import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
+import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {

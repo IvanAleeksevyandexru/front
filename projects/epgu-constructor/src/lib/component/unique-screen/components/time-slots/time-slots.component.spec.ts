@@ -4,7 +4,7 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import {
   ScreenPadComponent,
   HelperTextComponent,
-  HttpCancelService, TimeCalendarModule, TypeHelperService, JsonHelperService,
+  HttpCancelService, TimeCalendarModule, TypeHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
@@ -43,6 +43,7 @@ import { HttpClient } from '@angular/common/http';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { mockScreenDoctorStore } from './mocks/mock-screen-doctor-store';
 import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const moment = moment_;
 moment.locale('ru');

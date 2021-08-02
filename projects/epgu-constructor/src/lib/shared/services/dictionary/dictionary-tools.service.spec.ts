@@ -12,7 +12,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import {
   ConfigService,
-  ConfigServiceStub, JsonHelperService,
+  ConfigServiceStub,
   mockSelectMapObjectStore
 } from '@epgu/epgu-constructor-ui-kit';
 
@@ -31,6 +31,8 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from './dictionary-helper';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -174,7 +176,7 @@ describe('DictionaryToolsService', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],

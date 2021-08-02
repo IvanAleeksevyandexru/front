@@ -14,7 +14,7 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
   ModalService,
-  ModalServiceStub, JsonHelperService
+  ModalServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -37,6 +37,7 @@ import { CustomComponent } from '../../component/custom-screen/components-list.t
 import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
 import { ComponentsListFormService } from '../../component/custom-screen/services/components-list-form/components-list-form.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
+import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 
 const displayMock = {
   id: 's113',

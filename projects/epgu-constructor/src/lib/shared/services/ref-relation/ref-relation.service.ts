@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 import { ListElement } from '@epgu/epgu-lib';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class RefRelationService {

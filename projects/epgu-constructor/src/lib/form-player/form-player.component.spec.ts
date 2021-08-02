@@ -3,7 +3,6 @@ import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
 import {
-  JsonHelperService,
   LoadServiceStub,
   MainContainerModule,
   TracingServiceStub,
@@ -60,6 +59,7 @@ import { AutocompletePrepareService } from '../core/services/autocomplete/autoco
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { AnimationBuilder } from '@angular/animations';
+import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;

@@ -7,7 +7,6 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { LogicService } from '../service/logic.service';
 import {
   DatesToolsService,
-  JsonHelperService,
   TypeHelperService,
   UnsubscribeService,
   UtilsService
@@ -30,6 +29,7 @@ import { ComponentsListRelationsService } from '../../custom-screen/services/com
 import { SuggestHandlerService } from '../../../shared/services/suggest-handler/suggest-handler.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { NavigationPayload } from '../../../form-player/form-player.types';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;

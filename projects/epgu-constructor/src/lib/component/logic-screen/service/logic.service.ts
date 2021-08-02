@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angul
 import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 
-import { JsonHelperService, LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto, DictionaryOptions, LogicComponentAttrsDto, LogicComponents } from '@epgu/epgu-constructor-types';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CustomComponent } from '../../custom-screen/components-list.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class LogicService {

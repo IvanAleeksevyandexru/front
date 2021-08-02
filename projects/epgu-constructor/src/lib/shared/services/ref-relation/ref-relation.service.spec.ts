@@ -11,7 +11,7 @@ import {
 } from './ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
 import { ListElement } from '@epgu/epgu-lib';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;

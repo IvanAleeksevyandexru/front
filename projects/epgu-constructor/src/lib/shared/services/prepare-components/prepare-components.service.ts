@@ -5,7 +5,6 @@ import {
   CustomComponentRef,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
@@ -15,6 +14,7 @@ import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { get } from 'lodash';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class PrepareComponentsService {
