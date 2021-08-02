@@ -20,7 +20,7 @@
     class="map-objects-list"
     [ngClass]="{ 'fixed-height': selectedValue && selectedValue.children?.length > 1 && !isMobile}"
   >
-    <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
+    <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar">
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
     <ng-template #contentBlock>
