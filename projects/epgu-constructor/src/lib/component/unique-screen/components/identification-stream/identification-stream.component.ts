@@ -97,28 +97,26 @@ export class IdentificationStreamComponent {
   }
 
   next(): void {
-    const resultValue: { selfieId: string; faceId: string } | null =
-      JSON.parse(this.screenService.component?.value) || null;
-    if (resultValue) {
-      of(resultValue)
-        .pipe(
-          tap(() => this.apiLoading$.next(true)),
-          concatMap(({ faceId, selfieId }) =>
-            this.api
-              .videoIdentification({
-                faceId,
-                snapshot: this.result,
-                selfieFaceId: selfieId,
-              })
-              .pipe(finalize(() => this.apiLoading$.next(false))),
-          ),
-        )
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((result) => {
-          this.currentAnswersService.state = { ...result };
-          this.nextStep();
-        });
-    }
+    const selfieFaceId = this.screenService.component?.arguments?.selfieId as string;
+    const faceId = this.screenService.component?.arguments?.faceId as string;
+    of(1)
+      .pipe(
+        tap(() => this.apiLoading$.next(true)),
+        concatMap(() =>
+          this.api
+            .videoIdentification({
+              faceId,
+              selfieFaceId,
+              snapshot: this.result,
+            })
+            .pipe(finalize(() => this.apiLoading$.next(false))),
+        ),
+      )
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        this.currentAnswersService.state = { ...result };
+        this.nextStep();
+      });
   }
   private nextStep(): void {
     this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
