@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   ErrorHandlerOrderParams,
   ErrorHandlerOrderParamsAbstractService,
-  TypeHelperService,
+  ObjectHelperService,
   WordTransformService
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
@@ -14,7 +14,7 @@ export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderP
   constructor(
     public screenService: ScreenService,
     private wordTransformService: WordTransformService,
-    private typeHelperService: TypeHelperService,
+    private objectHelperService: ObjectHelperService,
   ) {}
 
   public getParams(): ErrorHandlerOrderParams {
@@ -22,7 +22,7 @@ export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderP
     let orderId = undefined;
 
     if (this.hasOrderId(store)) {
-      orderId = this.typeHelperService.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
+      orderId = this.objectHelperService.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
     }
 
     return {
@@ -33,6 +33,6 @@ export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderP
   }
 
   private hasOrderId(store: ScreenStore): boolean {
-    return this.typeHelperService.isDefined(store.orderId) || this.typeHelperService.isDefined(store.callBackOrderId);
+    return this.objectHelperService.isDefined(store.orderId) || this.objectHelperService.isDefined(store.callBackOrderId);
   }
 }

@@ -5,7 +5,7 @@ import { CoreModule } from '../../../../core/core.module';
 import {
   CoreUiModule,
   LocationService,
-  TypeHelperService,
+  ObjectHelperService,
   WINDOW_PROVIDERS,
   WordTransformService
 } from '@epgu/epgu-constructor-ui-kit';
@@ -83,7 +83,7 @@ describe('UploadAndEditPhotoComponent', () => {
         AutocompleteApiService,
         EaisdoGroupCostService,
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class UtilsServiceStub {
+export class DownloadServiceStub {
   public downloadFile(): void {}
 }

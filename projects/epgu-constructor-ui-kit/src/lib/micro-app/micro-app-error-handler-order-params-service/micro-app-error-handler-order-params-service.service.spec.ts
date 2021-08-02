@@ -4,7 +4,7 @@ import { MicroAppErrorHandlerOrderParamsServiceService } from './micro-app-error
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query.stub';
 import { WordTransformService } from '../../core/services/word-transform/word-transform.service';
-import { TypeHelperService } from '../../core/services/type-helper/type-helper.service';
+import { ObjectHelperService } from '../../core/services/object-helper/object-helper.service';
 
 
 describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
@@ -15,7 +15,7 @@ describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
       providers: [
         MicroAppErrorHandlerOrderParamsServiceService,
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
       ],
     });

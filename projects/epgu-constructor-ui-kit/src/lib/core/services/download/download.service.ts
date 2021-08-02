@@ -1,18 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TypeHelperService } from '../type-helper/type-helper.service';
 
 
 @Injectable()
-export class UtilsService {
-  constructor (private typeHelperService: TypeHelperService) {}
-
-  public filterIncorrectObjectFields(obj: object): object {
-    return Object.entries(obj).reduce(
-      (a, [k, v]) => (!this.typeHelperService.isDefined(v) ? a : ((a[k] = v), a)),
-      {},
-    );
-  }
-
+export class DownloadService {
   /**
    * Скачивание файла
    */

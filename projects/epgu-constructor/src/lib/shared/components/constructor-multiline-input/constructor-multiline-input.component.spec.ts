@@ -7,7 +7,7 @@ import { CoreModule } from '../../../core/core.module';
 import {
   CoreUiModule,
   DatesToolsService,
-  TypeHelperService,
+  ObjectHelperService,
   WordTransformService
 } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -55,7 +55,7 @@ describe('ConstructorMultilineInputComponent', () => {
         DatesToolsService,
         MockProvider(DateRestrictionsService),
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

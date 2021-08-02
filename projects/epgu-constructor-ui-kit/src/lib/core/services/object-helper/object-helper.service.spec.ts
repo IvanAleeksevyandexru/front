@@ -1,23 +1,34 @@
 import { TestBed } from '@angular/core/testing';
-
-import { UtilsService } from './utils.service';
 import { configureTestSuite } from 'ng-bullet';
-import { TypeHelperService } from '../type-helper/type-helper.service';
 
-describe('UtilsService', () => {
-  let service: UtilsService;
+import { ObjectHelperService } from './object-helper.service';
+
+describe('ObjectHelperService', () => {
+  let service: ObjectHelperService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        UtilsService,
-        TypeHelperService,
+        ObjectHelperService
       ]
     });
   });
 
   beforeEach(() => {
-    service = TestBed.inject(UtilsService);
+    service = TestBed.inject(ObjectHelperService);
+  });
+
+  describe('isDefined()', () => {
+    it('should return true', () => {
+      expect(service.isDefined({})).toBe(true);
+      expect(service.isDefined([])).toBe(true);
+      expect(service.isDefined('defined string')).toBe(true);
+    });
+
+    it('should return false', () => {
+      expect(service.isDefined(null)).toBe(false);
+      expect(service.isDefined(undefined)).toBe(false);
+    });
   });
 
   describe('filterIncorrectObjectFields()', () => {

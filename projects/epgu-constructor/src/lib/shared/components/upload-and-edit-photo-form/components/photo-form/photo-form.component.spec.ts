@@ -7,12 +7,12 @@ import { of } from 'rxjs';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { PhotoFormComponent } from './photo-form.component';
-import { TypeHelperService, UnsubscribeService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
+import { ObjectHelperService, UnsubscribeService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../service/validation/validation.service';
 import { UploadService } from '../../service/upload/upload.service';
@@ -38,13 +38,13 @@ describe('PhotoFormComponent', () => {
         UnsubscribeService,
         DeviceDetectorService,
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         TerraByteApiService,
         WebcamService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         EventBusService,
         ValidationService,
         UploadService,

@@ -14,14 +14,14 @@ import {
   ConfigService,
   ServiceNameService,
   SessionService,
-  TypeHelperService,
+  ObjectHelperService,
   WordTransformService
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../init-data/init-data.service';
 import { InitDataServiceStub } from '../init-data/init-data.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, LocationServiceStub, HealthService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -54,7 +54,7 @@ describe('HealthHandlerService', () => {
   let formPlayerApi: FormPlayerApiService;
   let config: ConfigService;
   let init: InitDataService;
-  let utils: UtilsService;
+  let utils: DownloadService;
   let wordTransformService: WordTransformService;
   let healthService: HealthService;
   let dictionaryService: DictionaryApiService;
@@ -88,13 +88,13 @@ describe('HealthHandlerService', () => {
       providers: [
         FormPlayerApiService,
         DictionaryApiService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         HealthHandlerService,
         TestHealthInterceptor,
         SessionService,
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
         ServiceNameService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
@@ -116,7 +116,7 @@ describe('HealthHandlerService', () => {
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
     init.orderId = Number(orderId);
-    utils = TestBed.inject(UtilsService);
+    utils = TestBed.inject(DownloadService);
     healthService = TestBed.inject(HealthService);
     service = TestBed.inject(HealthHandlerService);
     dictionaryService = TestBed.inject(DictionaryApiService);

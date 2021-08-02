@@ -16,8 +16,8 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -142,7 +142,7 @@ describe('ActionDirective', () => {
   let screenService: ScreenService;
   let navigationService: NavigationService;
   let navigationModalService: NavigationModalService;
-  let utilsService: UtilsService;
+  let downloadService: DownloadService;
   let localStorageService: LocalStorageService;
   let actionService: ActionService;
 
@@ -156,7 +156,7 @@ describe('ActionDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -181,7 +181,7 @@ describe('ActionDirective', () => {
     screenService = TestBed.inject(ScreenService);
     navigationService = TestBed.inject(NavigationService);
     navigationModalService = TestBed.inject(NavigationModalService);
-    utilsService = TestBed.inject(UtilsService);
+    downloadService = TestBed.inject(DownloadService);
     localStorageService = TestBed.inject(LocalStorageService);
     actionService = TestBed.inject(ActionService);
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
@@ -191,10 +191,10 @@ describe('ActionDirective', () => {
   it('test directive - download action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.download')).nativeElement;
     fixture.detectChanges();
-    spyOn(utilsService, 'downloadFile').and.callThrough();
+    spyOn(downloadService, 'downloadFile').and.callThrough();
     button.click();
 
-    expect(utilsService.downloadFile).toHaveBeenCalled();
+    expect(downloadService.downloadFile).toHaveBeenCalled();
   });
 
   it('test directive - prevStepModal Action', () => {
