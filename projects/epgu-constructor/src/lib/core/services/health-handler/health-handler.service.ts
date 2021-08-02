@@ -24,7 +24,7 @@ import {
   HealthHandler,
   UtilsService,
   HealthService,
-  WordTransformService, TypeHelperService
+  WordTransformService, TypeHelperService, ServiceNameService
 } from '@epgu/epgu-constructor-ui-kit';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
@@ -44,6 +44,7 @@ export class HealthHandlerService implements HealthHandler {
   constructor(
     private health: HealthService,
     private utils: UtilsService,
+    private serviceNameService: ServiceNameService,
     private wordTransformService: WordTransformService,
     private typeHelperService: TypeHelperService,
     private configService: ConfigService,
@@ -94,10 +95,10 @@ export class HealthHandlerService implements HealthHandler {
     request: HttpRequest<T>,
     serviceName: string,
   ): string[] {
-    const splittedUrl = this.utils.getSplittedUrl(request.url).map((el) => el.toLowerCase());
+    const splittedUrl = this.serviceNameService.getSplittedUrl(request.url).map((el) => el.toLowerCase());
     const lastUrlPart = splittedUrl.slice(-1)[0];
 
-    serviceName = request.url.includes(DICTIONARY) ? `${DICTIONARY}_${uuidv4()}` : this.utils.getServiceName(request.url);
+    serviceName = request.url.includes(DICTIONARY) ? `${DICTIONARY}_${uuidv4()}` : this.serviceNameService.getServiceName(request.url);
     serviceName =
       serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
     serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
@@ -375,7 +376,7 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private checkUrlForExceptions(url: string): boolean {
-    const splitByDirLocation = this.utils.getSplittedUrl(url);
+    const splitByDirLocation = this.serviceNameService.getSplittedUrl(url);
     return splitByDirLocation.some((name) => EXCEPTIONS.includes(name));
   }
 
@@ -409,7 +410,7 @@ export class HealthHandlerService implements HealthHandler {
   private isValidHttpEntity<T>(
     payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse,
   ): boolean {
-    return this.utils.isValidHttpUrl(payload['url']) && !this.checkUrlForExceptions(payload['url']);
+    return this.serviceNameService.isValidHttpUrl(payload['url']) && !this.checkUrlForExceptions(payload['url']);
   }
 
   private getFilterType(

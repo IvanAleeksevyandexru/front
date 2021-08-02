@@ -32,6 +32,7 @@ import { AddressesToolsService } from './services/addresses-tools/addresses-tool
 import { HealthService } from './services/health/health.service';
 import { TypeHelperService } from './services/type-helper/type-helper.service';
 import { WordTransformService } from './services/word-transform/word-transform.service';
+import { ServiceNameService } from './services/service-name/service-name.service';
 
 @NgModule({
   providers: [
@@ -57,6 +58,7 @@ import { WordTransformService } from './services/word-transform/word-transform.s
     TracingService,
     AddressesToolsService,
     HealthService,
+    ServiceNameService,
     WINDOW_PROVIDERS,
     {
       provide: ErrorHandler,
