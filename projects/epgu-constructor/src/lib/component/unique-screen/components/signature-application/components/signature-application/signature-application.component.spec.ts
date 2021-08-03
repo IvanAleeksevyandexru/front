@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
-import { ConfigService, HtmlSelectService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, LocationServiceStub, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -30,6 +30,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -68,8 +69,8 @@ describe('SignatureApplicationComponent', () => {
       ],
       providers: [
         NavigationService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

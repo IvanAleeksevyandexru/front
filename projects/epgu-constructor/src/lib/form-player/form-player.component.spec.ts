@@ -6,7 +6,7 @@ import {
   LoadServiceStub,
   MainContainerModule,
   TracingServiceStub,
-  TypeHelperService
+  ObjectHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
@@ -47,7 +47,7 @@ import { EpguLibModuleInited } from '../shared/base.module';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../screen/current-answers.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -59,6 +59,7 @@ import { AutocompletePrepareService } from '../core/services/autocomplete/autoco
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { AnimationBuilder } from '@angular/animations';
+import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -104,8 +105,8 @@ describe('FormPlayerComponent', () => {
         AutocompletePrepareService,
         EventBusService,
         ModalService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
         CurrentAnswersService,
         WINDOW_PROVIDERS,
@@ -127,6 +128,7 @@ describe('FormPlayerComponent', () => {
         SessionService,
         TerraByteApiService,
         AnimationBuilder,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

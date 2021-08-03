@@ -27,6 +27,7 @@ export interface BaseProgram {
   uuid: string;
   name: string;
   partnerName: string;
+  partnerPhone: string;
   address: string;
   imageUrl: string;
   imageSmallUrl: string;
@@ -55,6 +56,7 @@ export interface Program extends BaseProgram {
   teachers: string;
   maxPersons: number;
   programContent: string;
+  partnerPhone: string;
   goals: string;
   results: string;
   technicalBase: string;
@@ -66,6 +68,8 @@ export interface Program extends BaseProgram {
   datasource: string;
   region: Region;
   municipal: Municipality;
+  pfdodRulesLink: string;
+  site: string;
 }
 
 export enum FinancialSourceType {

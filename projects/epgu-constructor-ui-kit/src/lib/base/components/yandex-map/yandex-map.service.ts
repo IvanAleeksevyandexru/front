@@ -12,6 +12,7 @@ import {
   IFeatureItem,
   IYMapPoint,
   ObjectManager,
+  YMapItem,
 } from './yandex-map.interface';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
@@ -23,7 +24,7 @@ export class YandexMapService implements OnDestroy {
   public mapOptions;
 
   private objectManager;
-  private activePlacemarkId: number;
+  private activePlacemarkId: number | string;
   private MIN_ZOOM = 4;
   private DEFAULT_ZOOM = 9;
 
@@ -54,7 +55,7 @@ export class YandexMapService implements OnDestroy {
   public prepareFeatureCollection<T>(items: IYMapPoint<T>[]): IFeatureCollection<T> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item, index) => {
-      if (item.center) {
+      if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
           id: index,
@@ -118,18 +119,17 @@ export class YandexMapService implements OnDestroy {
           this.objectManager.objects.setObjectOptions(feature.id, {
             iconImageHref: this.icons.red.iconImageHref,
           });
-        const object =
-          feature.type === IFeatureTypes.Feature
-            ? [(feature as IFeatureItem<T>).properties.res]
-            : (feature as IClusterItem<T>).properties.geoObjects.map(
-                (object) => object.properties.res,
-              );
-        if (object.length === 1) {
-          object[0]['expanded'] = true;
-        }
-        this.selectedValue$.next(object);
       });
     }
+
+    const object =
+      feature.type === IFeatureTypes.Feature
+        ? [(feature as IFeatureItem<T>).properties.res]
+        : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
+    if (object.length === 1) {
+      object[0]['expanded'] = true;
+    }
+    this.selectedValue$.next(object);
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
@@ -148,6 +148,9 @@ export class YandexMapService implements OnDestroy {
   }
 
   public closeBalloon(): void {
+    this.selectedValue$.getValue()?.forEach((element) => {
+      element.expanded = false;
+    });
     this.selectedValue$.next(null);
     this.objectManager.objects.setObjectOptions(this.activePlacemarkId, {
       iconImageHref: this.icons.blue.iconImageHref,
@@ -158,9 +161,10 @@ export class YandexMapService implements OnDestroy {
   public setMapOptions(isMobile: boolean, options?): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.ymaps = (window as any).ymaps;
+    const mobileTop = (Number.parseInt(this.yaMapService.map.container.getElement().style.height))/3;
     this.yaMapService.map.controls.add('zoomControl', {
       position: {
-        top: isMobile ? 240 : 108,
+        top: isMobile ? mobileTop : 108,
         right: 10,
         bottom: 'auto',
         left: 'auto',
@@ -186,6 +190,21 @@ export class YandexMapService implements OnDestroy {
           }
         });
     }
+  }
+
+  public selectMapObject<T>(mapObject: YMapItem<T>): void {
+    if (!mapObject) return;
+    let chosenMapObject = this.getObjectById(mapObject.objectId);
+    if (!chosenMapObject) {
+      chosenMapObject = {
+        geometry: { type: 'Point', coordinates: [null, null] },
+        id: 1,
+        properties: { res: mapObject },
+        type: IFeatureTypes.Feature,
+      };
+      this.centerAllPoints();
+    }
+    this.centeredPlaceMark(chosenMapObject);
   }
 
   private createMapsObjectManager(OMSettings, urlTemplate: string, LOMSettings): ObjectManager {

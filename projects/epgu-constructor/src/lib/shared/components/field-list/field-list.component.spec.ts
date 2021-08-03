@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 import { FieldListComponent } from './field-list.component';
-import { ImgPrefixerPipe, TypeHelperService, UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ImgPrefixerPipe,
+  ObjectHelperService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlModule } from '../output-html/output-html.module';
@@ -10,6 +14,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -47,8 +52,8 @@ describe('FieldListComponent', () => {
         EaisdoGroupCostService,
         UnsubscribeService,
         CurrentAnswersService,
-        UtilsService,
-        TypeHelperService,
+        JsonHelperService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

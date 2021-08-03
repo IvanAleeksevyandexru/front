@@ -19,6 +19,7 @@ import { AutocompletePrepareService } from '../../../../core/services/autocomple
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -56,6 +57,7 @@ describe('FileUploadComponent', () => {
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         AutocompletePrepareService,
         CurrentAnswersService,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

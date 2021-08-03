@@ -1,7 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { ConfigService, DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  DatesToolsServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ReferralNumberService } from './referral-number.service';
@@ -16,6 +20,8 @@ import { ComponentsListRelationsService } from '../../../custom-screen/services/
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ReferralNumberService', () => {
   let service: ReferralNumberService;
@@ -33,7 +39,8 @@ describe('ReferralNumberService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },

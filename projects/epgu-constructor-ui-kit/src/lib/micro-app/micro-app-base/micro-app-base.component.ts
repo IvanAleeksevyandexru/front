@@ -21,12 +21,8 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { ConfigApiService } from '../../core/services/config-api/config-api.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
 
-export const getAppStorageKey = (
-  componentType: string,
-  componentId: string,
-  orderId: string | number,
-): string => {
-  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}_${orderId}`;
+export const getAppStorageKey = (componentType: string, componentId: string): string => {
+  return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}`;
 };
 
 @Component({
@@ -39,6 +35,7 @@ export class MicroAppBaseComponent<T, U> {
   public isFirstLoading$ = new BehaviorSubject(true);
   public isConfigReady = new BehaviorSubject<boolean>(false);
   public isConfigReady$ = this.isConfigReady.pipe(filter((status) => status));
+  public cdr: ChangeDetectorRef;
 
   private appStateService: MicroAppStateService<T, U>;
   private appStateQuery: MicroAppStateQuery<T, U>;
@@ -50,7 +47,6 @@ export class MicroAppBaseComponent<T, U> {
   private logger: LoggerService;
   private configService: ConfigService;
   private configApiService: ConfigApiService;
-  private cdr: ChangeDetectorRef;
   private ngUnsubscribe$: UnsubscribeService;
   private isCoreConfigLoaded$;
   private eventBusService: EventBusService;
@@ -126,7 +122,7 @@ export class MicroAppBaseComponent<T, U> {
     const stateFromStorage = this.getStateFromLocalStorage();
     let initState: MicroAppState<T, U>;
 
-    if (stateFromStorage) {
+    if (stateFromStorage && this.inputAppData?.orderId === stateFromStorage.orderId) {
       initState = stateFromStorage;
     } else {
       try {
@@ -134,6 +130,8 @@ export class MicroAppBaseComponent<T, U> {
         if (this.inputAppData?.healthPayload) {
           initState.healthPayload = this.inputAppData.healthPayload;
         }
+
+        initState.orderId = this.inputAppData.orderId;
 
         if (!initState.value) {
           initState.value = {} as T;
@@ -172,11 +170,7 @@ export class MicroAppBaseComponent<T, U> {
   }
 
   private getStorageKey(): string {
-    return getAppStorageKey(
-      this.inputAppData.componentType,
-      this.inputAppData.componentId,
-      this.inputAppData.orderId,
-    );
+    return getAppStorageKey(this.inputAppData.componentType, this.inputAppData.componentId);
   }
 
   private setOutputAppData(isPrevStepCase: boolean): void {

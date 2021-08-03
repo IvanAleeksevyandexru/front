@@ -1,0 +1,16 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+:host {
+  @include flex-container();
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 
 import { WordTransformService } from './word-transform.service';
-import { TypeHelperService } from '../type-helper/type-helper.service';
+import { ObjectHelperService } from '../object-helper/object-helper.service';
 
 describe('WordTransformService', () => {
   let service: WordTransformService;
@@ -11,7 +11,7 @@ describe('WordTransformService', () => {
     TestBed.configureTestingModule({
       providers: [
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
       ]
     });
   });

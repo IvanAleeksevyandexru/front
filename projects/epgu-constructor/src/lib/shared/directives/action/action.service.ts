@@ -20,7 +20,7 @@ import {
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
   Navigation,
@@ -42,6 +42,7 @@ import { ScreenStore } from '../../../screen/screen.types';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -62,7 +63,7 @@ export class ActionService {
     private screenService: ScreenService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
-    private utilsService: UtilsService,
+    private downloadService: DownloadService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private sessionStorageService: SessionStorageService,
@@ -73,6 +74,7 @@ export class ActionService {
     private modalService: ModalService,
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public switchAction(
@@ -308,7 +310,7 @@ export class ActionService {
     this.sendAction<string>(action)
       .pipe(filter((response) => !response.errorList.length))
       .subscribe(
-        ({ responseData }) => this.utilsService.downloadFile(responseData),
+        ({ responseData }) => this.downloadService.downloadFile(responseData),
         (error) => console.log(error),
       );
   }
@@ -350,7 +352,7 @@ export class ActionService {
 
   private prepareActionMultipleAnswers(action: ComponentActionDto): ComponentActionDto {
     if (typeof action.multipleAnswers === 'string' &&
-      UtilsService.hasJsonStructure(action.multipleAnswers)) {
+      this.jsonHelperService.hasJsonStructure(action.multipleAnswers)) {
       action.multipleAnswers = JSON.parse(action.multipleAnswers);
     }
     return action;

@@ -5,7 +5,12 @@ import { LogicComponent } from './logic.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { LogicService } from '../service/logic.service';
-import { DatesToolsService, TypeHelperService, UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  ObjectHelperService,
+  UnsubscribeService,
+  DownloadService
+} from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -24,6 +29,7 @@ import { ComponentsListRelationsService } from '../../custom-screen/services/com
 import { SuggestHandlerService } from '../../../shared/services/suggest-handler/suggest-handler.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { NavigationPayload } from '../../../form-player/form-player.types';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;
@@ -44,8 +50,9 @@ describe('LogicComponent', () => {
         { provide: HookService, useClass: HookServiceStub },
         DictionaryToolsService,
         CurrentAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
+        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),

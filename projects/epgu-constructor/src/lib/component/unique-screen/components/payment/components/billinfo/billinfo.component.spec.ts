@@ -9,7 +9,7 @@ import {
   SessionService,
   SessionStorageService,
   SessionStorageServiceStub,
-  TypeHelperService
+  ObjectHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -20,7 +20,7 @@ import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -35,6 +35,7 @@ import { FormPlayerServiceStub } from '../../../../../../form-player/services/fo
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -75,13 +76,14 @@ describe('BillInfoComponent', () => {
         NavigationService,
         NavigationModalService,
         DeviceDetectorService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,
         EaisdoGroupCostService,
         SessionService,
+        JsonHelperService,
         WINDOW_PROVIDERS,
       ],
     }).compileComponents();

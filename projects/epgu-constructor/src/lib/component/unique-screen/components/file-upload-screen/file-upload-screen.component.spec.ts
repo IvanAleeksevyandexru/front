@@ -45,6 +45,7 @@ const screenServiceComponentMockData: ComponentDto = {
 } as ComponentDto;
 
 const fileSample: UploadedFile = {
+  description: '',
   fileName: 'file-name',
   objectId: 'object-id',
   objectTypeId: 1,

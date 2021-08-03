@@ -21,6 +21,10 @@ import { FormPlayerNavigation } from '../form-player/form-player.types';
 import {
   ErrorHandlerOrderParamsServiceService
 } from './services/error-handler-order-params-service/error-handler-order-params-service.service';
+import { DateRefService } from './services/date-ref/date-ref.service';
+import { TypeCastService } from './services/type-cast/type-cast.service';
+import { HtmlSelectService } from './services/html-select/html-select.service';
+import { JsonHelperService } from './services/json-helper/json-helper.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -36,6 +40,10 @@ import {
     TerraByteApiService,
     ErrorHandlerService,
     HealthHandlerService,
+    DateRefService,
+    TypeCastService,
+    HtmlSelectService,
+    JsonHelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpHeadersInterceptor,

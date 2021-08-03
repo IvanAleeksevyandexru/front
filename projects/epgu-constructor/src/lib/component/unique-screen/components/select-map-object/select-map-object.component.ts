@@ -10,7 +10,7 @@ import {
 import { YaMapService } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { isEqual as _isEqual } from 'lodash';
+import { get, isEqual as _isEqual } from 'lodash';
 import {
   ActionType,
   ApplicantAnswersDto,
@@ -25,7 +25,6 @@ import {
   DeviceDetectorService,
   UnsubscribeService,
   ConfigService,
-  UtilsService,
   AddressesToolsService,
   YMapItem,
   IGeoCoordsResponse,
@@ -58,6 +57,7 @@ import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { PanelTypes } from './components/search-panel-resolver/search-panel-resolver.component';
 import { ContentTypes } from './components/balloon-content-resolver/balloon-content-resolver.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -113,6 +113,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
     private addressesToolsService: AddressesToolsService,
+    private jsonHelperService: JsonHelperService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -184,10 +185,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initSelectedValue(): void {
     if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
-      const mapObject = UtilsService.tryToParse(this.data?.value) as YMapItem<DictionaryItem>;
+      const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
+        DictionaryItem
+      >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
-        this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
+        this.yandexMapService.selectMapObject(mapObject);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
@@ -207,10 +210,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
   private getSelectedValue(): { [key: string]: string } {
-    const selectedValue = UtilsService.getObjectProperty(
+    const selectedValue = (get(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,
-    );
+    ) as unknown) as string;
     return JSON.parse(selectedValue);
   }
 

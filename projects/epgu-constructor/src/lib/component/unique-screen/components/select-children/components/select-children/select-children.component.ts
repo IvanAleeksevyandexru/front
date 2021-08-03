@@ -53,6 +53,7 @@ export class SelectChildrenComponent implements OnInit {
   NEW_ID = 'new';
   hideAddNewChildButton = false;
   expandAllChildrenBlocks: boolean;
+  isObliged: boolean;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -60,9 +61,6 @@ export class SelectChildrenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.repeatAmount = this.component?.attrs?.repeatAmount || this.DEFAULT_AVAILABLE;
-    this.expandAllChildrenBlocks = this.component?.attrs?.expandAllChildrenBlocks;
-
     this.initVariables();
     this.initStartValues();
 
@@ -84,6 +82,8 @@ export class SelectChildrenComponent implements OnInit {
   }
 
   initVariables(): void {
+    this.repeatAmount = this.component?.attrs?.repeatAmount || this.DEFAULT_AVAILABLE;
+    this.expandAllChildrenBlocks = this.component?.attrs?.expandAllChildrenBlocks;
     const itemsList = this.component ? JSON.parse(this.component.presetValue || '[]') : [];
     this.hideAddNewChildButton = this.component?.attrs?.hideAddNewChildButton || false;
     this.firstNameRef = this.getRefFromComponent('firstName');
@@ -93,6 +93,7 @@ export class SelectChildrenComponent implements OnInit {
     this.itemsToSelect = this.getItemsToSelect(itemsList);
     this.isSingleChild = this.component?.attrs?.singleChild;
     this.hint = this.component?.attrs?.hint;
+    this.isObliged = this.component?.attrs?.obliged;
   }
 
   initStartValues(): void {
@@ -105,7 +106,22 @@ export class SelectChildrenComponent implements OnInit {
         this.addMoreChild(childFromList, isNew ? child : {});
         this.handleSelect(child, index);
       });
-    } else if (this.expandAllChildrenBlocks && this.itemsToSelect.length > 1) {
+
+      return;
+    }
+
+    /**
+     * При attrs.obliged === true:
+     * если ребёнок только один - он выбирается автоматически
+     * если детей нет - открывается форма кастомного ребёнка
+     */
+    if (this.checkObligedConditions()) {
+      this.addMoreChild(this.itemsToSelect[0]);
+      this.handleSelect(this.itemsToSelect[0], 0);
+      return;
+    }
+
+    if (this.expandAllChildrenBlocks && this.itemsToSelect.length > 1) {
       this.initAllChildrenBlocks();
     } else {
       this.addMoreChild();
@@ -224,9 +240,9 @@ export class SelectChildrenComponent implements OnInit {
   }
 
   /**
-   * метод добавляет нового ребенка в массив и возвращает его
+   * метод добавляет нового ребенка в массив выбранных
    * @param initValue значальное значение для контрола
-   * @param childFromCache ребенок из кэша. Используется для заполнения полей кастомного беренка
+   * @param childFromCache ребенок из кэша. Используется для заполнения полей кастомного ребенка
    */
   addMoreChild(initValue?: ChildI, childFromCache: ChildI = {}): void {
     const index = this.items.length;
@@ -330,5 +346,13 @@ export class SelectChildrenComponent implements OnInit {
       }
       return { invalidForm: true };
     };
+  }
+
+  private checkObligedConditions(): boolean {
+    return (
+      this.isObliged &&
+      (this.itemsToSelect.filter((child) => child.id !== 'new').length === 1 ||
+        (this.itemsToSelect.length === 1 && this.itemsToSelect[0].id === this.NEW_ID))
+    );
   }
 }

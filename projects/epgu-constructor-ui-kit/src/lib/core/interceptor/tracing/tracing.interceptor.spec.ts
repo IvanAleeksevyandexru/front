@@ -23,14 +23,15 @@ import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { LocationService } from '../../services/location/location.service';
 import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
-import { UtilsService } from '../../services/utils/utils.service';
+import { DownloadService } from '../../services/download/download.service';
 import { DatesToolsService } from '../../services/dates-tools/dates-tools.service';
 import { SessionService } from '../../services/session/session.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from '../../services/tracing/tracing.token';
-import { TypeHelperService } from '../../services/type-helper/type-helper.service';
+import { ObjectHelperService } from '../../services/object-helper/object-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -73,21 +74,19 @@ describe('TracingHttpInterceptor', () => {
         ScreenService,
         CurrentAnswersService,
         DeviceDetectorService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
-        DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
         SessionService,
         UnsubscribeService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        DateRestrictionsService,
         {
           provide: TRACE_ALLOWED_REMOTE_SERVICES,
           useValue: [

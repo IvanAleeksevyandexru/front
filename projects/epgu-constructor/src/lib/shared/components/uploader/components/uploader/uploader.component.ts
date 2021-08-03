@@ -14,6 +14,11 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { UploaderButtonComponent } from '../uploader-button/uploader-button.component';
 
+export interface UploadingFile {
+  action?: string;
+  files: FileList;
+}
+
 @Component({
   selector: 'epgu-constructor-uploader',
   templateUrl: './uploader.component.html',
@@ -21,7 +26,7 @@ import { UploaderButtonComponent } from '../uploader-button/uploader-button.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploaderComponent implements AfterContentInit, OnDestroy {
-  @Output() upload = new EventEmitter<FileList>();
+  @Output() upload = new EventEmitter<UploadingFile>();
   @ContentChildren(UploaderButtonComponent, { descendants: true }) buttons!: QueryList<
     UploaderButtonComponent
   >;
@@ -56,8 +61,12 @@ export class UploaderComponent implements AfterContentInit, OnDestroy {
     this.init(event);
     this.isHighlight = false;
     if (event.dataTransfer.files.length > 0) {
-      this.upload.emit(event.dataTransfer.files);
+      this.upload.emit(this.createEvent(event.dataTransfer.files));
     }
+  }
+
+  createEvent(files: FileList, action?: string): UploadingFile {
+    return { files, action };
   }
 
   init(event: DragEvent): void {
@@ -73,7 +82,7 @@ export class UploaderComponent implements AfterContentInit, OnDestroy {
         item.selects
           .pipe(
             filter((files) => files.length > 0),
-            tap((files) => this.upload.emit(files)),
+            tap((files) => this.upload.emit(this.createEvent(files, item.id))),
           )
           .subscribe(),
       );

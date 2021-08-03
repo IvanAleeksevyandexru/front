@@ -13,6 +13,7 @@ import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-cons
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -114,7 +115,7 @@ describe('ValidationService', () => {
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
       ],

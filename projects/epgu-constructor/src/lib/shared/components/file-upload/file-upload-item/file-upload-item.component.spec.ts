@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService, HtmlSelectService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -25,8 +25,8 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteApiServiceStub } from '../../../../core/services/autocomplete/autocomplete-api.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -53,6 +53,8 @@ import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
+import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -134,7 +136,7 @@ describe('FileUploadItemComponent', () => {
         CompressionService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },
@@ -149,6 +151,7 @@ describe('FileUploadItemComponent', () => {
         UploaderStatService,
         UploaderProcessService,
         HtmlSelectService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(FileUploadItemComponent, {

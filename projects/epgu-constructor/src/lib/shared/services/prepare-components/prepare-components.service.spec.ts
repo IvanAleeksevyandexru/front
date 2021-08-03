@@ -8,8 +8,8 @@ import {
   LocalStorageServiceStub,
   ConfigService,
   LoggerService,
-  UtilsService,
-  DatesToolsService, TypeHelperService,
+  DownloadService,
+  DatesToolsService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
@@ -25,6 +25,9 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -35,8 +38,8 @@ describe('PrepareComponentsService', () => {
     TestBed.configureTestingModule({
       providers: [
         CachedAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         PrepareComponentsService,
         DatesToolsService,
         DictionaryToolsService,
@@ -48,7 +51,9 @@ describe('PrepareComponentsService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
+        JsonHelperService,
+        DateRefService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       imports: [HttpClientTestingModule],

@@ -10,13 +10,13 @@ export enum IFeatureTypes {
 
 export interface IFeatureItem<T> {
   type: IFeatureTypes;
-  id: number;
+  id: number | string;
   geometry: {
     type: string;
-    coordinates: [number, number];
+    coordinates: [number | null, number | null];
   };
   properties?: {
-    res?: IYMapPoint<T>;
+    res?: T;
   };
 }
 
@@ -34,6 +34,7 @@ export interface IFeatureCollection<T> {
 
 export type YMapItem<T> = T & {
   expanded?: boolean;
+  objectId?: number;
 };
 
 export class ObjectManager {

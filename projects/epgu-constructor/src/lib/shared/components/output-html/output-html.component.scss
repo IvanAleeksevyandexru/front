@@ -114,8 +114,7 @@
   }
 }
 
-:host-context(.gray-theme)::ng-deep ul:not(li ul):not(.dashed),
-:host-context(.gray-theme)::ng-deep .white-background { //TODO перепутан с .background-white?
+:host-context(.gray-theme)::ng-deep ul:not(li ul):not(.dashed) {
   background-color: $color-white;
   border-radius: 8px;
   @include shadow-main();

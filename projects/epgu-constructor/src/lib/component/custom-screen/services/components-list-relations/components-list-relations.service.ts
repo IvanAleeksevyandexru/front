@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isUndefined } from 'lodash';
+import { get, isUndefined } from 'lodash';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -12,8 +12,9 @@ import {
   CustomStatusElement,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DictionaryToolsService,
+} from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
@@ -21,6 +22,8 @@ import { DateRangeRef, Range } from '../../../../shared/services/date-range/date
 import { CachedAnswers } from '../../../../screen/screen.types';
 import { ApplicantAnswersDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -43,6 +46,7 @@ export class ComponentsListRelationsService {
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public getUpdatedShownElements(
@@ -185,7 +189,7 @@ export class ComponentsListRelationsService {
     if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
       return this.refRelationService.isValueEquals(
         displayOff.val,
-        utils.getObjectProperty(
+        get(
           this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
           displayOff.path,
         ) || cachedAnswers[displayOff.relatedRel].value,
@@ -193,7 +197,7 @@ export class ComponentsListRelationsService {
     } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
       return !this.refRelationService.isValueEquals(
         displayOn.val,
-        utils.getObjectProperty(
+        get(
           this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
           displayOn.path,
         ) || cachedAnswers[displayOn.relatedRel].value,
@@ -234,7 +238,7 @@ export class ComponentsListRelationsService {
     const relatedComponent = components.find((item) => item.id === componentId);
 
     if (relatedComponent) {
-      const dictKey = utils.getDictKeyByComp(relatedComponent);
+      const dictKey = getDictKeyByComp(relatedComponent);
 
       const dictionary = dictionaries[dictKey];
 
@@ -296,7 +300,7 @@ export class ComponentsListRelationsService {
   }
 
   private getRefValue(value: string | unknown): unknown {
-    const isParsable = utils.hasJsonStructure(value as string);
+    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
     return isParsable ? JSON.parse(value as string) : value;
   }
 
@@ -783,7 +787,7 @@ export class ComponentsListRelationsService {
         const relatedRelKey = match.replace(/[^\w]+/gi, '');
         const relatedRelValue = reference.relatedRelValues[relatedRelKey];
         if (relatedRelValue){
-          return utils.getObjectProperty(componentVal, relatedRelValue);
+          return get(componentVal, relatedRelValue);
         }
         return match;
       });

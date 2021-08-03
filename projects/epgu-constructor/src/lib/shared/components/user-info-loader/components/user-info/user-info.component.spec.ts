@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UserInfoComponent } from './user-info.component';
 import { AgeType, Gender, UserInfoType } from './user-info.type';
-import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
@@ -26,7 +26,7 @@ describe('UserInfoComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UserInfoComponent],
-      providers: [TypeHelperService, { provide: ConfigService, useClass: ConfigServiceStub }],
+      providers: [ObjectHelperService, { provide: ConfigService, useClass: ConfigServiceStub }],
     })
       .overrideComponent(UserInfoComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

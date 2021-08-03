@@ -13,7 +13,7 @@ import {
   DatesToolsService,
   UnsubscribeService,
   ConfigService,
-  LoggerService, TypeCastService,
+  LoggerService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -33,6 +33,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
 import { cloneDeep } from 'lodash';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -140,11 +143,12 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         DictionaryToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         MaskTransformService,
         DecimalPipe,
         TypeCastService,
+        JsonHelperService,
       ],
     });
   });

@@ -1,0 +1,31 @@
+<epgu-cf-ui-screen-container
+  [show-nav]="screenService.showNav$ | async"
+  [class.screen-container-mt]="!(screenService.showNav$ | async)"
+>
+  <div *ngIf="data$ | async as data" class="screen-body">
+    <epgu-constructor-page-name *ngIf="header$ | async as header">{{
+      header
+    }}</epgu-constructor-page-name>
+
+    <epgu-constructor-file-upload
+      [objectId]="screenService.orderIdAsString$ | async"
+      [prefixForMnemonic]="getUploadComponentPrefixForMnemonic(data)"
+      [attributes]="$any(data).attrs"
+    >
+    </epgu-constructor-file-upload>
+  </div>
+
+  <div class="screen-footer">
+    <div class="screen-buttons">
+      <lib-button
+        [disabled]="disabled$ | async"
+        [showLoader]="(isLoading$ | async) || (apiLoading$ | async)"
+        buttonType="button"
+        class="screen-button"
+        (click)="next()"
+      >
+        {{ 'Продолжить' }}
+      </lib-button>
+    </div>
+  </div>
+</epgu-cf-ui-screen-container>

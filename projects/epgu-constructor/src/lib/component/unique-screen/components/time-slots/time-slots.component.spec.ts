@@ -4,7 +4,7 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import {
   ScreenPadComponent,
   HelperTextComponent,
-  HttpCancelService, TimeCalendarModule, TypeHelperService,
+  HttpCancelService, TimeCalendarModule, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
@@ -30,7 +30,7 @@ import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
@@ -43,6 +43,7 @@ import { HttpClient } from '@angular/common/http';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { mockScreenDoctorStore } from './mocks/mock-screen-doctor-store';
 import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const moment = moment_;
 moment.locale('ru');
@@ -75,9 +76,10 @@ describe('TimeSlotsComponent', () => {
         TimeSlotsConstants,
         DatesToolsService,
         TimeSlotsService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         HttpCancelService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

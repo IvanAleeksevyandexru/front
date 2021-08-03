@@ -5,7 +5,6 @@ import {
   CustomComponentRef,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
@@ -13,6 +12,9 @@ import { DocInputField } from '../../../component/custom-screen/components/doc-i
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { get } from 'lodash';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class PrepareComponentsService {
@@ -21,6 +23,8 @@ export class PrepareComponentsService {
     private datesToolsService: DatesToolsService,
     private dictionaryToolsService: DictionaryToolsService,
     private refRelationService: RefRelationService,
+    private jsonHelperService: JsonHelperService,
+    private dateRefService: DateRefService,
   ) {}
 
   public prepareComponents(
@@ -126,8 +130,8 @@ export class PrepareComponentsService {
       return (parentIndex || parentIndex === 0) && parentId ? parsedJson[parentIndex][parentId].snils: parsedJson.snils;
     }
 
-    const isPresetParsable = UtilsService.hasJsonStructure(preset);
-    const isCachedValueParsable = UtilsService.hasJsonStructure(cachedValue);
+    const isPresetParsable = this.jsonHelperService.hasJsonStructure(preset);
+    const isCachedValueParsable = this.jsonHelperService.hasJsonStructure(cachedValue);
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
@@ -164,7 +168,7 @@ export class PrepareComponentsService {
     const cachedValue = JSON.parse(
       this.cachedAnswersService.getCachedValueById(cachedAnswers, id) || '{}',
     );
-    const value = UtilsService.getObjectProperty(cachedValue, path, item.value);
+    const value = get(cachedValue, path, item.value);
 
     return typeof value === 'object'
       ? { ...item, value: JSON.stringify(value) }
@@ -226,8 +230,8 @@ export class PrepareComponentsService {
     const { path, id } = this.getPathFromPreset(preset);
     const cache = cachedAnswers[id].value;
 
-    if (UtilsService.hasJsonStructure(cache)) {
-      const date: string = UtilsService.getObjectProperty({ value: JSON.parse(cache) }, path, '');
+    if (this.jsonHelperService.hasJsonStructure(cache)) {
+      const date: string = get({ value: JSON.parse(cache) }, path, '');
       if (this.isShortTimeFormat(date)) {
         return date;
       } else {
@@ -286,19 +290,14 @@ export class PrepareComponentsService {
     return component;
   }
 
-  private extractDateRef(refDate: string): string[] {
-    const ref = refDate.match(/^[\.\w]{0,}/gim)[0];
-    return [ref, refDate.replace(ref, '')];
-  }
-
   private setAttrsDateRef(attrs: ComponentAttrsDto, cachedAnswers: CachedAnswers): void {
     if (attrs.minDateRef) {
-      const extract = this.extractDateRef(attrs.minDateRef);
+      const extract = this.dateRefService.extract(attrs.minDateRef);
 
       attrs.minDate = this.getLimitDate(cachedAnswers, extract[0]) + extract[1];
     }
     if (attrs.maxDateRef) {
-      const extract = this.extractDateRef(attrs.maxDateRef);
+      const extract = this.dateRefService.extract(attrs.maxDateRef);
       attrs.maxDate = this.getLimitDate(cachedAnswers, extract[0]) + extract[1];
     }
   }
@@ -317,11 +316,11 @@ export class PrepareComponentsService {
           const { path, id } = this.getPathFromPreset(preset);
           const cache = cachedAnswers[id].value;
 
-          if (!UtilsService.hasJsonStructure(cache)) {
+          if (!this.jsonHelperService.hasJsonStructure(cache)) {
             return attrsWithFilter;
           }
 
-          const value: string = UtilsService.getObjectProperty(
+          const value: string = get(
             { value: JSON.parse(cache) },
             path,
             '',

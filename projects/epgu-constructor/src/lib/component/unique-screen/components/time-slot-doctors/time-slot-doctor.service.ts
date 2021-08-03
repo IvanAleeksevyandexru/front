@@ -7,7 +7,6 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { TimeSlotsTypes } from '../time-slots/time-slots.constants';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
@@ -26,6 +25,7 @@ import {
   TimeSlotDoctorState,
   TimeSlotValueInterface
 } from './time-slot-doctors.interface';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 type attributesMapType = { name: string; value: string }[];
 
@@ -68,6 +68,7 @@ export class TimeSlotDoctorService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
+    public jsonHelperService: JsonHelperService,
   ) {
   }
 
@@ -202,7 +203,7 @@ export class TimeSlotDoctorService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId || this.state$$.getValue().bookingRequestAttrs.MO_Id,
       bookAttributes:
-        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestAttrs,
       attributeNameWithAddress: (<TimeSlotDoctorsAttrs>this.screenService.component.attrs).ts.attributeNameWithAddress,

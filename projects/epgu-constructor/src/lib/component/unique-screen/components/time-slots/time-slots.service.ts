@@ -23,13 +23,13 @@ import {
 } from './time-slots.types';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 type attributesMapType = { name: string; value: string }[];
 
@@ -68,6 +68,7 @@ export class TimeSlotsService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
+    public jsonHelperService: JsonHelperService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -213,7 +214,7 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes:
-        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
