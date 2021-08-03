@@ -53,6 +53,7 @@ describe('TimeSlotsComponent', () => {
   let fixture: ComponentFixture<TimeSlotsComponent>;
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
+  let currentAnswersService: CurrentAnswersService;
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
   let datesToolsService: DatesToolsService;
   let store: ScreenStore;
@@ -93,6 +94,7 @@ describe('TimeSlotsComponent', () => {
 
   beforeEach(() => {
     timeSlotsService = TestBed.inject(TimeSlotsService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     datesToolsService = TestBed.inject(DatesToolsService);
     httpClient = TestBed.inject(HttpClient);
@@ -142,6 +144,42 @@ describe('TimeSlotsComponent', () => {
     fixture.detectChanges();
     const cachedAnswer = component['cachedAnswer'];
     expect(cachedAnswer?.department?.value).toBe('R7700028');
+  });
+
+  it('should set time slot on selection', () => {
+    const slot = {
+      areaId: 'Кабинет отдела',
+      slotId: 'a7164f5b-c5d6-4d47-9478-dcab86882695',
+      slotTime: new Date('2021-03-20T10:00:00.000Z'),
+      timezone: '00:00Z',
+    };
+
+    expect(component.currentSlot).toBeFalsy();
+    expect(currentAnswersService.state).toBeFalsy();
+
+    component.chooseTimeSlot(slot);
+
+    expect(component.currentSlot).toEqual(slot);
+    expect(currentAnswersService.state).toEqual(slot);
+  });
+
+  it('should clear time slot on the same slot selection', () => {
+    const slot = {
+      areaId: 'Кабинет отдела',
+      slotId: 'a7164f5b-c5d6-4d47-9478-dcab86882695',
+      slotTime: new Date('2021-03-20T10:00:00.000Z'),
+      timezone: '00:00Z',
+    };
+
+    component.chooseTimeSlot(slot);
+
+    expect(component.currentSlot).toEqual(slot);
+    expect(currentAnswersService.state).toEqual(slot);
+
+    component.chooseTimeSlot(slot);
+
+    expect(component.currentSlot).toEqual(null);
+    expect(currentAnswersService.state).toEqual(null);
   });
 
   it('checkDateRestrictions with mock\'s restrictions', () => {
