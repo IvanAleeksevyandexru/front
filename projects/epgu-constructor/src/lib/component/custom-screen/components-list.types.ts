@@ -147,6 +147,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   labelHint?: string;
   lockedValue?: boolean;
   lookupDefaultValue?: string | number;
+  lookupFilterPath?: string;
   mappingParams?: { idPath: string; textPath: string; isRoot: boolean };
   maskOptions?: NumberMaskOptions;
   maxDate?: string;

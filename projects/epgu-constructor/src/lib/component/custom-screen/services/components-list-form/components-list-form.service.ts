@@ -36,6 +36,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
+import { get } from 'lodash';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -148,7 +149,7 @@ export class ComponentsListFormService {
 
   public patch(component: CustomComponent): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const { defaultIndex = undefined, lookupDefaultValue = undefined } = component.attrs;
+    const { defaultIndex = undefined, lookupDefaultValue = undefined, lookupFilterPath = undefined } = component.attrs;
     const noValue = !component.value;
     const hasDefaultIndex = defaultIndex !== undefined;
     const hasDefaultValue = lookupDefaultValue !== undefined;
@@ -164,7 +165,7 @@ export class ComponentsListFormService {
     } else if (hasDefaultIndex && noValue && !isDropdownLike) {
       this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
     } else if (hasDefaultValue && noValue && isDictionaryLike) {
-      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue);
+      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue, lookupFilterPath);
     } else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
@@ -468,10 +469,22 @@ export class ComponentsListFormService {
     component: CustomComponent,
     control: AbstractControl,
     defaultValue: string | number,
+    lookupFilterPath: string,
   ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
     const key: string = getDictKeyByComp(component);
-    const value: ListItem = dicts[key]?.list.find(({ id }) => id === defaultValue);
+    const isRef = String(defaultValue).includes('$');
+    const compareValue = isRef ? String(defaultValue).replace(/[&/\\#,+()$~%'":*?<>{}]/g, '') : defaultValue;
+
+    let value: ListItem = undefined;
+
+    if (lookupFilterPath) {
+      value = dicts[key]?.list.find((item: ListItem) => 
+        get(item, lookupFilterPath) === (isRef ? get(this.screenService.getStore(), compareValue) : compareValue)
+      );
+    } else {
+      value = dicts[key]?.list.find(({ id }) => id === defaultValue);
+    }
 
     if (value) {
       control.get('value').patchValue(value);
