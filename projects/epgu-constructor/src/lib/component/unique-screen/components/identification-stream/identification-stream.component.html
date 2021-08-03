@@ -1,18 +1,5 @@
-<epgu-cf-ui-screen-container  *ngIf="!isMobile"
-                              [show-nav]="screenService.showNav$ | async"
-                              [class.screen-container-mt]="!(screenService.showNav$ | async)">
-  <div class="screen-body">
-    <epgu-cf-ui-constructor-screen-pad >
-      <p class='block--content-centered mb-24' ><img src='https://gu-st.ru/content/catalog/new/check_in_3_hands.svg'  class='width--auto'/></p>
-      <div class="error-title-message mb-16">Чтобы продолжить, понадобится камера</div>
-      <div class="error-description-message mb-24">Для заключительного этапа подтверждения личности необходимо снять короткое видео в реальном времени. Зайдите на Госуслуги с телефона или планшета. Черновик заявления будет в личном кабинете: вы начнете процедуру сразу с третьего шага</div>
-      <div class="info-container"><lib-button (click)="navigationService.redirectToHome()">На главную</lib-button></div>
-    </epgu-cf-ui-constructor-screen-pad>
-
-  </div>
-</epgu-cf-ui-screen-container>
 <epgu-cf-ui-screen-container
-  *ngIf="isMobile"
+
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >

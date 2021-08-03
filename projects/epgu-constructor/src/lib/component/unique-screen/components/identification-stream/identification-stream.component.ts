@@ -1,12 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { concatMap, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import {
-  ConfigService,
-  DeviceDetectorService,
-  ModalService,
-  UnsubscribeService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
@@ -46,7 +41,6 @@ export class IdentificationStreamComponent {
     action: DTOActionAction.getNextStep,
     type: ActionType.nextStep,
   };
-  isMobile = this.deviceDetectorService.isMobile;
 
   constructor(
     public screenService: ScreenService,
@@ -59,7 +53,6 @@ export class IdentificationStreamComponent {
     private actionService: ActionService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
-    private deviceDetectorService: DeviceDetectorService,
   ) {}
 
   mnemonic(): string {
