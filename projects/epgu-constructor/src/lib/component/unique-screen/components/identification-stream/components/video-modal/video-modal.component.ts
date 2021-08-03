@@ -38,6 +38,16 @@ export class VideoModalComponent extends ModalBaseComponent implements AfterView
     this.luna.checkLiveness();
   }
 
+  close(): void {
+    if (this.luna?.video) {
+      const stream = this.luna.video.srcObject as MediaStream;
+      stream?.getTracks().forEach((track) => stream.removeTrack(track));
+
+      this.luna.ws?.close(1000);
+    }
+    this.closeModal();
+  }
+
   onSuccess(result: LunaPassSuccess): void {
     try {
       const frameResult: LunaPassFrameResult = JSON.parse(
@@ -51,12 +61,7 @@ export class VideoModalComponent extends ModalBaseComponent implements AfterView
           ),
         });
       }
-      this.closeModal();
-      if (this.luna.video) {
-        this.luna.video.pause();
-        this.luna.video.srcObject = null;
-        this.luna.ws.close(0);
-      }
+      this.close();
     } catch (e) {
       this.logger.error([e]);
     }
