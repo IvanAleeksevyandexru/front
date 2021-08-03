@@ -44,9 +44,13 @@ import { MedicalReferralsListModule } from './components/medical-referrals-list/
 import { DatePeriodModule } from './components/date-period/date-period.module';
 import { PaymentWayModule } from './components/payment-way/payment-way.module';
 import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-doctors.module';
+import { IdentificationUploadScreenModule } from './components/identification-upload-screen/identification-upload-screen.module';
+import { IdentificationStreamModule } from './components/identification-stream/identification-stream.module';
 
 @NgModule({
   imports: [
+    IdentificationStreamModule,
+    IdentificationUploadScreenModule,
     BaseModule,
     WebcamShootModule,
     ModalModule,
@@ -82,7 +86,7 @@ import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-
     MedicalReferralsListModule,
     PaymentWayModule,
     DatePeriodModule,
-    TimeSlotDoctorsModule
+    TimeSlotDoctorsModule,
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -115,7 +119,7 @@ import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-
     MedicalReferralsListModule,
     DatePeriodModule,
     PaymentWayModule,
-    TimeSlotDoctorsModule
+    TimeSlotDoctorsModule,
   ],
   providers: [
     WebcamService,

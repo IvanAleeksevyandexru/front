@@ -1,0 +1,68 @@
+<div class="photo-editor-modal">
+  <div class="photo-editor-modal__header">
+    <a class="modal__close" (click)="closeModal()"></a>
+    <h4 class="modal__title">Просмотр фото</h4>
+  </div>
+  <div class="photo-editor-modal__body-scroll">
+    <div class="photo-editor-modal__body">
+      <div class="photo-editor__container">
+        <div *ngIf="!isPhoneSize" class="photo-editor__moving-hint">
+          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/move-icon.svg" alt="" />
+          <span>Перетащите фото,<br />чтобы изменить<br />положение</span>
+        </div>
+        <div class="photo-editor__cropper-container" (resized)="onResized($event)">
+          <div
+            class="photo-editor__cropper"
+            [style.width.px]="cropConfig.width"
+            [style.height.px]="cropConfig.height"
+            [class.mobile]="isPhoneSize"
+          >
+            <ly-img-cropper
+              #cropper
+              class="photo-editor__cropper-lib"
+              [config]="cropConfig"
+              [(scale)]="scale"
+              (ready)="imageLoaded()"
+            ></ly-img-cropper>
+          </div>
+          <div *ngIf="cropper.isLoaded" class="photo-editor__actions">
+            <button class="photo-editor__button" (click)="cropper.zoomOut()">
+              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/zoom-out.svg" alt="" />
+            </button>
+            <epgu-constructor-file-upload-slider
+              class="photo-editor__slider"
+              [max]="1"
+              [min]="cropper.minScale"
+              [(value)]="scale"
+            >
+            </epgu-constructor-file-upload-slider>
+            <button class="photo-editor__button" (click)="cropper.zoomIn()">
+              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/zoom-in.svg" alt="" />
+            </button>
+            <button class="photo-editor__button" (click)="cropper.rotate(90)">
+              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/rotate.svg" alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-editor-modal__footer">
+        <div *ngIf="errorTextIsShown" class="photo-editor-modal__error-text">
+          <span *ngFor="let error of imageErrors">
+            {{ imageErrorText[error[0]]?.title }}.
+            {{ imageErrorText[error[0]]?.text }}
+            {{ error[1] || imageErrorText[error[0]]?.textRules }}
+          </span>
+        </div>
+        <div class="photo-editor-modal__buttons">
+          <lib-button class="photo-editor-modal__button" color="white" (click)="takeAnotherPhoto()"
+            >Переснять
+          </lib-button>
+          <lib-button class="photo-editor-modal__button" (click)="saveAndExit()"
+            >Отправить
+          </lib-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
