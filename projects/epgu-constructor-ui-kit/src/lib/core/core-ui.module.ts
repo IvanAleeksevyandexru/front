@@ -20,7 +20,7 @@ import { HttpCancelService } from './interceptor/http-cancel/http-cancel.service
 import { SessionService } from './services/session/session.service';
 import { FocusManagerService } from './services/focus-manager/focus-manager.service';
 import { DatesToolsService } from './services/dates-tools/dates-tools.service';
-import { UtilsService } from './services/utils/utils.service';
+import { DownloadService } from './services/download/download.service';
 import { ModalService } from '../modal/modal.service';
 import { HealthInterceptor } from './interceptor/health/health.interceptor';
 import { ConfigApiService } from './services/config-api/config-api.service';
@@ -30,8 +30,9 @@ import { GlobalErrorHandler } from './services/global-error/global-error.service
 import { ErrorsInterceptor } from './interceptor/errors/errors.interceptor';
 import { AddressesToolsService } from './services/addresses-tools/addresses-tools.service';
 import { HealthService } from './services/health/health.service';
-import { TypeHelperService } from './services/type-helper/type-helper.service';
+import { ObjectHelperService } from './services/object-helper/object-helper.service';
 import { WordTransformService } from './services/word-transform/word-transform.service';
+import { ServiceNameService } from './services/service-name/service-name.service';
 
 @NgModule({
   providers: [
@@ -51,12 +52,13 @@ import { WordTransformService } from './services/word-transform/word-transform.s
     FocusManagerService,
     DatesToolsService,
     HttpClient,
-    UtilsService,
-    TypeHelperService,
+    DownloadService,
+    ObjectHelperService,
     WordTransformService,
     TracingService,
     AddressesToolsService,
     HealthService,
+    ServiceNameService,
     WINDOW_PROVIDERS,
     {
       provide: ErrorHandler,

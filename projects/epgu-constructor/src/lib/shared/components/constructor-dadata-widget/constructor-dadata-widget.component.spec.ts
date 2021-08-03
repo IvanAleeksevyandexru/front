@@ -5,8 +5,8 @@ import { ValidationShowOn } from '@epgu/epgu-lib';
 import { CoreModule } from '../../../core/core.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDadataWidgetComponent } from './constructor-dadata-widget.component';
 import { BaseModule } from '../../base.module';
 import {
@@ -27,7 +27,7 @@ describe('ConstructorDadataWidgetComponent', () => {
       imports: [CoreModule, BaseModule, RouterTestingModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         UnsubscribeService,

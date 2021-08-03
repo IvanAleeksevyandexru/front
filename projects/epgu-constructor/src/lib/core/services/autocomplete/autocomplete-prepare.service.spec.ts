@@ -10,13 +10,13 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
@@ -158,8 +158,8 @@ describe('AutocompletePrepareService', () => {
         CurrentAnswersService,
         MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,

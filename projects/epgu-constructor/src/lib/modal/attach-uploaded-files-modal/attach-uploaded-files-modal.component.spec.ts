@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceDetectorServiceStub, TypeHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorServiceStub, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -14,7 +14,7 @@ import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.i
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
@@ -78,8 +78,8 @@ describe('AttachUploadedFilesModalComponent', () => {
         AutocompleteService,
         AutocompleteApiService,
         AutocompletePrepareService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         CurrentAnswersService,
         JsonHelperService,
       ],

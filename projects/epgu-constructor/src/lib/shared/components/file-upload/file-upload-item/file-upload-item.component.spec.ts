@@ -25,8 +25,8 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteApiServiceStub } from '../../../../core/services/autocomplete/autocomplete-api.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -136,7 +136,7 @@ describe('FileUploadItemComponent', () => {
         CompressionService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },

@@ -8,8 +8,8 @@ import {
   LocalStorageServiceStub,
   ConfigService,
   LoggerService,
-  UtilsService,
-  DatesToolsService, TypeHelperService,
+  DownloadService,
+  DatesToolsService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
@@ -38,8 +38,8 @@ describe('PrepareComponentsService', () => {
     TestBed.configureTestingModule({
       providers: [
         CachedAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         PrepareComponentsService,
         DatesToolsService,
         DictionaryToolsService,

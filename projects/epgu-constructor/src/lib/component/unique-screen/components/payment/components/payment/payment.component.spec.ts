@@ -8,7 +8,7 @@ import {
   SessionService,
   SessionStorageService,
   SessionStorageServiceStub,
-  TypeHelperService
+  ObjectHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -20,7 +20,7 @@ import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -85,8 +85,8 @@ describe('PaymentComponent', () => {
         NavigationService,
         NavigationModalService,
         DeviceDetectorService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         HtmlRemoverService,
         AutocompleteApiService,
         ModalService,

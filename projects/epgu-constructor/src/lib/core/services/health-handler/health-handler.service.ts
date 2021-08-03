@@ -22,9 +22,8 @@ import {
 import {
   ConfigService,
   HealthHandler,
-  UtilsService,
   HealthService,
-  WordTransformService, TypeHelperService
+  WordTransformService, ObjectHelperService, ServiceNameService
 } from '@epgu/epgu-constructor-ui-kit';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
@@ -43,9 +42,9 @@ export class HealthHandlerService implements HealthHandler {
 
   constructor(
     private health: HealthService,
-    private utils: UtilsService,
+    private serviceNameService: ServiceNameService,
     private wordTransformService: WordTransformService,
-    private typeHelperService: TypeHelperService,
+    private objectHelperService: ObjectHelperService,
     private configService: ConfigService,
   ) {}
 
@@ -94,10 +93,10 @@ export class HealthHandlerService implements HealthHandler {
     request: HttpRequest<T>,
     serviceName: string,
   ): string[] {
-    const splittedUrl = this.utils.getSplittedUrl(request.url).map((el) => el.toLowerCase());
+    const splittedUrl = this.serviceNameService.getSplittedUrl(request.url).map((el) => el.toLowerCase());
     const lastUrlPart = splittedUrl.slice(-1)[0];
 
-    serviceName = request.url.includes(DICTIONARY) ? `${DICTIONARY}_${uuidv4()}` : this.utils.getServiceName(request.url);
+    serviceName = request.url.includes(DICTIONARY) ? `${DICTIONARY}_${uuidv4()}` : this.serviceNameService.getServiceName(request.url);
     serviceName =
       serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
     serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
@@ -105,7 +104,7 @@ export class HealthHandlerService implements HealthHandler {
     this.regionCode = this.getRegionCode(request?.body?.filter);
     this.startMeasureHealth(serviceName);
 
-    if (this.typeHelperService.isDefined(this.regionCode)) {
+    if (this.objectHelperService.isDefined(this.regionCode)) {
       this.cachedRegionId = this.regionCode;
     }
 
@@ -113,7 +112,7 @@ export class HealthHandlerService implements HealthHandler {
       const requestBody = request?.body || {};
 
       if (
-        this.typeHelperService.isDefined(requestBody['organizationId']) &&
+        this.objectHelperService.isDefined(requestBody['organizationId']) &&
         Array.isArray(requestBody['organizationId'])
       ) {
         this.slotInfo['organizationId'] = requestBody['organizationId'][0];
@@ -147,13 +146,13 @@ export class HealthHandlerService implements HealthHandler {
       const { display } = scenarioDto;
       const { components } = display;
 
-      const orderId = this.typeHelperService.isDefined(scenarioDto.orderId)
+      const orderId = this.objectHelperService.isDefined(scenarioDto.orderId)
         ? scenarioDto.orderId
         : callBackOrderId as number;
       const timeSlotValue = components.filter((component) => component.type === 'TimeSlot')[0]
         ?.value;
 
-      if (this.typeHelperService.isDefined(timeSlotValue) && typeof timeSlotValue === 'string') {
+      if (this.objectHelperService.isDefined(timeSlotValue) && typeof timeSlotValue === 'string') {
         try {
           const slot = JSON.parse(timeSlotValue);
           const department = JSON.parse(slot.department);
@@ -194,11 +193,11 @@ export class HealthHandlerService implements HealthHandler {
       const { total } = responseBody;
       const dictionaryPayload: DictionaryPayload = {
         empty: total === 0,
-        dict: this.typeHelperService.isDefined(lastUrlPart)
+        dict: this.objectHelperService.isDefined(lastUrlPart)
           ? lastUrlPart.toUpperCase()
           : undefined,
         region: this.regionCode,
-        regdictname: this.typeHelperService.isDefined(this.regionCode)
+        regdictname: this.objectHelperService.isDefined(this.regionCode)
           ? RegionSource.Okato
           : RegionSource.Gosbar,
       };
@@ -221,7 +220,7 @@ export class HealthHandlerService implements HealthHandler {
 
       if (
         serviceName === GET_SLOTS_MODIFIED &&
-        this.typeHelperService.isDefined(responseBody['slots']) &&
+        this.objectHelperService.isDefined(responseBody['slots']) &&
         Array.isArray(responseBody['slots'])
       ) {
         this.slotInfo['slotsCount'] = responseBody['slots'].length;
@@ -234,7 +233,7 @@ export class HealthHandlerService implements HealthHandler {
       this.endMeasureHealth(
         serviceName,
         RequestStatus.Succeed,
-        this.utils.filterIncorrectObjectFields(payload),
+        this.objectHelperService.filterIncorrectObjectFields(payload),
       );
     }
   }
@@ -256,7 +255,7 @@ export class HealthHandlerService implements HealthHandler {
       this.endMeasureHealth(
         serviceName,
         RequestStatus.Failed,
-        this.utils.filterIncorrectObjectFields({
+        this.objectHelperService.filterIncorrectObjectFields({
           id: this.commonParams.id,
           name: this.commonParams.name,
           orderId: this.commonParams.orderId,
@@ -269,7 +268,7 @@ export class HealthHandlerService implements HealthHandler {
       this.endMeasureHealth(
         serviceName,
         RequestStatus.Succeed,
-        this.utils.filterIncorrectObjectFields({
+        this.objectHelperService.filterIncorrectObjectFields({
           id: this.commonParams.id,
           name: this.commonParams.name,
           orderId: this.commonParams.orderId,
@@ -313,7 +312,7 @@ export class HealthHandlerService implements HealthHandler {
     this.endMeasureHealth(
       serviceName,
       RequestStatus.Succeed,
-      this.utils.filterIncorrectObjectFields(commonParams),
+      this.objectHelperService.filterIncorrectObjectFields(commonParams),
     );
   }
 
@@ -328,7 +327,7 @@ export class HealthHandlerService implements HealthHandler {
       const keyCode = this.getErrorByKey(responseBody?.error, 'code')
         ? responseBody?.error?.code
         : responseBody?.error?.errorCode;
-      const errorMessage = this.typeHelperService.isDefined(responseBody?.error?.message)
+      const errorMessage = this.objectHelperService.isDefined(responseBody?.error?.message)
         ? responseBody.error.message
         : responseBody?.error?.errorMessage;
 
@@ -342,7 +341,7 @@ export class HealthHandlerService implements HealthHandler {
     this.endMeasureHealth(
       serviceName,
       dictionaryError ? RequestStatus.Failed : RequestStatus.Succeed,
-      this.utils.filterIncorrectObjectFields({ ...this.commonParams, ...dictionaryParams }),
+      this.objectHelperService.filterIncorrectObjectFields({ ...this.commonParams, ...dictionaryParams }),
     );
   }
 
@@ -351,8 +350,8 @@ export class HealthHandlerService implements HealthHandler {
     orderId: string | number | undefined,
   ): void {
     if (
-      this.typeHelperService.isDefined(health) &&
-      this.typeHelperService.isDefined(health?.dictionaries) &&
+      this.objectHelperService.isDefined(health) &&
+      this.objectHelperService.isDefined(health?.dictionaries) &&
       health.dictionaries.length > 0
     ) {
       const { dictionaries } = health;
@@ -362,7 +361,7 @@ export class HealthHandlerService implements HealthHandler {
         this.endMeasureHealth(
           serviceName,
           RequestStatus.Succeed,
-          this.utils.filterIncorrectObjectFields({
+          this.objectHelperService.filterIncorrectObjectFields({
             id: serviceName,
             status: dictionary.status,
             method: dictionary.method,
@@ -375,19 +374,19 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private checkUrlForExceptions(url: string): boolean {
-    const splitByDirLocation = this.utils.getSplittedUrl(url);
+    const splitByDirLocation = this.serviceNameService.getSplittedUrl(url);
     return splitByDirLocation.some((name) => EXCEPTIONS.includes(name));
   }
 
   private isThatDictionary(responseBody: UnspecifiedDTO): boolean {
     return (
-      this.typeHelperService.isDefined(responseBody?.fieldErrors) && this.typeHelperService.isDefined(responseBody.total)
+      this.objectHelperService.isDefined(responseBody?.fieldErrors) && this.objectHelperService.isDefined(responseBody.total)
     );
   }
 
   private getErrorByKey(error: undefined | DictionaryError, key: string): boolean {
     return (
-      this.typeHelperService.isDefined(error) && this.typeHelperService.isDefined(error[key]) && Number(error[key]) !== 0
+      this.objectHelperService.isDefined(error) && this.objectHelperService.isDefined(error[key]) && Number(error[key]) !== 0
     );
   }
 
@@ -400,24 +399,24 @@ export class HealthHandlerService implements HealthHandler {
 
   private isValidScenarioDto(dto: { scenarioDto: ScenarioDto }): boolean {
     return (
-      this.typeHelperService.isDefined(dto) &&
-      this.typeHelperService.isDefined(dto.scenarioDto) &&
-      this.typeHelperService.isDefined(dto.scenarioDto.display)
+      this.objectHelperService.isDefined(dto) &&
+      this.objectHelperService.isDefined(dto.scenarioDto) &&
+      this.objectHelperService.isDefined(dto.scenarioDto.display)
     );
   }
 
   private isValidHttpEntity<T>(
     payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse,
   ): boolean {
-    return this.utils.isValidHttpUrl(payload['url']) && !this.checkUrlForExceptions(payload['url']);
+    return this.serviceNameService.isValidHttpUrl(payload['url']) && !this.checkUrlForExceptions(payload['url']);
   }
 
   private getFilterType(
     filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
   ): FilterType {
     if (
-      this.typeHelperService.isDefined(filter['union']) &&
-      this.typeHelperService.isDefined(filter['union']['subs']) &&
+      this.objectHelperService.isDefined(filter['union']) &&
+      this.objectHelperService.isDefined(filter['union']['subs']) &&
       Array.isArray(filter['union']['subs'])
     ) {
       return FilterType.UnionKind;
@@ -432,11 +431,11 @@ export class HealthHandlerService implements HealthHandler {
     filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
   ): boolean {
     if (
-      this.typeHelperService.isDefined(filter) &&
-      this.typeHelperService.isDefined(filter?.simple) &&
-      this.typeHelperService.isDefined(filter?.simple?.value) &&
-      this.typeHelperService.isDefined(filter?.simple?.attributeName) &&
-      this.typeHelperService.isDefined(filter?.simple?.value?.asString)
+      this.objectHelperService.isDefined(filter) &&
+      this.objectHelperService.isDefined(filter?.simple) &&
+      this.objectHelperService.isDefined(filter?.simple?.value) &&
+      this.objectHelperService.isDefined(filter?.simple?.attributeName) &&
+      this.objectHelperService.isDefined(filter?.simple?.value?.asString)
     ) {
       return true;
     }
@@ -447,19 +446,19 @@ export class HealthHandlerService implements HealthHandler {
   private getRegionCode(
     filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
   ): string | undefined {
-    if (this.typeHelperService.isDefined(filter)) {
+    if (this.objectHelperService.isDefined(filter)) {
       const filterType = this.getFilterType(filter);
 
       switch (filterType) {
         case FilterType.UnionKind: {
           const { subs } = (filter as DictionaryFilters['filter']).union;
           const areSubsValid = subs.every((sub: DictionarySubFilter) =>
-            this.typeHelperService.isDefined(sub?.simple),
+            this.objectHelperService.isDefined(sub?.simple),
           );
 
           if (areSubsValid) {
             const subFilter: DictionarySubFilter[] = subs.filter((sub: DictionarySubFilter) => {
-              if (!this.typeHelperService.isDefined(sub?.simple?.attributeName)) {
+              if (!this.objectHelperService.isDefined(sub?.simple?.attributeName)) {
                 return false;
               }
 

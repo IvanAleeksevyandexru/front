@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TypeHelperService } from '../type-helper/type-helper.service';
+import { ObjectHelperService } from '../object-helper/object-helper.service';
 
 interface TranslitAlphabet {
   [propName: string]: string;
@@ -44,14 +44,14 @@ const LETTERS = {
 
 @Injectable()
 export class WordTransformService {
-  constructor (private typeHelperService: TypeHelperService) {}
+  constructor (private objectHelperService: ObjectHelperService) {}
 
   /**
    * Converts cyrillic to latin
    * @param word
    */
   public cyrillicToLatin(word: string): string {
-    if (!this.typeHelperService.isDefined(word)) {
+    if (!this.objectHelperService.isDefined(word)) {
       return undefined;
     }
 

@@ -20,7 +20,7 @@ import {
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
   Navigation,
@@ -63,7 +63,7 @@ export class ActionService {
     private screenService: ScreenService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
-    private utilsService: UtilsService,
+    private downloadService: DownloadService,
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private sessionStorageService: SessionStorageService,
@@ -310,7 +310,7 @@ export class ActionService {
     this.sendAction<string>(action)
       .pipe(filter((response) => !response.errorList.length))
       .subscribe(
-        ({ responseData }) => this.utilsService.downloadFile(responseData),
+        ({ responseData }) => this.downloadService.downloadFile(responseData),
         (error) => console.log(error),
       );
   }
