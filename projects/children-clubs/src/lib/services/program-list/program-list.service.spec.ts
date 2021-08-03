@@ -12,7 +12,7 @@ import { ApiService } from '../api/api.service';
 import { ApiServiceStub } from '../api/api.service.stub';
 import { StateService } from '../state/state.service';
 import { StateServiceStub } from '../state/state.service.stub';
-import { BaseProgram } from '../../typings';
+import { baseProgramStub } from '../../stubs/projects.stub';
 
 describe('ProgramListService', () => {
   let service: ProgramListService;
@@ -38,20 +38,18 @@ describe('ProgramListService', () => {
     service = TestBed.inject(ProgramListService);
   });
 
-  const program: BaseProgram = {
-    uuid: '1',
-    name: '1',
-    partnerName: '1',
-    address: '1',
-    imageUrl: '1',
-    imageSmallUrl: '1',
-    available: true,
-    maxAge: 90,
-    minAge: 20,
-    financingTypes: []
-  };
+  const programsArray = new Array(13).fill(baseProgramStub);
 
-  const programsArray = new Array(13).fill(program);
+  it('should fill data behavior subject on subscribe', (done) => {
+    const spyAdd = jest.spyOn(service, 'add');
+
+    service.load$.subscribe(() => {
+      expect(spyAdd).toHaveBeenCalled();
+      expect(service.loading$$.getValue()).toBe(false);
+      expect(service.data$$.getValue().length).toBe(18);
+      done();
+    });
+  });
 
   describe('getNextPage()', () => {
 
