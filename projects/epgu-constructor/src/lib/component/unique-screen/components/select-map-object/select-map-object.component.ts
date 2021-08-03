@@ -190,7 +190,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
-        this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
+        this.yandexMapService.selectMapObject(mapObject);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);

@@ -12,6 +12,7 @@ import {
   IFeatureItem,
   IYMapPoint,
   ObjectManager,
+  YMapItem,
 } from './yandex-map.interface';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
@@ -54,7 +55,7 @@ export class YandexMapService implements OnDestroy {
   public prepareFeatureCollection<T>(items: IYMapPoint<T>[]): IFeatureCollection<T> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item, index) => {
-      if (item.center) {
+      if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
           id: index,
@@ -160,9 +161,10 @@ export class YandexMapService implements OnDestroy {
   public setMapOptions(isMobile: boolean, options?): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.ymaps = (window as any).ymaps;
+    const mobileTop = (Number.parseInt(this.yaMapService.map.container.getElement().style.height))/3;
     this.yaMapService.map.controls.add('zoomControl', {
       position: {
-        top: isMobile ? 240 : 108,
+        top: isMobile ? mobileTop : 108,
         right: 10,
         bottom: 'auto',
         left: 'auto',
@@ -188,6 +190,21 @@ export class YandexMapService implements OnDestroy {
           }
         });
     }
+  }
+
+  public selectMapObject<T>(mapObject: YMapItem<T>): void {
+    if (!mapObject) return;
+    let chosenMapObject = this.getObjectById(mapObject.objectId);
+    if (!chosenMapObject) {
+      chosenMapObject = {
+        geometry: { type: 'Point', coordinates: [null, null] },
+        id: 1,
+        properties: { res: mapObject },
+        type: IFeatureTypes.Feature,
+      };
+      this.centerAllPoints();
+    }
+    this.centeredPlaceMark(chosenMapObject);
   }
 
   private createMapsObjectManager(OMSettings, urlTemplate: string, LOMSettings): ObjectManager {
