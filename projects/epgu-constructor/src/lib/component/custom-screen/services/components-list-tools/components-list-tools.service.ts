@@ -60,15 +60,6 @@ export class ComponentsListToolsService {
     return type === CustomScreenComponentTypes.DateInput;
   }
 
-  public isPhone(value): boolean {
-    const numberWithoutSymbols = value.replace(/[+()]/g, '');
-    return value.includes('+7') && !isNaN(Number(numberWithoutSymbols));
-  }
-
-  public getMaskedPhone(value): string {
-    return value.replace(/^([0-9+]{2})([0-9()]{5})([0-9]{3})([0-9]{2})([0-9]{2})$/, '$1 $2 $3 $4 $5');
-  }
-
   private parseValue(
     value: string,
     isDateAndValue: boolean,
@@ -92,8 +83,6 @@ export class ComponentsListToolsService {
       return this.typeCastService.toBoolean(value);
     } else if (componentType === CustomScreenComponentTypes.DropDownDepts) {
       return ''; // Подавляем значение value т.к. оно используется для вставки данных в фильтр
-    } else if (this.isPhone(value)) {
-      return this.getMaskedPhone(value);
     } else {
       return value;
     }
