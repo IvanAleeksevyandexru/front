@@ -21,7 +21,6 @@ import {
   ComponentBaloonContentDto,
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
-import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line max-len
 import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
 
@@ -204,17 +203,6 @@ export class SelectMapObjectService implements OnDestroy {
     return this.filteredDictionaryItems.find((object) => object.value === value);
   }
 
-  public findObjectByObjectId(objectId: number): DictionaryYMapItem {
-    let ret;
-    this.filteredDictionaryItems.find((object) => {
-      return object.children.find((child: DictionaryYMapItem) => {
-        ret = child.objectId === objectId && child;
-        return ret;
-      });
-    });
-    return ret;
-  }
-
   public centeredPlaceMarkByObjectValue(value: string): void {
     const valueFromDict = this.findObjectByValue(value);
     if (valueFromDict?.center) {
@@ -255,38 +243,21 @@ export class SelectMapObjectService implements OnDestroy {
     return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true }) as unknown as Observable<IuikFullDataResponse>;
   }
 
-  private getHashKey(center: [number, number]): string {
-    return (center[0] && center[1]) ? `${center[0]}$${center[1]}` : uuidv4();
-  }
-
   /**
    * Нормализует словарь под карту. Все точки с одинаковыми координатами сливает в одну заполняя массив children
    * @param dictionary - словарь для нормализации
    */
   private normalizeDictionaryForMap(dictionary: DictionaryResponseForYMap): void {
     const newItems = [];
-    const hashMap = {};
     dictionary.items.forEach((item: DictionaryYMapItem) => {
       if (!item.center) {
         return;
       }
-
-      const hashKey = this.getHashKey(item.center);
       // agreement - чекбокс согласия с условиями услуг для загсов
       const attrValues = item.attributeValues;
       item.agreement = attrValues.GET_CONSENT !== 'true';
-      if (hashMap[hashKey]) {
-        hashMap[hashKey].children.push(item);
-        item.children = hashMap[hashKey].children;
-        item.idForMap = hashMap[hashKey].idForMap;
-      } else {
-        item.idForMap = item.objectId;
-        item.children.push(item);
-        // expanded - флаг для развертывания секции когда есть залы
-        item.expanded = true;
-        newItems.push(item);
-        hashMap[hashKey] = item;
-      }
+      item.idForMap = item.objectId;
+      newItems.push(item);
     });
     this.dictionary.items = newItems;
     this.filteredDictionaryItems = newItems;
