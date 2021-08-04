@@ -123,10 +123,14 @@ export class ConfirmationModalComponent extends ModalBaseComponent
 
   setDefaultCloseAction(): void {
     if (this.showCloseButton) {
-      this.buttons.push({
-        label: 'Закрыть',
-        closeModal: true,
-      });
+      const defaultCloseLabel = 'Закрыть';
+
+      if (!this.buttons.some((button) => button.label === defaultCloseLabel && button.closeModal)) {
+        this.buttons.push({
+          label: defaultCloseLabel,
+          closeModal: true,
+        });
+      }
     }
   }
 

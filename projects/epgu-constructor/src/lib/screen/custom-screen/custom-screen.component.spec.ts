@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule } from '@epgu/epgu-lib';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import {
   CustomComponentOutputData,
@@ -138,7 +138,6 @@ describe('CustomScreenComponent', () => {
         header: 'header1',
         id: 'id1',
         name: 'name1',
-        submitLabel: 'label1',
         type: ScreenTypes.CUSTOM,
         terminal: true,
       };
@@ -286,7 +285,6 @@ describe('CustomScreenComponent', () => {
       header: 'header1',
       id: 'id1',
       name: 'name1',
-      submitLabel: 'label1',
       type: ScreenTypes.CUSTOM,
       terminal: true,
     };
@@ -326,7 +324,7 @@ describe('CustomScreenComponent', () => {
   describe('Submit button', () => {
     const selector = 'epgu-cf-ui-screen-container lib-button';
 
-    it('should be rendered if screenService.submitLabel is TRUE', () => {
+    it('should be rendered if has screenService.buttons', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeNull();
