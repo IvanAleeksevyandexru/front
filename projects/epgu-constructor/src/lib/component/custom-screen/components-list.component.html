@@ -1,6 +1,6 @@
 <form class="form">
   <ng-container *ngFor="let componentData of formService.form.controls; let idx = index">
-    <!--TODO: разобраться, почему с ngIf элекменты экрана мерцают-->
+    <!--класс find-item позволяет находить первые и последние видимые элементы класса form__item-->
     <p class="find-item"
       *ngIf="formService.shownElements[componentData.value?.id]?.isShown
         | showComponent: componentData.value?.attrs?.hidden">
