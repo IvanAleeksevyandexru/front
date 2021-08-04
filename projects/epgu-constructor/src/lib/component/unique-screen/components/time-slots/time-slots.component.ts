@@ -203,7 +203,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    */
   public chooseTimeSlot(slot: SlotInterface): void {
     if (this.currentSlot?.slotId === slot.slotId) {
-      this.clearDateSelection();
+      this.clearTimeSlotSelection();
     } else {
       this.currentSlot = slot;
       this.currentAnswersService.state = slot;
@@ -616,14 +616,21 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Метод очищает выбранные на календаре день и время
+   * Метод очищает выбранные в календаре день и время
    */
   private clearDateSelection(): void {
     this.date = null;
+    this.timeSlots = null;
+    this.clearTimeSlotSelection();
+    this.recalcDaysStyles();
+  }
+
+  /**
+   * Метод очищает выбранное в календаре время
+   */
+  private clearTimeSlotSelection(): void {
     this.currentSlot = null;
     this.currentAnswersService.state = null;
-    this.timeSlots = null;
-    this.recalcDaysStyles();
   }
 
   /**
