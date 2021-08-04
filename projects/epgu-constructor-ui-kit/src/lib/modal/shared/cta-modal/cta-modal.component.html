@@ -4,16 +4,8 @@
     <div *ngIf="showCrossButton" class="conf-modal__close icon-close" (click)="closeModal()"></div>
   </div>
   <div class="conf-modal__body" [class.preview]="preview">
-    <div class="wrap-scrollbar">
-      <perfect-scrollbar
-        #perfectScroll
-        class="perfect-scrollbar"
-        *ngIf="!isMobile && !isShortModal; else contentBlock"
-        [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
-        [config]="scrollConfig"
-      >
-        <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
-      </perfect-scrollbar>
+    <div #scroll class="wrap-scrollbar" *ngIf="!isMobile && !isShortModal; else contentBlock">
+      <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </div>
   </div>
   <div *ngIf="isButtonsOutsideContent && !isMobile" class="conf-modal__footer">

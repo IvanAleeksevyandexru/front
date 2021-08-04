@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  ElementRef,
+} from '@angular/core';
 
-import { PerfectScrollbarConfigInterface, PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
@@ -21,10 +27,9 @@ export class CtaModalComponent implements AfterViewInit {
   @Input() isButtonsOutsideContent = false;
   @Input() scrollTop = true;
 
-  @ViewChild('perfectScroll', { static: false }) perfectScroll: PerfectScrollbarComponent;
+  @ViewChild('scroll', { static: false }) scroll: ElementRef;
 
   public isMobile: boolean;
-  public scrollConfig: PerfectScrollbarConfigInterface = { suppressScrollX: true };
 
   constructor(
     private deviceDetector: DeviceDetectorService,
@@ -34,12 +39,12 @@ export class CtaModalComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.perfectScroll && this.scrollTop) {
+    if (this.scroll && this.scrollTop) {
       /* TODO Подумать над лучшей реализацией. Сейчас задержка необходима для корректной работы
       https://jira.egovdev.ru/secure/attachment/514868/514868_2021-07-06+12-03-52.mp4
       */
       setTimeout(() => {
-        this.perfectScroll.directiveRef.scrollToTop();
+        this.scroll.nativeElement.scrollIntoView();
       });
     }
   }
