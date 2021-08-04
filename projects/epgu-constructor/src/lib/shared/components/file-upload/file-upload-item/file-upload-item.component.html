@@ -79,7 +79,7 @@
                 class="fileupload__button-icon"
                 alt="Файл"
               />
-              Выбрать {{ plurals.uploadingFiles | pluralize: uploader.maxAmount }}
+              Выбрать {{plurals.uploadingFiles | pluralize: files.getValue().length + 1}}
             </button>
           </epgu-constructor-uploader-button>
         </div>
