@@ -28,7 +28,7 @@ export class MaskTransformDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     const input = this.elRef.nativeElement.querySelector('input');
 
-    if (input.value.length > 0) {
+    if (input?.value.length > 0) {
       this.ngControl.control.patchValue(input.value, { emitEvent: false });
       this.ngControl.control.updateValueAndValidity();
     }
