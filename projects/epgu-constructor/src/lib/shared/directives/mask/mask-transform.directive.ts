@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { MASKS, NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { NgControl } from '@angular/forms';
 import { MaskTransformService } from './mask-transform.service';
@@ -6,13 +6,14 @@ import { MaskTransformService } from './mask-transform.service';
 @Directive({
   selector: '[epgu-constructor-mask-transform]',
 })
-export class MaskTransformDirective {
+export class MaskTransformDirective implements AfterViewInit {
   @Input('epgu-constructor-mask-transform') mask: string | string[];
   @Input() maskOptions?: Partial<NumberMaskOptions>;
 
   constructor(
-      private ngControl: NgControl,
-      private maskTransformService: MaskTransformService,
+    private elRef: ElementRef,
+    private ngControl: NgControl,
+    private maskTransformService: MaskTransformService,
   ) {}
 
   @HostListener('change', ['$event.target'])
@@ -24,4 +25,12 @@ export class MaskTransformDirective {
     }
   }
 
+  ngAfterViewInit(): void {
+    const input = this.elRef.nativeElement.querySelector('input');
+
+    if (input?.value.length > 0) {
+      this.ngControl.control.patchValue(input.value, { emitEvent: false });
+      this.ngControl.control.updateValueAndValidity();
+    }
+  }
 }
