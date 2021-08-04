@@ -3,7 +3,7 @@ import { MockModule } from 'ng-mocks';
 import { FieldListComponent } from './field-list.component';
 import {
   ImgPrefixerPipe,
-  TypeHelperService,
+  ObjectHelperService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -53,7 +53,7 @@ describe('FieldListComponent', () => {
         UnsubscribeService,
         CurrentAnswersService,
         JsonHelperService,
-        TypeHelperService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

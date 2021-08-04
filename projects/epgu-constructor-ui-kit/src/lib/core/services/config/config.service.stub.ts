@@ -41,6 +41,7 @@ export class ConfigServiceStub implements Config {
   _lookupQueryTimeoutMs = 42;
   _nsiSuggestDictionaryUrl = '';
   _suggestionsApiUrl = '';
+  _identificationApiUrl = 'http://localhost:8097/v1/identification';
 
   _isLoaded$ = of(false);
   _appPathMap = {};
@@ -249,6 +250,10 @@ export class ConfigServiceStub implements Config {
     return this._suggestionsApiUrl;
   }
 
+  get identificationApiUrl(): string {
+    return this._identificationApiUrl;
+  }
+
   initCore(): void {}
 
   set config(config: Config) {
@@ -280,5 +285,6 @@ export class ConfigServiceStub implements Config {
     this._zipkinEnv = config.zipkinEnv || '';
     this._showTraceIdOnError = config.isZipkinCascadeMode || false;
     this._showTraceIdOnError = config.showTraceIdOnError || false;
+    this._identificationApiUrl = config.identificationApiUrl || '';
   }
 }

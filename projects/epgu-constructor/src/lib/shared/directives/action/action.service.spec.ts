@@ -9,8 +9,8 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
@@ -181,7 +181,7 @@ const sendActionMock = of({
 
 describe('ActionService', () => {
   let actionService: ActionService;
-  let utilsService: UtilsService;
+  let downloadService: DownloadService;
   let navigationModalService: NavigationModalService;
   let navigationService: NavigationService;
   let screenService: ScreenService;
@@ -208,7 +208,7 @@ describe('ActionService', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -231,7 +231,7 @@ describe('ActionService', () => {
     screenService = TestBed.inject(ScreenService);
     actionService = TestBed.inject(ActionService);
     formPlayerService = TestBed.inject(FormPlayerService);
-    utilsService = TestBed.inject(UtilsService);
+    downloadService = TestBed.inject(DownloadService);
     navigationService = TestBed.inject(NavigationService);
     navigationModalService = TestBed.inject(NavigationModalService);
     localStorageService = TestBed.inject(LocalStorageService);
@@ -258,9 +258,9 @@ describe('ActionService', () => {
   });
 
   it('should call switchAction download', () => {
-    spyOn(utilsService, 'downloadFile').and.callThrough();
+    spyOn(downloadService, 'downloadFile').and.callThrough();
     actionService.switchAction(downloadAction, null);
-    expect(utilsService.downloadFile).toBeCalledTimes(1);
+    expect(downloadService.downloadFile).toBeCalledTimes(1);
   });
 
   it('should call switchAction prev modal', () => {

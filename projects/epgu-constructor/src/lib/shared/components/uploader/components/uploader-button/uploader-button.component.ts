@@ -16,6 +16,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploaderButtonComponent {
+  @Input() id?: string;
   @Input() accept: string;
   @Input() capture?: 'user' | 'environment';
   @Input() multiple = false;

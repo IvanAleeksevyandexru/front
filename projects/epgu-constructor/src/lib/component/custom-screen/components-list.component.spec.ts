@@ -19,7 +19,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   LocalStorageService,
-  LocalStorageServiceStub, HttpCancelService, TypeHelperService,
+  LocalStorageServiceStub, HttpCancelService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
@@ -44,7 +44,7 @@ import { AddressHelperService } from '../../shared/services/address-helper/addre
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
-import { UtilsService, HealthService, HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService, HealthService, HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormServiceStub } from './services/components-list-form/components-list-form.service.stub';
@@ -105,8 +105,8 @@ describe('ComponentsListComponent', () => {
         CurrentAnswersService,
         MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,

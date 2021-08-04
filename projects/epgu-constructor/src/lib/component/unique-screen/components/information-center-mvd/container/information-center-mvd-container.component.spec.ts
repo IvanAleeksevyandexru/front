@@ -7,10 +7,10 @@ import { InformationCenterMvdContainerComponent } from './information-center-mvd
 import { ScreenService } from '../../../../../screen/screen.service';
 import {
   UnsubscribeService,
-  UtilsService,
+  DownloadService,
   DatesToolsService,
   ConfigService,
-  LoggerService, TypeHelperService,
+  LoggerService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -80,8 +80,8 @@ describe('InformationCenterMvdContainerComponent', () => {
       ],
       providers: [
         UnsubscribeService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,

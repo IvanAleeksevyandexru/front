@@ -7,9 +7,9 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { LogicService } from '../service/logic.service';
 import {
   DatesToolsService,
-  TypeHelperService,
+  ObjectHelperService,
   UnsubscribeService,
-  UtilsService
+  DownloadService
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -50,8 +50,8 @@ describe('LogicComponent', () => {
         { provide: HookService, useClass: HookServiceStub },
         DictionaryToolsService,
         CurrentAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },

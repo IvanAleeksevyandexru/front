@@ -6,7 +6,7 @@ import { CachedAnswersService } from '../shared/services/cached-answers/cached-a
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore } from './screen.types';
-import { TypeHelperService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ObjectHelperService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -96,8 +96,8 @@ describe('ScreenService', () => {
         ScreenService,
         CachedAnswersService,
         CurrentAnswersService,
-        UtilsService,
-        TypeHelperService,
+        DownloadService,
+        ObjectHelperService,
         PrepareComponentsService,
         DateRefService,
         DatesToolsService,

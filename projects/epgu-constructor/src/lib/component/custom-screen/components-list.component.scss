@@ -34,20 +34,8 @@
       }
     }
     &[class*="grid"] {
-      &:last-child > * {
-        margin-bottom: $screen-pad-24 !important;
-      }
       .component-list-resolver {
         justify-content: flex-start;
-      }
-    }
-    &:last-child {
-      &::ng-deep > .component-list-resolver > * > *,
-      &::ng-deep > .component-list-resolver .component-item {
-        margin-bottom: 0;
-      }
-      ::ng-deep .doc-input {
-        margin-bottom: 0;
       }
     }
   }
@@ -84,13 +72,24 @@
       }
     }
   }
-  &__item:first-child::ng-deep {
-    .form__radio--block {
+  p.find-item {
+    display: none;
+  }
+  & > p:first-of-type + .form__item.show {
+    &::ng-deep .form__radio--block {
       margin-top: 0;
     }
   }
-  &__item:last-child::ng-deep {
-    .component-list-resolver {
+  & > p:last-of-type + .form__item.show {
+    &[class*="grid"] {
+      > * {
+        margin-bottom: $screen-pad-24 !important;
+      }
+    }
+    &::ng-deep > .component-list-resolver > * > *,
+    &::ng-deep > .component-list-resolver .component-item,
+    &::ng-deep .component-list-resolver,
+    ::ng-deep .doc-input {
       margin-bottom: 0;
     }
   }

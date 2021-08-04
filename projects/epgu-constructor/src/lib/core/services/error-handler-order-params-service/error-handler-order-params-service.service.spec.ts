@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { TypeHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
+import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 
 import {
   ErrorHandlerOrderParamsServiceService,
@@ -18,7 +18,7 @@ describe('ErrorHandlerOrderParamsServiceService', () => {
       providers: [
         ErrorHandlerOrderParamsServiceService,
         { provide: ScreenService, useClass: ScreenServiceStub },
-        TypeHelperService,
+        ObjectHelperService,
         WordTransformService,
       ],
     });

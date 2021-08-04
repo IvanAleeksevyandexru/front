@@ -12,7 +12,7 @@ import { ScreenModalService } from './screen-modal.service';
 import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
 import {
   DatesToolsService,
-  ERROR_HANDLER_ORDER_PARAMS_SERVICES, TypeHelperService,
+  ERROR_HANDLER_ORDER_PARAMS_SERVICES, ObjectHelperService,
   WordTransformService
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
@@ -71,7 +71,7 @@ describe('ScreenModalComponent', () => {
         CachedAnswersService,
         UnsubscribeService,
         WordTransformService,
-        TypeHelperService,
+        ObjectHelperService,
         DictionaryToolsService,
         RefRelationService,
         {

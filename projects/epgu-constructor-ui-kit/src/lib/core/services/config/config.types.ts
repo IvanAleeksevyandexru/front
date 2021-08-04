@@ -35,6 +35,7 @@ export type TimeSlotsApi = {
  * @property {string}staticDomainContentPath - путь до контента
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
+ * @property {string}identificationApiUrl - url до сервиса идентификации
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
@@ -65,6 +66,7 @@ export interface Config {
   lkUrl: string;
   lkApi: string;
   childrenClubsApi: string;
+  identificationApiUrl: string;
   yandexMapsApiKey: string;
   invitationUrl: string;
   staticDomainAssetsPath: string;
@@ -87,6 +89,7 @@ export interface Config {
   nsiSuggestDictionaryUrl?: string;
   lkuipElection?: string;
   appPathMap: AppPathMap;
+  wsIdentificationUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';
