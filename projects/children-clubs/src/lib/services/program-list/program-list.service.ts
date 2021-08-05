@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { BaseProgram, FocusFilter } from '../../typings';
+import { BaseProgram, Filters, FocusFilter } from '../../typings';
 import {
   map,
   shareReplay,
@@ -16,7 +16,6 @@ import { ListElement } from '@epgu/epgu-lib';
 import { StateService } from '../state/state.service';
 import { GroupFiltersModes, ChildrenClubsValue, ChildrenClubsState } from '../../children-clubs.types';
 import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
-import { Filters } from '../../../../../../dist/children-clubs/lib/typings';
 
 @Injectable()
 export class ProgramListService {
