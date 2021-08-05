@@ -33,3 +33,14 @@
   font-weight: $fw-regular;
   color: $color-summer-night;
 }
+
+@include desktops-down {
+  .filter-panel {
+    position: static;
+    width: auto;
+    z-index: 100;
+    ::ng-deep.container {
+      margin-top: 0px;
+    }
+  }
+}
