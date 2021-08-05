@@ -63,7 +63,9 @@ export class FormPlayerApiService {
   }
 
   public sendAction<T>(path: string, body: ActionRequestPayload): Observable<ActionApiResponse<T>> {
-    return this.http.post<ActionApiResponse<T>>(`${this.configService.apiUrl}/${path}`, body);
+    return this.http.post<ActionApiResponse<T>>(`${this.configService.apiUrl}/${path}`, body, {
+      withCredentials: true,
+    });
   }
 
   public navigate(

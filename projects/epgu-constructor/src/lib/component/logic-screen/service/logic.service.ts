@@ -3,13 +3,14 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angul
 import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 
-import { LocalStorageService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto, DictionaryOptions, LogicComponentAttrsDto, LogicComponents } from '@epgu/epgu-constructor-types';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CustomComponent } from '../../custom-screen/components-list.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Injectable()
 export class LogicService {
@@ -21,7 +22,7 @@ export class LogicService {
     private screenService: ScreenService,
     private dictionaryApiService: DictionaryApiService,
     private currentAnswersService: CurrentAnswersService,
-    private utils: UtilsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public fetch(
@@ -56,7 +57,7 @@ export class LogicService {
       dictionaryUrlType
     } = value;
 
-    const state = this.utils.tryToParseOrDefault(this.currentAnswersService.state);
+    const state = this.jsonHelperService.tryToParse(this.currentAnswersService.state, {});
     const store = {
       ...this.screenService.getStore(),
       applicantAnswers: {

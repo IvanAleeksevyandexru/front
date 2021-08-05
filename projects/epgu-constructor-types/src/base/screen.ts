@@ -18,7 +18,7 @@ export interface DisplayDto {
   name: string;
   header: string;
   submitLabel?: string; // TODO: depricated удалить после переезда на buttons
-  components: Array<ComponentDto>;
+  components: ComponentDto[];
   type: ScreenTypes;
   terminal: boolean;
   firstScreen?: boolean;
@@ -28,7 +28,7 @@ export interface DisplayDto {
   cssClass?: string;
   isSocialButtonsHidden?: boolean;
   displayCssClass?: string;
-  buttons?: Array<ScreenButton>;
+  buttons?: ScreenButton[];
   infoComponents?: string[];
   suggestion?: SuggestionGroup;
   hideBackButton?: boolean;

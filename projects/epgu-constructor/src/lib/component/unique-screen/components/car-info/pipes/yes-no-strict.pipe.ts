@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isBoolean } from '@epgu/epgu-constructor-ui-kit';
+import { isBoolean } from 'lodash';
 
 @Pipe({
   name: 'yesNoStrict',

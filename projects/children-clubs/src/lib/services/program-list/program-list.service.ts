@@ -7,9 +7,6 @@ import {
   shareReplay,
   switchMap,
   tap,
-  filter,
-  concatMap,
-  mapTo,
   distinctUntilChanged,
   catchError,
   pluck,
@@ -18,7 +15,7 @@ import { isEqual } from 'lodash';
 import { ListElement } from '@epgu/epgu-lib';
 import { StateService } from '../state/state.service';
 import { GroupFiltersModes, ChildrenClubsValue, ChildrenClubsState } from '../../children-clubs.types';
-import { AppStateQuery } from '@epgu/epgu-constructor-ui-kit';
+import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ProgramListService {
@@ -38,7 +35,7 @@ export class ProgramListService {
   get isFinish(): boolean {
     return this.isFinish$$.getValue();
   }
-  pageSize = 10000;
+  pageSize = 3;
 
   autoScroll$$ = new BehaviorSubject<boolean>(false);
   get autoScroll(): boolean {
@@ -50,6 +47,7 @@ export class ProgramListService {
 
   data$$ = new BehaviorSubject<BaseProgram[]>([]);
   data$ = this.data$$.asObservable();
+  paginatedData$ = new BehaviorSubject<BaseProgram[]>([]);
 
   public groupFiltersMode$: Observable<{
     isMap: boolean;
@@ -69,7 +67,7 @@ export class ProgramListService {
     return this.data$$.getValue();
   }
 
-  load$: Observable<void> = this.stateService.state$.pipe(
+  load$: Observable<BaseProgram[]> = this.stateService.state$.pipe(
     distinctUntilChanged(
       (prev, next) =>
         isEqual(prev?.programFilters, next?.programFilters) && prev.okato === next.okato,
@@ -95,28 +93,18 @@ export class ProgramListService {
     }),
     tap(() => this.reset()),
     switchMap((options) =>
-      this.page$$.pipe(
-        distinctUntilChanged(),
-        filter((page) => !this.isFinish && (page + 1) * this.pageSize > this.data.length),
-        concatMap((page) => {
-          this.loading$$.next(true);
-          return this.api
-            .getProgramList({
-              ...options,
-              page,
-              pageSize: this.pageSize,
-              okato: this.stateService.okato,
-              vendor: this.stateService.vendor,
-              nextSchoolYear: this.stateService.nextSchoolYear,
-            })
-            .pipe(
-              catchError((_) => of([])),
-              tap(() => this.loading$$.next(false)),
-              tap((data: BaseProgram[]) => this.add(data)),
-            );
-        }),
-        mapTo(null),
-      ),
+      this.api.getProgramList({
+        ...options,
+        page: 0,
+        pageSize: 100000,
+        okato: this.stateService.okato,
+        vendor: this.stateService.vendor,
+        nextSchoolYear: this.stateService.nextSchoolYear,
+      }).pipe(
+         catchError((_) => of([])),
+         tap(() => this.loading$$.next(false)),
+         tap((data: BaseProgram[]) => this.add(data))
+       )
     ),
     shareReplay(1),
   );
@@ -124,7 +112,7 @@ export class ProgramListService {
   constructor(
     private api: ApiService,
     private stateService: StateService,
-    private appStateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appStateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
 
   add(data: BaseProgram[]): void {
@@ -135,6 +123,7 @@ export class ProgramListService {
       this.finish();
     }
     this.data$$.next([...this.data].concat(data));
+    this.getNextPage();
   }
 
   isLoaded(): boolean {
@@ -146,13 +135,24 @@ export class ProgramListService {
   }
 
   getNextPage(): void {
-    if (!this.isFinish && !this.loading$$.getValue()) {
-      this.page$$.next(this.page$$.getValue() + 1);
+    const page = this.page$$.getValue() + 1;
+    const data = this.data$$.getValue();
+    const size = page * this.pageSize;
+    const length = data.length;
+    let result: BaseProgram[];
+    if (size > length) {
+      result = data.slice(size - this.pageSize, length);
+      this.isFinish$$.next(true);
+    } else {
+      result = data.slice(size - this.pageSize, size);
     }
+    this.paginatedData$.next(this.paginatedData$.getValue().concat(result));
+    this.page$$.next(page);
   }
 
   resetPagination(): void {
     this.page$$.next(0);
+    this.paginatedData$.next([]);
   }
 
   reset(): void {

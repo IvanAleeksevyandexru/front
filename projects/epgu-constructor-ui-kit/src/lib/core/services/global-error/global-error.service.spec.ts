@@ -4,13 +4,15 @@ import { HealthService } from '../health/health.service';
 import { GlobalErrorHandler } from './global-error.service';
 import { configureTestSuite } from 'ng-bullet';
 import { ERROR_HANDLER_ORDER_PARAMS_SERVICES } from './global-error.token';
-import { UtilsService } from '../utils/utils.service';
+import { DownloadService } from '../download/download.service';
 import { LoggerService } from '../logger/logger.service';
 import { HealthServiceStub } from '../../interceptor/health/health.service.stub';
 import { LoggerServiceStub } from '../logger/logger.service.stub';
-import { AppErrorHandlerOrderParamsServiceService } from '../../../app/app-error-handler-order-params-service/app-error-handler-order-params-service.service';
-import { AppStateQuery } from '../../../app/app-state/app-state.query';
-import { AppStateQueryStub } from '../../../app/app-state/app-state.query.stub';
+import { MicroAppErrorHandlerOrderParamsServiceService } from '../../../micro-app/micro-app-error-handler-order-params-service/micro-app-error-handler-order-params-service.service';
+import { MicroAppStateQuery } from '../../../micro-app/micro-app-state/micro-app-state.query';
+import { MicroAppStateQueryStub } from '../../../micro-app/micro-app-state/micro-app-state.query.stub';
+import { ObjectHelperService } from '../object-helper/object-helper.service';
+import { WordTransformService } from '../word-transform/word-transform.service';
 
 describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;
@@ -20,13 +22,15 @@ describe('GlobalErrorHandler', () => {
     TestBed.configureTestingModule({
       providers: [
         GlobalErrorHandler,
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
-        UtilsService,
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        DownloadService,
+        ObjectHelperService,
+        WordTransformService,
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         {
           provide: ERROR_HANDLER_ORDER_PARAMS_SERVICES,
-          useClass: AppErrorHandlerOrderParamsServiceService,
+          useClass: MicroAppErrorHandlerOrderParamsServiceService,
         },
       ],
     });

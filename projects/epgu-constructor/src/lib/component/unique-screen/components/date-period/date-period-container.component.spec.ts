@@ -16,6 +16,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatePeriodComponent } from './date-period/date-period.component';
 import { parseISO } from 'date-fns';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('DatePeriodContainerComponent', () => {
   let component: DatePeriodContainerComponent;
@@ -33,6 +34,7 @@ describe('DatePeriodContainerComponent', () => {
         CachedAnswersService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         DatesToolsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();

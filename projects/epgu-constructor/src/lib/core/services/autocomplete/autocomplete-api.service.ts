@@ -20,7 +20,7 @@ export class AutocompleteApiService {
   }
 
   public getSuggestionsFields(
-    fields: Array<string>,
+    fields: string[],
   ): Observable<ISuggestionApi[]> {
     const searchQuery = fields.join(',');
     const path = `${this.configService.suggestionsApiUrl}?fields=${searchQuery}`;

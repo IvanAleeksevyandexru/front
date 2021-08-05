@@ -12,10 +12,11 @@ import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../prepare-components/prepare-components.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { UniquenessErrorsService } from './uniqueness-errors.service';
+import { MockProvider } from 'ng-mocks';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('UniquenessErrorsService', () => {
   let service: UniquenessErrorsService;
@@ -32,16 +33,16 @@ describe('UniquenessErrorsService', () => {
         HttpHandler,
         ConfigService,
         LoggerService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         LocalStorageService,
         DatesToolsService,
-        DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
+        JsonHelperService,
       ],
     });
     service = TestBed.inject(UniquenessErrorsService);

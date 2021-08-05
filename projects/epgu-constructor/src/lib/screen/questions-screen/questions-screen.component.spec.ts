@@ -33,6 +33,7 @@ import {
   DTOActionAction,
   Clarifications,
 } from '@epgu/epgu-constructor-types';
+import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -101,6 +102,7 @@ describe('QuestionsScreenComponent', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        HtmlSelectService
       ],
     })
       .overrideComponent(QuestionsScreenComponent, {

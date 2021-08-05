@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const isSameValue = (compValue, value): boolean => {
   if (typeof compValue === 'string') {
@@ -27,7 +28,11 @@ export class UniquenessErrorsService {
   private _initValues: Record<string, string>[] = [];
   private _componendIdErrorsMap: Record<string, number[][]> = {};
 
-  constructor(private screenService: ScreenService, private ngUnsubscribe$: UnsubscribeService) {}
+  constructor(
+    private screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private jsonHelperService: JsonHelperService,
+  ) {}
 
   public init(): void {
     this.screenService.uniquenessErrors$
@@ -101,7 +106,7 @@ export class UniquenessErrorsService {
 
   private getState(): Record<string, string>[] {
     const cachedAnswers = this.screenService.cachedAnswers[this.screenService.component.id];
-    if (cachedAnswers && UtilsService.hasJsonStructure(cachedAnswers.value)) {
+    if (cachedAnswers && this.jsonHelperService.hasJsonStructure(cachedAnswers.value)) {
       return JSON.parse(this.screenService.cachedAnswers[this.screenService.component.id]?.value);
     }
     return [];

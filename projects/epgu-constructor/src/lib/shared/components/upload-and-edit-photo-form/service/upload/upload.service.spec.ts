@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { UploadService } from './upload.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { CompressionService } from '../compression/compression.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
@@ -52,7 +52,8 @@ describe('UploadService', () => {
         UploadService,
         TerraByteApiService,
         CompressionService,
-        UtilsService,
+        WordTransformService,
+        ObjectHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });

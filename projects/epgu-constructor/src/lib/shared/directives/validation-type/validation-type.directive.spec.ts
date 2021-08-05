@@ -26,7 +26,7 @@ import { ValidationService } from '../../services/validation/validation.service'
 import { ValidationTypeModule } from './validation-type.module';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 
 const componentMockData: CustomComponent = {
   attrs: {
@@ -87,7 +87,7 @@ describe('ValidationTypeDirective', () => {
         DateRangeService,
         DatesToolsService,
         UnsubscribeService,
-        DateRestrictionsService
+        MockProvider(DateRestrictionsService)
       ],
     });
   });

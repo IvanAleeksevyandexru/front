@@ -16,7 +16,8 @@ import {
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
-import { EventBusService, UnsubscribeService, isEqualObj } from '@epgu/epgu-constructor-ui-kit';
+import { isEqual } from 'lodash';
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import {
@@ -50,7 +51,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   screenCaption: string;
   secondScreenCaption: string;
   minOccures: number;
-  componentValidation: Array<boolean> = [];
+  componentValidation: boolean[] = [];
   parentComponentId: string;
   cacheRepeatableFieldsAnswersLocally: boolean;
 
@@ -200,7 +201,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
           return 'init';
         }
 
-        return isEqualObj(prev, curr) ? 'noChange' : 'change';
+        return isEqual(prev, curr) ? 'noChange' : 'change';
       }),
     );
   }

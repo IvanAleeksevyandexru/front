@@ -36,6 +36,7 @@ import { RefRelationService } from '../../../../../../shared/services/ref-relati
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { configureTestSuite } from 'ng-bullet';
 import { MockModule } from 'ng-mocks';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -75,6 +76,7 @@ describe('SelectChildrenComponent', () => {
         DatesToolsService,
         RefRelationService,
         DictionaryToolsService,
+        HtmlSelectService,
       ],
     })
       .overrideComponent(SelectChildrenComponent, {
@@ -90,8 +92,68 @@ describe('SelectChildrenComponent', () => {
     component.addSectionLabel = 'Add';
     component.cachedValue = null;
     component.component = componentMock;
-    component.errors = {};
+    component.errors = [];
     fixture.detectChanges();
+  });
+
+  describe('OnInit', () => {
+    it('should set start values', () => {
+      jest.spyOn(component, 'initVariables');
+      jest.spyOn(component, 'initStartValues');
+
+      component.ngOnInit();
+
+      expect(component.initVariables).toBeCalledTimes(1);
+      expect(component.initStartValues).toBeCalledTimes(1);
+    });
+
+    describe('If obliged is TRUE', () => {
+      it('should select the only children', () => {
+        component.component = {
+          arguments: {},
+          attrs: {
+            components: componentMock.attrs.components,
+            obliged: true,
+          },
+          id: 'cl1',
+          label: 'Добавить данные ребёнка',
+          required: true,
+          type: 'ChildrenList',
+          presetValue: '[{"cl1_ri":false,"cl1_3":"Ильдарович","cl1_4":"2013-07-03T00:00:00.000Z","cl1_5":"M","cl1_id":"7544001","cl1_1":"Бобков","cl1_2":"Геннадий"}]',
+        };
+
+        jest.spyOn(component, 'addMoreChild');
+        jest.spyOn(component, 'handleSelect');
+
+        component.ngOnInit();
+
+        expect(component.addMoreChild).toBeCalledWith(component.itemsToSelect[0]);
+        expect(component.handleSelect).toBeCalledWith(component.itemsToSelect[0], 0);
+      });
+
+      it('should select new children if user have no children', () => {
+        component.component = {
+          arguments: {},
+          attrs: {
+            components: componentMock.attrs.components,
+            obliged: true,
+          },
+          id: 'cl1',
+          label: 'Добавить данные ребёнка',
+          required: true,
+          type: 'ChildrenList',
+          value: '',
+        };
+
+        jest.spyOn(component, 'addMoreChild');
+        jest.spyOn(component, 'handleSelect');
+
+        component.ngOnInit();
+
+        expect(component.addMoreChild).toBeCalledWith(component.itemsToSelect[0]);
+        expect(component.handleSelect).toBeCalledWith(component.itemsToSelect[0], 0);
+      });
+    });
   });
 
   describe('handleSelect()', () => {
@@ -137,7 +199,6 @@ describe('SelectChildrenComponent', () => {
 
   describe('addMoreChild()', () => {
     it('should be call addMoreChild() after initStartValues()', () => {
-      console.log('test01', component.selectChildrenForm.controls.length);
       jest.spyOn(component, 'addMoreChild');
       component.initStartValues();
 

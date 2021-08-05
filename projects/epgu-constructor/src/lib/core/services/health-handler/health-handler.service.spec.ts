@@ -10,12 +10,18 @@ import {
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 
-import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ServiceNameService,
+  SessionService,
+  ObjectHelperService,
+  WordTransformService
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '../init-data/init-data.service';
 import { InitDataServiceStub } from '../init-data/init-data.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, LocationServiceStub, HealthService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -48,7 +54,8 @@ describe('HealthHandlerService', () => {
   let formPlayerApi: FormPlayerApiService;
   let config: ConfigService;
   let init: InitDataService;
-  let utils: UtilsService;
+  let utils: DownloadService;
+  let wordTransformService: WordTransformService;
   let healthService: HealthService;
   let dictionaryService: DictionaryApiService;
   let httpMock: HttpTestingController;
@@ -81,10 +88,14 @@ describe('HealthHandlerService', () => {
       providers: [
         FormPlayerApiService,
         DictionaryApiService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         HealthHandlerService,
         TestHealthInterceptor,
         SessionService,
+        WordTransformService,
+        ObjectHelperService,
+        ServiceNameService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
@@ -105,10 +116,11 @@ describe('HealthHandlerService', () => {
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
     init.orderId = Number(orderId);
-    utils = TestBed.inject(UtilsService);
+    utils = TestBed.inject(DownloadService);
     healthService = TestBed.inject(HealthService);
     service = TestBed.inject(HealthHandlerService);
     dictionaryService = TestBed.inject(DictionaryApiService);
+    wordTransformService = TestBed.inject(WordTransformService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -132,7 +144,7 @@ describe('HealthHandlerService', () => {
       requestToSucceed.flush(dataToFlush);
       const params = {
         id: dto.scenarioDto.display.id,
-        name: utils.cyrillicToLatin(dto.scenarioDto.display.name),
+        name: wordTransformService.cyrillicToLatin(dto.scenarioDto.display.name),
         orderId: orderId,
         method: 'POST',
         date: new Date().toISOString(),

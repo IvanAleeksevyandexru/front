@@ -4,7 +4,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CoreUiModule,
+  DatesToolsService,
+  ObjectHelperService,
+  WordTransformService
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -22,6 +27,7 @@ import { ConstructorMultilineInputComponent } from './constructor-multiline-inpu
 import { By } from '@angular/platform-browser';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ConstructorMultilineInputComponent', () => {
   let component: ConstructorMultilineInputComponent;
@@ -47,7 +53,9 @@ describe('ConstructorMultilineInputComponent', () => {
         ValidationService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
+        WordTransformService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

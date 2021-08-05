@@ -10,7 +10,7 @@ import {
   DeviceDetectorServiceStub,
   CoreUiModule,
   LocationService,
-  WINDOW_PROVIDERS
+  WINDOW_PROVIDERS,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -37,6 +37,7 @@ import { FormPlayerService } from '../../../../../../form-player/services/form-p
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { MockModule } from 'ng-mocks';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('PaymentTypeSelectorComponent', () => {
   let component: PaymentTypeSelectorComponent;
@@ -89,6 +90,7 @@ describe('PaymentTypeSelectorComponent', () => {
         CurrentAnswersService,
         AutocompleteApiService,
         EaisdoGroupCostService,
+        HtmlSelectService,
       ],
     })
       .overrideComponent(PaymentTypeSelectorComponent, {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -7,10 +7,10 @@ import { InformationCenterMvdContainerComponent } from './information-center-mvd
 import { ScreenService } from '../../../../../screen/screen.service';
 import {
   UnsubscribeService,
-  UtilsService,
+  DownloadService,
   DatesToolsService,
   ConfigService,
-  LoggerService,
+  LoggerService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -29,6 +29,7 @@ import { RefRelationService } from '../../../../../shared/services/ref-relation/
 import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -79,7 +80,8 @@ describe('InformationCenterMvdContainerComponent', () => {
       ],
       providers: [
         UnsubscribeService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
@@ -87,9 +89,10 @@ describe('InformationCenterMvdContainerComponent', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
@@ -12,6 +11,7 @@ import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { FormArray } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 @Injectable()
 export class DateRestrictionsService {
@@ -21,12 +21,15 @@ export class DateRestrictionsService {
   private maxDateConditions = ['<', '<='];
   private minDateConditions = ['>', '>='];
 
-  constructor(private datesToolsService: DatesToolsService) {}
+  constructor(
+    private datesToolsService: DatesToolsService,
+    private dateRefService: DateRefService,
+  ) {}
 
   async getDateRange(
     componentId: string,
     dateRestrictions: DateRestriction[],
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number
@@ -117,12 +120,12 @@ export class DateRestrictionsService {
   }
 
   private getDateByRef(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     dateRef: string,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): string {
-    const [dateId, dateExpression] = UtilsService.extractDateRef(dateRef);
+    const [dateId, dateExpression] = this.dateRefService.extract(dateRef);
 
     const dateFromComponents = this.getDateFromComponents(dateId, components, form);
 
@@ -135,7 +138,7 @@ export class DateRestrictionsService {
 
   private getDateFromComponents(
     dateId: string,
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
   ): Date {
     const component = components.find((component) => component.id === dateId);
@@ -155,7 +158,7 @@ export class DateRestrictionsService {
 
   private setDateRefs(
     restrictions: DateRestriction[],
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): void {

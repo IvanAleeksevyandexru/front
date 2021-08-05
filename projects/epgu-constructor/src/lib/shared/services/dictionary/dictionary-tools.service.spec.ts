@@ -10,7 +10,11 @@ import {
   DictionaryValueTypes,
   AttributeTypes,
 } from '@epgu/epgu-constructor-types';
-import { ConfigService, ConfigServiceStub, mockSelectMapObjectStore } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  mockSelectMapObjectStore
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
@@ -25,8 +29,10 @@ import {
   CustomListDictionaries,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { getDictKeyByComp } from './dictionary-helper';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -128,7 +134,7 @@ describe('DictionaryToolsService', () => {
 
   const setup = (
     componentType: string,
-    dictionaryItems: Array<object> = [],
+    dictionaryItems: object[] = [],
     attrs: Partial<CustomComponentAttr> = {},
   ) => {
     const component = ({
@@ -139,7 +145,7 @@ describe('DictionaryToolsService', () => {
         ...attrs,
       },
     } as any) as CustomComponent;
-    const dictionaryId = utils.getDictKeyByComp(component);
+    const dictionaryId = getDictKeyByComp(component);
     const dictionaryData = {
       loading: false,
       paginationLoading: false,
@@ -170,7 +176,8 @@ describe('DictionaryToolsService', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });
@@ -272,6 +279,14 @@ describe('DictionaryToolsService', () => {
       expect(() => {
         service['getValueForFilter'](compValue, MapStore, dFilter);
       }).toThrowError(`Неверный valueType для фильтров - ${dFilter.valueType}`);
+    });
+  });
+
+  describe('getDictKeyByComp()', () => {
+    it('should return dictionary key by component', () => {
+      expect(getDictKeyByComp(
+        { attrs: { dictionaryType: 'testType' }, id: 1 } as any))
+        .toBe('testType1');
     });
   });
 

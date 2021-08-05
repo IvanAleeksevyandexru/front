@@ -76,6 +76,7 @@ export interface FileUploadItem {
   pdfFileName?: string;
   maxCountByTypes?: MaxCountByType[];
   readonly?: boolean;
+  isPreviewPhoto?: boolean;
   validation?: FileUploadValidation[];
 }
 

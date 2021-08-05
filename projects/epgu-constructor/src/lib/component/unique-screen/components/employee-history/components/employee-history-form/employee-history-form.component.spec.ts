@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RadioComponent } from '@epgu/epgu-lib';
-import { MockComponents, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MonthYear } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
@@ -39,6 +39,7 @@ import { DateRestrictionsService } from '../../../../../../shared/services/date-
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -88,7 +89,7 @@ describe('EmployeeHistoryFormComponent', () => {
         ScreenService,
         CurrentAnswersService,
         DeviceDetectorService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         DictionaryToolsService,
         DictionaryApiService,
@@ -98,8 +99,9 @@ describe('EmployeeHistoryFormComponent', () => {
         DateRangeService,
         RefRelationService,
         SuggestHandlerService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         SuggestMonitorService,
+        JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ],

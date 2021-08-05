@@ -33,8 +33,8 @@ export class InformationCenterMvdContainerComponent implements OnInit {
   isLoading$ = this.screenService.isLoading$;
   header$ = this.screenService.header$;
   isLoadingInfoCenter = false;
-  sourceList: Array<ListElement> = [];
-  infoCenterList: Array<DictionaryItem> = [];
+  sourceList: ListElement[] = [];
+  infoCenterList: DictionaryItem[] = [];
   dictionaryToRequest: DictionaryToRequestI;
   screenStore: ScreenStore;
   componentValue: ComponentValue;
@@ -77,7 +77,7 @@ export class InformationCenterMvdContainerComponent implements OnInit {
   private loadInfoCenterDictionary(
     dictionaryName: string,
     id: number | string,
-    dictionaryFilter?: Array<ComponentDictionaryFilterDto> | undefined,
+    dictionaryFilter?: ComponentDictionaryFilterDto[] | undefined,
   ): void {
     this.clearInfoCenterList();
     this.isLoadingInfoCenter = true;
@@ -101,7 +101,7 @@ export class InformationCenterMvdContainerComponent implements OnInit {
 
   private loadSourceDictionary(
     dictionaryName: string,
-    dictionaryFilter?: Array<ComponentDictionaryFilterDto> | undefined,
+    dictionaryFilter?: ComponentDictionaryFilterDto[] | undefined,
   ): void {
     this.dictionaryApiService
       .getMvdDictionary(

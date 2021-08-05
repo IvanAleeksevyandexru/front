@@ -25,8 +25,8 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteApiServiceStub } from '../../../../core/services/autocomplete/autocomplete-api.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -53,6 +53,8 @@ import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
+import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -114,7 +116,7 @@ describe('FileUploadItemComponent', () => {
   let terabyteService: TerraByteApiService;
   let screenService: ScreenService;
   let viewerService: ViewerService;
-  let modalSerivce: ModalService;
+  let modalService: ModalService;
   let fileUploadService: UploaderLimitsService;
   let store: UploaderStoreService;
   let uploader: UploaderManagerService;
@@ -134,7 +136,7 @@ describe('FileUploadItemComponent', () => {
         CompressionService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: AutocompleteApiService, useClass: AutocompleteApiServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },
@@ -148,6 +150,8 @@ describe('FileUploadItemComponent', () => {
         UploaderManagerService,
         UploaderStatService,
         UploaderProcessService,
+        HtmlSelectService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(FileUploadItemComponent, {
@@ -164,7 +168,7 @@ describe('FileUploadItemComponent', () => {
     terabyteService = TestBed.inject(TerraByteApiService);
     screenService = TestBed.inject(ScreenService);
     viewerService = TestBed.inject(ViewerService);
-    modalSerivce = TestBed.inject(ModalService);
+    modalService = TestBed.inject(ModalService);
     fileUploadService = TestBed.inject(UploaderLimitsService);
     fileUploadService.registerUploader(
       uploadMock.uploadId,
@@ -317,7 +321,7 @@ describe('FileUploadItemComponent', () => {
 
   it('should open attached viewer', () => {
     jest.spyOn(component, 'isPrevUploadedFilesButtonShown').mockImplementation(() => true);
-    jest.spyOn(modalSerivce, 'openModal');
+    jest.spyOn(modalService, 'openModal');
     fixture.detectChanges();
     const button: HTMLDivElement = fixture.debugElement.queryAll(
       By.css('.fileupload__link-button'),
@@ -325,6 +329,6 @@ describe('FileUploadItemComponent', () => {
     button?.click();
     fixture.detectChanges();
 
-    expect(modalSerivce.openModal).toHaveBeenCalled();
+    expect(modalService.openModal).toHaveBeenCalled();
   });
 });

@@ -76,7 +76,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  public weeks: Array<Array<IDay>> = [];
+  public weeks: IDay[][] = [];
   public areas: ListItem[] = [];
   public isAreasVisible = false;
   public monthsYears: ListItem[] = [];
@@ -203,7 +203,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    */
   public chooseTimeSlot(slot: SlotInterface): void {
     if (this.currentSlot?.slotId === slot.slotId) {
-      this.clearDateSelection();
+      this.clearTimeSlotSelection();
     } else {
       this.currentSlot = slot;
       this.currentAnswersService.state = slot;
@@ -389,7 +389,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private addDayToWeek(week: Array<IDay>, date: Date, today: Date): void {
+  private addDayToWeek(week: IDay[], date: Date, today: Date): void {
     const isOutOfSection = this.isDateOutOfSection(
       date,
       this.firstDayOfMainSection,
@@ -616,14 +616,21 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Метод очищает выбранные на календаре день и время
+   * Метод очищает выбранные в календаре день и время
    */
   private clearDateSelection(): void {
     this.date = null;
+    this.timeSlots = null;
+    this.clearTimeSlotSelection();
+    this.recalcDaysStyles();
+  }
+
+  /**
+   * Метод очищает выбранное в календаре время
+   */
+  private clearTimeSlotSelection(): void {
     this.currentSlot = null;
     this.currentAnswersService.state = null;
-    this.timeSlots = null;
-    this.recalcDaysStyles();
   }
 
   /**

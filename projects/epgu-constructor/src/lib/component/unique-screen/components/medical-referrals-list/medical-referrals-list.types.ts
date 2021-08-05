@@ -11,6 +11,7 @@ export interface Referral {
   toMoName: string;
   toSpecsId: string;
   toSpecsName: string;
+  toServiceName: string;
   toResourceName: string;
   fromMoOid: string;
   fromMoName: string;

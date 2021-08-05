@@ -14,13 +14,13 @@ export interface ConfirmUserLegalData extends ComponentBase {
 }
 
 export interface ConfirmUserDataAttrs {
-  fields: Array<ConfirmUserDataField>;
-  actions: Array<ConfirmUserDataActions>;
+  fields: ConfirmUserDataField[];
+  actions: ConfirmUserDataActions[];
   style: ConfirmUserDataStyle;
 }
 
 export interface ConfirmUserLegalDataAttrs {
-  fields: Array<ConfirmUserDataField>;
+  fields: ConfirmUserDataField[];
   clarifications: Clarifications;
   hint: string;
 }
@@ -45,7 +45,7 @@ export interface ConfirmUserDataAdaptiveField {
 export interface ConfirmUserDataFieldsState {
   groupName: string;
   visibilityLabel: string;
-  fields: Array<ConfirmUserDataAdaptiveField>;
+  fields: ConfirmUserDataAdaptiveField[];
   needDivider?: boolean;
 }
 

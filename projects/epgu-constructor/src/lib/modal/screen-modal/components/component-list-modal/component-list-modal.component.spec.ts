@@ -24,6 +24,9 @@ import {
   LoggerServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -61,7 +64,10 @@ describe('ComponentListModalComponent', () => {
         HttpCancelService,
         DatesToolsService,
         DictionaryToolsService,
-        RefRelationService
+        RefRelationService,
+        DateRefService,
+        JsonHelperService,
+        TypeCastService,
       ]
     })
       .compileComponents();

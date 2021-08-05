@@ -33,6 +33,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
 import { cloneDeep } from 'lodash';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -96,6 +99,13 @@ describe('ComponentsListFormService', () => {
     value: 'value',
     required: true,
   };
+  let dictionaryMock = (index) => ({
+    originalItem: {
+      attributeValues: {
+        OKATO: index === 0 ? '40000000000' : '45000000000'
+      }
+    },
+  });
   let component: MockComponent;
   let dictionaryToolsService: DictionaryToolsService;
   let addressHelperService: AddressHelperService;
@@ -140,10 +150,12 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         DictionaryToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         MaskTransformService,
         DecimalPipe,
+        TypeCastService,
+        JsonHelperService,
       ],
     });
   });
@@ -188,7 +200,10 @@ describe('ComponentsListFormService', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       const getDictionariesSpy = jest.fn(() => ({
         [`${component.attrs.dictionaryType}${component.id}`]: {
-          list: Array(dictionaryItemsCount).fill({}).map((_, index) => ({ id: `index ${index}` })),
+          list: Array(dictionaryItemsCount).fill({}).map((_, index) => ({
+            id: `index ${index}`,
+            ...dictionaryMock(index),
+          })),
         },
       }));
 
@@ -253,7 +268,7 @@ describe('ComponentsListFormService', () => {
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
 
       it('should pass lookupDefaultValue if it is provided', () => {
@@ -265,7 +280,22 @@ describe('ComponentsListFormService', () => {
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 1' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 1', ...dictionaryMock(1) });
+      });
+
+      it('should pass lookupDefaultValue with lookupFilterPath if it is provided', () => {
+        const {
+          getDictionariesSpy,
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.Lookup, {
+          lookupDefaultValue: '40000000000',
+          lookupFilterPath: 'originalItem.attributeValues.OKATO',
+        });
+
+        service.patch(component);
+        expect(getDictionariesSpy).toHaveBeenCalled();
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
     });
 
@@ -279,7 +309,7 @@ describe('ComponentsListFormService', () => {
         service.patch(component);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
 
       it('should patchDropDownDeptsValue when there is one element', () => {
@@ -291,7 +321,7 @@ describe('ComponentsListFormService', () => {
         service.patch(component);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
     });
   });
@@ -328,7 +358,7 @@ describe('ComponentsListFormService', () => {
       componentStub.value = '123';
       component = JSON.parse(JSON.stringify(componentStub));
       service.create([componentStub, component], {});
-      
+
       await service.emitChanges();
       expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('123,00');
     });

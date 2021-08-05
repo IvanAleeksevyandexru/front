@@ -12,6 +12,7 @@ import {
   IFeatureItem,
   IYMapPoint,
   ObjectManager,
+  YMapItem,
 } from './yandex-map.interface';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
@@ -20,10 +21,13 @@ const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на к�
 export class YandexMapService implements OnDestroy {
   public selectedValue$ = new BehaviorSubject(null);
   public ymaps;
+  public mapOptions;
 
   private objectManager;
-  private activePlacemarkId: number;
+  private activePlacemarkId: number | string;
+  private activeClusterHash: string;
   private MIN_ZOOM = 4;
+  private MAX_ZOOM = 17;
   private DEFAULT_ZOOM = 9;
 
   constructor(
@@ -38,7 +42,7 @@ export class YandexMapService implements OnDestroy {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(() => {
-        this.setMapOptions(this.deviceDetector.isMobile);
+        this.setMapOptions(this.deviceDetector.isMobile, this.mapOptions);
       });
   }
 
@@ -53,7 +57,7 @@ export class YandexMapService implements OnDestroy {
   public prepareFeatureCollection<T>(items: IYMapPoint<T>[]): IFeatureCollection<T> {
     const res = { type: 'FeatureCollection', features: [] };
     items.forEach((item, index) => {
-      if (item.center) {
+      if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
           id: index,
@@ -72,9 +76,15 @@ export class YandexMapService implements OnDestroy {
    * place objects on yandex map
    * @param map link to yandex map
    */
-  public placeObjectsOnMap<T>(items: IYMapPoint<T>[], OMSettings?, urlTemplate?: string, LOMSettings?): void {
+  public placeObjectsOnMap<T>(
+    items: IYMapPoint<T>[],
+    OMSettings?,
+    urlTemplate?: string,
+    LOMSettings?,
+  ): void {
     this.objectManager = this.createMapsObjectManager(OMSettings, urlTemplate, LOMSettings);
     this.objectManager.objects.options.set(this.icons.blue);
+    this.objectManager.clusters.options.set('clusterIcons', [this.icons.clusterBlue]);
     this.objectManager.objects.options.set(
       'balloonContentLayout',
       this.getCustomBalloonContentLayout(),
@@ -96,26 +106,35 @@ export class YandexMapService implements OnDestroy {
    */
   public centeredPlaceMark<T>(feature: IFeatureItem<T> | IClusterItem<T>): void {
     this.closeBalloon();
-    if (feature.type === IFeatureTypes.Cluster && this.isClusterZoomable(feature as IClusterItem<T>)) {
+    if (
+      feature.type === IFeatureTypes.Cluster &&
+      this.isClusterZoomable(feature as IClusterItem<T>)
+    ) {
       return;
     }
     this.activePlacemarkId = feature.id;
     const coords = feature.geometry?.coordinates;
-
-    if (coords && coords[0] && coords[1]) {
+    if (feature.type === IFeatureTypes.Cluster) {
+      this.activeClusterHash = this.getClusterHash(feature as IClusterItem<T>);
+      this.paintActiveCluster(this.icons.clusterRed);
+    }
+    if (coords && coords[0] && coords[1] && feature.type === IFeatureTypes.Feature) {
       this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
-        this.yaMapService.map.setCenter([coords[0], coords[1] + POINT_ON_MAP_OFFSET], range[1] - 2);
-        this.objectManager &&
-          this.objectManager.objects.setObjectOptions(feature.id, {
-            iconImageHref: this.icons.red.iconImageHref,
-          });
-        const object =
-          feature.type === IFeatureTypes.Feature
-            ? [(feature as IFeatureItem<T>).properties.res]
-            : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
-        this.selectedValue$.next(object);
+        this.yaMapService.map.setCenter([coords[0], coords[1] + POINT_ON_MAP_OFFSET], range[1]);
+        this.objectManager.objects.setObjectOptions(feature.id, {
+          iconImageHref: this.icons.red.iconImageHref,
+        });
       });
     }
+
+    const object =
+      feature.type === IFeatureTypes.Feature
+        ? [(feature as IFeatureItem<T>).properties.res]
+        : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
+    if (object.length === 1) {
+      object[0]['expanded'] = true;
+    }
+    this.selectedValue$.next(object);
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
@@ -134,26 +153,42 @@ export class YandexMapService implements OnDestroy {
   }
 
   public closeBalloon(): void {
+    this.selectedValue$.getValue()?.forEach((element) => {
+      element.expanded = false;
+    });
     this.selectedValue$.next(null);
     this.objectManager.objects.setObjectOptions(this.activePlacemarkId, {
       iconImageHref: this.icons.blue.iconImageHref,
     });
+    this.paintActiveCluster(this.icons.clusterBlue);
     this.activePlacemarkId = null;
+    this.activeClusterHash = null;
   }
 
-  public setMapOptions(isMobile: boolean): void {
+  public setMapOptions(isMobile: boolean, options?): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.ymaps = (window as any).ymaps;
+    const mobileTop =
+      Number.parseInt(this.yaMapService.map.container.getElement().style.height) / 3;
     this.yaMapService.map.controls.add('zoomControl', {
       position: {
-        top: 108,
+        top: isMobile ? mobileTop : 108,
         right: 10,
         bottom: 'auto',
         left: 'auto',
       },
       size: isMobile ? 'small' : 'large',
     });
-    this.yaMapService.map.options.set('minZoom', this.MIN_ZOOM);
+    this.yaMapService.map.events.add(
+      'actionend',
+      () => this.paintActiveCluster(this.icons.clusterRed),
+      this,
+    );
+    this.yaMapService.map.options.set({
+      minZoom: this.MIN_ZOOM,
+      maxZoom: this.MAX_ZOOM,
+      ...options,
+    });
     this.yaMapService.map.copyrights.togglePromo();
   }
 
@@ -171,6 +206,40 @@ export class YandexMapService implements OnDestroy {
             this.yaMapService.map.setZoom(this.DEFAULT_ZOOM);
           }
         });
+    }
+  }
+
+  public selectMapObject<T>(mapObject: YMapItem<T>): void {
+    if (!mapObject) return;
+    let chosenMapObject = this.getObjectById(mapObject.objectId);
+    if (!chosenMapObject) {
+      chosenMapObject = {
+        geometry: { type: 'Point', coordinates: [null, null] },
+        id: 1,
+        properties: { res: mapObject },
+        type: IFeatureTypes.Feature,
+      };
+      this.centerAllPoints();
+    }
+    this.centeredPlaceMark(chosenMapObject);
+  }
+
+  private getClusterHash<T>(cluster: IClusterItem<T>): string {
+    return cluster.features.map(({ id }) => id).join('$');
+  }
+
+  private getClusterByHash(clusterHash: string): IClusterItem<unknown> {
+    return this.objectManager.clusters.getAll().find((cluster) => {
+      return this.getClusterHash(cluster) === clusterHash;
+    });
+  }
+
+  private paintActiveCluster(color): void {
+    const cluster = this.getClusterByHash(this.activeClusterHash);
+    if (cluster) {
+      this.objectManager.clusters.setClusterOptions(cluster.id, {
+        clusterIcons: [color],
+      });
     }
   }
 
@@ -222,7 +291,6 @@ export class YandexMapService implements OnDestroy {
   ): ObjectManager {
     const LOMSettings = {
       clusterize: true,
-      clusterDisableClickZoom: true,
       hasBalloon: false,
       splitRequests: false,
       paddingTemplate: 'uik_%b',
@@ -237,8 +305,8 @@ export class YandexMapService implements OnDestroy {
       let obj = this.objectManager.objects.getById(objectId);
       obj.properties = {
         res: {
-          ...obj.properties
-        }
+          ...obj.properties,
+        },
       };
     });
 

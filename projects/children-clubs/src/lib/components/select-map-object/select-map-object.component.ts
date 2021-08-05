@@ -10,7 +10,7 @@ import {
 import { YaMapService } from '@epgu/epgu-lib';
 import {
   AddressesToolsService,
-  AppNavigationService,
+  MicroAppNavigationService,
   ConfigService,
   DeviceDetectorService,
   IYMapPoint,
@@ -48,7 +48,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private cdr: ChangeDetectorRef,
     private deviceDetector: DeviceDetectorService,
     private programListService: ProgramListService,
-    private appNavigationService: AppNavigationService,
+    private appNavigationService: MicroAppNavigationService,
     private stateService: StateService,
     private zone: NgZone,
     private modalService: ModalService,
@@ -131,10 +131,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         catchError((error) => this.handleError(error)),
-        filter((coords: Array<IYMapPoint<BaseProgram>>) => !!coords),
-        tap((coords: Array<IYMapPoint<BaseProgram>>) =>
-          this.handleGettingCoordinatesResponse(coords),
-        ),
+        filter((coords: IYMapPoint<BaseProgram>[]) => !!coords),
+        tap((coords: IYMapPoint<BaseProgram>[]) => this.handleGettingCoordinatesResponse(coords)),
       )
       .subscribe(() => this.yandexMapService.centerAllPoints());
   }
@@ -147,15 +145,15 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     });
   }
 
-  private handleGettingCoordinatesResponse(coords: Array<IYMapPoint<BaseProgram>>): void {
+  private handleGettingCoordinatesResponse(coords: IYMapPoint<BaseProgram>[]): void {
     this.stateService.isLoaderVisible = false;
     this.yandexMapService.placeObjectsOnMap<BaseProgram>(coords);
     setTimeout(() => this.cdr.detectChanges(), 0);
   }
 
-  private fillCoords(): Observable<Array<IYMapPoint<BaseProgram>>> {
+  private fillCoords(): Observable<IYMapPoint<BaseProgram>[]> {
     return this.programListService.data$.pipe(
-      switchMap((programList: Array<BaseProgram>) => {
+      switchMap((programList: BaseProgram[]) => {
         // Параллелим получение геоточек на 4 запроса
         const addresses = programList.map((program) => program.address);
         const chunkSize = addresses.length / 4;

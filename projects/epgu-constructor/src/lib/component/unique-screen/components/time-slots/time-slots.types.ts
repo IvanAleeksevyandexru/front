@@ -20,8 +20,8 @@ export interface TimeSlotValueInterface {
   organizationId?: string;
   bookAttributes?: string;
   parentOrderId?: string;
-  timeSlotRequestAttrs?: Array<{ name: string; value: string }>;
-  bookingRequestParams?: Array<{ name: string; value: string }>;
+  timeSlotRequestAttrs?: { name: string; value: string }[];
+  bookingRequestParams?: { name: string; value: string }[];
   userSelectedRegion?: string;
 }
 

@@ -13,7 +13,7 @@ import { UniqueScreenComponentTypes } from '../../../../unique-screen-components
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
-import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
+import { DadataWidgetComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
@@ -24,6 +24,8 @@ import { ActionDirective } from '../../../../../../shared/directives/action/acti
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
+import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {
@@ -40,6 +42,11 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
           hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ',
         },
       ],
+      disclaimer: {
+        type: 'warn',
+        title: 'Добавьте адрес',
+        description: 'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
+      },
     },
     id: '',
     value: '{}',
@@ -65,7 +72,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       ],
       declarations: [
         ConfirmPersonalUserAddressReadonlyComponent,
-        MockComponent(DatePickerComponent),
+        MockComponent(ConstructorDatePickerComponent),
         MockDirective(TextTransformDirective),
         MockDirective(ActionDirective),
         MockComponent(LabelComponent),
@@ -73,6 +80,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         MockComponent(DefaultUniqueScreenWrapperComponent),
         MockComponent(DadataWidgetComponent),
         MockComponent(PlainInputComponent),
+        MockComponent(DisclaimerComponent),
         SafePipe,
         ImgPrefixerPipe,
       ],

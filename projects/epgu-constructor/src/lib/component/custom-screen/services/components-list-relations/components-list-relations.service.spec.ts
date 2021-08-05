@@ -31,6 +31,8 @@ import {
   DictionaryValueTypes,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -118,13 +120,14 @@ describe('ComponentsListRelationsService', () => {
         RefRelationService,
         HttpClient,
         HttpHandler,
+        JsonHelperService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
         DictionaryApiService,
         ConfigService,
         LoggerService,
         FormBuilder,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
       ],
     });
   });

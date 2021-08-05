@@ -21,7 +21,7 @@ export class ProgramListContainerComponent implements OnInit {
   fullLoading$: Observable<boolean> = this.listService.fullLoading$;
   filtersCount$$ = new BehaviorSubject<number>(0);
   filtersCount$ = this.filtersCount$$.asObservable();
-  data$: Observable<BaseProgram[]> = this.listService.data$;
+  data$: Observable<BaseProgram[]> = this.listService.paginatedData$;
 
   initValue = this.stateService.programFilters?.query;
 
@@ -32,7 +32,7 @@ export class ProgramListContainerComponent implements OnInit {
     private stateService: StateService,
   ) {}
 
-  fetchItems(): void {
+  nextPage(): void {
     this.listService.getNextPage();
   }
 

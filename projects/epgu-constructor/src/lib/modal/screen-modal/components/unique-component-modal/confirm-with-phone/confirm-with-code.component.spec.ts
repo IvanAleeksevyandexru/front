@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { CoreModule } from '../../../../../core/core.module';
@@ -65,7 +65,7 @@ describe('ConfirmWithCodeComponent', () => {
         EventBusService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
       ],
     }).compileComponents();
   });

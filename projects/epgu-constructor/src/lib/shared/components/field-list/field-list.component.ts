@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { ConfirmUserDataStyle, ComponentDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { get } from 'lodash';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
@@ -20,6 +21,7 @@ import {
   ConfirmUserDataAdaptiveField,
 } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const defaultStyle: ConfirmUserDataStyle = {
   group: 'mb-16',
@@ -40,7 +42,7 @@ const defaultStyle: ConfirmUserDataStyle = {
 export class FieldListComponent implements OnInit, OnChanges {
   @Input() data: ComponentDto;
 
-  public preparedData: Array<ConfirmUserDataFieldsState> = [];
+  public preparedData: ConfirmUserDataFieldsState[] = [];
   public style: ConfirmUserDataStyle;
   public errors: ConfirmUserDataError[];
   public currentEaisdoState: EaisdoStateTypes;
@@ -50,7 +52,7 @@ export class FieldListComponent implements OnInit, OnChanges {
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
-    private utilsService: UtilsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -110,8 +112,8 @@ export class FieldListComponent implements OnInit, OnChanges {
       const parsedPath = path.split('.');
       const componentId = parsedPath.shift();
       const componentValue = this.currentAnswersService.state[componentId]?.value;
-      const parsedComponentValue = this.utilsService.tryToParseOrDefault(componentValue, {});
-      const newValue = UtilsService.getObjectProperty(
+      const parsedComponentValue = this.jsonHelperService.tryToParse(componentValue, {});
+      const newValue = get(
         parsedComponentValue,
         parsedPath.splice(1, parsedPath.length - 1).join('.'),
         undefined,

@@ -67,7 +67,7 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
   >();
 
   public passportForm: FormGroup;
-  public fieldsNames: Array<string> = [];
+  public fieldsNames: string[] = [];
 
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   touchedUnfocused = ValidationShowOn.TOUCHED_UNFOCUSED;

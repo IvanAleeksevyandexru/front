@@ -13,8 +13,8 @@ import { DictionaryItem } from '../../../../../../shared/services/dictionary/dic
 export class InformationCenterFormComponent {
   @Input() sourceDictionaryLabel: string;
   @Input() dictionaryToRequestLabel: string;
-  @Input() infoCenterList: Array<DictionaryItem>;
-  @Input() sourceList: Array<ListElement>;
+  @Input() infoCenterList: DictionaryItem[];
+  @Input() sourceList: ListElement[];
   @Input() isLoadingInfoCenter: boolean;
   @Output() handleSelectEvent = new EventEmitter<ListElement>();
 

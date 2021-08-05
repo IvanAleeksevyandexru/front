@@ -5,10 +5,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { LogicService } from './logic.service';
 import {
   DatesToolsService,
-  EventBusService,
   LocalStorageService,
   LocalStorageServiceStub,
-  UtilsService
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
@@ -25,6 +24,7 @@ import { ComponentsListFormServiceStub } from '../../custom-screen/services/comp
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('LogicService', () => {
   let service: LogicService;
@@ -103,7 +103,8 @@ describe('LogicService', () => {
         { provide: HookService, useClass: HookServiceStub },
         DictionaryToolsService,
         CurrentAnswersService,
-        UtilsService,
+        JsonHelperService,
+        ObjectHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },

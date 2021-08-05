@@ -25,8 +25,8 @@ import { NavigationModalService } from '../../../../core/services/navigation-mod
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -51,9 +51,11 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { SearchPanelResolverComponent } from './components/search-panel-resolver/search-panel-resolver.component';
 import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -80,10 +82,12 @@ describe('SelectMapObjectComponent', () => {
         AutocompleteApiService,
         RefRelationService,
         PrepareComponentsService,
+        DateRefService,
         CachedAnswersService,
         ScreenService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         AddressesToolsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -91,7 +95,7 @@ describe('SelectMapObjectComponent', () => {
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,

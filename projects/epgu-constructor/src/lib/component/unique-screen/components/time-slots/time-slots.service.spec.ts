@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -20,10 +20,11 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
 import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-with-cache-store';
+import { JsonHelperService } from 'projects/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
@@ -48,7 +49,9 @@ describe('TimeSlotsComponent', () => {
         EventBusService,
         DatesToolsService,
         TimeSlotsService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -84,7 +87,7 @@ describe('TimeSlotsComponent', () => {
       const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
       expect(organizationId).toBe('123');
     });
-  
+
     it('MVD should take organizationId from department.value', () => {
       const newCompValue = cloneDeep(compValue);
       delete newCompValue.organizationId;

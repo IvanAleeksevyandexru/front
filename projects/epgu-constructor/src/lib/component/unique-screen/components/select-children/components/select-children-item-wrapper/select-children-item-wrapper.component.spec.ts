@@ -15,6 +15,7 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;
@@ -33,6 +34,7 @@ describe('SelectChildrenItemWrapperComponent', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        HtmlSelectService,
       ],
     }).compileComponents();
   });

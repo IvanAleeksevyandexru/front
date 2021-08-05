@@ -15,11 +15,11 @@
 
             <div class="project__info-item-list">
               <div *ngIf="data?.address" class="project__info-item">
-                <div class="item-icon"><img alt="адрес" src="assets/icons/address.svg"/></div>
+                <div class="item-icon"><img alt="адрес" src="{{ config.staticDomainAssetsPath }}/assets/icons/address.svg"/></div>
                 <div class="item-label">{{ data?.address }}</div>
               </div>
               <div *ngIf="data?.teachers" class="project__info-item">
-                <div class="item-icon"><img alt="учитель" src="assets/icons/teacher.svg"/></div>
+                <div class="item-icon"><img alt="учитель" src="{{ config.staticDomainAssetsPath }}/assets/icons/teacher.svg"/></div>
                 <div class="item-label">
                   <children-clubs-toggle-text
                     [text]="data?.teachers"
@@ -29,7 +29,7 @@
               </div>
               <div *ngIf="data?.maxPersons" class="project__info-item">
                 <div class="item-icon">
-                  <img alt="размер группы" src="assets/icons/group.svg"/>
+                  <img alt="размер группы" src="{{ config.staticDomainAssetsPath }}/assets/icons/group.svg"/>
                 </div>
                 <div class="item-label">
                   Размер группы до {{ data?.maxPersons }}
@@ -41,7 +41,7 @@
                   <div class="item-icon">
                     <img
                       [alt]="financingTypes[item].text"
-                      src="assets/icons/{{ financingTypes[item].icon }}"
+                      src="{{ config.staticDomainAssetsPath }}/assets/icons/{{ financingTypes[item].icon }}"
                     />
                   </div>
                   <div class="item-label">{{ financingTypes[item].text }}</div>

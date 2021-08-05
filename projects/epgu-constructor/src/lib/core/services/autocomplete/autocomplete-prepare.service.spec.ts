@@ -10,13 +10,13 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
@@ -34,13 +34,15 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
   let service: AutocompletePrepareService;
   let datesToolsService: DatesToolsService;
   let screenService: ScreenService;
-  let repeatableComponents: Array<Array<ComponentDto>>;
+  let repeatableComponents: ComponentDto[][];
   let componentsSuggestionsSet: Set<[string, string]>;
   let parentComponent: ComponentDto;
 
@@ -154,19 +156,21 @@ describe('AutocompletePrepareService', () => {
         AutocompleteAutofillService,
         HttpHandler,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,
+        JsonHelperService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         TerraByteApiService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],

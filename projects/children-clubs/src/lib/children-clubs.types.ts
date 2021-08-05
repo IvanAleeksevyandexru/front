@@ -25,6 +25,9 @@ export interface ValueProgram {
   fiasRegion: string;
   regionName: string;
   typeOfBudget: string;
+  partnerPhone: string;
+  pfdodRulesLink: string;
+  site: string;
 }
 
 export interface ValueGroup {

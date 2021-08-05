@@ -39,7 +39,7 @@ export class EmployeeHistoryContainerComponent implements AfterViewInit {
     }),
   );
 
-  ds: Array<EmployeeHistoryDataSource>;
+  ds: EmployeeHistoryDataSource[];
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 
@@ -57,7 +57,7 @@ export class EmployeeHistoryContainerComponent implements AfterViewInit {
   public updateEmployeeHistory({ data, isValid }: EmployeeHistoryFormData): void {
     this.currentAnswersService.isValid = isValid;
     if (isValid) {
-      const employeeHistoryBeforeSend: Array<EmployeeHistoryServerModel> = data.map(
+      const employeeHistoryBeforeSend: EmployeeHistoryServerModel[] = data.map(
         (employee: EmployeeHistoryModel) => this.formatToServerModel(employee),
       );
       this.currentAnswersService.state = JSON.stringify(employeeHistoryBeforeSend);

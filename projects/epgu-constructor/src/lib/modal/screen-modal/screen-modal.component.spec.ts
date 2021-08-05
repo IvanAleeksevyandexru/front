@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ScreenModalComponent } from './screen-modal.component';
 import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -10,7 +10,11 @@ import { NavigationModalService } from '../../core/services/navigation-modal/nav
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenModalService } from './screen-modal.service';
 import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
-import { DatesToolsService, ERROR_HANDLER_ORDER_PARAMS_SERVICES } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  ERROR_HANDLER_ORDER_PARAMS_SERVICES, ObjectHelperService,
+  WordTransformService
+} from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
@@ -63,9 +67,11 @@ describe('ScreenModalComponent', () => {
         DatesToolsService,
         HtmlRemoverService,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
         UnsubscribeService,
+        WordTransformService,
+        ObjectHelperService,
         DictionaryToolsService,
         RefRelationService,
         {

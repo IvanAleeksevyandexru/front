@@ -20,16 +20,15 @@
       <div *ngSwitchCase="isDate(field.fieldName)" class="item">
         <div *ngIf="form.get(field.fieldName)">
           <div class="label-helper">{{ field.label }}</div>
-          <lib-date-picker
+          <epgu-constructor-constructor-date-picker
             class="value-date"
             [name]="field.fieldName"
-            align="left"
             [minDate]="(data$ | async)?.attrs?.minDate || '-50y'"
             [maxDate]="(data$ | async)?.attrs?.maxDate || 'today'"
-            [formControlName]="field.fieldName"
+            [control]="form.get(field.fieldName)"
             [clearable]="true"
-          >
-          </lib-date-picker>
+            align="left"
+          ></epgu-constructor-constructor-date-picker>
           <div class="address-item-hint" *ngIf="field?.hint">
             <epgu-cf-ui-constructor-helper-text>{{ field?.hint }}</epgu-cf-ui-constructor-helper-text>
           </div>
@@ -45,6 +44,13 @@
     <div class="error" *ngIf="screenService.componentError$ | async">
       <small>{{ screenService.componentError$ | async }}</small>
     </div>
+    <epgu-constructor-disclaimer
+      *ngIf="(data$ | async)?.attrs?.disclaimer as disclaimer"
+      [type]="disclaimer.type"
+      [title]="disclaimer.title"
+      [description]="disclaimer.description"
+      [clarifications]="(data$ | async)?.attrs?.clarifications"
+    ></epgu-constructor-disclaimer>
 
     <div class="footer" *ngIf="isEditAction">
       <div class="divider"></div>

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
@@ -16,7 +16,7 @@ import { DisplayDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { AgeType, Gender, UserInfoType } from './components/user-info/user-info.type';
 import { UserInfoComponentTypes } from './user-info-loader.types';
 
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
 import { CycledInfo } from './components/cycled-info/cycled-info.types';
@@ -67,7 +67,8 @@ describe('UserInfoLoaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
       providers: [
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },

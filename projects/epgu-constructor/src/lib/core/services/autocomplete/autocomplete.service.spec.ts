@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService, ModalService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -12,7 +12,6 @@ import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
@@ -31,6 +30,8 @@ import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -124,9 +125,10 @@ describe('AutocompleteService', () => {
         AutocompletePrepareService,
         HttpHandler,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,
@@ -136,8 +138,9 @@ describe('AutocompleteService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         TerraByteApiService,
+        JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });

@@ -40,29 +40,29 @@
   h5 {
     @include typ-h5;
   }
-  
+
   h6 {
     @include typ-h6;
   }
-  
+
   p {
     @include typ-plain-text;
     &:not(:first-child) {
       margin-top: 24px;
     }
   }
-  
+
   small,
   label {
     @include typ-plain-small;
   }
-  
+
   .bold,
   b,
   strong {
     font-weight: $fw-bold;
   }
-  
+
   .helper-text {
     @include typ-plain-small;
     color: $color-text-helper;
@@ -79,7 +79,7 @@
   .text--justify {
     text-align: justify;
   }
-  
+
   sub {
     font-size: $font-xs;
     line-height: 16px;
@@ -89,32 +89,32 @@
     color: $color-gosblue;
     cursor: pointer;
     outline: none;
-  
+
     &:hover {
       color: $color-active-item;
     }
   }
-  
+
   button {
     font-family: inherit;
   }
-  
+
   strike {
     color: $color-text-helper;
   }
-  
+
   blockquote {
     background: $color-osso-grigio;
     border: 1px solid $color-pulsante-premuto;
     box-sizing: border-box;
     border-radius: $border-md;
   }
-  
+
   .divider {
     background: $color-divider;
     border-top: 1px solid $color-divider;
   }
-  
+
   .submit-button {
     @include screen-button-width;
     button {
@@ -123,7 +123,7 @@
   }
 
   /* Utility classes */
-  
+
   .text-color {
     &--white {
       color: $color-white;
@@ -141,7 +141,7 @@
       color: $color-text-helper;
     }
   }
-  
+
   .screen-pad-body {
     display: flex;
     @include tablets-down {
@@ -192,16 +192,16 @@
       padding: 16px;
       margin-top: 4px;
       position: relative;
-  
+
       > *:first-child:not(.block--description__link-close) {
         margin-top: 0;
       }
-  
+
       &__link-close {
         margin-top: 16px;
         display: block;
       }
-  
+
       &--close {
         position: absolute;
         top: 16px;
@@ -210,7 +210,7 @@
         height: 12px;
         cursor: pointer;
         z-index: 2;
-  
+
         &:before,
         &:after {
           content: '';
@@ -221,11 +221,11 @@
           background: $color-gosblue;
           transform: rotate(45deg);
         }
-  
+
         &:before {
           transform: rotate(45deg);
         }
-  
+
         &:after {
           transform: rotate(-45deg);
         }
@@ -249,13 +249,13 @@
   .screen-container-mt {
     margin-top: $navigation-mb;
   }
-  
+
   .counter::after {
     margin-left: 4px;
     counter-increment: section;
     content: counter(section);
   }
-  
+
   .hint-text,
   p.hint-text {
     font-size: $font-sm;

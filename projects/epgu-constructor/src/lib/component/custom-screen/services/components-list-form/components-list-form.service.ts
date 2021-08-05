@@ -4,13 +4,14 @@ import { ListItem } from '@epgu/epgu-lib';
 import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService as utils } from '@epgu/epgu-constructor-ui-kit';
-import { isEqualObj } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import {
+  DictionaryToolsService,
+} from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -34,6 +35,8 @@ import { ComponentsListRelationsService } from '../components-list-relations/com
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
+import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
+import { get } from 'lodash';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -76,7 +79,7 @@ export class ComponentsListFormService {
   ) {}
 
   public create(
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     errors: ScenarioErrorsDto,
     componentsGroupIndex?: number,
   ): FormArray {
@@ -146,7 +149,7 @@ export class ComponentsListFormService {
 
   public patch(component: CustomComponent): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const { defaultIndex = undefined, lookupDefaultValue = undefined } = component.attrs;
+    const { defaultIndex = undefined, lookupDefaultValue = undefined, lookupFilterPath = undefined } = component.attrs;
     const noValue = !component.value;
     const hasDefaultIndex = defaultIndex !== undefined;
     const hasDefaultValue = lookupDefaultValue !== undefined;
@@ -162,7 +165,7 @@ export class ComponentsListFormService {
     } else if (hasDefaultIndex && noValue && !isDropdownLike) {
       this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
     } else if (hasDefaultValue && noValue && isDictionaryLike) {
-      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue);
+      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue, lookupFilterPath);
     } else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
@@ -221,7 +224,7 @@ export class ComponentsListFormService {
     }, {});
   }
 
-  private relationRegExp(value: string, params: RegExp): Array<string> {
+  private relationRegExp(value: string, params: RegExp): string[] {
     return String(value).match(params);
   }
   private relationMinDate(value: string | Date, params: string): boolean {
@@ -311,7 +314,7 @@ export class ComponentsListFormService {
 
   private createGroup(
     component: CustomComponent,
-    components: Array<CustomComponent>,
+    components: CustomComponent[],
     errorMsg: string,
     componentsGroupIndex?: number,
   ): FormGroup {
@@ -375,7 +378,7 @@ export class ComponentsListFormService {
   }
 
   private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqualObj<CustomListFormGroup>(prev, next)) {
+    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqual(prev, next)) {
       const indexVehicle: number = this.form.controls.findIndex(
         (control: AbstractControl) => control.value?.id === next.id,
       );
@@ -406,7 +409,7 @@ export class ComponentsListFormService {
     }
   }
 
-  private watchFormGroup$(form: FormGroup): Observable<Array<CustomListFormGroup>> {
+  private watchFormGroup$(form: FormGroup): Observable<CustomListFormGroup[]> {
     return form.valueChanges.pipe(
       startWith(form.getRawValue() as unknown),
       pairwise(),
@@ -414,7 +417,7 @@ export class ComponentsListFormService {
     );
   }
 
-  private watchFormArray$(): Observable<Array<CustomListFormGroup>> {
+  private watchFormArray$(): Observable<CustomListFormGroup[]> {
     return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
   }
 
@@ -440,7 +443,7 @@ export class ComponentsListFormService {
     defaultIndex: number,
   ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = utils.getDictKeyByComp(component);
+    const key: string = getDictKeyByComp(component);
     const value: ListItem = dicts[key]?.list[defaultIndex];
 
     control.get('value').patchValue(value);
@@ -453,7 +456,7 @@ export class ComponentsListFormService {
   ): void {
     const lockedValue = component.attrs?.lockedValue;
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = utils.getDictKeyByComp(component);
+    const key: string = getDictKeyByComp(component);
     const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
 
     if ((lockedValue && !repeatedWithNoFilters) || dicts[key]?.list?.length === 1) {
@@ -466,10 +469,22 @@ export class ComponentsListFormService {
     component: CustomComponent,
     control: AbstractControl,
     defaultValue: string | number,
+    lookupFilterPath: string,
   ): void {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = utils.getDictKeyByComp(component);
-    const value: ListItem = dicts[key]?.list.find(({ id }) => id === defaultValue);
+    const key: string = getDictKeyByComp(component);
+    const isRef = String(defaultValue).includes('$');
+    const compareValue = isRef ? String(defaultValue).replace(/[&/\\#,+()$~%'":*?<>{}]/g, '') : defaultValue;
+
+    let value: ListItem = undefined;
+
+    if (lookupFilterPath) {
+      value = dicts[key]?.list.find((item: ListItem) => 
+        get(item, lookupFilterPath) === (isRef ? get(this.screenService.getStore(), compareValue) : compareValue)
+      );
+    } else {
+      value = dicts[key]?.list.find(({ id }) => id === defaultValue);
+    }
 
     if (value) {
       control.get('value').patchValue(value);

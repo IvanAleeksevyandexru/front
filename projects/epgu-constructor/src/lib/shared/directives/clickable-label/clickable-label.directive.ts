@@ -1,13 +1,17 @@
 import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
 import { Clarifications, ActionType, DTOActionAction, ActionAnswerDto } from '@epgu/epgu-constructor-types';
-import { ModalService, DeviceDetectorService, createOpenBrowserEvent } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ModalService,
+  DeviceDetectorService,
+  createOpenBrowserEvent,
+} from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
-import { getHiddenBlock } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 
@@ -19,14 +23,15 @@ export class ClickableLabelDirective {
   @Input() public componentId: string;
 
   constructor(
-    private _modalService: ModalService,
-    private _screenService: ScreenService,
-    private _actionService: ActionService,
-    private _elementRef: ElementRef,
-    private _currentAnswersService: CurrentAnswersService,
-    private _ngZone: NgZone,
-    private _smu: SmuEventsService,
-    private _deviceDetector: DeviceDetectorService,
+    private modalService: ModalService,
+    private screenService: ScreenService,
+    private actionService: ActionService,
+    private elementRef: ElementRef,
+    private currentAnswersService: CurrentAnswersService,
+    private ngZone: NgZone,
+    private smu: SmuEventsService,
+    private deviceDetectorService: DeviceDetectorService,
+    private htmlSelectService: HtmlSelectService,
   ) {}
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
@@ -37,8 +42,8 @@ export class ClickableLabelDirective {
     const targetElementActionMultipleAnswers = targetElement.getAttribute('data-action-multipleAnswers');
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
-    if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this._deviceDetector.isWebView) {
-      this._smu.notify(createOpenBrowserEvent(targetElement.getAttribute('href'), false));
+    if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this.deviceDetectorService.isWebView) {
+      this.smu.notify(createOpenBrowserEvent(targetElement.getAttribute('href'), false));
     }
 
     if (targetElementActionType) {
@@ -54,7 +59,7 @@ export class ClickableLabelDirective {
       if (needPrevent) {
         event.preventDefault();
       }
-      this._toggleHiddenBlockOrShowModal(this._elementRef.nativeElement, targetElement.id);
+      this._toggleHiddenBlockOrShowModal(this.elementRef.nativeElement, targetElement.id);
     }
   }
 
@@ -74,7 +79,7 @@ export class ClickableLabelDirective {
         targetElementActionMultipleAnswers,
       );
     } else {
-      this._ngZone.run(() =>
+      this.ngZone.run(() =>
         this._handleAction(
           targetElementActionType,
           targetElementActionValue,
@@ -103,18 +108,18 @@ export class ClickableLabelDirective {
     }
 
     if (value && !excludedTypesForState.includes(type)) {
-      this._currentAnswersService.state = value;
+      this.currentAnswersService.state = value;
     }
 
-    this._actionService.switchAction(
+    this.actionService.switchAction(
       { label: '', type, action: actionDTO, value, multipleAnswers: _multipleAnswers },
-      this.componentId || this._screenService.component.id,
+      this.componentId || this.screenService.component.id,
       targetElement,
     );
   }
 
   private _toggleHiddenBlockOrShowModal(el: HTMLElement, targetElementId: string): void {
-    const hiddenBlock = getHiddenBlock(el, targetElementId);
+    const hiddenBlock = this.htmlSelectService.getHiddenBlock(el, targetElementId);
     if (hiddenBlock) {
       hiddenBlock.hidden = !hiddenBlock.hidden;
     } else {
@@ -132,7 +137,7 @@ export class ClickableLabelDirective {
   private _showModal(targetClarification: { text?: string }, targetElementId: string): void {
     const clarifications = { ...this.clarifications };
     delete clarifications[targetElementId];
-    this._modalService.openModal(ConfirmationModalComponent, {
+    this.modalService.openModal(ConfirmationModalComponent, {
       ...targetClarification,
       clarifications,
       componentId: this.componentId,

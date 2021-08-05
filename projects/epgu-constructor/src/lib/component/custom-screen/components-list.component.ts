@@ -12,13 +12,13 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil, first, map, switchMap } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
-  isEqualObj,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import {
@@ -46,7 +46,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
    */
   @Input() componentsGroupIndex?: number;
   @Input() shouldPendingRequestsBeCancelledAfterDestroy = true;
-  @Input() components: Array<CustomComponent>;
+  @Input() components: CustomComponent[];
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
   @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
@@ -81,10 +81,10 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
 
-    const components: Array<CustomComponent> =
+    const components: CustomComponent[] =
       changes.components?.currentValue || this.formService.form.value || this.components;
     const { currentValue, previousValue } = changes.errors || {};
-    const isErrorsChanged = !isEqualObj(currentValue, previousValue);
+    const isErrorsChanged = !isEqual(currentValue, previousValue);
 
     if (components || isErrorsChanged) {
       const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
@@ -100,14 +100,14 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private loadRepository(components: Array<CustomComponent>): void {
+  private loadRepository(components: CustomComponent[]): void {
     this.dictionaryToolsService
       .loadReferenceData$(
         components,
         this.screenService.cachedAnswers,
         this.screenService.getStore(),
       )
-      .subscribe((references: Array<CustomListReferenceData>) => {
+      .subscribe((references: CustomListReferenceData[]) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);
           this.formService.emitChanges();
@@ -116,8 +116,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private handleAfterFilterOnRel(
-    references: Array<CustomListReferenceData>,
-  ): Observable<Array<CustomListReferenceData>> {
+    references: CustomListReferenceData[],
+  ): Observable<CustomListReferenceData[]> {
     return this.dictionaryToolsService.dictionaries$.pipe(
       first(),
       map(() => {
@@ -130,16 +130,16 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  private watchForFilters(components: Array<CustomComponent>): void {
+  private watchForFilters(components: CustomComponent[]): void {
     this.dictionaryToolsService
       .watchForFilters(components)
       .pipe(
         takeUntil(this.unsubscribeService.ngUnsubscribe$),
-        switchMap((references: Array<CustomListReferenceData>) =>
+        switchMap((references: CustomListReferenceData[]) =>
           this.handleAfterFilterOnRel(references),
         ),
       )
-      .subscribe((references: Array<CustomListReferenceData>) => {
+      .subscribe((references: CustomListReferenceData[]) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => {
             this.formService.patch(reference.component);

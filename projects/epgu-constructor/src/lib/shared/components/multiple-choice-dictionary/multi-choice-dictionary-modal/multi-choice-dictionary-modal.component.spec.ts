@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { ListElement } from '@epgu/epgu-lib';
 import { FormBuilder } from '@angular/forms';
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
@@ -21,6 +21,7 @@ import { RefRelationService } from '../../../services/ref-relation/ref-relation.
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -76,9 +77,10 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(MultiChoiceDictionaryModalComponent, {
