@@ -48,7 +48,7 @@ export class ConstructorDatePickerComponent {
     const input = $event.target as HTMLInputElement;
     const [day, month, year] = this.getDateTuple(input.value);
 
-    const date = (day && new Date(year, month - 1, day)) || null;
+    const date = (day && month && year && new Date(year, month - 1, day)) || null;
     this.onDateSelected(date);
   }
 
