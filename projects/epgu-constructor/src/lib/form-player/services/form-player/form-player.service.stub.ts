@@ -27,6 +27,7 @@ export class FormPlayerServiceStub {
         label: 'some label',
         id: '123',
         name: 'some name',
+        submitLabel: 'some submit label',
         terminal: false,
         type: ScreenTypes.UNIQUE,
       },

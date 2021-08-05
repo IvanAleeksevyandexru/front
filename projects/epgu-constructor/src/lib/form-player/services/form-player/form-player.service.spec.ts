@@ -249,6 +249,7 @@ describe('FormPlayerService', () => {
           label: 'some label',
           id: '2222',
           name: 'some name 2',
+          submitLabel: 'some submit label',
           terminal: false,
           type: ScreenTypes.COMPONENT,
         },

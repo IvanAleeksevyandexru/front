@@ -93,6 +93,7 @@ describe('BillInfoComponent', () => {
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockData;
     screenService.header = '';
+    screenService.submitLabel = '';
     fixture = TestBed.createComponent(BillInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -9,12 +9,13 @@
   </div>
 
   <div class="component-list__footer">
-    <epgu-constructor-screen-buttons
-      class="screen-buttons"
-      *ngIf="(screenService.buttons$ | async).length"
-      [screenButtons]="screenService.buttons$ | async"
-      [isLoading]="screenService.isLoading$ | async"
-      [disabled]="!isValid"
-    ></epgu-constructor-screen-buttons>
+    <lib-button
+      [showLoader]="screenService.isLoading$ | async"
+      (click)="nextScreen()"
+      class="submit-button"
+      [disabled]="(screenService.isLoading$ | async) || !isValid"
+    >
+      {{ screenService.submitLabel$ | async }}
+    </lib-button>
   </div>
 </div>

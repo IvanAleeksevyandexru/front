@@ -55,6 +55,7 @@ describe('FormPlayerApiService', () => {
         },
         id: '',
         name: '',
+        submitLabel: '',
         type: ScreenTypes.QUESTION,
         terminal: false,
       },

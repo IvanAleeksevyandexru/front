@@ -26,6 +26,7 @@ const displayMock = ({
   name: '',
   type: ScreenTypes.UNIQUE,
   header: '',
+  submitLabel: '',
   components: [],
   accepted: true,
   impasse: false,
