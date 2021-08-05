@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { BaseProgram, FocusFilter } from '../../typings';
+import { BaseProgram, Filters, FocusFilter } from '../../typings';
 import {
   map,
   shareReplay,
@@ -72,25 +72,7 @@ export class ProgramListService {
       (prev, next) =>
         isEqual(prev?.programFilters, next?.programFilters) && prev.okato === next.okato,
     ),
-    map((state) => {
-      const filters = { ...(state?.programFilters ?? {}) };
-      const focus = filters?.focus as ListElement;
-      if (focus && focus?.id) {
-        filters.focus = focus.id as FocusFilter;
-      }
-      const place = filters?.municipality as ListElement;
-      if (place && place?.id) {
-        filters.municipality = place?.id as string;
-      }
-      const direction = filters?.direction as ListElement;
-      if (direction && direction?.id) {
-        filters.direction = direction?.id as string;
-      }
-      if (filters?.query?.length === 0) {
-        delete filters.query;
-      }
-      return { filters };
-    }),
+    map((state) => this.processFilters(state)),
     tap(() => this.reset()),
     switchMap((options) =>
       this.api.getProgramList({
@@ -161,5 +143,25 @@ export class ProgramListService {
     this.resetPagination();
     this.fullLoading$$.next(true);
     this.data$$.next([]);
+  }
+
+  processFilters(state: ChildrenClubsState): { filters: Filters } {
+    const filters = { ...(state?.programFilters ?? {}) };
+    const focus = filters?.focus as ListElement;
+    if (focus && focus?.id) {
+      filters.focus = focus.id as FocusFilter;
+    }
+    const place = filters?.municipality as ListElement;
+    if (place && place?.id) {
+      filters.municipality = place?.id as string;
+    }
+    const direction = filters?.direction as ListElement;
+    if (direction && direction?.id) {
+      filters.direction = direction?.id as string;
+    }
+    if (filters?.query?.length === 0) {
+      delete filters.query;
+    }
+    return { filters };
   }
 }
