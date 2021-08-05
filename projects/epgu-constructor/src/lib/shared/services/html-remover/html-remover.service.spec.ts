@@ -11,6 +11,7 @@ describe('HtmlRemoverService', () => {
     name: 'Приветствие',
     type: ScreenTypes.INFO,
     header: 'Получение заграничного паспорта',
+    submitLabel: 'Начать',
     components: [
       {
         id: 'w1',

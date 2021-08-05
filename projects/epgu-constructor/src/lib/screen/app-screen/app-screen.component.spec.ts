@@ -26,6 +26,7 @@ const displayDtoSample: DisplayDto = {
   header: 'header1',
   id: 'id1',
   name: 'name1',
+  submitLabel: 'submitLabel1',
   type: ScreenTypes.APP,
   terminal: true,
 };

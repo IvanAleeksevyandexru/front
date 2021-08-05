@@ -10,13 +10,15 @@ import { SuggestionGroup } from './suggestion';
  * @property {string}header - текстовый заголовок компонента
  * @property {string}id - идентификатор экрана
  * @property {string}name - краткая информация о том что за компонент (на фронте не используется)
+ * @property {string}submitLabel - текст для submit-button'a
  * @property {ScreenTypes}type - тип компонента
  */
 export interface DisplayDto {
   id: string;
   name: string;
   header: string;
-  components: ComponentDto[];
+  submitLabel?: string; // TODO: depricated удалить после переезда на buttons
+  components: Array<ComponentDto>;
   type: ScreenTypes;
   terminal: boolean;
   firstScreen?: boolean;
@@ -26,7 +28,7 @@ export interface DisplayDto {
   cssClass?: string;
   isSocialButtonsHidden?: boolean;
   displayCssClass?: string;
-  buttons?: ScreenButton[];
+  buttons?: Array<ScreenButton>;
   infoComponents?: string[];
   suggestion?: SuggestionGroup;
   hideBackButton?: boolean;

@@ -5,6 +5,7 @@ const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
   name: 'Финальная страница сценария электронный вариант',
   type: ScreenTypes.CUSTOM,
   header: '',
+  submitLabel: '',
   components: [
     {
       id: 'finishcomponent_expire_order_error',

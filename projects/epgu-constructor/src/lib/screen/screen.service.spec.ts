@@ -38,6 +38,7 @@ const makeScreenStoreSample = (): ScreenStore => ({
     name: 'Приветствие',
     type: ScreenTypes.INFO,
     header: 'Получение заграничного паспорта',
+    submitLabel: 'Продолжить',
     components: [
       {
         id: 'w1',
