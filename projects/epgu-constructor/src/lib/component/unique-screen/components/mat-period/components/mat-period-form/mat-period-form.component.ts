@@ -43,6 +43,15 @@ export class MatPeriodFormComponent implements OnInit {
   }
 
   private initForm(cachedValue: FormValue['data'] | null): void {
+    const cachedPaymentDate = cachedValue[this.formField.paymentDate];
+    let paymentDate = null;
+
+    if (cachedPaymentDate?.length > 10) {
+      paymentDate = new Date(cachedPaymentDate);
+    } else {
+      paymentDate = cachedPaymentDate;
+    }
+
     this.form = this.fb.group({
       [this.formField.paymentType]: new FormControl(
         cachedValue[this.formField.paymentType] || 'one',
@@ -58,7 +67,7 @@ export class MatPeriodFormComponent implements OnInit {
         cachedValue[this.formField.finishPayment] || null,
       ),
       [this.formField.paymentDate]: new FormControl(
-        cachedValue[this.formField.paymentDate] || null,
+        paymentDate,
         this.getPaymentDateValidators(cachedValue[this.formField.paymentType] || 'one'),
       ),
     });
