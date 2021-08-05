@@ -200,7 +200,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
       if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
