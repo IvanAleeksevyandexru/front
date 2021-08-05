@@ -80,7 +80,7 @@ export const aboutPayment = {
 export const HealthListElements: ListElement[] = [
   {
     id: null,
-    text: 'Все',
+    text: 'Без ограничений',
   },
   {
     id: 'deafness',
