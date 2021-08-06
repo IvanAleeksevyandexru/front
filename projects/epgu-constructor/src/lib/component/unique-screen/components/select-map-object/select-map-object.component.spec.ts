@@ -41,9 +41,7 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
-import {
-  DictionaryResponse,
-} from '../../../../shared/services/dictionary/dictionary-api.types';
+import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { PrepareComponentsService } from '../../../../shared/services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
@@ -56,6 +54,11 @@ import { SearchPanelResolverComponent } from './components/search-panel-resolver
 import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { mockMvdPoint } from './mocks/mock-select-map-mvdPoints';
+import { CommonBalloonContentComponent } from './components/balloon-content-resolver/components/common-balloon-content/common-balloon-content.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { By } from '@angular/platform-browser';
+import { CommonSearchPanelComponent } from './components/search-panel-resolver/components/common-search-panel/common-search-panel.component';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -68,7 +71,13 @@ describe('SelectMapObjectComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [SelectMapObjectComponent, SearchPanelResolverComponent, BalloonContentResolverComponent],
+      declarations: [
+        SelectMapObjectComponent,
+        SearchPanelResolverComponent,
+        BalloonContentResolverComponent,
+        CommonBalloonContentComponent,
+        CommonSearchPanelComponent,
+      ],
       imports: [BaseModule, ConstructorLookupModule, MockModule(PrevButtonModule)],
       providers: [
         Icons,
@@ -100,7 +109,11 @@ describe('SelectMapObjectComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
       ],
-    }).compileComponents();
+    })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -155,5 +168,20 @@ describe('SelectMapObjectComponent', () => {
     component['componentPresetValue'].regCode = 'R66';
     const isFiltersSame = component['isFiltersSame']();
     expect(isFiltersSame).toBeFalsy();
+  });
+
+  it('should hide button', () => {
+    component.data.attrs.isSelectButtonHidden = true;
+    component.selectedValue = mockMvdPoint;
+    fixture.detectChanges();
+    const btn = fixture.debugElement.query(By.css('.submit-button'));
+    expect(btn).toBeFalsy();
+  });
+
+  it('should show button', () => {
+    component.selectedValue = mockMvdPoint;
+    fixture.detectChanges();
+    const btn = fixture.debugElement.query(By.css('.submit-button'));
+    expect(btn).toBeTruthy();
   });
 });

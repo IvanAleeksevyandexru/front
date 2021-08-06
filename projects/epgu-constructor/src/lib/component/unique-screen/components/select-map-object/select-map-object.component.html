@@ -29,6 +29,7 @@
         <epgu-constructor-balloon-content-resolver
           [contentType]="balloonContentType"
           [mapObject]="mapObject"
+          [isSelectButtonHidden]="data.attrs.isSelectButtonHidden"
           (selectObject)="selectObject($event)"
         >
         </epgu-constructor-balloon-content-resolver>

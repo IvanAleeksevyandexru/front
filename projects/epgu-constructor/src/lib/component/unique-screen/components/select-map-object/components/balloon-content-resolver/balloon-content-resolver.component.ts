@@ -34,6 +34,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
   @ViewChild('content', { read: ViewContainerRef }) content: ViewContainerRef;
 
   @Input() mapObject;
+  @Input() isSelectButtonHidden = false;
   @Input() contentType = ContentTypes.commonContent;
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
@@ -58,13 +59,8 @@ export class BalloonContentResolverComponent implements AfterViewInit {
       this.getComponent(this.contentType),
     );
     this.balloonContentComponentRef = this.content.createComponent(content);
-    const ref = this.balloonContentComponentRef.instance;
-    ref.mapObject = this.mapObject;
-    ref.selectObject = (obj, evt: Event): void => {
-      evt.stopPropagation();
-      this.selectObject.emit(obj);
-    };
-    ref.expandObject = (mapObject): void => this.expandObject(mapObject);
+    this.setInstanceFields(this.balloonContentComponentRef);
+
     this.cdr.detectChanges();
   }
 
@@ -79,5 +75,16 @@ export class BalloonContentResolverComponent implements AfterViewInit {
 
   private getComponent(type: ContentTypes): Type<ContentTypesComponents> {
     return this.contentMap[type];
+  }
+
+  private setInstanceFields(ref): void {
+    const { instance } = ref;
+    instance.mapObject = this.mapObject;
+    instance.isSelectButtonHidden = this.isSelectButtonHidden;
+    instance.selectObject = (obj, evt: Event): void => {
+      evt.stopPropagation();
+      this.selectObject.emit(obj);
+    };
+    instance.expandObject = (mapObject): void => this.expandObject(mapObject);
   }
 }
