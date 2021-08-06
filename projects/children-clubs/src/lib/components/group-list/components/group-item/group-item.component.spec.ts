@@ -88,6 +88,17 @@ describe('GroupItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('OnInit', () => {
+    it('should set isNextSchoolYear', () => {
+      jest.spyOn(stateQuery, 'state', 'get').mockReturnValue({ testState, ...{ nextSchoolYear: 'true' }});
+
+      expect(component.isNextSchoolYear).toBeFalsy();
+      component.ngOnInit();
+
+      expect(component.isNextSchoolYear).toBeTruthy();
+    });
+  });
+
   it('getCost', () => {
     let item = { cost: 9600, monthlyCost: 1200, sourceCode: FinancialSourceType.pfdod_certificate };
     expect(component['getCost'](item)).toEqual(1200);
@@ -122,4 +133,5 @@ describe('GroupItemComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl.nativeElement.textContent).toBe('test text 24.02.2020');
   });
+
 });

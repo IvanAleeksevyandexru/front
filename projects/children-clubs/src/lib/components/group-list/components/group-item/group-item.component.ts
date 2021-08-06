@@ -63,6 +63,7 @@ export class GroupItemComponent implements OnInit {
   available: boolean;
   sourceType = FinancialSourceType;
   denyReasonMessage: DenyReasonMessage | null = null;
+  isNextSchoolYear: boolean;
 
   constructor(
     private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
@@ -72,6 +73,7 @@ export class GroupItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setIsNextSchoolYear();
     this.getDenyReasonMessage();
   }
 
@@ -155,10 +157,10 @@ export class GroupItemComponent implements OnInit {
     try {
       if (this.group && !(this.group.available ?? true) && this.group.denyReason) {
         const { denyReason } = this.group;
-        const { denyReason: denyReasonJSON, nextSchoolYear } = this.stateQuery.state;
+        const { denyReason: denyReasonJSON } = this.stateQuery.state;
         const denyReasonsByPeriod = JSON.parse(denyReasonJSON);
         const denyReasonMessage: DenyReasonMessage | null =
-          (nextSchoolYear === 'true'
+          (this.isNextSchoolYear
             ? denyReasonsByPeriod.nextYear[denyReason]
             : denyReasonsByPeriod.currentYear[denyReason]) || null;
         if (denyReasonMessage) {
@@ -207,5 +209,9 @@ export class GroupItemComponent implements OnInit {
           DATE_STRING_DOT_FORMAT,
         )
       : '';
+  }
+
+  private setIsNextSchoolYear(): void {
+    this.isNextSchoolYear = this.stateQuery.state.nextSchoolYear === 'true';
   }
 }

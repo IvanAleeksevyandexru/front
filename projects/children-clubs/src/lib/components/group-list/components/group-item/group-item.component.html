@@ -24,15 +24,17 @@
         <div class="group-item__value">{{ program.address }}</div>
       </div>
       <div *ngIf="group?.dateBegin" class="group-item mt-16">
-        <div class="group-item__key">Период обучения</div>
+        <div class="group-item__key">
+          Период обучения
+          <ng-container *ngIf="isNextSchoolYear">(плановый)</ng-container>
+        </div>
         <div class="group-item__value">
-          {{ group.dateBegin | date: 'dd.MM.yyyy'
-          }}<ng-container *ngIf="group?.dateEnd"
-            >&nbsp;- {{ group.dateEnd | date: 'dd.MM.yyyy' }}</ng-container
-          ><ng-container *ngIf="group.hoursYear">
+          {{ group.dateBegin | date: (isNextSchoolYear ? 'dd.MM' : 'dd.MM.yyyy') }}
+          <ng-container *ngIf="group?.dateEnd"> - {{ group.dateEnd | date: (isNextSchoolYear ? 'dd.MM' : 'dd.MM.yyyy') }}</ng-container>
+          <ng-container *ngIf="group.hoursYear">
             ({{ group.hoursYear }}
-            {{ ['час', 'часа', 'часов'] | pluralize: group.hoursYear }})</ng-container
-          >
+            {{ ['час', 'часа', 'часов'] | pluralize: group.hoursYear }})
+          </ng-container>
         </div>
       </div>
       <div *ngIf="group?.schedule" class="group-item mt-16">
