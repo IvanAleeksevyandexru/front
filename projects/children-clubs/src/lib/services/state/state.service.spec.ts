@@ -6,6 +6,7 @@ import {
   MicroAppStateStore,
 } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../state/state.service';
+import { PfdoPaymentFilters } from '../../typings';
 
 describe('StateService', () => {
   let service: StateService;
@@ -45,18 +46,26 @@ describe('StateService', () => {
 
       expect(res.hasOwnProperty('nextSchoolYear')).toBe(true);
       expect(res.hasOwnProperty('vendor')).toBe(true);
-      expect(Object.keys(res).length).toBe(2);
+      expect(res.hasOwnProperty('isRegistrationOpen')).toBe(true);
+      expect(res.hasOwnProperty('maxPrice')).toBe(true);
+      expect(res.hasOwnProperty('age')).toBe(true);
+      expect(res.hasOwnProperty('inlearnoPayments')).toBe(true);
+      expect(Object.keys(res).length).toBe(6);
     });
 
     it('should return existing group filters if object is not empty', () => {
-      service.groupFilters = { age: 42 };
+      service.groupFilters = { pfdoPayments: {} as unknown as PfdoPaymentFilters };
 
       const res = service.groupFilters;
 
       expect(res.hasOwnProperty('nextSchoolYear')).toBe(true);
       expect(res.hasOwnProperty('vendor')).toBe(true);
-      expect(res.age).toBe(42);
-      expect(Object.keys(res).length).toBe(3);
+      expect(res.hasOwnProperty('isRegistrationOpen')).toBe(true);
+      expect(res.hasOwnProperty('maxPrice')).toBe(true);
+      expect(res.hasOwnProperty('age')).toBe(true);
+      expect(res.hasOwnProperty('inlearnoPayments')).toBe(true);
+      expect(res.hasOwnProperty('pfdoPayments')).toBe(true);
+      expect(Object.keys(res).length).toBe(7);
     });
 
   });
