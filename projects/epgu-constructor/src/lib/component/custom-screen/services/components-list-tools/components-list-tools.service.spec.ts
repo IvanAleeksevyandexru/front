@@ -82,6 +82,11 @@ describe('ComponentsListToolsService', () => {
       component.value = 'true';
       expect(service.convertedValue(component)).toEqual(true);
     });
+    it('should return parsed phone number', () => {
+      const component = JSON.parse(JSON.stringify(mockComponent));
+      component.value = '+7(980)7060210';
+      expect(service.convertedValue(component)).toEqual('+7 (980) 706 02 10');
+    });
     it('should return string value, if string value passed', () => {
       const component = mockComponent;
       expect(service.convertedValue(component)).toBe('value');
@@ -162,6 +167,25 @@ describe('ComponentsListToolsService', () => {
     it('should return false, if undefined', () => {
       const type = undefined;
       expect(service.isDate(type)).toBeFalsy();
+    });
+  });
+
+  describe('isPhone()', () => {
+    it('should return true, if is phone number', () => {
+      const value = '+7(980)7060210';
+      expect(service.isPhone(value)).toBeTruthy();
+    });
+    it('should return false, if is not phone number', () => {
+      const value = '234-234-423 34';
+      expect(service.isPhone(value)).toBeFalsy();
+    });
+    it('should return false, if undefined', () => {
+      const value = undefined;
+      expect(service.isPhone(value)).toBeFalsy();
+    });
+    it('should return false, if null', () => {
+      const value = null;
+      expect(service.isPhone(value)).toBeFalsy();
     });
   });
 });
