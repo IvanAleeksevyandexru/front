@@ -127,6 +127,7 @@
     "@angular-eslint/eslint-plugin-template": "0.0.1-alpha.32",
     "@angular-eslint/schematics": "0.0.1-alpha.32",
     "@angular-eslint/template-parser": "0.0.1-alpha.32",
+    "@angular-extensions/pretty-html-log": "^4.0.1",
     "@angular/cli": "11.0.0",
     "@angular/compiler-cli": "11.0.0",
     "@babel/core": "^7.12.10",

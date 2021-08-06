@@ -14,10 +14,6 @@
       & > * {
         display: block;
       }
-
-      &:last-of-type {
-        padding-bottom: 24px;
-      }
     }
 
     .details-link {
@@ -37,6 +33,7 @@
     }
 
     .submit-button {
+      display: block;
       padding-top: 24px;
     }
   }
