@@ -60,8 +60,10 @@ export class ComponentsListToolsService {
     return type === CustomScreenComponentTypes.DateInput;
   }
 
+  // Очень условная проверка на соответствие номеру телефона
+  // Решает конкретную проблему с валидностью полей с номерами телефонов
   public isPhone(value): boolean {
-    const numberWithoutSymbols = value.replace(/[+()]/g, '');
+    const numberWithoutSymbols = value.replace(/[+()* ]/g, '');
     return value.includes('+7') && !isNaN(Number(numberWithoutSymbols));
   }
 
