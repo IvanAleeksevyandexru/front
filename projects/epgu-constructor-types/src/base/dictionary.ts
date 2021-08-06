@@ -12,7 +12,7 @@ export interface DictionaryOptions {
   pageNum?: number;
   pageSize?: string | number;
   parentRefItemValue?: string;
-  selectAttributes?: Array<string>;
+  selectAttributes?: string[];
   tx?: string;
   excludedParams?: string[];
   additionalParams?: AdditionalRequestParam[];
@@ -25,7 +25,7 @@ export interface DictionaryFilters {
     pageNum?: number;
     pageSize?: string;
     parentRefItemValue?: string;
-    selectAttributes?: Array<string>;
+    selectAttributes?: string[];
     treeFiltering?: 'ONELEVEL';
     tx?: string;
     withCredentials?: boolean;
@@ -46,7 +46,7 @@ export interface DictionarySimpleFilter {
 
 export interface DictionaryUnionFilter {
   unionKind: DictionaryUnionKind;
-  subs: Array<DictionarySubFilter>;
+  subs: DictionarySubFilter[];
 }
 
 export enum AttributeTypes {

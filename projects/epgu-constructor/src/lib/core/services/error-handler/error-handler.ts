@@ -49,8 +49,12 @@ const BOOKING_ONLINE_ERROR_TEXT = `<div class="text_modal_error">
 
 const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
-<h4>Отправить заявление может только руководитель</h4>
-<span>Заявление сохранено как черновик и доступно в личном кабинете руководителя. Вы можете редактировать его, пока оно не отправлено</span>
+<h4>Нет прав на отправку заявления</h4>
+<span>Отправить заявление могут руководитель организации или сотрудник
+с электронной доверенностью, подписанной руководителем.<br />
+До отправки заявление сохранено в черновиках — вы и другие сотрудники можете его отредактировать.<br />
+<a target="_blank" href="https://www.gosuslugi.ru/help/faq/delegirovanie_polnomochij">Как получить электронную доверенность</a>
+</span>
 </div>`;
 
 const TIME_INVITATION_ERROR_TEXT = `<div class="text_modal_error">
@@ -216,9 +220,20 @@ export const SESSION_TIMEOUT: ConfirmationModal = {
 export const NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR: ConfirmationModal = {
   text: NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR_TEXT,
   title: '',
-  showCloseButton: true,
+  showCloseButton: false,
   showCrossButton: true,
-  buttons: [],
+  buttons: [
+    {
+      label: 'В личный кабинет',
+      closeModal: true,
+      color: 'white',
+      value: 'redirectToLk',
+    },
+    {
+      label: 'Закрыть',
+      closeModal: true,
+    },
+  ],
   isShortModal: true,
 };
 

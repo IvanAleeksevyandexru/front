@@ -49,6 +49,8 @@ export const SESSION_TIMEOUT_SMEV2 =
 // eslint-disable-next-line max-len
 export const SESSION_TIMEOUT_SMEV3 =
   'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const REFERRAL_NUMBER_NOT_FOUND =
+  'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.';
 export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
 
 @Injectable()
@@ -150,6 +152,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (!errorMessage.includes('FAILURE') &&
               !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
           ) {
+            if (this.excludedFromHandling(errorMessage)) {
+              return;
+            }
+
             if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
               this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
             } else {
@@ -194,7 +200,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
       if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
@@ -262,6 +268,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         });
         break;
     }
+  }
+
+  private excludedFromHandling(errorMessage: string): boolean {
+    return errorMessage === REFERRAL_NUMBER_NOT_FOUND;
   }
 
   private showModalNoData(errorMessage: string, replace: boolean): void {

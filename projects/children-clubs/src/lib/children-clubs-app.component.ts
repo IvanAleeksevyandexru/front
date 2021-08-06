@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  Injector,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Injector, OnInit } from '@angular/core';
 import { MicroAppBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { tap } from 'rxjs/operators';
 import { ChildrenClubsState, ChildrenClubsValue } from './children-clubs.types';
@@ -15,7 +8,6 @@ import { StateService } from './services/state/state.service';
   selector: 'children-clubs-app',
   templateUrl: './children-clubs-app.component.html',
   styleUrls: ['../styles/index.scss', './children-clubs-app.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChildrenClubsAppComponent

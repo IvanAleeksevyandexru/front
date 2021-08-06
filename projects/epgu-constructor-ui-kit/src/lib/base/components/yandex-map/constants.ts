@@ -5,7 +5,7 @@ import { ConfigService } from '../../../core/services/config/config.service';
 export class Icons {
   public readonly red = {
     iconLayout: 'default#image',
-    iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/point_red.svg`,
+    iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pinred.svg`,
     iconContentOffset: [11, 15],
     iconShape: {
       type: 'Circle',
@@ -18,7 +18,7 @@ export class Icons {
 
   public readonly blue = {
     iconLayout: 'default#image',
-    iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/point_blue.svg`,
+    iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pinblue.svg`,
     iconImageSize: [24, 40],
     iconImageOffset: [-12, -20],
     iconContentOffset: [11, 15],
@@ -29,6 +29,18 @@ export class Icons {
     },
     hideIconOnBalloonOpen: false,
     openEmptyBalloon: true
+  };
+
+  public readonly clusterBlue =       {
+    href: `${this.config.staticDomainAssetsPath}/assets/icons/svg/clusterblue.svg`,
+    size: [40, 40],
+    offset: [-20, -20]
+  };
+
+  public readonly clusterRed =       {
+    href: `${this.config.staticDomainAssetsPath}/assets/icons/svg/clusterred.svg`,
+    size: [40, 40],
+    offset: [-20, -20]
   };
 
   constructor(public config: ConfigService) { }

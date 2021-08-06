@@ -7,12 +7,12 @@ import { ComponentDictionaryFilterDto } from './dictionary';
  */
 export interface CustomComponentRef {
   relatedRel: string;
-  val: string | Array<string> | boolean;
+  val: string | string[] | boolean;
   relation: CustomComponentRefRelation;
   sourceId?: string;
   defaultValue?: string | boolean;
   valueFromCache?: string;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
   relatedRelValues?: { [key: string]: string };
 }
 
