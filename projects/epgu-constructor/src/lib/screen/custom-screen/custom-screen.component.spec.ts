@@ -138,7 +138,6 @@ describe('CustomScreenComponent', () => {
         header: 'header1',
         id: 'id1',
         name: 'name1',
-        submitLabel: 'label1',
         type: ScreenTypes.CUSTOM,
         terminal: true,
       };
@@ -286,7 +285,6 @@ describe('CustomScreenComponent', () => {
       header: 'header1',
       id: 'id1',
       name: 'name1',
-      submitLabel: 'label1',
       type: ScreenTypes.CUSTOM,
       terminal: true,
     };
@@ -326,7 +324,7 @@ describe('CustomScreenComponent', () => {
   describe('Submit button', () => {
     const selector = 'epgu-cf-ui-screen-container lib-button';
 
-    it('should be rendered if screenService.submitLabel is TRUE', () => {
+    it('should be rendered if has buttons', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeNull();

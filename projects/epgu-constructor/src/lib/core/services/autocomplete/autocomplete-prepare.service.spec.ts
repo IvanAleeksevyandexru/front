@@ -102,7 +102,6 @@ describe('AutocompletePrepareService', () => {
       id: '',
       name: '',
       displayCssClass: '',
-      submitLabel: '',
       suggestion: { groupId: 'groupId' },
       type: ScreenTypes.CUSTOM,
       terminal: false,

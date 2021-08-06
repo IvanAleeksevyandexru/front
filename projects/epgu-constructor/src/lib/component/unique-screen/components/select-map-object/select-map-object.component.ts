@@ -435,10 +435,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       );
 
       if (confirmationModalButtons.length > 0) {
-        this.actionService.openConfirmationModal(confirmationModalButtons[0], this.data.id, () => {
-          this.currentAnswersService.state = answer;
-          this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
-        });
+        this.actionService.openConfirmationModal(confirmationModalButtons[0], this.data.id);
       } else {
         this.currentAnswersService.state = answer;
         this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);

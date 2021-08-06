@@ -44,7 +44,6 @@ const displayMock = {
   name: 'Укажите все изменения ФИО',
   type: ScreenTypes.REPEATABLE,
   header: 'Укажите все изменения',
-  submitLabel: 'Далее',
   components: [
     {
       id: 'pd6',
