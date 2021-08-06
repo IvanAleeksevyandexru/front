@@ -151,22 +151,31 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
   private parseValue(data: ConfirmAddressInterface): ConfirmAddressReadonlyValue {
     const valueParsed = {} as ConfirmAddressReadonlyValue;
     const localValueParsed = JSON.parse(data.value);
+    // в data.value может находиться кэшированное значение,
+    // а при смене адреса через кнопку редактировать необходимо показывать новое значение,
+    // которое попадет в data.presetValue
+    let presetValueParsed = { regDate: null, regAddr: null };
+    if (data.presetValue) {
+      presetValueParsed = JSON.parse(data.presetValue);
+    }
+    const regDate = presetValueParsed.regDate || localValueParsed.regDate;
+    const regAddr = presetValueParsed.regAddr || localValueParsed.regAddr;
 
-    if (localValueParsed?.regDate) {
+    if (regDate) {
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === FieldNames.regDate),
       );
       if (isPresetable || data.valueFromCache) {
-        valueParsed.regDate = this.getDate(localValueParsed.regDate);
+        valueParsed.regDate = this.getDate(regDate);
       }
     }
 
-    if (localValueParsed?.regAddr) {
+    if (regAddr) {
       const isPresetable = this.isPresetable(
         data?.attrs?.fields?.find((field) => field.fieldName === FieldNames.regAddr),
       );
       if (isPresetable || data.valueFromCache) {
-        valueParsed.regAddr = localValueParsed.regAddr;
+        valueParsed.regAddr = regAddr;
       }
     }
 
