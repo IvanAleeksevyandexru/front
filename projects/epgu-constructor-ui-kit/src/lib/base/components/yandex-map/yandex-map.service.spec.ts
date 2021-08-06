@@ -9,12 +9,13 @@ import { DeviceDetectorServiceStub } from '../../../core/services/device-detecto
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Icons } from './constants';
 import { mockItemsWithEmptyCoords } from './mocks/mock-items';
-import { mockExpandedPoint, mockPointWithoutCoords } from './mocks/mock-points';
-import { IFeatureItem } from './yandex-map.interface';
+import { mockBrakCluster, mockExpandedPoint, mockPointWithoutCoords } from './mocks/mock-points';
+import { IClusterItem, IFeatureItem } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
 
 describe('SelectMapObjectComponent', () => {
   let yandexMapService: YandexMapService;
+  let icons: Icons;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -30,10 +31,14 @@ describe('SelectMapObjectComponent', () => {
 
   beforeEach(() => {
     yandexMapService = TestBed.inject(YandexMapService);
+    icons = TestBed.inject(Icons);
     yandexMapService['objectManager'] = {
       objects: {
         setObjectOptions: () => ({}),
       },
+      clusters: {
+        getAll: () => [],
+      }
     };
   });
 
@@ -67,4 +72,17 @@ describe('SelectMapObjectComponent', () => {
     const cnt = result.features.filter((feature) => feature.geometry.coordinates[0] && feature.geometry.coordinates[1]).length;
     expect(result.features.length).toEqual(cnt);
   });
+
+  it('closeBalloon should call paintActiveCluster with blue cluster', () => {
+    const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
+    yandexMapService.closeBalloon();
+    expect(spy).toBeCalledWith(icons.clusterBlue);
+  });
+
+  it('centeredPlaceMark should call paintActiveCluster with red cluster', () => {
+    const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
+    yandexMapService.centeredPlaceMark(mockBrakCluster as unknown as IClusterItem<unknown>);
+    expect(spy).toBeCalledWith(icons.clusterRed);
+  });
+
 });

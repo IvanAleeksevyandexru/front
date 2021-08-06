@@ -15,6 +15,7 @@
 
 .time-slots-empty {
   text-align: center;
+
   h4 {
     margin-bottom: 8px;
   }
@@ -23,14 +24,17 @@
 .calendar-grid {
   display: table;
   width: 100%;
+
   .calendar-week-days {
     display: table-row;
     width: 100%;
+  
     .calendar-week-day {
       display: table-cell;
       width: 14.28%; // 1/7
       text-align: center;
       padding: 10px;
+
       .calendar-week-day-text {
         font-family: Lato, sans-serif;
         font-size: 14px;
@@ -42,6 +46,7 @@
   .calendar-week {
     display: table-row;
     width: 100%;
+
     .calendar-day {
       display: table-cell;
       width: 14.28%; // 1/7
@@ -49,51 +54,64 @@
       padding: 10px;
       cursor: pointer;
       box-sizing: border-box;
+      border-radius: 12px;
+  
       .calendar-day-text {
         font-family: Lato, sans-serif;
         font-size: 14px;
         line-height: 20px;
         color: $color-gosblue;
       }
+
       &.today {
         position: relative;
       }
+
       &:hover {
         background: $color-gosblue;
-        border-radius: 12px;
+
         .calendar-day-text {
           color: $color-white;
         }
       }
+
       &.locked {
         cursor: default;
+
         &:hover {
           border: none;
+          background: none;
         }
+
         .calendar-day-text {
           color: $color-divider;
         }
       }
+
       &.holiday {
         .calendar-day-text {
           color: $color-gosred;
         }
       }
+
       &.is-past,
       &.outer-section {
         .calendar-day-text {
           color: $color-bg-disabled;
         }
       }
+
       &.outer-month {
         visibility: hidden;
       }
+
       &.visible {
         visibility: visible;
       }
+
       &.selected {
         background: $color-gosblue;
-        border-radius: 12px;
+
         .calendar-day-text {
           color: $color-white;
         }

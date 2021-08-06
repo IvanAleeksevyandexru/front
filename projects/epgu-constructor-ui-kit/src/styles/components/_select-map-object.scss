@@ -189,6 +189,7 @@
 @include desktops-down {
   :host::ng-deep {
     .widget__form {
+      position: static;
       width: auto;
       padding: 16px;
     }

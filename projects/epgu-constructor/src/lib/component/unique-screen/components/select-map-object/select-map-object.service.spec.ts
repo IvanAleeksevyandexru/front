@@ -52,11 +52,4 @@ describe('SelectMapObjectComponent', () => {
     selectMapObjectService.centeredPlaceMark([null, null], electionSinglePoint as unknown as YMapItem<DictionaryItem>);
   });
 
-  it('getHashKey should not return empty array', () => {
-    let hashKey = selectMapObjectService['getHashKey']([123, 456]);
-    expect(hashKey).toEqual('123$456');
-    hashKey = selectMapObjectService['getHashKey']([null, null]);
-    expect(hashKey).not.toEqual('null$null');
-  });
-
 });

@@ -57,13 +57,11 @@ export class CommonSearchPanelComponent implements AfterViewInit {
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
       this.selectMapObjectService.searchMapObject(searchString);
-      const fullItems = [];
-      this.selectMapObjectService.filteredDictionaryItems.forEach((item) => {
-        item.children.forEach((child) => {
-          fullItems.push(child);
-        });
-      });
-      return of(this.dictionaryToolsService.adaptDictionaryToListItem(fullItems));
+      return of(
+        this.dictionaryToolsService.adaptDictionaryToListItem(
+          this.selectMapObjectService.filteredDictionaryItems,
+        ),
+      );
     };
   }
 }
