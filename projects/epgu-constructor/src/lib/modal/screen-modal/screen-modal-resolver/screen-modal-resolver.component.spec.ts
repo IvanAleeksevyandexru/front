@@ -47,6 +47,7 @@ describe('ScreenModalResolverComponent', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     screenService.screenType = ScreenTypes.UNIQUE;
+    screenService.buttons = [];
     fixture = TestBed.createComponent(ScreenModalResolverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

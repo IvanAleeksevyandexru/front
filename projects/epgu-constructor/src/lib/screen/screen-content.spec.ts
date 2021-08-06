@@ -24,7 +24,6 @@ const screenStoreSample: ScreenStore = {
     name: 'Приветствие',
     type: ScreenTypes.INFO,
     header: 'Получение заграничного паспорта',
-    submitLabel: 'Продолжить',
     components: [
       {
         id: 'w1',
@@ -84,7 +83,6 @@ const displayDtoSample: DisplayDto = {
   header: '',
   id: '',
   name: '',
-  submitLabel: '',
   type: ScreenTypes.INFO,
   terminal: true,
 };
@@ -172,27 +170,6 @@ describe('ScreenContent', () => {
       screenContent.subHeader = dataSample;
 
       screenContent.subHeader$.subscribe((value) => {
-        expect(value).toBe(dataSample);
-        done();
-      });
-    });
-  });
-
-  describe('submitLabel property', () => {
-    const dataSample = 'any';
-
-    it('should get and set value', () => {
-      expect(screenContent.submitLabel).toBeNull();
-
-      screenContent.submitLabel = dataSample;
-
-      expect(screenContent.submitLabel).toBe(dataSample);
-    });
-
-    it('set value should emit submitLabel$ Observable', (done) => {
-      screenContent.submitLabel = dataSample;
-
-      screenContent.submitLabel$.subscribe((value) => {
         expect(value).toBe(dataSample);
         done();
       });
@@ -498,7 +475,6 @@ describe('ScreenContent', () => {
       const displaySpy = jest.spyOn(screenContent, 'display', 'set');
       const headerSpy = jest.spyOn(screenContent, 'header', 'set');
       const subHeaderSpy = jest.spyOn(screenContent, 'subHeader', 'set');
-      const submitLabelSpy = jest.spyOn(screenContent, 'submitLabel', 'set');
       const genderSpy = jest.spyOn(screenContent, 'gender', 'set');
       const terminalSpy = jest.spyOn(screenContent, 'terminal', 'set');
       const showNavSpy = jest.spyOn(screenContent, 'showNav', 'set');
@@ -524,9 +500,6 @@ describe('ScreenContent', () => {
 
       expect(subHeaderSpy).toBeCalledTimes(1);
       expect(subHeaderSpy).toBeCalledWith(screenStoreSample.display.subHeader);
-
-      expect(submitLabelSpy).toBeCalledTimes(1);
-      expect(submitLabelSpy).toBeCalledWith(screenStoreSample.display.submitLabel);
 
       expect(genderSpy).toBeCalledTimes(1);
       expect(genderSpy).toBeCalledWith(screenStoreSample.gender);

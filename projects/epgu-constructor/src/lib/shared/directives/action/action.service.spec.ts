@@ -367,7 +367,6 @@ describe('ActionService', () => {
           confirmation: {
             title: 'Some title',
             text: 'Some text',
-            submitLabel: 'Send',
           },
         },
       },

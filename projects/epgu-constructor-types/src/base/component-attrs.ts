@@ -293,7 +293,6 @@ export interface ActionConfirmationsDto {
   [key: string]: {
     title?: string;
     text?: string;
-    submitLabel?: string;
     buttons: {
       label: string;
       closeModal: boolean;

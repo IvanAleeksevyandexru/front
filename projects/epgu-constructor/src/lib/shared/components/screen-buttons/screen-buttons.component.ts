@@ -27,9 +27,9 @@ export class ScreenButtonsComponent implements OnInit {
   private isInformerScreen = false;
 
   constructor(
-    private certificateEaisdoService: CertificateEaisdoService,
+    private certificateEaisdoService: CertificateEaisdoService, // TODO: отвязать EaisdoGroupCostService переделать на EventBusService
     private eventBusService: EventBusService,
-    private eaisdoGroupCostService: EaisdoGroupCostService,
+    private eaisdoGroupCostService: EaisdoGroupCostService, // TODO: отвязать EaisdoGroupCostService переделать на EventBusService
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
   ) {}

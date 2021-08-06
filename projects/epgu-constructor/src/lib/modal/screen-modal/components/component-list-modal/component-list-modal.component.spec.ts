@@ -27,6 +27,8 @@ import { MockModule } from 'ng-mocks';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -39,7 +41,6 @@ describe('ComponentListModalComponent', () => {
     header: '',
     id: '',
     name: '',
-    submitLabel: '',
     type: ScreenTypes.CUSTOM
   };
 
@@ -52,7 +53,8 @@ describe('ComponentListModalComponent', () => {
         BaseModule,
         MockModule(CoreUiModule),
         ComponentsListModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ScreenButtonsModule,
       ],
       providers: [
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
@@ -60,6 +62,7 @@ describe('ComponentListModalComponent', () => {
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        CurrentAnswersService,
         CustomScreenService,
         HttpCancelService,
         DatesToolsService,
@@ -79,6 +82,7 @@ describe('ComponentListModalComponent', () => {
     fixture = TestBed.createComponent(ComponentListModalComponent);
     component = fixture.componentInstance;
     screenService.display = screenDataMock as any;
+    screenService.buttons = [];
     fixture.detectChanges();
   });
 
