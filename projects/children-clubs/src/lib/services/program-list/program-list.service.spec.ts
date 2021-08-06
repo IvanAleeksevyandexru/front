@@ -160,6 +160,16 @@ describe('ProgramListService', () => {
       expect(filters.focus).toBe('hudozhestvennoe');
     });
 
+    it('should delete focus field if id is null', () => {
+      const state = {
+        programFilters: { focus: { id: null }}
+      };
+
+      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+
+      expect(filters.hasOwnProperty('focus')).toBe(false);
+    });
+
     it('should add municipality as string', () => {
       const state = {
         programFilters: { municipality: { id: '15' }}
@@ -168,6 +178,16 @@ describe('ProgramListService', () => {
       const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
 
       expect(filters.municipality).toBe('15');
+    });
+
+    it('should delete direction field if id is null', () => {
+      const state = {
+        programFilters: { direction: { id: null }}
+      };
+
+      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+
+      expect(filters.hasOwnProperty('direction')).toBe(false);
     });
 
     it('should add direction as string', () => {

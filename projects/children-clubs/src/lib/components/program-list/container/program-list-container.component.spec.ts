@@ -33,6 +33,7 @@ import { StateService } from '../../../services/state/state.service';
 import { StateServiceStub } from '../../../services/state/state.service.stub';
 import { BaseModule } from '../../base/base.module';
 import { SelectMapObjectModule } from '../../select-map-object/select-map-object.module';
+import { Filters } from '../../../typings';
 
 describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
@@ -78,4 +79,32 @@ describe('ListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('countingFilters()', () => {
+
+    it('should count null filters ', () => {
+      component.countingFilters(null);
+      expect(component.filtersCount$$.getValue()).toBe(0);
+    });
+
+    it('should count filter plain fields', () => {
+      const filters: Filters = { focus: 'estestvennonauchnoe', direction: '2' };
+      component.countingFilters(filters);
+      expect(component.filtersCount$$.getValue()).toBe(2);
+    });
+
+    it('should not count query', () => {
+      const filters: Filters = { focus: 'estestvennonauchnoe', direction: '2', query: '2222' };
+      component.countingFilters(filters);
+      expect(component.filtersCount$$.getValue()).toBe(2);
+    });
+
+    it('should not count falsy values', () => {
+      const filters: Filters = { focus: null, ovzType: undefined, isRegistrationOpen: false };
+      component.countingFilters(filters);
+      expect(component.filtersCount$$.getValue()).toBe(0);
+    });
+
+  });
+
 });

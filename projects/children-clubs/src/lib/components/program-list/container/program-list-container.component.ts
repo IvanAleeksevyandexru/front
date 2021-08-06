@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ListElement } from '@epgu/epgu-lib';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../../../services/program-list/program-list.service';
@@ -55,20 +54,9 @@ export class ProgramListContainerComponent implements OnInit {
         value !== undefined &&
         key !== 'inlearnoPayments' &&
         key !== 'pfdoPayments' &&
-        key !== 'municipality' &&
-        key !== 'query' &&
-        key !== 'focus',
+        key !== 'query',
     );
     count += finded.length;
-
-    if ((filters?.municipality as ListElement)?.text) {
-      count += 1;
-    }
-
-    const focus = (filters?.focus as ListElement)?.id;
-    if (focus && focus !== 'null') {
-      count += 1;
-    }
 
     if (filters?.inlearnoPayments) {
       count += Object.entries(filters.inlearnoPayments).filter((value) => value[1]).length;
@@ -84,7 +72,6 @@ export class ProgramListContainerComponent implements OnInit {
       .openModal<Filters>(ProgramFiltersFormComponent)
       .pipe(filter((filters) => !!filters))
       .subscribe((programFilters) => {
-        this.countingFilters(programFilters);
         this.stateService.programFilters = programFilters;
       });
   }
@@ -99,7 +86,9 @@ export class ProgramListContainerComponent implements OnInit {
       delete filters?.inlearnoPayments;
     }
     this.stateService.programFilters = filters;
-    this.countingFilters(filters);
     this.listService.load$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.listService.programFilters$.subscribe((programFilters: Filters) =>
+      this.countingFilters(programFilters),
+    );
   }
 }

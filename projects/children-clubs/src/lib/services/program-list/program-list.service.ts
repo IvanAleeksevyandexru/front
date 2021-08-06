@@ -48,6 +48,7 @@ export class ProgramListService {
   data$$ = new BehaviorSubject<BaseProgram[]>([]);
   data$ = this.data$$.asObservable();
   paginatedData$ = new BehaviorSubject<BaseProgram[]>([]);
+  programFilters$ = new BehaviorSubject<Filters>({});
 
   public groupFiltersMode$: Observable<{
     isMap: boolean;
@@ -148,8 +149,10 @@ export class ProgramListService {
   processFilters(state: ChildrenClubsState): { filters: Filters } {
     const filters = { ...(state?.programFilters ?? {}) };
     const focus = filters?.focus as ListElement;
-    if (focus && focus?.id) {
+    if (focus && focus.id) {
       filters.focus = focus.id as FocusFilter;
+    } else {
+      delete filters.focus;
     }
     const place = filters?.municipality as ListElement;
     if (place && place?.id) {
@@ -158,10 +161,13 @@ export class ProgramListService {
     const direction = filters?.direction as ListElement;
     if (direction && direction?.id) {
       filters.direction = direction?.id as string;
+    } else {
+      delete filters.direction;
     }
     if (filters?.query?.length === 0) {
       delete filters.query;
     }
+    this.programFilters$.next(filters);
     return { filters };
   }
 }
