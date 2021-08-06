@@ -6,6 +6,7 @@ import {
   FormGroup,
   ValidationErrors,
   ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import {
   EventBusService,
@@ -151,7 +152,10 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       [this.formFields.focus]: new FormControl(null),
       [this.formFields.direction]: new FormControl(null),
       [this.formFields.level]: new FormControl(level || this.levelListElements[0]),
-      [this.formFields.age]: new FormControl(value?.age || null, this.numberValidators()),
+      [this.formFields.age]: new FormControl(value?.age || null, [
+        this.numberValidators(),
+        Validators.maxLength(2),
+      ]),
       [this.formFields.ovzType]: new FormControl(ovzType || this.healthListElements[0]),
     });
   }
