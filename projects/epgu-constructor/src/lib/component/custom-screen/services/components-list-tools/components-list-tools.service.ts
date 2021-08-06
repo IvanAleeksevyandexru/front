@@ -62,7 +62,11 @@ export class ComponentsListToolsService {
 
   // Очень условная проверка на соответствие номеру телефона
   // Решает конкретную проблему с валидностью полей с номерами телефонов
-  public isPhone(value): boolean {
+  public isPhone(value: string): boolean {
+    if (!value || typeof value !== 'string') {
+      return false;
+    }
+
     const numberWithoutSymbols = value.replace(/[+()* ]/g, '');
     return value.includes('+7') && !isNaN(Number(numberWithoutSymbols));
   }
