@@ -39,7 +39,6 @@ describe('ComponentListModalComponent', () => {
     header: '',
     id: '',
     name: '',
-    submitLabel: '',
     type: ScreenTypes.CUSTOM
   };
 

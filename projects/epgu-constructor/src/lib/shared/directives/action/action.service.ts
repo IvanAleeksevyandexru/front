@@ -162,19 +162,7 @@ export class ActionService {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
       componentId: componentId || this.screenService.component.id,
-      buttons: confirmationButtons?.length
-        ? confirmationButtons
-        : [
-            {
-              label: confirmation?.submitLabel || 'Отправить',
-              closeModal: true,
-              handler: handler
-                ? handler
-                : (): void => {
-                    this.navigate(action, componentId, 'nextStep');
-                  },
-            },
-          ],
+      buttons: confirmationButtons,
       actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,

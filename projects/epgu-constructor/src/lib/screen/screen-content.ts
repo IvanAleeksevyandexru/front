@@ -26,7 +26,6 @@ export class ScreenContent {
   private _header = new BehaviorSubject<string>(null);
   private _serviceCode = new BehaviorSubject<string>(null);
   private _subHeader = new BehaviorSubject<DisplaySubjHead>(null);
-  private _submitLabel = new BehaviorSubject<string>(null);
   private _gender = new BehaviorSubject<Gender>(null);
   private _terminal = new BehaviorSubject<boolean>(null);
   private _showNav = new BehaviorSubject<boolean>(null);
@@ -146,16 +145,6 @@ export class ScreenContent {
   }
   public get subHeader$(): Observable<DisplaySubjHead> {
     return this._subHeader.asObservable();
-  }
-
-  public get submitLabel(): string {
-    return this._submitLabel.getValue();
-  }
-  public set submitLabel(val: string) {
-    this._submitLabel.next(val);
-  }
-  public get submitLabel$(): Observable<string> {
-    return this._submitLabel.asObservable();
   }
 
   public get gender(): Gender {
@@ -424,7 +413,6 @@ export class ScreenContent {
     const {
       header,
       subHeader,
-      submitLabel,
       type,
       components = [],
       terminal,
@@ -441,7 +429,6 @@ export class ScreenContent {
     this.display = display;
     this.header = header;
     this.subHeader = subHeader;
-    this.submitLabel = submitLabel;
     this.gender = gender;
     this.terminal = terminal;
     this.showNav = !terminal && !(isWebView && firstScreen) && (terminal ? false : !hideBackButton);
