@@ -54,7 +54,14 @@ export class StateService {
   }
 
   get groupFilters(): FindOptionsGroup {
-    const defaultFindOptions: FindOptionsGroup = { nextSchoolYear: this.nextSchoolYear, vendor: this.vendor };
+    const defaultFindOptions: FindOptionsGroup = {
+      nextSchoolYear: this.nextSchoolYear,
+      vendor: this.vendor,
+      isRegistrationOpen: this.programFilters.isRegistrationOpen,
+      maxPrice: this.programFilters.maxPrice,
+      age: this.programFilters.age,
+      inlearnoPayments: this.programFilters.inlearnoPayments
+      };
     if (!this.stateQuery.state?.groupFilters || Object.keys(this.stateQuery.state?.groupFilters).length === 0) {
       return defaultFindOptions;
     } else {
