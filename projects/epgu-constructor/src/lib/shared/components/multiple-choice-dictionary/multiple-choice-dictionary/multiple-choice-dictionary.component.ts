@@ -12,6 +12,7 @@ import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { CustomComponentDropDownItem } from '../../../../component/custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
@@ -35,6 +36,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   @Input() subLabel: string;
   @Input() modalHeader: string;
   @Input() label: string;
+  @Input() dictionaryFilter: DictionaryFilters;
   @Input() dictionaryList?: ListElement[] | CustomComponentDropDownItem[];
   @Input() dictionaryType?: string;
   @Input() withAmount?: boolean;
@@ -55,6 +57,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
     this.modalService
       .openModal<ListElement[] | null>(MultiChoiceDictionaryModalComponent, {
         title: this.modalHeader || this.subLabel,
+        dictionaryFilter: this.dictionaryFilter,
         dictionaryList: this.dictionaryList,
         dictionaryType: this.dictionaryType,
         selectedItems: this.selectedItems.list,
