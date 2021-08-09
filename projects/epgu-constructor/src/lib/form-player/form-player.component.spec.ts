@@ -211,7 +211,7 @@ describe('FormPlayerComponent', () => {
     });
 
     it('should call tracingService init with true', () => {
-      configService['_isZipkinEnabled'] = true;
+      configService['_zipkinGenerationEnabled'] = true;
       spyOn(tracingService, 'init').and.callThrough();
       component['initConfigDependentEntities']();
       expect(tracingService.init).toBeCalledWith(true);

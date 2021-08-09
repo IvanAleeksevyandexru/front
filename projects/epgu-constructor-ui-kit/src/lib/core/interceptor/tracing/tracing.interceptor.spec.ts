@@ -89,11 +89,8 @@ describe('TracingHttpInterceptor', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         {
           provide: TRACE_ALLOWED_REMOTE_SERVICES,
-          useValue: [
-            someUrl1,
-            someUrl2
-          ]
-        }
+          useValue: [someUrl1, someUrl2],
+        },
       ],
     });
   });
@@ -102,6 +99,7 @@ describe('TracingHttpInterceptor', () => {
     interceptor = TestBed.inject(TracingHttpInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
     config = TestBed.inject(ConfigService);
+    config.zipkinSpanSendEnabled = true;
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
     init.orderId = orderId;
@@ -110,6 +108,23 @@ describe('TracingHttpInterceptor', () => {
   });
 
   describe('doIntercept()', () => {
+    it('should not call doIntercept(), if configService.zipkinSpanSendEnabled is disabled', fakeAsync(() => {
+      const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
+      config.zipkinSpanSendEnabled = false;
+      formPlayerApi.sendAction(api, dto).subscribe((response) => {
+        expect(response).toBeTruthy();
+      });
+      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
+      const dataToFlush = {
+        scenarioDto: {
+          ...dto.scenarioDto,
+          orderId,
+        },
+      };
+      requestToSucceed.flush(dataToFlush);
+      expect(doInterceptSpy).not.toHaveBeenCalled();
+      discardPeriodicTasks();
+    }));
     it('should not call doIntercept(), if no tracer', fakeAsync(() => {
       const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
       formPlayerApi.sendAction(api, dto).subscribe((response) => {

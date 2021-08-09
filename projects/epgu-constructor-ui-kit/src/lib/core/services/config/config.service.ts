@@ -37,7 +37,8 @@ export class ConfigService implements Config {
   private _isSocialShareDisabled: boolean;
   private _isAutocompleteServiceDisabled: boolean;
   private _addToCalendarUrl: string;
-  private _isZipkinEnabled: boolean;
+  private _zipkinGenerationEnabled: boolean;
+  private _zipkinSpanSendEnabled: boolean;
   private _zipkinUrl: string;
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
@@ -179,8 +180,16 @@ export class ConfigService implements Config {
     return this._addToCalendarUrl;
   }
 
-  get isZipkinEnabled(): boolean {
-    return this._isZipkinEnabled;
+  get zipkinGenerationEnabled(): boolean {
+    return this._zipkinGenerationEnabled;
+  }
+
+  get zipkinSpanSendEnabled(): boolean {
+    return this._zipkinSpanSendEnabled;
+  }
+
+  set zipkinSpanSendEnabled(value: boolean) {
+    this._zipkinSpanSendEnabled = value;
   }
 
   get zipkinUrl(): string {
@@ -275,7 +284,8 @@ export class ConfigService implements Config {
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;
-    this._isZipkinEnabled = config.isZipkinEnabled || false;
+    this._zipkinGenerationEnabled = config.zipkinGenerationEnabled || false;
+    this._zipkinSpanSendEnabled = config.zipkinSpanSendEnabled || false;
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';

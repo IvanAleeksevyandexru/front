@@ -115,7 +115,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private initConfigDependentEntities(): void {
     this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
-    this.tracingService.init(this.configService.isZipkinEnabled || false);
+    this.tracingService.init(this.configService.zipkinGenerationEnabled || false);
     this.screenService.serviceCode$
       .pipe(
         filter((serviceCode) => serviceCode !== null),
