@@ -15,6 +15,7 @@
   >
     <epgu-constructor-multiple-choice-dictionary
       [formControl]="$any(control.get('value'))"
+      [dictionaryFilter]="dictionaryFilter"
       [dictionaryList]="component.attrs?.dictionaryList"
       [dictionaryType]="component.attrs?.dictionaryType"
       [subLabel]="component.attrs?.subLabel"
