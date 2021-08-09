@@ -6,7 +6,6 @@ import { ModalModule } from '../../../../modal/modal.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
-import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { PhotoDescriptionComponent } from './component/photo-description/photo-description.component';
 import { UploadAndEditPhotoFormModule } from '../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.module';
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
@@ -23,7 +22,6 @@ import { ClickableLabelModule } from '../../../../shared/directives/clickable-la
     ModalModule,
     BaseComponentsModule,
     ScreenContainerModule,
-    UserInfoLoaderModule,
     UploadAndEditPhotoFormModule,
     ClickableLabelModule,
   ],

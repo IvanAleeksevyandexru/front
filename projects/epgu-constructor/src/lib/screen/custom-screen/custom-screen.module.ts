@@ -6,7 +6,6 @@ import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CustomScreenComponent } from './custom-screen.component';
 import { CustomScreenService } from './custom-screen.service';
-import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
     BaseComponentsModule,
     ScreenContainerModule,
     ScreenPadModule,
-    UserInfoLoaderModule,
     ScreenButtonsModule,
   ],
   providers: [

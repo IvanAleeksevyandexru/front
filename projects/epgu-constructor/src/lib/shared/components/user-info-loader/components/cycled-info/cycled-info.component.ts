@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CycledInfo } from './cycled-info.types';
+import { CycledInfo } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-cycled-info',
