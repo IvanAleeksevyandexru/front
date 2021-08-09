@@ -16,6 +16,7 @@ export interface ConfirmAddressInterface {
   label: string;
   type: UniqueScreenComponentTypes;
   value: string;
+  presetValue: string;
   required: boolean;
   valueFromCache: boolean;
 }
