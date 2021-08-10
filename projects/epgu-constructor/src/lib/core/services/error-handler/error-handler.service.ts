@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpResponse, HttpRequest } from '@angular/common/http';
 import {
   ConfirmationModal,
   ErrorModal,
@@ -23,9 +23,17 @@ import {
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   STATUS_ICON_MAP,
   TIME_INVITATION_ERROR,
-  ITEMS_NO_DATA,
   ITEMS_FAILURE,
   SESSION_TIMEOUT,
+  SERVICE_OR_SPEC_NO_SPECIALIST,
+  SERVICE_OR_SPEC_NO_AVAILABLE,
+  SERVICE_OR_SPEC_SESSION_TIMEOUT,
+  RESOURCE_NO_DATA,
+  GET_SLOT_RESPONSE_NO_DATA,
+  GET_SLOT_RESPONSE_TIMEOUT,
+  BOOK_RESPONSE_NOT_AVAILABLE,
+  BOOK_RESPONSE_ANY,
+  BOOK_RESPONSE_RE_ENTRY,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -43,15 +51,29 @@ export enum ModalFailureType {
   SESSION,
 }
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
-export const SESSION_TIMEOUT_SMEV2 =
-  'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
-
-// eslint-disable-next-line max-len
-export const SESSION_TIMEOUT_SMEV3 =
-  'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+/* eslint-disable max-len */
+export const SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST = 'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации.';
+export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже.';
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SMEV2_RESOURCE_NO_DATA = 'По  выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
+export const SMEV2_GET_SLOT_RESPONSE_NO_DATA = 'По выбранному Вами специалисту в ближайшие 14 дней нет доступного времени для записи. Пожалуйста, выберите другого специалиста или обратитесь в регистратуру медицинской организации для записи.';
+export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
+export const SMEV2_BOOK_RESPONSE_NOT_AVAILABLE = 'Выберите другую дату и время или другое подразделение.';
+export const SMEV3_BOOK_RESPONSE_NOT_AVAILABLE = 'Извините, запись невозможна. Время уже занято другим пациентом. Пожалуйста, выберите другое время.';
+export const SMEV2_BOOK_RESPONSE_RE_ENTRY = 'Извините, запись невозможна. Пациент уже записан к выбранному специалисту на этот день.';
+export const SMEV3_BOOK_RESPONSE_RE_ENTRY = 'Извините, запись невозможна. Пациент уже записан к выбранному специалисту на этот день.';
 export const REFERRAL_NUMBER_NOT_FOUND =
   'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.';
 export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
+
+export enum RefName {
+  serviceOrSpecs = 'ServiceOrSpecs',
+  resource = 'Resource',
+  getSlotsResponse = 'getSlotsResponse',
+  bookResponse = 'bookResponse'
+}
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -62,8 +84,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
   ) {}
 
-  public handleResponse(httpResponse: HttpResponse<unknown>): void {
+  public handleResponse(httpRequest: HttpRequest<unknown>, httpResponse: HttpResponse<unknown>): void {
     const { status, url, body } = httpResponse;
+    const requestBody = httpRequest?.body;
+    const refName = typeof requestBody === 'object' && requestBody != null ? requestBody['refName'] : undefined;
 
     if (status === 200) {
       const bookingValue = String(
@@ -123,60 +147,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
       }
 
-      if (
-        url.includes('agg/ref/items') &&
-        (error !== null || error !== undefined) &&
-        error?.errorDetail?.errorMessage !== undefined &&
-        error?.errorDetail?.errorMessage !== '' &&
-        error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !==
-          STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim()
-      ) {
-        const errorMessage = error?.errorDetail.errorMessage;
-        const errorCodeTxt = error?.errorDetail?.errorCodeTxt;
-
-        if (errorCodeTxt !== undefined && errorCodeTxt !== null) {
-          if (errorCodeTxt === 'NO_DATA') {
-            this.showModalNoData(errorMessage, false);
-          }
-
-          if (errorCodeTxt === 'FAILURE' || errorCodeTxt === 'UNKNOWN_REQUEST_DESCRIPTION') {
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, false, ModalFailureType.SESSION);
-            } else {
-              this.showModalFailure(errorMessage, false, ModalFailureType.FAILURE);
-            }
-          }
-        } else {
-          if (
-            errorMessage.includes('NO_DATA') ||
-            (!errorMessage.includes('FAILURE') &&
-              !errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION'))
-          ) {
-            if (this.excludedFromHandling(errorMessage)) {
-              return;
-            }
-
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
-            } else {
-              this.showModalNoData(errorMessage, true);
-            }
-          }
-
-          if (
-            errorMessage.includes('FAILURE') ||
-            errorMessage.includes('UNKNOWN_REQUEST_DESCRIPTION')
-          ) {
-            if (errorMessage === SESSION_TIMEOUT_SMEV2 || errorMessage === SESSION_TIMEOUT_SMEV3) {
-              this.showModalFailure(errorMessage, true, ModalFailureType.SESSION);
-            } else {
-              this.showModalFailure(errorMessage, true, ModalFailureType.FAILURE);
-            }
-          }
-        }
-      }
+      this.handleItemsRequest(body, url, refName);
     }
   }
+
+  
 
   public handleResponseError(
     httpErrorResponse: HttpErrorResponse,
@@ -274,19 +249,97 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  private excludedFromHandling(errorMessage: string): boolean {
-    return errorMessage === REFERRAL_NUMBER_NOT_FOUND;
-  }
+  private handleItemsRequest(body: unknown, url: string, refName: string | undefined): void {
+    const error = (body as ItemsErrorResponse)?.error;
 
-  private showModalNoData(errorMessage: string, replace: boolean): void {
-    const message = replace ? errorMessage.replace('NO_DATA:', '') : errorMessage;
-    ITEMS_NO_DATA.text = ITEMS_NO_DATA.text.replace(/\{textAsset\}?/g, message);
+    if (
+      url.includes('agg/ref/items') &&
+      (error !== null || error !== undefined) &&
+      error?.errorDetail?.errorMessage !== undefined &&
+      error?.errorDetail?.errorMessage !== '' &&
+      error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !==
+        STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim() &&
+      refName != null
+    ) {
+      const errorMessage = error?.errorDetail.errorMessage;
+      const errorCodeTxt = error?.errorDetail?.errorCodeTxt;
+      const errorCode = error?.errorDetail?.errorCode;
 
-    this.showModal(ITEMS_NO_DATA).then((prevStep) => {
-      if (prevStep) {
-        this.navigationService.prev();
+      switch(refName) {
+        case RefName.serviceOrSpecs: {
+          if (errorCode === 2 && errorMessage === SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST || errorCodeTxt === 'NO_DATA') {
+            this.showModal(SERVICE_OR_SPEC_NO_SPECIALIST).then((prevStep) => {
+              if (prevStep) {
+                this.navigationService.prev();
+              }
+            });
+          }
+
+          if (errorCodeTxt === 'FAILURE' && errorMessage === SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) {
+            this.showModal(SERVICE_OR_SPEC_NO_AVAILABLE).then((reload) => {
+              if (reload) {
+                this.locationService.reload();
+              }
+            });
+          }
+
+          if (
+            errorCode === 2 && (errorMessage === SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 ||
+            errorMessage === SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) || errorCodeTxt === 'FAILURE' && SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT
+          ) {
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((reload) => {
+              if (reload) {
+                this.locationService.reload();
+              }
+            });
+          }
+          break;
+        }
+        
+        case RefName.resource: {
+          if (errorCode === 2 && errorMessage === SMEV2_RESOURCE_NO_DATA || errorCodeTxt === 'NO_DATA') {
+            this.showModal(RESOURCE_NO_DATA).then((prevStep) => {
+              if (prevStep) {
+                this.navigationService.prev();
+              }
+            });
+          }
+          break;
+        }
+
+        case RefName.getSlotsResponse: {
+          if (errorMessage === SMEV2_GET_SLOT_RESPONSE_NO_DATA || errorCodeTxt === 'NO_DATA') {
+            this.showModal(GET_SLOT_RESPONSE_NO_DATA);
+          }
+
+          if (errorMessage === SMEV2_GET_SLOT_RESPONSE_TIMEOUT || errorCodeTxt === 'FAILURE') {
+            this.showModal(GET_SLOT_RESPONSE_TIMEOUT).then((reload) => {
+              if (reload) {
+                this.locationService.reload();
+              }
+            });
+          }
+
+          break;
+        }
+        
+        case RefName.bookResponse: {
+          if (errorMessage === SMEV2_BOOK_RESPONSE_NOT_AVAILABLE || errorMessage === SMEV3_BOOK_RESPONSE_NOT_AVAILABLE) {
+            this.showModal(BOOK_RESPONSE_NOT_AVAILABLE);
+          } else if (errorMessage === SMEV2_BOOK_RESPONSE_RE_ENTRY || errorMessage === SMEV3_BOOK_RESPONSE_RE_ENTRY) {
+            this.showModal(BOOK_RESPONSE_RE_ENTRY);
+          } else {
+            const message = errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
+            BOOK_RESPONSE_ANY.text = BOOK_RESPONSE_ANY.text.replace(/\{textAsset\}?/g, message);
+            this.showModal(BOOK_RESPONSE_ANY).then((reload) => {
+              if (reload) {
+                this.locationService.reload();
+              }
+            });
+          }
+        }
       }
-    });
+    }
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
