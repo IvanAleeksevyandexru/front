@@ -262,8 +262,12 @@ export class DictionaryToolsService {
   public prepareUnionFilter(
     componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dictionaryFilters?: ComponentDictionaryFilterDto[],
-  ): { union: DictionaryUnionFilter } {
+    dictionaryFilters?: ComponentDictionaryFilterDto[] | undefined,
+  ): { union: DictionaryUnionFilter } | null {
+    if (!dictionaryFilters) {
+      return null;
+    }
+
     const filters = dictionaryFilters.map((dFilter: ComponentDictionaryFilterDto) =>
       this.prepareSimpleFilter(componentValue, screenStore, dFilter),
     );
@@ -278,7 +282,7 @@ export class DictionaryToolsService {
   public getFilterOptions(
     componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dictionaryFilters?: ComponentDictionaryFilterDto[],
+    dictionaryFilters?: ComponentDictionaryFilterDto[] | undefined,
   ): DictionaryFilters {
     const filter =
       dictionaryFilters?.length === 1

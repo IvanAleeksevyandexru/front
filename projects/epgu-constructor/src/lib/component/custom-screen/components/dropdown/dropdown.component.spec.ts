@@ -28,6 +28,26 @@ const mockComponent = {
   required: false,
 };
 
+const mockComponentWithEmptyPlaceholder = {
+  id: 'mockComponentID',
+  attrs: {
+    dictionaryType: 'someDropdownType',
+    placeholder: '',
+  },
+  value: 'dropdownValue',
+  required: false,
+};
+
+const mockComponentWithFilledPlaceholder = {
+  id: 'mockComponentID',
+  attrs: {
+    dictionaryType: 'someDropdownType',
+    placeholder: 'Выбрать',
+  },
+  value: 'dropdownValue',
+  required: false,
+};
+
 describe('DropdownComponent', () => {
   let component: DropdownComponent;
   let fixture: ComponentFixture<DropdownComponent>;
@@ -113,6 +133,55 @@ describe('DropdownComponent', () => {
     const selector = 'lib-dropdown';
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
+    fixture.detectChanges();
+  });
+
+  it('should have default placeholder if has no property', () => {
+    const selector = 'lib-dropdown';
+    const debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl.componentInstance.placeholder).toEqual('—');
+    fixture.detectChanges();
+  });
+
+  it('should have default placeholder if property is empty', () => {
+    control = new FormGroup({
+      id: new FormControl(mockComponent.id),
+      attrs: new FormControl(mockComponentWithEmptyPlaceholder.attrs),
+      value: valueControl,
+      required: new FormControl(mockComponent.required),
+    });
+    formService['_form'] = new FormArray([control]);
+
+    fixture = TestBed.createComponent(DropdownComponent);
+
+    component = fixture.componentInstance;
+    component.componentIndex = 0;
+    fixture.detectChanges();
+
+    const selector = 'lib-dropdown';
+    const debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl.componentInstance.placeholder).toEqual('—');
+    fixture.detectChanges();
+  });
+
+  it('should have custom placeholder', () => {
+    control = new FormGroup({
+      id: new FormControl(mockComponent.id),
+      attrs: new FormControl(mockComponentWithFilledPlaceholder.attrs),
+      value: valueControl,
+      required: new FormControl(mockComponent.required),
+    });
+    formService['_form'] = new FormArray([control]);
+
+    fixture = TestBed.createComponent(DropdownComponent);
+
+    component = fixture.componentInstance;
+    component.componentIndex = 0;
+    fixture.detectChanges();
+
+    const selector = 'lib-dropdown';
+    const debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl.componentInstance.placeholder).toEqual(mockComponentWithFilledPlaceholder.attrs.placeholder);
     fixture.detectChanges();
   });
 });
