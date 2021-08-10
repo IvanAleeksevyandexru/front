@@ -152,7 +152,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  
+
 
   public handleResponseError(
     httpErrorResponse: HttpErrorResponse,
@@ -296,7 +296,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
           break;
         }
-        
+
         case RefName.resource: {
           if (errorCode === 2 && errorMessage === SMEV2_RESOURCE_NO_DATA || errorCode === 6 && errorMessage === SMEV3_RESOURCE_NO_DATA) {
             this.showModal(RESOURCE_NO_DATA).then((prevStep) => {
@@ -323,7 +323,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
           break;
         }
-        
+
         case RefName.bookResponse: {
           if (errorMessage === SMEV2_BOOK_RESPONSE_NOT_AVAILABLE || errorMessage === SMEV3_BOOK_RESPONSE_NOT_AVAILABLE) {
             this.showModal(BOOK_RESPONSE_NOT_AVAILABLE);

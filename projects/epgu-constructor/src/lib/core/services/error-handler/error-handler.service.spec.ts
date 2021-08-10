@@ -52,8 +52,9 @@ describe('ErrorHandlerService', () => {
         },
       });
 
+
       jest.spyOn(service, 'showModalFailure');
-      service.handleResponse(response);
+      service.handleResponse({}, response);
       expect(service.showModalFailure).toHaveBeenCalledWith(
         'Время сессии истекло, перейдите к началу',
         true,
@@ -77,7 +78,7 @@ describe('ErrorHandlerService', () => {
       });
 
       jest.spyOn(service, 'showModalFailure');
-      service.handleResponse(response);
+      service.handleResponse({}, response);
       expect(service.showModalFailure).toHaveBeenCalledWith(
         'Время сессии истекло, перейдите к началу',
         true,
