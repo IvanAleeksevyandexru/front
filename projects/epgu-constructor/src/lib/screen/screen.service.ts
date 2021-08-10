@@ -5,6 +5,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -35,6 +36,10 @@ export class ScreenService extends ScreenContent {
 
   public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
     return this.display?.components.find((comp) => comp.id === componentId);
+  }
+
+  public getComponentByIndex(index: number): ComponentDto {
+    return this.display?.components[index];
   }
 
   public getCompValueFromCachedAnswers(componentId?: string): string {
