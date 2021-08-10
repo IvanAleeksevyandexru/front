@@ -14,7 +14,7 @@
   <epgu-cf-ui-constructor-screen-pad class="screen-body" [ngClass]="async.displayCssClass">
     <div *ngIf="async.header">
       <epgu-constructor-page-name class="info__head">
-        <div [outerHTML]="async.header | safe:'html'"></div>
+        <div [outerHTML]="async.header | safe: 'html'"></div>
       </epgu-constructor-page-name>
       <div class="divider"></div>
     </div>
@@ -23,7 +23,7 @@
     </epgu-constructor-info-screen-body>
 
     <epgu-constructor-screen-buttons
-      *ngIf="async.buttons.length"
+      *ngIf="async.buttons.length && async.displayCssClass !== 'info-screen--outer-buttons'"
       [screenButtons]="async.buttons"
       [isLoading]="async.isLoading"
       class="info__submit"
@@ -31,6 +31,13 @@
   </epgu-cf-ui-constructor-screen-pad>
 
   <div class="screen-footer">
+    <epgu-constructor-screen-buttons
+      *ngIf="async.buttons.length && async.displayCssClass === 'info-screen--outer-buttons'"
+      [screenButtons]="async.buttons"
+      [isLoading]="async.isLoading"
+      class="info__submit"
+    ></epgu-constructor-screen-buttons>
+
     <lib-social-share
       *ngIf="!async.hideSocialShare && !async.terminal"
       class="social-share"
