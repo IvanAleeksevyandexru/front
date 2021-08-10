@@ -59,6 +59,7 @@ export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 = 'Закончилось в
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 export const SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
 export const SMEV2_RESOURCE_NO_DATA = 'По  выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
+export const SMEV3_RESOURCE_NO_DATA = 'NO_DATA:По выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
 export const SMEV2_GET_SLOT_RESPONSE_NO_DATA = 'По выбранному Вами специалисту в ближайшие 14 дней нет доступного времени для записи. Пожалуйста, выберите другого специалиста или обратитесь в регистратуру медицинской организации для записи.';
 export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
 export const SMEV2_BOOK_RESPONSE_NOT_AVAILABLE = 'Выберите другую дату и время или другое подразделение.';
@@ -154,7 +155,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  
+
 
   public handleResponseError(
     httpErrorResponse: HttpErrorResponse,
@@ -298,9 +299,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
           break;
         }
-        
+
         case RefName.resource: {
-          if (errorCode === 2 && errorMessage === SMEV2_RESOURCE_NO_DATA || errorCodeTxt === 'NO_DATA') {
+          if (errorCode === 2 && errorMessage === SMEV2_RESOURCE_NO_DATA || errorCode === 6 && errorMessage === SMEV3_RESOURCE_NO_DATA) {
             this.showModal(RESOURCE_NO_DATA).then((prevStep) => {
               if (prevStep) {
                 this.navigationService.prev();
@@ -325,7 +326,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
           break;
         }
-        
+
         case RefName.bookResponse: {
           if (errorMessage === SMEV2_BOOK_RESPONSE_NOT_AVAILABLE || errorMessage === SMEV3_BOOK_RESPONSE_NOT_AVAILABLE) {
             this.showModal(BOOK_RESPONSE_NOT_AVAILABLE);
