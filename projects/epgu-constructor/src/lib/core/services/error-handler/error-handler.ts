@@ -382,9 +382,8 @@ export const BOOK_RESPONSE_RE_ENTRY: ConfirmationModal = {
   showCrossButton: false,
   buttons: [
     {
-      label: 'Обновить',
+      label: 'Выбрать другого врача',
       closeModal: true,
-      value: 'reload'
     },
   ],
   isShortModal: true,

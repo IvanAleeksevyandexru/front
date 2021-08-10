@@ -327,11 +327,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           if (errorMessage === SMEV2_BOOK_RESPONSE_NOT_AVAILABLE || errorMessage === SMEV3_BOOK_RESPONSE_NOT_AVAILABLE) {
             this.showModal(BOOK_RESPONSE_NOT_AVAILABLE);
           } else if (errorMessage === SMEV2_BOOK_RESPONSE_RE_ENTRY || errorMessage === SMEV3_BOOK_RESPONSE_RE_ENTRY) {
-            this.showModal(BOOK_RESPONSE_RE_ENTRY).then((reload) => {
-              if (reload) {
-                this.locationService.reload();
-              }
-            });
+            this.showModal(BOOK_RESPONSE_RE_ENTRY);
           } else {
             const message = errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
             BOOK_RESPONSE_ANY.text = BOOK_RESPONSE_ANY.text.replace(/\{textAsset\}?/g, message);
