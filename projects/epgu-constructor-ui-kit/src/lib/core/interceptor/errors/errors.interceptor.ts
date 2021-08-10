@@ -28,7 +28,7 @@ export class ErrorsInterceptor implements HttpInterceptor {
           typeof res.body === 'object' &&
           this.errorHandleService.isValidRequest(res.body)
         ) {
-          this.errorHandleService.handleResponse(res);
+          this.errorHandleService.handleResponse(req, res);
         }
       }),
     );
