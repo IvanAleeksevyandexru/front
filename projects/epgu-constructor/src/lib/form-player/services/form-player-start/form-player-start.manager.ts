@@ -47,8 +47,10 @@ export class FormPlayerStartManager {
       this.startLoadLastScreenCase();
     } else if (this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY)) {
       this.startLoadNextScreenCase();
-    } else if (this.locationService.hasParam('fromQuiz')
-      && this.locationService.hasParam('token')) {
+    } else if (
+      this.locationService.hasParam('fromQuiz') &&
+      this.locationService.hasParam('token')
+    ) {
       this.startLoadFromQuizCaseByToken();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
@@ -81,10 +83,7 @@ export class FormPlayerStartManager {
   }
 
   private hasLoadFromStorageCase(queryParamName: string, key: string): boolean {
-    return (
-      this.locationService.hasParam(queryParamName) &&
-      !!this.localStorageService.getRaw(key)
-    );
+    return this.locationService.hasParam(queryParamName) && !!this.localStorageService.getRaw(key);
   }
 
   private startLoadLastScreenCase(): void {
@@ -105,7 +104,7 @@ export class FormPlayerStartManager {
   private startLoadFromQuizCaseByToken(): void {
     const token = this.locationService.getParamValue('token');
     this.formPlayerService.getQuizDataByToken(token).subscribe((quizDataDtoResponse) => {
-      const scenarioDto =  JSON.parse(quizDataDtoResponse.data.order) as ScenarioDto;
+      const scenarioDto = JSON.parse(quizDataDtoResponse.data.order) as ScenarioDto;
       this.loadOrderFromQuiz(scenarioDto);
     });
   }
@@ -141,7 +140,12 @@ export class FormPlayerStartManager {
     if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
       this.showContinueOrderModal();
     } else {
-      this.formPlayerService.initData(orderId);
+      let initOrderId = orderId;
+      if (this.localStorageService.hasKey('resetFormPlayer')) {
+        this.localStorageService.delete('resetFormPlayer');
+        initOrderId = null;
+      }
+      this.formPlayerService.initData(initOrderId);
       this.localStorageService.set('cachedAnswers', {});
     }
   }
@@ -155,6 +159,7 @@ export class FormPlayerStartManager {
       !invited &&
       canStartNew &&
       !!orderId &&
+      !this.localStorageService.hasKey('resetFormPlayer') &&
       !this.localStorageService.hasKey(APP_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY) &&

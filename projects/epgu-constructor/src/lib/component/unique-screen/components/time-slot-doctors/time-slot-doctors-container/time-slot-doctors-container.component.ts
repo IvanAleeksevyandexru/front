@@ -121,7 +121,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   component: TimeSlotDoctorsComponent;
   timeSlotDoctors$: Observable<TimeSlotDoctorsComponent> = this.screenService.component$.pipe(
     map((component: TimeSlotDoctorsComponent) => {
-      return { ...component, parsedValue: JSON.parse(component.value) };
+      return { ...component, parsedValue: this.screenService.componentValue };
     }),
     tap((component: TimeSlotDoctorsComponent) => {
       this.timeSlotDoctorService.isByMedRef = !component.attrs.ts.department;
@@ -156,9 +156,11 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
-    if (cachedAnswer) {
-      this.cachedAnswer = JSON.parse(cachedAnswer);
+    const cachedAnswer = this.screenService.getComponentData(
+      this.screenService.getCompValueFromCachedAnswers(),
+    );
+    if (cachedAnswer && typeof cachedAnswer !== 'string') {
+      this.cachedAnswer = cachedAnswer as TimeSlotsAnswerInterface;
     }
 
     if (this.screenService.component) {

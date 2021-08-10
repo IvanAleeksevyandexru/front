@@ -144,9 +144,11 @@ export class ActionService {
     }
   }
 
+  // TODO: выглядит как не зона ответвенности для экшена
   public openConfirmationModal(
     action: ComponentActionDto,
     componentId: string,
+    handler?: Function,
   ): void {
     const data = this.getActionDTO(action);
     const confirmations = data.scenarioDto?.display?.confirmations;
@@ -161,7 +163,19 @@ export class ActionService {
       title: confirmation?.title || '',
       text: confirmation?.text || '',
       componentId: componentId || this.screenService.component.id,
-      buttons: confirmationButtons,
+      buttons: confirmationButtons?.length
+        ? confirmationButtons
+        : [
+          {
+            label: 'Отправить заявление',
+            closeModal: true,
+            handler: handler
+              ? handler
+              : (): void => {
+                this.navigate(action, componentId, 'nextStep');
+              },
+          },
+        ],
       actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
