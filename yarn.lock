@@ -236,6 +236,14 @@
   dependencies:
     eslint-scope "^4.0.0"
 
+"@angular-extensions/pretty-html-log@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@angular-extensions/pretty-html-log/-/pretty-html-log-4.0.1.tgz#16c651c9a9dffd7b841de54e6e002e79950f353c"
+  integrity sha512-80RjA75waEU4L0AOn0ANQ+6taiYlKfktIYwSv060+hDVTSrkkVg8vJAj9iJGQpeGJjY1g/QzJMenJ+jXqgkqXw==
+  dependencies:
+    pretty-html-log "^1.1.1"
+    tslib "^2.0.0"
+
 "@angular/animations@11.0.0":
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-11.0.0.tgz#6f567930dca8eb8ab1320f1f48feb981493b86c6"
@@ -5099,6 +5107,11 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+
+commander@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
+  integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
 
 commander@^5.0.0, commander@^5.1.0:
   version "5.1.0"
@@ -12929,6 +12942,11 @@ prettier@2.0.5:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
   integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
+prettier@^1.18.2:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
+  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+
 pretty-bytes@^5.3.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-5.6.0.tgz#356256f643804773c82f64723fe78c92c62beaeb"
@@ -12963,6 +12981,15 @@ pretty-format@^25.2.1, pretty-format@^25.5.0:
     ansi-regex "^5.0.0"
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
+
+pretty-html-log@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/pretty-html-log/-/pretty-html-log-1.1.1.tgz#3d234af1f8e2bdc9c6af0f364de2ccb03ca60d6a"
+  integrity sha512-7Ai/cBk764SmU9vmJL/B7wzcWu7MIQflJ0Yx1cL/kPHZXkyn7AY1Tqtfgrjo9P750G7nsSDfk12FQ+mQKqQUvg==
+  dependencies:
+    chalk "^2.4.2"
+    commander "^3.0.2"
+    prettier "^1.18.2"
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

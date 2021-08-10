@@ -38,6 +38,7 @@ import { PaymentWayContainerComponent } from '../components/payment-way/componen
 import { TimeSlotDoctorsContainerComponent } from '../components/time-slot-doctors/time-slot-doctors-container/time-slot-doctors-container.component';
 import { IdentificationUploadScreenComponent } from '../components/identification-upload-screen/identification-upload-screen.component';
 import { IdentificationStreamComponent } from '../components/identification-stream/identification-stream.component';
+import { RegistrationAddrReadonlyComponent } from '../components/registration-addr/components/registration-addr-readonly/registration-addr-readonly.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -78,7 +79,8 @@ type UniqueScreenComponent =
   | CarDetailInfoContainerComponent
   | MedicalReferralsListContainerComponent
   | ReferralNumberComponent
-  | PaymentWayContainerComponent;
+  | PaymentWayContainerComponent
+  | RegistrationAddrReadonlyComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -120,6 +122,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
   RegistrationAddr: RegistrationAddrComponent,
   RegistrationLegalAddr: RegistrationAddrComponent,
+  RegistrationLegalAddrReadOnly: RegistrationAddrReadonlyComponent,
   PassportLookup: AddPassportContainerComponent,
   ChildrenList: SelectChildrenScreenContainerComponent,
   ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
