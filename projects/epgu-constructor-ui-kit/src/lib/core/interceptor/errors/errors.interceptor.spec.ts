@@ -37,6 +37,8 @@ import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationService } from '../../services/location/location.service';
 import { ERROR_HANDLER_SERVICE } from './errors.token';
 import { SessionService } from '../../services/session/session.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -63,6 +65,7 @@ describe('ErrorsInterceptor', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ErrorsInterceptor,
