@@ -156,14 +156,15 @@
   p {
     margin-top: 24px;
   }
-  h3 {
+  h3, h4 {
     font-weight: bold;
     font-size: $font-xl;
     line-height: $font-xxl;
     text-align: center;
     margin: 24px 0 16px 0;
   }
-  h3 + p, h3 + div {
+  h3 + p, h3 + div,
+  h4 + p, h4 + div {
     margin-top: 16px;
   }
   h5 {
