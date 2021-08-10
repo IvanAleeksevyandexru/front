@@ -62,6 +62,61 @@ const TIME_INVITATION_ERROR_TEXT = `<div class="text_modal_error">
 <h4>Пока нельзя отправить</h4>
 <span>Вы уже выслали приглашение. Подождите, оправить письмо повторно можно через 5 минут.</span></div>`;
 
+const SERVICE_OR_SPEC_NO_SPECIALIST_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Нет доступных специалистов</h4>
+<span>Выберите другую медицинскую организацию</span>
+</div>`;
+
+const SERVICE_OR_SPEC_NO_AVAILABLE_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Услуга временно недоступна в регионе</h4>
+<span>Чтобы записаться к врачу, обновите страницу или вернитесь позже</span>
+</div>`;
+
+const SERVICE_OR_SPEC_SESSION_TIMEOUT_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Закончилось время</h4>
+<span>Чтобы записаться к врачу, обновите страницу. Если ничего не изменится, начните заполнять форму заново</span>
+</div>`;
+
+const RESOURCE_NO_DATA_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Врачи не найдены</h4>
+<span>Выберите другую специальность врача или другую медицинскую организацию</span>
+</div>`;
+
+const GET_SLOT_RESPONSE_NO_DATA_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Нет свободного времени для приёма</h4>
+<span>Этот врач занят на ближайшие 14 дней. Выберите другого специалиста</span>
+</div>`;
+
+const GET_SLOT_RESPONSE_TIMEOUT_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Закончилось время</h4>
+<span>Чтобы записаться к врачу, обновите страницу. Если ничего не изменится, начните заполнять форму заново</span>
+</div>`;
+
+const BOOK_RESPONSE_NOT_AVAILABLE_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Это время уже занято</h4>
+<span>Выберите другое время для записи или другого врача</span>
+</div>`;
+
+const BOOK_RESPONSE_RE_ENTRY_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Пациент уже записан</h4>
+<span>Оформить несколько записей к врачу одной специальности нельзя. Отмените уже созданные записи и запишитесь заново</span>
+</div>`;
+
+const BOOK_RESPONSE_ANY_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Ошибка</h4>
+<span>{textAsset}</span>
+</div>`;
+
+
 export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: COMMON_ERROR_MODAL_PARAMS_TEXT,
   title: '',
@@ -212,6 +267,139 @@ export const SESSION_TIMEOUT: ConfirmationModal = {
       label: 'В начало',
       closeModal: true,
       value: 'reload',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const SERVICE_OR_SPEC_NO_SPECIALIST: ConfirmationModal = {
+  text: SERVICE_OR_SPEC_NO_SPECIALIST_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'На карту',
+      closeModal: true,
+      value: 'prevStep',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const SERVICE_OR_SPEC_NO_AVAILABLE: ConfirmationModal = {
+  text: SERVICE_OR_SPEC_NO_AVAILABLE_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Обновить',
+      closeModal: true,
+      value: 'reload',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const SERVICE_OR_SPEC_SESSION_TIMEOUT: ConfirmationModal = {
+  text: SERVICE_OR_SPEC_SESSION_TIMEOUT_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Обновить',
+      closeModal: true,
+      value: 'reload',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const RESOURCE_NO_DATA: ConfirmationModal = {
+  text: RESOURCE_NO_DATA_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Выбрать другую организацию',
+      closeModal: true,
+      value: 'prevStep',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const GET_SLOT_RESPONSE_NO_DATA: ConfirmationModal = {
+  text: GET_SLOT_RESPONSE_NO_DATA_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Выбрать другого специалиста',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const GET_SLOT_RESPONSE_TIMEOUT: ConfirmationModal = {
+  text: GET_SLOT_RESPONSE_TIMEOUT_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Обновить',
+      closeModal: true,
+      value: 'reload',
+    },
+  ],
+  isShortModal: true,
+};
+
+export const BOOK_RESPONSE_NOT_AVAILABLE: ConfirmationModal = {
+  text: BOOK_RESPONSE_NOT_AVAILABLE_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Изменить запись',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const BOOK_RESPONSE_RE_ENTRY: ConfirmationModal = {
+  text: BOOK_RESPONSE_RE_ENTRY_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Обновить',
+      closeModal: true,
+      value: 'reload'
+    },
+  ],
+  isShortModal: true,
+};
+
+export const BOOK_RESPONSE_ANY: ConfirmationModal = {
+  text: BOOK_RESPONSE_ANY_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Обновить',
+      closeModal: true,
+      value: 'reload'
     },
   ],
   isShortModal: true,
