@@ -404,7 +404,7 @@ describe('DictionaryToolsService', () => {
     });
   });
 
-  describe('isResultEmpty()', function () {
+  describe('isResultEmpty()', () => {
     it('should throw exception when component not dropdown and not dictionary', () => {
       const { component } = setup('Undefined');
       const isResultEmpty = () => {
@@ -621,6 +621,18 @@ describe('DictionaryToolsService', () => {
           value: { asDecimal: 42 },
         },
       });
+    });
+  });
+
+  describe('getFilterOptions', () => {
+    it('should return nothing', () => {
+      const filter = service.getFilterOptions(
+        { value: 42 },
+        {},
+        undefined
+      );
+
+      expect(filter).toEqual({ filter: null });
     });
   });
 });
