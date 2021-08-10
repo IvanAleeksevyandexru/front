@@ -6,6 +6,8 @@ import { ErrorHandlerService, ModalFailureType } from './error-handler.service';
 import {
   ConfigService,
   ConfigServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
   LocationService,
   LocationServiceStub,
   ModalService,
@@ -26,6 +28,7 @@ describe('ErrorHandlerService', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
   });
