@@ -13,8 +13,6 @@ import {
   BOOKING_ONLINE_ERROR,
   TIME_INVITATION_ERROR,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
-  ITEMS_NO_DATA,
-  ITEMS_FAILURE,
 } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
@@ -169,54 +167,6 @@ describe('ErrorsInterceptor', () => {
       ConfirmationModalComponent,
       BOOKING_ONLINE_ERROR,
     );
-    tick();
-  }));
-
-  it('should open modal with ITEMS_NO_DATA params', fakeAsync(() => {
-    const data = {
-      items: [],
-      error: {
-        errorDetail: {
-          errorMessage: 'NO_DATA:TEST MESSAGE',
-        },
-      },
-    };
-    const url = 'agg/ref/items';
-    const spy = jest.spyOn(modalService, 'openModal');
-    httpClient
-      .post(url, {})
-      .pipe(catchError(() => of()))
-      .subscribe();
-    const req = httpMock.expectOne(url);
-
-    expect(req.request.method).toBe('POST');
-
-    req.flush(data, { status: 200, statusText: 'success' });
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, ITEMS_NO_DATA);
-    tick();
-  }));
-
-  it('should open modal with ITEMS_FAILURE params', fakeAsync(() => {
-    const data = {
-      items: [],
-      error: {
-        errorDetail: {
-          errorMessage: 'UNKNOWN_REQUEST_DESCRIPTION:TEST MESSAGE',
-        },
-      },
-    };
-    const url = 'agg/ref/items';
-    const spy = jest.spyOn(modalService, 'openModal');
-    httpClient
-      .post(url, {})
-      .pipe(catchError(() => of()))
-      .subscribe();
-    const req = httpMock.expectOne(url);
-
-    expect(req.request.method).toBe('POST');
-
-    req.flush(data, { status: 200, statusText: 'success' });
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, ITEMS_FAILURE);
     tick();
   }));
 
