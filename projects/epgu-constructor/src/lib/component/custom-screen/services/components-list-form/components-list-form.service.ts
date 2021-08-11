@@ -4,7 +4,7 @@ import { ListItem } from '@epgu/epgu-lib';
 import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { isEqual } from 'lodash';
+import { get, isEqual } from 'lodash';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -36,7 +36,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
-import { get } from 'lodash';
 
 @Injectable()
 export class ComponentsListFormService {

@@ -28,6 +28,9 @@ export class NavigationService {
   get skipStep$(): Observable<Navigation> {
     return this.skipStep.asObservable();
   }
+  get restartOrder$(): Observable<Navigation> {
+    return this.restart.asObservable();
+  }
   get patchStepOnCli$(): Observable<Partial<ScenarioDto>> {
     return this.patchStepOnCli.asObservable();
   }
@@ -35,6 +38,7 @@ export class NavigationService {
   private nextStep = new Subject<Navigation>();
   private prevStep = new Subject<Navigation>();
   private skipStep = new Subject<Navigation>();
+  private restart = new Subject<Navigation>();
   private patchStepOnCli = new Subject<Partial<ScenarioDto>>();
 
   constructor(
@@ -58,6 +62,10 @@ export class NavigationService {
 
   skip(navigation?: Navigation): void {
     this.skipStep.next(navigation);
+  }
+
+  restartOrder(navigation?: Navigation): void {
+    this.restart.next(navigation);
   }
 
   patchOnCli(newScenarioDtoDiff?: Partial<ScenarioDto>): void {

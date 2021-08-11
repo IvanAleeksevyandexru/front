@@ -4,7 +4,7 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
 import { isChildrenListType } from './autocomplete.const';
-import { cloneDeep as _cloneDeep } from 'lodash';
+import { get as _get, cloneDeep as _cloneDeep } from 'lodash';
 import {
   ISuggestionApi,
   ISuggestionApiValueField,
@@ -299,18 +299,6 @@ export class AutocompletePrepareService {
   private setComponentValue(component: ComponentDto, value: string): void {
     if (component && value) {
       value = this.getFormattedValue(component, value);
-
-      // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
-      if (this.jonHelperService.hasJsonStructure(value)) {
-        const parsedValue = JSON.parse(value);
-        if (Array.isArray(parsedValue)) {
-          const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
-          value = JSON.stringify(parsedItem[component.id]);
-        } else if ('snils' in parsedValue) {
-          value = parsedValue['snils'];
-        }
-      }
-
       component.value = value;
     }
   }
@@ -376,6 +364,18 @@ export class AutocompletePrepareService {
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
       return componentAttrs.supportedValues.find((item) => item.value === value)?.label || value;
+    } else if (!!component.attrs.suggestionPath && this.jonHelperService.hasJsonStructure(value)) {
+      const parsedValue = this.jonHelperService.tryToParse(value);
+      return _get(parsedValue, component.attrs.suggestionPath);
+    } else if (this.jonHelperService.hasJsonStructure(value)) {
+      const parsedValue = JSON.parse(value);
+      if (Array.isArray(parsedValue)) {
+        const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
+        value = parsedItem[component.id];
+        return typeof value === 'string' ? value : JSON.stringify(value);
+      } else if ('snils' in parsedValue) {
+        return parsedValue['snils'];
+      }
     }
     return value;
   }

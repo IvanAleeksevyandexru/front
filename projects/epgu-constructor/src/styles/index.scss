@@ -6,7 +6,7 @@
 // TODO: remove all normalize css styles, it may affect lib's style
 // stylelint-disable
 
-.epgu-form-player {
+.epgu-constructor {
   counter-reset: section;
   @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/class';
   @include flex-container();
