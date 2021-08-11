@@ -352,6 +352,30 @@ describe('AutocompletePrepareService', () => {
         );
       });
     });
+    describe('should return', () => {
+      const component = _cloneDeep(mockData.display.components[0]);
+      component.type = 'StringInput';
+      let value = '{ "value": "value" }';
+      let result = 'value';
+      it('value via existing json-path in suggestionPath attr', () => {
+        component.attrs.suggestionPath = 'value';
+        expect(service['getFormattedValue'](component, value)).toEqual(result);
+      });
+      it('undefined value via non existing json-path in suggestionPath attr', () => {
+        component.attrs.suggestionPath = 'nonExisting.json.path.value';
+        expect(service['getFormattedValue'](component, value)).toBeUndefined();
+      });
+      it('json-string of finded item in json-stringified array of items', () => {
+        component.attrs.suggestionPath = null;
+        value = '[{ "pd8": "value"}]';
+        expect(service['getFormattedValue'](component, value)).toEqual(result);
+      });
+      it('snils as text if json-object with snils attr passed', () => {
+        component.attrs.suggestionPath = null;
+        value = '{"snils": "123"}';
+        expect(service['getFormattedValue'](component, value)).toEqual('123');
+      });
+    });
     describe('should return mapped value', () => {
       const component = _cloneDeep(mockData.display.components[0]);
       component.type = 'RadioInput';

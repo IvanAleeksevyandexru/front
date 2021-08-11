@@ -48,7 +48,7 @@ import { AutocompleteService } from '../core/services/autocomplete/autocomplete.
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
-  @HostBinding('class.epgu-form-player') class = true;
+  @HostBinding('class.epgu-constructor') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: ServiceEntity;
   @Input() context: FormPlayerContext = {};

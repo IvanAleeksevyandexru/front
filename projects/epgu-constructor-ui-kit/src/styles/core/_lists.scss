@@ -85,6 +85,15 @@
     }
   }
 
+  .suggests {
+    & ul {
+      margin: 0;
+    }
+    & ul li::after {
+      content: none;
+    }
+  }
+
   ul:not(:first-child):not(li ul) {
     margin-top: 8px;
   }
