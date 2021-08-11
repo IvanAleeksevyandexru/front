@@ -26,6 +26,7 @@ import { IdentificationApiService } from '../../shared/identification-api/identi
 import {
   PassportIdentificationResponse,
   SelfieIdentificationResponse,
+  simplifyQualityTransform,
 } from '../../shared/identification-api/identification-api.types';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 
@@ -101,6 +102,7 @@ export class IdentificationUploadScreenComponent implements OnInit {
 
     return faceId?.length > 0
       ? this.identification.selfieIdentification({ faceId, selfie: file }).pipe(
+          map(simplifyQualityTransform),
           tap((result) => this.setRequestState(result)),
           mapTo(null),
         )
@@ -109,6 +111,7 @@ export class IdentificationUploadScreenComponent implements OnInit {
             passportInfo: file,
           })
           .pipe(
+            map(simplifyQualityTransform),
             tap((result) => this.setRequestState(result)),
             mapTo(null),
           );
