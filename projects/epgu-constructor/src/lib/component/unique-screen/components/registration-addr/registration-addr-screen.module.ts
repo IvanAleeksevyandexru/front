@@ -27,6 +27,6 @@ import { RegistrationAddrReadonlyComponent } from './components/registration-add
     ClickableLabelModule,
   ],
   providers: [DateValidator, DatesToolsService],
-  entryComponents: [RegistrationAddrComponent]
+  entryComponents: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent]
 })
 export class RegistrationAddrScreenModule {}
