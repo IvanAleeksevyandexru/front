@@ -75,6 +75,13 @@ const skipAction: ComponentActionDto = {
   type: ActionType.skipStep,
 };
 
+const restartOrderAction: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: DTOActionAction.restartOrder,
+  type: ActionType.restartOrder,
+};
+
 const nextAction: ComponentActionDto = {
   label: '',
   action: DTOActionAction.editPhoneNumber,
@@ -188,6 +195,7 @@ describe('ActionService', () => {
   let modalPrevStepSpy: jasmine.Spy;
   let modalNextStepSpy: jasmine.Spy;
   let skipStepSpy: jasmine.Spy;
+  let restartOrderSpy: jasmine.Spy;
   let localStorageService: LocalStorageService;
   let sessionStorageService: SessionStorageService;
   let formPlayerApiService: FormPlayerApiService;
@@ -246,6 +254,7 @@ describe('ActionService', () => {
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
 
     skipStepSpy = spyOn(navigationService, 'skip');
+    restartOrderSpy = spyOn(navigationService, 'restartOrder');
     nextStepSpy = spyOn(navigationService, 'next');
     prevStepSpy = spyOn(navigationService, 'prev');
 
@@ -279,6 +288,12 @@ describe('ActionService', () => {
     skipStepSpy.calls.reset();
     actionService.switchAction(skipAction, null);
     expect(skipStepSpy).toBeCalledTimes(1);
+  });
+
+  it('should call switchAction restartOrder', () => {
+    restartOrderSpy.calls.reset();
+    actionService.switchAction(restartOrderAction, null);
+    expect(restartOrderSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction next', () => {

@@ -133,6 +133,7 @@ export interface ComponentAttrsDto {
   step?: number;
   style?: ConfirmUserDataStyle;
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  suggestionPath?: string;
   templateId?: string; // @see LkInvitationInputAttrs
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
