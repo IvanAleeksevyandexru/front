@@ -93,6 +93,9 @@ export class ActionService {
       case ActionType.skipStep:
         this.navigate(action, componentId, 'skipStep');
         break;
+      case ActionType.restartOrder:
+        this.restartOrder();
+        break;
       case ActionType.nextStepModal:
         this.navigateModal(action, componentId, 'nextStep');
         break;
@@ -192,6 +195,10 @@ export class ActionService {
         component.type === CustomScreenComponentTypes.EaisdoGroupCost,
     ) as unknown) as ActionRequestPayload;
     return this.actionApiService.sendAction<EaisdoResponse>(action.action, component);
+  }
+
+  private restartOrder(): void {
+    this.navService.restartOrder();
   }
 
   private navigate(action: ComponentActionDto, componentId: string, stepType: string): void {

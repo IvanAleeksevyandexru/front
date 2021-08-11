@@ -306,6 +306,13 @@ describe('FormPlayerComponent', () => {
       expect(component['skipStep']).toBeCalledWith(navigationParam);
     });
 
+    it('should call formPlayerService initData with param when push restartOrder', () => {
+      spyOn<any>(formPlayerService, 'initData').and.callThrough();
+      navService.restartOrder();
+      component['initNavigation']();
+      expect(formPlayerService['initData']).toBeCalledWith();
+    });
+
     it('should call patchStepOnCli with param when push patchStepOnCli prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'patchStepOnCli').and.callThrough();

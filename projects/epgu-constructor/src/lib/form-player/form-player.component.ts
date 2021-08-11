@@ -151,6 +151,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.changeDetectionRef.markForCheck();
       });
 
+    this.navService.restartOrder$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.formPlayerService.initData();
+      this.changeDetectionRef.markForCheck();
+    });
+
     this.navService.patchStepOnCli$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: Partial<ScenarioDto>) => {

@@ -55,6 +55,14 @@ describe('NavigationService', () => {
     navigationService.skip(null);
   });
 
+  it('test restart', (done) => {
+    navigationService.restartOrder$.subscribe((v) => {
+      expect(v).toBe(null);
+      done();
+    });
+    navigationService.restartOrder(null);
+  });
+
   it('test next', (done) => {
     navigationService.nextStep$.subscribe((v) => {
       expect(v).toBe(null);
