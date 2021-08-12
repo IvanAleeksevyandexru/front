@@ -38,6 +38,7 @@ import { PaymentWayContainerComponent } from '../components/payment-way/componen
 import { TimeSlotDoctorsContainerComponent } from '../components/time-slot-doctors/time-slot-doctors-container/time-slot-doctors-container.component';
 import { IdentificationUploadScreenComponent } from '../components/identification-upload-screen/identification-upload-screen.component';
 import { IdentificationStreamComponent } from '../components/identification-stream/identification-stream.component';
+import { PersonUserInnComponent } from '../components/person-user-inn/person-user-inn.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -78,7 +79,8 @@ type UniqueScreenComponent =
   | CarDetailInfoContainerComponent
   | MedicalReferralsListContainerComponent
   | ReferralNumberComponent
-  | PaymentWayContainerComponent;
+  | PaymentWayContainerComponent
+  | PersonUserInnComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -136,4 +138,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   MedicalReferrals: MedicalReferralsListContainerComponent,
   ReferralNumber: ReferralNumberComponent,
   PaymentWay: PaymentWayContainerComponent,
+  PersonUserInn: PersonUserInnComponent,
 };
