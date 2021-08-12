@@ -292,9 +292,6 @@ describe('ValidationService', () => {
 
     it('should return false', () => {
       expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
-      expect(checkNumber('5469 3800 2401')).toBeFalsy();
-      expect(checkNumber('5469 3800 2401 6155')).toBeFalsy();
-      expect(checkNumber('2205 3307 9345 4730809')).toBeFalsy();
     });
   });
 });
