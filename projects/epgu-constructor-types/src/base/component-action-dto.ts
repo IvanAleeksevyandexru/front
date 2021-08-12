@@ -64,6 +64,7 @@ export enum DTOActionAction {
   editLegalPhone = 'editLegalPhone',
   editMedicalData = 'editMedicalData',
   editPassportData = 'editPassportData',
+  editPersonalData = 'editPersonalData',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editUserActualResidence = 'service/actions/editUserAddress/actualResidence',
   editUserPermanentRegistry = 'service/actions/editUserAddress/permanentRegistry',
