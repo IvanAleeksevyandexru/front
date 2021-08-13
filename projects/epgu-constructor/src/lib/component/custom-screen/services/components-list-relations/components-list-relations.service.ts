@@ -9,7 +9,7 @@ import {
   CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomStatusElement,
+  CustomStatusElement, DATE_RESTRICTION_GROUP_DEFAULT_KEY, DateRestriction, DateRestrictionGroups,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import {
@@ -83,7 +83,7 @@ export class ComponentsListRelationsService {
             );
           });
 
-        this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
+        // this.updateReferenceLimitDate(dependentComponent as AbstractCustomComponent, component, form, screenService);
       },
     );
 
@@ -99,14 +99,15 @@ export class ComponentsListRelationsService {
     return shownElements;
   }
 
-  updateLimitDatesByDateRestrictions(
+  async updateLimitDatesByDateRestrictions(
     components: CustomComponent[],
     component: CustomComponent | CustomListFormGroup,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     initInitialValues: boolean,
     componentsGroupIndex?: number
-  ): void {
+  ): Promise<void> {
+
     if (component.attrs.dateRestrictions && !initInitialValues) {
       this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
       return;
@@ -299,6 +300,26 @@ export class ComponentsListRelationsService {
       });
   }
 
+  private createRestrictionGroups(rawRestrictions: DateRestriction[]): DateRestrictionGroups {
+    const restrictionGroups: {defaultGroup?: DateRestriction[]} = {};
+
+    for (const restriction of rawRestrictions) {
+      const childKey = restriction.forChild;
+      if (childKey) {
+        if (!restrictionGroups.hasOwnProperty(childKey)) {
+          restrictionGroups[childKey] = [];
+        }
+        restrictionGroups[childKey].push(restriction);
+      }
+    }
+
+    if (!Object.keys(restrictionGroups).length) {
+      restrictionGroups[DATE_RESTRICTION_GROUP_DEFAULT_KEY] = rawRestrictions;
+    }
+
+    return restrictionGroups;
+  }
+
   private getRefValue(value: string | unknown): unknown {
     const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
     return isParsable ? JSON.parse(value as string) : value;
@@ -327,15 +348,20 @@ export class ComponentsListRelationsService {
       );
 
       if (restriction) {
-        const dateRange = await this.dateRestrictionsService.getDateRange(
-          relatedComponents[index].id,
-          relatedComponents[index].attrs.dateRestrictions,
-          components,
-          form,
-          applicantAnswers,
-          componentsGroupIndex,
-        );
-        this.updateFormWithDateRange(form, relatedComponents[index], dateRange);
+        const restrictionGroups = this.createRestrictionGroups(relatedComponents[index].attrs.dateRestrictions);
+        for (const [key, value] of Object.entries(restrictionGroups)) {
+          const dateRange = await this.dateRestrictionsService.getDateRange(
+            relatedComponents[index].id,
+            value as unknown as DateRestriction[],
+            components,
+            form,
+            applicantAnswers,
+            key,
+            componentsGroupIndex
+          );
+          this.updateFormWithDateRange(form, relatedComponents[index], dateRange, key);
+        }
+
       }
     }
   }
@@ -346,36 +372,49 @@ export class ComponentsListRelationsService {
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number): Promise<void> {
-    const dateRange = await this.dateRestrictionsService.getDateRange(
-      component.id,
-      component.attrs.dateRestrictions,
-      components,
-      form,
-      applicantAnswers,
-      componentsGroupIndex
-    );
+    const restrictionGroups = this.createRestrictionGroups(component.attrs.dateRestrictions);
 
-    this.updateFormWithDateRange(form, component, dateRange);
+    for (const [key, value] of Object.entries(restrictionGroups)) {
+      const dateRange = await this.dateRestrictionsService.getDateRange(
+        component.id,
+        value as unknown as DateRestriction[],
+        components,
+        form,
+        applicantAnswers,
+        key,
+        componentsGroupIndex
+      );
+
+      this.updateFormWithDateRange(form, component, dateRange, key);
+    }
+
   }
 
   private updateFormWithDateRange(
     form: FormArray,
     component: CustomComponent | CustomListFormGroup,
     dateRange: Range,
+    forChild: string
   ): void {
     const control = form.controls.find((control) => control.value.id === component.id);
 
-    control.get('attrs').patchValue({
-      ...component.attrs,
-      minDate: dateRange.min || component.attrs.minDate,
-      maxDate: dateRange.max || component.attrs.maxDate,
-    });
-
-    const isDateInRange =
-      control.value.value >= dateRange.min?.getTime() &&
-      control.value.value <= dateRange.max?.getTime();
-    if (!isDateInRange) {
-      control.get('value').patchValue(control.value.value);
+    if (forChild !== DATE_RESTRICTION_GROUP_DEFAULT_KEY) {
+      const attrsValue = control.get('attrs').value;
+      attrsValue.children[forChild].attrs.minDate = dateRange.min || attrsValue.children[forChild].attrs.minDate;
+      attrsValue.children[forChild].attrs.maxDate = dateRange.max || attrsValue.children[forChild].attrs.maxDate;
+      control.get('attrs').patchValue(attrsValue);
+    } else {
+      control.get('attrs').patchValue({
+        ...component.attrs,
+        minDate: dateRange.min || component.attrs.minDate,
+        maxDate: dateRange.max || component.attrs.maxDate,
+      });
+      const isDateInRange =
+        control.value.value >= dateRange.min?.getTime() &&
+        control.value.value <= dateRange.max?.getTime();
+      if (!isDateInRange) {
+        control.get('value').patchValue(control.value.value);
+      }
     }
   }
 

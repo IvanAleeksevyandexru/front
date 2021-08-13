@@ -140,47 +140,53 @@ export class ValidationService {
       [];
 
     return (control: AbstractControl): ValidationErrors => {
-      if (validations.length === 0) return;
+      for (const validation of validations) {
+        let error;
+        let minDate =
+          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.min ||
+          this.dateRangeService.rangeMap.get(component.id)?.min ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
+        let maxDate =
+          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.max ||
+          this.dateRangeService.rangeMap.get(component.id)?.max ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
 
-      let minDate =
-        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
-        this.dateRangeService.rangeMap.get(component.id)?.min ||
-        DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
-      let maxDate =
-        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
-        this.dateRangeService.rangeMap.get(component.id)?.max ||
-        DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
+        let controlValueAsDate: Date | number;
+        if (control.value instanceof MonthYear) {
+          // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
+          controlValueAsDate = control.value.firstDay();
+          minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+          maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+        } else if (validation.forChild) {
+          controlValueAsDate = control.value.forChild;
+        } {
+          controlValueAsDate = control.value;
+        }
 
-      let controlValueAsDate: Date | number;
-      if (control.value instanceof MonthYear) {
-        // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
-        controlValueAsDate = control.value.firstDay();
-        minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
-        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
-      } else {
-        controlValueAsDate = control.value;
-      }
-
-      const error =
-        controlValueAsDate &&
-        validations.find((validation) => {
+        if (controlValueAsDate) {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              return this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              error = this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              break;
             case '<=':
-              return this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              error = this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              break;
             case '>':
-              return this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              error = this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              break;
             case '>=':
-              return this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              error = this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              break;
             default:
-              return null;
+              error = null;
           }
-        });
+        }
 
-      if (error) {
-        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
+        if (error) {
+          return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
+        }
       }
+
     };
   }
 

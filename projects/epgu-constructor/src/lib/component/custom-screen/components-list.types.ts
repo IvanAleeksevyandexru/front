@@ -29,6 +29,7 @@ export enum CustomScreenComponentTypes {
   CityInput = 'CityInput',
   ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
   DateInput = 'DateInput',
+  CalendarInput = 'CalendarInput',
   Dictionary = 'Dictionary',
   DocInput = 'DocInput',
   DropDown = 'DropDown',
@@ -177,7 +178,12 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
 export interface DateRestriction {
   condition: string;
   type: 'ref' | 'const';
-  value: string;
+  value: string | Date;
+  amount?: number;
+  operand?: '+' | '-';
+  period?: any;
+  forChild?: string;
+  precision?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -191,6 +197,7 @@ export interface CustomComponentAttrValidation {
   errorMsg: string;
   errorDesc?: string;
   updateOn?: UpdateOn;
+  forChild?: string;
 }
 
 export interface CustomComponentOutputData {
@@ -289,3 +296,9 @@ export interface SupportedValue {
   value: string;
   isDefault?: boolean;
 }
+
+export interface DateRestrictionGroups {
+  [key: string]: DateRestriction[];
+}
+
+export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';

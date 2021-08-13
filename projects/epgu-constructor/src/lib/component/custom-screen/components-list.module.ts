@@ -61,6 +61,7 @@ import { DepartmentLookupComponent } from './components/department-lookup/depart
 import { RadioInputComponent } from './components/radio-input/radio-input.component';
 import { EaisdoGroupCostComponent } from './components/eaisdo-group-cost/eaisdo-group-cost.component';
 import { CertificateEaisdoComponent } from './components/certificate-eaisdo/certificate-eaisdo.component';
+import { CalendarInputComponent } from './components/calendar-input/calendar-input.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     CityInputComponent,
     ComponentsListComponent,
     DateInputComponent,
+    CalendarInputComponent,
     DepartmentLookupComponent,
     DictionaryComponent,
     DropdownComponent,
@@ -134,6 +136,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     CheckboxListComponent,
     CityInputComponent,
     DateInputComponent,
+    CalendarInputComponent,
     DepartmentLookupComponent,
     DictionaryComponent,
     DocInputComponent,

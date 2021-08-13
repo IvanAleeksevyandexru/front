@@ -152,6 +152,65 @@ export class FormPlayerService extends FormPlayerBaseService {
    * @param response - ответ сервера на запрос
    */
   processResponse(response: FormPlayerApiResponse): void {
+    // response.scenarioDto.display.components.push({
+    //   id: '77777',
+    //   type: 'CalendarInput',
+    //   value: '',
+    //   visited: false,
+    //   attrs: {
+    //     dateRestrictions: [
+    //       {
+    //         condition: ">=",
+    //         type: "const",
+    //         value: "01.01.2018",
+    //         forChild: "firstDate"
+    //       },
+    //       {
+    //         condition: "<=",
+    //         type: "const",
+    //         value: "today",
+    //         forChild: "firstDate"
+    //       },
+    //       {
+    //         condition: ">=",
+    //         type: "ref",
+    //         value: "77777",
+    //         forChild: "secondDate",
+    //         precision: "firstDate",
+    //       },
+    //       {
+    //         condition: "<=",
+    //         type: "ref",
+    //         value: "77777",
+    //         forChild: "secondDate",
+    //         precision: "firstDate",
+    //         operand: "+",
+    //         amount: 5,
+    //         period: "days"
+    //       },
+    //     ],
+    //     children: {
+    //       firstDate: {
+    //         label: "biba",
+    //         attrs: {
+    //           hint: "сejzjz",
+    //           grid: "grid-col-6 grid-col-12-sm",
+    //           brokenDateFixStrategy: "restore",
+    //         },
+    //       },
+    //       secondDate: {
+    //         label: "boba",
+    //         attrs: {
+    //           hint: "срок пребывания не более 90 дней",
+    //           grid: "grid-col-6 grid-col-12-sm",
+    //           brokenDateFixStrategy: "restore",
+    //
+    //         },
+    //       }
+    //     }
+    //   },
+    // });
+
     if (this.hasError(response)) {
       this.sendDataError(response);
     } else {

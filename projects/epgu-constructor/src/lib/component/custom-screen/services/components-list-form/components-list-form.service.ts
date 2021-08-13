@@ -1,17 +1,12 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { ListItem } from '@epgu/epgu-lib';
-import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
+import { ListItem, LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { isEqual } from 'lodash';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { get, isEqual } from 'lodash';
+import { DatesToolsService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import {
-  DictionaryToolsService,
-} from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService, } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -33,10 +28,9 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { DictionaryConditions, ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
-import { get } from 'lodash';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -325,7 +319,8 @@ export class ComponentsListFormService {
 
     if (
       component.type === CustomScreenComponentTypes.DateInput ||
-      component.type === CustomScreenComponentTypes.MonthPicker
+      component.type === CustomScreenComponentTypes.MonthPicker ||
+      component.type === CustomScreenComponentTypes.CalendarInput
     ) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
@@ -357,28 +352,31 @@ export class ComponentsListFormService {
 
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+
         this.lastChangedComponent = [prev, next];
-        this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
-          components,
-          next,
-          this.shownElements,
-          this.form,
-          this.dictionaryToolsService.dictionaries,
-          true,
-          this.screenService,
-          this.dictionaryToolsService,
-          componentsGroupIndex,
-        );
-        // TODO: в перспективе избавиться от этой хардкодной логики
-        this.checkAndFetchCarModel(next, prev);
+        if (!isEqual(prev, next)) {
+          this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
+            components,
+            next,
+            this.shownElements,
+            this.form,
+            this.dictionaryToolsService.dictionaries,
+            true,
+            this.screenService,
+            this.dictionaryToolsService,
+            componentsGroupIndex,
+          );
+          // TODO: в перспективе избавиться от этой хардкодной логики
+          this.checkAndFetchCarModel(next);
+        }
       },
     );
 
     return form;
   }
 
-  private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqual(prev, next)) {
+  private checkAndFetchCarModel(next: CustomListFormGroup): void {
+    if (next.attrs.dictionaryType === 'MARKI_TS') {
       const indexVehicle: number = this.form.controls.findIndex(
         (control: AbstractControl) => control.value?.id === next.id,
       );
@@ -479,7 +477,7 @@ export class ComponentsListFormService {
     let value: ListItem = undefined;
 
     if (lookupFilterPath) {
-      value = dicts[key]?.list.find((item: ListItem) => 
+      value = dicts[key]?.list.find((item: ListItem) =>
         get(item, lookupFilterPath) === (isRef ? get(this.screenService.getStore(), compareValue) : compareValue)
       );
     } else {
