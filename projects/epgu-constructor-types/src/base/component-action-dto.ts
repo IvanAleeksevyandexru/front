@@ -52,6 +52,7 @@ export enum ActionType {
   redirectToLK = 'redirectToLK',
   redirectToPayByUin = 'redirectToPayByUin',
   skipStep = 'skipStep',
+  reload = 'reload',
 }
 
 export enum DTOActionAction {
