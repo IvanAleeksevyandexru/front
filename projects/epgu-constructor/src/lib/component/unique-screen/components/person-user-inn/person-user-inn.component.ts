@@ -4,29 +4,11 @@ import { isEmpty as _isEmpty } from 'lodash';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ComponentBase } from '../../../../screen/screen.types';
 import {
   ConfirmUserDataError,
   ConfirmUserDataErrorType,
 } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-import { InnState } from './person-user-inn.types';
-
-type PersonalUserInnWithErrors = ComponentBase & {
-  errors: ConfirmUserDataError[];
-};
-
-const INN_ERROR = {
-  EMPTY: {
-    type: ConfirmUserDataErrorType.error,
-    title: 'ИНН не указан',
-    desc: 'Запросите его в личном кабинете, потом вернитесь к услуге',
-  },
-  INVALID: {
-    type: ConfirmUserDataErrorType.error,
-    title: 'Некорректный ИНН',
-    desc: 'Запросите его в личном кабинете, потом вернитесь к услуге',
-  },
-};
+import { INN_ERROR, InnState, PersonalUserInnWithErrors } from './person-user-inn.types';
 
 @Component({
   selector: 'epgu-constructor-person-user-inn',
@@ -68,10 +50,7 @@ export class PersonUserInnComponent implements OnInit {
       }
 
       this.updateValue(data.value, data.errors);
-
-      setTimeout(() => {
-        this.changeDetectionRef.detectChanges();
-      });
+      this.changeDetectionRef.markForCheck();
     });
   }
 
