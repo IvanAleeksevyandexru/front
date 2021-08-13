@@ -15,7 +15,7 @@ import {
   SessionStorageService,
   ConfigService,
   EventBusService,
-  ModalService,
+  ModalService, LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -75,6 +75,7 @@ export class ActionService {
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
     private jsonHelperService: JsonHelperService,
+    private locationService: LocationService,
   ) {}
 
   public switchAction(
@@ -143,6 +144,9 @@ export class ActionService {
         break;
       case ActionType.externalIntegration:
         this.handleExternalIntegrationAction(action, componentId);
+        break;
+      case ActionType.reload:
+        this.locationService.reload();
         break;
     }
   }

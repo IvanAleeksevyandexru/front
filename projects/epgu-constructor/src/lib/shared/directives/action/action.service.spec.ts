@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -145,6 +145,13 @@ const homeAction: ComponentActionDto = {
   type: ActionType.home,
 };
 
+const reloadAction: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: null,
+  type: ActionType.reload,
+};
+
 const openDropdownModalAction: ComponentActionDto = {
   label: '',
   value: 'test',
@@ -204,6 +211,7 @@ describe('ActionService', () => {
   let currentAnswersService: CurrentAnswersService;
   let htmlRemover: HtmlRemoverService;
   let formPlayerService: FormPlayerService;
+  let locationService: LocationService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -221,6 +229,7 @@ describe('ActionService', () => {
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: HookService, useClass: HookServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
         HtmlRemoverService,
         ActionService,
         NavigationModalService,
@@ -241,6 +250,7 @@ describe('ActionService', () => {
     formPlayerService = TestBed.inject(FormPlayerService);
     downloadService = TestBed.inject(DownloadService);
     navigationService = TestBed.inject(NavigationService);
+    locationService = TestBed.inject(LocationService);
     navigationModalService = TestBed.inject(NavigationModalService);
     localStorageService = TestBed.inject(LocalStorageService);
     sessionStorageService = TestBed.inject(SessionStorageService);
@@ -367,6 +377,12 @@ describe('ActionService', () => {
     spyOn(navigationService, 'redirectToHome').and.callThrough();
     actionService.switchAction(homeAction, null);
     expect(navigationService.redirectToHome).toHaveBeenCalled();
+  });
+
+  it('should call switchAction reload', () => {
+    spyOn(locationService, 'reload').and.callThrough();
+    actionService.switchAction(reloadAction, null);
+    expect(locationService.reload).toHaveBeenCalled();
   });
 
   it('should call switchAction openDropdownListModal', () => {

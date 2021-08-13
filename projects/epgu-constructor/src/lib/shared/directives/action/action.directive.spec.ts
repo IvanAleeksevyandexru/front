@@ -5,7 +5,8 @@ import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import {
-  ConfigService,
+  ConfigService, LocationService,
+  LocationServiceStub,
   SessionStorageService,
   SessionStorageServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
@@ -160,6 +161,7 @@ describe('ActionDirective', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
         HtmlRemoverService,
         CurrentAnswersService,
         ActionService,
