@@ -2,6 +2,7 @@ import { ComponentDto } from './component-dto';
 import { ActionConfirmationsDto, DisplaySubjHead } from './component-attrs';
 import { ScreenButton } from './screen-buttons';
 import { SuggestionGroup } from './suggestion';
+import { InfoComponentDto } from './info-component-dto';
 
 /**
  * @property {}components
@@ -27,7 +28,7 @@ export interface DisplayDto {
   isSocialButtonsHidden?: boolean;
   displayCssClass?: string;
   buttons?: ScreenButton[];
-  infoComponents?: string[];
+  infoComponents?: InfoComponentDto[];
   suggestion?: SuggestionGroup;
   hideBackButton?: boolean;
   pronounceText?: string; // для умного поиска

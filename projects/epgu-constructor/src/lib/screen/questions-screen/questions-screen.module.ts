@@ -4,7 +4,6 @@ import { BaseComponentsModule } from '../../shared/components/base-components/ba
 import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { BaseModule } from '../../shared/base.module';
-import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
     BaseComponentsModule,
     ScreenContainerModule,
     AnswerButtonModule,
-    UserInfoLoaderModule,
     ScreenButtonsModule,
   ],
 })

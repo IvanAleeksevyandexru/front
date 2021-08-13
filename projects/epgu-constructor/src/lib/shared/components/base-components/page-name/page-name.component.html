@@ -1,6 +1,9 @@
 <h1>
   <ng-content></ng-content>
 </h1>
+<epgu-constructor-user-info-loader
+  *ngIf="screenService.showInfoComponent$ | async"
+></epgu-constructor-user-info-loader>
 
 <epgu-constructor-output-html
   *ngIf="screenService.subHeader$ | async as subheader"
