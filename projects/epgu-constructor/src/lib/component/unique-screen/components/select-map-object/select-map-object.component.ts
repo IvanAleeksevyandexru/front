@@ -9,7 +9,16 @@ import {
 } from '@angular/core';
 import { YaMapService } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
-import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  reduce,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { get, isEqual as _isEqual } from 'lodash';
 import {
   ActionType,
@@ -58,6 +67,10 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
 import { PanelTypes } from './components/search-panel-resolver/search-panel-resolver.component';
 import { ContentTypes } from './components/balloon-content-resolver/balloon-content-resolver.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+
+const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
@@ -114,6 +127,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private currentAnswersService: CurrentAnswersService,
     private addressesToolsService: AddressesToolsService,
     private jsonHelperService: JsonHelperService,
+    private navigationService: NavigationService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -264,6 +278,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
             catchError((error) => this.handleError(error)),
             filter((coords: IGeoCoordsResponse) => !!coords),
             tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
+            finalize(() => this.screenService.isLoaderVisible.next(false)),
           )
           .subscribe();
         return;
@@ -281,6 +296,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           catchError((error) => this.handleError(error)),
           filter((coords: IGeoCoordsResponse) => !!coords),
           tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
+          finalize(() => this.screenService.isLoaderVisible.next(false)),
         )
         .subscribe();
     }
@@ -294,14 +310,31 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private handleError(error): Observable<null> {
-    this.modalErrorService.showError(error);
+    if ((error?.message || error) === INTERNAL_ERROR_MESSAGE) {
+      this.modalService
+        .openModal(ConfirmationModalComponent, {
+          ...COMMON_ERROR_MODAL_PARAMS,
+          backdropDismiss: false,
+          showCrossButton: false,
+          buttons: [
+            {
+              label: 'На предыдущий шаг',
+              closeModal: true,
+              value: 'prevStep',
+              handler: (): void => this.navigationService.prev(),
+            },
+          ],
+        })
+        .toPromise();
+    } else {
+      this.modalErrorService.showError(error);
+    }
     return of(null);
   }
 
   private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
     this.handleFilledCoordinate(coords);
     this.mapIsLoaded = true;
-    this.screenService.isLoaderVisible.next(false);
     this.initSelectedValue();
     this.cdr.detectChanges();
   }
