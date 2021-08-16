@@ -11,6 +11,7 @@ import {
   LocationService,
   ErrorHandlerAbstractService,
   ConfigService,
+  LocalStorageService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import {
@@ -60,6 +61,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private locationService: LocationService,
     private navigationService: NavigationService,
     private configService: ConfigService,
+    private localStorageService: LocalStorageService,
   ) {}
 
   public handleResponse(httpResponse: HttpResponse<unknown>): void {
@@ -115,6 +117,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           dictionaryResponse?.items?.length &&
           dictionaryResponse.items[0]?.value === 'FAILURE'
         ) {
+          this.localStorageService.set('resetFormPlayer', 1);
           this.showModalFailure(
             'Время сессии истекло, перейдите к началу',
             true,
@@ -200,7 +203,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
       if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR); // TODO: переделать кейс на errorModalWindow
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR).then((redirectToLk) => {
+          if (redirectToLk) {
+            this.navigationService.redirectToLK();
+          }
+        }); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {

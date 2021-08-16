@@ -41,7 +41,8 @@ export type TimeSlotsApi = {
  * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
  * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
  * @property {string}addToCalendarUrl - url добавления ивента в календарь
- * @property {boolean}isZipkinEnabled - включен ли трейсинг Zipkin
+ * @property {boolean}zipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
+ * @property {boolean}zipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
@@ -78,7 +79,8 @@ export interface Config {
   isSocialShareDisabled?: boolean;
   isAutocompleteServiceDisabled?: boolean;
   addToCalendarUrl?: string;
-  isZipkinEnabled?: boolean;
+  zipkinGenerationEnabled?: boolean;
+  zipkinSpanSendEnabled?: boolean;
   zipkinUrl?: string;
   zipkinMaxPayloadSize?: number;
   zipkinEnv?: string;

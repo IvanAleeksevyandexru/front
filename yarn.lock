@@ -238,7 +238,7 @@
 
 "@angular-extensions/pretty-html-log@^4.0.1":
   version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@angular-extensions/pretty-html-log/-/pretty-html-log-4.0.1.tgz#16c651c9a9dffd7b841de54e6e002e79950f353c"
+  resolved "http://npm.gosuslugi.local/@angular-extensions%2fpretty-html-log/-/pretty-html-log-4.0.1.tgz#16c651c9a9dffd7b841de54e6e002e79950f353c"
   integrity sha512-80RjA75waEU4L0AOn0ANQ+6taiYlKfktIYwSv060+hDVTSrkkVg8vJAj9iJGQpeGJjY1g/QzJMenJ+jXqgkqXw==
   dependencies:
     pretty-html-log "^1.1.1"
@@ -5110,7 +5110,7 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.20.0:
 
 commander@^3.0.2:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
+  resolved "http://npm.gosuslugi.local/commander/-/commander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==
 
 commander@^5.0.0, commander@^5.1.0:
@@ -12944,7 +12944,7 @@ prettier@2.0.5:
 
 prettier@^1.18.2:
   version "1.19.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
+  resolved "http://npm.gosuslugi.local/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
 pretty-bytes@^5.3.0:
@@ -12984,7 +12984,7 @@ pretty-format@^25.2.1, pretty-format@^25.5.0:
 
 pretty-html-log@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/pretty-html-log/-/pretty-html-log-1.1.1.tgz#3d234af1f8e2bdc9c6af0f364de2ccb03ca60d6a"
+  resolved "http://npm.gosuslugi.local/pretty-html-log/-/pretty-html-log-1.1.1.tgz#3d234af1f8e2bdc9c6af0f364de2ccb03ca60d6a"
   integrity sha512-7Ai/cBk764SmU9vmJL/B7wzcWu7MIQflJ0Yx1cL/kPHZXkyn7AY1Tqtfgrjo9P750G7nsSDfk12FQ+mQKqQUvg==
   dependencies:
     chalk "^2.4.2"

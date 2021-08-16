@@ -24,6 +24,7 @@ import {
   EventBusService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 
@@ -40,6 +41,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   isLoading = false;
   title: string;
   dictionaryType: string;
+  dictionaryFilter: DictionaryFilters;
   dictionaryList: ListElement[];
   selectedItems: ListElement[];
   items: ListElement[];
@@ -167,17 +169,19 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
 
   private fetchDictionary(): Observable<ListElement[]> {
     this.isLoading = true;
-    return this.dictionaryApiService.getDictionary(this.dictionaryType, {}).pipe(
-      delay(500),
-      map((response) => {
-        if (response.error.code !== 0) {
-          throw new Error('Dictionary error');
-        }
-        return this.dictionaryToolsService.adaptDictionaryToListItem(response.items);
-      }),
-      retry(1),
-      catchError(() => of([])),
-    );
+    return this.dictionaryApiService
+      .getDictionary(this.dictionaryType, { filter: this.dictionaryFilter.filter })
+      .pipe(
+        delay(500),
+        map((response) => {
+          if (response.error.code !== 0) {
+            throw new Error('Dictionary error');
+          }
+          return this.dictionaryToolsService.adaptDictionaryToListItem(response.items);
+        }),
+        retry(1),
+        catchError(() => of([])),
+      );
   }
 
   private updateInputPlaceholder(length: number): void {

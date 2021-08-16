@@ -6,7 +6,7 @@ import { JsonHelperService } from '../../../core/services/json-helper/json-helpe
 
 @Injectable()
 export class RefRelationService {
-  constructor (private jsonHelperService: JsonHelperService) {}
+  constructor(private jsonHelperService: JsonHelperService) {}
 
   public isDisplayOffRelation(relation: CustomComponentRefRelation): boolean {
     return relation === CustomComponentRefRelation.displayOff;
@@ -71,7 +71,7 @@ export class RefRelationService {
     return value === parsedComponentValue;
   }
 
-  public getValueFromComponentVal(
+  private getValueFromComponentVal(
     componentVal: { id?: string } | string | number | Date | ListElement[],
   ): string | Date | ListElement[] {
     if (componentVal instanceof Date) {
@@ -79,7 +79,12 @@ export class RefRelationService {
     }
 
     if (this.jsonHelperService.hasJsonStructure(componentVal as string)) {
-      return JSON.parse(componentVal as string);
+      const parsedValue = JSON.parse(componentVal as string);
+      if (Array.isArray(parsedValue)) {
+        return parsedValue;
+      } else {
+        return parsedValue.id;
+      }
     }
 
     // NOTICE: иногда сюда приходят значения мультисписка, которые представлены массивом ListElement

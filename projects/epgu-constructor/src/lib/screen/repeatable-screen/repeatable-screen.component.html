@@ -19,21 +19,20 @@
         class="cmp-group__layer"
         *ngFor="let screenKey of objectKeys(screens); let i = index; trackBy: trackByFunction"
       >
-        <ng-container [ngTemplateOutlet]="groupHeaderTmpl"
-                      [ngTemplateOutletContext]="{
-                        label: (i > 0 && secondScreenCaption)
-                               ? secondScreenCaption
-                               : screenCaption,
-                        index: i,
-                        screenKey: screenKey
-                      }"
+        <ng-container
+          [ngTemplateOutlet]="groupHeaderTmpl"
+          [ngTemplateOutletContext]="{
+            label: i > 0 && secondScreenCaption ? secondScreenCaption : screenCaption,
+            index: i,
+            screenKey: screenKey
+          }"
         ></ng-container>
         <epgu-constructor-components-list
           class="cmp-group__item"
           [id]="screenKey"
-          [componentsGroupIndex]="+screenKey"
+          [componentsGroupIndex]="i"
           [components]="$any(screens[screenKey])"
-          [errors]="(commonError$ | async)?.errors[i] || {}"
+          [errors]="((commonError$ | async)?.errors)[i] || {}"
           (changes)="changeComponentList($event, i)"
         >
         </epgu-constructor-components-list>
@@ -56,12 +55,7 @@
   </div>
 </epgu-cf-ui-screen-container>
 
-<ng-template
-  #groupHeaderTmpl
-  let-label="label"
-  let-index="index"
-  let-screenKey="screenKey"
->
+<ng-template #groupHeaderTmpl let-label="label" let-index="index" let-screenKey="screenKey">
   <div class="cmp-group-header">
     <epgu-constructor-output-html
       [class.mb-24]="label"
