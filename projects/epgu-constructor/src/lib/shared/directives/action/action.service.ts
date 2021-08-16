@@ -272,14 +272,14 @@ export class ActionService {
   ): ComponentStateForNavigate {
     let value = '';
 
-    LOOP: do {
+    BLOCK: {
       if (action.type === ActionType.skipStep) {
-        break LOOP;
+        break BLOCK;
       }
 
       if (action.value !== undefined) {
         value = action.value;
-        break LOOP;
+        break BLOCK;
       }
 
       if (action.value === undefined) {
@@ -287,9 +287,9 @@ export class ActionService {
           typeof this.currentAnswersService.state === 'object'
             ? JSON.stringify(this.currentAnswersService.state)
             : this.currentAnswersService.state;
-        break LOOP;
+        break BLOCK;
       }
-    } while (0);
+    };
 
     return this.prepareDefaultComponentState(componentId, value, action);
   }
