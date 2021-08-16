@@ -85,12 +85,21 @@
     }
   }
 
+  li:not(:first-child) {
+    margin-top: 12px;
+  }
+
   .suggests {
     & ul {
       margin: 0;
-    }
-    & ul li::after {
-      content: none;
+      & li {
+        &:after {
+          content: none;
+        }
+        &:first-letter {
+          text-transform: none;
+        }
+      }
     }
   }
 
@@ -99,10 +108,6 @@
   }
 
   ol:not(:first-child) {
-    margin-top: 12px;
-  }
-
-  li:not(:first-child) {
     margin-top: 12px;
   }
 
