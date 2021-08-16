@@ -490,7 +490,7 @@ describe('ActionService', () => {
       sessionStorageService.setRaw('childId', '1');
       actionService.switchAction(action(DTOActionAction.editChildData), null);
       expect(navigationService.redirectTo).toHaveBeenCalled();
-      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family/child/1');
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family/child/1/docs');
     });
 
     it('editLegalPhone or editLegalEmail', () => {
