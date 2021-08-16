@@ -198,11 +198,11 @@ export class DictionaryToolsService {
     filters: ComponentDictionaryFilterDto[],
     index: number = 0,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    const meta = { repeatedWithNoFilters: false };
     const options = this.prepareOptions(component, screenStore, [filters[index]]);
     return this.getDictionaries$(dictionaryType, component, options).pipe(
       concatMap((value: CustomListGenericData<DictionaryResponse>) => {
         const newIndex = index + 1;
+        const meta = { repeatedWithNoFilters: index > 0 };
         if (value.data.items.length === 0 && filters[newIndex]) {
           return this.dictionaryFiltersLoader(
             component,
