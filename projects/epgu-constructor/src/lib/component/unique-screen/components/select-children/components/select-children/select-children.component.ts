@@ -18,9 +18,15 @@ import { startWith, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'lodash';
-import { ScenarioErrorsDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ScenarioErrorsDto, ComponentDto, ChildrenListAgeView } from '@epgu/epgu-constructor-types';
+import {
+  DATE_STRING_DOT_FORMAT,
+  EventBusService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 
+import { differenceInCalendarMonths, differenceInCalendarYears, format } from 'date-fns';
+import { PluralizePipe } from '@epgu/epgu-lib';
 import { CustomComponentOutputData } from '../../../../../custom-screen/components-list.types';
 import { CachedValue, ChildI, ClearEvent, ItemStatus } from '../../select-children.models';
 
@@ -43,6 +49,8 @@ export class SelectChildrenComponent implements OnInit {
   itemsComponents = []; // Компоненты для кастомных детей
   selectChildrenForm = new FormGroup({});
   firstNameRef: string;
+  lastNameRef: string;
+  birthDateRef: string;
   idRef: string;
   isNewRef: string;
   passportRef: string;
@@ -54,6 +62,9 @@ export class SelectChildrenComponent implements OnInit {
   hideAddNewChildButton = false;
   expandAllChildrenBlocks: boolean;
   isObliged: boolean;
+  fullNameInList: boolean;
+  fullNameListAge: ChildrenListAgeView;
+  defaultNewList: string;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -82,11 +93,16 @@ export class SelectChildrenComponent implements OnInit {
   }
 
   initVariables(): void {
+    this.fullNameInList = this.component?.attrs?.fullNameInList || false;
+    this.defaultNewList = this.component?.attrs?.defaultNewList || 'Добавить нового ребёнка';
+    this.fullNameListAge = this.component?.attrs?.fullNameListAge || null;
     this.repeatAmount = this.component?.attrs?.repeatAmount || this.DEFAULT_AVAILABLE;
     this.expandAllChildrenBlocks = this.component?.attrs?.expandAllChildrenBlocks;
     const itemsList = this.component ? JSON.parse(this.component.presetValue || '[]') : [];
     this.hideAddNewChildButton = this.component?.attrs?.hideAddNewChildButton || false;
     this.firstNameRef = this.getRefFromComponent('firstName');
+    this.lastNameRef = this.getRefFromComponent('lastName');
+    this.birthDateRef = this.getRefFromComponent('birthDate');
     this.isNewRef = this.getRefFromComponent('isNew');
     this.idRef = this.getRefFromComponent('id');
     this.passportRef = this.getRefFromComponent('rfPasportSeries');
@@ -309,12 +325,38 @@ export class SelectChildrenComponent implements OnInit {
     });
   }
 
+  private getChildName(item: ChildI): string {
+    let result = this.fullNameInList
+      ? `${item[this.firstNameRef]} ${item[this.lastNameRef]}`
+      : item[this.firstNameRef];
+
+    let birthDate = item[this.birthDateRef];
+    if (this.fullNameListAge && birthDate?.length > 0) {
+      if (this.fullNameListAge === 'age') {
+        const pipe = new PluralizePipe();
+        const age = differenceInCalendarYears(new Date(), new Date(birthDate));
+        if (age === 0) {
+          const months = differenceInCalendarMonths(new Date(), new Date(birthDate));
+          birthDate = `${months} ${pipe.transform(['месяц', 'месяца', 'месяцев'], months)}`;
+        } else {
+          birthDate = `${age} ${pipe.transform(['год', 'года', 'лет'], age)}`;
+        }
+      } else {
+        birthDate = format(new Date(birthDate), DATE_STRING_DOT_FORMAT);
+      }
+
+      result = `<div class="children-list-item"><div class="full-name-item">${result}</div><div class="date-item">${birthDate}</div></div>`;
+    }
+
+    return result;
+  }
+
   private getItemsToSelect(itemsList: { [key: string]: string }[]): ChildI[] {
     const itemsToSelect = itemsList.map<ChildI>((child) => {
       return {
         ...child,
         id: child[this.idRef],
-        text: child[this.firstNameRef],
+        text: this.getChildName(child),
       };
     });
 
@@ -332,7 +374,7 @@ export class SelectChildrenComponent implements OnInit {
   private getChildForAddNewChildButton(prop: string): ChildI {
     return {
       id: this.NEW_ID,
-      text: 'Добавить нового ребёнка',
+      text: this.defaultNewList,
       [prop]: this.NEW_ID,
     };
   }
