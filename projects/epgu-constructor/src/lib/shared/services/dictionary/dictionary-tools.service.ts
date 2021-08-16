@@ -74,9 +74,7 @@ export class DictionaryToolsService {
     private datesToolsService: DatesToolsService,
   ) {}
 
-  public watchForFilters(
-    components: CustomComponent[],
-  ): Observable<CustomListReferenceData[]> {
+  public watchForFilters(components: CustomComponent[]): Observable<CustomListReferenceData[]> {
     return this.componentsListRelationsService.filters$.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
         return forkJoin(
@@ -125,10 +123,9 @@ export class DictionaryToolsService {
               dictionaryFilter = null,
             } = component.attrs;
             const excludedParams = component.attrs.dictionaryOptions?.excludedParams || [];
-            const additionalParams = this.getAdditionalParams(
-              screenStore,
-              [...component.attrs.dictionaryOptions?.additionalParams || []],
-            );
+            const additionalParams = this.getAdditionalParams(screenStore, [
+              ...(component.attrs.dictionaryOptions?.additionalParams || []),
+            ]);
 
             const defaultOptions: DictionaryOptions = { pageNum: 0 };
             const options: DictionaryOptions = {
@@ -138,7 +135,7 @@ export class DictionaryToolsService {
                 ? this.prepareOptions(component, screenStore, dictionaryFilter)
                 : {}),
               ...{ excludedParams },
-              ... { additionalParams },
+              ...{ additionalParams },
             };
 
             data.push(this.getDictionaries$(dictionaryType, component, options));
@@ -156,72 +153,115 @@ export class DictionaryToolsService {
     component: CustomComponent,
     options: DictionaryOptions,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    return this.dictionaryApiService
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
-      .pipe(
-        map((dictionary: DictionaryResponse) => ({
-          component,
-          data: {
-            ...dictionary,
-          },
-        })),
-        map((dictionary) => {
-          // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
-          if (component.attrs.filter) {
-            const items = dictionary.data.items.filter((item) => {
-              if (component.attrs.filter.isExcludeType) {
-                return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
-              } else {
-                return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
-              }
-            });
-            const data: DictionaryResponse = {
-              ...dictionary.data,
-              items,
-            };
+    return (
+      this.dictionaryApiService
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
+        .pipe(
+          map((dictionary: DictionaryResponse) => ({
+            component,
+            data: {
+              ...dictionary,
+            },
+          })),
+          map((dictionary) => {
+            // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
+            if (component.attrs.filter) {
+              const items = dictionary.data.items.filter((item) => {
+                if (component.attrs.filter.isExcludeType) {
+                  return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+                } else {
+                  return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
+                }
+              });
+              const data: DictionaryResponse = {
+                ...dictionary.data,
+                items,
+              };
 
-            return {
-              component,
-              data,
-            };
-          }
+              return {
+                component,
+                data,
+              };
+            }
 
-          return dictionary;
-        }),
-      );
+            return dictionary;
+          }),
+        )
+    );
+  }
+
+  dictionaryFiltersLoader(
+    component: CustomComponent,
+    screenStore: ScreenStore,
+    dictionaryType: string,
+    filters: ComponentDictionaryFilterDto[],
+    index: number = 0,
+  ): Observable<CustomListGenericData<DictionaryResponse>> {
+    const meta = { repeatedWithNoFilters: false };
+    const options = this.prepareOptions(component, screenStore, [filters[index]]);
+    return this.getDictionaries$(dictionaryType, component, options).pipe(
+      concatMap((value: CustomListGenericData<DictionaryResponse>) => {
+        const newIndex = index + 1;
+        if (value.data.items.length === 0 && filters[newIndex]) {
+          return this.dictionaryFiltersLoader(
+            component,
+            screenStore,
+            dictionaryType,
+            filters,
+            newIndex,
+          );
+        }
+        return of({ ...value, meta });
+      }),
+    );
   }
 
   public getDropDownDepts$(
     component: CustomComponent,
     screenStore: ScreenStore,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    const { dictionaryType, dictionaryFilter, repeatWithNoFilters } = component.attrs;
-    const firstQueryOptions: DictionaryOptions = dictionaryFilter
-      ? this.prepareOptions(component, screenStore, dictionaryFilter)
-      : { pageNum: 0 };
+    const {
+      dictionaryType,
+      dictionaryFilter,
+      repeatWithNoFilters,
+      dictionaryFilters,
+    } = component.attrs;
 
-    return this.getDictionaries$(dictionaryType, component, firstQueryOptions).pipe(
-      concatMap((value: CustomListGenericData<DictionaryResponse>) => {
-        if (value.data.items.length === 0 && repeatWithNoFilters) {
-          const { secondaryDictionaryFilter } = component.attrs;
-          const secondQueryOptions: DictionaryOptions = this.prepareOptions(
-            component,
-            screenStore,
-            secondaryDictionaryFilter,
-          );
+    if (dictionaryFilters?.length) {
+      return this.dictionaryFiltersLoader(
+        component,
+        screenStore,
+        dictionaryType,
+        dictionaryFilters,
+      );
+    } else {
+      const firstQueryOptions: DictionaryOptions = dictionaryFilter
+        ? this.prepareOptions(component, screenStore, dictionaryFilter)
+        : { pageNum: 0 };
+      const meta = { repeatedWithNoFilters: false };
+      return this.getDictionaries$(dictionaryType, component, firstQueryOptions).pipe(
+        concatMap((value: CustomListGenericData<DictionaryResponse>) => {
+          if (value.data.items.length === 0 && repeatWithNoFilters) {
+            const { secondaryDictionaryFilter } = component.attrs;
+            const secondQueryOptions: DictionaryOptions = this.prepareOptions(
+              component,
+              screenStore,
+              secondaryDictionaryFilter,
+            );
 
-          return this.getDictionaries$(dictionaryType, component, secondQueryOptions).pipe(
-            map((value: CustomListGenericData<DictionaryResponse>) => ({
-              ...value,
-              meta: { repeatedWithNoFilters: true },
-            })),
-          );
-        }
+            return this.getDictionaries$(dictionaryType, component, secondQueryOptions).pipe(
+              map((value: CustomListGenericData<DictionaryResponse>) => ({
+                ...value,
+                meta,
+              })),
+            );
+          }
 
-        return of({ ...value, meta: { repeatedWithNoFilters: false }});
-      }),
-    );
+          return of({ ...value, meta });
+        }),
+      );
+    }
   }
 
   public initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
@@ -236,7 +276,7 @@ export class DictionaryToolsService {
     dictionaries[id].list = this.adaptDictionaryToListItem(
       reference.data.items,
       reference.component.attrs.mappingParams,
-      reference.component.attrs.mappingParams?.isRoot
+      reference.component.attrs.mappingParams?.isRoot,
     );
     dictionaries[id].repeatedWithNoFilters = reference?.meta?.repeatedWithNoFilters;
 
@@ -254,7 +294,9 @@ export class DictionaryToolsService {
         condition: dFilter.condition,
         value: this.getValueForFilter(componentValue, screenStore, dFilter),
         ...(dFilter.hasOwnProperty('trueForNull') ? { trueForNull: dFilter.trueForNull } : {}),
-        ...(dFilter.hasOwnProperty('checkAllValues') ? { checkAllValues: dFilter.checkAllValues } : {}),
+        ...(dFilter.hasOwnProperty('checkAllValues')
+          ? { checkAllValues: dFilter.checkAllValues }
+          : {}),
       },
     };
   }
@@ -297,7 +339,10 @@ export class DictionaryToolsService {
     params?: AdditionalRequestParam[],
   ): AdditionalRequestParam[] {
     return params.map((param: AdditionalRequestParam) => ({
-      value: param?.type === AdditionalRequestType.ref ? this.getValueViaRef(screenStore.applicantAnswers, param.value) : param.value,
+      value:
+        param?.type === AdditionalRequestType.ref
+          ? this.getValueViaRef(screenStore.applicantAnswers, param.value)
+          : param.value,
       name: param?.name,
       type: param?.type,
     }));
@@ -314,8 +359,13 @@ export class DictionaryToolsService {
   ): ListElement[] {
     return items.map((item) => ({
       originalItem: item,
-      id: (isRoot ? get(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) || item.value,
-      text: `${(isRoot ? get(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) || item.title}`,
+      id:
+        (isRoot ? get(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) ||
+        item.value,
+      text: `${
+        (isRoot ? get(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) ||
+        item.title
+      }`,
     }));
   }
 
