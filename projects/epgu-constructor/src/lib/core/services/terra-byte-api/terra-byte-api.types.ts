@@ -48,6 +48,8 @@ export interface FileUploadAttributes {
   maxSize?: number;
   maxFileCount?: number;
   minFileCount?: number;
+  hideTotalAvailableSize?: boolean;
+  hideTotalAvailableCount?: boolean;
 }
 
 export interface MaxCountByType {
@@ -124,6 +126,7 @@ export interface FileUploadEmitValue {
  */
 export interface FileUploadEmitValueForComponent {
   id: string;
+  totalSize?: number;
   type: string;
   uploads?: FileUploadEmitValue[];
 }
