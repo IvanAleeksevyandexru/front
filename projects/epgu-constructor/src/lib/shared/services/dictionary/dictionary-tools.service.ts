@@ -239,7 +239,7 @@ export class DictionaryToolsService {
       const firstQueryOptions: DictionaryOptions = dictionaryFilter
         ? this.prepareOptions(component, screenStore, dictionaryFilter)
         : { pageNum: 0 };
-      const meta = { repeatedWithNoFilters: false };
+
       return this.getDictionaries$(dictionaryType, component, firstQueryOptions).pipe(
         concatMap((value: CustomListGenericData<DictionaryResponse>) => {
           if (value.data.items.length === 0 && repeatWithNoFilters) {
@@ -253,11 +253,11 @@ export class DictionaryToolsService {
             return this.getDictionaries$(dictionaryType, component, secondQueryOptions).pipe(
               map((value: CustomListGenericData<DictionaryResponse>) => ({
                 ...value,
-                meta,
+                meta: { repeatedWithNoFilters: true },
               })),
             );
           }
-
+          const meta = { repeatedWithNoFilters: false };
           return of({ ...value, meta });
         }),
       );
