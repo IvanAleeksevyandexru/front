@@ -13,6 +13,7 @@ import { FileUploadComponent } from '../../../../shared/components/file-upload/f
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import {
   FileResponseToBackendUploadsItem,
+  FileUploadAttributes,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
@@ -32,12 +33,13 @@ const screenServiceComponentMockData: ComponentDto = {
       {
         uploadId: '1',
         label: '',
-        fileType: 'txt',
-        maxFileCount: '1',
-        maxSize: '42',
+        fileType: ['txt'],
+        maxFileCount: 1,
+        maxSize: 1000,
       },
     ],
-  },
+    clarifications: null,
+  } as FileUploadAttributes,
   id: '',
   label: '',
   type: 'FileUploadComponent',
@@ -157,6 +159,7 @@ describe('FileUploadScreenComponent', () => {
             value: [fileSample],
           },
         ],
+        totalSize: 100
       });
     });
 
@@ -294,7 +297,7 @@ describe('FileUploadScreenComponent', () => {
               label: '',
               fileType: 'txt',
               maxFileCount: '1',
-              maxSize: '42',
+              maxSize: '1000',
             },
           ],
         },
@@ -310,7 +313,7 @@ describe('FileUploadScreenComponent', () => {
             label: '',
             fileType: 'txt',
             maxFileCount: '1',
-            maxSize: '42',
+            maxSize: '1000',
           },
         ],
       });
@@ -411,6 +414,81 @@ describe('FileUploadScreenComponent', () => {
     it('action property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl.injector.get(ActionDirective).action).toEqual(button);
+    });
+  });
+
+  describe('Total files size', () => {
+    it('should be set if files attached', () => {
+      const eventData: FileResponseToBackendUploadsItem = {
+        uploadId: 'id1',
+        files: [
+          {
+            value: [fileSample],
+          },
+        ],
+        errors: [],
+      };
+
+      eventBusService.emit('fileUploadValueChangedEvent', eventData);
+
+      expect(component.currentFilesSize).toEqual(100);
+    });
+
+    describe('Info plate', () => {
+      const selector = '.size-info';
+
+      it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is UNDEFINED', () => {
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeNull();
+      });
+
+      it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is TRUE', () => {
+        screenService.component = {
+          ...screenServiceComponentMockData,
+          ...{
+            attrs: {
+              hideTotalAvailableSize: true,
+              hideTotalAvailableCount: true,
+            } as FileUploadAttributes
+          }
+        };
+        fixture.detectChanges();
+
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeNull();
+      });
+
+      it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is defined', () => {
+        screenService.component = {
+          ...screenServiceComponentMockData,
+          ...{
+            attrs: {
+              maxSize: 10000,
+              hideTotalAvailableSize: false
+            } as FileUploadAttributes
+          }
+        };
+        fixture.detectChanges();
+
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeTruthy();
+      });
+
+      it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is defined', () => {
+        screenService.component = {
+          ...screenServiceComponentMockData,
+          ...{
+            attrs: {
+              maxFileCount: 10,
+              hideTotalAvailableCount: false
+            } as FileUploadAttributes
+          }
+        };
+        fixture.detectChanges();
+
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeTruthy();
+      });
     });
   });
 });

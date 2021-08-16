@@ -11,7 +11,7 @@
 }
 
 .screen-button {
-  margin: 24px 0 0;
+  margin: 20px 0 0;
   @include screen-button-width;
   @include tablets-down {
     // Кнопка nextstep всегда первая на mob

@@ -1,0 +1,37 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
+    <ng-container *ngIf="errors.length > 0">
+      <epgu-constructor-disclaimer
+        class="mb-16"
+        *ngFor="let error of errors"
+        [title]="error.title"
+        [description]="error.desc"
+      ></epgu-constructor-disclaimer>
+    </ng-container>
+
+    <div class="item" *ngIf="currentInnState === InnState.valid">
+      <div class="label-helper">{{ data.label }}</div>
+      <div class="value-text">{{ data.value }}</div>
+    </div>
+
+    <div class="data-footer" *ngIf="screenService.action?.type">
+      <div class="divider"></div>
+      <ng-container *ngFor="let action of screenService.actions">
+        <button
+          epgu-constructor-action
+          class="btn-edit"
+          *ngIf="action.value === currentInnState"
+          [action]="action"
+        >
+          <span class="btn-edit__text">{{ action.label }}</span>
+        </button>
+      </ng-container>
+    </div>
+  </epgu-cf-ui-constructor-screen-pad>
+</epgu-constructor-default-unique-screen-wrapper>

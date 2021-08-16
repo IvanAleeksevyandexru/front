@@ -7,6 +7,9 @@
 @import 'display';
 @import 'grid';
 @import 'tables';
-@import 'core';
 @import 'class';
-@import 'lists';
+.epgu-constructor {
+  @import 'core';
+  @import 'lists';
+}
+

@@ -39,6 +39,7 @@ import { TimeSlotDoctorsContainerComponent } from '../components/time-slot-docto
 import { IdentificationUploadScreenComponent } from '../components/identification-upload-screen/identification-upload-screen.component';
 import { IdentificationStreamComponent } from '../components/identification-stream/identification-stream.component';
 import { RegistrationAddrReadonlyComponent } from '../components/registration-addr/components/registration-addr-readonly/registration-addr-readonly.component';
+import { PersonUserInnComponent } from '../components/person-user-inn/person-user-inn.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -80,6 +81,7 @@ type UniqueScreenComponent =
   | MedicalReferralsListContainerComponent
   | ReferralNumberComponent
   | PaymentWayContainerComponent
+  | PersonUserInnComponent
   | RegistrationAddrReadonlyComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
@@ -139,4 +141,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   MedicalReferrals: MedicalReferralsListContainerComponent,
   ReferralNumber: ReferralNumberComponent,
   PaymentWay: PaymentWayContainerComponent,
+  PersonUserInn: PersonUserInnComponent
 };

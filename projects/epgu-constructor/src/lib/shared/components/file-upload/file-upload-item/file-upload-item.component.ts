@@ -98,11 +98,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     concatMap(
       (file: FileItem) => this.validation.prepare(file), // Валидируем файл
     ),
-    filter((file: FileItem) => this.stat.amountFilter(file)), // Фильруем по лимитам
+    filter((file: FileItem) => this.stat.amountFilter(file)), // Фильтруем по лимитам
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
-    filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
+    filter((file: FileItem) => file.status !== FileItemStatus.error), // Далее только без ошибок
     tap((file: FileItem) => this.stat.incrementLimits(file)), // Обновляем лимиты
-    tap((file: FileItem) => this.addUpload(file)), // Эвент на згарузку
+    tap((file: FileItem) => this.addUpload(file)), // Эвент на загрузку
   );
 
   files = this.store.files;

@@ -39,6 +39,7 @@ export enum ActionType {
   getNextQuiz = 'getNextQuiz', // для умного поиска
   home = 'home',
   modalRedirectTo = 'modalRedirectTo',
+  restartOrder = 'restartOrder',
   nextStep = 'nextStep',
   nextStepModal = 'nextStepModal',
   orderToOrder = 'orderToOrder',
@@ -51,6 +52,7 @@ export enum ActionType {
   redirectToLK = 'redirectToLK',
   redirectToPayByUin = 'redirectToPayByUin',
   skipStep = 'skipStep',
+  reload = 'reload',
 }
 
 export enum DTOActionAction {
@@ -63,10 +65,12 @@ export enum DTOActionAction {
   editLegalPhone = 'editLegalPhone',
   editMedicalData = 'editMedicalData',
   editPassportData = 'editPassportData',
+  editPersonalData = 'editPersonalData',
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editUserActualResidence = 'service/actions/editUserAddress/actualResidence',
   editUserPermanentRegistry = 'service/actions/editUserAddress/permanentRegistry',
   externalIntegrationAction = 'service/actions/externalIntegration',
+  restartOrder = 'restartOrder',
   getNextQuiz = 'getNextQuiz', // для умного поиска
   getNextStep = 'getNextScreen',
   getPrevStep = 'getPrevScreen',

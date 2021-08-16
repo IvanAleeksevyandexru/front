@@ -46,6 +46,7 @@ import { PaymentWayModule } from './components/payment-way/payment-way.module';
 import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-doctors.module';
 import { IdentificationUploadScreenModule } from './components/identification-upload-screen/identification-upload-screen.module';
 import { IdentificationStreamModule } from './components/identification-stream/identification-stream.module';
+import { PersonUserInnModule } from './components/person-user-inn/person-user-inn.module';
 
 @NgModule({
   imports: [
@@ -87,6 +88,7 @@ import { IdentificationStreamModule } from './components/identification-stream/i
     PaymentWayModule,
     DatePeriodModule,
     TimeSlotDoctorsModule,
+    PersonUserInnModule,
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -120,6 +122,7 @@ import { IdentificationStreamModule } from './components/identification-stream/i
     DatePeriodModule,
     PaymentWayModule,
     TimeSlotDoctorsModule,
+    PersonUserInnModule,
   ],
   providers: [
     WebcamService,

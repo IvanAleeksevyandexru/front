@@ -48,7 +48,7 @@ import { AutocompleteService } from '../core/services/autocomplete/autocomplete.
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
-  @HostBinding('class.epgu-form-player') class = true;
+  @HostBinding('class.epgu-constructor') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: ServiceEntity;
   @Input() context: FormPlayerContext = {};
@@ -150,6 +150,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.skipStep(data);
         this.changeDetectionRef.markForCheck();
       });
+
+    this.navService.restartOrder$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.formPlayerService.initData();
+      this.changeDetectionRef.markForCheck();
+    });
 
     this.navService.patchStepOnCli$
       .pipe(takeUntil(this.ngUnsubscribe$))

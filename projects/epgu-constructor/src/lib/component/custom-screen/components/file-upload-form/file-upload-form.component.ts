@@ -73,8 +73,11 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
     if (minFileCount) {
       return uploadedFileCount >= minFileCount;
     }
-    const requiredUploads = this.files.filter((uploader) => uploader.required);
-    return uploadedFileCount >= requiredUploads.length;
+    return this.isOptional() || !!uploadedFileCount;
+  }
+
+  private isOptional(): boolean {
+    return !this.screenService.getComponentByIndex(this.componentIndex).required;
   }
 
   private isValidMaxFileSize(): boolean {

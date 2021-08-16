@@ -15,7 +15,7 @@ import {
   SessionStorageService,
   ConfigService,
   EventBusService,
-  ModalService,
+  ModalService, LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -75,6 +75,7 @@ export class ActionService {
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
     private jsonHelperService: JsonHelperService,
+    private locationService: LocationService,
   ) {}
 
   public switchAction(
@@ -92,6 +93,9 @@ export class ActionService {
         break;
       case ActionType.skipStep:
         this.navigate(action, componentId, 'skipStep');
+        break;
+      case ActionType.restartOrder:
+        this.restartOrder();
         break;
       case ActionType.nextStepModal:
         this.navigateModal(action, componentId, 'nextStep');
@@ -140,6 +144,9 @@ export class ActionService {
         break;
       case ActionType.externalIntegration:
         this.handleExternalIntegrationAction(action, componentId);
+        break;
+      case ActionType.reload:
+        this.locationService.reload();
         break;
     }
   }
@@ -192,6 +199,10 @@ export class ActionService {
         component.type === CustomScreenComponentTypes.EaisdoGroupCost,
     ) as unknown) as ActionRequestPayload;
     return this.actionApiService.sendAction<EaisdoResponse>(action.action, component);
+  }
+
+  private restartOrder(): void {
+    this.navService.restartOrder();
   }
 
   private navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
@@ -399,11 +410,13 @@ export class ActionService {
       case DTOActionAction.editChildData:
         const childId: string = this.sessionStorageService.getRaw('childId');
         this.sessionStorageService.delete('childId');
-        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family/child/${childId}`);
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family/child/${childId}/docs`);
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       case DTOActionAction.editMedicalData:
         return this.navService.redirectTo(`${this.configService.lkUrl}/profile/health`);
+      case DTOActionAction.editPersonalData:
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/personal`);
       default:
         return this.navService.redirectToProfileEdit();
     }
