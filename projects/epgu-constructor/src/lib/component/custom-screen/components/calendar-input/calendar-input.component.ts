@@ -10,7 +10,7 @@ import { ChildDateComponent } from '../../components-list.types';
   selector: 'epgu-constructor-calendar-input',
   templateUrl: './calendar-input.component.html',
   styleUrls: ['./calendar-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default, // TODO: нужно сделать onPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class CalendarInputComponent extends AbstractComponentListItemComponent
@@ -26,14 +26,6 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
 
   constructor(public injector: Injector, public fb: FormBuilder) {
     super(injector);
-  }
-
-  get secondDateInvalid(): boolean {
-    return this.control?.get('value')?.getError('forChild') === 'secondDate';
-  }
-
-  get firstDateInvalid(): boolean {
-    return this.control?.get('value')?.getError('forChild') === 'firstDate';
   }
 
   get firstDateParams(): ChildDateComponent {
@@ -53,41 +45,46 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((changes) => this.emitToParentForm(changes));
+
+    this.control?.get('value').valueChanges.subscribe(() => {
+      const errors = this.control?.get('value')?.errors;
+      if (errors) {
+        const controlKeys = Object.keys(this.form.controls);
+        controlKeys.forEach((key) => {
+          if (key === errors.forChild) {
+            this.form.get(key).setErrors(errors);
+          }
+        });
+      }
+    });
   }
 
   emitToParentForm(changes): void {
     this.control.get('value').setValue(changes);
     this.formService.emitChanges();
   }
-
-  setValidatorsForParenForm(): void {
-    const validator: ValidatorFn = () => (this.form.valid ? null : this.form.errors);
-    this.control.setValidators(validator);
-  }
-
   updateForm(): void {
     this.initFormGroup();
     this.cdr.markForCheck();
   }
 
   private initFormGroup(): void {
-    const validators = this.control.value.required ? [this.requiredValidatorFn()] : [];
-    // const parsedValue = JSON.parse(this.control.value || '{}');
-    const parsedValue = JSON.parse('{}');
-
+    const parsedValue = JSON.parse(this.control.value.value || '{}');
     const gr = {
-      firstDate: new FormControl({ value: parsedValue.firstDate || '', disabled: false }),
-      secondDate: new FormControl({ value: parsedValue.secondDate || '', disabled: false }),
+      firstDate: new FormControl({ value: parsedValue.firstDate || '', disabled: false }, [
+        this.requiredValidatorFn(),
+      ]),
+      secondDate: new FormControl({ value: parsedValue.secondDate || '', disabled: false }, [
+        this.requiredValidatorFn(),
+      ]),
     };
-
-    this.form = this.fb.group(gr, { validators });
+    this.form = this.fb.group(gr, {});
     this.control.get('value').setValue(this.form.getRawValue());
   }
 
   private requiredValidatorFn(): ValidatorFn {
     return ({ value }: FormGroup): ValidationErrors => {
-      const isValid = Object.values(value).some((val) => !!val);
-      return isValid ? null : { required: true };
+      return value ? null : { required: true, msg: 'Обязательно для заполнения' };
     };
   }
 }

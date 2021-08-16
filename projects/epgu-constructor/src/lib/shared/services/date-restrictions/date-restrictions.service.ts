@@ -32,14 +32,13 @@ export class DateRestrictionsService {
     components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-    storeAdditionalKey: string,
+    storeAdditionalKey?: string,
     componentsGroupIndex?: number
   ): Promise<Range> {
     if (!this.today) {
       this.today = await this.datesToolsService.getToday();
     }
     const restrictions = cloneDeep(dateRestrictions);
-
     this.setDateRefs(restrictions, components, form, applicantAnswers);
     this.modifyDates(restrictions);
     const minRestrictions = restrictions.filter((restriction) =>
@@ -74,13 +73,29 @@ export class DateRestrictionsService {
     return restriction.type === 'ref';
   }
 
+  public setDateRefs(
+    restrictions: DateRestriction[],
+    components: CustomComponent[],
+    form: FormArray,
+    applicantAnswers: ApplicantAnswersDto,
+  ): void {
+    restrictions
+      .filter((restriction) => this.haveDateRef(restriction))
+      .forEach((restriction, index) => {
+        restrictions[index] = {
+          ...restriction,
+          value: this.getDateByRef(components, restriction, form, applicantAnswers),
+        };
+      });
+  }
+
   private setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number, forChild?: string): void {
     this.dateRangeStore.set(this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild), dateRange);
   }
 
   private modifyDates(restrictions: DateRestriction[]): DateRestriction[] {
     return restrictions.map(restriction => {
-      const date = DatesHelperService.relativeOrFixedToFixed(restriction.value);
+      const date = this.datesToolsService.parse(restriction.value as string, DATE_STRING_DOT_FORMAT);
       let modifiedDate;
       if (restriction.operand === '+') {
         modifiedDate = this.datesToolsService.add(date, restriction.amount, restriction.period);
@@ -152,8 +167,11 @@ export class DateRestrictionsService {
     let date = dateFromComponents || applicantAnswers[dateId]?.value;
     if (applicantAnswers[dateId]?.value) {
       if (precision) {
-        const parsedAnswer = JSON.parse(date as string);
+        const parsedAnswer = JSON.parse(date as string || '{}');
         date = parsedAnswer[precision];
+        if (!date) {
+          return null;
+        }
       }
       const parsedDate = this.datesToolsService.parse(date as string);
       return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
@@ -174,9 +192,7 @@ export class DateRestrictionsService {
     if (!component) {
       return;
     }
-
     const { value } = form.controls.find((control) => control.value.id === component.id).value;
-
     if (precision) {
       return value[precision];
     }
@@ -186,21 +202,5 @@ export class DateRestrictionsService {
     }
 
     return value;
-  }
-
-  private setDateRefs(
-    restrictions: DateRestriction[],
-    components: CustomComponent[],
-    form: FormArray,
-    applicantAnswers: ApplicantAnswersDto,
-  ): void {
-    restrictions
-      .filter((restriction) => this.haveDateRef(restriction))
-      .forEach((restriction, index) => {
-        restrictions[index] = {
-          ...restriction,
-          value: this.getDateByRef(components, restriction, form, applicantAnswers),
-        };
-      });
   }
 }

@@ -251,6 +251,8 @@ export class ValidationService {
         return value.length === this.personInnLength && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
+      case CustomScreenComponentTypes.CalendarInput:
+        return Object.values(value).every((val) => !!val);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
       default:

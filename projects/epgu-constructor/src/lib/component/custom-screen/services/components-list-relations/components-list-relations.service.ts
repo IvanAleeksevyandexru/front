@@ -83,7 +83,7 @@ export class ComponentsListRelationsService {
             );
           });
 
-        // this.updateReferenceLimitDate(dependentComponent as AbstractCustomComponent, component, form, screenService);
+        this.updateReferenceLimitDate(dependentComponent as CustomComponent, component, form, screenService);
       },
     );
 
@@ -109,12 +109,12 @@ export class ComponentsListRelationsService {
   ): Promise<void> {
 
     if (component.attrs.dateRestrictions && !initInitialValues) {
-      this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
+      await this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
       return;
     }
 
     if (initInitialValues) {
-      this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
+      await this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
     }
   }
 
@@ -373,7 +373,6 @@ export class ComponentsListRelationsService {
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number): Promise<void> {
     const restrictionGroups = this.createRestrictionGroups(component.attrs.dateRestrictions);
-
     for (const [key, value] of Object.entries(restrictionGroups)) {
       const dateRange = await this.dateRestrictionsService.getDateRange(
         component.id,
@@ -384,7 +383,6 @@ export class ComponentsListRelationsService {
         key,
         componentsGroupIndex
       );
-
       this.updateFormWithDateRange(form, component, dateRange, key);
     }
 

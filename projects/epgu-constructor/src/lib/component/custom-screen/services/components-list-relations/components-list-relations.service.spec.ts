@@ -1,9 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {
@@ -13,7 +11,8 @@ import {
   CustomListDictionaries,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomStatusElement,
+  CustomStatusElement, DATE_RESTRICTION_GROUP_DEFAULT_KEY,
+  DateRestriction,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -22,14 +21,10 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentsListRelationsService } from './components-list-relations.service';
 import { Observable } from 'rxjs';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
-import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
+import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
-import {
-  DictionaryConditions,
-  DictionaryFilters,
-  DictionaryValueTypes,
-} from '@epgu/epgu-constructor-types';
+import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes, } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -1505,7 +1500,7 @@ describe('ComponentsListRelationsService', () => {
         },
       ];
       const refsExpected = JSON.parse(JSON.stringify(refs));
-      const { dependentControl, control, mockForm, dependentComponent } = setup(refs);
+      const { dependentControl, control, mockForm, dependentComponent } = setup(refs as any);
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
 
@@ -1529,4 +1524,35 @@ describe('ComponentsListRelationsService', () => {
       expect(dependentComponent.attrs.ref).toEqual(refsExpected);
     });
   });
+
+  describe('updateLimitDatesByDateRestrictions()', () => {
+
+    it('should process date restrictions and pass right arguments to form update method', async () => {
+      const dateRestrictions: DateRestriction[] = [ { type: 'const', value: 'today', condition: '>' } ];
+      const component: CustomComponent = { id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: { dateRestrictions }};
+      const form = new FormArray([]);
+      const stub = jest.spyOn(service as any, 'updateFormWithDateRange').mockImplementation((...args) =>  null);
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(stub).toHaveBeenLastCalledWith(form, component, undefined, DATE_RESTRICTION_GROUP_DEFAULT_KEY);
+    });
+
+    it('should process date restrictions and separately call form update for different childs', async () => {
+      const dateRestrictions: DateRestriction[] = [
+        { type: 'const', value: 'today', condition: '>', forChild: 'first' },
+        { type: 'const', value: 'today', condition: '>', forChild: 'second' },
+      ];
+      const component: CustomComponent = { id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: { dateRestrictions }};
+      const form = new FormArray([]);
+      const stub = jest.spyOn(service as any, 'updateFormWithDateRange').mockImplementation((...args) =>  null);
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(stub).toHaveBeenCalledTimes(2);
+      expect(stub).nthCalledWith(1, form, component, undefined, 'first');
+      expect(stub).nthCalledWith(2, form, component, undefined, 'second');
+    });
+  });
+
 });

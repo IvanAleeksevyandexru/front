@@ -179,7 +179,7 @@ export interface DateRestriction {
   condition: string;
   type: 'ref' | 'const';
   value: string | Date;
-  amount?: number;
+  amount?: string | number;
   operand?: '+' | '-';
   period?: any;
   forChild?: string;

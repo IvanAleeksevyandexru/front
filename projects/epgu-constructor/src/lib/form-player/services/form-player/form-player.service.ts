@@ -157,6 +157,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     //   type: 'CalendarInput',
     //   value: '',
     //   visited: false,
+    //   required: true,
     //   attrs: {
     //     validation: [
     //       {
@@ -178,8 +179,8 @@ export class FormPlayerService extends FormPlayerBaseService {
     //     dateRestrictions: [
     //       {
     //         condition: ">=",
-    //         type: "const",
-    //         value: "01.01.2018",
+    //         type: "ref",
+    //         value: "fi8",
     //         forChild: "firstDate"
     //       },
     //       {
@@ -208,7 +209,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     //     ],
     //     children: {
     //       firstDate: {
-    //         readonly: true,
+    //         readonly: false,
     //         label: "biba",
     //         attrs: {
     //           hint: "сejzjz",
