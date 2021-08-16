@@ -141,7 +141,7 @@ export class ValidationService {
 
     return (control: AbstractControl): ValidationErrors => {
       for (const validation of validations) {
-        let error;
+        let hasErrors;
         let minDate =
           this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.min ||
           this.dateRangeService.rangeMap.get(component.id)?.min ||
@@ -158,32 +158,40 @@ export class ValidationService {
           minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
           maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
         } else if (validation.forChild) {
-          controlValueAsDate = control.value.forChild;
-        } {
+          controlValueAsDate = control.value[validation.forChild];
+        } else {
           controlValueAsDate = control.value;
         }
 
         if (controlValueAsDate) {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              error = this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isBefore(controlValueAsDate, minDate);
               break;
             case '<=':
-              error = this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
               break;
             case '>':
-              error = this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isAfter(controlValueAsDate, maxDate);
               break;
             case '>=':
-              error = this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
               break;
             default:
-              error = null;
+              hasErrors = null;
           }
         }
 
-        if (error) {
-          return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
+        if (hasErrors) {
+          if (validation.forChild) {
+            control.markAllAsTouched();
+          }
+          return this.validationErrorMsg(validation.errorMsg ?
+            validation.errorMsg :
+            INCORRENT_DATE_FIELD,
+            undefined,
+            !!validation.errorMsg,
+            validation.forChild);
         }
       }
 
@@ -254,8 +262,9 @@ export class ValidationService {
     error: string = InvalidControlMsg.formatField,
     desc?: string,
     textFromJson = false,
+    forChild?: string
   ): ValidationErrors {
-    return { msg: error, desc, textFromJson };
+    return { msg: error, desc, textFromJson, forChild };
   }
 
   private getError(

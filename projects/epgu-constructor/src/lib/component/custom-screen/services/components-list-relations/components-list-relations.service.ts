@@ -402,7 +402,7 @@ export class ComponentsListRelationsService {
       const attrsValue = control.get('attrs').value;
       attrsValue.children[forChild].attrs.minDate = dateRange.min || attrsValue.children[forChild].attrs.minDate;
       attrsValue.children[forChild].attrs.maxDate = dateRange.max || attrsValue.children[forChild].attrs.maxDate;
-      control.get('attrs').patchValue(attrsValue);
+      control.get('attrs').setValue(attrsValue);
     } else {
       control.get('attrs').patchValue({
         ...component.attrs,

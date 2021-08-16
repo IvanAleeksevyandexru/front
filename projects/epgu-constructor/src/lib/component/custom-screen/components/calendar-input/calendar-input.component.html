@@ -3,36 +3,75 @@
   [component]="control.value"
   [invalid]="control.invalid"
 >
-  <div [formGroup]="form">
-    <epgu-constructor-constructor-date-picker
-      (clearedEvent)="clearDate(control.value?.attrs?.children?.firstDate?.id, control.value?.attrs?.children?.firstDate?.attrs)"
-      [invalid]="control.get('value').invalid && control.get('value').touched"
-      [validationShowOn]="validationShowOn"
-      [name]="control.value?.attrs?.children?.firstDate?.id"
-      [control]="$any(form.get('firstDate'))"
-      [component]="control.value.attrs?.children?.firstDate"
-      [readOnly]="control.value?.attrs?.children?.firstDate?.attrs?.readonly"
-      [minDate]="control.value?.attrs?.children?.firstDate?.attrs?.minDate || minDateDefault"
-      [maxDate]="control.value?.attrs?.children?.firstDate?.attrs?.maxDate || maxDateDefault"
-      [clearable]="clearable"
-      [align]="align"
-      [brokenDateFixStrategy]="control.value?.attrs?.children?.firstDate?.attrs?.children?.brokenDateFixStrategy || strategy"
-    ></epgu-constructor-constructor-date-picker>
+  <div [formGroup]="form" class="calendar-input-from">
+    <div class=" calendar-input-item">
+      <epgu-constructor-output-html
+        *ngIf="firstDateParams.attrs?.subLabel"
+        class="custom_subLabel"
+        [html]="firstDateParams.attrs.subLabel"
+        [clarifications]="firstDateParams.attrs?.clarifications"
+      ></epgu-constructor-output-html>
+      <epgu-constructor-label
+        [isTextHelper]="firstDateParams.attrs?.isTextHelper"
+        [tips]="firstDateParams.attrs?.labelHint"
+        [label]="firstDateParams.label"
+        [clarifications]="firstDateParams.attrs?.clarifications"
+        *ngIf="firstDateParams.label"
+      ></epgu-constructor-label>
+      <epgu-constructor-constructor-date-picker
+        [invalid]="firstDateInvalid"
+        [validationShowOn]="validationShowOn"
+        [name]="control.value?.id + '-firstDate'"
+        [control]="$any(form.get('firstDate'))"
+        [component]="firstDateParams"
+        [readOnly]="firstDateParams?.readonly"
+        [minDate]="firstDateParams?.attrs?.minDate || minDateDefault"
+        [maxDate]="firstDateParams?.attrs?.maxDate || maxDateDefault"
+        [clearable]="clearable"
+        [align]="align"
+        [brokenDateFixStrategy]="firstDateParams?.brokenDateFixStrategy || strategy"
+      ></epgu-constructor-constructor-date-picker>
+      <epgu-constructor-hint
+        *ngIf="firstDateParams?.attrs?.hint"
+        [hint]="firstDateParams?.attrs?.hint"
+        [clarifications]="firstDateParams?.attrs?.clarifications"
+      ></epgu-constructor-hint>
+    </div>
 
+    <div class=" calendar-input-item">
+      <epgu-constructor-output-html
+        *ngIf="secondDateParams.attrs?.subLabel"
+        class="custom_subLabel"
+        [html]="secondDateParams.attrs.subLabel"
+        [clarifications]="secondDateParams.attrs?.clarifications"
+      ></epgu-constructor-output-html>
+      <epgu-constructor-label
+        [isTextHelper]="secondDateParams.attrs?.isTextHelper"
+        [tips]="secondDateParams.attrs?.labelHint"
+        [label]="secondDateParams.label"
+        [clarifications]="secondDateParams.attrs?.clarifications"
+        *ngIf="secondDateParams.label"
+      ></epgu-constructor-label>
     <epgu-constructor-constructor-date-picker
-      (clearedEvent)="clearDate(control.value?.attrs?.children?.secondDate.id, control.value?.attrs?.children?.secondDate.attrs)"
-      [invalid]="control.get('value').invalid && control.get('value').touched"
+      [invalid]="secondDateInvalid"
+
       [validationShowOn]="validationShowOn"
-      [name]="control.value?.attrs?.children?.secondDate.id"
+      [name]="control.value?.id + '-secondDate'"
       [control]="$any(form.get('secondDate'))"
-      [component]="control.value?.attrs?.children?.secondDate"
-      [readOnly]="control.value?.attrs?.children?.secondDate.attrs?.readonly"
-      [minDate]="control.value?.attrs?.children?.secondDate.attrs?.minDate || minDateDefault"
-      [maxDate]="control.value?.attrs?.children?.secondDate.attrs?.maxDate || maxDateDefault"
+      [component]="secondDateParams"
+      [readOnly]="secondDateParams?.readonly"
+      [minDate]="secondDateParams?.attrs?.minDate || minDateDefault"
+      [maxDate]="secondDateParams?.attrs?.maxDate || maxDateDefault"
       [clearable]="clearable"
       [align]="align"
-      [brokenDateFixStrategy]="control.value?.attrs?.children?.secondDate.attrs?.brokenDateFixStrategy || strategy"
+      [brokenDateFixStrategy]="secondDateParams?.brokenDateFixStrategy || strategy"
     ></epgu-constructor-constructor-date-picker>
+      <epgu-constructor-hint
+        *ngIf="secondDateParams?.attrs?.hint"
+        [hint]="secondDateParams?.attrs?.hint"
+        [clarifications]="secondDateParams?.attrs?.clarifications"
+      ></epgu-constructor-hint>
+    </div>
   </div>
 
 

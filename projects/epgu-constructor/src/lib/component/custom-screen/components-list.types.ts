@@ -1,4 +1,4 @@
-import { ListItem } from '@epgu/epgu-lib';
+import { BrokenDateFixStrategy, ListItem } from '@epgu/epgu-lib';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -299,6 +299,14 @@ export interface SupportedValue {
 
 export interface DateRestrictionGroups {
   [key: string]: DateRestriction[];
+}
+
+export interface ChildDateComponent {
+  readonly: boolean;
+  brokenDateFixStrategy?: BrokenDateFixStrategy;
+  hint?: string;
+  label?: string;
+  attrs?: CustomComponentAttr;
 }
 
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';

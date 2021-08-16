@@ -158,6 +158,23 @@ export class FormPlayerService extends FormPlayerBaseService {
     //   value: '',
     //   visited: false,
     //   attrs: {
+    //     validation: [
+    //       {
+    //         type: "RegExp",
+    //         value: ".*",
+    //         ref: "",
+    //         condition: "",
+    //         errorMsg: "Поле должно быть заполено"
+    //       },
+    //       {
+    //         type: "Date",
+    //         value: "",
+    //         ref: "",
+    //         condition: "<",
+    //         forChild: "secondDate",
+    //         errorMsg: "Проверьте, дата окончания периода не может быть раньше его начала"
+    //       },
+    //     ],
     //     dateRestrictions: [
     //       {
     //         condition: ">=",
@@ -191,10 +208,10 @@ export class FormPlayerService extends FormPlayerBaseService {
     //     ],
     //     children: {
     //       firstDate: {
+    //         readonly: true,
     //         label: "biba",
     //         attrs: {
     //           hint: "сejzjz",
-    //           grid: "grid-col-6 grid-col-12-sm",
     //           brokenDateFixStrategy: "restore",
     //         },
     //       },
@@ -202,7 +219,6 @@ export class FormPlayerService extends FormPlayerBaseService {
     //         label: "boba",
     //         attrs: {
     //           hint: "срок пребывания не более 90 дней",
-    //           grid: "grid-col-6 grid-col-12-sm",
     //           brokenDateFixStrategy: "restore",
     //
     //         },

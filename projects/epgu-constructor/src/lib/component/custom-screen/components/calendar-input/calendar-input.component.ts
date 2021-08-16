@@ -3,13 +3,13 @@ import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DateRangeAttrs } from '../../../../shared/services/date-range/date-range.models';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { ChildDateComponent } from '../../components-list.types';
 
 @Component({
   selector: 'epgu-constructor-calendar-input',
   templateUrl: './calendar-input.component.html',
+  styleUrls: ['./calendar-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default, // TODO: нужно сделать onPush
   providers: [UnsubscribeService],
 })
@@ -24,16 +24,24 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
 
   form: FormGroup;
 
-  constructor(
-    public injector: Injector,
-    private dateRangeService: DateRangeService,
-    public fb: FormBuilder,
-  ) {
+  constructor(public injector: Injector, public fb: FormBuilder) {
     super(injector);
   }
 
-  clearDate(id: string, attrs: DateRangeAttrs): void {
-    this.dateRangeService.clearDate(id, attrs);
+  get secondDateInvalid(): boolean {
+    return this.control?.get('value')?.getError('forChild') === 'secondDate';
+  }
+
+  get firstDateInvalid(): boolean {
+    return this.control?.get('value')?.getError('forChild') === 'firstDate';
+  }
+
+  get firstDateParams(): ChildDateComponent {
+    return this.control?.value.attrs?.children?.firstDate;
+  }
+
+  get secondDateParams(): ChildDateComponent {
+    return this.control?.value.attrs?.children?.secondDate;
   }
 
   ngOnInit(): void {
@@ -45,10 +53,6 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((changes) => this.emitToParentForm(changes));
-
-    // this.control.valueChanges.subscribe((formControl) => {
-    //
-    // });
   }
 
   emitToParentForm(changes): void {
@@ -62,7 +66,6 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
   }
 
   updateForm(): void {
-    // const { firstDate, secondDate } = this.control.value.attrs.children;
     this.initFormGroup();
     this.cdr.markForCheck();
   }
