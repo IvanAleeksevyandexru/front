@@ -415,6 +415,8 @@ export class ActionService {
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       case DTOActionAction.editMedicalData:
         return this.navService.redirectTo(`${this.configService.lkUrl}/profile/health`);
+      case DTOActionAction.editPersonalData:
+        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/personal`);
       default:
         return this.navService.redirectToProfileEdit();
     }

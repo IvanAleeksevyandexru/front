@@ -504,6 +504,13 @@ describe('ActionService', () => {
       expect(navigationService.redirectTo).toHaveBeenCalledWith('/notification-setup');
     });
 
+    it('editPersonalData', () => {
+      jest.spyOn(navigationService, 'redirectTo');
+      actionService.switchAction(action(DTOActionAction.editPersonalData), null);
+      expect(navigationService.redirectTo).toHaveBeenCalled();
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/personal');
+    });
+
     it('by default', () => {
       jest.spyOn(navigationService, 'redirectToProfileEdit');
       actionService.switchAction(action(null), null);
