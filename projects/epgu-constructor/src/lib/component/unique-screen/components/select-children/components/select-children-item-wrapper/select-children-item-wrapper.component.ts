@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-select-children-item-wrapper',
@@ -11,6 +12,11 @@ export class SelectChildrenItemWrapperComponent {
   @Input() isMoreThanOneChild: boolean;
   @Input() isSingleChild?: boolean;
   @Output() removeChildEvent = new EventEmitter<number>();
+
+  listLabel = this.screenService.component?.attrs?.listLabel ?? true;
+  chooseChildLabel =
+    this.screenService.component?.attrs?.chooseChildLabel ?? 'Выберите ребёнка из вашего профиля';
+  constructor(private screenService: ScreenService) {}
 
   public removeChild(): void {
     this.removeChildEvent.emit(this.idx);

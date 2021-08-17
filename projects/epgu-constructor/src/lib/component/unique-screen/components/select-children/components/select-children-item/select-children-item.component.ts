@@ -9,6 +9,7 @@ import {
   CustomComponent,
   CustomComponentOutputData,
 } from '../../../../../custom-screen/components-list.types';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-select-children-item',
@@ -29,6 +30,11 @@ export class SelectChildrenItemComponent {
   @Output() updateChildEvent = new EventEmitter<CustomComponentOutputData>();
   @Output() updateItemValueAndValidityEvent = new EventEmitter<void>();
   @Output() updateItemValidatorsEvent = new EventEmitter<FormArray>();
+
+  isClearable = this.screenService?.component?.attrs?.isClearable ?? true;
+  defaultLabelList = this.screenService?.component?.attrs?.defaultLabelList ?? '—';
+
+  constructor(private screenService: ScreenService) {}
 
   public selectChildren(value: ChildI): void {
     this.selectChildrenEvent.emit(value);
