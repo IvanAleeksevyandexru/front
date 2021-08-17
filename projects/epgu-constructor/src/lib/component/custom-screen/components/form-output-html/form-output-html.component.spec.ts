@@ -81,5 +81,25 @@ describe('FormOutputHtmlComponent', () => {
       expect(fixture.debugElement.query(By.css('.label'))).toBeNull();
       expect(fixture.debugElement.query(By.css('.info__text'))).toBeTruthy();
     });
+
+    it('interpolate data if needed', () => {
+      component.control = new FormControl({
+        ...mockFormOutputHtmlComponent,
+        type: CustomScreenComponentTypes.HtmlString,
+        value: {
+          anotherComponent1: { data: 'some-data1' },
+          anotherComponent2: { data: 'some-data2' },
+        },
+        label: 'fake label ${anotherComponent1.data} ${anotherComponent2.data}',
+        attrs: {
+          ...mockFormOutputHtmlComponent.attrs,
+          interpolationEnabled: true
+        },
+      });
+
+      fixture.detectChanges();
+
+      expect(component.label()).toBe('fake label some-data1 some-data2');
+    });
   });
 });
