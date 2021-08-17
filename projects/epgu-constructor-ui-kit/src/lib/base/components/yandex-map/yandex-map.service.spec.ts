@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { features } from 'process';
 import { filter } from 'rxjs/operators';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
@@ -10,6 +9,7 @@ import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscri
 import { Icons } from './constants';
 import { mockItemsWithEmptyCoords } from './mocks/mock-items';
 import { mockBrakCluster, mockExpandedPoint, mockPointWithoutCoords } from './mocks/mock-points';
+import { electionSinglePoint } from './mocks/mock-select-map-elections';
 import { IClusterItem, IFeatureItem } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
 
@@ -83,6 +83,18 @@ describe('SelectMapObjectComponent', () => {
     const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
     yandexMapService.centeredPlaceMark(mockBrakCluster as unknown as IClusterItem<unknown>);
     expect(spy).toBeCalledWith(icons.clusterRed);
+  });
+
+  it('isClusterZoomable should return false for non zoomable cluster', () => {
+    const isClusterZoomable = yandexMapService['isClusterZoomable'](mockBrakCluster as unknown as IClusterItem<unknown>);
+    expect(isClusterZoomable).toBeFalsy();
+  });
+
+  it('isClusterZoomable should return true for zoomable cluster', () => {
+    const cluster = { ...mockBrakCluster };
+    cluster.features[0].geometry.coordinates[0]++;
+    const isClusterZoomable = yandexMapService['isClusterZoomable'](mockBrakCluster as unknown as IClusterItem<unknown>);
+    expect(isClusterZoomable).toBeTruthy();
   });
 
 });
