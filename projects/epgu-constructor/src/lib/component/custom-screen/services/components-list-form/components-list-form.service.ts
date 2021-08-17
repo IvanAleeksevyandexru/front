@@ -189,9 +189,9 @@ export class ComponentsListFormService {
   }
 
   private markForFirstRoundValidation(components: CustomComponent[]): void {
-    if (components.some((component: CustomComponent) => !!component.value)) {
+    if (components.some((component: CustomComponent) => component.value)) {
       this._form.controls.forEach((control: FormControl) => {
-        if (!!control.value.value) {
+        if (control.value.value) {
           control.markAsTouched();
         }
       });
