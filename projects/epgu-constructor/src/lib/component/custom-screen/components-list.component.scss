@@ -64,6 +64,9 @@
     &--inline {
       display: inline-flex;
       flex-wrap: wrap;
+      @include phones-down {
+        flex-direction: column;
+      }
       lib-radio {
         margin-top: $screen-pad-12;
       }
