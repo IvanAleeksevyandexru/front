@@ -424,6 +424,7 @@ describe('ActionService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
+      spyOn<any>(actionService, 'isTimerComponent').and.returnValue(false);
       const expectedValue = { 123: { value: 'some value', visited: true }};
       currentAnswersService.state = expectedValue;
       const value = actionService['getComponentStateForNavigate'](nextAction, '123');
@@ -434,6 +435,7 @@ describe('ActionService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
+      spyOn<any>(actionService, 'isTimerComponent').and.returnValue(true);
       const expectedValue = { 123: { visited: true, value: nextAction.value }};
       const value = actionService['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);

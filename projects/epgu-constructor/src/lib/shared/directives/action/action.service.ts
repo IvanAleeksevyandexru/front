@@ -8,6 +8,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
   EaisdoResponse,
+  ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import {
   LocalStorageService,
@@ -270,18 +271,33 @@ export class ActionService {
     action: ComponentActionDto,
     componentId: string,
   ): ComponentStateForNavigate {
+    let value = '';
     if (action.type === ActionType.skipStep) {
-      return this.prepareDefaultComponentState(componentId, '', action);
+      return this.prepareDefaultComponentState(componentId, value, action);
     }
 
     if (action.value !== undefined) {
       return this.prepareDefaultComponentState(componentId, action.value, action);
     }
 
-    const value =
-      typeof this.currentAnswersService.state === 'object'
-        ? JSON.stringify(this.currentAnswersService.state)
-        : this.currentAnswersService.state;
+    if (action.value === undefined) {
+      value =
+        typeof this.currentAnswersService.state === 'object'
+          ? JSON.stringify(this.currentAnswersService.state)
+          : this.currentAnswersService.state;
+    }
+
+    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
+    if (
+      this.screenService.display?.type === ScreenTypes.CUSTOM &&
+      !this.isTimerComponent(componentId) &&
+      action.value === undefined
+    ) {
+      return {
+        ...(this.currentAnswersService.state as object),
+        ...this.screenService.logicAnswers,
+      };
+    }
 
     return this.prepareDefaultComponentState(componentId, value, action);
   }
@@ -298,6 +314,13 @@ export class ActionService {
       },
       ...this.screenService.logicAnswers,
     };
+  }
+
+  private isTimerComponent(componentId: string): boolean {
+    return this.screenService.display.components.some(
+      (component) =>
+        component.id === componentId && component.type === CustomScreenComponentTypes.Timer,
+    );
   }
 
   private downloadAction(action: ComponentActionDto): void {
