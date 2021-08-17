@@ -1,4 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
 
 :host {
   @include flex-container();
@@ -12,5 +13,19 @@
   min-height: inherit;
   @include tablets-up {
     min-height: auto;
+  }
+}
+
+div.screen-body.with-size-info {
+  margin-bottom: 0;
+}
+
+.size-info {
+  margin-top: 32px;
+  text-align: center;
+  line-height: 24px;
+
+  &__bold {
+    font-weight: $fw-bold;
   }
 }

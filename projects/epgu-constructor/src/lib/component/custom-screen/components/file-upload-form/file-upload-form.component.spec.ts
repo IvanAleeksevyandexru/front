@@ -4,7 +4,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 
 import { configureTestSuite } from 'ng-bullet';
-import { Clarifications } from '@epgu/epgu-constructor-types';
+import { Clarifications, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { FileUploadFormComponent } from './file-upload-form.component';
 import { ChangeDetectionStrategy, Injector } from '@angular/core';
 import { FileUploadItemComponent } from '../../../../shared/components/file-upload/file-upload-item/file-upload-item.component';
@@ -23,6 +23,7 @@ describe('FileUploadComponent', () => {
   let component: FileUploadFormComponent;
   let fixture: ComponentFixture<FileUploadFormComponent>;
   let uploadService: UploaderLimitsService;
+  let screenService: ScreenService;
   let eventService: EventBusService;
   let formService: ComponentsListFormService;
   let form: FormArray;
@@ -57,6 +58,17 @@ describe('FileUploadComponent', () => {
     type: 'FileUploadComponent',
   } as CustomComponent;
 
+  let mockDisplay: DisplayDto = {
+    id: 'loadFiles',
+    name: '',
+    type: ScreenTypes.CUSTOM,
+    header: 'someHeader',
+    components: [
+      mockComponent
+    ],
+    terminal: false
+  };
+
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -83,6 +95,8 @@ describe('FileUploadComponent', () => {
     uploadService = TestBed.inject(UploaderLimitsService);
     eventService = TestBed.inject(EventBusService);
     formService = TestBed.inject(ComponentsListFormService);
+    screenService = TestBed.inject(ScreenService);
+    screenService.display = mockDisplay;
     component = fixture.componentInstance;
     component.componentIndex = 0;
     const { type, attrs, id, label, required } = mockComponent;

@@ -69,6 +69,9 @@
   .error {
     margin-bottom: 4px;
     color: $color-gosred;
+    :empty {
+      margin-bottom: 0;
+    }
   }
 
   .modal-divider {

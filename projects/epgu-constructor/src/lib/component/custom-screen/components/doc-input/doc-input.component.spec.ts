@@ -33,10 +33,12 @@ import { ConstructorMaskedInputModule } from 'projects/epgu-constructor/src/lib/
 import { ValidationTypeModule } from 'projects/epgu-constructor/src/lib/shared/directives/validation-type/validation-type.module';
 import { SuggestHandlerService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-monitor/suggest-monitor.service';
+import { By } from '@angular/platform-browser';
 
 const mockComponent = {
   id: 'pd6',
   type: 'DocInput',
+  label: '',
   attrs: {
     fields: {},
   },
@@ -149,6 +151,40 @@ describe('DocInputComponent', () => {
   });
 
   describe('Init', () => {
+    it('should render title if there is in the component', () => {
+      fixture = TestBed.createComponent(DocInputComponent);
+      component = fixture.componentInstance;
+      component.componentIndex = 0;
+
+      valueControl = new FormControl(mockComponent.value);
+      control = new FormGroup({
+        id: new FormControl(mockComponent.id),
+        attrs: new FormControl(mockComponent.attrs),
+        value: valueControl,
+        required: new FormControl(mockComponent.required),
+        label: new FormControl('Паспорт РФ'),
+      });
+      formService['_form'] = new FormArray([control]);
+
+      fixture.detectChanges();
+
+      component.ngOnInit();
+
+      const selector = '.doc-input__title';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.nativeElement.textContent).toEqual('Паспорт РФ');
+    });
+
+    it('should not render title if there is not in the component', () => {
+      component.ngOnInit();
+
+      const selector = '.doc-input__title';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl).toBeFalsy();
+    });
+
     it('should set fields from component attrs', () => {
       component.ngOnInit();
 

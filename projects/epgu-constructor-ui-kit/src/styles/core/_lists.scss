@@ -85,15 +85,29 @@
     }
   }
 
+  li:not(:first-child) {
+    margin-top: 12px;
+  }
+
+  .suggests {
+    & ul {
+      margin: 0;
+      & li {
+        &:after {
+          content: none;
+        }
+        &:first-letter {
+          text-transform: none;
+        }
+      }
+    }
+  }
+
   ul:not(:first-child):not(li ul) {
     margin-top: 8px;
   }
 
   ol:not(:first-child) {
-    margin-top: 12px;
-  }
-
-  li:not(:first-child) {
     margin-top: 12px;
   }
 

@@ -73,6 +73,7 @@
     <div *ngIf="item.attributeValues.GET_CONSENT === 'true'" class="map-modal__bottom-confirm">
       <lib-checkbox
         [(ngModel)]="item.agreement"
+        (change)="cdr.markForCheck()"
         labelText="Настоящим подтверждаю, что ознакомлен и согласен с дополнительными условиями оказания услуг"
       >
       </lib-checkbox>

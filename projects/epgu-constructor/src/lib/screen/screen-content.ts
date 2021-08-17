@@ -1,6 +1,6 @@
-import { BehaviorSubject, Observable, of, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenStore, ServiceInfo } from './screen.types';
-import { concatMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
 import {
   DisplayDto,
@@ -14,7 +14,7 @@ import {
   ApplicantAnswersDto,
   CachedAnswersDto,
   LogicComponents,
-  ScreenTypes,
+  ScreenTypes, InfoComponentDto,
 } from '@epgu/epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;
@@ -47,35 +47,13 @@ export class ScreenContent {
   private _applicantAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
   private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
+  private _infoComponents = new BehaviorSubject<InfoComponentDto[]>(null);
+  private _showInfoComponent = new BehaviorSubject<boolean>(null);
   private _logicAnswers = new BehaviorSubject<ApplicantAnswersDto>(null);
   private _serviceInfo = new BehaviorSubject<null | ServiceInfo>(null);
   private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
-
-  public get displayInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
-    return this.display$.pipe(
-      concatMap(({ infoComponents, components }) =>
-        infoComponents
-          ? (of(infoComponents).pipe(
-              map((infoList) => this.filteredComponents(infoList, components)),
-            ) as Observable<[ComponentDto, ComponentValue][]>)
-          : of([] as [ComponentDto, ComponentValue][]),
-      ),
-    );
-  }
-
-  public get componentInfoComponents$(): Observable<[ComponentDto, ComponentValue][]> {
-    return this.component$.pipe(
-      concatMap(({ attrs: { infoComponents }}) =>
-        infoComponents
-          ? (combineLatest([of(infoComponents), this.display$]).pipe(
-              map(([infoList, display]) => this.filteredComponents(infoList, display.components)),
-            ) as Observable<[ComponentDto, ComponentValue][]>)
-          : (of([]) as Observable<[ComponentDto, ComponentValue][]>),
-      ),
-    );
-  }
 
   public get display(): DisplayDto {
     return this._display.getValue();
@@ -85,6 +63,26 @@ export class ScreenContent {
   }
   public get display$(): Observable<DisplayDto> {
     return this._display.asObservable();
+  }
+
+  public get showInfoComponent(): boolean {
+    return this._showInfoComponent.getValue();
+  }
+  public set showInfoComponent(val: boolean) {
+    this._showInfoComponent.next(val);
+  }
+  public get showInfoComponent$(): Observable<boolean> {
+    return this._showInfoComponent.asObservable();
+  }
+
+  public get infoComponents(): InfoComponentDto[] {
+    return this._infoComponents.getValue();
+  }
+  public set infoComponents(val: InfoComponentDto[]) {
+    this._infoComponents.next(val);
+  }
+  public get infoComponents$(): Observable<InfoComponentDto[]> {
+    return this._infoComponents.asObservable();
   }
 
   public get isTheSameScreenWithErrors(): boolean {
@@ -420,6 +418,7 @@ export class ScreenContent {
       buttons,
       firstScreen,
       hideBackButton,
+      infoComponents = [],
     } = display;
     const firstComponent = components.filter((component) => component?.attrs?.hidden !== true)[0];
     this.isTheSameScreenWithErrors =
@@ -427,6 +426,8 @@ export class ScreenContent {
     this.isPrevStepCase = isPrevStepCase;
     this.screenType = type;
     this.display = display;
+    this.infoComponents = infoComponents.length ? infoComponents : [];
+    this.showInfoComponent = !!infoComponents.length;
     this.header = header;
     this.subHeader = subHeader;
     this.gender = gender;
@@ -459,16 +460,5 @@ export class ScreenContent {
     } catch (e) {
       return str;
     }
-  }
-
-  private filteredComponents(infoList, components): [ComponentDto, ComponentValue][] {
-    return infoList
-      .map((componentId) => {
-        const findedComponent = components.find((component) => component.id === componentId);
-        return findedComponent
-          ? [findedComponent, this.getComponentData(findedComponent.value)]
-          : null;
-      })
-      .filter((component) => !!component);
   }
 }

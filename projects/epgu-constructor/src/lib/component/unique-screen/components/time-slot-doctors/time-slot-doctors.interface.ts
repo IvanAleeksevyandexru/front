@@ -2,7 +2,7 @@ import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ListElement } from '@epgu/epgu-lib';
 
-export interface TimeSlotDoctorsComponent extends ComponentDto {
+export interface TimeSlotDoctorsComponentDto extends ComponentDto {
   attrs: TimeSlotDoctorsAttrs;
   parsedValue: ComponentValue;
 }

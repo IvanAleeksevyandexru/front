@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -75,6 +75,13 @@ const skipAction: ComponentActionDto = {
   type: ActionType.skipStep,
 };
 
+const restartOrderAction: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: DTOActionAction.restartOrder,
+  type: ActionType.restartOrder,
+};
+
 const nextAction: ComponentActionDto = {
   label: '',
   action: DTOActionAction.editPhoneNumber,
@@ -138,6 +145,13 @@ const homeAction: ComponentActionDto = {
   type: ActionType.home,
 };
 
+const reloadAction: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: null,
+  type: ActionType.reload,
+};
+
 const openDropdownModalAction: ComponentActionDto = {
   label: '',
   value: 'test',
@@ -188,6 +202,7 @@ describe('ActionService', () => {
   let modalPrevStepSpy: jasmine.Spy;
   let modalNextStepSpy: jasmine.Spy;
   let skipStepSpy: jasmine.Spy;
+  let restartOrderSpy: jasmine.Spy;
   let localStorageService: LocalStorageService;
   let sessionStorageService: SessionStorageService;
   let formPlayerApiService: FormPlayerApiService;
@@ -196,6 +211,7 @@ describe('ActionService', () => {
   let currentAnswersService: CurrentAnswersService;
   let htmlRemover: HtmlRemoverService;
   let formPlayerService: FormPlayerService;
+  let locationService: LocationService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -213,6 +229,7 @@ describe('ActionService', () => {
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: HookService, useClass: HookServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
         HtmlRemoverService,
         ActionService,
         NavigationModalService,
@@ -233,6 +250,7 @@ describe('ActionService', () => {
     formPlayerService = TestBed.inject(FormPlayerService);
     downloadService = TestBed.inject(DownloadService);
     navigationService = TestBed.inject(NavigationService);
+    locationService = TestBed.inject(LocationService);
     navigationModalService = TestBed.inject(NavigationModalService);
     localStorageService = TestBed.inject(LocalStorageService);
     sessionStorageService = TestBed.inject(SessionStorageService);
@@ -246,6 +264,7 @@ describe('ActionService', () => {
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
 
     skipStepSpy = spyOn(navigationService, 'skip');
+    restartOrderSpy = spyOn(navigationService, 'restartOrder');
     nextStepSpy = spyOn(navigationService, 'next');
     prevStepSpy = spyOn(navigationService, 'prev');
 
@@ -279,6 +298,12 @@ describe('ActionService', () => {
     skipStepSpy.calls.reset();
     actionService.switchAction(skipAction, null);
     expect(skipStepSpy).toBeCalledTimes(1);
+  });
+
+  it('should call switchAction restartOrder', () => {
+    restartOrderSpy.calls.reset();
+    actionService.switchAction(restartOrderAction, null);
+    expect(restartOrderSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction next', () => {
@@ -352,6 +377,12 @@ describe('ActionService', () => {
     spyOn(navigationService, 'redirectToHome').and.callThrough();
     actionService.switchAction(homeAction, null);
     expect(navigationService.redirectToHome).toHaveBeenCalled();
+  });
+
+  it('should call switchAction reload', () => {
+    spyOn(locationService, 'reload').and.callThrough();
+    actionService.switchAction(reloadAction, null);
+    expect(locationService.reload).toHaveBeenCalled();
   });
 
   it('should call switchAction openDropdownListModal', () => {
@@ -459,7 +490,7 @@ describe('ActionService', () => {
       sessionStorageService.setRaw('childId', '1');
       actionService.switchAction(action(DTOActionAction.editChildData), null);
       expect(navigationService.redirectTo).toHaveBeenCalled();
-      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family/child/1');
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/family/child/1/docs');
     });
 
     it('editLegalPhone or editLegalEmail', () => {
@@ -471,6 +502,13 @@ describe('ActionService', () => {
       actionService.switchAction(action(DTOActionAction.editLegalEmail), null);
       expect(navigationService.redirectTo).toHaveBeenCalled();
       expect(navigationService.redirectTo).toHaveBeenCalledWith('/notification-setup');
+    });
+
+    it('editPersonalData', () => {
+      jest.spyOn(navigationService, 'redirectTo');
+      actionService.switchAction(action(DTOActionAction.editPersonalData), null);
+      expect(navigationService.redirectTo).toHaveBeenCalled();
+      expect(navigationService.redirectTo).toHaveBeenCalledWith('/profile/personal');
     });
 
     it('by default', () => {

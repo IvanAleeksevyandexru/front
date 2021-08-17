@@ -3,6 +3,8 @@
     [panelType]="searchPanelType"
     [label]="data.label"
     [showNav]="screenService.showNav$ | async"
+    [noDepartmentsErrorMsg]="data.attrs.noDepartmentsErrorMsg"
+    [isNoDepartmentErrorVisible]="isNoDepartmentErrorVisible"
   ></epgu-constructor-search-panel-resolver>
   <lib-map
     *ngIf="showMap"

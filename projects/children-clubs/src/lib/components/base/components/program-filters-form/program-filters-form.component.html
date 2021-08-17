@@ -80,6 +80,7 @@
         <lib-dropdown
           [formControlName]="formFields[formFields.level]"
           [items]="levelListElements"
+          [rollUp]="true"
         ></lib-dropdown>
       </div>
 
@@ -100,6 +101,7 @@
       <lib-dropdown
         [formControlName]="formFields[formFields.ovzType]"
         [items]="healthListElements"
+        [rollUp]="true"
       ></lib-dropdown>
     </div>
   </form>

@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor-types",
-  "version": "24.1.1",
+  "version": "28.4.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {

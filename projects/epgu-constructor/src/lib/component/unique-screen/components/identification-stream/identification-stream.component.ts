@@ -14,6 +14,7 @@ import { UploadedFile } from '../../../../core/services/terra-byte-api/terra-byt
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { simplifyQualityTransform } from '../../shared/identification-api/identification-api.types';
 
 @Component({
   selector: 'epgu-constructor-identification-stream',
@@ -102,7 +103,10 @@ export class IdentificationStreamComponent {
               selfieFaceId,
               snapshot: this.result,
             })
-            .pipe(finalize(() => this.apiLoading$.next(false))),
+            .pipe(
+              map(simplifyQualityTransform),
+              finalize(() => this.apiLoading$.next(false)),
+            ),
         ),
       )
       .pipe(takeUntil(this.ngUnsubscribe$))

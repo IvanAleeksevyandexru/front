@@ -8,6 +8,7 @@
   >
     <ng-container *ngIf="timeSlotDoctorService.state$$ | async as state">
       <epgu-constructor-time-slot-doctors
+        #timeSlotDoctorsComponent
         *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
         [timeNotFoundTemplate]="timeNotFoundTemplate"
         [daysNotFoundTemplate]="daysNotFoundTemplate"

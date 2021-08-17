@@ -47,10 +47,9 @@
       >
         <div class="uploader-info">
           <span *ngIf="isMobile && !uploader.hasImageTypes">Выберите файл</span>
-          <span *ngIf="!isMobile"
-            >Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на
-            компьютере</span
-          >
+          <span *ngIf="!isMobile">
+            Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на компьютере
+          </span>
           <span *ngIf="isMobile && uploader.hasImageTypes">Выберите файл или сделайте фото</span>
         </div>
         <div class="uploader-buttons">
@@ -138,9 +137,9 @@
           {{ plurals.before | pluralize: uploader.maxTotalAmount }}
           {{ uploader.maxTotalAmount }}
           {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
-          <ng-container *ngIf="uploader.maxTotalAmount > 1"
-            >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxTotalAmount > 1">
+            Чтобы выбрать другие файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #amount>
@@ -154,9 +153,9 @@
           {{ plurals.before | pluralize: uploader.maxAmount }}
           {{ uploader.maxAmount }}
           {{ beforeFilesPlural | pluralize: uploader.maxAmount }}.
-          <ng-container *ngIf="uploader.maxAmount > 1"
-            >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxAmount > 1">
+            Чтобы выбрать другие файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #totalSize>
@@ -178,9 +177,9 @@
           {{ plurals.before | pluralize: uploader.maxTotalAmount }}
           {{ uploader.maxTotalAmount }}&nbsp;
           {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
-          <ng-container *ngIf="uploader.maxTotalAmount > 1"
-            >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxTotalAmount > 1">
+            Если хотите выбрать еще файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #amountMax>
@@ -188,9 +187,9 @@
         <div class="message__description">
           Здесь можно загрузить {{ plurals.before | pluralize: uploader.maxAmount }}
           {{ uploader.maxAmount }} {{ beforeFilesPlural | pluralize: uploader.maxAmount }}.
-          <ng-container *ngIf="uploader.maxAmount > 1"
-            >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxAmount > 1">
+            Если хотите выбрать еще файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #totalSizeMax>
@@ -200,8 +199,8 @@
           хотите выбрать еще файлы, удалите часть прикрепленных
         </div>
       </ng-template>
-    </ng-container></ng-container
-  >
+    </ng-container>
+  </ng-container>
 </div>
 
 <ng-template #filesPluralAttach let-value>

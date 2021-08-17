@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement, ListItem } from '@epgu/epgu-lib';
@@ -31,7 +38,7 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import {
   BookingRequestAttrs,
   TimeSlotDoctorsAttrs,
-  TimeSlotDoctorsComponent,
+  TimeSlotDoctorsComponentDto,
 } from '../time-slot-doctors.interface';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent } from '../../../../custom-screen/components-list.types';
@@ -46,12 +53,15 @@ import {
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { TimeSlotDoctorService } from '../time-slot-doctor.service';
+import { TimeSlotDoctorsComponent } from '../time-slot-doctors.component';
 
 @Component({
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
 })
-export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
+export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('timeSlotDoctorsComponent') timeSlotDoctorsComponent: TimeSlotDoctorsComponent;
+
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
 
@@ -118,18 +128,18 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   specLookupControl = new FormControl();
   docLookupControl = new FormControl();
 
-  component: TimeSlotDoctorsComponent;
-  timeSlotDoctors$: Observable<TimeSlotDoctorsComponent> = this.screenService.component$.pipe(
-    map((component: TimeSlotDoctorsComponent) => {
+  component: TimeSlotDoctorsComponentDto;
+  timeSlotDoctors$: Observable<TimeSlotDoctorsComponentDto> = this.screenService.component$.pipe(
+    map((component: TimeSlotDoctorsComponentDto) => {
       return { ...component, parsedValue: this.screenService.componentValue };
     }),
-    tap((component: TimeSlotDoctorsComponent) => {
+    tap((component: TimeSlotDoctorsComponentDto) => {
       this.timeSlotDoctorService.isByMedRef = !component.attrs.ts.department;
 
       this.component = component;
       this.setProviders(component);
     }),
-    filter((component: TimeSlotDoctorsComponent) => !!component.value),
+    filter((component: TimeSlotDoctorsComponentDto) => !!component.value),
   );
 
   private errorModalResultSub = new Subscription();
@@ -171,6 +181,10 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.focusOnFirstLookup();
+  }
+
   ngOnDestroy(): void {
     this.httpCancelService.cancelPendingRequests();
   }
@@ -182,6 +196,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
       this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup: null, docLookup: null });
       setTimeout(() => {
         this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup, docLookup: null });
+        setTimeout(() => this.timeSlotDoctorsComponent.docLookup.setFocus());
       });
     });
   }
@@ -385,7 +400,15 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setProviders(component: TimeSlotDoctorsComponent): void {
+  private focusOnFirstLookup(): void {
+    if (this.timeSlotDoctorService.isByMedRef) {
+      this.timeSlotDoctorsComponent.docLookup.setFocus();
+    } else {
+      this.timeSlotDoctorsComponent.specLookup.setFocus();
+    }
+  }
+
+  private setProviders(component: TimeSlotDoctorsComponentDto): void {
     this.specProvider = {
       search: this.providerSearch(component, component.attrs.specLookup, () => []),
     };
@@ -408,7 +431,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   }
 
   private providerSearch(
-    component: TimeSlotDoctorsComponent,
+    component: TimeSlotDoctorsComponentDto,
     attrs: ComponentAttrsDto,
     getInitialDictionaryFilterFunc: () => ComponentDictionaryFilterDto[],
   ): (val: string) => Observable<Partial<ListElement>[]> {
