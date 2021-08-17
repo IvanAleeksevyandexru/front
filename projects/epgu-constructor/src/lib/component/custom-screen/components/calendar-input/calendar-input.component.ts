@@ -38,7 +38,7 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.updateForm();
+    this.initFormGroup();
   }
 
   ngAfterViewInit(): void {
@@ -47,38 +47,45 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
       .subscribe((changes) => this.emitToParentForm(changes));
 
     this.control?.get('value').valueChanges.subscribe(() => {
-      const errors = this.control?.get('value')?.errors;
-      if (errors) {
-        const controlKeys = Object.keys(this.form.controls);
-        controlKeys.forEach((key) => {
-          if (key === errors.forChild) {
-            this.form.get(key).setErrors(errors);
-          }
-        });
-      }
+      this.processErrors();
     });
+  }
+
+  processErrors(): void {
+    const errors = this.control?.get('value')?.errors;
+    if (errors) {
+      const controlKeys = Object.keys(this.form.controls);
+      controlKeys.forEach((key) => {
+        if (key === errors.forChild) {
+          this.form.get(key).setErrors(errors);
+        }
+      });
+    }
   }
 
   emitToParentForm(changes): void {
     this.control.get('value').setValue(changes);
     this.formService.emitChanges();
   }
-  updateForm(): void {
-    this.initFormGroup();
-    this.cdr.markForCheck();
-  }
 
   private initFormGroup(): void {
-    const parsedValue = JSON.parse(this.control.value.value || '{}');
-    const gr = {
-      firstDate: new FormControl({ value: parsedValue.firstDate || '', disabled: false }, [
+    let parsedValue;
+    if (typeof this.control.value.value === 'object') {
+      parsedValue = this.control.value.value;
+    } else if (typeof this.control.value.value === 'string') {
+      parsedValue = JSON.parse(this.control.value.value || '{}');
+    }
+    const firstValue = parsedValue.firstDate ? new Date(parsedValue.firstDate) : '';
+    const secondValue = parsedValue.secondDate ? new Date(parsedValue.secondDate) : '';
+    const formGroup = {
+      firstDate: new FormControl({ value: firstValue, disabled: false }, [
         this.requiredValidatorFn(),
       ]),
-      secondDate: new FormControl({ value: parsedValue.secondDate || '', disabled: false }, [
+      secondDate: new FormControl({ value: secondValue || '', disabled: false }, [
         this.requiredValidatorFn(),
       ]),
     };
-    this.form = this.fb.group(gr, {});
+    this.form = this.fb.group(formGroup, {});
     this.control.get('value').setValue(this.form.getRawValue());
   }
 

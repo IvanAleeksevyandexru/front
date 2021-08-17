@@ -401,6 +401,7 @@ export class ComponentsListRelationsService {
       attrsValue.children[forChild].attrs.minDate = dateRange.min || attrsValue.children[forChild].attrs.minDate;
       attrsValue.children[forChild].attrs.maxDate = dateRange.max || attrsValue.children[forChild].attrs.maxDate;
       control.get('attrs').setValue(attrsValue);
+      control.get('value').patchValue(control.value.value);
     } else {
       control.get('attrs').patchValue({
         ...component.attrs,

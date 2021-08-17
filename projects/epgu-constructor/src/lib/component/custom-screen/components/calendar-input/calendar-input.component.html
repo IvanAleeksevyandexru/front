@@ -2,17 +2,17 @@
 
   <div class="calendar-input-item">
     <epgu-constructor-output-html
-      *ngIf="firstDateParams.attrs?.subLabel"
+      *ngIf="firstDateParams?.attrs?.subLabel"
       class="custom_subLabel"
-      [html]="firstDateParams.attrs.subLabel"
-      [clarifications]="firstDateParams.attrs?.clarifications"
+      [html]="firstDateParams?.attrs.subLabel"
+      [clarifications]="firstDateParams?.attrs?.clarifications"
     ></epgu-constructor-output-html>
     <epgu-constructor-label
-      [isTextHelper]="firstDateParams.attrs?.isTextHelper"
-      [tips]="firstDateParams.attrs?.labelHint"
-      [label]="firstDateParams.label"
-      [clarifications]="firstDateParams.attrs?.clarifications"
-      *ngIf="firstDateParams.label"
+      [isTextHelper]="firstDateParams?.attrs?.isTextHelper"
+      [tips]="firstDateParams?.attrs?.labelHint"
+      [label]="firstDateParams?.label"
+      [clarifications]="firstDateParams?.attrs?.clarifications"
+      *ngIf="firstDateParams?.label"
     ></epgu-constructor-label>
     <epgu-constructor-constructor-date-picker
       [invalid]="form.get('firstDate').invalid && form.get('firstDate').touched"
@@ -39,17 +39,17 @@
 
   <div class="calendar-input-item">
     <epgu-constructor-output-html
-      *ngIf="secondDateParams.attrs?.subLabel"
+      *ngIf="secondDateParams?.attrs?.subLabel"
       class="custom_subLabel"
-      [html]="secondDateParams.attrs.subLabel"
-      [clarifications]="secondDateParams.attrs?.clarifications"
+      [html]="secondDateParams?.attrs.subLabel"
+      [clarifications]="secondDateParams?.attrs?.clarifications"
     ></epgu-constructor-output-html>
     <epgu-constructor-label
-      [isTextHelper]="secondDateParams.attrs?.isTextHelper"
-      [tips]="secondDateParams.attrs?.labelHint"
-      [label]="secondDateParams.label"
-      [clarifications]="secondDateParams.attrs?.clarifications"
-      *ngIf="secondDateParams.label"
+      [isTextHelper]="secondDateParams?.attrs?.isTextHelper"
+      [tips]="secondDateParams?.attrs?.labelHint"
+      [label]="secondDateParams?.label"
+      [clarifications]="secondDateParams?.attrs?.clarifications"
+      *ngIf="secondDateParams?.label"
     ></epgu-constructor-label>
     <epgu-constructor-constructor-date-picker
       [invalid]="form.get('secondDate').invalid && form.get('secondDate')?.touched"
