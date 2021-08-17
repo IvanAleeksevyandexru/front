@@ -1,7 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { ErrorTemplate, IDay, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorLookupComponent,
+  ErrorTemplate,
+  IDay,
+  SlotInterface,
+} from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-time-slot-doctors',
@@ -9,6 +14,9 @@ import { ErrorTemplate, IDay, SlotInterface } from '@epgu/epgu-constructor-ui-ki
   styleUrls: ['./time-slot-doctors.component.scss'],
 })
 export class TimeSlotDoctorsComponent {
+  @ViewChild('specLookup') specLookup: ConstructorLookupComponent;
+  @ViewChild('docLookup') docLookup: ConstructorLookupComponent;
+
   @Input() daysNotFoundTemplate: ErrorTemplate;
   @Input() timeNotFoundTemplate: ErrorTemplate;
 
