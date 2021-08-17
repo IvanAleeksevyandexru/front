@@ -372,6 +372,16 @@ describe('ComponentsListFormService', () => {
     });
   });
 
+  describe('markForFirstRoundValidation()', () => {
+    it('should mark form controls as touched, if there are non-empty values ', () => {
+      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
+      service.create([componentMockData, extraComponent], {});
+      service['markForFirstRoundValidation']([extraComponent]);
+      const result = service['_form'].controls.some(control => control.touched);
+      expect(result).toBeTruthy();
+    });
+  });
+
   describe('getPreparedStateForSending()', () => {
     it('should return CustomComponentOutputData', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
