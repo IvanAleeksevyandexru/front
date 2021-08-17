@@ -36,6 +36,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
+import { FormControl } from '@angular/forms';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -103,11 +104,8 @@ export class ComponentsListFormService {
       }),
     );
     this.validationService.form = this.form;
-    // TODO: временно отключаю т.к. данная имплементация нежелательно аффектит обычные CUSTOM-формы без ошибок уникальности
-    // Додумать механизм до выкатывания фичи в release/22
-    // if (this.errors) {
-    //   this._form.markAllAsTouched();
-    // }
+
+    this.markForFirstRoundValidation(components);
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
@@ -188,6 +186,16 @@ export class ComponentsListFormService {
     attrs: CustomComponentAttr,
   ): LookupProvider | LookupPartialProvider {
     return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
+  }
+
+  private markForFirstRoundValidation(components: CustomComponent[]): void {
+    if (components.some((component: CustomComponent) => !!component.value)) {
+      this._form.controls.forEach((control: FormControl) => {
+        if (!!control.value.value) {
+          control.markAsTouched();
+        }
+      });
+    }
   }
 
   private getPreparedStateForSending(): CustomComponentOutputData {
