@@ -270,26 +270,18 @@ export class ActionService {
     action: ComponentActionDto,
     componentId: string,
   ): ComponentStateForNavigate {
-    let value = '';
+    if (action.type === ActionType.skipStep) {
+      return this.prepareDefaultComponentState(componentId, '', action);
+    }
 
-    BLOCK: {
-      if (action.type === ActionType.skipStep) {
-        break BLOCK;
-      }
+    if (action.value !== undefined) {
+      return this.prepareDefaultComponentState(componentId, action.value, action);
+    }
 
-      if (action.value !== undefined) {
-        value = action.value;
-        break BLOCK;
-      }
-
-      if (action.value === undefined) {
-        value =
-          typeof this.currentAnswersService.state === 'object'
-            ? JSON.stringify(this.currentAnswersService.state)
-            : this.currentAnswersService.state;
-        break BLOCK;
-      }
-    };
+    const value =
+      typeof this.currentAnswersService.state === 'object'
+        ? JSON.stringify(this.currentAnswersService.state)
+        : this.currentAnswersService.state;
 
     return this.prepareDefaultComponentState(componentId, value, action);
   }
@@ -402,7 +394,9 @@ export class ActionService {
       case DTOActionAction.editChildData:
         const childId: string = this.sessionStorageService.getRaw('childId');
         this.sessionStorageService.delete('childId');
-        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family/child/${childId}/docs`);
+        return this.navService.redirectTo(
+          `${this.configService.lkUrl}/profile/family/child/${childId}/docs`,
+        );
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       case DTOActionAction.editMedicalData:
