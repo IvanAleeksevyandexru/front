@@ -37,6 +37,7 @@ export enum UniqueScreenComponentTypes {
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
   confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
   registrationAddr = 'RegistrationAddr',
+  registrationLegalAddrReadOnly = 'RegistrationLegalAddrReadOnly',
   registrationLegalAddr = 'RegistrationLegalAddr',
   passportLookup = 'PassportLookup',
   childrenList = 'ChildrenList',
