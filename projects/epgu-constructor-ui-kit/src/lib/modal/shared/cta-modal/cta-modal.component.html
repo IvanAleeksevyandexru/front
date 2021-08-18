@@ -21,7 +21,9 @@
   </div>
   <ng-template #contentBlock>
     <div class="conf-modal__content">
-      <ng-content select="[modal-content]"></ng-content>
+      <div [class.scroll-padding]="!isShortModal">
+        <ng-content select="[modal-content]"></ng-content>
+      </div>
       <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
         <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
       </ng-container>
