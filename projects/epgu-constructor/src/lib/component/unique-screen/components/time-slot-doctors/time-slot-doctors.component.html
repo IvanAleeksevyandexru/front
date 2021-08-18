@@ -44,6 +44,11 @@
       </epgu-cf-ui-constructor-constructor-lookup>
     </div>
 
+    <epgu-constructor-output-html
+      *ngIf="isDoctorsNotAvailable && doctorsNotFoundTemplate"
+      [html]="doctorsNotFoundTemplate.header + doctorsNotFoundTemplate.description"
+    ></epgu-constructor-output-html>
+
     <lib-throbber-hexagon *ngIf="inLoadingProgress" class="mt-24" size="big"></lib-throbber-hexagon>
 
     <div *ngIf="isMapShown" class="mt-24">

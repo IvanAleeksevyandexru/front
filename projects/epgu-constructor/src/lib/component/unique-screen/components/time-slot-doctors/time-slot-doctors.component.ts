@@ -11,6 +11,7 @@ import { ErrorTemplate, IDay, SlotInterface } from '@epgu/epgu-constructor-ui-ki
 export class TimeSlotDoctorsComponent {
   @Input() daysNotFoundTemplate: ErrorTemplate;
   @Input() timeNotFoundTemplate: ErrorTemplate;
+  @Input() doctorsNotFoundTemplate: ErrorTemplate;
 
   @Input() label: string;
   @Input() isValid: boolean;
@@ -20,6 +21,7 @@ export class TimeSlotDoctorsComponent {
   @Input() inBookingProgress: boolean;
   @Input() isLoading: boolean;
   @Input() labelButton: string;
+  @Input() isDoctorsNotAvailable = false;
 
   @Input() monthsRange: string;
   @Input() slotList: SlotInterface[];
