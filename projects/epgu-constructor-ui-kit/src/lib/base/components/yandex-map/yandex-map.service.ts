@@ -11,9 +11,9 @@ import {
   IFeatureCollection,
   IFeatureItem,
   IYMapPoint,
-  ObjectManager,
   YMapItem,
 } from './yandex-map.interface';
+import { ymaps } from './yandex-map.types';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 
@@ -243,7 +243,7 @@ export class YandexMapService implements OnDestroy {
     }
   }
 
-  private createMapsObjectManager(OMSettings, urlTemplate: string, LOMSettings): ObjectManager {
+  private createMapsObjectManager(OMSettings, urlTemplate: string, LOMSettings): ymaps.ObjectManager {
     const objectManager = urlTemplate
       ? this.createLoadingObjectManager(urlTemplate, LOMSettings)
       : this.createObjectManager(OMSettings);
@@ -252,7 +252,7 @@ export class YandexMapService implements OnDestroy {
       'click',
       (evt) => {
         let objectId = evt.get('objectId');
-        let obj = objectManager.objects.getById(objectId);
+        let obj = objectManager.objects.getById(objectId) as IFeatureItem<unknown>;
         this.centeredPlaceMark(obj);
       },
       this,
@@ -260,14 +260,14 @@ export class YandexMapService implements OnDestroy {
 
     objectManager.clusters.events.add('click', (evt) => {
       let clustersId = evt.get('objectId');
-      let cluster = objectManager.clusters.getById(clustersId);
+      let cluster = objectManager.clusters.getById(clustersId) as IClusterItem<unknown>;
       this.centeredPlaceMark(cluster);
     });
 
     return objectManager;
   }
 
-  private createObjectManager(settings?): ObjectManager {
+  private createObjectManager(settings?): ymaps.ObjectManager {
     const OMSettings = {
       clusterize: !0,
       minClusterSize: 2,
@@ -288,7 +288,7 @@ export class YandexMapService implements OnDestroy {
   private createLoadingObjectManager(
     urlTemplate: string = 'http://mobiz.cowry.team/api/map/uiks?bbox=%b',
     settings?,
-  ): ObjectManager {
+  ): ymaps.ObjectManager {
     const LOMSettings = {
       clusterize: true,
       hasBalloon: false,
@@ -322,7 +322,7 @@ export class YandexMapService implements OnDestroy {
     return cluster.features.some((feature, index, arr) => {
       const i = index > 0 ? index : 1;
       return (
-        feature.geometry.coordinates[0] !== arr[i - 1].geometry.coordinates[0] &&
+        feature.geometry.coordinates[0] !== arr[i - 1].geometry.coordinates[0] ||
         feature.geometry.coordinates[1] !== arr[i - 1].geometry.coordinates[1]
       );
     });

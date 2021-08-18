@@ -1781,10 +1781,10 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
-"@epgu/epgu-lib@3.0.376.1-core-frontv3":
-  version "3.0.37-6.1-core-frontv3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-3.0.37-6.1-core-frontv3.tgz#d129593f5c6fabd1c7e6f84aca163d42da6898dd"
-  integrity sha512-64u07HK6ZIPQ526GvEITQ+XSOPSmbHVcv6drXIee8P8xVf4oX395X0/m59uFXugTTaBS9Mh1BN/6eLu1A0Ow9Q==
+"@epgu/epgu-lib@3.0.377.1-core-frontv3":
+  version "3.0.37-7.1-core-frontv3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-3.0.37-7.1-core-frontv3.tgz#6454a2ef2c4b5d50c214ea531af4e4f158b9020c"
+  integrity sha512-Fi6sZdo0K5fuUaQMA59QDpNRRbs7uXA9GvG4ZlUvtDCyr5/u82FtjdiPF0WmuWqhrzI4hBZooSgkzSBXK6kgAw==
   dependencies:
     "@angular/animations" "11.0.0"
     "@angular/cdk" "11.0.0"

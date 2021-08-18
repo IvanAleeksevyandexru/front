@@ -6,7 +6,7 @@ import {
   DictionaryItem,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { electionSinglePoint } from './mocks/mock-select-map-elections';
+import { electionSinglePoint } from '../../../../../../../epgu-constructor-ui-kit/src/lib/base/components/yandex-map/mocks/mock-select-map-elections';
 import { nullCoordsItems } from './mocks/mock-select-map-nullCoordsPoint';
 import { SelectMapObjectService } from './select-map-object.service';
 

@@ -6,7 +6,6 @@ import {
   CustomComponentAttr,
   CustomComponentDropDownItem,
   CustomComponentDropDownItemList,
-  CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListDictionary,
   CustomListDropDowns,
@@ -38,6 +37,7 @@ import {
   AdditionalRequestParam,
   AdditionalRequestType,
   KeyValueMap,
+  CustomComponentRefRelation,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';

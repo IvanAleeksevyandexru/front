@@ -30,4 +30,5 @@ export enum CustomComponentRefRelation {
   reset = 'reset',
   validateDependentControl = 'validateDependentControl',
   autoFillTextFromRefs = 'autoFillTextFromRefs',
+  formatOn = 'formatOn',
 }
