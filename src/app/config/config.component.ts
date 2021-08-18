@@ -47,9 +47,18 @@ export class ConfigComponent implements OnInit {
     config.canStartNew = config.canStartNew ? config.canStartNew.toString() !== 'false' : '';
     config.invited = config.invited ? config.invited.toString() !== 'false' : '';
     this.appService.saveConfig(config);
+    this.showToast();
   }
 
   resetConfig(): void {
     this.appService.resetConfig();
+  }
+
+  private showToast(): void {
+    const elem = document.getElementById('toast');
+    elem.className = 'show';
+    setTimeout(() => {
+      elem.className = elem.className.replace('show', '');
+    }, 1000);
   }
 }
