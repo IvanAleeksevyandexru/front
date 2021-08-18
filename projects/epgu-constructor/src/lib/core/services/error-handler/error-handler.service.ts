@@ -45,6 +45,7 @@ import {
   DictionaryResponse,
   DictionaryResponseError,
 } from '../../../shared/services/dictionary/dictionary-api.types';
+import { finalize } from 'rxjs/operators';
 
 export enum ModalFailureType {
   BOOKING,
@@ -53,19 +54,32 @@ export enum ModalFailureType {
 }
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 /* eslint-disable max-len */
-export const SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST = 'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации.';
-export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже.';
-export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
-export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 = 'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
-export const SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT = 'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
-export const SMEV2_RESOURCE_NO_DATA = 'По  выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
-export const SMEV3_RESOURCE_NO_DATA = 'NO_DATA:По выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
-export const SMEV2_GET_SLOT_RESPONSE_NO_DATA = 'По выбранному Вами специалисту в ближайшие 14 дней нет доступного времени для записи. Пожалуйста, выберите другого специалиста или обратитесь в регистратуру медицинской организации для записи.';
-export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT = 'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
-export const SMEV2_BOOK_RESPONSE_NOT_AVAILABLE = 'Выберите другую дату и время или другое подразделение.';
-export const SMEV3_BOOK_RESPONSE_NOT_AVAILABLE = 'Извините, запись невозможна. Время уже занято другим пациентом. Пожалуйста, выберите другое время.';
-export const SMEV2_BOOK_RESPONSE_RE_ENTRY = 'Извините, запись невозможна. Пациент уже записан к выбранному специалисту на этот день.';
-export const SMEV3_BOOK_RESPONSE_RE_ENTRY = 'Извините, запись невозможна. Пациент уже записан к выбранному специалисту на этот день.';
+export const SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST =
+  'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации.';
+export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE =
+  'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже.';
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 =
+  'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
+  'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT =
+  'FAILURE:Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+export const SMEV2_RESOURCE_NO_DATA =
+  'По  выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
+export const SMEV3_RESOURCE_NO_DATA =
+  'NO_DATA:По выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию.';
+export const SMEV2_GET_SLOT_RESPONSE_NO_DATA =
+  'По выбранному Вами специалисту в ближайшие 14 дней нет доступного времени для записи. Пожалуйста, выберите другого специалиста или обратитесь в регистратуру медицинской организации для записи.';
+export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT =
+  'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова.';
+export const SMEV2_BOOK_RESPONSE_NOT_AVAILABLE =
+  'Выберите другую дату и время или другое подразделение.';
+export const SMEV3_BOOK_RESPONSE_NOT_AVAILABLE =
+  'Извините, запись невозможна. Время уже занято другим пациентом. Пожалуйста, выберите другое время.';
+export const SMEV2_BOOK_RESPONSE_RE_ENTRY =
+  'Извините, запись невозможна. Пациент уже записан к выбранному специалисту на этот день.';
+export const SMEV3_BOOK_RESPONSE_RE_ENTRY =
+  'Извините, запись невозможна. Пациент уже записан к выбранному специалисту на этот день.';
 export const REFERRAL_NUMBER_NOT_FOUND =
   'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.';
 export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
@@ -74,7 +88,7 @@ export enum RefName {
   serviceOrSpecs = 'ServiceOrSpecs',
   resource = 'Resource',
   getSlotsResponse = 'getSlotsResponse',
-  bookResponse = 'bookResponse'
+  bookResponse = 'bookResponse',
 }
 
 @Injectable()
@@ -87,10 +101,14 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private localStorageService: LocalStorageService,
   ) {}
 
-  public handleResponse(httpRequest: HttpRequest<unknown>, httpResponse: HttpResponse<unknown>): void {
+  public handleResponse(
+    httpRequest: HttpRequest<unknown>,
+    httpResponse: HttpResponse<unknown>,
+  ): void {
     const { status, url, body } = httpResponse;
     const requestBody = httpRequest?.body;
-    const refName = typeof requestBody === 'object' && requestBody != null ? requestBody['refName'] : undefined;
+    const refName =
+      typeof requestBody === 'object' && requestBody != null ? requestBody['refName'] : undefined;
 
     if (status === 200) {
       const bookingValue = String(
@@ -155,8 +173,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-
-
   public handleResponseError(
     httpErrorResponse: HttpErrorResponse,
   ): Observable<HttpEvent<void | never>> {
@@ -166,7 +182,12 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
     } else if (error?.errorModalWindow) {
-      this.showErrorModal(error?.errorModalWindow);
+      const isPrevStep =
+        url.includes('confirmSmsCode') ||
+        url.includes('resendConfirmationCode') ||
+        url.includes('resendEmailConfirmation') ||
+        url.includes('confirmEmailCode');
+      this.showErrorModal(error?.errorModalWindow, isPrevStep);
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
@@ -269,9 +290,12 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       const errorCodeTxt = error?.errorDetail?.errorCodeTxt;
       const errorCode = error?.errorDetail?.errorCode;
 
-      switch(refName) {
+      switch (refName) {
         case RefName.serviceOrSpecs: {
-          if (errorCode === 2 && errorMessage === SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST || errorCodeTxt === 'NO_DATA') {
+          if (
+            (errorCode === 2 && errorMessage === SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST) ||
+            errorCodeTxt === 'NO_DATA'
+          ) {
             this.showModal(SERVICE_OR_SPEC_NO_SPECIALIST).then((prevStep) => {
               if (prevStep) {
                 this.navigationService.prev();
@@ -288,8 +312,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
 
           if (
-            errorCode === 2 && (errorMessage === SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 ||
-            errorMessage === SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) || errorCodeTxt === 'FAILURE' && SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT
+            (errorCode === 2 &&
+              (errorMessage === SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 ||
+                errorMessage === SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) ||
+            (errorCodeTxt === 'FAILURE' && SMEV3_SERVICE_OR_SPEC_SESSION_TIMEOUT)
           ) {
             this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((reload) => {
               if (reload) {
@@ -301,7 +327,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
 
         case RefName.resource: {
-          if (errorCode === 2 && errorMessage === SMEV2_RESOURCE_NO_DATA || errorCode === 6 && errorMessage === SMEV3_RESOURCE_NO_DATA) {
+          if (
+            (errorCode === 2 && errorMessage === SMEV2_RESOURCE_NO_DATA) ||
+            (errorCode === 6 && errorMessage === SMEV3_RESOURCE_NO_DATA)
+          ) {
             this.showModal(RESOURCE_NO_DATA).then((prevStep) => {
               if (prevStep) {
                 this.navigationService.prev();
@@ -328,12 +357,20 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
 
         case RefName.bookResponse: {
-          if (errorMessage === SMEV2_BOOK_RESPONSE_NOT_AVAILABLE || errorMessage === SMEV3_BOOK_RESPONSE_NOT_AVAILABLE) {
+          if (
+            errorMessage === SMEV2_BOOK_RESPONSE_NOT_AVAILABLE ||
+            errorMessage === SMEV3_BOOK_RESPONSE_NOT_AVAILABLE
+          ) {
             this.showModal(BOOK_RESPONSE_NOT_AVAILABLE);
-          } else if (errorMessage === SMEV2_BOOK_RESPONSE_RE_ENTRY || errorMessage === SMEV3_BOOK_RESPONSE_RE_ENTRY) {
+          } else if (
+            errorMessage === SMEV2_BOOK_RESPONSE_RE_ENTRY ||
+            errorMessage === SMEV3_BOOK_RESPONSE_RE_ENTRY
+          ) {
             this.showModal(BOOK_RESPONSE_RE_ENTRY);
           } else {
-            const message = errorMessage.replace('FAILURE:', '').replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
+            const message = errorMessage
+              .replace('FAILURE:', '')
+              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
             BOOK_RESPONSE_ANY.text = BOOK_RESPONSE_ANY.text.replace(/\{textAsset\}?/g, message);
             this.showModal(BOOK_RESPONSE_ANY).then((reload) => {
               if (reload) {
@@ -352,10 +389,17 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       .toPromise();
   }
 
-  private showErrorModal(params: ErrorModal): Promise<unknown> {
+  private showErrorModal(params: ErrorModal, isPrevStep = false): Promise<unknown> {
     const confirmationModalParams = this.getConfirmationModalParamsFromErrorModalParams(params);
     return this.modalService
       .openModal(ConfirmationModalComponent, confirmationModalParams)
+      .pipe(
+        finalize(() => {
+          if (isPrevStep) {
+            this.navigationService.prev();
+          }
+        }),
+      )
       .toPromise();
   }
 
