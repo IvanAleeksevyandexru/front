@@ -262,7 +262,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
   private handleItemsRequest(body: unknown, url: string, refName: string | undefined): void {
     const error = (body as ItemsErrorResponse)?.error;
-    const errorMessage = error?.errorDetail.errorMessage;
+    const errorMessage = error?.errorDetail?.errorMessage;
     const errorCode = error?.errorDetail?.errorCode;
 
     if (
@@ -329,14 +329,14 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 this.formPlayer.initData();
               }
             });
-          } 
+          }
           break;
         }
       }
     }
 
     if (
-      url.includes('equeue/agg/slots') && 
+      url.includes('equeue/agg/slots') &&
       (error !== null || error !== undefined) &&
       errorMessage !== undefined &&
       errorMessage !== ''
