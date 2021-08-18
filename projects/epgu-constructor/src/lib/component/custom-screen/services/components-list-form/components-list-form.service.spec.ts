@@ -23,7 +23,6 @@ import { ComponentsListRelationsService } from '../components-list-relations/com
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import {
   CustomComponent,
-  CustomComponentRefRelation,
   CustomListFormGroup,
   CustomScreenComponentTypes,
 } from '../../components-list.types';
@@ -36,6 +35,7 @@ import { cloneDeep } from 'lodash';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -369,6 +369,16 @@ describe('ComponentsListFormService', () => {
       const addressHelperServiceSpy = jest.spyOn(addressHelperService, 'getProvider');
       service.addressHelperServiceProvider(componentMockData.attrs);
       expect(addressHelperServiceSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('markForFirstRoundValidation()', () => {
+    it('should mark form controls as touched, if there are non-empty values ', () => {
+      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
+      service.create([componentMockData, extraComponent], {});
+      service['markForFirstRoundValidation']([extraComponent]);
+      const result = service['_form'].controls.some(control => control.touched);
+      expect(result).toBeTruthy();
     });
   });
 

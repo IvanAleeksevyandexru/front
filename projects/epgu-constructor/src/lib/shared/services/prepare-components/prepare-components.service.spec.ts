@@ -11,7 +11,7 @@ import {
   DownloadService,
   DatesToolsService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, ComponentDto, CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers } from '../../../screen/screen.types';
@@ -19,10 +19,7 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
-import {
-  CustomComponentRef,
-  CustomComponentRefRelation,
-} from '../../../component/custom-screen/components-list.types';
+import { CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';

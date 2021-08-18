@@ -10,6 +10,7 @@ import {
   ComponentImageDto,
   ComponentAttrsDto,
   DictionaryUrlTypes,
+  CustomComponentRefRelation,
 } from '@epgu/epgu-constructor-types';
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../screen/screen.types';
@@ -173,6 +174,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   updateOnValidation?: UpdateOn;
   validation?: CustomComponentAttrValidation[];
   withAmount?: boolean;
+  interpolationEnabled?: boolean;
 }
 
 export interface DateRestriction {
@@ -208,22 +210,6 @@ export interface CustomComponentOutputData {
     disabled?: boolean;
     condition?: string;
   };
-}
-
-/**
- * Тип зависимости от другого компонента
- */
-export enum CustomComponentRefRelation {
-  displayOn = 'displayOn',
-  displayOff = 'displayOff',
-  filterOn = 'filterOn',
-  disabled = 'disabled',
-  calc = 'calc',
-  getValue = 'getValue',
-  autofillFromDictionary = 'autofillFromDictionary',
-  reset = 'reset',
-  validateDependentControl = 'validateDependentControl',
-  autoFillTextFromRefs = 'autoFillTextFromRefs',
 }
 
 export enum CustomComponentValidationConditions {

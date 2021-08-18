@@ -425,7 +425,7 @@ describe('ActionService', () => {
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       spyOn<any>(actionService, 'isTimerComponent').and.returnValue(false);
-      const expectedValue = { 123: { value: 'some value' }};
+      const expectedValue = { 123: { value: 'some value', visited: true }};
       currentAnswersService.state = expectedValue;
       const value = actionService['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);

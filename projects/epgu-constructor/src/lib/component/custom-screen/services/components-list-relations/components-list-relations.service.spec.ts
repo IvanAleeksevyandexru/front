@@ -7,7 +7,6 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {
   CustomComponent,
   CustomComponentRef,
-  CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListStatusElements,
   CustomScreenComponentTypes,
@@ -24,7 +23,12 @@ import { ComponentDictionaryFilters } from './components-list-relations.interfac
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
-import { DictionaryConditions, DictionaryFilters, DictionaryValueTypes, } from '@epgu/epgu-constructor-types';
+import {
+  CustomComponentRefRelation,
+  DictionaryConditions,
+  DictionaryFilters,
+  DictionaryValueTypes,
+} from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -1228,6 +1232,44 @@ describe('ComponentsListRelationsService', () => {
           clarification: 'clarification with some address',
           hint: 'not match for replace ${not_match}',
         });
+      });
+    });
+
+    describe('if relation === formatOn', () => {
+      it('should set value from related component', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '*',
+          relation: CustomComponentRefRelation.formatOn,
+        };
+
+        const dependentControl = form.controls[0];
+        const patchValue = jest.spyOn(dependentControl, 'patchValue');
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(patchValue).toBeCalled();
+        expect(patchValue).toBeCalledTimes(1);
+        expect(patchValue).toBeCalledWith({
+            id: 'dependentComponentId',
+            value: { rf1: { foo: 'bar' }}
+          },
+          {
+            emitEvent: false,
+            onlySelf: true
+          }
+        );
       });
     });
   });

@@ -15,7 +15,8 @@ import {
   SessionStorageService,
   ConfigService,
   EventBusService,
-  ModalService, LocationService,
+  ModalService,
+  LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
@@ -173,16 +174,16 @@ export class ActionService {
       buttons: confirmationButtons?.length
         ? confirmationButtons
         : [
-          {
-            label: 'Отправить заявление',
-            closeModal: true,
-            handler: handler
-              ? handler
-              : (): void => {
-                this.navigate(action, componentId, 'nextStep');
-              },
-          },
-        ],
+            {
+              label: 'Отправить заявление',
+              closeModal: true,
+              handler: handler
+                ? handler
+                : (): void => {
+                    this.navigate(action, componentId, 'nextStep');
+                  },
+            },
+          ],
       actionButtons: confirmation?.actionButtons || [],
       showCrossButton: true,
       showCloseButton: false,
@@ -270,31 +271,32 @@ export class ActionService {
     action: ComponentActionDto,
     componentId: string,
   ): ComponentStateForNavigate {
-    let value: string;
+    // NOTICE: в порядке следования if-блоков содержится бизнес-логика, не менять без надобности
     if (action.type === ActionType.skipStep) {
       return this.prepareDefaultComponentState(componentId, '', action);
-    } else if (action.value !== undefined) {
-      value = action.value;
-    } else {
-      value =
-        typeof this.currentAnswersService.state === 'object'
-          ? JSON.stringify(this.currentAnswersService.state)
-          : this.currentAnswersService.state;
     }
 
-    // NOTICE: дополнительная проверка, т.к. у CUSTOM-скринов свои бизнес-требования к подготовке ответов
-    if (this.screenService.display?.type === ScreenTypes.CUSTOM) {
-      if (this.isTimerComponent(componentId)) {
-        return this.prepareDefaultComponentState(componentId, value, action);
-      } else {
-        return {
-          ...(this.currentAnswersService.state as object),
-          ...this.screenService.logicAnswers,
-        };
-      }
-    } else {
-      return this.prepareDefaultComponentState(componentId, value, action);
+    if (
+      this.screenService.display?.type === ScreenTypes.CUSTOM &&
+      !this.isTimerComponent(componentId) &&
+      !action.value
+    ) {
+      return {
+        ...(this.currentAnswersService.state as object),
+        ...this.screenService.logicAnswers,
+      };
     }
+
+    if (action.value !== undefined) {
+      return this.prepareDefaultComponentState(componentId, action.value, action);
+    }
+
+    const value =
+      typeof this.currentAnswersService.state === 'object'
+        ? JSON.stringify(this.currentAnswersService.state)
+        : this.currentAnswersService.state;
+
+    return this.prepareDefaultComponentState(componentId, value, action);
   }
 
   private prepareDefaultComponentState(
@@ -363,8 +365,10 @@ export class ActionService {
   }
 
   private prepareActionMultipleAnswers(action: ComponentActionDto): ComponentActionDto {
-    if (typeof action.multipleAnswers === 'string' &&
-      this.jsonHelperService.hasJsonStructure(action.multipleAnswers)) {
+    if (
+      typeof action.multipleAnswers === 'string' &&
+      this.jsonHelperService.hasJsonStructure(action.multipleAnswers)
+    ) {
       action.multipleAnswers = JSON.parse(action.multipleAnswers);
     }
     return action;
@@ -410,7 +414,9 @@ export class ActionService {
       case DTOActionAction.editChildData:
         const childId: string = this.sessionStorageService.getRaw('childId');
         this.sessionStorageService.delete('childId');
-        return this.navService.redirectTo(`${this.configService.lkUrl}/profile/family/child/${childId}/docs`);
+        return this.navService.redirectTo(
+          `${this.configService.lkUrl}/profile/family/child/${childId}/docs`,
+        );
       case DTOActionAction.editLegalPhone || DTOActionAction.editLegalEmail:
         return this.navService.redirectTo(`${this.configService.lkUrl}/notification-setup`);
       case DTOActionAction.editMedicalData:

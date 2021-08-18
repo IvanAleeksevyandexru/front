@@ -4,6 +4,8 @@
     [items]="children"
     [control]="control"
     (changed)="selectChildren($event)"
+    [clearable]="isClearable"
+    [placeholder]="defaultLabelList"
   ></epgu-cf-ui-constructor-constructor-dropdown>
 </div>
 <div class="mt-8" *ngIf="hint">

@@ -25,7 +25,6 @@ import {
   ApplicantAnswersDto,
   ComponentDictionaryFilterDto,
   DictionaryOptions,
-  IMvdFilter,
   ScreenButton,
   DictionaryFilterPriority,
 } from '@epgu/epgu-constructor-types';
@@ -46,7 +45,6 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
-  DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import {
   ComponentValue,
@@ -395,12 +393,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       switchMap((dictionary: DictionaryResponseForYMap) => {
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
-        const needToFilterMvd =
-          this.data.attrs.mvdFilters && this.componentValue.isMvdFiltersActivatedOnFront === 'true';
         // Параллелим получение геоточек на 4 запроса
-        const items = needToFilterMvd
-          ? this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters)
-          : [...dictionary.items];
+        const items = [...dictionary.items];
         const addresses = items.map(
           (item: DictionaryItem) =>
             item.attributeValues[this.screenService.component.attrs.attributeNameWithAddress],
@@ -582,23 +576,5 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       coords.dictionaryError.code === 0 &&
       !!this.data.attrs.secondaryDictionaryFilter
     );
-  }
-
-  private applyRegionFilters(
-    items: DictionaryYMapItem[],
-    mvdFilters: IMvdFilter[],
-  ): DictionaryYMapItem[] {
-    const filteredMvdFilters = mvdFilters.filter((mvdFilter) =>
-      mvdFilter.fiasList.some((fias) =>
-        ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
-      ),
-    );
-    const lastFilteredMvdFilter = filteredMvdFilters.pop();
-
-    return items.filter((department) => {
-      return lastFilteredMvdFilter
-        ? lastFilteredMvdFilter.value.includes(department[lastFilteredMvdFilter.field])
-        : false;
-    });
   }
 }
