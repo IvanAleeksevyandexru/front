@@ -165,9 +165,10 @@ export class ComponentsListFormService {
       this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
     } else if (hasDefaultValue && noValue && isDictionaryLike) {
       this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue, lookupFilterPath);
-    } else if (isDictionaryLike && component.value === ''){
+    } else if (isDictionaryLike && noValue){
       // control.value должен оставаться тем же потому что с бэка приходит пока что пустое значение
       // Кейс создан для ререндеринга компонента на repeatable-screen при удалении одного, последующие обнулялись пустым значением с Бэка
+      return;
     }
     else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
