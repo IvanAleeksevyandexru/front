@@ -30,7 +30,7 @@ export class PersonUserInnComponent implements OnInit {
   errors: ConfirmUserDataError[] = [];
   currentInnState = InnState.valid;
 
-  private innRegExp = /([0-9] {1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{10}/;
+  private innRegExp = /^([0-9] {1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{10}$/;
 
   constructor(
     public currentAnswersService: CurrentAnswersService,

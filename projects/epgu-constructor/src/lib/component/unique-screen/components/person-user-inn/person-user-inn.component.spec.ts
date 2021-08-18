@@ -77,6 +77,44 @@ describe('PersonUserInnComponent', () => {
     });
   });
 
+  describe('inn value validity', () => {
+    it ('should be valid', () => {
+      component.errors = [];
+      component.updateValue('234324364633', []);
+
+      expect(currentAnswersService.isValid).toEqual(true);
+      expect(currentAnswersService.state).toEqual('234324364633');
+    });
+
+    it ('should be invalid', () => {
+      component.updateValue('23432436463', []);
+
+      expect(currentAnswersService.isValid).toEqual(false);
+      expect(currentAnswersService.state).toEqual('23432436463');
+    });
+
+    it ('should be invalid', () => {
+      component.updateValue('023432436463', []);
+
+      expect(currentAnswersService.isValid).toEqual(false);
+      expect(currentAnswersService.state).toEqual('023432436463');
+    });
+
+    it ('should be invalid', () => {
+      component.updateValue('23432436463435345', []);
+
+      expect(currentAnswersService.isValid).toEqual(false);
+      expect(currentAnswersService.state).toEqual('23432436463435345');
+    });
+
+    it ('should be invalid', () => {
+      component.updateValue('234324s36463435345', []);
+
+      expect(currentAnswersService.isValid).toEqual(false);
+      expect(currentAnswersService.state).toEqual('234324s36463435345');
+    });
+  });
+
   describe('ngOnInit()', () => {
     it('should set initial state', () => {
       const updateValue = spyOn(component, 'updateValue');
