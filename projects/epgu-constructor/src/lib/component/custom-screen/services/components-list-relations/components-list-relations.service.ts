@@ -398,8 +398,8 @@ export class ComponentsListRelationsService {
 
     if (forChild !== DATE_RESTRICTION_GROUP_DEFAULT_KEY) {
       const attrsValue = control.get('attrs').value;
-      attrsValue.children[forChild].attrs.minDate = dateRange.min || attrsValue.children[forChild].attrs.minDate;
-      attrsValue.children[forChild].attrs.maxDate = dateRange.max || attrsValue.children[forChild].attrs.maxDate;
+      attrsValue.children[forChild].attrs.minDate = dateRange.min;
+      attrsValue.children[forChild].attrs.maxDate = dateRange.max;
       control.get('attrs').setValue(attrsValue);
       control.get('value').patchValue(control.value.value);
     } else {

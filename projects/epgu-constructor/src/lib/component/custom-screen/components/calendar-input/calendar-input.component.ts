@@ -20,7 +20,7 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
   maxDateDefault = '+50y';
   clearable = true;
   align = 'left';
-  strategy = BrokenDateFixStrategy;
+  strategy = BrokenDateFixStrategy.NONE;
 
   form: FormGroup;
 

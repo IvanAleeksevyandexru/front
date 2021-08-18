@@ -59,6 +59,7 @@ export class DateRestrictionsService {
       (prevDate, currentDate) => isAfter(prevDate, currentDate),
     );
     const dateRange: Range = { min: minDate || null, max: maxDate || null };
+    this.processDateRange(dateRange);
     this.setDateRangeToStore(componentId, dateRange, componentsGroupIndex, storeAdditionalKey);
 
     return dateRange;
@@ -107,6 +108,15 @@ export class DateRestrictionsService {
       }
       return restriction;
     });
+  }
+
+  private processDateRange(dateRange: Range): void {
+    if (!(dateRange.min instanceof Date) || isNaN(dateRange.min.getTime())) {
+      dateRange.min = null;
+    }
+    if (!(dateRange.max instanceof Date) || isNaN(dateRange.max.getTime())) {
+      dateRange.max = null;
+    }
   }
 
   private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number, forChild?: string): string {

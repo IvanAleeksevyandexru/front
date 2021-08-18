@@ -302,11 +302,13 @@ export interface DateRestrictionGroups {
 }
 
 export interface ChildDateComponent {
+  id: string
+  type: CustomScreenComponentTypes;
   readonly: boolean;
   brokenDateFixStrategy?: BrokenDateFixStrategy;
   hint?: string;
   label?: string;
-  attrs?: CustomComponentAttr;
+  attrs: CustomComponentAttr;
 }
 
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';
