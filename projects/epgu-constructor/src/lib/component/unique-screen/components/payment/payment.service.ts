@@ -148,6 +148,9 @@ export class PaymentService {
    */
   getDictionaryInfo(attrs: PaymentsAttrs): Observable<PaymentInfoInterface> {
     const { nsi } = attrs;
+    const returnUrl = attrs?.returnUrl;
+    const returnUrlOrder = attrs?.returnUrlOrder;
+
     const dictionaryOptions = this.createPaymentRequestOptions(attrs);
 
     return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
@@ -162,7 +165,17 @@ export class PaymentService {
       }),
       map(({ error: { code }, items }) => {
         if (code === 0) {
-          return items[0].attributeValues as PaymentInfoInterface;
+          let result = items[0].attributeValues as PaymentInfoInterface;
+
+          if (returnUrl !== undefined) {
+            result = { ...result, returnUrl };
+          }
+
+          if (returnUrlOrder !== undefined) {
+            result = { ...result, returnUrlOrder };
+          }
+          
+          return result;
         }
         throw Error();
       }),
