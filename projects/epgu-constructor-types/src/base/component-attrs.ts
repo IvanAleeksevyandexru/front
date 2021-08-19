@@ -162,6 +162,7 @@ export interface ComponentAttrsDto {
   defaultLabelList?: string;
   defaultNewList?: string;
   listLabel?: boolean;
+  limit?: number;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';
