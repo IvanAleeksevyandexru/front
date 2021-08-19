@@ -9,10 +9,14 @@
   word-break: break-word;
   background: $color-azzurro-alice;
   border-radius: 8px;
+
+  @include tablets-down {
+    padding: 16px;
+  }
 }
 
 .chip__text {
-  min-height: 20px;
+  line-height: 1.5;
 }
 
 .cross-btn {
