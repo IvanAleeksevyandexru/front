@@ -1,25 +1,36 @@
 @import '../../../../styles/core/index';
 
 .chip {
-  min-height: 40px;
-  border-radius: 8px;
   display: inline-flex;
-  align-items: center;
   justify-content: space-between;
-  background: $color-azzurro-alice;
+  align-items: center;
+  min-height: 40px;
   padding: 8px 16px;
   word-break: break-word;
+  background: $color-azzurro-alice;
+  border-radius: 8px;
 }
+
+.chip__text {
+  min-height: 20px;
+}
+
 .cross-btn {
   position: relative;
   top: 0;
   right: 0;
-  margin-left: 10px;
-  min-width: 20px;
+  width: 15px;
+  min-width: 15px;
+  height: 15px;
+  margin-left: 6px;
+
   &:before,
   &:after {
+    width: 1px;
+    height: 15px;
     background: $color-blue-selvaggio;
   }
+
   &:hover:before,
   &:hover:after {
     background: $color-gosblue;
