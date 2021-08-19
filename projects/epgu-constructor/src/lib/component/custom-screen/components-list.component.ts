@@ -86,6 +86,16 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     const { currentValue, previousValue } = changes.errors || {};
     const isErrorsChanged = !isEqual(currentValue, previousValue);
 
+    // NOTICE: из-за асинхронности получения ошибок с бэка, на REPEATALBE скринах возможен бесконечный цикл,
+    // в котором changes.error вызывают пересоздание всей формы,
+    // что в свою очередь активирует расчет изменений в changeComponentList,
+    // с сохранением нового стейта в repeatable-screen.component.ts,
+    // который триггерит изменения в commonErrors$, что приводит нас снова сюда с changes.error:
+    // Чтобы разорвать эту цепочку делаем проверку на валидность всей формы, если невалидна, значит ошибки уже переданы в форму
+    // и пересоздавать ее не нужно, разрывая таким образом бесконечный цикл
+    // TODO: подумать над переделкой текущего механизма передачи ошибок с бэка в пользу проброса ошибок через абстракцию самой формы
+    if (this.formService.form.invalid) return;
+
     if (components || isErrorsChanged) {
       const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
       this.emitFormCreated.emit(formArray);

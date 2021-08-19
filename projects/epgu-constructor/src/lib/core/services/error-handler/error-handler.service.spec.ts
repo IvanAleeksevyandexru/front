@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import { ErrorHandlerService, ModalFailureType } from './error-handler.service';
 import {
   ConfigService,
@@ -29,6 +30,7 @@ describe('ErrorHandlerService', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
       ],
     });
   });
