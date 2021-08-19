@@ -78,7 +78,7 @@ describe('PersonUserInnComponent', () => {
   });
 
   describe('inn value validity', () => {
-    it ('should be valid', () => {
+    it ('should be valid inn value if match regex', () => {
       component.errors = [];
       component.updateValue('234324364633', []);
 
@@ -86,28 +86,28 @@ describe('PersonUserInnComponent', () => {
       expect(currentAnswersService.state).toEqual('234324364633');
     });
 
-    it ('should be invalid', () => {
+    it ('should be invalid inn value if not match regex', () => {
       component.updateValue('23432436463', []);
 
       expect(currentAnswersService.isValid).toEqual(false);
       expect(currentAnswersService.state).toEqual('23432436463');
     });
 
-    it ('should be invalid', () => {
+    it ('should be invalid inn value if not match regex', () => {
       component.updateValue('023432436463', []);
 
       expect(currentAnswersService.isValid).toEqual(false);
       expect(currentAnswersService.state).toEqual('023432436463');
     });
 
-    it ('should be invalid', () => {
+    it ('should be invalid inn value if not match regex', () => {
       component.updateValue('23432436463435345', []);
 
       expect(currentAnswersService.isValid).toEqual(false);
       expect(currentAnswersService.state).toEqual('23432436463435345');
     });
 
-    it ('should be invalid', () => {
+    it ('should be invalid inn value if not match regex', () => {
       component.updateValue('234324s36463435345', []);
 
       expect(currentAnswersService.isValid).toEqual(false);
