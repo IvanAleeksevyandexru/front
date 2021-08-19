@@ -55,6 +55,11 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { TimeSlotDoctorService } from '../time-slot-doctor.service';
 import { TimeSlotDoctorsComponent } from '../time-slot-doctors.component';
 
+/* eslint-disable max-len */
+export const STATIC_ERROR_MESSAGE =
+  'Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию';
+export const STATIC_ERROR_TEMPLATE = `Выберите другую специальность врача или <a data-action-type='prevStep'>другую медицинскую организацию</a>`;
+
 @Component({
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
@@ -76,12 +81,19 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
 
   readonly daysNotFoundTemplate: ErrorTemplate = {
     header: 'Нет свободного времени для приёма',
-    description: 'Всё занято на ближайшие 14 дней. Выберите другого врача',
+    description: 'Этот врач занят на ближайшие 14 дней. Выберите другого специалиста',
   };
 
   readonly timeNotFoundTemplate: ErrorTemplate = {
     header: 'В этот день всё занято',
     description: 'Выберите другой, чтобы забронировать время',
+  };
+
+  doctorsNotFoundTemplate: ErrorTemplate = {
+    header: `<h6 class='yellow-line mt-24'>Врачи не найдены</h6>`,
+    description: `<div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+      {textAsset}
+    </div>`,
   };
 
   confirmModalParameters: ConfirmationModal = {
@@ -116,6 +128,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   inLoadingProgress = false;
   inBookingProgress = false;
   changeTSConfirm = false;
+  isDoctorsNotAvailable = false;
   bookedSlot: SlotInterface;
   errorMessage;
 
@@ -439,6 +452,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       let additionalParams = {};
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;
+      this.isDoctorsNotAvailable = false;
 
       if (!startFilter) {
         filters[0].value = searchString;
@@ -467,6 +481,29 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         )
         .pipe(
           map((reference) => {
+            let errorMessage = reference?.data?.error?.errorDetail?.errorMessage;
+
+            if (errorMessage != null && errorMessage !== 'Operation completed') {
+              this.isDoctorsNotAvailable = true;
+              const regExp = /\{textAsset\}?/g;
+              errorMessage = errorMessage
+                .replace('FAILURE:', '')
+                .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+                .replace('NO_DATA:', '');
+
+              if (errorMessage.includes(STATIC_ERROR_MESSAGE)) {
+                this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
+                  regExp,
+                  STATIC_ERROR_TEMPLATE,
+                );
+              } else {
+                this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
+                  regExp,
+                  errorMessage,
+                );
+              }
+            }
+
             return this.dictionaryToolsService.adaptDictionaryToListItem(
               reference.data.items,
               reference.component.attrs.mappingParams,
@@ -489,6 +526,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.inLoadingProgress = true;
     this.clearDateSelection();
     const value = JSON.parse(this.screenService.component?.value);
+    this.isDoctorsNotAvailable = false;
 
     this.initServiceVariables(value);
     this.timeSlotDoctorService.init(value, this.cachedAnswer).subscribe(
