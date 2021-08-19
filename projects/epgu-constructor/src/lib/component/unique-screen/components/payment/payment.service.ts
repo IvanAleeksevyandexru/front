@@ -121,15 +121,21 @@ export class PaymentService {
   /**
    * Возвращает адрес куда нужно сделать возврат
    */
-  getReturnUrl(): string {
+  getReturnUrl(encode: boolean = true): string {
     const slashInEndRex = /\/$/;
     const href = this.locationService.getHref().replace(slashInEndRex, '');
     const haveQuestion = href.includes('?');
     const glueParam = haveQuestion ? '&' : '?';
     const historyParam = 'getLastScreen=1';
-    return href.includes(historyParam)
-      ? href
-      : encodeURIComponent(`${href}${glueParam}getLastScreen=1`);
+    const url = `${href}${glueParam}getLastScreen=1`;
+
+    if (href.includes(historyParam)) {
+      return href;
+    } else if(encode) {
+      return encodeURIComponent(url);
+    } else {
+      return url;
+    }
   }
 
   /**
@@ -167,14 +173,14 @@ export class PaymentService {
         if (code === 0) {
           let result = items[0].attributeValues as PaymentInfoInterface;
 
-          if (returnUrl !== undefined) {
-            result = { ...result, returnUrl };
+          if (returnUrl !== undefined && returnUrl) {
+            result = { ...result, returnUrl: this.getReturnUrl(false) };
           }
 
-          if (returnUrlOrder !== undefined) {
-            result = { ...result, returnUrlOrder };
+          if (returnUrlOrder !== undefined && returnUrlOrder) {
+            result = { ...result, returnUrlOrder: this.getReturnUrl(false) };
           }
-          
+
           return result;
         }
         throw Error();
