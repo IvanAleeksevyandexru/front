@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { DictionaryResponse } from './dictionary-api.types';
 
 @Injectable()
 export class DictionaryApiServiceStub {
@@ -7,21 +8,24 @@ export class DictionaryApiServiceStub {
     return of({});
   }
 
-  getDictionary(): Observable<{items: any[]}> {
+  getDictionary(): Observable<{ items: any[] }> {
     return of({
-      items: []
+      items: [],
     });
   }
 
-  getMvdDictionary(): Observable<{ items: any[]}> {
+  getMvdDictionary(): Observable<{ items: any[] }> {
     return of({
-      items: []
+      items: [],
     });
   }
 
-  getSelectMapDictionary(): Observable<{ items: any[]}> {
+  getSelectMapDictionary(): Observable<DictionaryResponse> {
     return of({
-      items: []
+      error: null,
+      fieldErrors: [],
+      total: 0,
+      items: [],
     });
   }
 }
