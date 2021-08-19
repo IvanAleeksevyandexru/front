@@ -148,6 +148,24 @@ export class PaymentService {
     return `${domain}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
   }
 
+  createReturnUrl(value: string | boolean): string {
+    const type = typeof value;
+
+    switch(type) {
+      case 'string': {
+        return value as string;
+      }
+
+      case 'boolean': {
+        return this.getReturnUrl(false);
+      }
+
+      default: {
+        return undefined;
+      }
+    }
+  }
+
   /**
    * Загружает информацию из справочников для оплаты
    * @param attrs - аттрибуты
@@ -173,12 +191,12 @@ export class PaymentService {
         if (code === 0) {
           let result = items[0].attributeValues as PaymentInfoInterface;
 
-          if (returnUrl !== undefined && returnUrl) {
-            result = { ...result, returnUrl: this.getReturnUrl(false) };
+          if (!!returnUrl) {
+            result = { ...result, returnUrl: this.createReturnUrl(returnUrl) };
           }
 
-          if (returnUrlOrder !== undefined && returnUrlOrder) {
-            result = { ...result, returnUrlOrder: this.getReturnUrl(false) };
+          if (!!returnUrlOrder) {
+            result = { ...result, returnUrlOrder: this.createReturnUrl(returnUrlOrder) };
           }
 
           return result;
