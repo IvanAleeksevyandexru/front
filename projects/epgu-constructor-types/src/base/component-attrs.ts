@@ -155,7 +155,16 @@ export interface ComponentAttrsDto {
   electionDate?: string;
   mapOptions?: KeyValueMap;
   region?: string;
+  fullNameInList?: boolean;
+  fullNameListAge?: ChildrenListAgeView;
+  isClearable?: boolean;
+  chooseChildLabel?: string;
+  defaultLabelList?: string;
+  defaultNewList?: string;
+  listLabel?: boolean;
 }
+
+export type ChildrenListAgeView = 'date' | 'age';
 
 export interface Hints {
   label: string;

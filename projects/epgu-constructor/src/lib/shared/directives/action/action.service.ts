@@ -8,6 +8,7 @@ import {
   ComponentActionDto,
   DTOActionAction,
   EaisdoResponse,
+  ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import {
   LocalStorageService,
@@ -270,8 +271,20 @@ export class ActionService {
     action: ComponentActionDto,
     componentId: string,
   ): ComponentStateForNavigate {
+    // NOTICE: в порядке следования if-блоков содержится бизнес-логика, не менять без надобности
     if (action.type === ActionType.skipStep) {
       return this.prepareDefaultComponentState(componentId, '', action);
+    }
+
+    if (
+      this.screenService.display?.type === ScreenTypes.CUSTOM &&
+      !this.isTimerComponent(componentId) &&
+      !action.value
+    ) {
+      return {
+        ...(this.currentAnswersService.state as object),
+        ...this.screenService.logicAnswers,
+      };
     }
 
     if (action.value !== undefined) {
@@ -298,6 +311,13 @@ export class ActionService {
       },
       ...this.screenService.logicAnswers,
     };
+  }
+
+  private isTimerComponent(componentId: string): boolean {
+    return this.screenService.display.components.some(
+      (component) =>
+        component.id === componentId && component.type === CustomScreenComponentTypes.Timer,
+    );
   }
 
   private downloadAction(action: ComponentActionDto): void {

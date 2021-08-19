@@ -4,7 +4,7 @@
 <ng-template #formOutputHtml let-component>
   <epgu-constructor-output-html
     [class]="outputHtmlClass[component?.type]"
-    [html]="component?.label"
+    [html]="label()"
     [clarifications]="component?.attrs?.clarifications"
     [componentId]="component?.id"
   >

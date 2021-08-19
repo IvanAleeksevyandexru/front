@@ -5,7 +5,6 @@ import { get, isUndefined } from 'lodash';
 import {
   CustomComponent,
   CustomComponentRef,
-  CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
@@ -20,7 +19,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { ApplicantAnswersDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto, CustomComponentRefRelation, DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -495,6 +494,9 @@ export class ComponentsListRelationsService {
       case CustomComponentRefRelation.autoFillTextFromRefs:
         this.handleAutoFillTextFromRefs(reference, componentVal, dependentControl, dependentComponent);
         break;
+      case CustomComponentRefRelation.formatOn:
+        this.handleFormatOn(reference, componentVal, dependentControl);
+        break;
     }
 
     if (isDependentDisabled) {
@@ -655,6 +657,15 @@ export class ComponentsListRelationsService {
         this.patchToPrevValueAndEnable(dependentComponent.id, dependentControl);
       }
     }
+  }
+
+  private handleFormatOn(
+    reference: CustomComponentRef,
+    componentVal: { [key: string]: string },
+    dependentControl: AbstractControl,
+  ): void {
+    const newValue = { ...(dependentControl?.value?.value ?? {}), [reference.relatedRel]: { ...componentVal }};
+    dependentControl.patchValue({ ...dependentControl?.value, value: newValue }, { onlySelf: true, emitEvent: false });
   }
 
   private patchValueAndDisable(

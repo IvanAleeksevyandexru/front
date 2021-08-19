@@ -23,7 +23,6 @@ import { ComponentsListRelationsService } from '../components-list-relations/com
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import {
   CustomComponent,
-  CustomComponentRefRelation,
   CustomListFormGroup,
   CustomScreenComponentTypes,
 } from '../../components-list.types';
@@ -36,6 +35,7 @@ import { cloneDeep } from 'lodash';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
