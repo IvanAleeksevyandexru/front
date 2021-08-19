@@ -1,10 +1,9 @@
-<children-clubs-select-map-object
-  *ngIf="(listService.groupFiltersMode$ | async).isMap"
->
+<children-clubs-select-map-object *ngIf="(listService.groupFiltersMode$ | async).isMap">
   <div class="filter-panel">
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
+      [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
       [showNav]="(listService.groupFiltersMode$ | async).isMap"
     ></children-clubs-filter-panel>
@@ -22,7 +21,6 @@
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
-      [isShowMenu]="true"
       [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
     ></children-clubs-filter-panel>

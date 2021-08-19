@@ -20,7 +20,7 @@ import { ProgramListService } from '../../../../services/program-list/program-li
 })
 export class ChildrenClubsFilterPanelComponent implements OnInit {
   @Input() filtersCount: number;
-  @Input() initValue: string;
+  @Input() initValue: () => string;
   @Input() isShowMenu = true;
   @Input() title = 'Введите название группы, ФИО педагога, или адрес проведения занятий';
   @Input() showNav = false;
@@ -40,7 +40,7 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     if (this.initValue) {
-      this.searchControl.setValue(this.initValue);
+      this.searchControl.setValue(this.initValue());
     }
     this.searchControl.valueChanges
       .pipe(
