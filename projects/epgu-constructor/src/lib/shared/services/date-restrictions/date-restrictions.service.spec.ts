@@ -55,47 +55,6 @@ describe('DateRestrictionsService', () => {
       });
     });
 
-    it('should calculate range with modified params operand:+, period:days, amount: 4', async () => {
-      const range = await service.getDateRange(
-        'compId',
-        [
-          {
-            condition: '>',
-            type: 'const',
-            value: '24.05.2010',
-            operand: '+',
-            period: 'days',
-            amount: '4',
-          },
-        ],
-        [],
-        new FormArray([]),
-        {},
-      );
-      expect(range.min.getDate()).toEqual(29);
-    });
-
-    it('should calculate range with modified params operand:-, period:months, amount: 4', async () => {
-      const range = await service.getDateRange(
-        'compId',
-        [
-          {
-            condition: '>',
-            type: 'const',
-            value: '24.05.2010',
-            operand: '-',
-            period: 'years',
-            amount: '4',
-          },
-        ],
-        [],
-        new FormArray([]),
-        {},
-      );
-
-      expect(range.min.getFullYear()).toEqual(2006);
-    });
-
   });
 
   describe('setDateRefs() method', () => {

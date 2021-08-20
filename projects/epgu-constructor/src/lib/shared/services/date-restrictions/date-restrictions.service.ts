@@ -40,7 +40,6 @@ export class DateRestrictionsService {
     }
     const restrictions = cloneDeep(dateRestrictions);
     this.setDateRefs(restrictions, components, form, applicantAnswers);
-    this.modifyDates(restrictions);
     const minRestrictions = restrictions.filter((restriction) =>
       this.haveDateConditions(restriction, this.minDateConditions),
     );
@@ -92,22 +91,6 @@ export class DateRestrictionsService {
 
   private setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number, forChild?: string): void {
     this.dateRangeStore.set(this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild), dateRange);
-  }
-
-  private modifyDates(restrictions: DateRestriction[]): DateRestriction[] {
-    return restrictions.map(restriction => {
-      const date = this.datesToolsService.parse(restriction.value as string, DATE_STRING_DOT_FORMAT);
-      let modifiedDate;
-      if (restriction.operand === '+') {
-        modifiedDate = this.datesToolsService.add(date, restriction.amount, restriction.period);
-      } else if (restriction.operand === '-') {
-        modifiedDate = this.datesToolsService.sub(date, restriction.amount, restriction.period);
-      }
-      if (modifiedDate) {
-        restriction.value = modifiedDate;
-      }
-      return restriction;
-    });
   }
 
   private processDateRange(dateRange: Range): void {
