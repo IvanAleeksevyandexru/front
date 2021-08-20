@@ -175,6 +175,8 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   validation?: CustomComponentAttrValidation[];
   withAmount?: boolean;
   interpolationEnabled?: boolean;
+  readonly?: boolean;
+  brokenDateFixStrategy?: BrokenDateFixStrategy;
 }
 
 export interface DateRestriction {
@@ -285,16 +287,6 @@ export interface SupportedValue {
 
 export interface DateRestrictionGroups {
   [key: string]: DateRestriction[];
-}
-
-export interface ChildDateComponent {
-  id: string
-  type: CustomScreenComponentTypes;
-  readonly: boolean;
-  brokenDateFixStrategy?: BrokenDateFixStrategy;
-  hint?: string;
-  label?: string;
-  attrs: CustomComponentAttr;
 }
 
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';

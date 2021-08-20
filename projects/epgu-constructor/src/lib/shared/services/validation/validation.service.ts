@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn, } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
@@ -16,12 +10,12 @@ import {
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import {
+  DatesToolsService,
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 
 enum ValidationType {
@@ -137,9 +131,7 @@ export class ValidationService {
   }
 
   public dateValidator(component: CustomComponent, componentsGroupIndex?: number): ValidatorFn {
-    const validations =
-      component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
-      [];
+    const validations = this.getDateValidators(component);
 
     return (control: AbstractControl): ValidationErrors => {
       for (const validation of validations) {
@@ -152,7 +144,6 @@ export class ValidationService {
           this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.max ||
           this.dateRangeService.rangeMap.get(component.id)?.max ||
           DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
-
         let controlValueAsDate: Date | number;
         if (control.value instanceof MonthYear) {
           // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
@@ -164,7 +155,6 @@ export class ValidationService {
         } else {
           controlValueAsDate = control.value;
         }
-
         if (controlValueAsDate) {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
@@ -286,5 +276,25 @@ export class ValidationService {
           new RegExp(value).test(control.value)) ||
         (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)),
     );
+  }
+
+
+  private getDateValidators(component: CustomComponent): CustomComponentAttrValidation[] {
+    let validations: CustomComponentAttrValidation[] = [];
+    if (component.type === CustomScreenComponentTypes.CalendarInput) {
+      const components = component.attrs.components;
+      for (const component of components) {
+        for (const validation of component.attrs.validation) {
+          if (validation.type === ValidationType.date) {
+            validation['forChild'] = component.id;
+            validations.push(validation);
+          }
+        }
+      }
+    } else {
+      validations = component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
+        [];
+    }
+    return validations;
   }
 }

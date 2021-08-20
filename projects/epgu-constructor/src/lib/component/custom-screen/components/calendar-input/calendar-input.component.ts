@@ -4,7 +4,7 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { ChildDateComponent } from '../../components-list.types';
+import { CustomComponent } from '../../components-list.types';
 
 @Component({
   selector: 'epgu-constructor-calendar-input',
@@ -21,19 +21,14 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
   clearable = true;
   align = 'left';
   strategy = BrokenDateFixStrategy.NONE;
-
   form: FormGroup;
 
   constructor(public injector: Injector, public fb: FormBuilder) {
     super(injector);
   }
 
-  get firstDateParams(): ChildDateComponent {
-    return this.control?.value.attrs?.children?.firstDate;
-  }
-
-  get secondDateParams(): ChildDateComponent {
-    return this.control?.value.attrs?.children?.secondDate;
+  get components(): CustomComponent[] {
+    return this.control?.value?.attrs?.components || [];
   }
 
   ngOnInit(): void {
@@ -75,16 +70,17 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
     } else if (typeof this.control.value.value === 'string') {
       parsedValue = JSON.parse(this.control.value.value || '{}');
     }
-    const firstValue = parsedValue.firstDate ? new Date(parsedValue.firstDate) : '';
-    const secondValue = parsedValue.secondDate ? new Date(parsedValue.secondDate) : '';
-    const formGroup = {
-      firstDate: new FormControl({ value: firstValue, disabled: false }, [
-        this.requiredValidatorFn(),
-      ]),
-      secondDate: new FormControl({ value: secondValue || '', disabled: false }, [
-        this.requiredValidatorFn(),
-      ]),
-    };
+    const formGroup = {};
+    this.components.forEach((component) => {
+      const componentId = component.id;
+      formGroup[componentId] = new FormControl(
+        {
+          value: parsedValue[componentId] ? new Date(parsedValue[componentId]) : '',
+          disabled: false,
+        },
+        [this.requiredValidatorFn()],
+      );
+    });
     this.form = this.fb.group(formGroup, {});
     this.control.get('value').setValue(this.form.getRawValue());
   }

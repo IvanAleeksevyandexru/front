@@ -2,10 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { AbstractControl } from '@angular/forms';
 import { Align, BrokenDateFixStrategy, RelativeDate, ValidationShowOn } from '@epgu/epgu-lib';
 
-import {
-  ChildDateComponent,
-  CustomComponent,
-} from '../../../component/custom-screen/components-list.types';
+import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-constructor-date-picker',
@@ -17,7 +14,7 @@ export class ConstructorDatePickerComponent {
   @Input() validationShowOn: ValidationShowOn | string | boolean;
   @Input() name: string;
   @Input() control: AbstractControl;
-  @Input() component: CustomComponent | ChildDateComponent;
+  @Input() component: CustomComponent;
   @Input() readOnly: boolean;
   @Input() minDate: Date | RelativeDate | string;
   @Input() maxDate: Date | RelativeDate | string;

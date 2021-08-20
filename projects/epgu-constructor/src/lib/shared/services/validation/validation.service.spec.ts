@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { FormArray, FormControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl } from '@angular/forms';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
@@ -14,9 +14,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 describe('ValidationService', () => {
   let service: ValidationService;
+  let restrictionService: DateRestrictionsService;
   let dateInputComponent = ({
     id: 'pd8',
     type: CustomScreenComponentTypes.DateInput,
@@ -115,7 +117,8 @@ describe('ValidationService', () => {
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
-        MockProvider(DateRestrictionsService),
+        DateRestrictionsService,
+        MockProvider(DateRefService),
         ConfigService,
         LoggerService,
       ],
@@ -124,6 +127,7 @@ describe('ValidationService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(ValidationService);
+    restrictionService = TestBed.inject(DateRestrictionsService);
   });
 
   describe('customValidator', () => {
@@ -294,4 +298,86 @@ describe('ValidationService', () => {
       expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
     });
   });
+
+  describe('dateValidator()', () => {
+
+    const compoundComponent = {
+      type: CustomScreenComponentTypes.CalendarInput,
+      attrs: { components: [{
+        id: 'first',
+          type: CustomScreenComponentTypes.DateInput,
+          attrs: {
+            validation: [{
+              type: 'Date',
+              value: '',
+              ref: '',
+              condition: '<',
+              errorMsg: 'Я ошибка',
+              dataType: 'aa'
+            }]
+          }}] },
+      id: 'test',
+    };
+
+    const plainComponent = {
+      type: CustomScreenComponentTypes.DateInput,
+      id: 'test',
+      attrs: {
+        validation: [{
+          type: 'Date',
+          value: '',
+          ref: '',
+          condition: '>',
+          errorMsg: 'Я ошибка',
+          dataType: 'aa'
+        }] },
+    };
+
+    const range = { min: new Date(2005, 5,5 ), max: new Date(2010, 10, 10) };
+    const controlCompound = { value: { first : new Date(2004, 4, 4) }, markAllAsTouched() { return null; } };
+    const controlPlain = { value: new Date(2006, 6, 6) };
+
+    it('should return error if min date is greater than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlCompound.value.first = new Date(2004, 4, 4);
+      const validator = service.dateValidator(compoundComponent);
+
+      const result = validator(controlCompound as AbstractControl);
+
+      expect(result.msg).toEqual('Я ошибка');
+    });
+
+    it('should return nothing if min date is lower than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlCompound.value.first = new Date(2006, 6, 6);
+      const validator = service.dateValidator(compoundComponent);
+
+      const result = validator(controlCompound as AbstractControl);
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should return error if max date is lower than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlPlain.value = new Date(2006, 6, 6);
+      const validator = service.dateValidator(plainComponent);
+
+      const result = validator(controlPlain as AbstractControl);
+
+      expect(result).toBeUndefined();
+
+    });
+
+    it('should return undefined if max date is greater than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlPlain.value = new Date(2011, 11, 11);
+      const validator = service.dateValidator(plainComponent);
+
+      const result = validator(controlPlain as AbstractControl);
+
+      expect(result.msg).toEqual('Я ошибка');
+    });
+
+  });
+
 });
