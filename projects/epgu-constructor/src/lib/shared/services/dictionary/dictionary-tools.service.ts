@@ -96,18 +96,7 @@ export class DictionaryToolsService {
   ): Observable<CustomListReferenceData[]> {
     const data: Observable<CustomListReferenceData>[] = [];
     components
-      .filter((component: CustomComponent) => {
-        if (component.attrs.searchProvider) {
-          return false;
-        }
-
-        if (!Array.isArray(component.attrs.ref)) {
-          return true;
-        }
-
-        const isLoadingNeeded = this.isLoadingNeeded(component.attrs);
-        return isLoadingNeeded;
-      })
+      .filter((component: CustomComponent) => this.isLoadingNeeded(component.attrs))
       .forEach((component: CustomComponent) => {
         if (this.isDropdownLike(component.type)) {
           data.push(this.getDropdowns$(component, cachedAnswers));
@@ -672,6 +661,14 @@ export class DictionaryToolsService {
    * @returns
    */
   private isLoadingNeeded(compAttrs: CustomComponentAttr): boolean {
+    if (compAttrs.searchProvider) {
+      return false;
+    }
+
+    if (!Array.isArray(compAttrs.ref)) {
+      return true;
+    }
+
     const hasFilterOnRef = compAttrs.ref.some(
       (reference) => reference.relation === CustomComponentRefRelation.filterOn,
     );
