@@ -90,6 +90,7 @@ describe('DictionaryToolsService', () => {
       dictionaryType: 'FNS_ZAGS_ORGANIZATION_AREA',
       lockedValue: true,
       repeatWithNoFilters: true,
+
       dictionaryFilter: [
         {
           attributeName: 'SHOW_ON_MAP',
@@ -293,43 +294,79 @@ describe('DictionaryToolsService', () => {
   describe('dictionaryFiltersLoader()', () => {
     const patchedComponent = {
       ...component,
-      attrs: { ...component.attrs, dictionaryFilters: component.attrs.dictionaryFilter },
+      attrs: {
+        ...component.attrs,
+        dictionaryFilters: [
+          [
+            {
+              attributeName: 'SHOW_ON_MAP',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+          [
+            {
+              attributeName: 'SOLEMN',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+          [
+            {
+              attributeName: 'CODE',
+              condition: DictionaryConditions.CONTAINS,
+              value: 'regCode',
+              valueType: 'preset',
+            },
+          ],
+          [
+            {
+              attributeName: 'PR2',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+        ],
+      },
     };
 
-    it(' dictionaryFiltersLoader() nulled items', (done) => {
+    it('nulled items', (done) => {
       jest.spyOn(service, 'getDictionaries$').mockReturnValue(
         of({
           component: patchedComponent,
           data: getDictionary(0),
         }),
       );
-      const { dictionaryType } = component.attrs;
+      const { dictionaryType } = patchedComponent.attrs;
       service
         .dictionaryFiltersLoader(
           patchedComponent,
           screenStore,
           dictionaryType,
-          component.attrs.dictionaryFilter,
+          patchedComponent.attrs.dictionaryFilters,
         )
         .subscribe(() => {
           expect(service.getDictionaries$).toHaveBeenCalledTimes(4);
           done();
         });
     });
-    it(' dictionaryFiltersLoader() not nulled items', (done) => {
+    it('not nulled items', (done) => {
       jest.spyOn(service, 'getDictionaries$').mockReturnValue(
         of({
           component: patchedComponent,
           data: getDictionary(1),
         }),
       );
-      const { dictionaryType } = component.attrs;
+      const { dictionaryType } = patchedComponent.attrs;
       service
         .dictionaryFiltersLoader(
           patchedComponent,
           screenStore,
           dictionaryType,
-          component.attrs.dictionaryFilter,
+          patchedComponent.attrs.dictionaryFilters,
         )
         .subscribe(() => {
           expect(service.getDictionaries$).toHaveBeenCalledTimes(1);

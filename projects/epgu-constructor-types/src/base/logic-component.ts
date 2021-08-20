@@ -17,8 +17,9 @@ export interface LogicComponents {
   attrs: LogicComponentAttrsDto;
 }
 
-enum LogicComponentMethods {
+export enum LogicComponentMethods {
   POST = 'POST',
+  PUT = 'PUT',
   GET = 'GET',
 }
 
@@ -31,7 +32,7 @@ export interface LogicComponentHeaders {
   [header: string]: string;
 }
 
-export interface LogicComponentAttrsDto {
+export interface RestAttrsDto {
   url: string;
   body: string;
   method: LogicComponentMethods;
@@ -39,6 +40,9 @@ export interface LogicComponentAttrsDto {
   timeout?: string;
   headers: LogicComponentHeaders;
   events?: LogicComponentEventTypes[];
+}
+
+export interface LogicComponentAttrsDto extends RestAttrsDto {
   dictionaryType?: string;
   dictionaryUrlType?: DictionaryUrlTypes;
   dictionaryFilter?: ComponentDictionaryFilterDto[];

@@ -27,6 +27,8 @@ export interface PaymentInfoInterface {
   recipientTaxAuthorityName: string;
   recipientTitle: string;
   sum: string;
+  returnUrl?: string;
+  returnUrlOrder?: string;
   DATAN?: string;
   DATAK?: string;
 }
@@ -182,6 +184,8 @@ export interface PaymentsAttrs {
   nsi: string;
   dictItemCode: string;
   ref: { fiasCode: string };
+  returnUrl?: string;
+  returnUrlOrder?: string;
 }
 
 /**
