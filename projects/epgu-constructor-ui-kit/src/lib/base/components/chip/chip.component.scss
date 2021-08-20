@@ -5,14 +5,10 @@
   justify-content: space-between;
   align-items: center;
   min-height: 40px;
-  padding: 8px 16px;
+  padding: 8px 12px 8px 16px;
   word-break: break-word;
   background: $color-azzurro-alice;
   border-radius: 8px;
-
-  @include tablets-down {
-    padding: 16px;
-  }
 }
 
 .chip__text {
@@ -23,20 +19,32 @@
   position: relative;
   top: 0;
   right: 0;
-  width: 15px;
-  min-width: 15px;
-  height: 15px;
-  margin-left: 6px;
+  align-self: flex-start;
+  width: 16px;
+  min-width: 16px;
+  height: 24px;
+  margin-left: 9px;
 
   &:before,
   &:after {
-    width: 1px;
-    height: 15px;
+    top: 5px;
+    left: 7px;
+    height: 16px;
     background: $color-blue-selvaggio;
+
+    @include tablets-down {
+      top: 4px;
+      left: 11px;
+    }
   }
 
   &:hover:before,
   &:hover:after {
     background: $color-gosblue;
+  }
+
+  @include tablets-down {
+    width: 24px;
+    min-width: 24px;
   }
 }
