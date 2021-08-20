@@ -23,11 +23,14 @@ import { ComponentsListFormService } from '../../custom-screen/services/componen
 import { ComponentsListFormServiceStub } from '../../custom-screen/services/components-list-form/components-list-form.service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { RestService } from '../../../shared/services/rest/rest.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 describe('LogicService', () => {
   let service: LogicService;
+  let restService: RestService;
   let dictionaryToolsService: DictionaryToolsService;
   let dictionaryApiService: DictionaryApiService;
   let httpTestingController: HttpTestingController;
@@ -40,17 +43,6 @@ describe('LogicService', () => {
         headers: { headers: 'headers' },
         method: 'POST',
         body: 'body',
-        path: 'path',
-      },
-    },
-  ];
-  const componentsGET: { id: string; value: ComponentValue }[] = [
-    {
-      id: 'rest1',
-      value: {
-        url: 'url',
-        headers: { headers: 'headers' },
-        method: 'GET',
         path: 'path',
       },
     },
@@ -105,6 +97,7 @@ describe('LogicService', () => {
         CurrentAnswersService,
         JsonHelperService,
         ObjectHelperService,
+        MockProviders(RestService),
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -116,6 +109,7 @@ describe('LogicService', () => {
   beforeEach(() => {
     service = TestBed.inject(LogicService);
     httpTestingController = TestBed.inject(HttpTestingController);
+    restService = TestBed.inject(RestService);
     localStorage = TestBed.inject(LocalStorageService);
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     dictionaryApiService = TestBed.inject(DictionaryApiService);
@@ -127,6 +121,7 @@ describe('LogicService', () => {
 
   describe('fetch', () => {
     it('should be create http request', () => {
+      jest.spyOn(restService, 'fetch').mockReturnValue(of(null));
       const reqComponents = service.fetch(componentsPOST);
       expect(reqComponents.length).toBeGreaterThan(0);
     });
@@ -134,24 +129,12 @@ describe('LogicService', () => {
 
   describe('callHttpMethod', () => {
     it('should be return request with body', () => {
-      service.fetch(componentsPOST)[0].subscribe();
-      const req = httpTestingController.expectOne('url');
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toBe('body');
-    });
+      const spyRestFetch = jest.spyOn(restService, 'fetch').mockReturnValue(of(null));
 
-    it('should be return request without body', () => {
-      service.fetch(componentsGET)[0].subscribe();
-      const req = httpTestingController.expectOne('url');
-      expect(req.request.method).toBe('GET');
-      expect(req.request.body).toBeNull();
-    });
-
-    it('should be set value to localStorage', () => {
-      const spy = jest.spyOn(localStorage, 'setRaw');
       service.fetch(componentsPOST)[0].subscribe();
-      const req = httpTestingController.expectOne('url');
-      expect(spy).toHaveBeenCalledWith(req.request.url, req.request.body);
+
+      expect(spyRestFetch).toBeCalledTimes(1);
+      expect(spyRestFetch).toBeCalledWith(componentsPOST[0].value);
     });
   });
 
@@ -178,6 +161,11 @@ describe('LogicService', () => {
   describe('createLogicAnswers', () => {
     jest.useFakeTimers();
     it('should be create logic answers if success response', () => {
+      jest.spyOn(restService, 'fetch').mockReturnValue(of(new HttpResponse({
+        status: 200,
+        body: { body:'body' }
+      })));
+
       service.fetch(componentsPOST)[0].subscribe((response) => {
         expect(response).toEqual({
           rest1: {
@@ -186,12 +174,15 @@ describe('LogicService', () => {
           },
         });
       });
-      const req = httpTestingController.expectOne('url');
-      req.flush({ body: 'body' });
       jest.runAllTimers();
     });
 
     it('should be create logic answers if error response', () => {
+      jest.spyOn(restService, 'fetch').mockReturnValue(throwError(new HttpErrorResponse({
+        status: 500,
+        error: 'body'
+      })));
+
       service.fetch(componentsPOST)[0].subscribe((response) => {
         expect(response).toEqual({
           rest1: {
@@ -200,23 +191,26 @@ describe('LogicService', () => {
           },
         });
       });
-      const req = httpTestingController.expectOne('url');
-      req.flush('body', {
-        status: 500,
-        statusText: '',
-      });
+
       jest.runAllTimers();
     });
 
     it('should be remove value from localStorage', () => {
       const spy = jest.spyOn(localStorage, 'delete');
+      const response =  new HttpResponse({ body:'body', url: 'Some_url' });
+      jest.spyOn(restService, 'fetch').mockReturnValue(of(response));
+
       service.fetch(componentsPOST)[0].subscribe();
-      const req = httpTestingController.expectOne('url');
-      req.flush({ body: 'body' });
-      expect(spy).toHaveBeenCalledWith(req.request.url);
+
+      expect(spy).toHaveBeenCalledWith(response.url);
     });
 
     it('should be create logic answers if timeout error', () => {
+      jest.spyOn(restService, 'fetch').mockReturnValue(of(new HttpResponse({
+        status: 408,
+        body: '408 Request Timeout'
+      })));
+
       service.fetch(componentsWithTimeOut)[0].subscribe((response) => {
         expect(response).toEqual({
           rest1: {
@@ -225,7 +219,6 @@ describe('LogicService', () => {
           },
         });
       });
-      httpTestingController.expectOne('url');
       jest.runAllTimers();
     });
   });

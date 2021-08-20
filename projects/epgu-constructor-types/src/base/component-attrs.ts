@@ -12,6 +12,7 @@ import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { ScreenButton } from './screen-buttons';
 import { KeyValueMap } from './core.types';
+import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
 
 export interface KinderGardenAttrs {
   header?: string;
@@ -155,6 +156,12 @@ export interface ComponentAttrsDto {
   electionDate?: string;
   mapOptions?: KeyValueMap;
   region?: string;
+  url?: string;
+  body?: string;
+  method?: LogicComponentMethods;
+  path?: string;
+  timeout?: string;
+  headers?: LogicComponentHeaders;
 }
 
 export interface Hints {

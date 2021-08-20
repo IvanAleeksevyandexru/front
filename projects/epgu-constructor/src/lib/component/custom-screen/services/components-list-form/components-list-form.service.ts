@@ -37,6 +37,7 @@ import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { FormControl } from '@angular/forms';
+import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -133,14 +134,17 @@ export class ComponentsListFormService {
     return this._form;
   }
 
-  public onAfterFilterOnRel(component: CustomComponent): void {
+  public onAfterFilterOnRel(
+    component: CustomComponent,
+    service: DictionaryToolsService | RestToolsService = this.dictionaryToolsService
+  ): void {
     this.componentsListRelationsService.onAfterFilterOnRel(
       {
         ...component,
         value: this.componentsListToolsService.convertedValue(component),
       } as CustomComponent,
       this.form,
-      this.dictionaryToolsService,
+      service,
     );
   }
 
@@ -491,7 +495,7 @@ export class ComponentsListFormService {
     let value: ListItem = undefined;
 
     if (lookupFilterPath) {
-      value = dicts[key]?.list.find((item: ListItem) => 
+      value = dicts[key]?.list.find((item: ListItem) =>
         get(item, lookupFilterPath) === (isRef ? get(this.screenService.getStore(), compareValue) : compareValue)
       );
     } else {
