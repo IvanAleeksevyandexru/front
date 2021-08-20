@@ -162,12 +162,8 @@ export class DateRestrictionsService {
       if (precision) {
         const parsedAnswer = JSON.parse(date as string || '{}');
         date = parsedAnswer[precision];
-        if (!date) {
-          return null;
-        }
       }
-      const parsedDate = this.datesToolsService.parse(date as string);
-      return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
+      date = this.datesToolsService.parse(date as string);
     }
     return date
       ? `${this.datesToolsService.format(date, DATE_STRING_DOT_FORMAT)}${dateExpression}`
