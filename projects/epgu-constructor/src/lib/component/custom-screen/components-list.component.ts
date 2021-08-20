@@ -31,6 +31,7 @@ import { ComponentsListFormService } from './services/components-list-form/compo
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
+import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -61,6 +62,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     public dateRangeService: DateRangeService,
     public screenService: ScreenService,
     private dictionaryToolsService: DictionaryToolsService,
+    private restToolsService: RestToolsService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     private httpCancelService: HttpCancelService,
@@ -123,6 +125,15 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
           this.formService.emitChanges();
         });
       });
+
+    this.restToolsService
+      .loadReferenceData$(components)
+      .subscribe((references: CustomListReferenceData[]) => {
+        references.forEach((reference: CustomListReferenceData) => {
+          setTimeout(() => this.formService.patch(reference.component), 0);
+          this.formService.emitChanges();
+        });
+      });
   }
 
   private handleAfterFilterOnRel(
@@ -140,6 +151,21 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
+  private handleAfterRestUpdate(
+    references: CustomListReferenceData[],
+  ): Observable<CustomListReferenceData[]> {
+    return this.restToolsService.dictionaries$.pipe(
+      first(),
+      map(() => {
+        references.forEach((reference) => {
+          this.formService.onAfterFilterOnRel(reference.component, this.restToolsService);
+        });
+
+        return references;
+      }),
+    );
+  }
+
   private watchForFilters(components: CustomComponent[]): void {
     this.dictionaryToolsService
       .watchForFilters(components)
@@ -147,6 +173,24 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.unsubscribeService.ngUnsubscribe$),
         switchMap((references: CustomListReferenceData[]) =>
           this.handleAfterFilterOnRel(references),
+        ),
+      )
+      .subscribe((references: CustomListReferenceData[]) => {
+        references.forEach((reference: CustomListReferenceData) => {
+          setTimeout(() => {
+            this.formService.patch(reference.component);
+            this.changeDetectionRef.markForCheck();
+          }, 0);
+          this.formService.emitChanges();
+        });
+      });
+
+    this.restToolsService
+      .watchForUpdates(components)
+      .pipe(
+        takeUntil(this.unsubscribeService.ngUnsubscribe$),
+        switchMap((references: CustomListReferenceData[]) =>
+          this.handleAfterRestUpdate(references),
         ),
       )
       .subscribe((references: CustomListReferenceData[]) => {

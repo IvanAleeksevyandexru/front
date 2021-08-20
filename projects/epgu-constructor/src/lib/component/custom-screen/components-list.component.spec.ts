@@ -1,3 +1,4 @@
+import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 import { cloneDeep } from 'lodash';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -55,6 +56,7 @@ import { DateRestrictionsService } from '../../shared/services/date-restrictions
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
 import { SuggestMonitorService } from '../../shared/services/suggest-monitor/suggest-monitor.service';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { of } from 'rxjs';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -101,6 +103,7 @@ describe('ComponentsListComponent', () => {
         ScreenService,
         DateRangeService,
         DatesToolsService,
+        MockProvider(RestToolsService),
         AddressHelperService,
         CurrentAnswersService,
         MockProvider(PrepareComponentsService),
@@ -131,6 +134,9 @@ describe('ComponentsListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentsListComponent);
+    const restToolsService = TestBed.inject(RestToolsService);
+    jest.spyOn(restToolsService, 'dictionaries$', 'get').mockReturnValue(of({}));
+    jest.spyOn(restToolsService, 'watchForUpdates').mockReturnValue(of({}));
     component = fixture.componentInstance;
     formService = TestBed.inject(ComponentsListFormService);
     component.components = cloneDeep(mockComponentsListComponentStore.display.components);

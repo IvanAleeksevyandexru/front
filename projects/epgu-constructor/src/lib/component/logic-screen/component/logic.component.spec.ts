@@ -24,12 +24,14 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryApiServiceStub } from '../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListFormService } from '../../custom-screen/services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../custom-screen/services/components-list-form/components-list-form.service.stub';
-import { MockProviders } from 'ng-mocks';
+import { MockProvider, MockProviders } from 'ng-mocks';
 import { ComponentsListRelationsService } from '../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { SuggestHandlerService } from '../../../shared/services/suggest-handler/suggest-handler.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { NavigationPayload } from '../../../form-player/form-player.types';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { RestToolsService } from '../../../shared/services/rest-tools/rest-tools.service';
+import { RestService } from '../../../shared/services/rest/rest.service';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;
@@ -56,6 +58,8 @@ describe('LogicComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
+        MockProvider(RestToolsService),
+        MockProvider(RestService),
       ],
     })
       .overrideComponent(LogicComponent, {

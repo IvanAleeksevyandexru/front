@@ -75,6 +75,7 @@ export enum DictionaryValueTypes {
   ref = 'ref',
   rawFilter = 'rawFilter',
   formValue = 'formValue',
+  calc = 'calc',
 }
 
 export enum DictionaryConditions {
