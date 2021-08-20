@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
 import { ValidationShowOn } from '@epgu/epgu-lib';
 import { map } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { getDictKeyByComp } from '../../../../shared/services/dictionary/diction
   templateUrl: './dictionary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DictionaryComponent extends AbstractComponentListItemComponent {
+export class DictionaryComponent extends AbstractComponentListItemComponent implements OnInit {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   list$ = this.dictionaryToolsService.dictionaries$.pipe(
     map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
@@ -19,5 +19,15 @@ export class DictionaryComponent extends AbstractComponentListItemComponent {
 
   constructor(public injector: Injector, public dictionaryToolsService: DictionaryToolsService) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    this.list$.subscribe((data) => {
+      if (data?.length === 1 && data[0].id && data[0].text) {
+        this.control.get('value').setValue(data[0]);
+      }
+    });
   }
 }
