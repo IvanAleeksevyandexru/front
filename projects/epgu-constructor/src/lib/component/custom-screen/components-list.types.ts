@@ -131,7 +131,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   defaultIndex?: number;
   defaultValue?: boolean;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
-  dictionaryFilters?: ComponentDictionaryFilterDto[];
+  dictionaryFilters?: ComponentDictionaryFilterDto[][];
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryOptions?: DictionaryOptions;
   dictionaryType?: string;
