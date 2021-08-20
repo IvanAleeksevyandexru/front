@@ -1,4 +1,14 @@
 /* eslint-disable max-len */
+export const mockDictionaryWithObjectError = {
+  error: {
+    code: 3,
+    message: 'Internal Error',
+  },
+  fieldErrors: [],
+  total: 0,
+  items: [],
+};
+
 export const mockMapDictionary = {
   error: { code: 0, message: 'operation completed' },
   fieldErrors: [],
