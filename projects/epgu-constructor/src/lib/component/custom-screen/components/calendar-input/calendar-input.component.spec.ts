@@ -83,11 +83,10 @@ describe('CalendarInputComponent', () => {
     mockComponent = {
       id: 'SomeId',
       attrs: {
-        children:
-          {
-            firstDate: {},
-            secondDate: {}
-          },
+        components:[
+            { id: 'firstDate', attrs: {}},
+            { id: 'secondDate', attrs: {}}
+          ],
         dateRestrictions: {
           type: 'const',
           condition: '>',
@@ -102,15 +101,12 @@ describe('CalendarInputComponent', () => {
       ComponentsListFormService,
     ));
 
-    valueControl = new FormControl(mockComponent.value);
-
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
       attrs: new FormControl(mockComponent.attrs),
-      value: valueControl,
+      value: new FormControl(mockComponent.value),
       required: new FormControl(mockComponent.required),
     });
-
     formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(CalendarInputComponent);
     component = fixture.componentInstance;
