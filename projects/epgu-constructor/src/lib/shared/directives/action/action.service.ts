@@ -149,6 +149,9 @@ export class ActionService {
       case ActionType.reload:
         this.locationService.reload();
         break;
+      case ActionType.redirectToLKAccount:
+        this.navService.redirectTo(`${this.configService.lkUrl}/settings/account`);
+        break;
     }
   }
 
