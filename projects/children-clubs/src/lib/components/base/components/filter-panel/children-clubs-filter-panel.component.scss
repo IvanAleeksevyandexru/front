@@ -1,5 +1,7 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .nav::ng-deep {
   margin-bottom: 0;
@@ -7,6 +9,12 @@
   & .container {
     margin: 0 0;
   }
+}
+
+.subtitle {
+  @include typ-plain-small;
+  color: $color-summer-night;
+  margin-bottom: 4px;
 }
 
 .filter-panel {
