@@ -11,7 +11,7 @@ import {
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { ContentModalComponent } from '../../components/base/components/content-modal/content-modal.component';
 import { AUTH_ERROR_MODAL_PARAMS, COMMON_ERROR_MODAL_PARAMS } from './error-handler.data';
-import { SEARCH_GROUP_SUB_URL } from '../health/health-handler';
+import { PROGRAM_DETAIL_SUB_URL, SEARCH_GROUP_SUB_URL } from '../health/health-handler';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -31,7 +31,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   ): Observable<HttpEvent<void | never>> {
     const { status, error, url } = httpErrorResponse;
     const traceId = httpErrorResponse.headers.get('x-trace-id') || error?.traceId;
-    if (status >= 400 && url.includes(SEARCH_GROUP_SUB_URL)) {
+    if (status >= 400 && (url.includes(SEARCH_GROUP_SUB_URL) || url.includes(PROGRAM_DETAIL_SUB_URL))) {
       this.navigationService.toDisplay('projectList');
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
