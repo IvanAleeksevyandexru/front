@@ -42,7 +42,10 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { SelectMapObjectComponent } from './select-map-object.component';
-import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
+import {
+  mockDictionaryWithObjectError,
+  mockMapDictionary,
+} from './mocks/mock-select-map-dictionary';
 import {
   DictionaryResponse,
   DictionaryYMapItem,
@@ -68,6 +71,10 @@ import { YaMapService } from '@epgu/epgu-lib';
 import { SelectMapObjectService } from './select-map-object.service';
 import { mockDivorceMapFeature } from './mocks/mock-select-map-mapFeatures';
 import { divorceApplicantAnswers } from './mocks/mock-select-map-divorceAnswers';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
+import { ExplicitContext } from '@epgu/zipkin';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -77,6 +84,8 @@ describe('SelectMapObjectComponent', () => {
   let yandexMapService: YandexMapService;
   let selectMapObjectService: SelectMapObjectService;
   let yaMapService: YaMapService;
+  let modalService: ModalService;
+  let navigationService: NavigationService;
   let MapStore: ScenarioDto;
   let comp;
   let compValue;
@@ -90,7 +99,12 @@ describe('SelectMapObjectComponent', () => {
         CommonBalloonContentComponent,
         CommonSearchPanelComponent,
       ],
-      imports: [BaseModule, ConstructorLookupModule, MockModule(PrevButtonModule)],
+      imports: [
+        BaseModule,
+        ConstructorLookupModule,
+        MockModule(PrevButtonModule),
+        HttpClientTestingModule,
+      ],
       providers: [
         Icons,
         ModalErrorService,
@@ -158,6 +172,8 @@ describe('SelectMapObjectComponent', () => {
     fixture = TestBed.createComponent(SelectMapObjectComponent);
     yandexMapService = fixture.debugElement.injector.get(YandexMapService);
     selectMapObjectService = fixture.debugElement.injector.get(SelectMapObjectService);
+    modalService = fixture.debugElement.injector.get(ModalService);
+    navigationService = fixture.debugElement.injector.get(NavigationService);
     component = fixture.componentInstance;
     yandexMapService['objectManager'] = {
       objects: {
@@ -226,6 +242,28 @@ describe('SelectMapObjectComponent', () => {
         longitude: 37.61017,
       });
       done();
+    });
+  });
+
+  it('initMap should show modal with error with mockDictionaryWithObjectError', () => {
+    jest
+      .spyOn(dictionaryApiService, 'getSelectMapDictionary')
+      .mockReturnValue(of((mockDictionaryWithObjectError as unknown) as DictionaryResponse));
+
+    const spy = jest.spyOn<any, any>(modalService, 'openModal');
+    component['initMap']();
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, {
+      ...COMMON_ERROR_MODAL_PARAMS,
+      backdropDismiss: false,
+      showCrossButton: false,
+      buttons: [
+        {
+          label: 'На предыдущий шаг',
+          closeModal: true,
+          value: 'prevStep',
+          handler: expect.any(Function),
+        },
+      ],
     });
   });
 

@@ -12,6 +12,7 @@ import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { ScreenButton } from './screen-buttons';
 import { KeyValueMap } from './core.types';
+import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
 
 export interface KinderGardenAttrs {
   header?: string;
@@ -163,6 +164,12 @@ export interface ComponentAttrsDto {
   defaultNewList?: string;
   listLabel?: boolean;
   limit?: number;
+  url?: string;
+  body?: string;
+  method?: LogicComponentMethods;
+  path?: string;
+  timeout?: string;
+  headers?: LogicComponentHeaders;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';

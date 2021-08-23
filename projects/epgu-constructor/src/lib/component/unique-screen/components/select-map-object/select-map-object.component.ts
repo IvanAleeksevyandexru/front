@@ -391,6 +391,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     }
     return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options).pipe(
       switchMap((dictionary: DictionaryResponseForYMap) => {
+        if (dictionary.error !== null && dictionary.error?.code !== 0) {
+          return throwError(dictionary.error);
+        }
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
         // Параллелим получение геоточек на 4 запроса
@@ -573,7 +576,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private isSecondReqNeeded(coords: IFillCoordsResponse): boolean {
     return (
       coords.coords.length === 0 &&
-      coords.dictionaryError.code === 0 &&
+      (coords.dictionaryError === null || coords.dictionaryError.code === 0) &&
       !!this.data.attrs.secondaryDictionaryFilter
     );
   }

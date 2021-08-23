@@ -176,6 +176,24 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
       }
 
+      if (url.includes('dictionary/mzrf_regions_smev3')) {
+        const dictionaryError = error as DictionaryResponseError;
+        const dictionaryResponse = body as DictionaryResponse;
+        if (
+          dictionaryError?.code === 3 &&
+          dictionaryError?.message === 'Internal Error' &&
+          dictionaryResponse?.fieldErrors.length === 0 &&
+          dictionaryResponse?.total === 0 &&
+          dictionaryResponse.items.length === 0
+        ) {
+          this.showModal(COMMON_ERROR_MODAL_PARAMS).then((prevStep) => {
+            if (prevStep) {
+              this.navigationService.prev();
+            }
+          });
+        }
+      }
+
       this.handleItemsRequest(body, url, refName);
     }
   }
