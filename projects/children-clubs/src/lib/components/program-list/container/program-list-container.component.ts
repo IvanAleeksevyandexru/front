@@ -22,14 +22,14 @@ export class ProgramListContainerComponent implements OnInit {
   filtersCount$ = this.filtersCount$$.asObservable();
   data$: Observable<BaseProgram[]> = this.listService.paginatedData$;
 
-  initValue = this.stateService.programFilters?.query;
-
   constructor(
     public listService: ProgramListService,
     private modalService: ModalService,
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
   ) {}
+
+  initValue: () => string = () => this.stateService.programFilters?.query || '';
 
   nextPage(): void {
     this.listService.getNextPage();

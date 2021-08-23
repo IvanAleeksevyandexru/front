@@ -10,7 +10,7 @@
     [validationShowOn]="validationShowOn"
     [disabled]="list?.length === 1"
     [formControl]="$any(control.get('value'))"
-    [clearable]="true"
+    [clearable]="list?.length !== 1"
     class="cs__select cs-select"
   >
   </lib-dropdown>

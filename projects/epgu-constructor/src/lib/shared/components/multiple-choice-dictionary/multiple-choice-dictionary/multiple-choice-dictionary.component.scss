@@ -3,10 +3,7 @@
 .wrapper {
   display: flex;
   flex-wrap: wrap;
-}
-
-.item {
-  margin: 0 8px 12px 0;
+  gap: 8px;
 }
 
 .header {
