@@ -13,6 +13,14 @@
       <small>{{ error }}</small>
     </div>
   </epgu-cf-ui-constructor-screen-pad>
+  <div 
+    *ngIf="!(currentAnswersService.isValid$ | async) && 
+      (screenService.buttons$ | async) && 
+      (data$ | async)?.attrs?.textErrorHasEmptyFields"
+    class="has-empty-fields"
+    >
+    {{ (data$ | async)?.attrs?.textErrorHasEmptyFields }}
+  </div>
 </epgu-constructor-default-unique-screen-wrapper>
 
 <ng-template #formTmpl let-data>

@@ -1,10 +1,17 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 .employee-history {
   &__progress,
-  &__completed {
+  &__completed,
+  &__has-empty-fields {
     display: flex;
-    margin-top: 40px;
+    margin-top: 24px;
+
+    @include tablets-up {
+      margin-top: 40px;
+    }
 
     &__msg {
       @include typ-h5();
@@ -54,5 +61,11 @@
       height: 32px;
       background-image: url('../../../../../../../assets/icons/svg/complete_form.svg');
     }
+  }
+
+  &__has-empty-fields {
+    justify-content: center;
+    color: $color-text-helper;
+    line-height: 24px;
   }
 }

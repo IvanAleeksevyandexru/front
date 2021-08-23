@@ -144,4 +144,5 @@
   "
   [periods]="monthsService.availableMonths | memo: monthsService.getUncheckedPeriods:monthsService"
   [years]="monthsService.years"
+  [textErrorHasEmptyFields]="init[0]?.attrs?.textErrorHasEmptyFields"
 ></epgu-constructor-employee-history-description>
