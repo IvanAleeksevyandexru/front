@@ -135,6 +135,7 @@ export interface ComponentAttrsDto {
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   suggestionPath?: string;
   templateId?: string; // @see LkInvitationInputAttrs
+  textErrorHasEmptyFields: string;
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
   ussr?: boolean;
