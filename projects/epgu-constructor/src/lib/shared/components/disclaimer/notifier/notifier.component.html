@@ -1,0 +1,17 @@
+<div
+  class="notifiers-list {{ setting.align }} {{ setting.theme }}"
+  [hidden]="!notifiers || !notifiers.length"
+  #notifiersList
+>
+  <div *ngFor="let notifier of notifiers" class="notifier">
+    <div class="flex-container-md justify-between-md">
+      <epgu-constructor-disclaimer
+        [type]="notifier.type"
+        [title]="notifier.title"
+        [description]="notifier.message"
+        [isNotifierDisclaimer]="true"
+      ></epgu-constructor-disclaimer>
+    </div>
+    <a class="icon-close" (click)="removeNotifier(notifier)" title="Закрыть"></a>
+  </div>
+</div>

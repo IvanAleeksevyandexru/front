@@ -6,6 +6,7 @@ import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { NotifierDisclaimerService } from '../shared/services/notifier/notifier.service';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -23,6 +24,7 @@ export class ScreenService extends ScreenContent {
     private currentAnswersService: CurrentAnswersService,
     private deviceDetectorService: DeviceDetectorService,
     private prepareComponentsService: PrepareComponentsService,
+    private notifierDisclaimerService: NotifierDisclaimerService,
   ) {
     super();
   }
@@ -68,6 +70,7 @@ export class ScreenService extends ScreenContent {
     this.prepareComponents();
     this.initComponentStateService();
     this.updateScreenContent(store, this.deviceDetectorService.isWebView);
+    this.initNotifierDisclaimers();
   }
 
   /**
@@ -95,6 +98,24 @@ export class ScreenService extends ScreenContent {
   private initComponentStateService(): void {
     this.currentAnswersService.state = '';
     this.currentAnswersService.isValid = true;
+  }
+
+  private initNotifierDisclaimers(): void {
+    const disclaimers = this.screenStore.disclaimers || [];
+    if (!disclaimers.length) return;
+
+    this.disclaimers.forEach((disclaimer) => {
+      const { level, title, message, id: notifierId } = disclaimer;
+      const type = level.toLocaleLowerCase();
+      setTimeout(() => {
+        this.notifierDisclaimerService.open({
+          notifierId,
+          title,
+          message,
+          type,
+        });
+      });
+    });
   }
 
   private prepareComponents(): void {

@@ -4,15 +4,36 @@
   margin-top: 24px;
 }
 
-.error {
-  .title {
+.disclaimer {
+  & .title {
     @include typ-h6;
     font-weight: $fw-bold;
     margin-bottom: 4px;
   }
-  .description {
+  & .description {
     @include typ-plain-small;
     color: $color-text-helper;
     margin: 0;
+  }
+  &.vertical-line {
+    padding-left: calc(16px + 6px);
+    position: relative;
+    &[class*="-line"] {
+      &:before {
+        display: block;
+        position: absolute;
+        height: 100%;
+        width: 6px;
+        border-radius: 8px;
+        left: 0;
+        top: 0;
+      }
+    }
+    & .title [class*="-line"] {
+      display:none;
+    }
+    & .description {
+      color: $color-summer-night;
+    }
   }
 }

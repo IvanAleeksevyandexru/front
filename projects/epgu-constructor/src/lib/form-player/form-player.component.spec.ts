@@ -60,6 +60,7 @@ import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { AnimationBuilder } from '@angular/animations';
 import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
+import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -88,7 +89,7 @@ describe('FormPlayerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModuleInited, MainContainerModule],
+      imports: [EpguLibModuleInited, MainContainerModule, NotifierDisclaimerModule],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,

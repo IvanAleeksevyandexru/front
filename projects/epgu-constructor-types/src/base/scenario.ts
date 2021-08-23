@@ -5,6 +5,7 @@ import { DisplayDto } from './screen';
 import { Gender } from './gender';
 import { LogicComponents } from './logic-component';
 import { AdditionalParameters } from './additional-parameters';
+import { DisclaimerDto } from './component-attrs';
 
 /**
  * @property {Object}additionalParameters - дополнительные параметры;
@@ -12,6 +13,9 @@ import { AdditionalParameters } from './additional-parameters';
  * @property {number}currentRule - id сценария для управление порядком компонентов (наверное не нужен для фронта)
  * @property {object}currentValue - для отправляемых данных
  * @property {DisplayDto}display - текущий экран с компонентами и данными для отрисовки
+ * @property {ScenarioErrorsDto}errors - ошибки валидации пользовательского ввода с бэка
+ * @property {ScenarioErrorsDto}uniquenessErrors - ошибки уникальности записей с бэка
+ * @property {ScenarioErrorsDto}disclaimers - сообщения (всплывашки) технического характера, полученные бэком от одноименного DisclaimerAPI
  * @property {string}gender- пол пользователя
  * @property {string}orderId - идентификатор запорлнения черновика, (уже был черновик...)
  * (человек 1, человек 2) => эти людям прилетает уведомление о подтверждении ...
@@ -30,6 +34,7 @@ export interface ScenarioDto {
   display: DisplayDto;
   errors: ScenarioErrorsDto;
   uniquenessErrors: ScenarioErrorsDto[][];
+  disclaimers: DisclaimerDto[];
   gender: Gender;
   finishedAndCurrentScreens: string[];
   orderId: number;
