@@ -5,7 +5,7 @@ import {
   MicroAppStateQuery,
   MicroAppStateService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
@@ -46,6 +46,7 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
       .pipe(
         filter((value) => value.length > 3 || !value.length),
         distinctUntilChanged(),
+        debounceTime(2000),
       )
       .subscribe((searchTxt) => this.search.next(searchTxt));
   }
