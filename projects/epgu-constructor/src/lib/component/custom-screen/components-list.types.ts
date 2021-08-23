@@ -183,9 +183,6 @@ export interface DateRestriction {
   condition: string;
   type: 'ref' | 'const';
   value: string | Date;
-  amount?: string | number;
-  operand?: '+' | '-';
-  period?: any;
   forChild?: string;
   precision?: string;
 }
