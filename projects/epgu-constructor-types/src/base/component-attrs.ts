@@ -56,6 +56,7 @@ export interface ComponentAttrsDto {
   dictItemCode?: string;
   disabled?: boolean;
   disclaimer?: DisclaimerDto;
+  defaultHint?: HintDto;
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
@@ -193,6 +194,12 @@ export interface DisclaimerDto {
   type: 'warn' | 'error';
   title: string;
   description: string;
+}
+
+export interface HintDto {
+  type: 'warn' | 'info' | 'default';
+  title: string;
+  value: string;
 }
 
 export interface IMvdFilter {
