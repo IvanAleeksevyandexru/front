@@ -36,7 +36,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   @Input() componentIndex = 0;
   @Input() componentsGroupIndex = 0;
   @Input() componentType: ComponentTypes;
-  @Input() limit?: number;
+  @Input() limit?: number | string;
   componentRef: ComponentRef<ScreenComponentTypes>;
 
   constructor(
