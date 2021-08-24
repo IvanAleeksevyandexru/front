@@ -121,15 +121,21 @@ export class PaymentService {
   /**
    * Возвращает адрес куда нужно сделать возврат
    */
-  getReturnUrl(): string {
+  getReturnUrl(encode: boolean = true): string {
     const slashInEndRex = /\/$/;
     const href = this.locationService.getHref().replace(slashInEndRex, '');
     const haveQuestion = href.includes('?');
     const glueParam = haveQuestion ? '&' : '?';
     const historyParam = 'getLastScreen=1';
-    return href.includes(historyParam)
-      ? href
-      : encodeURIComponent(`${href}${glueParam}getLastScreen=1`);
+    const url = `${href}${glueParam}getLastScreen=1`;
+
+    if (href.includes(historyParam)) {
+      return href;
+    } else if(encode) {
+      return encodeURIComponent(url);
+    } else {
+      return url;
+    }
   }
 
   /**
@@ -142,12 +148,33 @@ export class PaymentService {
     return `${domain}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
   }
 
+  createReturnUrl(value: string | boolean): string {
+    const type = typeof value;
+
+    switch(type) {
+      case 'string': {
+        return value as string;
+      }
+
+      case 'boolean': {
+        return this.getReturnUrl(false);
+      }
+
+      default: {
+        return undefined;
+      }
+    }
+  }
+
   /**
    * Загружает информацию из справочников для оплаты
    * @param attrs - аттрибуты
    */
   getDictionaryInfo(attrs: PaymentsAttrs): Observable<PaymentInfoInterface> {
     const { nsi } = attrs;
+    const returnUrl = attrs?.returnUrl;
+    const returnUrlOrder = attrs?.returnUrlOrder;
+
     const dictionaryOptions = this.createPaymentRequestOptions(attrs);
 
     return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
@@ -162,7 +189,17 @@ export class PaymentService {
       }),
       map(({ error: { code }, items }) => {
         if (code === 0) {
-          return items[0].attributeValues as PaymentInfoInterface;
+          let result = items[0].attributeValues as PaymentInfoInterface;
+
+          if (!!returnUrl) {
+            result = { ...result, returnUrl: this.createReturnUrl(returnUrl) };
+          }
+
+          if (!!returnUrlOrder) {
+            result = { ...result, returnUrlOrder: this.createReturnUrl(returnUrlOrder) };
+          }
+
+          return result;
         }
         throw Error();
       }),

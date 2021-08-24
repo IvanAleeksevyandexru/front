@@ -32,6 +32,7 @@ import { DictionaryConditions, ScenarioErrorsDto } from '@epgu/epgu-constructor-
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { FormControl } from '@angular/forms';
+import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -128,14 +129,17 @@ export class ComponentsListFormService {
     return this._form;
   }
 
-  public onAfterFilterOnRel(component: CustomComponent): void {
+  public onAfterFilterOnRel(
+    component: CustomComponent,
+    service: DictionaryToolsService | RestToolsService = this.dictionaryToolsService
+  ): void {
     this.componentsListRelationsService.onAfterFilterOnRel(
       {
         ...component,
         value: this.componentsListToolsService.convertedValue(component),
       } as CustomComponent,
       this.form,
-      this.dictionaryToolsService,
+      service,
     );
   }
 
@@ -158,7 +162,12 @@ export class ComponentsListFormService {
       this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
     } else if (hasDefaultValue && noValue && isDictionaryLike) {
       this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue, lookupFilterPath);
-    } else {
+    } else if (isDictionaryLike && noValue){
+      // control.value должен оставаться тем же потому что с бэка приходит пока что пустое значение
+      // Кейс создан для ререндеринга компонента на repeatable-screen при удалении одного, последующие обнулялись пустым значением с Бэка
+      return;
+    }
+    else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
   }

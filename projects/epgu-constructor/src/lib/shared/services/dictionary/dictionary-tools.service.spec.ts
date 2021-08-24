@@ -13,7 +13,7 @@ import {
 import {
   ConfigService,
   ConfigServiceStub,
-  mockSelectMapObjectStore
+  mockSelectMapObjectStore,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -91,6 +91,7 @@ describe('DictionaryToolsService', () => {
       dictionaryType: 'FNS_ZAGS_ORGANIZATION_AREA',
       lockedValue: true,
       repeatWithNoFilters: true,
+
       dictionaryFilter: [
         {
           attributeName: 'SHOW_ON_MAP',
@@ -286,16 +287,121 @@ describe('DictionaryToolsService', () => {
 
   describe('getDictKeyByComp()', () => {
     it('should return dictionary key by component', () => {
-      expect(getDictKeyByComp(
-        { attrs: { dictionaryType: 'testType' }, id: 1 } as any))
-        .toBe('testType1');
+      expect(getDictKeyByComp({ attrs: { dictionaryType: 'testType' }, id: 1 } as any)).toBe(
+        'testType1',
+      );
+    });
+  });
+
+  describe('dictionaryFiltersLoader()', () => {
+    const patchedComponent = {
+      ...component,
+      attrs: {
+        ...component.attrs,
+        dictionaryFilters: [
+          [
+            {
+              attributeName: 'SHOW_ON_MAP',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+          [
+            {
+              attributeName: 'SOLEMN',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+          [
+            {
+              attributeName: 'CODE',
+              condition: DictionaryConditions.CONTAINS,
+              value: 'regCode',
+              valueType: 'preset',
+            },
+          ],
+          [
+            {
+              attributeName: 'PR2',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+        ],
+      },
+    };
+
+    it('nulled items', (done) => {
+      jest.spyOn(service, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(0),
+        }),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      service
+        .dictionaryFiltersLoader(
+          patchedComponent,
+          screenStore,
+          dictionaryType,
+          patchedComponent.attrs.dictionaryFilters,
+        )
+        .subscribe(() => {
+          expect(service.getDictionaries$).toHaveBeenCalledTimes(4);
+          done();
+        });
+    });
+    it('not nulled items', (done) => {
+      jest.spyOn(service, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(1),
+        }),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      service
+        .dictionaryFiltersLoader(
+          patchedComponent,
+          screenStore,
+          dictionaryType,
+          patchedComponent.attrs.dictionaryFilters,
+        )
+        .subscribe(() => {
+          expect(service.getDictionaries$).toHaveBeenCalledTimes(1);
+          done();
+        });
     });
   });
 
   describe('getDropDownDepts$()', () => {
+    it('should dictionaryFilters', (done) => {
+      const patchedComponent = {
+        ...component,
+        attrs: { ...component.attrs, dictionaryFilters: component.attrs.dictionaryFilter },
+      };
+
+      jest.spyOn(service, 'dictionaryFiltersLoader').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(0),
+        }),
+      );
+
+      service.getDropDownDepts$(patchedComponent, screenStore).subscribe(() => {
+        expect(service.dictionaryFiltersLoader).toHaveBeenCalled();
+        done();
+      });
+    });
     describe('when repeatWithNoFilters is false and there is no items', () => {
       const repeatWithNoFilters = false;
-      const patchedComponent = { ...component, attrs: { ...component.attrs, repeatWithNoFilters }};
+      const patchedComponent = {
+        ...component,
+        attrs: { ...component.attrs, repeatWithNoFilters },
+      };
       const data = {
         component: patchedComponent,
         data: getDictionary(0),
@@ -316,7 +422,10 @@ describe('DictionaryToolsService', () => {
 
     describe('when repeatWithNoFilters is true', () => {
       const repeatWithNoFilters = true;
-      const patchedComponent = { ...component, attrs: { ...component.attrs, repeatWithNoFilters }};
+      const patchedComponent = {
+        ...component,
+        attrs: { ...component.attrs, repeatWithNoFilters },
+      };
 
       describe('when there is no items for filtered fetch', () => {
         const data = {
@@ -628,11 +737,7 @@ describe('DictionaryToolsService', () => {
 
   describe('getFilterOptions', () => {
     it('should return nothing', () => {
-      const filter = service.getFilterOptions(
-        { value: 42 },
-        {},
-        undefined
-      );
+      const filter = service.getFilterOptions({ value: 42 }, {}, undefined);
 
       expect(filter).toEqual({ filter: null });
     });

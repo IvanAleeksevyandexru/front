@@ -1,4 +1,4 @@
-<form class="config" [formGroup]="configForm">
+<form class="config" [formGroup]="configForm" (keyup.enter)="saveConfig()">
   <div class="config__input" *ngFor="let fieldName of fieldsName">
     <label [for]="fieldName">{{ fieldName }}</label>
     <ng-container *ngIf="numberFields.includes(fieldName)">
@@ -13,4 +13,5 @@
     <lib-button class="config__cta" color="white" (click)="resetConfig()">Вернуть дефолтные</lib-button>
     <lib-button class="config__cta" (click)="saveConfig()">Сохранить</lib-button>
   </div>
+  <div id="toast">Конфигурация сохранена</div>
 </form>

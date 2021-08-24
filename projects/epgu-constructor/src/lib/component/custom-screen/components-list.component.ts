@@ -31,6 +31,7 @@ import { ComponentsListFormService } from './services/components-list-form/compo
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
+import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -61,6 +62,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     public dateRangeService: DateRangeService,
     public screenService: ScreenService,
     private dictionaryToolsService: DictionaryToolsService,
+    private restToolsService: RestToolsService,
     private unsubscribeService: UnsubscribeService,
     private eventBusService: EventBusService,
     private httpCancelService: HttpCancelService,
@@ -85,6 +87,16 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       changes.components?.currentValue || this.formService.form.value || this.components;
     const { currentValue, previousValue } = changes.errors || {};
     const isErrorsChanged = !isEqual(currentValue, previousValue);
+
+    // NOTICE: из-за асинхронности получения ошибок с бэка, на REPEATALBE скринах возможен бесконечный цикл,
+    // в котором changes.error вызывают пересоздание всей формы,
+    // что в свою очередь активирует расчет изменений в changeComponentList,
+    // с сохранением нового стейта в repeatable-screen.component.ts,
+    // который триггерит изменения в commonErrors$, что приводит нас снова сюда с changes.error:
+    // Чтобы разорвать эту цепочку делаем проверку на валидность всей формы, если невалидна, значит ошибки уже переданы в форму
+    // и пересоздавать ее не нужно, разрывая таким образом бесконечный цикл
+    // TODO: подумать над переделкой текущего механизма передачи ошибок с бэка в пользу проброса ошибок через абстракцию самой формы
+    if (this.formService.form.invalid) return;
 
     if (components || isErrorsChanged) {
       const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
@@ -113,6 +125,15 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
           this.formService.emitChanges();
         });
       });
+
+    this.restToolsService
+      .loadReferenceData$(components)
+      .subscribe((references: CustomListReferenceData[]) => {
+        references.forEach((reference: CustomListReferenceData) => {
+          setTimeout(() => this.formService.patch(reference.component), 0);
+          this.formService.emitChanges();
+        });
+      });
   }
 
   private handleAfterFilterOnRel(
@@ -130,6 +151,21 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
+  private handleAfterRestUpdate(
+    references: CustomListReferenceData[],
+  ): Observable<CustomListReferenceData[]> {
+    return this.restToolsService.dictionaries$.pipe(
+      first(),
+      map(() => {
+        references.forEach((reference) => {
+          this.formService.onAfterFilterOnRel(reference.component, this.restToolsService);
+        });
+
+        return references;
+      }),
+    );
+  }
+
   private watchForFilters(components: CustomComponent[]): void {
     this.dictionaryToolsService
       .watchForFilters(components)
@@ -137,6 +173,24 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.unsubscribeService.ngUnsubscribe$),
         switchMap((references: CustomListReferenceData[]) =>
           this.handleAfterFilterOnRel(references),
+        ),
+      )
+      .subscribe((references: CustomListReferenceData[]) => {
+        references.forEach((reference: CustomListReferenceData) => {
+          setTimeout(() => {
+            this.formService.patch(reference.component);
+            this.changeDetectionRef.markForCheck();
+          }, 0);
+          this.formService.emitChanges();
+        });
+      });
+
+    this.restToolsService
+      .watchForUpdates(components)
+      .pipe(
+        takeUntil(this.unsubscribeService.ngUnsubscribe$),
+        switchMap((references: CustomListReferenceData[]) =>
+          this.handleAfterRestUpdate(references),
         ),
       )
       .subscribe((references: CustomListReferenceData[]) => {

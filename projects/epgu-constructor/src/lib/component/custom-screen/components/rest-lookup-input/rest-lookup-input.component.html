@@ -1,0 +1,25 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <lib-lookup
+    epgu-constructor-validation-type
+    [showNotFound]="showNotFound"
+    [component]="control.value"
+    [id]="control.value.id"
+    [invalid]="control.get('value').invalid && control.get('value').touched"
+    [validationShowOn]="validationShowOn"
+    [formControl]="$any(control.get('value'))"
+    [queryMinSymbolsCount]="0"
+    [searchCaseSensitive]="false"
+    [fixedItems]="dictionariesList$ | async"
+    [virtualScroll]="true"
+    [clearable]="true"
+    [required]="control.value.required"
+    [queryTimeout]="queryTimeout"
+    [itemsProvider]="provider"
+    [placeholder]="control.value?.attrs?.placeholder"
+  >
+  </lib-lookup>
+</epgu-constructor-component-item>

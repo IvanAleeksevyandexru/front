@@ -194,7 +194,8 @@ describe('ComponentsListFormService', () => {
     const setup = (
       type = CustomScreenComponentTypes.DropDown,
       attrs = { defaultIndex: 0 },
-      dictionaryItemsCount = 2
+      dictionaryItemsCount = 2,
+      value = ''
     ) => {
       const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
@@ -217,7 +218,7 @@ describe('ComponentsListFormService', () => {
       extraComponent.id = 'someID';
       component.type = type;
       component.attrs = { ...component.attrs, ...attrs };
-      component.value = undefined;
+      component.value = value;
       service.create([component, extraComponent], {});
 
       const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
@@ -324,6 +325,15 @@ describe('ComponentsListFormService', () => {
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
         expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+      });
+
+      it('should dont call patch when there is no value ', () => {
+        const {
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.Lookup, { lockedValue: false }, 1, '');
+        service.patch(component);
+        expect(controlPatchSpy).toHaveBeenCalledTimes(0);
       });
     });
   });

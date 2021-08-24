@@ -17,6 +17,18 @@ describe('PersonUserInnComponent', () => {
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
 
+  const validInnValue = '234324364634';
+
+  const invalidInnValues = [
+    '23432436463',
+    '023432436463',
+    '23432436463435345',
+    '234324s36463435345',
+    '23^343434343',
+    '345ds545',
+    '345аывп545'
+  ];
+
   const mockData: ComponentBase = {
     attrs: {},
     id: '',
@@ -63,10 +75,10 @@ describe('PersonUserInnComponent', () => {
   describe('updateValue()', () => {
     it('should update value', () => {
       component.errors = [];
-      component.updateValue('234324364634', []);
+      component.updateValue(validInnValue, []);
 
       expect(currentAnswersService.isValid).toEqual(true);
-      expect(currentAnswersService.state).toEqual('234324364634');
+      expect(currentAnswersService.state).toEqual(validInnValue);
     });
 
     it('shouldn\'t update value', () => {
@@ -74,6 +86,26 @@ describe('PersonUserInnComponent', () => {
 
       expect(currentAnswersService.isValid).toEqual(false);
       expect(currentAnswersService.state).toEqual(undefined);
+    });
+  });
+
+  describe('inn value validity', () => {
+    it('should be valid inn value if match regex', () => {
+      component.errors = [];
+      component.updateValue(validInnValue, []);
+
+      expect(currentAnswersService.isValid).toEqual(true);
+      expect(currentAnswersService.state).toEqual(validInnValue);
+    });
+
+    it.each(invalidInnValues)('should be invalid inn value if not match regex', (invalidInn) => {
+      screenService.component.value = invalidInn;
+      component.ngOnInit();
+      fixture.detectChanges();
+      component.updateValue(invalidInn, []);
+
+      expect(currentAnswersService.isValid).toEqual(false);
+      expect(currentAnswersService.state).toEqual(invalidInn);
     });
   });
 

@@ -1,8 +1,17 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 @import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
 
-:host {
+:host::ng-deep {
   @include flex-container();
+
+  .file-upload-container {
+    display: block;
+    margin-bottom: 32px;
+  
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .inner {

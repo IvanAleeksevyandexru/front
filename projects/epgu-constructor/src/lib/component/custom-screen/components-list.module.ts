@@ -62,6 +62,10 @@ import { RadioInputComponent } from './components/radio-input/radio-input.compon
 import { EaisdoGroupCostComponent } from './components/eaisdo-group-cost/eaisdo-group-cost.component';
 import { CertificateEaisdoComponent } from './components/certificate-eaisdo/certificate-eaisdo.component';
 import { CalendarInputComponent } from './components/calendar-input/calendar-input.component';
+import { RestService } from '../../shared/services/rest/rest.service';
+import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
+import { RestLookupInputComponent } from './components/rest-lookup-input/rest-lookup-input.component';
+import { InterpolationService } from '../../shared/services/interpolation/interpolation.service';
 
 @NgModule({
   declarations: [
@@ -87,6 +91,7 @@ import { CalendarInputComponent } from './components/calendar-input/calendar-inp
     MvdGiacLookupComponent,
     PassportLookupComponent,
     RadioInputComponent,
+    RestLookupInputComponent,
     SearchableDropdownComponent,
     ShowComponentPipe,
     TextAreaComponent,
@@ -129,6 +134,9 @@ import { CalendarInputComponent } from './components/calendar-input/calendar-inp
     DictionaryApiService,
     SuggestHandlerService,
     ValidationService,
+    RestService,
+    RestToolsService,
+    InterpolationService,
   ],
   entryComponents: [
     AddressInputComponent,
@@ -153,6 +161,7 @@ import { CalendarInputComponent } from './components/calendar-input/calendar-inp
     MvdGiacLookupComponent,
     PassportLookupComponent,
     RadioInputComponent,
+    RestLookupInputComponent,
     SearchableDropdownComponent,
     TextAreaComponent,
     TimerItemComponent,

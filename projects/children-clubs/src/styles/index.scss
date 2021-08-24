@@ -69,7 +69,7 @@
   .error {
     margin-bottom: 4px;
     color: $color-gosred;
-    :empty {
+    &:empty {
       margin-bottom: 0;
     }
   }

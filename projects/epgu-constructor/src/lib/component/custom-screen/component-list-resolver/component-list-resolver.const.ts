@@ -25,6 +25,7 @@ import { TextAreaComponent } from '../components/text-area/text-area.component';
 import { TimerItemComponent } from '../components/timer-item/timer-item.component';
 import { CertificateEaisdoComponent } from '../components/certificate-eaisdo/certificate-eaisdo.component';
 import { CalendarInputComponent } from '../components/calendar-input/calendar-input.component';
+import { RestLookupInputComponent } from '../components/rest-lookup-input/rest-lookup-input.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -49,6 +50,7 @@ type CustomScreenComponent =
   | MvdGiacLookupComponent
   | PassportLookupComponent
   | RadioInputComponent
+  | RestLookupInputComponent
   | SearchableDropdownComponent
   | TextAreaComponent
   | TimerItemComponent;
@@ -80,6 +82,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   LabelSection: FormOutputHtmlComponent,
   LegalInnInput: MaskedAndPlainInputComponent,
   Lookup: LookupInputComponent,
+  RestLookup: RestLookupInputComponent,
   MonthPicker: MonthPickerComponent,
   MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
   MvdGiac: MvdGiacLookupComponent,

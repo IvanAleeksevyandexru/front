@@ -11,18 +11,21 @@ import {
   CustomStatusElement, DATE_RESTRICTION_GROUP_DEFAULT_KEY, DateRestriction, DateRestrictionGroups,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import {
-  DictionaryToolsService,
-} from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { ComponentDictionaryFilters } from './components-list-relations.interface';
+import { ComponentDictionaryFilters, ComponentRestUpdates, ComponentValueChangeDto } from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
-import { ApplicantAnswersDto, CustomComponentRefRelation, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import {
+  ApplicantAnswersDto,
+  CustomComponentRefRelation,
+  DictionaryFilters,
+} from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 @Injectable()
@@ -39,15 +42,28 @@ export class ComponentsListRelationsService {
     return this._filters$.asObservable();
   }
 
+  public get restUpdates(): ComponentRestUpdates {
+    return this._restUpdates$.getValue();
+  }
+
+  public set restUpdates(val: ComponentRestUpdates) {
+    this._restUpdates$.next(val);
+  }
+
+  public get restUpdates$(): Observable<ComponentRestUpdates> {
+    return this._restUpdates$.asObservable();
+  }
+
   private prevValues: { [key: string]: string | number } = {};
   private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
+  private readonly _restUpdates$: BehaviorSubject<ComponentRestUpdates> = new BehaviorSubject({});
 
   constructor(
     private dateRangeService: DateRangeService,
     private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService,
     private jsonHelperService: JsonHelperService,
-    private dateRefService: DateRefService,
+    private dateRefService: DateRefService
   ) {}
 
   public getUpdatedShownElements(
@@ -59,12 +75,12 @@ export class ComponentsListRelationsService {
     initInitialValues = false,
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
-    componentsGroupIndex?: number
+    componentsGroupIndex?: number,
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
         dependentComponent.attrs.ref
-          ?.filter((el) => el.relatedRel === component.id)
+          ?.filter((el) => el.relatedRel.split(';').some((e) => e === component.id))
           .forEach((reference) => {
             const value = reference.valueFromCache
               ? screenService.cachedAnswers[reference.valueFromCache].value
@@ -84,7 +100,7 @@ export class ComponentsListRelationsService {
             );
           });
 
-        this.updateReferenceLimitDate(dependentComponent as CustomComponent, component, form, screenService);
+        this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
       },
     );
 
@@ -94,7 +110,7 @@ export class ComponentsListRelationsService {
       form,
       screenService.applicantAnswers,
       initInitialValues,
-      componentsGroupIndex
+      componentsGroupIndex,
     );
 
     return shownElements;
@@ -108,7 +124,6 @@ export class ComponentsListRelationsService {
     initInitialValues: boolean,
     componentsGroupIndex?: number
   ): Promise<void> {
-
     if (component.attrs.dateRestrictions && !initInitialValues) {
       await this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
       return;
@@ -157,7 +172,7 @@ export class ComponentsListRelationsService {
       const k = key.replace('{', '').replace('}', '');
       const targetFormKey = `${components.findIndex((component) => component.id === k)}.value`;
       const control = form.get(targetFormKey);
-      const val = Number(control?.value);
+      const val = parseFloat(control?.value.replace(/ /g, '').replace(',', '.'));
       // eslint-disable-next-line no-restricted-globals
       if (isNaN(val)) {
         haveAllValues = false;
@@ -191,18 +206,14 @@ export class ComponentsListRelationsService {
     if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
       return this.refRelationService.isValueEquals(
         displayOff.val,
-        get(
-          this.getRefValue(cachedAnswers[displayOff.relatedRel].value),
-          displayOff.path,
-        ) || cachedAnswers[displayOff.relatedRel].value,
+        get(this.getRefValue(cachedAnswers[displayOff.relatedRel].value), displayOff.path) ||
+          cachedAnswers[displayOff.relatedRel].value,
       );
     } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
       return !this.refRelationService.isValueEquals(
         displayOn.val,
-        get(
-          this.getRefValue(cachedAnswers[displayOn.relatedRel].value),
-          displayOn.path,
-        ) || cachedAnswers[displayOn.relatedRel].value,
+        get(this.getRefValue(cachedAnswers[displayOn.relatedRel].value), displayOn.path) ||
+          cachedAnswers[displayOn.relatedRel].value,
       );
     } else {
       return false;
@@ -210,7 +221,7 @@ export class ComponentsListRelationsService {
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
-    return arr.some((el) => [el.relatedRel, el.relatedDate].includes(component.id));
+    return arr.some((el) => [...el.relatedRel.split(';'), el.relatedDate].includes(component.id));
   }
 
   public getDependentComponents(
@@ -235,7 +246,7 @@ export class ComponentsListRelationsService {
     componentId: string,
     components: CustomComponent[],
     componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
-    dictionaries: CustomListDictionaries,
+    dictionaries: CustomListDictionaries
   ): unknown {
     const relatedComponent = components.find((item) => item.id === componentId);
 
@@ -258,7 +269,7 @@ export class ComponentsListRelationsService {
 
   public getRelation(
     component: CustomComponent,
-    reference: CustomComponentRef,
+    reference: CustomComponentRef
   ): CustomComponentRef {
     return component.attrs.ref?.find(({ relation }) => relation === reference.relation);
   }
@@ -275,7 +286,7 @@ export class ComponentsListRelationsService {
   public onAfterFilterOnRel(
     dependentComponent: CustomComponent,
     form: FormArray,
-    dictionaryToolsService: DictionaryToolsService,
+    dictionaryToolsService: DictionaryToolsService | RestToolsService
   ): void {
     if (!Array.isArray(dependentComponent?.attrs?.ref)) {
       return;
@@ -284,8 +295,13 @@ export class ComponentsListRelationsService {
       (control: AbstractControl) => control.value.id === dependentComponent.id,
     );
 
+    const relationsToHandle = [
+      CustomComponentRefRelation.updateRestLookupOn,
+      CustomComponentRefRelation.filterOn,
+    ];
+
     dependentComponent?.attrs?.ref
-      .filter((reference) => reference.relation === CustomComponentRefRelation.filterOn)
+      .filter((reference) => relationsToHandle.includes(reference.relation))
       .forEach((reference) => {
         const refControl: AbstractControl = form.controls.find(
           (control: AbstractControl) => control.value.id === reference.relatedRel,
@@ -444,7 +460,7 @@ export class ComponentsListRelationsService {
     }
   }
 
-  private getDependentComponentUpdatedShownElements(
+  private getDependentComponentUpdatedShownElements( // TODO название уже не отражает суть
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
@@ -538,10 +554,22 @@ export class ComponentsListRelationsService {
         this.validateDependentControl(dependentControl, form, reference);
         break;
       case CustomComponentRefRelation.autoFillTextFromRefs:
-        this.handleAutoFillTextFromRefs(reference, componentVal, dependentControl, dependentComponent);
+        this.handleAutoFillTextFromRefs(
+          reference,
+          componentVal,
+          dependentControl,
+          dependentComponent,
+        );
         break;
       case CustomComponentRefRelation.formatOn:
         this.handleFormatOn(reference, componentVal, dependentControl);
+        break;
+      case CustomComponentRefRelation.updateRestLookupOn:
+        this.handleUpdateRestLookupOn(
+          reference,
+          componentVal,
+          dependentComponent,
+        );
         break;
     }
 
@@ -694,7 +722,7 @@ export class ComponentsListRelationsService {
     refControl: AbstractControl,
     dependentControl: AbstractControl,
     dependentComponent: CustomComponent,
-    dictionaryToolsService: DictionaryToolsService,
+    dictionaryToolsService: DictionaryToolsService | RestToolsService,
   ): void {
     if (refControl.touched) {
       if (dictionaryToolsService.isResultEmpty(dependentComponent)) {
@@ -707,11 +735,37 @@ export class ComponentsListRelationsService {
 
   private handleFormatOn(
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: ComponentValueChangeDto,
     dependentControl: AbstractControl,
   ): void {
-    const newValue = { ...(dependentControl?.value?.value ?? {}), [reference.relatedRel]: { ...componentVal }};
-    dependentControl.patchValue({ ...dependentControl?.value, value: newValue }, { onlySelf: true, emitEvent: false });
+    const newValue = {
+      ...(dependentControl?.value?.value ?? {}),
+      [reference.relatedRel]: { ...componentVal },
+    };
+    dependentControl.patchValue(
+      { ...dependentControl?.value, value: newValue },
+      { onlySelf: true, emitEvent: false },
+    );
+  }
+
+  private handleUpdateRestLookupOn(
+    reference: CustomComponentRef,
+    componentVal: ComponentValueChangeDto,
+    dependentComponent: CustomComponent,
+  ): void {
+    if ( this.refRelationService.isValueEquals(reference.val, componentVal) ) {
+      this.restUpdates = {
+        [dependentComponent.id]: {
+          rest: reference.rest,
+          value: {
+            ...(this.restUpdates[dependentComponent.id]?.value || {}),
+            [reference.relatedRel]: componentVal,
+          }
+        }
+      };
+    } else {
+      this.restUpdates = { [dependentComponent.id]: null };
+    }
   }
 
   private patchValueAndDisable(
@@ -839,16 +893,19 @@ export class ComponentsListRelationsService {
     dependentControl: AbstractControl,
     dependentComponent: CustomComponent,
   ): void {
-    if(componentVal) {
+    if (componentVal) {
       const newValue = JSON.stringify(dependentComponent).replace(/\${\w+}/gi, (match) => {
         const relatedRelKey = match.replace(/[^\w]+/gi, '');
         const relatedRelValue = reference.relatedRelValues[relatedRelKey];
-        if (relatedRelValue){
+        if (relatedRelValue) {
           return get(componentVal, relatedRelValue);
         }
         return match;
       });
-      dependentControl.patchValue({ ...JSON.parse(newValue) }, { onlySelf: true, emitEvent: false });
+      dependentControl.patchValue(
+        { ...JSON.parse(newValue) },
+        { onlySelf: true, emitEvent: false },
+      );
     }
   }
 }

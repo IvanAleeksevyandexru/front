@@ -12,6 +12,7 @@ import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { ScreenButton } from './screen-buttons';
 import { KeyValueMap } from './core.types';
+import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
 
 export interface KinderGardenAttrs {
   header?: string;
@@ -55,6 +56,7 @@ export interface ComponentAttrsDto {
   dictItemCode?: string;
   disabled?: boolean;
   disclaimer?: DisclaimerDto;
+  defaultHint?: HintDto;
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
@@ -162,6 +164,12 @@ export interface ComponentAttrsDto {
   defaultLabelList?: string;
   defaultNewList?: string;
   listLabel?: boolean;
+  url?: string;
+  body?: string;
+  method?: LogicComponentMethods;
+  path?: string;
+  timeout?: string;
+  headers?: LogicComponentHeaders;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';
@@ -186,6 +194,12 @@ export interface DisclaimerDto {
   type: 'warn' | 'error';
   title: string;
   description: string;
+}
+
+export interface HintDto {
+  type: 'warn' | 'info' | 'default';
+  title: string;
+  value: string;
 }
 
 export interface IMvdFilter {

@@ -33,6 +33,7 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationService } from '../../services/location/location.service';
+import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
 import { ERROR_HANDLER_SERVICE } from './errors.token';
 import { SessionService } from '../../services/session/session.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
@@ -61,6 +62,7 @@ describe('ErrorsInterceptor', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
