@@ -183,7 +183,7 @@ export class DateRestrictionsService {
     }
     const { value } = form.controls.find((control) => control.value.id === component.id).value;
     if (precision) {
-      return value[precision];
+      return value[precision] ? new Date(value[precision]) : null;
     }
 
     if (value instanceof MonthYear) {

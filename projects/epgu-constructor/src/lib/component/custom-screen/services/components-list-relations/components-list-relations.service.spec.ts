@@ -32,6 +32,7 @@ import {
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -113,6 +114,7 @@ describe('ComponentsListRelationsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
+        DateRefService,
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,

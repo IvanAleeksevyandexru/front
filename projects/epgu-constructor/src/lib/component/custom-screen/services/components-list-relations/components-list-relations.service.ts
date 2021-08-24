@@ -23,6 +23,7 @@ import { ApplicantAnswersDto, CustomComponentRefRelation, DictionaryFilters } fr
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -46,6 +47,7 @@ export class ComponentsListRelationsService {
     private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService,
     private jsonHelperService: JsonHelperService,
+    private dateRefService: DateRefService,
   ) {}
 
   public getUpdatedShownElements(
@@ -342,8 +344,11 @@ export class ComponentsListRelationsService {
     for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
       const restriction = relatedComponents[index].attrs.dateRestrictions.find(
         (restriction) =>
-          this.dateRestrictionsService.haveDateRef(restriction) &&
-          restriction.value === component.id,
+        {
+          const [dateId, ] = this.dateRefService.extract(restriction.value as string);
+          return this.dateRestrictionsService.haveDateRef(restriction) &&
+          dateId === component.id;
+        }
       );
 
       if (restriction) {

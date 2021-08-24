@@ -211,6 +211,12 @@ export class ComponentsListFormService {
       if (this.shownElements[val.id].isShown) {
         if (type === CustomScreenComponentTypes.DateInput && value) {
           value = this.datesToolsService.format(value);
+        } else if (type === CustomScreenComponentTypes.CalendarInput) {
+          for (const key in value) {
+            if (value.hasOwnProperty(key) && value[key]) {
+              value[key] = this.datesToolsService.format(value[key]);
+            }
+          }
         } else if (
           type === CustomScreenComponentTypes.StringInput &&
           val.attrs.mask === 'NumberMaskInput' &&

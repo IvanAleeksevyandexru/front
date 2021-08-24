@@ -88,10 +88,10 @@ describe('DateRestrictionsService', () => {
       service.setDateRefs(
         restrictions,
         [{ id: 'test', value: '', attrs: {}, type: CustomScreenComponentTypes.DateInput }],
-        new FormArray([new FormControl({ value: { firstDate: '25.02.2007' }, id: 'test' })]),
+        new FormArray([new FormControl({ value: { firstDate: '2021-08-23T00:00:00.000Z' }, id: 'test' })]),
         {},
       );
-      expect(restrictions[0].value).toEqual('25.02.2007');
+      expect(restrictions[0].value).toEqual('23.08.2021');
     });
 
     it('should correctly set refs for applicant answers', () => {
