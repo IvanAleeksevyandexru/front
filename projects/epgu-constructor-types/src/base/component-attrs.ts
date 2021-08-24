@@ -329,6 +329,7 @@ export interface ActionConfirmationsDto {
 
 export interface ComponentDateTimeDto {
   label: string;
+  sublabel: string;
   valueType: string;
   value: string;
   required: boolean;
