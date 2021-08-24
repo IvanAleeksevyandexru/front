@@ -57,6 +57,7 @@ import { mockComponentsListComponentStore } from './mocks/mock-components-list';
 import { SuggestMonitorService } from '../../shared/services/suggest-monitor/suggest-monitor.service';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 import { of } from 'rxjs';
+import { DateRefService } from '../../core/services/date-ref/date-ref.service';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -103,6 +104,7 @@ describe('ComponentsListComponent', () => {
         ScreenService,
         DateRangeService,
         DatesToolsService,
+        DateRefService,
         MockProvider(RestToolsService),
         AddressHelperService,
         CurrentAnswersService,
