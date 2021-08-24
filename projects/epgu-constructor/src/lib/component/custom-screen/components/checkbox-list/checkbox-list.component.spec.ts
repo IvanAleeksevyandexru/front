@@ -16,32 +16,33 @@ const mockComponent = {
   attrs: {
     labelShow: 'Развернуть все приоды',
     labelHide: 'Показать меньше',
+    limit: 2,
     checkBoxes: {
       checkbox1: {
         label: 'Оформление инвалидности',
         value: false,
-        showOn: true
+        showOn: true,
       },
       checkbox2: {
         label: 'Участие в боевых действиях',
         value: false,
-        showOn: true
+        showOn: true,
       },
       checkbox3: {
         label: 'Исполнение обязанностей военной службы',
         value: false,
-        showOn: false
+        showOn: false,
       },
       checkbox4: {
         label: 'Великая Отчественная Война',
         value: false,
-        showOn: false
-      }
-    }
+        showOn: false,
+      },
+    },
   },
   value: '{}',
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('CheckboxListComponent', () => {
@@ -52,26 +53,28 @@ describe('CheckboxListComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        CheckboxListComponent,
-      ],
+      declarations: [CheckboxListComponent],
       imports: [FormsModule, ReactiveFormsModule, ConstructorCheckboxModule],
       providers: [
         UnsubscribeService,
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    }).overrideComponent(CheckboxListComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+    })
+      .overrideComponent(CheckboxListComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     fixture = TestBed.createComponent(CheckboxListComponent);
     component = fixture.componentInstance;
     control = new FormControl(mockComponent);
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     component.componentIndex = 0;
     fixture.detectChanges();
   });
@@ -86,7 +89,10 @@ describe('CheckboxListComponent', () => {
     });
 
     it('should set default labels', () => {
-      component.control = new FormControl( { ...mockComponent, attrs: { checkBoxes: mockComponent.attrs.checkBoxes }});
+      component.control = new FormControl({
+        ...mockComponent,
+        attrs: { checkBoxes: mockComponent.attrs.checkBoxes },
+      });
       component.labels = { show: 'show', hide: 'hide' };
       component.ngOnChanges();
       fixture.detectChanges();
@@ -103,14 +109,16 @@ describe('CheckboxListComponent', () => {
           checkbox1: {
             label: 'Оформление инвалидности',
             value: false,
-            showOn: true
-          }
-        }
-      }
+            showOn: true,
+          },
+        },
+      },
     });
     component.ngOnChanges();
     fixture.detectChanges();
-    expect(component.checkboxes).toEqual([ { id: 'checkbox1', label: 'Оформление инвалидности', showOn: true, hidden: false }]);
+    expect(component.checkboxes).toEqual([
+      { id: 'checkbox1', label: 'Оформление инвалидности', showOn: true, hidden: false },
+    ]);
   });
 
   describe('requiredValidator', () => {
@@ -133,18 +141,19 @@ describe('CheckboxListComponent', () => {
 
   describe('toggle', () => {
     const mockAttrs = {
-      ...mockComponent.attrs, checkBoxes: {
+      ...mockComponent.attrs,
+      checkBoxes: {
         checkbox1: {
           label: 'label1',
           value: false,
-          showOn: true
+          showOn: true,
         },
         checkbox2: {
           label: 'label2',
           value: false,
-          showOn: false
+          showOn: false,
         },
-      }
+      },
     };
 
     beforeEach(() => {
@@ -157,14 +166,14 @@ describe('CheckboxListComponent', () => {
     it('hide checkboxes', () => {
       expect(component.checkboxes).toEqual([
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
-        { id: 'checkbox2', label: 'label2', showOn: false, hidden: true }
+        { id: 'checkbox2', label: 'label2', showOn: false, hidden: true },
       ]);
       let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
       expect(component.toggle).toHaveBeenCalled();
       expect(component.checkboxes).toEqual([
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
-        { id: 'checkbox2', label: 'label2', showOn: false, hidden: false }
+        { id: 'checkbox2', label: 'label2', showOn: false, hidden: false },
       ]);
     });
 
@@ -177,9 +186,11 @@ describe('CheckboxListComponent', () => {
       expect(component.toggle).toHaveBeenCalled();
       expect(component.checkboxes).toEqual([
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
-        { id: 'checkbox2', label: 'label2', showOn: false, hidden: true }
+        { id: 'checkbox2', label: 'label2', showOn: false, hidden: true },
       ]);
     }));
+
+
   });
 
   describe('formChanges', () => {
@@ -193,8 +204,17 @@ describe('CheckboxListComponent', () => {
       component.form.patchValue(setValue as any);
       fixture.detectChanges();
       expect(component.emitToParentForm).toHaveBeenCalledWith({
-        ...currentValue, ...setValue
+        ...currentValue,
+        ...setValue,
       });
+    });
+
+    it('call checkShownElements', () => {
+      jest.spyOn(component, 'checkShownElements');
+      const setValue = { checkbox1: false, checkbox2: true, checkbox3: true, checkbox4: false };
+      component.form.patchValue(setValue as any);
+      fixture.detectChanges();
+      expect(component.checkShownElements).toHaveBeenCalledWith(setValue);
     });
   });
 });
