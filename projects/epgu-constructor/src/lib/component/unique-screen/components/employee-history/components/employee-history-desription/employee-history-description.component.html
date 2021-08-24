@@ -10,8 +10,8 @@
   </div>
 </section>
 
-<section *ngIf="!periods.length && !isCompleted && textErrorHasEmptyFields" class="employee-history__has-empty-fields">
-  {{textErrorHasEmptyFields}}
+<section *ngIf="!periods.length && !isCompleted && hasEmptyFieldsErrorMsg" class="employee-history__has-empty-fields">
+  {{hasEmptyFieldsErrorMsg}}
 </section>
 
 <section *ngIf="isCompleted" class="employee-history__completed">

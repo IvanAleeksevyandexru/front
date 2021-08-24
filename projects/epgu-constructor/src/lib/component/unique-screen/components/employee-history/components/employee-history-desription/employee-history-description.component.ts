@@ -12,7 +12,7 @@ export class EmployeeHistoryDescriptionComponent {
   @Input() years: number;
   @Input() periods: EmployeeHistoryUncheckedPeriod[] = [];
   @Input() isCompleted: boolean;
-  @Input() textErrorHasEmptyFields: string;
+  @Input() hasEmptyFieldsErrorMsg: string;
 
   public getPeriod(period: EmployeeHistoryUncheckedPeriod): string {
     const isPeriodEqul: boolean = period.from === period.to;

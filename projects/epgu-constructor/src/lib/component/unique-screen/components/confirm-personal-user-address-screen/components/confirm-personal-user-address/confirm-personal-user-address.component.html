@@ -16,10 +16,10 @@
   <div 
     *ngIf="!(currentAnswersService.isValid$ | async) && 
       (screenService.buttons$ | async) && 
-      (data$ | async)?.attrs?.textErrorHasEmptyFields"
+      (data$ | async)?.attrs?.hasEmptyFieldsErrorMsg"
     class="has-empty-fields"
     >
-    {{ (data$ | async)?.attrs?.textErrorHasEmptyFields }}
+    {{ (data$ | async)?.attrs?.hasEmptyFieldsErrorMsg }}
   </div>
 </epgu-constructor-default-unique-screen-wrapper>
 
