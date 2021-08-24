@@ -124,8 +124,6 @@ export class ValidationService {
         controlValue = this.datesToolsService.format(controlValue);
       }
 
-      // TODO: здесь всегда будет true, т.к. с бэка component.value возвращается пустой и сравнение некорректно.
-      // Именно поэтому не видны ошибки с бэка. Подумать над другой имлментацией проверки изменений
       const valueChanged = component.value !== controlValue;
 
       if (valueChanged) {
