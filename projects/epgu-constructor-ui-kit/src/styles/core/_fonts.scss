@@ -1,26 +1,5 @@
-@import "variables";
-
-// Font families
-$font-lato: 'Lato';
-
-// Font weights
-$fw-thin: 100;
-$fw-light: 300;
-$fw-regular: 400;
-$fw-medium: 500;
-$fw-semi-bold: 600;
-$fw-bold: 700;
-$fw-black: 900;
-
-// Font sizes
-$font-xs: 12px;
-$font-sm: 14px;
-$font-dflt: 16px;
-$font-md: 18px;
-$font-lg: 20px;
-$font-xl: 24px;
-$font-xxl: 32px;
-$font-extra: 36px;
+// @import "variables";
+@import "typography";
 
 @font-face {
   font-family: $font-lato;

@@ -1,4 +1,5 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 :host {
   ::ng-deep.map-object {
