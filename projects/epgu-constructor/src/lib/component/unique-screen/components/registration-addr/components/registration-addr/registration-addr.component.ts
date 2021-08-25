@@ -165,7 +165,7 @@ export class RegistrationAddrComponent implements OnInit {
 
   private prepareFormValue(changes: RegistrationAddrFormValue): RegistrationAddrFormValue {
     return Object.entries(changes).reduce((acc, [key, value]) => {
-      if (this.datesToolsService.isValid(value)) {
+      if (value instanceof Date && this.datesToolsService.isValid(value)) {
         return { ...acc, [key]: this.datesToolsService.format(value as Date) };
       }
       return acc;
