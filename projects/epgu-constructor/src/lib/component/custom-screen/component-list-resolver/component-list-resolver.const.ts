@@ -25,6 +25,7 @@ import { TextAreaComponent } from '../components/text-area/text-area.component';
 import { TimerItemComponent } from '../components/timer-item/timer-item.component';
 import { CertificateEaisdoComponent } from '../components/certificate-eaisdo/certificate-eaisdo.component';
 import { RestLookupInputComponent } from '../components/rest-lookup-input/rest-lookup-input.component';
+import { FormDisclaimerComponent } from '../components/form-disclaimer/form-disclaimer.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -36,6 +37,7 @@ type CustomScreenComponent =
   | CityInputComponent
   | DateInputComponent
   | DepartmentLookupComponent
+  | FormDisclaimerComponent
   | DocInputComponent
   | EaisdoGroupCostComponent
   | FieldListItemComponent
@@ -69,6 +71,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   DateInput: DateInputComponent,
   Dictionary: DictionaryComponent,
+  Disclaimer: FormDisclaimerComponent,
   DocInput: DocInputComponent,
   DropDown: DropdownComponent,
   DropDownDepts: DepartmentLookupComponent,

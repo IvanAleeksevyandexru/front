@@ -1,0 +1,11 @@
+<ng-container *ngTemplateOutlet="formDisclaimer; context: { $implicit: control.value }">
+</ng-container>
+
+<ng-template #formDisclaimer let-component>
+  <epgu-constructor-disclaimer
+    [type]="component?.attrs?.type"
+    [title]="component?.attrs?.title"
+    [description]="component?.attrs?.description"
+    [clarifications]="component?.attrs?.clarifications"
+  ></epgu-constructor-disclaimer>
+</ng-template>
