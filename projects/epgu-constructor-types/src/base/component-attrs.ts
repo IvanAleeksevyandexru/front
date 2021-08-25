@@ -164,6 +164,7 @@ export interface ComponentAttrsDto {
   defaultLabelList?: string;
   defaultNewList?: string;
   listLabel?: boolean;
+  limit?: number | string;
   url?: string;
   body?: string;
   method?: LogicComponentMethods;
