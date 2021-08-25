@@ -172,6 +172,7 @@ export interface ComponentAttrsDto {
   path?: string;
   timeout?: string;
   headers?: LogicComponentHeaders;
+  balloonAttrs?: KeyValueMap;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';
