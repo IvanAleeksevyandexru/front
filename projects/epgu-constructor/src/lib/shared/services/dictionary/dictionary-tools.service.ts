@@ -583,15 +583,26 @@ export class DictionaryToolsService {
     dFilter: ComponentDictionaryFilterDto | string,
     index: number = 0,
   ): DictionaryValue {
+
     const attributeType: AttributeTypes =
       (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
     //TODO разобраться с типами
     // @ts-ignore
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
       [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
-      [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({
-        [attributeType]: componentValue[dFilter.value] as string,
-      }),
+      [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => {
+        const filters = this.formatValue(
+          componentValue[dFilter.value],
+          dFilter.formatValue,
+        );
+
+        if (dFilter?.excludeWrapper) {
+          return filters;
+        }
+        return {
+          [attributeType]: filters,
+        };
+      },
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
         [attributeType]: this.formatValue(
           get(screenStore, dFilter.value, undefined),
