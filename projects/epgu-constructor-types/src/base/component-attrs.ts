@@ -10,15 +10,16 @@ import { ConfirmUserDataStyle } from './confirm-user-data';
 import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
-import { ScreenButton } from './screen-buttons';
 import { KeyValueMap } from './core.types';
 import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
 
-export interface KinderGardenAttrs {
+export interface KindergartenAttrs {
   header?: string;
   label?: string;
   checkboxLabel?: string;
-  buttons?: ScreenButton[];
+  finalScreenText?: string;
+  listMaxLength?: number;
+  nextStepLength?: number;
   attrs?: ComponentAttrsDto;
 }
 
@@ -93,7 +94,7 @@ export interface ComponentAttrsDto {
   labelHint?: string;
   lastName?: string;
   link?: string;
-  mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
+  mapKindergartenPriorityAttrs?: KindergartenAttrs;
   mask?: string[];
   maxDate?: string;
   maxDateRef?: string;
