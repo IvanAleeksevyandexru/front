@@ -300,6 +300,7 @@ describe('AutocompletePrepareService', () => {
     it('should return string value of passed component via suggestions', () => {
       const component = mockData.display.components[0];
       const componentValue = 'value';
+      const componentMnemonic = 'prev_region';
       screenService.suggestions['pd8'] = {
         mnemonic: 'prev_region',
         list: [
@@ -310,9 +311,15 @@ describe('AutocompletePrepareService', () => {
           },
         ],
       };
-      expect(service['findComponentValue'](component, null, componentValue)).toEqual(
-        componentValue,
-      );
+      expect(
+        service['findComponentValue'](
+          component,
+          null,
+          componentValue,
+          componentMnemonic,
+          componentsSuggestionsSet,
+        ),
+      ).toEqual(componentValue);
     });
   });
 
