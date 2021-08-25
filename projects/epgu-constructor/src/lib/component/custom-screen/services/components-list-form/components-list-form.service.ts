@@ -9,9 +9,7 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import {
-  DictionaryToolsService,
-} from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -33,7 +31,7 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { ScenarioErrorsDto, DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { FormControl } from '@angular/forms';
@@ -52,7 +50,6 @@ export class ComponentsListFormService {
   private indexesByIds: Record<string, number> = {};
   private cachedAttrsComponents: Record<string, { base: CustomComponentAttr; last: string }> = {};
   private lastChangedComponent: [CustomListFormGroup, CustomListFormGroup];
-  private errors: ScenarioErrorsDto;
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
@@ -79,12 +76,7 @@ export class ComponentsListFormService {
     private maskTransformService: MaskTransformService,
   ) {}
 
-  public create(
-    components: CustomComponent[],
-    errors: ScenarioErrorsDto,
-    componentsGroupIndex?: number,
-  ): FormArray {
-    this.errors = errors;
+  public create(components: CustomComponent[], componentsGroupIndex?: number): FormArray {
     this._shownElements = this.componentsListRelationsService.createStatusElements(
       components,
       this.screenService.cachedAnswers,
@@ -96,12 +88,7 @@ export class ComponentsListFormService {
     this._form = new FormArray(
       components.map((component: CustomComponent, index) => {
         this.indexesByIds[component.id] = index;
-        return this.createGroup(
-          component,
-          components,
-          errors && errors[component.id],
-          componentsGroupIndex,
-        );
+        return this.createGroup(component, components, componentsGroupIndex);
       }),
     );
     this.validationService.form = this.form;
@@ -136,7 +123,7 @@ export class ComponentsListFormService {
 
   public onAfterFilterOnRel(
     component: CustomComponent,
-    service: DictionaryToolsService | RestToolsService = this.dictionaryToolsService
+    service: DictionaryToolsService | RestToolsService = this.dictionaryToolsService,
   ): void {
     this.componentsListRelationsService.onAfterFilterOnRel(
       {
@@ -150,7 +137,11 @@ export class ComponentsListFormService {
 
   public patch(component: CustomComponent): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const { defaultIndex = undefined, lookupDefaultValue = undefined, lookupFilterPath = undefined } = component.attrs;
+    const {
+      defaultIndex = undefined,
+      lookupDefaultValue = undefined,
+      lookupFilterPath = undefined,
+    } = component.attrs;
     const noValue = !component.value;
     const hasDefaultIndex = defaultIndex !== undefined;
     const hasDefaultValue = lookupDefaultValue !== undefined;
@@ -166,13 +157,17 @@ export class ComponentsListFormService {
     } else if (hasDefaultIndex && noValue && !isDropdownLike) {
       this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
     } else if (hasDefaultValue && noValue && isDictionaryLike) {
-      this.patchDictionaryLikeWithDefaultValue(component, control, lookupDefaultValue, lookupFilterPath);
-    } else if (isDictionaryLike && noValue){
+      this.patchDictionaryLikeWithDefaultValue(
+        component,
+        control,
+        lookupDefaultValue,
+        lookupFilterPath,
+      );
+    } else if (isDictionaryLike && noValue) {
       // control.value должен оставаться тем же потому что с бэка приходит пока что пустое значение
       // Кейс создан для ререндеринга компонента на repeatable-screen при удалении одного, последующие обнулялись пустым значением с Бэка
       return;
-    }
-    else {
+    } else {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
   }
@@ -253,10 +248,7 @@ export class ComponentsListFormService {
   }
 
   private changeValidators(component: CustomComponent, control: AbstractControl): void {
-    control.setValidators([
-      this.validationService.customValidator(component),
-      this.validationService.validationBackendError(this.errors[component.id], component),
-    ]);
+    control.setValidators([this.validationService.customValidator(component)]);
   }
 
   private relationPatch(component: CustomComponent, patch: object): void {
@@ -331,13 +323,9 @@ export class ComponentsListFormService {
   private createGroup(
     component: CustomComponent,
     components: CustomComponent[],
-    errorMsg: string,
     componentsGroupIndex?: number,
   ): FormGroup {
-    const validators = [
-      this.validationService.customValidator(component),
-      this.validationService.validationBackendError(errorMsg, component),
-    ];
+    const validators = [this.validationService.customValidator(component)];
 
     if (
       component.type === CustomScreenComponentTypes.DateInput ||
@@ -490,13 +478,18 @@ export class ComponentsListFormService {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
     const key: string = getDictKeyByComp(component);
     const isRef = String(defaultValue).includes('$');
-    const compareValue = isRef ? String(defaultValue).replace(/[&/\\#,+()$~%'":*?<>{}]/g, '') : defaultValue;
+    const specialCharactersRegExp = /[&\/\\#^,+()$~%'":*?<>{}]/g;
+    const compareValue = isRef
+      ? String(defaultValue).replace(specialCharactersRegExp, '')
+      : defaultValue;
 
     let value: ListItem = undefined;
 
     if (lookupFilterPath) {
-      value = dicts[key]?.list.find((item: ListItem) =>
-        get(item, lookupFilterPath) === (isRef ? get(this.screenService.getStore(), compareValue) : compareValue)
+      value = dicts[key]?.list.find(
+        (item: ListItem) =>
+          get(item, lookupFilterPath) ===
+          (isRef ? get(this.screenService.getStore(), compareValue) : compareValue),
       );
     } else {
       value = dicts[key]?.list.find(({ id }) => id === defaultValue);
