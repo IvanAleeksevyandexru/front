@@ -17,6 +17,7 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.CityInput,
     CustomScreenComponentTypes.PassportLookup,
     CustomScreenComponentTypes.DocInput,
+    CustomScreenComponentTypes.CalendarInput
   ];
 
   constructor(private typeCastService: TypeCastService) { }

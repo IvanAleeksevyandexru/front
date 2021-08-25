@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { REQUIRED_FIELD, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { CustomComponent } from '../../components-list.types';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 
 @Component({
   selector: 'epgu-constructor-calendar-input',
@@ -23,7 +24,11 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
   strategy = BrokenDateFixStrategy.NONE;
   form: FormGroup;
 
-  constructor(public injector: Injector, public fb: FormBuilder) {
+  constructor(
+    public injector: Injector,
+    private fb: FormBuilder,
+    private componentsListTool: ComponentsListToolsService,
+  ) {
     super(injector);
   }
 
@@ -64,12 +69,7 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
   }
 
   private initFormGroup(): void {
-    let parsedValue;
-    if (typeof this.control.value.value === 'object') {
-      parsedValue = this.control.value.value;
-    } else if (typeof this.control.value.value === 'string') {
-      parsedValue = JSON.parse(this.control.value.value || '{}');
-    }
+    const parsedValue = this.componentsListTool.convertedValue(this.control.value);
     const formGroup = {};
     this.components.forEach((component) => {
       const componentId = component.id;
@@ -87,7 +87,7 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
 
   private requiredValidatorFn(): ValidatorFn {
     return ({ value }: FormGroup): ValidationErrors => {
-      return value ? null : { required: true, msg: 'Обязательно для заполнения' };
+      return value ? null : { required: true, msg: REQUIRED_FIELD };
     };
   }
 }

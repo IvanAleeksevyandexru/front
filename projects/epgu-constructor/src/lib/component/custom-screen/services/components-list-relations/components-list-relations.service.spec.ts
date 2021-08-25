@@ -110,6 +110,7 @@ describe('ComponentsListRelationsService', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let refRelationService: RefRelationService;
   let dateRangeService: DateRangeService;
+  let dateRestrictionsService: DateRestrictionsService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -139,6 +140,7 @@ describe('ComponentsListRelationsService', () => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     refRelationService = TestBed.inject(RefRelationService);
     dateRangeService = TestBed.inject(DateRangeService);
+    dateRestrictionsService = TestBed.inject(DateRestrictionsService);
   });
 
   describe('filters$ property', () => {
@@ -1597,6 +1599,73 @@ describe('ComponentsListRelationsService', () => {
       expect(stub).nthCalledWith(1, form, component, undefined, 'first');
       expect(stub).nthCalledWith(2, form, component, undefined, 'second');
     });
+
+    it('should correctly set min and max dates', async () => {
+      const dateRestrictions: DateRestriction[] = [ { type: 'const', value: 'today', condition: '>' } ];
+      const component: CustomComponent = {
+        id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: {
+          dateRestrictions,
+        }
+      };
+      const control = new FormGroup({
+        id: new FormControl('test'),
+        attrs: new FormControl(component.attrs),
+        value: new FormControl(''),
+      });
+      const form = new FormArray([control]);
+      const testDate = new Date('2021-01-02T00:00:00.000Z');
+      jest.spyOn(dateRestrictionsService, 'getDateRange')
+        .mockImplementation((...args) => {
+          return Promise.resolve({
+            min: testDate,
+            max: testDate
+          });
+        });
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(control.get('attrs').value.minDate).toEqual(testDate);
+      expect(control.get('attrs').value.maxDate).toEqual(testDate);
+    });
+
+    it('should set min and max dates for child controls', async () => {
+
+      const dateRestrictions: DateRestriction[] = [
+        { type: 'const', value: 'today', condition: '>', forChild: 'firstDate' },
+        { type: 'const', value: 'today', condition: '>', forChild: 'secondDate' },
+      ];
+      const component: CustomComponent = {
+        id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: {
+          dateRestrictions, components: [
+            { id: 'firstDate', attrs: {}, type: 'DateInput' },
+            { id: 'secondDate', attrs: {}, type: 'DateInput' }
+          ]
+        }
+      };
+      const control = new FormGroup({
+        id: new FormControl('test'),
+        attrs: new FormControl(component.attrs),
+        value: new FormControl(''),
+      });
+      const form = new FormArray([control]);
+      const testDate = new Date('2021-01-02T00:00:00.000Z');
+      jest.spyOn(dateRestrictionsService, 'getDateRange')
+        .mockImplementation((...args) => {
+          return Promise.resolve({
+            min: testDate,
+            max: testDate
+          });
+        });
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(control.get('attrs').value.components[0].attrs.minDate).toEqual(testDate);
+      expect(control.get('attrs').value.components[1].attrs.minDate).toEqual(testDate);
+      expect(control.get('attrs').value.components[0].attrs.maxDate).toEqual(testDate);
+      expect(control.get('attrs').value.components[1].attrs.maxDate).toEqual(testDate);
+
+    });
+
   });
 
 });

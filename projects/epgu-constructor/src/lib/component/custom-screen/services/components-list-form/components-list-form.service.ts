@@ -221,11 +221,10 @@ export class ComponentsListFormService {
         if (type === CustomScreenComponentTypes.DateInput && value) {
           value = this.datesToolsService.format(value);
         } else if (type === CustomScreenComponentTypes.CalendarInput) {
-          for (const key in value) {
-            if (value.hasOwnProperty(key) && value[key]) {
-              value[key] = this.datesToolsService.format(value[key]);
-            }
-          }
+          const keys = Object.keys(value);
+          keys.forEach((key: string) => {
+            value[key] = this.datesToolsService.format(value[key]);
+          });
         } else if (
           type === CustomScreenComponentTypes.StringInput &&
           val.attrs.mask === 'NumberMaskInput' &&

@@ -8,7 +8,10 @@ import {
   CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
-  CustomStatusElement, DATE_RESTRICTION_GROUP_DEFAULT_KEY, DateRestriction, DateRestrictionGroups,
+  CustomStatusElement,
+  DATE_RESTRICTION_GROUP_DEFAULT_KEY,
+  DateRestriction,
+  DateRestrictionGroups,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';

@@ -4,7 +4,8 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 import { isAfter, isBefore } from 'date-fns';
 import {
-  CustomComponent, DATE_RESTRICTION_GROUP_DEFAULT_KEY,
+  CustomComponent,
+  DATE_RESTRICTION_GROUP_DEFAULT_KEY,
   DateRestriction,
 } from '../../../component/custom-screen/components-list.types';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';

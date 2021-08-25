@@ -1,27 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
-import { MockComponent, MockModule, MockProviders } from 'ng-mocks';
+import { MockModule, MockProviders } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import {
-  DatesToolsService,
   EventBusService,
   ImgPrefixerPipe,
   SafePipe,
   UnsubscribeService
 } from '@epgu/epgu-constructor-ui-kit';
 
-import { ComponentItemComponent } from '../component-item/component-item.component';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { CalendarInputComponent } from './calendar-input.component';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
@@ -31,9 +22,8 @@ import { ClickableLabelDirective } from '../../../../shared/directives/clickable
 import { TableDirective } from '../../../../shared/directives/table/table.directive';
 import { ValidationTypeDirective } from '../../../../shared/directives/validation-type/validation-type.directive';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 
 describe('CalendarInputComponent', () => {
   let mockComponent;
@@ -58,30 +48,21 @@ describe('CalendarInputComponent', () => {
       imports: [ MockModule(EpguLibModule)],
       providers: [
         UnsubscribeService,
-        DictionaryToolsService,
-        ValidationService,
-        DateRangeService,
-        MockComponent(ComponentItemComponent),
-        DateRestrictionsService,
+        MockProviders(ValidationService, EventBusService, TypeCastService),
+        ComponentsListToolsService,
         FormBuilder,
-        DateRefService,
-        EventBusService,
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
       .compileComponents();
   });
-
-  let valueControl: FormControl;
   let control: FormGroup;
 
   beforeEach(() => {
 
     mockComponent = {
       id: 'SomeId',
+      type: 'CalendarInput',
       attrs: {
         components:[
             { id: 'firstDate', attrs: {}},
@@ -106,6 +87,7 @@ describe('CalendarInputComponent', () => {
       attrs: new FormControl(mockComponent.attrs),
       value: new FormControl(mockComponent.value),
       required: new FormControl(mockComponent.required),
+      type: new FormControl(mockComponent.type)
     });
     formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(CalendarInputComponent);
