@@ -22,7 +22,9 @@ export class ConfirmPersonalUserDataComponent
 
     const applicantAnswers = this.screenService.getStore()?.applicantAnswers;
     const childIdFromPrevStep = applicantAnswers?.cld1_id?.value;
-    const childIdFromNextStep = JSON.parse(applicantAnswers?.cld1?.value)[0]?.cld1_id;
+    const childIdFromNextStep = applicantAnswers?.cld1?.value
+      ? JSON.parse(applicantAnswers?.cld1?.value)[0]?.cld1_id
+      : '';
 
     this.sessionStorageService.setRaw('childId', childIdFromPrevStep || childIdFromNextStep || '');
   }
