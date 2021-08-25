@@ -589,9 +589,10 @@ export class DictionaryToolsService {
     // @ts-ignore
     const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
       [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
-      [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => ({
-        [attributeType]: componentValue[dFilter.value] as string,
-      }),
+      [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => {
+        const filters = this.formatValue(componentValue[dFilter.value], dFilter.formatValue);
+        return dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+      },
       [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
         [attributeType]: this.formatValue(
           get(screenStore, dFilter.value, undefined),
