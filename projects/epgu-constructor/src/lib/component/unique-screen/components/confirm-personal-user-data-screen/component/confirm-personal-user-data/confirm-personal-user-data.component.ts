@@ -19,9 +19,11 @@ export class ConfirmPersonalUserDataComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.sessionStorageService.setRaw(
-      'childId',
-      this.screenService.getStore()?.applicantAnswers?.cld1_id?.value || '',
-    );
+
+    const applicantAnswers = this.screenService.getStore()?.applicantAnswers;
+    const childIdFromPrevStep = applicantAnswers?.cld1_id?.value;
+    const childIdFromNextStep = JSON.parse(applicantAnswers?.cld1?.value)[0]?.cld1_id;
+
+    this.sessionStorageService.setRaw('childId', childIdFromPrevStep || childIdFromNextStep || '');
   }
 }
