@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Output, EventEmitter } from '@angul
 import { combineLatest } from 'rxjs';
 import { pluck, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { KinderGardenAttrs } from '@epgu/epgu-constructor-types';
+import { DTOActionAction, KindergartenAttrs, ScreenButton } from '@epgu/epgu-constructor-types';
 import { FormControl, Validators } from '@angular/forms';
 import { NotifierService, NotifierType } from '@epgu/epgu-lib';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -20,37 +20,53 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
   providers: [UnsubscribeService],
 })
 export class PriorityScreenComponent {
-  @Output() selectMap = new EventEmitter<null>();
   @Output() showMap = new EventEmitter<DictionaryItem>();
   @Output() back = new EventEmitter<null>();
 
   displayCssClass$ = this.screenService.displayCssClass$;
-  moreSize$ = this.itemsService.moreSize$;
   items$ = this.itemsService.items;
-  maxKinderGarden$ = this.itemsService.maxKinderGarden$;
-  oldMaxKinderGarden$ = this.itemsService.oldMaxKinderGarden$;
+  maxKindergarten$ = this.itemsService.maxKindergarten$;
   screenItems$ = this.itemsService.screenItems;
   leftItems$ = this.itemsService.leftItems$;
   disabled$ = this.itemsService.disabled$$;
   isLoading$ = this.screenService.isLoading$;
-  maxIsChange$ = this.itemsService.maxIsChange$;
 
-  attrs$: Observable<KinderGardenAttrs> = this.screenService.component$.pipe(
-    pluck('attrs', 'mapKinderGardenPriorityAttrs'),
+  attrs$: Observable<KindergartenAttrs> = this.screenService.component$.pipe(
+    pluck('attrs', 'mapKindergartenPriorityAttrs'),
   );
 
   controlCheckbox = new FormControl({ value: true, disabled: false }, Validators.required);
   notifierId = 'NOTIFIERS_CHILDREN_GARDEN';
   plural = ['сад', 'сада', 'садов'];
 
+  finalScreen = (this.screenService.component?.arguments?.finalScreen as boolean) || false;
+
+  buttonBase = [
+    {
+      label: 'Сохранить заявление',
+      value: '',
+      type: 'nextStep',
+      action: DTOActionAction.getNextStep,
+    } as ScreenButton,
+  ];
+
+  buttonFinalScreen = [
+    {
+      label: 'Продолжить',
+      value: '',
+      type: 'nextStep',
+      action: DTOActionAction.getNextStep,
+    } as ScreenButton,
+  ];
+
   changes$ = combineLatest([
     this.itemsService.items,
     this.controlCheckbox.valueChanges.pipe(startWith(this.controlCheckbox.value)),
   ])
     .pipe(
-      tap(([items, otherKinderGarden]) => {
+      tap(([items, otherKindergarten]) => {
         this.currentAnswersService.state = {
-          otherKinderGarden,
+          otherKindergarten,
           items: items.map((item) => item.attributeValues),
         };
       }),
@@ -99,10 +115,6 @@ export class PriorityScreenComponent {
       event.preventDefault();
       this.backAction();
     }
-  }
-
-  selectAction(): void {
-    this.selectMap.emit();
   }
 
   rollUpAction(): void {

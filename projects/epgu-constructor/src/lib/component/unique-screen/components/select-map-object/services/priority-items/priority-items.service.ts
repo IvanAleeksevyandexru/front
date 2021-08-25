@@ -14,39 +14,41 @@ export class PriorityItemsService {
   status = new BehaviorSubject<boolean>(false);
   items = new BehaviorSubject<DictionaryItem[]>([]);
   screenItems = new BehaviorSubject<(DictionaryItem | null)[]>([]);
-  maxKinderGarden$$ = new BehaviorSubject<number>(null);
-  maxKinderGarden$ = this.maxKinderGarden$$.pipe(filter((status) => !!status));
-  disabled$$ = combineLatest([this.maxKinderGarden$, this.items]).pipe(
+  maxKindergarten$$ = new BehaviorSubject<number>(null);
+  maxKindergarten$ = this.maxKindergarten$$.pipe(filter((status) => !!status));
+  disabled$$ = combineLatest([this.maxKindergarten$, this.items]).pipe(
     map(([max, items]) => items.length > max),
   );
-  leftItems$ = combineLatest([this.maxKinderGarden$, this.screenItems]).pipe(
+  leftItems$ = combineLatest([this.maxKindergarten$, this.screenItems]).pipe(
     map(() => this.getStep()),
   );
-  moreSize$ = combineLatest([this.maxKinderGarden$, this.items]).pipe(
-    map(([max, items]) => items.length - max),
-  );
 
-  oldMaxKinderGarden$$ = new BehaviorSubject<number>(null);
-  oldMaxKinderGarden$ = this.oldMaxKinderGarden$$.pipe(filter((status) => !!status));
-  maxIsChange$ = combineLatest([this.oldMaxKinderGarden$, this.maxKinderGarden$]).pipe(
-    map(([old, now]) => old !== now),
-  );
-  set oldMaxKinderGarden(max: number) {
-    this.oldMaxKinderGarden$$.next(max > 50 ? 50 : max);
+  listMaxLength$$ = new BehaviorSubject<number>(6);
+
+  get listMaxLength(): number {
+    return this.listMaxLength$$.getValue();
   }
-  get oldMaxKinderGarden(): number {
-    return this.oldMaxKinderGarden$$.getValue();
+  set listMaxLength(length: number) {
+    this.listMaxLength$$.next(length);
   }
 
-  set maxKinderGarden(max: number) {
-    this.maxKinderGarden$$.next(max > 50 ? 50 : max);
+  nextStepLength$$ = new BehaviorSubject<number>(10);
+  get nextStepLength(): number {
+    return this.nextStepLength$$.getValue();
   }
-  get maxKinderGarden(): number {
-    return this.maxKinderGarden$$.getValue();
+  set nextStepLength(length: number) {
+    this.nextStepLength$$.next(length);
+  }
+
+  set maxKindergarten(max: number) {
+    this.maxKindergarten$$.next(max > 50 ? 50 : max);
+  }
+  get maxKindergarten(): number {
+    return this.maxKindergarten$$.getValue();
   }
 
   getInitSize(): number {
-    return this.maxKinderGarden > 6 ? 6 : this.maxKinderGarden;
+    return this.maxKindergarten > this.listMaxLength ? this.listMaxLength : this.maxKindergarten;
   }
 
   set(dictItems: DictionaryItem[]): void {
@@ -55,27 +57,28 @@ export class PriorityItemsService {
     const size = this.getInitSize();
     if (items.length > size) {
       this.updateScreenItems(items.slice(0, size));
-    } else if (items.length < 6) {
+    } else if (items.length < this.listMaxLength) {
       this.updateScreenItems(items.concat(new Array(size - items.length).fill(null)));
     } else {
       this.updateScreenItems(items);
     }
   }
-  init(oldMax: number, max: number, dictItems: DictionaryItem[]): void {
-    this.oldMaxKinderGarden = oldMax;
-    this.maxKinderGarden = max;
+
+  init(max: number, dictItems: DictionaryItem[]): void {
+    this.maxKindergarten = max;
     this.set(dictItems);
   }
+
   getStep(): number {
     const items = this.getScreenItems();
 
     const selectedSize = this.getItems().length;
     let add = 0;
-    if (selectedSize > this.maxKinderGarden) {
-      add = selectedSize - this.maxKinderGarden;
+    if (selectedSize > this.maxKindergarten) {
+      add = selectedSize - this.maxKindergarten;
     }
-    const diff = this.maxKinderGarden - items.length + add;
-    return diff > 10 ? 10 : diff;
+    const diff = this.maxKindergarten - items.length + add;
+    return diff > this.nextStepLength ? this.nextStepLength : diff;
   }
 
   moreBySize(size: number): void {

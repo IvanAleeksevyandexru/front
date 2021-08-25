@@ -1,4 +1,4 @@
-<epgu-cf-ui-constructor-screen-pad *ngIf="maxKinderGarden$ | async as maxKinderGarden">
+<epgu-cf-ui-constructor-screen-pad *ngIf="maxKindergarten$ | async as maxKindergarten">
   <div class="priority-header mb-12">
     <div class="priority-header__index">{{ index }}</div>
     <div class="priority-header__actions">
@@ -18,10 +18,10 @@
       </button>
     </div>
   </div>
-  <div *ngIf="index > maxKinderGarden" class="priority-info mb-24">
+  <div *ngIf="index > maxKindergarten" class="priority-info mb-24">
     <div class="priority-info__title mb-4">Этот сад не поместился</div>
     <div class="priority-info__description">
-      Оставьте в списке садов не более {{ itemsService.maxKinderGarden }}
+      Оставьте в списке садов не более {{ itemsService.maxKindergarten }}
     </div>
   </div>
   <div class="priority-content mb-8">
@@ -49,7 +49,10 @@
       </div>
       <div class="priority-detail" *ngIf="data.attributeValues?.SCHEDULE">
         <div class="priority-detail__label mt-12">Режим работы</div>
-        <div class="priority-detail__value mb-4">{{ data.attributeValues.SCHEDULE }}</div>
+        <div
+          class="priority-detail__value mb-4"
+          [innerHTML]="data.attributeValues.SCHEDULE | imgPrefixer | safe: 'html'"
+        ></div>
       </div>
     </div>
   </div>
@@ -71,7 +74,7 @@
     </button>
     <button
       (click)="deleteAction()"
-      [ngClass]="{ max: index > maxKinderGarden }"
+      [ngClass]="{ max: index > maxKindergarten }"
       class="priority-action delete link-btn"
     >
       Удалить
