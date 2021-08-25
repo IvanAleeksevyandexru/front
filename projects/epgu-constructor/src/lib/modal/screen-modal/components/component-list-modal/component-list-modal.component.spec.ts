@@ -78,6 +78,7 @@ describe('ComponentListModalComponent', () => {
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
+    screenService.componentErrors = {};
     navModalService = TestBed.inject(NavigationModalService);
     fixture = TestBed.createComponent(ComponentListModalComponent);
     component = fixture.componentInstance;

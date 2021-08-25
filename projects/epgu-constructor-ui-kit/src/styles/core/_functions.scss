@@ -1,5 +1,7 @@
 @import 'variables';
 @import 'breakpoint';
+@import 'palettes';
+@import 'typography';
 
 @mixin shadow-main {
   box-shadow: 0px 24px 48px hsla(220, 43%, 93%, .4), 0px 1px 4px hsla(221, 10%, 99%, 1);

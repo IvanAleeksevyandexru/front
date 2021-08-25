@@ -127,7 +127,22 @@ export class AutocompletePrepareService {
       mnemonic,
       componentsGroupIndex,
     );
-    const componentValue = this.findComponentValue(component, id, value);
+    let componentValue = this.findComponentValue(
+      component,
+      id,
+      value,
+      mnemonic,
+      componentsSuggestionsSet,
+    );
+    if (component.type === CustomScreenComponentTypes.DocInput) {
+      const [, fieldName] = Array.from(componentsSuggestionsSet)
+        .find(([suggestId]) => suggestId === mnemonic)[1]
+        .split('.');
+      componentValue = JSON.stringify({
+        ...JSON.parse(component.value),
+        [fieldName]: componentValue,
+      });
+    }
     this.setComponentValue(component, componentValue);
     if (isChildrenListType(parentComponent)) {
       const cachedAnswer: Answer = this.prepareCachedAnswers(
@@ -267,31 +282,42 @@ export class AutocompletePrepareService {
       return repeatableComponents[componentsGroupIndex].find((component) => {
         return Array.from(componentsSuggestionsSet).some(
           ([componentMnemonic, componentId]) =>
-            componentId === component.id && componentMnemonic === parentMnemonic,
+            (componentId === component.id && componentMnemonic === parentMnemonic) ||
+            (componentId.includes(component.id) && componentMnemonic === parentMnemonic),
         );
       });
     } else {
       return this.screenService.display?.components?.find((component) => {
         return Array.from(componentsSuggestionsSet).some(
           ([componentMnemonic, componentId]) =>
-            componentId === component.id && componentMnemonic === parentMnemonic,
+            (componentId === component.id && componentMnemonic === parentMnemonic) ||
+            (componentId.includes(component.id) && componentMnemonic === parentMnemonic),
         );
       });
     }
   }
 
-  private findComponentValue(component: Partial<ComponentDto>, id: number, value: string): string {
-    const result =
-      component &&
-      this.screenService.suggestions[component.id]?.list.find((item) => {
-        if (typeof id === 'number') {
-          return item.id === id;
-        } else if (item.originalItem.includes(value)) {
-          return true;
-        } else {
-          return item.value === value;
-        }
-      });
+  private findComponentValue(
+    component: Partial<ComponentDto>,
+    id: number,
+    value: string,
+    mnemonic: string,
+    componentsSuggestionsSet: Set<[string, string]>,
+  ): string {
+    const [, fieldName] = Array.from(componentsSuggestionsSet).find(
+      ([componentMnemonic]) => componentMnemonic === mnemonic,
+    );
+    const suggestions =
+      this.screenService.suggestions[component?.id] || this.screenService.suggestions[fieldName];
+    const result = suggestions?.list.find((item) => {
+      if (typeof id === 'number') {
+        return item.id === id;
+      } else if (item.originalItem.includes(value)) {
+        return true;
+      } else {
+        return item.value === value;
+      }
+    });
 
     return result?.originalItem || '';
   }
@@ -360,6 +386,13 @@ export class AutocompletePrepareService {
         return isFormattedReturn && this.datesToolsService.isValid(dateValue)
           ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
           : dateValue;
+      }
+    } else if (component.type === CustomScreenComponentTypes.DocInput) {
+      const dateValue = this.datesToolsService.parse(value);
+      if (this.datesToolsService.isValid(dateValue)) {
+        return this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT);
+      } else {
+        return value;
       }
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
