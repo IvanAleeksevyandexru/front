@@ -10,7 +10,7 @@
   </div>
 </section>
 
-<section *ngIf="!periods.length && !isCompleted && emptyFieldsErrorMsg" class="employee-history__empty-fields">
+<section *ngIf="!formValid && emptyFieldsErrorMsg" class="employee-history__empty-fields">
   {{emptyFieldsErrorMsg}}
 </section>
 

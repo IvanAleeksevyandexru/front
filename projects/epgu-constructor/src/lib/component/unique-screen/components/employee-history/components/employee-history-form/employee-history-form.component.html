@@ -145,4 +145,5 @@
   [periods]="monthsService.availableMonths | memo: monthsService.getUncheckedPeriods:monthsService"
   [years]="monthsService.years"
   [emptyFieldsErrorMsg]="init[0]?.attrs?.emptyFieldsErrorMsg"
+  [formValid]="employeeFormService.employeeHistoryForm.valid"
 ></epgu-constructor-employee-history-description>
