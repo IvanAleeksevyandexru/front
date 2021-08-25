@@ -21,6 +21,7 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   @Input() isSelectButtonHidden = false;
   @Input() showLoader = false;
   @Input() mapObject;
+  @Input() attrs;
   public selectObject: Function;
   public expandObject: Function;
   public extInfo$: Observable<IuikFullDataResponse>;
