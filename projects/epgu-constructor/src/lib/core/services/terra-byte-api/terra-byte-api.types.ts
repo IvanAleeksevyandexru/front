@@ -66,6 +66,7 @@ export interface FileUploadValidation {
  * Интерфейс для файла на загругку из JSON
  */
 export interface FileUploadItem {
+  notCompression: boolean;
   uploadId: string;
   label: string;
   labelHint?: string;

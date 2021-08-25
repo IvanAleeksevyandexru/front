@@ -111,6 +111,12 @@ export class UploaderValidationService {
   }
 
   compressImage(file: FileItem): Observable<FileItem> {
+    const notCompression = this.uploader.data?.notCompression || false;
+
+    if (notCompression) {
+      return of(file);
+    }
+
     const compressedImageOptions: CompressionOptions = {
       maxSizeMB: getSizeInMB(this.maxImgSizeInBytes),
       deepChecking: true,
