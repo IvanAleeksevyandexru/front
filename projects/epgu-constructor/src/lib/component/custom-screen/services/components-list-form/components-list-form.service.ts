@@ -478,8 +478,9 @@ export class ComponentsListFormService {
     const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
     const key: string = getDictKeyByComp(component);
     const isRef = String(defaultValue).includes('$');
+    const specialCharactersRegExp = /[&\/\\#^,+()$~%'":*?<>{}]/g;
     const compareValue = isRef
-      ? String(defaultValue).replace(/[&/\\#,+()$~%'":*?<>{}]/g, '')
+      ? String(defaultValue).replace(specialCharactersRegExp, '')
       : defaultValue;
 
     let value: ListItem = undefined;
