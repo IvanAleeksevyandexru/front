@@ -18,6 +18,8 @@ export interface KindergartenAttrs {
   label?: string;
   checkboxLabel?: string;
   finalScreenText?: string;
+  listMaxLength?: number;
+  nextStepLength?: number;
   attrs?: ComponentAttrsDto;
 }
 

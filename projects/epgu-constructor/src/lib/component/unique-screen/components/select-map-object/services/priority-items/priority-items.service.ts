@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { filter, map } from 'rxjs/operators';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 export interface CancelContext {
   index: number;
@@ -47,6 +48,8 @@ export class PriorityItemsService {
     return this.maxKindergarten$$.getValue();
   }
 
+  constructor(private screenService: ScreenService) {}
+
   getInitSize(): number {
     return this.maxKindergarten > this.listMaxLength ? this.listMaxLength : this.maxKindergarten;
   }
@@ -65,6 +68,10 @@ export class PriorityItemsService {
   }
 
   init(max: number, dictItems: DictionaryItem[]): void {
+    this.listMaxLength =
+      this.screenService.component.attrs?.mapKindergartenPriorityAttrs?.listMaxLength || 6;
+    this.nextStepLength =
+      this.screenService.component.attrs?.mapKindergartenPriorityAttrs?.nextStepLength || 10;
     this.maxKindergarten = max;
     this.set(dictItems);
   }
