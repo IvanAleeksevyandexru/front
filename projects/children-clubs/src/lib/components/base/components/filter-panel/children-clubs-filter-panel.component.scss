@@ -9,6 +9,12 @@
   }
 }
 
+.subtitle {
+  @include typ-plain-small;
+  color: $color-summer-night;
+  margin-bottom: 4px;
+}
+
 .filter-panel {
   margin-top: 12px;
   padding: 0 4px;
