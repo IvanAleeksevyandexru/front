@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { configureTestSuite } from 'ng-bullet';
@@ -13,6 +14,7 @@ import {
   UnsubscribeService,
   HelperTextComponent,
   ModalService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -67,6 +69,7 @@ describe('InvitationErrorComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         ValidationService,
         UnsubscribeService,
         CurrentAnswersService,
