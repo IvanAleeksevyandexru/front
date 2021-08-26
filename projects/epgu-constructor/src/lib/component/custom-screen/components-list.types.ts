@@ -208,6 +208,7 @@ export interface CustomComponentAttrValidation {
   errorDesc?: string;
   updateOn?: UpdateOn;
   expr?: string;
+  forChild?: string;
 }
 
 export enum CustomComponentAttrValidator {
