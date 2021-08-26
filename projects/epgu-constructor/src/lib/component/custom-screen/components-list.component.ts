@@ -20,6 +20,7 @@ import {
   ConfigService,
   HttpCancelService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { AbstractControl, FormArray } from '@angular/forms';
 import { ScreenService } from '../../screen/screen.service';
 import {
   CustomComponent,
@@ -32,6 +33,7 @@ import { DateRangeService } from '../../shared/services/date-range/date-range.se
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
+import { ValidationService } from '../../shared/services/validation/validation.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -67,6 +69,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     private eventBusService: EventBusService,
     private httpCancelService: HttpCancelService,
     private changeDetectionRef: ChangeDetectorRef,
+    private validationService: ValidationService,
   ) {
     this.changes = this.formService.changes;
   }
@@ -83,33 +86,49 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     this.unsubscribe();
 
-    const components: CustomComponent[] =
-      changes.components?.currentValue || this.formService.form.value || this.components;
-    const { currentValue, previousValue } = changes.errors || {};
-    const isErrorsChanged = !isEqual(currentValue, previousValue);
+    const components: CustomComponent[] = changes.components?.currentValue;
+    const { currentValue: scenarioErrors, previousValue } = changes.errors || {};
+    const isErrorsChanged = !isEqual(scenarioErrors, previousValue);
 
-    // NOTICE: из-за асинхронности получения ошибок с бэка, на REPEATALBE скринах возможен бесконечный цикл,
-    // в котором changes.error вызывают пересоздание всей формы,
-    // что в свою очередь активирует расчет изменений в changeComponentList,
-    // с сохранением нового стейта в repeatable-screen.component.ts,
-    // который триггерит изменения в commonErrors$, что приводит нас снова сюда с changes.error:
-    // Чтобы разорвать эту цепочку делаем проверку на валидность всей формы, если невалидна, значит ошибки уже переданы в форму
-    // и пересоздавать ее не нужно, разрывая таким образом бесконечный цикл
-    // TODO: подумать над переделкой текущего механизма передачи ошибок с бэка в пользу проброса ошибок через абстракцию самой формы
-    if (this.formService.form.invalid) return;
-
-    if (components || isErrorsChanged) {
-      const formArray = this.formService.create(components, this.errors, this.componentsGroupIndex);
+    if (components) {
+      const formArray: FormArray = this.formService.create(components, this.componentsGroupIndex);
       this.emitFormCreated.emit(formArray);
-      this.subscribeOnFormStatusChanging();
-      this.loadRepository(this.components);
     }
+
+    if (isErrorsChanged) {
+      this.handleScenarioErrors(scenarioErrors);
+    }
+
+    this.subscribeOnFormStatusChanging();
+    this.loadRepository(this.components);
   }
 
   ngOnDestroy(): void {
     if (this.shouldPendingRequestsBeCancelledAfterDestroy) {
       this.httpCancelService.cancelPendingRequests();
     }
+  }
+
+  private handleScenarioErrors(scenarioErrors): void {
+    const componentsIdsWithError = Object.keys(scenarioErrors);
+    const controlsToUpdateWithError = this.formService.form.controls.filter(
+      (control: AbstractControl): boolean =>
+        componentsIdsWithError.includes(control.get('id').value),
+    );
+
+    controlsToUpdateWithError.forEach((control: AbstractControl): void => {
+      const { value: componentId } = control.get('id');
+      const errorMsg = scenarioErrors[componentId];
+      const componentsList = this.formService.form.value;
+      const component = componentsList.find(
+        (item: CustomComponent): boolean => item.id === componentId,
+      );
+
+      control
+        .get('value')
+        .setValidators(this.validationService.validationBackendError(errorMsg, component));
+      control.get('value').updateValueAndValidity();
+    });
   }
 
   private loadRepository(components: CustomComponent[]): void {

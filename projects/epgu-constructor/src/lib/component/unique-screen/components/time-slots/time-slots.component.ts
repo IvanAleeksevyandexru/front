@@ -28,7 +28,12 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ScreenService } from '../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
-import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
+import {
+  DateTypeTypes,
+  TimeSlotsConstants,
+  TimeSlotsTypes,
+  STATIC_ERROR_MESSAGE,
+} from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
@@ -362,7 +367,12 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
-          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+          if (this.errorMessage?.includes(STATIC_ERROR_MESSAGE)) {
+            this.daysNotFoundTemplate.header = 'Непредвиденная ошибка';
+            this.daysNotFoundTemplate.description = this.errorMessage;
+          } else {
+            this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+          }
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
         }

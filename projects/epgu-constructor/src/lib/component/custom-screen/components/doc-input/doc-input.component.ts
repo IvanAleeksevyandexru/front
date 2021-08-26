@@ -6,6 +6,7 @@ import {
   UnsubscribeService,
   DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { isEmpty } from 'lodash';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
@@ -71,6 +72,16 @@ export class DocInputComponent extends AbstractComponentListItemComponent
         this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
           suggestions[this.control.value?.id],
         );
+
+        if (isEmpty(this.classifiedSuggestionItems)) {
+          this.classifiedSuggestionItems = Object.keys(suggestions)
+            .filter((key) => key.includes(this.control.value?.id))
+            .reduce((acc, key) => {
+              const [, fieldName] = key.split('.');
+              acc[fieldName] = suggestions[key];
+              return { ...acc };
+            }, {});
+        }
       });
   }
 

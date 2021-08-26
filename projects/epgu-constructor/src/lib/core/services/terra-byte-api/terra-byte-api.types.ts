@@ -68,6 +68,7 @@ export interface FileUploadValidation {
 export interface FileUploadItem {
   uploadId: string;
   label: string;
+  notCompression?: boolean;
   labelHint?: string;
   title?: string;
   fileType?: string[];

@@ -1,4 +1,12 @@
-<div class="error">
+<div
+  class="disclaimer"
+  [ngClass]="{
+    'vertical-line': isNotifierDisclaimer,
+    'yellow-line': type === 'warn',
+    'gray-line': type === 'info',
+    'red-line': type === 'error'
+  }"
+>
   <p class="title">
     <ng-container [ngSwitch]="type">
       <span *ngSwitchCase="'warn'" class="yellow-line"></span>

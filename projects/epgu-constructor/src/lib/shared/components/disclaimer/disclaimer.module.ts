@@ -8,4 +8,4 @@ import { BaseModule } from '../../base.module';
   imports: [CommonModule, BaseModule],
   exports: [DisclaimerComponent],
 })
-export class DisclaimerModule { }
+export class DisclaimerModule {}

@@ -1,4 +1,7 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 :host::ng-deep {
   .LyImageCropper-area-d {

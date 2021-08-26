@@ -1,4 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
 
 .clone-btn {
   &:focus {

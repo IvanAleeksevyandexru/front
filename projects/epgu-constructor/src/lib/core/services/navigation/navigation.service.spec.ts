@@ -92,10 +92,6 @@ describe('NavigationService', () => {
     expect(hrefFn).toBeCalledWith('/abc');
   });
   it('test redirectToProfileEdit', () => {
-    navigationService.isWebView = true;
-    navigationService.redirectToProfileEdit();
-    expect(locationService.getHref()).toBe('/settings/edit');
-    navigationService.isWebView = false;
     navigationService.redirectToProfileEdit();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/settings/edit`);
   });

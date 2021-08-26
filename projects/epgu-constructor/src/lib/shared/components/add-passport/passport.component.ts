@@ -22,7 +22,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { FocusState, ValidationShowOn } from '@epgu/epgu-lib';
-import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import {
   EventBusService,
@@ -86,13 +86,9 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
     this.initFormGroup();
     this.subscribeToFormChanges();
 
-    this.focusManager
-      .stateComponent$(this.componentId)
-      .pipe(
-        tap((state) => this.setFocusedInput(state)),
-        takeUntil(this.ngUnsubscribe$),
-      )
-      .subscribe();
+    this.focusManager.state$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((state) => this.setFocusedInput(state));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -194,7 +190,7 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
   }
 
   showOnFocus(fieldName: string): boolean {
-    return this.passportForm.get(fieldName).touched ? true : fieldName !== this.focusedInputId;
+    return this.passportForm.get(fieldName).touched && fieldName !== this.focusedInputId;
   }
 
   private setFocusedInput(state: FocusState): void {

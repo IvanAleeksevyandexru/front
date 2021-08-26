@@ -27,6 +27,7 @@ import { ValidationTypeModule } from './validation-type.module';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 import { MockModule, MockProvider } from 'ng-mocks';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 const componentMockData: CustomComponent = {
   attrs: {
@@ -79,6 +80,7 @@ describe('ValidationTypeDirective', () => {
       imports: [CoreModule, MockModule(CoreUiModule), ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
       providers: [
         ValidationService,
+        CurrentAnswersService,
         NgControl,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },

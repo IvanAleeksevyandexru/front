@@ -1,4 +1,6 @@
-<epgu-cf-ui-main-container [showLoader]="(isFirstLoading$ | async) || (screenService.isLoaderVisible | async)">
+<epgu-cf-ui-main-container
+  [showLoader]="(isFirstLoading$ | async) || (screenService.isLoaderVisible | async)"
+>
   <ng-container
     *ngIf="(formPlayerService.playerLoaded$ | async) && (configService.isLoaded$ | async)"
   >
@@ -6,5 +8,6 @@
     <epgu-constructor-screen-modal></epgu-constructor-screen-modal>
     <epgu-constructor-logic></epgu-constructor-logic>
     <lib-notifier></lib-notifier>
+    <epgu-constructor-notifier-disclaimer></epgu-constructor-notifier-disclaimer>
   </ng-container>
 </epgu-cf-ui-main-container>

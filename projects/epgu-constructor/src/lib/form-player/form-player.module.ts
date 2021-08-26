@@ -2,7 +2,11 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
 import { SmuEventsService } from '@epgu/epgu-lib';
-import { CoreUiModule, MainContainerModule, PREV_BUTTON_NAVIGATION } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CoreUiModule,
+  MainContainerModule,
+  PREV_BUTTON_NAVIGATION,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
@@ -19,6 +23,7 @@ registerLocaleData(localeRu);
 
 import 'hammerjs';
 import { PrevButtonNavigationService } from '../core/services/prev-button-navigation/prev-button-navigation.service';
+import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
 
 /**
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
@@ -34,6 +39,7 @@ import { PrevButtonNavigationService } from '../core/services/prev-button-naviga
     AutocompleteModule,
     LogicScreenModule,
     MainContainerModule,
+    NotifierDisclaimerModule,
   ],
   providers: [
     FormPlayerService,
@@ -45,7 +51,7 @@ import { PrevButtonNavigationService } from '../core/services/prev-button-naviga
     {
       provide: PREV_BUTTON_NAVIGATION,
       useClass: PrevButtonNavigationService,
-    }
+    },
   ],
   exports: [FormPlayerComponent],
   entryComponents: [FormPlayerComponent],

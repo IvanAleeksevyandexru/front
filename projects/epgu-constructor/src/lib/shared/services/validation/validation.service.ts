@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn, } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
@@ -7,6 +7,7 @@ import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
+  CustomComponentAttrValidator,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import {
@@ -17,6 +18,9 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { get } from 'lodash';
+
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -24,6 +28,7 @@ enum ValidationType {
   date = 'Date',
   checkRS = 'checkRS',
 }
+
 type DateValidationCondition = '<' | '<=' | '>' | '>=';
 
 @Injectable()
@@ -40,7 +45,9 @@ export class ValidationService {
     private dateRangeService: DateRangeService,
     private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
-  ) {}
+    private currentAnswerService: CurrentAnswersService
+  ) {
+  }
 
   public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
@@ -63,7 +70,8 @@ export class ValidationService {
           return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
+            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -96,7 +104,8 @@ export class ValidationService {
           return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
+            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -118,8 +127,6 @@ export class ValidationService {
         controlValue = this.datesToolsService.format(controlValue);
       }
 
-      // TODO: здесь всегда будет true, т.к. с бэка component.value возвращается пустой и сравнение некорректно.
-      // Именно поэтому не видны ошибки с бэка. Подумать над другой имлментацией проверки изменений
       const valueChanged = component.value !== controlValue;
 
       if (valueChanged) {
@@ -222,13 +229,7 @@ export class ValidationService {
       }
       sum += cardNum;
     }
-    return sum % 10 === 0 ? this.checkMIRCardBins(cardNumber) : false;
-  }
-
-  private checkMIRCardBins(cardNumber: string): boolean {
-    // eslint-disable-next-line max-len
-    const binRegExp = /^((2200\s?0[1-9])|(2200\s?1[0135-9])|(2200\s?2[0-9])|(2200\s?3[0-47-9])|(2200\s?4[0235789])|(2200\s?5[02-689])|(2200\s?6[0-24-79])|(2200\s?7[01346-8])|(2200\s?8[02-479])|(2200\s?9[1-35-9])|(2201\s?0[0468])|(2201\s?1[023679])|(2201\s?2[023579])|(2201\s?3[0346])|(2201\s?4[02-46-9])|(2201\s?5[03-9])|(2201\s?6[125-79])|(2201\s?7[0289])|(2201\s?8[14-8])|(2201\s?9[569])|(2202\s?1[0247])|(2202\s?2[018])|(2202\s?3[169])|(2202\s?49)|(2202\s?5[35-9])|(2202\s?7[489])|(2203\s?2[2459])|(2203\s?3[19])|(2203\s?4[14])|(2203\s?51)|(2203\s?74)|(2203\s?8[13])|(2204\s?15)|(2204\s?88)|(3562\s?99)|(3565\s?(04|14|46))|(6234\s?46)|(6291\s?(29|57))|(6292\s?44)|(6711\s?82)|(6763\s?47)|(6764\s?54)|(6765\s?31)|(6768\s?84)|(6769\s?07)|(6773\s?(19|84)))[0-9]{2}\s?[0-9]{4}\s?([0-9]{4}\s?([0-9]|[0-9]{2}|[0-9]{3})?)$/;
-    return binRegExp.test(cardNumber);
+    return sum % 10 === 0;
   }
 
   private isValid(component: CustomComponent, value: string): boolean {
@@ -247,9 +248,40 @@ export class ValidationService {
         return Object.values(value).every((val) => !!val);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
+      case CustomScreenComponentTypes.StringInput:
+        return this.calculateStringPredicate(component, value);
       default:
         return true;
     }
+  }
+
+  private calculateStringPredicate(component: CustomComponent, value: string): boolean {
+    let customPredicateValidation = component.attrs.validation?.find((validation) => {
+      return validation.type === CustomComponentAttrValidator.calculatedPredicate;
+    });
+    if (!customPredicateValidation) {
+      return true;
+    }
+    let validationExpression = this.replaceValueForPredicateExpression(customPredicateValidation.expr, component.id, value);
+    try {
+      return eval(validationExpression);
+    } catch (error: unknown) {
+      if (error instanceof SyntaxError) {
+        throw new Error(`Ошибка в выражении CalculatedPredicate. Component ID: ${component.id}`);
+      }
+    }
+  }
+
+  private replaceValueForPredicateExpression(expression: string, componentId: string, value: string): string {
+    return expression.match(/\${([^\s)]*)}/g)
+      .map(match => match.match(/\${\s?(?<refGroup>[^\s)]*)\s?}/).groups.refGroup)
+      .reduce((accumulator, currentMatch) => {
+        // Конвертируется в Number чтобы избежать скриптинга по эвал
+        let valueToReplace = currentMatch === `${componentId}.value`?
+          Number(value) :
+          Number(get(this.currentAnswerService.state, currentMatch));
+        return accumulator.replace(`\$\{${currentMatch}\}`, isNaN(valueToReplace) ? '' : valueToReplace + '');
+      }, expression);
   }
 
   private validationErrorMsg(

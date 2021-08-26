@@ -11,6 +11,7 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 export class AbstractComponentListItemComponent implements OnInit {
   @Input() componentIndex: number;
   @Input() componentsGroupIndex: number;
+  @Input() limit?: number | string;
 
   public formService: ComponentsListFormService;
   public control: AbstractControl;

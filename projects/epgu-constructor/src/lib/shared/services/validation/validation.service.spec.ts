@@ -15,10 +15,12 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('ValidationService', () => {
   let service: ValidationService;
   let restrictionService: DateRestrictionsService;
+  let currentAnswersService: CurrentAnswersService;
   let dateInputComponent = ({
     id: 'pd8',
     type: CustomScreenComponentTypes.DateInput,
@@ -108,7 +110,7 @@ describe('ValidationService', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+    configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -116,6 +118,7 @@ describe('ValidationService', () => {
         ComponentsListToolsService,
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        CurrentAnswersService,
         DatesToolsService,
         DateRestrictionsService,
         MockProvider(DateRefService),
@@ -128,6 +131,7 @@ describe('ValidationService', () => {
   beforeEach(() => {
     service = TestBed.inject(ValidationService);
     restrictionService = TestBed.inject(DateRestrictionsService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
   });
 
   describe('customValidator', () => {
@@ -169,6 +173,71 @@ describe('ValidationService', () => {
       });
     });
   });
+
+    describe('calculateStringPredicate()', () => {
+      let mockCalcStringComponent: CustomComponent = {
+        id: 'rf2',
+        type: CustomScreenComponentTypes.StringInput,
+        label: 'Сумма',
+        attrs: {
+          dictionaryType: '',
+          ref: [],
+          labelAttr: '',
+          fields: [],
+          validation: [
+            {
+              type: 'CalculatedPredicate',
+              value: '',
+              ref: '',
+              condition: '',
+              dataType: '',
+              expr: '${rf2.value} > ${rf3.value}',
+              errorMsg: 'Полная стоимость путёвки должна превышать оплаченную'
+            }
+          ],
+          value: '',
+        }
+      };
+      it('should evaluate 10 > 12 to false', () => {
+        currentAnswersService.state = {
+          rf3: {
+            value: 12
+          }
+        };
+        const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+        expect(customValidator).toBeFalsy();
+      });
+
+      it('should evaluate 10 > 8 to true', () => {
+        currentAnswersService.state = {
+          rf3: {
+            value: 8
+          }
+        };
+        const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+        expect(customValidator).toBeTruthy();
+      });
+
+      it('should throw error on evil script', () => {
+        // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
+         currentAnswersService.state = {
+          rf3: {
+            value: 'throw new Error("Evil code"); 12'
+          }
+        };
+        expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError('Ошибка в выражении CalculatedPredicate. Component ID: rf2');
+      });
+
+      it('should throw error on evil script', () => {
+        // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
+        currentAnswersService.state = {
+          rf3: {
+            value: '12; throw new Error("Evil code")'
+          }
+        };
+        expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError('Ошибка в выражении CalculatedPredicate. Component ID: rf2');
+      });
+    });
 
   describe('customValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
