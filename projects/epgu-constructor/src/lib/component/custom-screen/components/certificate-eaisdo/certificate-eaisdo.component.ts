@@ -79,22 +79,22 @@ export class CertificateEaisdoComponent extends AbstractComponentListItemCompone
   }
 
   private handleResponse(response: ActionApiResponse<EaisdoResponse>): void {
-    const hasErrors = Array.isArray(response.errorList) && response.errorList.length > 0;
-    const isTimeout = ((response?.responseData as unknown) as { isTimeout: boolean })?.isTimeout;
+    const hasErrors = !!response.message;
+    const isTimeout = response.status === 'REQUEST_TIMEOUT';
     if (hasErrors || isTimeout) {
       this.handleError(null);
+    } else {
+      this.control.get('value').setValue(response);
+      this.formService.emitChanges();
+      this.actionService.switchAction(
+        {
+          label: 'nextStep',
+          type: ActionType.nextStep,
+          action: DTOActionAction.getNextStep,
+        },
+        this.component.id,
+      );
     }
-
-    this.control.get('value').setValue(response);
-    this.formService.emitChanges();
-    this.actionService.switchAction(
-      {
-        label: 'nextStep',
-        type: ActionType.nextStep,
-        action: DTOActionAction.getNextStep,
-      },
-      this.component.id,
-    );
   }
 
   private handleError(error: unknown): void {

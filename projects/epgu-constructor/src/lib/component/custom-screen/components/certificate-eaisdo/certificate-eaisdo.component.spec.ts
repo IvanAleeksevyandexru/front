@@ -116,9 +116,8 @@ const mockComponent = {
 };
 
 const timeoutResponse = {
-  responseData: {
-    isTimeout: true,
-  }
+  message: 'Error Message',
+  status: 'REQUEST_TIMEOUT'
 };
 
 const okResponse = {
