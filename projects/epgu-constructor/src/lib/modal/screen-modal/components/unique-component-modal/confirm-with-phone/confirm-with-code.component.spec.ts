@@ -26,6 +26,7 @@ import { ValidationService } from '../../../../../shared/services/validation/val
 import { ConfirmWithCodeComponent } from './confirm-with-code.component';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 
 describe('ConfirmWithCodeComponent', () => {
   let component: ConfirmWithCodeComponent;
@@ -62,6 +63,7 @@ describe('ConfirmWithCodeComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         ValidationService,
+        CurrentAnswersService,
         EventBusService,
         DateRangeService,
         DatesToolsService,

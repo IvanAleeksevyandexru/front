@@ -25,6 +25,7 @@ import { DateRangeService } from '../../../../../../shared/services/date-range/d
 import { LabelPipe } from '../../pipe/label.pipe';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -102,6 +103,7 @@ describe('MatPeriodFormComponent', () => {
         DurationService,
         DatesToolsService,
         ValidationService,
+        CurrentAnswersService,
         DateRangeService,
         MockProvider(DateRestrictionsService),
         { provide: ScreenService, use: ScreenServiceStub },

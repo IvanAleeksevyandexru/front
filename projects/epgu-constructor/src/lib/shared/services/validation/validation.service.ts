@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
@@ -13,16 +7,20 @@ import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
+  CustomComponentAttrValidator,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import {
+  DatesToolsService,
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { get } from 'lodash';
+
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -30,6 +28,7 @@ enum ValidationType {
   date = 'Date',
   checkRS = 'checkRS',
 }
+
 type DateValidationCondition = '<' | '<=' | '>' | '>=';
 
 @Injectable()
@@ -46,7 +45,9 @@ export class ValidationService {
     private dateRangeService: DateRangeService,
     private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
-  ) {}
+    private currentAnswerService: CurrentAnswersService
+  ) {
+  }
 
   public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
@@ -69,7 +70,8 @@ export class ValidationService {
           return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
+            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -102,7 +104,8 @@ export class ValidationService {
           return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
+            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -233,9 +236,40 @@ export class ValidationService {
         return value.length === this.legalInnLength && checkINN(value);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
+      case CustomScreenComponentTypes.StringInput:
+        return this.calculateStringPredicate(component, value);
       default:
         return true;
     }
+  }
+
+  private calculateStringPredicate(component: CustomComponent, value: string): boolean {
+    let customPredicateValidation = component.attrs.validation?.find((validation) => {
+      return validation.type === CustomComponentAttrValidator.calculatedPredicate;
+    });
+    if (!customPredicateValidation) {
+      return true;
+    }
+    let validationExpression = this.replaceValueForPredicateExpression(customPredicateValidation.expr, component.id, value);
+    try {
+      return eval(validationExpression);
+    } catch (error: unknown) {
+      if (error instanceof SyntaxError) {
+        throw new Error(`Ошибка в выражении CalculatedPredicate. Component ID: ${component.id}`);
+      }
+    }
+  }
+
+  private replaceValueForPredicateExpression(expression: string, componentId: string, value: string): string {
+    return expression.match(/\${([^\s)]*)}/g)
+      .map(match => match.match(/\${\s?(?<refGroup>[^\s)]*)\s?}/).groups.refGroup)
+      .reduce((accumulator, currentMatch) => {
+        // Конвертируется в Number чтобы избежать скриптинга по эвал
+        let valueToReplace = currentMatch === `${componentId}.value`?
+          Number(value) :
+          Number(get(this.currentAnswerService.state, currentMatch));
+        return accumulator.replace(`\$\{${currentMatch}\}`, isNaN(valueToReplace) ? '' : valueToReplace + '');
+      }, expression);
   }
 
   private validationErrorMsg(
