@@ -12,4 +12,5 @@ export class DisclaimerComponent {
   @Input() title: string;
   @Input() description: string;
   @Input() clarifications: Clarifications;
+  @Input() isNotifierDisclaimer = false;
 }

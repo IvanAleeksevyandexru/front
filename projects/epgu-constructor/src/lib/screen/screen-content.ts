@@ -14,7 +14,9 @@ import {
   ApplicantAnswersDto,
   CachedAnswersDto,
   LogicComponents,
-  ScreenTypes, InfoComponentDto,
+  ScreenTypes,
+  InfoComponentDto,
+  DisclaimerDto,
 } from '@epgu/epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;
@@ -37,6 +39,7 @@ export class ScreenContent {
   private _componentValue = new BehaviorSubject<ComponentValue>(null);
   private _componentErrors = new BehaviorSubject<ScenarioErrorsDto>(null);
   private _uniquenessErrors = new BehaviorSubject<ScenarioErrorsDto[][]>([]);
+  private _disclaimers = new BehaviorSubject<DisclaimerDto[]>([]);
   private _componentError = new BehaviorSubject<string>(null);
   private _componentLabel = new BehaviorSubject<string>(null);
   private _buttons = new BehaviorSubject<ScreenButton[]>(null);
@@ -258,6 +261,16 @@ export class ScreenContent {
     return this._uniquenessErrors.asObservable();
   }
 
+  public get disclaimers(): DisclaimerDto[] {
+    return this._disclaimers.getValue();
+  }
+  public set disclaimers(val: DisclaimerDto[]) {
+    this._disclaimers.next(val);
+  }
+  public get disclaimers$(): Observable<DisclaimerDto[]> {
+    return this._disclaimers.asObservable();
+  }
+
   public get componentError(): string {
     return this._componentError.getValue();
   }
@@ -398,6 +411,7 @@ export class ScreenContent {
     const {
       errors = {} as ScenarioErrorsDto,
       uniquenessErrors = [] as ScenarioErrorsDto[][],
+      disclaimers = [] as DisclaimerDto[],
       display = {} as DisplayDto,
       orderId,
       gender,
@@ -437,6 +451,7 @@ export class ScreenContent {
     this.orderId = orderId;
     this.componentErrors = errors;
     this.uniquenessErrors = uniquenessErrors;
+    this.disclaimers = disclaimers;
     this.componentError = errors[firstComponent?.id];
     this.component = firstComponent;
     this.componentType = firstComponent?.type;

@@ -194,9 +194,12 @@ export type HintTimeTypes =
   | 'milliseconds';
 
 export interface DisclaimerDto {
-  type: 'warn' | 'error';
+  type: 'warn' | 'error' | 'info';
+  level: 'WARN' | 'ERROR' | 'INFO';
   title: string;
   description: string;
+  message?: string;
+  id?: number;
 }
 
 export interface HintDto {
