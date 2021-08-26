@@ -218,6 +218,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.currentSlot = null;
     this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
       (timeSlots) => {
+        this.processTimeSlots(timeSlots);
         this.timeSlots = timeSlots;
         if (this.timeSlotsService.hasError()) {
           this.showError(
@@ -387,6 +388,32 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.changeDetectionRef.markForCheck();
       },
     );
+  }
+
+  /**
+   * Вставляем уже забуканный таймслот в массив таймслотов в нужном порядке, чтобы можно было его выбрать.
+   */
+  private processTimeSlots(timeSlots: SlotInterface[]): void {
+    if (
+      this.bookedSlot &&
+      timeSlots.length &&
+      this.datesHelperService.isSameDate(this.bookedSlot.slotTime, timeSlots[0].slotTime)
+    ) {
+      const bookedSlotTime = this.bookedSlot.slotTime?.getTime();
+      const insertIdx = timeSlots.findIndex((timeSlot, idx) => {
+        const prevSlotTime = timeSlots[idx - 1]?.slotTime?.getTime();
+        const currentSlotTime = timeSlot.slotTime?.getTime();
+        return (
+          (!prevSlotTime && bookedSlotTime < currentSlotTime) ||
+          (prevSlotTime && bookedSlotTime > prevSlotTime && bookedSlotTime < currentSlotTime)
+        );
+      });
+      if (insertIdx !== -1) {
+        timeSlots.splice(insertIdx, 0, this.bookedSlot);
+      } else {
+        timeSlots.push(this.bookedSlot);
+      }
+    }
   }
 
   private addDayToWeek(week: IDay[], date: Date, today: Date): void {

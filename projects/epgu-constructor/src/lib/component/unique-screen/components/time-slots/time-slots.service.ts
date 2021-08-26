@@ -280,7 +280,7 @@ export class TimeSlotsService {
   private getBookedDepartment(cachedAnswer: TimeSlotsAnswerInterface, department): boolean {
     return (
       cachedAnswer?.department.value === department.value &&
-      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME
+      cachedAnswer?.department.attributeValues?.AREA_NAME == department.attributeValues?.AREA_NAME
     );
   }
 
