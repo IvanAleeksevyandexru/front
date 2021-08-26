@@ -67,6 +67,7 @@ import { ContentTypes } from './components/balloon-content-resolver/balloon-cont
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
@@ -108,24 +109,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   ]);
 
   constructor(
+    public config: ConfigService,
+    public screenService: ScreenService,
     public selectMapObjectService: SelectMapObjectService,
     public yandexMapService: YandexMapService,
-    public config: ConfigService,
-    private yaMapService: YaMapService,
-    private dictionaryApiService: DictionaryApiService,
-    private ngUnsubscribe$: UnsubscribeService,
-    public screenService: ScreenService,
-    private cdr: ChangeDetectorRef,
-    private modalService: ModalService,
-    private modalErrorService: ModalErrorService,
-    private zone: NgZone,
-    private deviceDetector: DeviceDetectorService,
-    private dictionaryToolsService: DictionaryToolsService,
     private actionService: ActionService,
-    private currentAnswersService: CurrentAnswersService,
+    private actionToolsService: ActionToolsService,
     private addressesToolsService: AddressesToolsService,
+    private cdr: ChangeDetectorRef,
+    private currentAnswersService: CurrentAnswersService,
+    private deviceDetector: DeviceDetectorService,
+    private dictionaryApiService: DictionaryApiService,
+    private dictionaryToolsService: DictionaryToolsService,
     private jsonHelperService: JsonHelperService,
+    private modalErrorService: ModalErrorService,
+    private modalService: ModalService,
     private navigationService: NavigationService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private yaMapService: YaMapService,
+    private zone: NgZone,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -465,10 +467,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       );
 
       if (confirmationModalButtons.length > 0) {
-        this.actionService.openConfirmationModal(confirmationModalButtons[0], this.data.id, () => {
-          this.currentAnswersService.state = answer;
-          this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
-        });
+        this.actionToolsService.openConfirmationModal(
+          confirmationModalButtons[0],
+          this.data.id,
+          () => {
+            this.currentAnswersService.state = answer;
+            this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
+          },
+        );
       } else {
         this.currentAnswersService.state = answer;
         this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);

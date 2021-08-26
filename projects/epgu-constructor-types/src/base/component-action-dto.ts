@@ -23,7 +23,7 @@ export interface ComponentActionDto {
   serviceCode?: string; // для умного поиска
   target?: TargetType; // для умного поиска
   targetCode?: string; // для умного поиска
-  type?: ActionType;
+  type: ActionType;
   underConstruction?: boolean;
   value?: string;
 }
@@ -31,32 +31,34 @@ export interface ComponentActionDto {
 export enum ActionType {
   attachUploadedFiles = 'attachUploadedFiles',
   confirmModalStep = 'confirmModalStep',
+  copyToClipboard = 'copyToClipboard',
   deleteSuggest = 'deleteSuggest',
   deliriumNextStep = 'deliriumNextStep',
   download = 'download',
-  externalIntegration = 'externalIntegration',
   dropdownListModal = 'dropdownListModal',
+  externalIntegration = 'externalIntegration',
   getNextQuiz = 'getNextQuiz', // для умного поиска
   home = 'home',
+  legalEdit = 'legalEdit',
   modalRedirectTo = 'modalRedirectTo',
-  restartOrder = 'restartOrder',
   nextStep = 'nextStep',
   nextStepModal = 'nextStepModal',
   orderToOrder = 'orderToOrder',
   prevStep = 'prevStep',
   prevStepModal = 'prevStepModal',
   profileEdit = 'profileEdit',
-  legalEdit = 'legalEdit',
   quizToOrder = 'quizToOrder',
   redirect = 'redirect', // для умного поиска
   redirectToLK = 'redirectToLK',
-  redirectToPayByUin = 'redirectToPayByUin',
-  skipStep = 'skipStep',
-  reload = 'reload',
   redirectToLKAccount = 'redirectToLKAccount',
+  redirectToPayByUin = 'redirectToPayByUin',
+  reload = 'reload',
+  restartOrder = 'restartOrder',
+  skipStep = 'skipStep',
 }
 
 export enum DTOActionAction {
+  addToCalendar = 'service/action/addToCalendar',
   attachUploadedFiles = 'attachUploadedFiles',
   confirmSmsCode = 'service/actions/confirmSmsCode',
   confirmEmailCode = 'service/actions/confirmEmailCode',

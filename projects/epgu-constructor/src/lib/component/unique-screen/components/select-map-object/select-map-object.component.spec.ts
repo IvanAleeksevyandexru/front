@@ -74,7 +74,8 @@ import { divorceApplicantAnswers } from './mocks/mock-select-map-divorceAnswers'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
-import { ExplicitContext } from '@epgu/zipkin';
+import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
+import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -106,26 +107,27 @@ describe('SelectMapObjectComponent', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        Icons,
-        ModalErrorService,
-        DictionaryToolsService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        DatesToolsService,
-        HtmlRemoverService,
-        CurrentAnswersService,
-        AutocompleteApiService,
-        RefRelationService,
-        PrepareComponentsService,
-        DateRefService,
-        CachedAnswersService,
-        ScreenService,
-        MockProvider(DateRestrictionsService),
         AddressesToolsService,
+        AutocompleteApiService,
+        CachedAnswersService,
+        ComponentsListRelationsService,
+        CurrentAnswersService,
+        DateRangeService,
+        DateRefService,
+        DatesToolsService,
+        DictionaryToolsService,
+        HtmlRemoverService,
+        Icons,
         JsonHelperService,
+        MockProvider(ActionToolsService),
+        MockProvider(DateRestrictionsService),
+        ModalErrorService,
+        PrepareComponentsService,
+        RefRelationService,
+        ScreenService,
         SelectMapObjectService,
-        YandexMapService,
         UnsubscribeService,
+        YandexMapService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -136,7 +138,6 @@ describe('SelectMapObjectComponent', () => {
         { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService,
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, {

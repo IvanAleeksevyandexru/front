@@ -1,5 +1,6 @@
 import { ComponentBase } from '../../../../screen/screen.types';
 import {
+  ActionType,
   Clarifications,
   ConfirmUserDataStyle,
   DTOActionAction,
@@ -29,6 +30,7 @@ export interface ConfirmUserDataActions {
   label: string;
   value: string;
   action: DTOActionAction;
+  type: ActionType;
 }
 
 export interface ConfirmUserDataField {
