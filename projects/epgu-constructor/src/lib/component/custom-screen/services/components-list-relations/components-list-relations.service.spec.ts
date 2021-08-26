@@ -10,7 +10,8 @@ import {
   CustomListDictionaries,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomStatusElement, DATE_RESTRICTION_GROUP_DEFAULT_KEY,
+  CustomStatusElement,
+  DATE_RESTRICTION_GROUP_DEFAULT_KEY,
   DateRestriction,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
