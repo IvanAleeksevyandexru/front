@@ -36,6 +36,7 @@ import { TypeCastService } from '../../../../core/services/type-cast/type-cast.s
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -136,6 +137,7 @@ describe('ComponentsListFormService', () => {
       providers: [
         ComponentsListFormService,
         ValidationService,
+        CurrentAnswersService,
         UnsubscribeService,
         ComponentsListToolsService,
         AddressHelperService,
