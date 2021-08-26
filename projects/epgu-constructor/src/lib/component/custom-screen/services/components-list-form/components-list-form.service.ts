@@ -486,7 +486,7 @@ export class ComponentsListFormService {
     let value: ListItem = undefined;
 
     if (lookupFilterPath) {
-      value = dicts[key]?.list.find((item: ListItem) => 
+      value = dicts[key]?.list.find((item: ListItem) =>
         get(item, lookupFilterPath) === (isRef ? get(this.screenService.getStore(), compareValue) : compareValue)
       );
     } else {
