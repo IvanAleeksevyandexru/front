@@ -1399,7 +1399,7 @@ describe('ComponentsListRelationsService', () => {
     it('should return number calculated by formula, if components have valid values', () => {
       const form = new FormBuilder().group({ ...component });
       formMock = new FormArray([form]);
-      expect(service.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe(2);
+      expect(service.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('2');
     });
   });
 
