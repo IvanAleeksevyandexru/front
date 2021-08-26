@@ -248,7 +248,12 @@ export class ComponentsListFormService {
   }
 
   private changeValidators(component: CustomComponent, control: AbstractControl): void {
-    control.setValidators([this.validationService.customValidator(component)]);
+    const validators = [this.validationService.customValidator(component)];
+    if (component.type === CustomScreenComponentTypes.DateInput ||
+      component.type === CustomScreenComponentTypes.MonthPicker) {
+      validators.push(this.validationService.dateValidator(component, null));
+    }
+    control.setValidators(validators);
   }
 
   private relationPatch(component: CustomComponent, patch: object): void {
