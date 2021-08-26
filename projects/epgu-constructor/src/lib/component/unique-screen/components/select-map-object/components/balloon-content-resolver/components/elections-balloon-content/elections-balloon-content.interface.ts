@@ -13,6 +13,7 @@ export interface IuikFullDataResponse {
 
 export interface election {
   district: string;
+  districtNo: string;
   electionId: string;
   electionName: string;
 }

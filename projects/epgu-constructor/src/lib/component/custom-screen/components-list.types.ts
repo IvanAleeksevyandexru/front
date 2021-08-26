@@ -202,6 +202,12 @@ export interface CustomComponentAttrValidation {
   errorMsg: string;
   errorDesc?: string;
   updateOn?: UpdateOn;
+  expr?: string;
+}
+
+export enum CustomComponentAttrValidator {
+  validationFn = 'validation-fn',
+  calculatedPredicate = 'CalculatedPredicate'
 }
 
 export interface CustomComponentOutputData {
