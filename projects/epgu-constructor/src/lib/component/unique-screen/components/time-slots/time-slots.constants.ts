@@ -1,5 +1,6 @@
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
 
+export const STATIC_ERROR_MESSAGE = 'При обработке данных произошла непредвиденная ошибка';
 export class TimeSlotsConstants {
   errorModal: ConfirmationModal = {
     title: 'Ошибка',
