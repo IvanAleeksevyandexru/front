@@ -10,6 +10,10 @@
   </div>
 </section>
 
+<section *ngIf="!formValid && emptyFieldsErrorMsg" class="employee-history__empty-fields">
+  {{emptyFieldsErrorMsg}}
+</section>
+
 <section *ngIf="isCompleted" class="employee-history__completed">
   <div class="employee-history__completed__icon"></div>
   <div class="employee-history__completed__msg">Вы заполнили {{ years }} лет</div>
