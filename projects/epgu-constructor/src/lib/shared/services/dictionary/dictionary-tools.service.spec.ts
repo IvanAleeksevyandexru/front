@@ -199,7 +199,11 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.value,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'true' });
+      const result = { asString: 'true' };
+      expect(valueForFilter).toEqual({
+        rawValue: result,
+        value: result,
+      });
     });
 
     it('should calc valueType preset', () => {
@@ -211,7 +215,8 @@ describe('DictionaryToolsService', () => {
       };
       const compValue = JSON.parse(MapStore.display.components[0].value);
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'R77' });
+
+      expect(valueForFilter).toEqual({ rawValue: 'R77', value: { asString: 'R77' }});
     });
 
     it('should calc valueType root', () => {
@@ -222,7 +227,7 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.root,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 763712529 });
+      expect(valueForFilter).toEqual({ rawValue: 763712529, value: { asString: 763712529 }});
     });
 
     it('should calc valueType ref', () => {
@@ -233,7 +238,10 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.ref,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: '77000000000358800' });
+      expect(valueForFilter).toEqual({
+        rawValue: '77000000000358800',
+        value: { asString: '77000000000358800' },
+      });
     });
 
     it('should calc valueType rawFilter', () => {
@@ -244,7 +252,10 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.rawFilter,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'searchString' });
+      expect(valueForFilter).toEqual({
+        rawValue: 'searchString',
+        value: { asString: 'searchString' },
+      });
     });
 
     it('should calc valueType formValue with date', () => {
@@ -256,7 +267,7 @@ describe('DictionaryToolsService', () => {
         dateFormat: 'yyyy-MM-dd',
       };
       const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: '2021-04-08' });
+      expect(valueForFilter).toEqual({ rawValue: '2021-04-08', value: { asString: '2021-04-08' }});
     });
 
     it('should calc valueType formValue with string', () => {
@@ -267,7 +278,7 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.formValue,
       };
       const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'test' });
+      expect(valueForFilter).toEqual({ rawValue: 'test', value: { asString: 'test' }});
     });
 
     it('should calc valueType INVALID_VALUE_TYPE', () => {
@@ -705,6 +716,8 @@ describe('DictionaryToolsService', () => {
         simple: {
           attributeName: 'TEST',
           condition: 'EQUALS',
+          maxLength: undefined,
+          rawValue: 42,
           value: { asString: 42 },
         },
       });
@@ -727,6 +740,8 @@ describe('DictionaryToolsService', () => {
         simple: {
           attributeName: 'TEST',
           condition: 'EQUALS',
+          maxLength: undefined,
+          rawValue: 42,
           value: { asDecimal: 42 },
         },
       });
