@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { MatPeriodFormComponent } from './mat-period-form.component';
 import {
@@ -10,6 +11,7 @@ import {
   DatesToolsService,
   ConfigService,
   LoggerService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
@@ -107,6 +109,7 @@ describe('MatPeriodFormComponent', () => {
         DateRangeService,
         MockProvider(DateRestrictionsService),
         { provide: ScreenService, use: ScreenServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         ConfigService,
         LoggerService,
       ],
