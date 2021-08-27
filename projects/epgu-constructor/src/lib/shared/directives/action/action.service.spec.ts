@@ -15,7 +15,6 @@ import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constru
 import { SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
-import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -25,176 +24,41 @@ import { FormPlayerServiceStub } from '../../../form-player/services/form-player
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import {
-  ComponentDto,
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-  ActionApiResponse,
-} from '@epgu/epgu-constructor-types';
+import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { HookService } from '../../../core/services/hook/hook.service';
-import { HookTypes } from '../../../core/services/hook/hook.constants';
-import { tap } from 'rxjs/operators';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
-
-const mockComponent: ComponentDto = {
-  attrs: {},
-  label: '',
-  type: '',
-  id: '12',
-  value: '',
-};
-
-const downloadAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.download,
-};
-
-const prevStepModalAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.prevStepModal,
-};
-
-const nextStepModalAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.nextStepModal,
-};
-
-const skipAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.skipStep,
-};
-
-const restartOrderAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.restartOrder,
-  type: ActionType.restartOrder,
-};
-
-const nextAction: ComponentActionDto = {
-  label: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.nextStep,
-  value: 'some value',
-};
-
-const prevAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.prevStep,
-};
-
-const quizToOrderAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: '/to-some-order' as DTOActionAction,
-  type: ActionType.quizToOrder,
-};
-
-const orderToOrderAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: '/to-some-order' as DTOActionAction,
-  type: ActionType.orderToOrder,
-  multipleAnswers: [
-    {
-      screenId: 's1',
-      componentId: 'w1',
-      priority: 2,
-      value: 'valueA',
-    },
-    {
-      screenId: 's2',
-      componentId: 'q1',
-      priority: 1,
-      value: 'valueB',
-    },
-  ],
-};
-
-const redirectToLKAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.redirectToLK,
-};
-
-const profileEditAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.profileEdit,
-};
-
-const homeAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: DTOActionAction.editPhoneNumber,
-  type: ActionType.home,
-};
-
-const reloadAction: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: null,
-  type: ActionType.reload,
-};
-
-const openDropdownModalAction: ComponentActionDto = {
-  label: '',
-  value: 'test',
-  action: null,
-  type: ActionType.dropdownListModal,
-};
-
-const openConfirmationModalAction: ComponentActionDto = {
-  label: 'test',
-  value: 'confirmation',
-  action: null,
-  type: ActionType.confirmModalStep,
-};
-
-const deliriumAction: ComponentActionDto = {
-  label: 'delirium',
-  value: 'delirium',
-  action: DTOActionAction.getNextStep,
-  type: ActionType.deliriumNextStep,
-  deliriumAction: 'edit',
-};
-
-const redirectAction: ComponentActionDto = {
-  label: 'redirect',
-  value: '#',
-  action: DTOActionAction.redirect,
-  type: ActionType.redirect,
-};
-
-const redirectToPayByUinAction: ComponentActionDto = {
-  label: 'Начать',
-  value: '',
-  type: ActionType.redirectToPayByUin,
-  action: DTOActionAction.redirectToPayByUin,
-};
-
-const sendActionMock = of({
-  errorList: [],
-  responseData: { value: 'value', type: 'type' },
-}) as Observable<ActionApiResponse<string>>;
+import {
+  mockComponent,
+  sendActionMock,
+  downloadAction,
+  prevStepModalAction,
+  nextStepModalAction,
+  skipAction,
+  restartOrderAction,
+  nextAction,
+  prevAction,
+  quizToOrderAction,
+  orderToOrderAction,
+  redirectToLKAction,
+  profileEditAction,
+  homeAction,
+  reloadAction,
+  openDropdownModalAction,
+  openConfirmationModalAction,
+  redirectAction,
+  redirectToPayByUinAction,
+  deliriumAction,
+} from './action.mock';
+import { ActionToolsService } from './action-tools.service';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { HookTypes } from '../../../core/services/hook/hook.constants';
 
 describe('ActionService', () => {
   let actionService: ActionService;
+  let actionToolsService: ActionToolsService;
   let downloadService: DownloadService;
   let navigationModalService: NavigationModalService;
   let navigationService: NavigationService;
@@ -207,11 +71,9 @@ describe('ActionService', () => {
   let sessionStorageService: SessionStorageService;
   let formPlayerApiService: FormPlayerApiService;
   let modalService: ModalService;
-  let hookService: HookService;
   let currentAnswersService: CurrentAnswersService;
-  let htmlRemover: HtmlRemoverService;
-  let formPlayerService: FormPlayerService;
   let locationService: LocationService;
+  let hookService: HookService;
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
@@ -232,6 +94,7 @@ describe('ActionService', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         HtmlRemoverService,
         ActionService,
+        ActionToolsService,
         NavigationModalService,
         CurrentAnswersService,
         AutocompleteApiService,
@@ -247,7 +110,8 @@ describe('ActionService', () => {
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
     actionService = TestBed.inject(ActionService);
-    formPlayerService = TestBed.inject(FormPlayerService);
+    actionToolsService = TestBed.inject(ActionToolsService);
+    hookService = TestBed.inject(HookService);
     downloadService = TestBed.inject(DownloadService);
     navigationService = TestBed.inject(NavigationService);
     locationService = TestBed.inject(LocationService);
@@ -256,9 +120,7 @@ describe('ActionService', () => {
     sessionStorageService = TestBed.inject(SessionStorageService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     modalService = TestBed.inject(ModalService);
-    hookService = TestBed.inject(HookService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
-    htmlRemover = TestBed.inject(HtmlRemoverService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -270,6 +132,8 @@ describe('ActionService', () => {
 
     modalPrevStepSpy = spyOn(navigationModalService, 'prev');
     modalNextStepSpy = spyOn(navigationModalService, 'next');
+
+    screenService.display = new FormPlayerServiceStub()._store.scenarioDto.display;
   });
 
   it('should extend ActionService', () => {
@@ -408,9 +272,9 @@ describe('ActionService', () => {
   });
 
   it('should call switchAction handleDeliriumAction', () => {
-    spyOn(actionService, 'handleDeliriumAction').and.callThrough();
+    spyOn(actionToolsService, 'handleDeliriumAction').and.callThrough();
     actionService.switchAction(deliriumAction, null);
-    expect(actionService['handleDeliriumAction']).toHaveBeenCalled();
+    expect(actionToolsService['handleDeliriumAction']).toHaveBeenCalled();
   });
 
   it('should call switchAction redirectExternal', () => {
@@ -424,10 +288,10 @@ describe('ActionService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      spyOn<any>(actionService, 'isTimerComponent').and.returnValue(false);
+      spyOn<any>(actionToolsService, 'isTimerComponent').and.returnValue(false);
       const expectedValue = { 123: { value: 'some value', visited: true }};
       currentAnswersService.state = expectedValue;
-      const value = actionService['getComponentStateForNavigate'](nextAction, '123');
+      const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
@@ -435,9 +299,9 @@ describe('ActionService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      spyOn<any>(actionService, 'isTimerComponent').and.returnValue(true);
+      spyOn<any>(actionToolsService, 'isTimerComponent').and.returnValue(true);
       const expectedValue = { 123: { visited: true, value: nextAction.value }};
-      const value = actionService['getComponentStateForNavigate'](nextAction, '123');
+      const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
@@ -446,7 +310,7 @@ describe('ActionService', () => {
       screenService.display = display;
       const expectedValue = { 123: { value: 'some value', visited: true }};
       currentAnswersService.state = 'some value';
-      const value = actionService['getComponentStateForNavigate'](nextAction, '123');
+      const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
@@ -455,16 +319,8 @@ describe('ActionService', () => {
       screenService.display = display;
       const expectedValue = { 123: { value: '', visited: true }};
       currentAnswersService.state = 'some value';
-      const value = actionService['getComponentStateForNavigate'](skipAction, '123');
+      const value = actionToolsService['getComponentStateForNavigate'](skipAction, '123');
       expect(value).toEqual(expectedValue);
-    });
-  });
-
-  describe('handleDeliriumAction()', () => {
-    it('sould call formPlayerService.navigate()', () => {
-      const formPlayerServiceNavigateSpy = spyOn(formPlayerService, 'navigate');
-      actionService['handleDeliriumAction'](deliriumAction, 'componentId');
-      expect(formPlayerServiceNavigateSpy).toBeCalled();
     });
   });
 
@@ -475,7 +331,7 @@ describe('ActionService', () => {
       };
     });
 
-    it('should call htmlRemover.delete()', () => {
+    it('should call navigationService.redirectTo()', () => {
       const spy = spyOn(navigationService, 'redirectTo');
       actionService.switchAction(redirectToPayByUinAction, '');
       expect(spy).toHaveBeenCalledWith('oplataUrl/pay/uin/100');

@@ -36,6 +36,7 @@ import { FormPlayerService } from '../../../../../../form-player/services/form-p
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -64,27 +65,11 @@ describe('BillInfoComponent', () => {
         MockProvider(ConfigService),
         MockProvider(LocationService),
         MockProvider(LocalStorageService),
+        MockProvider(DatesToolsService),
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
-        EventBusService,
-        DatesToolsService,
-        ActionService,
-        FormPlayerApiService,
-        InitDataService,
-        LoggerService,
-        NavigationService,
-        NavigationModalService,
-        DeviceDetectorService,
-        DownloadService,
-        ObjectHelperService,
-        HtmlRemoverService,
-        AutocompleteApiService,
-        ModalService,
-        EaisdoGroupCostService,
-        SessionService,
-        JsonHelperService,
-        WINDOW_PROVIDERS,
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   });

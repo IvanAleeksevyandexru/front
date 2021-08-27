@@ -41,6 +41,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { ActionToolsService } from './action-tools.service';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -165,6 +166,7 @@ describe('ActionDirective', () => {
         HtmlRemoverService,
         CurrentAnswersService,
         ActionService,
+        ActionToolsService,
         AutocompleteApiService,
         HttpClient,
         HttpHandler,
@@ -188,6 +190,8 @@ describe('ActionDirective', () => {
     actionService = TestBed.inject(ActionService);
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
+
+    screenService.display = new FormPlayerServiceStub()._store.scenarioDto.display;
   });
 
   it('test directive - download action', () => {
