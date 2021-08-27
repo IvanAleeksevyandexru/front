@@ -19,6 +19,10 @@
   margin: 0 0 $screen-pad-24;
 }
 
+.screen-body ::ng-deep .screen-button {
+  margin-top: $screen-pad-24;
+}
+
 .gray-theme {
   display: flex;
   flex-grow: 1;
@@ -29,6 +33,13 @@
 
   .divider {
     display: none;
+  }
+
+  &.screen-body ::ng-deep .screen-button {
+    margin-top: $screen-pad-40;
+    @include tablets-down {
+      margin-top: $screen-pad-32;
+    }
   }
 }
 
